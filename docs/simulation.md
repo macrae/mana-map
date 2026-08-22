@@ -165,6 +165,21 @@ each: Default 3/6, Experimental 2/6, Reckless 2/6 — the aggro profiles make a 
 deck worse, so Default stays the default and the AI caveat stands. Also learned: a game
 that hits the `-c` clock still declares a winner.
 
+## Every figure carries its median, not just its mean
+
+`mean_ci` reports `{mean, median, min, max, ci95, n}`. The median is there because a
+mean over a skewed sample is a true number that describes no game. Measured on the
+kianne V1-vs-V2 experiment, arm B's per-game commander damage was
+`0 0 0 0 0 0 0 0 0 0 31 178` — **mean 17.42 against V1's 2.25**, which reads as a
+sevenfold improvement and was nearly reported as one. The **median is 0 in both arms**:
+the entire difference is two games, one of them a 178-damage blowout, and the deck
+actually connected in FEWER games after the change (2 of 12 against 4).
+
+The `ci95` of `[-11.64, 46.47]` already spanned zero, so the record was honest and the
+repo's interval discipline worked — but it took sorting the per-game values in a
+throwaway script to see it. `compact()` had been writing those per-game scalars into
+`doc["games"]` all along; the distribution was on disk and merely unsurfaced.
+
 ## Commander damage (CR 903.10a), per defender
 
 A player dealt 21 combat damage by the same commander over a game loses — for some decks

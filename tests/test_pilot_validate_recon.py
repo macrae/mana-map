@@ -133,7 +133,7 @@ def test_ownership_is_falsified_against_the_boxes(tmp_path, monkeypatch):
     assert not [e for e in validate_recon._validate_ownership(ok) if "says" in e]
 
     lying = _doc(ownership={"Craterhoof Behemoth": False})
-    assert any("says False but the collection says True"
+    assert any("says False but no box in COLLECTION_DIR holds it"
                in e for e in validate_recon._validate_ownership(lying))
 
 

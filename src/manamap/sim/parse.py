@@ -335,16 +335,33 @@ def wilson(k, n, z=1.96):
 
 
 def mean_ci(xs):
+    """`{mean, median, min, max, ci95, n}` — the mean never travels alone.
+
+    The median is here because a mean over a skewed sample is a true number that
+    describes no game. Measured on the V1-vs-V2 kianne experiment, arm B's per-game
+    commander damage was `0 0 0 0 0 0 0 0 0 0 31 178`: mean 17.42 against a V1 mean
+    of 2.25, which reads as a sevenfold improvement. The median is 0 in BOTH arms —
+    the whole difference is two games, one of them a blowout, and the deck connected
+    in FEWER games after the change. The ci95 of [-11.64, 46.47] did span zero, so
+    the record was already honest and the interval discipline worked; it took
+    sorting the per-game values by hand to see it. Now it does not.
+    """
     xs = [x for x in xs if x is not None]
     if not xs:
         return {"mean": None, "n": 0}
     n = len(xs)
     mean = sum(xs) / n
+    ordered = sorted(xs)
+    mid = n // 2
+    median = ordered[mid] if n % 2 else (ordered[mid - 1] + ordered[mid]) / 2
+    out = {"mean": round(mean, 2), "median": round(median, 2),
+           "min": round(ordered[0], 2), "max": round(ordered[-1], 2), "n": n}
     if n < 2:
-        return {"mean": round(mean, 2), "n": n}
+        return out
     sd = math.sqrt(sum((x - mean) ** 2 for x in xs) / (n - 1))
     half = 1.96 * sd / math.sqrt(n)
-    return {"mean": round(mean, 2), "ci95": [round(mean - half, 2), round(mean + half, 2)], "n": n}
+    out["ci95"] = [round(mean - half, 2), round(mean + half, 2)]
+    return out
 
 
 def aggregate(facts, slug_label, label, commanders=None):

@@ -110,7 +110,8 @@ def test_aggregate_intervals_behave():
     agg = parse.aggregate(facts, "Ai(1)-radagast", LABEL)
     r = agg["seats"]["radagast"]
     assert r["wins"] == 1 and r["win_rate"] == 1.0 and r["win_rate_ci95"] == [0.207, 1.0]
-    assert agg["round"] == {"mean": 9.0, "n": 1}, "no interval below two games"
+    assert agg["round"] == {"mean": 9.0, "median": 9, "min": 9, "max": 9, "n": 1}, \
+        "no interval below two games, but the median and range still describe it"
     assert parse.wilson(0, 0) == (None, None)
     assert parse.wilson(0, 8) == (0.0, 0.324)
     m = parse.mean_ci([1, 2, 3, 4])
@@ -205,3 +206,29 @@ def test_the_aggregate_separates_total_dealt_from_the_number_that_kills():
     assert cd["games_reaching_21"] == 0 and cd["games_dealing_any"] == 1
     assert any("903.10a" in x for x in agg["limits"]), \
         "the limit that explains per-defender must travel with the figure"
+
+
+def test_the_mean_never_travels_without_the_median():
+    """A mean over a skewed sample is a true number describing no game.
+
+    kianne's V1-vs-V2 arm B had per-game commander damage
+    `0 0 0 0 0 0 0 0 0 0 31 178`: mean 17.42 against V1's 2.25, which reads as a
+    sevenfold win. The median is 0 in BOTH arms — the whole difference is two games,
+    one a blowout, and the deck connected in FEWER games after the change. The ci95
+    already spanned zero, so the record was honest; it took sorting the values by hand
+    to see it.
+    """
+    skewed = parse.mean_ci([0] * 10 + [31, 178])
+    assert skewed["mean"] == 17.42 and skewed["median"] == 0.0
+    assert skewed["min"] == 0 and skewed["max"] == 178
+    assert skewed["ci95"][0] < 0 < skewed["ci95"][1], "the interval spans zero"
+
+    flat = parse.mean_ci([0] * 8 + [5, 7, 7, 8])
+    assert flat["mean"] == 2.25 and flat["median"] == 0.0
+    assert flat["max"] == 8
+
+    assert parse.mean_ci([]) == {"mean": None, "n": 0}
+    one = parse.mean_ci([4])
+    assert one["median"] == 4 and "ci95" not in one, "no interval below two games"
+    even = parse.mean_ci([1, 3])
+    assert even["median"] == 2.0, "an even sample averages the middle pair"
