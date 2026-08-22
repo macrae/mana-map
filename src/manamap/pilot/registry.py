@@ -18,6 +18,8 @@ PILOT_STEPS = [
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
+    ("card-search", "manamap.pilot.card_search",
+     "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
     ("deck-notes", "manamap.pilot.deck_notes",
      "The captain's log: add a note about a game, list them, show one (append-only, authored)"),
@@ -314,6 +316,40 @@ def add_pilot_parser(subparsers):
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
+        if name == "card-search":
+            # NO slug positional: a search is not per-deck. `--deck` scopes it
+            # (identity DERIVED from the commander, the deck's own cards excluded)
+            # without making the corpus a per-deck artifact.
+            cmd.add_argument("--deck", default=None,
+                             help="scope to a deck: identity derived from its commander, "
+                                  "and its own 99 excluded from the results")
+            cmd.add_argument("--identity", default=None,
+                             help="colour identity to stay within (e.g. GU); mutually "
+                                  "exclusive with --deck, whose identity is derived")
+            cmd.add_argument("--include-owned", action="store_true", dest="include_owned",
+                             help="--deck: do NOT exclude cards already in the deck")
+            cmd.add_argument("--oracle", action="append", default=[], metavar="REGEX",
+                             help="oracle-text regex, repeatable (ANY match unless --all)")
+            cmd.add_argument("--all", action="store_true", dest="require_all",
+                             help="require EVERY --oracle pattern rather than any")
+            cmd.add_argument("--name", action="append", default=[], metavar="REGEX",
+                             help="card-NAME regex, repeatable (any) — --oracle searches "
+                                  "rules text and would not find a card by its name")
+            cmd.add_argument("--type", action="append", default=[], metavar="REGEX",
+                             help="type-line regex, repeatable (any)")
+            cmd.add_argument("--role", action="append", default=[], metavar="ROLE",
+                             help="card_roles.json role, repeatable (any)")
+            cmd.add_argument("--cmc-max", type=float, default=None, dest="cmc_max")
+            cmd.add_argument("--cmc-min", type=float, default=None, dest="cmc_min")
+            cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
+                             help="drop Game Changers (they force bracket 4)")
+            cmd.add_argument("--limit", type=int, default=None,
+                             help=f"max results (default {50})")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            # NOT slug-guarded: the results are corpus rows, not this deck's numbers,
+            # even when --deck scoped the query.
+            cmd.add_argument("--out", default=None,
+                             help="Write JSON here as well (a view, never tracked)")
         if name == "pool-facts":
             # Takes paths, not a slug: a collection is not a deck, and forcing it
             # into data/decks/<slug>/ would put it in reach of validate-deck.

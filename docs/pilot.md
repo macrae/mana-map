@@ -46,6 +46,7 @@ manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
+manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
@@ -221,6 +222,43 @@ The vocabulary lives in `pilot/common.py` (`DECK_STATUSES`, `UNPLAYABLE_STATUSES
 `deck_lifecycle`), not in `issue_spec`, where it started: the workbench has to read it and
 `issue_spec` is the frozen renderer that gets deleted with the magazine. `issue_spec`
 re-exports it under the old names so the legacy banner is unchanged.
+
+## Mining the corpus (`card-search`, tier ◆, computed on demand)
+
+Every other command on the bench measures a deck; this is the only one that answers the
+question those measurements end in — **which cards would fix it**. `deck-audit` names an
+under-filled axis, `goldfish` prices a thin component, `prescribe` asks the doctor for
+adds, and until now all three needed a human or an agent to *think of* candidates. An
+agent asked to think of candidates invents them; this hands it a list it did not author,
+and a validator can then check membership.
+
+```bash
+manamap pilot card-search --deck kianne --oracle "additional combat phase"
+manamap pilot card-search --identity GU --role ramp:rock --cmc-max 2 --no-game-changers
+manamap pilot card-search --deck heliod --name "^Sword of " --include-owned
+```
+
+Filters: `--identity` / `--deck`, `--oracle` (regex, repeatable, ANY unless `--all`),
+`--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--limit`. Three
+rules it enforces so a caller cannot get them wrong:
+
+- **Identity is DERIVED, never authored.** `--deck` takes it from that deck's commander,
+  the same rule `build_deck.load_brief` follows, and passing `--identity` alongside is a
+  hard error rather than an override.
+- **A candidate is a card you do not already have.** `--deck` excludes the deck's own 99
+  (`--include-owned` turns that off) — a search that hands your own list back is the
+  commonest way a tool like this wastes a reader's time.
+- **Truncation is stated.** A silently cut list reads as "that is all of them".
+
+`--oracle` searches rules text and `--name` searches names, deliberately separately:
+`--oracle "Sol Ring"` looks like it should find Sol Ring and instead finds every card
+whose rules text mentions one, which is a confusing empty result rather than an error.
+
+It does **not** score fit. The repo has one scorer (`build_deck`) and one retrieval aid
+(the synergy graph, whose own docstring says it "is a retrieval aid and not a scoring
+function"); a second opinion here would be a third answer to "is this card good" that
+nothing reconciles. Results rank by EDHREC rank, unranked last — a card with no rank is
+usually just new, and a new set's answer to a problem is exactly what this should surface.
 
 ## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
 

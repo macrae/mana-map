@@ -1,0 +1,135 @@
+"""card-search: deterministic card mining over the corpus.
+
+The bench could measure a deck from nine directions and could not answer the
+question every measurement ends in — WHICH CARDS would fix it. These pin the
+three rules that keep the answer honest: identity is derived and not authored,
+a candidate is a card you do not already have, and a truncated list says so.
+"""
+
+import re
+
+import pytest
+
+from manamap.pilot import card_search
+
+from conftest import requires_data, requires_deck
+
+
+class Args:
+    """argparse stand-in; `analyze` reads everything with getattr defaults."""
+
+    def __init__(self, **kw):
+        for k, v in kw.items():
+            setattr(self, k, v)
+
+
+@requires_data
+def test_identity_is_a_subset_filter_not_an_equality_one():
+    """A GU deck may play a mono-blue or colourless card. Filtering on equality
+    would return only gold Simic cards, which is a tiny and wrong slice."""
+    rows, _ = card_search.search(identity={"G", "U"}, oracle=[r"^Draw a card\."], limit=200)
+    idents = {tuple(r["color_identity"]) for r in rows}
+    assert idents, "expected some matches"
+    assert all(set(i) <= {"G", "U"} for i in idents)
+    assert any(i == () for i in idents) or any(len(i) == 1 for i in idents), \
+        "a subset filter must admit colourless and mono-coloured cards"
+
+
+@requires_data
+def test_commander_illegal_cards_are_dropped_and_counted():
+    """Legality is a filter, not a note — but the count is reported, so a caller
+    can tell 'nothing matched' from 'everything that matched was illegal'."""
+    rows, meta = card_search.search(oracle=[r"\bproliferate\b"], limit=500)
+    assert rows and meta["matched"] == len(rows) or meta.get("truncated")
+    assert meta["commander_illegal_skipped"] > 0
+    assert all("Conspiracy" not in r["type_line"] for r in rows)
+
+
+@requires_data
+def test_truncation_is_stated_never_silent():
+    """A silently cut list reads as 'that is all of them', which is the one claim
+    this tool must never make by accident."""
+    rows, meta = card_search.search(oracle=[r"\bcreature\b"], limit=5)
+    assert len(rows) == 5 and meta["returned"] == 5
+    assert meta["truncated"] == meta["matched"] - 5 > 0
+
+
+@requires_data
+def test_any_versus_all_across_several_oracle_patterns():
+    """ANY is the default because several phrasings of one question are
+    alternative answers, not a conjunction."""
+    pats = [r"additional combat phase", r"\bproliferate\b"]
+    any_rows, _ = card_search.search(oracle=pats, limit=500)
+    all_rows, _ = card_search.search(oracle=pats, require_all=True, limit=500)
+    assert len(all_rows) < len(any_rows)
+    assert {r["name"] for r in all_rows} <= {r["name"] for r in any_rows}
+    for r in all_rows:
+        assert len(r["matched"]) == 2
+
+
+@requires_data
+def test_unranked_cards_sort_last_but_are_not_dropped():
+    """A card with no EDHREC rank is usually just new — and a new set's answer to
+    a problem is exactly what a search like this should be able to surface."""
+    rows, _ = card_search.search(oracle=[r"\bproliferate\b"], limit=500)
+    ranks = [r["edhrec_rank"] for r in rows]
+    seen_unranked = False
+    for r in ranks:
+        if r is None:
+            seen_unranked = True
+        else:
+            assert not seen_unranked, "a ranked card sorted after an unranked one"
+
+
+@requires_data
+@requires_deck
+def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
+    doc = card_search.analyze(Args(deck="kianne", oracle=[r"\bcounters?\b"], limit=200))
+    assert doc["identity"] == ["G", "U"], "derived from the commander, not authored"
+    assert doc["identity_derived_from"] == "kianne"
+    assert doc["excluded_deck_cards"] == 90, "88 entries; two DFC lands contribute both faces"
+    names = {r["name"] for r in doc["results"]}
+    assert "Hardened Scales" not in names, "the deck already runs it — not a candidate"
+    assert "Branching Evolution" not in names
+
+
+@requires_data
+@requires_deck
+def test_include_owned_turns_the_exclusion_off():
+    """Searched by NAME, not oracle: `--oracle "Hardened Scales"` matches cards whose
+    RULES TEXT says that, which is nothing — the trap `--name` exists to avoid."""
+    q = dict(deck="kianne", name=[r"^(Hardened Scales|Branching Evolution)$"], limit=50)
+    assert card_search.analyze(Args(**q))["results"] == [], "both are in the deck"
+    owned = card_search.analyze(Args(include_owned=True, **q))
+    assert {r["name"] for r in owned["results"]} == {"Hardened Scales", "Branching Evolution"}
+
+
+@requires_data
+@requires_deck
+def test_identity_may_not_override_a_deck_because_it_is_derived():
+    """`build_deck.load_brief` derives identity from the commander and refuses an
+    authored one; two derivations of one fact are two chances to disagree."""
+    with pytest.raises(SystemExit, match="DERIVED"):
+        card_search.analyze(Args(deck="kianne", identity="WUBRG"))
+
+
+@requires_data
+def test_game_changers_can_be_excluded_because_they_force_bracket_4():
+    with_gc, _ = card_search.search(identity={"U"}, oracle=[r"\bdraw\b"], limit=500)
+    without, _ = card_search.search(identity={"U"}, oracle=[r"\bdraw\b"], limit=500,
+                                    allow_game_changers=False)
+    assert any(r["game_changer"] for r in with_gc)
+    assert not any(r["game_changer"] for r in without)
+
+
+@requires_data
+def test_the_search_that_motivated_this_command_still_answers():
+    """Simic has exactly two extra-combat effects and it is why kianne's win
+    condition is under-built — one creature, one attack, one opponent per turn.
+    If this ever returns nothing the corpus or the filter has broken, and the
+    finding it supports would silently stop being reproducible."""
+    rows, _ = card_search.search(identity={"G", "U"}, oracle=[r"additional combat phase"],
+                                 limit=50)
+    assert {"Genji Glove", "Illusionist's Gambit"} <= {r["name"] for r in rows}
+    glove = next(r for r in rows if r["name"] == "Genji Glove")
+    assert re.search(r"double strike", glove["oracle_text"], re.I)

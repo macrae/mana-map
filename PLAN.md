@@ -17,7 +17,7 @@ agents that turn a question into a priced, checked answer. Optimised for one pla
 used to be the product is a frozen legacy renderer until the compact deck page replaces
 it. The card atlas in `viz/` is unchanged and live.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 61 `manamap pilot`
+Scale (derived; `tests/test_docs_counts.py` polices these): 62 `manamap pilot`
 subcommands, 18 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
@@ -99,8 +99,12 @@ suggestions that would need a deck to shuffle.
    as a tab. The magazine gets simplified *into* this (`docs/manual-v5-spec.md`), not rewritten.
 5. **An agent in the pilot's seat** for a handful of seeded games on one question — only
    once 1–3 show the AI's play is the thing limiting the measurement.
-6. `card-search` — deterministic card mining (role, identity, cmc, oracle regex,
-   neighbours); the audit's item 8.
+6. ~~`card-search`~~ — **DONE 2026-08-21**: deterministic card mining over `cards.csv`
+   (identity derived from a deck's commander, oracle/name regex, role, type, cmc,
+   Game-Changer filter), the deck's own cards excluded by default. Built because
+   kianne's audit ended in "which cards fix this" and nothing could answer it. Neighbour
+   search is NOT in it — that would be a second retrieval opinion beside the synergy
+   graph. The audit's item 8.
 
 ### Known gaps, named in the artifacts
 

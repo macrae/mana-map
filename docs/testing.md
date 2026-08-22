@@ -52,13 +52,13 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-21: **1,821 tests** across 80 files — 1,684 fast, 136 browser and 1 `forge`
+As of 2026-08-21: **1,843 tests** across 81 files — 1,706 fast, 136 browser and 1 `forge`
 (a real Forge game, opt-in). One is a deliberately unmet `xfail(strict=True)` ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
-Why the count cannot be checked mechanically: **426 of those cases do not exist in the
-source** — there are 1,395 `def test_` functions and 1,821 collected cases, the difference
+Why the count cannot be checked mechanically: **433 of those cases do not exist in the
+source** — there are 1,410 `def test_` functions and 1,843 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
