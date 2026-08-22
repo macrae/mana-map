@@ -654,6 +654,16 @@ box, per-identity depth **and** castable sources, role coverage against `DECK_RO
 fully-contained combo lines, the bracket floor, in-box upgrades from
 `obsolescence_index.json`, and mechanical-tag concentrations.
 
+**The commander list is ranked by DEPTH, and `edhrec_card_rank` is not a quality
+signal.** `cards.csv`'s `edhrec_rank` is a card's popularity across the whole format in
+every role, so a legend played mostly in other people's 99s outranks a genuine commander —
+Selvala, Heart of the Wilds is card rank 430 and commander rank **#448**, while Atraxa is
+commander rank **#4**. It is the shortlist's *tiebreak* only (every commander in one
+identity sees the same pool, so they tie on depth), the key is named `edhrec_card_rank` so
+the label cannot lie, and `build_notes` emits the caveat into `notes` so it travels with
+the JSON rather than only the printed report. Depth is what the box holds, not what the
+deck would be worth.
+
 Three things it exists to get right, each learned the expensive way on the first real box:
 
 - **Depth is not castability.** Depth — owned cards inside a commander's colour identity —

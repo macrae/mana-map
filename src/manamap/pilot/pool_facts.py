@@ -391,14 +391,26 @@ def analyze(targets, exclude=None):
         commanders.append({
             "name": name,
             "color_identity": identity_key(identity),
-            "edhrec_rank": None if pd.isna(rank) else int(rank),
+            # NOT a commander rating. `cards.csv`'s edhrec_rank is the card's
+            # popularity across the WHOLE format in every role, so a legend played
+            # mostly IN other people's 99s outranks a genuine commander. Named
+            # `edhrec_card_rank` because the short name invited exactly one reading
+            # and it was the wrong one: it put Selvala, Heart of the Wilds (card
+            # rank 430, commander rank #448) above Atraxa, Praetors' Voice
+            # (commander rank #4) on a real shortlist. `card_search` and
+            # `deck_audit` use the same column correctly, on cards-as-candidates.
+            "edhrec_card_rank": None if pd.isna(rank) else int(rank),
             "depth": len(playable),
             "sources": colour_sources,
             # A colour with no sources is a colour you cannot cast. Reported per
             # commander because that is where the decision is made.
             "starved": sorted(c for c, n in colour_sources.items() if n < 2),
         })
-    commanders.sort(key=lambda c: (-c["depth"], c["edhrec_rank"] or 10**9, c["name"]))
+    # Depth first, then card popularity as a TIEBREAK only — every commander in one
+    # identity sees the same pool and so ties on depth, which makes this the
+    # effective order within a colour. It is a stable, defensible tiebreak and it is
+    # not a quality ranking; `build_notes` says so out loud.
+    commanders.sort(key=lambda c: (-c["depth"], c["edhrec_card_rank"] or 10**9, c["name"]))
 
     # One entry per identity a commander in the box actually licenses — the real
     # menu, rather than a hardcoded list of guild names.
@@ -466,6 +478,17 @@ def analyze(targets, exclude=None):
 def build_notes(facts):
     """The traps, said out loud, so no agent has to rediscover them."""
     notes = []
+    if facts.get("commanders"):
+        notes.append(
+            "`commanders[].edhrec_card_rank` is the CARD's popularity across the whole "
+            "format in every role — NOT a rating of the card as a commander, and not a "
+            "power ranking. A legend played mostly in other people's 99s outranks a "
+            "genuine commander: Selvala, Heart of the Wilds is card rank 430 and "
+            "commander rank #448, while Atraxa, Praetors' Voice is commander rank #4. "
+            "The list is ordered by DEPTH, with card rank as a tiebreak only, because "
+            "every commander in one identity sees the same pool and so ties on depth. "
+            "Depth is what the box holds, not what the deck would be worth."
+        )
     if facts["resolution"]["unresolved"]:
         notes.append(
             f"{len(facts['resolution']['unresolved'])} name(s) did not resolve against "
@@ -551,11 +574,12 @@ def format_report(facts):
         out.append(f"           {len(i['commanders'])} commander(s); role holes: {holes}"
                    f"  ({i['role_unclassified']} unclassified)")
 
-    out += ["", f"  top commanders (of {len(facts['commanders'])} legal in the box):"]
+    out += ["", f"  deepest commanders (of {len(facts['commanders'])} legal in the box) — "
+                f"ranked by DEPTH, not by quality:"]
     for c in facts["commanders"][:15]:
-        rank = c["edhrec_rank"] or "—"
+        rank = c["edhrec_card_rank"] or "—"
         warn = f"  ⚠ starved: {','.join(c['starved'])}" if c["starved"] else ""
-        out.append(f"    {c['color_identity']:6s} depth={c['depth']:4d}  edhrec={str(rank):>6s}  "
+        out.append(f"    {c['color_identity']:6s} depth={c['depth']:4d}  card-rank={str(rank):>6s}  "
                    f"{c['name']}{warn}")
 
     out += ["", f"  combo lines contained ({facts['combos']['total']} total, all UNVERIFIED):"]

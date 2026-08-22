@@ -139,6 +139,19 @@ that much again in the orchestrating session's context — `candidate_pool.json`
 reaches 133 KB. The directory is gitignored; the orchestrator validates your file and
 merges it into the tracked artifact.
 
+**Write it EARLY and extend it — a partial artifact beats a stalled one.** Create the
+file as soon as you have the headline plus one finding, then rewrite it as you learn
+more. Two `deck-doctor` recon runs were lost in a single session — one stalled on a
+WebFetch that never returned, one to the machine sleeping mid-response — and because
+both held everything until the end, each produced **nothing at all** and the whole spawn
+was re-spent. The third run wrote early, survived, and produced the best artifact of the
+session. Your last write wins, so there is no cost to writing sooner.
+
+**Cap your retries on any single source.** If a fetch or a command fails twice, record
+what you could not reach in `gaps` and move on. An agent that cannot finish is worth
+less than one that finishes and says what it missed — and naming the hole is itself a
+finding, since the reader needs to know which claims rest on nothing.
+
 ## 9. Things you cannot do, and what to do instead
 
 - **You cannot spawn agents.** What you cannot settle goes in `open_questions` with

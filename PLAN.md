@@ -123,6 +123,16 @@ suggestions that would need a deck to shuffle.
   The commander names ride IN the record (`seats[].commander`), never looked up from
   disk at validate time; a record without the field re-derives exactly as before, and
   `simulate <slug> --analyze <run>` is the migration.
+- **The deterministic builder cannot produce a curve SHAPE.** `build_deck` scores every
+  card independently and takes the top N, and `curve_fit` penalises each point of mana
+  value above `DECK_CURVE_SWEET_SPOT = 3` — so the top N are all cheap. Measured on the
+  first kinnan baseline (2026-08-21): 64 nonland cards, curve `{0:1, 1:11, 2:28, 3:24}`,
+  **nothing above mana value 3**, and 29 of them mana producers. A legal deck that ramps
+  into nothing. It is not a bug in the scorer; it is that N independent maxima are not a
+  distribution. The same reason it cannot assemble a two-card combo: Kinnan + Basalt
+  Monolith scores as two unrelated cards. Both are why the agent pass exists — but a
+  curve-shape constraint (fill buckets to a target distribution rather than take top N)
+  would make the baseline a better starting point for every deck.
 - **DFC pips**: `manabase.pip_requirements` reads `card["mana_cost"]`, empty for
   transform/MDFC layouts; 10 spells on 7 decks. Three-line fix that changes every
   `mana_analysis.json` — deliberately not done mid-flight.

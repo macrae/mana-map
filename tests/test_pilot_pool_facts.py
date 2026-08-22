@@ -474,3 +474,31 @@ def test_load_cards_reparses_when_the_file_changes():
     sig, _ = _MTIME_MEMO["pool_facts:cards"]
     _MTIME_MEMO["pool_facts:cards"] = ((sig[0] - 1, sig[1]), {"stale": True})
     assert "stale" not in pf.load_cards()
+
+
+def test_the_commander_rank_says_what_it_is_and_is_not():
+    """`cards.csv`'s `edhrec_rank` is a CARD's popularity across the whole format in
+    every role — not a rating of the card as a commander.
+
+    In `pool_facts` it is simultaneously a displayed column and the shortlist's
+    tiebreak sort key, which invited exactly one reading and it was the wrong one: on
+    a real 931-card collection it put Selvala, Heart of the Wilds (card rank 430,
+    commander rank #448) above Atraxa, Praetors' Voice (commander rank #4). The key is
+    named `edhrec_card_rank` and the caveat rides in `notes` so it travels with the
+    JSON, not just the human report.
+    """
+    facts = {"commanders": [{"name": "X", "edhrec_card_rank": 430, "depth": 1}],
+             "resolution": {"unresolved": []}, "identities": [],
+             "combos": {"total": 0, "reported": 0}, "bracket": {}}
+    notes = pool_facts.build_notes(facts)
+    note = next((n for n in notes if "edhrec_card_rank" in n), None)
+    assert note, "the rank caveat must be a note, not only a column heading"
+    assert "NOT a rating of the card as a commander" in note
+    assert "tiebreak" in note, "the note must say why the ordering is what it is"
+
+
+def test_no_rank_caveat_when_there_are_no_commanders():
+    """A note about a section the report does not contain is noise."""
+    facts = {"commanders": [], "resolution": {"unresolved": []}, "identities": [],
+             "combos": {"total": 0, "reported": 0}, "bracket": {}}
+    assert not [n for n in pool_facts.build_notes(facts) if "edhrec_card_rank" in n]
