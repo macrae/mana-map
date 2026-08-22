@@ -34,6 +34,8 @@ import math
 import re
 from collections import Counter, defaultdict
 
+from manamap.sim import stats
+
 # Seat labels are `Ai(k)-<meta name>` and meta names are kebab (`mm-<slug>`); `\S+`
 # swallowed the comma after an `Activator:` tag and mis-attributed every token resolution.
 _SEAT = r"(Ai\(\d+\)-[\w-]+)"
@@ -324,14 +326,17 @@ def game_facts(g, commanders=None):
 # ── Aggregates over a run ───────────────────────────────────────────────────
 
 def wilson(k, n, z=1.96):
-    """95% Wilson interval for a proportion; (None, None) when n == 0."""
-    if not n:
+    """95% Wilson interval for a proportion, rounded; (None, None) when n == 0.
+
+    The arithmetic lives in `sim.stats.wilson_bounds`, unrounded, because
+    Newcombe's interval on a DIFFERENCE is built out of these bounds and rounding
+    them first puts that error into the difference. One implementation, two
+    presentations: this one reports, that one composes.
+    """
+    lo, hi = stats.wilson_bounds(k, n, z)
+    if lo is None:
         return None, None
-    p = k / n
-    denom = 1 + z * z / n
-    centre = (p + z * z / (2 * n)) / denom
-    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
-    return round(max(0.0, centre - half), 3), round(min(1.0, centre + half), 3)
+    return round(lo, 3), round(hi, 3)
 
 
 def mean_ci(xs):
