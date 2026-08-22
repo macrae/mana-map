@@ -107,3 +107,43 @@ def test_the_tracked_artifact_carries_the_honesty_lines():
     assert doc["arms"]["a"]["decklist_text"] and doc["arms"]["b"]["decklist_text"], \
         "the arms' lists ride in the artifact so the gitignored logs are exactly regenerable"
     assert doc["delta"]["win_rate"]["intervals_overlap"] is True
+
+
+def test_the_delta_carries_commander_damage_per_defender():
+    """The A/B is the tool for judging a change to a commander-damage deck, and it was
+    the one path in the sim stack blind to commander damage — `experiment.py` called
+    `analyze_logs` without commander names while `run`, `analyze` and `validate_sim`
+    all passed them. Measured on kianne: the win rate moved 0.0 -> 0.083 (noise at
+    n=12) while games reaching 21 on one defender moved 0 -> 2, which is the figure
+    the change was actually aimed at.
+
+    `max_on_one_defender` and `dealt_total` are BOTH reported because they answer
+    different questions: 60 damage spread across three seats wins nothing.
+    """
+    keys = dict(ex.DELTA_KEYS)
+    assert keys["commander_damage_max_on_one_defender"] == \
+        ("commander_damage", "max_on_one_defender", "mean")
+    assert keys["commander_damage_dealt_total"] == ("commander_damage", "dealt_total", "mean")
+    assert keys["commander_damage_games_reaching_21"] == ("commander_damage", "games_reaching_21")
+
+    def seat(maxd, total, reaching):
+        a = _analysis(0.1, 12, 10.0, 0.0)
+        a["seats"][SLUG]["commander_damage"] = {
+            "commander": ["Kianne, Corrupted Memory"],
+            "dealt_total": {"mean": total, "n": 12},
+            "max_on_one_defender": {"mean": maxd, "n": 12},
+            "games_reaching_21": reaching}
+        return a
+
+    d = ex.delta(seat(2.25, 2.5, 0), seat(17.42, 21.92, 2), SLUG)
+    assert d["commander_damage_max_on_one_defender"]["diff"] == 15.17
+    assert d["commander_damage_games_reaching_21"]["a"] == 0
+    assert d["commander_damage_games_reaching_21"]["b"] == 2
+
+
+def test_an_arm_with_no_commander_damage_block_reports_none_not_zero():
+    """An arm whose commander could not be identified must not read as 'dealt 0' —
+    the same absent-rather-than-zeroed contract the parser holds."""
+    d = ex.delta(_analysis(0.1, 12, 10.0, 0.0), _analysis(0.2, 12, 30.0, 0.1), SLUG)
+    cd = d["commander_damage_max_on_one_defender"]
+    assert cd["a"] is None and cd["b"] is None and cd["diff"] is None

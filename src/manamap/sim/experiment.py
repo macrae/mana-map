@@ -31,13 +31,14 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 
-from manamap.config import SIM_DEFAULT_GAMES, SIM_GAME_CLOCK_SECONDS
+from manamap.config import SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_GAME_CLOCK_SECONDS
 from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot import deck_versions as dv
 from manamap.sim import parse as sim_parse
-from manamap.sim.forge import (ASSUMPTIONS, FORGE_AI_CAVEAT, _java_version, _seat_label,
-                               command, forge_jar, forge_version, install_deck,
-                               install_named, seat_sha, split_games)
+from manamap.sim.forge import (ASSUMPTIONS, FORGE_AI_CAVEAT, _commanders_by_slug,
+                               _java_version, _seat_label, command, commanders_from_text,
+                               forge_jar, forge_version, install_deck, install_named,
+                               seat_sha, split_games)
 
 EXP_DIR = "experiments"
 # The aggregate keys the delta reports, and where they live in a seat's analysis.
@@ -50,6 +51,14 @@ DELTA_KEYS = (
     ("token_damage_share", ("tokens", "token_damage_share", "mean")),
     ("tokens_observed", ("tokens", "tokens_observed", "mean")),
     ("token_resolutions", ("tokens", "token_resolutions", "mean")),
+    # Per DEFENDER — 21 from one commander on one player is a whole archetype's only
+    # win condition, and dealt_total cannot see it: 60 spread over three seats wins
+    # nothing. Absent on both arms when the commander is unknown, so an arm that
+    # cannot be scored reports None rather than 0.
+    ("commander_damage_max_on_one_defender",
+     ("commander_damage", "max_on_one_defender", "mean")),
+    ("commander_damage_dealt_total", ("commander_damage", "dealt_total", "mean")),
+    ("commander_damage_games_reaching_21", ("commander_damage", "games_reaching_21")),
 )
 
 
@@ -170,8 +179,19 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
 
     label_a = _seat_label([names_a, *opp_names]); label_a[f"Ai(1)-{names_a}"] = slug
     label_b = _seat_label([names_b, *opp_names]); label_b[f"Ai(1)-{names_b}"] = slug
-    _, analysis_a = sim_parse.analyze_logs(texts_a, label_a)
-    _, analysis_b = sim_parse.analyze_logs(texts_b, label_b)
+    # Commander damage is per-defender and the parser cannot see a commander in a log,
+    # so each arm is scored against ITS OWN list — the decklist text rides in the
+    # artifact for exactly this reason. Without this the A/B, which is the tool for
+    # judging a change to a commander-damage deck, was the one path blind to it.
+    opp_cmd = _commanders_by_slug(opponents)
+    def _cmd_map(meta_name, arm):
+        m = {f"Ai(1)-{meta_name}": commanders_from_text(arm["decklist_text"])}
+        for i, o in enumerate(opponents):
+            if opp_cmd.get(o):
+                m[f"Ai({i + 2})-{opp_names[i]}"] = opp_cmd[o]
+        return {k: v for k, v in m.items() if v}
+    _, analysis_a = sim_parse.analyze_logs(texts_a, label_a, _cmd_map(names_a, a))
+    _, analysis_b = sim_parse.analyze_logs(texts_b, label_b, _cmd_map(names_b, b))
 
     doc = {
         "experiment_id": eid, "slug": slug, "at": date.today().isoformat(),
@@ -206,6 +226,47 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
     return path, doc
 
 
+def analyze(slug, experiment_id_or_path):
+    """Re-derive both arms' analysis from their kept logs and rewrite the artifact.
+
+    The same migration path `simulate --analyze` provides, and needed for the same
+    reason: the parser gained commander damage after these logs were written, and an
+    A/B whose figures cannot be re-derived is a claim nobody can check. Each arm is
+    scored against ITS OWN decklist text, which rides in the artifact — so this needs
+    the logs but never the deck directory, and an arm on a version you no longer hold
+    still re-derives.
+    """
+    base = deck_dir(slug) / EXP_DIR
+    name = experiment_id_or_path if str(experiment_id_or_path).endswith(".json") \
+        else f"{experiment_id_or_path}.json"
+    path = base / name
+    if not path.exists():
+        raise SystemExit(f"{slug}: no experiment {path.name} under {EXP_DIR}/")
+    doc = load_json(path)
+    log_dir = base / "logs" / path.stem
+    opponents = [o["slug"] for o in doc["opponents"]]
+    opp_names = [f"{SIM_DECK_PREFIX}{o}" for o in opponents]
+    opp_cmd = _commanders_by_slug(opponents)
+    for letter in ("a", "b"):
+        logs = sorted(log_dir.glob(f"{letter}-part-*.log"))
+        if not logs:
+            raise SystemExit(f"{slug}: no {letter}-part-*.log under {log_dir} — an "
+                             f"experiment's logs are gitignored and only exist where it ran")
+        meta = f"mm-x-{slug}-{letter}"
+        label = _seat_label([meta, *opp_names]); label[f"Ai(1)-{meta}"] = slug
+        cmd = {f"Ai(1)-{meta}": commanders_from_text(doc["arms"][letter]["decklist_text"])}
+        for i, o in enumerate(opponents):
+            if opp_cmd.get(o):
+                cmd[f"Ai({i + 2})-{opp_names[i]}"] = opp_cmd[o]
+        texts = [l.read_text(encoding="utf-8", errors="replace") for l in logs]
+        _, analysis = sim_parse.analyze_logs(texts, label, {k: v for k, v in cmd.items() if v})
+        doc["arms"][letter]["analysis"] = analysis
+        doc["arms"][letter]["games"] = analysis.get("games")
+    doc["delta"] = delta(doc["arms"]["a"]["analysis"], doc["arms"]["b"]["analysis"], slug)
+    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+    return path, doc
+
+
 def list_all(slug):
     base = deck_dir(slug) / EXP_DIR
     return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
@@ -213,6 +274,14 @@ def list_all(slug):
 
 def main(args):
     slug = args.slug
+    if getattr(args, "analyze", None):
+        path, doc = analyze(slug, args.analyze)
+        d = doc["delta"]
+        print(f"{slug}: re-derived both arms from logs → {path.name}")
+        for k, _ in DELTA_KEYS:
+            v = d[k]
+            print(f"  {k:<40} A {v['a']}   B {v['b']}   Δ {v['diff']}")
+        return
     if getattr(args, "list", False) or not (getattr(args, "a", None) and getattr(args, "b", None)):
         docs = list_all(slug)
         if not docs:

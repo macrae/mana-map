@@ -78,6 +78,17 @@ def seat_dir(slug):
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
 
 
+def commanders_from_text(decklist_text):
+    """The commander name(s) named by a decklist TEXT.
+
+    An experiment arm's list rides IN its artifact, so an arm's commander comes from
+    that arm's own text rather than from disk — two arms may legitimately be two
+    versions with different commanders, and each must be scored against its own.
+    """
+    from manamap.pilot.fetch_deck import parse_decklist
+    return {e["name"] for e in parse_decklist(decklist_text) if e.get("is_commander")}
+
+
 def _commanders_by_slug(seats):
     """{slug -> set of commander names} read from each seat's decklist.
 

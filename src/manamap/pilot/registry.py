@@ -297,6 +297,9 @@ def add_pilot_parser(subparsers):
                              help="AI profile for YOUR seat in both arms (opponents stay Default)")
             cmd.add_argument("--list", action="store_true")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run")
+            cmd.add_argument("--analyze", default=None, metavar="EXPERIMENT_ID",
+                             help="re-derive BOTH arms' analysis from their kept logs "
+                                  "(where the experiment was run)")
         if name == "fetch-opponent":
             cmd.add_argument("commander", nargs="?", default=None,
                              help="commander name or EDHREC slug; omit (or --list) to list the pod")
