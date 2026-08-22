@@ -133,3 +133,51 @@ def test_the_search_that_motivated_this_command_still_answers():
     assert {"Genji Glove", "Illusionist's Gambit"} <= {r["name"] for r in rows}
     glove = next(r for r in rows if r["name"] == "Genji Glove")
     assert re.search(r"double strike", glove["oracle_text"], re.I)
+
+
+def test_the_compact_identity_form_is_parsed_as_LETTERS_not_one_token():
+    """`--identity GU` silently returned only COLOURLESS cards.
+
+    `analysis.common.parse_color_identity` splits on commas, because that is how
+    cards.csv stores the column ("G, U"). Handed the compact form a human types it
+    returned `{"GU"}` — one two-character token — and `{"U"} <= {"GU"}` is False for
+    every coloured card. The header still read "identity GU", so the search reported
+    a filter it was not applying. Same shape as the bug `card_pool._build_pool`
+    records, and the registry help advertises exactly this spelling.
+    """
+    assert card_search.parse_identity_arg("GU") == {"G", "U"}
+    assert card_search.parse_identity_arg("gu") == {"G", "U"}
+    assert card_search.parse_identity_arg("G, U") == {"G", "U"}
+    assert card_search.parse_identity_arg("G,U") == {"G", "U"}
+    assert card_search.parse_identity_arg("WUBRG") == {"W", "U", "B", "R", "G"}
+    # Colourless as an IDENTITY is the empty set, not a sixth colour.
+    assert card_search.parse_identity_arg("C") == set()
+    with pytest.raises(SystemExit, match="not a colour"):
+        card_search.parse_identity_arg("GX")
+
+
+@requires_data
+def test_the_regression_the_identity_bug_actually_caused():
+    """Simic has exactly two 'additional combat phase' cards. Before the fix this
+    returned one — the colourless Equipment — and dropped the mono-blue instant."""
+    rows, _ = card_search.search(identity=card_search.parse_identity_arg("GU"),
+                                 oracle=[r"additional combat phase"], limit=50)
+    assert {"Genji Glove", "Illusionist's Gambit"} <= {r["name"] for r in rows}
+
+
+@requires_data
+def test_owned_and_unowned_partition_the_same_search():
+    """`pool-facts` knew the box but could not filter by oracle text; `card-search`
+    filtered by oracle text but could not see the box. Every 'what could I add that I
+    already have' question needed both. The two filters must be exact complements —
+    if they are not, one of them is quietly dropping cards."""
+    q = dict(identity={"G", "U"}, oracle=[r"\bproliferate\b"], limit=500)
+    everything = {r["name"] for r in card_search.search(**q)[0]}
+    owned = {r["name"] for r in card_search.search(owned=True, **q)[0]}
+    unowned = {r["name"] for r in card_search.search(owned=False, **q)[0]}
+    assert owned | unowned == everything
+    assert not (owned & unowned)
+    for r in card_search.search(owned=True, **q)[0]:
+        assert r["owned"] is True
+    # Absent the filter the field is None, not False — "not asked" is not "no".
+    assert all(r["owned"] is None for r in card_search.search(**q)[0])

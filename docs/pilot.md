@@ -239,8 +239,8 @@ manamap pilot card-search --deck heliod --name "^Sword of " --include-owned
 ```
 
 Filters: `--identity` / `--deck`, `--oracle` (regex, repeatable, ANY unless `--all`),
-`--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--limit`. Three
-rules it enforces so a caller cannot get them wrong:
+`--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--owned` /
+`--unowned`, `--limit`. Three rules it enforces so a caller cannot get them wrong:
 
 - **Identity is DERIVED, never authored.** `--deck` takes it from that deck's commander,
   the same rule `build_deck.load_brief` follows, and passing `--identity` alongside is a
@@ -249,6 +249,19 @@ rules it enforces so a caller cannot get them wrong:
   (`--include-owned` turns that off) — a search that hands your own list back is the
   commonest way a tool like this wastes a reader's time.
 - **Truncation is stated.** A silently cut list reads as "that is all of them".
+
+`--owned` / `--unowned` read `pilot/collection.py`, so "owned" means **in a box OR
+sleeved in a tracked deck** — unsleeving is a decision, not a purchase. They are exact
+complements and a test asserts it; without the flag the `owned` field is `None`, because
+"not asked" is not "no". `--unowned` is the buy list.
+
+**`--identity` takes letters, and the compact form was broken.** `parse_identity_arg`
+accepts `GU`, `gu`, `G,U` or `G, U`; a non-colour letter is an error, never a silent
+narrowing. It exists because `analysis.common.parse_color_identity` splits on commas —
+correct for `cards.csv`'s `"G, U"` — and returned `{"GU"}` for the compact form, one
+two-character token that no coloured card's identity can be a subset of. `--identity GU`
+therefore returned only *colourless* cards while printing "identity GU" in its header.
+Same shape as the bug recorded in `card_pool._build_pool`.
 
 `--oracle` searches rules text and `--name` searches names, deliberately separately:
 `--oracle "Sol Ring"` looks like it should find Sol Ring and instead finds every card

@@ -346,6 +346,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--cmc-min", type=float, default=None, dest="cmc_min")
             cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
                              help="drop Game Changers (they force bracket 4)")
+            group = cmd.add_mutually_exclusive_group()
+            group.add_argument("--owned", action="store_true",
+                               help="only cards the pilot has (a box OR sleeved in a deck)")
+            group.add_argument("--unowned", action="store_true",
+                               help="only cards the pilot does NOT have — the buy list")
             cmd.add_argument("--limit", type=int, default=None,
                              help=f"max results (default {50})")
             cmd.add_argument("--json", action="store_true", dest="as_json")

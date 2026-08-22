@@ -31,8 +31,8 @@ import json
 import re
 from pathlib import Path
 
+from manamap.pilot import collection
 from manamap.pilot.card_pool import corpus_oracle, load_pool
-from manamap.analysis.common import parse_color_identity
 from manamap.pilot.common import (
     deck_dir,
     expand_faces,
@@ -47,6 +47,32 @@ from manamap.pilot.common import (
 UNRANKED = 10 ** 9
 
 MAX_RESULTS = 50
+
+
+def parse_identity_arg(value):
+    """`--identity` as a set of single-letter colours, from either spelling.
+
+    `analysis.common.parse_color_identity` splits on commas because that is how
+    `cards.csv` stores the column ("G, U"). Handed the COMPACT form a human types —
+    `GU` — it returns `{"GU"}`, a single two-character token, and `{"U"} <= {"GU"}`
+    is False for every coloured card. The filter then silently returned only
+    COLOURLESS cards while reporting "identity GU": `--identity GU --oracle
+    "additional combat phase"` found Genji Glove (colourless) and dropped
+    Illusionist's Gambit (mono-blue). Same shape as the bug recorded in
+    `card_pool._build_pool` — an identity set that can never be a superset, failing
+    quietly rather than loudly.
+
+    Accepts `GU`, `gu`, `G,U`, `G, U`. Anything that is not a WUBRGC letter is an
+    error rather than a silent drop: a typo must not narrow a search invisibly.
+    """
+    raw = str(value or "").upper()
+    letters = [c for c in raw if not c.isspace() and c != ","]
+    bad = sorted({c for c in letters if c not in "WUBRGC"})
+    if bad:
+        raise SystemExit(f"--identity: {', '.join(bad)} is not a colour. "
+                         f"Use WUBRG letters, e.g. GU or 'G, U'.")
+    # C means colourless, which as an IDENTITY is the empty set, not a sixth colour.
+    return {c for c in letters if c != "C"}
 
 
 def commander_identity(slug):
@@ -74,7 +100,7 @@ def deck_names(slug):
 
 def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_max=None,
            cmc_min=None, exclude=(), limit=MAX_RESULTS, allow_game_changers=True,
-           require_all=False):
+           require_all=False, owned=None):
     """Filter the corpus. Returns (rows, meta) — rows already ranked and capped.
 
     `oracle` is a list of regexes: a card matches when ANY of them hits, or ALL
@@ -103,6 +129,10 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     type_pats = [re.compile(t, re.IGNORECASE) for t in (types or [])]
     want_roles = set(roles or [])
     exclude = set(exclude or [])
+    # `pool-facts` knew the box but could not filter by oracle text; this could
+    # filter by oracle text but could not see the box. Every "what could I add that I
+    # already have" question needed both, so it was answered by hand every time.
+    have = collection.owned_names() if owned is not None else set()
 
     rows, skipped_illegal = [], 0
     for name, rec in pool.items():
@@ -134,6 +164,9 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
         card_roles = roles_map.get(name) or []
         if want_roles and not (want_roles & set(card_roles)):
             continue
+        is_owned = bool(expand_faces(name) & have) if owned is not None else None
+        if owned is not None and is_owned is not owned:
+            continue
         rows.append({
             "name": name,
             "mana_cost": rec["mana_cost"],
@@ -143,6 +176,7 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
             "edhrec_rank": rec["edhrec_rank"],
             "game_changer": rec["game_changer"],
             "roles": sorted(card_roles),
+            "owned": is_owned,
             "matched": hits,
             "oracle_text": text,
         })
@@ -151,6 +185,9 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
                              r["name"]))
     meta = {"matched": len(rows), "returned": min(len(rows), limit),
             "commander_illegal_skipped": skipped_illegal}
+    if owned is not None:
+        meta["ownership_filter"] = "owned" if owned else "unowned"
+        meta["collection"] = collection.summary()["distinct_including_decks"]
     if len(rows) > limit:
         # Say what was dropped. A silently truncated list reads as "that is all
         # of them", which is the claim this tool must never make by accident.
@@ -173,7 +210,7 @@ def analyze(args):
             raise SystemExit(
                 "--identity and --deck both given: a deck's identity is DERIVED from its "
                 "commander and may not be overridden. Drop one.")
-        identity = parse_color_identity(args.identity)
+        identity = parse_identity_arg(args.identity)
     rows, meta = search(
         identity=identity,
         oracle=getattr(args, "oracle", None) or [],
@@ -186,6 +223,8 @@ def analyze(args):
         limit=getattr(args, "limit", None) or MAX_RESULTS,
         allow_game_changers=not getattr(args, "no_game_changers", False),
         require_all=getattr(args, "require_all", False),
+        owned=(True if getattr(args, "owned", False)
+               else False if getattr(args, "unowned", False) else None),
     )
     return {
         "identity": sorted(identity) if identity is not None else None,
@@ -217,7 +256,8 @@ def format_report(doc):
     for r in doc["results"]:
         rank = r["edhrec_rank"]
         gc = " ★GC" if r["game_changer"] else ""
-        out.append(f"  {str(r['mana_cost']) or '—':<12} {r['name']}{gc}")
+        own = "" if r.get("owned") is None else ("  ✓owned" if r["owned"] else "  ·buy")
+        out.append(f"  {str(r['mana_cost']) or '—':<12} {r['name']}{gc}{own}")
         out.append(f"    {r['type_line']}  ·  edhrec "
                    f"{rank if rank is not None else 'unranked'}"
                    + (f"  ·  roles {', '.join(r['roles'])}" if r["roles"] else ""))
