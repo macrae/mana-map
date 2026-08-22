@@ -95,6 +95,11 @@ demo:  ## Rebuild everything the demo shows, then serve it. Run before presentin
 	  test -f data/decks/$$slug/cards.json && $(MANAMAP) pilot deck-info $$slug --write >/dev/null \
 	    && echo "    info.json  $$slug"; \
 	done
+	@echo "==> the version list (a git walk; never committed, always regenerated)"
+	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
+	  test -f data/decks/$$slug/decklist.txt && $(MANAMAP) pilot deck-version $$slug list --write >/dev/null \
+	    && echo "    versions.json  $$slug"; \
+	done
 	@echo "==> the compact Pilot's Manual for every deck that can render one"
 	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
 	  test -f data/decks/$$slug/cards.json && $(MANAMAP) pilot build-page $$slug >/dev/null \
@@ -109,7 +114,16 @@ demo:  ## Rebuild everything the demo shows, then serve it. Run before presentin
 	@echo "  DO NOT run 'simulate' or 'experiment' while presenting - Forge saturates"
 	@echo "  every core and the browser stops responding mid-click."
 	@echo ""
-	python3 -m http.server $(PORT)
+	@# A server already on this port makes `python -m http.server` die with a
+	@# traceback, which is the last thing anyone needs five minutes before
+	@# presenting. Say what is happening instead: the pages are already served.
+	@if lsof -ti :$(PORT) >/dev/null 2>&1; then \
+	  echo "  Something is already serving port $(PORT) — everything above is"; \
+	  echo "  rebuilt and live at those URLs. Nothing more to do."; \
+	  echo "  (To restart it: kill \`lsof -ti :$(PORT)\` then make demo)"; \
+	else \
+	  python3 -m http.server $(PORT); \
+	fi
 
 clean:  ## Drop caches and bytecode. Never touches data/ or manuals/.
 	rm -rf .pytest_cache

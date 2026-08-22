@@ -52,3 +52,10 @@ data/decks/*/sim/logs/
 data/decks/*/sim/scenarios/
 # experiment logs: regenerable exactly — each arm's decklist text is inside the tracked artifact
 data/decks/*/experiments/logs/
+
+# The deploy-time version list. Versions are a git walk, and the commit that
+# changes `decklist.txt` receives its sha AFTER anything written in the same
+# commit — so a tracked copy is one version behind forever, and a wrong version
+# is worse than an absent one when the log stamps games against it. Regenerated
+# by `make demo` immediately before anything reads it.
+data/decks/*/versions.json

@@ -452,8 +452,14 @@
       return (cur ? '<b>' : '') + 'V' + ver.version + (cur ? '</b>' : '') +
         ' <span class="ev">' + esc(ver.first_date || '') + '</span> ' +
         (ver.tags && ver.tags.length ? '<span class="chip">' + esc(ver.tags.join(', ')) + '</span> ' : '') +
-        (ver.games ? ver.games + ' game(s) · ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
-                   : '<span class="ev">no games</span>');
+        // What MOVED is the whole point of a version list. `in`/`out` are card
+        // names; the counts are what fits on a row, and the subject says why.
+        ((ver['in'] || []).length || (ver.out || []).length
+          ? ' <span class="chip">+' + (ver['in'] || []).length +
+            ' \u2212' + (ver.out || []).length + '</span>' : '') +
+        (ver.games ? ' ' + ver.games + ' game(s) · ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
+                   : ' <span class="ev">no games</span>') +
+        (ver.subject ? '<span class="ev">' + esc(ver.subject) + '</span>' : '');
     });
     var body = list(rows);
     if (v.unmatched_log_entries && v.unmatched_log_entries.length) {
@@ -675,9 +681,16 @@
     var issue = d.issue || {};
     document.title = (issue.deck_name || slug) + ' — Deck Dossier';
     document.getElementById('deckName').textContent = issue.deck_name || slug;
+    // The commander and the version — NOT "Pilot's Manual Vol. 006". Volume
+    // numbers belong to the magazine this surface replaced, and the version is
+    // both truer and more useful: it is the list the games attach to.
+    // `info.json` deliberately omits the version — it is a git walk, and a
+    // committed copy is one commit behind forever. The manifest's `paper` block
+    // carries the SLEEVED version, which is the more useful fact anyway: it is
+    // the list the games attach to.
+    var paper = (d.entry || {}).paper;
     document.getElementById('commanderLine').textContent =
-      (issue.commander || '') + (issue.volume ? ' · Pilot\'s Manual Vol. ' +
-        String(issue.volume).padStart(3, '0') : '');
+      (issue.commander || '') + (paper ? ' \u00b7 sleeved V' + paper.version : '');
     // A deck is loadable here as soon as it has a cards.json; a magazine issue is a
     // separate, later, expensive step. Linking to `../manuals/<slug>.html`
     // unconditionally sent every unpublished deck to a 404 — the manifest carries
@@ -708,7 +721,10 @@
     // 404s is worse than a link that is not there.
     var manual = document.getElementById('manualLink');
     if (manual) {
-      if (d.has && d.has.page) {
+      // `has` rides on the MANIFEST entry, not on the artifacts object —
+      // `d` is keyed by artifact name. Reading `d.has` was always undefined,
+      // so the link silently hid itself on every deck that had a manual.
+      if (d.entry && d.entry.has && d.entry.has.page) {
         manual.hidden = false;
         manual.href = '../manuals/p/' + slug + '.html';
       } else {
@@ -739,8 +755,15 @@
   }
 
   function pickerHTML(decks, current) {
-    return 'Deck: ' + decks.map(function (d) {
-      var label = 'Vol. ' + String(d.volume).padStart(3, '0') + ' ' + d.slug;
+    // No volume numbers. "Vol. 999 KIANNE" is the magazine's sentinel for an
+    // unnumbered issue leaking onto the workbench, and volume/issue/newsstand is
+    // vocabulary the product retired. A deck has a name; that is the label.
+    // Locked decks lead, because that is the question the front door asks.
+    var sorted = decks.slice().sort(function (a, b) {
+      return (b.locked ? 1 : 0) - (a.locked ? 1 : 0) || a.slug.localeCompare(b.slug);
+    });
+    return 'Decks: ' + sorted.map(function (d) {
+      var label = d.slug + (d.locked ? ' \u25c6' : '');
       return d.slug === current ? '<b>' + esc(label) + '</b>'
         : '<a href="?deck=' + esc(d.slug) + '">' + esc(label) + '</a>';
     }).join(' · ');

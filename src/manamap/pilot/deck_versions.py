@@ -328,6 +328,18 @@ def main(args):
     action = getattr(args, "action", "list") or "list"
     if action == "list":
         doc = report(slug)
+        if getattr(args, "write", False):
+            # THE DEPLOY-TIME ARTIFACT. Versions are a git walk, so this cannot be
+            # committed: the commit that changes `decklist.txt` receives its sha
+            # AFTER anything written in the same commit, which would leave a
+            # tracked copy one version behind forever. Gitignored, and regenerated
+            # by `make demo` immediately before it is read.
+            out = deck_dir(slug) / "versions.json"
+            out.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+            print(f"{slug}: wrote {out.name} "
+                  f"({len(doc['versions'])} version(s), current "
+                  f"V{doc['current_version']})")
+            return
         if getattr(args, "as_json", False):
             print(json.dumps(doc, indent=2, ensure_ascii=False))
         else:
