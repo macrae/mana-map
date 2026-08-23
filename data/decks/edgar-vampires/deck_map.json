@@ -1,30 +1,20 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e",
+  "decklist_sha256": "88bffd9b93945a1d9af432b9b64694651b4f9f5f026128570d18d08045cc472f",
   "meta": {
     "space": "embeddings_ability.npy",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
-    "cards": 97,
+    "cards": 96,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
-    "named_by": "deck-cartographer",
-    "cartographer_notes": [
-      "city-1 is 34 of 97 cards, but the mass that does work is city-2 (28): the token makers, converters, refills and pumps all sit in one place, which is what a linear critical-mass deck looks like from above.",
-      "city-4 carries verified_count 5 of 8 — the densest verified block on the map. The drain is the engine on the record, not a theory; city-2's 5 verified sit across 28 cards.",
-      "Deflecting Swat is the map's odd member. It clusters into city-2-hood-0 among the token payoffs, but it is a free instant you hold up, and every other card that does that job is in city-6. I read this as a placement artifact, not a discovery — membership left untouched.",
-      "Olivia's Wrath is loose in the same neighbourhood for the same kind of reason: it is the one card in city-2 that removes bodies rather than adding or counting them. Worth knowing it lives inside the width engine, since five of the deck's creatures are not Vampires and the wrath hits them.",
-      "Vampire Socialite sits in city-2-hood-1 with two cost reducers and a one-drop; it is a +1/+1 counter payoff and reads closer to city-0's crew. The hood's other three do share the 'make the second cast happen' job, so the name holds for the majority.",
-      "city-3, city-4, city-5 and city-6 each contain exactly one neighbourhood identical to the city. There is no split to name, so those four hood ids are omitted deliberately rather than given a synonym of their parent.",
-      "city-1-hood-3 is the cleanest split on the map: the two basics and the two lands that check for a basic type. That is a real dependency, not a leftover bucket."
-    ]
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Edgar Markov",
-      "x": -0.75574,
-      "y": -0.20835,
-      "city": 0,
+      "x": 0.76157,
+      "y": 0.19494,
+      "city": 2,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -37,9 +27,9 @@
     },
     {
       "name": "Akroma's Will",
-      "x": -0.79282,
-      "y": 0.37683,
-      "city": 6,
+      "x": 0.53367,
+      "y": -0.70411,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:granted",
@@ -51,9 +41,9 @@
     },
     {
       "name": "Ancient Tomb",
-      "x": 0.57533,
-      "y": 0.08334,
-      "city": 1,
+      "x": -0.58198,
+      "y": -0.1144,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:utility"
@@ -63,9 +53,9 @@
     },
     {
       "name": "Anguished Unmaking",
-      "x": -0.14713,
-      "y": 0.35345,
-      "city": 3,
+      "x": -0.01141,
+      "y": 0.53753,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -75,10 +65,10 @@
     },
     {
       "name": "Anointed Procession",
-      "x": -0.15513,
-      "y": 0.08784,
-      "city": 2,
-      "hood": 0,
+      "x": 0.12946,
+      "y": -0.12806,
+      "city": 1,
+      "hood": 3,
       "roles": [
         "doubler:tokens"
       ],
@@ -87,9 +77,9 @@
     },
     {
       "name": "Arcane Signet",
-      "x": 0.2687,
-      "y": 0.69341,
-      "city": 5,
+      "x": -0.2626,
+      "y": -0.71697,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -100,9 +90,9 @@
     },
     {
       "name": "Battlefield Forge",
-      "x": 0.6099,
-      "y": 0.01676,
-      "city": 1,
+      "x": -0.61738,
+      "y": -0.06213,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:untapped-dual",
@@ -113,9 +103,9 @@
     },
     {
       "name": "Blazemire Verge",
-      "x": 0.57758,
-      "y": 0.02127,
-      "city": 1,
+      "x": -0.58682,
+      "y": -0.09802,
+      "city": 0,
       "hood": 3,
       "roles": [
         "land:untapped-dual"
@@ -125,9 +115,9 @@
     },
     {
       "name": "Bleachbone Verge",
-      "x": 0.58449,
-      "y": -0.02289,
-      "city": 1,
+      "x": -0.59014,
+      "y": -0.05168,
+      "city": 0,
       "hood": 3,
       "roles": [
         "land:untapped-dual"
@@ -136,10 +126,23 @@
       "commander": false
     },
     {
+      "name": "Blood Artist",
+      "x": 0.25896,
+      "y": 0.64258,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Blood Crypt",
-      "x": 0.61224,
-      "y": -0.19775,
-      "city": 1,
+      "x": -0.61884,
+      "y": 0.16194,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -149,9 +152,9 @@
     },
     {
       "name": "Bloodletter of Aclazotz",
-      "x": -0.14027,
-      "y": -0.33864,
-      "city": 4,
+      "x": 0.15192,
+      "y": 0.35953,
+      "city": 5,
       "hood": 0,
       "roles": [
         "threat:body"
@@ -161,10 +164,10 @@
     },
     {
       "name": "Bloodline Keeper // Lord of Lineage",
-      "x": -0.55804,
-      "y": 0.12884,
-      "city": 2,
-      "hood": 3,
+      "x": 0.51397,
+      "y": -0.28174,
+      "city": 1,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "threat:body",
@@ -176,9 +179,9 @@
     },
     {
       "name": "Bloodstained Mire",
-      "x": 0.93325,
-      "y": 0.21394,
-      "city": 1,
+      "x": -0.98805,
+      "y": 0.06896,
+      "city": 0,
       "hood": 2,
       "roles": [
         "land:fetch",
@@ -189,9 +192,9 @@
     },
     {
       "name": "Bloodthirsty Conqueror",
-      "x": -0.13312,
-      "y": -0.50676,
-      "city": 4,
+      "x": 0.1622,
+      "y": 0.5139,
+      "city": 5,
       "hood": 0,
       "roles": [
         "threat:body",
@@ -201,23 +204,10 @@
       "commander": false
     },
     {
-      "name": "Bontu's Monument",
-      "x": -1.0,
-      "y": -0.00143,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "ramp:cost-reduction",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Boros Charm",
-      "x": -0.7238,
-      "y": 0.43843,
-      "city": 6,
+      "x": 0.46404,
+      "y": -0.71536,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:self",
@@ -229,10 +219,10 @@
     },
     {
       "name": "Captivating Vampire",
-      "x": -0.41537,
-      "y": 0.11796,
-      "city": 2,
-      "hood": 3,
+      "x": 0.40916,
+      "y": -0.23956,
+      "city": 1,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "threat:body"
@@ -242,10 +232,10 @@
     },
     {
       "name": "Caretaker's Talent",
-      "x": -0.61348,
-      "y": -0.05283,
-      "city": 2,
-      "hood": 2,
+      "x": 0.58911,
+      "y": -0.09509,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "buff:pump",
         "draw:engine"
@@ -255,9 +245,9 @@
     },
     {
       "name": "Castle Locthwain",
-      "x": 0.69291,
-      "y": -0.20059,
-      "city": 1,
+      "x": -0.68846,
+      "y": 0.21443,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:tapped",
@@ -267,23 +257,10 @@
       "commander": false
     },
     {
-      "name": "Cavern of Souls",
-      "x": 0.75843,
-      "y": -0.03793,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Caves of Koilos",
-      "x": 0.60914,
-      "y": 0.00738,
-      "city": 1,
+      "x": -0.61775,
+      "y": -0.05205,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:untapped-dual",
@@ -293,11 +270,24 @@
       "commander": false
     },
     {
-      "name": "Charismatic Conqueror",
-      "x": -0.39661,
-      "y": -0.25703,
-      "city": 2,
+      "name": "Champion of Dusk",
+      "x": 0.33722,
+      "y": 0.47105,
+      "city": 1,
       "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Charismatic Conqueror",
+      "x": 0.40275,
+      "y": 0.1891,
+      "city": 1,
+      "hood": 3,
       "roles": [
         "threat:body",
         "threat:tokens"
@@ -306,10 +296,24 @@
       "commander": false
     },
     {
+      "name": "City of Brass",
+      "x": -0.6787,
+      "y": -0.01162,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Command Tower",
-      "x": 0.67724,
-      "y": 0.00927,
-      "city": 1,
+      "x": -0.67718,
+      "y": -0.07376,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -320,9 +324,9 @@
     },
     {
       "name": "Concealed Courtyard",
-      "x": 0.58096,
-      "y": -0.22347,
-      "city": 1,
+      "x": -0.59062,
+      "y": 0.17908,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -332,9 +336,9 @@
     },
     {
       "name": "Cordial Vampire",
-      "x": -0.55131,
-      "y": -0.58982,
-      "city": 0,
+      "x": 0.69938,
+      "y": 0.34307,
+      "city": 2,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -345,9 +349,9 @@
     },
     {
       "name": "Corpse Knight",
-      "x": -0.19997,
-      "y": -0.76315,
-      "city": 4,
+      "x": 0.27152,
+      "y": 0.74448,
+      "city": 5,
       "hood": 0,
       "roles": [
         "threat:body",
@@ -358,11 +362,24 @@
       "commander": false
     },
     {
-      "name": "Deflecting Swat",
-      "x": 0.0531,
-      "y": 0.13324,
-      "city": 2,
+      "name": "Cruel Celebrant",
+      "x": 0.30482,
+      "y": 0.72657,
+      "city": 5,
       "hood": 0,
+      "roles": [
+        "threat:body",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Deflecting Swat",
+      "x": -0.07754,
+      "y": -0.1434,
+      "city": 1,
+      "hood": 3,
       "roles": [
         "protection:redirect"
       ],
@@ -370,22 +387,10 @@
       "commander": false
     },
     {
-      "name": "Demonic Tutor",
-      "x": -0.29366,
-      "y": 0.86073,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "tutor:unrestricted"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Despark",
-      "x": -0.06435,
-      "y": 0.54435,
-      "city": 3,
+      "x": -0.01248,
+      "y": -0.48842,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -394,22 +399,10 @@
       "commander": false
     },
     {
-      "name": "Diabolic Intent",
-      "x": -0.41117,
-      "y": 0.92318,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "tutor:unrestricted"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Drana, Liberator of Malakir",
-      "x": -0.5577,
-      "y": -0.49785,
-      "city": 0,
+      "x": 0.67883,
+      "y": 0.25779,
+      "city": 2,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -421,10 +414,10 @@
     },
     {
       "name": "Elspeth, Storm Slayer",
-      "x": -0.7434,
-      "y": 0.13091,
-      "city": 0,
-      "hood": 0,
+      "x": 0.70114,
+      "y": -0.3123,
+      "city": 1,
+      "hood": 3,
       "roles": [
         "buff:counters",
         "doubler:tokens",
@@ -436,9 +429,9 @@
     },
     {
       "name": "Flawless Maneuver",
-      "x": -0.53432,
-      "y": 0.42841,
-      "city": 6,
+      "x": 0.27312,
+      "y": -0.66974,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:granted",
@@ -448,10 +441,37 @@
       "commander": false
     },
     {
-      "name": "Godless Shrine",
-      "x": 0.6427,
-      "y": -0.22194,
+      "name": "Forerunner of the Legion",
+      "x": 0.87847,
+      "y": 0.05323,
       "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:pump",
+        "threat:body",
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gifted Aetherborn",
+      "x": -0.03704,
+      "y": 0.11148,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": true,
+      "commander": false
+    },
+    {
+      "name": "Godless Shrine",
+      "x": -0.64893,
+      "y": 0.18951,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -461,9 +481,9 @@
     },
     {
       "name": "Haunted Ridge",
-      "x": 0.5877,
-      "y": -0.22003,
-      "city": 1,
+      "x": -0.59647,
+      "y": 0.16916,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -473,10 +493,10 @@
     },
     {
       "name": "Herald's Horn",
-      "x": -0.92597,
-      "y": 0.47178,
-      "city": 2,
-      "hood": 1,
+      "x": 0.79719,
+      "y": -0.6691,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "payoff:typal",
         "ramp:cost-reduction"
@@ -486,9 +506,9 @@
     },
     {
       "name": "Impact Tremors",
-      "x": -0.14706,
-      "y": -0.10627,
-      "city": 2,
+      "x": 0.12384,
+      "y": 0.12737,
+      "city": 1,
       "hood": 0,
       "roles": [
         "removal:damage",
@@ -498,10 +518,38 @@
       "commander": false
     },
     {
+      "name": "Indulgent Aristocrat",
+      "x": 0.81943,
+      "y": 0.41823,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "sac-cost",
+        "sac-outlet",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Intangible Virtue",
+      "x": 0.30884,
+      "y": -0.09066,
+      "city": 1,
+      "hood": 3,
+      "roles": [
+        "buff:pump"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Knight of the Ebon Legion",
-      "x": -0.29753,
-      "y": -0.51323,
-      "city": 0,
+      "x": 0.39828,
+      "y": 0.38831,
+      "city": 2,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -512,10 +560,10 @@
     },
     {
       "name": "Legion Lieutenant",
-      "x": -0.12696,
-      "y": 0.01673,
-      "city": 2,
-      "hood": 3,
+      "x": 0.14208,
+      "y": -0.05197,
+      "city": 1,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "threat:body"
@@ -525,9 +573,9 @@
     },
     {
       "name": "Legion's Landing // Adanto, the First Fort",
-      "x": 0.10104,
-      "y": 0.61109,
-      "city": 5,
+      "x": -0.08033,
+      "y": -0.64229,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -540,9 +588,9 @@
     },
     {
       "name": "Luxury Suite",
-      "x": 0.58039,
-      "y": -0.20682,
-      "city": 1,
+      "x": -0.58694,
+      "y": 0.16955,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -552,9 +600,9 @@
     },
     {
       "name": "Mana Confluence",
-      "x": 0.74991,
-      "y": 0.03147,
-      "city": 1,
+      "x": -0.74754,
+      "y": -0.10618,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -566,9 +614,9 @@
     },
     {
       "name": "Marsh Flats",
-      "x": 0.94069,
-      "y": 0.1853,
-      "city": 1,
+      "x": -0.98329,
+      "y": 0.09576,
+      "city": 0,
       "hood": 2,
       "roles": [
         "land:fetch",
@@ -578,11 +626,27 @@
       "commander": false
     },
     {
-      "name": "Mavren Fein, Dusk Apostle",
-      "x": -0.60758,
-      "y": -0.16451,
+      "name": "Master of Dark Rites",
+      "x": 0.0236,
+      "y": -0.66716,
       "city": 2,
-      "hood": 0,
+      "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "sac-cost",
+        "sac-outlet",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Mavren Fein, Dusk Apostle",
+      "x": 0.59947,
+      "y": 0.07644,
+      "city": 1,
+      "hood": 3,
       "roles": [
         "threat:body",
         "threat:tokens"
@@ -592,9 +656,9 @@
     },
     {
       "name": "Midgar, City of Mako // Reactor Raid",
-      "x": 0.5799,
-      "y": -0.16278,
-      "city": 1,
+      "x": -0.60094,
+      "y": 0.11395,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -604,9 +668,9 @@
     },
     {
       "name": "Minas Tirith",
-      "x": 0.68044,
-      "y": -0.20851,
-      "city": 1,
+      "x": -0.68627,
+      "y": 0.17984,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:tapped",
@@ -616,10 +680,24 @@
       "commander": false
     },
     {
+      "name": "Mirkwood Bats",
+      "x": 0.43634,
+      "y": 0.66813,
+      "city": 5,
+      "hood": 1,
+      "roles": [
+        "sac-cost",
+        "threat:body",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Mondrak, Glory Dominus",
-      "x": -0.67474,
-      "y": 0.26459,
-      "city": 6,
+      "x": 0.44225,
+      "y": -0.55537,
+      "city": 4,
       "hood": 0,
       "roles": [
         "doubler:tokens",
@@ -631,10 +709,10 @@
     },
     {
       "name": "Night's Whisper",
-      "x": -0.76421,
-      "y": -0.395,
-      "city": 2,
-      "hood": 2,
+      "x": 0.12077,
+      "y": 0.84521,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "draw:burst"
       ],
@@ -642,10 +720,22 @@
       "commander": false
     },
     {
-      "name": "Nomad Outpost",
-      "x": 0.61514,
-      "y": -0.25036,
+      "name": "Nighthawk Scavenger",
+      "x": 0.16547,
+      "y": 0.01335,
       "city": 1,
+      "hood": 0,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Nomad Outpost",
+      "x": -0.62399,
+      "y": 0.20869,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -654,23 +744,10 @@
       "commander": false
     },
     {
-      "name": "Ocelot Pride",
-      "x": -0.50628,
-      "y": -0.09612,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Olivia's Wrath",
-      "x": -0.44475,
-      "y": 0.55329,
-      "city": 2,
+      "x": 0.6028,
+      "y": -0.45878,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:sweeper"
@@ -679,10 +756,22 @@
       "commander": false
     },
     {
+      "name": "Pact of the Serpent",
+      "x": 0.05458,
+      "y": 0.27863,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "payoff:typal"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Patchwork Banner",
-      "x": 0.2023,
-      "y": 0.78252,
-      "city": 5,
+      "x": -0.16223,
+      "y": -0.80612,
+      "city": 3,
       "hood": 0,
       "roles": [
         "payoff:typal",
@@ -694,9 +783,9 @@
     },
     {
       "name": "Path to Exile",
-      "x": -0.12139,
-      "y": 0.52794,
-      "city": 3,
+      "x": 0.08508,
+      "y": -0.4514,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -706,9 +795,9 @@
     },
     {
       "name": "Plains",
-      "x": 0.5484,
-      "y": 0.08904,
-      "city": 1,
+      "x": -0.5668,
+      "y": -0.16033,
+      "city": 0,
       "hood": 3,
       "roles": [
         "land:basic"
@@ -718,10 +807,10 @@
     },
     {
       "name": "Preacher of the Schism",
-      "x": -0.46367,
-      "y": -0.35893,
-      "city": 2,
-      "hood": 2,
+      "x": 0.43812,
+      "y": 0.34587,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "threat:body",
         "threat:tokens"
@@ -730,23 +819,10 @@
       "commander": false
     },
     {
-      "name": "Prismatic Vista",
-      "x": 0.92914,
-      "y": 0.18456,
-      "city": 1,
-      "hood": 2,
-      "roles": [
-        "land:fetch",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Purphoros, God of the Forge",
-      "x": -0.61485,
-      "y": 0.35695,
-      "city": 6,
+      "x": 0.36686,
+      "y": -0.62307,
+      "city": 4,
       "hood": 0,
       "roles": [
         "buff:pump",
@@ -760,9 +836,9 @@
     },
     {
       "name": "Reflecting Pool",
-      "x": 0.71392,
-      "y": 0.08504,
-      "city": 1,
+      "x": -0.71016,
+      "y": -0.16203,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:fixing"
@@ -771,22 +847,10 @@
       "commander": false
     },
     {
-      "name": "Sacred Foundry",
-      "x": 0.60283,
-      "y": -0.20859,
-      "city": 1,
-      "hood": 1,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Sanctum Seeker",
-      "x": -0.23663,
-      "y": -0.66738,
-      "city": 4,
+      "x": 0.29471,
+      "y": 0.64551,
+      "city": 5,
       "hood": 0,
       "roles": [
         "threat:body",
@@ -797,9 +861,9 @@
     },
     {
       "name": "Sanguine Bond",
-      "x": -0.15182,
-      "y": -0.44131,
-      "city": 4,
+      "x": 0.1604,
+      "y": 0.46691,
+      "city": 5,
       "hood": 0,
       "roles": [
         "wincon:drain"
@@ -809,9 +873,9 @@
     },
     {
       "name": "Savai Triome",
-      "x": 0.73228,
-      "y": -0.10364,
-      "city": 1,
+      "x": -0.73846,
+      "y": 0.07986,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:tapped",
@@ -822,10 +886,10 @@
     },
     {
       "name": "Shared Animosity",
-      "x": -0.39238,
-      "y": 0.09656,
-      "city": 2,
-      "hood": 3,
+      "x": 0.40172,
+      "y": -0.19285,
+      "city": 1,
+      "hood": 2,
       "roles": [
         "buff:pump"
       ],
@@ -834,9 +898,9 @@
     },
     {
       "name": "Shattered Sanctum",
-      "x": 0.58265,
-      "y": -0.22831,
-      "city": 1,
+      "x": -0.5924,
+      "y": 0.18302,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -846,9 +910,9 @@
     },
     {
       "name": "Silent Clearing",
-      "x": 0.69079,
-      "y": -0.04071,
-      "city": 1,
+      "x": -0.68569,
+      "y": 0.01892,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:untapped-dual",
@@ -858,10 +922,36 @@
       "commander": false
     },
     {
+      "name": "Skullclamp",
+      "x": 1.0,
+      "y": -0.09589,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "buff:attached",
+        "draw:burst",
+        "draw:engine"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Smoldering Marsh",
+      "x": -0.60261,
+      "y": 0.14669,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Sol Ring",
-      "x": 0.28486,
-      "y": 0.79422,
-      "city": 5,
+      "x": -0.27561,
+      "y": -0.80646,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -872,9 +962,9 @@
     },
     {
       "name": "Spectator Seating",
-      "x": 0.58002,
-      "y": -0.22574,
-      "city": 1,
+      "x": -0.58815,
+      "y": 0.19118,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -883,11 +973,24 @@
       "commander": false
     },
     {
+      "name": "Stroke of Midnight",
+      "x": 0.50211,
+      "y": -0.48027,
+      "city": 6,
+      "hood": 0,
+      "roles": [
+        "removal:spot",
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Stromkirk Captain",
-      "x": -0.35043,
-      "y": 0.16534,
-      "city": 2,
-      "hood": 3,
+      "x": 0.34284,
+      "y": -0.25122,
+      "city": 1,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "threat:body"
@@ -897,9 +1000,9 @@
     },
     {
       "name": "Sulfurous Springs",
-      "x": 0.62061,
-      "y": 0.05144,
-      "city": 1,
+      "x": -0.6284,
+      "y": -0.09978,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:untapped-dual",
@@ -910,9 +1013,9 @@
     },
     {
       "name": "Sundown Pass",
-      "x": 0.59294,
-      "y": -0.24132,
-      "city": 1,
+      "x": -0.60245,
+      "y": 0.19643,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -921,10 +1024,24 @@
       "commander": false
     },
     {
+      "name": "Survivors' Encampment",
+      "x": -0.70664,
+      "y": -0.08835,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Swamp",
-      "x": 0.59803,
-      "y": 0.07347,
-      "city": 1,
+      "x": -0.60727,
+      "y": -0.15352,
+      "city": 0,
       "hood": 3,
       "roles": [
         "land:basic"
@@ -933,22 +1050,10 @@
       "commander": false
     },
     {
-      "name": "Swords to Plowshares",
-      "x": -0.16136,
-      "y": 0.53187,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Takenuma, Abandoned Mire",
-      "x": 0.65967,
-      "y": 0.14241,
-      "city": 1,
+      "x": -0.72173,
+      "y": -0.03349,
+      "city": 0,
       "hood": 0,
       "roles": [
         "land:utility"
@@ -958,9 +1063,9 @@
     },
     {
       "name": "Talisman of Indulgence",
-      "x": 0.22793,
-      "y": 0.71012,
-      "city": 5,
+      "x": -0.22778,
+      "y": -0.73096,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -971,9 +1076,9 @@
     },
     {
       "name": "Teferi's Protection",
-      "x": -0.64247,
-      "y": 0.56457,
-      "city": 6,
+      "x": 0.30539,
+      "y": -0.81447,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:self"
@@ -983,9 +1088,9 @@
     },
     {
       "name": "Throne of the God-Pharaoh",
-      "x": -0.09349,
-      "y": -0.18427,
-      "city": 2,
+      "x": 0.09898,
+      "y": 0.20998,
+      "city": 1,
       "hood": 0,
       "roles": [
         "wincon:drain"
@@ -994,35 +1099,36 @@
       "commander": false
     },
     {
-      "name": "Urborg, Tomb of Yawgmoth",
-      "x": 0.48974,
-      "y": 0.00779,
-      "city": 1,
+      "name": "Unbounded Potential",
+      "x": 0.5237,
+      "y": 0.26968,
+      "city": 2,
       "hood": 0,
       "roles": [
-        "land:fixing"
+        "buff:counters"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Vampire of the Dire Moon",
-      "x": 0.00224,
-      "y": -0.06306,
+      "name": "Vampire Cutthroat",
+      "x": 0.63109,
+      "y": 0.60255,
       "city": 2,
       "hood": 0,
       "roles": [
-        "threat:body"
+        "threat:body",
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Vampire Socialite",
-      "x": -0.50228,
-      "y": -0.6639,
+      "x": 0.64479,
+      "y": 0.49297,
       "city": 2,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "buff:counters",
         "threat:body",
@@ -1033,11 +1139,23 @@
       "commander": false
     },
     {
+      "name": "Vampire of the Dire Moon",
+      "x": -0.00881,
+      "y": 0.08422,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Vampiric Tutor",
-      "x": -0.25784,
-      "y": 0.76418,
-      "city": 0,
-      "hood": 1,
+      "x": 0.79231,
+      "y": -0.01343,
+      "city": 1,
+      "hood": 0,
       "roles": [
         "tutor:unrestricted"
       ],
@@ -1046,9 +1164,9 @@
     },
     {
       "name": "Vault of Champions",
-      "x": 0.58027,
-      "y": -0.21945,
-      "city": 1,
+      "x": -0.58775,
+      "y": 0.18883,
+      "city": 0,
       "hood": 1,
       "roles": [
         "land:tapped"
@@ -1058,117 +1176,22 @@
     },
     {
       "name": "Vito, Thorn of the Dusk Rose",
-      "x": -0.18396,
-      "y": -0.54111,
-      "city": 4,
+      "x": 0.22414,
+      "y": 0.5224,
+      "city": 5,
       "hood": 0,
       "roles": [
         "threat:body",
         "wincon:drain"
       ],
       "verified": true,
-      "commander": false
-    },
-    {
-      "name": "Warleader's Call",
-      "x": -0.50042,
-      "y": 0.04422,
-      "city": 2,
-      "hood": 3,
-      "roles": [
-        "buff:pump",
-        "removal:damage",
-        "value:etb"
-      ],
-      "verified": true,
-      "commander": false
-    },
-    {
-      "name": "Welcoming Vampire",
-      "x": -0.75034,
-      "y": -0.34248,
-      "city": 2,
-      "hood": 2,
-      "roles": [
-        "draw:engine",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Winds of Abandon",
-      "x": -0.16076,
-      "y": 0.42033,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Witty Roastmaster",
-      "x": -0.06979,
-      "y": -0.42576,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "removal:damage",
-        "threat:body",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Blood Artist",
-      "x": -0.20539,
-      "y": -0.66549,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Cruel Celebrant",
-      "x": -0.23313,
-      "y": -0.75701,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Indulgent Aristocrat",
-      "x": -0.72345,
-      "y": -0.60646,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "buff:counters",
-        "sac-cost",
-        "sac-outlet",
-        "threat:body",
-        "utility:activated"
-      ],
-      "verified": false,
       "commander": false
     },
     {
       "name": "Voldaren Epicure",
-      "x": -0.35416,
-      "y": -0.10868,
-      "city": 2,
+      "x": 0.35437,
+      "y": 0.02149,
+      "city": 1,
       "hood": 0,
       "roles": [
         "removal:damage",
@@ -1180,93 +1203,54 @@
       "commander": false
     },
     {
-      "name": "Vampire Cutthroat",
-      "x": -0.43379,
-      "y": -0.77205,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "threat:body",
-        "wincon:combat"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Champion of Dusk",
-      "x": -0.32577,
-      "y": -0.43423,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Pact of the Serpent",
-      "x": -0.05879,
-      "y": -0.23905,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "payoff:typal"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Skullclamp",
-      "x": -0.97843,
-      "y": -0.25619,
-      "city": 2,
+      "name": "Warleader's Call",
+      "x": 0.48948,
+      "y": -0.17167,
+      "city": 1,
       "hood": 2,
       "roles": [
-        "buff:attached",
-        "draw:burst",
-        "draw:engine"
+        "buff:pump",
+        "removal:damage",
+        "value:etb"
+      ],
+      "verified": true,
+      "commander": false
+    },
+    {
+      "name": "Welcoming Vampire",
+      "x": 0.80516,
+      "y": -0.10592,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "draw:engine",
+        "threat:body"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Generous Gift",
-      "x": -0.33184,
-      "y": 0.60393,
-      "city": 3,
+      "name": "Winds of Abandon",
+      "x": 0.12651,
+      "y": -0.3776,
+      "city": 6,
       "hood": 0,
       "roles": [
-        "removal:spot",
-        "threat:tokens"
+        "removal:spot"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Stroke of Midnight",
-      "x": -0.34042,
-      "y": 0.57864,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "removal:spot",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "City of Brass",
-      "x": 0.67173,
-      "y": -0.0398,
+      "name": "Witty Roastmaster",
+      "x": 0.06058,
+      "y": 0.44044,
       "city": 1,
       "hood": 0,
       "roles": [
-        "land:fixing",
-        "land:untapped-dual",
-        "land:utility"
+        "removal:damage",
+        "threat:body",
+        "value:etb"
       ],
       "verified": false,
       "commander": false
@@ -1276,70 +1260,11 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": "TEETH AND TUTORS",
-      "fallback": "Tutors",
-      "cx": -0.5102,
-      "cy": 0.02925,
-      "count": 9,
-      "cards": [
-        "Cordial Vampire",
-        "Demonic Tutor",
-        "Diabolic Intent",
-        "Drana, Liberator of Malakir",
-        "Edgar Markov",
-        "Elspeth, Storm Slayer",
-        "Indulgent Aristocrat",
-        "Knight of the Ebon Legion",
-        "Vampiric Tutor"
-      ],
-      "verified_count": 2,
-      "gloss": "Where the 1/1s learn to bite, plus the three searches that go get whichever half of the kill you lack."
-    },
-    {
-      "id": "city-0-hood-0",
-      "level": 1,
-      "parent": "city-0",
-      "label": "COUNTERS AND COPIES",
-      "fallback": "Payoffs",
-      "cx": -0.60486,
-      "cy": -0.3808,
-      "count": 6,
-      "cards": [
-        "Cordial Vampire",
-        "Drana, Liberator of Malakir",
-        "Edgar Markov",
-        "Elspeth, Storm Slayer",
-        "Indulgent Aristocrat",
-        "Knight of the Ebon Legion"
-      ],
-      "verified_count": 2,
-      "gloss": "Five of these leave permanent +1/+1 counters on the whole team; the sixth doubles every token the mint makes."
-    },
-    {
-      "id": "city-0-hood-1",
-      "level": 1,
-      "parent": "city-0",
-      "label": "THE MISSING HALF",
-      "fallback": "Tutors",
-      "cx": -0.32089,
-      "cy": 0.84936,
-      "count": 3,
-      "cards": [
-        "Demonic Tutor",
-        "Diabolic Intent",
-        "Vampiric Tutor"
-      ],
-      "verified_count": 0,
-      "gloss": "Buy the payoff or the multiplier you are short, not a combo piece — the race is the plan."
-    },
-    {
-      "id": "city-1",
-      "level": 0,
-      "label": "THE MANA",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.65239,
-      "cy": -0.06053,
-      "count": 34,
+      "cx": -0.65778,
+      "cy": 0.04651,
+      "count": 32,
       "cards": [
         "Ancient Tomb",
         "Battlefield Forge",
@@ -1348,7 +1273,6 @@
         "Blood Crypt",
         "Bloodstained Mire",
         "Castle Locthwain",
-        "Cavern of Souls",
         "Caves of Koilos",
         "City of Brass",
         "Command Tower",
@@ -1362,37 +1286,34 @@
         "Minas Tirith",
         "Nomad Outpost",
         "Plains",
-        "Prismatic Vista",
         "Reflecting Pool",
-        "Sacred Foundry",
         "Savai Triome",
         "Shattered Sanctum",
         "Silent Clearing",
+        "Smoldering Marsh",
         "Spectator Seating",
         "Sulfurous Springs",
         "Sundown Pass",
+        "Survivors' Encampment",
         "Swamp",
         "Takenuma, Abandoned Mire",
-        "Urborg, Tomb of Yawgmoth",
         "Vault of Champions"
       ],
-      "verified_count": 0,
-      "gloss": "Thirty-four lands for the deck's short colour: black is half the pip load, and much of this fixing is bought with life."
+      "verified_count": 0
     },
     {
-      "id": "city-1-hood-0",
+      "id": "city-0-hood-0",
       "level": 1,
-      "parent": "city-1",
-      "label": "COLOUR ON DEMAND",
+      "parent": "city-0",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.66214,
-      "cy": -0.01308,
-      "count": 15,
+      "cx": -0.6776,
+      "cy": -0.0222,
+      "count": 14,
       "cards": [
         "Ancient Tomb",
         "Battlefield Forge",
         "Castle Locthwain",
-        "Cavern of Souls",
         "Caves of Koilos",
         "City of Brass",
         "Command Tower",
@@ -1402,20 +1323,19 @@
         "Savai Triome",
         "Silent Clearing",
         "Sulfurous Springs",
-        "Takenuma, Abandoned Mire",
-        "Urborg, Tomb of Yawgmoth"
+        "Survivors' Encampment",
+        "Takenuma, Abandoned Mire"
       ],
-      "verified_count": 0,
-      "gloss": "Broad fixers and painlands that say yes on the turn you need them, plus the few that also draw or regrow."
+      "verified_count": 0
     },
     {
-      "id": "city-1-hood-1",
+      "id": "city-0-hood-1",
       "level": 1,
-      "parent": "city-1",
-      "label": "THE DUALS",
+      "parent": "city-0",
+      "label": null,
       "fallback": "Mana II",
-      "cx": 0.59481,
-      "cy": -0.21721,
+      "cx": -0.60334,
+      "cy": 0.17484,
       "count": 12,
       "cards": [
         "Blood Crypt",
@@ -1425,40 +1345,37 @@
         "Luxury Suite",
         "Midgar, City of Mako // Reactor Raid",
         "Nomad Outpost",
-        "Sacred Foundry",
         "Shattered Sanctum",
+        "Smoldering Marsh",
         "Spectator Seating",
         "Sundown Pass",
         "Vault of Champions"
       ],
-      "verified_count": 0,
-      "gloss": "One named pair of colours each: some land untapped when it matters, some ask you to wait a turn."
+      "verified_count": 0
     },
     {
-      "id": "city-1-hood-2",
+      "id": "city-0-hood-2",
       "level": 1,
-      "parent": "city-1",
-      "label": "THE FETCHES",
+      "parent": "city-0",
+      "label": null,
       "fallback": "Mana IIII",
-      "cx": 0.93436,
-      "cy": 0.1946,
-      "count": 3,
+      "cx": -0.98567,
+      "cy": 0.08236,
+      "count": 2,
       "cards": [
         "Bloodstained Mire",
-        "Marsh Flats",
-        "Prismatic Vista"
+        "Marsh Flats"
       ],
-      "verified_count": 0,
-      "gloss": "Pay a life, take the exact colour you are missing, and thin nothing worth counting."
+      "verified_count": 0
     },
     {
-      "id": "city-1-hood-3",
+      "id": "city-0-hood-3",
       "level": 1,
-      "parent": "city-1",
-      "label": "THE BASIC TYPES",
+      "parent": "city-0",
+      "label": null,
       "fallback": "Mana III",
-      "cx": 0.57712,
-      "cy": 0.04022,
+      "cx": -0.58776,
+      "cy": -0.11589,
       "count": 4,
       "cards": [
         "Blazemire Verge",
@@ -1466,103 +1383,80 @@
         "Plains",
         "Swamp"
       ],
-      "verified_count": 0,
-      "gloss": "Two basics and the two lands whose second colour only switches on when you control one."
+      "verified_count": 0
     },
     {
-      "id": "city-2",
+      "id": "city-1",
       "level": 0,
-      "label": "THE WIDTH ENGINE",
+      "label": null,
       "fallback": "Bodies",
-      "cx": -0.42428,
-      "cy": -0.11093,
+      "cx": 0.36202,
+      "cy": 0.03907,
       "count": 28,
       "cards": [
         "Anointed Procession",
         "Bloodline Keeper // Lord of Lineage",
-        "Bontu's Monument",
         "Captivating Vampire",
         "Caretaker's Talent",
         "Champion of Dusk",
         "Charismatic Conqueror",
         "Deflecting Swat",
-        "Herald's Horn",
+        "Elspeth, Storm Slayer",
+        "Forerunner of the Legion",
+        "Gifted Aetherborn",
         "Impact Tremors",
+        "Intangible Virtue",
         "Legion Lieutenant",
         "Mavren Fein, Dusk Apostle",
         "Night's Whisper",
-        "Ocelot Pride",
-        "Olivia's Wrath",
+        "Nighthawk Scavenger",
         "Pact of the Serpent",
         "Preacher of the Schism",
         "Shared Animosity",
         "Skullclamp",
         "Stromkirk Captain",
         "Throne of the God-Pharaoh",
-        "Vampire Cutthroat",
-        "Vampire Socialite",
         "Vampire of the Dire Moon",
+        "Vampiric Tutor",
         "Voldaren Epicure",
         "Warleader's Call",
         "Welcoming Vampire",
         "Witty Roastmaster"
       ],
-      "verified_count": 5,
-      "gloss": "The deck's working mass: bodies arrive, get doubled, get counted, and get bigger. Everything here scales with the board."
+      "verified_count": 5
     },
     {
-      "id": "city-2-hood-0",
+      "id": "city-1-hood-0",
       "level": 1,
-      "parent": "city-2",
-      "label": "PAID BY THE HEAD",
+      "parent": "city-1",
+      "label": null,
       "fallback": "Bodies",
-      "cx": -0.23877,
-      "cy": -0.10035,
-      "count": 13,
+      "cx": 0.25636,
+      "cy": 0.16344,
+      "count": 11,
       "cards": [
-        "Anointed Procession",
         "Champion of Dusk",
-        "Charismatic Conqueror",
-        "Deflecting Swat",
+        "Forerunner of the Legion",
+        "Gifted Aetherborn",
         "Impact Tremors",
-        "Mavren Fein, Dusk Apostle",
-        "Ocelot Pride",
-        "Olivia's Wrath",
+        "Nighthawk Scavenger",
         "Pact of the Serpent",
         "Throne of the God-Pharaoh",
         "Vampire of the Dire Moon",
+        "Vampiric Tutor",
         "Voldaren Epicure",
         "Witty Roastmaster"
       ],
-      "verified_count": 3,
-      "gloss": "Every card here bills by the body: entries convert to damage, tapped attackers drain, and two refills price width as cards."
+      "verified_count": 3
     },
     {
-      "id": "city-2-hood-1",
+      "id": "city-1-hood-1",
       "level": 1,
-      "parent": "city-2",
-      "label": "TWO SPELLS A TURN",
-      "fallback": "Finishers II",
-      "cx": -0.71551,
-      "cy": -0.2414,
-      "count": 4,
-      "cards": [
-        "Bontu's Monument",
-        "Herald's Horn",
-        "Vampire Cutthroat",
-        "Vampire Socialite"
-      ],
-      "verified_count": 1,
-      "gloss": "Cost cuts and cheap Vampires. A second cast in one turn is a second eminence token, free."
-    },
-    {
-      "id": "city-2-hood-2",
-      "level": 1,
-      "parent": "city-2",
-      "label": "THE ROLLING REFILL",
+      "parent": "city-1",
+      "label": null,
       "fallback": "Card Flow",
-      "cx": -0.71403,
-      "cy": -0.28108,
+      "cx": 0.59063,
+      "cy": 0.17883,
       "count": 5,
       "cards": [
         "Caretaker's Talent",
@@ -1571,17 +1465,16 @@
         "Skullclamp",
         "Welcoming Vampire"
       ],
-      "verified_count": 0,
-      "gloss": "Repeatable draw priced in life and bodies — the two resources you bank by the handful, and no graveyard involved."
+      "verified_count": 0
     },
     {
-      "id": "city-2-hood-3",
+      "id": "city-1-hood-2",
       "level": 1,
-      "parent": "city-2",
-      "label": "EVERYONE GETS BIGGER",
-      "fallback": "Value",
-      "cx": -0.3906,
-      "cy": 0.09494,
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.38321,
+      "cy": -0.19817,
       "count": 6,
       "cards": [
         "Bloodline Keeper // Lord of Lineage",
@@ -1591,78 +1484,186 @@
         "Stromkirk Captain",
         "Warleader's Call"
       ],
-      "verified_count": 1,
-      "gloss": "The second kill: static pumps that turn the same width into attack damage when the triggers alone fall short."
+      "verified_count": 1
+    },
+    {
+      "id": "city-1-hood-3",
+      "level": 1,
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Bodies II",
+      "cx": 0.34402,
+      "cy": -0.06815,
+      "count": 6,
+      "cards": [
+        "Anointed Procession",
+        "Charismatic Conqueror",
+        "Deflecting Swat",
+        "Elspeth, Storm Slayer",
+        "Intangible Virtue",
+        "Mavren Fein, Dusk Apostle"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-2",
+      "level": 0,
+      "label": null,
+      "fallback": "Finishers",
+      "cx": 0.57563,
+      "cy": 0.2556,
+      "count": 9,
+      "cards": [
+        "Cordial Vampire",
+        "Drana, Liberator of Malakir",
+        "Edgar Markov",
+        "Indulgent Aristocrat",
+        "Knight of the Ebon Legion",
+        "Master of Dark Rites",
+        "Unbounded Potential",
+        "Vampire Cutthroat",
+        "Vampire Socialite"
+      ],
+      "verified_count": 3
+    },
+    {
+      "id": "city-2-hood-0",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Payoffs",
+      "cx": 0.61966,
+      "cy": 0.36419,
+      "count": 7,
+      "cards": [
+        "Cordial Vampire",
+        "Drana, Liberator of Malakir",
+        "Edgar Markov",
+        "Knight of the Ebon Legion",
+        "Unbounded Potential",
+        "Vampire Cutthroat",
+        "Vampire Socialite"
+      ],
+      "verified_count": 3
+    },
+    {
+      "id": "city-2-hood-1",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Bodies III",
+      "cx": 0.42152,
+      "cy": -0.12447,
+      "count": 2,
+      "cards": [
+        "Indulgent Aristocrat",
+        "Master of Dark Rites"
+      ],
+      "verified_count": 0
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": "THE ANSWERS",
-      "fallback": "Interaction",
-      "cx": -0.18961,
-      "cy": 0.50864,
-      "count": 7,
+      "label": null,
+      "fallback": "Ramp",
+      "cx": -0.20171,
+      "cy": -0.74056,
+      "count": 5,
       "cards": [
-        "Anguished Unmaking",
-        "Despark",
-        "Generous Gift",
-        "Path to Exile",
-        "Stroke of Midnight",
-        "Swords to Plowshares",
-        "Winds of Abandon"
+        "Arcane Signet",
+        "Legion's Landing // Adanto, the First Fort",
+        "Patchwork Banner",
+        "Sol Ring",
+        "Talisman of Indulgence"
       ],
-      "verified_count": 0,
-      "gloss": "Seven ways to delete one permanent. Spend them on the piece taxing your entries, not on the scariest board."
+      "verified_count": 0
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Interaction",
-      "cx": -0.18961,
-      "cy": 0.50864,
-      "count": 7,
+      "fallback": "Ramp",
+      "cx": -0.20171,
+      "cy": -0.74056,
+      "count": 5,
       "cards": [
-        "Anguished Unmaking",
-        "Despark",
-        "Generous Gift",
-        "Path to Exile",
-        "Stroke of Midnight",
-        "Swords to Plowshares",
-        "Winds of Abandon"
+        "Arcane Signet",
+        "Legion's Landing // Adanto, the First Fort",
+        "Patchwork Banner",
+        "Sol Ring",
+        "Talisman of Indulgence"
       ],
       "verified_count": 0
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": "THE DRAIN",
-      "fallback": "Finishers",
-      "cx": -0.18553,
-      "cy": -0.58511,
-      "count": 8,
+      "label": null,
+      "fallback": "Insurance",
+      "cx": 0.45465,
+      "cy": -0.67874,
+      "count": 7,
       "cards": [
-        "Blood Artist",
-        "Bloodletter of Aclazotz",
-        "Bloodthirsty Conqueror",
-        "Corpse Knight",
-        "Cruel Celebrant",
-        "Sanctum Seeker",
-        "Sanguine Bond",
-        "Vito, Thorn of the Dusk Rose"
+        "Akroma's Will",
+        "Boros Charm",
+        "Flawless Maneuver",
+        "Herald's Horn",
+        "Mondrak, Glory Dominus",
+        "Purphoros, God of the Forge",
+        "Teferi's Protection"
       ],
-      "verified_count": 5,
-      "gloss": "The kill itself: a body arriving or dying bills the whole table, and two pairs in here simply end it."
+      "verified_count": 2
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
       "label": null,
+      "fallback": "Insurance",
+      "cx": 0.45465,
+      "cy": -0.67874,
+      "count": 7,
+      "cards": [
+        "Akroma's Will",
+        "Boros Charm",
+        "Flawless Maneuver",
+        "Herald's Horn",
+        "Mondrak, Glory Dominus",
+        "Purphoros, God of the Forge",
+        "Teferi's Protection"
+      ],
+      "verified_count": 2
+    },
+    {
+      "id": "city-5",
+      "level": 0,
+      "label": null,
+      "fallback": "Value",
+      "cx": 0.25167,
+      "cy": 0.58778,
+      "count": 9,
+      "cards": [
+        "Blood Artist",
+        "Bloodletter of Aclazotz",
+        "Bloodthirsty Conqueror",
+        "Corpse Knight",
+        "Cruel Celebrant",
+        "Mirkwood Bats",
+        "Sanctum Seeker",
+        "Sanguine Bond",
+        "Vito, Thorn of the Dusk Rose"
+      ],
+      "verified_count": 5
+    },
+    {
+      "id": "city-5-hood-0",
+      "level": 1,
+      "parent": "city-5",
+      "label": null,
       "fallback": "Finishers",
-      "cx": -0.18553,
-      "cy": -0.58511,
+      "cx": 0.22858,
+      "cy": 0.57773,
       "count": 8,
       "cards": [
         "Blood Artist",
@@ -1677,84 +1678,61 @@
       "verified_count": 5
     },
     {
-      "id": "city-5",
-      "level": 0,
-      "label": "THE HEAD START",
-      "fallback": "Ramp",
-      "cx": 0.21697,
-      "cy": 0.71827,
-      "count": 5,
-      "cards": [
-        "Arcane Signet",
-        "Legion's Landing // Adanto, the First Fort",
-        "Patchwork Banner",
-        "Sol Ring",
-        "Talisman of Indulgence"
-      ],
-      "verified_count": 0,
-      "gloss": "Cheap acceleration that lands Edgar a turn early; two of these also pay in a body or a typal buff."
-    },
-    {
-      "id": "city-5-hood-0",
+      "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
       "label": null,
-      "fallback": "Ramp",
-      "cx": 0.21697,
-      "cy": 0.71827,
-      "count": 5,
+      "fallback": "Bodies IIII",
+      "cx": 0.43634,
+      "cy": 0.66813,
+      "count": 1,
       "cards": [
-        "Arcane Signet",
-        "Legion's Landing // Adanto, the First Fort",
-        "Patchwork Banner",
-        "Sol Ring",
-        "Talisman of Indulgence"
+        "Mirkwood Bats"
       ],
       "verified_count": 0
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": "HELD FOR THE WIPE",
-      "fallback": "Insurance",
-      "cx": -0.66383,
-      "cy": 0.40496,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.21543,
+      "cy": -0.28649,
       "count": 6,
       "cards": [
-        "Akroma's Will",
-        "Boros Charm",
-        "Flawless Maneuver",
-        "Mondrak, Glory Dominus",
-        "Purphoros, God of the Forge",
-        "Teferi's Protection"
+        "Anguished Unmaking",
+        "Despark",
+        "Olivia's Wrath",
+        "Path to Exile",
+        "Stroke of Midnight",
+        "Winds of Abandon"
       ],
-      "verified_count": 2,
-      "gloss": "Held, not cast — four saves for the turn you commit, plus two permanents built to walk out of a sweeper."
+      "verified_count": 0
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
       "label": null,
-      "fallback": "Insurance",
-      "cx": -0.66383,
-      "cy": 0.40496,
+      "fallback": "Interaction II",
+      "cx": 0.21543,
+      "cy": -0.28649,
       "count": 6,
       "cards": [
-        "Akroma's Will",
-        "Boros Charm",
-        "Flawless Maneuver",
-        "Mondrak, Glory Dominus",
-        "Purphoros, God of the Forge",
-        "Teferi's Protection"
+        "Anguished Unmaking",
+        "Despark",
+        "Olivia's Wrath",
+        "Path to Exile",
+        "Stroke of Midnight",
+        "Winds of Abandon"
       ],
-      "verified_count": 2
+      "verified_count": 0
     }
   ],
   "edges": [
     {
       "a": 0,
-      "b": 24,
+      "b": 25,
       "d": 0.0919
     },
     {
@@ -1769,12 +1747,12 @@
     },
     {
       "a": 1,
-      "b": 74,
+      "b": 82,
       "d": 0.1094
     },
     {
       "a": 2,
-      "b": 68,
+      "b": 76,
       "d": 0.007
     },
     {
@@ -1784,42 +1762,42 @@
     },
     {
       "a": 3,
-      "b": 71,
-      "d": 0.0517
-    },
-    {
-      "a": 3,
-      "b": 28,
+      "b": 29,
       "d": 0.057
     },
     {
+      "a": 3,
+      "b": 59,
+      "d": 0.0843
+    },
+    {
       "a": 4,
-      "b": 26,
+      "b": 40,
+      "d": 0.1052
+    },
+    {
+      "a": 4,
+      "b": 28,
       "d": 0.118
     },
     {
-      "a": 4,
-      "b": 31,
-      "d": 0.1295
-    },
-    {
       "a": 5,
-      "b": 65,
+      "b": 72,
       "d": 0.0246
     },
     {
       "a": 5,
-      "b": 73,
+      "b": 81,
       "d": 0.0426
     },
     {
       "a": 6,
-      "b": 20,
+      "b": 19,
       "d": 0.0023
     },
     {
       "a": 6,
-      "b": 68,
+      "b": 76,
       "d": 0.0041
     },
     {
@@ -1829,72 +1807,72 @@
     },
     {
       "a": 7,
-      "b": 70,
+      "b": 79,
       "d": 0.0196
     },
     {
       "a": 8,
-      "b": 70,
+      "b": 79,
       "d": 0.0199
     },
     {
       "a": 9,
-      "b": 58,
-      "d": 0.0083
+      "b": 27,
+      "d": 0.0152
     },
     {
       "a": 9,
-      "b": 33,
+      "b": 64,
+      "d": 0.0255
+    },
+    {
+      "a": 10,
+      "b": 35,
       "d": 0.0091
     },
     {
       "a": 10,
-      "b": 13,
-      "d": 0.0349
-    },
-    {
-      "a": 10,
-      "b": 60,
-      "d": 0.0743
+      "b": 71,
+      "d": 0.0126
     },
     {
       "a": 11,
+      "b": 14,
+      "d": 0.0349
+    },
+    {
+      "a": 11,
+      "b": 65,
+      "d": 0.0743
+    },
+    {
+      "a": 12,
       "b": 16,
       "d": 0.0952
     },
     {
-      "a": 11,
-      "b": 67,
+      "a": 12,
+      "b": 75,
       "d": 0.0964
     },
     {
-      "a": 12,
-      "b": 42,
+      "a": 13,
+      "b": 46,
       "d": 0.001
     },
     {
-      "a": 12,
-      "b": 55,
-      "d": 0.0019
+      "a": 13,
+      "b": 69,
+      "d": 0.1008
     },
     {
-      "a": 13,
-      "b": 60,
+      "a": 14,
+      "b": 65,
       "d": 0.046
     },
     {
-      "a": 14,
-      "b": 35,
-      "d": 0.156
-    },
-    {
-      "a": 14,
-      "b": 75,
-      "d": 0.1918
-    },
-    {
       "a": 15,
-      "b": 56,
+      "b": 62,
       "d": 0.1026
     },
     {
@@ -1904,123 +1882,128 @@
     },
     {
       "a": 16,
-      "b": 67,
+      "b": 75,
       "d": 0.0484
     },
     {
       "a": 16,
-      "b": 82,
+      "b": 92,
       "d": 0.0805
     },
     {
       "a": 17,
-      "b": 83,
+      "b": 93,
       "d": 0.1018
     },
     {
       "a": 17,
-      "b": 54,
+      "b": 61,
       "d": 0.1204
     },
     {
       "a": 18,
-      "b": 61,
+      "b": 66,
       "d": 0.0317
     },
     {
       "a": 18,
-      "b": 45,
+      "b": 50,
       "d": 0.0358
     },
     {
       "a": 19,
-      "b": 57,
-      "d": 0.0489
-    },
-    {
-      "a": 19,
-      "b": 22,
-      "d": 0.0651
-    },
-    {
-      "a": 20,
-      "b": 68,
+      "b": 76,
       "d": 0.0064
     },
     {
+      "a": 14,
+      "b": 20,
+      "d": 0.1244
+    },
+    {
+      "a": 11,
+      "b": 20,
+      "d": 0.1279
+    },
+    {
       "a": 21,
-      "b": 43,
+      "b": 48,
       "d": 0.0573
     },
     {
       "a": 21,
-      "b": 49,
-      "d": 0.0778
+      "b": 61,
+      "d": 0.1292
     },
     {
-      "a": 22,
-      "b": 41,
+      "a": 6,
+      "b": 22,
+      "d": 0.021
+    },
+    {
+      "a": 19,
+      "b": 22,
+      "d": 0.0239
+    },
+    {
+      "a": 23,
+      "b": 78,
+      "d": 0.0108
+    },
+    {
+      "a": 23,
+      "b": 45,
       "d": 0.0114
     },
     {
-      "a": 22,
-      "b": 57,
-      "d": 0.0188
-    },
-    {
-      "a": 23,
-      "b": 63,
+      "a": 24,
+      "b": 68,
       "d": 0.0002
     },
     {
-      "a": 23,
-      "b": 69,
+      "a": 24,
+      "b": 77,
       "d": 0.0022
     },
     {
-      "a": 24,
+      "a": 25,
+      "b": 84,
+      "d": 0.0541
+    },
+    {
+      "a": 25,
       "b": 30,
       "d": 0.0546
     },
     {
-      "a": 24,
-      "b": 37,
-      "d": 0.0617
-    },
-    {
-      "a": 25,
-      "b": 87,
+      "a": 26,
+      "b": 27,
       "d": 0.0307
     },
     {
-      "a": 25,
-      "b": 59,
+      "a": 26,
+      "b": 64,
       "d": 0.0348
     },
     {
-      "a": 26,
-      "b": 36,
-      "d": 0.143
-    },
-    {
       "a": 27,
-      "b": 79,
-      "d": 0.025
-    },
-    {
-      "a": 27,
-      "b": 29,
-      "d": 0.04
+      "b": 64,
+      "d": 0.0183
     },
     {
       "a": 28,
-      "b": 52,
-      "d": 0.0449
+      "b": 38,
+      "d": 0.143
     },
     {
       "a": 29,
-      "b": 79,
-      "d": 0.0589
+      "b": 59,
+      "d": 0.0449
+    },
+    {
+      "a": 30,
+      "b": 84,
+      "d": 0.0963
     },
     {
       "a": 0,
@@ -2028,384 +2011,414 @@
       "d": 0.0964
     },
     {
+      "a": 4,
+      "b": 31,
+      "d": 0.1295
+    },
+    {
       "a": 32,
-      "b": 56,
+      "b": 62,
       "d": 0.0631
     },
     {
       "a": 32,
-      "b": 74,
+      "b": 82,
       "d": 0.0705
     },
     {
       "a": 33,
-      "b": 58,
-      "d": 0.0078
+      "b": 88,
+      "d": 0.1474
+    },
+    {
+      "a": 33,
+      "b": 42,
+      "d": 0.167
     },
     {
       "a": 34,
-      "b": 69,
+      "b": 87,
+      "d": 0.0561
+    },
+    {
+      "a": 34,
+      "b": 83,
+      "d": 0.1192
+    },
+    {
+      "a": 35,
+      "b": 71,
+      "d": 0.0181
+    },
+    {
+      "a": 36,
+      "b": 77,
       "d": 0.0029
     },
     {
-      "a": 34,
-      "b": 63,
+      "a": 36,
+      "b": 68,
       "d": 0.0038
     },
     {
       "a": 1,
-      "b": 35,
+      "b": 37,
       "d": 0.182
     },
     {
-      "a": 36,
-      "b": 85,
-      "d": 0.0479
-    },
-    {
-      "a": 36,
-      "b": 82,
-      "d": 0.1208
-    },
-    {
-      "a": 30,
-      "b": 37,
-      "d": 0.1238
-    },
-    {
-      "a": 16,
-      "b": 38,
-      "d": 0.0827
+      "a": 37,
+      "b": 57,
+      "d": 0.2013
     },
     {
       "a": 38,
-      "b": 67,
-      "d": 0.0895
+      "b": 95,
+      "d": 0.0479
     },
     {
-      "a": 5,
-      "b": 39,
-      "d": 0.0635
+      "a": 38,
+      "b": 92,
+      "d": 0.1208
+    },
+    {
+      "a": 39,
+      "b": 47,
+      "d": 0.1223
     },
     {
       "a": 39,
       "b": 51,
-      "d": 0.0823
+      "d": 0.1488
     },
     {
       "a": 40,
-      "b": 66,
-      "d": 0.0025
+      "b": 42,
+      "d": 0.1104
     },
     {
-      "a": 40,
-      "b": 80,
-      "d": 0.0034
+      "a": 25,
+      "b": 41,
+      "d": 0.0617
     },
     {
       "a": 41,
-      "b": 57,
-      "d": 0.0198
+      "b": 84,
+      "d": 0.0803
+    },
+    {
+      "a": 16,
+      "b": 42,
+      "d": 0.0827
     },
     {
       "a": 42,
-      "b": 55,
-      "d": 0.0025
+      "b": 75,
+      "d": 0.0895
+    },
+    {
+      "a": 5,
+      "b": 43,
+      "d": 0.0635
     },
     {
       "a": 43,
-      "b": 49,
-      "d": 0.0574
+      "b": 58,
+      "d": 0.0823
     },
     {
       "a": 44,
-      "b": 48,
-      "d": 0.039
+      "b": 73,
+      "d": 0.0025
     },
     {
-      "a": 23,
-      "b": 44,
-      "d": 0.039
+      "a": 44,
+      "b": 89,
+      "d": 0.0034
     },
     {
       "a": 45,
-      "b": 61,
-      "d": 0.0418
-    },
-    {
-      "a": 32,
-      "b": 46,
-      "d": 0.099
+      "b": 78,
+      "d": 0.0192
     },
     {
       "a": 46,
-      "b": 56,
-      "d": 0.1219
-    },
-    {
-      "a": 47,
-      "b": 93,
-      "d": 0.1283
-    },
-    {
-      "a": 47,
-      "b": 83,
-      "d": 0.2004
-    },
-    {
-      "a": 34,
-      "b": 48,
-      "d": 0.0052
-    },
-    {
-      "a": 48,
       "b": 69,
-      "d": 0.0057
+      "d": 0.0977
+    },
+    {
+      "a": 47,
+      "b": 51,
+      "d": 0.1947
+    },
+    {
+      "a": 40,
+      "b": 48,
+      "d": 0.1121
+    },
+    {
+      "a": 49,
+      "b": 71,
+      "d": 0.0382
+    },
+    {
+      "a": 49,
+      "b": 55,
+      "d": 0.039
     },
     {
       "a": 50,
-      "b": 84,
-      "d": 0.1602
+      "b": 66,
+      "d": 0.0418
     },
     {
-      "a": 31,
-      "b": 50,
-      "d": 0.2058
+      "a": 51,
+      "b": 64,
+      "d": 0.1103
     },
     {
       "a": 51,
       "b": 65,
-      "d": 0.0538
+      "d": 0.1187
     },
     {
-      "a": 5,
-      "b": 51,
-      "d": 0.0551
+      "a": 32,
+      "b": 52,
+      "d": 0.099
     },
     {
       "a": 52,
-      "b": 71,
-      "d": 0.0493
+      "b": 62,
+      "d": 0.1219
     },
     {
       "a": 53,
       "b": 70,
+      "d": 0.1283
+    },
+    {
+      "a": 53,
+      "b": 93,
+      "d": 0.2004
+    },
+    {
+      "a": 34,
+      "b": 54,
+      "d": 0.1353
+    },
+    {
+      "a": 54,
+      "b": 57,
+      "d": 0.1596
+    },
+    {
+      "a": 36,
+      "b": 55,
+      "d": 0.0052
+    },
+    {
+      "a": 55,
+      "b": 77,
+      "d": 0.0057
+    },
+    {
+      "a": 56,
+      "b": 94,
+      "d": 0.1602
+    },
+    {
+      "a": 31,
+      "b": 56,
+      "d": 0.2058
+    },
+    {
+      "a": 57,
+      "b": 83,
+      "d": 0.1074
+    },
+    {
+      "a": 11,
+      "b": 57,
+      "d": 0.1315
+    },
+    {
+      "a": 58,
+      "b": 72,
+      "d": 0.0538
+    },
+    {
+      "a": 5,
+      "b": 58,
+      "d": 0.0551
+    },
+    {
+      "a": 59,
+      "b": 94,
+      "d": 0.0519
+    },
+    {
+      "a": 60,
+      "b": 79,
       "d": 0.0102
     },
     {
       "a": 8,
-      "b": 53,
+      "b": 60,
       "d": 0.0243
     },
     {
-      "a": 54,
-      "b": 59,
+      "a": 61,
+      "b": 64,
       "d": 0.1042
     },
     {
-      "a": 59,
-      "b": 87,
-      "d": 0.0183
+      "a": 63,
+      "b": 78,
+      "d": 0.0173
     },
     {
-      "a": 59,
-      "b": 86,
-      "d": 0.0255
+      "a": 23,
+      "b": 63,
+      "d": 0.0188
     },
     {
-      "a": 60,
-      "b": 81,
+      "a": 65,
+      "b": 90,
       "d": 0.0452
     },
     {
-      "a": 62,
-      "b": 82,
+      "a": 67,
+      "b": 92,
       "d": 0.0722
     },
     {
       "a": 16,
-      "b": 62,
+      "b": 67,
       "d": 0.0957
     },
     {
-      "a": 63,
-      "b": 69,
+      "a": 68,
+      "b": 77,
       "d": 0.0018
     },
     {
-      "a": 22,
-      "b": 64,
+      "a": 69,
+      "b": 78,
+      "d": 0.0283
+    },
+    {
+      "a": 23,
+      "b": 69,
       "d": 0.0341
     },
     {
-      "a": 41,
-      "b": 64,
-      "d": 0.0395
-    },
-    {
-      "a": 65,
-      "b": 73,
-      "d": 0.0439
-    },
-    {
-      "a": 66,
-      "b": 80,
-      "d": 0.0017
-    },
-    {
-      "a": 2,
-      "b": 72,
-      "d": 0.0875
-    },
-    {
-      "a": 20,
-      "b": 72,
-      "d": 0.0879
-    },
-    {
-      "a": 13,
-      "b": 75,
-      "d": 0.1016
-    },
-    {
-      "a": 10,
-      "b": 75,
-      "d": 0.1029
-    },
-    {
-      "a": 57,
-      "b": 76,
-      "d": 0.0759
-    },
-    {
-      "a": 19,
-      "b": 76,
-      "d": 0.0775
-    },
-    {
-      "a": 75,
-      "b": 77,
-      "d": 0.1098
-    },
-    {
-      "a": 13,
-      "b": 77,
-      "d": 0.1415
-    },
-    {
-      "a": 78,
-      "b": 90,
-      "d": 0.1083
-    },
-    {
-      "a": 37,
-      "b": 78,
-      "d": 0.133
-    },
-    {
-      "a": 59,
-      "b": 81,
-      "d": 0.0373
-    },
-    {
-      "a": 81,
-      "b": 87,
-      "d": 0.0449
-    },
-    {
-      "a": 54,
-      "b": 83,
-      "d": 0.157
-    },
-    {
-      "a": 52,
-      "b": 84,
-      "d": 0.0519
-    },
-    {
-      "a": 28,
-      "b": 84,
-      "d": 0.064
-    },
-    {
-      "a": 85,
-      "b": 89,
-      "d": 0.1274
-    },
-    {
-      "a": 86,
-      "b": 87,
-      "d": 0.0152
-    },
-    {
-      "a": 24,
-      "b": 88,
-      "d": 0.1977
-    },
-    {
-      "a": 37,
-      "b": 88,
-      "d": 0.1991
-    },
-    {
-      "a": 36,
-      "b": 89,
-      "d": 0.1332
-    },
-    {
-      "a": 14,
-      "b": 90,
-      "d": 0.1999
-    },
-    {
-      "a": 13,
-      "b": 91,
-      "d": 0.1244
-    },
-    {
-      "a": 10,
-      "b": 91,
-      "d": 0.1279
-    },
-    {
-      "a": 75,
-      "b": 92,
-      "d": 0.1074
-    },
-    {
-      "a": 10,
-      "b": 92,
-      "d": 0.1315
-    },
-    {
-      "a": 83,
+      "a": 70,
       "b": 93,
       "d": 0.1641
     },
     {
-      "a": 94,
-      "b": 95,
-      "d": 0.0144
+      "a": 36,
+      "b": 71,
+      "d": 0.0077
     },
     {
       "a": 71,
+      "b": 77,
+      "d": 0.0093
+    },
+    {
+      "a": 72,
+      "b": 81,
+      "d": 0.0439
+    },
+    {
+      "a": 73,
+      "b": 89,
+      "d": 0.0017
+    },
+    {
+      "a": 59,
+      "b": 74,
+      "d": 0.0911
+    },
+    {
+      "a": 29,
+      "b": 74,
+      "d": 0.1033
+    },
+    {
+      "a": 2,
+      "b": 80,
+      "d": 0.0875
+    },
+    {
+      "a": 19,
+      "b": 80,
+      "d": 0.0879
+    },
+    {
+      "a": 14,
+      "b": 83,
+      "d": 0.1016
+    },
+    {
+      "a": 11,
+      "b": 83,
+      "d": 0.1029
+    },
+    {
+      "a": 85,
+      "b": 86,
+      "d": 0.1083
+    },
+    {
+      "a": 85,
+      "b": 87,
+      "d": 0.2287
+    },
+    {
+      "a": 84,
+      "b": 86,
+      "d": 0.1163
+    },
+    {
+      "a": 83,
+      "b": 87,
+      "d": 0.1098
+    },
+    {
+      "a": 59,
+      "b": 88,
+      "d": 0.2196
+    },
+    {
+      "a": 64,
+      "b": 90,
+      "d": 0.0373
+    },
+    {
+      "a": 27,
+      "b": 90,
+      "d": 0.0449
+    },
+    {
+      "a": 91,
+      "b": 95,
+      "d": 0.1274
+    },
+    {
+      "a": 38,
+      "b": 91,
+      "d": 0.1332
+    },
+    {
+      "a": 61,
+      "b": 93,
+      "d": 0.157
+    },
+    {
+      "a": 29,
       "b": 94,
-      "d": 0.0905
-    },
-    {
-      "a": 71,
-      "b": 95,
-      "d": 0.0845
-    },
-    {
-      "a": 6,
-      "b": 96,
-      "d": 0.021
-    },
-    {
-      "a": 20,
-      "b": 96,
-      "d": 0.0239
+      "d": 0.064
     }
   ]
 }

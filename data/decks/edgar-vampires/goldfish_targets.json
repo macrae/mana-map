@@ -1,173 +1,169 @@
 {
- "_note": "Re-derived 2026-08-05 after the six-pair pass. Two groups moved and no others: Corpse Knight joins the token-to-damage payoff group (its 'whenever another creature you control enters, each opponent loses 1 life' is the same entry trigger the other three carry, and it is the only one that causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it), and Anguished Unmaking joins the noncreature-answer group, which was a one-card component and is the deck's binding axis. No group named a cut card, so nothing was removed. Cathars' Crusade is deliberately NOT filed as a token multiplier \u2014 it puts counters on creatures, it does not create tokens. Forerunner of the Legion is deliberately NOT added to the infinite's group: it TUTORS Bloodthirsty Conqueror to the top rather than drawing it, and this file does not model tutors anywhere else (Vampiric Tutor and Demonic Tutor are in the 99 and appear in no group). Stack 009 verified the payoff group composing: nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.",
- "targets": [
-  {
-   "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
-   "need": [
+  "_note": "Re-derived 2026-08-05 after the six-pair pass. Two groups moved and no others: Corpse Knight joins the token-to-damage payoff group (its 'whenever another creature you control enters, each opponent loses 1 life' is the same entry trigger the other three carry, and it is the only one that causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it), and Anguished Unmaking joins the noncreature-answer group, which was a one-card component and is the deck's binding axis. No group named a cut card, so nothing was removed. Cathars' Crusade is deliberately NOT filed as a token multiplier — it puts counters on creatures, it does not create tokens. Forerunner of the Legion is deliberately NOT added to the infinite's group: it TUTORS Bloodthirsty Conqueror to the top rather than drawing it, and this file does not model tutors anywhere else (Vampiric Tutor and Demonic Tutor are in the 99 and appear in no group). Stack 009 verified the payoff group composing: nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.",
+  "targets": [
     {
-     "any_of": [
-      "Purphoros, God of the Forge",
-      "Impact Tremors",
-      "Warleader's Call",
-      "Corpse Knight",
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Witty Roastmaster"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "A token multiplier or extra token-maker drawn",
-   "need": [
-    {
-     "any_of": [
-      "Anointed Procession",
-      "Mondrak, Glory Dominus",
-      "Elspeth, Storm Slayer",
-      "Ocelot Pride",
-      "Mavren Fein, Dusk Apostle",
-      "Bloodline Keeper // Lord of Lineage",
-      "Charismatic Conqueror",
-      "Legion's Landing // Adanto, the First Fort"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-   "need": [
-    {
-     "any_of": [
-      "Purphoros, God of the Forge",
-      "Impact Tremors",
-      "Warleader's Call",
-      "Corpse Knight",
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Witty Roastmaster"
-     ]
+      "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
+      "need": [
+        {
+          "any_of": [
+            "Purphoros, God of the Forge",
+            "Impact Tremors",
+            "Warleader's Call",
+            "Corpse Knight",
+            "Blood Artist",
+            "Cruel Celebrant",
+            "Witty Roastmaster"
+          ]
+        }
+      ]
     },
     {
-     "any_of": [
-      "Anointed Procession",
-      "Mondrak, Glory Dominus",
-      "Elspeth, Storm Slayer",
-      "Ocelot Pride",
-      "Mavren Fein, Dusk Apostle",
-      "Bloodline Keeper // Lord of Lineage",
-      "Charismatic Conqueror",
-      "Legion's Landing // Adanto, the First Fort"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "A Vampire lord or anthem drawn (the combat plan)",
-   "need": [
-    {
-     "any_of": [
-      "Legion Lieutenant",
-      "Stromkirk Captain",
-      "Captivating Vampire",
-      "Sanctum Seeker",
-      "Shared Animosity",
-      "Vampire Socialite",
-      "Cordial Vampire",
-      "Drana, Liberator of Malakir"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
-   "need": [
-    {
-     "any_of": [
-      "Bloodthirsty Conqueror"
-     ]
+      "label": "A token multiplier or extra token-maker drawn",
+      "need": [
+        {
+          "any_of": [
+            "Anointed Procession",
+            "Mondrak, Glory Dominus",
+            "Elspeth, Storm Slayer",
+            "Mavren Fein, Dusk Apostle",
+            "Bloodline Keeper // Lord of Lineage",
+            "Charismatic Conqueror",
+            "Legion's Landing // Adanto, the First Fort"
+          ]
+        }
+      ]
     },
     {
-     "any_of": [
-      "Vito, Thorn of the Dusk Rose",
-      "Sanguine Bond"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "Ramp or fixing drawn",
-   "need": [
-    {
-     "any_of": [
-      "Sol Ring",
-      "Arcane Signet",
-      "Talisman of Indulgence",
-      "Bontu's Monument",
-      "Herald's Horn",
-      "Patchwork Banner"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "A draw engine drawn",
-   "need": [
-    {
-     "any_of": [
-      "Caretaker's Talent",
-      "Welcoming Vampire",
-      "Preacher of the Schism",
-      "Night's Whisper",
-      "Champion of Dusk",
-      "Skullclamp",
-      "Pact of the Serpent"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "Protection held for the swarm",
-   "need": [
-    {
-     "any_of": [
-      "Teferi's Protection",
-      "Flawless Maneuver",
-      "Boros Charm",
-      "Akroma's Will",
-      "Deflecting Swat"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "An answer to a noncreature permanent drawn \u2014 Despark, Anguished Unmaking, Generous Gift, Stroke of Midnight",
-   "need": [
-    {
-     "any_of": [
-      "Despark",
-      "Anguished Unmaking",
-      "Generous Gift",
-      "Stroke of Midnight"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-   "need": [
-    {
-     "any_of": [
-      "Bloodletter of Aclazotz"
-     ]
+      "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
+      "need": [
+        {
+          "any_of": [
+            "Purphoros, God of the Forge",
+            "Impact Tremors",
+            "Warleader's Call",
+            "Corpse Knight",
+            "Blood Artist",
+            "Cruel Celebrant",
+            "Witty Roastmaster"
+          ]
+        },
+        {
+          "any_of": [
+            "Anointed Procession",
+            "Mondrak, Glory Dominus",
+            "Elspeth, Storm Slayer",
+            "Mavren Fein, Dusk Apostle",
+            "Bloodline Keeper // Lord of Lineage",
+            "Charismatic Conqueror",
+            "Legion's Landing // Adanto, the First Fort"
+          ]
+        }
+      ]
     },
     {
-     "any_of": [
-      "Sanctum Seeker",
-      "Throne of the God-Pharaoh"
-     ]
+      "label": "A Vampire lord or anthem drawn (the combat plan)",
+      "need": [
+        {
+          "any_of": [
+            "Legion Lieutenant",
+            "Stromkirk Captain",
+            "Captivating Vampire",
+            "Sanctum Seeker",
+            "Shared Animosity",
+            "Vampire Socialite",
+            "Cordial Vampire",
+            "Drana, Liberator of Malakir"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+      "need": [
+        {
+          "any_of": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "any_of": [
+            "Vito, Thorn of the Dusk Rose",
+            "Sanguine Bond"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ramp or fixing drawn",
+      "need": [
+        {
+          "any_of": [
+            "Sol Ring",
+            "Arcane Signet",
+            "Talisman of Indulgence",
+            "Herald's Horn",
+            "Patchwork Banner"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A draw engine drawn",
+      "need": [
+        {
+          "any_of": [
+            "Caretaker's Talent",
+            "Welcoming Vampire",
+            "Preacher of the Schism",
+            "Night's Whisper",
+            "Champion of Dusk",
+            "Skullclamp",
+            "Pact of the Serpent"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Protection held for the swarm",
+      "need": [
+        {
+          "any_of": [
+            "Teferi's Protection",
+            "Flawless Maneuver",
+            "Boros Charm",
+            "Akroma's Will",
+            "Deflecting Swat"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
+      "need": [
+        {
+          "any_of": [
+            "Despark",
+            "Anguished Unmaking",
+            "Stroke of Midnight"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
+      "need": [
+        {
+          "any_of": [
+            "Bloodletter of Aclazotz"
+          ]
+        },
+        {
+          "any_of": [
+            "Sanctum Seeker",
+            "Throne of the God-Pharaoh"
+          ]
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

@@ -10,12 +10,18 @@
     "R"
   ],
   "size": 100,
-  "lands": 37,
+  "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 10,
     "of": 18,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "targets",
+      "engine",
+      "tutors",
+      "—",
+      "—"
+    ],
     "missing": [
       "brief",
       "log"
@@ -38,20 +44,20 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.614,
-    "commander_cast_by_turn_6_pct": 52,
+    "commander_mean_cast_turn": 6.705,
+    "commander_cast_by_turn_6_pct": 48,
     "targets": [
       {
         "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
-        "by_turn_6_pct": 63
+        "by_turn_6_pct": 62
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
-        "by_turn_6_pct": 68
+        "by_turn_6_pct": 63
       },
       {
         "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-        "by_turn_6_pct": 42
+        "by_turn_6_pct": 38
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
@@ -63,7 +69,7 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 49
       },
       {
         "label": "A draw engine drawn",
@@ -74,8 +80,8 @@
         "by_turn_6_pct": 50
       },
       {
-        "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Generous Gift, Stroke of Midnight",
-        "by_turn_6_pct": 43
+        "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
+        "by_turn_6_pct": 34
       },
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
@@ -92,7 +98,7 @@
   "diagnosis": {
     "verdict": "The LOCK bought what it paid for: the token-to-damage kill assembles in 57.4% of games (74.4% tutor-assisted), every engine component except the two declared one-card bonus lines sits between 52.9% and 78.9%, and the deck keeps 80.8% of opening sevens with a 91.9% turn-3 land drop. What binds is black mana: 27 B sources against a Karsten target of 36, 76.4% on-curve castability with rocks against the 90% standard — and black is where the drain payoffs live. The only other measured weakness is interaction breadth: zero answers to a graveyard, confirmed by oracle read. Everything else is at or above target once the taxonomy's floors are read against the cards.",
     "skeptic": "pass",
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": "aggro",
@@ -103,8 +109,8 @@
       "interaction-breadth"
     ],
     "over": [
-      "mana-base",
-      "interaction"
+      "interaction",
+      "creatures"
     ],
     "stale": []
   },
@@ -197,7 +203,9 @@
     }
   },
   "next": [
+    "5 artifact(s) fail their own gate (targets, engine, tutors, —, —) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "nothing in the captain's log — play it, then `deck-notes edgar-vampires add \"…\" --result win|loss --opponents N`",
+    "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: goldfish ×3, research-strategy ×1, resolve-stack ×4"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
