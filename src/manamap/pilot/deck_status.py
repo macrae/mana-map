@@ -60,7 +60,7 @@ ADDED_2026_08 = {"map", "engine", "log"}
 # published decks are frozen legacy inputs until the manual is simplified).
 # `shortlist` and `shortlist-art` followed on the same day: The Short List's rule
 # (ten ranked cards worth knowing about, ownership not a criterion) lives in the
-# doctor's prescriptions now; the nine tracked considering.json files are frozen
+# doctor's prescriptions now; the surviving considering.json files are frozen
 # legacy the renderer still reads and `validate-considering` still gates.
 # A stage whose artifact exists for another reason cannot be checked by file
 # presence — `panel` was checked by KEY for that reason, and the mechanism went
