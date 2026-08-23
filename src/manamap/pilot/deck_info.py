@@ -189,14 +189,32 @@ def compose(slug):
     return info
 
 
+def _current_sha(slug):
+    return ((load_json(deck_dir(slug) / "cards.json") or {}).get("decklist_sha256"))
+
+
 def _simulation(slug):
+    """The latest run, and WHETHER IT MEASURED THIS LIST.
+
+    A run record stamps every seat's decklist sha, so a measurement made against
+    a list the deck no longer holds is mechanically detectable — and nothing was
+    detecting it. Edgar shipped a 0.25 win rate on the workbench for a deck that
+    had been checked in and re-baselined under it. A stale figure presented as
+    current is worse than an absent one: the reader has no way to know, and the
+    number is exactly as precise-looking as a true one.
+    """
     runs = sim_runs(slug)
     if not runs:
         return None
     r = runs[-1]
     me = (r.get("analysis") or {}).get("seats", {}).get(slug, {})
     tok = me.get("tokens") or {}
+    ran_on = next((s.get("decklist_sha256") for s in r.get("seats", [])
+                   if s.get("slug") == slug), None)
+    cur = _current_sha(slug)
     return {"runs": len(runs), "latest": r["run_id"], "at": r.get("at"),
+            "stale": bool(ran_on and cur and ran_on != cur),
+            "ran_on_decklist_sha256": ran_on,
             "games": r.get("games_completed"),
             "vs": [s["slug"] for s in r.get("seats", [])[1:]],
             "win_rate": me.get("win_rate"), "win_rate_ci95": me.get("win_rate_ci95"),
@@ -213,13 +231,19 @@ def _experiments(slug):
     d = docs[-1]
     w = d["delta"]["win_rate"]
     power = d["delta"].get("power") or {}
+    # An A/B is stale when NEITHER arm is the list the deck now holds — it
+    # compared two lists, and if the deck has moved past both, the delta is a
+    # fact about history rather than about this deck.
+    cur = _current_sha(slug)
+    arms = {d["arms"]["a"]["decklist_sha256"], d["arms"]["b"]["decklist_sha256"]}
+    stale = bool(cur and cur not in arms)
     # `overlap` is gone rather than deprecated. It named the overlap fallacy —
     # two marginal intervals overlapping says nothing about their difference —
     # and leaving the key in the artifact re-invites the error it was removed
     # for. What replaces it is the interval on the DIFFERENCE, and the effect
     # size this experiment could have detected at all.
     return {"count": len(docs), "latest": {
-        "question": d["question"], "at": d["at"],
+        "question": d["question"], "at": d["at"], "stale": stale,
         "games_per_arm": d["games_per_arm"], "win_a": w["a"], "win_b": w["b"],
         "win_diff_ci95": w.get("ci95_diff"),
         "differs": w.get("excludes_zero"),
@@ -343,13 +367,17 @@ def _print(info):
         print(f"             {str(d['verdict'])[:100]}")
     sm = info["simulation"]
     if sm:
-        print(f"  simulated  {sm['runs']} run(s) · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
+        print(f"  simulated  {sm['runs']} run(s)"
+              + ("  ** STALE — measured on a list this deck no longer holds **" if sm.get("stale") else "")
+              + f" · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
               f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']} · mean round {sm['mean_round']} · "
               f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
     xp = info["experiments"]
     if xp:
         l = xp["latest"]
-        print(f"  tested     {xp['count']} experiment(s) · latest {l['question'][:70]}")
+        print(f"  tested     {xp['count']} experiment(s)"
+              + ("  ** STALE — neither arm is the current list **" if l.get("stale") else "")
+              + f" · latest {l['question'][:70]}")
         print(f"             win {l['win_a']} → {l['win_b']} over {l['games_per_arm']}/arm · {l['reading'][:80]}")
     p = info["prescriptions"]
     if p["count"]:

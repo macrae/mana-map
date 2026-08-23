@@ -527,6 +527,12 @@
 
   function tablePanel(d) {
     var runs = d.sims || [], exps = d.experiments || [];
+    // A measurement made against a list the deck no longer holds is still a
+    // measurement — of a deck that is gone. `info.json` detects it from the sha
+    // every run record stamps, and it says so here rather than letting a precise
+    // number pass for a current one.
+    var simStale = ((d.info || {}).simulation || {}).stale;
+    var expStale = (((d.info || {}).experiments || {}).latest || {}).stale;
     if (!runs.length && !exps.length) return '';
     var body = '';
     runs.forEach(function (run) {
@@ -543,7 +549,8 @@
         rows.push(['Cmdr damage on one seat', figure(cd.max_on_one_defender)]);
         rows.push(['Games reaching 21', cd.games_reaching_21 + ' / ' + run.games_completed]);
       }
-      body += '<h3 class="slug-line">' + esc(run.run_id.slice(0, 46)) + '</h3>' + facts(rows);
+      body += '<h3 class="slug-line">' + esc(run.run_id.slice(0, 46)) +
+        (simStale ? ' <span class="chip stale">stale</span>' : '') + '</h3>' + facts(rows);
     });
     exps.forEach(function (x) {
       var d = x.delta || {}, w = d.win_rate || {}, pw = d.power || {};
@@ -562,9 +569,16 @@
           pw.minimum_detectable_difference !== null) {
         rows.push(['Smallest detectable Δ', '±' + pw.minimum_detectable_difference]);
       }
-      body += '<h3 class="slug-line">' + esc(x.question || '') + '</h3>' + facts(rows) +
+      body += '<h3 class="slug-line">' + esc(x.question || '') +
+        (expStale ? ' <span class="chip stale">stale</span>' : '') + '</h3>' + facts(rows) +
         '<p class="ev">' + esc(d.reading || '') + '</p>';
     });
+    if (simStale || expStale) {
+      body += '<p class="ev"><b>Marked stale:</b> these games were played on a list ' +
+        'this deck no longer holds. The figures are true about the deck that played ' +
+        'them and say nothing about the current one — re-run <code>simulate</code> ' +
+        'or <code>experiment</code> to measure this list.</p>';
+    }
     body += '<p class="ev"><b>Every seat is a Forge AI, including this deck.</b> Forge ' +
       'rates its own AI "poor to ok in control, pretty bad for combo", so a control ' +
       'deck\'s rate is a lower bound and a combo deck\'s is not a measurement. A ' +

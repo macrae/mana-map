@@ -116,3 +116,35 @@ def test_no_combat_block_when_the_flag_is_off(tmp_path):
     assert "combat" not in metrics
     out = deck_info._goldfish(_as_deck_dir(tmp_path, {"meta": {}, "metrics": metrics}))
     assert "combat" not in out
+
+
+# ── Stale measurements must be marked ────────────────────────────────────────
+
+@requires_deck
+def test_a_simulation_run_on_an_older_list_is_marked_stale():
+    """A run record stamps every seat's decklist sha, so a measurement made
+    against a list the deck no longer holds is mechanically detectable — and
+    nothing was detecting it. Edgar showed a 0.25 win rate on the workbench for a
+    deck that had been checked in and re-baselined under it. A stale figure
+    presented as current is worse than an absent one: it is exactly as
+    precise-looking as a true one, and the reader has no way to tell."""
+    from manamap.pilot import deck_info
+    sim = deck_info._simulation("edgar-vampires")
+    if not sim:
+        pytest.skip("no sim runs on this deck")
+    assert "stale" in sim, "a run must say whether it measured THIS list"
+    assert sim["ran_on_decklist_sha256"], "and which list it did measure"
+    assert sim["stale"] is (sim["ran_on_decklist_sha256"]
+                            != deck_info._current_sha("edgar-vampires"))
+
+
+@requires_deck
+def test_an_experiment_is_stale_only_when_NEITHER_arm_is_current():
+    """An A/B compares two lists. It is still about this deck while one of them
+    is the list the deck holds; it becomes history when the deck moves past
+    both."""
+    from manamap.pilot import deck_info
+    xp = deck_info._experiments("edgar-vampires")
+    if not xp:
+        pytest.skip("no experiments on this deck")
+    assert "stale" in xp["latest"]
