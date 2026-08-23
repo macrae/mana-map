@@ -1,15 +1,15 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "bdaa14183bcd959c4c772153b8516f964ca2503b0fa39dd11c9bcfa202c7cc6e",
+  "decklist_sha256": "88bffd9b93945a1d9af432b9b64694651b4f9f5f026128570d18d08045cc472f",
   "lands": {
-    "total": 37,
-    "entries": 34,
+    "total": 36,
+    "entries": 32,
     "enters_tapped": 15,
     "enters_tapped_always": 3,
     "classes": {
-      "basic": 5,
-      "fetch": 3,
-      "fixing": 6,
+      "basic": 6,
+      "fetch": 2,
+      "fixing": 5,
       "mdfc": 1,
       "tapped": 15,
       "untapped-dual": 10,
@@ -88,15 +88,6 @@
         "produces": [
           "B"
         ]
-      },
-      {
-        "name": "Cavern of Souls",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": []
       },
       {
         "name": "Caves of Koilos",
@@ -240,7 +231,7 @@
       },
       {
         "name": "Plains",
-        "copies": 1,
+        "copies": 2,
         "classes": [
           "basic"
         ],
@@ -249,32 +240,12 @@
         ]
       },
       {
-        "name": "Prismatic Vista",
-        "copies": 1,
-        "classes": [
-          "fetch",
-          "utility"
-        ],
-        "produces": []
-      },
-      {
         "name": "Reflecting Pool",
         "copies": 1,
         "classes": [
           "fixing"
         ],
         "produces": []
-      },
-      {
-        "name": "Sacred Foundry",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "W"
-        ]
       },
       {
         "name": "Savai Triome",
@@ -313,6 +284,17 @@
         ]
       },
       {
+        "name": "Smoldering Marsh",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "R"
+        ]
+      },
+      {
         "name": "Spectator Seating",
         "copies": 1,
         "classes": [
@@ -347,6 +329,20 @@
         ]
       },
       {
+        "name": "Survivors' Encampment",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Swamp",
         "copies": 4,
         "classes": [
@@ -367,14 +363,6 @@
         ]
       },
       {
-        "name": "Urborg, Tomb of Yawgmoth",
-        "copies": 1,
-        "classes": [
-          "fixing"
-        ],
-        "produces": []
-      },
-      {
         "name": "Vault of Champions",
         "copies": 1,
         "classes": [
@@ -389,24 +377,24 @@
   },
   "sources": {
     "lands": {
-      "W": 18,
+      "W": 19,
       "U": 0,
-      "B": 24,
-      "R": 14,
+      "B": 26,
+      "R": 15,
       "G": 0
     },
     "nonland": {
       "W": 3,
       "U": 0,
-      "B": 3,
+      "B": 4,
       "R": 3,
       "G": 0
     },
     "total": {
-      "W": 21,
+      "W": 22,
       "U": 0,
-      "B": 27,
-      "R": 17,
+      "B": 30,
+      "R": 18,
       "G": 0
     },
     "producers": [
@@ -426,6 +414,14 @@
         "cmc": 1.0,
         "produces": [
           "W"
+        ]
+      },
+      {
+        "name": "Master of Dark Rites",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "B"
         ]
       },
       {
@@ -457,9 +453,9 @@
   },
   "pips": {
     "B": {
-      "total_pips": 41.0,
+      "total_pips": 45.0,
       "max_pips": 3,
-      "cards": 30,
+      "cards": 32,
       "earliest_turn": 1,
       "effective_pips": 2
     },
@@ -480,16 +476,16 @@
   },
   "shares": {
     "B": {
-      "pip_share": 0.519,
-      "source_share": 0.429
+      "pip_share": 0.542,
+      "source_share": 0.433
     },
     "R": {
-      "pip_share": 0.139,
+      "pip_share": 0.133,
       "source_share": 0.25
     },
     "W": {
-      "pip_share": 0.342,
-      "source_share": 0.321
+      "pip_share": 0.325,
+      "source_share": 0.317
     }
   },
   "source_targets": {
@@ -499,44 +495,45 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.849,
-      "B": 0.694,
-      "R": 0.762
+      "W": 0.866,
+      "B": 0.742,
+      "R": 0.787
     },
     "with_rocks_and_dorks": {
-      "W": 0.895,
-      "B": 0.764,
-      "R": 0.831
+      "W": 0.907,
+      "B": 0.822,
+      "R": 0.849
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 2,
+    "ramp:cost-reduction": 1,
+    "ramp:dork": 1,
     "ramp:rock": 5
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.397,
+      "10": 0.388,
       "2": 0.997,
-      "3": 0.919,
-      "4": 0.806,
-      "5": 0.692,
-      "6": 0.589,
-      "7": 0.509,
-      "8": 0.449,
-      "9": 0.417
+      "3": 0.913,
+      "4": 0.783,
+      "5": 0.667,
+      "6": 0.559,
+      "7": 0.481,
+      "8": 0.438,
+      "9": 0.413
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.247,
-      "2": 2.147,
-      "3": 3.168,
-      "4": 4.006,
-      "5": 4.729,
-      "6": 5.348,
-      "7": 5.879,
-      "8": 6.37,
-      "9": 6.82
+      "10": 7.099,
+      "2": 2.14,
+      "3": 3.159,
+      "4": 3.97,
+      "5": 4.668,
+      "6": 5.255,
+      "7": 5.761,
+      "8": 6.236,
+      "9": 6.679
     }
   },
   "assumptions": [
@@ -546,9 +543,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 24 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 27.",
-    "R: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 17.",
-    "W: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 37-land deck; rocks and dorks lift the count to 21.",
-    "15 of 37 lands enter tapped (41%) — over the one-in-three budget the deck builder allows itself."
+    "B: 26 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 30.",
+    "R: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 18.",
+    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
+    "15 of 36 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
