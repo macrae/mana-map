@@ -43,6 +43,27 @@ SESSION.headers["User-Agent"] = USER_AGENT
 _PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
 
 
+def _comment_marker(line):
+    """A comment line whose whole text is a section marker, or None.
+
+    Moxfield and Archidekt export the commander under `// COMMANDER`, and both
+    parsers strip `//` lines before ever testing for a marker — so the header was
+    swallowed and the list parsed with no commander at all. The `//` test is
+    anchored to line start on purpose (a DFC name carries ` // ` inline), so the
+    fix is not to stop skipping comments; it is to notice when a comment IS a
+    marker.
+
+    Requires the whole remaining text to be a marker, never a prefix: a genuine
+    note like `// commander is the wincon` must stay a note.
+    """
+    if not (line.startswith("//") or line.startswith("#")):
+        return None
+    body = line.lstrip("/#").strip().lower().rstrip(":")
+    known = (COMMANDER_SECTION_MARKERS | MAIN_SECTION_MARKERS
+             | SIDEBOARD_SECTION_MARKERS)
+    return body if body in known else None
+
+
 def parse_decklist(text):
     """Parse a decklist into entries, order preserved.
 
@@ -61,16 +82,32 @@ def parse_decklist(text):
     """
     entries = []
     section = "deck"
+    # Whether the CURRENT section was entered through a comment-style header
+    # rather than a bare one. It is the only thing that gives a blank line
+    # meaning, and only inside such a section — see `_comment_marker`.
+    from_comment = False
     for raw in text.split("\n"):
         line = raw.strip()
-        if not line or line.startswith("#") or line.startswith("//"):
+        if not line:
+            # A blank line closes a comment-entered section and nothing else.
+            # Exports that write `// COMMANDER` do not write a matching `// DECK`;
+            # the blank IS the terminator. Everywhere else a blank line stays what
+            # it has always been — nothing — which is what keeps `basic.txt` and
+            # `comments_and_aliases.txt` parsing exactly as before.
+            if from_comment:
+                section, from_comment = "deck", False
             continue
-        lowered = line.lower().rstrip(":")
+        marker = _comment_marker(line)
+        if marker is None and (line.startswith("#") or line.startswith("//")):
+            continue
+        lowered = marker if marker is not None else line.lower().rstrip(":")
         if lowered in COMMANDER_SECTION_MARKERS:
             section = "commander"
+            from_comment = marker is not None
             continue
         if lowered in MAIN_SECTION_MARKERS:
             section = "deck"
+            from_comment = marker is not None
             continue
         if lowered in SIDEBOARD_SECTION_MARKERS:
             # There is no sideboard any more, but the MARKER still has to be

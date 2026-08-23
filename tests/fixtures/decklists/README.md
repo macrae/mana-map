@@ -22,3 +22,23 @@ the line **before** it runs. Reverse that order and every foil line silently kee
 its printing suffix inside the card name. `printings.txt` line 2 is that case, and
 `tricky_names.txt` guards the inverse: an inline ` // ` in a double-faced card name
 must not be mistaken for a comment.
+
+## Comment-style section headers
+
+`comment_markers.txt` is the Moxfield/Archidekt export shape: the commander sits
+under a `// COMMANDER` header and there is **no matching `// DECK`** — a blank
+line is what ends the section. Both parsers used to strip `//` lines before ever
+testing for a marker, so the header was swallowed and the whole list imported
+with no commander.
+
+Two traps the fixture pins, and they pull in opposite directions:
+
+- A comment is a marker only when its **whole** text is one. Lines 5 and 7 both
+  contain the word "commander" in prose and must stay comments — otherwise a
+  note about the deck silently re-sections it.
+- A blank line closes a section **only** when that section was entered from a
+  comment. `basic.txt` has the identical commander/blank/deck shape with an
+  explicit `Deck` marker, and must keep parsing exactly as it always has.
+
+The trailing `// SIDEBOARD` also proves the terminator still works when it
+arrives as a comment: everything below it is out of the deck.

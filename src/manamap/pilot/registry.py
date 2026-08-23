@@ -294,10 +294,11 @@ def add_pilot_parser(subparsers):
                                   "(committed, staleness-gated, no version block)")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
-                             choices=["list", "show", "tag", "restore", "paper"],
+                             choices=["list", "show", "tag", "restore", "paper", "baseline"],
                              help="list versions / show one vs the working list / name one / "
                                   "write one back to decklist.txt (dry run without --write) / "
-                                  "paper: mark the version you have SLEEVED (locked)")
+                                  "paper: mark the version you have SLEEVED (locked) / "
+                                  "baseline: restart version numbering at the working list")
             cmd.add_argument("ref", nargs="?", default=None,
                              help="V4, a tag name, or a sha prefix (tag: the new tag's name)")
             cmd.add_argument("--at", default=None, dest="at",
@@ -307,7 +308,7 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--built-at", default=None, dest="built_at",
                              help="paper: the date you sleeved it (default: today)")
             cmd.add_argument("--clear", action="store_true",
-                             help="paper: withdraw the lock (the deck came apart)")
+                             help="paper/baseline: withdraw it")
             cmd.add_argument("--full", action="store_true", help="show: print the whole decklist")
             cmd.add_argument("--write", action="store_true",
                              help="restore: actually write decklist.txt (default is a dry run)")

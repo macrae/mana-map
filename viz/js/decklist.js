@@ -36,20 +36,45 @@ window.Decklist = (function () {
     return { line: line.slice(0, upper.lastIndexOf(marker)).trim(), found: true };
   }
 
+  // A comment line whose WHOLE text is a section marker, or null. Moxfield and
+  // Archidekt write the commander under `// COMMANDER`, and both parsers used to
+  // strip `//` lines before ever testing for a marker — so the header was
+  // swallowed and the list imported with no commander. The `//` test stays
+  // anchored to line start (a DFC name carries ` // ` inline); this notices when
+  // a comment IS a marker. Whole text only, never a prefix, so a real note like
+  // `// commander is the wincon` stays a note.
+  function commentMarker(line) {
+    if (!line.startsWith('//') && !line.startsWith('#')) return null;
+    const body = line.replace(/^[/#]+/, '').trim().toLowerCase().replace(/:+$/, '');
+    return (COMMANDER.has(body) || MAIN.has(body) || SIDEBOARD.has(body)) ? body : null;
+  }
+
   function parse(text) {
     const entries = [];
     let section = 'deck';
+    // Whether the current section was entered through a comment header. It is the
+    // only thing that gives a blank line meaning, and only inside such a section.
+    let fromComment = false;
 
     for (const raw of String(text).split('\n')) {
       let line = raw.trim();
+      if (!line) {
+        // A blank line closes a comment-entered section and nothing else. Exports
+        // that write `// COMMANDER` do not write a matching `// DECK`; the blank
+        // IS the terminator. Everywhere else a blank line stays what it has always
+        // been — nothing.
+        if (fromComment) { section = 'deck'; fromComment = false; }
+        continue;
+      }
+      const marker = commentMarker(line);
       // A leading `//` is a comment; an inline one is a double-faced card name
       // ("Fable of the Mirror-Breaker // Reflection of Kiki-Jiki"), which is why this
       // tests the start of the line rather than searching it.
-      if (!line || line.startsWith('#') || line.startsWith('//')) continue;
+      if (marker === null && (line.startsWith('#') || line.startsWith('//'))) continue;
 
-      const lowered = line.toLowerCase().replace(/:+$/, '');
-      if (COMMANDER.has(lowered)) { section = 'commander'; continue; }
-      if (MAIN.has(lowered)) { section = 'deck'; continue; }
+      const lowered = marker !== null ? marker : line.toLowerCase().replace(/:+$/, '');
+      if (COMMANDER.has(lowered)) { section = 'commander'; fromComment = marker !== null; continue; }
+      if (MAIN.has(lowered)) { section = 'deck'; fromComment = marker !== null; continue; }
       // There is no sideboard any more, but the MARKER still has to be consumed:
       // a pasted list carrying one would otherwise file every card after it as
       // mainboard. Stop reading — everything below the line is out of the deck.

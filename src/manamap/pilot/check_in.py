@@ -144,7 +144,10 @@ def analyze(slug, text):
                             f"here becomes a card the deck does not have: "
                             f"{', '.join(unknown)}")
 
-    if was_commander and commanders != was_commander:
+    # Only when the new list HAS a commander. With none parsed, the blocking error
+    # above already says so, and this rendered as "Edgar Markov -> ." — an empty
+    # arrow that reads as a data bug rather than as the missing header it is.
+    if was_commander and commanders and commanders != was_commander:
         warnings.append(f"the commander changed: {', '.join(was_commander)} -> "
                         f"{', '.join(commanders)}. That is a different deck; consider a "
                         f"new slug rather than a new version of this one")

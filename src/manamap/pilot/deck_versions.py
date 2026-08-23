@@ -38,6 +38,7 @@ from manamap.pilot.deck_notes import read_log
 
 TAGS_FILE = "deck_versions.json"
 PAPER_KEY = "paper"
+BASELINE_KEY = "baseline"
 
 
 def _sha(blob):
@@ -48,8 +49,20 @@ def versions(slug):
     """Every content-distinct decklist, oldest first, each with the byte-shas that
     map to it (a comment-only edit adds a sha, not a version)."""
     path = f"data/decks/{slug}/decklist.txt"
+    revs = dh.revisions(slug)
+    b = baseline(slug)
+    if b and b.get("decklist_sha256"):
+        # Skip forward to the commit that first carries the baseline LIST. Matching
+        # on content rather than on a commit sha is what lets the baseline be
+        # written before the commit that would name it exists.
+        want = b["decklist_sha256"]
+        for i, rev in enumerate(revs):
+            blob = dh._git("show", f"{rev['sha']}:{path}")
+            if blob is not None and _sha(blob) == want:
+                revs = revs[i:]
+                break
     out, previous = [], None
-    for rev in dh.revisions(slug):
+    for rev in revs:
         blob = dh._git("show", f"{rev['sha']}:{path}")
         if blob is None:
             continue
@@ -79,6 +92,45 @@ def versions(slug):
 def tags(slug):
     doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
     return doc.get("tags") or {}
+
+
+def baseline(slug):
+    """The list version numbering RESTARTS from, or None.
+
+    WHY AN AUTHORED INPUT TO A DERIVED QUANTITY. This module's doctrine is that
+    versions are derived from git so they cannot drift and need no maintenance,
+    and a baseline is the one deliberate exception: a deck gets rebuilt in paper
+    and the pilot wants its history to start there, not to carry the development
+    scaffolding that preceded it. Nothing is destroyed — the earlier commits stay
+    in git and remain reachable by sha — they simply stop being numbered.
+
+    IT NAMES A LIST, NOT A COMMIT, and that is the load-bearing part. A commit's
+    sha is not knowable inside the commit that creates it, which is exactly why
+    `versions.json` cannot be tracked. A decklist's content hash is known before
+    anything is committed, so the baseline can be written in the same breath as
+    the list it names.
+    """
+    doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
+    return doc.get(BASELINE_KEY) or None
+
+
+def set_baseline(slug, sha256=None, note=None, clear=False):
+    """Restart version numbering at a list. Authored, tracked, never derived."""
+    path = deck_dir(slug) / TAGS_FILE
+    doc = load_json(path) or {"slug": slug, "tags": {}}
+    if clear:
+        if BASELINE_KEY not in doc:
+            raise SystemExit(f"{slug}: no baseline to clear")
+        doc.pop(BASELINE_KEY)
+        _write_tags(path, doc)
+        return None
+    sha256 = sha256 or working_sha(slug)
+    if not sha256:
+        raise SystemExit(f"{slug}: no decklist.txt to baseline")
+    doc[BASELINE_KEY] = {"decklist_sha256": sha256,
+                         "at": date.today().isoformat(), "note": note or ""}
+    _write_tags(path, doc)
+    return doc[BASELINE_KEY]
 
 
 def paper(slug):
@@ -167,6 +219,8 @@ def _write_tags(path, doc):
     doc.setdefault("tags", {})
     doc["tags"] = dict(sorted(doc["tags"].items()))
     ordered = {"slug": doc.get("slug")}
+    if BASELINE_KEY in doc:
+        ordered[BASELINE_KEY] = doc[BASELINE_KEY]
     if PAPER_KEY in doc:
         ordered[PAPER_KEY] = doc[PAPER_KEY]
     ordered["tags"] = doc["tags"]
@@ -184,14 +238,21 @@ def resolve(slug, ref, vers=None):
     ref = str(ref or "").strip()
     if not ref:
         return None
-    if ref.upper().startswith("V") and ref[1:].isdigit():
+    # A `V` prefix is an UNAMBIGUOUS request for a version number, so a miss is a
+    # miss. A BARE digit string is ambiguous — it could be a sha prefix — so that
+    # one falls through. The first version of this fall-through did not draw the
+    # distinction and let `V9` reach the sha matcher, where a hex sha beginning
+    # with 9 matches about one time in seven: an intermittent wrong answer, and a
+    # flake in `test_an_arm_resolves_from_a_version_or_the_working_copy`.
+    explicit_version = ref.upper().startswith("V") and ref[1:].isdigit()
+    if explicit_version:
         ref = ref[1:]
     if ref.isdigit():
         n = int(ref)
         hit = next((v for v in vers if v["version"] == n), None)
-        if hit is not None:
+        if hit is not None or explicit_version:
             return hit
-        # FALL THROUGH, do not return None. A git sha is hex, so an all-digit
+        # FALL THROUGH for a bare number only. A git sha is hex, so an all-digit
         # short prefix is not exotic: (10/16)**7 is about one 7-char prefix in
         # 27. Returning None here meant a perfectly good sha silently resolved
         # to nothing roughly 3.7% of the time — which is exactly how often
@@ -238,6 +299,11 @@ def report(slug):
     if unmatched:
         notes.append(f"{len(unmatched)} log entr{'y' if len(unmatched) == 1 else 'ies'} "
                      f"({', '.join(unmatched)}) stamped with a decklist no commit carries")
+    base = baseline(slug)
+    if base:
+        notes.append(f"version numbering restarts at V1 from the list baselined "
+                     f"{base.get('at','')} — earlier commits are still in git and "
+                     f"reachable by sha, they are simply no longer numbered")
     state = paper_state(slug, vers, current_version)
     if state and state.get("in_sync") is False and state.get("drift"):
         d = state["drift"]
@@ -246,7 +312,7 @@ def report(slug):
                      f"to bring the cardboard level")
     return {"slug": slug, "current_version": current_version,
             "working_decklist_sha256": current, "versions": vers,
-            "tags": tags(slug), "paper": state,
+            "tags": tags(slug), "paper": state, "baseline": base,
             "unmatched_log_entries": unmatched, "notes": notes}
 
 
@@ -307,7 +373,12 @@ def _print_list(doc):
                 + ("" if p.get("in_sync") else f" — {p.get('versions_behind') or '?'} behind"))
     print(f"DECK VERSIONS — {doc['slug']} ({len(doc['versions'])}, "
           f"current: {'V' + str(doc['current_version']) if doc['current_version'] else 'uncommitted'}"
-          f"{lock})\n")
+          f"{lock})")
+    b = doc.get("baseline")
+    if b:
+        print(f"  re-baselined {b.get('at','')} — earlier history is pre-baseline "
+              f"and still in git" + (f": {b['note']}" if b.get("note") else ""))
+    print()
     for v in doc["versions"]:
         tag_s = f"  [{', '.join(v['tags'])}]" if v["tags"] else ""
         cur = " ◀ current" if v["version"] == doc["current_version"] else ""
@@ -344,6 +415,18 @@ def main(args):
             print(json.dumps(doc, indent=2, ensure_ascii=False))
         else:
             _print_list(doc)
+        return
+    if action == "baseline":
+        if getattr(args, "clear", False):
+            set_baseline(slug, clear=True)
+            print(f"{slug}: baseline cleared — the full git history is numbered again")
+            return
+        b = set_baseline(slug, note=getattr(args, "note", None))
+        doc = report(slug)
+        print(f"{slug}: BASELINED at the working list ({b['decklist_sha256'][:12]}) — "
+              f"version numbering restarts at V1 from here")
+        print(f"  {len(doc['versions'])} version(s) now numbered; earlier commits stay "
+              f"in git and are still reachable by sha")
         return
     if action == "paper":
         if getattr(args, "clear", False):
