@@ -1,110 +1,111 @@
 {
   "slug": "edgar-vampires",
-  "at": "2026-08-22",
+  "at": "2026-08-23",
   "runs": [
     "giada-angels-vs-vito-vs-baylen-tokens-n20-4d56c78c-s1297532812",
+    "giada-angels-vs-vito-vs-baylen-tokens-n20-717196e1-s1903269601",
     "v5-vs-v6-x-giada-angels-vito-baylen-tokens-n20-7708bee6-s861962526"
   ],
-  "games": 60,
-  "decisions": 516,
+  "games": 80,
+  "decisions": 712,
   "seed": 0,
   "permutation_iterations": 10000,
   "forge_ai_targeting_policy": {
     "most_damage_dealt": {
       "hypothesis": "attacks the seat that has dealt the most combat damage",
-      "decisions": 516,
-      "hits": 351,
-      "rate": 0.6802,
+      "decisions": 712,
+      "hits": 479,
+      "rate": 0.6728,
       "ci95": [
-        0.639,
-        0.719
+        0.637,
+        0.706
       ],
-      "uniform_expected_rate": 0.522,
+      "uniform_expected_rate": 0.5154,
       "permutation_p": 0.0001,
       "per_game_rate": {
-        "mean": 0.73,
-        "median": 0.78,
-        "min": 0.25,
+        "mean": 0.72,
+        "median": 0.73,
+        "min": 0.23,
         "max": 1.0,
-        "n": 60,
+        "n": 80,
         "ci95": [
-          0.68,
-          0.79
+          0.67,
+          0.77
         ]
       }
     },
     "lowest_life": {
       "hypothesis": "attacks the lowest-life seat",
-      "decisions": 516,
-      "hits": 300,
-      "rate": 0.5814,
+      "decisions": 712,
+      "hits": 419,
+      "rate": 0.5885,
       "ci95": [
-        0.538,
-        0.623
+        0.552,
+        0.624
       ],
-      "uniform_expected_rate": 0.4373,
+      "uniform_expected_rate": 0.4356,
       "permutation_p": 0.0001,
       "per_game_rate": {
-        "mean": 0.59,
-        "median": 0.6,
+        "mean": 0.6,
+        "median": 0.61,
         "min": 0.0,
         "max": 1.0,
-        "n": 60,
+        "n": 80,
         "ci95": [
-          0.53,
+          0.55,
           0.65
         ]
       }
     },
     "highest_life": {
       "hypothesis": "attacks the highest-life seat",
-      "decisions": 516,
-      "hits": 166,
-      "rate": 0.3217,
+      "decisions": 712,
+      "hits": 229,
+      "rate": 0.3216,
       "ci95": [
-        0.283,
-        0.363
+        0.288,
+        0.357
       ],
-      "uniform_expected_rate": 0.4432,
+      "uniform_expected_rate": 0.445,
       "permutation_p": 1.0,
       "per_game_rate": {
-        "mean": 0.36,
-        "median": 0.33,
+        "mean": 0.35,
+        "median": 0.32,
         "min": 0.0,
         "max": 1.0,
-        "n": 60,
+        "n": 80,
         "ci95": [
-          0.29,
-          0.42
+          0.3,
+          0.4
         ]
       }
     }
   },
   "when_the_hypotheses_disagree": {
-    "decisions": 253,
+    "decisions": 353,
     "note": "only the decisions where the two hypotheses name different seats. The three outcomes are mutually exclusive shares of one multinomial, so the intervals below are marginal and comparing two of them needs an interval on the difference of CORRELATED proportions — not offered here, and not to be eyeballed from the overlap.",
     "most_damage_dealt": {
-      "hits": 122,
-      "rate": 0.4822,
+      "hits": 168,
+      "rate": 0.4759,
       "ci95": [
-        0.421,
-        0.544
+        0.424,
+        0.528
       ]
     },
     "lowest_life": {
-      "hits": 108,
-      "rate": 0.4269,
+      "hits": 155,
+      "rate": 0.4391,
       "ci95": [
-        0.367,
-        0.488
+        0.388,
+        0.491
       ]
     },
     "neither": {
-      "hits": 23,
-      "rate": 0.0909,
+      "hits": 30,
+      "rate": 0.085,
       "ci95": [
-        0.061,
-        0.133
+        0.06,
+        0.119
       ]
     }
   },
@@ -115,7 +116,7 @@
     "Strength is REVEALED cumulative combat damage dealt to players. Printed board power is only partly recoverable from a Forge log — counters, anthems, auras, equipment and token counts are invisible — so a board-power ranking would be biased against token, counter and anthem decks, which is most of this pod.",
     "The unit is one declare-attackers step with at least two living opponents, not one attacker: five creatures almost always go at the same player. A one-on-one run contributes zero decisions by construction.",
     "Decisions cluster within games, so the pooled Wilson interval is optimistic; the game-clustered mean is reported beside it.",
-    "Pooled over 2 run(s), 60 game(s), 516 decision(s).",
+    "Pooled over 3 run(s), 80 game(s), 712 decision(s).",
     "SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this Forge build identical inputs reproduce the logs byte for byte — game g of job j replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the claim, the seed is the receipt."
   ]
 }
