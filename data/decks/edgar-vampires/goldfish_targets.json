@@ -1,5 +1,5 @@
 {
-  "_note": "Re-derived 2026-08-05 after the six-pair pass. Two groups moved and no others: Corpse Knight joins the token-to-damage payoff group (its 'whenever another creature you control enters, each opponent loses 1 life' is the same entry trigger the other three carry, and it is the only one that causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it), and Anguished Unmaking joins the noncreature-answer group, which was a one-card component and is the deck's binding axis. No group named a cut card, so nothing was removed. Cathars' Crusade is deliberately NOT filed as a token multiplier — it puts counters on creatures, it does not create tokens. Forerunner of the Legion is deliberately NOT added to the infinite's group: it TUTORS Bloodthirsty Conqueror to the top rather than drawing it, and this file does not model tutors anywhere else (Vampiric Tutor and Demonic Tutor are in the 99 and appear in no group). Stack 009 verified the payoff group composing: nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.",
+  "_note": "Re-derived 2026-08-24 against the v1.0.0 paper list. ONE group added and ONE amended, both for the same reason: stacks 002, 008 and 010 all open by CASTING a two-mana Vampire (Gifted Aetherborn twice, Cordial Vampire once) to fire eminence, and no group named that leg \u2014 so `validate-goldfish-targets` reported Gifted Aetherborn as appearing in three checker-passed stacks and no component, correctly. The leg is the deck's thirteen Vampire creatures at mana value <=2, which is the class you can cast alongside the rest of the plan rather than instead of it; eminence fires on ANY Vampire spell, but a six-mana one is not a turn-three trigger. It was added BOTH as its own group (so the leg's own rate is reported) and as a third `need` on THE GO-WIDE KILL (so the kill is modelled as the proofs actually run it). It is NOT free, which is why it was worth adding: the kill goes 0.531 -> 0.491 assembled, 0.382 -> 0.327 by turn six, mean turn 4.25 -> 4.77. Thirteen of 99 is 84.8% by turn six, not 100%. Everything below this line is unchanged from the 2026-08-05 six-pair pass.\n\nTwo groups moved in that pass and no others: Corpse Knight joins the token-to-damage payoff group (its 'whenever another creature you control enters, each opponent loses 1 life' is the same entry trigger the other three carry, and it is the only one that causes LIFE LOSS rather than damage, so Bloodletter of Aclazotz doubles it), and Anguished Unmaking joins the noncreature-answer group, which was a one-card component and is the deck's binding axis. Cathars' Crusade is deliberately NOT filed as a token multiplier - it puts counters on creatures, it does not create tokens. Forerunner of the Legion is deliberately NOT added to the infinite's group: it TUTORS Bloodthirsty Conqueror to the top rather than drawing it, and this file does not model tutors anywhere else. Stack 009 verified the payoff group composing: nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.",
   "targets": [
     {
       "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
@@ -56,6 +56,23 @@
             "Bloodline Keeper // Lord of Lineage",
             "Charismatic Conqueror",
             "Legion's Landing // Adanto, the First Fort"
+          ]
+        },
+        {
+          "any_of": [
+            "Indulgent Aristocrat",
+            "Knight of the Ebon Legion",
+            "Master of Dark Rites",
+            "Vampire Cutthroat",
+            "Vampire of the Dire Moon",
+            "Voldaren Epicure",
+            "Blood Artist",
+            "Charismatic Conqueror",
+            "Cordial Vampire",
+            "Cruel Celebrant",
+            "Gifted Aetherborn",
+            "Legion Lieutenant",
+            "Vampire Socialite"
           ]
         }
       ]
@@ -138,7 +155,7 @@
       ]
     },
     {
-      "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
+      "label": "An answer to a noncreature permanent drawn \u2014 Despark, Anguished Unmaking, Stroke of Midnight",
       "need": [
         {
           "any_of": [
@@ -161,6 +178,28 @@
           "any_of": [
             "Sanctum Seeker",
             "Throne of the God-Pharaoh"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A castable Vampire drawn \u2014 the eminence trigger every kill proof opens on",
+      "need": [
+        {
+          "any_of": [
+            "Indulgent Aristocrat",
+            "Knight of the Ebon Legion",
+            "Master of Dark Rites",
+            "Vampire Cutthroat",
+            "Vampire of the Dire Moon",
+            "Voldaren Epicure",
+            "Blood Artist",
+            "Charismatic Conqueror",
+            "Cordial Vampire",
+            "Cruel Celebrant",
+            "Gifted Aetherborn",
+            "Legion Lieutenant",
+            "Vampire Socialite"
           ]
         }
       ]
