@@ -1,160 +1,163 @@
 {
-  "slug": "ur-dragon",
-  "decklist_sha256_prefix": "edc6644d0683",
-  "bracket_floor": 4,
-  "mandate": "Pilot-approved bracket 4; maximize power, consistency and menace (data/decks/ur-dragon/pilot_feedback.md).",
-  "archetype": "Five-colour Dragon critical-mass battlecruiser with a certified combo exit: 24 bodies of which 22 are Dragons feeding per-Dragon triggers, on top of three contained two-card infinites that all route through Aggravated Assault. deck-audit runs it on the combo budget (4-8 tutors, 4-6 protection) and the deck sits inside both — but the measured rate of the infinite is 3.6% by turn six, so the median game is won by Dragons and burn, not by the loop.",
-  "schools": [
-    "strategy:critical-mass",
-    "strategy:whos-the-beatdown.metagame-clock",
-    "strategy:multiplayer.threat-deflection",
-    "strategy:multiplayer.pivot-window",
-    "strategy:resource-hedging.wrath-math",
-    "strategy:multiplayer.commander-insurance",
-    "strategy:deckbuilding.mana-base"
-  ],
-  "role_assignment": {
-    "default_role": "Control-leaning engine seat. The deck owns the long game (strategy:whos-the-beatdown.metagame-clock): eminence discounts every other Dragon spell from the command zone, the per-Dragon payoffs scale with a board nobody else is building, and four-player games trend long enough for that to compound. So the early turns develop and deflect rather than race — which is also what the mana forces, since mean available mana is 4.937 at turn six against 28 of 66 nonland entries costing five or more.",
-    "pivot_trigger": "The window (strategy:multiplayer.pivot-window) opens on the first turn Aggravated Assault can be activated with a connecting Old Gnawbone or Savage Ventmaw — the two loops the checker has certified (stacks 006 and 003) — or on a Sneak Attack turn with Dragon Tempest, Terror of the Peaks or Scourge of Valkas already down. The doc's bar is 'protection up, interaction counted and accounted for'; the deck holds protection 66.0% of the time by turn six and 77.1% overall, so the bar is usually meetable when the pieces arrive. Note the loop itself is rare: Assault plus a mana dragon assembles 3.6% by turn six, 6.4% within ten turns, mean turn 5.442. Do not wait for it.",
-    "strategy_ref": "strategy:pivot-point"
+ "slug": "ur-dragon",
+ "decklist_sha256_prefix": "b544a740c197",
+ "bracket_floor": 4,
+ "mandate": "Pilot-approved bracket 4 (bracket_report.json: floor 4 on four Game Changers — Enlightened Tutor, Smothering Tithe, Teferi's Protection, Worldly Tutor — target 4, within_target true). The pilot's own standing brief is power, consistency and menace (data/decks/ur-dragon/pilot_feedback.md); after the first logged game they narrowed it: 'The bottleneck is mana consistency, not card selection' (log.jsonl 001).",
+ "archetype": "Five-colour Dragon typal ramp-midrange: buy the curve down with eminence and four printed reducers, land fat fliers, and convert with per-Dragon entry triggers or by multiplying one attacking Dragon. Written deliberately without an archetype keyword. deck_audit._ARCHETYPE_HINTS is a keyword read over this string; the previous frame's wording matched the tutors-4-8 / protection-4-6 template and the audit inherited it, which is wrong for a 99 holding 27 creature entries, 24 Dragons, six narrow tutors, one contained line and zero two-card infinites. With no keyword matched the audit falls back to the base targets, which are the right yardstick here (diagnosis.json archetype).",
+ "schools": [
+  "strategy:critical-mass",
+  "strategy:whos-the-beatdown.metagame-clock",
+  "strategy:deckbuilding.mana-base",
+  "strategy:deckbuilding.mana-base.color-sources",
+  "strategy:deckbuilding.curve",
+  "strategy:deckbuilding.threat-density",
+  "strategy:deckbuilding.redundancy-vs-tutors",
+  "strategy:multiplayer.threat-deflection",
+  "strategy:multiplayer.pivot-window",
+  "strategy:multiplayer.commander-insurance",
+  "strategy:resource-hedging.wrath-math",
+  "strategy:combat-math.probability"
+ ],
+ "role_assignment": {
+  "default_role": "Engine seat that owns the long game, and must stop pretending it owns the early one. strategy:whos-the-beatdown.metagame-clock: 'four-player games trend long, so inevitability compounds — engines are the default winning plan'; eminence discounts every other Dragon spell from the command zone with nothing to cast and nothing to remove, and the per-Dragon payoffs scale with a board nobody else is building. The measurements force the posture rather than merely permitting it (◆ goldfish, 10,000 iterations, seed 42): mean available mana 4.219 at turn five and 4.669 at six, land drops 0.834 / 0.670 / 0.525 on turns three to five, against 26 maindeck nonland entries at mana value five or more. So turns one to four are fixing and reducers, not threats.",
+  "pivot_trigger": "The window (strategy:multiplayer.pivot-window) opens on an ENTRY board, not on a loop — the loop is gone with Aggravated Assault. Concretely: a per-Dragon damage payoff already on the battlefield (Dragon Tempest, Terror of the Peaks or Scourge of Valkas) plus one widener (Ancient Gold Dragon, Miirym, Lathliss, Utvara Hellkite, Sarkhan Fireblood), then cast one nontoken Dragon. Two checker-passed, presentable stacks price what such a board does: stack 001 puts 255 damage on offer at X=17 and its final_state reads 'lethality confirmed', killing every opponent on that board; stack 002 deals 64 in 12 separately-targeted instances and kills the 32-life seat. ◆ The declaration measures the two-legged version at 0.240 assembled / 0.153 by turn six, mean turn 4.983 — so this is a window you build toward and often do not get. The doc's bar is 'protection up, table tapped out, interaction counted and accounted for'; the protection component is the deck's second-deepest at 0.764 assembled / 0.655 by turn six, so the bar is usually meetable on the turn the payoff arrives.",
+  "strategy_ref": "strategy:pivot-point"
+ },
+ "gameplan_by_phase": {
+  "early_t1_t4": "Land every drop, take fixing over utility, and treat a reducer as the real acceleration. The turn-three land drop is 0.834 and then falls to 0.670 and 0.525 (◆ goldfish), so a turn-two rock or Farseek is worth more here than in a deck that can afford a miss; ramp-or-fixing is drawn 0.820 assembled / 0.712 by turn six, the deepest component in the deck, while the four-card reducer group is 0.518 / 0.419. Mulligan on strategy:mulligans.engine-hands: 'Payoffs without the enabler are blanks until the engine exists' — and in this deck the enabler class is lands, rocks and the four reducers, not the Dragons. Posture is deflection (strategy:multiplayer.threat-deflection), with the doc's own warning attached: 'combo decks look non-threatening while advancing in secret, which is exactly why experienced tables hit the quiet ramp player'.",
+  "mid_t5_t7": "The squeeze, and the deck has to deploy through it. Deploy in waves under strategy:resource-hedging.wrath-math — 'assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package' — which this deck can actually do: Miirym and Lathliss rebuild in tokens, Teferi's Protection and Heroic Intervention cover a whole board, and Eerie Interlude answers a sweeper at instant speed for {2}{W} (engine.json adds it to the declared eight; the declaration still says eight). The commander is NOT the mid-game plan: ◆ mean cast turn 8.172, cast by turn six in 4.1%, and never cast by turn ten in 7,170 of 10,000 iterations. Sneak Attack compresses a finisher into {R} for one turn (✓ stack 005: Drakuseth enters hasty, its attack trigger fires for 4+3+3, connects for 7, all 17 stands after the mandatory end-step sacrifice) — and the same stack refutes Sneak Attack ever reaching the command zone.",
+  "late_t8_plus": "◆ The combat model's clock: kill by turn 8 in 24.4%, by turn 10 in 52.2%, mean kill turn 8.203, no kill inside ten turns in 47.8%. Read it as a clock on ONE unopposed seat at 40, never as a win rate — nothing blocks in that model, which makes the clock optimistic, while five combat effects (Ancient Gold Dragon, Atarka World Render, Hellkite Tyrant, Klauth, Thrakkus the Butcher) and five Treasure sources (Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone, Smothering Tithe) are unreadable to the parser, which makes the board a floor. Both directions are stated in goldfish meta.model_assumptions. What the deck is actually doing this late is looking for the entry board, because the two lethal proofs are both entry boards and neither declared kill is verified as reachable."
+ },
+ "engines": [
+  {
+   "piece": "Dragon Tempest + Ancient Gold Dragon",
+   "engine": "THE ENTRY KILL's proven instance: one d20 roll turns combat damage into N simultaneous Dragon entries, and every Tempest trigger sees X = the whole board. At the scenario's fixed roll of 15, X = 17 across 15 triggers — 255 available at one target, the 30-life seat dead to the second trigger, and Miirym copies none of the tokens because they are not nontoken.",
+   "evidence": "verified stack 001 (data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json, checker.verdict pass, presentable); combo_details lists the pair as the deck's only contained line (bracket 3, popularity 24453, produces 'Near-infinite damage')",
+   "strategy_ref": "strategy:critical-mass"
   },
-  "gameplan_by_phase": {
-    "early_t1_t4": "Land every drop and take fixing over utility. The land drop holds at 88.3% on turn three and then falls off a cliff — 60.3% on five, 49.7% on six — so a turn-two rock or Farseek is worth more here than in a deck that could afford to miss. Ramp or fixing is in hand 71.6% of the time by turn six. Posture is deflection (strategy:multiplayer.threat-deflection): a five-colour ramp deck reads as slow, and the doc's warning is that experienced tables hit the quiet ramp player anyway — so keep Aggravated Assault, the deck's loudest tell, in hand until the turn it wins.",
-    "mid_t5_t7": "This is where the deck is squeezed and where it has to deploy anyway. Deploy in waves under wrath math (strategy:resource-hedging.wrath-math) and buy resilience rather than restraint: Miirym and Lathliss rebuild in tokens, Teferi's Protection and Heroic Intervention cover a whole board, and with Wrathful Red Dragon on the battlefield an opposing Blasphemous Act becomes 39 damage redirected at one opponent (verified, stack 004). Sneak Attack compresses the clock for {R} a Dragon (verified, stack 005), and Hellkite Courser is the deck's only route from the command zone to the battlefield — stack 005 refutes Sneak Attack reaching it (CR 903.6).",
-    "late_t8_plus": "The Ur-Dragon is a capstone, not the spine: mean cast turn 8.967, 0% by turn six, and the goldfish does not model the cost reducers, so read that as a floor rather than a schedule. The closers are the Assault engines — Gnawbone funds unbounded combats at net +2 Treasures a cycle and kills sequentially (verified, stack 006); Ventmaw self-funds at +1 mana a cycle (verified, stack 003) — plus the Dragon Tempest burst, which scales with a board the deck has been building all game (verified, stack 001). Sequence the scariest piece last so the deflection budget lasts to the turn you take (strategy:multiplayer.pivot-window)."
+  {
+   "piece": "Miirym, Sentinel Wyrm + Panharmonicon (with Terror of the Peaks and Dragon Tempest)",
+   "engine": "The trigger multiplier. Panharmonicon doubles every trigger in the cascade because each is caused by a creature entering, so one Lathliss cast becomes two nonlegendary 6/6 copies and 64 damage in 12 separately-targeted instances — 36 from Terror at 6 apiece and 28 from Tempest at X = 4,4,5,5,5,5. The loop is finite by construction: every later entry is a token and both 'nontoken' clauses exclude them.",
+   "evidence": "verified stack 002 (data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json, checker.verdict pass, presentable); kills the 32-life seat, and its own final_state states the 40-life seat survives at 8 — 64 against 72 is the shortfall, stated rather than assumed",
+   "strategy_ref": "strategy:deckbuilding.threat-density"
   },
-  "engines": [
-    {
-      "piece": "Aggravated Assault + Old Gnawbone",
-      "engine": "Treasure-funded unbounded combat phases: an unblocked 7/7 makes 7 Treasures against a {3}{R}{R} reactivation, net +2 a cycle, killing opponents in sequence",
-      "evidence": "verified stack 006 (data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json)",
-      "strategy_ref": "strategy:critical-mass"
-    },
-    {
-      "piece": "Aggravated Assault + Savage Ventmaw",
-      "engine": "Self-funding extra combats: the attack trigger adds {R}{R}{R}{G}{G}{G} against a {3}{R}{R} reactivation, +1 mana a cycle, and the mana survives the phase change",
-      "evidence": "verified stack 003 (data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json)",
-      "strategy_ref": "strategy:critical-mass"
-    },
-    {
-      "piece": "Dragon Tempest + Ancient Gold Dragon",
-      "engine": "The density payoff: every entering Dragon deals damage equal to your Dragon count, and Ancient Gold Dragon's d20 Faerie Dragon wave widens the count that scales it",
-      "evidence": "verified stack 001 (data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json)",
-      "strategy_ref": "strategy:critical-mass"
-    },
-    {
-      "piece": "Miirym, Sentinel Wyrm + Panharmonicon",
-      "engine": "Copy doubling on every nontoken Dragon entering — one scaling permanent that out-values a fair board against three seats, and the widener that feeds Tempest, Scourge of Valkas and Lathliss",
-      "evidence": "verified stack 002 (data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json)",
-      "strategy_ref": "strategy:multiplayer.asymmetry"
-    },
-    {
-      "piece": "Wrathful Red Dragon + Blasphemous Act",
-      "engine": "Sweeper inversion: three triggers of 13 redirected damage kills ONE opponent at 39 or less life, not the table — its real work is making every opposing wipe a bad trade while your tokens rebuild",
-      "evidence": "verified stack 004 (data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json)",
-      "strategy_ref": "strategy:resource-hedging.wrath-math"
-    },
-    {
-      "piece": "Sneak Attack",
-      "engine": "Velocity: {R} puts any Dragon from hand onto the battlefield with haste, all entry and attack triggers fire, and the damage stands after the mandatory end-step sacrifice",
-      "evidence": "verified stack 005 (data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json)",
-      "strategy_ref": "strategy:multiplayer.pivot-window"
-    },
-    {
-      "piece": "Hellkite Courser",
-      "engine": "The only card in the 99 that moves The Ur-Dragon from the command zone to the battlefield — hasted for one attack (eminence draw plus a free permanent), returning to the zone with no cast added to the recast tax",
-      "evidence": "oracle text (cards.json) plus stack 005, which refutes Sneak Attack doing this job",
-      "strategy_ref": "strategy:multiplayer.commander-insurance"
-    },
-    {
-      "piece": "The Ur-Dragon (eminence)",
-      "engine": "A discount that never has to be drawn or cast: other Dragon spells cost {1} less from turn one, and the attack trigger draws per attacking Dragon and deploys a free permanent when the body is out",
-      "evidence": "oracle text (cards.json) plus goldfish_metrics.json (mean cast turn 8.967, 0% by turn six; the simulation states it does not model cost reduction)",
-      "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
-    },
-    {
-      "piece": "Urza's Incubator + Herald's Horn + Dragonspeaker Shaman",
-      "engine": "The stacked-discount component the deck's own goldfish declaration names its curve fixer — three cards, 19.9% of openers, measured 42.3% assembled and 33.2% by turn six; the thinnest non-combo component in the declaration",
-      "evidence": "goldfish_targets.json + goldfish_metrics.json targets[0]; the redundancy arithmetic is strategy:deckbuilding.redundancy-vs-tutors ('5 copies is 31% of openers, 7 is 41%')",
-      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
-    },
-    {
-      "piece": "Korlessa, Scale Singer",
-      "engine": "Virtual card advantage for two mana: you may cast Dragon spells off the top of the library, compounding with the eminence discount so the top card is both visible and cheaper",
-      "evidence": "oracle text (cards.json)",
-      "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
-    },
-    {
-      "piece": "Scourge of the Throne",
-      "engine": "The second extra-combat effect in the 99: attacking the player with the most life untaps all attackers and adds a combat phase, at no mana — once each turn and conditional on the life-total read, so it hedges the effect without repeating it",
-      "evidence": "oracle text (cards.json); an oracle-text scan of all 95 entries for an additional combat phase returns exactly two cards, this and Aggravated Assault",
-      "strategy_ref": "strategy:combat-math"
-    }
-  ],
-  "key_tensions": [
-    "Every infinite routes through one card. bracket_report.json lists three two-card infinites and Aggravated Assault is half of all three, so a single Disenchant takes the whole combo plan. The redundancy is thinner than it looks in two directions: Scourge of the Throne is the only other extra-combat effect in the 99 and it is once a turn and gated on attacking the highest life total, and of the seven tutors only Enlightened Tutor can find an enchantment at all — the other six fetch lands, Forests, Dragon creatures or any creature. The doc's prescription for a linear deck is redundancy that shrugs off three answers or a deflection posture that keeps them unspent (strategy:critical-mass); this list has the second, not the first.",
-    "The binding constraint is mana, not power. 34 land copies against the 36-38 the template genre asks for (strategy:deckbuilding.ratios), with 28 of 66 nonland entries at mana value five or more, 16 of 34 lands entering tapped in the raw count, and land drops falling to 60.3% on turn five and 49.7% on turn six. Mean available mana is 4.937 at turn six. The source budget is fine — 46 sources against Burgess's 45 — but it is met by rocks and dorks rather than lands, which is exactly why the count passes while the curve does not (strategy:deckbuilding.mana-base). Only five of those sixteen enter tapped unconditionally; the rest are shocks, battle lands and check lands, so the tapland axis itself is comfortable.",
-    "Dragon mana cannot pay the combo. Five sources — Haven of the Spirit Dragon, Klauth Unrivaled Ancient, Maelstrom of the Spirit Dragon, Rivaz of the Claw and Unclaimed Territory — read 'spend this mana only to cast' some class of spell, and an activated ability is not a spell (deck-facts notes). None of them can pay Aggravated Assault's {3}{R}{R}, Lathliss's {1}{R} or Sneak Attack's {R}. Klauth plus Assault is a false line no matter how much mana Klauth makes. Treasures are the legal funding route, which is what stack 006 verifies.",
-    "The certified kill is not the median kill. The declared infinite-combat component measures 6.4% assembled and 3.6% by turn six at mean turn 5.442, because Aggravated Assault is a one-of and a named card is 7.1% of an opening seven (strategy:deckbuilding.redundancy-vs-tutors). The Dragon payoff component, by contrast, is seven cards at 73.1% and 62.2% by turn six. Prose and play should treat the loop as the ceiling and Tempest-plus-bodies as the median line (strategy:deckbuilding.threat-density separates exactly these).",
-    "Colour sources are short everywhere except green. Karsten's 90% budget wants 36 black and 36 red sources against 16 and 27 held; only green clears (24 against 22). Black is a six-card splash so its -20 is nominal, but red is on 32 cards and 47 pips with a maximum of three in a single cost, and nine short is a real number (strategy:deckbuilding.mana-base.color-sources).",
-    "Menace versus deflection. The pilot wants the deck to be powerfully scary and the deflection frame says the tells should land the turn they win, not the turn they impress (strategy:multiplayer.threat-deflection). At a bracket-4 table Aggravated Assault gets answered on sight, and the deck cannot re-buy it.",
-    "The deck's own sweepers are not free. It holds three mass-damage effects the sweeper axis counts as one: Crux of Fate (whose non-Dragon mode is asymmetric here), Dragonback Assault (3 damage on entry, which all 22 Dragons survive — the lowest Dragon toughness in the 99 is 4) and Blasphemous Act. Dragonback Assault and Crux's non-Dragon mode both kill your only two non-Dragon creatures, Dragonspeaker Shaman (2/2) and Rivaz of the Claw (a 3/3 Lizard Warlock, not a Dragon) — one of the three cost reducers and one of the six castable-dragon pieces. Korlessa, Scale Singer is the 1/4 and is a Dragon; she survives all three."
-  ],
-  "candidate_missing_lines": [
-    {
-      "title": "Cavern-Hoard Dragon + Aggravated Assault: the third contained infinite",
-      "cards": [
-        "Cavern-Hoard Dragon",
-        "Aggravated Assault"
-      ],
-      "why_plausible": "combo_details via deck-facts lists it as a contained two-card infinite producing 'Infinite combat damage to one opponent' / 'Target opponent loses the game' (popularity 9438), and bracket_report.json counts it toward the floor of 4. But its Treasure output equals the number of artifacts the DEFENDING player controls, so unlike Gnawbone the funding depends on an opponent's board — against an artifact-light seat the loop may not sustain the {3}{R}{R}. That is precisely the conditional stack 006 had to settle for Gnawbone.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Do the three cost reducers all reduce The Ur-Dragon, and do they stack?",
-      "cards": [
-        "Urza's Incubator",
-        "Herald's Horn",
-        "Dragonspeaker Shaman",
-        "The Ur-Dragon"
-      ],
-      "why_plausible": "The goldfish declaration names a target 'the turn-5-Ur-Dragon hand' and measures it at 33.9%, but nothing here has verified the arithmetic under that name. Incubator and Horn reduce creature spells of a CHOSEN type and the commander is a Dragon Avatar; Dragonspeaker Shaman reduces 'Dragon spells'; eminence says 'other' and so cannot reduce the commander itself. Whether all three apply and stack to {W}{U}{B}{R}{G} is a rules question with a real planning consequence.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Sneak Attack at instant speed: Wrathful Red Dragon in response to a sweeper",
-      "cards": [
-        "Sneak Attack",
-        "Wrathful Red Dragon",
-        "Blasphemous Act"
-      ],
-      "why_plausible": "Sneak Attack's {R} ability carries no timing restriction in its oracle text, and Wrathful Red Dragon needs only to be on the battlefield when the sweeper's damage is dealt. If it works, stack 004's redirect becomes a reactive ambush rather than a board state you have to telegraph. The timing window, the ordering against the sweeper on the stack, and whether the redirect resolves before the end-step sacrifice are all unverified.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Miirym + Sneak Attack: does the token copy survive the end-step sacrifice?",
-      "cards": [
-        "Miirym, Sentinel Wyrm",
-        "Sneak Attack"
-      ],
-      "why_plausible": "Sneak Attack's delayed trigger sacrifices the creature it put onto the battlefield; Miirym's trigger creates a separate token copy of the entering nontoken Dragon. If the delayed trigger's scope does not reach the token, {R} buys a permanent Dragon body every turn — a large enough rate change to be worth settling rather than assuming.",
-      "status": "needs a stack scenario"
-    }
-  ],
-  "matchup_frames": {
-    "vs_sweeper_control": "Deploy in waves and buy resilience rather than restraint (strategy:resource-hedging.wrath-math) — the doc's point that against a control deck holding back IS the loss applies squarely, since their plan is the time you would be buying them. Two things make this matchup better than the card counts suggest: with Wrathful Red Dragon on the battlefield an opposing Blasphemous Act is 39 damage redirected at one opponent (verified, stack 004), and Miirym, Lathliss and Utvara Hellkite rebuild in tokens while Teferi's Protection, Heroic Intervention and Flawless Maneuver cover a whole board at instant speed. Let another player's board be the reason the wipe gets cast, then redeploy worst-first and keep the best Dragon for the second one. Sequencing rule that applies in every matchup: Aggravated Assault is the card the table fears and the card you cannot replace, so it is the last permanent you deploy, not the first (strategy:multiplayer.threat-deflection).",
-    "vs_stax": "Role flips to beatdown racing the lock's completion (strategy:threat-assessment.resource-denial). Taxes hit hardest exactly where this deck is thinnest — a mana value 5+ top end 28 entries deep on 4.937 mean mana at turn six — so name the piece that beats YOU (an untap denier, or any tax on Assault's activation) rather than the scariest piece on the table, and hold an answer for it. Two things break the tax math: eminence discounts every Dragon spell from the command zone whether or not the commander is castable, and Treasure bursts from Gnawbone, Goldspan Dragon, Atsushi and Cavern-Hoard Dragon convert a single good combat into a turn's worth of mana. Only 3 of the 11 interactive cards are counterspells and a counter answers a lock piece only on the way in — the rest have to be castable under the tax.",
-    "vs_aggro": "You are the control seat (strategy:whos-the-beatdown). Their math is the worst at the table — roughly 120 combined life behind three defences makes incremental combat damage a losing plan (strategy:multiplayer.asymmetry) — and 20 fliers with toughness 4 or better blank a ground board outright. Trade time rather than cards, hold single-target removal until the threat is pointed at you (strategy:threat-assessment.answer-economy), and let the engine's inevitability do the work (strategy:whos-the-beatdown.metagame-clock). Crux of Fate's non-Dragon mode is close to a one-sided wipe against a creature deck; the cost is your own Dragonspeaker Shaman and Rivaz of the Claw.",
-    "vs_combo": "Held answers rot, and against combo the last profitable moment is their win attempt (strategy:threat-assessment.answer-economy). The suite is real for the job — Counterspell, Swan Song, Dovin's Veto, Deflecting Swat, Chaos Warp, Teferi's Protection — though price Deflecting Swat and Flawless Maneuver at three mana, since their free clause needs a commander on the battlefield and this one is cast on turn 9 on average. You also race credibly rather than purely reacting: all three of the deck's two-card infinites need no extra mana beyond the pieces (mana_value_needed 0 in bracket_report.json), so the frame is pivot-window timing against another clock (strategy:multiplayer.pivot-window). The one class the deck cannot answer is the graveyard — nothing in the 99 touches an opposing one — so a reanimator or a graveyard-loop opponent has to be beaten on speed or on the stack."
+  {
+   "piece": "Sneak Attack + Drakuseth, Maw of Flames",
+   "engine": "The cheat lane, and the only checker-passed arrow in the deck that reaches a finisher: {R} puts a 7/7 in with haste, the attack trigger (not a cast trigger) fires for 4+3+3 before blockers, it connects for 7, and all 17 damage stands after the mandatory end-step sacrifice. Its limit is proven in the same artifact — Sneak Attack cannot touch the command zone, so it is not a route to the nine-mana commander.",
+   "evidence": "verified stack 005 (data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json, checker.verdict pass, presentable)",
+   "strategy_ref": "strategy:multiplayer.pivot-window"
   },
-  "distribution_notes": "95 entries / 100 copies; 34 land copies across 29 entries, 66 nonland. The curve peaks at mana value 3 (17 cards) against the format's modal 2, with a heavy shelf of 23 cards at 5-7 and 5 at 8-9 — roughly three times the ~1.5 cards at 8+ that EDHREC data puts in an average deck (strategy:deckbuilding.curve). That is a two-humped ramp curve, and it is the number the mana base has to answer for: 28 of 66 nonland entries cost five or more while mean available mana is 4.937 at turn six and 6.539 at turn ten. Roles (card_roles.json covers 93.7% of the deck): 24 threat:body and 6 threat:tokens, ramp as 6 rocks + 5 cost-reducers + 4 treasure + 3 dorks + 3 land-ramp, 10 value:etb, 7 tutor:narrow, 6 removal:damage, 5 protection:self, 3 counterspell. Six cards carry no role pattern — Aggravated Assault, Chaos Warp, Dracogenesis, Patriarch's Bidding, Rishkar's Expertise, Sneak Attack — and the first of those is the combo plan, which is why deck-audit reads threat-density at 2 against a floor of 3 and card-advantage at 4 against 10 while the deck plainly does both things. Pips are red-dominant: 47 red pips over 32 cards, maximum 3 in one cost, then green 22/20, white 13/12, blue 11/10, black 8/6. Sources held against Karsten's 90% targets: R 27/36, G 24/22, B 16/36, U 16/22, W 15/22. Opening hands keep 75.1% of first sevens at 0.313 mean mulligans and the turn-three land drop holds 88.3%, so the early game is not the problem — turns five and six are, at 60.3% and 49.7%. synergy_graph.json has 132 edges falling inside this deck, but it is a global top-10 shortlist over every tagged card in the format and cannot say how well a card fits this list (deck-facts notes).",
-  "overall_assessment": "This is a linear critical-mass deck with a combo exit (strategy:critical-mass): every card feeds the Dragon threshold, and past it the deck stops merely outclassing the table and starts taking unbounded combats. Its game is inevitability-ownership (strategy:whos-the-beatdown.metagame-clock) — eminence discounts from turn one, per-Dragon triggers that scale with a board only this deck is building, and six checker-passed stacks covering the burst, the sweeper inversion, the cheat and both Assault loops. Play it as deflect-then-pivot: ramp quietly, deploy in wrath-aware waves, and take one decisive window (strategy:multiplayer.pivot-window) with protection held, which the goldfish measures at 66.0% by turn six. Two honest structural facts shape everything else. The first is that the certified kill is the ceiling and not the median: Assault plus a mana dragon assembles 3.6% by turn six against the Dragon-payoff component's 62.2%, so the deck wins far more games with Dragon Tempest and a board than with a loop, and the loop is carried by one unreplaceable enchantment that five of the deck's own mana sources are forbidden to activate. The second is that mana, not power, is what binds: 34 lands against 36-38, 28 nonland entries at five or more, and land drops falling through 60.3% and 49.7% exactly on the turns the plan has to start deploying. Bracket 4 is earned by contents — three two-card infinites, all assembling at zero extra mana — rather than by Game Changers, of which the deck runs three. That is a coherent identity: menace delivered through engines the checker has already certified, on a mana base that is the first thing worth improving.",
-  "gaps": [
-    "No section treats extra combats as a school in their own right: when to take combat two versus holding the mana, how to price a conditional extra combat (Scourge of the Throne) as a hedge against losing a repeatable one, and how many extra-combat cards a deck built on them should run. strategy:combat-math and strategy:critical-mass are the nearest hits and neither is on point.",
-    "No section on kill-order sequencing in multiplayer — which opponent a sequential kill should take first, and what the surviving seats do about it. Verified stack 006 kills in sequence and the doc has no framework for choosing the order; strategy:multiplayer.politics is adjacent but not on point.",
-    "No section on cheat-into-play economics (Sneak Attack, reanimation, Hellkite Courser): the cards-for-mana exchange rate, what a sacrifice or bounce clause costs, and when a temporary body is worth a card.",
-    "No section on typal payoff density — how many lords and per-type triggers a tribe needs before the tribe is the plan. strategy:critical-mass covers the concept and strategy:deckbuilding.threat-density the finisher count, but neither gives the construction math for a typal deck's payoff-to-body ratio.",
-    "strategy:deckbuilding.mana-base gives land counts and a source budget for a generic deck but no guidance on a five-colour base with a top-heavy curve, where fixing and untapped-ness trade against each other directly. The 16-tapped raw count reads as a failure while only 5 of them are unconditional, and the doc has no vocabulary for that distinction.",
-    "Nothing in the doc prices a single point of failure. strategy:critical-mass says a linear deck needs redundancy that shrugs off three answers; it does not say what to do when the effect has no second printing your colours can play, which is the actual situation of an Aggravated Assault deck."
-  ]
+  {
+   "piece": "Eminence + Urza's Incubator, Herald's Horn, Dragonspeaker Shaman, Dragonlord's Servant",
+   "engine": "Ignition, and it is what this deck has instead of ramp at the top end: eminence works from the command zone with nothing to cast and nothing an opponent can remove, and four printed reducers stack on it. An oracle scan of all 95 entries for cost reduction returns exactly those four plus eminence and Cavern-Hoard Dragon's self-reduction (engine.json ignition stage).",
+   "evidence": "oracle text (cards.json) + ◆ goldfish 'Cost reducer drawn' 0.518 assembled / 0.419 by turn six, mean turn 3.28; crossed with ramp the turn-5-commander hand is 0.417 / 0.285. At four cards deck-audit prices it at 0.258 in an opening seven.",
+   "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+  },
+  {
+   "piece": "Treasure fuel: Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone, Rapacious Dragon, Smothering Tithe (and Smaug the Magnificent, whose hoard is its own trigger's input)",
+   "engine": "The one-expensive-turn subsidy. A Treasure is a one-shot stockpile spent only when lands and rocks fall short, so it does not raise the average — mean available mana is 4.219 at turn five with the model on and off alike — it buys the single turn a nine-mana commander needs. Turning the model on took commander-by-turn-six from 0.0% to 4.1%.",
+   "evidence": "◆ goldfish with model_treasures on, 10,000 iterations: 'A Treasure source drawn' 0.732 assembled / 0.618 by turn six. Every Treasure-derived MANA figure is a FLOOR: five of the sources are named in meta.treasure_sources_not_modelled.",
+   "strategy_ref": "strategy:deckbuilding.mana-base"
+  },
+  {
+   "piece": "Protection held for the big turn: Teferi's Protection, Heroic Intervention, Flawless Maneuver, Boros Charm, Deflecting Swat, Counterspell, Swan Song, Dovin's Veto (+ Eerie Interlude)",
+   "engine": "Insurance on the pivot turn rather than on the commander — which is the correct target here, because the commander is not the plan. Two of the nine are conditionally free: Flawless Maneuver and Deflecting Swat read 'If you control a commander', and this commander is usually in the command zone (engine.json protection stage).",
+   "evidence": "◆ goldfish 'Protection held for the big turn' 0.764 assembled / 0.655 by turn six, mean turn 2.796 — the deck's second-deepest component after ramp",
+   "strategy_ref": "strategy:multiplayer.commander-insurance"
+  },
+  {
+   "piece": "Hellkite Courser",
+   "engine": "The only card in the 99 that puts a commander onto the battlefield from the command zone — an oracle scan of all 95 entries returns it and the commander itself. It is therefore the deck's only route to its largest payoff that beats turn eight, and none of it is checked: whether the ETB reaches the command zone, whether the granted haste makes an attack legal, and whether the end-step return adds to the tax under CR 903.8 are all open.",
+   "evidence": "oracle text (cards.json) + engine.json conversion stage; NO stack covers it — see candidate_missing_lines",
+   "strategy_ref": "strategy:multiplayer.commander-insurance"
+  }
+ ],
+ "key_tensions": [
+  "TWO KILLS, AND THE SCHEMA CANNOT ADD THEM UP. THE ENTRY KILL measures 0.240 assembled / 0.153 by turn six; THE COMBAT KILL measures 0.204 / 0.128. Both carry UNVERIFIED in their own declared titles. They are 3.6 points apart, which is the finding — not which is nominally ahead — and they must never be summed or averaged, because a goldfish target is an assembly rate for one named set of cards and there is no expression in the declaration for the union of two plans. What breaks the tie is evidence, not rate: two presentable checker-passed stacks (001, 002) are entry boards and NO passing stack names any combat-kill multiplier at all.",
+  "THE PROOF IS LETHALITY; THE GAP IS REACHABILITY. Stack 001 kills every opponent on its board and stack 002 kills a 32-life seat — those are facts about boards, not about frequencies. 001's own reachability is better than it reads: with N tokens, X is N+2 across N triggers with targets locked at stacking time, so three seats at 40 needs 3·⌈40/(N+2)⌉ ≤ N — N=12 holds and N=11 fails, which is a d20 at 12 or better: nine faces of twenty, 45% (engine.json open_questions, derived). That is arithmetic on the printed card, ◆ at best, and the board it starts from still grants the payoff, the widener and a connection.",
+  "THE COMMANDER IS THE NAME OF THE DECK AND NOT ITS PLAN. ◆ mean cast turn 8.172, by turn six 4.1%, never inside ten turns in 7,170 of 10,000. strategy:deckbuilding.archetype-selection's distinction is the one that binds: 'built around your commander is not reliant on it'. This list is correctly built — 24 Dragons that want eminence's discount whether or not the nine-mana body ever lands — and the risk is the pilot playing it as though the commander were the payoff.",
+  "MANA IS THE BINDING AXIS AND THE HEADLINE COLOUR FIGURE IS A DECOY. 31 land copies against strategy:deckbuilding.ratios' '36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes', and 43 sources against Burgess's 31 + 5 colours + a mana value 9 commander = 45. But deck-audit's alarming −15 colour-sources figure is BLACK, and exactly three cards in the 99 want black (diagnosis.json colour-sources axis). Red is the colour that matters: 53.9% of the pip load on 30.0% of the sources, on-curve 0.515 from lands alone.",
+  "FOURTEEN OF THIRTY-ONE LANDS ENTER TAPPED (45%), FIVE ALWAYS. strategy:deckbuilding.mana-base: 'Duke treats entering tapped as a real drawback — around eight taplands is comfortable in a slow deck, near zero in an aggressive one'; strategy:deckbuilding.mana-base.color-sources adds that Karsten caps pure taplands at about four. This deck is slow, so the eight-tapland reading is the right one and it is still nearly double. The goldfish cannot see this at all — it models one land drop per turn and no tapped state — so the tempo cost is real and unmeasured, which is exactly what the pilot asked to have audited (log.jsonl 001)."
+ ],
+ "candidate_missing_lines": [
+  {
+   "title": "THE ENTRY KILL at a board you can actually reach: a payoff, a widener, and one nontoken Dragon cast into three seats at 40",
+   "cards": [
+    "Dragon Tempest",
+    "Miirym, Sentinel Wyrm",
+    "Lathliss, Dragon Queen",
+    "Terror of the Peaks",
+    "Scourge of Valkas"
+   ],
+   "why_plausible": "Stacks 001 and 002 both pass and both kill, but 001 starts from a connected Ancient Gold Dragon with the roll fixed at 15 and 002 states its own shortfall (64 against 72). The declaration prices the two-legged version at 0.240 assembled / 0.153 by turn six, and after today's correction the damage leg is three cards. What nobody has resolved is whether a REACHABLE version reaches three opponents at 40, or what the exact shortfall is. This is the deck's central open question.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Hellkite Courser: does its ETB put The Ur-Dragon onto the battlefield, does the granted haste make an attack legal, and does the end-step return add to the tax under CR 903.8?",
+   "cards": [
+    "Hellkite Courser",
+    "The Ur-Dragon"
+   ],
+   "why_plausible": "An oracle scan of all 95 entries returns Hellkite Courser as the only card that puts a commander onto the battlefield from the command zone, and stack 005 already refutes the obvious alternative (Sneak Attack cannot). With the commander never cast inside ten turns in 7,170 of 10,000 iterations, this is the only route to the deck's largest payoff that beats turn eight — and every part of it is unchecked.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "The Ur-Dragon's attack trigger: one card per attacking Dragon, and may the permanent it puts from hand be any permanent?",
+   "cards": [
+    "The Ur-Dragon"
+   ],
+   "why_plausible": "This is the payoff the Courser question exists to reach. It is a triggered-ability reading of the commander's own printed text and no artifact in the deck covers it; every claim about what the commander does once it lands currently rests on a paraphrase.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "THE COMBAT KILL's shape: Thrakkus the Butcher doubling Moltensteel Dragon, and the order of pump against doubling",
+   "cards": [
+    "Thrakkus the Butcher",
+    "Moltensteel Dragon"
+   ],
+   "why_plausible": "The declared kill measures 0.204 assembled / 0.128 by turn six on a two-card multiplier leg, and no passing stack — presentable or withheld — names Atarka, Thrakkus, Radiant Destiny or Garruk's Uprising (diagnosis.json lean_into, grepped across all six files). Thrakkus doubles power on attack and Moltensteel pumps itself for life, so the answer depends on ordering, which is a rules question nobody has asked. Until it is asked, the whole second plan is prose.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Atarka, World Render on Drakuseth: double strike doubles the combat damage and does NOT fire the attack trigger twice",
+   "cards": [
+    "Atarka, World Render",
+    "Drakuseth, Maw of Flames"
+   ],
+   "why_plausible": "engine.json states the narrow version deliberately, because the obvious version is wrong: the attack trigger fires once on declare. Stack 005 already establishes Drakuseth's 4+3+3 and its 7 in the air on a hasty turn, so the increment Atarka actually buys is checkable and unchecked — and it is the other half of the multiplier leg above.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Smaug the Magnificent's attack trigger cannot be fed by Old Gnawbone within one combat",
+   "cards": [
+    "Smaug the Magnificent",
+    "Old Gnawbone"
+   ],
+   "why_plausible": "engine.json argues from printed timing: Smaug's trigger goes on the stack in declare-attackers and counts Treasures when it resolves, before the combat damage step, which is when Gnawbone's 'deals combat damage to a player' clause makes any. If that is right the pairing is a two-combat arrow, not a one-combat one, and the pilot should sequence accordingly — but it is a timing claim, not a checked one.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Moltensteel Dragon as a lone clock: sixteen life for twelve damage, as it actually happened",
+   "cards": [
+    "Moltensteel Dragon"
+   ],
+   "why_plausible": "log_annotations 001 records the play from the first logged game and flags it unproven: the pilot paid sixteen life to hit for twelve while locked out of three colours. The arithmetic is consistent with the printed card ({R/P}: +1/+0), but no stack artifact covers the phyrexian-mana payment, and this is the deck's floor-case threat — what it does when nothing else is castable.",
+   "status": "needs a stack scenario"
+  }
+ ],
+ "matchup_frames": {
+  "vs_sweeper_control": "You are the inevitability seat and they are trying to be (strategy:whos-the-beatdown.metagame-clock). Play strategy:resource-hedging.wrath-math straight: 'assume the wrath — over a four-player game one is near-certain — so deploy in waves, hold a rebuild package'. This deck is unusually well set up for it and unusually punished by ignoring it: 0.764 assembled protection means the answer is usually there, and Teferi's Protection, Heroic Intervention and Eerie Interlude each cover the whole board rather than one permanent, while Miirym and Lathliss rebuild in tokens. The specific error to avoid is jamming the payoff before the widener: the entry board is worth almost nothing without both legs, so a Dragon Tempest resolved into open blue mana on turn five buys a counterspell for their best turn, not yours. Sequence the scariest piece last (strategy:multiplayer.pivot-window).",
+  "vs_stax": "Role flips: strategy:threat-assessment.resource-denial says 'you rarely own the long game under an assembling lock, so you are the beatdown, racing the lock's completion'. Taxes hit this deck exactly where it is thinnest — 26 maindeck nonland entries at mana value five or more on 4.219 mean mana at turn five — so name the piece that beats YOU rather than the scariest piece, and note that only three of the interactive cards are counterspells and a counter answers a lock piece only on the way in. Two things break a tax: eminence discounts every Dragon spell from the command zone whether or not the commander is castable, and a Treasure burst converts one good turn into the one expensive cast. ONE DIRECTION IS CLOSED BY THE PILOT: log.jsonl 001 lost to a turn-two-or-three Blood Moon that turned 22 of 31 lands into Mountains, and the pilot's stated decision is that this is an accepted risk at bracket 3+ and they are not building around it. strategy:deckbuilding.power-level.barometers files Blood Moon under mass land denial — 'Armageddon, Ruination, Sunder, Winter Orb, Blood Moon' — which is 'not anywhere in Brackets 1-3'; this frame records that and prescribes nothing against it. What the game IS evidence for is the mana base generally, which the pilot did ask to have audited.",
+  "vs_aggro": "The one matchup where 27 creature entries — 25 of them Dragons, counting the commander, so 24 in the 99 — do defensive work for free: fat fliers block, and strategy:multiplayer.asymmetry's warning — '~120 combined life behind three defenses makes incremental combat damage a losing plan' — is the OPPONENT's problem here, not yours. The risk is the reverse of the sweeper matchup: an early attacker makes you spend removal you were holding for the pivot turn, and this deck's removal is 7 damage-based plus 2 spot, so a single big body eats several cards. strategy:threat-assessment.answer-economy is the discipline — the bar is 'ends the game or ends my deck's function', and against a fair aggressive board a chump block from a 5/5 Dragon token is cheaper than a card. Do not race: mean board power is 4.451 at turn five and 6.423 at turn six (◆), which is a defensive board long before it is an offensive one.",
+  "vs_combo": "You lose the long game you thought you owned, so the clock reading inverts: their turn-15 picture is better than yours and strategy:whos-the-beatdown.metagame-clock's table test says whoever likes it less should be attacking now. In practice this deck cannot interact its way to a win — 12 interaction copies, of which exactly three answer a spell on the stack — an oracle scan of all 95 entries for 'counter target' returns Counterspell, Swan Song and Dovin's Veto and nothing else — so the plan is to present the entry board early and accept the deflection cost (strategy:multiplayer.threat-deflection). Hold the counterspells for the piece that wins rather than the piece that scales, per strategy:threat-assessment.answer-economy: 'held answers rot — against combo, or lethal already on board, the last profitable moment is now.' Note the asymmetry in the doc's own warning: this deck reads as the quiet ramp player and will be treated as one, which buys turns against the table and none against the player who is also quietly ramping."
+ },
+ "distribution_notes": "95 entries / 100 copies (◆ deck-facts). 31 land copies across 26 entries; 69 nonland entries including the commander, so 68 maindeck, of which 26 cost five or more. Curve by mana value: 0:1, 1:5, 2:11, 3:17, 4:8, 5:10, 6:9, 7:5, 8:1, 9:2 — modal at 3 against the format's modal 2, with 24 cards at 5-7 and 3 at 8-9 against the ~1.5 at 8+ that strategy:deckbuilding.curve puts in an average deck. That section's instruction is 'Build to hit 2, 4 and 6 mana reliably', and the goldfish says 4 is where this deck stops doing so: mean available mana 3.674 at turn four, 4.219 at five, 4.669 at six. Lands: 9 basic (4 Mountain, 3 Forest, 1 Island, 1 Plains — no Swamp), 14 of 31 entering tapped (45%), 5 always. Colour, lands only: G 0.810, W 0.592, U 0.592, R 0.515, B 0.217; with rocks and dorks G 0.918, W 0.810, U 0.810, R 0.742, B 0.524. Pip share R 0.539 on source share 0.300 — the one real mismatch. Roles (card_roles covers 96.8%; Chaos Warp, Rishkar's Expertise and Sneak Attack have no pattern): 27 threat:body, 10 value:etb, 9 utility:activated, 8 ramp:rock, 7 ramp:treasure, 7 removal:damage, 7 threat:tokens, 6 tutor:narrow, 5 ramp:cost-reduction, 5 protection:self, 3 counterspell, 3 payoff:typal, 1 removal:sweeper. Five sources produce RESTRICTED mana that cannot pay a coloured activation cost — Desolation of Smaug, Klauth, Maelstrom of the Spirit Dragon, Sarkhan Fireblood, Unclaimed Territory — which is why they accelerate toward the commander without accelerating what it then does; the declaration prices that group at 0.306 assembled.",
+ "overall_assessment": "This is a linear deck (strategy:critical-mass) that has just lost the non-linear escape hatch it used to have. With Aggravated Assault gone there is no loop and no two-card infinite in the 99 — deck-facts counts one contained line and zero infinites — so the whole plan is the threshold: put a per-Dragon payoff and a widener on the same battlefield and cast one nontoken Dragon. The doc's tradeoff applies exactly: 'linear strategies give up flexibility in exchange for power', and its Commander correction is the sentence to build against — 'the linear deck needs redundancy that shrugs off three answers, or a deflection posture that keeps them unspent'. This list has more of the second than the first: 0.764 assembled protection is real, but the entry kill's damage leg is three cards and its widener leg five, and the whole target assembles 0.240 / 0.153 by turn six. What changed today is the evidence, and it changed in the deck's favour on lethality and against it on frequency. TWO presentable checker-passed stacks now eliminate a player — 001 at 255 available damage with 'lethality confirmed' in its own final_state, 002 at 64 in 12 targeted instances — so the previous reading of this deck as having no proven kill was wrong. Set against that: correcting two mis-declared groups moved the entry kill from 0.481 / 0.356 to 0.240 / 0.153 and the combat kill from 0.411 / 0.290 to 0.204 / 0.128, so the deck's own declaration now says its likelier plan is a one-in-four assembly, and the 3.6-point gap between the two plans is small enough that the tie is broken by evidence rather than rate. And underneath all of it sits the mana, which is what the pilot said after the only game on record and what diagnosis.json's terminal verdict says too: 31 lands against a 36-38 floor, land drops 0.834 / 0.670 / 0.525, 45% of the lands entering tapped, and a commander that arrives in 28.3% of ten-turn games. Above the mana line this deck is in good shape and the pilot is right about it. The honest one-line world-view: this is an inevitability deck whose inevitability is priced at turn eight and whose mana pays for turn five — and the first correction is not another Dragon, it is lands (◆/★, and diagnosis.json carries a TERMINAL skeptic verdict of 'fail' at iteration 3 with two findings undischarged — a miscounted enumeration in cut_candidates[4] and an over-claim in lean_into[2], both text-level rather than arithmetic — so its figures are usable and its recommendations are under review, not settled).",
+ "gaps": [
+  "The basic-land floor for a five-colour deck running Farseek, Nature's Lore and Skyshroud Claim: at what basics count does tutor whiff become material, and how does that trade against generic fixing? strategy:deckbuilding.mana-base budgets SOURCES and strategy:deckbuilding.mana-base.color-sources budgets pips, but neither section says anything about a fetch package whiffing. This is the pilot's own first question from log.jsonl 001 and log_annotations already routes it to research-strategy.",
+  "A Commander-specific tapland budget. The doc has Duke's 'around eight taplands is comfortable in a slow deck' and Karsten's cap 'at about four' pure taplands — two numbers that disagree by a factor of two and neither of which is denominated for a 31-to-38-land five-colour deck. This deck is at 14 (5 always), the goldfish cannot see tapped state at all, and the pilot explicitly asked whether it is costing tempo.",
+  "How to choose between TWO unconnected win plans by measured assembly rate. strategy:deckbuilding.threat-density has Eisenherz's 'a Plan A and Plan B' and 'Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board' — but nothing on what to do when two plans measure 0.240 and 0.204 and share cards. The doc says cut the least efficient; it does not say how to price 3.6 points of separation, which is the exact decision in front of this deck.",
+  "Dice- and coin-based payoffs as probability. strategy:combat-math.probability gives the method — 'count successes in the deck and cards seen, read the cumulative probability' — for library questions, and nothing for a d20 threshold. Stack 001's kill needs a 12 or better (45%) and Ancient Gold Dragon is in the corpus's most-played Dragon shells; a short section on reading a die as a leg of a plan would let the frame stop deriving it inline.",
+  "A section on a critical-mass deck whose largest payoff is an uncastable commander. strategy:multiplayer.commander-insurance prices protecting a commander you cast and strategy:deckbuilding.archetype-selection warns that 'built around your commander is not reliant on it', but neither addresses the case measured here: a commander cast in 28.3% of ten-turn games whose static command-zone ability is doing all the work. The right advice may be that this is FINE and the frame currently has to argue it from first principles."
+ ]
 }

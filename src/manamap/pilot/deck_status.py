@@ -36,7 +36,9 @@ STAGES = [
     ("targets",    "goldfish_targets.json",  None,  False, "the engine DECLARATION: any_of groups, size = redundancy"),
     ("goldfish",   "goldfish_metrics.json",  "meta.decklist_sha256", False, "seeded Monte Carlo — `goldfish`"),
     ("mana",       "mana_analysis.json",     "decklist_sha256",      False, "hypergeometric colour sources — run AFTER goldfish"),
-    ("frame",      "strategic_frame.json",   None,  False, "the strategist's read — `research-strategy` consult"),
+    ("frame",      "strategic_frame.json",
+     "decklist_sha256_prefix|decklist_sha256_12|as_of_decklist_sha256|decklist_sha256",
+     False, "the strategist's read — `research-strategy` consult"),
     ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`"),
     ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
@@ -68,11 +70,39 @@ ADDED_2026_08 = {"map", "engine", "log"}
 
 
 def _dig(doc, path):
-    for part in path.split("."):
-        if not isinstance(doc, dict):
-            return None
-        doc = doc.get(part)
-    return doc
+    """Read a dotted path. `path` may name SEVERAL, separated by `|`.
+
+    Several because the same stamp is written under different keys by
+    different producers: `strategic_frame.json` carries
+    `decklist_sha256_prefix` on two decks and `decklist_sha256_12` on a
+    third. One dotted path could not reach both, which is half of why the
+    frame's staleness went unchecked for as long as it did. The first path
+    that resolves wins.
+    """
+    for candidate in path.split("|"):
+        cur = doc
+        for part in candidate.split("."):
+            if not isinstance(cur, dict):
+                cur = None
+                break
+            cur = cur.get(part)
+        if cur:
+            return cur
+    return None
+
+
+def _stamp_is_stale(stamped, truth):
+    """Compare a stamp to the truth, tolerating a PREFIX.
+
+    The other half of why the frame went unchecked: the comparison was
+    `stamped != truth`, and three decks store twelve characters rather than
+    the full sha. An exact test would have called gishath and heliod stale
+    while they were current — a validator that fires on correct data, which
+    this repo rejects checks for. Compare over the shorter of the two.
+    """
+    a, b = str(stamped), str(truth)
+    n = min(len(a), len(b))
+    return n == 0 or a[:n] != b[:n]
 
 
 def status(slug, validate=True):
@@ -132,9 +162,17 @@ def status(slug, validate=True):
                 state = "unverified"
         elif sha_path and truth:
             stamped = _dig(doc, sha_path)
-            if stamped and stamped != truth:
+            if stamped and _stamp_is_stale(stamped, truth):
                 state = "STALE"
                 detail = f"built against {str(stamped)[:12]}…, deck is {truth[:12]}…"
+            elif not stamped:
+                # UNSTAMPED is not STALE and must not be reported as it: the
+                # artifact may be perfectly current and simply not say so.
+                # Reported anyway, because "nothing can check this" is a fact
+                # the lifecycle view owes its reader — six of nine frames are
+                # in this state, and one of the three that WAS stamped had
+                # gone stale under a re-baseline with the row reading OK.
+                detail = detail or "unstamped — staleness cannot be checked"
 
         # Validity LAST, and only for an artifact that is otherwise fine.
         # STALE already outranks it: an artifact built against another decklist
