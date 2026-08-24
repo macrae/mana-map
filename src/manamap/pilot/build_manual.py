@@ -781,7 +781,7 @@ def stack_entry_text(entry):
     return entry.get("object") or entry.get("item") or ""
 
 
-def render_board_block(scenario, label="The board"):
+def render_board_block(scenario, label="The board", creatures=None):
     """The board, stated before anything argues about it.
 
     Every stack file carries `board`, `hand`, `graveyard`, `mana_available` and an
@@ -810,7 +810,16 @@ def render_board_block(scenario, label="The board"):
 
     you = board.get("you")
     if isinstance(you, (list, tuple)):
-        split = board_bodies(you)
+        # `creatures` is the deck's set of names that are unconditionally creatures.
+        # Without it a bare board entry — "Mondrak, Glory Dominus", no P/T in the
+        # prose — prints under Permanents and the reader is told a 4/4 is not a
+        # creature. The renderer stays decoupled: it takes the set, not a slug.
+        #
+        # The MAGAZINE deliberately does not pass it. That renderer is frozen legacy
+        # on a deletion path, and wiring it would rewrite nine tracked, byte-compared
+        # pages to correct a display detail in something being removed. `build_page`,
+        # the live surface, does pass it.
+        split = board_bodies(you, creatures)
         pairs = [
             ("Creatures", _as_text(split["creature_bodies"])),
             ("Permanents", _as_text(split["other_permanents"])),

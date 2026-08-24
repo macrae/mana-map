@@ -148,3 +148,77 @@ def test_runs_on_every_committed_deck_with_stacks():
             assert "drain_arithmetic" in s and "card_membership" in s
         ran += 1
     assert ran >= 1
+
+
+# ── A bare board entry is still a creature ───────────────────────────────────
+
+def test_a_creature_named_without_a_pt_is_still_a_body():
+    """A v1 board entry is PROSE. "Mondrak, Glory Dominus" carries no `4/4`, so the
+    classifier could only ever go on what was written and filed 46 of 127 board
+    entries across seven decks as non-creatures while the deck's own `cards.json`
+    typed them Creature.
+
+    The gate never caught it — `validate_stack` unions all three buckets, so
+    membership still got checked. What it corrupted is the BRIEF every resolver is
+    told to read first, and the sibling-claim body counts computed from it."""
+    from manamap.pilot.scenario_facts import board_bodies
+    bare = ["Mondrak, Glory Dominus", "Anointed Procession", "five lands, all untapped"]
+    blind = board_bodies(bare)
+    assert blind["creature_bodies"] == [], "without the deck it can only read prose"
+    seeing = board_bodies(bare, {"Mondrak, Glory Dominus"})
+    assert seeing["creature_bodies"] == ["Mondrak, Glory Dominus"]
+    assert seeing["other_permanents"] == ["Anointed Procession"]
+    assert seeing["lands"] == ["five lands, all untapped"]
+
+
+def test_prose_always_beats_the_card_database():
+    """The board describes a game state; the decklist is not entitled to overrule
+    it. An explicit annotation must win, or a card the board says was sacrificed
+    comes back as a body."""
+    from manamap.pilot.scenario_facts import board_bodies
+    cr = {"Mondrak, Glory Dominus"}
+    spent = board_bodies(["Mondrak, Glory Dominus (already sacrificed)"], cr)
+    assert spent["spent_paying_a_cost"] == ["Mondrak, Glory Dominus"]
+    assert spent["creature_bodies"] == []
+
+
+@requires_deck
+def test_a_god_is_not_promoted_on_its_type_line_alone():
+    """Purphoros is a Legendary Enchantment Creature whose own text says he "isn't a
+    creature" below five devotion to red. Promoting him on the type line would
+    assert a devotion count nobody wrote down — and he is on two of this repo's
+    boards, so it is not hypothetical."""
+    from manamap.pilot.scenario_facts import unconditional_creatures
+    cr = unconditional_creatures("edgar-vampires")
+    assert "Mondrak, Glory Dominus" in cr
+    assert "Purphoros, God of the Forge" not in cr
+
+
+@requires_deck
+def test_the_fleet_no_longer_miscounts_its_boards():
+    """The measurable form of the bug: 46 creatures filed as non-creatures before,
+    and only the conditional ones after."""
+    import json
+    from pathlib import Path
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.scenario_facts import board_bodies, your_board, unconditional_creatures
+
+    missed = []
+    for deck in sorted(DECKS_DIR.iterdir()):
+        if not (deck / "cards.json").exists():
+            continue
+        cr = unconditional_creatures(deck.name)
+        types = {c["name"]: (c.get("type_line") or "")
+                 for c in json.loads((deck / "cards.json").read_text())["cards"]}
+        for sp in sorted((deck / "stacks").glob("*.json")):
+            sc = json.loads(sp.read_text()).get("scenario") or {}
+            for n in board_bodies(your_board(sc), cr)["other_permanents"]:
+                if "creature" in types.get(n, "").lower():
+                    missed.append((deck.name, n))
+    # Only conditional creatures may remain, and they must be conditional for a
+    # reason the card states rather than because we gave up on them.
+    for slug, name in missed:
+        cards = json.loads((DECKS_DIR / slug / "cards.json").read_text())["cards"]
+        oracle = next(c.get("oracle_text", "") for c in cards if c["name"] == name)
+        assert "isn't a creature" in oracle.lower() or "is not a creature" in oracle.lower(), (
+            f"{slug}: {name} is a creature by type line and is not filed as a body")

@@ -33,6 +33,7 @@ from datetime import date
 from manamap.config import DECKS_DIR, MANUALS_DIR as MANUALS_DIR_PATH
 from manamap.pilot import build_manual as bm
 from manamap.pilot import design as dz
+from manamap.pilot import scenario_facts as sf
 from manamap.pilot.common import deck_dir, deck_lifecycle, load_json
 from manamap.pilot import page_design as pd
 from manamap.pilot.page_spec import SECTION_BY_ID, SECTIONS
@@ -64,6 +65,9 @@ def load(slug):
         "deck_map": load_json(base / "deck_map.json"),
         "tutors": load_json(base / "tutor_guide.json"),
         "debrief": load_json(base / "log_annotations.json"),
+        # The deck's own answer to "is this name a creature", so the board block
+        # does not print a 4/4 under Permanents because the prose omitted a P/T.
+        "creatures": sf.unconditional_creatures(slug),
     }
 
 
@@ -285,7 +289,8 @@ def render_the_lines(d):
         # from the question, the intro and the result, and opens the fold when
         # the answer is yes.
         steps = (st.get("resolution") or {}).get("steps") or []
-        board = bm.render_board_block(st.get("scenario") or {})
+        board = bm.render_board_block(st.get("scenario") or {},
+                                      creatures=d.get("creatures"))
         if board or steps:
             label = "The board and the walk-through"
             if steps:

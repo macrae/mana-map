@@ -10,16 +10,22 @@
         "Elspeth, Storm Slayer",
         "Anointed Procession",
         "Mondrak, Glory Dominus",
-        "six lands (any colours), all untapped"
+        "six lands (any colours); two tapped for the {B}{B} that cast Gifted Aetherborn"
       ],
       "opponents": [
-        {"life": 40, "board": []},
-        {"life": 40, "board": []}
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
       ]
     },
-    "hand": ["Gifted Aetherborn"],
+    "hand": [],
     "graveyard": [],
-    "mana_available": "{B}{B} from two untapped lands",
+    "mana_available": "{4} from the four lands still untapped",
     "stack": [
       {
         "pos": 0,
@@ -33,6 +39,240 @@
       "context": "Edgar Markov's eminence: 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.' Elspeth, Storm Slayer: 'If one or more tokens would be created under your control, twice that many of those tokens are created instead.' Mondrak, Glory Dominus: identical wording to Elspeth. Anointed Procession is worded differently — 'If an EFFECT would create one or more tokens under your control, IT creates twice that many of those tokens instead' — and whether that difference matters here is part of the question.",
       "why_this_matters": "goldfish_targets.json counts Elspeth, Storm Slayer inside the token-multiplier group and therefore inside THE GO-WIDE KILL, the deck's headline assembled rate. Stack 002 is the only checker-passed artifact about doubler token math and it names Anointed Procession and Mondrak and never names Elspeth. The declaration is currently unproven, and the pilot singled Elspeth out as the card he liked most in game 001.",
       "scope": "Replacement effects and token creation only. Vampire Socialite and Cordial Vampire are deliberately OFF this board so the count is not entangled with counter math — stack 002 already covers that."
+    }
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players pass priority. The stack resolves top down: Edgar Markov's eminence triggered ability was put on the stack above the Gifted Aetherborn spell that triggered it, so the trigger resolves first and the spell waits.",
+        "effect": "The eminence trigger begins to resolve; Gifted Aetherborn remains on the stack at pos 0.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Edgar's ability functions from the command zone. 'Eminence' is an ability word with no rules meaning — CR 207.2c's own list of ability words contains it — so the ability is an ordinary triggered ability, read off the card: 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token' (oracle text, cards.json). Because that ability states the zones it functions in, it functions from the command zone, which is an exception to the default that an object's abilities function only on the battlefield. Its intervening-'if' condition is checked again on resolution; Edgar is still in the command zone.",
+        "effect": "The trigger resolves from the command zone and instructs you to create a 1/1 black Vampire creature token — one token-creation event for one token, before any replacement effect is applied.",
+        "citations": [
+          {
+            "rule": "207.2c",
+            "quote": "An ability word appears in italics at the beginning of some abilities. Ability words are similar to keywords in that they tie together cards that have similar functionality, but they have no special rules meaning and no individual entries in the Comprehensive Rules."
+          },
+          {
+            "rule": "207.2c",
+            "quote": "descend 8, disappear, domain, eerie, eminence, enrage, fateful hour"
+          },
+          {
+            "rule": "113.6",
+            "quote": "Abilities of all other objects usually function only while that object is on the battlefield. The exceptions are as follows:"
+          },
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          },
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The tokens would be created UNDER YOUR CONTROL, which is the event Elspeth, Anointed Procession and Mondrak each watch for. Edgar in the command zone is a card that is neither a permanent nor a spell, so he has no controller and his owner — you — is used instead; the triggered ability is therefore controlled by you, and you as its controller carry out its instruction. Creating a token means putting it onto the battlefield, and the player who creates it owns it and it enters under that player's control.",
+        "effect": "The pending event is 'one or more tokens would be created under your control' — satisfying the condition in Elspeth's and Mondrak's text, and (see step 5) Anointed Procession's.",
+        "citations": [
+          {
+            "rule": "108.4",
+            "quote": "A card doesn’t have a controller unless that card represents a permanent or spell; in those cases, its controller is determined by the rules for permanents or spells."
+          },
+          {
+            "rule": "108.4a",
+            "quote": "If anything asks for the controller of a card that doesn’t have one (because it’s not a permanent or spell), use its owner instead."
+          },
+          {
+            "rule": "603.3a",
+            "quote": "A triggered ability is controlled by the player who controlled its source at the time it triggered"
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "ANSWER (a): YES — Elspeth, Storm Slayer's static ability applies. Elspeth is a permanent you control on the battlefield, which is where an object's abilities function by default, and her static ability creates a continuous effect that is active for as long as she is there. Her text uses 'instead', so that effect is a replacement effect, and a replacement effect is defined by the EVENT it watches for, not by where the source of the effect that would cause the event is: her text names the event 'one or more tokens would be created under your control', which step 3 established is exactly the event now pending. She was already on the battlefield when the trigger began resolving, so the effect exists before the event. Nothing in her ability, and nothing in rule 614, conditions a replacement effect on the zone of the object whose ability would cause the event; CR 113.6b (step 2) governs whether EDGAR's ability functions from the command zone, not whether ELSPETH's functions from the battlefield.",
+        "effect": "Elspeth's replacement effect is applicable to this token-creation event, exactly as Anointed Procession's and Mondrak's are, even though Edgar has never been on the battlefield.",
+        "citations": [
+          {
+            "rule": "604.2",
+            "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability"
+          },
+          {
+            "rule": "113.3d",
+            "quote": "Static abilities are written as statements. They’re simply true. Static abilities create continuous effects which are active while the permanent with the ability is on the battlefield and has the ability"
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects. Most replacement effects use the word “instead” to indicate what events will be replaced with other events."
+          },
+          {
+            "rule": "614.1",
+            "quote": "Such effects watch for a particular event that would happen and completely or partially replace that event with a different event."
+          },
+          {
+            "rule": "614.4",
+            "quote": "Replacement effects must exist before the appropriate event occurs—they can’t “go back in time” and change something that’s already happened."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The wording difference does NOT change anything on this board. Anointed Procession requires that 'an EFFECT would create one or more tokens under your control'; Elspeth and Mondrak use the passive 'if one or more tokens WOULD BE created under your control'. Here the tokens would be created by the one-shot effect produced by the eminence triggered ability as it resolves, and an effect is by definition something that happens as a result of a spell or ability — so Procession's narrower 'an effect' clause is satisfied and all three describe the same pending event. Nor does application order break Procession's wording: when one of the other two is applied first the event is replaced by a modified event, which is still that same resolving effect creating tokens under your control, and a replacement effect may become applicable to an event as a result of another effect modifying it. The difference could only bite where tokens would be created by something that is not an effect of a spell or ability; nothing on this board is such a source.",
+        "effect": "All three replacement effects apply to the single eminence token-creation event, in any order.",
+        "citations": [
+          {
+            "rule": "609.1",
+            "quote": "An effect is something that happens in the game as a result of a spell or ability. When a spell, activated ability, or triggered ability resolves, it may create one or more one-shot or continuous effects."
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "616.2",
+            "quote": "A replacement or prevention effect can become applicable to an event as the result of another replacement or prevention effect that modifies the event."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "ANSWER (c): YOU choose the order. Three replacement effects are attempting to modify the same event affecting you, so the affected player chooses which to apply. None of the three is a self-replacement effect — each is a continuous effect from the static ability of a separate permanent, not part of the resolving eminence ability replacing its own effect — so the forced first choice for self-replacement effects does not apply here, and neither do the forced choices for effects modifying under whose control an object enters, copy effects, or back-face effects. That leaves the general step: any applicable effect may be chosen. No opponent chooses anything and no APNAP ordering is needed, since you are the only affected player.",
+        "effect": "You pick which doubler applies first, then which of the remaining two applies next.",
+        "citations": [
+          {
+            "rule": "616.1",
+            "quote": "If two or more replacement and/or prevention effects are attempting to modify the way an event affects an object or player, the affected object’s controller (or its owner if it has no controller) or the affected player chooses one to apply, following the steps listed below."
+          },
+          {
+            "rule": "614.15",
+            "quote": "Some replacement effects are not continuous effects. Rather, they are an effect of a resolving spell or ability that replace part or all of that spell or ability’s own effect(s). Such effects are called self-replacement effects."
+          },
+          {
+            "rule": "616.1a",
+            "quote": "If any of the replacement and/or prevention effects are self-replacement effects (see rule 614.15), one of them must be chosen. If not, proceed to rule 616.1b."
+          },
+          {
+            "rule": "616.1e",
+            "quote": "Any of the applicable replacement and/or prevention effects may be chosen."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "ANSWER (b): EIGHT tokens. After each choice the process is repeated over the effects that are now applicable, and each replacement effect gets only one opportunity to affect the event or any modified event that replaces it — so none of Elspeth, Anointed Procession or Mondrak can apply twice to this event, and none of them re-applies to the doubled events the others produce. The arithmetic is: eminence's event is 1 token; apply the first doubler, 1 x 2 = 2; apply the second to that modified event, 2 x 2 = 4; apply the third, 4 x 2 = 8. Order does not change the number: each of the three multiplies the pending count by exactly 2, and 1 x 2 x 2 x 2 = 8 for all six possible orders. CR 614.5's own worked example is the two-doubler case at four times the original, which is the same composition this deck's checker-passed stack 002 records for Anointed Procession + Mondrak alone (1 -> 2 -> 4); Elspeth is a third instance of that same doubling, and 8 is 4 x 2. This resolution is consistent with stack 002 and does not contradict it.",
+        "effect": "The single eminence trigger creates eight 1/1 black Vampire creature tokens.",
+        "citations": [
+          {
+            "rule": "616.1f",
+            "quote": "Once the chosen effect has been applied, this process is repeated (taking into account only replacement or prevention effects that would now be applicable) until there are no more left to apply."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A creature that normally deals 2 damage will deal 8 damage—not just 4, and not an infinite amount."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The modified event happens: eight 1/1 black Vampire creature tokens are put onto the battlefield under your control. They are created, not cast, so no game event matches eminence's trigger condition 'whenever you cast another Vampire spell' — the tokens do not re-trigger eminence.",
+        "effect": "Eight 1/1 black Vampire tokens enter the battlefield under your control. No new triggers.",
+        "citations": [
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "State-based actions are checked before any player receives priority: no creature has 0 or less toughness and none has lethal damage marked, so nothing is performed and nothing dies. No triggered abilities are waiting to go on the stack.",
+        "effect": "No state-based actions; players receive priority with the Gifted Aetherborn spell now on top of the stack.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Players pass again and Gifted Aetherborn, a targetless creature spell, resolves and enters the battlefield under your control as a 2/3 with deathtouch and lifelink (oracle text, cards.json). It is not a token, so none of the three doublers — each of which speaks only of tokens being created — applies to it.",
+        "effect": "Gifted Aetherborn enters as a 2/3 deathtouch, lifelink Vampire. The stack is empty.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "(a) YES. Edgar's eminence is an ability word with no rules meaning (207.2c); the ability itself states the zones it functions in, so it functions from the command zone (113.6b) and its intervening-'if' still holds on resolution (603.4). Elspeth, Storm Slayer needs nothing from Edgar's zone: she is a permanent you control on the battlefield, her static ability creates a continuous replacement effect (604.2, 614.1a), and a replacement effect keys off the EVENT it watches for (614.1) — here 'one or more tokens would be created under your control', which holds because you control the resolving trigger (108.4a, 603.3a, 608.2c) and the tokens would enter under your control (111.2). (b) EIGHT 1/1 black Vampire tokens from the one trigger: 1 → 2 → 4 → 8. Each doubler gets exactly one opportunity at the event and any modified event replacing it (614.5), so no doubler applies twice, and because each multiplies by 2 the result is identical for all six orders. This composes with, and does not contradict, checker-passed stack 002, which records Anointed Procession + Mondrak alone as 1 → 2 → 4; Elspeth is a third instance of the same doubling and 8 = 4 × 2. The wording difference is inert here: Anointed Procession's 'if an EFFECT would create' is satisfied because the eminence trigger's resolution produces a one-shot effect (609.1), and after another doubler applies the modified event is still that effect creating tokens under your control (614.6, 616.2). It would only matter for a token source that is not an effect of a spell or ability, and there is none on this board. (c) YOU do — the affected player chooses the order (616.1); none of the three is a self-replacement effect (614.15, 616.1a), so the general step applies (616.1e) and the process repeats until all three are applied (616.1f). Afterwards Gifted Aetherborn resolves as a 2/3 deathtouch/lifelink (608.3a); the doublers do not touch it because it is not a token. Two scenario-block frictions, neither load-bearing: the board lists 'six lands, all untapped' while the stack note says Gifted Aetherborn was already cast for {B}{B} (two of those lands must now be tapped, or the mana came from elsewhere), and Gifted Aetherborn is listed in `hand` while also being on the stack. Neither changes the token count.",
+      "you": {
+        "battlefield_new": [
+          "8x Vampire token — 1/1 black Vampire creature token",
+          "Gifted Aetherborn — 2/3 Aetherborn Vampire, deathtouch, lifelink"
+        ],
+        "battlefield_unchanged": [
+          "Elspeth, Storm Slayer",
+          "Anointed Procession",
+          "Mondrak, Glory Dominus",
+          "six lands (two tapped for the {B}{B} that cast Gifted Aetherborn)"
+        ],
+        "command_zone": "Edgar Markov (still in the command zone; never cast, never on the battlefield)",
+        "hand": [],
+        "stack": "empty",
+        "new_bodies": 9,
+        "new_tokens": 8
+      },
+      "opponents": [
+        {
+          "life": 40,
+          "board": [],
+          "note": "unchanged; no damage dealt in this resolution"
+        },
+        {
+          "life": 40,
+          "board": [],
+          "note": "unchanged; no damage dealt in this resolution"
+        }
+      ]
     }
   }
 }

@@ -34,7 +34,8 @@ import json
 import re
 from collections import Counter
 
-from manamap.pilot.common import deck_dir, load_deck_cards, resolve_out_path
+from manamap.pilot.common import (deck_dir, expand_faces, load_deck_cards,
+                                  mtime_memo, resolve_out_path)
 
 # What a board entry IS, from how the scenario annotates it.
 #
@@ -66,13 +67,57 @@ def _strip_annotation(entry):
     return name.strip()
 
 
-def board_bodies(entries):
+# Cards whose type line says Creature but whose own text takes it away under a
+# condition the board cannot be assumed to meet. The Theros gods template it
+# exactly this way — "As long as your devotion to red is less than five, Purphoros
+# isn't a creature" — and Purphoros is on two of this repo's boards. Promoting him
+# to a body on a type line alone would assert a devotion count nobody wrote down.
+_CONDITIONAL_CREATURE = re.compile(r"isn't a creature|is not a creature", re.I)
+
+
+def unconditional_creatures(slug):
+    """Names in this deck that are creatures and cannot stop being one.
+
+    A v1 board entry is PROSE — `"Mondrak, Glory Dominus"` carries no `4/4` — so the
+    classifier below could only ever go on what was written, and filed 46 of 127
+    board entries across seven decks as non-creatures when the deck's own
+    `cards.json` types them Creature. The gate never noticed because
+    `validate_stack` unions all three buckets; what it corrupted is the BRIEF every
+    resolver is told to read first, and the sibling-claim body counts computed from
+    it.
+    """
+    from manamap.config import DECKS_DIR
+
+    def build():
+        try:
+            cards = load_deck_cards(slug)["cards"]
+        except Exception:
+            return frozenset()
+        out = set()
+        for c in cards:
+            if "creature" not in (c.get("type_line") or "").lower():
+                continue
+            if _CONDITIONAL_CREATURE.search(c.get("oracle_text") or ""):
+                continue
+            out.update(expand_faces(c["name"]))
+        return frozenset(out)
+
+    return mtime_memo(DECKS_DIR / slug / "cards.json", f"bodies:{slug}", build)
+
+
+def board_bodies(entries, creatures=None):
     """Split a board list into creature bodies, other permanents, lands, and spent.
 
     `spent` is the annotated cost payment: still listed, NOT on the battlefield.
     Getting that wrong changes the body count, and the body count is what every
     engine in this deck family is bounded by — so it is reported separately rather
     than folded into either side.
+
+    `creatures` is `unconditional_creatures(slug)` when the caller knows the deck.
+    It is consulted LAST, only for an entry nothing else classified, so an explicit
+    annotation in the prose always wins over the card database — a board that calls
+    something an artifact is describing a game state, and the deck list is not
+    entitled to overrule it.
     """
     bodies, others, lands, spent = [], [], [], []
     for entry in entries or []:
@@ -102,6 +147,8 @@ def board_bodies(entries):
             others.append(name)
         elif _PT.search(raw):
             bodies.append(name)          # tokens included: they are bodies
+        elif creatures and name in creatures:
+            bodies.append(name)          # a creature the deck runs, named bare
         elif _LAND_WORDS.search(name):
             # No word-count cap. Boards describe their mana in prose —
             # "five lands (can produce {3}{R}{R}), all untapped" — and a <=3-word
@@ -219,7 +266,7 @@ def membership(names, deck_names):
     }
 
 
-def comparable_siblings(this_id, all_scenarios):
+def comparable_siblings(this_id, all_scenarios, creatures=None):
     """Sibling scenarios whose board is genuinely like-for-like with this one.
 
     Checkers kept reconciling this in prose because nothing computed it — one
@@ -231,12 +278,12 @@ def comparable_siblings(this_id, all_scenarios):
     mine = all_scenarios.get(this_id)
     if not mine:
         return []
-    my_bodies = Counter(board_bodies(your_board(mine))["creature_bodies"])
+    my_bodies = Counter(board_bodies(your_board(mine), creatures)["creature_bodies"])
     out = []
     for sid, sc in sorted(all_scenarios.items()):
         if sid == this_id:
             continue
-        theirs = Counter(board_bodies(your_board(sc))["creature_bodies"])
+        theirs = Counter(board_bodies(your_board(sc), creatures)["creature_bodies"])
         shared = sum((my_bodies & theirs).values())
         same_count = sum(my_bodies.values()) == sum(theirs.values())
         only_theirs = sorted((theirs - my_bodies).elements())
@@ -272,11 +319,15 @@ def analyze(slug, stack_id=None):
         sid = str(stack.get("id") or path.name[:3])
         scenarios[sid] = stack.get("scenario") or {}
 
+    # The deck's own answer to "is this name a creature", so a bare board entry
+    # is not read as a non-creature just because the prose omitted a P/T.
+    creatures = unconditional_creatures(slug)
+
     out = {"slug": slug, "stacks": {}}
     for sid, sc in scenarios.items():
         if stack_id and sid != stack_id:
             continue
-        you = board_bodies(your_board(sc))
+        you = board_bodies(your_board(sc), creatures)
         opps = opponents_of(sc)
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
         out["stacks"][sid] = {
@@ -288,7 +339,7 @@ def analyze(slug, stack_id=None):
                                else ((game_state_our(sc) or {}).get("mana") or {}).get("available")),
             "hand": (sc.get("hand") if not sc.get("version") == 2
                      else (game_state_our(sc) or {}).get("hand")),
-            "comparable_siblings": comparable_siblings(sid, scenarios),
+            "comparable_siblings": comparable_siblings(sid, scenarios, creatures),
         }
     out["notes"] = _notes(out)
     return out

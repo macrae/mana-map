@@ -195,7 +195,8 @@ def unknown_cards(doc, slug):
     not in your deck by definition) and never tokens (never in a decklist).
     """
     from manamap.pilot.common import load_deck_cards
-    from manamap.pilot.scenario_facts import board_bodies, membership
+    from manamap.pilot.scenario_facts import (board_bodies, membership,
+                                              unconditional_creatures)
 
     scenario = doc.get("scenario") or {}
     try:
@@ -214,7 +215,8 @@ def unknown_cards(doc, slug):
     if game_state.is_v2(scenario):
         named = game_state.our_named_cards(scenario)
     else:
-        you = board_bodies((scenario.get("board") or {}).get("you"))
+        you = board_bodies((scenario.get("board") or {}).get("you"),
+                           unconditional_creatures(slug))
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
         named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
 
