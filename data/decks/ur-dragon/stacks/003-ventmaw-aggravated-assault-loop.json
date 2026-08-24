@@ -36,29 +36,29 @@
       }
     ],
     "extras": {
-      "context": "VERIFIED PRE-SWAP (Assault has since been promoted to the 99 — see HISTORY.md 2026-07-28): sideboard-facts reports it opens two claimed infinites — 'Savage Ventmaw + Aggravated Assault' and 'Aggravated Assault + Old Gnawbone' — and adding it raises the computed bracket floor 3 -> 4. The combo DB has twice claimed lines this pipeline refuted (Heliod stacks 001, 005), so this needs its own verdict before the sideboard analysis presents it. Savage Ventmaw: 'Whenever this creature attacks, add {R}{R}{R}{G}{G}{G}. Until end of turn, you don't lose this mana as steps and phases end.' Aggravated Assault: '{3}{R}{R}: Untap all creatures you control. After this main phase, there is an additional combat phase followed by an additional main phase. Activate only as a sorcery.' Old Gnawbone: 'Whenever a creature you control deals combat damage to a player, create that many Treasure tokens.' It is your turn, precombat main, all three permanents untapped and Ventmaw free of summoning sickness.",
+      "context": "VERIFIED PRE-SWAP (Assault has since been promoted to the 99 \u2014 see HISTORY.md 2026-07-28): sideboard-facts reports it opens two claimed infinites \u2014 'Savage Ventmaw + Aggravated Assault' and 'Aggravated Assault + Old Gnawbone' \u2014 and adding it raises the computed bracket floor 3 -> 4. The combo DB has twice claimed lines this pipeline refuted (Heliod stacks 001, 005), so this needs its own verdict before the sideboard analysis presents it. Savage Ventmaw: 'Whenever this creature attacks, add {R}{R}{R}{G}{G}{G}. Until end of turn, you don't lose this mana as steps and phases end.' Aggravated Assault: '{3}{R}{R}: Untap all creatures you control. After this main phase, there is an additional combat phase followed by an additional main phase. Activate only as a sorcery.' Old Gnawbone: 'Whenever a creature you control deals combat damage to a player, create that many Treasure tokens.' It is your turn, precombat main, all three permanents untapped and Ventmaw free of summoning sickness.",
       "combat_state": "declare-attackers step; Ventmaw and Old Gnawbone attacking opponent 2"
     },
-    "question": "Walk one full cycle: declare combat, Ventmaw attacks (its trigger adds {R}{R}{R}{G}{G}{G} that persists through end of turn), combat resolves, and in the post-combat main phase Aggravated Assault is activated for {3}{R}{R}. Is the mana from one attack sufficient to pay each activation ('{3}' generic — can the {G}{G}{G} pay it)? Does the loop repeat without bound — each extra combat re-triggering Ventmaw for fresh mana — and what bounds it, if anything (the sorcery-only restriction on the activation, blockers, Ventmaw dying)? Separately: with Old Gnawbone also attacking, how do Treasures change the ledger, and is Aggravated Assault + Old Gnawbone ALONE (without Ventmaw) also unbounded — what does that require? State exactly what each pairing achieves: unbounded combats, unbounded damage, unbounded Treasures, or bounded."
+    "question": "Walk one full cycle: declare combat, Ventmaw attacks (its trigger adds {R}{R}{R}{G}{G}{G} that persists through end of turn), combat resolves, and in the post-combat main phase Aggravated Assault is activated for {3}{R}{R}. Is the mana from one attack sufficient to pay each activation ('{3}' generic \u2014 can the {G}{G}{G} pay it)? Does the loop repeat without bound \u2014 each extra combat re-triggering Ventmaw for fresh mana \u2014 and what bounds it, if anything (the sorcery-only restriction on the activation, blockers, Ventmaw dying)? Separately: with Old Gnawbone also attacking, how do Treasures change the ledger, and is Aggravated Assault + Old Gnawbone ALONE (without Ventmaw) also unbounded \u2014 what does that require? State exactly what each pairing achieves: unbounded combats, unbounded damage, unbounded Treasures, or bounded."
   },
   "resolution": {
     "steps": [
       {
         "n": 1,
         "action": "Savage Ventmaw's attack trigger resolves (top of stack). It triggered when Ventmaw was declared as an attacker and was put on the stack.",
-        "effect": "You add {R}{R}{R}{G}{G}{G}. Normally a mana pool empties at the end of each step and phase, but Ventmaw's own text — 'Until end of turn, you don't lose this mana as steps and phases end' — overrides that default for this mana, so all six mana persist through combat into the postcombat main phase.",
+        "effect": "You add {R}{R}{R}{G}{G}{G}. Normally a mana pool empties at the end of each step and phase, but Ventmaw's own text \u2014 'Until end of turn, you don't lose this mana as steps and phases end' \u2014 overrides that default for this mana, so all six mana persist through combat into the postcombat main phase.",
         "citations": [
           {
             "rule": "508.3a",
-            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+            "quote": "An ability that reads \u201cWhenever [a creature] attacks, . . .\u201d triggers if that creature is declared as an attacker."
           },
           {
             "rule": "603.3",
-            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
           },
           {
             "rule": "106.4",
-            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+            "quote": "Each player\u2019s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
           }
         ]
       },
@@ -77,26 +77,26 @@
           },
           {
             "rule": "510.1b",
-            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+            "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it\u2019s attacking."
           },
           {
             "rule": "510.2",
-            "quote": "Second, all combat damage that’s been assigned is dealt simultaneously. This turn-based action doesn’t use the stack."
+            "quote": "Second, all combat damage that\u2019s been assigned is dealt simultaneously. This turn-based action doesn\u2019t use the stack."
           }
         ]
       },
       {
         "n": 3,
-        "action": "Old Gnawbone's ability triggers twice — once for each creature you control that dealt combat damage to a player — and both triggers are put on the stack and resolve.",
-        "effect": "Gnawbone's text — 'Whenever a creature you control deals combat damage to a player, create that many Treasure tokens' — creates 4 Treasures for Ventmaw's damage and 7 for its own: 11 Treasures. Each is an artifact with '{T}, Sacrifice this token: Add one mana of any color.'",
+        "action": "Old Gnawbone's ability triggers twice \u2014 once for each creature you control that dealt combat damage to a player \u2014 and both triggers are put on the stack and resolve.",
+        "effect": "Gnawbone's text \u2014 'Whenever a creature you control deals combat damage to a player, create that many Treasure tokens' \u2014 creates 4 Treasures for Ventmaw's damage and 7 for its own: 11 Treasures. Each is an artifact with '{T}, Sacrifice this token: Add one mana of any color.'",
         "citations": [
           {
             "rule": "603.3",
-            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
           },
           {
             "rule": "111.10a",
-            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+            "quote": "A Treasure token is a colorless Treasure artifact token with \u201c{T}, Sacrifice this token: Add one mana of any color.\u201d"
           }
         ]
       },
@@ -111,18 +111,18 @@
           },
           {
             "rule": "106.4",
-            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+            "quote": "Each player\u2019s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
           }
         ]
       },
       {
         "n": 5,
         "action": "Postcombat main phase: you activate Aggravated Assault's ability, '{3}{R}{R}: Untap all creatures you control. After this main phase, there is an additional combat phase followed by an additional main phase. Activate only as a sorcery.'",
-        "effect": "'Activate only as a sorcery' requires sorcery timing: a main phase of your turn with the stack empty and you holding priority. A postcombat main phase is 'a main phase' — the rule does not restrict to the first one — and the same is true of every additional main phase Aggravated Assault later creates, so the activation is legal in each of them. The activation is legal now.",
+        "effect": "'Activate only as a sorcery' requires sorcery timing: a main phase of your turn with the stack empty and you holding priority. A postcombat main phase is 'a main phase' \u2014 the rule does not restrict to the first one \u2014 and the same is true of every additional main phase Aggravated Assault later creates, so the activation is legal in each of them. The activation is legal now.",
         "citations": [
           {
             "rule": "602.5d",
-            "quote": "Activated abilities that read “Activate only as a sorcery” mean the player must follow the timing rules for casting a sorcery spell, though the ability isn’t actually a sorcery."
+            "quote": "Activated abilities that read \u201cActivate only as a sorcery\u201d mean the player must follow the timing rules for casting a sorcery spell, though the ability isn\u2019t actually a sorcery."
           },
           {
             "rule": "307.1",
@@ -133,7 +133,7 @@
       {
         "n": 6,
         "action": "You pay the activation cost {3}{R}{R} from the floating {R}{R}{R}{G}{G}{G}.",
-        "effect": "{R}{R} is paid with two red mana; the {3} generic is paid with {G}{G}{G}, since generic mana accepts any type. Cost 5, pool 6: one {R} remains floating. One Ventmaw attack fully funds one activation with +1 mana left over — the pairing is mana-positive without touching the Treasures.",
+        "effect": "{R}{R} is paid with two red mana; the {3} generic is paid with {G}{G}{G}, since generic mana accepts any type. Cost 5, pool 6: one {R} remains floating. One Ventmaw attack fully funds one activation with +1 mana left over \u2014 the pairing is mana-positive without touching the Treasures.",
         "citations": [
           {
             "rule": "107.4b",
@@ -155,38 +155,38 @@
       {
         "n": 8,
         "action": "Additional combat phase: you declare Ventmaw and Old Gnawbone as attackers against opponent 2 again.",
-        "effect": "Both are untapped (just untapped by the Assault) and have been under your control since the turn began, so the declaration is legal. Ventmaw's ability triggers again on declaration, adding a fresh {R}{R}{R}{G}{G}{G} on resolution — which again persists. The cycle is now exactly where step 1 began, with one extra {R} floating: opponent 2 still has no blockers, so 11 more damage, 11 more Treasures, and another legal Assault activation follow in the extra main phase.",
+        "effect": "Both are untapped (just untapped by the Assault) and have been under your control since the turn began, so the declaration is legal. Ventmaw's ability triggers again on declaration, adding a fresh {R}{R}{R}{G}{G}{G} on resolution \u2014 which again persists. The cycle is now exactly where step 1 began, with one extra {R} floating: opponent 2 still has no blockers, so 11 more damage, 11 more Treasures, and another legal Assault activation follow in the extra main phase.",
         "citations": [
           {
             "rule": "508.1a",
-            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can\u2019t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
           },
           {
             "rule": "508.3a",
-            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+            "quote": "An ability that reads \u201cWhenever [a creature] attacks, . . .\u201d triggers if that creature is declared as an attacker."
           }
         ]
       },
       {
         "n": 9,
         "action": "Verdict, pairing 1 (Savage Ventmaw + Aggravated Assault): self-sustaining and unbounded.",
-        "effect": "Each cycle produces 6 mana and spends 5, netting +1 floating mana, one extra combat, and one extra main phase — unbounded combat phases and combat damage, and with Gnawbone along, unbounded Treasures. What bounds it: Ventmaw must be legally declared each combat (untapped, no attack restriction) — if Ventmaw dies, is tapped down, or can't attack, the fresh 6 mana stops. Blockers do NOT stop the mana engine: the trigger fires on declaration, before blocks. When opponent 2 dies (704.5a; at 11/combat that is the 4th combat: 40→29→18→7→dead), you redirect attacks to opponent 1 — and both Ventmaw and Old Gnawbone have flying, so opponent 1's ground 2/2 (no flying, no reach) cannot block either dragon at all. The only real bounds are attack-declaration legality each combat and the dragons surviving; on this board nothing interrupts the loop.",
+        "effect": "Each cycle produces 6 mana and spends 5, netting +1 floating mana, one extra combat, and one extra main phase \u2014 unbounded combat phases and combat damage, and with Gnawbone along, unbounded Treasures. What bounds it: Ventmaw must be legally declared each combat (untapped, no attack restriction) \u2014 if Ventmaw dies, is tapped down, or can't attack, the fresh 6 mana stops. Blockers do NOT stop the mana engine: the trigger fires on declaration, before blocks. When opponent 2 dies (704.5a; at 11/combat that is the 4th combat: 40\u219229\u219218\u21927\u2192dead), you redirect attacks to opponent 1 \u2014 and both Ventmaw and Old Gnawbone have flying, so opponent 1's ground 2/2 (no flying, no reach) cannot block either dragon at all. The only real bounds are attack-declaration legality each combat and the dragons surviving; on this board nothing interrupts the loop.",
         "citations": [
           {
             "rule": "508.1a",
-            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+            "quote": "The active player chooses which creatures that they control, if any, will attack. The chosen creatures must be untapped, they can\u2019t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
           },
           {
             "rule": "508.1c",
-            "quote": "The active player checks each creature they control to see whether it’s affected by any restrictions (effects that say a creature can’t attack, or that it can’t attack unless some condition is met)."
+            "quote": "The active player checks each creature they control to see whether it\u2019s affected by any restrictions (effects that say a creature can\u2019t attack, or that it can\u2019t attack unless some condition is met)."
           },
           {
             "rule": "508.3a",
-            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+            "quote": "An ability that reads \u201cWhenever [a creature] attacks, . . .\u201d triggers if that creature is declared as an attacker."
           },
           {
             "rule": "702.9b",
-            "quote": "A creature with flying can’t be blocked except by creatures with flying and/or reach."
+            "quote": "A creature with flying can\u2019t be blocked except by creatures with flying and/or reach."
           },
           {
             "rule": "704.5a",
@@ -197,11 +197,11 @@
       {
         "n": 10,
         "action": "Verdict, pairing 2 (Aggravated Assault + Old Gnawbone alone, no Ventmaw): conditionally unbounded, and the condition is met on this board.",
-        "effect": "Each Treasure taps and sacrifices for one mana of any color, so 5 Treasures pay the full {3}{R}{R} (any color covers both the {R}{R} and the {3}). Exact condition: your creatures must deal at least 5 combat damage to players each combat, so each cycle creates at least the 5 Treasures its activation consumes. On this board Gnawbone alone is a 7-power flier attacking an empty board: 7 Treasures per combat, spend 5, net +2 Treasures per cycle — unbounded combats, damage, and Treasures. It breaks if damage to players drops below 5 per combat (blockers soaking damage, the attacker removed, or a stabilized board).",
+        "effect": "Each Treasure taps and sacrifices for one mana of any color, so 5 Treasures pay the full {3}{R}{R} (any color covers both the {R}{R} and the {3}). Exact condition: your creatures must deal at least 5 combat damage to players each combat, so each cycle creates at least the 5 Treasures its activation consumes. On this board Gnawbone alone is a 7-power flier attacking an empty board: 7 Treasures per combat, spend 5, net +2 Treasures per cycle \u2014 unbounded combats, damage, and Treasures. It breaks if damage to players drops below 5 per combat (blockers soaking damage, the attacker removed, or a stabilized board).",
         "citations": [
           {
             "rule": "111.10a",
-            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+            "quote": "A Treasure token is a colorless Treasure artifact token with \u201c{T}, Sacrifice this token: Add one mana of any color.\u201d"
           },
           {
             "rule": "107.4b",
@@ -215,12 +215,12 @@
       },
       {
         "n": 11,
-        "action": "Bracket verdict: the combo DB's two claims are CONFIRMED for this board — unlike the two lines this pipeline previously refuted.",
-        "effect": "Ventmaw + Assault is unconditionally self-sustaining once both are on the battlefield and Ventmaw can attack: unbounded extra combats, unbounded combat damage, net +1 mana per cycle. Assault + Gnawbone is a second, independent infinite whose ≥5-damage-per-combat condition Gnawbone's own 7 power satisfies. Adding sideboard Aggravated Assault genuinely opens two infinites; the computed bracket floor raise 3→4 is supported.",
+        "action": "Bracket verdict: the combo DB's two claims are CONFIRMED for this board \u2014 unlike the two lines this pipeline previously refuted.",
+        "effect": "Ventmaw + Assault is unconditionally self-sustaining once both are on the battlefield and Ventmaw can attack: unbounded extra combats, unbounded combat damage, net +1 mana per cycle. Assault + Gnawbone is a second, independent infinite whose \u22655-damage-per-combat condition Gnawbone's own 7 power satisfies. Adding sideboard Aggravated Assault genuinely opens two infinites; the computed bracket floor raise 3\u21924 is supported.",
         "citations": [
           {
             "rule": "602.5d",
-            "quote": "Activated abilities that read “Activate only as a sorcery” mean the player must follow the timing rules for casting a sorcery spell, though the ability isn’t actually a sorcery."
+            "quote": "Activated abilities that read \u201cActivate only as a sorcery\u201d mean the player must follow the timing rules for casting a sorcery spell, though the ability isn\u2019t actually a sorcery."
           },
           {
             "rule": "500.8",
@@ -230,7 +230,7 @@
       }
     ],
     "final_state": {
-      "summary": "After one full cycle you are in the additional combat phase with Ventmaw and Gnawbone attacking again, a fresh {R}{R}{R}{G}{G}{G} plus {R} floating, 11 Treasures, and opponent 2 at 29. Both claimed infinites are real here: Ventmaw+Assault nets +1 mana per cycle (unbounded combats/damage); Assault+Gnawbone nets +2 Treasures per cycle whenever your creatures deal ≥5 combat damage to a player each combat. Opponent 2 dies on the 4th combat; opponent 1's ground 2/2 cannot block either dragon — both have flying (702.9b) — so the only bounds are attack-declaration legality and the dragons surviving. Bracket floor 3→4 with the sideboard card is supported.",
+      "summary": "After one full cycle you are in the additional combat phase with Ventmaw and Gnawbone attacking again, a fresh {R}{R}{R}{G}{G}{G} plus {R} floating, 11 Treasures, and opponent 2 at 29. Both claimed infinites are real here: Ventmaw+Assault nets +1 mana per cycle (unbounded combats/damage); Assault+Gnawbone nets +2 Treasures per cycle whenever your creatures deal \u22655 combat damage to a player each combat. Opponent 2 dies on the 4th combat; opponent 1's ground 2/2 cannot block either dragon \u2014 both have flying (702.9b) \u2014 so the only bounds are attack-declaration legality and the dragons surviving. Bracket floor 3\u21924 with the sideboard card is supported.",
       "you": {
         "battlefield": [
           "Savage Ventmaw (untapped, re-attacking)",
@@ -252,7 +252,7 @@
         {
           "life": 29,
           "board": [],
-          "note": "takes 11 per combat with no blockers; dead on the 4th combat (40→29→18→7→−4, loses per 704.5a)"
+          "note": "takes 11 per combat with no blockers; dead on the 4th combat (40\u219229\u219218\u21927\u2192\u22124, loses per 704.5a)"
         }
       ]
     }
@@ -319,7 +319,7 @@
         "step": 4,
         "rule": "704.5a",
         "status": "supported",
-        "note": "SBA check present; 29 life, no loss. This was the class of omission flagged in a prior deck's iteration 1 — handled here."
+        "note": "SBA check present; 29 life, no loss. This was the class of omission flagged in a prior deck's iteration 1 \u2014 handled here."
       },
       {
         "step": 4,
@@ -426,5 +426,7 @@
     ],
     "summary": "Iteration 2 passes. The iteration-1 defect is fixed: the resolution now cites 702.9b and correctly states that both dragons fly (confirmed against cards.json oracle text) and opponent 1's ground 2/2 cannot block either. All 27 citation instances across 11 steps were re-fetched and judged against full rule text: every quote is accurate and in context. Missing-step audit: SBAs are checked (step 4), Gnawbone's two triggers are both accounted for with correct 'that many' counts, trigger-on-declaration timing is right, mana-pool persistence is handled via Ventmaw's explicit override of 106.4, and priority/timing for the sorcery-speed activation is grounded in 307.1/602.5d. Arithmetic verified: 11 damage/combat, 11 Treasures/combat, 6-mana trigger vs 5-mana activation (+1/cycle), opponent 2 dead on combat 4. Minor non-blocking observations: (a) the relative order of Gnawbone's two triggers (603.3b) is not discussed, but ordering is outcome-irrelevant here; (b) the 2/2's lack of flying/reach is an assumption the resolution states explicitly rather than a scenario-given keyword line. Both combo-DB claims are confirmed for this board; the bracket floor 3->4 conclusion follows.",
     "iterations": 2
-  }
+  },
+  "presentable": false,
+  "presentable_note": "Held back on the v1.0.0 baseline: the rules finding stands and the checker's verdict is unchanged, but this board names Aggravated Assault, Savage Ventmaw \u2014 no longer in the 99, so the deck can no longer make it. Not withdrawn: a passing stack is a fact about how a board resolves, and that does not expire when a card leaves."
 }

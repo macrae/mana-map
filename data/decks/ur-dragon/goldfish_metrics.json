@@ -1,5 +1,12 @@
 {
   "meta": {
+    "combat_effects_not_modelled": [
+      "Ancient Gold Dragon",
+      "Atarka, World Render",
+      "Hellkite Tyrant",
+      "Klauth, Unrivaled Ancient",
+      "Thrakkus the Butcher"
+    ],
     "commander": "The Ur-Dragon",
     "commander_cmc": 9,
     "deck": "ur-dragon",
@@ -16,22 +23,88 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
-      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative).",
+      "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+      "Only Treasure triggers a goldfish can see are modeled — upkeep, landfall and cast (recurring), Saga chapters, plus enters-the-battlefield (once). Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+      "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+      "Attacks with every creature that is not summoning-sick; haste is read from the type line. There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+      "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens."
     ],
-    "seed": 42
+    "seed": 42,
+    "treasure_sources_not_modelled": [
+      "Atsushi, the Blazing Sky",
+      "Cavern-Hoard Dragon",
+      "Goldspan Dragon",
+      "Old Gnawbone",
+      "Smothering Tithe"
+    ]
   },
   "metrics": {
-    "commander": {
-      "cast_by_turn_6_rate": 0.0,
-      "cast_turn_histogram": {
-        "10": 284,
-        "7": 120,
-        "8": 69,
-        "9": 352,
-        "not_by_max_turn": 9175
+    "combat": {
+      "kill_by_turn_rate": {
+        "1": 0.0,
+        "10": 0.522,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.003,
+        "5": 0.069,
+        "6": 0.095,
+        "7": 0.138,
+        "8": 0.244,
+        "9": 0.389
       },
-      "mean_cast_turn": 8.97,
-      "median_cast_turn": 9
+      "kill_turn_histogram": {
+        "10": 1328,
+        "4": 31,
+        "5": 655,
+        "6": 266,
+        "7": 426,
+        "8": 1064,
+        "9": 1452
+      },
+      "mean_board_power_by_turn": {
+        "1": 0.0,
+        "10": 16.082,
+        "2": 0.262,
+        "3": 1.852,
+        "4": 2.876,
+        "5": 4.451,
+        "6": 6.423,
+        "7": 8.537,
+        "8": 10.957,
+        "9": 13.431
+      },
+      "mean_damage_by_turn": {
+        "1": 0.0,
+        "10": 16.683,
+        "2": 0.016,
+        "3": 0.311,
+        "4": 2.104,
+        "5": 3.389,
+        "6": 5.19,
+        "7": 7.521,
+        "8": 10.261,
+        "9": 13.371
+      },
+      "mean_kill_turn": 8.203,
+      "median_kill_turn": 9,
+      "no_kill_by_max_turn_rate": 0.478
+    },
+    "commander": {
+      "cast_by_turn_6_rate": 0.041,
+      "cast_turn_histogram": {
+        "10": 631,
+        "4": 31,
+        "5": 62,
+        "6": 314,
+        "7": 544,
+        "8": 541,
+        "9": 707,
+        "not_by_max_turn": 7170
+      },
+      "mean_cast_turn": 8.172,
+      "median_cast_turn": 8
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -48,27 +121,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.997,
-      "10": 6.092,
+      "10": 6.091,
       "2": 2.129,
       "3": 2.984,
       "4": 3.674,
       "5": 4.219,
       "6": 4.669,
-      "7": 5.066,
+      "7": 5.065,
       "8": 5.428,
       "9": 5.763
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 4.701,
-      "2": 0.203,
-      "3": 0.611,
-      "4": 1.119,
-      "5": 1.679,
-      "6": 2.253,
-      "7": 2.834,
-      "8": 3.452,
-      "9": 4.058
+      "10": 3.776,
+      "2": 0.186,
+      "3": 0.574,
+      "4": 0.831,
+      "5": 1.221,
+      "6": 1.675,
+      "7": 2.154,
+      "8": 2.68,
+      "9": 3.215
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -95,13 +168,13 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.417,
-        "assembled_rate_assisted": 0.417,
-        "by_turn_6_rate": 0.328,
-        "by_turn_6_rate_assisted": 0.328,
+        "assembled_rate": 0.518,
+        "assembled_rate_assisted": 0.518,
+        "by_turn_6_rate": 0.419,
+        "by_turn_6_rate_assisted": 0.419,
         "label": "Cost reducer drawn (the deck's real curve fixer)",
-        "mean_turn": 3.453,
-        "mean_turn_assisted": 3.453
+        "mean_turn": 3.28,
+        "mean_turn_assisted": 3.28
       },
       {
         "assembled_rate": 0.82,
@@ -122,22 +195,22 @@
         "mean_turn_assisted": 2.91
       },
       {
-        "assembled_rate": 0.335,
-        "assembled_rate_assisted": 0.335,
-        "by_turn_6_rate": 0.224,
-        "by_turn_6_rate_assisted": 0.224,
+        "assembled_rate": 0.417,
+        "assembled_rate_assisted": 0.417,
+        "by_turn_6_rate": 0.285,
+        "by_turn_6_rate_assisted": 0.285,
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "mean_turn": 4.667,
-        "mean_turn_assisted": 4.667
+        "mean_turn": 4.546,
+        "mean_turn_assisted": 4.546
       },
       {
-        "assembled_rate": 0.24,
-        "assembled_rate_assisted": 0.24,
-        "by_turn_6_rate": 0.153,
-        "by_turn_6_rate_assisted": 0.153,
+        "assembled_rate": 0.43,
+        "assembled_rate_assisted": 0.43,
+        "by_turn_6_rate": 0.293,
+        "by_turn_6_rate_assisted": 0.293,
         "label": "Payoff + a castable dragon by mid-game",
-        "mean_turn": 4.995,
-        "mean_turn_assisted": 4.995
+        "mean_turn": 4.571,
+        "mean_turn_assisted": 4.571
       },
       {
         "assembled_rate": 0.764,
@@ -149,14 +222,67 @@
         "mean_turn_assisted": 2.796
       },
       {
-        "assembled_rate": 0.0,
-        "assembled_rate_assisted": 0.0,
-        "by_turn_6_rate": 0.0,
-        "by_turn_6_rate_assisted": 0.0,
-        "label": "THE INFINITE COMBAT LOOP (stacks 003/006): Aggravated Assault + a mana dragon",
-        "mean_turn": null,
-        "mean_turn_assisted": null
+        "assembled_rate": 0.306,
+        "assembled_rate_assisted": 0.306,
+        "by_turn_6_rate": 0.236,
+        "by_turn_6_rate_assisted": 0.236,
+        "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
+        "mean_turn": 3.63,
+        "mean_turn_assisted": 3.63
+      },
+      {
+        "assembled_rate": 0.732,
+        "assembled_rate_assisted": 0.732,
+        "by_turn_6_rate": 0.618,
+        "by_turn_6_rate_assisted": 0.618,
+        "label": "A Treasure source drawn — seven in the 99, of which the model can SPEND only two",
+        "mean_turn": 2.897,
+        "mean_turn_assisted": 2.897
+      },
+      {
+        "assembled_rate": 0.481,
+        "assembled_rate_assisted": 0.481,
+        "by_turn_6_rate": 0.356,
+        "by_turn_6_rate_assisted": 0.356,
+        "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon damage payoff AND a way to put several Dragons on the battlefield at once",
+        "mean_turn": 3.968,
+        "mean_turn_assisted": 3.968
+      },
+      {
+        "assembled_rate": 0.411,
+        "assembled_rate_assisted": 0.411,
+        "by_turn_6_rate": 0.29,
+        "by_turn_6_rate_assisted": 0.29,
+        "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): an attacking-Dragon multiplier AND a Dragon to attack with",
+        "mean_turn": 4.251,
+        "mean_turn_assisted": 4.251
       }
-    ]
+    ],
+    "treasure": {
+      "engine_online_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.134,
+        "2": 0.0,
+        "3": 0.004,
+        "4": 0.006,
+        "5": 0.053,
+        "6": 0.072,
+        "7": 0.089,
+        "8": 0.104,
+        "9": 0.121
+      },
+      "mean_treasures_in_hoard_by_turn": {
+        "1": 0.0,
+        "10": 1.085,
+        "2": 0.0,
+        "3": 0.008,
+        "4": 0.03,
+        "5": 0.134,
+        "6": 0.332,
+        "7": 0.461,
+        "8": 0.611,
+        "9": 0.811
+      }
+    }
   }
 }

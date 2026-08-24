@@ -1,23 +1,18 @@
 {
   "banned": [],
   "combo_bracket_floor": 3,
-  "combo_count": 4,
+  "combo_count": 1,
   "cut_candidates": [],
   "drivers": [
     {
-      "detail": "3 Game Changer(s): Enlightened Tutor, Teferi's Protection, Worldly Tutor",
-      "forces": 3,
+      "detail": "4 Game Changer(s): Enlightened Tutor, Smothering Tithe, Teferi's Protection, Worldly Tutor",
+      "forces": 4,
       "signal": "game_changers"
     },
     {
       "detail": "highest-bracket line present: Dragon Tempest + Ancient Gold Dragon",
       "forces": 3,
       "signal": "combo_content"
-    },
-    {
-      "detail": "3 two-card infinite(s); 3 assemble at mana value <= 6. e.g. Aggravated Assault + Old Gnawbone",
-      "forces": 4,
-      "signal": "two_card_infinite"
     }
   ],
   "excluded_commander_assumption": [],
@@ -25,6 +20,7 @@
   "floor_name": "Optimized",
   "game_changers": [
     "Enlightened Tutor",
+    "Smothering Tithe",
     "Teferi's Protection",
     "Worldly Tutor"
   ],
@@ -37,50 +33,6 @@
   "slug": "ur-dragon",
   "target": 4,
   "tutors": [],
-  "two_card_infinites": [
-    {
-      "bracket": 3,
-      "cards": [
-        "Aggravated Assault",
-        "Old Gnawbone"
-      ],
-      "mana_value_needed": 0,
-      "produces": [
-        "Infinite colored mana",
-        "Infinite combat phases",
-        "Infinite Treasure tokens",
-        "Infinite untap of creatures you control",
-        "Infinite mana creatures you control can produce"
-      ]
-    },
-    {
-      "bracket": 3,
-      "cards": [
-        "Savage Ventmaw",
-        "Aggravated Assault"
-      ],
-      "mana_value_needed": 0,
-      "produces": [
-        "Infinite combat damage",
-        "Infinite combat phases",
-        "Infinite green mana",
-        "Infinite mana creatures you control can produce",
-        "Infinite red mana",
-        "Infinite untap of creatures you control"
-      ]
-    },
-    {
-      "bracket": 3,
-      "cards": [
-        "Cavern-Hoard Dragon",
-        "Aggravated Assault"
-      ],
-      "mana_value_needed": 0,
-      "produces": [
-        "Target opponent loses the game",
-        "Infinite combat damage to one opponent"
-      ]
-    }
-  ],
+  "two_card_infinites": [],
   "within_target": true
 }

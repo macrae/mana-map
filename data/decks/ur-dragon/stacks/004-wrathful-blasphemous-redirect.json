@@ -38,15 +38,15 @@
       }
     ],
     "extras": {
-      "context": "VERIFIED PRE-SWAP (Wrathful has since been promoted to the 99 — see HISTORY.md 2026-07-28); Blasphemous Act is maindeck. The sideboard analysis parked Wrathful behind exactly this question. Wrathful Red Dragon (5/5, Flying): 'Whenever a Dragon you control is dealt damage, it deals that much damage to any target that isn't a Dragon.' Blasphemous Act: 'Blasphemous Act deals 13 damage to each creature.' Your three Dragons are 5/5 (Wrathful), 4/4 (Ventmaw) and 7/7 (Gnawbone) — all three will be dealt lethal damage by the Act."
+      "context": "VERIFIED PRE-SWAP (Wrathful has since been promoted to the 99 \u2014 see HISTORY.md 2026-07-28); Blasphemous Act is maindeck. The sideboard analysis parked Wrathful behind exactly this question. Wrathful Red Dragon (5/5, Flying): 'Whenever a Dragon you control is dealt damage, it deals that much damage to any target that isn't a Dragon.' Blasphemous Act: 'Blasphemous Act deals 13 damage to each creature.' Your three Dragons are 5/5 (Wrathful), 4/4 (Ventmaw) and 7/7 (Gnawbone) \u2014 all three will be dealt lethal damage by the Act."
     },
-    "question": "Resolve Blasphemous Act. The 13 damage is dealt to every creature simultaneously — including your three Dragons, all of which will die. How many of Wrathful Red Dragon's triggered abilities trigger, given the damaged Dragons (and Wrathful itself) are dealt lethal damage in the same event? Do Dragons that die to the 13 still produce redirect triggers, and what does 'it deals that much damage' mean for a source that is no longer on the battlefield? Can each redirect target a player, and may all of them target the same player? Walk the state-based actions and the trigger resolutions to the final life totals."
+    "question": "Resolve Blasphemous Act. The 13 damage is dealt to every creature simultaneously \u2014 including your three Dragons, all of which will die. How many of Wrathful Red Dragon's triggered abilities trigger, given the damaged Dragons (and Wrathful itself) are dealt lethal damage in the same event? Do Dragons that die to the 13 still produce redirect triggers, and what does 'it deals that much damage' mean for a source that is no longer on the battlefield? Can each redirect target a player, and may all of them target the same player? Walk the state-based actions and the trigger resolutions to the final life totals."
   },
   "resolution": {
     "steps": [
       {
         "n": 1,
-        "action": "Blasphemous Act resolves. Its oracle text reads 'Blasphemous Act deals 13 damage to each creature.' The 13 damage is dealt to all nine creatures on the battlefield — your Wrathful Red Dragon (5/5), Savage Ventmaw (4/4), and Old Gnawbone (7/7), Opponent A's five 1/1 Goblin tokens, and Opponent B's 3/3 — as a single simultaneous action.",
+        "action": "Blasphemous Act resolves. Its oracle text reads 'Blasphemous Act deals 13 damage to each creature.' The 13 damage is dealt to all nine creatures on the battlefield \u2014 your Wrathful Red Dragon (5/5), Savage Ventmaw (4/4), and Old Gnawbone (7/7), Opponent A's five 1/1 Goblin tokens, and Opponent B's 3/3 \u2014 as a single simultaneous action.",
         "effect": "13 damage is marked on each of the nine creatures at the same time, in one event.",
         "citations": [
           {
@@ -62,11 +62,11 @@
       {
         "n": 2,
         "action": "Wrathful Red Dragon's ability ('Whenever a Dragon you control is dealt damage, it deals that much damage to any target that isn't a Dragon') checks the damage event. Wrathful is still on the battlefield at the moment the event occurs, and the one simultaneous event contains three occurrences of 'a Dragon you control is dealt damage': Wrathful itself, Savage Ventmaw, and Old Gnawbone. The opponents' creatures are not Dragons you control, so they produce no triggers.",
-        "effect": "The ability triggers three times — once for each of your three Dragons, including Wrathful being dealt damage itself. The triggers do nothing yet; they wait to be put on the stack.",
+        "effect": "The ability triggers three times \u2014 once for each of your three Dragons, including Wrathful being dealt damage itself. The triggers do nothing yet; they wait to be put on the stack.",
         "citations": [
           {
             "rule": "603.2",
-            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers. The ability doesn\u2019t do anything at this point."
           },
           {
             "rule": "603.2c",
@@ -76,8 +76,8 @@
       },
       {
         "n": 3,
-        "action": "State-based actions are checked before any player would receive priority — and therefore before the three triggers are put on the stack. Every creature on the battlefield has 13 damage marked, which meets or exceeds each one's toughness.",
-        "effect": "All nine creatures — Wrathful Red Dragon, Savage Ventmaw, Old Gnawbone, the five 1/1 Goblin tokens, and the 3/3 — are destroyed simultaneously as a single event. The battlefield is now empty of creatures.",
+        "action": "State-based actions are checked before any player would receive priority \u2014 and therefore before the three triggers are put on the stack. Every creature on the battlefield has 13 damage marked, which meets or exceeds each one's toughness.",
+        "effect": "All nine creatures \u2014 Wrathful Red Dragon, Savage Ventmaw, Old Gnawbone, the five 1/1 Goblin tokens, and the 3/3 \u2014 are destroyed simultaneously as a single event. The battlefield is now empty of creatures.",
         "citations": [
           {
             "rule": "704.5g",
@@ -96,26 +96,26 @@
         "citations": [
           {
             "rule": "113.7a",
-            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won\u2019t affect the ability."
           },
           {
             "rule": "117.5",
-            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
           },
           {
             "rule": "603.3b",
-            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn\u2019t another ability triggering on the stack in any order they choose."
           }
         ]
       },
       {
         "n": 5,
-        "action": "Targets are chosen as each trigger is put on the stack, following the same process as casting a spell. 'Any target' means a creature, player, planeswalker, or battle — but because the state-based actions in step 3 already destroyed every creature, no creatures remain to target. Each opponent (and you) is a legal non-Dragon target. Each of the three triggers is a separate ability choosing its own target, so all three may legally choose the same player.",
-        "effect": "You choose targets: all three triggers target Opponent A (32 life). (The alternative — all three at Opponent B — is analyzed in the answer.) Legal targets exist, so no trigger is removed from the stack.",
+        "action": "Targets are chosen as each trigger is put on the stack, following the same process as casting a spell. 'Any target' means a creature, player, planeswalker, or battle \u2014 but because the state-based actions in step 3 already destroyed every creature, no creatures remain to target. Each opponent (and you) is a legal non-Dragon target. Each of the three triggers is a separate ability choosing its own target, so all three may legally choose the same player.",
+        "effect": "You choose targets: all three triggers target Opponent A (32 life). (The alternative \u2014 all three at Opponent B \u2014 is analyzed in the answer.) Legal targets exist, so no trigger is removed from the stack.",
         "citations": [
           {
             "rule": "603.3d",
-            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d. If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c\u2013d. If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
           },
           {
             "rule": "115.4",
@@ -129,12 +129,12 @@
       },
       {
         "n": 6,
-        "action": "The triggers resolve one at a time (top-down). Each says the damaged Dragon — not the ability — deals 13 damage to the target. Those Dragons are no longer on the battlefield, so the game uses their last known information; a source that has left the battlefield can still perform the action. 'That much damage' is 13 in each case, the amount dealt to that Dragon.",
-        "effect": "Each resolving trigger has a dead Dragon (via last known information) deal 13 damage to Opponent A, causing 13 life loss per trigger: 32 → 19 → 6 → −7.",
+        "action": "The triggers resolve one at a time (top-down). Each says the damaged Dragon \u2014 not the ability \u2014 deals 13 damage to the target. Those Dragons are no longer on the battlefield, so the game uses their last known information; a source that has left the battlefield can still perform the action. 'That much damage' is 13 in each case, the amount dealt to that Dragon.",
+        "effect": "Each resolving trigger has a dead Dragon (via last known information) deal 13 damage to Opponent A, causing 13 life loss per trigger: 32 \u2192 19 \u2192 6 \u2192 \u22127.",
         "citations": [
           {
             "rule": "113.7a",
-            "quote": "if the source is no longer in the zone it’s expected to be in at that time, its last known information is used. The source can still perform the action even though it no longer exists."
+            "quote": "if the source is no longer in the zone it\u2019s expected to be in at that time, its last known information is used. The source can still perform the action even though it no longer exists."
           },
           {
             "rule": "119.2",
@@ -144,8 +144,8 @@
       },
       {
         "n": 7,
-        "action": "State-based actions are checked again after the triggers resolve (in a multiplayer game, as soon as Opponent A's life total is 0 or less at an SBA check, they lose — in practice after the trigger that takes them below 0 resolves).",
-        "effect": "Opponent A, at −7 life, loses the game. Opponent B is untouched at 40 life with an empty board.",
+        "action": "State-based actions are checked again after the triggers resolve (in a multiplayer game, as soon as Opponent A's life total is 0 or less at an SBA check, they lose \u2014 in practice after the trigger that takes them below 0 resolves).",
+        "effect": "Opponent A, at \u22127 life, loses the game. Opponent B is untouched at 40 life with an empty board.",
         "citations": [
           {
             "rule": "704.5a",
@@ -180,7 +180,7 @@
         }
       ]
     },
-    "answer": "Not a table-kill, but a one-player kill plus a full sweep. Exactly THREE triggers occur — one per Dragon you control dealt damage, including Wrathful itself (603.2c: one event, three occurrences), and they trigger even though every Dragon dies to the same event, because the triggers exist independently of their sources once the event has occurred (113.7a). 'It deals that much damage' means the dead Dragon itself deals 13, using last known information — a source can still deal damage after it no longer exists (113.7a). All creatures die to the lethal-damage SBA (704.5g) BEFORE targets are chosen, so the only legal non-Dragon targets are players; each trigger targets independently and all three may target the same player. That yields 3 × 13 = 39 redirect damage: enough to kill the 32-life opponent exactly (needs all three; two triggers = 26 falls short), or to drop the 40-life opponent to 1 — but never both. Wrathful Red Dragon turns Blasphemous Act into 'destroy everything, one opponent of your choice at ≤39 life dies' — excellent, but with only three Dragons in play it is not a table-kill against these life totals."
+    "answer": "Not a table-kill, but a one-player kill plus a full sweep. Exactly THREE triggers occur \u2014 one per Dragon you control dealt damage, including Wrathful itself (603.2c: one event, three occurrences), and they trigger even though every Dragon dies to the same event, because the triggers exist independently of their sources once the event has occurred (113.7a). 'It deals that much damage' means the dead Dragon itself deals 13, using last known information \u2014 a source can still deal damage after it no longer exists (113.7a). All creatures die to the lethal-damage SBA (704.5g) BEFORE targets are chosen, so the only legal non-Dragon targets are players; each trigger targets independently and all three may target the same player. That yields 3 \u00d7 13 = 39 redirect damage: enough to kill the 32-life opponent exactly (needs all three; two triggers = 26 falls short), or to drop the 40-life opponent to 1 \u2014 but never both. Wrathful Red Dragon turns Blasphemous Act into 'destroy everything, one opponent of your choice at \u226439 life dies' \u2014 excellent, but with only three Dragons in play it is not a table-kill against these life totals."
   },
   "checker": {
     "verdict": "pass",
@@ -276,7 +276,9 @@
         "note": "Player at 0 or less life loses; SBA check after the trigger that takes A below 0. -7 correct."
       }
     ],
-    "summary": "ITERATION 2: pass. Both iteration-1 card-fact defects are fixed and consistent everywhere: 'nine creatures' now appears in step 1, step 3, and the final summary (3 Dragons + 5 Goblin tokens + one 3/3 = 9), and the scenario stack note now reads cast for {R} with nine creatures reducing the {8} to nothing, matching Blasphemous Act's oracle text in cards.json ({8}{R}, {1} less per creature). Mechanical gate passes. All 14 citations re-verified from scratch against full rule text: supported. Card facts verified: Wrathful Red Dragon 5/5 Flying sideboard card with exact quoted ability; Savage Ventmaw 4/4 Dragon; Old Gnawbone 7/7 Dragon; Blasphemous Act maindeck sorcery. Missing-step audit clean: SBA destruction correctly ordered before trigger placement (704.3/117.5), LKI handled for dead damage sources (113.7a), target legality holds at each resolution (A at 19 then 6 when later triggers resolve), no other triggered abilities implicated (Ventmaw/Gnawbone triggers are attack/combat-damage only), and both arithmetic chains (32->19->6->-7; 40-39=1; 2 triggers = 26 < 32) check out. The headline conclusion — three triggers, 39 redirect damage, one-player kill plus full sweep, not a table-kill — is rules-correct.",
+    "summary": "ITERATION 2: pass. Both iteration-1 card-fact defects are fixed and consistent everywhere: 'nine creatures' now appears in step 1, step 3, and the final summary (3 Dragons + 5 Goblin tokens + one 3/3 = 9), and the scenario stack note now reads cast for {R} with nine creatures reducing the {8} to nothing, matching Blasphemous Act's oracle text in cards.json ({8}{R}, {1} less per creature). Mechanical gate passes. All 14 citations re-verified from scratch against full rule text: supported. Card facts verified: Wrathful Red Dragon 5/5 Flying sideboard card with exact quoted ability; Savage Ventmaw 4/4 Dragon; Old Gnawbone 7/7 Dragon; Blasphemous Act maindeck sorcery. Missing-step audit clean: SBA destruction correctly ordered before trigger placement (704.3/117.5), LKI handled for dead damage sources (113.7a), target legality holds at each resolution (A at 19 then 6 when later triggers resolve), no other triggered abilities implicated (Ventmaw/Gnawbone triggers are attack/combat-damage only), and both arithmetic chains (32->19->6->-7; 40-39=1; 2 triggers = 26 < 32) check out. The headline conclusion \u2014 three triggers, 39 redirect damage, one-player kill plus full sweep, not a table-kill \u2014 is rules-correct.",
     "iterations": 2
-  }
+  },
+  "presentable": false,
+  "presentable_note": "Held back on the v1.0.0 baseline: the rules finding stands and the checker's verdict is unchanged, but this board names Savage Ventmaw, Blasphemous Act \u2014 no longer in the 99, so the deck can no longer make it. Not withdrawn: a passing stack is a fact about how a board resolves, and that does not expire when a card leaves."
 }

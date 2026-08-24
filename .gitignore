@@ -59,3 +59,7 @@ data/decks/*/experiments/logs/
 # is worse than an absent one when the log stamps games against it. Regenerated
 # by `make demo` immediately before anything reads it.
 data/decks/*/versions.json
+
+# check-in writes a safety copy of the previous list before overwriting it.
+# It is a local undo, not an artifact — the previous list is already in git.
+*.txt.bak

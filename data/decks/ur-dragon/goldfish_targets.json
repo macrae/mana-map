@@ -7,7 +7,8 @@
           "any_of": [
             "Urza's Incubator",
             "Herald's Horn",
-            "Dragonspeaker Shaman"
+            "Dragonspeaker Shaman",
+            "Dragonlord's Servant"
           ]
         }
       ]
@@ -53,7 +54,8 @@
           "any_of": [
             "Urza's Incubator",
             "Herald's Horn",
-            "Dragonspeaker Shaman"
+            "Dragonspeaker Shaman",
+            "Dragonlord's Servant"
           ]
         },
         {
@@ -87,10 +89,11 @@
           "any_of": [
             "Goldspan Dragon",
             "Thrakkus the Butcher",
-            "Savage Ventmaw",
-            "Rivaz of the Claw",
             "Lathliss, Dragon Queen",
-            "Tiamat"
+            "Glorybringer",
+            "Smaug the Magnificent",
+            "Rapacious Dragon",
+            "Moltensteel Dragon"
           ]
         }
       ]
@@ -113,21 +116,83 @@
       ]
     },
     {
-      "label": "THE INFINITE COMBAT LOOP (stacks 003/006): Aggravated Assault + a mana dragon",
+      "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
       "need": [
         {
           "any_of": [
-            "Aggravated Assault"
+            "Desolation of Smaug",
+            "Sarkhan, Fireblood"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A Treasure source drawn \u2014 seven in the 99, of which the model can SPEND only two",
+      "need": [
+        {
+          "any_of": [
+            "Atsushi, the Blazing Sky",
+            "Cavern-Hoard Dragon",
+            "Goldspan Dragon",
+            "Old Gnawbone",
+            "Rapacious Dragon",
+            "Smaug the Magnificent",
+            "Smothering Tithe"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE ENTRY KILL (UNVERIFIED \u2014 no passing stack): a per-dragon damage payoff AND a way to put several Dragons on the battlefield at once",
+      "need": [
+        {
+          "any_of": [
+            "Dragon Tempest",
+            "Terror of the Peaks",
+            "Scourge of Valkas",
+            "Lathliss, Dragon Queen",
+            "Miirym, Sentinel Wyrm",
+            "Temur Ascendancy",
+            "Garruk's Uprising"
           ]
         },
         {
           "any_of": [
-            "Old Gnawbone",
-            "Savage Ventmaw",
-            "Cavern-Hoard Dragon"
+            "Ancient Gold Dragon",
+            "Miirym, Sentinel Wyrm",
+            "Lathliss, Dragon Queen",
+            "Sarkhan, Fireblood",
+            "Utvara Hellkite"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE COMBAT KILL (UNVERIFIED \u2014 no passing stack): an attacking-Dragon multiplier AND a Dragon to attack with",
+      "need": [
+        {
+          "any_of": [
+            "Atarka, World Render",
+            "Thrakkus the Butcher",
+            "Radiant Destiny",
+            "Garruk's Uprising"
+          ]
+        },
+        {
+          "any_of": [
+            "Goldspan Dragon",
+            "Thrakkus the Butcher",
+            "Lathliss, Dragon Queen",
+            "Glorybringer",
+            "Smaug the Magnificent",
+            "Rapacious Dragon",
+            "Moltensteel Dragon"
           ]
         }
       ]
     }
-  ]
+  ],
+  "model_treasures": true,
+  "model_combat": true,
+  "_note": "Re-derived 2026-08-24 against the v1.0.0 paper list, because the deck's ONLY checker-verified win line left the 99. Aggravated Assault is gone, and with it stack 003 (Ventmaw + Assault infinite combats) and stack 006's driver; Savage Ventmaw and Blasphemous Act went too, so stack 004 also describes a board this deck can no longer make. THE INFINITE COMBAT LOOP target is DELETED rather than repaired: both halves are out of the maindeck, it measured 0% by construction, and a target naming cards that can never be drawn is worse than no target \u2014 it reports a rate for a plan the deck does not have.\n\nTHIS DECK NOW HAS NO VERIFIED WIN LINE, and that is the single most important fact about it. The two kill targets below are declared UNVERIFIED in their own labels, because this file is a declaration and declaring is not proving \u2014 the repo's rule is that a line is fact only once a stack carries checker.verdict == 'pass'. They are declared anyway rather than omitted, because a primary win line with NO target at all is the documented defect that let this very deck go unmeasured before: the simulator never measured how it actually wins. Two kills are declared rather than one because the deck genuinely has two and the schema cannot express their UNION \u2014 do not add their rates together.\n\nWhat changed and why: Dragonlord's Servant joins the cost reducers (it is literally 'Dragon spells you cast cost {1} less', the same job as Urza's Incubator and Dragonspeaker Shaman). 'Payoff + a castable dragon' loses Savage Ventmaw, Rivaz of the Claw and Tiamat, which all left, and gains the arriving Dragons that do that job \u2014 Glorybringer, Smaug the Magnificent, Rapacious Dragon, Moltensteel Dragon. A DRAGON-RESTRICTED MANA group is new: Desolation of Smaug and Sarkhan, Fireblood both add mana spendable only on Dragon spells, which `manabase.land_colors` counts as ZERO sources by the deck-builder's rule \u2014 correct for colour maths and exactly wrong for the question 'can I cast my commander', so it is measured separately rather than folded into ramp.\n\nmodel_treasures and model_combat are BOTH ON as of this revision, and turning them on is what exposed how badly the deck was being mismeasured: the commander went from 'cast by turn 6 in 0.0% of games' to 4.1%, and games where it NEVER arrives fell from 9,175 to 7,170 in 10,000. A fifth of this deck's games were being scored as 'commander never lands' because the model could not see a Treasure. Mean available mana is UNCHANGED at every turn (4.219 at t5, both ways), which is the mechanism stated exactly: a Treasure is a one-shot stockpile spent only when lands and rocks fall short, so it does not raise your average mana, it buys the one expensive turn. The Treasure group below names ALL SEVEN sources, not the two the model can spend \u2014 because the group's question is 'do I have Treasure', which is answerable for a card the model cannot read, and scoping it to the modellable two dropped Old Gnawbone out of every component while it sits in three checker-passed stacks (validate-goldfish-targets caught exactly that). Only Rapacious Dragon's ETB and Smaug's upkeep trigger actually feed the mana model; Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone and Smothering Tithe are real Treasure the model cannot count, so every Treasure-derived MANA figure is a FLOOR even though this group's drawn-rate is complete. Same for combat: Ancient Gold Dragon, Atarka World Render, Hellkite Tyrant, Klauth and Thrakkus have effects the model cannot read."
 }

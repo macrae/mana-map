@@ -12,12 +12,17 @@
     "G"
   ],
   "size": 100,
-  "lands": 34,
+  "lands": 31,
   "status": {
-    "complete": 13,
+    "complete": 11,
     "of": 17,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "engine",
+      "tutors",
+      "—",
+      "—"
+    ],
     "missing": [
       "brief",
       "log"
@@ -40,16 +45,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 8.967,
-    "commander_cast_by_turn_6_pct": 0,
+    "commander_mean_cast_turn": 8.172,
+    "commander_cast_by_turn_6_pct": 4,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
-        "by_turn_6_pct": 33
+        "by_turn_6_pct": 42
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 71
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
@@ -57,21 +62,50 @@
       },
       {
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "by_turn_6_pct": 23
+        "by_turn_6_pct": 28
       },
       {
         "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_6_pct": 27
+        "by_turn_6_pct": 29
       },
       {
         "label": "Protection held for the big turn",
         "by_turn_6_pct": 66
       },
       {
-        "label": "THE INFINITE COMBAT LOOP (stacks 003/006): Aggravated Assault + a mana dragon",
-        "by_turn_6_pct": 4
+        "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
+        "by_turn_6_pct": 24
+      },
+      {
+        "label": "A Treasure source drawn — seven in the 99, of which the model can SPEND only two",
+        "by_turn_6_pct": 62
+      },
+      {
+        "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon damage payoff AND a way to put several Dragons on the battlefield at once",
+        "by_turn_6_pct": 36
+      },
+      {
+        "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): an attacking-Dragon multiplier AND a Dragon to attack with",
+        "by_turn_6_pct": 29
       }
-    ]
+    ],
+    "combat": {
+      "mean_kill_turn": 8.203,
+      "median_kill_turn": 9,
+      "kill_by_turn_6_pct": 10,
+      "kill_by_turn_8_pct": 24,
+      "max_turn": 10,
+      "no_kill_by_max_turn_pct": 48,
+      "kill_turn_histogram": {
+        "10": 1328,
+        "4": 31,
+        "5": 655,
+        "6": 266,
+        "7": 426,
+        "8": 1064,
+        "9": 1452
+      }
+    }
   },
   "engine": {
     "thesis": "A five-colour typal deck that buys Dragons below sticker price and then taxes every Dragon that enters: one entry multiplies into several, each entry is priced in damage and cards, and the game ends either to one of those cascades or to Aggravated Assault turning a mana dragon into unlimited combats.",
@@ -82,15 +116,15 @@
   "diagnosis": {
     "verdict": "Four checker-passed stacks certify three independent kills, and two of them — stack 001's Dragon Tempest burst and stack 004's Blasphemous Act redirect — never touch Aggravated Assault, so the deck is not one enchantment away from having no way to win. What limits it is mana at the point of deployment: 34 land copies against 36-38, and a land drop that holds at 88.3% on turn three and then falls to 60.3% on five and 49.7% on six, against 27 entries in the 99 that cost five or more. Card advantage is the second-order cause and reads 4 against a floor of 10, but the uncounted draw in this deck is board-dependent, so it pays on the turns the deck is already winning rather than the turns it is stuck.",
     "skeptic": "pass",
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": "combo",
     "under": [
       "mana-base",
+      "mana-sources",
       "colour-sources",
       "card-advantage",
-      "threat-density",
       "interaction-breadth"
     ],
     "over": [
@@ -153,7 +187,9 @@
   "simulation": null,
   "experiments": null,
   "next": [
+    "4 artifact(s) fail their own gate (engine, tutors, —, —) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "nothing in the captain's log — play it, then `deck-notes ur-dragon add \"…\" --result win|loss --opponents N`",
+    "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×4",
     "no simulation runs — `simulate ur-dragon --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
   ],
