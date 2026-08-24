@@ -1,65 +1,15 @@
 {
  "slug": "edgar-vampires",
- "assessment": "Cast a black tutor at this table and three seats decide you are digging for the infinite. You are almost never digging for the infinite.\n\nThe loop assembles in 4.8% of your games on natural draws and 24.3% when a wish goes into it \u2014 so carry the ticket and never steer for it. Your default wish is the missing half of the go-wide kill: a converter that turns every token entry into damage at three seats, or the multiplier beside it.\n\nThat kill is why the tutors exist. It is online by turn six in 41.7% of games off your natural draws and 57.7% once a tutor is spent on it \u2014 sixteen points of your kill rate live in these three cards, so spend them on the plan and stop saving them for something cleverer.\n\nYour commander is not the early game. He lands on a mean turn 6.6 and is down by turn six in 52.1% of games, so the wishes have to win the first five turns without him \u2014 and they can, because a converter lands on a mean turn 2.8.\n\nThree wishes, all blank cheques. Demonic Tutor is two mana, any card, to hand \u2014 the workhorse. Diabolic Intent is the same contract with a creature sacrificed on top, and eminence prints that currency: a 1/1 from the command zone on every Vampire spell you cast. Vampiric Tutor is one mana at instant speed for any card on TOP of your library plus two life \u2014 it costs your next draw, so it is the end-step wish, cast when the table's mana is spent and cashed the turn it arrives.\n\nOne structural fact governs every loop wish. Bloodthirsty Conqueror is half of both verified infinites \u2014 stacks 004 and 006 \u2014 so when you do buy the loop, fetch toward the half you already hold and keep two doors open instead of one. He is also a 5/5 creature, which hands the table an instant-speed removal window. Count their open mana first, then spend the wish happily.\n\nAnd one cost governs the flashiest closer. Bloodletter of Aclazotz is the only triple-black cast in the 99, in your thinnest colour \u2014 27 black sources against a 36-source yardstick \u2014 so never fetch him onto a board that cannot pay {B}{B}{B} on schedule.",
+ "assessment": "Two wishes now, and they are not the same tool. Vampiric Tutor is {B} at instant speed for any card, taken in secret, put on top, costing two life and your next draw. Forerunner of the Legion is a {2}{W} 2/2 that finds a Vampire, REVEALS it, and puts it on top — and being a Vampire spell, casting it mints an eminence token on the way in.\n\nStart with what Forerunner cannot do, because it decides which wish goes where. THE GO-WIDE KILL wants a token-to-damage payoff beside a multiplier. Of the seven payoffs, five fire when a creature ENTERS — Purphoros, Impact Tremors, Warleader's Call, Corpse Knight, Witty Roastmaster — and not one is a Vampire. The two Forerunner can reach, Blood Artist and Cruel Celebrant, fire when a creature DIES, which is not the event stack 009 verified. The other half of that pair holds three true doublers — Anointed Procession, Mondrak, Elspeth — and four cards that simply make extra tokens. Forerunner finds none of the doublers and three of the makers: Mavren Fein, Charismatic Conqueror, Bloodline Keeper. Stack 010 is the reason that gap is worth naming: three doublers turn one eminence trigger into eight tokens under all six application orders, and Forerunner cannot go and get the third one.\n\nSo the go-wide kill is Vampiric Tutor's job. It assembles in 49.1% of games and by turn six in 32.7%; spend the wish on it and that is 55.6% and 38.2% (◆ goldfish, 10,000 seeded games). Its third leg — a Vampire cheap enough to cast alongside the rest of the turn — is already there in 92.3% of games and 84.8% by turn six, so never spend a wish on it.\n\nForerunner's job is the drain lines and the bodies, and it is good at that job because both single points of failure are Vampires: Bloodthirsty Conqueror, half of the checker-passed loops in stacks 004 and 006, and Bloodletter of Aclazotz, the doubler in stack 003. So are Vito, Sanctum Seeker, Champion of Dusk. Sanguine Bond and Throne of the God-Pharaoh are not, and this search will never see them.\n\nTwo costs to say out loud before either wish. Both put the card on TOP, which is a turn of delay unless something cashes it — Herald's Horn's upkeep look hands you a Vampire creature and leaves your draw step intact, and Skullclamp, Night's Whisper, Welcoming Vampire, Caretaker's Talent, Preacher of the Schism, Champion of Dusk and Pact of the Serpent all turn a stacked top card into a card in hand. And Forerunner reveals what it takes: the blue seat learns your plan a full turn before you cast it. In the one game on record, two counters on two named cards decided the result. Vampiric Tutor reveals nothing, and that is a reason to hold it for the turn the table is representing an answer.",
  "tutors": [
   {
-   "card": "Demonic Tutor",
-   "notes": "Two mana, any card, straight to hand \u2014 the only wish that hands you a spell you cast the same turn. Mean available mana is 4.006 on turn four, so plan it as Tutor plus a two-drop on four and Tutor plus a three-drop on five; anything dearer means you are buying next turn, and you should say that out loud before you cast it. Never ask it for your best card. Ask which missing piece turns the board you already have \u2014 2.9 bodies by turn four \u2014 into damage at three seats.",
-   "targets": [
-    {
-     "scenario": "Turn four. Edgar is in the command zone, you have three bodies and a token doubler down, and nothing on the battlefield converts an entry into damage. Player 2 is the durdle seat on four lands; Player 3 has a 4/4 and is looking at you.",
-     "fetch": "Impact Tremors",
-     "why": "Take the cheapest door into your actual plan and take it now. Two for the Tutor and two for Tremors is the whole of turn four at 4.006 mean mana \u2014 cast both and pass with the layer live. From then on every eminence token is one damage to each seat, no combat step, no blocker. The converter layer is down by turn six in only 62.6% of games on natural draws, so a third of your games ask you to go and get it. Go and get it.",
-     "citations": [
-      {
-       "rule": "strategy:multiplayer.asymmetry",
-       "quote": "Your cards should do something to all three seats or win the game"
-      }
-     ]
-    },
-    {
-     "scenario": "The turn after a board wipe resolved. You kept two lands and a Vampire in hand, Edgar is back in the command zone, and the table thinks you are out of the game for three turns.",
-     "fetch": "Skullclamp",
-     "why": "Rebuild into cards, not just bodies. Skullclamp costs one to cast and one to equip, and every 1/1 that dies under it draws you two \u2014 so each Vampire spell you cast from here mints an eminence token that is itself two cards on demand. Your draw engine is online by turn six in only 62.2% of games unassisted; after a wipe is exactly when you are on the wrong side of that number, and this is the cheapest engine in the 99 to deploy off two lands.",
-     "citations": [
-      {
-       "rule": "strategy:resource-hedging.wrath-math",
-       "quote": "redeploy worst-first, keeping the best threat in hand for their second sweeper"
-      }
-     ]
-    },
-    {
-     "scenario": "Turn six or later. Anointed Procession and Mondrak, Glory Dominus are both on the battlefield, you hold a two-mana Vampire, and all three opponents are above 20 life. Nobody is attacking you because your board is 1/1s.",
-     "fetch": "Purphoros, God of the Forge",
-     "why": "Close it \u2014 the arithmetic is already on the record. Stack 008 ran one two-mana Vampire through the 1-to-2-to-4 eminence doubling as five Purphoros triggers: ten damage to each opponent off a single cheap cast. Hold the two-drop until Purphoros lands, then cast it and hand the whole table a Lava Axe. Deploy him into the sweeper seat's held mana without flinching: he is indestructible, and at this deck's devotion he is usually not even a creature.",
-     "citations": [
-      {
-       "rule": "strategy:life-as-resource.philosophy-of-fire",
-       "quote": "reach must scale (each-opponent drains, commander damage, damage doublers)"
-      }
-     ]
-    },
-    {
-     "scenario": "The wish nobody sees coming. The blue seat has held two untapped Islands every turn and countered the last two spells anyone tried to resolve. You have a hand of Vampires and no way to make one stick.",
-     "fetch": "Cavern of Souls",
-     "why": "Fetching a land looks like a waste until you name what it buys. Choose Vampire and every Vampire creature spell you cast can no longer be countered \u2014 their whole held plan goes blank for the rest of the game. It also fixes your short colour: black sits at 27 sources against a 36-source yardstick. One rule so it never surprises you: Cavern's coloured mana pays only for creature spells, so tap it for colourless \u2014 or tap another land \u2014 when you want Vito's lifelink activation.",
-     "citations": [
-      {
-       "rule": "strategy:card-advantage.virtual",
-       "quote": "ask which of the opponent's likely cards your permanent invalidates"
-      }
-     ]
-    }
-   ]
-  },
-  {
    "card": "Vampiric Tutor",
-   "notes": "One mana at instant speed, any card, on TOP \u2014 plus two life and your next draw. That shape dictates the timing: cast it at the end step right before your untap, when the table's mana and attention are spent, and only when you will cast the card the turn it arrives. A Vampiric cast three turns early is a card spent arranging a draw you then draw into removal range. Pay the two life without blinking \u2014 Sanctum Seeker and the lifegain halves hand it straight back.",
+   "notes": "One mana at instant speed, any card, on TOP — plus two life and your next draw. That shape dictates the timing: cast it at the end step right before your untap, when the table's mana and attention are spent, and only when you will cast the card the turn it arrives. A Vampiric cast three turns early is a card spent arranging a draw you then draw into removal range. Pay the two life without blinking — Sanctum Seeker and the lifegain halves hand it straight back. It is also the only one of the two wishes that reaches a card which is not a Vampire, so spend it on the enchantments and the artifact — Anointed Procession, Impact Tremors, Warleader's Call, Sanguine Bond, Throne of the God-Pharaoh — and leave the Vampires to Forerunner. And it takes in secret: nothing is revealed, which is what makes it the wish to cast against a seat holding counterspells.",
    "targets": [
     {
      "scenario": "Opponent 3's end step, turn four. You have a doubler and five bodies but no converter, three untapped lands, and your untap is next. Player 2 just tapped out for a planeswalker.",
      "fetch": "Witty Roastmaster",
-     "why": "The go-wide kill is online by turn six in 41.7% of your games on natural draws and 57.7% with a wish spent on it \u2014 this is the wish, at the moment the table cannot answer it. Roastmaster is the converter on a body: every later entry is one damage to each seat, and he triggers the other converters on his own way in. One mana at their end step, cast him on your turn with mana to spare.",
+     "why": "The go-wide kill is online by turn six in 32.7% of your games on natural draws and 38.2% with a wish spent on it — this is the wish, at the moment the table cannot answer it. Roastmaster is one of the five payoffs that fire when a creature ENTERS, and none of the five is a Vampire, so Forerunner cannot go and get any of them. This half of the plan is Vampiric Tutor's alone. Roastmaster is the converter on a body: every later entry is one damage to each seat, and he triggers the other converters on his own way in. One mana at their end step, cast him on your turn with mana to spare.",
      "citations": [
       {
        "rule": "strategy:tempo.sequencing",
@@ -70,7 +20,7 @@
     {
      "scenario": "The sweeper seat has held five mana across two turns and is visibly waiting. You have seven Vampires, the table knows the wipe is coming, and your hand is lands.",
      "fetch": "Cruel Celebrant",
-     "why": "Make the wipe cost them the game instead of costing you yours. With Celebrant down, every creature you lose drains each opponent for one and pays you one \u2014 seven deaths is seven off each seat while you rebuild from the command zone. Prefer him over Blood Artist when the whole table matters: Artist drains one target player per death, Celebrant hits everyone. Fetch at their end step, cast him for two, and stop being afraid of the wipe.",
+     "why": "Make the wipe cost them the game instead of costing you yours. With Celebrant down, every creature you lose drains each opponent for one and pays you one — seven deaths is seven off each seat while you rebuild from the command zone. Prefer him over Blood Artist when the whole table matters: Artist drains one target player per death, Celebrant hits everyone. Fetch at their end step, cast him for two, and stop being afraid of the wipe.",
      "citations": [
       {
        "rule": "strategy:resource-hedging.wrath-math",
@@ -81,57 +31,70 @@
     {
      "scenario": "Sanctum Seeker and six other Vampires are on your board, untapped, and your attack is next turn. Two opponents are at 14 and 16. You can pay {B}{B}{B} plus one.",
      "fetch": "Bloodletter of Aclazotz",
-     "why": "This is the closing fetch, and the maths is verified: stack 003 resolves a seven-Vampire attack with Bloodletter and Sanctum Seeker as 14 life off each opponent on attack declaration alone \u2014 before a single point of combat damage. Both life totals in this scenario are inside that number. The rule attached: he is the only triple-black cast in the 99, so confirm the {B}{B}{B} is actually there before the wish, not after."
+     "why": "This is the closing fetch, and the maths is verified: stack 003 resolves a seven-Vampire attack with Bloodletter and Sanctum Seeker as 14 life off each opponent on attack declaration alone — before a single point of combat damage. Both life totals in this scenario are inside that number. The rule attached: he is the only triple-black cast in the 99, so confirm the {B}{B}{B} is actually there before the wish, not after — black is 30 sources against the 36 a 90% on-curve rate would take."
     },
     {
-     "scenario": "The wish nobody sees coming. Player 2's Ghostly Prison-style tax has shut off your combat, your hand has no answer, and the rest of the table is shrugging because it does not tax them.",
-     "fetch": "Generous Gift",
-     "why": "You draw an answer to a noncreature permanent by turn six in only 42.8% of games \u2014 more than half the time you hold none, and that is what this wish is for. Gift is the deck's true catch-all: it destroys ANY permanent, lands included, at instant speed. The 3/3 Elephant you hand back is a blocker against the wrong seat and nothing against a board that drains on entry and death. Fetch it, hold it, and spend it on the piece taxing YOU \u2014 let the bystanders answer everything else.",
+     "scenario": "The wish nobody sees coming. Opponent 2's end step. The blue seat has held two untapped Islands for three turns and has countered the last two spells anyone tried to resolve. Edgar is on the battlefield, you have six Vampires, a five-mana refuel stranded in hand, and one black source untapped.",
+     "fetch": "Deflecting Swat",
+     "why": "Do not fetch a better spell. Fetch the thing that makes the spell you are already holding resolve. Deflecting Swat changes the target of a counterspell, and with Edgar on the battlefield you cast it without paying its mana cost — so the refuel goes through and their held mana bought a redirected spell. Read the condition rather than the card: 'if you control a commander' means Edgar on the battlefield, not in the command zone, and without him the Swat costs {2}{R} and belongs to a different turn. Vampiric Tutor reveals nothing on its way through, so the seat you are answering cannot see the answer coming. In the one game on record, two counters on named cards decided the result.",
      "citations": [
       {
-       "rule": "strategy:threat-assessment.answer-economy",
-       "quote": "hold single-target removal until the threat is pointed at you"
+       "rule": "strategy:critical-mass",
+       "quote": "sequence so one removal spell can't break the chain"
       }
      ]
     }
    ]
   },
   {
-   "card": "Diabolic Intent",
-   "notes": "Two mana and a creature sacrificed as an additional cost \u2014 and eminence prints that currency, minting a 1/1 from the command zone on every Vampire spell you cast. Spend a token, never a lord. Two upgrades to look for before you cast it: with Cordial Vampire out the sacrifice puts a +1/+1 counter on every Vampire you control, so sequence Intent after Cordial and the cost becomes an anthem; with Blood Artist or Cruel Celebrant out, the cost drains on its way to the graveyard. The one time Intent is wrong is the one time it looks right: when your only body is your only blocker, that body is not spare \u2014 that is Demonic Tutor's job.",
+   "card": "Forerunner of the Legion",
+   "notes": "{2}{W} for a 2/2, and three things happen on one cast. It is a Vampire spell, so eminence mints a 1/1 token — stack 010 is checker-passed that eminence works with Edgar in the command zone and never on the battlefield. The body arrives. And its enter trigger searches out a Vampire card and puts it on top. White is 22 sources against a 22-source yardstick, so unlike the deck's black costs it casts on curve. Two limits govern every fetch below and neither goes away. The search is Vampire-only, which is most of the go-wide kill out of reach: of the seven token-to-damage payoffs it can find two, Blood Artist and Cruel Celebrant, and of the seven cards in the multiplier-or-extra-token-maker group it can find three — Mavren Fein, Charismatic Conqueror, Bloodline Keeper — every one of which makes an extra token rather than doubling one. The three that actually double (Anointed Procession, Mondrak, Elspeth) are all out of reach. And it REVEALS what it takes, so the table sees the card a full turn before you cast it. Fetch what you want NEXT turn, not this one — unless Herald's Horn is out with Vampire named, in which case the upkeep look puts the card in hand and your draw step still draws. Its second ability is small and real: every later Vampire that enters, tokens included, pumps a creature of your choice until end of turn.",
    "targets": [
     {
-     "scenario": "Turn five. You have four bodies including a spare token, every seat is developing, and your 1/1s are bouncing off 3/3 blockers. No converter on the battlefield.",
-     "fetch": "Warleader's Call",
-     "why": "Take the payoff that repays the sacrifice twice. One damage to each opponent on every entry, plus a permanent +1/+1 to your whole board \u2014 the token you spent comes straight back as a point of power on everything you own, and your swarm stops bouncing. Three mana on top of the two-mana Intent against 4.729 mean mana on turn five: that is the whole turn, and it is the right whole turn."
-    },
-    {
-     "scenario": "Turn five or six. Seven Vampires on your board, one of them a spare token, and your hand is empty. The table is leaving you alone because you look topdecked.",
-     "fetch": "Champion of Dusk",
-     "why": "Refill from the width you already built. Champion draws you a card per Vampire on entry \u2014 and he counts himself plus the eminence token his own cast mints, so sacrifice the spare token to Intent and six on board still resolves as eight cards drawn. The draw engine assembles in 73.4% of games and this is how you land on the right side of it when the natural draw missed. Double black: check the 27 sources can pay {3}{B}{B} this turn, not next. If his seat is already spent, Pact of the Serpent is the same effect for three mana."
-    },
-    {
-     "scenario": "Impact Tremors is on the battlefield and undisturbed, you have five bodies and a Vampire in hand, and the table has spent its removal on each other. All three opponents are above 25.",
-     "fetch": "Mondrak, Glory Dominus",
-     "why": "Double every future entry, on a 4/4 body. Stack 002 verified the doubling as one event and order-independent \u2014 one eminence trigger becomes two tokens, two doublers make four \u2014 so stop sequencing cleverly and just resolve him. The go-wide kill goes 41.7% to 57.7% by turn six with a wish, and this fetch is what that second number is made of. Bank the neat part: his indestructible activation eats two spare tokens, the exact currency Intent taught you to farm."
-    },
-    {
-     "scenario": "The wish nobody sees coming. Player 3 has resolved a Rhystic Study-style engine and is pulling ahead of the whole table. Your board is fine; your hand has Vampires and no answer.",
-     "fetch": "Anguished Unmaking",
-     "why": "Exile any nonland permanent at instant speed, and pay the three life without thinking in a deck whose drains and lifelink refill it. You draw an answer to a noncreature permanent in 52.9% of games \u2014 half the time it is not coming on its own, so the moment an engine or stax piece resolves against you, this is the wish. Fetch it and HOLD it: let another seat spend theirs first, and spend yours on the piece actually beating you.",
+     "scenario": "Turn three, Forerunner is the play. You have two bodies — which is where the goldfish has you on turn three, mean 2.058 — no converter on the battlefield, and all three opponents untapped and above 30.",
+     "fetch": "Sanctum Seeker",
+     "why": "Buy the conversion Forerunner can actually reach. Five of the seven token-to-damage payoffs fire when a creature ENTERS — Purphoros, Impact Tremors, Warleader's Call, Corpse Knight, Witty Roastmaster — and not one of them is a Vampire, so this search cannot see them. The two it can see, Blood Artist and Cruel Celebrant, fire when a creature DIES, which is not the line stack 009 verified. What is left is combat, and Sanctum Seeker is the card that turns width into damage there: each attacking Vampire drains every opponent for one. Stack 003 measured that at width — seven attackers is seven triggers, and with Bloodletter of Aclazotz out it is 14 life off each opponent on attack declaration, before blockers are declared. The life it hands back is also the input Vito and Sanguine Bond convert.",
      "citations": [
       {
        "rule": "strategy:multiplayer.asymmetry",
-       "quote": "hold removal until the threat is pointed at you"
+       "quote": "Your cards should do something to all three seats or win the game"
       }
      ]
+    },
+    {
+     "scenario": "The behind fetch. The turn after the second sweeper. You have three lands, Forerunner in hand, Edgar back in the command zone, and the blue seat still has two untapped Islands. After you cast Forerunner your hand is one land.",
+     "fetch": "Welcoming Vampire",
+     "why": "Rebuild into a drip rather than a refill. Welcoming Vampire draws a card whenever one or more other creatures with power 2 or less enter, once each turn — and every eminence token is a 1/1, so the plan you are already running becomes a card a turn from a three-mana body. A draw engine is drawn in 73.3% of games and by turn six in 62.1%, so a third of your games ask you to go and get one, and Forerunner can reach exactly two: this and Champion of Dusk. Take this one into open blue mana. Champion is five mana and one large refill — the shape a held counterspell most wants to meet — while Welcoming Vampire costs a seat's counter to stop one card and then you cast another Vampire.",
+     "citations": [
+      {
+       "rule": "strategy:resource-hedging.wrath-math",
+       "quote": "buy resilience instead of restraint where you can"
+      }
+     ]
+    },
+    {
+     "scenario": "The closing fetch. Turn six or later. Vito, Thorn of the Dusk Rose is on the battlefield and untouched, you have five lands untapped after Forerunner, and nobody at the table has shown blue mana this game.",
+     "fetch": "Bloodthirsty Conqueror",
+     "why": "The one fetch that ends the game instead of improving it. Stack 004 is checker-passed: Conqueror beside Vito is a deterministic table kill from a three-life seed — 13 Vito resolutions, both opponents to exactly zero, and the loop consumes no cards, mana or creatures. Stack 006 proves the same pairing with Sanguine Bond in Vito's place, and Forerunner can find the Conqueror half and the Vito half and never Sanguine Bond, which is an enchantment. Price two things before you take it. He costs {3}{B}{B} and lands the turn AFTER the search, and he is a 5/5 creature, so every iteration's priority window admits instant-speed creature removal — stack 004 names that cost itself. Then there is the reveal, which tells the table which card is coming while it is still on top of your library. The loop assembles in 4.6% of games and 10.2% with a wish, so carry the ticket and never steer for it.",
+     "citations": [
+      {
+       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+       "quote": "tutor only the irreplaceable"
+      }
+     ]
+    },
+    {
+     "scenario": "The wish nobody sees coming. Turn three. Bloodletter of Aclazotz and Champion of Dusk are both in hand, your three lands produce exactly one black between them, and a spare eminence token is on the battlefield.",
+     "fetch": "Master of Dark Rites",
+     "why": "Fetch the mana, not the threat. Master of Dark Rites is a one-mana 1/1 that taps and sacrifices another creature for {B}{B}{B}, and eminence prints the creature to sacrifice on every Vampire spell you cast. Black is 30 sources against the 36 a 90% on-curve rate would take, and Bloodletter of Aclazotz is the only triple-black cast in the 99, so this is the card that makes the deck's most expensive coloured cost payable a turn early. The restriction is exact, and deck-facts names it: that mana pays for Vampire, Cleric and Demon SPELLS, and an activated ability is not a spell. It casts Bloodletter (Vampire Demon), Bloodthirsty Conqueror and Champion of Dusk (Vampire Knights) and Vito (Vampire Cleric); it cannot pay Vito's own {3}{B}{B} lifelink activation or Indulgent Aristocrat's {2}, and Sanguine Bond is an enchantment and out of reach. Bank the free part: the token you sacrifice is a creature dying, so Cruel Celebrant, Blood Artist and Cordial Vampire all fire off the cost."
     }
    ]
   }
  ],
  "gaps": [
-  "The goldfish prices all three tutors as unrestricted wildcards to hand. Vampiric Tutor's top-of-library lag and two-life cost, and Diabolic Intent's sacrifice cost, are not modelled \u2014 so the assisted figures are a ceiling on those two thirds of the tutor suite, and the coaching above prices the costs in prose instead.",
-  "Nothing simulates opposing interaction: every fetch-versus-hold call against held removal or counterspells here is coaching judgment on top of measured assembly rates, not measurement.",
-  "There is no graveyard answer in the 99 to fetch \u2014 confirmed at the oracle level in the diagnosis \u2014 so against a reanimator seat these tutors buy speed, never an answer. A tutor cannot buy a class the deck does not hold."
+  "The goldfish models only UNRESTRICTED tutors as wildcards ('search your library for a card'), so every *_assisted figure quoted here is Vampiric Tutor alone. Forerunner of the Legion is priced at zero in every measurement of this deck — goldfish_targets.json says so in its own note, and the model has no way to represent a Vampire-only search. The assisted figures are therefore a ceiling on Vampiric Tutor (its top-of-library lag and two life are not modelled) and a floor on the pair.",
+  "A caveat on reading one group's rate as the plan's rate, and it lands exactly where Forerunner reaches. goldfish_targets.json's TOKEN -> DAMAGE group holds seven cards, and two of them — Blood Artist and Cruel Celebrant — trigger on a creature DYING rather than entering. Both genuinely convert tokens into damage, so the group is not wrong; but stack 009's verified nine-trigger line is an ENTRY line, and a fetch into the death half does not reproduce it. Those two are the only members of that group Forerunner can find.",
+  "Nothing simulates opposing interaction, so every fetch-versus-hold call here — and the whole cost of Forerunner's reveal — is coaching judgment on top of measured assembly rates. The one logged game had two named cards countered by the same seat; one game is an anecdote, not a rate, and no artifact measures what a revealed fetch costs.",
+  "There is no graveyard answer in the 99 to fetch: confirmed at the oracle level across all 96 entries, where the only cards naming a graveyard are Takenuma, Abandoned Mire (your own) and Nighthawk Scavenger (a power count). Against a reanimator seat these two tutors buy speed, never an answer. A tutor cannot buy a class the deck does not hold."
  ]
 }
