@@ -197,6 +197,43 @@ pip fix, and `deck-status`'s gate blind spot (2026-08-22).
 
 Sized 2026-08-22; each is small and independent unless noted.
 
+**QUEUED 2026-08-24, both ready to run, both precisely specified.** They came out of
+ur-dragon's terminal rounds and were deliberately NOT acted on there: a change made after
+the last adversary has finished is unreviewed by construction.
+
+- **`/resolve-stack ur-dragon 007`** — the scenario is written, preflighted
+  (`validate-stack --scenario-only`: OK) and committed as
+  `stacks/007-cascade-without-panharmonicon.json`. It is stack **002's exact board minus
+  Panharmonicon**, derived from 002 rather than invented, and answers the three things
+  `diagnosis.json`'s `open_questions[0]` asks: how many token copies and how much damage
+  without the doubler; whether it is still lethal to the 32-life seat 002 kills with 64;
+  and — the deck's central question — whether ANY version kills a fresh seat at **40**,
+  which neither proven board has been shown to do (002 leaves the 40-life seat alive at 8).
+  It prices `cut_candidates[5]`, which currently rests on a mana argument alone with its
+  decisive evidence *named and absent*: nothing on the record says whether cutting
+  Panharmonicon costs 002's **lethality** or only its **margin**. One rules domain, no
+  combat; 002's nontoken finding is inherited and stated in `extras.context`.
+
+- **Scourge of the Throne in THE COMBAT KILL's multiplier leg** — `engine-critic`'s
+  terminal round found the two-card leg (Atarka, Thrakkus) arguably omits it: an additional
+  combat phase doubles the turn's Dragon combat damage, and `engine.json` itself calls it
+  that kill's mechanism, which is an internal contradiction. It differs from the other two
+  in being **conditional** (it must attack the player with the most life), which is why it
+  is a judgement rather than an obvious omission. Recorded in `goldfish_targets.json`'s
+  note. **Run it with a critic attached** — this declaration moved three times on
+  2026-08-24 and every move cascaded into `engine.json` and `diagnosis.json`.
+
+- **`diagnosis.json` for ur-dragon carries a terminal `fail`** and is NOT cache-recorded,
+  per the rule that a fail is never recorded. Two text-level defects, both discharged,
+  neither moving a swap. It clears on the next diagnose pass, which the two items above
+  should precede — both change figures the diagnosis quotes.
+
+- **Six of nine `strategic_frame.json` are unstamped** and now say so in `deck-status`
+  ("unstamped — staleness cannot be checked"). That is a third state, not a softer STALE:
+  they may be current and simply not say so. Each is one `strategy-researcher` MODE consult
+  to stamp, and worth doing opportunistically rather than as a sweep — ur-dragon's turned
+  out to be asserting proof that had left the deck.
+
 - **`merge_deck_map` / `engine_facts` have ZERO test coverage** — no test file imports
   either. ~300 lines, blocked on nothing. `merge_deck_map`'s whole reason to exist is the
   `OWNED = ("label", "gloss")` whitelist, and nothing asserts it.
