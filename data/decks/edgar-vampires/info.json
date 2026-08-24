@@ -13,7 +13,7 @@
   "lands": 36,
   "status": {
     "complete": 11,
-    "of": 17,
+    "of": 18,
     "stale": [],
     "invalid": [
       "targets",
@@ -37,9 +37,7 @@
     "loss": 1,
     "draw": 0,
     "last_played": "2026-08-22",
-    "undebriefed": [
-      "001"
-    ]
+    "undebriefed": []
   },
   "goldfish": {
     "seed": 42,
@@ -159,6 +157,21 @@
       "from": "diagnosis",
       "question": "Does a second fixing swap beyond the Forge slot pay for itself? Black remains 8 sources short after Path of Ancestry, and on-curve B castability is 76.4% against Karsten's 90%.",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "Does Elspeth, Storm Slayer double Edgar Markov's eminence tokens, and how does she compose with the deck's other token doublers? Stack 002 is checker-passed for eminence through Anointed Procession plus Mondrak and never names Elspeth, so her half of the note ('she doubled a couple of tokens for me') rests on nothing verified.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:001",
+      "question": "Is Edgar arriving late a property of the list or of this game's piloting? The note's reason is attention; the goldfish's 6.705 mean cast turn is produced by a model that casts the commander on the first affordable turn and models no opponents, so the two agree on the outcome and cannot be compared on the cause.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:001",
+      "question": "The note describes eating 'multiple board wipes' and names none of the deck's five protection spells (Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat), and the loss is attributed to 'the third wipe plus the counter on my draw'. Is the deck's answer to repeated sweepers rebuild speed alone, and is that enough against a table that has decided you are the problem?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -207,9 +220,8 @@
   },
   "next": [
     "4 artifact(s) fail their own gate (targets, engine, tutors, —) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "1 logged game(s) not yet debriefed (001) — `/debrief edgar-vampires`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: goldfish ×3, research-strategy ×1, resolve-stack ×4"
+    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×1, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

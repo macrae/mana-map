@@ -1,0 +1,112 @@
+{
+  "slug": "edgar-vampires",
+  "entries": {
+    "001": {
+      "summary": "Three-player pod at Tom's, on V1 (v1.0.0 — the entry's decklist sha matches the current decklist.txt, so nothing the note names has since left the 99). The deck did its job: cheap vampires plus eminence put five bodies down by turn three off three mana spent, the table correctly made Markov the archenemy, and the low curve rebuilt through multiple wipes 'in a turn or two, every time'. It lost as a gas problem, not a board problem — Tom countered Champion of Dusk (the refuel the pilot says 'would have closed the game') and Bloodthirsty Conqueror (the Sanguine Bond half), Alex finished on 1 life, and the pilot 'needed one more vampire and had nothing'. The pilot names two mistakes himself: wiping Alex's Nazgul too late, and not casting Edgar until eight mana were available — the second with the reason 'I had not even been thinking about him', which is a reason about attention, not mana.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Alex's Nazgul kept getting bigger every time the Ring tempted him"
+        },
+        {
+          "seat": "Tom",
+          "archetype": "control",
+          "commander": null,
+          "evidence": "Cyclonic Rift, counters, general interference"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Edgar Markov",
+          "read": "as-expected",
+          "why": "the note: 'When he did land it was the finisher' — the turn he arrived is the turn that got Alex to 1. The reading is about timing, not power: he was not cast 'until I had eight mana', two more than his mana value of six."
+        },
+        {
+          "card": "Elspeth, Storm Slayer",
+          "read": "over",
+          "why": "the pilot's own words — 'targeted immediately, but before she died she doubled a couple of tokens for me and took out one of Tom's creatures. I liked that a lot — she pulled attention while the vampire board kept growing underneath.'"
+        },
+        {
+          "card": "Olivia's Wrath",
+          "read": "as-expected",
+          "why": "part of the finisher turn: 'Olivia's Wrath for a big X to clear a couple of blockers and chip a large creature, then swing wide'."
+        },
+        {
+          "card": "Champion of Dusk",
+          "read": "under",
+          "why": "countered before it resolved; the note calls it 'the refuel that would have closed the game' and says the pilot 'would happily have paid the five life'. The card was drawn and cast — it was answered, not absent."
+        },
+        {
+          "card": "Bloodthirsty Conqueror",
+          "read": "under",
+          "why": "the second of the 'two counters [that] decided it'; the note names it as 'my Sanguine Bond half'."
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Alex's Nazgul are growing every time the Ring tempts him but are not lethal yet — spend the sweeper on them now, or hold it for a wider board. The pilot's own named mistake: 'I should have wiped them earlier instead of letting them proliferate. I saw it too late.'",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "the board has been rebuilt after a wipe and Edgar (six mana) is affordable — cast the commander, or keep deploying cheap vampires and eminence triggers into a table holding counterspells and sweepers",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "Champion of Dusk with Tom's blue mana untapped: cast the refuel now for five cards, or wait and keep developing. Logged because it is where the game turned; not recommended for a spread, because the note records it as Tom's counter rather than as a branch the pilot weighed.",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "Edgar landing late is measured; WHY he landed late is not. The note gives an attention reason — 'I did not cast Edgar himself until I had eight mana. I had not even been thinking about him.' The goldfish independently reports the commander landing late (mean cast turn 6.705, median 6, cast by turn six in 48% of 10,000 seeded games), but it cannot corroborate or refute the reason: its stated assumptions are 'Commander cast on first affordable turn (highest spending priority)' and 'no interaction, no removal', so a model that never forgets Edgar still puts him down at 6.7 and a mana explanation is the only explanation it is capable of producing. Treat the WHAT as agreed by two sources and the WHY as unsettled.",
+        "Make Edgar an explicit decision from the first turn he is affordable rather than a card that comes up when the mana is spare. His mana value is six and the note has him cast at eight; the turn he arrived is the turn that produced Olivia's Wrath into a wide swing with haste and the attack-trigger counters, and got Alex to 1.",
+        "A doubler that pulls removal is still paying. Elspeth was answered immediately and still doubled tokens, killed one of Tom's creatures, and, in the pilot's words, 'pulled attention while the vampire board kept growing underneath'. Her value in this game was partly the removal she absorbed, which no goldfish figure will show.",
+        "Being the whole table's target is the plan, and the rebuild held: 'the whole table decided Markov was the problem immediately, which is the correct read and also the price of the plan', and the low curve plus the mana base put a real board back 'in a turn or two, every time' through multiple wipes. What did not hold was the refuel — both cards Tom countered were the ones that would have kept the deck going.",
+        "Wipe a compounding threat before it outgrows the answer. Olivia's Wrath's X is the pilot's own Vampire count, so both sides of that race were growing at once; the note does not say which was growing faster, only that the wipe came too late."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "conversion",
+        "fuel",
+        "output",
+        "wincon"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Bloodthirsty Conqueror",
+            "Sanguine Bond"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/006-sanguine-conqueror-loop.json"
+        },
+        {
+          "cards": [
+            "Edgar Markov",
+            "Elspeth, Storm Slayer"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Does Elspeth, Storm Slayer double Edgar Markov's eminence tokens, and how does she compose with the deck's other token doublers? Stack 002 is checker-passed for eminence through Anointed Procession plus Mondrak and never names Elspeth, so her half of the note ('she doubled a couple of tokens for me') rests on nothing verified.",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "the pilot singled her out as the card he liked most in the game, and goldfish_targets.json counts her as a member of the token-multiplier group (assembled 73.5%, 62.6% by turn six) — the group's rate is being quoted for a card no passing stack covers."
+        },
+        {
+          "question": "Is Edgar arriving late a property of the list or of this game's piloting? The note's reason is attention; the goldfish's 6.705 mean cast turn is produced by a model that casts the commander on the first affordable turn and models no opponents, so the two agree on the outcome and cannot be compared on the cause.",
+          "settled_by": "diagnose",
+          "why_it_matters": "the two fixes are different and only one is the doctor's: if the commander is structurally late the answer is ramp or cost reduction in the 99, and if it is attention the answer is a piloting habit and the list should not move. One logged game cannot tell them apart."
+        },
+        {
+          "question": "The note describes eating 'multiple board wipes' and names none of the deck's five protection spells (Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat), and the loss is attributed to 'the third wipe plus the counter on my draw'. Is the deck's answer to repeated sweepers rebuild speed alone, and is that enough against a table that has decided you are the problem?",
+          "settled_by": "diagnose",
+          "why_it_matters": "goldfish reports the protection group assembled in 61.0% of games and 49.8% by turn six, so availability is roughly a coin flip — but the goldfish models no wipes and no held mana, and the note gives no evidence either way about whether these cards were in hand. This is the pilot's own stated cause of the loss and it is the one part of it no current artifact measures."
+        }
+      ]
+    }
+  }
+}
