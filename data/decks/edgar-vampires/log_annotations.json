@@ -59,18 +59,20 @@
         }
       ],
       "takeaways": [
-        "Edgar landing late is measured; WHY he landed late is not. The note gives an attention reason — 'I did not cast Edgar himself until I had eight mana. I had not even been thinking about him.' The goldfish independently reports the commander landing late (mean cast turn 6.705, median 6, cast by turn six in 48% of 10,000 seeded games), but it cannot corroborate or refute the reason: its stated assumptions are 'Commander cast on first affordable turn (highest spending priority)' and 'no interaction, no removal', so a model that never forgets Edgar still puts him down at 6.7 and a mana explanation is the only explanation it is capable of producing. Treat the WHAT as agreed by two sources and the WHY as unsettled.",
+        "Edgar was NOT structurally late — the pilot's own call on it: \"Edgar was NOT structurally late, that was piloting (and in my opinion an error).\" That is consistent with the note itself, whose stated reason is attention — \"I had not even been thinking about him\" — and not mana. The goldfish's commander figures (mean cast turn 6.705, median 6, cast by turn six in 48.4% of 10,000 seeded games) stand as a resource measurement and are not evidence of a list defect: its assumptions are \"Commander cast on first affordable turn (highest spending priority)\" and \"no interaction, no removal\", so a model that never forgets Edgar still puts him down at 6.7. No list-level change follows from this game.",
         "Make Edgar an explicit decision from the first turn he is affordable rather than a card that comes up when the mana is spare. His mana value is six and the note has him cast at eight; the turn he arrived is the turn that produced Olivia's Wrath into a wide swing with haste and the attack-trigger counters, and got Alex to 1.",
-        "A doubler that pulls removal is still paying. Elspeth was answered immediately and still doubled tokens, killed one of Tom's creatures, and, in the pilot's words, 'pulled attention while the vampire board kept growing underneath'. Her value in this game was partly the removal she absorbed, which no goldfish figure will show.",
+        "A doubler that pulls removal is still paying. Elspeth was answered immediately and still doubled tokens, killed one of Tom's creatures, and, in the pilot's words, 'pulled attention while the vampire board kept growing underneath'. Her value in this game was partly the removal she absorbed, which no goldfish figure will show. The doubling half of the note is now verified rather than assumed: checker-passed stack 010 resolves an eminence trigger with Edgar in the COMMAND ZONE, having never entered the battlefield, and finds that Elspeth applies to the token anyway — her static ability is a replacement effect keying off the event \"one or more tokens would be created under your control\", which needs nothing from Edgar's zone. On a board holding Elspeth, Anointed Procession and Mondrak, one eminence trigger makes EIGHT tokens (1 -> 2 -> 4 -> 8), the same under all six application orders.",
         "Being the whole table's target is the plan, and the rebuild held: 'the whole table decided Markov was the problem immediately, which is the correct read and also the price of the plan', and the low curve plus the mana base put a real board back 'in a turn or two, every time' through multiple wipes. What did not hold was the refuel — both cards Tom countered were the ones that would have kept the deck going.",
-        "Wipe a compounding threat before it outgrows the answer. Olivia's Wrath's X is the pilot's own Vampire count, so both sides of that race were growing at once; the note does not say which was growing faster, only that the wipe came too late."
+        "Wipe a compounding threat before it outgrows the answer. Olivia's Wrath's X is the pilot's own Vampire count, so both sides of that race were growing at once; the note does not say which was growing faster, only that the wipe came too late.",
+        "Three wipes without protection was variance, not a shortfall — the pilot's own reading: \"yup, I ate three wipes without protection... I have it in the deck, it just wasn't in hand. some games that's the way it is.\" The five protection spells (Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat) are in the 99, and goldfish measures the protection group held in 61.0% of games and 49.8% by turn six — about a coin flip. That is the honest frame for this game: the deck's answer to a sweeper is a card it is holding roughly half the time by six, and this was the other half. Do not read it as a hole in the list."
       ],
       "engine_stages": [
         "mana",
         "ignition",
-        "conversion",
         "fuel",
+        "conversion",
         "output",
+        "protection",
         "wincon"
       ],
       "lines": [
@@ -87,24 +89,15 @@
             "Edgar Markov",
             "Elspeth, Storm Slayer"
           ],
-          "status": "needs a stack scenario"
+          "status": "verified",
+          "stack_artifact": "stacks/010-elspeth-third-doubler.json"
         }
       ],
       "open_questions": [
         {
-          "question": "Does Elspeth, Storm Slayer double Edgar Markov's eminence tokens, and how does she compose with the deck's other token doublers? Stack 002 is checker-passed for eminence through Anointed Procession plus Mondrak and never names Elspeth, so her half of the note ('she doubled a couple of tokens for me') rests on nothing verified.",
-          "settled_by": "resolve-stack",
-          "why_it_matters": "the pilot singled her out as the card he liked most in the game, and goldfish_targets.json counts her as a member of the token-multiplier group (assembled 73.5%, 62.6% by turn six) — the group's rate is being quoted for a card no passing stack covers."
-        },
-        {
-          "question": "Is Edgar arriving late a property of the list or of this game's piloting? The note's reason is attention; the goldfish's 6.705 mean cast turn is produced by a model that casts the commander on the first affordable turn and models no opponents, so the two agree on the outcome and cannot be compared on the cause.",
+          "question": "\"Two counters decided it\" — Tom countered Champion of Dusk (the refuel the note calls \"the refuel that would have closed the game\") and Bloodthirsty Conqueror. With the wipes settled as variance and Edgar's timing settled as piloting, resolving a key spell through a seat holding counterspells is the one cause the note names that no artifact has looked at. Is that also variance, or is it a real property of a deck that is the table's archenemy from turn three?",
           "settled_by": "diagnose",
-          "why_it_matters": "the two fixes are different and only one is the doctor's: if the commander is structurally late the answer is ramp or cost reduction in the 99, and if it is attention the answer is a piloting habit and the list should not move. One logged game cannot tell them apart."
-        },
-        {
-          "question": "The note describes eating 'multiple board wipes' and names none of the deck's five protection spells (Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat), and the loss is attributed to 'the third wipe plus the counter on my draw'. Is the deck's answer to repeated sweepers rebuild speed alone, and is that enough against a table that has decided you are the problem?",
-          "settled_by": "diagnose",
-          "why_it_matters": "goldfish reports the protection group assembled in 61.0% of games and 49.8% by turn six, so availability is roughly a coin flip — but the goldfish models no wipes and no held mana, and the note gives no evidence either way about whether these cards were in hand. This is the pilot's own stated cause of the loss and it is the one part of it no current artifact measures."
+          "why_it_matters": "the note says the whole table's answers were aimed at this deck — \"I was the reason the table's answers left their hands\" — so the deck meets interaction more often than a seat that is not the archenemy. Goldfish cannot speak to it at all: its stated assumption is \"Simulates resource development, not full games (no interaction, no removal)\". One logged game is not enough to size it, which is exactly why it is a question rather than a takeaway."
         }
       ]
     }
