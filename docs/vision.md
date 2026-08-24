@@ -42,7 +42,8 @@ not so anyone else is supported.
 
 **`experiment <slug> --a <ref> --b <ref> --vs <pod> --games N` is the flagship.** Two
 versions of a deck, the same table, the same N, the same seeds, one artifact carrying both
-arms, the delta, and the sentence people skip: whether the intervals overlap. Same seeds
+arms, the delta, and an interval on the DIFFERENCE of every figure — never a comparison of
+two marginal intervals, which is the overlap fallacy and was deleted from the code. Same seeds
 are **not** paired games — a changed list changes every shuffle — so seeds buy per-arm
 replayability and the control is N. An A/A is refused with the reason.
 

@@ -155,7 +155,12 @@ runs two versions of one deck — a version ref (`V4`, a tag, a sha) or `working
 the SAME table, N games per arm, and writes one accumulating artifact under
 `data/decks/<slug>/experiments/`: each figure for both arms (win rate with intervals,
 elimination turn, damage dealt and taken, first attack, the token figures), the delta,
-and the one sentence people skip — whether the win-rate intervals overlap at this N.
+and — on EVERY figure — a `ci95_diff`, an interval on the DIFFERENCE (Newcombe for
+proportions, Welch plus a permutation p for means, a bootstrap on skewed ones) with
+`excludes_zero` beside it, plus a `power` block giving the design's minimum detectable
+difference so an uninformative result says so instead of reading as no effect. It used to
+report whether the two arms' MARGINAL intervals overlapped; that key is deleted rather than
+deprecated, because non-overlap implies a difference while overlap implies nothing at all.
 Arms run under their own Forge meta names and never touch the deck directory; each arm's
 decklist text rides IN the artifact, so the gitignored logs are exactly regenerable.
 **Same seeds are not paired games** — a changed list changes every shuffle; the control
