@@ -63,3 +63,41 @@ What "better" means now, in rough priority:
 
 - The previous pass's Viscera Seer promote is accepted reasoning; re-rank
   everything else under this mandate rather than inheriting keep verdicts.
+
+## 2026-08-23 — the pilot closes two of the debrief's open questions
+
+The `debrief` on game 001 raised three open questions and routed all three. The
+pilot answered two of them directly, and those answers close them: they are the
+pilot's own judgment about his own game, which is the one kind of evidence no
+loop here can generate.
+
+**Was Edgar arriving late structural, or piloting?** Piloting.
+
+> "Edgar was NOT structurally late, that was piloting (and in my opinion an
+> error)."
+
+This settles a question `diagnose` was routed. It also resolves the disagreement
+recorded in the debrief's takeaways: the goldfish reports the commander landing
+late (mean cast turn 6.705) and *cannot* explain why, because it casts the
+commander on the first affordable turn and models no interaction. The note gave
+an attention reason. The pilot now confirms the attention reason and calls it an
+error. **Do not open a list-level fix for this** — the deck is not too slow to
+deploy its commander; the commander was not deployed. Nothing should be cut or
+added on account of it.
+
+**Three board wipes eaten and no protection spell named — is rebuild speed the
+whole answer?** No, and there is nothing to fix.
+
+> "yup, I ate three wipes without protection... I have it in the deck, it just
+> wasn't in hand. some games that's the way it is."
+
+The protection is present and was not drawn. The goldfish already prices exactly
+this: the protection group assembles in 61.0% of games and 49.8% by turn six, so
+roughly half of games reach turn six without it, and this was one of them. A
+single game that lands on the wrong side of a measured rate is evidence about
+variance, not about the list. **Do not treat this as a protection shortfall.**
+
+Both answers are recorded here rather than edited into `log_annotations.json`,
+which is derived: the debrief agent wrote what it could see, correctly, and
+rewriting its output to add what only the pilot knows would put the pilot's
+words behind an agent's byline.

@@ -1,0 +1,38 @@
+{
+  "id": "010",
+  "slug": "elspeth-third-doubler",
+  "deck": "edgar-vampires",
+  "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Elspeth, Storm Slayer",
+        "Anointed Procession",
+        "Mondrak, Glory Dominus",
+        "six lands (any colours), all untapped"
+      ],
+      "opponents": [
+        {"life": 40, "board": []},
+        {"life": 40, "board": []}
+      ]
+    },
+    "hand": ["Gifted Aetherborn"],
+    "graveyard": [],
+    "mana_available": "{B}{B} from two untapped lands",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gifted Aetherborn (Vampire spell)",
+        "controller": "you",
+        "note": "cast for {B}{B}; Edgar Markov is in the COMMAND ZONE and has never been cast this game; his eminence trigger 'create a 1/1 black Vampire creature token' is on the stack above the spell, having triggered on the cast"
+      }
+    ],
+    "question": "Resolve the eminence trigger. (a) Does Elspeth, Storm Slayer's static ability apply to the token created by Edgar Markov's eminence trigger while Edgar is in the COMMAND ZONE and has never been on the battlefield? (b) With Elspeth, Anointed Procession and Mondrak all on the battlefield, how many 1/1 black Vampire tokens does that single eminence trigger create, and does the order in which the three replacement effects are applied change the number? (c) Who chooses that order?",
+    "extras": {
+      "context": "Edgar Markov's eminence: 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.' Elspeth, Storm Slayer: 'If one or more tokens would be created under your control, twice that many of those tokens are created instead.' Mondrak, Glory Dominus: identical wording to Elspeth. Anointed Procession is worded differently — 'If an EFFECT would create one or more tokens under your control, IT creates twice that many of those tokens instead' — and whether that difference matters here is part of the question.",
+      "why_this_matters": "goldfish_targets.json counts Elspeth, Storm Slayer inside the token-multiplier group and therefore inside THE GO-WIDE KILL, the deck's headline assembled rate. Stack 002 is the only checker-passed artifact about doubler token math and it names Anointed Procession and Mondrak and never names Elspeth. The declaration is currently unproven, and the pilot singled Elspeth out as the card he liked most in game 001.",
+      "scope": "Replacement effects and token creation only. Vampire Socialite and Cordial Vampire are deliberately OFF this board so the count is not entangled with counter math — stack 002 already covers that."
+    }
+  }
+}
