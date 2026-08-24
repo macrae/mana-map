@@ -39,6 +39,46 @@ WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting:
   critic's job. Do not try to close this hole with string matching on resolution
   prose: the same wrong line would survive a rephrase, and a check that catches
   one wording is worse than an honest gap somebody knows about.
+
+  **The ACTING-STAGE check: prototyped fleet-wide 2026-08-24 and REJECTED, with
+  numbers, so the next person to have the idea meets the measurement instead of
+  re-deriving it.** A third real example had just been caught by the critic —
+  edgar `lines[4]` routed an arrow through Cordial Vampire and cited stack 002,
+  whose scenario says twice, in the negative, that Cordial Vampire never triggers
+  because nothing dies. Same failure as radagast's two, third deck, still invisible
+  to everything below.
+
+  Two formulations were implemented and RUN over all nine tracked `engine.json`
+  and their passing stacks — 120 lines, 57 of them verified — rather than reasoned
+  about. Measured three times independently (critic, engineer, orchestrator), same
+  numbers each time:
+
+    * *as first proposed* — "a `via` card from the `from` stage must appear in the
+      cited scenario's `stack[]`" — fires **46 times across 57 verified lines**,
+      including 9 of radagast's 9. Dead on arrival. Most of that is structural: a
+      replacement effect never uses the stack at all, and 003's and 007's `stack[]`
+      objects are prose about a trigger ("Sanctum Seeker's attack trigger") from
+      which `line_cards` extracts no card name, so the check sees an empty set and
+      condemns correct lines.
+    * *the acting-stage variant* — extract `stack[]` cards with `line_cards`; if
+      they all belong to ONE stage, that stage is the scenario's acting stage, and
+      a line whose `from` is that stage must have `via` intersect it. A scenario
+      yielding no card name has no acting stage and tests nothing, which removes
+      the false positives above instead of hiding them. It fires **once fleet-wide:
+      ur-dragon `lines[3]`, a FALSE POSITIVE on a critic-passed model** — its
+      `conversion` stage holds Lathliss on the stack and Miirym on the board, and
+      `via` correctly names the board card. Counting edgar's defect, 1-in-2
+      precision.
+
+  The reason it cannot be fixed is the useful part: **edgar's defect and
+  ur-dragon's correct line are structurally identical.** Both are a line whose
+  `from` stage holds one card on the stack (the cast) and one on the battlefield
+  (the converter), with `via` naming the battlefield one. What separates them is a
+  rules fact — Cordial Vampire never triggers because nothing dies — and no shape
+  test can see it. Scoping the check by `carries` was rejected for a second,
+  independent reason: `carries` is free prose the engineer writes, so renaming a
+  line evades the check silently, which is the rephrase failure this docstring
+  already warns about one paragraph up.
 """
 
 import json
