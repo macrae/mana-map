@@ -203,7 +203,12 @@ the last adversary has finished is unreviewed by construction.
 
 - **`/resolve-stack ur-dragon 007`** — the scenario is written, preflighted
   (`validate-stack --scenario-only`: OK) and committed as
-  `stacks/007-cascade-without-panharmonicon.json`. It is stack **002's exact board minus
+  `stacks/queued/007-cascade-without-panharmonicon.json` — in `queued/` rather than
+  `stacks/`, because `validate-stack`'s glob is non-recursive and the citation-contract
+  test requires every tracked stack to carry a PASSING resolution, so a staged scenario in
+  `stacks/` turns the suite red. **Move it up one directory to run it.** That tension is
+  real and worth noticing: `--scenario-only` exists to preflight in place, and a preflighted
+  scenario cannot then be committed where it was preflighted. It is stack **002's exact board minus
   Panharmonicon**, derived from 002 rather than invented, and answers the three things
   `diagnosis.json`'s `open_questions[0]` asks: how many token copies and how much damage
   without the doubler; whether it is still lethal to the 32-life seat 002 kills with 64;
