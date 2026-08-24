@@ -62,7 +62,7 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 | `sisay` | 1/3 | 4/4 | pass | 0 | 0 | `retired` — **not the pilot's deck** |
 | `heliod` | 6/6 | 4/4 | pass | 0 | 0 | white short by 16, not 5 — see the DFC fix |
 | `ur-dragon` | 6/6 | 4/4 | pass | 0 | 0 | two-engine rebuild proposed, not applied |
-| `edgar-vampires` | 9/9 (7 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress (v4 LOCK) |
+| `edgar-vampires` | 11/11 (9 presentable) | 4/4 | pass | 1 | 1 | **v1.0.0 baselined, sleeved; both loops pass; 1 game logged** |
 | `gishath` | 5/5 | 4/4 | pass | 0 | 0 | |
 | `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress |
 | `radagast` | 8/8 | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21) |
