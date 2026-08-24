@@ -141,27 +141,27 @@
       },
       {
         "n": 5,
-        "action": "The wording difference does NOT change anything on this board. Anointed Procession requires that 'an EFFECT would create one or more tokens under your control'; Elspeth and Mondrak use the passive 'if one or more tokens WOULD BE created under your control'. Here the tokens would be created by the one-shot effect produced by the eminence triggered ability as it resolves, and an effect is by definition something that happens as a result of a spell or ability — so Procession's narrower 'an effect' clause is satisfied and all three describe the same pending event. Nor does application order break Procession's wording: when one of the other two is applied first the event is replaced by a modified event, which is still that same resolving effect creating tokens under your control, and a replacement effect may become applicable to an event as a result of another effect modifying it. The difference could only bite where tokens would be created by something that is not an effect of a spell or ability; nothing on this board is such a source.",
-        "effect": "All three replacement effects apply to the single eminence token-creation event, in any order.",
+        "action": "The wording difference does NOT change anything, in any application order. Anointed Procession requires that 'an EFFECT would create one or more tokens under your control'; Elspeth and Mondrak use the passive 'if one or more tokens WOULD BE created under your control'. CR 614.16 is written for Procession's exact template and disposes of both halves of the question. First half: the tokens here would be created by the one-shot effect the eminence triggered ability produces as it resolves — an effect being by definition something that happens as a result of a spell or ability — which is precisely 614.16's 'the effect of a resolving spell or ability creates a token'. Second half: when one of the other two doublers is applied first, the original event is replaced and a modified event occurs instead, and 614.16 says these effects apply in that case too — they apply 'if another replacement or prevention effect does so, even if the original event being modified wasn't itself an effect'. That final clause is stronger than this board needs and it removes the residual gap: there is no ordering, and no token source, for which Procession's narrower wording would drop out while Elspeth's and Mondrak's held.",
+        "effect": "All three replacement effects apply to the single eminence token-creation event, and all three remain applicable whichever of them is applied first.",
         "citations": [
           {
             "rule": "609.1",
             "quote": "An effect is something that happens in the game as a result of a spell or ability. When a spell, activated ability, or triggered ability resolves, it may create one or more one-shot or continuous effects."
           },
           {
-            "rule": "614.6",
-            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+            "rule": "614.16",
+            "quote": "These replacement effects apply if the effect of a resolving spell or ability creates a token or puts a counter on a permanent, and they also apply if another replacement or prevention effect does so, even if the original event being modified wasn’t itself an effect."
           },
           {
-            "rule": "616.2",
-            "quote": "A replacement or prevention effect can become applicable to an event as the result of another replacement or prevention effect that modifies the event."
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
           }
         ]
       },
       {
         "n": 6,
-        "action": "ANSWER (c): YOU choose the order. Three replacement effects are attempting to modify the same event affecting you, so the affected player chooses which to apply. None of the three is a self-replacement effect — each is a continuous effect from the static ability of a separate permanent, not part of the resolving eminence ability replacing its own effect — so the forced first choice for self-replacement effects does not apply here, and neither do the forced choices for effects modifying under whose control an object enters, copy effects, or back-face effects. That leaves the general step: any applicable effect may be chosen. No opponent chooses anything and no APNAP ordering is needed, since you are the only affected player.",
-        "effect": "You pick which doubler applies first, then which of the remaining two applies next.",
+        "action": "ANSWER (c), scoped to this board: YOU choose the order. Three replacement effects are attempting to modify the same event affecting you, and you are the only affected player, so you choose which to apply, following 616.1's steps in the order they are written. 616.1a — none of the three is a self-replacement effect: each is a continuous effect from the static ability of a separate permanent (step 4), not an effect of the resolving eminence ability replacing that ability's own effect — so proceed to 616.1b. 616.1b — none would modify under whose control an object would enter the battlefield: each changes only HOW MANY tokens are created, and control is already fixed by 111.2 (step 3) — proceed to 616.1c. 616.1c — none would cause an object to become a copy of another object as it enters the battlefield — proceed to 616.1d. 616.1d — none would cause a card to enter the battlefield with its back face up; no double-faced card is entering here at all — proceed to 616.1e, where any applicable effect may be chosen. One further constraint has to be checked: 616.1g says an effect applying to an event CONTAINED within another cannot be chosen until after the outer one, and its own example is a token doubler alongside an 'as this creature enters' effect on the token. It is VACUOUS here — nothing on this board is an 'enters' replacement effect, because Vampire Socialite and Cordial Vampire are deliberately off it (extras.scope). So the free choice of 616.1e is the answer FOR THIS BOARD and does not generalise: on the deck's real go-wide board Socialite is present, and its 'each other Vampire you control enters with an additional +1/+1 counter' is a 614.1d '[Objects] enter' replacement effect (checker-passed stack 002, step 6), so 616.1g would there force the doublers to be chosen before it. That constrains the ORDER only; it does not change the count.",
+        "effect": "On this board you pick which doubler applies first and which of the remaining two applies next, with all six orders open. With an 'enters' replacement effect also present, 616.1g would remove that freedom without changing the number of tokens.",
         "citations": [
           {
             "rule": "616.1",
@@ -176,8 +176,28 @@
             "quote": "If any of the replacement and/or prevention effects are self-replacement effects (see rule 614.15), one of them must be chosen. If not, proceed to rule 616.1b."
           },
           {
+            "rule": "616.1b",
+            "quote": "If any of the replacement and/or prevention effects would modify under whose control an object would enter the battlefield, one of them must be chosen. If not, proceed to rule 616.1c."
+          },
+          {
+            "rule": "616.1c",
+            "quote": "If any of the replacement and/or prevention effects would cause an object to become a copy of another object as it enters the battlefield, one of them must be chosen. If not, proceed to rule 616.1d."
+          },
+          {
+            "rule": "616.1d",
+            "quote": "If any of the replacement and/or prevention effects would cause a card to enter the battlefield with its back face up, one of them must be chosen"
+          },
+          {
             "rule": "616.1e",
             "quote": "Any of the applicable replacement and/or prevention effects may be chosen."
+          },
+          {
+            "rule": "616.1g",
+            "quote": "While following the steps in 616.1a–f, one replacement or prevention effect may apply to an event, and another may apply to an event contained within the first event. In this case, the second effect can’t be chosen until after the first effect has been chosen."
+          },
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read “[This permanent] enters . . .” or “[Objects] enter [the battlefield] . . .” are replacement effects."
           }
         ]
       },
@@ -240,10 +260,21 @@
             "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
           }
         ]
+      },
+      {
+        "n": 11,
+        "action": "Final state-based-action check before any player next receives priority. Nothing is at a listed condition: the eight tokens are undamaged 1/1s and Gifted Aetherborn is an undamaged 2/3, so no creature has 0 or less toughness and none has lethal damage marked; no player is at 0 or less life; and the legend rule reaches nothing, since Elspeth and Mondrak are each the only legendary permanent you control with their name and the tokens are not legendary. No triggered abilities are waiting to be put on the stack.",
+        "effect": "No state-based actions are performed and nothing is put on the stack. The stack is empty and the active player receives priority with the board as recorded below.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
       }
     ],
     "final_state": {
-      "summary": "(a) YES. Edgar's eminence is an ability word with no rules meaning (207.2c); the ability itself states the zones it functions in, so it functions from the command zone (113.6b) and its intervening-'if' still holds on resolution (603.4). Elspeth, Storm Slayer needs nothing from Edgar's zone: she is a permanent you control on the battlefield, her static ability creates a continuous replacement effect (604.2, 614.1a), and a replacement effect keys off the EVENT it watches for (614.1) — here 'one or more tokens would be created under your control', which holds because you control the resolving trigger (108.4a, 603.3a, 608.2c) and the tokens would enter under your control (111.2). (b) EIGHT 1/1 black Vampire tokens from the one trigger: 1 → 2 → 4 → 8. Each doubler gets exactly one opportunity at the event and any modified event replacing it (614.5), so no doubler applies twice, and because each multiplies by 2 the result is identical for all six orders. This composes with, and does not contradict, checker-passed stack 002, which records Anointed Procession + Mondrak alone as 1 → 2 → 4; Elspeth is a third instance of the same doubling and 8 = 4 × 2. The wording difference is inert here: Anointed Procession's 'if an EFFECT would create' is satisfied because the eminence trigger's resolution produces a one-shot effect (609.1), and after another doubler applies the modified event is still that effect creating tokens under your control (614.6, 616.2). It would only matter for a token source that is not an effect of a spell or ability, and there is none on this board. (c) YOU do — the affected player chooses the order (616.1); none of the three is a self-replacement effect (614.15, 616.1a), so the general step applies (616.1e) and the process repeats until all three are applied (616.1f). Afterwards Gifted Aetherborn resolves as a 2/3 deathtouch/lifelink (608.3a); the doublers do not touch it because it is not a token. Two scenario-block frictions, neither load-bearing: the board lists 'six lands, all untapped' while the stack note says Gifted Aetherborn was already cast for {B}{B} (two of those lands must now be tapped, or the mana came from elsewhere), and Gifted Aetherborn is listed in `hand` while also being on the stack. Neither changes the token count.",
+      "summary": "(a) YES. Edgar's eminence is an ability word with no rules meaning (207.2c); the ability itself states the zones it functions in, so it functions from the command zone (113.6b) and its intervening-'if' still holds on resolution (603.4). Elspeth, Storm Slayer needs nothing from Edgar's zone: she is a permanent you control on the battlefield, her static ability creates a continuous replacement effect (604.2, 614.1a), and a replacement effect keys off the EVENT it watches for (614.1) — here 'one or more tokens would be created under your control', which holds because you control the resolving trigger (108.4a, 603.3a, 608.2c) and the tokens would enter under your control (111.2). (b) EIGHT 1/1 black Vampire tokens from the one trigger: 1 → 2 → 4 → 8. Each doubler gets exactly one opportunity at the event and any modified event replacing it (614.5), so no doubler applies twice, and because each multiplies by 2 the result is identical for all six orders. This composes with, and does not contradict, checker-passed stack 002, which records Anointed Procession + Mondrak alone as 1 → 2 → 4; Elspeth is a third instance of the same doubling and 8 = 4 × 2. The wording difference is inert, and CR 614.16 — the rule written for Anointed Procession's exact template — is why: those effects apply when the effect of a resolving spell or ability creates the token, which the eminence trigger's resolution is (609.1), AND when another replacement or prevention effect does so, “even if the original event being modified wasn’t itself an effect”. So Procession applies whether it is chosen first or chosen after another doubler has already replaced the event (614.6), and no ordering and no token source leaves it behind. (c) YOU do, on THIS board — the affected player chooses the order (616.1), and 616.1's forced-choice steps are walked rather than skipped: no self-replacement effect (614.15, 616.1a), nothing modifying control on entry (616.1b), no copy-on-entry (616.1c), no back-face-up (616.1d), which reaches the general step where any applicable effect may be chosen (616.1e), repeated until all three are applied (616.1f). That freedom is scoped: 616.1g forces an effect applying to a contained event to be chosen second, and it is vacuous here only because Vampire Socialite and Cordial Vampire are off this board. On the deck's real go-wide board Socialite is a 614.1d '[Objects] enter' replacement effect (checker-passed stack 002, step 6) and 616.1g would order the doublers ahead of it — constraining the order, never the count. Afterwards Gifted Aetherborn resolves as a 2/3 deathtouch/lifelink (608.3a); the doublers do not touch it because it is not a token. A final state-based-action check performs nothing (704.3).",
       "you": {
         "battlefield_new": [
           "8x Vampire token — 1/1 black Vampire creature token",
@@ -274,5 +305,258 @@
         }
       ]
     }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Byte-identical to iteration 1. Full rule: top (last-added) object resolves when all pass. Trigger-above-spell ordering remains a scenario premise, not a claim."
+      },
+      {
+        "step": 2,
+        "rule": "207.2c",
+        "status": "supported",
+        "note": "Byte-identical. Definition sentence establishes ability words have no rules meaning."
+      },
+      {
+        "step": 2,
+        "rule": "207.2c",
+        "status": "supported",
+        "note": "Byte-identical. Second quote is from 207.2c's own list and does contain 'eminence'."
+      },
+      {
+        "step": 2,
+        "rule": "113.6",
+        "status": "supported",
+        "note": "Byte-identical. Establishes the default that abilities of other objects function only on the battlefield, and that exceptions follow."
+      },
+      {
+        "step": 2,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Byte-identical. Eminence names 'in the command zone or on the battlefield'. Same route checker-passed stack 002 step 2 uses."
+      },
+      {
+        "step": 2,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Byte-identical. Intervening-'if' rechecked on resolution; Edgar still in the command zone per the scenario."
+      },
+      {
+        "step": 3,
+        "rule": "108.4",
+        "status": "supported",
+        "note": "Byte-identical. A card that is not a permanent or spell has no controller."
+      },
+      {
+        "step": 3,
+        "rule": "108.4a",
+        "status": "supported",
+        "note": "Byte-identical. Supplies the owner where a controller is asked for and none exists."
+      },
+      {
+        "step": 3,
+        "rule": "603.3a",
+        "status": "supported",
+        "note": "Byte-identical. Full rule incl. the delayed-trigger carve-out, inapplicable here; 108.4a completes the chain."
+      },
+      {
+        "step": 3,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Byte-identical. Controller follows the instructions."
+      },
+      {
+        "step": 3,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Byte-identical. Create = put the specified number onto the battlefield."
+      },
+      {
+        "step": 3,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Byte-identical. Creator owns the token; it enters under that player's control."
+      },
+      {
+        "step": 4,
+        "rule": "604.2",
+        "status": "supported",
+        "note": "Byte-identical. Elspeth is a Legendary Planeswalker (cards.json), i.e. a permanent, so 'the permanent with the ability remains on the battlefield' is satisfied."
+      },
+      {
+        "step": 4,
+        "rule": "113.3d",
+        "status": "supported",
+        "note": "Byte-identical. Same proposition from the abilities chapter; redundant with 604.2, not irrelevant."
+      },
+      {
+        "step": 4,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Byte-identical. Oracle re-verified in cards.json: Elspeth, Storm Slayer reads 'If one or more tokens would be created under your control, twice that many of those tokens are created instead.' Mondrak's wording is identical, as extras.context claims."
+      },
+      {
+        "step": 4,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "Byte-identical. 'Such effects watch for a particular event that would happen' is precisely the proposition that a replacement effect keys off the EVENT, not the zone of the source that would cause it. Re-enumerated 614.1 through 614.17d: no subrule conditions a replacement effect on the zone of the object whose ability causes the event."
+      },
+      {
+        "step": 4,
+        "rule": "614.4",
+        "status": "supported",
+        "note": "Byte-identical. Elspeth was on the battlefield before the trigger resolved."
+      },
+      {
+        "step": 5,
+        "rule": "609.1",
+        "status": "supported",
+        "note": "REVISED STEP. 'An effect is something that happens in the game as a result of a spell or ability' establishes the one-shot effect the resolving eminence trigger produces, which is what feeds 614.16's first clause."
+      },
+      {
+        "step": 5,
+        "rule": "614.16",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED. 614.16 is now cited and 616.2 is dropped, as instructed. Quote is verbatim and covers both clauses. Crucially, the residual-boundary claim I refuted in iteration 1 ('could only bite where tokens would be created by something that is not an effect of a spell or ability') is GONE from step 5 AND from final_state.summary — checked by string probe, not by eye — and nothing equivalent is reworded elsewhere. Its replacement is the logical inverse, and it is genuinely licensed rather than merely asserted: 'there is no ordering, and no token source, for which Procession's narrower wording would drop out while Elspeth's and Mondrak's held' is a CONDITIONAL claim, and 614.16 closes it in two legs — if the original event is an effect of a resolving spell or ability, clause 1 applies Procession; if it is not, then Elspeth's or Mondrak's applying (which 616.1f forces, since the process repeats until no effect is left) makes 'another replacement or prevention effect' the creator, and clause 2 applies Procession 'even if the original event being modified wasn't itself an effect'. I initially read this as an unenumerated universal over the whole card pool and it is not; the 'while Elspeth's and Mondrak's held' antecedent is what makes it derivable."
+      },
+      {
+        "step": 5,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "REVISED STEP. 'If an event is replaced, it never happens. A modified event occurs instead' correctly carries the second half — the modified event another doubler produces."
+      },
+      {
+        "step": 6,
+        "rule": "616.1",
+        "status": "supported",
+        "note": "REVISED STEP. Affected player chooses; you are the only affected player (tokens would be created under your control), so the full rule's APNAP sentence is correctly held inapplicable. Answer (c) is UNCHANGED from iteration 1 — 'ANSWER (c), scoped to this board: YOU choose the order' adds a scope caveat and moves nothing."
+      },
+      {
+        "step": 6,
+        "rule": "614.15",
+        "status": "supported",
+        "note": "REVISED STEP. Definition of self-replacement. Full rule's 'the text can be a separate ability, particularly when preceded by an ability word' does NOT drag eminence in — eminence is the ability creating the effect, not one replacing its own effect. Carve-out applied, not waved past."
+      },
+      {
+        "step": 6,
+        "rule": "616.1a",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED (leg 1 of 4). Cited and correctly answered in the negative: each doubler is a continuous effect from the static ability of a separate permanent."
+      },
+      {
+        "step": 6,
+        "rule": "616.1b",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED (leg 2 of 4). Newly cited. Exclusion correctly stated: each doubler changes only HOW MANY tokens are created; control is fixed by 111.2, not modified. Rule's 'If not, proceed to rule 616.1c' matches the prose."
+      },
+      {
+        "step": 6,
+        "rule": "616.1c",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED (leg 3 of 4). Newly cited. No copy-on-entry effect on this board; verified against every permanent's oracle text in cards.json (Elspeth, Anointed Procession, Mondrak)."
+      },
+      {
+        "step": 6,
+        "rule": "616.1d",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED (leg 4 of 4). Newly cited. Quote is truncated before '(See rule 701.27...) If not, proceed to 616.1e', but the prose's 'proceed to 616.1e' is established by the full rule text. No double-faced card is entering. Judged against the entire rule: supported."
+      },
+      {
+        "step": 6,
+        "rule": "616.1e",
+        "status": "supported",
+        "note": "Now genuinely REACHED rather than asserted. In iteration 1 'that leaves the general step' rested on three uncited exclusions; 616.1a-d are all cited now, so the walk to 616.1e is established end to end."
+      },
+      {
+        "step": 6,
+        "rule": "616.1g",
+        "status": "supported",
+        "note": "ITERATION-1 FINDING RESOLVED, and the cross-reference is REAL. Quote verbatim (the two rule sentences, Example excluded). Three checks made. (1) Vacuity on this board: verified by reading every permanent's oracle text in cards.json — Elspeth (static doubler + three loyalty abilities), Mondrak (static doubler + an activated indestructible-counter ability), Anointed Procession (static doubler), six lands. None is an 'enters' replacement effect, so 616.1g is genuinely vacuous and answer (c) and the count of 8 stand. (2) The 616.1g Example characterisation ('a token doubler alongside an as-this-creature-enters effect on the token') is accurate: Doubling Season plus a Voice of All token with 'As this creature enters, choose a color'. (3) THE STACK 002 ATTRIBUTION IS NOT FABRICATED. I read 002 rather than taking 010's word: 002's checker verdict is 'pass', and its step 6 cites 614.1d for exactly Vampire Socialite's 'each other Vampire you control enters with an additional +1/+1 counter', with a 'supported' finding. Socialite's oracle text re-verified in cards.json. The rules consequence also holds: entering the battlefield is an event contained within creating a token (616.1g's own Example says so), so the doublers would have to be chosen ahead of Socialite. ONE IMPRECISION, not a defect: the go-wide claim omits that Socialite's replacement is conditional ('As long as an opponent lost life this turn'), so 616.1g would bind there only when that condition is met. It is hedged as 'would there force' and it constrains order, never count."
+      },
+      {
+        "step": 6,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "Newly cited, and correctly: 'Continuous effects that read [Objects] enter [the battlefield]' covers Socialite's 'each other Vampire you control enters with...'. Same citation stack 002 step 6 uses for the same card. SECOND IMPRECISION, recorded and not failed: step 6 and the summary give the vacuity of 616.1g as being 'because Vampire Socialite and Cordial Vampire are deliberately off it' / 'only because ... are off this board'. Cordial Vampire's ability is 'Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control' (cards.json) — a triggered ability, never an 'enters' replacement effect — so its absence is not a reason 616.1g is vacuous. Socialite's absence alone is. No citation is attached to that clause, it touches none of the three answers, the count or the final state, and it is inherited verbatim from extras.scope."
+      },
+      {
+        "step": 7,
+        "rule": "616.1f",
+        "status": "supported",
+        "note": "Byte-identical. 'taking into account only replacement or prevention effects that would now be applicable' is exactly the repeat mechanism claimed."
+      },
+      {
+        "step": 7,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Byte-identical. First quote directly establishes that no doubler applies twice and that none re-applies to a modified event replacing the original."
+      },
+      {
+        "step": 7,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Byte-identical. Second quote is from 614.5's own Example and the characterisation is accurate: two doubling permanents take a 2-damage creature to 8, four times the original. ARITHMETIC RE-VERIFIED: three effects each multiplying by 2, each applying once, give 1x2x2x2 = 8; multiplication is commutative so all 3! = 6 orders give 8. ANSWER (b) is UNCHANGED at eight. SIBLING COMPARABILITY — I MUST CORRECT MY OWN ITERATION-1 NOTE. I wrote then that scenario-facts 'lists 002 as same-body-count and comparable'. It no longer does: commit 72fc8aa (2026-08-24 07:53, i.e. AFTER both my iteration-1 report and the resolver's revision) fixed scenario_facts.board_bodies, which had been misfiling bare creature entries with no P/T in the prose. scenario-facts now reports 002 at 3 bodies against 010's 1 and lists 002 under 'Sibling boards that are NOT like-for-like'. My earlier comparability confirmation therefore rested on a bug and is withdrawn. The quote nevertheless survives on the note's own terms ('must never be quoted against each other without saying what differs'), for three reasons I checked rather than assumed. (i) What is quoted is 002's DOUBLER CHAIN (1 -> 2 -> 4, its step 4, a 'supported' 614.5 finding), not any of its totals; 010 never quotes 002's five-new-bodies figure or its 2/2 token sizes. (ii) That chain is provably independent of the differing bodies: Socialite adds +1/+1 counters and Cordial Vampire triggers on death, and neither multiplies tokens. (iii) The difference is stated in BOTH directions at the point of quoting and twice more — step 7 says 'Anointed Procession + Mondrak alone', extras.scope names Socialite and Cordial Vampire as deliberately off this board and points at 002, and extras.why_this_matters says 002 'names Anointed Procession and Mondrak and never names Elspeth'."
+      },
+      {
+        "step": 8,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Byte-identical. Tokens are put onto the battlefield."
+      },
+      {
+        "step": 8,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Byte-identical. Under your control."
+      },
+      {
+        "step": 8,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Byte-identical. Supports the no-re-trigger claim. As in iteration 1: 603.2g states the negative directly and is what 002 cites, so tightening would make the two artifacts cite alike. Not a defect."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Byte-identical. SBA check before priority. Full rule's second clause ('all triggered abilities that are waiting to be put on the stack are put on the stack') is addressed by the step's own 'No triggered abilities are waiting to go on the stack'."
+      },
+      {
+        "step": 10,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Byte-identical. Targetless creature spell becomes a permanent under its controller's control. Gifted Aetherborn re-verified in cards.json as a 2/3 Aetherborn Vampire with deathtouch and lifelink; it is not a token, so the doublers correctly do not touch it."
+      },
+      {
+        "step": 11,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "ITERATION-1 MISSING-STEP FINDING RESOLVED. The final SBA check is present and it does the whole of 704.3's job rather than gesturing: it names the conditions it clears (no creature at 0 or less toughness, none with lethal damage marked, no player at 0 or less life, legend rule reaches nothing) and it addresses the rule's triggered-abilities clause ('No triggered abilities are waiting to be put on the stack'). The legend-rule claim is correct on this board — Elspeth and Mondrak are each the only legendary permanent controlled with their name, Gifted Aetherborn is not legendary (cards.json), the tokens are not legendary, and Edgar is in the command zone rather than on the battlefield. It matches checker-passed stack 002's own step 9, which is the parity I asked for."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "BYTE-IDENTITY SPOT-CHECK PASSED, PROGRAMMATICALLY. I diffed the working copy against HEAD (which now carries the iteration-1 artifact with the scenario block already corrected) key by key. Steps 1, 2, 3, 4, 7, 8, 9 and 10 are byte-identical including every citation; only steps 5 and 6 changed, step 11 is new, and final_state.summary changed. scenario, id, slug, deck, title, rules_version, final_state.you and final_state.opponents are all byte-identical. No previously-passed step was silently reworded, so no previously-verified citation is now carrying a different claim. Citation count 32 -> 38 and step count 10 -> 11 as stated."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "MISSING-STEP AUDIT: NONE FOUND. I walked the board independently. The trigger is on the stack by scenario premise; priority passes and the trigger resolves (1); intervening-'if' rechecked (2); controller and instruction (3); replacement effects established as applicable (4, 5); 616.1's ordering walked a-e plus the 616.1g constraint (6); applied via 616.1f with 614.5 capping each at one application (7); the modified event happens and no new triggers fire (8) — verified against every permanent's oracle text that no ETB trigger exists on this board; SBA plus priority (9); the spell resolves (10); final SBA (11). Nothing is put on the stack that is not accounted for, and no 614 replacement effect on the board is left unapplied."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "ITERATION-1 SELF-CONTRADICTION FINDING RESOLVED. The 'two scenario-block frictions' paragraph is gone from final_state.summary (probed for 'scenario-block friction' and 'all untapped'; both absent). The summary's board statements now agree with the scenario block and with scenario-facts: board.you is 'six lands (any colours); two tapped for the {B}{B} that cast Gifted Aetherborn', hand is [], mana_available is '{4} from the four lands still untapped'. final_state.you.battlefield_unchanged agrees. ANSWERS UNMOVED: (a) YES, (b) EIGHT, (c) the affected player (you). new_bodies 9 = 8 tokens + Gifted Aetherborn, new_tokens 8, both consistent with step 7. No per-opponent versus pod-total claim is made anywhere in the artifact — no life is lost in this resolution and both seats stay at 40 — so the conflation this deck family is prone to does not arise. scenario-facts card_membership reports NOT_IN_THE_DECK empty; Gifted Aetherborn and Vampire Socialite are both in the 99 (cards.json) and Edgar Markov is the commander."
+      }
+    ],
+    "iterations": 2,
+    "summary": "All 11 steps and 38 citations supported; no missing-step findings."
   }
 }
