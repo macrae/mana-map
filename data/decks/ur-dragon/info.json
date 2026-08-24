@@ -14,17 +14,12 @@
   "size": 100,
   "lands": 31,
   "status": {
-    "complete": 11,
-    "of": 16,
+    "complete": 14,
+    "of": 17,
     "stale": [],
-    "invalid": [
-      "engine",
-      "tutors",
-      "—"
-    ],
+    "invalid": [],
     "missing": [
-      "brief",
-      "log"
+      "brief"
     ]
   },
   "bracket": {
@@ -34,11 +29,11 @@
     "within_target": true
   },
   "record": {
-    "games": 0,
+    "games": 1,
     "win": 0,
-    "loss": 0,
+    "loss": 1,
     "draw": 0,
-    "last_played": null,
+    "last_played": "2026-08-22",
     "undebriefed": []
   },
   "goldfish": {
@@ -80,12 +75,12 @@
         "by_turn_6_pct": 62
       },
       {
-        "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon damage payoff AND a way to put several Dragons on the battlefield at once",
-        "by_turn_6_pct": 36
+        "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
+        "by_turn_6_pct": 15
       },
       {
-        "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): an attacking-Dragon multiplier AND a Dragon to attack with",
-        "by_turn_6_pct": 29
+        "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
@@ -107,15 +102,15 @@
     }
   },
   "engine": {
-    "thesis": "A five-colour typal deck that buys Dragons below sticker price and then taxes every Dragon that enters: one entry multiplies into several, each entry is priced in damage and cards, and the game ends either to one of those cascades or to Aggravated Assault turning a mana dragon into unlimited combats.",
+    "thesis": "A five-colour Dragon deck that buys its own curve down and then taxes every Dragon that enters — one arrival multiplies into several, each arrival is priced in damage and cards — whose kill is PROVEN on a board and unproven as a board you can reach.",
     "critic": "pass",
-    "lines": 11,
-    "verified_lines": 6
+    "lines": 13,
+    "verified_lines": 4
   },
   "diagnosis": {
-    "verdict": "Four checker-passed stacks certify three independent kills, and two of them — stack 001's Dragon Tempest burst and stack 004's Blasphemous Act redirect — never touch Aggravated Assault, so the deck is not one enchantment away from having no way to win. What limits it is mana at the point of deployment: 34 land copies against 36-38, and a land drop that holds at 88.3% on turn three and then falls to 60.3% on five and 49.7% on six, against 27 entries in the 99 that cost five or more. Card advantage is the second-order cause and reads 4 against a floor of 10, but the uncounted draw in this deck is board-dependent, so it pays on the turns the deck is already winning rather than the turns it is stuck.",
-    "skeptic": "pass",
-    "stale": true
+    "verdict": "Above the mana line this deck is in good shape and the pilot is right about it: 12 interaction copies, 6 protection, 6 tutors, 4 finishers, and — once the audit's own probe list is read — about ten real card-advantage cards rather than the five the taxonomy sees. What limits it is the mana, exactly as the captain's log says: 31 lands against a 36-38 floor, 43 sources against Burgess's 45, and a land-drop rate that falls 0.834 / 0.670 / 0.525 across turns three to five while 26 of the 68 maindeck nonland entries cost five or more. The colour half of that is misread by the headline: the audit's -15 is black, and black is the colour this deck barely wants. Red carries 53.9% of the pip load on 30.0% of the sources. Separately, and not what binds: the conversion is better evidenced than a stack count suggests and both declared kills shrank under audit. TWO checker-passed, non-withheld boards are lethal — stack 001 (255 damage, both opponents on its board dead) and stack 002 (64 damage in 12 instances, the 32-life seat dead) — and both are entry-kill boards. Meanwhile correcting two mis-declared groups moved THE ENTRY KILL from 0.481 / 0.356 to 0.240 / 0.153 and THE COMBAT KILL from 0.411 / 0.290 to 0.204 / 0.128, so the entry kill is now both the better evidenced and the likelier plan — and it rests on a three-card damage leg.",
+    "skeptic": "fail",
+    "stale": false
   },
   "audit": {
     "archetype": "combo",
@@ -139,57 +134,94 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Re-measure THE INFINITE COMBAT LOOP with the fuel half tested for SUFFICIENCY rather than legality. The declared half is Old Gnawbone, Savage Ventmaw and Cavern-Hoard Dragon — size 3, 19.9% of opening sevens. Cavern-Hoard makes 'a Treasure token for each artifact that player controls', meaning the DEFENDING player: against an artifact-free seat it makes nothing, it needs that player holding five artifacts to cover one {3}{R}{R}, and it appears in neither of the loop's two passing stacks. Klauth and Rivaz are out for a different reason — their mana is spell-locked and an activated ability is not a spell. Goldspan is not excluded by legality at all: its Treasures are unrestricted, and its second clause gives every Treasure you control '{T}, Sacrifice this artifact: Add two mana of any one color', which doubles Gnawbone's and Cavern-Hoard's output. What does 6.4% assembled / 3.6% by turn six become with Cavern-Hoard removed, and what does it become with Goldspan counted as a multiplier on Gnawbone rather than as a mana dragon in its own right?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Nothing in goldfish_targets.json measures whether the commander ever reaches the battlefield. Hellkite Courser is the only card in the 99 that can put The Ur-Dragon there without paying nine (stack 005 refutes Sneak Attack doing it), and goldfish reports the commander at mean cast turn 8.967 with 0% by turn six. What does a target of {Hellkite Courser} — or {Hellkite Courser + nine mana available} — actually measure?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Scourge of the Throne in an Ur-Dragon board: does its 'attacks for the first time each turn' trigger untap all attackers and grant the extra combat, and in that second combat do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus's doubling and The Ur-Dragon's attack draw all fire again? Also: is the dethrone condition re-checked against life totals the first combat has already changed?",
+      "question": "Stack 001 kills every opponent on its board, but its board assumes Ancient Gold Dragon has already connected in combat, and its d20 needs 12 or better rather than the 15 the scenario fixes (derived: three seats at 40 needs 3 x ceil(40/(N+2)) <= N, so N=12; nine faces of twenty). Build the reachable version of THE ENTRY KILL instead — Dragon Tempest or Terror of the Peaks or Scourge of Valkas, with a widener, and one nontoken Dragon cast — and resolve whether the cascade reaches three opponents at 40 or state the exact shortfall, as stack 002 does at 64 against 72.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Eerie Interlude with a payoff on the battlefield: exile your Dragons in response to a sweeper, and when they return at the beginning of the next end step, do Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Lathliss each trigger again for every returning Dragon, and does Miirym copy the returning nontoken Dragons?",
+      "question": "Hellkite Courser's enters-the-battlefield trigger, one domain and three sub-questions: does it put The Ur-Dragon onto the battlefield from the command zone, does the haste it grants make an attack legal that turn, and does the return to the command zone at the beginning of the next end step add nothing to the commander tax under CR 903.8?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "For strong Ur-Dragon lists, which is treated as the primary kill: the per-entry damage cascade (Dragon Tempest / Terror of the Peaks under Miirym and Panharmonicon) or the extra-combat loop headed by Aggravated Assault? And where do those lists put the redundancy — more entry payoffs, or more combat effects?",
+      "question": "The Ur-Dragon's attack trigger with the commander on the battlefield: does 'whenever one or more Dragons you control attack' draw exactly one card per attacking Dragon, and may the permanent it then puts onto the battlefield from hand be any permanent card rather than a Dragon?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Scourge of the Throne, alone: does its 'attacks for the first time each turn' dethrone-conditioned trigger untap all attacking creatures and grant an additional combat phase, and is 'the player with the most life' re-evaluated in that second combat against life totals the first combat has already changed?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Given a second combat phase, do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus the Butcher's power doubling and Atarka, World Render's double strike each fire again on the re-declared attackers?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Eerie Interlude with the entry payoffs on the battlefield: when the exiled Dragons return at the beginning of the next end step, do Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Lathliss each trigger again for every returning Dragon, and does Miirym copy the returning nontoken ones?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What does a goldfish target measuring the commander's ARRIVAL report — Hellkite Courser drawn, and Courser drawn with six mana available — separately from the nine-mana cast already reported at mean turn 8.172 and 4.1% by turn six?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Price the mana audit the pilot asked for after logged game 001, in the terms the goldfish can answer: with 9 basics against three basic/Forest-fetching sorceries and 14 of 31 lands entering tapped, what do mean available mana at turn five (4.219), the reducer-plus-ramp component (0.417 assembled / 0.285 by turn six) and commander-by-turn-six (4.1%) become if tapped lands are traded for untapped sources at constant land count? Scope caveat to state in the answer: the model reads land and ramp COUNTS, not enters-tapped status and not colour, so it can price one third of the pilot's question and must say so.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "For strong Ur-Dragon lists, which is treated as the primary kill — the per-entry damage cascade (Dragon Tempest and Terror of the Peaks under Miirym and Panharmonicon) or a combat multiplier turn (Atarka, Thrakkus, an extra combat)? And where do those lists put their redundancy: more entry payoffs, or more combat effects and more ways to repeat a combat?",
       "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
-      "question": "At 36 lands (Mana Confluence and Ancient Tomb in, Patriarch's Bidding and Klauth out), do the turn-five and turn-six land-drop rates move off 0.603 and 0.497?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "goldfish_targets.json declares no component for either of the two non-Assault kills the checker certified — nothing names Ancient Gold Dragon (stack 001) or Wrathful Red Dragon (stack 004).",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Does Old Gnawbone plus Hellkite Charger sustain? The combo record prices the activation at {5}{R}{R} and the question is whether one connection's Treasures fund the next.",
+      "question": "Does either checker-passed lethal board survive being made from a NORMAL position, and does either kill a 40-life seat? Both grant the hard part. Stack 001 kills both opponents on its board but grants Dragon Tempest and Ancient Gold Dragon already down, combat damage already dealt, and a d20 fixed at 15 against a median of 10.5. Stack 002 actually CASTS its Dragon, which is the shape this question wants, but grants four permanents already on the battlefield — Miirym, Panharmonicon, Dragon Tempest, Terror of the Peaks — with eight lands, and its 64 damage kills the 32-life seat while the 40-life seat survives at 8. Resolve that same cascade with PANHARMONICON REMOVED — 002's exact board minus the doubler, which is the swap cut_candidates[5] proposes — and say two things: whether it is still lethal against the 32-life seat, and whether any version of it kills a seat at 40.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Cavern-Hoard Dragon plus Aggravated Assault is listed by bracket_report as a two-card infinite that says 'Target opponent loses the game', and it has no stack artifact.",
+      "question": "THE ENTRY KILL's damage leg is now three cards — Dragon Tempest, Terror of the Peaks, Scourge of Valkas — at 19.9% of openers, and deck-audit flags it thin. Is three enough for the deck's only rules-evidenced kill, and what in the pool or the format would join that leg? Re-measure with a widened leg against today's 0.240 assembled / 0.153 by turn six.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Re-goldfish the swapped list (31 lands to 36, five untapped or flexible sources in, six spells out) and report mean available mana at turn five (4.219 today), the turn-four and turn-five land-drop rates (0.670 / 0.525), and commander cast by turn six (0.041). Does five lands move them, and by how much?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "What does the literature say about the floor on basic-land count for a five-colour Commander deck running Farseek, Nature's Lore, Skyshroud Claim, Encroaching Dragonstorm and Fabled Passage — and running Prismatic Vista alongside them, as this diagnosis prescribes — at what point does whiff risk become material, and how does that trade against generic fixing?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:001",
+      "question": "Audit the mana base holistically for a five-colour dragon deck: is 9 basics the right count against the deck's land tutors, does the pip spread across the 22 nonbasic lands match what the dragons actually demand rather than being generic fixing, and are the 14 enters-tapped lands (5 always tapped) costing tempo where an untapped source would do? Black is the specific soft spot — 22% on-curve from lands alone, lowest of five colours, with no Swamp in the 99.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:001",
+      "question": "For a five-colour Commander deck with land tutors, what does the literature say about the floor on basic-land count — how many basics a Farseek/Nature's Lore/Skyshroud Claim package needs before whiff risk becomes material, and how that trades against generic fixing?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:001",
+      "question": "If land count and the ramp package were reshaped toward more untapped sources, how much would mean available mana by turn five (currently 4.219) and the commander cast rate (currently 4.1% by turn six, mean cast turn 8.172, never cast by turn ten in 7,170 of 10,000 iterations) actually move?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "Which line, if any, is this deck's win line now? Three checker-passed stacks describe boards v1.0.0 can no longer make (003, 004, 006, all marked presentable: false) and the three that remain — 001 Dragon Tempest + Ancient Gold Dragon, 002 Miirym under Panharmonicon, 005 Sneak Attack — are not a proven kill.",
       "settled_by": "resolve-stack"
     }
   ],
   "simulation": null,
   "experiments": null,
   "next": [
-    "3 artifact(s) fail their own gate (engine, tutors, —) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "nothing in the captain's log — play it, then `deck-notes ur-dragon add \"…\" --result win|loss --opponents N`",
-    "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
-    "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×4",
+    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×3, resolve-stack ×8",
     "no simulation runs — `simulate ur-dragon --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

@@ -16,13 +16,16 @@ last is the one this module is really for: heliod's Hullbreaker Horror line and
 ur-dragon's Aggravated Assault are each named in two passing stacks and in no
 component, so the simulator has never once measured how those decks actually win.
 
-Two checks, both measured against the whole fleet before being written:
+Three checks, each measured against the whole fleet before being written:
 
   * every declared card must still be in the 99 — the staleness guard, because a
     swap silently strands the name it removed;
   * a card appearing in TWO OR MORE checker-passed stacks and in no component is
     reported as a likely omission. Commanders and basic lands are excluded: both
     are on every board and neither says anything about the engine.
+  * no card may sit in TWO `any_of` legs of the same target — an AND of ORs
+    satisfied twice over by one draw. See `_validate_shared_leg`; it fires on
+    2 of 9 decks and both are genuine.
 
 A check deliberately NOT implemented: "members of a group should share a role
 axis". Prototyped against all eight decks, it fired hardest on the most correct
@@ -96,6 +99,43 @@ def _validate_shape(doc):
     return errors
 
 
+def _validate_shared_leg(doc):
+    """No card may sit in two `any_of` legs of the SAME target.
+
+    A multi-leg target is an AND of ORs, and `goldfish._target_met` marks a need
+    met if ANY card it names is in hand. So a card appearing in two legs of one
+    target satisfies both from a single draw, and the target reports an assembly
+    rate it has not earned — silently, because every name in it is a real card
+    doing a real job.
+
+    Measured against all nine tracked declarations before being kept, per this
+    module's own rule. It fires on exactly TWO decks and both are genuine:
+    ur-dragon's THE COMBAT KILL (Thrakkus the Butcher in both legs, worth 5.8
+    points of by-turn-six rate) and edgar's THE GO-WIDE KILL (Charismatic
+    Conqueror, worth 1.6). Zero false positives — which is why this one shipped
+    and the two checks proposed for `validate_engine` the same day did not, at
+    50% and 1.4% precision respectively.
+
+    The size of the error tracks the SCARCER leg, not the shared card: edgar's
+    cost little because the leg it left is thirteen deep, ur-dragon's cost four
+    times as much because its leg is four. The fix is always to keep the card in
+    the leg where its job is rarer.
+    """
+    errors = []
+    for i, target in enumerate(doc.get("targets", []) or []):
+        label = target.get("label", f"target {i}")
+        legs = [set(g.get("any_of") or []) for g in (target.get("need") or [])]
+        for a in range(len(legs)):
+            for b in range(a + 1, len(legs)):
+                for name in sorted(legs[a] & legs[b]):
+                    errors.append(
+                        f"targets[{i}] ({label}): '{name}' is in BOTH need[{a}] "
+                        f"and need[{b}] — one drawn card satisfies both, so this "
+                        f"target's rate is an upper bound on itself. Keep it in "
+                        f"the leg where its job is scarcer")
+    return errors
+
+
 def _validate_membership(doc, main_names, commander_names):
     """Every declared card must still be in the 99."""
     errors = []
@@ -160,6 +200,7 @@ def validate(doc, slug, base):
     main_names = {c["name"] for c in cards}
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
+    errors += _validate_shared_leg(doc)
     errors += _validate_membership(doc, main_names, commander_names)
     errors += _validate_win_line_coverage(doc, slug, main_names,
                                           commander_names, base)

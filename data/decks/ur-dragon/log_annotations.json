@@ -1,0 +1,81 @@
+{
+  "slug": "ur-dragon",
+  "entries": {
+    "001": {
+      "summary": "A three-player pod at Tom Beloy's on 22 August, played on v1.0.0 (decklist sha b544a740c197…, the entry's stamp matches the current decklist.txt, so nothing the note names has left the 99). Alex resolved Blood Moon on turn two or three, every nonbasic became a Mountain, and the pilot spent the rest of the game 'reduced to the all-red dragons only' — casting Moltensteel Dragon and paying sixteen life to pump it into Alex for twelve. The pilot's own framing is explicit and closes one reading while opening another: Blood Moon is an accepted risk at bracket 3+ and they are 'not building around it', so this is not a request for an answer to Blood Moon; the finding they want pursued is the mana base itself, audited holistically.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": "mono-red warp",
+          "commander": "Tannuk, Steadfast Second",
+          "evidence": "Alex on a mono-red Tannuk, Steadfast Second warp deck"
+        },
+        {
+          "seat": "Tom",
+          "archetype": "Merfolk",
+          "commander": null,
+          "evidence": "Tom on Merfolk"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Moltensteel Dragon",
+          "read": "over",
+          "why": "the one threat that still functioned under the lockout — the note says 'What I actually did with it: Moltensteel Dragon, and at the end I paid sixteen life to pump it and hit Alex for twelve'"
+        },
+        {
+          "card": "Smothering Tithe",
+          "read": "under",
+          "why": "stranded rather than outclassed: the note says 'I could not cast Smothering Tithe'. A colour the mana base could not produce, not a card that underperformed once cast"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the last turn: locked out of three colours, spend sixteen life pumping Moltensteel Dragon to hit one opponent for twelve, or hold the life total in a three-player pod",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The pilot's own verdict: 'The bottleneck is mana consistency, not card selection.' They are happy with removal, treasures, discounts, haste and card draw, and want the mana base audited instead.",
+        "Blood Moon is a closed question by the pilot's decision, not an open one — 'I am not calling this a deck problem in the sense of needing an answer to Blood Moon.' Do not route work that proposes answering it.",
+        "The measurement this game is texture on: the deck runs 31 lands, 9 basic and 22 nonbasic, so a Blood Moon turns off 71% of the mana base. What survives is 4x Mountain, 3x Forest, 1x Island, 1x Plains — and no Swamp at all. One game does not make that a rate; the land counts are the standing fact.",
+        "Independent of Blood Moon, black is the weakest colour in the deck: mana_analysis on-curve from lands alone reads W 0.592, U 0.592, B 0.217, R 0.515, G 0.810 — black lowest of the five, at 22%, with no Swamp in the 99 (v1.0.0's own check-in cut one).",
+        "The three audit questions the pilot asked for are distinct and route to different loops: basics count and land-tutor whiff risk is deckbuilding theory, pip spread against actual dragon colour demand is a measurement the audit already makes, and enters-tapped tempo (mana_analysis counts 14 of 31 lands entering tapped, 5 of them always) is measurable but invisible to the goldfish, which does not model tapped lands."
+      ],
+      "engine_stages": [
+        "mana"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Moltensteel Dragon"
+          ],
+          "status": "needs a stack scenario",
+          "note": "The pilot's account of sixteen life for twelve damage is arithmetically consistent with the printed card, but no stack artifact covers it. Recorded as unproven rather than asserted."
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Audit the mana base holistically for a five-colour dragon deck: is 9 basics the right count against the deck's land tutors, does the pip spread across the 22 nonbasic lands match what the dragons actually demand rather than being generic fixing, and are the 14 enters-tapped lands (5 always tapped) costing tempo where an untapped source would do? Black is the specific soft spot — 22% on-curve from lands alone, lowest of five colours, with no Swamp in the 99.",
+          "settled_by": "diagnose",
+          "why_it_matters": "This is the pilot's own stated lesson and their explicit request: 'The real lesson is the mana base and I want it audited holistically.' All three sub-questions turn on colour sources and land classes, which deck-audit and mana_analysis measure and the goldfish cannot see."
+        },
+        {
+          "question": "For a five-colour Commander deck with land tutors, what does the literature say about the floor on basic-land count — how many basics a Farseek/Nature's Lore/Skyshroud Claim package needs before whiff risk becomes material, and how that trades against generic fixing?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "The pilot named tutor whiff as the first of their three sub-questions ('how many basics I run and whether land tutors can whiff'). It is a deckbuilding-theory question with a citable answer, and it sets the target the diagnose pass would then measure this deck against."
+        },
+        {
+          "question": "If land count and the ramp package were reshaped toward more untapped sources, how much would mean available mana by turn five (currently 4.219) and the commander cast rate (currently 4.1% by turn six, mean cast turn 8.172, never cast by turn ten in 7,170 of 10,000 iterations) actually move?",
+          "settled_by": "goldfish",
+          "why_it_matters": "The pilot asserts mana consistency is the bottleneck; the current metrics on this exact decklist sha are consistent with that and give the change a baseline to beat. Scope caveat: the goldfish models land and ramp counts, not enters-tapped status and not colour, so it can price the count half of the audit and not the tempo or pip-spread halves."
+        },
+        {
+          "question": "Which line, if any, is this deck's win line now? Three checker-passed stacks describe boards v1.0.0 can no longer make (003, 004, 006, all marked presentable: false) and the three that remain — 001 Dragon Tempest + Ancient Gold Dragon, 002 Miirym under Panharmonicon, 005 Sneak Attack — are not a proven kill.",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "The note says 'The rest of the deck I am happy with', which is a claim about card selection the deck's evidence cannot currently corroborate: after the re-baseline the deck has no verified win line, and both kill targets in goldfish_targets.json are labelled UNVERIFIED in their own titles. This is a disagreement between the pilot's reading and the artifacts, recorded here rather than argued in the annotation."
+        }
+      ]
+    }
+  }
+}
