@@ -1,0 +1,560 @@
+{
+  "id": "011",
+  "slug": "edgar-vampires",
+  "deck": "Edgar Markov",
+  "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Mirkwood Bats",
+        "Anointed Procession",
+        "Vampire Socialite",
+        "Swamp x3",
+        "Mountain",
+        "Plains"
+      ],
+      "opponents": [
+        {
+          "seat": "Opponent A",
+          "life": 40,
+          "permanents": []
+        },
+        {
+          "seat": "Opponent B",
+          "life": 40,
+          "permanents": []
+        }
+      ]
+    },
+    "hand": [
+      "Gifted Aetherborn"
+    ],
+    "graveyard": [],
+    "mana_available": "{B}{B} untapped from two Swamps; three other lands untapped and unspent",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gifted Aetherborn (Vampire creature spell)",
+        "controller": "you",
+        "note": "cast for its printed {B}{B}. Edgar Markov has NEVER been cast and is in the command zone; eminence applies from there."
+      }
+    ],
+    "question": "Edgar Markov's eminence triggers on this cast and would create one 1/1 black Vampire token, which Anointed Procession replaces with two. Mirkwood Bats reads 'Whenever you create or sacrifice a token, each opponent loses 1 life' \u2014 singular 'a token'. (a) How many times does Mirkwood Bats trigger from this single doubled creation event: once, or once per token created? (b) Does the answer change if a second doubler (Mondrak, Glory Dominus) is present and four tokens are created at once? (c) Vampire Socialite's replacement effect is conditional on an opponent having lost life this turn; if the Mirkwood Bats trigger is the FIRST life loss of the turn, do the tokens that caused it enter with the +1/+1 counter?",
+    "extras": {
+      "context": "Assume no opponent has lost life this turn before this cast, and no other permanent has a relevant triggered or replacement ability. Vampire Socialite is on the battlefield solely to make part (c) askable; Gifted Aetherborn is a Vampire, so Socialite's 'each other Vampire you control enters' would reach both the tokens and the resolved creature if its condition is met. Anointed Procession is the only token doubler on the battlefield for parts (a) and (c); part (b) is hypothetical and should be answered from the rules rather than from this board.",
+      "why_this_matters": "Mirkwood Bats arrived with the deck's v1.0.0 paper list and is the only payoff in the 99 keyed on token CREATION rather than on a creature ENTERING. Stack 010 proved that three doublers turn one eminence trigger into eight tokens. Whether Bats reads that as one drain or eight is the difference between a rounding error and a win condition, and no artifact in this deck currently prices it either way.",
+      "scope": "One rules domain: triggered-ability event counting under a token-creation replacement effect, plus the conditional-replacement timing in (c). No combat, no state-based actions beyond those needed to finish the cast."
+    }
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "You cast Gifted Aetherborn for {B}{B}. Edgar Markov's eminence ability \u2014 \"Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token\" \u2014 has an intervening 'if' clause; Edgar is in the command zone as you cast, so the ability triggers. Its own text states the zone it functions in, so it functions from the command zone with Edgar never having been on the battlefield (established by checker-passed stack 010, steps 1-2). It is put on the stack above the Gifted Aetherborn spell the next time a player would receive priority, all players pass, and it resolves first.",
+        "effect": "The eminence trigger begins to resolve. Gifted Aetherborn remains on the stack at pos 0. Both opponents are still at 40 and no opponent has lost life this turn.",
+        "citations": [
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing."
+          },
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that\u2019s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The eminence trigger's instruction is to create one 1/1 black Vampire creature token. Anointed Procession is a permanent you control whose static ability generates a continuous replacement effect: \"If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.\" It is the only doubler on this board. The word 'instead' marks it a replacement effect, and the event it would replace \u2014 one token created under your control \u2014 is exactly what this resolving ability would do. Two preconditions are met rather than assumed. Edgar is still in the command zone as the trigger resolves, so the intervening 'if' holds a second time and the ability is not removed from the stack (603.4). And the Procession's precondition is that an EFFECT would create the tokens: CR 614.16 is written for that exact template and says these replacement effects apply when the effect of a resolving spell or ability creates a token, which a resolving triggered ability's token creation is.",
+        "effect": "The one-token creation never happens. The modified event happens instead: you create TWO 1/1 black Vampire creature tokens, in a single creation, and they are put onto the battlefield under your control as their owner.",
+        "citations": [
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word \u201cinstead\u201d are replacement effects."
+          },
+          {
+            "rule": "604.2",
+            "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects."
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "701.7a",
+            "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player\u2019s control."
+          },
+          {
+            "rule": "603.4",
+            "quote": "If the ability triggers, it checks the stated condition again as it resolves. If the condition isn\u2019t true at that time, the ability is removed from the stack and does nothing."
+          },
+          {
+            "rule": "614.16",
+            "quote": "Some replacement effects apply \u201cif an effect would create one or more tokens\u201d or \u201cif an effect would put one or more counters on a permanent.\u201d These replacement effects apply if the effect of a resolving spell or ability creates a token or puts a counter on a permanent"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "ANSWER (c), first half: the two tokens do NOT enter with a +1/+1 counter. Vampire Socialite's second ability \u2014 \"As long as an opponent lost life this turn, each other Vampire you control enters with an additional +1/+1 counter on it\" \u2014 is a static ability generating a replacement effect that modifies how those Vampires enter, so it is checked now, as the tokens are put onto the battlefield. A continuous effect from a static ability is not locked in: it applies at any given moment to whatever its text indicates, and its 'as long as' clause is false at this moment, because by the scenario's stipulation no opponent has lost life this turn. Mirkwood Bats has not even triggered yet (step 4), and a trigger does nothing when it triggers in any case.",
+        "effect": "Socialite's replacement effect is not applicable to this entry. The two 1/1 black Vampire tokens enter the battlefield with no counters on them: two 1/1s.",
+        "citations": [
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read \u201c[This permanent] enters . . .\u201d or \u201c[Objects] enter [the battlefield] . . .\u201d are replacement effects."
+          },
+          {
+            "rule": "614.12",
+            "quote": "To determine which replacement effects apply and how they apply, check the characteristics of the permanent as it would exist on the battlefield"
+          },
+          {
+            "rule": "611.3a",
+            "quote": "A continuous effect generated by a static ability isn\u2019t \u201clocked in\u201d; it applies at any given moment to whatever its text indicates."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers. The ability doesn\u2019t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "ANSWER (a): Mirkwood Bats triggers TWICE \u2014 once per token created, not once per creation event. Its trigger event is written in the singular: \"Whenever you create or sacrifice a token, each opponent loses 1 life.\" The event it is looking for is you creating A token, and creating a token is putting a token onto the battlefield; the single happening in step 2 put two tokens onto the battlefield, so it contains two occurrences of that event. One happening is treated as a single event by one ability and as multiple events by another, exactly as the CR's own blocked / blocked-by-a-creature example shows, and an ability triggers repeatedly when one event contains multiple occurrences \u2014 the CR's mass-land-destruction example triggers once per land within a single resolution. (Contrast the wording the doublers use: Anointed Procession and Mondrak both say 'one or more tokens', which describes the whole happening. Bats does not.)",
+        "effect": "Two Mirkwood Bats triggers have triggered. Nothing has happened yet \u2014 no life has been lost, and no opponent has lost life this turn as far as any other effect can see.",
+        "citations": [
+          {
+            "rule": "700.1",
+            "quote": "The text of triggered abilities and replacement effects defines the event they\u2019re looking for. One \u201chappening\u201d may be treated as a single event by one ability and as multiple events by another."
+          },
+          {
+            "rule": "700.1",
+            "quote": "this is one event for a triggered ability that reads \u201cWhenever this creature becomes blocked\u201d but two events for a triggered ability that reads \u201cWhenever this creature becomes blocked by a creature.\u201d"
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "the ability will trigger once for each land put into the graveyard during the spell\u2019s resolution"
+          },
+          {
+            "rule": "glossary:create",
+            "quote": "To create a token is to put a token onto the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The eminence trigger finishes resolving and leaves the stack. Before any player receives priority, state-based actions are checked \u2014 no player is at 0 or less life, no creature has lethal damage or 0 toughness, so none are performed \u2014 and then the triggered abilities waiting to be put on the stack are put there. You control both Bats triggers and neither triggers on another ability triggering, so you put them on the stack in whichever order you choose, above the Gifted Aetherborn spell.",
+        "effect": "The stack, bottom to top: Gifted Aetherborn (pos 0), Mirkwood Bats trigger #1, Mirkwood Bats trigger #2. The two triggers are textually identical, so their order does not matter. You receive priority.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, \u201cState-Based Actions\u201d), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn\u2019t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "All players pass; the top Mirkwood Bats trigger resolves. Each opponent loses 1 life.",
+        "effect": "Opponent A 40 -> 39, Opponent B 40 -> 39. That is 1 life PER OPPONENT and 2 across this two-opponent pod \u2014 the two figures are not interchangeable. An opponent has now lost life this turn.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player\u2019s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "All players pass again; the second Mirkwood Bats trigger resolves. Each opponent loses 1 life.",
+        "effect": "Opponent A 39 -> 38, Opponent B 39 -> 38. Total from the doubled eminence token: 2 life PER OPPONENT, 4 across this two-opponent pod. The Bats drain is exactly the number of tokens created, per opponent.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "the top (last-added) spell or ability on the stack resolves"
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player\u2019s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "ANSWER (c), second half: the counter arrives too late for the tokens and in time for the spell that caused them. The tokens are already on the battlefield; a replacement effect cannot go back in time and change an event that has already happened, and Socialite's ability is a replacement effect, not a triggered one, so there is nothing to look back and put counters on the tokens. But Socialite's continuous effect is not locked in: its condition is true from step 6 onward. All players pass, Gifted Aetherborn \u2014 a targetless creature spell \u2014 resolves and enters the battlefield, and it is another Vampire you control (Creature \u2014 Aetherborn Vampire, per cards.json), so the replacement effect now applies to ITS entry.",
+        "effect": "The two tokens remain 1/1s with no counters, permanently \u2014 nothing revisits them. Gifted Aetherborn enters with an additional +1/+1 counter on it: a 3/4 with deathtouch and lifelink. Socialite's own \"When this creature enters\" trigger does not trigger; it refers to Socialite itself, which entered earlier. Nothing triggers Mirkwood Bats, which watches tokens, and Gifted Aetherborn is not a token.",
+        "citations": [
+          {
+            "rule": "614.4",
+            "quote": "Replacement effects must exist before the appropriate event occurs\u2014they can\u2019t \u201cgo back in time\u201d and change something that\u2019s already happened."
+          },
+          {
+            "rule": "611.3a",
+            "quote": "it applies at any given moment to whatever its text indicates"
+          },
+          {
+            "rule": "608.3a",
+            "quote": "If the object that\u2019s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell\u2019s controller."
+          },
+          {
+            "rule": "614.12",
+            "quote": "To determine which replacement effects apply and how they apply, check the characteristics of the permanent as it would exist on the battlefield"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "ANSWER (b), from the rules and not from this board: yes, the count scales, and it scales with the number of TOKENS in the final modified event \u2014 not with the number of doublers and not with the number of create instructions. With a second doubler (Mondrak, Glory Dominus) present, each replacement effect gets one opportunity to affect the event or any modified event that replaces it, so one token becomes two becomes four, and the modified event that actually happens is a single happening in which you create four tokens. The two doublers' different wordings are inert, and 614.16 is why: Anointed Procession's 'if an effect would create' applies not only to the resolving ability's own creation but also when another replacement effect has already replaced the event, so Procession is not left behind by Mondrak going first. Mirkwood Bats' singular trigger event then has four occurrences inside that one happening and triggers four times.",
+        "effect": "Four tokens created at once = four Mirkwood Bats triggers = 4 life lost PER OPPONENT (8 across a two-opponent pod, 12 across a three-opponent pod). Generally, N tokens created in one event = N triggers = N life per opponent. COUNTERFACTUAL, not a claim about a tracked board: checker-passed stack 010 proves the TOKEN COUNT only \u2014 its three doublers (Elspeth, Storm Slayer + Anointed Procession + Mondrak) turn one eminence trigger into eight tokens \u2014 and that board holds NO Mirkwood Bats, no Vampire Socialite, and its own passing final_state records both opponents at 40, 'unchanged; no damage dealt in this resolution'. Nobody lost life there and this resolution does not say they did. Add Mirkwood Bats to that board and the same eight tokens would be eight triggers: 8 per opponent, 16 across its two-opponent pod. Conversely this board (011) holds Bats but only one doubler, so it makes two tokens, not eight. The rules generalisation is established by step 4 alone and needs no sibling board.",
+        "citations": [
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn\u2019t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "it can trigger repeatedly if one event contains multiple occurrences"
+          },
+          {
+            "rule": "700.1",
+            "quote": "The text of triggered abilities and replacement effects defines the event they\u2019re looking for."
+          },
+          {
+            "rule": "614.16",
+            "quote": "they also apply if another replacement or prevention effect does so, even if the original event being modified wasn\u2019t itself an effect"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "State-based actions are checked once more before any player next receives priority. No player is at 0 or less life (both opponents are at 38), no creature has lethal damage marked and none has 0 or less toughness. Nothing is performed and no ability is waiting to go on the stack.",
+        "effect": "The stack is empty and the board stands as recorded below.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, \u201cTiming and Priority\u201d), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "(a) Mirkwood Bats triggers ONCE PER TOKEN CREATED, not once per creation event: its trigger event is singular ('a token'), and the single doubled happening contains two occurrences of it (CR 700.1, 603.2c). Anointed Procession's doubled eminence token therefore drains 2 life per opponent \u2014 4 across this two-opponent pod \u2014 not 1 and 2. (b) The count follows the number of tokens in the final modified event: two doublers and four tokens = four triggers = 4 per opponent. Doublers multiply the drain; the drain is not per doubler. Stated counterfactually, because no tracked board shows it: checker-passed stack 010 proves eight tokens from three doublers but holds no Mirkwood Bats and records both opponents at 40, so putting Bats on that board \u2014 a change to it \u2014 is what would make those eight tokens eight triggers. (c) NO \u2014 the tokens do not enter with Vampire Socialite's +1/+1 counter. Socialite's ability is a conditional replacement effect checked as each Vampire enters (614.1d, 614.12, 611.3a), and at that instant no opponent has lost life this turn: the Bats ability has only TRIGGERED, and a trigger does nothing until it is put on the stack and resolves (603.2, 603.3). The life loss arrives afterwards and cannot go back in time (614.4). The same delay works the other way for the spell that started it: by the time Gifted Aetherborn resolves, both Bats triggers have, so it enters as a 3/4 with the counter. The intuitive reading \u2014 'the tokens caused the drain, so the drain should count for them' \u2014 is the wrong one.",
+      "you": {
+        "battlefield": [
+          "Mirkwood Bats (2/3 flying)",
+          "Anointed Procession",
+          "Vampire Socialite (menace)",
+          "Gifted Aetherborn \u2014 2/3 base with one +1/+1 counter = 3/4, deathtouch, lifelink",
+          "1/1 black Vampire creature token (no counters)",
+          "1/1 black Vampire creature token (no counters)",
+          "Swamp x3 (two tapped for the {B}{B} that cast Gifted Aetherborn), Mountain, Plains"
+        ],
+        "hand": [],
+        "command_zone": [
+          "Edgar Markov (never cast; eminence functioned from here)"
+        ],
+        "stack": "empty",
+        "tokens_created_this_event": 2,
+        "mirkwood_bats_triggers": 2
+      },
+      "opponents": [
+        {
+          "seat": "Opponent A",
+          "life": 38,
+          "life_lost_this_event": 2,
+          "permanents": []
+        },
+        {
+          "seat": "Opponent B",
+          "life": 38,
+          "life_lost_this_event": 2,
+          "permanents": []
+        }
+      ],
+      "drain_arithmetic": {
+        "per_opponent": 2,
+        "pod_total_two_opponents": 4,
+        "note": "Per-opponent and pod total are not interchangeable. Bats drains 1 per opponent per token created."
+      },
+      "answers": {
+        "a": "Twice \u2014 once per token created. Two tokens from the doubled eminence trigger = 2 Bats triggers = 2 life per opponent.",
+        "b": "Yes, it scales: four tokens created at once = four triggers = 4 life per opponent. The count tracks tokens in the final modified event, not doublers. Any figure quoted for another board (e.g. stack 010's eight tokens) is counterfactual \u2014 010 carries no Mirkwood Bats and its passing record has both opponents at 40.",
+        "c": "No. The tokens enter before the Bats trigger is even put on the stack, so Socialite's condition is false as they enter and cannot be applied retroactively. Gifted Aetherborn, resolving after both Bats triggers, DOES get the counter."
+      },
+      "open_questions": [
+        "This resolution prices one creation event. Whether Mirkwood Bats is a win condition in this deck depends on how many creation events the 99 generates per turn, which is a goldfish/engine question and not a rules one."
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Full text is the intervening-'if' rule and the quote is its first half. Edgar is in the command zone as the Vampire spell is cast, so the ability triggers. See the step-null 603.4 finding for the half that is never walked. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 1,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Verbatim and on topic. Read strictly it is a RESTRICTION ('functions only from those zones'); the affirmative grant needs the ability's own text plus 113.6's default, which this step imports from checker-passed stack 010 steps 1-2 rather than re-citing. I read 010: steps 1-2 cite 207.2c (eminence is an ability word with no rules meaning), 113.6, 113.6b and 603.4 on an identical premise - Edgar never cast, in the command zone. The lean is legitimate and board-independent. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Establishes the trigger is put on the stack at the next priority and becomes the topmost object, which is the 'above the Gifted Aetherborn spell' claim. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Establishes all-pass resolves the top object. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 2,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Anointed Procession's oracle text (verbatim against cards.json) uses 'instead'. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 2,
+        "rule": "604.2",
+        "status": "supported",
+        "note": "Static ability -> continuous effect that may be a replacement effect, active while the permanent is on the battlefield. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 2,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "Full text: replaced event never happens, modified event occurs instead, 'which may in turn trigger abilities' - that trailing clause is also the hinge for step 4 and is genuinely present. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 2,
+        "rule": "701.7a",
+        "status": "supported",
+        "note": "Creating N tokens is putting N tokens onto the battlefield. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 2,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Owner and controller of the tokens. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 3,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "Correct subrule, and I checked the neighbour: 614.1c's three templates are all '[This permanent]'-referential ('enters with', 'As [this permanent] enters', 'enters as'), so it cannot cover Socialite, which speaks about OTHER objects. 614.1d's '[Objects] enter [the battlefield] ...' is the exact fit. Same classification checker-passed stack 002 step 6 and stack 010 already use. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 3,
+        "rule": "614.12",
+        "status": "supported",
+        "note": "The quoted fragment alone is about characteristics, but the rest of the rule carries the claim: 'To determine which replacement effects apply and how they apply, check ... continuous effects that already exist and would apply to the permanent.' That is applicability judged at the moment of entry, which is what the step needs. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 3,
+        "rule": "611.3a",
+        "status": "supported",
+        "note": "The load-bearing rule here: a static ability's continuous effect is not locked in and applies moment by moment to whatever its text indicates. Socialite's 'as long as an opponent lost life this turn' is false as the tokens enter. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 3,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "'The ability doesn't do anything at this point' is exactly the claim - Bats has triggered and nothing has happened. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 4,
+        "rule": "700.1",
+        "status": "supported",
+        "note": "First quote is the definitional sentence and licenses the whole method: the ability's own text defines the event it watches. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 4,
+        "rule": "700.1",
+        "status": "supported",
+        "note": "Second quote is 700.1's blocked / blocked-by-a-creature example. I tested the analogy rather than accepting it: the example turns on whether the ability's text names the individual sub-object, and that is precisely the difference here. Mirkwood Bats names it ('a token'); Anointed Procession and Mondrak do not ('one or more tokens' - both verified verbatim against cards.json). Structurally parallel, not merely evocative. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "'It can trigger repeatedly if one event contains multiple occurrences' is the rule the conclusion rests on. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "The mass-land-destruction example is the STRONGER of the two analogies and it is exactly parallel: one spell, simultaneous destruction, a singular indefinite trigger event ('a land'), one trigger per land. glossary:create + 701.7a make the token case identical in form. I searched for a counter-rule and found none: 603.2d (effects that add extra triggers), 603.2e ('becomes'), 616.1g (entering is an event CONTAINED within creating - consistent), 701.7b and 111.11 all leave the conclusion standing. Note for the record: Mirkwood Bats has NO official Gatherer rulings (Scryfall returns an empty rulings list), so the CR argument is the whole basis - which is the right basis for this gate. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 4,
+        "rule": "glossary:create",
+        "status": "supported",
+        "note": "'To create a token is to put a token onto the battlefield' is the identity that converts one creation of two tokens into two occurrences of the trigger event. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 5,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs first, then waiting triggers go on the stack, then priority. Exactly the sequence narrated. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Quote is verbatim from 704.3 and is the 'otherwise all triggered abilities waiting are put on the stack' clause. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Two abilities triggered since the last priority, both controlled by you, neither triggering on another ability triggering - the first part of the two-part process, controller's choice of order. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "All pass, top object resolves. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 6,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Life loss adjusts the life total. Per-seat vs pod arithmetic is stated correctly and separately (1 per opponent, 2 across a two-opponent pod); scenario-facts confirms 2 opponents at 40 each. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 7,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Second trigger resolves the same way. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 7,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "38/38 is right, and the step again separates 2 per opponent from 4 across the pod rather than conflating them. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 8,
+        "rule": "614.4",
+        "status": "supported",
+        "note": "'They can't go back in time and change something that's already happened' does cover the claim. Worth noting for precision: 614.4's first clause ('must exist before the appropriate event occurs') is SATISFIED here, not violated - Socialite's effect existed, it was merely inapplicable - so 611.3a, also cited, is what actually does the work. Supported as used. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 8,
+        "rule": "611.3a",
+        "status": "supported",
+        "note": "The same not-locked-in rule cutting the other way once the condition is true is a correct and symmetric use. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 8,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Targetless permanent spell becomes a permanent and enters. Same use checker-passed stack 010 makes for the same card. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 8,
+        "rule": "614.12",
+        "status": "supported",
+        "note": "Second use, for Gifted Aetherborn's entry. I verified the ordering the claim depends on: the two Bats triggers are put on the stack ABOVE the waiting spell (603.3, step 5), so both resolve first and the condition is true when the spell resolves. Gifted Aetherborn is 'Creature - Aetherborn Vampire', 2/3, deathtouch/lifelink in cards.json, and is 'other' than Socialite, so it enters with one +1/+1 counter as a 3/4. Socialite's own ETB trigger really does exist ('When this creature enters, if an opponent lost life this turn, put a +1/+1 counter on each other Vampire you control') and really does not re-trigger. This new claim holds. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 9,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Read in FULL, 614.5's example settles the compounding claim its rule text alone only limits: two damage-doubling effects take 2 damage to 8, i.e. both apply and compound. That is why no separate 616.1 citation is needed for '1 -> 2 -> 4'. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 9,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "Modified event occurs instead. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 9,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Multiple occurrences inside one event. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 9,
+        "rule": "700.1",
+        "status": "supported",
+        "note": "The ability's text defines its event. [R2: citation itself unchanged; the step's prose was revised, and I re-read the revised prose \u2014 this citation still supports the claim it is attached to.]"
+      },
+      {
+        "step": 10,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Final SBA check; nothing applies at 38 life with no damage marked. [R2: this step is byte-identical to round 1 \u2014 I re-read its action, effect and every citation quote and they match; the round-1 judgement stands.]"
+      },
+      {
+        "step": 2,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "NEW IN ROUND 2, and it closes my round-1 step-null finding. Quote is verbatim from the second half of 603.4 ('If the ability triggers, it checks the stated condition again as it resolves. If the condition isn't true at that time, the ability is removed from the stack and does nothing'). Placement is correct: step 1 is the trigger triggering and going on the stack and quotes 603.4's first half; step 2 is its RESOLUTION, which is where the recheck belongs. The factual premise holds \u2014 the scenario stipulates Edgar has never been cast and is in the command zone, and nothing in steps 1-2 moves him \u2014 so the intervening 'if' is true a second time and the ability is not removed. Two quotes of one rule at two steps doing two different jobs is legitimate, not padding."
+      },
+      {
+        "step": 2,
+        "rule": "614.16",
+        "status": "supported",
+        "note": "NEW IN ROUND 2; was my round-1 unsupported finding on this step. Quote verbatim from 614.16's opening. This is the FIRST clause and it does the first job: 614.16's own text names Anointed Procession's exact template in quotation marks ('if an effect would create one or more tokens'), which is word-for-word the card's precondition in cards.json, and then says these effects 'apply if the effect of a resolving spell or ability creates a token'. Edgar's eminence is a triggered ability and it is resolving, so its token creation is the effect of a resolving ability. The step's prose now NAMES the precondition and discharges it ('Two preconditions are met rather than assumed') instead of stepping over it. 609.1 is no longer needed as a second route \u2014 614.16 says it in terms. Fully supported; no adjacency."
+      },
+      {
+        "step": 9,
+        "rule": "614.16",
+        "status": "supported",
+        "note": "NEW IN ROUND 2; was my round-1 unsupported finding on this step. Judged INDEPENDENTLY of the step-2 use, because it is a different clause doing different work and it is the subtler of the two. Quote verbatim from 614.16's tail: 'they also apply if another replacement or prevention effect does so, even if the original event being modified wasn't itself an effect.' The claim is that a Mondrak-first ordering does not leave Anointed Procession behind \u2014 i.e. that Procession's 'if an EFFECT would create' precondition survives when the thing creating the tokens is Mondrak's replacement effect rather than a resolving ability. That is exactly what the quoted clause licenses, and the 'even if the original event being modified wasn't itself an effect' tail is permissive here rather than limiting, so unlike the 614.16 tail-clause trap in stack 010's earlier iteration it refutes no boundary this resolution asserts. I also checked the reverse ordering: Mondrak's wording carries no 'effect' precondition at all, so it applies either way \u2014 both orders give four, which is what makes the step's word 'inert' correct rather than convenient. Checker-passed stack 010 reaches the same holding with the same rule, so the two artifacts agree."
+      },
+      {
+        "step": null,
+        "rule": "stack:010",
+        "status": "supported",
+        "note": "ROUND-1 FINDING FIXED, re-verified against the sibling rather than against the resolver's account of it. All three sites now carry the counterfactual: step 9's effect opens 'COUNTERFACTUAL, not a claim about a tracked board'; summary (b) says 'Stated counterfactually, because no tracked board shows it'; answers.b says 'Any figure quoted for another board (e.g. stack 010's eight tokens) is counterfactual'. I re-read stack 010 and every factual claim made about it is true: its board is Elspeth, Storm Slayer + Anointed Procession + Mondrak (three doublers, eight tokens from one eminence trigger), it holds no Mirkwood Bats and no Vampire Socialite (010's own scope note puts Socialite deliberately off that board), and its passing final_state records both opponents at 40 with the note 'unchanged; no damage dealt in this resolution' \u2014 quoted verbatim here. The counterfactual is unmistakable to a reader who has never opened 010, because 011 supplies the three things such a reader needs: what 010 lacks, what 010's record actually says about life totals, and the explicit statement that adding Bats is 'a change to it'. The reverse direction is stated too ('this board (011) holds Bats but only one doubler, so it makes two tokens, not eight'), which is what scenario-facts asks for. The 8-per-opponent figure has been removed from the summary entirely and survives only inside the labelled counterfactual in step 9. I also checked the claim 'The rules generalisation is established by step 4 alone and needs no sibling board' and it is TRUE as scoped: the generalisation in question is the immediately preceding sentence, 'N tokens created in one event = N triggers = N life per opponent', and step 4 establishes precisely that from 700.1, 603.2c and glossary:create without reference to any sibling. The division of labour the artifact draws \u2014 010 supplies the TOKEN COUNT, step 4 supplies the triggers-per-token \u2014 is stated correctly and is not overstated."
+      },
+      {
+        "step": null,
+        "rule": "cards.json:Mirkwood Bats",
+        "status": "supported",
+        "note": "ROUND-1 FINDING FIXED. final_state.you.battlefield now reads 'Mirkwood Bats (2/3 flying)', which matches the deck's cards.json ({3}{B} Creature - Bat, 2/3, flying) and Scryfall. No other card fact moved and I re-checked them all against cards.json: Vampire Socialite 2/2 Vampire Noble with menace and the 'When this creature enters...' trigger step 8 refers to; Gifted Aetherborn 2/3 Aetherborn Vampire deathtouch/lifelink, hence 3/4 with the counter; Edgar Markov's eminence, Anointed Procession and Mondrak all quoted verbatim. Per-seat and pod arithmetic remain correctly separated throughout (2 per opponent, 4 across this two-opponent pod; scenario-facts confirms 2 opponents at 40 each) and the closing life totals of 38/38 are right."
+      }
+    ]
+  },
+  "iterations": 2
+}

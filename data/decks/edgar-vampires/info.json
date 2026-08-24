@@ -12,15 +12,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 14,
     "of": 18,
     "stale": [],
-    "invalid": [
-      "targets",
-      "engine",
-      "tutors",
-      "—"
-    ],
+    "invalid": [],
     "missing": [
       "brief"
     ]
@@ -46,8 +41,12 @@
     "commander_cast_by_turn_6_pct": 48,
     "targets": [
       {
-        "label": "TOKEN -> DAMAGE drawn (the dimension the pilot asked about)",
-        "by_turn_6_pct": 62
+        "label": "A payoff that fires when a token is CREATED (the leg every kill proof uses)",
+        "by_turn_6_pct": 57
+      },
+      {
+        "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+        "by_turn_6_pct": 24
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
@@ -55,7 +54,7 @@
       },
       {
         "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-        "by_turn_6_pct": 38
+        "by_turn_6_pct": 28
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
@@ -84,19 +83,23 @@
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
         "by_turn_6_pct": 3
+      },
+      {
+        "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
+        "by_turn_6_pct": 85
       }
     ]
   },
   "engine": {
-    "thesis": "Edgar's eminence mints a free body every time you cast a Vampire, the doublers turn one mint into four, and the entry payoffs bill all three seats at once — so this deck wins by CASTING cheap creatures, and attacking is only one of the ways it converts them.",
+    "thesis": "Edgar's eminence mints a free body every time you cast a Vampire and the doublers turn one mint into eight, so this deck wins by CASTING cheap creatures into a payoff that bills all three seats at once — and after the v1.0.0 baseline it does that by drawing more chances at the piece rather than by going and finding it.",
     "critic": "pass",
-    "lines": 13,
-    "verified_lines": 5
+    "lines": 18,
+    "verified_lines": 8
   },
   "diagnosis": {
-    "verdict": "The LOCK bought what it paid for: the token-to-damage kill assembles in 57.4% of games (74.4% tutor-assisted), every engine component except the two declared one-card bonus lines sits between 52.9% and 78.9%, and the deck keeps 80.8% of opening sevens with a 91.9% turn-3 land drop. What binds is black mana: 27 B sources against a Karsten target of 36, 76.4% on-curve castability with rocks against the 90% standard — and black is where the drain payoffs live. The only other measured weakness is interaction breadth: zero answers to a graveyard, confirmed by oracle read. Everything else is at or above target once the taxonomy's floors are read against the cards.",
+    "verdict": "It functions and every multi-card component turns over: 91.3% turn-3 land drop, a castable Vampire in 92.3% of games, lords 79.0%, a draw engine 73.3%. What I can measure end to end is conversion, and that is where it thins — THE GO-WIDE KILL assembles by turn six in 28.5% of games (mean turn 5.043), and its payoff leg is the thinnest of its three legs — six cards at 36.4% of openers against the multiplier's seven and the ignition leg's thirteen. That leg is now declared correctly: the group this document said was wrong in both directions has been split by trigger event, Mirkwood Bats is in it and the two death drains have a component of their own, and the pod attacks the biggest revealed damage dealer in 67.3% of 712 declare-attackers decisions, ci95 [0.637, 0.706] against a uniform 51.5%, permutation p = 0.0001. Card draw is not what costs games: eleven real sources survive an oracle read against a floor of ten. Black may be — 30 sources of 36 and 82.2% on-curve with rocks against a cited 90% — and this document declines to rank it against conversion rather than pretending to, because the instrument that measures assembly cannot see colour at all; that ranking is routed, not decided here.",
     "skeptic": "pass",
-    "stale": true
+    "stale": false
   },
   "audit": {
     "archetype": "aggro",
@@ -120,7 +123,12 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Bloodletter of Aclazotz double DAMAGE, not just direct life loss? Its own reminder text reads '(Damage causes loss of life.)' and stack 004's checker treated the identical parenthetical on Bloodthirsty Conqueror as reminder text under 207.2a, but stacks 003 and 007 only ever tested 'each opponent loses N life' from Sanctum Seeker and Throne. Nobody has run the other direction: does Purphoros dealing 2 to each opponent become 4?",
+      "question": "Stack 011 settled the round-1 form of this: Mirkwood Bats triggers once per TOKEN, so N tokens created in one event is N triggers and N life per opponent, tracking the tokens and never the doublers. What 011 deliberately left counterfactual is the deck's own board — it holds ONE doubler and two opponents, and 010's eight-token board carries no Bats and ends with both opponents at 40. What does the real go-wide board put on the table: Bats plus two or three doublers into three untouched seats, and does Bloodletter of Aclazotz double it?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does Bloodletter of Aclazotz double DAMAGE, not only stated life loss? Its reminder text reads '(Damage causes loss of life.)' and stack 004's checker treated the identical parenthetical on Bloodthirsty Conqueror as reminder text under 207.2a — but stacks 003 and 007 only ever tested 'each opponent loses N life' from Sanctum Seeker and Throne. Nobody has run the other direction: does Purphoros dealing 2 to each opponent become 4?",
       "settled_by": "resolve-stack"
     },
     {
@@ -130,33 +138,43 @@
     },
     {
       "from": "engine",
-      "question": "Can eminence be verified with Edgar Markov actually named in a scenario's board or stack list? Stacks 002, 008 and 009 all resolve his trigger but keep him in a command-zone note, so the deck has no passing stack that joins the commander to the doublers.",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "What is the real assembled rate of the drain-doubler line if the drain-source half is declared with every source Bloodletter doubles rather than only Sanctum Seeker and Throne of the God-Pharaoh?",
+      "question": "goldfish.py's _TUTOR_RE is the literal phrase 'search your library for a card' and deliberately excludes narrow tutors, so Forerunner of the Legion is not modelled — verified at source, and no longer the question. What is open: should it be, for a deck where 28 of the 99 are the searched type and the tutored card lands on top? And what does THE GO-WIDE KILL's assisted rate become if it is?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Should stacks 002 and 008 be re-run on a Vampire that is still in the 99, or marked `presentable: false` like 001 and 005? Both scenarios cast Gifted Aetherborn, which the deck no longer plays; 001 and 005 were pulled from publication for exactly this class of staleness (Exquisite Blood), and these two carry no flag and publish.",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Should Exquisite Blood come back to edgar-vampires or stay in yawgmoth-swarm? Sandbox the (Exquisite Blood in, Vampire of the Dire Moon out) swap seed-matched against the LOCK baseline, the way the LOCK itself was verified.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "What is the cheapest graveyard answer the interaction-breadth measure actually credits? A utility land (Bojuka Bog, Scavenger Grounds) shows the function but carries only land tags, so the axis heuristic skips it and the measured 4/5 would not move.",
+      "question": "After this baseline the interactive suite covers 3 of 5 classes: deck-audit reads land and graveyard at zero, and reading all six removal spells confirms none answers a land. For a Mardu aggro deck whose pilot logged the whole table making him the archenemy on turn three, is a land answer or graveyard hate load-bearing, or is the correct trade exactly the one made — two premium white removal spells for more cheap Vampire bodies?",
       "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
-      "question": "Does a second fixing swap beyond the Forge slot pay for itself? Black remains 8 sources short after Path of Ancestry, and on-curve B castability is 76.4% against Karsten's 90%.",
+      "question": "ANSWERED for its first half, still open for its second. The payoff group has been corrected and re-derived: the leg is six creation-and-entry payoffs at 36.4% of openers, 67.4% assembled, 56.7% by turn six; Blood Artist and Cruel Celebrant hold their own component at 13.7% / 30.4% / 24.1%; and THE GO-WIDE KILL moved from 0.491 assembled and 0.327 by turn six to 0.445 and 0.285, mean turn 4.773 to 5.043. What remains unrun is the sandbox with this document's four (add, natural_cut) pairs applied, which is the only way to price two things it cannot derive: the payoff leg at eight copies against the kill's other two legs, and THE SURVIVING INFINITE once Sanguine Bond leaves its second group.",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Mirkwood Bats reads 'whenever you create or sacrifice a token' where Caretaker's Talent reads 'whenever one or more tokens you control enter ... only once each turn'. When one eminence trigger creates eight tokens as a single replaced event (stack 010), does Mirkwood Bats trigger eight times or once?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Bloodletter of Aclazotz double DAMAGE as well as stated life loss? Stacks 003 and 007 only ever tested 'each opponent loses N life' from Sanctum Seeker and Throne of the God-Pharaoh; nobody has run Purphoros dealing 2 to each opponent through it.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "What does the corpus say about typal and uncounterable mana against raw source counts? manabase.land_colors credits Urborg, Tomb of Yawgmoth and Cavern of Souls ZERO colour sources, so both left the 99 without moving the colour-sources axis by a single point, and no measured axis will move if either comes back.",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is the black shortfall costing this deck games, or is conversion? The bench cannot currently answer it: goldfish.py's `_mana_pips` reduces every cost to generic-equivalent mana and its mulligan rule counts lands rather than colours, so assembly rates, the turn-3 land drop and the keep rate are all colour-blind by construction, and mana_analysis's Karsten castability is a static hypergeometric that never meets the deck's curve. What would settle it is a colour-aware run: how often is a black spell in hand, affordable by total mana, and uncastable for want of a black source?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does the death-drain line actually convert? It now has a measured rate — Blood Artist and Cruel Celebrant, 30.4% assembled and 24.1% by turn six — and no checker-passed stack showing it closing a game. engine-critic established the deck can manufacture the death rather than wait for it (Skullclamp for {1} on a 1/1 token; Indulgent Aristocrat's outlet has no tap symbol and no timing restriction), so the question is how many deaths a seat costs at what mana, the way stack 009 did for the entry event.",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "log:001",
@@ -219,9 +237,7 @@
     }
   },
   "next": [
-    "4 artifact(s) fail their own gate (targets, engine, tutors, —) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×1, resolve-stack ×5"
+    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×7"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
