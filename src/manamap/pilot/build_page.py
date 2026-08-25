@@ -106,7 +106,19 @@ def page_header(d):
         bits.append(bm.esc(issue["issue_date"]))
     legend = "".join(dz.badge(t) for t in ("verified", "data", "coach"))
     banner = dz.issue_status_banner(deck_lifecycle(d["slug"]))
+    # A way back. Every other link on this page is an internal anchor, so the
+    # manual was a dead end: the workbench sends a pilot here and nothing sent
+    # them anywhere. Relative because the file is served from the repo root and
+    # must also open from disk — and plain <a>, because the NO-`<script>` rule
+    # is what makes this a standalone printable file that rebuilds byte for byte.
+    slug = bm.esc(d["slug"])
+    home = ('<p class="page-home">'
+            f'<a href="../../viz/workbench.html">← The Workbench</a>'
+            f'<a href="../../viz/deck.html?deck={slug}">Dossier →</a>'
+            f'<a href="../../viz/index.html?deck={slug}">See it on the map →</a>'
+            '</p>')
     return (f'{banner}<header class="page-head">'
+            f'{home}'
             f'<h1>{bm.esc(name)}</h1>'
             f'<p class="page-sub">{" · ".join(bits)}</p>'
             f'<p class="page-legend">{legend}</p></header>')

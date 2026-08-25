@@ -39,6 +39,17 @@ body.page { font-size: 15px; line-height: 1.5; }
             text-transform: uppercase; letter-spacing: .04em; font-size: 13px; }
 .page-legend { margin: 0; display: flex; gap: 6px; flex-wrap: wrap; }
 
+/* The way back to the workbench. Set ABOVE the title and quiet: a pilot opens
+   this to read the deck, not to navigate, so it must be findable without
+   competing with the masthead. `print` drops it — the links are dead on paper. */
+.page-home { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 16px;
+             font-family: var(--condensed, sans-serif); text-transform: uppercase;
+             letter-spacing: .06em; font-size: 11px; }
+.page-home a { color: var(--ink-soft, #555); text-decoration: none;
+               border-bottom: 1px solid var(--rule-soft, #ccc); }
+.page-home a:hover { color: var(--ink, #111); }
+@media print { .page-home { display: none; } }
+
 /* The nav rail replaces a contents page: one line, sticky, no prose. */
 .page-nav {
   position: sticky; top: 0; z-index: 20; display: flex; flex-wrap: wrap; gap: 2px 14px;
