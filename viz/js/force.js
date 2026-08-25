@@ -1340,6 +1340,12 @@
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
     setLine, clearLine, setGroup, clearGroup, selectCard,
     walkRegion, branchByRow, hasRow, setCommander,
+    /* Adopt WITHOUT branching. `branchByRow` was the only way in, and it also
+     * pulls the row's relations — right when the pilot clicked a relation, wrong
+     * when they named a card to add: the graph would grow by twelve when one was
+     * asked for. Exported so "add this card where it belongs" is sayable on its
+     * own, since that is the only shape of growth that cannot delete anything. */
+    adopt(row) { const n = adoptRow(row); restart(0.3); draw(); return !!n; },
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a
     // question only the world map can answer.

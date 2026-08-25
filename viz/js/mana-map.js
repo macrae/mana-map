@@ -1340,10 +1340,11 @@
     const sel = document.getElementById('modeSelect');
     if (sel) sel.value = 'discover';
     setMode('discover');
-    Force.newWalk(true);
-    Promise.resolve(Force.enter(rows, label, { chrome: 'discovery' }))
+    // Through Discovery's shared seed path, which owns newWalk-then-enter and,
+    // more importantly, owns the replace-versus-adopt decision. A box-select is
+    // unambiguously a REPLACE — you drew a new set and asked to walk it.
+    Promise.resolve(Discovery.seedFromRows(rows, label, {}))
       .then(function () {
-        if (window.Discovery) { Discovery.setCurrent(rows[0]); Discovery.render(); }
         setStatus(rows.length.toLocaleString() + ' cards from ' + label +
                   ' — click any card to grow outward.');
       });

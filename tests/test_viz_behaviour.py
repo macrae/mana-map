@@ -5290,3 +5290,115 @@ def test_the_fade_only_promises_more_when_there_is_more(browser, viz_server):
         assert page.js_errors == []
     finally:
         page.close()
+
+
+# ── Starting a walk from cards you name ────────────────────────────────────
+
+
+def test_a_comma_stays_inside_a_card_name(discover_page):
+    """3,222 of 34,890 card names contain a comma — 9.2%, and they are the
+    legendary creatures somebody would actually seed a walk with.
+
+    Splitting on commas turns the commonest input into two cards that do not
+    exist, and it fails silently: the graph comes up short with no explanation.
+    So the ENUMERATION marker separates items, never a bare comma.
+    """
+    page = discover_page
+    got = page.evaluate("""() => {
+        const P = Discovery.parseSeedNames;
+        return {
+            one:   P('Miirym, Sentinel Wyrm').rows.length,
+            two:   P('1) Miirym, Sentinel Wyrm, 2) Sol Ring').rows.length,
+            lines: P('Miirym, Sentinel Wyrm\\nSol Ring').rows.length,
+            // The pilot's own shorthand.
+            short: P('1) sol ring, 2) lightning bolt').rows.length,
+        };
+    }""")
+    assert got["one"] == 1, "a comma inside a name split it in two"
+    assert got["two"] == 2, "a numbered marker did not separate two items"
+    assert got["lines"] == 2
+    assert got["short"] == 2
+    assert page.js_errors == []
+
+
+def test_a_marker_inside_a_name_is_not_a_separator(discover_page):
+    """Eight corpus names carry an enumeration-looking marker inside them —
+    "Vault 87: Forced Evolution" and its five Fallout siblings.
+
+    A naive /\\d+[).:]/ cuts those in half. The marker only separates where an
+    item can BEGIN: at the start, after a newline, or after a comma.
+    """
+    page = discover_page
+    got = page.evaluate(
+        "() => Discovery.parseSeedNames('Vault 87: Forced Evolution').rows.length")
+    assert got == 1, "an enumeration-like marker inside a card name split it"
+    assert page.js_errors == []
+
+
+def test_naming_cards_never_deletes_the_walk(discover_page):
+    """GROWING MUST NEVER BE ABLE TO DELETE.
+
+    `Force.enter([row])` REBUILDS — it replaces the graph with that one card.
+    Two callers have shipped this bug already, each destroying a walk silently.
+    So "Add to walk" adopts, and only "Start here" reseeds; both are buttons
+    that say which one they are.
+    """
+    page = discover_page
+    got = page.evaluate("""async () => {
+        // Build a walk worth losing.
+        await Discovery.seedFromRows(
+            Discovery.parseSeedNames('Sol Ring\\nLightning Bolt').rows, 'seed', {});
+        Force.branchByRow(Force.rows()[0], 'similar');
+        await new Promise(r => setTimeout(r, 900));
+        const before = Force.rows().slice();
+
+        // ADD — every card that was there must still be there.
+        await Discovery.seedFromRows(
+            Discovery.parseSeedNames('Birds of Paradise').rows, 'add', {replace: false});
+        const after = new Set(Force.rows());
+        const grew = { before: before.length, after: after.size,
+                       survived: before.every(r => after.has(r)) };
+
+        // REPLACE — the explicit request, and it does replace.
+        await Discovery.seedFromRows(
+            Discovery.parseSeedNames('Sol Ring').rows, 'fresh', {});
+        return { grew, replaced: Force.nodeCount };
+    }""")
+    assert got["grew"]["before"] > 2, "the walk under test never grew"
+    assert got["grew"]["survived"], "adding a named card deleted part of the walk"
+    assert got["grew"]["after"] == got["grew"]["before"] + 1
+    assert got["replaced"] == 1, "Start here did not start over"
+    assert page.js_errors == []
+
+
+def test_an_unresolved_name_is_reported_not_dropped(discover_page):
+    """A typo that quietly yields a one-card walk instead of two is
+    indistinguishable from the feature not working."""
+    page = discover_page
+    got = page.evaluate(
+        "() => Discovery.parseSeedNames('Sol Ring\\nNot A Real Card')")
+    assert len(got["rows"]) == 1
+    assert got["missing"] == ["Not A Real Card"]
+    assert page.js_errors == []
+
+
+def test_a_walk_can_be_linked_to(browser, viz_server):
+    """`?cards=` is the shareable form, and it seeds ONCE.
+
+    Seeding twice — show() then a reseed — draws the first card, throws it away
+    and draws the set, which reads as a flicker on the first frame the pilot
+    ever sees.
+    """
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html"
+                  "?cards=1)%20Miirym,%20Sentinel%20Wyrm,%202)%20Sol%20Ring")
+        page.wait_for_function(
+            "() => window.Force && Force.nodeCount >= 2", timeout=30000)
+        assert page.evaluate("MM.mode") == "discover"
+        assert page.evaluate("Force.nodeCount") == 2
+        assert errors == []
+    finally:
+        page.close()

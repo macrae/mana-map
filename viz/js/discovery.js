@@ -297,6 +297,11 @@ window.Discovery = (function () {
     panel().classList.add('open');
     loadRegionSeeds();
 
+    // Read once, at the top: the seed controls need it ABOVE the graph section
+    // that computes it, and "is there a walk to add to" must be the same answer
+    // in both places within one render.
+    const graphN0 = window.Force ? Force.nodeCount : 0;
+
     const rec = current >= 0 ? index[current] : null;
     const c = current >= 0 ? counts(current) : { similar: 0, synergy: 0, obsolete: 0 };
     const types = ['Creature', 'Instant', 'Sorcery', 'Enchantment', 'Artifact',
@@ -319,6 +324,28 @@ window.Discovery = (function () {
       (Session.tray.size ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
                      '<button class="lens-btn" onclick="Discovery.tray.clear()">Clear</button>' : '') +
       '</div>';
+    /* START FROM CARDS YOU NAME.
+     *
+     * Two buttons, not one, because there are two different acts here and this
+     * repo has already paid for a control that meant different things in
+     * different states. "Start here" REPLACES the graph — a fresh walk, which
+     * is the explicit request that makes replacement legitimate. "Add to walk"
+     * GROWS it, and only appears once there is a walk to add to. A single
+     * button that silently switched between them would destroy a graph the
+     * pilot spent ten minutes building, with no way to tell in advance. */
+    html += '<div class="discover-tray">' +
+      '<button class="lens-btn" onclick="Discovery.toggleSeed()">Start from cards I name</button>' +
+      '</div>';
+    html += '<div id="dcSeedWrap" style="display:none">' +
+      '<textarea id="dcSeed" class="discover-import" rows="3" ' +
+      'placeholder="Zur, the Enchanter&#10;Sol Ring&#10;&#10;or: 1) zur, 2) sol ring"></textarea>' +
+      '<div class="discover-tray">' +
+        '<button class="lens-btn" onclick="Discovery.onSeedCards(true)">Start here</button>' +
+        (graphN0 ? '<button class="lens-btn" onclick="Discovery.onSeedCards(false)">Add to walk</button>' : '') +
+      '</div>' +
+      '<p class="lens-note">One card per line. Commas stay inside a name — ' +
+      '"Zur, the Enchanter" is one card — so number the items to put several on one line.</p></div>';
+
     html += '<div id="dcImportWrap" style="display:none">' +
       '<textarea id="dcImport" class="discover-import" rows="5" ' +
       'placeholder="1 Sol Ring&#10;1 Edgar Markov *CMDR*&#10;&#10;Moxfield exports work as-is."></textarea>' +
@@ -428,8 +455,9 @@ window.Discovery = (function () {
     current = row;
     Session.setFocus(row);
     if (row >= 0 && window.Force) {
-      Force.newWalk(true);
-      Force.enter([row], index[row].n, { chrome: 'discovery' });
+      // The landing is the one seed that is unconditionally a REPLACE: it is
+      // what "Feeling lucky" means, and there is nothing to lose on boot.
+      seedFromRows([row], index[row].n, {});
     }
     render();
     if (row >= 0) {
@@ -440,6 +468,39 @@ window.Discovery = (function () {
   function land(params) {
     const wanted = params && params.get('card');
     const seed = params && params.get('seed');
+
+    /* `?cards=Zur+the+Enchanter,Sol+Ring` — a walk you can link to.
+     *
+     * Query strings are the one place a comma IS a conventional separator, and
+     * `URLSearchParams` has already decoded any `%2C` a real name carried — so
+     * by the time the value is read, the two are indistinguishable. Rather than
+     * guess, the parameter is handed to the SAME reader the textarea uses: a
+     * bare comma stays inside a name, and numbering separates items. So the
+     * shareable form of "Zur, the Enchanter + Sol Ring" is
+     * `?cards=1) Zur, the Enchanter, 2) Sol Ring`, which is ugly and correct,
+     * and `?cards=Sol Ring,Lightning Bolt` — no commas in either name — is
+     * simply one unresolvable string that reports itself as unresolved instead
+     * of half-working.
+     *
+     * A newline works too, and is the unambiguous form: `%0A` between names. */
+    const many = params && params.get('cards');
+    if (many) {
+      const out = parseSeedNames(many);
+      if (out.rows.length) {
+        // One seed, not `show()` then a reseed: seeding twice draws the first
+        // card, throws it away and draws the set, which reads as a flicker on
+        // the very first frame the pilot sees.
+        const label = out.rows.length === 1 ? index[out.rows[0]].n
+          : index[out.rows[0]].n + ' +' + (out.rows.length - 1);
+        Promise.resolve(seedFromRows(out.rows, label, {})).then(function () {
+          MM.setStatus(label + (out.missing.length
+            ? ' — no match for ' + out.missing.slice(0, 3).join(', ')
+            : ' — pick a relation to grow the graph.'));
+        });
+        return;
+      }
+    }
+
     let row = -1;
     if (wanted) row = rowByName(wanted);
     if (row < 0) row = pick(null, seed ? parseInt(seed, 10) : 0);
@@ -627,6 +688,110 @@ window.Discovery = (function () {
   /* Paste a Moxfield export, get your deck as a graph. Resolution is against
    * `viz_index.json`, NOT `data/decks/index.json` — Build's deck picker refuses any
    * slug it does not already know, and an imported deck has no slug and never will. */
+  /* Seed the graph from a set of rows, or GROW it from them.
+   *
+   * The three-step dance below — newWalk, enter, then pin/current/render — is
+   * repeated at four call sites (the landing card, a pasted list, a loaded
+   * deck, and a browse selection). Written a fifth time by hand for named-card
+   * seeding it would have got the ONE rule that matters wrong, because two of
+   * those four already did:
+   *
+   *   GROWING MUST NEVER BE ABLE TO DELETE.
+   *
+   * `Force.enter([row])` REBUILDS — it replaces the graph with that one card —
+   * while `Force.enter(null)` restores what is there. So `replace: false` never
+   * calls enter with a seed at all; it adopts each row into the graph that
+   * exists, which is what `MM.relate` had to be taught after merely looking at
+   * the atlas and coming back wiped a walk. */
+  function seedFromRows(rows, label, opts) {
+    const o = opts || {};
+    if (!rows || !rows.length || !window.Force) return Promise.resolve(null);
+
+    // GROW. Adopt places each card at the graph's centre of mass and links it to
+    // what it already belongs beside — nothing existing is touched.
+    if (o.replace === false && Force.nodeCount) {
+      for (const r of rows) if (!Force.hasRow(r)) Force.adopt(r);
+      setCurrent(rows[0]);
+      render();
+      return Promise.resolve({ rows: rows.length, grew: true });
+    }
+
+    // Commander first so it becomes the pinned node, and — for a named-card
+    // walk — so the FIRST card the pilot typed is the one the walk opens on.
+    const cmdr = typeof o.commander === 'number' ? o.commander : -1;
+    const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
+    if (cmdr >= 0) Session.setCommander(cmdr);
+    if (o.tray) for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
+
+    Force.newWalk(true);
+    return Promise.resolve(
+      Force.enter(seeds, label, { chrome: 'discovery', deck: o.deck || undefined })
+    ).then(function () {
+      if (cmdr >= 0) Force.pinCard(cmdr);
+      setCurrent(seeds[0]);
+      render();
+      return { rows: rows.length, grew: false };
+    });
+  }
+
+  /* ── START A WALK FROM CARDS YOU NAME ─────────────────────────────────
+   *
+   * "Zur the Enchanter", or "1) zur, 2) sol ring" — the pilot's own two
+   * examples, and they need different splitting rules.
+   *
+   * A COMMA CANNOT BE A SEPARATOR. 3,222 of 34,890 card names contain one
+   * (9.2%), and they are overwhelmingly the legendary creatures somebody would
+   * actually seed a walk with: Zur, the Enchanter. Miirym, Sentinel Wyrm.
+   * Splitting on commas turns the commonest input into two cards that do not
+   * exist, and it fails SILENTLY — "Zur" resolves to nothing and the graph
+   * comes up short with no explanation.
+   *
+   * So the ENUMERATION is the separator, not the comma. A `1)` / `2.` / `3:`
+   * marker splits an item only where an item can begin — at the start of the
+   * text, after a newline, or after a comma or semicolon. That last clause is
+   * the whole trick: it is what makes "1) zur, 2) sol ring" two cards while
+   * leaving "Zur, the Enchanter" one.
+   *
+   * Requiring a boundary also protects the 8 corpus names that carry a marker
+   * INSIDE them — "Vault 87: Forced Evolution" and its five Fallout siblings.
+   * The `87:` sits after a space, which is not an item boundary, so the name
+   * survives; a naive /\d+[).:]/ would have cut it in half.
+   *
+   * Then hand the normalised, one-per-line text to `Decklist.parse` — never a
+   * second name reader. That parser is fixture-locked in parity with
+   * `pilot/fetch_deck.py`, and it already handles the quantity prefix, `*CMDR*`
+   * and printing suffixes. Normalising IN FRONT of it costs nothing and forking
+   * it would put a third decklist parser in a repo that has twice paid for
+   * having two. */
+  const ITEM_MARKER = /(^|[\n,;])\s*\d+\s*[).:]\s*/g;
+
+  function parseSeedNames(text) {
+    const normalised = String(text || '')
+      .replace(ITEM_MARKER, '$1\n')   // keep the boundary char's own line break
+      .split(/[\n;]/)
+      .map(function (line) {
+        // A trailing comma or the pilot's own trailing "…" is punctuation from
+        // the list, not part of the name.
+        return line.trim().replace(/[,;]+$/, '').replace(/\.{2,}$|…$/, '').trim();
+      })
+      .filter(Boolean)
+      .join('\n');
+    if (!normalised) return { rows: [], missing: [], entries: [] };
+
+    const entries = window.Decklist ? Decklist.parse(normalised)
+                                    : normalised.split('\n').map(n => ({ name: n }));
+    const rows = [];
+    const missing = [];
+    for (const e of entries) {
+      const row = rowByName(e.name);
+      // Order is the pilot's, and it is meaningful: the FIRST card named is the
+      // one the walk opens on. Dedupe without reordering.
+      if (row < 0) missing.push(e.name);
+      else if (rows.indexOf(row) === -1) rows.push(row);
+    }
+    return { rows: rows, missing: missing, entries: entries };
+  }
+
   function importText(text) {
     if (!index) return { resolved: 0, missing: [], total: 0 };
     const entries = Decklist.parse(text);
@@ -647,12 +812,6 @@ window.Discovery = (function () {
     for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
 
     if (window.Force) {
-      Force.newWalk(true);
-      // Commander first so it becomes the pinned node — "where does my deck live" starts
-      // from the card the deck is built around.
-      const seeds = commanderRow >= 0
-        ? [commanderRow].concat(rows.filter(r => r !== commanderRow))
-        : rows;
       // Pass `opts.deck`, exactly as `loadDeck` does. Without it a PASTED list — which is
       // how a bulk pool arrives — got a pinned commander and none of the visual language:
       // no gold ring, no deck ink, no warm deck edges, every card washed out as if you had
@@ -661,15 +820,10 @@ window.Discovery = (function () {
       // the brief reads Session, so writing only the graph meant an imported deck named
       // its commander and the exported brief came out with `commander: null` — which
       // `build-deck` refuses.
-      if (commanderRow >= 0) Session.setCommander(commanderRow);
-      Promise.resolve(Force.enter(seeds, 'Imported pool', {
-        chrome: 'discovery',
+      seedFromRows(rows, 'Imported pool', {
+        commander: commanderRow,
         deck: { rows: new Set(rows), commander: commanderRow },
-      }))
-        .then(function () {
-          if (commanderRow >= 0) Force.pinCard(commanderRow);
-          render();
-        });
+      });
     }
     current = commanderRow >= 0 ? commanderRow : rows[0];
     MM.setStatus(rows.length + ' of ' + entries.length + ' cards placed'
@@ -710,21 +864,14 @@ window.Discovery = (function () {
         if (cmdr < 0 && entry && entry.commander) cmdr = rowByName(entry.commander);
         if (!rows.length) { MM.setStatus('Could not resolve any of ' + slug); return null; }
 
-        for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
-
-        const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
         // Session is the one answer to "who is the commander" — the ring, the colour
-        // identity and the exported brief all read it from there.
-        if (cmdr >= 0) Session.setCommander(cmdr);
-        const deck = { rows: new Set(rows), commander: cmdr };
-        Force.newWalk(true);
-        return Promise.resolve(
-          Force.enter(seeds, (entry && entry.deck_name) || slug,
-                      { chrome: 'discovery', deck: deck })
-        ).then(() => {
-          if (cmdr >= 0) Force.pinCard(cmdr);
-          current = cmdr >= 0 ? cmdr : rows[0];
-          render();
+        // identity and the exported brief all read it from there. `seedFromRows`
+        // writes it, along with the tray, the pin and the reseed.
+        return seedFromRows(rows, (entry && entry.deck_name) || slug, {
+          commander: cmdr,
+          tray: true,
+          deck: { rows: new Set(rows), commander: cmdr },
+        }).then(() => {
           MM.setStatus(((entry && entry.deck_name) || slug) + ' — ' + rows.length +
             ' cards' + (cmdr >= 0 ? ', commander ringed' : '') +
             '. Click any card to explore outward.');
@@ -750,6 +897,49 @@ window.Discovery = (function () {
   function toggleImport() {
     const box = document.getElementById('dcImportWrap');
     if (box) box.style.display = box.style.display === 'none' ? '' : 'none';
+  }
+
+  function toggleSeed() {
+    const box = document.getElementById('dcSeedWrap');
+    if (!box) return;
+    const open = box.style.display === 'none';
+    box.style.display = open ? '' : 'none';
+    if (open) { const t = document.getElementById('dcSeed'); if (t) t.focus(); }
+  }
+
+  /* Resolve what the pilot typed and either start a walk from it or grow the
+   * one that is there.
+   *
+   * UNRESOLVED NAMES ARE REPORTED, never silently dropped — the same contract
+   * `importText` keeps with its `missing[]`. A typo that quietly produces a
+   * one-card walk instead of two is indistinguishable from the feature not
+   * working, and the pilot has no way to tell which happened. */
+  function onSeedCards(replace) {
+    const box = document.getElementById('dcSeed');
+    const text = box ? box.value : '';
+    const out = parseSeedNames(text);
+
+    if (!out.rows.length) {
+      MM.setStatus(out.missing.length
+        ? 'No card matched: ' + out.missing.slice(0, 3).join(', ') +
+          (out.missing.length > 3 ? ' (+' + (out.missing.length - 3) + ')' : '')
+        : 'Type a card name to start from.');
+      return;
+    }
+
+    const label = out.rows.length === 1
+      ? index[out.rows[0]].n
+      : index[out.rows[0]].n + ' +' + (out.rows.length - 1);
+
+    Promise.resolve(seedFromRows(out.rows, label, { replace: replace })).then(function () {
+      const note = out.missing.length
+        ? ' — no match for ' + out.missing.slice(0, 3).join(', ') +
+          (out.missing.length > 3 ? ' (+' + (out.missing.length - 3) + ')' : '')
+        : '';
+      MM.setStatus(out.rows.length + (replace ? ' card' : ' card added')
+        + (out.rows.length === 1 ? '' : 's') + note
+        + ' — click a relation to grow the graph.');
+    });
   }
 
   function enter() {
@@ -786,6 +976,7 @@ window.Discovery = (function () {
     tray: { get list() { return Session.tray.list; }, has: inTray, toggle: toggleTray,
             clear: clearTray, names: trayNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,
+    seedFromRows, parseSeedNames, onSeedCards, toggleSeed,
     get current() { return current; },
     record, neighbours, counts,
     pick, rowByName, poolSize, setFilter, getFilters,

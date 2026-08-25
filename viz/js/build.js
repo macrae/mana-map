@@ -1159,6 +1159,12 @@
       ? [cmdIdx].concat(rows.filter(function (r) { return r !== cmdIdx; }))
       : rows;
     if (cmdIdx >= 0) Session.setCommander(cmdIdx);   // one answer, read by the brief
+    /* Build seeds the SAME engine and deliberately does NOT go through
+     * `Discovery.seedFromRows`. That helper ends by calling Discovery's own
+     * `render()`, which would repaint Build's roles, curve and verified lines
+     * with Discover's landing controls — the exact defect `Force.renderPanel`
+     * was taught to avoid by asking `MM.mode`. The panel belongs to the mode;
+     * the seed helper belongs to the mode that owns the panel it draws. */
     Promise.resolve(Force.enter(seeds, active.entry.deck_name,
       { chrome: 'discovery',
         deck: { rows: new Set(rows), commander: cmdIdx, lines: graphLines() } }))
