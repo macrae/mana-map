@@ -636,6 +636,85 @@
       .sort((a, b) => b.n - a.n);
   }
 
+  /* ── ASK — the agents, in the page ────────────────────────────────────
+   *
+   * The reason the local bridge exists. `manamap serve` exposes `/api/ask`,
+   * which spawns a real Claude Code sub-agent against this repo using the same
+   * charters the terminal uses — so the answer here is the answer there, not a
+   * weaker page-flavoured version of it.
+   *
+   * ABSENT, NOT BROKEN. On a deployed page there is no server, so this renders
+   * one line saying what is missing and how to get it. The PRD's rule, and the
+   * answer to `CLAUDE.md`'s objection that a local bridge makes two products:
+   * it does, and the page is the thing that says which one you are holding.
+   *
+   * THE COST IS SHOWN BEFORE IT IS SPENT. The cheapest measured routine is
+   * 54.5k tokens and `candidate-pool` is 235k. A button that spends a quarter
+   * of a million tokens without saying so is the one thing this must not be.
+   */
+  let askJob = null;
+
+  function askSectionHtml() {
+    if (!window.Api) return '';
+    if (!Api.ready) {
+      return '<div class="deck-section"><div class="deck-section-title">Ask</div>'
+        + '<p class="lens-note">' + esc(Api.reason || 'no local server')
+        + ' — the agents answer from your machine, so this half of Build is '
+        + 'absent here rather than broken.</p></div>';
+    }
+    let h = '<div class="deck-section"><div class="deck-section-title">Ask '
+      + '<span>the bench</span></div>'
+      + '<textarea id="bdAsk" class="discover-import" rows="2" '
+      + 'placeholder="Why does this deck stall on turn five?"></textarea>'
+      + '<button class="lens-btn" onclick="Build.ask()">Ask</button>';
+    if (askJob) {
+      h += '<p class="lens-note">' + esc(askJob.cost || '') + '</p>';
+      if (askJob.state === 'running') {
+        h += '<p class="lens-note">thinking…</p>';
+      } else if (askJob.error) {
+        h += '<p class="lens-note">' + esc(askJob.error) + '</p>';
+      } else if (askJob.output) {
+        h += '<div class="lens-line-prose"><p>' + esc(askJob.output.trim())
+          + '</p></div>';
+      }
+    }
+    return h + '</div>';
+  }
+
+  function ask() {
+    const box = document.getElementById('bdAsk');
+    const q = box && box.value.trim();
+    if (!q) return;
+    // The deck is context the pilot should not have to retype. A question asked
+    // from a deck's page is a question ABOUT that deck.
+    const scoped = active
+      ? q + '\n\n(Context: the deck slug is ' + active.slug + '. Its artifacts are '
+          + 'under data/decks/' + active.slug + '/. Read them before answering.)'
+      : q;
+    askJob = { state: 'running', cost: null };
+    renderPanel();
+    Api.call('ask', { question: scoped }).then(function (job) {
+      askJob = job;
+      renderPanel();
+      poll(job.id);
+    }).catch(function (e) {
+      askJob = { state: 'failed', error: e.message };
+      renderPanel();
+    });
+  }
+
+  /* Poll, slowly. An agent takes minutes, so a fast poll is a fast way to
+   * learn nothing repeatedly. */
+  function poll(id) {
+    setTimeout(function () {
+      Api.call('job', { id: id }).then(function (job) {
+        askJob = job;
+        renderPanel();
+        if (job.state === 'running') poll(id);
+      }).catch(function () { /* the server went away; leave the last state */ });
+    }, 2000);
+  }
+
   function renderPanel() {
     const el = panelEl();
     if (!el) return;
@@ -789,6 +868,8 @@
             '</div>').join('') +
         '</div>';
     }
+
+    html += askSectionHtml();
 
     if (active.candidates.length) {
       html +=
@@ -1291,6 +1372,7 @@
     clearLine,
     handleEscape,
     get activeLine() { return focusedLine; },
+    ask,
     // A read-only probe for the browser suite: the prose a line was BUILT with,
     // so a test can compare what the panel printed against what the artifact
     // says without re-fetching and re-implementing the source ranking.

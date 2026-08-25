@@ -1867,6 +1867,17 @@
    * assuming it: `prefers-reduced-motion` means the map boots still, and a control that
    * showed "on" while nothing moved would read as a broken toggle rather than an honoured
    * system setting. The renderer owns the default; this only ever flips it. */
+  // Probe for the local API once at boot. Every agent affordance is gated on
+  // the answer, and a page that cannot reach one says so rather than offering a
+  // button that does nothing.
+  if (window.Api) {
+    Api.probe().then(function (ready) {
+      if (ready && window.Build && Build.renderPanel && MM.mode === 'build') {
+        Build.renderPanel();
+      }
+    });
+  }
+
   for (const tab of document.querySelectorAll('.mode-tab')) {
     tab.addEventListener('click', function () {
       const sel = document.getElementById('modeSelect');

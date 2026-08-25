@@ -20,7 +20,8 @@ zero LLM calls.** You do not need a GPU, and you do not need to run the pipeline
 **With nothing but `git clone` and Python's own web server:**
 
 ```bash
-python3 -m http.server 8000
+manamap serve            # viz + the local /api that makes Build's agents work
+python3 -m http.server 8000   # or plain static — everything but the agent half
 # localhost:8000/viz/workbench.html        THE LANDING PAGE — every deck, racked and tabled
 # localhost:8000/viz/index.html            the card map, all three modes
 # localhost:8000/viz/deck.html?deck=heliod one deck's dossier

@@ -60,6 +60,11 @@ def build_parser():
     # scores artifacts the pipeline just built; this one needs the network and a
     # frozen EDHREC snapshot, so putting it in STEPS would make `manamap run`
     # fetch eighty decklists on its way to a projection.
+    srv = subparsers.add_parser(
+        "serve",
+        help="Serve viz/ AND a local /api the deployed site does not have")
+    srv.add_argument("--port", type=int, default=8000)
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -83,6 +88,9 @@ def main():
         console.set_plain(True)
     if args.command == "run":
         run(start=args.start)
+    elif args.command == "serve":
+        from manamap import serve
+        serve.main(args)
     elif args.command == "eval-commander-search":
         from manamap.analysis import eval_commander_search
         eval_commander_search.main(args)

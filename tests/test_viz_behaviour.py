@@ -5804,3 +5804,55 @@ def test_the_card_is_not_clipped_by_its_art_crop_frame(discover_page):
         f"the frame ({box['wrap']}px) is shorter than the card ({box['img']}px) "
         f"— it is clipping again")
     assert page.js_errors == []
+
+
+# ── The local bridge, seen from the page ───────────────────────────────────
+
+
+def test_agent_affordances_are_absent_not_broken_without_a_server(browser, viz_server):
+    """The PRD's rule for the static build, and the answer to `CLAUDE.md`'s
+    objection that a local bridge makes two products.
+
+    It does make two, and the page is the thing that says which one you are
+    holding. The browser suite's `viz_server` is a plain static server with no
+    `/api`, which is exactly the deployed shape — so this test runs in the
+    condition it is about rather than simulating it.
+    """
+    # `_build_page` is the helper every other Build test uses — it waits for the
+    # graph to have nodes, which is the signal that a deck actually loaded.
+    # Hand-rolling the wait here read "Loading artifacts…" and reported a
+    # missing message that had simply not been written yet.
+    page = _build_page(browser, viz_server, "heliod")
+    errors = page.js_errors
+    try:
+        page.wait_for_function("() => window.Api && Api.probed", timeout=BOOT_TIMEOUT_MS)
+        state = page.evaluate("() => ({ready: Api.ready, reason: Api.reason})")
+        assert state["ready"] is False
+        assert "manamap serve" in (state["reason"] or ""), state
+        body = page.inner_text("#deckInner")
+        assert "manamap serve" in body, (
+            "the static build did not say what is missing — absent is fine, "
+            "silent is not")
+        assert page.query_selector("#bdAsk") is None, (
+            "an Ask box was offered with no server behind it")
+        assert errors == [], errors
+    finally:
+        page.close()
+
+
+def test_the_probe_happens_once(browser, viz_server):
+    """A page on Pages would otherwise spend its life issuing failing requests
+    to an origin that has no server."""
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    try:
+        calls = []
+        page.on("request", lambda r: calls.append(r.url) if "/api/" in r.url else None)
+        page.goto(f"{viz_server}/viz/index.html")
+        page.wait_for_function("() => window.Api && Api.probed", timeout=BOOT_TIMEOUT_MS)
+        page.wait_for_timeout(1500)
+        page.evaluate("() => Api.probe()")
+        page.evaluate("() => Api.probe()")
+        page.wait_for_timeout(400)
+        assert len(calls) <= 2, f"{len(calls)} API requests: {calls}"
+    finally:
+        page.close()

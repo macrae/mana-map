@@ -89,15 +89,18 @@
 
 <!-- The shell first and dependency-free: it is the one thing that must paint
      even if the atlas never loads. -->
-<script src="js/shell.js?v=137"></script>
-<script src="js/stage.js?v=137"></script>
-<script src="js/session.js?v=137"></script>
-<script src="js/decklist.js?v=137"></script>
-<script src="js/discovery.js?v=137"></script>
-<script src="js/render/canvas.js?v=137"></script>
-<script src="js/mana-map.js?v=137"></script>
-<script src="js/drill.js?v=137"></script>
-<script src="js/force.js?v=137"></script>
-<script src="js/build.js?v=137"></script>
+<!-- Probes for a local `manamap serve`. Dependency-free and early, because
+     every agent affordance is gated on the answer. -->
+<script src="js/api.js?v=139"></script>
+<script src="js/shell.js?v=139"></script>
+<script src="js/stage.js?v=139"></script>
+<script src="js/session.js?v=139"></script>
+<script src="js/decklist.js?v=139"></script>
+<script src="js/discovery.js?v=139"></script>
+<script src="js/render/canvas.js?v=139"></script>
+<script src="js/mana-map.js?v=139"></script>
+<script src="js/drill.js?v=139"></script>
+<script src="js/force.js?v=139"></script>
+<script src="js/build.js?v=139"></script>
 </body>
 </html>
