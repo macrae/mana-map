@@ -26,19 +26,21 @@ python -m http.server 8000
 | File | Role |
 |------|------|
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
-| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~480 lines) |
-| `viz/js/mana-map.js` | Explore mode (~2,560 lines). IIFE; exposes shared state as `window.MM` |
+| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~520 lines) |
+| `viz/js/mana-map.js` | Explore mode (~2,610 lines). IIFE; exposes shared state as `window.MM` |
 | `viz/js/drill.js` | Drill mode (~430 lines). IIFE; exposes `window.Drill`; depends on `MM` |
 | `viz/js/stage.js` | Shared canvas primitives (~260 lines). Surface, camera, labels, typed edges |
 | `viz/js/session.js` | Focus, tray, commander (~130 lines). One answer each; force registers as its graph provider |
-| `viz/js/force.js` | The graph engine (~1,323 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/discovery.js` | Discover — the front door (~800 lines). Landing card, relations, tray, import, `brief()` |
+| `viz/js/force.js` | The graph engine (~1,430 lines). Canvas + d3-force; exposes `window.Force` |
+| `viz/js/discovery.js` | Discover — the front door (~990 lines). Landing card, relations, tray, import, seeding from named cards, `brief()` |
 | `viz/js/render/canvas.js` | The map renderer (~1,150 lines). The ONLY renderer; owns the aura + ambient drift |
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
-| `viz/js/build.js` | Build (~980 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
+| `viz/js/build.js` | Build (~1,300 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~180 lines) |
-| `viz/js/deck-view.js` | The dossier (~470 lines). IIFE; no globals exported, no `MM` dependency |
+| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~330 lines). Shared by `deck.html` AND `workbench.html` |
+| `viz/js/deck-view.js` | The dossier (~860 lines). IIFE; no globals exported, no `MM` dependency |
+| `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
+| `viz/js/workbench.js` | The workbench (~410 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
 
 **Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
 
@@ -112,6 +114,84 @@ manifest's `verified`.
 `tests/test_viz_deck_lens.py` guards the three assumptions the browser cannot check for
 itself: every deck card name resolves in `projection_2d.json`, every role family has a
 colour, and `index.html` loads the script at a cache-bust matching its siblings.
+
+#### An open line explains itself
+
+Clicking a verified line spotlights its cards **and prints its prose**. `buildEdges` used
+to keep a stack's `title` and drop the document it came from — while `loadDeck` was
+already fetching that whole document, resolution and all. The explanation was fetched,
+parsed, held in memory and thrown away.
+
+Three sources, each keeping its own slot and attribution rather than being blended:
+
+| slot | source | fleet coverage |
+|---|---|---|
+| the intro | `manual_prose.json`'s `combo_lines[<stack id>]` — authored, gated on `stacks:passing` | 47 of 50 |
+| **The answer** | `resolution.answer` — only where the scenario asks something sharp enough | 4 of 50 |
+| **Where it ends** | `resolution.final_state.summary` | **50 of 50** |
+
+Measured across the fleet before shipping: **zero published lines have no prose**, so the
+panel never renders an empty block — a fact about the artifacts, not a hope about them.
+
+**Nothing is derived, summarised or truncated.** A checker read these words; re-wording
+them in the browser would put a ✓ over prose no checker saw, which is the same mistake as
+editing a resolution's step text to fix a stale cross-reference.
+`test_the_prose_is_the_artifact_verbatim` was proven to fire by truncating a summary to
+120 characters — precisely the "helpful" regression it exists to catch.
+
+Only the OPEN line renders prose: summaries run a median of 838 characters and up to
+4,337, and printing all of them turns the list you are choosing from into a wall. The
+block caps at 340px and fades at the bottom, and **the fade is a claim that must be true
+in both directions** — it comes off at the end, and it comes off for a block shorter than
+the cap, which never fires a scroll event and so cannot be settled by the scroll handler
+(goblin-storm 002 is 877 characters). A fade over the end of a complete text is a lie
+about there being more.
+
+#### Verified edges point, and say what they carry
+
+A verified line becomes a **clique** over the cards its stack names, and a clique has no
+arrows: `{source, target}` is whichever order the pair was built in, and `findLink`
+matches either way. Drawing an arrow on that would be array order wearing a claim.
+
+`engine.json` is the one artifact that knows. Each line is `from → to` across two of
+eight stages with a `carries` noun, written by an engineer and attacked by `engine-critic`.
+Build fetches it (gated on the manifest's `has.engine`, because a browser cannot stat),
+builds a card→stage lookup, and **orients** each pair: `a → b` when `a` sits in the `from`
+stage and `b` in the `to` stage.
+
+A pair that does not span the two stages gets **no arrowhead** — a clique includes pairs
+sitting wholly inside one stage, and for those the direction genuinely is not known. On
+ur-dragon that is **5 directed edges of 196**: the arrow is the exception, and earned.
+
+**A stack can carry two lines.** ur-dragon's 002 is cited twice, for `bodies` and for
+`triggers`, and `.find()` would have silently dropped half of what that board proves. All
+matching lines are read, agreeing nouns are joined (`bodies · triggers`), and if two lines
+citing one stack DISAGREED on direction no arrowhead is drawn at all — a pair pointing two
+ways is a pair whose direction is not a fact. Arrowheads live in `Stage.drawEdges` behind
+an `e.dir` flag, so the atlas can draw the same edge and mean the same thing by it.
+
+Deliberately out of scope: parsing magnitudes (damage, mana, copies) out of
+`final_state.summary` prose. That is the string-matching this repo keeps rejecting; a
+magnitude should be an authored structural field on the engine line, which is a question
+for the engineer's charter.
+
+#### A bar is a control
+
+Clicking a curve segment or a role row spotlights exactly those cards. The colours already
+agreed — `renderManaCurve`, the role bars and the map scatter all read
+`MM.GROUPINGS[MM.grouping]`'s `order` and `palette` — so what was missing was only
+interaction. It routes exactly like `applyLine` and for the same reason: **Build defaults
+to the GRAPH**, and a handler that only moved the map spends its time restyling a
+`display:none` canvas, which reads as the click doing nothing. The two surfaces answer at
+their own scale — the graph spotlights this deck's cards in the group, the map spotlights
+the group across the atlas and composes with the deck lens through the legend's existing
+`spotlightFor(g)` predicate.
+
+A group and a line are two answers to "show me", so taking one puts the other down.
+
+**The bug this exposed**: node fill was dimmed and then `globalAlpha` reset to 1 before the
+rim was stroked, so a spotlight left 96 bright outlines and the picture never actually
+dimmed. `Force.setLine` had shipped with the same defect. One alpha now covers both.
 
 ## Drill mode (`viz/js/drill.js`)
 
@@ -258,6 +338,57 @@ and because it showed up as contention that made two browser tests pass alone an
 the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
+
+### Starting a walk from cards you name
+
+`?cards=Sol+Ring%0ALightning+Bolt`, or a textarea on the panel. Two forms have to work —
+`Zur the Enchanter`, and `1) zur, 2) sol ring` — and they need different splitting rules.
+
+**A COMMA CANNOT BE A SEPARATOR.** 3,222 of 34,890 card names contain one (9.2%), and they
+are overwhelmingly the legendary creatures somebody would actually seed a walk with:
+*Miirym, Sentinel Wyrm*. Splitting on commas turns the commonest input into two cards that
+do not exist, and it fails **silently** — the graph comes up short with nothing said.
+
+So the **enumeration** is the separator. A `1)` / `2.` / `3:` marker splits an item only
+where an item can BEGIN: at the start, after a newline, or after a comma or semicolon.
+That last clause is the whole trick — it makes `1) Miirym, Sentinel Wyrm, 2) Sol Ring` two
+cards while leaving `Miirym, Sentinel Wyrm` one. Requiring a boundary also protects the
+**eight corpus names carrying a marker inside them** — `Vault 87: Forced Evolution` and its
+five Fallout siblings, which a naive `/\d+[).:]/` cuts in half.
+
+The normalised, one-per-line text then goes to **`Decklist.parse`, never a second name
+reader**. That parser is fixture-locked in parity with `pilot/fetch_deck.py` and already
+handles quantity prefixes, `*CMDR*` and printing suffixes. Normalising in FRONT of it costs
+nothing; forking it would put a third decklist parser in a repo that has twice paid for
+having two. Unresolved names are **reported**, never dropped — a typo that quietly yields a
+one-card walk is indistinguishable from the feature not working.
+
+**`Discovery.seedFromRows(rows, label, opts)`** is the shared path, and it exists because
+writing a fifth caller by hand is exactly how the rule gets broken again:
+
+> **Growing must never be able to delete.** `Force.enter([row])` REBUILDS — it replaces the
+> graph with that one card. Two callers have shipped that bug, each destroying a walk
+> silently.
+
+So there are **two buttons and each says which it is**: *Start here* reseeds (the explicit
+request that makes replacement legitimate) and *Add to walk* adopts, appearing only once
+there is a walk to add to. A single button switching on graph state is the
+control-means-two-things bug fixed in the atlas. `Force.adopt` is exported for this —
+`branchByRow` was the only way in and it also pulls the row's relations, right for a
+relation click and wrong for "add this card", where the graph grows by twelve when one was
+asked for.
+
+Three of the four seed sites route through the helper. **Build deliberately does not**:
+`seedFromRows` ends by calling Discovery's `render()`, which would repaint Build's roles and
+curve with Discover's landing controls — the defect `Force.renderPanel` was taught to avoid
+by asking `MM.mode`. The panel belongs to the mode.
+
+`?cards=` goes through the same reader as the textarea rather than splitting on commas
+itself: query strings are the one context where a comma IS conventionally a separator, and
+`URLSearchParams` has already decoded any `%2C`, so by read time the two are
+indistinguishable. Ambiguous input reports itself unresolved instead of half-working. It
+seeds **once** — `show()` then a reseed would draw a card, throw it away and draw the set on
+the first frame anyone ever sees.
 
 **One relation mechanism, one behaviour.** The controls live in `buildCardDetailHtml`, so
 Discover, Build, the explore accordion and the browse panel all offer the same thing, and
@@ -908,6 +1039,44 @@ Getters: `allData`, `currentMap`, `obsolescence`.
 Helpers: `escHtml`, `buildHoverTextMinimal`, `renderManaSymbols`, `closeDetail`, `removeFromSelection`, `bringToTop`, `selectByName`, `findSimilar`, `findSynergies`, `render`, `setStatus`, `setMode`.
 Constants: `MAP_CONFIGS`, `DATA`, `EMBED_DIM`.
 Async data loaders: `getEmbeddings()`, `getSynergyGraph()` — the deck builder awaits these instead of downloading its own copies of the two largest payloads (~17 MB + ~27 MB); both resolve to the shared cached instance.
+
+## The workbench (`workbench.html`) — the landing page
+
+The front door for a **pilot**, as `index.html` is the front door for the corpus. It
+fetches every deck's `info.json` from the manifest (N+1 requests, no new artifact) and
+answers one question: *which deck should I spend tonight on?*
+
+Two views over the same payload, toggled and carried in the URL
+(`?view=table&sort=played`, written with `history.replaceState` so a sorted view is
+linkable and the back button is not filled with noise):
+
+- **Racks** group by lifecycle — LOCKED (built in paper, playable tonight), ON THE
+  BENCH (lists and build plans, nothing sleeved), and the dead.
+- **The fleet table** is one row per deck across record, stages, evidence, table and
+  open work, sorted four ways: *recently played*, *needs game logs*, *needs analysis*,
+  *optimisations identified*. Every sort maps to a predicate `deck_info._next` already
+  computes — the page adds no judgement of its own.
+
+**`info.next[0]` is the last column and gets its OWN full-width row.** As a cell it
+broke the table: every other column is `nowrap`, so their widths summed past 100% and
+the browser pushed the whole thing behind a horizontal scrollbar. It is a sentence, not
+a cell, and the fix was to stop treating it as one.
+
+**Three labelled links per card — MANUAL · DOSSIER · ON THE MAP — and no whole-card hit
+target.** The card used to be one `<a>` to the dossier with a small separate manual
+link, which is the interaction bug this repo already fixed once in the atlas: *a
+control that opens two different things depending on where you click*. Every
+destination is now named. `ON THE MAP` is `index.html?deck=<slug>`, the documented
+inbound contract that lands in Build with the deck loaded.
+
+**The bug worth remembering**: the games/record chip read `info.status.games`, and
+`deck-info` writes the games under **`info.record`** — `info.status` is the stage-count
+block. The chip had never rendered once, on any deck, so two decks with logged games
+looked identical to nine without. It survived because a missing chip is invisible; a
+wrong chip would have been reported in a day.
+
+`workbench.js` shares `deck-view.js`'s shape deliberately: an IIFE that exports nothing,
+depends on no `MM`, and reads only committed artifacts. Neither page loads the map.
 
 ## The deck dossier (`deck.html`)
 

@@ -37,7 +37,7 @@ instead. To print the current numbers rather than trust a snapshot:
 | `make test-fresh` | **29 s** |
 | serial, before any of this work | 86.5 s |
 | `make test-browser` (`-n 4`) | 234 s |
-| **a fresh clone, cold** | **20 s** (1,360 passed, 129 gate-skipped) |
+| **a fresh clone, cold** | **20 s** (1,360 passed, 129 gate-skipped) — measured 2026-08-24 |
 
 A fresh clone is FASTER than a developed checkout, which is not a paradox: 129
 cases gate on gitignored artifacts a clone has not generated, and the expensive
@@ -52,7 +52,7 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-24: **2,023 tests** across 86 files — 1,877 fast, 145 browser and 1 `forge`
+As of 2026-08-25: **2,052 tests** across 86 files — 1,889 fast, 162 browser and 1 `forge`
 (a real Forge game, opt-in). One is a deliberately unmet `xfail(strict=True)` ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
@@ -118,7 +118,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (145) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (162) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the

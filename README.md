@@ -42,6 +42,12 @@ with the reason.
 
 ## Two frontends over one data layer
 
+**The workbench** (`viz/workbench.html`) — **the landing page**: every deck you own, in
+racks by whether it is sleeved, or as one fleet table across record, stages, evidence,
+table and open work — sortable by *recently played*, *needs game logs*, *needs analysis*
+and *optimisations identified*. Each deck carries a derived **next**, and three named
+links: its Pilot's Manual, its dossier, and where it sits on the map.
+
 **The card atlas** — every Magic oracle card (~34,900) embedded by two small neural nets.
 It opens on **one card**: hover it, click a relation, and its neighbours join a
 force-directed graph you grow by clicking. Load one of your own decks and it lights up with
@@ -82,16 +88,22 @@ does not travel** — enforced in code, not by convention. Every agent returns J
 validator checks; the Python makes zero LLM calls; the deployed site and your machine run
 the same code.
 
-**Two things this is honest about.** Forge's AI pilots every seat *including yours*, and
+**Three things this is honest about.** Forge's AI pilots every seat *including yours*, and
 rates itself "poor to ok in control, pretty bad for combo" — a sentence quoted verbatim in
-every run record, which makes a control deck's win rate a lower bound on the pilot. And
-nothing has been logged at a real table yet: the log, debrief and prescription surfaces are
-built and tested against zero real entries.
+every run record, which makes a control deck's win rate a lower bound on the pilot. **Two
+decks have a real game logged** (Edgar and Ur-Dragon, both losses, both debriefed) — which
+is two, not a sample: the log, debrief and prescription surfaces are built and tested, and
+barely used. And **most decks are not marked as built in paper**: whether a deck exists as
+cardboard is an assertion only the pilot can make, so an unlocked deck says it is unlocked
+rather than being assumed playable.
 
-**The deck page in `manuals/`.** Each deck also renders to a self-contained printable HTML
-file. Today that is the *legacy magazine* (nine issues, frozen;
-[the rack](https://macrae.github.io/mana-map/manuals/index.html)); it is being replaced by a
-compact technical page — `docs/manual-v5-spec.md`.
+**The Pilot's Manual** (`manuals/p/<slug>.html`, from `manamap pilot build-page`) — each
+deck's self-contained printable page: the game plan, the mulligan, the verified lines
+argued, the engine, the numbers with their intervals. **No `<script>` anywhere**, so it
+rebuilds byte-identically and is trustworthy offline and in print — which is exactly why
+live map embeds go on the dossier instead. The *legacy magazine* (nine frozen issues;
+[the rack](https://macrae.github.io/mana-map/manuals/index.html)) still renders from
+`build-manual` and is no longer linked from any live surface.
 
 ---
 
@@ -248,7 +260,8 @@ where a deck stands and what to do next; start with both.
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
 | `/resolve-stack` | A verified line: resolver → validator → adversarial checker | no |
 | `/write-manual` | The pilot's notes: game plan, mulligan, line intros, threats, matchups | no |
-| `manamap pilot build-manual <slug>` + `build-index` | The deck page (legacy renderer, deterministic, byte-identical) | **yes** |
+| `manamap pilot build-page <slug>` + `build-index` | The Pilot's Manual (`manuals/p/`, deterministic, no `<script>`) | **yes** |
+| `manamap pilot build-manual <slug>` | The legacy magazine issue (frozen renderer) | **yes** |
 
 Then the loop the bench exists for — all CLI except the two agents:
 
@@ -661,9 +674,10 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 ## Deployment
 
 GitHub Pages serves the repo directly. There is no root index; the entry points are
-`/viz/index.html` (the card atlas), `/viz/deck.html?deck=<slug>` (the workbench surface for
-one deck) and `/manuals/index.html` (the printable pages — the legacy rack until the
-compact page lands). Pushing to `main` deploys.
+**`/viz/workbench.html` (the landing page — start here)**, `/viz/index.html` (the card
+atlas), `/viz/deck.html?deck=<slug>` (one deck's dossier) and `/manuals/p/<slug>.html`
+(its Pilot's Manual). `/manuals/index.html` is the legacy magazine rack, still rendered
+and no longer linked from any live surface. Pushing to `main` deploys.
 
 One artifact the deployed site cannot carry yet: **the version list**. `deck-version`
 derives it by walking git, and the commit that changes `decklist.txt` receives its sha

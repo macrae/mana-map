@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim at `docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-08-22**. Everything below is committed and pushed to `main` except
+Last updated **2026-08-25**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -69,18 +69,24 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 | `kianne` | 0/0 | 4/4 | — | **2** | 0 | **concept abandoned** — voltron is 10 decks of 970; the shell is sound, the win condition is not |
 | `kinnan` | 0/0 | 4/4 | — | 0 | 0 | deterministic baseline built; recon done; commander not owned |
 
-**Four Forge runs and two experiments exist**, all on radagast and kianne. They are the
-only decks that have been simulated at all.
+**Eight Forge runs and six experiments exist**, across four decks — edgar (3 runs, 2
+experiments), kianne (2, 2), radagast (2, 2), ur-dragon (1). The other seven have not been
+simulated at all.
 
-**Nothing is logged on any deck yet.** The log, debrief, prescriptions and versions are
-built and tested with zero real entries — the first one is the pilot's to write, and it
-will teach the agents more than another sprint would.
+**Two decks have a real table logged**: edgar and ur-dragon, one game each, both losses,
+both debriefed, each feeding a prescription. That is enough to have proved the loop works
+end to end and nowhere near enough to conclude anything about either deck — and the other
+nine still have zero. The next entry is the pilot's to write.
+
+**Five decks are not marked as built in paper** (heliod, yawgmoth-swarm, gishath, kianne,
+kinnan). That is a third state, distinct from the three that no longer exist as cardboard:
+nobody has said either way, and `deck-info` now says so instead of assuming.
 
 Three decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`). Their
 artifacts stay exactly as published; `deck-info` states the status and withholds the
 suggestions that would need a deck to shuffle.
 
-## Where it stands (2026-08-22)
+## Where it stands (2026-08-25)
 
 | | | where |
 |---|---|---|
@@ -96,15 +102,25 @@ suggestions that would need a deck to shuffle.
 | `validate-recon` | the gate `deck_recon.json` never had; its first catch was a data gap, not an agent error | `pilot/validate_recon.py` |
 | Builder curve + combos | role quota crossed with a **cited** mana-value target; `complete_combos` finishes a line the deck half-holds | `pilot/build_deck.py` |
 | **The deck page** | `viz/deck.html` — nine workbench panels over `info.json`, sim figures with intervals, lifecycle flag | `docs/viz.md` |
+| **The Pilot's Manual** | `manuals/p/<slug>.html` from `build-page` — the compact technical page, no `<script>`, rebuilds byte-identically. The magazine is unlinked from every live surface | `docs/manual-v5-spec.md` |
+| **The first real games** | edgar v1.0.0 and ur-dragon v1.0.0, one logged game each, both debriefed, both feeding a prescription | `data/decks/*/log.jsonl` |
+| **The workbench landing page** | `viz/workbench.html` — racks by whether a deck is SLEEVED, plus a fleet table sorted four ways over every `info.json`. Three labelled links per deck | `docs/viz.md` |
+| **The fusion** | an open verified line prints its prose (50 of 50 covered); engine arrows on the 5 of 196 edges whose direction is a fact; a curve bar is a control | `docs/viz.md` |
+| **Seed a walk from named cards** | textarea + `?cards=`; the enumeration separates, never the comma (9.2% of names contain one); *Start here* vs *Add to walk* | `docs/viz.md` |
+| **The version policy** | PATCH/MINOR/MAJOR by capability, every slug from v1.0.0; releases sort numerically, near-misses refused, re-tagging needs `--force` | `docs/pilot.md` |
+| **The paper lock's third state** | UNLOCKED is not dead. Four of eleven decks are unlocked and now say so; three rehearsal locks withdrawn | `docs/pilot.md` |
 
 ## Open work
 
 ### Next, in order
 
-1. **The first real logged games** — any deck, `deck-notes add`, then `/debrief` and
-   `/prescribe`. **Only the pilot can do this**, and it is the highest-value thing
-   available: the log, the debrief, prescriptions and three panels of the deck page are
-   built and tested against **zero real entries**.
+1. **Paper check-ins, one deck at a time** — **only the pilot can do this**, and it is
+   the highest-value thing available. Five decks (heliod, yawgmoth-swarm, gishath,
+   kianne, kinnan) are **not marked as built in paper**, so nothing knows whether they
+   exist as cardboard; Dinosaurs and Shrines were never checked in at all. `check-in`
+   takes a typed list and refuses rather than guesses, then `deck-version paper` locks
+   it and drift is computed on every swap from then on. Two decks (edgar, ur-dragon)
+   have one logged game each — which is two, not a sample.
 2. **The versions deploy-time step** — a Pages workflow checking out with
    `fetch-depth: 0` and running `deck-version list --json` per deck into `versions.json`.
    The producer already exists and the deck page's panel is already written; it renders
@@ -113,14 +129,24 @@ suggestions that would need a deck to shuffle.
 3. **An agent in the pilot's seat** for a handful of seeded games on one question — the
    evidence for it is in: no Forge AI profile flies a hold-up deck better than Default,
    so the AI is the thing limiting the measurement rather than the configuration.
-4. **The magazine unfreeze** (`docs/manual-v5-spec.md` phases 2–4) — blocked on the
-   pilot's answers to five open questions in that spec, all about the printable page.
-   The deck page in the viz was phase 5 and shipped first, because the spec separates the
-   surfaces: "the manual does not grow a log or a version panel."
+4. **The version-bump classifier** — `deck-version bump` measuring a diff and PROPOSING
+   major/minor/patch with its evidence, for the pilot to confirm. The policy is written
+   (`docs/pilot.md`); the classifier needs three things that do not exist: a diff between
+   two *arbitrary* versions (every diff today is consecutive or against the working tree),
+   `quantity_changes` carried into `versions()` — `history()` computes it and `versions()`
+   drops it, so 36 to 37 Forests reads as no change at all — and a classifier reporting
+   **evidence, never intent**, since `deck_history` is explicit that *why* a card moved is
+   not knowable from a commit.
 5. **Content-addressed cache busting for `deck.html`** — it went from nine artifact
    fetches to fifteen, and `manuals/magazine.css`'s `?v=<sha8>` is the pattern to copy.
 
-**Done since the last revision:** `experiment` and AI profiles (2026-08-19); `card-search`,
+**Done since the last revision:** the Pilot's Manual (`build-page`) and the magazine
+unlinked from every live surface; edgar and ur-dragon pinned at v1.0.0 with a real game
+each, debriefed and prescribed; the workbench landing page and its fleet table;
+verified-line prose, engine arrows and clickable group bars in Build; seeding a walk from
+named cards and `?cards=`; the semver policy and its three tag guards; the paper lock's
+third state and the withdrawal of three rehearsal locks (2026-08-23 → 25). Before that:
+`experiment` and AI profiles (2026-08-19); `card-search`,
 commander damage per defender, the collection primitive, `validate-recon`, deck lifecycle
 in `deck-info` (2026-08-21); the builder's curve quota and combo completion, `mean_ci`'s
 distribution, `deck-info --write`, the manifest's instanced files, the deck page, the DFC

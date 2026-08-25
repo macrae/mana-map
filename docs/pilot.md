@@ -311,6 +311,45 @@ working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions
 unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
 `deck-status` prints the current version in its header.
 
+### The paper lock — three states, not two
+
+`deck-version <slug> paper [--at V4] [--note …] [--clear]` asserts that one exact list is
+the one **sleeved**. It is authored and it is the only claim in the repo about cardboard;
+nothing derives it, because nothing can. Locking a version is also what makes **drift** free
+— `report()` already knows the current version, so locked / in_sync / versions_behind falls
+out, and the two sides are named `pull` and `add` because that is the physical instruction.
+
+The state that had to be added is the third one:
+
+| state | meaning | what the front door says |
+|---|---|---|
+| **locked** | the pilot says this exact list is sleeved | play it, log it, simulate it |
+| dead (`broken-down` / `retired`) | it demonstrably is not | the play/measure loop is closed, **and says what it withheld** |
+| **absent** | nobody has said either way | *not marked as built in paper* — with the command that settles it |
+
+`deck-info` had two of the three and treated **absent as locked**, telling the pilot to go
+and play a deck that may never have been built. That is the quiet half of the defect that
+once had this same command recommending `hapatra` while hapatra's cards sat in yawgmoth's
+sleeves: the loud half was caught because the cards were provably elsewhere, this one just
+does not know and said nothing, which reads identically to knowing.
+
+It **informs rather than withholds** — an unbuilt deck is not a closed deck, so the
+play/measure suggestions stay and a line above them names the command. Withholding is
+reserved for a deck we know is gone.
+
+Only the **authored** half of the lock reaches `info.json` (version, date, note).
+`paper_state`'s drift needs a git walk, and `info.json` is committed and omits everything
+git-derived because the commit that changes `decklist.txt` receives its sha after anything
+written alongside it — a stored drift would be one swap behind forever. `paper()` is a plain
+file read, so it is on the safe side of that split, and a test asserts `in_sync` and `drift`
+never appear there.
+
+**A lock nobody checked is worse than no lock.** Three decks carried placeholder locks
+written to exercise the drift display during a demo; two asserted "in sync" and one asserted
+a two-card drift, and all three rendered identically to evidence on the surface whose job is
+saying what you can play tonight. They were withdrawn rather than corrected — the note on a
+lock should say who checked and when.
+
 ### What a version bump means
 
 `deck-version` NUMBERS every list from git (V1, V2, V3…) and that numbering is

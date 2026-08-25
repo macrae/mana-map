@@ -8,24 +8,24 @@ the code. **Start with the vision; everything else is written against it.**
 
 | | | |
 |---|---:|---|
-| **[vision.md](vision.md)** | 82 | Who this is for (a deck scientist and pilot), what the bench does end to end, the evidence contract, what is live / legacy / next, and the vocabulary. If a doc disagrees with this page, this page wins. |
-| **[pilot.md](pilot.md)** | 1,114 | The bench reference: the evidence and citation contracts, every `manamap pilot` command, the per-deck artifacts, then each piece — status, `deck-info`, versions, the captain's log and debrief, prescriptions, simulation, goldfish, scenarios and game state v2, the resolve loop, the rules and strategy DBs, facts, audit, diagnosis, engine, constellation — and a LEGACY block on the magazine renderer last. |
-| **[simulation.md](simulation.md)** | 169 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
+| **[vision.md](vision.md)** | 154 | Who this is for (a deck scientist and pilot), what the bench does end to end, the evidence contract, what is live / legacy / next, and the vocabulary. If a doc disagrees with this page, this page wins. |
+| **[pilot.md](pilot.md)** | 1,431 | The bench reference: the evidence and citation contracts, every `manamap pilot` command, the per-deck artifacts, then each piece — status, `deck-info`, versions (incl. **the paper lock's three states and what a version bump means**), the captain's log and debrief, prescriptions, simulation, goldfish, scenarios and game state v2, the resolve loop, the rules and strategy DBs, facts, audit, diagnosis, engine, constellation — and a LEGACY block on the magazine renderer last. |
+| **[simulation.md](simulation.md)** | 254 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
 | **[pipeline.md](pipeline.md)** | 43 | The 15 card-pipeline steps: command, inputs, outputs, runtime, when to re-run what. |
-| **[data-artifacts.md](data-artifacts.md)** | 80 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
-| **[testing.md](testing.md)** | 543 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
+| **[data-artifacts.md](data-artifacts.md)** | 85 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
+| **[testing.md](testing.md)** | 553 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
 
 ## Reference, by subsystem
 
 | | | |
 |---|---:|---|
 | [architecture.md](architecture.md) | 316 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
-| [viz.md](viz.md) | 1,208 | The frontend: the three modes, the `window.MM` contract, the canvas renderer, the deck dossier, Pages deployment. Read before any `viz/` change. |
+| [viz.md](viz.md) | 1,405 | The frontend: the three PAGES (workbench, atlas, dossier), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 243 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 15 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |
-| [manual-v5-spec.md](manual-v5-spec.md) | 100 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
+| [manual-v5-spec.md](manual-v5-spec.md) | 115 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
 
-The LEGACY magazine renderer's constitution is **[../STYLEv3.md](../STYLEv3.md)** (1,116
+The LEGACY magazine renderer's constitution is **[../STYLEv3.md](../STYLEv3.md)** (1,122
 lines), banner-marked SUPERSEDED: it governs `build_manual.py`, `design.py`,
 `issue_spec.py` and `validate_issue.py` only, which still render the nine frozen pages
 until manual-v5 replaces them. Nothing in it applies to the bench.

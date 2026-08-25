@@ -21,13 +21,16 @@ zero LLM calls.** You do not need a GPU, and you do not need to run the pipeline
 
 ```bash
 python3 -m http.server 8000
+# localhost:8000/viz/workbench.html        THE LANDING PAGE — every deck, racked and tabled
 # localhost:8000/viz/index.html            the card map, all three modes
-# localhost:8000/manuals/index.html        the deck pages (legacy magazine renderer)
+# localhost:8000/viz/deck.html?deck=heliod one deck's dossier
+# localhost:8000/manuals/p/heliod.html     its Pilot's Manual (printable, no JS)
+# localhost:8000/manuals/index.html        the legacy magazine rack (frozen, unlinked)
 ```
 
 The map boots on 1.8 MB because the artifacts it needs are tracked on purpose.
 
-**After `make setup`, with no pipeline run:** **1,360 of the 1,488 fast tests** —
+**After `make setup`, with no pipeline run:** **1,360 of the fast tests** —
 91%, measured on an actual fresh clone —
 every deterministic `manamap pilot` subcommand that reads a deck rather than the
 corpus, and a byte-identical re-render of every deck page.

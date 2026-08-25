@@ -62,7 +62,9 @@ replayability and the control is N. An A/A is refused with the reason.
 | know where a deck stands | `deck-info <slug>` — the whole join, and a derived **next** | ◆ |
 | keep the list honest across swaps | `deck-version` — every list from git, joined to the games played on it | ◆ |
 | remember what happened at the table | `deck-notes add` → `/debrief` → `/prescribe` | authored → ★ → ◆★ |
-| read any of it in a browser | the **deck page** — `viz/deck.html?deck=<slug>` | all |
+| know whether a deck EXISTS as cardboard | `deck-version <slug> paper` — the one claim nothing can derive | authored |
+| decide which deck to spend tonight on | the **workbench** — `viz/workbench.html`, every deck and its derived next | ◆ |
+| read any of it in a browser | the **deck page** — `viz/deck.html?deck=<slug>` — and the **Pilot's Manual**, `manuals/p/<slug>.html` | all |
 
 ## The evidence contract — the part that never moves
 
@@ -91,6 +93,12 @@ Three relations, each precomputed so a click is instant: **similar** (embedding
 neighbours), **synergy** (rule-based complements), **outclassed by** (strictly-better
 replacements). Boot costs 1.8 MB.
 
+**The workbench** (`viz/workbench.html`) — the landing page, and the only screen that
+answers *which deck should I spend tonight on*. Racks group by whether a deck is sleeved;
+the fleet table is one row per deck sorted by recently played, needs game logs, needs
+analysis, or optimisations identified. Every sort maps to a predicate `deck-info` already
+computes, so the page adds no judgement of its own.
+
 **The deck page** (`viz/deck.html?deck=<slug>`) — the workbench surface. What to do next,
 where the deck stands, every list it has been, what limits it, the engine, **the
 experiments and simulation runs with their intervals**, prescriptions, the captain's log,
@@ -98,19 +106,21 @@ open questions, and the constellation. It renders `info.json` — the shape `dec
 composes — rather than re-deriving anything, so it cannot disagree with the command that
 owns each figure.
 
-## What is live, what is legacy, what is honest (2026-08-22)
+## What is live, what is legacy, what is honest (2026-08-25)
 
 **Live** — the whole loop above. Simulation (`simulate`, `experiment`, `validate-sim`,
 `sim-scenario`, `fetch-opponent`), the goldfish, the deterministic builder, `card-search`,
 `deck-audit`, `deck-info`, `deck-version`, `deck-notes`/`/debrief`/`/prescribe`,
-`/resolve-stack`, `analyze-engine`, `deck-recon`, the card atlas and the deck page.
+`/resolve-stack`, `analyze-engine`, `deck-recon`, the card atlas, the deck page, the
+**workbench landing page** and the **Pilot's Manual** (`build-page` → `manuals/p/`).
 
 **Legacy, frozen** — the magazine renderer (`build_manual`, `issue_spec`, `design`,
 `validate_issue`, STYLEv3) and the artifacts only it reads. It still renders nine pages;
-nothing regenerates its inputs; it is replaced by the compact deck page
-(`docs/manual-v5-spec.md`). Marked LEGACY and left accurate rather than rewritten.
+nothing regenerates its inputs; it has been **replaced** by the compact Pilot's Manual
+(`build-page`, `docs/manual-v5-spec.md`) and is no longer linked from any live surface.
+Marked LEGACY and left accurate rather than rewritten.
 
-**Honest about two things.**
+**Honest about three things.**
 
 *Forge's AI pilots the deck — including yours.* Forge rates its own AI "poor to ok in
 control, pretty bad for combo", and that sentence is quoted verbatim in every run record.
@@ -118,10 +128,15 @@ A control deck's win rate is a **lower bound on the pilot**; a combo deck's is n
 measurement at all. What a run is genuinely good at: the clock the table sets, who kills
 you and how, and whether the kill the goldfish measured actually lands.
 
-*Nothing has been logged at a real table yet.* The captain's log, the debrief and
-prescriptions are built, tested and wired into the deck page against **zero real
-entries**. That is the one gap no amount of implementation closes, and the first entry
-will teach the agents more than another sprint would.
+*Two games. Not two hundred.* Edgar and Ur-Dragon each have one real table logged and
+debriefed, and each fed a prescription — which is enough to have proved the loop works
+end to end, and nowhere near enough to conclude anything about either deck. The gap no
+amount of implementation closes is still open; it is just narrower than it was.
+
+*Most decks are not marked as built in paper.* Whether a deck exists as cardboard is an
+assertion only the pilot can make, and five of eleven have not been asserted either way.
+An unlocked deck now SAYS it is unlocked rather than being quietly assumed playable —
+the third state, after LOCKED and dead.
 
 ## Vocabulary
 
