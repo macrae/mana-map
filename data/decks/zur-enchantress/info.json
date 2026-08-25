@@ -1,0 +1,72 @@
+{
+  "slug": "zur-enchantress",
+  "commander": [
+    "Zur the Enchanter"
+  ],
+  "lifecycle": null,
+  "colour_identity": [
+    "W",
+    "U",
+    "B"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 3,
+    "of": 15,
+    "stale": [],
+    "invalid": [],
+    "missing": [
+      "bracket",
+      "targets",
+      "goldfish",
+      "mana",
+      "frame",
+      "map",
+      "engine",
+      "stacks",
+      "tutors",
+      "prose",
+      "log",
+      "issue"
+    ]
+  },
+  "bracket": null,
+  "paper": null,
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "undebriefed": []
+  },
+  "goldfish": null,
+  "engine": null,
+  "diagnosis": null,
+  "audit": {
+    "archetype": null,
+    "under": [
+      "card-advantage",
+      "interaction-breadth"
+    ],
+    "over": [
+      "ramp"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [],
+  "simulation": null,
+  "experiments": null,
+  "next": [
+    "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`",
+    "no simulation runs — `simulate zur-enchantress --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

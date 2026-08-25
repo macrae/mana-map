@@ -871,15 +871,21 @@
      * stale. */
     getJSON(DECK_BASE + slug + '/brief.json').then(function (brief) {
       const names = (brief && brief.must_include) || [];
+      /* ADD, NOT TOGGLE. Restoring a list by flipping each entry means a name
+       * appearing twice — or two names the corpus resolves to one row — takes
+       * the card straight back out again. And the status then quoted
+       * `names.length`, i.e. what it MEANT to keep, so it could print "2 card(s)
+       * kept" beside a panel rendering one. Report what is actually held. */
       Session.library.clear();
       let missing = 0;
       for (const n of names) {
-        const row = window.Discovery ? Discovery.rowByName(n) : -1;
-        if (row >= 0) Session.library.toggle(row); else missing++;
+        if (window.Discovery && Discovery.rowByName(n) < 0) missing++;
+        Session.library.add(n);
       }
+      const kept = Session.library.size;
       newDeck.fmt = brief.format || newDeck.fmt;
       renderPanel();
-      MM.setStatus(d.deck_name + ' — a draft, ' + names.length + ' card(s) kept'
+      MM.setStatus(d.deck_name + ' — a draft, ' + kept + ' card(s) kept'
         + (missing ? ' (' + missing + ' no longer in the corpus)' : ''));
     }).catch(function () {
       MM.setStatus(d.deck_name + ' — a draft (its brief could not be read)');
@@ -923,7 +929,10 @@
       Api.call('build/save', {
         slug: newDeck.slug, commander: newDeck.commander || null,
         theme: newDeck.theme || null, fmt: newDeck.fmt,
-        library: Session.library.list.map(r => (MM.cardRecord(r) || {}).n).filter(Boolean),
+        // `names`, not rows mapped back to names: a card the corpus cannot
+        // place is still one the pilot kept, and `list` holds only the placeable
+        // ones — so the round trip silently dropped it out of the saved draft.
+        library: Session.library.names,
       }).then(function (out) {
         newDeck.saved = out.slug;
         renderPanel();
@@ -1609,7 +1618,21 @@
     renderPanel();
   }
 
+  /* Build shows a library count too ("N cards from your library will be kept in
+   * the 99"), so it subscribes for the same reason Discover does: the writer
+   * should not have to know which panels are on screen. */
+  let watchingLibrary = false;
+
+  function watchLibrary() {
+    if (watchingLibrary || !window.Session || !Session.on) return;
+    watchingLibrary = true;
+    Session.on(function (what) {
+      if (what === 'library' && MM.mode === 'build') renderPanel();
+    });
+  }
+
   async function enter() {
+    watchLibrary();
     const panel = document.getElementById('deckPanel');
     panel.classList.add('open');
     resizeMap();
@@ -1665,7 +1688,7 @@
 
   function addCard(row) {
     if (typeof row !== 'number' || row < 0) return;
-    if (!Session.library.has(row)) Session.library.toggle(row);
+    Session.library.add(row);
     if (active) renderPanel();
     MM.setStatus((MM.cardRecord(row) || {}).n + ' added — ' + Session.library.size +
                  ' in the library · Export brief hands them to the build loop');

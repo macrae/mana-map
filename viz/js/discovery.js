@@ -77,6 +77,7 @@ window.Discovery = (function () {
          * is the first moment a name CAN become a row, so it is the moment the
          * library comes back. */
         if (window.Session && Session.useCards) {
+          watchLibrary();
           const report = Session.useCards({
             nameOf: function (row) { return index[row] ? index[row].n : null; },
             rowOf: rowByName,
@@ -374,11 +375,20 @@ window.Discovery = (function () {
         ' — ' + d.commander + '</option>').join('') +
       '</select></div>';
 
+    /* THE LIBRARY'S CONTROLS LIVE IN THE DRAWER, not here. They used to sit
+     * inside this collapsed `<details>` — so the count, Export and an
+     * unconfirmed Clear were all hidden behind a disclosure labelled "Start
+     * somewhere else", which is a destructive control mislabelled by its
+     * container. What is left is a count and the one action that is genuinely
+     * about the WALK rather than about the library. The count reads the same
+     * array the strip does, so the two cannot disagree. */
     html += '<div class="discover-tray">' +
       '<button class="lens-btn" onclick="Discovery.toggleImport()">Paste a decklist</button>' +
       '<span class="discover-traycount">' + Session.library.size + ' in library</span>' +
-      (Session.library.size ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
-                     '<button class="lens-btn" onclick="Discovery.library.clear()">Clear</button>' : '') +
+      (Session.library.size
+        ? '<button class="lens-btn" onclick="Shell.toggle()">Show them</button>' +
+          '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>'
+        : '') +
       '</div>';
     /* START FROM CARDS YOU NAME.
      *
@@ -657,15 +667,29 @@ window.Discovery = (function () {
    * storage, since it was a fifth array all the same. */
   function inLibrary(row) { return Session.library.has(row); }
 
-  function toggleLibrary(row) {
-    Session.library.toggle(row);
-    render();
-    if (window.Force && Force.isActive()) Force.renderPanel();
+  /* SUBSCRIBED, NOT CALLED. Every panel showing a library count repaints itself
+   * when Session says the library moved, so a writer does not have to know which
+   * panels exist. `MM.keep` wrote straight to Session and repainted nothing in
+   * this mode, which is exactly the count that went stale. */
+  let subscribed = false;
+
+  function watchLibrary() {
+    if (subscribed || !window.Session || !Session.on) return;
+    subscribed = true;
+    Session.on(function (what) {
+      if (what !== 'library') return;
+      if (MM.mode === 'discover' && isReady()) render();
+      if (window.Force && Force.isActive()) Force.renderPanel();
+    });
   }
 
-  function clearLibrary() { Session.library.clear(); render(); }
+  function toggleLibrary(row) { Session.library.toggle(row); }
 
-  function libraryNames() { return Session.library.list.map(r => index[r].n); }
+  function clearLibrary() { Session.library.clear(); }
+
+  /* Straight from Session: `list` holds only the names this corpus could place,
+   * and a name it could not is still a card the pilot kept. */
+  function libraryNames() { return Session.library.names; }
 
   /* The hand-off to the pilot loop. There is no backend and this plan does not add one:
    * the manuals are 6-10 serially dependent LLM subagents costing ~330k-1.7M tokens, and
@@ -826,7 +850,7 @@ window.Discovery = (function () {
     const cmdr = typeof o.commander === 'number' ? o.commander : -1;
     const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
     if (cmdr >= 0) Session.setCommander(cmdr);
-    if (o.library) for (const r of rows) if (!inLibrary(r)) Session.library.toggle(r);
+    if (o.library) for (const r of rows) Session.library.add(r);
 
     Force.newWalk(true);
     return Promise.resolve(
@@ -914,7 +938,7 @@ window.Discovery = (function () {
       return { resolved: 0, missing: missing, total: entries.length };
     }
 
-    for (const r of rows) if (!inLibrary(r)) Session.library.toggle(r);
+    for (const r of rows) Session.library.add(r);
 
     if (window.Force) {
       // Pass `opts.deck`, exactly as `loadDeck` does. Without it a PASTED list — which is

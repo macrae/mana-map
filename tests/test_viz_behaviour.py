@@ -5561,19 +5561,30 @@ def test_the_shell_marks_where_you_are(browser, viz_server, path, here):
         page.close()
 
 
-def test_the_shell_needs_neither_session_nor_the_atlas(browser, viz_server):
-    """It lives on `workbench.html`, which loads neither.
+def test_the_shell_needs_no_card_data(browser, viz_server):
+    """It lives on `workbench.html`, which draws decks and never loads a card.
 
-    A shell that needed them would either pull 0.56 MB of card index onto a page
-    that draws no cards, or exist on one page and stop being a shell.
+    A shell that needed the atlas would either pull 0.56 MB of card index onto a
+    page that draws no cards, or exist on one page and stop being a shell. That
+    is still the rule, and `MM` is still absent here.
+
+    `Session` IS now present, deliberately: it is ~10 KB with no data behind it,
+    and the library drawer WRITES — the strip can count out of localStorage but
+    taking a card back out cannot. What must stay absent is the DATA, not every
+    dependency, and this asserts the line in the place it actually falls.
     """
     page = _shell_page(browser, viz_server, "/viz/workbench.html")
     try:
         state = page.evaluate("""() => ({
-            session: !!window.Session, mm: !!window.MM, shell: !!window.Shell,
+            mm: !!window.MM, shell: !!window.Shell,
+            session: !!window.Session,
+            // The card index is the weight, and nothing here may have loaded it.
+            discovery: !!window.Discovery,
         })""")
         assert state["shell"] is True
-        assert state["session"] is False and state["mm"] is False
+        assert state["mm"] is False, "the workbench pulled in the atlas"
+        assert state["discovery"] is False, "the workbench pulled in the card index"
+        assert state["session"] is True, "the drawer cannot write without Session"
         assert page.js_errors == []
     finally:
         page.close()
@@ -5588,14 +5599,20 @@ def test_the_library_count_crosses_surfaces(browser, viz_server):
     """
     page = _shell_page(browser, viz_server, "/viz/workbench.html")
     try:
-        shown = page.evaluate("""() => {
+        # Seed the store and load the page against it, which is what a pilot
+        # arriving from the Atlas actually does. Asserted through the rendered
+        # strip rather than through whichever object holds the list, so it stays
+        # a statement about the product and not about the plumbing.
+        page.evaluate("""() => {
             localStorage.setItem('manamap-library', JSON.stringify({
                 v: 1, corpus: null,
                 cards: ['Sol Ring', 'Rhystic Study', 'Command Tower', 'Cyclonic Rift'],
             }));
-            Shell.refresh();
-            return document.querySelector('.shell-library').innerText;
+            location.reload();
         }""")
+        page.wait_for_function("() => document.querySelector('.shell-library')",
+                               timeout=20000)
+        shown = page.evaluate("() => document.querySelector('.shell-library').innerText")
         assert "4" in shown, f"shell shows {shown!r}"
         assert page.js_errors == []
     finally:
@@ -5622,7 +5639,11 @@ def test_the_count_is_never_one_behind(discover_page):
                 shown: document.querySelector('.shell-library').innerText};
     }""")
     assert r["stored"] == 4
-    assert r["shown"].strip().startswith("4"), (
+    # The strip carries a mark before the number now, so read the digits rather
+    # than the first character.
+    import re as _re
+    shown_n = (_re.search(r"\d+", r["shown"]) or [None])[0]
+    assert shown_n == "4", (
         f"the strip says {r['shown']!r} while {r['stored']} are stored — "
         f"save() must run before emit()")
     assert page.js_errors == []
@@ -6005,3 +6026,257 @@ def test_finish_is_offered_only_once_there_is_a_deck_to_finish(browser, viz_serv
         assert errors == [], errors
     finally:
         page.close()
+
+
+# ---------------------------------------------------------------------------
+# The library is a PLACE, not a number
+#
+# It had no content view anywhere in the frontend: you could add to it, you were
+# told how many things were in it, and the only way to see WHAT was to export a
+# JSON file. There was no per-card remove — the sole removal control was an
+# unconfirmed Clear inside a collapsed block labelled "Start somewhere else".
+#
+# And the count disagreed with itself, because four counters read three
+# different representations of one library.
+# ---------------------------------------------------------------------------
+
+def _open_drawer(page):
+    page.evaluate("() => { if (!Shell.isOpen) Shell.toggle(); }")
+    page.wait_for_function("() => document.querySelector('.lib-head')", timeout=10000)
+
+
+def test_the_strip_the_tray_and_the_tiles_cannot_disagree(discover_page):
+    """THE REPORTED BUG: "it says two cards in the library, only shows one".
+
+    `MM.keep` repainted only in explore and build. In discover it wrote to
+    Session and told nobody, so the strip — which Session notifies — moved while
+    the panel's own count sat at whatever it last rendered. Measured against the
+    real page before the fix, with no reload involved:
+
+        cleared   strip "library empty"    tray "2 in library"
+        kept 1    strip "1 in your library"  tray "2 in library"
+        kept 2    strip "2 in your library"  tray "2 in library"
+
+    Adding `discover` to that list of modes would have fixed the symptom and
+    left the fourth panel to rediscover it, so the repaint is a subscription now
+    and this asserts all three readings of one library at every step.
+    """
+    page = discover_page
+    steps = page.evaluate("""() => {
+        const strip = () => (document.querySelector('.shell-lib-btn') || {}).textContent || '';
+        const tray = () => (document.querySelector('.discover-traycount') || {}).textContent || '';
+        const out = [];
+        const read = (label) => out.push({
+            label,
+            strip: (strip().match(/\\d+/) || [strip().indexOf('empty') >= 0 ? '0' : '?'])[0],
+            tray: (tray().match(/\\d+/) || ['?'])[0],
+            size: String(Session.library.size),
+        });
+        Session.library.clear();
+        read('cleared');
+        MM.keep(Discovery.rowByName('Sol Ring'));
+        read('kept one');
+        MM.keep(Discovery.rowByName('Rhystic Study'));
+        read('kept two');
+        return out;
+    }""")
+    for step in steps:
+        assert step["strip"] == step["size"] == step["tray"], (
+            f"at {step['label']!r} the strip says {step['strip']}, the tray "
+            f"{step['tray']} and the library holds {step['size']}")
+
+    _open_drawer(page)
+    tiles = page.locator(".lib-tile").count()
+    assert tiles == 2, f"{tiles} tiles for a library of 2"
+    assert page.js_errors == []
+
+
+def test_a_name_this_corpus_cannot_place_is_still_a_card_you_kept(discover_page):
+    """It used to be dropped from memory and LEFT in the store.
+
+    That is the worst of both: the strip counted a card forever and no surface
+    could show it. The only report was a transient `MM.setStatus` line, which
+    the next status message overwrites. Now it is an entry with no row — drawn,
+    labelled, and removable.
+    """
+    page = discover_page
+    state = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 1, corpus: 'whatever',
+            cards: ['Sol Ring', 'A Card That Was Never Printed'],
+        }));
+        Session.useCards({
+            nameOf: r => (MM.cardRecord(r) || {}).n || null,
+            rowOf: Discovery.rowByName,
+            fingerprint: () => 'now',
+        });
+        if (!Shell.isOpen) Shell.toggle();
+        return { names: Session.library.names, size: Session.library.size };
+    }""")
+    assert state["size"] == 2, "the unresolvable name was dropped from the count"
+    assert "A Card That Was Never Printed" in state["names"]
+
+    page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 2",
+                           timeout=10000)
+    flagged = page.locator(".lib-tile-unknown")
+    assert flagged.count() == 1, "exactly one tile should say it cannot be placed"
+    assert "not in this corpus" in flagged.inner_text().lower()
+    assert page.js_errors == []
+
+
+def test_two_rows_with_one_name_are_one_card(discover_page):
+    """`data/viz_index.json` carries 38 names on more than one row.
+
+    Memory deduped by ROW and the store held NAMES, with nothing reconciling
+    them and no write on restore — so keeping two printings of `Savage Lands`
+    stored two names, restored one row, and the disagreement was permanent
+    across every reload of every page. The dedupe is by name, and the store is
+    rewritten once so it stops being wrong.
+    """
+    page = discover_page
+    out = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 1, corpus: 'whatever', cards: ['Savage Lands', 'Savage Lands'],
+        }));
+        Session.useCards({
+            nameOf: r => (MM.cardRecord(r) || {}).n || null,
+            rowOf: Discovery.rowByName,
+            fingerprint: () => 'now',
+        });
+        return {
+            size: Session.library.size,
+            stored: JSON.parse(localStorage.getItem('manamap-library')).cards,
+        };
+    }""")
+    assert out["size"] == 1, "one card, however many rows carry its name"
+    assert out["stored"] == ["Savage Lands"], (
+        f"the store was left disagreeing with memory: {out['stored']}")
+    assert page.js_errors == []
+
+
+def test_a_card_goes_back_out_in_one_click(discover_page):
+    """There was no per-card remove at all. To take one card out you had to
+    navigate back to that exact card and press Keep again — and nothing rendered
+    the library, so if you had forgotten what was in it there was no way to look."""
+    page = discover_page
+    page.evaluate("""() => {
+        Session.library.clear();
+        ['Sol Ring', 'Rhystic Study', 'Command Tower'].forEach(n => Session.library.add(n));
+    }""")
+    _open_drawer(page)
+    page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 3",
+                           timeout=10000)
+
+    page.locator(".lib-tile").nth(1).locator(".lib-drop").click()
+    page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 2",
+                           timeout=10000)
+
+    after = page.evaluate("""() => ({
+        size: Session.library.size,
+        names: Session.library.names,
+        stored: JSON.parse(localStorage.getItem('manamap-library')).cards,
+        strip: (document.querySelector('.shell-lib-btn') || {}).textContent,
+    })""")
+    assert after["size"] == 2
+    assert "Rhystic Study" not in after["names"], "the wrong card came out"
+    assert after["stored"] == after["names"], "the store did not follow"
+    assert "2" in after["strip"]
+    assert page.js_errors == []
+
+
+def test_opening_a_kept_card_does_not_delete_the_walk(discover_page):
+    """GROWING MUST NEVER BE ABLE TO DELETE, and this is a new door onto it.
+
+    The obvious implementation of "open this card" is `Discovery.show`, which
+    calls `newWalk(true)` — so clicking a card in the library would silently
+    destroy the graph you kept it from. `MM.openCard` routes by mode and touches
+    the graph's membership not at all.
+    """
+    page = discover_page
+    page.evaluate("""() => {
+        Session.library.clear();
+        Session.library.add('Sol Ring');
+        MM.relate(Discovery.current, 'similar');
+    }""")
+    page.wait_for_function("() => Force.nodeCount > 1", timeout=15000)
+    before = page.evaluate("() => Force.nodeCount")
+
+    _open_drawer(page)
+    page.locator(".lib-tile").first.locator(".lib-open").click()
+    page.wait_for_function("() => !Shell.isOpen", timeout=10000)
+
+    after = page.evaluate("""() => ({
+        nodes: Force.nodeCount,
+        open: (MM.cardRecord(Discovery.current) || {}).n,
+    })""")
+    assert after["nodes"] == before, (
+        f"the walk went from {before} nodes to {after['nodes']} — opening a card destroyed it")
+    assert after["open"] == "Sol Ring", f"opened {after['open']!r}"
+    assert page.js_errors == []
+
+
+def test_the_drawer_works_where_there_is_no_corpus(browser, viz_server):
+    """The workbench loads no card index and never will — it draws decks.
+
+    It works because the library stores NAMES: a name needs nothing to be held,
+    and Scryfall's image endpoint takes one, so real card art renders on a page
+    that has never heard of a card. The first cut restored the library inside
+    `useCards`, which only the Atlas calls, so the drawer opened empty here while
+    the strip beside it counted eleven cards out of the same store.
+    """
+    page = _shell_page(browser, viz_server, "/viz/workbench.html")
+    try:
+        page.evaluate("""() => {
+            localStorage.setItem('manamap-library', JSON.stringify({
+                v: 1, corpus: 'somefingerprint',
+                cards: ['Sol Ring', 'Rhystic Study', 'Command Tower'],
+            }));
+            location.reload();
+        }""")
+        page.wait_for_function("() => window.Shell && window.Session", timeout=20000)
+        page.evaluate("() => { if (!Shell.isOpen) Shell.toggle(); }")
+        page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 3",
+                               timeout=15000)
+
+        state = page.evaluate("""() => ({
+            hasMM: !!window.MM,
+            resolvable: Session.library.resolvable,
+            flagged: document.querySelectorAll('.lib-tile-unknown').length,
+            imgs: document.querySelectorAll('.lib-tile img').length,
+        })""")
+        assert not state["hasMM"], "the workbench must not need the atlas"
+        assert not state["resolvable"], "nothing has resolved a name here"
+        # "Not in this corpus" is only sayable where there IS a corpus. Reading
+        # `row < 0` as unknown would libel every card in the library.
+        assert state["flagged"] == 0, "cards were falsely flagged as unknown"
+        assert state["imgs"] == 3, "no card art without the corpus"
+
+        # Removal must work here too — a count can come from localStorage,
+        # taking a card back out cannot.
+        page.locator(".lib-tile").first.locator(".lib-drop").click()
+        page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 2",
+                               timeout=10000)
+        doc = page.evaluate("() => JSON.parse(localStorage.getItem('manamap-library'))")
+        assert len(doc["cards"]) == 2
+        # A write from a page with no index must not erase the fingerprint: absent
+        # knowledge is not knowledge of absence, and that value is what later
+        # EXPLAINS a name that stopped resolving.
+        assert doc["corpus"] == "somefingerprint", f"fingerprint erased: {doc['corpus']!r}"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_restoring_a_draft_keeps_a_repeated_card(discover_page):
+    """`resumeDraft` restored a brief by TOGGLING each must-include, so a name
+    appearing twice took the card straight back out — and the status quoted
+    `names.length`, i.e. what it meant to keep rather than what it kept."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        ['Sol Ring', 'Rhystic Study', 'Sol Ring'].forEach(n => Session.library.add(n));
+        return { size: Session.library.size, names: Session.library.names };
+    }""")
+    assert out["size"] == 2, f"a repeated name cancelled itself out: {out['names']}"
+    assert "Sol Ring" in out["names"]
+    assert page.js_errors == []

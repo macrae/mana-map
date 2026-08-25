@@ -720,9 +720,14 @@
     return (window.Discovery && Discovery.record(row)) || null;
   }
 
-  function cardImageUrl(name) {
+  /* ONE IMAGE-URL BUILDER, and it lives in the shell because the shell is the
+   * one module present on all three surfaces — the drawer draws cards on two
+   * pages that never load this file. The local form is the fallback for the
+   * boot window before `shell.js` has run. */
+  function cardImageUrl(name, version) {
+    if (window.Shell && Shell.cardImageUrl) return Shell.cardImageUrl(name, version || 'normal');
     return 'https://api.scryfall.com/cards/named?exact='
-      + encodeURIComponent(name) + '&format=image&version=normal';
+      + encodeURIComponent(name) + '&format=image&version=' + (version || 'normal');
   }
 
   // Warm the browser cache for the cards either side of the open one. Each image is a
@@ -1350,12 +1355,21 @@
       });
   }
 
+  /* THE REPAINT IS A SUBSCRIPTION, NOT A LIST OF MODES THIS FUNCTION KNOWS ABOUT.
+   *
+   * This used to repaint only in `explore` and `build`. In `discover` it wrote to
+   * Session and told nobody, so the strip — which Session notifies — went to 2
+   * while the panel's own count sat at whatever it last rendered. Measured, with
+   * no reload involved: strip `empty -> 1 -> 2` against a tray frozen at `2`.
+   * That is the "it says two cards, only shows one" report.
+   *
+   * Adding `discover` to the list would have fixed today and left the fourth
+   * panel to rediscover it. Every surface that shows a count now subscribes to
+   * Session and repaints itself — the same argument `Force.renderPanel` makes
+   * about asking `MM.mode` rather than assuming who owns the panel. */
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
     Session.library.toggle(row);
-    if (currentMode === 'explore' || currentMode === 'build') {
-      updateViewerPanel();
-    }
   }
 
   function buildObsolescenceHtml(cardName) {
@@ -1721,6 +1735,23 @@
   // MM.setStatus, and calling it here threw — which aborted the IIFE, so MM was never
   // exported and every later file failed at its own top level too. One ordering
   // mistake, four broken files, twice. A microtask runs after the assignment completes.
+  /* THE VIEWER PANEL SUBSCRIBES TOO, and forgetting it was the first cost of
+   * this change: `keep` used to repaint explore and build directly, so removing
+   * that call while wiring subscribers for Discover and Build left the Keep
+   * button in Explore reading "+ Keep this card" over a card that was already
+   * in the library. Every panel that draws library state listens; none of them
+   * is a special case the writer has to know about.
+   *
+   * Registered in the microtask for the reason above it — subscribing is safe
+   * anywhere, but the callback reads `MM.mode`, and the IIFE has not returned. */
+  queueMicrotask(function () {
+    if (!window.Session || !Session.on) return;
+    Session.on(function (what) {
+      if (what !== 'library') return;
+      if (currentMode === 'explore' && selectedCards.length) updateViewerPanel();
+    });
+  });
+
   if (!wantedDeck) queueMicrotask(function () {
     const sel = document.getElementById('modeSelect');
     if (sel) sel.value = currentMode;
@@ -2534,6 +2565,35 @@
     if (idx !== -1) addToSelection(idx);
   }
 
+  /* OPEN A CARD, FROM ANYWHERE, WITHOUT DESTROYING A WALK.
+   *
+   * The library drawer needed "show me this card" and there was no safe way to
+   * say it. `selectByName` is a MAP selection — it needs the 12.9 MB projection
+   * and does nothing visible in Discover, where the panel belongs to Discovery.
+   * `Discovery.show` would have worked and is exactly wrong: it calls
+   * `newWalk(true)`, so opening a card you kept would silently delete the graph
+   * you kept it from. That is the "growing must never be able to delete" rule,
+   * and this is a new door onto the same trap.
+   *
+   * So it routes by mode, for the reason `MM.relate` and `applyLine` already do:
+   * `Discovery.focus` notes the card and repaints Discovery's panel, and calling
+   * it from Build would repaint Build's roles and curve with Discover's landing
+   * controls. Nothing here touches the graph's membership at all. */
+  function openCard(nameOrRow) {
+    if (!window.Discovery || !Discovery.isReady()) return false;
+    const row = typeof nameOrRow === 'number'
+      ? nameOrRow : Discovery.rowByName(nameOrRow);
+    if (row < 0) return false;
+    if (currentMode === 'discover') { Discovery.focus(row); return true; }
+    Discovery.setCurrent(row);
+    // The map lights the card too when the projection has landed — but only as
+    // an addition, never as the thing that makes this work.
+    if (allData.length) selectByName((cardRecord(row) || {}).n);
+    if (currentMode === 'build' && window.Build) Build.renderPanel();
+    else updateViewerPanel();
+    return true;
+  }
+
   // ── Expose shared state/functions on window.MM ──
   // Only members with a live caller (the other eight scripts, generated onclick
   // handlers, or index.html) are exported — see docs/viz.md for the contract.
@@ -2541,6 +2601,7 @@
     get allData() { return allData; },
     get currentMap() { return currentMap; },
     escHtml,
+    openCard,
     buildHoverTextMinimal,
     renderManaSymbols,
     closeDetail: clearSelection,

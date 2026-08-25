@@ -541,9 +541,6 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
    unlinked — an unlinked word next to links reads as broken, not as current. */
 .shell-here { color: var(--fg, #e8e8f0); border-bottom: 1px solid var(--gold, #c4a747); }
 .shell-sep { color: var(--rule, #2a2a3e); }
-.shell-library { margin-left: auto; }
-.shell-library a { color: var(--gold, #c4a747); text-decoration: none; }
-.shell-library a:hover { text-decoration: underline; }
 .shell-empty { color: var(--rule, #3a3a52); }
 @media print { .shell { display: none; } }
 
@@ -630,3 +627,77 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   font-size: 0.95rem; color: #e8e8f0; }
 .nd-options { display: flex; flex-direction: column; gap: 3px; margin: 6px 0; }
 .nd-options .lens-btn { text-align: left; }
+
+/* ── The library drawer ────────────────────────────────────────────────────
+ *
+ * One panel, three surfaces, opened from the count in the strip. The count used
+ * to be a link to `index.html` — you clicked "2 in your library" and landed on a
+ * page that showed you nothing about your library, because the library had no
+ * content view anywhere in the frontend.
+ *
+ * Written with `var(--x, fallback)` because this block is duplicated into both
+ * stylesheets: `index.html` loads only `mana-map.css` and the other two pages
+ * only `tokens.css`, so a rule that resolved in one would vanish in the other.
+ */
+.shell-library { margin-left: auto; }
+.shell-lib-btn { background: none; border: 1px solid transparent; cursor: pointer;
+  font: inherit; font-size: 0.78rem; color: var(--gold, #c4a747);
+  padding: 3px 9px; border-radius: 3px; letter-spacing: 0.02em; }
+.shell-lib-btn:hover { border-color: var(--gold, #c4a747); }
+.shell-lib-btn.is-open { background: var(--gold, #c4a747); color: var(--paper, #12122a);
+  border-color: var(--gold, #c4a747); }
+.shell-lib-mark { opacity: 0.75; }
+
+.lib-drawer { background: var(--panel, #16213e);
+  border-bottom: 1px solid var(--rule, #2a2a3e); padding: 14px 20px 18px; }
+.lib-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 12px; }
+.lib-title { font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink, #e8e8f0); }
+.lib-n { font-size: 0.75rem; color: var(--ink-soft, #8a8aa0); }
+.lib-actions { margin-left: auto; display: flex; gap: 6px; }
+.lib-btn { background: none; border: 1px solid var(--rule, #3a3a5a); cursor: pointer;
+  color: var(--ink-soft, #8a8aa0); font: inherit; font-size: 0.72rem;
+  padding: 3px 10px; border-radius: 3px; }
+.lib-btn:hover { color: var(--ink, #e8e8f0); border-color: var(--gold, #c4a747); }
+.lib-empty { font-size: 0.82rem; color: var(--ink-soft, #8a8aa0); margin: 0; max-width: 60ch; }
+.lib-empty a { color: var(--gold, #c4a747); }
+
+/* `auto-fill` with a floor, so the row reflows rather than stretching six cards
+ * across a wide screen. 132px is a legible thumbnail at Scryfall's `small`. */
+.lib-grid { display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 132px)); }
+.lib-tile { position: relative; }
+.lib-open { display: block; width: 100%; padding: 0; background: none; border: 0;
+  cursor: pointer; text-align: left; color: inherit; font: inherit; }
+/* RESERVE THE BOX BEFORE THE IMAGE LANDS. Without a known height every tile
+ * measures ~0 and the grid reflows as each one arrives — the same reason
+ * `.card-popup img` pins its ratio. */
+.lib-open img { width: 100%; display: block; aspect-ratio: 488 / 680;
+  border-radius: 6px; background: var(--panel-hi, #2a2a4a);
+  transition: transform .12s, box-shadow .12s; }
+.lib-open:hover img { transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45); }
+.lib-name { display: block; font-size: 0.68rem; line-height: 1.25; margin-top: 5px;
+  color: var(--ink-soft, #8a8aa0); overflow: hidden; text-overflow: ellipsis;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.lib-open:hover .lib-name { color: var(--ink, #e8e8f0); }
+
+/* The remove control appears on hover, and is always reachable by keyboard. */
+.lib-drop { position: absolute; top: 4px; right: 4px; z-index: 2;
+  width: 22px; height: 22px; line-height: 1; padding: 0; cursor: pointer;
+  border: 0; border-radius: 50%; font-size: 15px;
+  background: rgba(10, 10, 20, 0.82); color: #fff;
+  opacity: 0; transition: opacity .12s; }
+.lib-tile:hover .lib-drop, .lib-drop:focus { opacity: 1; }
+.lib-drop:hover { background: var(--stamp-red, #c41e1e); }
+
+/* A name this corpus cannot place still gets a tile. Dropping it silently is
+ * what made the strip count cards no surface could show. */
+.lib-tile-unknown .lib-open img { opacity: 0.45; }
+.lib-flag { display: block; font-size: 0.6rem; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--stamp-red, #c41e1e); margin-top: 2px; }
+.lib-tile-noart { }
+.lib-tile-noart .lib-open::before { content: ""; display: block; width: 100%;
+  aspect-ratio: 488 / 680; border-radius: 6px;
+  background: var(--panel-hi, #2a2a4a); }

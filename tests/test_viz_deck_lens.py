@@ -188,8 +188,10 @@ def test_deck_html_busts_its_own_assets():
     html = (Path(__file__).resolve().parents[1] / "viz" / "deck.html").read_text()
     busts = dict(re.findall(r'(?:src|href)="(?:js|css)/([\w-]+)\.(?:js|css)\?v=(\d+)"', html))
     # `shell` joined when the navigation strip became shared across all three
-    # surfaces — it is dependency-free and loads first, so every page carries it.
-    assert set(busts) == {"deck-view", "tokens", "shell"}, busts
+    # surfaces. `session` joined when the library drawer did: the strip can COUNT
+    # the library out of localStorage, but taking a card back out is a write, and
+    # only Session may write. Both are dependency-free and carry no data.
+    assert set(busts) == {"deck-view", "tokens", "shell", "session"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 
