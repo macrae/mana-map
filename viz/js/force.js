@@ -1054,9 +1054,20 @@
   function injectLines() {
     if (!deckLines) return;
     for (const line of deckLines) {
+      /* The pairs this line knows the DIRECTION of, as "from-row:to-row".
+       *
+       * A verified line is a clique over the cards its stack names, and a
+       * clique has no arrows — `{source, target}` is whichever order the pair
+       * was built in. `engine.json` is the one artifact that says which way a
+       * resource moves, so only the pairs that span its `from` and `to` stages
+       * get an arrowhead. The rest stay undirected, which is honest: for those
+       * pairs the direction is genuinely not known. */
+      const dir = new Set((line.directed || []).map(function (p) { return p[0] + ':' + p[1]; }));
       for (const pair of (line.pairs || [])) {
         const a = byIdx.get(pair[0]), b = byIdx.get(pair[1]);
         if (!a || !b || a === b) continue;
+        const fwd = dir.has(pair[0] + ':' + pair[1]);
+        const rev = dir.has(pair[1] + ':' + pair[0]);
         const existing = findLink(a, b);
         if (existing) {
           // Keep the geometry, adopt the meaning: a verified line outranks "these two
@@ -1064,10 +1075,30 @@
           existing.rel = 'verified';
           existing.line = line.id;
           existing.reason = line.title || existing.reason;
+          if (fwd || rev) {
+            // Point the link the way the engine points. An existing similarity
+            // edge was built in arbitrary order, so the endpoints are swapped
+            // when the engine disagrees rather than drawing an arrow backwards.
+            if (rev && existing.source === a) {
+              const t = existing.source; existing.source = existing.target; existing.target = t;
+            } else if (fwd && existing.source === b) {
+              const t = existing.source; existing.source = existing.target; existing.target = t;
+            }
+            existing.dir = true;
+            existing.carries = line.carries || null;
+            if (line.carries) existing.reason = line.carries;
+          }
           continue;
         }
-        links.push({ source: a, target: b, d: VERIFIED_EDGE_LENGTH,
-                     rel: 'verified', reason: line.title || null, line: line.id });
+        const src = rev ? b : a, dst = rev ? a : b;
+        links.push({ source: src, target: dst, d: VERIFIED_EDGE_LENGTH,
+                     rel: 'verified', line: line.id,
+                     dir: !!(fwd || rev),
+                     carries: (fwd || rev) ? (line.carries || null) : null,
+                     // The `carries` noun beats the stack title as an edge label:
+                     // "bodies" says what moves, where the title says what was
+                     // asked. The title is still on the panel row.
+                     reason: ((fwd || rev) && line.carries) ? line.carries : (line.title || null) });
       }
     }
   }
@@ -1319,7 +1350,10 @@
     links() {
       return links.map(function (l) {
         return { a: l.source.row, b: l.target.row, rel: l.rel || 'similar',
-                 reason: l.reason || null, d: l.d, line: l.line || null };
+                 reason: l.reason || null, d: l.d, line: l.line || null,
+                 // `a -> b` is only a claim when `dir` is set; otherwise the
+                 // order is whichever way the pair happened to be built.
+                 dir: !!l.dir, carries: l.carries || null };
       });
     },
     pinnedRow() { return pinned ? pinned.row : -1; },

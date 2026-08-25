@@ -5140,3 +5140,48 @@ def test_a_group_spotlight_and_a_line_spotlight_are_not_the_same_thing(browser, 
         assert page.js_errors == [], page.js_errors
     finally:
         page.close()
+
+
+def test_engine_lines_give_verified_edges_a_direction(browser, viz_server):
+    """A clique has no arrows; `engine.json` is the one artifact that knows.
+
+    A verified line becomes a clique over the cards its stack names, so
+    `{source, target}` is whichever order the pair was built in — drawing an
+    arrow on that would be array order wearing a claim. The engine model
+    declares each line as `from -> to` across two of eight stages with a
+    `carries` noun, written by an engineer and attacked by a critic.
+
+    So only the pairs that actually SPAN the two stages get an arrowhead. A
+    pair sitting wholly inside one stage stays undirected, which is honest:
+    for that pair the direction genuinely is not known.
+    """
+    page = _build_page(browser, viz_server, "ur-dragon")
+    try:
+        assert page.js_errors == [], page.js_errors
+        links = page.evaluate("Force.links()")
+        directed = [l for l in links if l.get("dir")]
+        assert directed, "no verified edge picked up a direction from engine.json"
+        # Every directed edge names what it moves — that is the whole point of
+        # the arrow, and an unlabelled one would just be a prettier line.
+        assert all(l.get("carries") for l in directed), directed
+        # And most edges stay undirected: the arrow is the exception, earned.
+        assert len(directed) < len(links)
+    finally:
+        page.close()
+
+
+def test_a_stack_carrying_two_engine_lines_keeps_both_nouns(browser, viz_server):
+    """ur-dragon's stack 002 is cited by two lines — `bodies` and `triggers`.
+
+    Taking the first match would silently drop half of what that board proves.
+    They agree on direction, so the nouns are joined; if two lines citing one
+    stack DISAGREED on direction, no arrowhead is drawn at all, because a pair
+    pointing two ways is a pair whose direction is not a fact.
+    """
+    page = _build_page(browser, viz_server, "ur-dragon")
+    try:
+        carries = page.evaluate(
+            "[...new Set(Force.links().filter(l => l.dir).map(l => l.carries))]")
+        assert any(" · " in (c or "") for c in carries), carries
+    finally:
+        page.close()

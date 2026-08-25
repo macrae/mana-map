@@ -293,6 +293,22 @@
     let considering = null;
     try { considering = await getJSON(DECK_BASE + slug + '/considering.json'); } catch (e) { /* absent */ }
 
+    /* `engine.json` is the ONLY place direction lives.
+     *
+     * Every edge on the graph is undirected by construction — a verified line
+     * becomes a clique over the cards its stack names, and a clique has no
+     * arrows. The engine model is the one artifact that says which way a
+     * resource moves: each line is `from -> to` between two of eight stages,
+     * with a `carries` noun for what travels. That is a modelled assertion an
+     * engineer wrote and `engine-critic` attacked, not something derived here.
+     *
+     * Gated on `has.engine` so a deck without a model costs no failed fetch —
+     * the flag is in the manifest precisely because a browser cannot stat. */
+    let engine = null;
+    if (entry.has && entry.has.engine) {
+      try { engine = await getJSON(DECK_BASE + slug + '/engine.json'); } catch (e) { /* absent */ }
+    }
+
     // The manifest lists checker-passed stacks only, which is the whole point of it —
     // a browser can list neither data/decks/ nor stacks/.
     const stacks = [];
@@ -305,10 +321,10 @@
         stacks.push(doc);
       } catch (e) { /* skip */ }
     }
-    return buildActive(entry, deckDoc, considering, stacks);
+    return buildActive(entry, deckDoc, considering, stacks, engine);
   }
 
-  function buildActive(entry, deckDoc, considering, stacks) {
+  function buildActive(entry, deckDoc, considering, stacks, engine) {
     const cards = deckDoc.cards || [];
     const commanderName = (deckDoc.commander && deckDoc.commander.name) || entry.commander;
 
@@ -346,7 +362,8 @@
       main,
       candidates,
       unmapped,
-      edges: buildEdges(stacks, main, entry),
+      edges: buildEdges(stacks, main, entry, engine),
+      engine: engine || null,
       copies: main.reduce((n, s) => n + s.qty, 0),
     };
   }
@@ -354,7 +371,7 @@
   // Each verified stack becomes a small clique between the deck cards it names, so a
   // rules-verified line reads as geometry: which corners of the deck actually talk to
   // each other.
-  function buildEdges(stacks, main, entry) {
+  function buildEdges(stacks, main, entry, engine) {
     const byName = new Map();
     for (const s of main) if (s.idx !== null) byName.set(s.name, s);
     const derived = (entry && entry.stack_cards) || {};
@@ -383,9 +400,55 @@
       for (let i = 0; i < hit.length; i++) {
         for (let j = i + 1; j < hit.length; j++) pairs.push([byName.get(hit[i]), byName.get(hit[j])]);
       }
-      edges.push({ id: stack.id || '', title: stack.title || '', cards: hit, pairs });
+      const flow = engineFlow(engine, stack.id || '');
+      edges.push({ id: stack.id || '', title: stack.title || '', cards: hit, pairs,
+                   carries: flow ? flow.carries : null,
+                   from: flow ? flow.from : null, to: flow ? flow.to : null,
+                   stageOf: flow ? flow.stageOf : null });
     }
     return edges;
+  }
+
+  /* What `engine.json` says this stack's line MOVES, and which way.
+   *
+   * A verified line becomes a clique over the cards its stack names, and a
+   * clique has no direction — `{source, target}` is whichever order the pair
+   * was built in. The engine model is the one artifact that knows: each line
+   * is `from -> to` across two of eight stages, carrying a named resource.
+   *
+   * Returns the two stage names, the noun, and a card -> stage lookup, so an
+   * edge can be ORIENTED rather than merely labelled: a pair is drawn
+   * `a -> b` when a sits in the `from` stage and b in the `to` stage. A pair
+   * that does not span the two stages gets no arrowhead, because for that pair
+   * the direction genuinely is not known. */
+  function engineFlow(engine, stackId) {
+    if (!engine || !stackId || !Array.isArray(engine.lines)) return null;
+    /* ALL the lines citing this stack, not the first.
+     *
+     * A stack can carry more than one arrow: ur-dragon's 002 is cited twice,
+     * once for `bodies` and once for `triggers`, and taking `.find()` would
+     * have silently dropped half of what that board proves. If they agree on
+     * direction the nouns are joined; if they disagree, no arrowhead is drawn,
+     * because a pair pointing two ways is a pair whose direction is not a
+     * fact. */
+    const lines = engine.lines.filter(function (l) {
+      return l && l.from && l.to && String(l.verified_by || '') === String(stackId);
+    });
+    if (!lines.length) return null;
+    const line = lines[0];
+    if (lines.some(function (l) { return l.from !== line.from || l.to !== line.to; })) return null;
+    const carries = lines.map(function (l) { return l.carries; })
+                         .filter(Boolean)
+                         .filter(function (c, i, a) { return a.indexOf(c) === i; })
+                         .join(' · ');
+    const stageOf = new Map();
+    for (const st of (engine.stages || [])) {
+      for (const c of (st.cards || [])) {
+        const name = typeof c === 'string' ? c : (c && (c.card || c.name));
+        if (name) stageOf.set(name, st.stage);
+      }
+    }
+    return { from: line.from, to: line.to, carries: carries || null, stageOf: stageOf };
   }
 
   // ── Overlay ──
@@ -791,12 +854,31 @@
   /* The deck's lines in the shape `Force.enter` injects: pairs of ROWS. Only lines that
    * actually name two deck cards produce edges — a scenario can be about a single card,
    * and those stay in the sidebar list but draw nothing. */
+  /* Orient a pair against the line's two stages. Null when the pair does not
+   * span them — a clique includes pairs that sit wholly inside one stage, and
+   * an arrow there would be array order wearing a claim. */
+  function orient(edge, a, b) {
+    if (!edge.stageOf || !edge.from || !edge.to) return null;
+    const sa = edge.stageOf.get(a.name), sb = edge.stageOf.get(b.name);
+    if (sa === edge.from && sb === edge.to) return [a.idx, b.idx];
+    if (sb === edge.from && sa === edge.to) return [b.idx, a.idx];
+    return null;
+  }
+
   function graphLines() {
     if (!active) return [];
     return active.edges.map((edge, i) => ({
       id: edge.id || String(i),
       title: edge.title || '',
       pairs: edge.pairs.map(pr => [pr[0].idx, pr[1].idx]),
+      // Only the pairs that actually span the engine line's two stages, in
+      // `from -> to` order. Everything else on the clique stays undirected.
+      directed: edge.stageOf
+        ? edge.pairs.map(pr => orient(edge, pr[0], pr[1])).filter(Boolean)
+        : [],
+      carries: edge.carries || null,
+      from: edge.from || null,
+      to: edge.to || null,
     })).filter(l => l.pairs.length);
   }
 

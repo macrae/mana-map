@@ -242,6 +242,33 @@ window.Stage = (function () {
         ctx.lineTo(b[0], b[1]);
       }
       ctx.stroke();
+      /* AN ARROWHEAD, only where direction is a FACT rather than an artefact.
+       *
+       * Every edge on this surface is undirected — `{source, target}` is
+       * whichever order the pair was built in, and `findLink` matches either
+       * way — so drawing an arrow on all of them would invent a claim out of
+       * array order. `e.dir` is set only where something knows: `engine.json`
+       * declares its lines as `from -> to` with a `carries` noun, which is a
+       * modelled assertion an engineer wrote and a critic attacked.
+       *
+       * Drawn short of the target so it does not disappear under the node. */
+      if (e.dir) {
+        const dx = b[0] - a[0], dy = b[1] - a[1];
+        const len = Math.hypot(dx, dy);
+        if (len > 0.001) {
+          const ux = dx / len, uy = dy / len;
+          const back = (o.headBack == null ? 9 : o.headBack) / k;
+          const size = (o.headSize == null ? 7 : o.headSize) / k;
+          const tx = b[0] - ux * back, ty = b[1] - uy * back;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(tx - ux * size - uy * size * 0.55, ty - uy * size + ux * size * 0.55);
+          ctx.lineTo(tx - ux * size + uy * size * 0.55, ty - uy * size - ux * size * 0.55);
+          ctx.closePath();
+          ctx.fillStyle = e.ink || edgeInk(rel, closeness);
+          ctx.fill();
+        }
+      }
     }
     ctx.lineWidth = base / k;
   }
