@@ -270,3 +270,65 @@ details.case .body { padding: 0 14px 14px; }
    the figure is true about the games that were played — it just does not
    describe this deck. */
 .chip.stale { border-color: var(--tier-coach); color: var(--tier-coach); }
+
+/* ── The fleet table ─────────────────────────────────────────────────────
+   A second READING of the same data, not a second source. The racks answer
+   "what can I play tonight"; the table answers "where should I spend the
+   evening". Both render from one manifest and one info.json per deck. */
+.wb-views, .wb-sorts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.wb-sorts { margin-bottom: 14px; }
+.wb-view, .wb-sort {
+  background: var(--panel); color: var(--ink-soft); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 3px; padding: 6px 12px;
+  font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .05em; font-size: 11px;
+}
+.wb-view:hover, .wb-sort:hover { color: var(--ink); border-color: var(--ink-soft); }
+.wb-view.is-on, .wb-sort.is-on {
+  color: var(--paper-ink, #0B0A14); background: var(--y2k-blue); border-color: var(--y2k-blue);
+}
+
+/* The table scrolls in its OWN container. The page body must never scroll
+   sideways — eight columns on a phone is a horizontal scroll somewhere, and
+   it belongs here rather than on the document. */
+.wb-tablewrap { overflow-x: auto; }
+.wb-table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.wb-table th, .wb-table td {
+  text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule);
+  vertical-align: top; white-space: nowrap;
+}
+.wb-table thead th {
+  font-family: var(--condensed); text-transform: uppercase; letter-spacing: .06em;
+  font-size: 11px; color: var(--ink-soft); border-bottom-color: var(--ink-soft);
+}
+.wb-table tbody th a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.wb-table tbody th a:hover { color: var(--y2k-blue); }
+.wb-table tr.is-dead { opacity: .5; }
+.wb-table tr.is-dead:hover { opacity: 1; }
+/* Digits in a column must line up or the column is a list, not a comparison. */
+.wb-table td { font-variant-numeric: tabular-nums; }
+.t-sub { display: block; color: var(--ink-soft); font-size: 11px; }
+.t-none { color: var(--ink-soft); }
+.t-ok { color: var(--tier-verified); }
+.t-warn { color: var(--tier-coach); }
+/* The only column allowed to wrap: it is a sentence, and it is the point.
+   It is also given an explicit share of the table rather than a min-width,
+   because every other column is `nowrap` — so with `min-width` the sum
+   exceeded 100% and the browser pushed the ONE column the page exists for
+   off the right edge, behind a scrollbar. A table whose payload needs
+   scrolling to reach has buried its own answer. */
+.t-next {
+  white-space: normal; color: var(--ink-soft);
+  font-size: 12px; line-height: 1.45; padding: 0 0 10px 0;
+}
+.t-next a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+.t-next a:hover { color: var(--ink); border-bottom-color: var(--ink-soft); }
+/* The metrics row and its sentence are ONE deck: the rule goes under the pair,
+   not between them. */
+.wb-table tr.t-head th, .wb-table tr.t-head td { border-bottom: none; padding-bottom: 4px; }
+.wb-table tr.t-nextrow td { border-bottom: 1px solid var(--rule); }
+.t-total th, .t-total td {
+  border-top: 1px solid var(--ink-soft); border-bottom: none;
+  color: var(--ink-soft); font-family: var(--condensed);
+  text-transform: uppercase; letter-spacing: .04em; font-size: 11px;
+}

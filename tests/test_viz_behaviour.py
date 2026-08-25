@@ -4893,3 +4893,104 @@ def test_the_games_chip_reads_the_key_deck_info_actually_writes(browser, viz_ser
         assert "game" not in chips[1].lower(), chips[1]
     finally:
         page.close()
+
+
+def test_the_fleet_table_reads_the_next_field_nothing_else_reads(browser, viz_server):
+    """`info.next` is the derived to-do list and the workbench ignored it.
+
+    `deck-info` already builds a per-deck to-do list where every line names the
+    command that would settle it (deck_info.py:254-315), commits it to
+    `info.json`, and the front door fetched the file and read one other key.
+    The table's last column is that field. If this ever stops rendering, the
+    page has gone back to telling you what a deck IS rather than what to do
+    with it.
+    """
+    page = _workbench(browser, viz_server, [
+        _deck("alpha", has={"page": True}),
+    ], infos={"alpha": {
+        "record": {"games": 0, "win": 0, "loss": 0},
+        "status": {"complete": 9, "of": 17, "stale": [], "invalid": [], "missing": []},
+        "next": ["no games logged — `manamap pilot deck-notes alpha add`"],
+    }})
+    try:
+        page.click('[data-view="table"]')
+        page.wait_for_selector(".wb-table")
+        assert "no games logged" in page.eval_on_selector(".t-next", "e => e.innerText")
+        # stages come from `status`, which is a different block from `record` —
+        # the exact confusion that hid the games chip for weeks.
+        body = page.eval_on_selector(".wb-table tbody", "e => e.innerText")
+        assert "9/17" in body, body
+    finally:
+        page.close()
+
+
+def test_each_fleet_sort_puts_the_deck_that_needs_you_first(browser, viz_server):
+    """A sort is only useful if it ANSWERS its label.
+
+    Four sorts, four questions. Each is asserted by which deck lands in row
+    one, because that is the whole claim a sort makes — not that it ordered
+    something, but that the top of the list is where to look.
+    """
+    decks = [_deck("quiet", has={"page": True}),
+             _deck("busy", has={"page": True}),
+             _deck("broken", has={"page": True})]
+    infos = {
+        # played recently, everything else fine
+        "quiet": {"record": {"games": 4, "win": 2, "loss": 2, "last_played": "2026-08-23"},
+                  "status": {"complete": 17, "of": 17, "stale": [], "invalid": [], "missing": []},
+                  "engine": {"critic": "pass", "lines": 9, "verified_lines": 9},
+                  "prescriptions": {"count": 0, "answered": 0}, "open_questions": []},
+        # never played
+        "busy": {"record": {"games": 0, "win": 0, "loss": 0, "last_played": None},
+                 "status": {"complete": 17, "of": 17, "stale": [], "invalid": [], "missing": []},
+                 "engine": {"critic": "pass", "lines": 9, "verified_lines": 9},
+                 "prescriptions": {"count": 6, "answered": 0},
+                 "open_questions": [{}, {}, {}]},
+        # played, but its evidence is failing and half-built
+        "broken": {"record": {"games": 9, "win": 1, "loss": 8, "last_played": "2026-08-01"},
+                   "status": {"complete": 4, "of": 17, "stale": ["engine"],
+                              "invalid": ["diagnosis"], "missing": []},
+                   "engine": {"critic": "fail", "lines": 9, "verified_lines": 1},
+                   "diagnosis": {"skeptic": "fail", "stale": True},
+                   "prescriptions": {"count": 0, "answered": 0}, "open_questions": []},
+    }
+    page = _workbench(browser, viz_server, decks, infos=infos)
+
+    def first_row():
+        return page.eval_on_selector(".wb-table tbody tr th", "e => e.innerText").lower()
+
+    try:
+        page.click('[data-view="table"]')
+        page.wait_for_selector(".wb-table")
+        for sort, expected in (("played", "quiet"),        # most recent date
+                               ("logs", "busy"),           # zero games
+                               ("analysis", "broken"),     # failing gates + missing stages
+                               ("optimisations", "busy")): # six unanswered prescriptions
+            page.click('[data-sort="' + sort + '"]')
+            page.wait_for_timeout(150)
+            assert expected in first_row(), (sort, first_row())
+    finally:
+        page.close()
+
+
+def test_the_fleet_sort_is_in_the_url_so_it_can_be_sent(browser, viz_server):
+    """A view worth reaching twice is worth addressing.
+
+    Same reason `?deck=` and `?mode=` are params on the map. `replaceState`,
+    not `pushState` — flipping a sort is not a navigation and must not stack
+    up in the back button.
+    """
+    page = _workbench(browser, viz_server, [_deck("alpha", has={"page": True})])
+    try:
+        page.click('[data-view="table"]')
+        page.click('[data-sort="analysis"]')
+        page.wait_for_timeout(150)
+        url = page.evaluate("location.search")
+        assert "view=table" in url and "sort=analysis" in url, url
+        # and it survives a reload, which is what "can be sent" means
+        page.reload()
+        page.wait_for_selector(".wb-table")
+        assert page.eval_on_selector('[data-sort="analysis"]',
+                                     "e => e.className").find("is-on") >= 0
+    finally:
+        page.close()
