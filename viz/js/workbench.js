@@ -19,7 +19,13 @@
 (function () {
   'use strict';
 
-  var MANIFEST = '../data/decks/index.json';
+  // Cache-busted, because the manifest GREW A KEY. CLAUDE.md's rule is to bump
+  // whenever a consumer would draw a different conclusion from the bytes, and
+  // "no drafts" versus "one draft" is exactly that — a browser holding the old
+  // shape would show an empty bench and be quietly wrong about your work.
+  // Bump this when the manifest's shape changes again.
+  var MANIFEST_VERSION = 2;
+  var MANIFEST = '../data/decks/index.json?v=' + MANIFEST_VERSION;
   var BASE = '../data/decks/';
 
   function esc(v) {
@@ -309,6 +315,41 @@
       + '</tbody></table></div></section>';
   }
 
+  /* IN PROGRESS — decks that exist as a brief and no more.
+   *
+   * A partial build is work you must be able to put down and find again, so it
+   * has to appear here or it is lost the moment the tab closes. `build-index`
+   * files these under `drafts` rather than `decks`, because everything that
+   * consumes `decks` assumes a 99 and a draft has none — the deck picker, the
+   * dossier and `deck-info` would all offer something they cannot load.
+   *
+   * FIRST in the racks, and only when there are any. It is the one thing on
+   * this page that is waiting on YOU rather than reporting a measurement.
+   */
+  function draftRack(drafts) {
+    drafts = drafts || [];
+    if (!drafts.length) return '';
+    var tiles = drafts.map(function (d) {
+      var bits = [];
+      if (d.theme) bits.push(esc(d.theme));
+      if (d.kept) bits.push(d.kept + ' kept');
+      if (d.bracket) bits.push('bracket ' + d.bracket);
+      return '<article class="wb-card wb-draft">'
+        + '<div class="wb-body">'
+        + '<div class="wb-title"><a href="index.html?mode=build&draft='
+        + encodeURIComponent(d.slug) + '">' + esc(d.deck_name || d.slug) + '</a></div>'
+        + '<div class="wb-sub">' + esc(d.commander || '') + '</div>'
+        + (bits.length ? '<div class="wb-chips"><span class="wb-chip">'
+            + bits.join('</span><span class="wb-chip">') + '</span></div>' : '')
+        + '<div class="wb-sub">started ' + esc(d.started || '') + '</div>'
+        + '</div></article>';
+    }).join('');
+    return '<section class="wb-rack">'
+      + '<h2>In progress <span class="wb-count">' + drafts.length + '</span></h2>'
+      + '<p class="wb-blurb">Started and not finished. Pick one up where you left it.</p>'
+      + '<div class="wb-grid">' + tiles + '</div></section>';
+  }
+
   function rack(title, blurb, entries, infos) {
     if (!entries.length) return '';
     return '<section class="wb-rack">'
@@ -339,7 +380,7 @@
     history.replaceState(null, '', window.location.pathname + (q ? '?' + q : ''));
   }
 
-  function render(decks, infos, state) {
+  function render(decks, infos, state, drafts) {
     var locked = decks.filter(function (e) { return e.locked; });
     // A deck that has been broken down or retired is not "on the bench" waiting
     // for work — it is history, and it sorts last so the rack reads as a queue.
@@ -358,6 +399,7 @@
       html = toggle + fleetTable(decks, infos, state.sort);
     } else {
       html = toggle
+        + draftRack(drafts)
         + rack('Sleeved', 'Built in paper — you can play these tonight.',
                locked, infos)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
@@ -393,7 +435,7 @@
       decks.forEach(function (e, i) { infos[e.slug] = list[i]; });
 
       var state = readState();
-      render(decks, infos, state);
+      render(decks, infos, state, m.drafts || []);
 
       // One delegated listener on the container, because `render` replaces its
       // whole innerHTML — per-button handlers would be re-bound on every
@@ -405,7 +447,7 @@
         if (v) state.view = v.getAttribute('data-view');
         if (s) { state.view = 'table'; state.sort = s.getAttribute('data-sort'); }
         writeState(state);
-        render(decks, infos, state);
+        render(decks, infos, state, m.drafts || []);
       });
     });
   });

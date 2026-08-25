@@ -286,3 +286,47 @@ def test_withheld_works_without_a_checker_block():
     assert withheld(decision)
     assert not presentable(decision)
     assert not withheld({"kind": "decision"})
+
+
+# ── Drafts ─────────────────────────────────────────────────────────────────
+
+
+def test_a_brief_only_deck_is_a_draft_not_a_deck(tmp_path, monkeypatch):
+    """A partial build is work you must be able to put down and find again, so
+    the Workbench has to see it — and everything that consumes `decks` assumes a
+    99, which a draft does not have.
+
+    A new question gets a new list. Putting a draft in `decks` crashed the
+    manifest projection outright, which was the honest early warning: the deck
+    picker, the dossier and `deck-info` would all have offered something they
+    cannot load.
+    """
+    import json
+
+    from manamap.pilot import build_index
+
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    (tmp_path / "zz-draft").mkdir()
+    (tmp_path / "zz-draft" / "brief.json").write_text(json.dumps(
+        {"slug": "zz-draft", "commander": "Zur the Enchanter",
+         "theme": "voltron", "bracket": 3, "must_include": ["Ethereal Armor"]}))
+
+    entries = build_index.gather_entries()
+    drafts = [e for e in entries if e.get("draft")]
+    assert len(drafts) == 1
+    assert drafts[0]["commander"] == "Zur the Enchanter"
+    assert drafts[0]["kept"] == 1
+    assert drafts[0]["started"], "a draft with no date cannot be sorted or aged"
+
+
+def test_a_brief_with_no_commander_is_not_a_draft_either(tmp_path, monkeypatch):
+    """An empty directory with a stub file is not work in progress; it is
+    noise, and the Workbench should not offer to resume it."""
+    import json
+
+    from manamap.pilot import build_index
+
+    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    (tmp_path / "zz-empty").mkdir()
+    (tmp_path / "zz-empty" / "brief.json").write_text(json.dumps({"slug": "zz-empty"}))
+    assert [e for e in build_index.gather_entries() if e.get("draft")] == []

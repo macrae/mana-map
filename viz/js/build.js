@@ -42,7 +42,9 @@
   'use strict';
 
   const DECK_BASE = '../data/decks/';
-  const MANIFEST_URL = DECK_BASE + 'index.json';
+  // `?v=` for the same reason `workbench.js` carries one: the manifest's
+  // SHAPE changes, and a cached older shape is a confidently wrong answer.
+  const MANIFEST_URL = DECK_BASE + 'index.json?v=2';
   const ROLES_URL = '../data/card_roles.json';
 
   // The scenario DOES have a card list now: `build_index.py:line_cards` derives it from the

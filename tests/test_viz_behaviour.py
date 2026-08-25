@@ -4719,7 +4719,7 @@ def test_the_kill_points_at_the_proof_instead_of_reprinting_it(browser, viz_serv
 def _workbench(browser, viz_server, decks, infos=None):
     page = browser.new_page()
     import json as _json
-    page.route("**/data/decks/index.json", lambda route: route.fulfill(
+    page.route("**/data/decks/index.json*", lambda route: route.fulfill(
         status=200, content_type="application/json",
         body=_json.dumps({"decks": decks})))
     page.route("**/data/decks/*/info.json", lambda route: route.fulfill(

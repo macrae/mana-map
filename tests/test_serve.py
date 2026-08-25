@@ -107,3 +107,59 @@ def test_asking_nothing_is_refused():
 def test_the_formats_endpoint_reports_all_five():
     keys = [f["key"] for f in serve.call("formats", {})["formats"]]
     assert set(keys) == {"commander", "standard", "modern", "pioneer", "pauper"}
+
+
+# ── Drafts: work you can put down ──────────────────────────────────────────
+
+
+def test_saving_a_draft_is_idempotent_and_preserves_what_it_does_not_mention(tmp_path,
+                                                                             monkeypatch):
+    """The page saves on every change, so a save must not be a replace.
+
+    Sending `{"slug": …, "bracket": 4}` — a perfectly good update to a draft
+    that already names a commander and holds a library — must not drop either.
+    """
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    first = serve.call("build/save", {
+        "slug": "zz", "commander": "Zur the Enchanter",
+        "theme": "voltron", "library": ["Ethereal Armor"]})
+    assert first["brief"]["must_include"] == ["Ethereal Armor"]
+
+    second = serve.call("build/save", {"slug": "zz", "bracket": 4})
+    assert second["brief"]["bracket"] == 4
+    assert second["brief"]["commander"] == "Zur the Enchanter", "the commander was dropped"
+    assert second["brief"]["theme"] == "voltron", "the style was dropped"
+    assert second["brief"]["must_include"] == ["Ethereal Armor"], (
+        "the library the pilot spent ten minutes gathering was dropped")
+
+
+def test_a_required_field_is_checked_on_the_MERGED_brief(tmp_path, monkeypatch):
+    """Requiring a commander on every save refused `{"slug", "bracket"}` — an
+    update that was never going to send a field it already had on disk."""
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    with pytest.raises(ValueError):
+        serve.call("build/save", {"slug": "zz"})          # nothing on disk yet
+    serve.call("build/save", {"slug": "zz", "commander": "Zur the Enchanter"})
+    serve.call("build/save", {"slug": "zz", "bracket": 4})   # must not raise
+
+
+def test_a_sixty_card_format_needs_no_commander(tmp_path, monkeypatch):
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    out = serve.call("build/save", {"slug": "zz-modern", "fmt": "modern"})
+    assert out["draft"] is True
+
+
+def test_a_draft_writes_a_brief_and_nothing_else(tmp_path, monkeypatch):
+    """No 99, no `cards.json`, and no `paper` block — a draft claims nothing."""
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    serve.call("build/save", {"slug": "zz", "commander": "Zur the Enchanter"})
+    files = sorted(p.name for p in (tmp_path / "zz").iterdir())
+    assert files == ["brief.json"], files

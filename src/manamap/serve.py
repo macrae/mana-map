@@ -156,6 +156,67 @@ def _formats():
         for k, s in sorted(formats.FORMATS.items())]}
 
 
+def _build_save(slug=None, commander=None, theme=None, bracket=None,
+                library=(), fmt=None):
+    """Create or update a DRAFT — a deck that exists as a brief and no more.
+
+    §7.4 lands a new deck at v0.1.0, and this is the step before that: the point
+    where a half-finished idea becomes something the Workbench can show you and
+    you can come back to. Saving is idempotent, so the page can save on every
+    change without a "is this the first time" branch.
+
+    NOT A COMMITTED DECK. It writes `brief.json` and nothing else; there is no
+    99, no `cards.json`, and `build_index` files it under `drafts` rather than
+    `decks` for exactly that reason.
+    """
+    import json as _json
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import formats
+
+    if not slug or not str(slug).strip():
+        raise ValueError("a draft needs a slug")
+    slug = str(slug).strip().lower().replace(" ", "-")
+    base = DECKS_DIR / slug
+    base.mkdir(parents=True, exist_ok=True)
+    path = base / "brief.json"
+    # Read-modify-write, so saving a theme does not drop the library somebody
+    # spent ten minutes gathering.
+    brief = _json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    brief.update({k: v for k, v in {
+        "slug": slug, "commander": commander, "theme": theme,
+        "format": fmt, "bracket": bracket,
+    }.items() if v is not None})
+    if library:
+        brief["must_include"] = list(library)
+    brief.setdefault("must_include", [])
+    brief.setdefault("must_exclude", [])
+    # Validate the MERGED brief, not the incoming patch. Requiring a commander
+    # on every save meant `{"slug": …, "bracket": 4}` — a perfectly good update
+    # to a draft that already names one — was refused for lacking a field it
+    # was never going to send.
+    spec = formats.get(brief.get("format"))
+    if spec.commanders and not brief.get("commander"):
+        raise ValueError(f"{spec.name} needs a commander")
+    path.write_text(_json.dumps(brief, indent=2, ensure_ascii=False) + "\n",
+                    encoding="utf-8")
+    return {"slug": slug, "path": str(path), "brief": brief, "draft": True}
+
+
+def _build_run(slug=None):
+    """Turn a draft into a 99 and write `decklist.txt`. Deterministic, no agent."""
+    from manamap.pilot import build_deck
+
+    if not slug:
+        raise ValueError("build needs a slug")
+    plan = build_deck.build(slug)
+    return {"slug": slug, "commander": plan["commander"],
+            "cards": len(plan["slots"]) + sum(plan["land_counts"].values()) + 1,
+            "bracket": plan["bracket"],
+            "role_budget_grounding": plan.get("role_budget_grounding"),
+            "slots": [{"name": s["name"], "role": s.get("role")} for s in plan["slots"]]}
+
+
 # ── Agent jobs ─────────────────────────────────────────────────────────────
 #
 # THE POINT OF THE BRIDGE. A deterministic command answers in milliseconds and
@@ -258,6 +319,11 @@ ENDPOINTS = {
     "card-search": (_card_search, {
         "identity": _str, "oracle": _strlist, "role": _str,
         "cmc": _int, "limit": _int}),
+    # Drafts: a deck you can put down and pick up.
+    "build/save": (_build_save, {
+        "slug": _str, "commander": _str, "theme": _str, "bracket": _int,
+        "library": _strlist, "fmt": _str}),
+    "build/run": (_build_run, {"slug": _str}),
     # The agent half. Started, then polled — an agent takes minutes.
     "agents": (_agents, {}),
     "ask": (_ask, {"question": _str, "agent": _str}),

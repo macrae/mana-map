@@ -197,6 +197,22 @@ def line_cards(scenario, deck_names=None):
     return collect(list(named) + list(board))
 
 
+def _draft_started(deck_path):
+    """When this draft was begun, from the brief's own mtime.
+
+    Not stored in the brief: a timestamp inside a file that the pilot edits by
+    hand is a field that goes stale the first time they edit it, and the
+    filesystem already knows.
+    """
+    import datetime
+
+    try:
+        ts = (deck_path / "brief.json").stat().st_mtime
+    except OSError:
+        return None
+    return datetime.date.fromtimestamp(ts).isoformat()
+
+
 def gather_entries():
     """One scan, two questions — and they are not the same question.
 
@@ -219,6 +235,27 @@ def gather_entries():
         slug = deck_path.name
         cards_path = deck_path / "cards.json"
         if not cards_path.exists():
+            # A DRAFT: a brief exists but no 99 does yet. Build writes one the
+            # moment a deck is started, and the Workbench has to show it or a
+            # partial build is work you cannot find your way back to.
+            #
+            # A separate, minimal entry rather than a loosened gate, because
+            # everything downstream of `cards.json` — the deck picker, the
+            # dossier, `deck-info` — would offer a deck it cannot load. A draft
+            # carries only what a "resume this" tile needs, and `draft: true`
+            # is what every consumer filters on.
+            brief = load_json(deck_path / "brief.json", {})
+            if brief.get("commander"):
+                entries.append({
+                    "slug": slug, "draft": True,
+                    "deck_name": brief.get("deck_name") or slug,
+                    "commander": brief["commander"],
+                    "theme": brief.get("theme"),
+                    "bracket": brief.get("bracket"),
+                    "kept": len(brief.get("must_include") or []),
+                    "started": _draft_started(deck_path),
+                    "volume": 999, "published": False,
+                })
             continue
         published = (MANUALS_DIR / f"{slug}.html").exists()
         doc = load_json(cards_path)
@@ -395,7 +432,21 @@ def write_manifest(entries):
     because a browser cannot list `stacks/` and should not hardcode a deck list:
     add a deck, run build-index, and the dossier picks it up.
     """
+    # DRAFTS GET THEIR OWN LIST, not a place in `decks`.
+    #
+    # Every consumer of `decks` — the deck picker, the dossier, the workbench
+    # racks — assumes the keys below exist, and a draft has almost none of them
+    # because it has no 99 yet. Adding it to that list would either crash the
+    # projection (it did) or force a dozen consumers to learn a new predicate.
+    # A new question gets a new list, which is the same argument `stack_files`
+    # made: a browser cannot list a directory, so the manifest names what is
+    # there.
     manifest = {
+        "drafts": [
+            {k: e.get(k) for k in ("slug", "deck_name", "commander", "theme",
+                                   "bracket", "kept", "started")}
+            for e in entries if e.get("draft")
+        ],
         "decks": [
             {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
                                "coverline", "verified", "decisions", "stack_files",
@@ -405,7 +456,7 @@ def write_manifest(entries):
                                # The workbench landing: art for the rack, and the
                                # one predicate it filters on.
                                "image", "paper", "locked")}
-            for e in entries
+            for e in entries if not e.get("draft")
         ]
     }
     out = DECKS_DIR / "index.json"
