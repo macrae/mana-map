@@ -717,6 +717,187 @@
     }, 2000);
   }
 
+  /* ── START A NEW DECK ─────────────────────────────────────────────────
+   *
+   * PRD §7. The cards you kept, a format, a commander, a style — saved as a
+   * DRAFT the moment there is anything to save, so the work survives the tab.
+   *
+   * LOCAL ONLY, and absent rather than broken on a deployed page: writing a
+   * draft means writing a file, and a static host has nowhere to put one. The
+   * static build says so and offers the command instead.
+   *
+   * SAVED ON EVERY CHANGE, never on a "Save" button. A draft is not a document
+   * you commit to; it is the state of a thought, and asking someone to
+   * remember to save it is how the thought gets lost. `build/save` is
+   * idempotent and read-modify-write precisely so this can be noisy.
+   */
+  let newDeck = null;      // {slug, fmt, commander, theme, open}
+
+  function draftOptions() {
+    const drafts = (manifest && manifest.drafts) || [];
+    if (!drafts.length) return '';
+    return '<optgroup label="In progress">' + drafts.map(d =>
+      '<option value="draft:' + esc(d.slug) + '">' + esc(d.deck_name || d.slug) +
+      ' — ' + esc(d.commander || '') + '</option>').join('') + '</optgroup>';
+  }
+
+  function newDeckHtml() {
+    if (!window.Api || !Api.ready) {
+      return '<p class="lens-note">Starting a deck writes a file, so it needs '
+        + '<code>manamap serve</code>. Reading and exploring work here either way.</p>';
+    }
+    if (!newDeck || !newDeck.open) {
+      return '<button class="lens-btn" onclick="Build.newDeck()">Start a new deck</button>';
+    }
+    const kept = Session.library.size;
+    const fmts = (newDeck.formats || []).map(f =>
+      '<option value="' + esc(f.key) + '"' + (f.key === newDeck.fmt ? ' selected' : '') +
+      '>' + esc(f.name) + ' — ' + f.deck_size + (f.exact_size ? '' : '+') +
+      (f.singleton ? ', singleton' : ', 4-of') + '</option>').join('');
+    let h = '<div class="deck-section"><div class="deck-section-title">New deck</div>'
+      + '<div class="deck-format-row"><label for="ndFmt">Format</label>'
+      + '<select id="ndFmt" onchange="Build.newDeckField(\'fmt\', this.value)">'
+      + fmts + '</select></div>'
+      + '<input id="ndSlug" class="discover-import" placeholder="a slug, e.g. zur-voltron" '
+      + 'value="' + esc(newDeck.slug || '') + '" '
+      + 'oninput="Build.newDeckField(\'slug\', this.value)">';
+    // A commander is asked for only where the format requires one — the spec
+    // says so, and asking a Modern deck for a commander is the kind of question
+    // that makes a tool feel like it was written for one game.
+    const spec = (newDeck.formats || []).find(f => f.key === newDeck.fmt);
+    if (!spec || spec.commanders) {
+      h += '<input id="ndCmd" class="discover-import" placeholder="commander" '
+        + 'value="' + esc(newDeck.commander || '') + '" '
+        + 'oninput="Build.newDeckField(\'commander\', this.value)">';
+      h += '<button class="lens-btn" onclick="Build.newDeckStyles()">'
+        + 'How is it actually built?</button>';
+      if (newDeck.themes) {
+        h += '<div class="discover-relations">' + newDeck.themes.slice(0, 6).map(t =>
+          '<button class="lens-btn' + (t.slug === newDeck.theme ? ' is-on' : '') + '"'
+          + ' onclick="Build.newDeckField(\'theme\', \'' + esc(t.slug) + '\')">'
+          + esc(t.name) + ' <span class="discover-count">' + t.decks + '</span></button>'
+        ).join('') + '</div>'
+        + '<p class="lens-note">Deck counts are play rates, shown as data — not a '
+        + 'ranking, and nothing here recommends a style.</p>';
+      }
+    }
+    h += '<p class="lens-note">' + kept + ' card' + (kept === 1 ? '' : 's')
+      + ' from your library will be kept in the 99.</p>';
+    if (newDeck.saved) h += '<p class="lens-note">saved · ' + esc(newDeck.saved) + '</p>';
+    if (newDeck.built) h += '<div class="lens-line-prose"><p>' + esc(newDeck.built) + '</p></div>';
+    h += '<button class="lens-btn" onclick="Build.newDeckBuild()">Build the deck</button>';
+    return h + '</div>';
+  }
+
+  /* Reopen a draft. The Workbench links here with `?draft=<slug>`, and the
+   * deck picker offers them under "In progress". */
+  function resumeDraft(slug) {
+    const d = ((manifest && manifest.drafts) || []).find(x => x.slug === slug);
+    if (!d) { MM.setStatus('no draft "' + slug + '"'); return; }
+    active = null;
+    newDeck = { open: true, slug: d.slug, commander: d.commander,
+                theme: d.theme, fmt: d.format || 'commander', formats: [],
+                saved: d.slug };
+    renderPanel();
+    MM.render();
+
+    /* LOAD THE DRAFT'S LIBRARY INTO THE SESSION.
+     *
+     * Without this the panel showed the SESSION's library while the draft held
+     * its own, and the two disagreed on screen — "2 card(s) kept" in the status
+     * beside "7 cards from your library" in the panel. Worse, the next save
+     * would have overwritten the draft's list with whatever happened to be in
+     * the session, silently replacing work with unrelated work.
+     *
+     * Resuming a draft means picking up its cards, so the session becomes the
+     * draft. Read from `brief.json` directly: it is a static file, and the
+     * manifest deliberately carries only a COUNT — the names belong to the
+     * brief, and copying them into the manifest would be a second copy to go
+     * stale. */
+    getJSON(DECK_BASE + slug + '/brief.json').then(function (brief) {
+      const names = (brief && brief.must_include) || [];
+      Session.library.clear();
+      let missing = 0;
+      for (const n of names) {
+        const row = window.Discovery ? Discovery.rowByName(n) : -1;
+        if (row >= 0) Session.library.toggle(row); else missing++;
+      }
+      newDeck.fmt = brief.format || newDeck.fmt;
+      renderPanel();
+      MM.setStatus(d.deck_name + ' — a draft, ' + names.length + ' card(s) kept'
+        + (missing ? ' (' + missing + ' no longer in the corpus)' : ''));
+    }).catch(function () {
+      MM.setStatus(d.deck_name + ' — a draft (its brief could not be read)');
+    });
+
+    if (window.Api && Api.ready) {
+      Api.call('formats', {}).then(function (f) {
+        newDeck.formats = f.formats; renderPanel();
+      });
+    }
+  }
+
+  function newDeckOpen() {
+    newDeck = { open: true, fmt: 'commander', formats: [] };
+    renderPanel();
+    Api.call('formats', {}).then(function (d) {
+      newDeck.formats = d.formats;
+      renderPanel();
+    });
+  }
+
+  function newDeckField(key, value) {
+    if (!newDeck) return;
+    newDeck[key] = value;
+    if (key === 'fmt' || key === 'theme') renderPanel();
+    saveDraft();
+  }
+
+  /* Debounced, because this fires on every keystroke and a draft save is a
+   * disk write. 600ms is long enough that typing a slug is one save and short
+   * enough that closing the tab straight after typing still keeps it. */
+  let saveTimer = null;
+  function saveDraft() {
+    if (!newDeck || !newDeck.slug) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      Api.call('build/save', {
+        slug: newDeck.slug, commander: newDeck.commander || null,
+        theme: newDeck.theme || null, fmt: newDeck.fmt,
+        library: Session.library.list.map(r => (MM.cardRecord(r) || {}).n).filter(Boolean),
+      }).then(function (out) {
+        newDeck.saved = out.slug;
+        renderPanel();
+      }).catch(function (e) {
+        newDeck.saved = null; newDeck.built = 'not saved: ' + e.message;
+        renderPanel();
+      });
+    }, 600);
+  }
+
+  function newDeckStyles() {
+    if (!newDeck || !newDeck.commander) return;
+    newDeck.themes = null;
+    newDeck.built = 'reading how ' + newDeck.commander + ' is built…';
+    renderPanel();
+    Api.call('archetypes', { commander: newDeck.commander, limit: 8 })
+      .then(function (d) {
+        newDeck.themes = d.themes; newDeck.built = null; renderPanel();
+      })
+      .catch(function (e) { newDeck.built = e.message; renderPanel(); });
+  }
+
+  function newDeckBuild() {
+    if (!newDeck || !newDeck.slug) return;
+    newDeck.built = 'building…';
+    renderPanel();
+    Api.call('build/run', { slug: newDeck.slug }).then(function (r) {
+      newDeck.built = r.commander + ' — ' + r.cards + ' cards, bracket '
+        + (r.bracket || {}).target + '. ' + (r.role_budget_grounding || '');
+      renderPanel();
+    }).catch(function (e) { newDeck.built = e.message; renderPanel(); });
+  }
+
   function renderPanel() {
     const el = panelEl();
     if (!el) return;
@@ -734,9 +915,10 @@
         '<div class="deck-format-row">' +
           '<label for="deckLensSelect">Deck</label>' +
           '<select id="deckLensSelect" onchange="Build.select(this.value)">' +
-            '<option value="">Choose a deck…</option>' + picker +
+            '<option value="">Choose a deck…</option>' + picker + draftOptions() +
           '</select>' +
         '</div>' +
+        newDeckHtml() +
       '</div>';
 
     if (loading) {
@@ -936,6 +1118,12 @@
 
   async function select(slug) {
     if (!slug) { active = null; renderPanel(); MM.render(); return; }
+    // A DRAFT has no 99 to load, so `loadDeck` would 404 on its `cards.json`.
+    // Picking one reopens the new-deck form on it instead — which is what
+    // "pick up where you left it" means for a deck that is still a brief.
+    if (String(slug).indexOf('draft:') === 0) {
+      return resumeDraft(slug.slice('draft:'.length));
+    }
     loading = true;
     renderPanel();
     try {
@@ -1375,6 +1563,11 @@
     handleEscape,
     get activeLine() { return focusedLine; },
     ask,
+    newDeck: newDeckOpen,
+    newDeckField,
+    newDeckStyles,
+    newDeckBuild,
+    resumeDraft,
     // A read-only probe for the browser suite: the prose a line was BUILT with,
     // so a test can compare what the panel printed against what the artifact
     // says without re-fetching and re-implementing the source ranking.

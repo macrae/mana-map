@@ -1700,6 +1700,10 @@
   // Landing used to mean waiting for the projection before a single pixel appeared.
   const params = new URLSearchParams(window.location.search);
   const wantedDeck = params.get('deck');
+  // `?draft=<slug>` is the Workbench's "pick this up" link. Same shape as
+  // `?deck=`, different destination: a draft has no 99 to light, so it reopens
+  // the new-deck form rather than loading a deck that does not exist yet.
+  const wantedDraft = params.get('draft');
   // ?mode=explore deep-links straight to the atlas. Discovery is the front door now, so
   // anything that wants the 34,322-point map — a bookmark, a browser test about
   // rendering — has to ask for it rather than assume it is what boot produces.
@@ -1759,11 +1763,16 @@
       // ?deck=<slug> is the map's first inbound deep link — the dossier and the
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
       // dropping the reader on an unfiltered map with a query string they can't see.
-      if (wantedDeck) {
+      if (wantedDeck || wantedDraft) {
         // `?deck=<slug>` is an inbound contract: the dossier and every published manual
         // link to it. Deck Lens and Build Deck are one mode now, so it lands in Build.
         document.getElementById('modeSelect').value = 'build';
         setMode('build');
+        if (wantedDraft && window.Build && Build.resumeDraft) {
+          // After `setMode`, which is what loads the manifest the draft is
+          // looked up in.
+          setTimeout(function () { Build.resumeDraft(wantedDraft); }, 300);
+        }
       }
       // Load region data in background, then re-render with labels. `currentMap`, not a
       // hardcoded 'default' — the second place the boot map was written as a literal, and
