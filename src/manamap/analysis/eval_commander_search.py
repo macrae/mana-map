@@ -47,18 +47,20 @@ import numpy as np
 import pandas as pd
 
 from manamap.config import (ABILITY_EMBEDDINGS_PATH, EMBEDDINGS_PATH, DATA_DIR,
-                            OUTPUT_CSV_PATH, TEXT_EMBEDDINGS_PATH)
+                            TEXT_EMBEDDINGS_PATH)
 from manamap import console
+# THE PRODUCT OWNS THE MATHS AND THE EVAL IMPORTS IT — never the other way, and
+# never a second copy. An eval with its own centroid measures code nobody ships,
+# and the two drift the first time one of them is tuned. Same argument the deck
+# builder makes for having exactly one scorer.
+from manamap.analysis.commander_search import (BASIC_LANDS, Corpus, centroid,
+                                               composition, normalized as _normalized,
+                                               primary_type as _primary_type,
+                                               type_controlled_rows)
 
 #: The frozen candidate pool. Written by `--refresh`, read by everything else.
 POOL_PATH = DATA_DIR / "eval" / "commander_pool.json"
 
-#: Basic lands carry no signal and would drag every centroid toward one point.
-#: §6.1 step 2 keeps SPECIALTY and utility lands, which do carry signal — so
-#: this is a five-name exclusion, not a type-line exclusion.
-BASIC_LANDS = frozenset({"Plains", "Island", "Swamp", "Mountain", "Forest", "Wastes",
-                         "Snow-Covered Plains", "Snow-Covered Island", "Snow-Covered Swamp",
-                         "Snow-Covered Mountain", "Snow-Covered Forest"})
 
 SEED_SIZE = 20          # §6.1 step 1: "user supplies ~20 cards"
 EVAL_SEED = 20260825    # fixed, so a re-run is a re-run
@@ -78,37 +80,12 @@ EVAL_SEED = 20260825    # fixed, so a re-run is a re-run
 REPEATS = 10
 
 
-def _normalized(path):
-    array = np.load(path)
-    return array / np.maximum(np.linalg.norm(array, axis=1, keepdims=True), 1e-8)
-
-
-def _primary_type(type_line):
-    """The one type a card counts as, for composition control.
-
-    Order matters and is not alphabetical: a card is filed under the first of
-    these its type line mentions, so an artifact creature counts as a creature
-    (it is a body first) and a land that also does something is a land.
-    """
-    t = str(type_line or "")
-    for kind in ("Land", "Creature", "Planeswalker", "Battle",
-                 "Instant", "Sorcery", "Enchantment", "Artifact"):
-        if kind in t:
-            return kind
-    return "Other"
 
 
 def load_corpus():
-    """Row index, name→row, and primary type per row."""
-    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
-    names = frame["name"].tolist()
-    by_name = {}
-    for i, n in enumerate(names):
-        by_name.setdefault(n, i)                      # first printing wins, as everywhere
-        if " // " in n:                               # decklists carry front faces
-            by_name.setdefault(n.split(" // ")[0], i)
-    types = [_primary_type(t) for t in frame.get("type_line", [""] * len(names))]
-    return names, by_name, types
+    """The corpus views this eval needs, through the product's own reader."""
+    c = Corpus()
+    return c.names, c, c.types
 
 
 def refresh_pool(identities, per_identity, limit_decks=None):
@@ -163,57 +140,19 @@ def load_pool():
     return json.loads(POOL_PATH.read_text(encoding="utf-8"))["commanders"]
 
 
-def _rows(cards, by_name):
-    """Deck card names -> corpus rows, dropping basics and anything unresolved."""
-    out = []
-    for name in cards:
-        if name in BASIC_LANDS:
-            continue
-        row = by_name.get(name)
-        if row is not None and row not in out:
-            out.append(row)
-    return out
+def _rows(cards, corpus):
+    """Deck names -> rows, through the product's resolver."""
+    rows, _missing = corpus.rows(cards)
+    return rows
 
 
-def centroid(embeddings, rows):
-    """Mean embedding of a card set, re-normalised. None if the set is empty."""
-    if not rows:
-        return None
-    v = embeddings[rows].mean(axis=0)
-    n = np.linalg.norm(v)
-    return None if n < 1e-8 else v / n
 
 
-def type_controlled_rows(rows, types, seed_composition, rng):
-    """Reference rows resampled to match the SEED's type composition (§6.1 step 6).
-
-    The argument: a seed that is all instants and sorceries embeds nowhere near a
-    creature-heavy deck centroid, so an uncontrolled comparison ranks by how
-    creature-heavy each deck is — deck composition rather than deck identity.
-
-    The control is a stratified sample: for each type, take as many reference
-    cards of that type as the seed has, proportionally. Where a reference deck
-    has none of a type the seed is full of, it simply contributes nothing there,
-    which is itself the honest answer.
-    """
-    by_type = {}
-    for r in rows:
-        by_type.setdefault(types[r], []).append(r)
-    picked = []
-    for kind, share in seed_composition.items():
-        pool = by_type.get(kind) or []
-        if not pool:
-            continue
-        want = max(1, int(round(share * len(rows))))
-        picked.extend(pool if want >= len(pool) else rng.sample(pool, want))
-    return picked or rows          # never return nothing; an empty centroid is not a result
-
-
-def evaluate(embeddings, pool, by_name, types, controlled, rng):
+def evaluate(embeddings, pool, corpus, types, controlled, rng):
     """Rank every commander for every held-out seed. Returns the metric block."""
     decks = []
     for entry in pool:
-        rows = _rows(entry["cards"], by_name)
+        rows = _rows(entry["cards"], corpus)
         if len(rows) >= SEED_SIZE + 10:               # enough to hold out AND still describe
             decks.append((entry["commander"], rows))
 
@@ -225,9 +164,7 @@ def evaluate(embeddings, pool, by_name, types, controlled, rng):
         if seed_vec is None:
             continue
 
-        composition = {}
-        for r in seed_rows:
-            composition[types[r]] = composition.get(types[r], 0) + 1 / len(seed_rows)
+        comp = composition(seed_rows, types)      # the product's own function
 
         scores = []
         for j, (other, other_rows) in enumerate(decks):
@@ -235,7 +172,7 @@ def evaluate(embeddings, pool, by_name, types, controlled, rng):
             # and wins on every space, including a random one.
             ref = [r for r in other_rows if r not in seed_set] if i == j else other_rows
             if controlled:
-                ref = type_controlled_rows(ref, types, composition, rng)
+                ref = type_controlled_rows(ref, types, comp, rng)
             vec = centroid(embeddings, ref)
             scores.append(-1.0 if vec is None else float(seed_vec @ vec))
 
@@ -258,7 +195,7 @@ def evaluate(embeddings, pool, by_name, types, controlled, rng):
     }
 
 
-def repeated(embeddings, pool, by_name, types, controlled, repeats=REPEATS):
+def repeated(embeddings, pool, corpus, types, controlled, repeats=REPEATS):
     """`evaluate` over K independent draws: mean, min and max of each metric.
 
     The spread is not decoration. It is what separates "this space is better"
@@ -266,7 +203,7 @@ def repeated(embeddings, pool, by_name, types, controlled, repeats=REPEATS):
     number — which is how the first reading of this eval produced a confident,
     wrong claim about type control.
     """
-    runs = [evaluate(embeddings, pool, by_name, types, controlled,
+    runs = [evaluate(embeddings, pool, corpus, types, controlled,
                      random.Random(EVAL_SEED + i))
             for i in range(repeats)]
     runs = [r for r in runs if r.get("queries")]
@@ -289,7 +226,7 @@ def main(args=None):
                      limit_decks=getattr(args, "limit", None))
 
     pool = load_pool()
-    names, by_name, types = load_corpus()
+    names, corpus, types = load_corpus()
 
     spaces = {
         "function (ability)": ABILITY_EMBEDDINGS_PATH,
@@ -309,7 +246,7 @@ def main(args=None):
             # every row answers the same held-out seeds. A per-row rng would let
             # an easier draw look like a better embedding.
             rows.append((label, controlled,
-                         repeated(emb, pool, by_name, types, controlled)))
+                         repeated(emb, pool, corpus, types, controlled)))
 
     head = next((m for _, _, m in rows if m.get("queries")), {})
     print(f"\nCOMMANDER SEARCH — {SEED_SIZE}-card held-out seed, "

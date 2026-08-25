@@ -88,6 +88,29 @@ def _cardviews(doc):
     return [c for group in lists for c in (group.get("cardviews") or [])]
 
 
+#: Three-colour identities, and ONLY three-colour, need their name.
+#:
+#: Probed rather than assumed: `w` redirects to mono-white, `rg` to gruul,
+#: `wubr` to yore-tiller and `wubrg` to five-color — every arity takes a colour
+#: code and answers with a redirect. `wur` returns **403**. So the shards and
+#: wedges are the one gap, and they are hardcoded here because they are
+#: EDHREC's vocabulary rather than Magic's; a caller should be able to ask in
+#: colours and never learn the word "Jeskai".
+_WEDGES = {
+    frozenset("wub"): "esper",   frozenset("ubr"): "grixis",
+    frozenset("brg"): "jund",    frozenset("rgw"): "naya",
+    frozenset("gwu"): "bant",    frozenset("wbg"): "abzan",
+    frozenset("wur"): "jeskai",  frozenset("ubg"): "sultai",
+    frozenset("wbr"): "mardu",   frozenset("urg"): "temur",
+}
+
+
+def identity_segment(identity):
+    """The URL segment EDHREC will answer for a colour code."""
+    letters = frozenset(identity)
+    return _WEDGES.get(letters, identity) if len(letters) == 3 else identity
+
+
 def top_commanders(identity, limit=100):
     """The most-played commanders for a colour identity, EDHREC's order.
 
@@ -96,8 +119,9 @@ def top_commanders(identity, limit=100):
     and re-sorting it would discard the one thing the endpoint is for.
     """
     key = f"commanders-{identity}"
-    doc = _cached(key, lambda: _follow(_get(f"{BASE}/commanders/{identity}.json"),
-                                       f"{BASE}/commanders/{identity}.json"))
+    seg = identity_segment(identity)
+    doc = _cached(key, lambda: _follow(_get(f"{BASE}/commanders/{seg}.json"),
+                                       f"{BASE}/commanders/{seg}.json"))
     return [c["name"] for c in _cardviews(doc)][:limit]
 
 

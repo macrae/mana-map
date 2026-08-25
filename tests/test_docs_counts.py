@@ -83,8 +83,15 @@ def _truths():
         "pilot-subcommands": (
             len(PILOT_STEPS),
             r"(?:`manamap pilot`|pilot)[ ]+subcommands?\b"),
+        # Read from the PARSER, not from `len(STEPS) + 2`. That expression was
+        # correct while every top-level subcommand was either a pipeline step,
+        # `run` or `pilot` — and it silently undercounted the moment
+        # `eval-commander-search` was added deliberately OUTSIDE `STEPS` (it
+        # needs the network and a frozen snapshot, so `manamap run` must not
+        # invoke it). A count derived from a proxy is a count that is right
+        # until it isn't, which is the failure this whole module exists to catch.
         "top-level-subcommands": (
-            len(STEPS) + 2, r"top-level[ ]+subcommands?\b"),
+            _top_level_count(), r"top-level[ ]+subcommands?\b"),
         "agents": (
             len(list((ROOT / ".claude" / "agents").glob("*.md"))),
             r"agents?\b"),
@@ -96,6 +103,17 @@ def _truths():
         "cached-routines": (
             len(AGENT_ROUTINES), r"(?:static[ ]+)?routines?\b"),
     }
+
+
+def _top_level_count():
+    """Every `manamap <x>` subcommand, from the real argument parser."""
+    from manamap.cli import build_parser
+    import argparse
+
+    for action in build_parser()._actions:
+        if isinstance(action, argparse._SubParsersAction):
+            return len(action.choices)
+    raise AssertionError("no subparsers on the top-level parser")
 
 
 TRUTHS = _truths()

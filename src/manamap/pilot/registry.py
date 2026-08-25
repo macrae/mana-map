@@ -25,6 +25,8 @@ PILOT_STEPS = [
      "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
+    ("commander-search", "manamap.pilot.commander_search_cmd",
+     "Cards in, commanders out: rank real commanders by proximity to a seed"),
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
     ("deck-notes", "manamap.pilot.deck_notes",
      "The captain's log: add a note about a game, list them, show one (append-only, authored)"),
@@ -365,6 +367,32 @@ def add_pilot_parser(subparsers):
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
+        if name == "commander-search":
+            # Slugless for the same reason as `card-search`: a search is not
+            # per-deck. The seed comes from names, a file, or a deck's own 99.
+            cmd.add_argument("cards", nargs="*", default=[],
+                             help="seed card names; or use --from / --deck")
+            cmd.add_argument("--from", dest="from_file", default=None, metavar="FILE",
+                             help="read seed card names from a file, one per line "
+                                  "('-' for stdin); a decklist works as-is")
+            cmd.add_argument("--deck", default=None,
+                             help="seed from a tracked deck's own 99")
+            cmd.add_argument("--space", default="text",
+                             choices=["text", "function", "layout"],
+                             help="which embedding to rank in. Default TEXT, because it "
+                                  "measures better than the trained space: top-1 0.584 "
+                                  "vs 0.410 over 10 held-out draws "
+                                  "(`manamap eval-commander-search`)")
+            cmd.add_argument("--no-type-control", action="store_true",
+                             dest="no_type_control",
+                             help="do not match the reference to the seed's type mix "
+                                  "(§6.1 step 6); measured as 'does not hurt', not as a win")
+            cmd.add_argument("--limit", type=int, default=10,
+                             help="how many commanders to print (default 10)")
+            cmd.add_argument("--candidates", type=int, default=25, dest="per_identity",
+                             help="how many of the identity's top commanders to score "
+                                  "(default 25, per §6.1 step 4)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "card-search":
             # NO slug positional: a search is not per-deck. `--deck` scopes it
             # (identity DERIVED from the commander, the deck's own cards excluded)
