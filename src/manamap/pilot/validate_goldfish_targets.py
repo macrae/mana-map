@@ -41,6 +41,7 @@ import json
 
 from manamap.pilot.agent_cache import passing_stacks
 from manamap.pilot.common import (
+    scenario_game_state,
     deck_dir,
     load_deck_cards,
     load_json,
@@ -166,7 +167,8 @@ def _validate_win_line_coverage(doc, slug, main_names, commander_names, base):
         return []                          # nothing verified yet; nothing to say
     for path in stacks:
         try:
-            blob = json.dumps(load_json(path).get("scenario", {}))
+            blob = json.dumps(scenario_game_state(
+                load_json(path).get("scenario", {})))
         except Exception:                  # pragma: no cover
             continue
         for name in main_names:

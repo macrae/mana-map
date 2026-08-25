@@ -612,3 +612,35 @@ def load_strategy_db():
             f"re-run `manamap pilot build-strategy-db`."
         )
     return index["sections"], order, embeddings
+
+# Scenario keys that are PROSE ABOUT the board rather than the board itself.
+# Both v1 (`board`/`hand`/`graveyard`) and v2 (`seats`/`actions`) name their game
+# state in other keys, so excluding these two is schema-proof in a way that listing
+# the state keys is not — a new state key is included by default.
+SCENARIO_PROSE_KEYS = ("extras", "question")
+
+
+def scenario_game_state(scenario):
+    """A scenario's GAME STATE, with the prose stripped.
+
+    `validate_diagnosis` already carried the principle — "a resolution or a checker
+    note may discuss a card the board never held, and a discussion is not a
+    dependency" — and applied it one level too shallow: `extras` and `question` are
+    discussion too, and both validators scanned them.
+
+    The case that exposed it: ur-dragon's stack 007 is "002's board with
+    PANHARMONICON REMOVED", so it names Panharmonicon twice in prose and never puts
+    it on the battlefield. Both gates then read the card as present in a
+    checker-passed stack — one demanding it join a goldfish component, the other
+    demanding a cut price a line resting on the board that PROVES WHAT CUTTING IT
+    COSTS.
+
+    Measured across every checker-passed stack before being kept: **32 phantom
+    memberships across 6 decks**, each a card counted as present because prose
+    mentions it. An earlier attempt listing the state keys instead of the prose keys
+    scored 43 and was wrong — it missed v2's `seats`/`actions` and would have
+    dropped radagast's whole sim-lifted board.
+    """
+    if not isinstance(scenario, dict):
+        return {}
+    return {k: v for k, v in scenario.items() if k not in SCENARIO_PROSE_KEYS}

@@ -39,6 +39,7 @@ from manamap.config import DECK_AXIS_TARGETS
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import deck_audit as audit_mod
 from manamap.pilot.common import (
+    scenario_game_state,
     UNVERIFIED_STATUS,
     VERIFIED_STATUS,
     checker_passed,
@@ -133,7 +134,8 @@ def stacks_naming(deck_path, name):
             continue
         if not doc or not checker_passed(doc):
             continue
-        blob = json.dumps(doc.get("scenario", {}), ensure_ascii=False)
+        blob = json.dumps(scenario_game_state(doc.get("scenario", {})),
+                          ensure_ascii=False)
         if name in blob:
             hits.append(path.stem.split("-", 1)[0])
     return hits

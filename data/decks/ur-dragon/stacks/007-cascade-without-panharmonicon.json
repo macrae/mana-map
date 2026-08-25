@@ -1,0 +1,467 @@
+{
+  "id": "007",
+  "slug": "ur-dragon",
+  "deck": "The Ur-Dragon",
+  "title": "The same cascade with Panharmonicon cut: does it still kill, and can any version kill a seat at 40?",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Miirym, Sentinel Wyrm",
+        "Dragon Tempest",
+        "Terror of the Peaks",
+        "lands x8"
+      ],
+      "opponents": [
+        {
+          "life": 32,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [
+      "Lathliss, Dragon Queen"
+    ],
+    "graveyard": [],
+    "mana_available": "{4}{R}{R}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Lathliss, Dragon Queen",
+        "controller": "you",
+        "note": "cast for her printed {4}{R}{R} \u2014 with The Ur-Dragon's eminence she would cost {3}{R}{R}; the scenario pays full price so the cascade, not the discount, is what is being measured. Identical to stack 002's cast."
+      }
+    ],
+    "question": "This is stack 002's board with PANHARMONICON REMOVED and nothing else changed. (a) Walk the cascade: Miirym's trigger is no longer doubled, so how many nonlegendary Lathliss token copies enter, and what is the total damage from Terror of the Peaks and Dragon Tempest, in how many separately-targeted instances? (b) Is it still lethal to the 32-life seat, which stack 002 kills with 64 damage? (c) Can the damage, optimally assigned, kill a seat at 40 life \u2014 either here or in stack 002's four-permanent version, whose own resolution leaves the 40-life seat alive at 8?",
+    "extras": {
+      "context": "Stack 002 is checker-passed and resolves the SAME cast with Panharmonicon on the battlefield: two token copies, 64 damage in 12 instances (36 from Terror across six enters-triggers, 28 from Tempest at X = 4,4,5,5,5,5 with optimal ordering), killing the 32-life seat while the 40-life seat survives at 8. Read it before resolving this one; the only difference is the doubler. Note the rules point 002 settled and this scenario inherits: Miirym and Lathliss both read 'another NONTOKEN Dragon you control enters', so the token copies do not re-trigger either of them.",
+      "why_this_matters": "diagnosis.json's cut_candidates[5] proposes cutting Panharmonicon, and the skeptic established that the cut deletes one of the deck's two checker-passed lethal boards. Nothing on the record says whether that costs 002's LETHALITY or only its MARGIN, and the cut currently rests on a mana argument alone with its decisive evidence named and absent. Part (c) is the deck's central open question: it has two proven kills and neither has been shown to kill a fresh 40-life seat.",
+      "scope": "One rules domain: trigger counting and damage assignment across one resolving creature spell. No combat, no additional turns. The d20 of Ancient Gold Dragon is stack 001's question and is deliberately not in this board."
+    }
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Lathliss, Dragon Queen \u2014 the only object on the stack \u2014 resolves.",
+        "effect": "Lathliss has no targets, so she becomes a permanent and enters the battlefield under your control: a legendary NONTOKEN 6/6 red Dragon with flying. Board before this: Miirym, Sentinel Wyrm; Terror of the Peaks; Dragon Tempest; lands x8. Panharmonicon is NOT on this battlefield \u2014 that single absence is the whole delta from stack 002.",
+        "citations": [
+          {
+            "rule": "608.3a",
+            "quote": "If the object that\u2019s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell\u2019s controller."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Trigger check for the event 'Lathliss enters' \u2014 count the triggers, ONCE each.",
+        "effect": "Four abilities match: Miirym ('Whenever another nontoken Dragon you control enters, create a token that's a copy of it, except the token isn't legendary' \u2014 Lathliss is another nontoken Dragon), Terror of the Peaks ('Whenever another creature you control enters, this creature deals damage equal to that creature's power to any target'), Dragon Tempest's damage ability ('Whenever a Dragon you control enters, it deals X damage to any target, where X is the number of Dragons you control'), and Dragon Tempest's haste ability ('Whenever a creature you control with flying enters'). Lathliss's own ability does NOT trigger: it requires 'another' nontoken Dragon and she is not another Dragon relative to herself. Each of the four triggers exactly ONCE. Rule 603.2d only multiplies a trigger when some effect states it triggers additional times; the only such effect in stack 002 was Panharmonicon, which is absent here, so nothing on this board states any ability triggers an additional time. Wave-1 trigger count: 4 (versus 8 in stack 002).",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs."
+          },
+          {
+            "rule": "603.2d",
+            "quote": "An ability may state that a triggered ability triggers additional times. In this case, rather than simply determining that such an ability has triggered, determine how many times it should trigger, then that ability triggers that many times."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "You put all four triggers on the stack in the order you choose and announce targets.",
+        "effect": "You control every trigger, so you order them freely. THE ORDERING ASSUMED, AND WHY IT IS OPTIMAL: put Miirym's trigger on the stack LAST so it resolves FIRST, and put Dragon Tempest's damage trigger on the stack FIRST so it resolves LAST. Dragon Tempest's X counts Dragons at resolution (step 6/7), so every Tempest trigger that resolves after Miirym's token has entered counts 4 Dragons instead of 3. Terror's damage does not depend on the order (it is the entering creature's power, 6 in both cases), and the haste trigger deals no damage, so this one choice is the entire optimisation. Targets are announced as each ability goes on the stack; each damage ability says 'any target', so a player is a legal choice for every one of them.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn\u2019t another ability triggering on the stack in any order they choose"
+          },
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c\u2013d."
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "115.4",
+            "quote": "These targets may be creatures, players, planeswalkers, or battles."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Miirym's single trigger resolves.",
+        "effect": "You create Token A: one token that is a copy of Lathliss, except it isn't legendary. It acquires her copiable values \u2014 a 6/6 red Dragon with flying and all of her printed abilities, including her own 'Whenever another nontoken Dragon you control enters' trigger and her {1}{R} pump. It enters the battlefield under your control as it is created. ONE token copy, not two: this is the direct cost of removing Panharmonicon, which in stack 002 gave Miirym a second trigger and therefore Token B.",
+        "citations": [
+          {
+            "rule": "707.2",
+            "quote": "When copying an object, the copy acquires the copiable values of the original object\u2019s characteristics"
+          },
+          {
+            "rule": "111.2",
+            "quote": "The player who creates a token is its owner. The token enters the battlefield under that player\u2019s control."
+          },
+          {
+            "rule": "glossary:enters-the-battlefield",
+            "quote": "A token enters the battlefield as it\u2019s created."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Trigger check for the event 'Token A enters'.",
+        "effect": "Three abilities trigger, once each: Terror of the Peaks ('another creature' \u2014 no nontoken clause), Dragon Tempest's damage ability ('a Dragon you control'), and Dragon Tempest's haste ability ('a creature you control with flying'). Four abilities do NOT trigger, and together they are the finiteness argument this scenario inherits from stack 002: Miirym requires a NONTOKEN Dragon and Token A is a token; original Lathliss requires a NONTOKEN Dragon, so no 5/5 is made either; Token A's own copied Lathliss ability cannot see its own entry ('another'); and there is no second token to see it. The cascade therefore terminates here \u2014 one nontoken entry, one token entry, and nothing further. These three new triggers go on the stack above the three wave-1 triggers still waiting below.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability\u2019s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Token A's three triggers resolve.",
+        "effect": "Terror of the Peaks: damage equal to that creature's power \u2014 Token A is a 6/6 copy of Lathliss, so 6 damage to the announced target. Dragon Tempest: X is counted when the effect is applied \u2014 you control Miirym (Dragon Spirit), Terror of the Peaks (Dragon), Lathliss (Dragon) and Token A (Dragon) = 4 Dragons, so Token A deals 4 damage to its target. Haste: Token A gains haste (no damage; there is no combat in this scenario). Running damage total: 10, in 2 separately-targeted instances.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The three wave-1 triggers resolve, bottoming out on Dragon Tempest.",
+        "effect": "Haste: Lathliss gains haste. Terror of the Peaks: damage equal to Lathliss's power, using her current information since she is still on the battlefield \u2014 6 damage. Dragon Tempest: X counted now = 4 Dragons (Miirym, Terror, Lathliss, Token A), so Lathliss deals 4. FINAL TOTAL: 20 damage in 4 separately-targeted instances \u2014 Terror 6 + 6 = 12, Tempest 4 + 4 = 8. That 20 is the MAXIMUM this board produces: had the wave-1 Tempest trigger resolved before Miirym's, X would have been 3 and the total 19; Terror's two instances are 6 apiece under every ordering. Compare stack 002 on the identical board with Panharmonicon: 64 damage in 12 instances (Terror 6x6 = 36, Tempest 4+4+5+5+5+5 = 28). Removing the doubler is NOT a halving \u2014 it is 20 of 64, a 68.75% loss \u2014 because Panharmonicon doubled Terror and both Tempest abilities on EVERY entry as well as doubling Miirym, and the lost Miirym trigger also deletes Token B and with it a whole third wave of entry triggers.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "the effect uses the current information of that object if it\u2019s in the public zone it was expected to be in"
+          },
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn\u2019t another ability triggering on the stack in any order they choose"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "State-based actions are checked between each resolution and after the last \u2014 answering (b).",
+        "effect": "The legend rule never applies: Miirym's token is created 'except the token isn't legendary', so you control one legendary Lathliss and one nonlegendary copy. No creature was dealt damage; all 20 was aimed at players. ANSWER TO (b): NO \u2014 this is not lethal to the 32-life seat. Twenty damage pointed entirely at that seat leaves it at 12, and 12 is not 0 or less, so no player loses. The board stack 002 proves lethal is the SAME board plus Panharmonicon; cutting Panharmonicon costs stack 002 its LETHALITY, not merely its margin. Concretely, the deficit is 12 damage against a 32-life seat, this cascade cannot produce it, and nothing else on this board can either \u2014 the scenario settles that rather than leaving it open. ENUMERATING what could raise the figure, since the board is small enough to read in full: Miirym (flying, ward {2}, one triggered ability), Terror of the Peaks (flying, a cost-increase static, one triggered ability) and Dragon Tempest (two triggered abilities) have no activated ability at all, and the eight lands' mana abilities are already spent in the declaration below. That leaves exactly one activated ability on the board, and it sits on TWO permanents \u2014 Lathliss and Token A, which copied all of her printed abilities (step 4) \u2014 namely '{1}{R}: Dragons you control get +1/+0 until end of turn', which would add 1 to each Terror instance if it resolved before them. Neither copy can be activated, and the reason is the COST rather than which permanent carries it. `mana_available` is the scenario's declaration of what you have to spend: {4}{R}{R}, six mana. Lathliss's total cost is determined and locked in before any of it is paid, minus all cost reductions, and The Ur-Dragon's eminence is active from the command zone ('As long as The Ur-Dragon is in the command zone or on the battlefield, other Dragon spells you cast cost {1} less to cast'), so the cost paid is {3}{R}{R} \u2014 five mana. A cost reduction is not optional and the printed {4}{R}{R} is not payable as written; the scenario's own note concedes the reduced figure. Six declared minus five locked in leaves exactly {1} floating. The pump costs {1}{R}, which is two mana. One cannot pay two, whatever its colour, because partial payments are not allowed \u2014 so neither copy of the pump is activatable at any point in the cascade. Twenty is the final figure: the 32-life seat survives at 12 and the pump cannot close the gap.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, \u201cTiming and Priority\u201d), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.5j",
+            "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners\u2019 graveyards."
+          },
+          {
+            "rule": "601.2f",
+            "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Answering (c): can the damage, optimally assigned, kill a seat at 40 \u2014 here, or in stack 002's four-permanent version?",
+        "effect": "ON THIS BOARD (007): NO. Twenty is the whole output and 20 < 40; the 40-life seat ends at 20 at best, and killing it is arithmetically impossible from this cascade. ON STACK 002's BOARD: YES \u2014 and this corrects a reading of that artifact rather than contradicting it. Every one of 002's twelve instances belongs to a separate ability that says 'any target', so a player is a legal choice for each, and nothing requires them to name different players; you may aim all twelve at one seat. 002's checker-passed instance list is 6,6,4,4,6,6,5,5,6,6,5,5 = 64, and its resolution order runs Token A's Terror 6,6, Token A's Tempest 4,4, Token B's Terror 6,6, Token B's Tempest 5,5, then wave-1's Terror 6,6 and Tempest 5,5. Aimed at a 40-life seat the running total is 6,12,16,20,26,32,37,42 \u2014 the seat is at -2 after the eighth instance and loses the game at the next state-based check, with the last four instances (22 damage) free to be aimed at the other seat from the start, since wave-1's targets are announced before any of this resolves. 002's 'the 40-life opponent survives at 8' is an ASSIGNMENT CHOICE, not a ceiling: 64 < 72, so exactly one seat can die, and 002 chose the 32-life one. What remains true of both boards, and is the honest limit: neither kills TWO seats, and 007 kills none.",
+        "citations": [
+          {
+            "rule": "115.4",
+            "quote": "These targets may be creatures, players, planeswalkers, or battles."
+          },
+          {
+            "rule": "glossary:any-target",
+            "quote": "\u201cAny target\u201d is the same as \u201ctarget creature, player, planeswalker, or battle.\u201d"
+          },
+          {
+            "rule": "601.2c",
+            "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Stack 002's board with Panharmonicon removed and nothing else changed. (a) Miirym triggers ONCE, so ONE nonlegendary 6/6 hasty Lathliss token copy enters (002 makes two). Total damage is 20 in 4 separately-targeted instances: Terror of the Peaks 6 + 6 = 12 (the entering creature's power, 6 for Lathliss and 6 for the copy) and Dragon Tempest X = 4, 4 = 8. The assumed ordering is Miirym's trigger resolving FIRST (put on the stack last) and the wave-1 Tempest trigger resolving LAST, which is optimal because Tempest counts Dragons at resolution (608.2h): with Miirym first both Tempest triggers see 4 Dragons; with the wave-1 Tempest first it sees 3 and the total is 19. Terror's instances are 6 under every ordering, so 20 is the maximum. (b) NO \u2014 20 damage does not kill the 32-life seat, which survives at 12. Cutting Panharmonicon costs stack 002 its LETHALITY, not just its margin: the deficit is 12 damage and this cascade cannot produce it. Removing the doubler is not a halving (20 of 64, a 68.75% loss) because Panharmonicon doubled Terror and both Dragon Tempest abilities on every entry as well as doubling Miirym, and losing Miirym's second trigger also deletes Token B and its entire wave of entry triggers. (c) NOT on this board (20 < 40). YES on stack 002's board: its twelve instances each read 'any target', a player is a legal choice for every one, and nothing forces them apart \u2014 aimed at one seat the running total reaches 42 by the eighth instance, so a fresh 40-life seat dies with 22 damage still to spend elsewhere. 002's '40-life opponent survives at 8' is an assignment choice, not a ceiling; what neither board can do is kill BOTH seats, since 64 < 72. SETTLED, not declined: the only activated ability on this board other than the lands' mana abilities is '{1}{R}: Dragons you control get +1/+0 until end of turn', and it sits on BOTH Lathliss and her token copy \u2014 the scenario settles it against both. `mana_available` is the scenario's declaration of what you have, {4}{R}{R} = six mana, and Lathliss's total cost is locked in minus all cost reductions (601.2f), so with The Ur-Dragon's eminence live in the command zone she is paid for at {3}{R}{R} = five. Six minus five leaves exactly {1} floating; the pump costs two, and partial payments are not allowed (601.2h), so neither copy can be activated once. Twenty is final and the 32-life seat survives at 12. Stack 002 declares the identical {4}{R}{R} against the same locked-in five, so the pump is equally unpayable there \u2014 but (c) never rested on that: 64 already exceeds 40, and a pump could only raise a damage total, so (c) is a LOWER BOUND and monotone in the pump whichever way the mana had gone. No combat, no additional turns, and the Ancient Gold Dragon d20 is stack 001's question and is not on this board.",
+      "you": {
+        "battlefield": [
+          "Miirym, Sentinel Wyrm",
+          "Terror of the Peaks",
+          "Dragon Tempest",
+          "Lathliss, Dragon Queen (haste)",
+          "Lathliss token copy A (nonlegendary, 6/6 flying, haste, all her abilities)",
+          "lands x8"
+        ],
+        "dragons_controlled": 4,
+        "token_copies_created": 1,
+        "damage_dealt_total": 20,
+        "damage_instances": [
+          6,
+          4,
+          6,
+          4
+        ],
+        "damage_by_source": {
+          "Terror of the Peaks": [
+            6,
+            6
+          ],
+          "Dragon Tempest": [
+            4,
+            4
+          ]
+        },
+        "delta_vs_stack_002": {
+          "stack_002_token_copies": 2,
+          "stack_002_damage_total": 64,
+          "stack_002_instances": 12,
+          "damage_lost": 44,
+          "note": "20 of 64. Panharmonicon doubled Miirym, Terror and both Dragon Tempest abilities on every entry, so its removal is not a halving."
+        }
+      },
+      "opponents": [
+        {
+          "life": 12,
+          "note": "32-life seat, best case: all 20 damage assigned here leaves 12. NOT lethal \u2014 stack 002 kills this seat outright and this board cannot (704.5a)."
+        },
+        {
+          "life": 40,
+          "note": "40-life seat: untouched in the best-case assignment above; even taking all 20 it survives at 20. Cannot be killed from this cascade."
+        }
+      ],
+      "answers": {
+        "a": "One nonlegendary token copy; 20 damage in 4 separately-targeted instances (Terror 6+6, Tempest X=4,4), under the ordering Miirym-first / wave-1-Tempest-last, which is the optimum available.",
+        "b": "No \u2014 and completely, not provisionally. The 32-life seat survives at 12, and the only activated ability that could raise the figure \u2014 the {1}{R} pump, carried by Lathliss and by her token copy alike \u2014 is unpayable: the scenario's declared {4}{R}{R} (six mana) pays her eminence-reduced, locked-in {3}{R}{R} (five) and leaves exactly {1} floating against a two-mana cost, and partial payments are not allowed (601.2f, 601.2h). Twenty is the whole output. The Panharmonicon cut removes the LETHALITY of stack 002's board, not merely its margin.",
+        "c": "Not on this board (20 < 40). Yes on stack 002's board: all 64 damage is separately targeted at 'any target' and may be aimed at one seat, reaching 42 by the eighth instance \u2014 a fresh 40-life seat dies. Neither board kills two seats (64 < 72)."
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "ROUND 3 SCOPE, verified before spending the round. Compared the installed file against my round-2 read field by field. Steps 1-7 and 9 are unchanged in action, effect length and citation list; final_state.you, final_state.opponents, answers.a and answers.c are byte-identical. Exactly three sites moved: step 8 (effect 1981 -> 2418 chars, one citation added), final_state.summary, answers.b. Citation count 27 = 26 unchanged + 601.2h, 9 steps, inside budget. The resolver's claim holds, so round-1 and round-2 clearances stand as recorded and were not re-derived. Grepped the whole artifact for the withdrawn language: 'two are red', 'no red source', 'the one candidate', 'not stated by the scenario' and 'I do not assume' are all ABSENT."
+      },
+      {
+        "step": 1,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 2,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 2,
+        "rule": "603.2d",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 3,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 3,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. Note this step already models the correct citation pattern for reaching 601.2 from a non-spell object."
+      },
+      {
+        "step": 3,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 3,
+        "rule": "115.4",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 4,
+        "rule": "707.2",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. Token A acquires all printed abilities including the {1}{R} pump - which is what step 8 now correctly leans on."
+      },
+      {
+        "step": 4,
+        "rule": "111.2",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 4,
+        "rule": "glossary:enters-the-battlefield",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. Finiteness argument intact."
+      },
+      {
+        "step": 5,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 6,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. X=4 verified from four Dragon type lines."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 7,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 7,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. (a)'s 20-in-4 maximum stands: X=4 is a hard ceiling because only four Dragons ever exist, Terror is 6 under every ordering, worst ordering 19."
+      },
+      {
+        "step": 8,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. 32 - 20 = 12."
+      },
+      {
+        "step": 8,
+        "rule": "704.5j",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 8,
+        "rule": "601.2f",
+        "status": "supported",
+        "note": "Round 2, unmoved and re-cleared. Verbatim; full rule carries the lock-in sentence; eminence verified against cards.json oracle text with The Ur-Dragon confirmed as commander (decklist.txt under the 'Commander:' header; cards.json is_commander true)."
+      },
+      {
+        "step": 8,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "THE NEW CITATION, and it clears. 'Partial payments are not allowed.' is verbatim - confirmed by substring test against the CR text, not by eye. Read in full, 601.2h is the payment rule itself ('The player pays the total cost... Partial payments are not allowed. Unpayable costs can't be paid.'), so it establishes precisely the claim made: one floating mana cannot pay a two-mana cost, and the colour question never has to be reached. The arithmetic is right at every step - declared {4}{R}{R} = six, locked-in eminence-reduced {3}{R}{R} = five, residue exactly one, pump cost {1}{R} = two. My round-2 finding is fully discharged: the argument no longer depends on any reading of what the {4} is coloured, and 'whatever its colour' is stated explicitly.\n\nOne remark for the record, deliberately NOT a finding. 601.2h is written about casting a spell, and the pump is an activated ability; the bridge is CR 602.2b ('The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b-i... An activated ability's analog to a spell's mana cost (as referenced in rule 601.2f) is its activation cost'), which the artifact does not name - though step 3 names the equivalent bridge, 603.3d, for triggered abilities. I checked 602.2b's text rather than assuming it: it makes the equivalence explicitly and even names 601.2f. So the rule cited is the correct rule, reached by a link the CR supplies in terms, and there is no reading under which the claim is false. Adding '(via 602.2b)' would make the chain airtight and matches this artifact's own practice, but failing a terminal round on an uncontested cross-reference that changes no conclusion would be manufacturing a finding, and I am not doing that."
+      },
+      {
+        "step": 9,
+        "rule": "115.4",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 9,
+        "rule": "glossary:any-target",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 9,
+        "rule": "601.2c",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. Read in full, this is what settles (c)."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved. (c)'s running total 6,12,16,20,26,32,37,42 verified against 002's own steps and damage_instances array."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Rounds 1-2, unmoved."
+      },
+      {
+        "step": 8,
+        "rule": null,
+        "status": "supported",
+        "note": "THE SECOND SUPERLATIVE, enumerated - and I checked the list rather than the claim. The set is closed by construction: final_state.you.battlefield holds exactly six entries and scenario-facts' board split agrees (bodies Miirym + Terror of the Peaks, other_permanents Dragon Tempest, lands x8, nothing spent paying a cost), plus Lathliss and Token A. All six appear in step 8's enumeration - checked programmatically, not by reading. Each entry's oracle text re-read in cards.json against what the step says about it: Miirym 'Flying, ward {2}' + one enters-trigger; Terror of the Peaks 'Flying' + the static 'Spells your opponents cast that target this creature cost an additional 3 life to cast' + one enters-trigger; Dragon Tempest exactly two triggered abilities; Lathliss flying + the 5/5 trigger + '{1}{R}: Dragons you control get +1/+0 until end of turn'; Token A copies her printed abilities per step 4. So 'one activated ability, on two permanents' is exact, and hand and graveyard are empty with no castable object left. Two things an incomplete enumeration would have dropped and this one does not: Terror's cost-increase static is named and correctly classed as not a damage source (and an opponent choosing to pay 3 life is not something the pilot can produce), and Token A is counted as a second carrier rather than being folded into Lathliss. Immaterial nicety, recorded because I looked: ward {2} is itself a triggered ability (702.21a), so Miirym has two rather than 'ward {2}, one triggered ability' - it is named explicitly, nothing is hidden, and the load-bearing claim (no activated ability) is correct. The conclusion is robust far beyond its margin anyway: pumps do not move Dragon Tempest's X, which is a count and not a power, so each pump adds at most +2 and closing 12 would need six pumps and twelve mana beyond the cast against a declared six."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "THE 002 CLAUSE, re-premised and demoted - confirmed correctly stated, not echoed. It now reads: 'Stack 002 declares the identical {4}{R}{R} against the same locked-in five, so the pump is equally unpayable there - but (c) never rested on that: 64 already exceeds 40, and a pump could only raise a damage total, so (c) is a LOWER BOUND and monotone in the pump whichever way the mana had gone.' Every clause verified against 002 itself: its mana_available is the string '{4}{R}{R}', character for character identical; same deck, same commander, same printed cost, hence the same locked-in {3}{R}{R} and the same one-mana residue; no conflict with 002's own note that 'the extra mana is available', which is that surplus. The monotonicity is stated correctly and for the right reason - a pump raises Terror's power-based instances and cannot touch Tempest's X, so the total is non-decreasing, and a lower-bound claim that already clears 40 cannot be undone by an effect that only adds. The demotion is the right editorial call: the artifact no longer needs the mana question to answer (c), and says so."
+      },
+      {
+        "step": null,
+        "rule": null,
+        "status": "supported",
+        "note": "MISSING-STEP AUDIT, final pass. No step added, none missing. Triggers placed at every wave (603.3b), SBAs checked at each priority and after the last resolution (704.3), legend rule raised and dismissed (704.5j), no replacement effects on this board, priority carried implicitly by 704.3's own text as in checker-passed 002. Sibling handling re-checked against scenario-facts: 002 is like-for-like (same body count, two shared bodies, no exclusive bodies), the sole difference is named in the artifact, and no figure from the non-comparable siblings 003/005/006 is quoted. Scenario is v1, so no v2 combat-step vocabulary applies and extras carries no reconstruction_notes. All three conclusions stand as cleared in round 1 and re-verified since: (a) 20 in 4 instances, maximal; (b) NO, the 32-life seat survives at 12, and now settled rather than hedged; (c) YES on 002's board, 002's '40-life opponent survives at 8' is an assignment choice and not a ceiling."
+      }
+    ],
+    "iterations": 3
+  }
+}

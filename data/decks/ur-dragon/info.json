@@ -218,11 +218,35 @@
       "settled_by": "resolve-stack"
     }
   ],
-  "simulation": null,
+  "simulation": {
+    "runs": 1,
+    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892",
+    "at": "2026-08-24",
+    "stale": false,
+    "ran_on_decklist_sha256": "b544a740c197e11532aee0c1d4d2ac4d3238a196a4996edf29824704dd8c46b7",
+    "games": 100,
+    "vs": [
+      "giada-angels",
+      "vito",
+      "baylen-tokens"
+    ],
+    "win_rate": 0.12,
+    "win_rate_ci95": [
+      0.07,
+      0.198
+    ],
+    "eliminated_by": {
+      "vito": 17,
+      "giada-angels": 39,
+      "baylen-tokens": 7
+    },
+    "mean_round": 18.4,
+    "token_damage_share": 0.07,
+    "tokens_observed": 1.5
+  },
   "experiments": null,
   "next": [
-    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×3, resolve-stack ×8",
-    "no simulation runs — `simulate ur-dragon --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×3, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
