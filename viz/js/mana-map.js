@@ -2520,6 +2520,49 @@
     groupColour: function (d) { const g = grouping(); return g.palette[g.keyOf(d)] || '#666'; },
     get regionFocus() { return regionFocus; },
     get legendFocus() { return legendFocus; },
+    /* ONE spotlight, reachable from more than the legend.
+     *
+     * `legendFocus` was private with a getter and no setter, so the legend was
+     * the only control that could point it. Build's mana curve and role bars
+     * report the SAME groups in the SAME colours from the SAME registry — that
+     * is the whole argument for `MM.GROUPINGS` — and a bar you can read but
+     * cannot click is a legend that forgot it was one.
+     *
+     * Passing `groupingName` switches the overlay first, because a role bar is
+     * always about roles: clicking "ramp" while the map is coloured by
+     * supertype must mean "colour by role AND light up ramp", not "light up a
+     * supertype called ramp", which is nothing. Toggles off when re-clicked,
+     * exactly like the legend row.
+     */
+    focusGroup: function (key, groupingName) {
+      var toggle = function () {
+        legendFocus = (legendFocus && legendFocus.key === key) ? null : { key: key };
+        regroup();
+        return legendFocus;
+      };
+      if (!groupingName || !GROUPINGS[groupingName] || groupingName === currentColorBy) {
+        return Promise.resolve(toggle());
+      }
+      // Switching the overlay is not a field assignment. `role` is the one
+      // grouping whose data is NOT in the boot payload — `card_roles.json` is
+      // 0.39 MB gz and loads on selection — so skipping `ensure()` would
+      // colour all 34,890 cards 'unclassified' and read as a broken roles file
+      // rather than an absent one. The select is kept in sync because it is
+      // the other control for the same state, and two controls disagreeing
+      // about one value is how a legend ends up lying.
+      currentColorBy = groupingName;
+      var sel = document.getElementById('colorBy');
+      if (sel) sel.value = groupingName;
+      var g = grouping();
+      if (!g.ensure) return Promise.resolve(toggle());
+      setStatus('Loading ' + g.label.toLowerCase() + ' data…');
+      return Promise.resolve(g.ensure()).then(function (ok) {
+        if (!ok) { setStatus('Could not load ' + g.label.toLowerCase() + ' data'); return null; }
+        setMapStatus();
+        return toggle();
+      });
+    },
+    clearGroupFocus: function () { clearLegendFocus(); },
     relate,
     keep,
     orientTo,

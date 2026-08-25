@@ -4994,3 +4994,149 @@ def test_the_fleet_sort_is_in_the_url_so_it_can_be_sent(browser, viz_server):
                                      "e => e.className").find("is-on") >= 0
     finally:
         page.close()
+
+
+# ── Bars as controls ─────────────────────────────────────────────────────
+
+
+def _lit_pixels(page):
+    """Pixels above a brightness threshold on the force canvas.
+
+    Three measures were tried before this one and the first two are the
+    lesson. Summing EVERY pixel moved 3% in the wrong direction while two
+    thirds of the nodes were visibly dimmed — 96 dots are a rounding error
+    against the ground. Sampling small discs at `Force.screenNodes()` was no
+    better: a 12x12 box around a 6px node is mostly background either way, so
+    the ratio compressed to nothing. Counting lit pixels canvas-wide is coarse
+    but it is the one that actually moves.
+    """
+    return page.evaluate("""() => {
+        const c = document.getElementById('forceCanvas');
+        const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let n = 0;
+        for (let i = 0; i < d.length; i += 4) {
+            if (Math.max(d[i], d[i+1], d[i+2]) > 110) n++;
+        }
+        return n;
+    }""")
+
+
+def test_a_group_spotlight_actually_dims_the_graph(browser, viz_server):
+    """A bar you can read but cannot click is a legend that forgot it was one.
+
+    THE THRESHOLD IS MEASURED ON BOTH SIDES, because one chosen only from
+    passing runs says nothing about what it catches. On edgar-vampires, against
+    a base of 31,313 lit pixels:
+
+        spotlight EVERY row (a no-op)      105%   <- every node gains a ring
+        spotlight 1/7 of the deck           84%
+        spotlight 1/20                      82%
+        released                           100%   exact, to the pixel
+
+    So 90% sits between a real spotlight and a spotlight that does nothing —
+    and note the no-op reads ABOVE base rather than at it, which is why "did
+    the number go down" had to be checked rather than assumed.
+
+    Finding this also fixed two real rendering bugs. The node fill was dimmed
+    and then `globalAlpha` was reset to 1 before the rim, so in Build — where
+    every deck card carries a white rim — a spotlight left 96 bright outlines
+    on screen; `setLine` had shipped with the same defect. And a group
+    spotlight left every edge at full strength, so the graph stayed a bright
+    web while the nodes receded.
+    """
+    page = _build_page(browser, viz_server, "edgar-vampires")
+    try:
+        assert page.js_errors == [], page.js_errors
+        base = _lit_pixels(page)
+
+        # The SMALLEST group on the curve. The first is `Creature`, and edgar
+        # is a creature deck — spotlighting it dims almost nothing, so the
+        # measurement would be about the deck rather than about the feature.
+        key = page.evaluate(r"""() => {
+            const segs = [...document.querySelectorAll('.curve-seg[data-group]')];
+            const n = {};
+            for (const s of segs) {
+                const m = /\u00d7 (\d+)/.exec(s.getAttribute('title') || '');
+                if (m) n[s.getAttribute('data-group')] =
+                    (n[s.getAttribute('data-group')] || 0) + Number(m[1]);
+            }
+            return Object.keys(n).sort((a, b) => n[a] - n[b])[0];
+        }""")
+        assert key, "no curve segment rendered"
+
+        page.query_selector('.curve-seg[data-group="%s"]' % key).click()
+        page.wait_for_timeout(800)
+        assert page.js_errors == [], page.js_errors
+        assert page.evaluate("Build.focusedGroup && Build.focusedGroup.key") == key
+        during = _lit_pixels(page)
+        assert during < base * 0.9, (base, during, key)
+
+        # Clicking the same segment releases it, and the graph comes back.
+        page.query_selector('.curve-seg[data-group="%s"]' % key).click()
+        page.wait_for_timeout(700)
+        assert page.evaluate("Build.focusedGroup") is None
+        after = _lit_pixels(page)
+        assert after > during * 1.05, (during, after)
+    finally:
+        page.close()
+
+
+def test_a_role_bar_switches_the_overlay_because_it_is_always_about_roles(browser, viz_server):
+    """Clicking "ramp" while the map is coloured by supertype must mean
+    "colour by role AND light up ramp" — not "light up a supertype called
+    ramp", which is nothing at all.
+
+    `role` is also the one grouping whose data is NOT in the boot payload
+    (`card_roles.json`, 0.39 MB gz, loaded on selection), so this exercises the
+    `ensure()` path: without it every card colours 'unclassified' and reads as
+    a broken roles file rather than an absent one.
+    """
+    page = _build_page(browser, viz_server, "edgar-vampires")
+    try:
+        assert page.evaluate("MM.grouping") != "role"
+        row = page.query_selector(".lens-bar-row[data-role]")
+        assert row is not None, "no role bar rendered"
+        family = row.get_attribute("data-role")
+        row.click()
+        page.wait_for_function("() => window.Build && Build.focusedGroup",
+                               timeout=BOOT_TIMEOUT_MS)
+        page.wait_for_timeout(900)
+        assert page.js_errors == [], page.js_errors
+        assert page.evaluate("MM.grouping") == "role"
+        assert page.evaluate("Build.focusedGroup.key") == family
+        # The select is the other control for the same state; two controls
+        # disagreeing about one value is how a legend ends up lying.
+        assert page.eval_on_selector("#colorBy", "e => e.value") == "role"
+        # And the spotlight really reached the graph, not just the panel.
+        assert page.evaluate("Force.nodeCount") > 0
+    finally:
+        page.close()
+
+
+def test_a_group_spotlight_and_a_line_spotlight_are_not_the_same_thing(browser, viz_server):
+    """Two answers to "show me", and holding both means neither is legible.
+
+    They are also deliberately different in scope: a LINE is a claim about
+    edges, so it mutes every edge that is not part of it; a GROUP is a claim
+    about nodes, and muting the deck's verified lines while you look at its
+    ramp would hide the thing that makes the graph worth reading. Taking one
+    must put the other down.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        seg = page.query_selector(".curve-seg[data-group]")
+        assert seg is not None, "no curve segment rendered"
+        seg.click()
+        page.wait_for_timeout(600)
+        assert page.evaluate("Build.focusedGroup") is not None
+
+        page.evaluate("Build.focusLine(0)")
+        page.wait_for_timeout(600)
+        assert page.evaluate("Build.focusedGroup") is None, \
+            "taking a line must put the group down"
+        assert page.js_errors == [], page.js_errors
+    finally:
+        page.close()

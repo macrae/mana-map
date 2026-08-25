@@ -208,8 +208,16 @@
       const seg = segments[i];
       let stack = '';
       for (const s of seg) {
-        stack += '<div title="' + esc(s.key) + ' \u00d7 ' + s.n + '" style="width:100%;' +
-          'background:' + s.colour + ';height:' + ((s.n / (buckets[i] || 1)) * 100) + '%;"></div>';
+        // A bar you can read but cannot click is a legend that forgot it was
+        // one. These segments report the same groups, in the same order, in
+        // the same colours as the map legend — from the same registry — so
+        // they get the same gesture.
+        stack += '<div class="curve-seg' +
+          (focusedGroup && focusedGroup.key === s.key ? ' is-on' : '') +
+          '" data-group="' + esc(s.key) + '"' +
+          ' title="' + esc(s.key) + ' \u00d7 ' + s.n + ' \u2014 click to spotlight"' +
+          ' style="width:100%;background:' + s.colour + ';height:' +
+          ((s.n / (buckets[i] || 1)) * 100) + '%;"></div>';
       }
       html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;">' +
         '<div style="height:40px;width:100%;display:flex;align-items:flex-end;">' +
@@ -227,7 +235,10 @@
     present.sort((a, b) => (order.indexOf(a.key) + 1 || 99) - (order.indexOf(b.key) + 1 || 99));
     if (present.length > 1) {
       html += '<div class="curve-key">' + present.map(s =>
-        '<span class="curve-key-item"><span class="lens-swatch" style="background:' +
+        '<span class="curve-key-item' +
+        (focusedGroup && focusedGroup.key === s.key ? ' is-on' : '') +
+        '" data-group="' + esc(s.key) + '">' +
+        '<span class="lens-swatch" style="background:' +
         s.colour + '"></span>' + esc(s.key) + '</span>').join('') + '</div>';
     }
     return html + '</div>';
@@ -555,8 +566,16 @@
         '<div class="lens-title">' + esc(e.deck_name) + '</div>' +
         '<div class="lens-sub">' + esc(e.commander) + '</div>' +
         '<div class="lens-coverline">“' + esc(e.coverline) + '”</div>' +
+        // The magazine is not a product any more, so nothing invites a pilot
+        // into it. This link survived the removal on the other three surfaces
+        // because it lives in a panel that only renders with a deck loaded —
+        // a grep for the string found it, a click-through never would have.
+        // `has.page` gates the manual for the same reason it does everywhere
+        // else: a link that 404s is worse than a link that is not there.
         '<div class="lens-links">' +
-          '<a href="../manuals/' + esc(active.slug) + '.html">Read the issue →</a>' +
+          ((e.has && e.has.page)
+            ? '<a href="../manuals/p/' + esc(active.slug) + '.html">Pilot\'s Manual →</a>'
+            : '') +
           '<a href="deck.html?deck=' + esc(active.slug) + '">Dossier →</a>' +
         '</div>' +
       '</div>' +
@@ -607,7 +626,15 @@
         // disagree in silence — that is the mistake the land audit already made once.
         '<div class="lens-note">Bars count copies · map dots count distinct cards</div>' +
         counts.map(c =>
-          '<div class="lens-bar-row">' +
+          // `data-role` rather than `data-group`: a role bar is ALWAYS about
+          // roles, so clicking it must switch the overlay to `role` as well as
+          // spotlight the family. Clicking "ramp" while the map is coloured by
+          // supertype would otherwise mean "light up a supertype called ramp",
+          // which is nothing at all.
+          '<div class="lens-bar-row' +
+          (focusedGroup && focusedGroup.key === c.family ? ' is-on' : '') +
+          '" data-role="' + esc(c.family) + '"' +
+          ' title="' + esc(c.family) + ' \u2014 click to spotlight">' +
             '<span class="lens-swatch" style="background:' + familyColour(c.family) + '"></span>' +
             '<span class="lens-bar-label">' + esc(c.family) + '</span>' +
             '<span class="lens-bar-track"><span class="lens-bar-fill" style="width:' +
@@ -669,6 +696,20 @@
     }
 
     el.innerHTML = html;
+
+    // Bound ONCE on the container, not per element: `renderPanel` replaces the
+    // whole innerHTML on every repaint, so per-row listeners would be re-bound
+    // on each render and leak the ones they replaced. Same pattern the map
+    // legend uses, for the same reason.
+    if (!el._groupBound) {
+      el._groupBound = true;
+      el.addEventListener('click', function (ev) {
+        const role = ev.target.closest && ev.target.closest('[data-role]');
+        if (role) { focusGroup(role.getAttribute('data-role'), 'role'); return; }
+        const grp = ev.target.closest && ev.target.closest('[data-group]');
+        if (grp) { focusGroup(grp.getAttribute('data-group')); }
+      });
+    }
   }
 
   function statBox(n, label) {
@@ -765,9 +806,81 @@
    * canvas is `display:none`. So the click panned a hidden canvas and changed a status
    * string, which is why it read as doing nothing. Clicking the same line again clears it.
    */
+  /* ── SPOTLIGHT A GROUP ──────────────────────────────────────────────────
+   *
+   * The curve segments and the role bars already report the same groups, in
+   * the same order, in the same colours as the map legend — all three read
+   * `MM.GROUPINGS`, which is the entire argument for that registry existing.
+   * What they could not do is be CLICKED, so the panel was a readout beside a
+   * picture rather than a control over it.
+   *
+   * Routed exactly like `applyLine`, and for the same reason it had to be:
+   * Build defaults to the GRAPH, and a handler that only moved the map spent
+   * its time restyling a `display:none` canvas — which reads as the click
+   * doing nothing. The two surfaces answer at their own scale: the graph
+   * spotlights this DECK's cards in the group, the map spotlights the group
+   * across the atlas and composes with the deck lens, which is what the legend
+   * has always done.
+   */
+  let focusedGroup = null;
+
+  function groupRows(key, groupingName) {
+    if (!active || !window.MM || !MM.cardRecord) return [];
+    const want = groupingName || MM.grouping;
+    const g = MM.GROUPINGS && MM.GROUPINGS[want];
+    if (!g) return [];
+    return active.main.map(function (x) { return x.idx; })
+      .filter(function (i) {
+        if (i === null) return false;
+        const rec = MM.cardRecord(i);
+        return rec && g.keyOf(rec) === key;
+      });
+  }
+
+  function focusGroup(key, groupingName) {
+    if (!key) return;
+    const same = focusedGroup && focusedGroup.key === key;
+    focusedGroup = same ? null : { key: key, grouping: groupingName || null };
+    // A group and a line are two answers to "show me"; holding both at once
+    // means neither is legible, so taking one puts the other down.
+    if (focusedGroup && focusedLine !== -1) { focusedLine = -1; applyLine(null); }
+
+    const apply = function () {
+      if (view === 'graph') {
+        if (window.Force && Force.setGroup) {
+          Force.setGroup(focusedGroup ? groupRows(key, groupingName) : null, key);
+        }
+      } else if (MM.focusGroup) {
+        MM.focusGroup(key, groupingName);
+      }
+      renderPanel();
+      MM.setStatus(focusedGroup
+        ? key + ' — ' + groupRows(key, groupingName).length + ' in this deck'
+        : (active && active.entry ? active.entry.deck_name : ''));
+    };
+
+    // Switching to `role` lazy-loads card_roles.json, so the rows cannot be
+    // computed until it lands — see MM.focusGroup's own note on `ensure`.
+    if (groupingName && MM.focusGroup && groupingName !== MM.grouping) {
+      Promise.resolve(MM.focusGroup(key, groupingName)).then(function () {
+        if (view === 'graph' && window.Force && Force.setGroup) {
+          Force.setGroup(focusedGroup ? groupRows(key, groupingName) : null, key);
+        }
+        renderPanel();
+      });
+      return;
+    }
+    apply();
+  }
+
   function focusLine(i) {
     if (!active || !active.edges[i]) return;
     focusedLine = (focusedLine === i) ? -1 : i;
+    if (focusedLine !== -1 && focusedGroup) {
+      focusedGroup = null;
+      if (window.Force && Force.setGroup) Force.setGroup(null);
+      if (MM.clearGroupFocus) MM.clearGroupFocus();
+    }
     const edge = focusedLine === -1 ? null : active.edges[i];
     applyLine(edge);
     renderPanel();
@@ -973,6 +1086,8 @@
     zoomToDeck,
     fitDeck,
     focusLine,
+    focusGroup,
+    get focusedGroup() { return focusedGroup; },
     clearLine,
     handleEscape,
     get activeLine() { return focusedLine; },

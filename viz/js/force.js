@@ -107,6 +107,14 @@
   // Deliberately NOT node references (unlike `hovered`/`pinned`) — a line is chosen in
   // the sidebar from a manifest that speaks rows, and nodes are rebuilt on every reseed.
   let lineRows = null, lineId = null;
+  /* A GROUP spotlight is a different question from a LINE spotlight, so it gets
+   * its own state rather than borrowing `lineRows`. A line is a claim about
+   * EDGES — which cards talk to each other — so it mutes every edge that is not
+   * part of it. A group ("show me the ramp", "show me the three-drops") is a
+   * claim about NODES, and muting the deck's verified lines while you look at
+   * its ramp would hide the thing that makes the graph worth reading. Same
+   * dimming, deliberately different scope. */
+  let groupRows = null, groupLabel = null;
   // The deck's verified lines, as {id, title, pairs:[[rowA,rowB],…]}. Held so a reseed
   // can re-inject them — links point at live node objects, so they cannot outlive nodes.
   let deckLines = null;
@@ -502,6 +510,22 @@
         // scenery. `relOf` is the documented hook for deciding an edge's kind from
         // context rather than storing it, and "which line am I looking at" is context.
         if (lineRows) return l.line === lineId ? 'verified' : 'muted';
+        /* A GROUP spotlight mutes the edges it has nothing to do with, and
+         * keeps the ones that TOUCH it.
+         *
+         * The first cut left every edge alone, on the reasoning that a group
+         * is a claim about nodes while a line is a claim about edges. That was
+         * half right and looked wrong: with all the edges at full strength the
+         * graph stayed a bright web while the nodes receded, so the spotlight
+         * barely read. Measured at the dimmed nodes, the ink moved 6% because
+         * edges converge on every node centre.
+         *
+         * Keeping the edges that touch the lit set is the honest middle: an
+         * edge INTO your ramp is part of what you asked about; an edge between
+         * two cards you did not ask about is scenery. */
+        if (groupRows) {
+          if (!groupRows.has(l.source.row) && !groupRows.has(l.target.row)) return 'muted';
+        }
         // At rest a verified edge is still visible — you should be able to see the deck's
         // lines without clicking — but quiet, so selecting one is a visible change.
         if (l.rel === 'verified') return 'verifiedQuiet';
@@ -538,14 +562,29 @@
       // loaded deck stays legible as you explore outward from it.
       // Spotlight: with a line active everything else recedes so the line reads at a
       // glance. Otherwise the original two states — what you brought vs what you found.
-      ctx.globalAlpha = lineRows ? (lineRows.has(n.row) ? 1 : 0.15)
-                                 : ((deckRows && !n.deck) ? 0.5 : 1);
+      /* ONE alpha for the whole node, fill AND rim.
+       *
+       * This used to dim only the fill and then reset to 1 before the rings,
+       * so in Build — where every deck card carries a white rim — a spotlight
+       * left 96 bright outlines on screen and receded almost nothing. Measured
+       * while adding the group spotlight: the ink AT THE DIMMED NODES moved
+       * 3.6% when two thirds of them were supposed to be dark. The rim was the
+       * signal, and it was never dimming. `setLine` had the same defect since
+       * it shipped.
+       *
+       * The commander's gold ring is deliberately exempt below: it answers
+       * "where is my commander", which stays true while you look at something
+       * else. */
+      const spot = lineRows ? (lineRows.has(n.row) ? 1 : 0.15)
+                 : groupRows ? (groupRows.has(n.row) ? 1 : 0.15)
+                             : ((deckRows && !n.deck) ? 0.5 : 1);
+      ctx.globalAlpha = spot;
       ctx.fillStyle = n.color;
       ctx.fill();
-      ctx.globalAlpha = 1;
       // The commander gets a permanent gold ring — it is the one card the deck is built
       // around, and it should be findable without hunting.
       if (n.commander) {
+        ctx.globalAlpha = 1;   // always findable, spotlight or not
         ctx.lineWidth = 2.5 / transform.k;
         ctx.strokeStyle = '#c4a747';
         ctx.stroke();
@@ -561,9 +600,18 @@
       }
       // Ring only what is meaningful right now. Ringing every seed was noise: on a fresh
       // walk every node is a seed, so the ring said nothing.
+      ctx.globalAlpha = 1;
       if (lineRows && lineRows.has(n.row)) {
         ctx.lineWidth = 2.5 / transform.k;
         ctx.strokeStyle = '#4CAF50';
+        ctx.stroke();
+      } else if (groupRows && groupRows.has(n.row)) {
+        // NOT the line green. A group spotlight and a line spotlight must not
+        // look the same, or "these cards are your ramp" reads as "these cards
+        // are a rules-verified line" — which is the evidence contract leaking
+        // into a colour.
+        ctx.lineWidth = 2 / transform.k;
+        ctx.strokeStyle = '#fff';
         ctx.stroke();
       }
       if (n === hovered || n === pinned || onTrail.has(n)) {
@@ -594,6 +642,10 @@
     if (lineRows) {
       for (const n of nodes) {
         if (lineRows.has(n.row) && priority.indexOf(n) === -1) priority.push(n);
+      }
+    } else if (groupRows) {
+      for (const n of nodes) {
+        if (groupRows.has(n.row) && priority.indexOf(n) === -1) priority.push(n);
       }
     }
     for (let i = trail.length - 1; i >= 0; i--) {
@@ -1050,6 +1102,7 @@
     deckRows = null; commanderRow = -1; deckLines = null;
     // A spotlight must not survive into a graph that no longer contains its line.
     lineRows = null; lineId = null;
+    groupRows = null; groupLabel = null;
     userAdjusted = false;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
@@ -1100,6 +1153,23 @@
   }
 
   function clearLine() { setLine(null); }
+
+  /* Spotlight a GROUP of cards — a role family, a mana-value bucket, a colour.
+   * Restyle only, exactly like `setLine`: no reseed, no reheat, no camera move.
+   * The nodes must not move, or a click on a bar chart reads as the graph
+   * exploding rather than as an answer.
+   *
+   * No `fit`, and that is deliberate where `setLine` offers one: a line is a
+   * handful of cards worth framing, a group is routinely a third of the deck
+   * and framing it is just the fit you already had. */
+  function setGroup(rows, label) {
+    groupRows = (rows && rows.length) ? new Set(rows) : null;
+    groupLabel = groupRows ? (label || null) : null;
+    draw();
+    renderPanel();
+  }
+
+  function clearGroup() { setGroup(null); }
 
   /* Frame a subset. Same maths as `fitToGraph`, which drives the camera through
    * `zoomBehaviour.transform` rather than `Stage.camera` — programmatic transforms have
@@ -1237,7 +1307,7 @@
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
-    setLine, clearLine, selectCard,
+    setLine, clearLine, setGroup, clearGroup, selectCard,
     walkRegion, branchByRow, hasRow, setCommander,
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a

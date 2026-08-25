@@ -480,3 +480,22 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
    are now the same colour language — see MM.GROUPINGS. */
 .curve-key { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; }
 .curve-key-item { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; color: #aaa; }
+
+/* ── Bars as controls ────────────────────────────────────────────────────
+   The curve segments, the curve key and the role bars all report groups from
+   `MM.GROUPINGS` — the same registry, order and colours as the map legend. So
+   they get the legend's gesture too: click to spotlight, click again to
+   release. A swatch you can read but not click is a legend that forgot it was
+   one. The affordance has to be visible or the capability is a secret. */
+.curve-seg { cursor: pointer; }
+.curve-seg:hover { outline: 1px solid rgba(255,255,255,.55); outline-offset: -1px; }
+.curve-key-item { cursor: pointer; }
+.curve-key-item:hover { color: #fff; }
+.lens-bar-row { cursor: pointer; border-radius: 2px; }
+.lens-bar-row:hover { background: rgba(255,255,255,.05); }
+/* The ACTIVE group, on all three surfaces that can name it. Deliberately not
+   the verified-line green: a group spotlight and a rules-verified line must
+   never look alike, or "these are your ramp" reads as "these are proved". */
+.curve-seg.is-on { outline: 1.5px solid #fff; outline-offset: -1px; }
+.curve-key-item.is-on { color: #fff; font-weight: 600; }
+.lens-bar-row.is-on { background: rgba(255,255,255,.09); }
