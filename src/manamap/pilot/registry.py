@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("brew", "manamap.pilot.brew",
+     "Start a deck: a commander, the cards you kept, and a style -> brief.json"),
     ("archetypes", "manamap.pilot.archetypes",
      "How a commander is actually built, and the role template each style wants"),
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
@@ -375,6 +377,22 @@ def add_pilot_parser(subparsers):
             from manamap.pilot.formats import FORMATS
             cmd.add_argument("--format", default=None, choices=sorted(FORMATS),
                              help="rules to validate against (default: commander)")
+        if name == "brew":
+            cmd.add_argument("slug", help="the new deck's slug (kebab-case)")
+            cmd.add_argument("--commander", required=True, help="the commander's name")
+            cmd.add_argument("--theme", default=None,
+                             help="an EDHREC archetype slug — its role histogram "
+                                  "shapes the budget instead of the flat provisional one "
+                                  "(`manamap pilot archetypes \"<commander>\"` lists them)")
+            cmd.add_argument("--library", nargs="*", default=[],
+                             help="cards you are keeping — they become must_include")
+            cmd.add_argument("--from", dest="from_file", default=None, metavar="FILE",
+                             help="read the library from a file, or a brief.json "
+                                  "exported from the Atlas ('-' for stdin)")
+            cmd.add_argument("--bracket", type=int, default=None,
+                             help="power bracket target (default: the repo default)")
+            cmd.add_argument("--build", action="store_true",
+                             help="run the builder immediately and write decklist.txt")
         if name == "archetypes":
             cmd.add_argument("commander", help="commander name, e.g. \"Zur the Enchanter\"")
             cmd.add_argument("--theme", default=None,

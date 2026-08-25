@@ -56,6 +56,7 @@ manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
+manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
 manamap pilot validate-recon <slug>                 # form-check deck_recon.json: cards real, legal, in identity
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]

@@ -43,6 +43,7 @@ from manamap.config import (
     DECK_CURVE_SWEET_SPOT,
     DECK_CURVE_TOLERANCE,
     DECK_ROLE_BUDGET,
+    DECKS_DIR,
     DECK_ROLE_GROUPS,
     EMBEDDINGS_PATH,
     SYNERGY_GRAPH_PATH,
@@ -64,6 +65,40 @@ BASIC_LANDS = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G":
 
 class BriefError(ValueError):
     """The brief is unusable — the caller must fix it, not build around it."""
+
+
+def scaffold_brief(slug, commander, library=(), theme=None, bracket=None,
+                   pool_files=()):
+    """Write `brief.json` for a new deck. PRD §7.4 — the start of a build-out.
+
+    The library goes in as `must_include`: those are the cards the pilot
+    deliberately kept, and `must_include` is exactly the promise that they are in
+    the 99. Everything else is the builder's to choose.
+
+    THE DECK ARRIVES ON THE BENCH, NOT SLEEVED, and nothing here pretends
+    otherwise — no `paper` block is written. §7.4 says a new deck lands at
+    v0.1.0, and 0.x is the version of a list that exists only digitally;
+    reaching 1.0.0 is the act of sleeving it, which only the pilot can do.
+    """
+    # `DECKS_DIR / slug`, not `deck_dir(slug)`: that helper is a READER and
+    # refuses a directory that does not exist yet, which is correct for every
+    # other caller and exactly wrong for the one creating a deck.
+    base = DECKS_DIR / slug
+    path = base / "brief.json"
+    if path.exists():
+        raise SystemExit(f"{path} already exists — edit it, or pick another slug")
+    base.mkdir(parents=True, exist_ok=True)
+
+    brief = {"slug": slug, "commander": commander,
+             "bracket": bracket or BRACKET_DEFAULT,
+             "must_include": list(library), "must_exclude": []}
+    if theme:
+        brief["theme"] = theme
+    if pool_files:
+        brief["pool_files"] = list(pool_files)
+    path.write_text(json.dumps(brief, indent=2, ensure_ascii=False) + "\n",
+                    encoding="utf-8")
+    return path, brief
 
 
 def load_brief(slug):
@@ -335,6 +370,72 @@ def curve_bucket(cmc):
     if cmc is None or (isinstance(cmc, float) and math.isnan(cmc)):
         return 0
     return min(int(float(cmc)), 8)
+
+
+def role_budget_for(brief, roles):
+    """The role budget to fill to, and where it came from. §7.3.
+
+    `DECK_ROLE_BUDGET` is ONE FLAT BUDGET for every deck. Its own comment in
+    `config.py` calls it PROVISIONAL, `upgrade_facts` printed its shortfalls as
+    "Context, not evidence", and a stax deck and a voltron deck plainly do not
+    want the same eight numbers.
+
+    When the brief names a `theme`, the budget is measured instead: the role
+    histogram of that archetype's average deck on EDHREC, collapsed through
+    `role_group` — THE SAME mapping `fill_slots` uses, so the budget and the
+    filling cannot disagree about what counts as ramp.
+
+    It is SHAPED, not copied. The measured histogram is renormalised onto the
+    provisional budget's total, because that total is what the rest of the
+    builder is sized against (land counts, the curve quota, the bracket pass);
+    taking EDHREC's raw counts would change the deck's size as a side effect of
+    choosing a style. What the theme decides is the SHAPE — how the same number
+    of slots is divided — which is the part that actually differs.
+
+    Falls back with a reason rather than an exception. A theme that cannot be
+    fetched must not stop a build: the flat budget is what every deck here was
+    built on until now.
+    """
+    theme = (brief or {}).get("theme")
+    if not theme:
+        return dict(DECK_ROLE_BUDGET), "provisional — pending strategy:deckbuilding.ratios"
+
+    try:
+        from manamap.pilot.archetypes import role_template
+
+        template = role_template(brief["commander"], theme, roles)
+    except Exception as exc:
+        return (dict(DECK_ROLE_BUDGET),
+                f"provisional — could not read the {theme!r} template ({exc})")
+
+    # Collapse the fine roles onto the budget's coarse lines through the
+    # builder's own mapping.
+    #
+    # LANDS ARE EXCLUDED FIRST. `role_group` has no land line, so every
+    # `land:basic` / `land:tapped` / `land:utility` fell into `flex` — 32 of
+    # voltron's 135 role-copies — inflating flex and deflating every real line
+    # in the same stroke. Lands are budgeted separately by `land_counts`, so
+    # counting them here was double-counting the mana base into the spells.
+    measured = {}
+    for role, count in template["roles"].items():
+        if role.startswith("land:"):
+            continue
+        measured[role_group([role])] = measured.get(role_group([role]), 0) + count
+
+    spells = {k: v for k, v in DECK_ROLE_BUDGET.items() if k != "lands"}
+    total = sum(spells.values())
+    pool = sum(v for k, v in measured.items() if k != "lands") or 1
+    budget = {"lands": DECK_ROLE_BUDGET["lands"]}
+    for line in spells:
+        budget[line] = max(0, round(measured.get(line, 0) * total / pool))
+
+    # Renormalising by rounding does not land on the total; `flex` absorbs the
+    # remainder because that is already what it does for overflow and shortfall.
+    budget["flex"] = max(0, budget.get("flex", 0) + total - sum(
+        v for k, v in budget.items() if k != "lands"))
+    return budget, (f"measured — {template['theme']} role histogram over "
+                    f"{template['deck_size']} cards (EDHREC), shaped to the "
+                    f"provisional budget's total")
 
 
 def fill_slots(scored, roles, budget, must_include, cmcs=None):
@@ -616,7 +717,7 @@ def build(slug):
         identity, deck_tags, combo_partners, target,
     )
 
-    budget = dict(DECK_ROLE_BUDGET)
+    budget, grounding = role_budget_for(brief, roles)
     cmcs = dict(zip(spell_pool["name"], spell_pool["cmc"]))
     slots, taken, effective_budget = fill_slots(
         scored, roles, budget, brief["must_include"], cmcs=cmcs)
@@ -669,7 +770,7 @@ def build(slug):
             g: {"target": budget[g], "actual": effective_budget[g]}
             for g in budget if effective_budget.get(g) != budget[g]
         },
-        "role_budget_grounding": "provisional — pending strategy:deckbuilding.ratios",
+        "role_budget_grounding": grounding,
         # Recorded so `validate-build` can re-derive the pool and prove every
         # non-basic name was actually owned. A build that silently reached
         # outside the collection is the one failure a paper pilot cannot use.
