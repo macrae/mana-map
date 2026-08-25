@@ -171,14 +171,40 @@ def _post_collection(identifiers):
         if start > 0:
             time.sleep(SCRYFALL_REQUEST_DELAY_S)
         payload = {"identifiers": batch}
-        # Retry 429 (rate limit) and 5xx (transient outage) with linear backoff.
-        # A single 503 used to abort the whole fetch mid-batch, losing every batch
-        # already retrieved; observed live against /cards/collection.
+        # Retry 429 (rate limit), 5xx (transient outage) AND a dropped
+        # connection, with linear backoff. A single 503 used to abort the whole
+        # fetch mid-batch, losing every batch already retrieved; observed live
+        # against /cards/collection.
+        #
+        # THE TRANSPORT HALF IS NOT A STATUS CODE, WHICH IS WHY IT WAS MISSING.
+        # This loop inspected `resp.status_code`, so it could only ever see a
+        # failure the server was well enough to describe. A keep-alive socket
+        # closed between requests raises inside `SESSION.post` — there is no
+        # response to inspect — so `RemoteDisconnected` sailed straight past
+        # four retries written to survive exactly this kind of blip and out to
+        # the caller. It reached a browser as
+        # `ConnectionError: ('Connection aborted.', RemoteDisconnected(...))`,
+        # on a deck whose 99 cards take two round trips.
+        resp = None
         for attempt in range(SCRYFALL_MAX_RETRIES):
-            resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
+            last = attempt == SCRYFALL_MAX_RETRIES - 1
+            try:
+                resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
+            except requests.exceptions.RequestException as exc:
+                if last:
+                    raise RuntimeError(
+                        f"Scryfall did not answer after {SCRYFALL_MAX_RETRIES} "
+                        f"attempts ({exc.__class__.__name__}). The deck is "
+                        f"unchanged — run the same command again."
+                    ) from exc
+                # A dropped keep-alive socket stays in the pool and the next
+                # request reuses it, so the retry fails identically. Close it.
+                SESSION.close()
+                time.sleep(SCRYFALL_RETRY_BACKOFF_S * (attempt + 1))
+                continue
             if resp.status_code != 429 and resp.status_code < 500:
                 break
-            if attempt < SCRYFALL_MAX_RETRIES - 1:
+            if not last:
                 time.sleep(SCRYFALL_RETRY_BACKOFF_S * (attempt + 1))
         resp.raise_for_status()
         doc = resp.json()

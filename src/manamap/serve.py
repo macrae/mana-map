@@ -609,6 +609,17 @@ class Handler(SimpleHTTPRequestHandler):
             # `SystemExit` is how the pilot layer reports a refusal — an unknown
             # theme, a missing brief. That is a 400, not a crashed server.
             return self._json(400, {"error": str(exc)})
+        except RuntimeError as exc:
+            # A DELIBERATE, ALREADY-READABLE FAILURE: something outside this
+            # machine did not cooperate and the raiser wrote a sentence about
+            # it. Prefixing the class name onto that sentence is how the page
+            # came to say "ConnectionError: ('Connection aborted.',
+            # RemoteDisconnected('Remote end closed connection without
+            # response'))" — a true statement about a socket, offered as the
+            # answer to "did my deck get built". The prefix survives below,
+            # where an unexpected TYPE is genuinely the most useful clue.
+            console.err(traceback.format_exc())
+            return self._json(502, {"error": str(exc)})
         except Exception as exc:               # noqa: BLE001 — a server must not die
             console.err(traceback.format_exc())
             return self._json(500, {"error": f"{type(exc).__name__}: {exc}"})

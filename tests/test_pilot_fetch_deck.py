@@ -492,3 +492,109 @@ def test_real_deck_dfc_colors_agree_with_cards_csv():
             )
             checked += 1
     assert checked, "no multi-face cards found in any committed deck"
+
+
+# ---------------------------------------------------------------------------
+# A dropped connection is not a status code
+#
+# `_post_collection` retries 429 and 5xx, and did so by inspecting
+# `resp.status_code` — which means it could only see a failure the server was
+# well enough to describe. A closed keep-alive socket raises inside
+# `SESSION.post`, so there is no response to inspect, and the exception went
+# straight past four retries written to survive exactly this. It surfaced in the
+# browser, mid-build, as `ConnectionError: ('Connection aborted.',
+# RemoteDisconnected(...))`.
+# ---------------------------------------------------------------------------
+
+class _Resp:
+    status_code = 200
+
+    def __init__(self, data):
+        self._data = data
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return {"data": self._data, "not_found": []}
+
+
+def test_a_dropped_connection_is_retried_rather_than_raised(monkeypatch):
+    """The transport failure that used to escape the retry loop entirely."""
+    import requests
+
+    from manamap.pilot import fetch_deck
+
+    calls = []
+
+    def flaky(url, json=None, timeout=None):
+        calls.append(json)
+        if len(calls) == 1:
+            raise requests.exceptions.ConnectionError(
+                "('Connection aborted.', RemoteDisconnected('Remote end closed "
+                "connection without response'))")
+        return _Resp([{"name": "Sol Ring"}])
+
+    monkeypatch.setattr(fetch_deck.SESSION, "post", flaky)
+    monkeypatch.setattr(fetch_deck.time, "sleep", lambda s: None)
+
+    cards, not_found = fetch_deck._post_collection([{"name": "Sol Ring"}])
+
+    assert len(calls) == 2, "the first attempt dropped; it must be retried"
+    assert [c["name"] for c in cards] == ["Sol Ring"]
+    assert not_found == []
+
+
+def test_the_retry_reuses_no_dead_socket(monkeypatch):
+    """A dropped keep-alive socket stays in the pool unless the session closes.
+
+    Retrying over the same pooled connection fails identically, which would
+    make the retry loop look like it ran without doing anything.
+    """
+    import requests
+
+    from manamap.pilot import fetch_deck
+
+    closed = []
+    monkeypatch.setattr(fetch_deck.SESSION, "close", lambda: closed.append(1))
+    monkeypatch.setattr(fetch_deck.time, "sleep", lambda s: None)
+
+    state = {"n": 0}
+
+    def flaky(url, json=None, timeout=None):
+        state["n"] += 1
+        if state["n"] == 1:
+            raise requests.exceptions.ConnectionError("aborted")
+        return _Resp([])
+
+    monkeypatch.setattr(fetch_deck.SESSION, "post", flaky)
+    fetch_deck._post_collection([{"name": "Sol Ring"}])
+
+    assert closed, "the dead connection must be dropped before retrying"
+
+
+def test_giving_up_says_what_to_do_rather_than_naming_a_socket(monkeypatch):
+    """Exhausting the retries is an ordinary operating condition, not a bug.
+
+    What reaches the pilot must be a sentence, not the repr of a urllib3
+    exception. The deck is untouched at this point, so "run it again" is both
+    true and the entire remedy.
+    """
+    import requests
+
+    from manamap.pilot import fetch_deck
+
+    monkeypatch.setattr(fetch_deck.time, "sleep", lambda s: None)
+    monkeypatch.setattr(
+        fetch_deck.SESSION, "post",
+        lambda *a, **k: (_ for _ in ()).throw(
+            requests.exceptions.ConnectionError("aborted")))
+
+    with pytest.raises(RuntimeError) as exc:
+        fetch_deck._post_collection([{"name": "Sol Ring"}])
+
+    message = str(exc.value)
+    assert "Scryfall" in message
+    assert "again" in message, "it must say what to do"
+    assert "RemoteDisconnected" not in message
+    assert "urllib3" not in message
