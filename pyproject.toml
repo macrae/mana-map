@@ -20,6 +20,14 @@ dependencies = [
     "numpy<2",
     "pacmap",
     "hdbscan>=0.8.33",
+    # The terminal is a first-class surface here (`manamap/console.py`), so its
+    # renderer is a real dependency. It was PRESENT in the environment for
+    # months without being declared, because `typer` — itself transitive —
+    # happens to require it. A transitive dependency is not an available one:
+    # the day something drops typer, every progress bar in the bench stops
+    # importing. `console.py` still degrades to plain lines if it is missing,
+    # which is a safety net rather than a licence to leave it undeclared.
+    "rich>=13",
 ]
 
 [project.optional-dependencies]

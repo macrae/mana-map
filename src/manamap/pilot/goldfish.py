@@ -24,6 +24,7 @@ import json
 import random
 import re
 
+from manamap import console
 from manamap.config import (
     GOLDFISH_ITERATIONS,
     GOLDFISH_MAX_MULLIGANS,
@@ -881,11 +882,18 @@ def run(slug, iterations=None, seed=None, max_turn=None):
     }) if model_combat else []
 
     rng = random.Random(seed)
-    results = [
-        simulate_once(rng, library, commander_cmc, targets, max_turn,
-                      model_treasures=model_treasures, model_combat=model_combat)
-        for _ in range(iterations)
-    ]
+    # The loop is a list comprehension no longer, because 10,000 silent
+    # simulations look identical to a hang. The comprehension is otherwise
+    # unchanged — same rng, same order, same seed, so the RESULT is
+    # bit-identical and `tests/test_pilot_goldfish.py`'s determinism assertions
+    # hold. Progress is drawn on stderr and nothing here reads it back.
+    results = []
+    with console.task(f"Goldfishing {slug}", total=iterations, unit="sims") as t:
+        for _ in range(iterations):
+            results.append(
+                simulate_once(rng, library, commander_cmc, targets, max_turn,
+                              model_treasures=model_treasures, model_combat=model_combat))
+            t.advance()
 
     return {
         "meta": {

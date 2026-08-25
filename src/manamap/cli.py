@@ -7,6 +7,7 @@ stays fast (no torch import).
 import argparse
 import re
 
+from manamap import console
 from manamap.pilot.registry import add_pilot_parser, run_pilot_step
 from manamap.pipeline import STEP_NAMES, STEPS, run, run_step
 
@@ -31,6 +32,15 @@ def build_parser():
         prog="manamap",
         description="MTG card embedding pipeline — run all steps or one at a time.",
     )
+    # Global, and it must be on the ROOT parser rather than per-command: it is a
+    # property of the terminal you are running in, not of the job you asked for.
+    # `console.is_plain()` already infers this from `stderr.isatty()`, so the
+    # flag exists for the case inference cannot reach — a terminal where you
+    # want the output quiet anyway, and recording a session for a transcript.
+    parser.add_argument(
+        "--plain", action="store_true",
+        help="no progress bars, spinners or colour — plain lines only "
+             "(also: MANAMAP_PLAIN=1, NO_COLOR=1, or any non-terminal stderr)")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     run_parser = subparsers.add_parser(
@@ -53,6 +63,9 @@ def build_parser():
 
 def main():
     args = build_parser().parse_args()
+    # Before dispatch, so a step that draws on import still sees the decision.
+    if getattr(args, "plain", False):
+        console.set_plain(True)
     if args.command == "run":
         run(start=args.start)
     elif args.command == "pilot":

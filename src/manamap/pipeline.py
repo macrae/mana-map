@@ -6,6 +6,7 @@ import cost.
 """
 
 import importlib
+import time
 
 # (name, dotted module, description) — execution order matters.
 STEPS = [
@@ -35,14 +36,38 @@ STEPS = [
 STEP_NAMES = [name for name, _, _ in STEPS]
 
 
-def run_step(name):
-    """Run a single pipeline step by registry name."""
+def run_step(name, position=None):
+    """Run a single pipeline step by registry name.
+
+    The step banner stays on STDOUT. It is not theatre — it is the pipeline's
+    own record, and `manamap run > pipeline.log` is a thing people do. What is
+    new is the ELAPSED time, printed after the step rather than during it, and
+    the optional `N/M` position when running the whole thing.
+
+    Timing is the point: `--from` is chosen by remembering which step is
+    expensive, and nothing has ever printed the numbers to remember.
+    """
     for step_name, module_path, description in STEPS:
         if step_name == name:
-            print(f"\n[{description.split(':')[0]}] {description.split(': ', 1)[1]}")
+            head, body = description.split(":")[0], description.split(": ", 1)[1]
+            where = f" {position}" if position else ""
+            print(f"\n[{head}{where}] {body}")
+            started = time.monotonic()
             importlib.import_module(module_path).main()
+            print(f"    ✓ {head.lower()} finished in {_duration(time.monotonic() - started)}")
             return
     raise ValueError(f"Unknown step: {name!r} (choose from {', '.join(STEP_NAMES)})")
+
+
+def _duration(seconds):
+    """Human time. A pipeline step runs from a second to an hour, and `3612.4s`
+    is a number the reader has to convert before it means anything."""
+    seconds = int(round(seconds))
+    if seconds < 60:
+        return f"{seconds}s"
+    if seconds < 3600:
+        return f"{seconds // 60}m {seconds % 60:02d}s"
+    return f"{seconds // 3600}h {(seconds % 3600) // 60:02d}m"
 
 
 def run(start=None):
@@ -55,15 +80,28 @@ def run(start=None):
     print("=" * 50)
 
     started = start is None
+    todo = []
     for name, _, _ in STEPS:
         if not started and name == start:
             started = True
         if started:
-            run_step(name)
+            todo.append(name)
+
+    began = time.monotonic()
+    timings = []
+    for i, name in enumerate(todo, 1):
+        step_began = time.monotonic()
+        run_step(name, position=f" {i}/{len(todo)}")
+        timings.append((name, time.monotonic() - step_began))
 
     print("\n" + "=" * 50)
-    print("Pipeline complete.")
+    print(f"Pipeline complete — {len(todo)} step(s) in {_duration(time.monotonic() - began)}")
     print("=" * 50)
+    # The slowest steps, named. This is what makes `--from` an evidence-based
+    # choice on the next run instead of a guess about which step was the long one.
+    slowest = sorted(timings, key=lambda kv: kv[1], reverse=True)[:3]
+    if len(timings) > 3:
+        print("  slowest: " + " · ".join(f"{n} {_duration(d)}" for n, d in slowest))
 
 
 def main():
