@@ -5959,3 +5959,49 @@ def test_typing_a_slug_does_not_create_a_deck_per_keystroke(browser, viz_server)
         assert errors == [], errors
     finally:
         page.close()
+
+
+def test_finish_is_offered_only_once_there_is_a_deck_to_finish(browser, viz_server):
+    """It is the SECOND half of one thing, not a second way to do it.
+
+    Showing Finish beside Build would read as two routes to the same place;
+    it only becomes possible after Build has written a decklist.
+    """
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html?mode=build")
+        page.wait_for_function("() => window.Build && window.Api && Api.probed",
+                               timeout=BOOT_TIMEOUT_MS)
+        seen = page.evaluate("""async () => {
+            Object.defineProperty(Api, 'ready', {get: () => true, configurable: true});
+            Api.call = function (name, payload) {
+                if (name === 'formats') return Promise.resolve({formats: [
+                    {key: 'commander', name: 'Commander', deck_size: 100,
+                     exact_size: true, singleton: true, commanders: 1,
+                     buildable: true}]});
+                if (name === 'build/run') return Promise.resolve({
+                    commander: 'Zur the Enchanter', cards: 100,
+                    bracket: {target: 3}, written: ['brief.json', 'decklist.txt'],
+                    must_include_illegal: []});
+                return Promise.resolve({slug: payload && payload.slug});
+            };
+            const label = () => [...document.querySelectorAll('.lens-btn')]
+                .map(b => b.textContent).find(t => t.startsWith('Finish it'));
+            Build.newDeck();
+            await new Promise(r => setTimeout(r, 300));
+            const box = document.getElementById('ndSlug');
+            box.value = 'zz'; box.dispatchEvent(new Event('change', {bubbles: true}));
+            Build.pickCommander('Zur the Enchanter');
+            await new Promise(r => setTimeout(r, 300));
+            const before = label();
+            Build.newDeckBuild();
+            await new Promise(r => setTimeout(r, 400));
+            return {before: before || null, after: label() || null};
+        }""")
+        assert seen["before"] is None, "Finish was offered before there was a deck"
+        assert seen["after"], "Finish never appeared after the build"
+        assert errors == [], errors
+    finally:
+        page.close()

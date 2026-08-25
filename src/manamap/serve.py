@@ -367,6 +367,66 @@ def _build_run(slug=None):
             "slots": [{"name": s["name"], "role": s.get("role")} for s in plan["slots"]]}
 
 
+def _build_finish(slug=None, commit=False, message=None):
+    """A draft becomes a tracked deck. The last step that needed a terminal.
+
+    Two acts, and only the second is irreversible:
+
+    1. `fetch-deck` resolves every name against Scryfall and writes
+       `cards.json` — printings, images, the decklist sha. This is what moves
+       the deck out of `manifest.drafts` and onto the bench, because
+       `build_index` admits a deck when it has a `cards.json`.
+    2. `build-index` rewrites the manifest so the page can see it.
+
+    THE COMMIT IS SEPARATE AND OPT-IN. `decklist.txt` is tracked, so the commit
+    is what `deck-version` NUMBERS and what the captain's log stamps games
+    against — "check a deck in without committing and tonight's games attach to
+    no version at all". That makes it load-bearing rather than bookkeeping, and
+    load-bearing enough that a button should not do it by surprise. Without
+    `commit`, the exact command is returned instead, which is also the honest
+    answer for anyone who wants to write their own message.
+    """
+    import subprocess
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import build_index, fetch_deck
+
+    if not slug:
+        raise ValueError("finish needs a slug")
+    base = DECKS_DIR / slug
+    if not (base / "decklist.txt").exists():
+        raise ValueError(f"{slug} has no decklist yet — build it first")
+
+    fetch_deck.main(type("A", (), {"slug": slug, "force": False})())
+    build_index.main()
+
+    out = {"slug": slug,
+           "written": [p.name for p in sorted(base.iterdir())],
+           "committed": False,
+           "commit_command": f"git add data/decks/{slug} && git commit -m "
+                             f"\"Build {slug}: first list\""}
+    if not commit:
+        out["note"] = ("committed nothing — `decklist.txt` is tracked, and the "
+                       "commit is what numbers this V1 and what the captain's "
+                       "log stamps games against. Run the command above, or ask "
+                       "again with commit.")
+        return out
+
+    msg = message or f"Build {slug}: first list"
+    try:
+        subprocess.run(["git", "add", f"data/decks/{slug}"],
+                       cwd=str(DECKS_DIR.parent.parent), check=True,
+                       capture_output=True, text=True)
+        r = subprocess.run(["git", "commit", "-m", msg],
+                           cwd=str(DECKS_DIR.parent.parent),
+                           capture_output=True, text=True)
+        out["committed"] = r.returncode == 0
+        out["git"] = (r.stdout or r.stderr).strip().splitlines()[:3]
+    except Exception as exc:                    # noqa: BLE001
+        out["git"] = [f"{type(exc).__name__}: {exc}"]
+    return out
+
+
 # ── Agent jobs ─────────────────────────────────────────────────────────────
 #
 # THE POINT OF THE BRIDGE. A deterministic command answers in milliseconds and
@@ -475,6 +535,7 @@ ENDPOINTS = {
         "slug": _str, "commander": _str, "theme": _str, "bracket": _int,
         "library": _strlist, "fmt": _str}),
     "build/run": (_build_run, {"slug": _str}),
+    "build/finish": (_build_finish, {"slug": _str, "commit": _bool, "message": _str}),
     # The agent half. Started, then polled — an agent takes minutes.
     "agents": (_agents, {}),
     "ask": (_ask, {"question": _str, "agent": _str}),

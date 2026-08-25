@@ -828,6 +828,19 @@
     if (newDeck.saved) h += '<p class="lens-note">saved · ' + esc(newDeck.saved) + '</p>';
     if (newDeck.built) h += '<div class="lens-line-prose"><p>' + esc(newDeck.built) + '</p></div>';
     h += '<button class="lens-btn" onclick="Build.newDeckBuild()">Build the deck</button>';
+    /* FINISH is offered only once there is a 99 to finish. Showing it beside
+     * Build would suggest two ways to do one thing; it is the SECOND half of
+     * one thing, and it only becomes possible after the first. */
+    if (newDeck.hasDecklist) {
+      h += '<button class="lens-btn" onclick="Build.newDeckFinish()">'
+        + 'Finish it — resolve printings and put it on the bench</button>';
+      if (newDeck.finished) {
+        h += '<div class="lens-line-prose"><p>' + esc(newDeck.finished) + '</p>'
+          + (newDeck.commitCmd
+              ? '<p><code>' + esc(newDeck.commitCmd) + '</code></p>'
+              : '') + '</div>';
+      }
+    }
     return h + '</div>';
   }
 
@@ -950,6 +963,31 @@
     renderPanel();
   }
 
+  /* The last step that needed a terminal: resolve every printing against
+   * Scryfall and let the manifest see the deck.
+   *
+   * THE COMMIT IS NOT DONE HERE. `decklist.txt` is tracked, so the commit is
+   * what `deck-version` numbers and what the captain's log stamps games
+   * against — load-bearing rather than bookkeeping, and load-bearing enough
+   * that a button should not do it by surprise. The command is printed instead,
+   * which is also the right answer for anyone who wants their own message. */
+  function newDeckFinish() {
+    if (!newDeck || !newDeck.slug) return;
+    newDeck.finished = 'resolving printings against Scryfall…';
+    renderPanel();
+    Api.call('build/finish', { slug: newDeck.slug }).then(function (r) {
+      newDeck.finished = r.slug + ' is on the bench — '
+        + (r.written || []).join(', ') + '. ' + (r.note || '');
+      newDeck.commitCmd = r.commit_command;
+      renderPanel();
+      // The manifest moved this deck out of `drafts`, so the picker is stale.
+      manifest = null;
+    }).catch(function (e) {
+      newDeck.finished = e.message;
+      renderPanel();
+    });
+  }
+
   function newDeckStyles() {
     if (!newDeck || !newDeck.commander) return;
     newDeck.themes = null;
@@ -1003,6 +1041,7 @@
             }).join(', ') + '.';
       }
       newDeck.built = msg;
+      newDeck.hasDecklist = (r.written || []).indexOf('decklist.txt') !== -1;
       renderPanel();
     }).catch(function (e) { newDeck.built = e.message; renderPanel(); });
   }
@@ -1676,6 +1715,7 @@
     newDeckField,
     newDeckStyles,
     newDeckBuild,
+    newDeckFinish,
     commanderSearch,
     pickCommander,
     resumeDraft,

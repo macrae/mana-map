@@ -318,3 +318,38 @@ def test_the_picker_only_offers_things_that_can_be_commanders():
     out = serve.call("commanders", {"q": "zur", "limit": 8})["commanders"]
     assert "Zuran Orb" not in out
     assert "Zur's Weirding" not in out
+
+
+# ── Finishing a draft ──────────────────────────────────────────────────────
+
+
+def test_finishing_needs_a_decklist_to_finish(tmp_path, monkeypatch):
+    import json as _json
+
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    (tmp_path / "zz").mkdir()
+    (tmp_path / "zz" / "brief.json").write_text(_json.dumps(
+        {"slug": "zz", "commander": "Zur the Enchanter"}))
+    with pytest.raises(ValueError) as e:
+        serve.call("build/finish", {"slug": "zz"})
+    assert "build it first" in str(e.value)
+
+
+def test_finishing_does_not_commit_unless_asked():
+    """`decklist.txt` is tracked, so the commit is what `deck-version` NUMBERS
+    and what the captain's log stamps games against — "check a deck in without
+    committing and tonight's games attach to no version at all".
+
+    That makes it load-bearing rather than bookkeeping, and load-bearing enough
+    that a button must not do it by surprise. The command is returned instead,
+    which is also the right answer for anyone who wants their own message.
+    """
+    import inspect
+
+    src = inspect.getsource(serve._build_finish)
+    assert "if not commit:" in src, "the commit is not gated"
+    assert "commit_command" in src, "it does not offer the command it declined to run"
+    # The default must be off at the signature, not merely in the body.
+    assert "commit=False" in src.split("\n")[0] or "commit=False" in src[:200]
