@@ -262,6 +262,54 @@ def search(seed_names, space="text", controlled=True, per_identity=25,
     }
 
 
+def write_reference(commander, corpus=None):
+    """Write one commander's reference deck where the Atlas can open it. §6.1 §9.
+
+    THE BROWSER CANNOT DO THIS ITSELF. The deployed site is static and makes no
+    service calls (PRD §5.2), so EDHREC is unreachable from the page — the CLI
+    fetches, the page reads. That is the same local-vs-deployed split the agent
+    layer lives under, and it is why harvesting is a LOCAL flow.
+
+    Written under `data/reference/`, which is gitignored: a reference deck is
+    scratch for one brew, it is somebody else's list, and it is re-fetchable in
+    one command. Committing eighty of them would put a slice of EDHREC's
+    database in the repo for no gain.
+
+    The page opens it with `?ref=<slug>`, which reuses the seeding path
+    `?cards=` already established — so step 9 is a URL and step 10 is the Keep
+    button that has been on every card panel since the library shipped. Almost
+    no new machinery, which is what the PRD means by the program being mostly
+    glue.
+    """
+    import json
+
+    from manamap.config import DATA_DIR
+    from manamap.ingest import edhrec
+
+    corpus = corpus or Corpus()
+    deck = edhrec.average_deck(commander)
+    names = [n for n, _ in deck["cards"]]
+    rows, missing = corpus.rows(names)
+
+    out = DATA_DIR / "reference" / f"{deck['slug']}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({
+        "slug": deck["slug"],
+        "commander": deck["commander"] or commander,
+        # NAMES, not rows — the same rule the library persists under. A row
+        # index is meaningless the moment `cards.csv` is regenerated, and this
+        # file outlives at least one corpus refresh by construction.
+        "cards": names,
+        "unresolved": missing,
+        "source": "edhrec average deck",
+        "note": ("A representative list, not a specific one — the same caveat "
+                 "every fetched opponent carries. Cards you keep from it go to "
+                 "your library; the list itself is scratch."),
+    }, indent=1) + "\n", encoding="utf-8")
+    return {"path": out, "slug": deck["slug"], "cards": len(names),
+            "resolved": len(rows), "unresolved": missing}
+
+
 def format_report(result):
     lines = []
     s = result["seed"]

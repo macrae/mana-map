@@ -398,6 +398,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--candidates", type=int, default=25, dest="per_identity",
                              help="how many of the identity's top commanders to score "
                                   "(default 25, per §6.1 step 4)")
+            cmd.add_argument("--open", type=int, default=None, dest="open_rank",
+                             metavar="N",
+                             help="write result N's reference deck under data/reference/ "
+                                  "and print the Atlas URL that opens it (PRD 6.1 step 9)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "card-search":
             # NO slug positional: a search is not per-deck. `--deck` scopes it

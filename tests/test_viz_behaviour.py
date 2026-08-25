@@ -5612,3 +5612,80 @@ def test_the_count_is_never_one_behind(discover_page):
         f"the strip says {r['shown']!r} while {r['stored']} are stored — "
         f"save() must run before emit()")
     assert page.js_errors == []
+
+
+# ── Harvesting from a reference deck (PRD §6.1 steps 9-10) ─────────────────
+
+
+def test_a_reference_deck_is_not_loaded_as_your_deck(browser, viz_server, tmp_path):
+    """THE distinction step 10 rests on.
+
+    A reference deck is somebody else's list, fetched by the CLI because the
+    page cannot reach EDHREC. Loading it with `opts.deck` would ring a
+    commander, ink the cards as yours and put all eighty in your library — the
+    opposite of harvesting a few out of another brew. It seeds the graph and
+    nothing else; the library only grows when you Keep something.
+    """
+    import json as _json
+    import pathlib
+
+    root = pathlib.Path(__file__).resolve().parents[1]
+    ref_dir = root / "data" / "reference"
+    ref_dir.mkdir(parents=True, exist_ok=True)
+    slug = "zz-test-reference"
+    (ref_dir / f"{slug}.json").write_text(_json.dumps({
+        "slug": slug, "commander": "Test Commander",
+        "cards": ["Sol Ring", "Arcane Signet", "Command Tower",
+                  "Rhystic Study", "Cyclonic Rift"],
+        "unresolved": [], "source": "test",
+    }))
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html?ref={slug}")
+        page.wait_for_function("() => window.Force && Force.nodeCount >= 4",
+                               timeout=BOOT_TIMEOUT_MS)
+        state = page.evaluate("""() => {
+            Session.library.clear();
+            return {nodes: Force.nodeCount, library: Session.library.size,
+                    commander: Session.commander};
+        }""")
+        assert state["nodes"] >= 4, "the reference deck did not seed the graph"
+        assert state["library"] == 0, (
+            "loading a reference deck put its cards in your library — that is "
+            "loading it AS your deck, not harvesting from it")
+        assert state["commander"] == -1, "a reference deck claimed the commander ring"
+
+        # …and harvesting one card is exactly one card.
+        grew = page.evaluate("""() => {
+            const before = Session.library.size;
+            Session.library.toggle(Force.rows()[0]);
+            return {before: before, after: Session.library.size};
+        }""")
+        assert grew["after"] == grew["before"] + 1
+        assert errors == []
+    finally:
+        page.close()
+        (ref_dir / f"{slug}.json").unlink(missing_ok=True)
+
+
+def test_a_missing_reference_deck_says_so(browser, viz_server):
+    """`data/reference/` is gitignored and local-only, so a deployed page will
+    never have one. "Nothing happened" is the wrong way to learn that — the
+    static build must degrade VISIBLY, not silently (PRD §5.2)."""
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html?ref=zz-does-not-exist")
+        page.wait_for_function(
+            "() => (document.getElementById('status')||{}).innerText"
+            "      && document.getElementById('status').innerText.includes('reference')",
+            timeout=BOOT_TIMEOUT_MS)
+        status = page.inner_text("#status")
+        assert "commander-search" in status, (
+            f"the failure did not name the command that fixes it: {status!r}")
+        assert errors == []
+    finally:
+        page.close()

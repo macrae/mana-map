@@ -63,6 +63,27 @@ def main(args):
         limit=args.limit,
     )
 
+    # §6.1 steps 9-10: open one of the results in the Atlas and harvest from it.
+    #
+    # The URL is the whole mechanism. `?ref=` seeds the graph from a reference
+    # deck the same way `?cards=` seeds it from names, and every card panel has
+    # carried a Keep button since the library shipped — so "select cards out of
+    # that deck into your library" is a feature that already existed, pointed at
+    # a list it could not previously see.
+    rank = getattr(args, "open_rank", None)
+    if rank is not None:
+        if not 1 <= rank <= len(result["results"]):
+            raise SystemExit(f"--open {rank}: there are {len(result['results'])} results")
+        chosen = result["results"][rank - 1]["commander"]
+        ref = cs.write_reference(chosen)
+        print(f"\n{chosen} — {ref['resolved']} of {ref['cards']} cards on the map")
+        if ref["unresolved"]:
+            print(f"  not in the corpus: {', '.join(ref['unresolved'][:5])}")
+        print(f"  wrote {ref['path']}")
+        print(f"  open  http://localhost:8000/viz/index.html?ref={ref['slug']}")
+        print("  then Keep the cards you want — they go to your library.")
+        return
+
     # stdout is the answer; the progress went to stderr on the way here.
     if getattr(args, "as_json", False):
         print(json.dumps(result, indent=2))

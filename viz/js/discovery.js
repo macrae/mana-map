@@ -37,7 +37,10 @@ window.Discovery = (function () {
   // never exported at all and every later module failed too. One missing global, four
   // broken files.
   let urls = { vizIndex: '../data/viz_index.json', neighbours: '../data/neighbours.bin',
-               deckIndex: '../data/decks/index.json', deckBase: '../data/decks/' };
+               deckIndex: '../data/decks/index.json', deckBase: '../data/decks/',
+               // Local-only scratch: `data/reference/` is gitignored, so a
+               // deployed page never has one and says so rather than failing quietly.
+               referenceBase: '../data/reference/' };
 
   function configure(u) { urls = Object.assign({}, urls, u || {}); }
 
@@ -526,11 +529,59 @@ window.Discovery = (function () {
       }
     }
 
+    /* `?ref=<slug>` — a REFERENCE deck, opened from commander search. §6.1 §9.
+     *
+     * Someone else's list, fetched by the CLI because the page cannot reach
+     * EDHREC, and scratch rather than yours: it seeds the graph so you can walk
+     * it and Keep what you want, and it is NOT loaded as a deck. That
+     * distinction is the whole point of step 10 — `opts.deck` would ring a
+     * commander, ink the cards as yours and put all eighty in your library,
+     * which is the opposite of harvesting a few out of somebody else's brew.
+     *
+     * Absent file = absent feature, said out loud. `data/reference/` is
+     * gitignored and local-only, so a deployed page will never have one, and
+     * "nothing happened" is the wrong way to learn that. */
+    const ref = params && params.get('ref');
+    if (ref) {
+      loadReference(ref);
+      return;
+    }
+
     let row = -1;
     if (wanted) row = rowByName(wanted);
     if (row < 0) row = pick(null, seed ? parseInt(seed, 10) : 0);
     show(row);
   }
+
+  function loadReference(slug) {
+    const url = (urls.referenceBase || '../data/reference/') + slug + '.json';
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(doc => {
+        const out = parseSeedNames((doc.cards || []).join('\n'));
+        if (!out.rows.length) {
+          MM.setStatus('reference deck ' + slug + ' resolved no cards');
+          return;
+        }
+        const label = (doc.commander || slug) + ' — reference';
+        return Promise.resolve(seedFromRows(out.rows, label, {})).then(function () {
+          referenceNote = {
+            commander: doc.commander || slug,
+            cards: out.rows.length,
+            missing: out.missing.length,
+          };
+          render();
+          MM.setStatus(label + ': ' + out.rows.length + ' cards — Keep the ones you '
+            + 'want and they go to your library.');
+        });
+      })
+      .catch(function (e) {
+        MM.setStatus('no reference deck "' + slug + '" — run `manamap pilot '
+          + 'commander-search … --open N` to write one (local only). [' + e.message + ']');
+      });
+  }
+
+  let referenceNote = null;
 
   /* The graph says which card is selected; the panel follows. Distinct from `show()`,
    * which RESEEDS the graph — clicking a node must open that card without throwing away
