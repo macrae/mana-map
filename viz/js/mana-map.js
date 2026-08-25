@@ -106,7 +106,13 @@
     regionsAbility: v(DATA_BASE + 'regions_ability.json'),
     obsolescence: v(DATA_BASE + 'obsolescence_index.json'),
     synergyGraph: v(DATA_BASE + 'synergy_graph.json'),
-    comboGraph: v(DATA_BASE + 'combo_graph.json'),
+    // `combo_graph.json` was registered here and fetched by NOTHING. The deck
+    // builder that read it is gone, and a registered URL nobody requests is a
+    // trap: it reads as a live dependency, so the 4.5 MB artifact behind it
+    // looks load-bearing to anyone deciding what may be deleted. Combo prose
+    // now comes from the stack artifacts, which are per-deck and already
+    // fetched. The FILE stays — `config.py` uses it as the invalidation proxy
+    // for `combo_details.json`, which several Python consumers do read.
     // The discovery front door — small enough to land on before anything else arrives.
     vizIndex: v(DATA_BASE + 'viz_index.json'),
     neighbours: v(DATA_BASE + 'neighbours.bin'),

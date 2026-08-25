@@ -2,9 +2,25 @@
 
 Two files, because they have two different audiences:
 
-- `combo_graph.json` — the partner adjacency map. Small, and the only thing the
-  viz deck builder reads (`graph.partners[name]`). It is fetched and parsed on
-  the browser's main thread, so nothing else belongs in it.
+- `combo_graph.json` — the partner adjacency map. It was the only thing the viz
+  deck builder read (`graph.partners[name]`); that builder is deleted, so today
+  it is read by nothing but `config.py`, which uses it as the invalidation proxy
+  for its larger sibling. Kept small on the old grounds anyway.
+
+  MEASURED AND NOT KEPT (2026-08-24): Spellbook carries a `description` on
+  **every** variant — 83,261 of 83,261 — a numbered walk-through of how the
+  combo works, median 405 characters. Writing it into `combo_details.json`
+  costs **+36.4 MB on a 25.7 MB tracked file**, and `data/` carries no LFS
+  because Pages serves pointers. Gzipped as an id-keyed sidecar it is 4.4 MB
+  (8.4x, the same ratio the raw dumps get), which is affordable — but at the
+  time of measuring it had no reader: the browser's combo prose comes from the
+  per-deck stack artifacts it already fetches, and those cover 50 of 50
+  published lines. The consumer that WOULD justify it is `engine_facts`, whose
+  contained-combo lines are handed to `deck-engineer` with no explanation of
+  how each one works. Do it when that agent is the one asking, key the sidecar
+  by Spellbook `id` and never by position — an index-aligned sidecar is the
+  `projection[i] == cards.csv[i]` hazard with none of the pipeline discipline
+  that keeps that one honest.
 - `combo_details.json` — the full combo records plus a card→combo index. Read
   by Python and by agents, never by the browser. This is where the power-level
   signal lives: Spellbook tags every variant with a bracket letter, which is

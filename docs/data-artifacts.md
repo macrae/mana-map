@@ -21,7 +21,7 @@ Everything lives in `data/`. Most files are gitignored (regenerable via `manamap
 | `projection_2d.json` | reduce (6) | ~13MB | **tracked** | viz (Color+Type map) |
 | `projection_2d_ability.json` | reduce (6) | ~13MB | **tracked** | viz (Abilities map) |
 | `combos_raw.json.gz` | download-combos (7) | **~34MB gz** (428MB raw) | ignored | process-combos |
-| `combo_graph.json` | process-combos (8) | ~4.5MB, `{"partners": {name: [names]}}` **only** | **tracked** | viz deck builder, synergy (exclusions) |
+| `combo_graph.json` | process-combos (8) | ~4.5MB, `{"partners": {name: [names]}}` **only** | **tracked** | `config.py` invalidation proxy for `combo_details.json` — **fetched by nothing**; the viz deck builder that read it is deleted, and its `MM.DATA` registration went with it |
 | `combo_details.json` | process-combos (8) | ~25.7MB, `{combos, by_card, meta}`; per-combo `bracket` (1–4), `mana_value_needed`, `popularity`, banned flag | **tracked** | `pilot/bracket.py`, `pilot/build_deck.py`, `deck-analyst` — **never fetched by the viz** |
 | `embeddings.bin` | export (9) | ~17MB | **tracked** | viz (Find Similar, deck builder) |
 | `embeddings_ability.bin` | export (9) | ~17MB | **tracked** | viz (Abilities map similarity) |

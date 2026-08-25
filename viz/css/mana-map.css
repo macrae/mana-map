@@ -267,6 +267,28 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 #deckLensSelect { min-width: 0; }
 /* A verified line the map cannot draw (fewer than two of its cards are in the deck)
  * still belongs in the list — greyed, not hidden. */
+/* The open line's prose. Measure is capped at ~62ch and the block scrolls at 340px:
+   the fleet's longest summary is 4,337 characters, and a panel that grows to fit it
+   pushes The Short List and the roster off the bottom of the screen — the list you
+   are choosing from stops being visible the moment you choose from it. */
+.lens-line-prose { margin-top: 8px; padding-top: 8px; border-top: 1px solid #2c4a2e;
+  max-height: 340px; overflow-y: auto;
+  /* A hard cut at 340px looks like the end of the text, and the fleet's longest
+     summary is 4,337 characters — so the fade is what says "there is more", in
+     the one place a reader has no other cue. It is masked rather than painted:
+     an overlaid gradient would need the row's background colour, and the row has
+     two (`.lens-line` and `.lens-line.is-on`). */
+  mask-image: linear-gradient(#000 calc(100% - 26px), transparent);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 26px), transparent); }
+/* ...but only while there IS more. Scrolled to the bottom, the fade would dim
+   the last two lines of a summary the reader has arrived at. */
+.lens-line-prose.is-end { mask-image: none; -webkit-mask-image: none; }
+.lens-line-prose p { font-size: 0.72rem; line-height: 1.55; color: #c6d3c7;
+  margin: 0 0 8px; max-width: 62ch; white-space: pre-wrap; }
+.lens-line-prose p:last-of-type { margin-bottom: 4px; }
+.lens-line-prose b { color: #9fe0a3; font-weight: 600; }
+.lens-line-meta { font-size: 0.65rem; color: #6f8a71; letter-spacing: 0.04em;
+  text-transform: uppercase; }
 .lens-line-nodraw { border-left-color: #3a3a5a; }
 .lens-line-nodraw .lens-line-cards { color: #666; font-style: italic; }
 /* The line currently under the spotlight in the graph. The panel is re-rendered

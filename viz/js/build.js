@@ -309,6 +309,21 @@
       try { engine = await getJSON(DECK_BASE + slug + '/engine.json'); } catch (e) { /* absent */ }
     }
 
+    /* The authored intro to each verified line.
+     *
+     * `manual_prose.json`'s `combo_lines` is keyed by STACK ID and is the most
+     * authoritative prose a line has: a person wrote it against the passing
+     * resolution, and `config.py` gates the key on `stacks:passing` so it
+     * cannot be written about a line nobody checked. The compact page already
+     * renders it; the graph threw it away and showed a title.
+     *
+     * Gated on `has.manual_prose` for the same reason `engine` is: a browser
+     * cannot stat, and a 404 per deck load is a cost paid for nothing. */
+    let prose = null;
+    if (entry.has && entry.has.manual_prose) {
+      try { prose = await getJSON(DECK_BASE + slug + '/manual_prose.json'); } catch (e) { /* absent */ }
+    }
+
     // The manifest lists checker-passed stacks only, which is the whole point of it —
     // a browser can list neither data/decks/ nor stacks/.
     const stacks = [];
@@ -321,10 +336,10 @@
         stacks.push(doc);
       } catch (e) { /* skip */ }
     }
-    return buildActive(entry, deckDoc, considering, stacks, engine);
+    return buildActive(entry, deckDoc, considering, stacks, engine, prose);
   }
 
-  function buildActive(entry, deckDoc, considering, stacks, engine) {
+  function buildActive(entry, deckDoc, considering, stacks, engine, prose) {
     const cards = deckDoc.cards || [];
     const commanderName = (deckDoc.commander && deckDoc.commander.name) || entry.commander;
 
@@ -362,19 +377,54 @@
       main,
       candidates,
       unmapped,
-      edges: buildEdges(stacks, main, entry, engine),
+      edges: buildEdges(stacks, main, entry, engine, prose),
       engine: engine || null,
       copies: main.reduce((n, s) => n + s.qty, 0),
     };
   }
 
+  /* What a verified line SAYS, in the order the evidence ranks.
+   *
+   * Three things could speak for a line and they are not interchangeable, so
+   * each keeps its own slot and its own attribution rather than being merged
+   * into one blob of text:
+   *
+   *   `note`     the authored intro from `manual_prose.combo_lines[<id>]` —
+   *              a person's argument for why this line matters, gated on the
+   *              stack passing. 47 of the fleet's 60 stacks have one.
+   *   `answer`   the resolution's direct reply to the scenario's question.
+   *              Only 8 stacks ask a question sharp enough to have one, which
+   *              is why it cannot be the primary source.
+   *   `summary`  `resolution.final_state.summary` — what the board looked like
+   *              when the dust settled. Present on ALL 60, so it is the floor:
+   *              every drawn line has at least this much to say.
+   *
+   * Every one of these was already fetched. `buildEdges` kept `title` and
+   * dropped the rest, so the panel could name a line and never explain it.
+   *
+   * Nothing here is derived, summarised or truncated. A checker read these
+   * words; re-wording them in the browser would put a ✓ over prose no checker
+   * saw, which is the same mistake as editing a resolution to fix a reference. */
+  function linePr(stack, authored) {
+    const res = stack.resolution || {};
+    const fs = res.final_state || {};
+    const out = {
+      note: authored[stack.id] || null,
+      answer: typeof res.answer === 'string' ? res.answer : null,
+      summary: typeof fs.summary === 'string' ? fs.summary : null,
+      steps: Array.isArray(res.steps) ? res.steps.length : 0,
+    };
+    return (out.note || out.answer || out.summary) ? out : null;
+  }
+
   // Each verified stack becomes a small clique between the deck cards it names, so a
   // rules-verified line reads as geometry: which corners of the deck actually talk to
   // each other.
-  function buildEdges(stacks, main, entry, engine) {
+  function buildEdges(stacks, main, entry, engine, prose) {
     const byName = new Map();
     for (const s of main) if (s.idx !== null) byName.set(s.name, s);
     const derived = (entry && entry.stack_cards) || {};
+    const authored = (prose && prose.combo_lines) || {};
 
     const edges = [];
     for (const stack of stacks) {
@@ -402,6 +452,7 @@
       }
       const flow = engineFlow(engine, stack.id || '');
       edges.push({ id: stack.id || '', title: stack.title || '', cards: hit, pairs,
+                   prose: linePr(stack, authored),
                    carries: flow ? flow.carries : null,
                    from: flow ? flow.from : null, to: flow ? flow.to : null,
                    stageOf: flow ? flow.stageOf : null });
@@ -734,6 +785,7 @@
               '<div class="lens-line-cards">' +
                 (edge.cards.length ? edge.cards.map(esc).join(' · ') : 'no deck card named — no line drawn') +
               '</div>' +
+              (i === focusedLine ? lineProseHtml(edge) : '') +
             '</div>').join('') +
         '</div>';
     }
@@ -773,6 +825,17 @@
         if (grp) { focusGroup(grp.getAttribute('data-group')); }
       });
     }
+    bindProseFade(el);
+
+    /* A block SHORTER than the cap never fires a scroll event, so `is-end` would
+     * never be set and the fade would dim the last lines of prose that has
+     * nothing after it. Rare but real — goblin-storm's line 002 is 877
+     * characters — and a fade over the end of a complete text is a lie about
+     * there being more. Settled on render rather than on scroll, because that
+     * is the only moment the two heights are both known and the reader has not
+     * touched anything yet. */
+    const pr = el.querySelector('.lens-line-prose');
+    if (pr) pr.classList.toggle('is-end', pr.scrollHeight <= pr.clientHeight + 2);
   }
 
   function statBox(n, label) {
@@ -880,6 +943,55 @@
       from: edge.from || null,
       to: edge.to || null,
     })).filter(l => l.pairs.length);
+  }
+
+  /* The open line's prose, under the row it belongs to.
+   *
+   * ONLY under the focused row. The fleet's summaries run a median of 838
+   * characters and up to 4,337; printing all of them at once turns a scannable
+   * list of four to eleven lines into a wall, and the list's job is choosing
+   * which line to open. Clicking already spotlights the cards — this is the
+   * same click saying what you are looking at.
+   *
+   * Each source is LABELLED. An authored intro and a resolver's final state are
+   * different kinds of claim, and running them together as one paragraph would
+   * make the second look as considered as the first. The step count and the
+   * pointer to the manual carry the rest: the full resolution with its
+   * citations lives there, and this panel must not become a second, worse copy
+   * of it — the same rule that keeps the theatre from reprinting Judge's Desk.
+   *
+   * The cards named in the prose are NOT linked. Every one is already a lit
+   * node three inches to the left, and a second affordance for the same card
+   * in the same glance is the interaction bug this repo fixed in the atlas. */
+  function lineProseHtml(edge) {
+    const p = edge.prose;
+    if (!p) return '';
+    let h = '<div class="lens-line-prose">';
+    if (p.note) h += '<p>' + esc(p.note) + '</p>';
+    if (p.answer) h += '<p><b>The answer.</b> ' + esc(p.answer) + '</p>';
+    if (p.summary) h += '<p><b>Where it ends.</b> ' + esc(p.summary) + '</p>';
+    const bits = [];
+    if (p.steps) bits.push(p.steps + ' resolved step' + (p.steps === 1 ? '' : 's'));
+    if (edge.carries) bits.push('carries ' + esc(edge.carries));
+    if (bits.length) h += '<div class="lens-line-meta">' + bits.join(' · ') + '</div>';
+    h += '</div>';
+    return h;
+  }
+
+  /* The fade means "there is more", so it must come off at the bottom. Bound on
+   * the container by delegation rather than per-row, because the panel's HTML is
+   * rebuilt wholesale on every render and a listener on a row does not survive
+   * that — the same reason the group and line clicks are delegated. */
+  let _proseBound = false;
+  function bindProseFade(host) {
+    if (_proseBound || !host) return;
+    _proseBound = true;
+    host.addEventListener('scroll', function (e) {
+      const el = e.target;
+      if (!el.classList || !el.classList.contains('lens-line-prose')) return;
+      const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
+      el.classList.toggle('is-end', atEnd);
+    }, true); // capture: scroll does not bubble
   }
 
   /* Click a verified line to put it under a spotlight.
@@ -1173,6 +1285,10 @@
     clearLine,
     handleEscape,
     get activeLine() { return focusedLine; },
+    // A read-only probe for the browser suite: the prose a line was BUILT with,
+    // so a test can compare what the panel printed against what the artifact
+    // says without re-fetching and re-implementing the source ranking.
+    __lineProse: i => (active && active.edges[i] ? active.edges[i].prose : null),
     getOverlayTraces,
     getDimmedIndices,
     dimsAll,

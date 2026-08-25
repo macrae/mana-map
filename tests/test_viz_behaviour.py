@@ -5185,3 +5185,108 @@ def test_a_stack_carrying_two_engine_lines_keeps_both_nouns(browser, viz_server)
         assert any(" · " in (c or "") for c in carries), carries
     finally:
         page.close()
+
+
+# ── The open line explains itself ──────────────────────────────────────────
+#
+# `buildEdges` kept a stack's `title` and dropped everything else, so the panel
+# could NAME a verified line and never say what it does. Every word it needed
+# was already on the wire: Build fetches whole stack documents, and 50 of 50
+# published stacks carry `resolution.final_state.summary`.
+
+
+def test_the_open_line_shows_its_prose(browser, viz_server):
+    """Clicking a line explains it, and closing it takes the explanation away."""
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        assert page.locator(".lens-line-prose").count() == 0, (
+            "prose before anything was opened")
+
+        page.click(".lens-line")
+        page.wait_for_timeout(800)
+
+        # Exactly ONE block, under the row that is open. The median summary is
+        # 838 characters and the longest is 4,337; rendering every line's prose
+        # at once turns the list you choose from into a wall of text.
+        assert page.locator(".lens-line-prose").count() == 1
+        assert page.locator(".lens-line.is-on .lens-line-prose").count() == 1
+
+        text = page.locator(".lens-line-prose").inner_text()
+        assert len(text) > 200, f"prose block is only {len(text)} chars"
+
+        page.click(".lens-line")
+        page.wait_for_timeout(600)
+        assert page.locator(".lens-line-prose").count() == 0
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_prose_is_the_artifact_verbatim(browser, viz_server):
+    """A checker read these words.
+
+    The panel may choose which of the three sources to print and may leave one
+    out — it must never re-word one. Summarising a resolution in the browser
+    puts a ✓ over prose no checker saw, which is the same mistake as editing a
+    resolution's step text to fix a stale cross-reference.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line")
+        page.wait_for_timeout(800)
+        shown = page.locator(".lens-line-prose").inner_text()
+
+        # Pull the same line's artifact prose out of Build's own state, then
+        # assert the rendered block contains it whole.
+        src = page.evaluate("Build.__lineProse ? Build.__lineProse(0) : null")
+        assert src, "Build did not expose the open line's prose"
+        for key in ("note", "answer", "summary"):
+            val = src.get(key)
+            if not val:
+                continue
+            # innerText collapses the source's newlines; compare a run that has
+            # none rather than weakening the assertion to a prefix.
+            probe = max(val.split("\n"), key=len).strip()
+            assert probe and probe in shown, f"{key} was not printed verbatim"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_fade_only_promises_more_when_there_is_more(browser, viz_server):
+    """The fade at the bottom of the prose block means "keep scrolling".
+
+    It has to come off in the two states where that is false: scrolled to the
+    bottom, and a block shorter than the 340px cap — which never fires a scroll
+    event at all, so it cannot be settled by the scroll handler. One line in the
+    fleet is that short (goblin-storm 002, 877 characters), and a fade over the
+    end of a complete text is a lie about there being more.
+    """
+    slug = _a_deck_with_a_drawable_line()
+    if not slug:
+        pytest.skip("no deck with a drawable verified line")
+    page = _build_page(browser, viz_server, slug)
+    try:
+        page.click(".lens-line")
+        page.wait_for_timeout(800)
+        state = page.evaluate("""() => {
+            const el = document.querySelector('.lens-line-prose');
+            const over = el.scrollHeight > el.clientHeight + 2;
+            const top = { over, end: el.classList.contains('is-end') };
+            el.scrollTop = el.scrollHeight;
+            el.dispatchEvent(new Event('scroll'));
+            return { top, end: el.classList.contains('is-end') };
+        }""")
+        # Overflowing: faded at the top, not at the bottom. Not overflowing:
+        # never faded. Both are "the fade is on iff there is more below".
+        assert state["top"]["end"] == (not state["top"]["over"])
+        assert state["end"] is True, "fade survived scrolling to the end"
+        assert page.js_errors == []
+    finally:
+        page.close()
