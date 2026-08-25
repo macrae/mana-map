@@ -157,6 +157,62 @@ def _formats():
         for k, s in sorted(formats.FORMATS.items())]}
 
 
+def _resolve_commander(name):
+    """A typed commander name -> the corpus's exact name, or a helpful refusal.
+
+    TYPED BY A HUMAN, so it is matched the way a human means it: case and
+    punctuation are ignored. The report that produced this was "zur, the
+    enchanter" — lowercase, and with a comma that most legendary creatures do
+    have. `Zur, Eternal Schemer` sits three rows away in the corpus WITH one;
+    `Zur the Enchanter` has none. That is not a user error, it is a lookup that
+    demanded more precision than the name itself carries.
+
+    It also mattered that EDHREC already forgave it: `archetypes` answered
+    happily for "zur, the enchanter" because `edhrec_slug` lowercases and strips
+    punctuation. So the styles panel worked and the build failed, which is the
+    worst arrangement — the part that looks like progress succeeds and the part
+    that does the work does not.
+
+    A miss SUGGESTS. "not in cards.csv" is accurate and useless; the corpus
+    knows perfectly well what you probably meant.
+    """
+    import re
+
+    from manamap.pilot import card_pool
+
+    def key(v):
+        return re.sub(r"[^a-z0-9]+", "", str(v).lower())
+
+    wanted = key(name)
+    if not wanted:
+        return None, []
+
+    # Legendary creatures first, because this is a COMMANDER field. Suggesting
+    # Zuran Orb to someone typing "zur" is technically a prefix match and no
+    # help at all.
+    frame = card_pool.load_frame()
+    legendary = {n for n, t in zip(frame["name"], frame["type_line"])
+                 if "Legendary" in str(t) and "Creature" in str(t)}
+
+    exact, near = None, []
+    for real in card_pool.corpus_names():
+        k = key(real)
+        # An empty key matches everything — the corpus holds cards literally
+        # named "_____", and `"".startswith("")` put them at the head of every
+        # suggestion list.
+        if not k:
+            continue
+        if k == wanted:
+            exact = real
+            break
+        if k.startswith(wanted) or wanted.startswith(k):
+            near.append(real)
+    # Commanders before anything else, then shortest — the shortest legendary
+    # starting with what you typed is almost always the one you meant.
+    near.sort(key=lambda n: (n not in legendary, len(n)))
+    return exact, near[:6]
+
+
 def _build_save(slug=None, commander=None, theme=None, bracket=None,
                 library=(), fmt=None):
     """Create or update a DRAFT — a deck that exists as a brief and no more.
@@ -184,6 +240,17 @@ def _build_save(slug=None, commander=None, theme=None, bracket=None,
     # Read-modify-write, so saving a theme does not drop the library somebody
     # spent ten minutes gathering.
     brief = _json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    if commander:
+        # Resolved at SAVE, so the draft on disk carries the corpus's exact name
+        # and every later step — build, validate, the manual — agrees about
+        # which card this is.
+        exact, near = _resolve_commander(commander)
+        if not exact:
+            raise ValueError(
+                f"no card named {commander!r}"
+                + (f" — did you mean {', '.join(near)}?" if near else
+                   " — check the spelling against the card"))
+        commander = exact
     brief.update({k: v for k, v in {
         "slug": slug, "commander": commander, "theme": theme,
         "format": fmt, "bracket": bracket,
@@ -230,11 +297,24 @@ def _build_run(slug=None):
             f"has no such anchor. {spec.name} decks can be VALIDATED "
             f"(`validate-deck --format {brief.get('format')}`) and their pool "
             f"searched, but not built.")
-    plan = build_deck.build(slug)
+    # BUILD AND *WRITE*. `build_deck.build()` computes a plan and returns it;
+    # `build_deck.main()` is what persists one. Calling only the first reported
+    # "100 cards, bracket 3" and left NOTHING on disk — success for work it had
+    # thrown away, which is the worst thing a build button can do.
+    #
+    # Routed through `main` rather than reimplementing the writes here, so the
+    # page and the CLI produce byte-identical artifacts: `main` also merges the
+    # agent-authored keys an existing `build_plan.json` carries, and a second
+    # writer would drop them.
+    build_deck.main(type("A", (), {"slug": slug, "write_decklist": True})())
+
+    plan = _json.loads((DECKS_DIR / slug / "build_plan.json").read_text(encoding="utf-8"))
+    written = [p.name for p in sorted((DECKS_DIR / slug).iterdir())]
     return {"slug": slug, "commander": plan["commander"],
             "cards": len(plan["slots"]) + sum(plan["land_counts"].values()) + 1,
             "bracket": plan["bracket"],
             "role_budget_grounding": plan.get("role_budget_grounding"),
+            "written": written,
             "slots": [{"name": s["name"], "role": s.get("role")} for s in plan["slots"]]}
 
 

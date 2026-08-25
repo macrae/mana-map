@@ -767,9 +767,16 @@
       + '<div class="deck-format-row"><label for="ndFmt">Format</label>'
       + '<select id="ndFmt" onchange="Build.newDeckField(\'fmt\', this.value)">'
       + fmts + '</select></div>'
+      /* `onchange`, NOT `oninput`. The slug names a DIRECTORY, and autosaving it
+       * per keystroke created one deck per prefix — typing "zur-enchantress"
+       * left `zur`, `zur-en`, `zur-enchan` and `zur-enchantress` on the bench,
+       * three of them junk. Every other field can be noisy because it edits a
+       * draft that already exists; this one decides which draft that is, so it
+       * commits when you finish typing. */
       + '<input id="ndSlug" class="discover-import" placeholder="a slug, e.g. zur-voltron" '
       + 'value="' + esc(newDeck.slug || '') + '" '
-      + 'oninput="Build.newDeckField(\'slug\', this.value)">';
+      + 'oninput="Build.newDeckField(\'slugDraft\', this.value)" '
+      + 'onchange="Build.newDeckField(\'slug\', this.value)">';
     // A commander is asked for only where the format requires one — the spec
     // says so, and asking a Modern deck for a commander is the kind of question
     // that makes a tool feel like it was written for one game.
@@ -862,6 +869,10 @@
 
   function newDeckField(key, value) {
     if (!newDeck) return;
+    // `slugDraft` is what you are typing; `slug` is what you settled on. Only
+    // the settled one reaches disk, because it names a directory.
+    if (key === 'slugDraft') { newDeck.slugDraft = value; return; }
+    if (key === 'slug') newDeck.slugDraft = value;
     newDeck[key] = value;
     if (key === 'fmt' || key === 'theme') renderPanel();
     saveDraft();

@@ -193,3 +193,82 @@ def test_the_formats_endpoint_reports_buildability():
     fmts = {f["key"]: f for f in serve.call("formats", {})["formats"]}
     assert fmts["commander"]["buildable"] is True
     assert fmts["standard"]["buildable"] is False
+
+
+# ── Four defects from one report: "I am trying to build a zur deck" ────────
+
+
+def test_a_commander_is_matched_the_way_a_human_types_it():
+    """The report was "zur, the enchanter" — lowercase, with a comma.
+
+    That is not a user error. `Zur, Eternal Schemer` sits three rows away in the
+    corpus WITH a comma; `Zur the Enchanter` has none. The lookup demanded more
+    precision than the name itself carries, and EDHREC had already forgiven it —
+    `archetypes` answered happily for the same string, so the styles panel
+    worked and the build failed. The part that looks like progress succeeding
+    while the part that does the work fails is the worst arrangement of the two.
+    """
+    exact, _ = serve._resolve_commander("zur, the enchanter")
+    assert exact == "Zur the Enchanter"
+    assert serve._resolve_commander("ZUR THE ENCHANTER")[0] == "Zur the Enchanter"
+    assert serve._resolve_commander("Zur the Enchanter")[0] == "Zur the Enchanter"
+
+
+def test_a_miss_suggests_commanders_rather_than_anything_that_starts_the_same():
+    """"not in cards.csv" is accurate and useless; the corpus knows what you
+    probably meant.
+
+    Legendary creatures first, because this is a COMMANDER field — suggesting
+    Zuran Orb to someone typing "zur" is a prefix match and no help. And the
+    empty-named cards are skipped: the corpus holds cards literally called
+    "_____", and `"".startswith("")` put them at the head of every list.
+    """
+    exact, near = serve._resolve_commander("zur")
+    assert exact is None
+    assert near, "a miss with no suggestions"
+    assert "Zur the Enchanter" in near
+    assert not any(n.strip("_") == "" for n in near), near
+    assert "Zuran Orb" not in near[:3], f"an artifact outranked a commander: {near}"
+
+
+def test_saving_stores_the_corpus_name_not_what_was_typed(tmp_path, monkeypatch):
+    """Resolved at SAVE, so every later step — build, validate, the manual —
+    agrees about which card this is."""
+    import json as _json
+
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    serve.call("build/save", {"slug": "zz", "commander": "zur, the enchanter"})
+    on_disk = _json.loads((tmp_path / "zz" / "brief.json").read_text())
+    assert on_disk["commander"] == "Zur the Enchanter"
+
+
+def test_an_unresolvable_commander_is_refused_with_suggestions(tmp_path, monkeypatch):
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    with pytest.raises(ValueError) as e:
+        serve.call("build/save", {"slug": "zz", "commander": "zur"})
+    assert "did you mean" in str(e.value)
+    assert "Zur the Enchanter" in str(e.value)
+
+
+@pytest.mark.skipif(not (serve.DATA_DIR / "decks").is_dir(), reason="no decks")
+def test_build_run_WRITES_and_says_what_it_wrote():
+    """THE WORST OF THE FOUR. `build_deck.build()` computes a plan and returns
+    it; `build_deck.main()` is what persists one. Calling only the first
+    reported "100 cards, bracket 3" and left NOTHING on disk — success for work
+    it had thrown away.
+
+    Routed through `main` rather than reimplementing the writes, so the page and
+    the CLI produce byte-identical artifacts: `main` also merges the
+    agent-authored keys an existing `build_plan.json` carries, and a second
+    writer would drop them.
+    """
+    import inspect
+
+    src = inspect.getsource(serve._build_run)
+    assert "build_deck.main(" in src, (
+        "the endpoint computes a plan without persisting it again")
+    assert '"written"' in src, "it does not report what it wrote"

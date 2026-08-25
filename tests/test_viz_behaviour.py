@@ -5909,3 +5909,53 @@ def test_the_new_deck_form_never_declines_in_silence(browser, viz_server):
         assert errors == [], errors
     finally:
         page.close()
+
+
+def test_typing_a_slug_does_not_create_a_deck_per_keystroke(browser, viz_server):
+    """Typing "zur-enchantress" left `zur`, `zur-en`, `zur-enchan` and
+    `zur-enchantress` on the bench — three of them junk.
+
+    The slug names a DIRECTORY. Every other field can autosave noisily because
+    it edits a draft that already exists; this one decides WHICH draft that is,
+    so it commits on `change` (blur or enter) rather than on `input`.
+    """
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html?mode=build")
+        page.wait_for_function("() => window.Build && window.Api && Api.probed",
+                               timeout=BOOT_TIMEOUT_MS)
+        saved = page.evaluate("""async () => {
+            const calls = [];
+            Object.defineProperty(Api, 'ready', {get: () => true, configurable: true});
+            Api.call = function (name, payload) {
+                if (name === 'build/save') calls.push(payload.slug);
+                if (name === 'formats') return Promise.resolve({formats: [
+                    {key: 'commander', name: 'Commander', deck_size: 100,
+                     exact_size: true, singleton: true, commanders: 1,
+                     buildable: true}]});
+                return Promise.resolve({slug: payload && payload.slug});
+            };
+            Build.newDeck();
+            await new Promise(r => setTimeout(r, 300));
+            const box = document.getElementById('ndSlug');
+            // Type it, character by character, exactly as a person does.
+            for (const ch of 'zur-ench') {
+                box.value += ch;
+                box.dispatchEvent(new Event('input', {bubbles: true}));
+                await new Promise(r => setTimeout(r, 90));
+            }
+            await new Promise(r => setTimeout(r, 900));   // past the debounce
+            const duringTyping = calls.length;
+            box.dispatchEvent(new Event('change', {bubbles: true}));   // blur
+            await new Promise(r => setTimeout(r, 900));
+            return {duringTyping, after: calls.slice()};
+        }""")
+        assert saved["duringTyping"] == 0, (
+            f"typing saved {saved['duringTyping']} draft(s) — one directory per "
+            f"prefix is exactly the reported bug")
+        assert saved["after"] == ["zur-ench"], saved["after"]
+        assert errors == [], errors
+    finally:
+        page.close()

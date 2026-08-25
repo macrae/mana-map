@@ -106,10 +106,20 @@ def test_tracked_manifest_matches_the_artifacts_on_disk():
         pytest.skip("no manifest yet — run `manamap pilot build-index`")
     manifest = json.loads(path.read_text())
 
-    fresh = {e["slug"]: e for e in build_index.gather_entries()}
+    # DRAFTS ARE NOT DECKS, and `gather_entries` returns both. A draft is a
+    # brief with no 99, filed under `manifest.drafts` because every consumer of
+    # `decks` assumes a `cards.json` that a draft does not have. Comparing the
+    # whole scan against `decks` reported a stale manifest the moment a draft
+    # existed — this test was the consumer the split forgot.
+    entries = build_index.gather_entries()
+    fresh = {e["slug"]: e for e in entries if not e.get("draft")}
     listed = {d["slug"]: d for d in manifest["decks"]}
     assert set(listed) == set(fresh), (
         "manifest deck set is stale — re-run `manamap pilot build-index`")
+
+    fresh_drafts = {e["slug"] for e in entries if e.get("draft")}
+    assert {d["slug"] for d in manifest.get("drafts", [])} == fresh_drafts, (
+        "manifest draft set is stale — re-run `manamap pilot build-index`")
 
     for slug, deck in listed.items():
         assert deck["verified"] == fresh[slug]["verified"], slug
