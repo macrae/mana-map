@@ -127,3 +127,21 @@ def test_the_delta_drops_roles_that_do_not_move(fake):
     d = archetypes.report("Zur the Enchanter", theme="voltron")["distinguishing"]
     assert all(v != 0 for v in d.values())
     assert "ramp:rock" not in d, "a role both decks run identically was printed"
+
+
+def test_an_unknown_theme_is_a_wrong_slug_not_a_python_error(monkeypatch):
+    """EDHREC answers an unknown theme with a DIFFERENT SHAPE — a list, not the
+    `{deck: {...}}` document — so `deck.get("cards")` raised
+
+        'list' object has no attribute 'get'
+
+    and that travelled all the way to the page as the reason a role budget fell
+    back. A wrong slug is a wrong slug; the message has to say which slug.
+    """
+    from manamap.ingest import edhrec
+
+    monkeypatch.setattr(edhrec, "_cached", lambda key, fetch: [])
+    with pytest.raises(ValueError) as e:
+        edhrec.average_deck("Atraxa, Praetors' Voice", theme="not-a-theme")
+    assert "not-a-theme" in str(e.value)
+    assert "no attribute" not in str(e.value), "a Python error reached the caller"

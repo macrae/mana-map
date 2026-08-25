@@ -165,6 +165,14 @@ def average_deck(commander, theme=None):
     path = f"{slug}/{theme}" if theme else slug
     key = f"average-{slug}" + (f"-{theme}" if theme else "")
     doc = _cached(key, lambda: _get(f"{BASE}/average-decks/{path}.json"))
+    # EDHREC answers an unknown theme with a DIFFERENT SHAPE — a list, not the
+    # `{deck: {...}}` document — so `deck.get("cards")` raised
+    # `'list' object has no attribute 'get'` and that Python error travelled all
+    # the way to the page. A wrong slug is a wrong slug; say so.
+    if not isinstance(doc, dict) or not isinstance(doc.get("deck"), dict):
+        raise ValueError(
+            f"EDHREC has no average deck for {path!r}"
+            + (f" — {theme!r} may not be a theme of this commander" if theme else ""))
     deck = doc.get("deck") or {}
     cards = [(name, int(qty))
              for rows in (deck.get("cards") or {}).values()
