@@ -125,8 +125,36 @@ def top_commanders(identity, limit=100):
     return [c["name"] for c in _cardviews(doc)][:limit]
 
 
-def average_deck(commander):
+def themes(commander):
+    """How this commander is ACTUALLY built, with a deck count each. PRD §7.2.
+
+    EDHREC's `taglinks` panel, which is the archetype list the PRD asks an agent
+    to research — except it is already data. Zur comes back Enchantress 1201,
+    Auras 736, Stax 542, Control 529, Combo 380, Voltron 361, which is precisely
+    the split §7.2 names as its worked example.
+
+    **The count is a PLAY RATE and nothing more.** §7.2 requires styles be shown
+    side by side without ranking, and permits play rates as data. EDHREC's order
+    is preserved because re-sorting it would be inventing a ranking; the count
+    travels so a reader can see what the order means, and nothing here calls one
+    of them better.
+    """
+    from manamap.sim.opponents import edhrec_slug
+
+    slug = edhrec_slug(commander)
+    doc = _cached(f"themes-{slug}", lambda: _get(f"{BASE}/commanders/{slug}.json"))
+    panel = ((doc.get("panels") or {}).get("taglinks")) or []
+    return [{"slug": t["slug"], "name": t.get("value") or t["slug"],
+             "decks": int(t.get("count") or 0)}
+            for t in panel if t.get("slug")]
+
+
+def average_deck(commander, theme=None):
     """One commander's representative decklist: `{commander, cards: [(name, qty)]}`.
+
+    With `theme`, the representative deck for THAT STYLE — the path is
+    `average-decks/<commander>/<theme>`, and it is what makes a per-archetype
+    role template derivable rather than authored.
 
     A representative list, never a specific one — the same caveat
     `sim/opponents.py` writes into every `source.json` it produces.
@@ -134,12 +162,15 @@ def average_deck(commander):
     from manamap.sim.opponents import edhrec_slug          # one slug rule, not two
 
     slug = edhrec_slug(commander)
-    doc = _cached(f"average-{slug}", lambda: _get(f"{BASE}/average-decks/{slug}.json"))
+    path = f"{slug}/{theme}" if theme else slug
+    key = f"average-{slug}" + (f"-{theme}" if theme else "")
+    doc = _cached(key, lambda: _get(f"{BASE}/average-decks/{path}.json"))
     deck = doc.get("deck") or {}
     cards = [(name, int(qty))
              for rows in (deck.get("cards") or {}).values()
              for name, qty in rows]
-    return {"slug": slug, "commander": (deck.get("commander") or [None])[0], "cards": cards}
+    return {"slug": slug, "theme": theme,
+            "commander": (deck.get("commander") or [None])[0], "cards": cards}
 
 
 def cache_state():

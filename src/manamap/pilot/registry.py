@@ -27,6 +27,8 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("archetypes", "manamap.pilot.archetypes",
+     "How a commander is actually built, and the role template each style wants"),
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
     ("deck-notes", "manamap.pilot.deck_notes",
      "The captain's log: add a note about a game, list them, show one (append-only, authored)"),
@@ -373,6 +375,13 @@ def add_pilot_parser(subparsers):
             from manamap.pilot.formats import FORMATS
             cmd.add_argument("--format", default=None, choices=sorted(FORMATS),
                              help="rules to validate against (default: commander)")
+        if name == "archetypes":
+            cmd.add_argument("commander", help="commander name, e.g. \"Zur the Enchanter\"")
+            cmd.add_argument("--theme", default=None,
+                             help="derive the role template for this style (its slug)")
+            cmd.add_argument("--limit", type=int, default=12,
+                             help="how many styles to list (default 12)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "commander-search":
             # Slugless for the same reason as `card-search`: a search is not
             # per-deck. The seed comes from names, a file, or a deck's own 99.
