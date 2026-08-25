@@ -1,8 +1,8 @@
 {
   "slug": "ur-dragon",
   "as_of_decklist_sha256": "b544a740c197e11532aee0c1d4d2ac4d3238a196a4996edf29824704dd8c46b7",
-  "archetype": "Five-colour Dragon typal: accelerate, land fat fliers, and convert with per-Dragon entry triggers or an attacking-Dragon multiplier. The frame disagrees with the composition. strategic_frame.json declares 'combo' and deck-audit inherits it (tutors 4-8, protection 4-6), but the 99 holds 27 creatures, 24 Dragons, six narrow tutors, one contained combo line and zero two-card infinites. It is ramp-typal midrange being measured against a combo template.",
-  "verdict": "Above the mana line this deck is in good shape and the pilot is right about it: 12 interaction copies, 6 protection, 6 tutors, 4 finishers, and — once the audit's own probe list is read — about ten real card-advantage cards rather than the five the taxonomy sees. What limits it is the mana, exactly as the captain's log says: 31 lands against a 36-38 floor, 43 sources against Burgess's 45, and a land-drop rate that falls 0.834 / 0.670 / 0.525 across turns three to five while 26 of the 68 maindeck nonland entries cost five or more. The colour half of that is misread by the headline: the audit's -15 is black, and black is the colour this deck barely wants. Red carries 53.9% of the pip load on 30.0% of the sources. Separately, and not what binds: the conversion is better evidenced than a stack count suggests and both declared kills shrank under audit. TWO checker-passed, non-withheld boards are lethal — stack 001 (255 damage, both opponents on its board dead) and stack 002 (64 damage in 12 instances, the 32-life seat dead) — and both are entry-kill boards. Meanwhile correcting two mis-declared groups moved THE ENTRY KILL from 0.481 / 0.356 to 0.240 / 0.153 and THE COMBAT KILL from 0.411 / 0.290 to 0.204 / 0.128, so the entry kill is now both the better evidenced and the likelier plan — and it rests on a three-card damage leg.",
+  "archetype": "Five-colour Dragon typal ramp-midrange: accelerate, land fat fliers, and convert with per-Dragon entry triggers or by multiplying one attacking Dragon. The frame and the composition now AGREE, which is a change since the previous version of this document. strategic_frame.json was rewritten without an archetype keyword and today's deck-audit reports archetype null, source 'none \u2014 base targets apply'; the old complaint that the frame declared 'combo' and the audit inherited a tutors-4-8 / protection-4-6 template is discharged and has been deleted rather than annotated. Read every axis below against the BASE targets, which is what the audit used.",
+  "verdict": "Above the mana line this deck is in good shape and the pilot is right about it; below the line it is five lands short of the corpus's 36\u201338 \u2014 and the table corroborates the KIND of claim without pricing the number, because a 100-game correlation between resource development and winning sets no land count. open_questions[2] routes that half to the goldfish. In 100 seeded Forge games against the pilot's pod it won 12 \u2014 0.12, ci95 [0.070, 0.198], n=100 \u2014 and made 5.48 land drops a game (ci95 [5.15, 5.81], n=100), and inside that sample what separates its wins from its losses is RESOURCE DEVELOPMENT \u2014 land drops and the casts they buy. Sweeping all eighteen numeric per-seat fields the record keeps per game, the partition is NINE separating with a Welch interval excluding zero, EIGHT null, and ONE untestable \u2014 `eliminated_turn`, which cannot separate wins from losses even in principle because a winner is never eliminated (all twelve wins carry null). Exactly two of the nine are resource counts rather than consequences of having won: land drops (7.25 against 5.24, diff 2.01, ci95 [0.52, 3.50], p 0.0002) and casts (15.92 against 9.02, diff 6.89, ci95 [2.28, 11.51], p 0.0001). The other seven are downstream. First-attack timing is one of the eight nulls; turns survived is null too but is a quantity I derived, not a field the record keeps. Both nulls this document previously enumerated are non-resource, which is why 'land drops' alone read as exclusive when it was not. lean_into[3] decides whether the two are one finding or two and shows the working \u2014 all of it under Forge's own caveat that its AI is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" and that every seat including ours is that AI. The binding axis is mana-base, 31 land copies against a 36\u201338 floor, with land drops falling 0.834 / 0.670 / 0.525 across turns three to five while 26 maindeck nonland entries cost five or more. The conversion above it is better evidenced than it has ever been: four presentable checker-passed stacks now rather than three, and stack 002's annotation establishes that the deck CAN kill a fresh 40-life seat \u2014 the claim this document previously carried the other way round.",
   "axes": [
     {
       "axis": "mana-base",
@@ -10,15 +10,15 @@
       "measured": {
         "value": 31
       },
-      "reading": "31 land copies against a 36-38 floor, five short. The goldfish shows where it bites: the turn-3 land drop holds at 0.834, then 0.670 on four and 0.525 on five, while 26 maindeck nonland entries cost five or more. This is the axis that binds.",
+      "reading": "31 land copies against a 36\u201338 floor, five short, and it is now measured three ways. The goldfish shows where it bites: the turn-3 land drop holds at 0.834, then 0.670 on four and 0.525 on five, while 26 maindeck nonland entries cost five or more. The 100-game pod run agrees to within a third of a land: 5.48 land drops a game (ci95 [5.15, 5.81], n=100) against the goldfish's own cumulative 5.164 through turn eight and 5.482 through turn nine, the window our seat's mean game sits in. This is the axis that binds.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
         },
         {
           "rule": "strategy:deckbuilding.mana-base",
-          "quote": "Commander's usual 36–38 lands only works because rocks, dorks and land-ramp pay the remainder"
+          "quote": "Commander's usual 36\u201338 lands only works because rocks, dorks and land-ramp pay the remainder"
         },
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -32,12 +32,8 @@
       "measured": {
         "value": 43
       },
-      "reading": "43 against Burgess's 31 + 5 colours + a mana value 9 commander = 45. The gap is only two because twelve persistent producers are already carrying the land count; that is the deck paying its 36-38 with rocks, and it is why the ramp axis reads over.",
+      "reading": "43 against Burgess's 31 + 5 colours + a mana value 9 commander = 45. The gap is only two because twelve persistent producers are already carrying the land count; that is the deck paying its 36\u201338 with rocks, and it is why the ramp axis reads over.",
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base",
-          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-        },
         {
           "rule": "strategy:deckbuilding.mana-base",
           "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
@@ -50,15 +46,15 @@
       "measured": {
         "value": -15
       },
-      "reading": "The headline -15 is BLACK, and reading it as the finding inverts the deck. Exactly three cards in the 99 carry a black pip — the commander, Crux of Fate {3}{B}{B} and Dragonlord Kolaghan {4}{B}{R} (enumerated from cards.json mana costs) — 3.9% of the pip load on 13.3% of the sources. Red is the real gap: 53.9% of pips, 35 cards, 30.0% of sources, 26 against a 36 target, on-curve 0.515 from lands alone.",
+      "reading": "The headline -15 is BLACK, and reading it as the finding inverts the deck. Exactly three cards in the 99 carry a black pip \u2014 the commander, Crux of Fate {3}{B}{B} and Dragonlord Kolaghan {4}{B}{R} (enumerated from cards.json mana costs) \u2014 3.9% of the pip load on 13.3% of the sources. Red is the real gap: 53.9% of pips, 35 cards, 30.0% of sources, 26 against a 36 target, on-curve 0.515 from lands alone. Do not buy black.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" \u2248 90%"
         },
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
+          "quote": "Duke's judgment layer, in 60-card terms: 17\u201318 sources for a colour you won't keep a hand without, 14\u201316 for a main colour, 10\u201313 for a secondary, 4\u20137 for a splash."
         },
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -72,7 +68,7 @@
       "measured": {
         "value": 5
       },
-      "reading": "Five unconditional taplands sits inside Duke's eight-tapland band for a slow deck and OVER Karsten's tighter cap of about four; mana_analysis's own note adds that 14 of 31 lands enter tapped (45%), over the one-in-three budget. I take Duke's yardstick here because this deck's measured failure is deployment on turns four to six rather than turn one, and because nine of the fourteen are conditional rather than fixed — but the 45% is real and it is why every land added below is untapped or flexible. The pilot's tempo worry sits in those nine: six shocks pay 2 life, Stormcarved Coast is free from turn three, and Canopy Vista and Cinder Glade key on controlling two or more BASIC lands in a deck with nine basics — those two are the ones that really enter tapped early.",
+      "reading": "Five unconditional taplands sits inside Duke's eight-tapland band for a slow deck and OVER Karsten's tighter cap of about four; mana_analysis's own note adds that 14 of 31 lands enter tapped (45%), over the one-in-three budget. I take Duke's yardstick here because this deck's measured failure is deployment on turns four to six rather than turn one, and because nine of the fourteen are conditional rather than fixed \u2014 but the 45% is real and it is why every land added below is untapped or flexible. The pilot's tempo worry sits in those nine: six shocks pay 2 life, Stormcarved Coast is free from turn three, and Canopy Vista and Cinder Glade key on controlling two or more BASIC lands in a deck with nine basics \u2014 those two are the ones that really enter tapped early.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -98,7 +94,7 @@
       "measured": {
         "value": 0.834
       },
-      "reading": "0.834 on turn three clears the 0.74 bar, and it is the last turn that does. Turn four is 0.670, turn five 0.525, turn six 0.431 — the deck stops making land drops precisely when its top half comes online.",
+      "reading": "0.834 on turn three clears the 0.74 bar, and it is the last turn that does. Turn four is 0.670, turn five 0.525, turn six 0.431 \u2014 the deck stops making land drops precisely when its top half comes online, and the pod run measures the consequence rather than the rate: 5.48 land drops a game, ci95 [5.15, 5.81], n=100.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -116,7 +112,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "Modal mana value 3 against a format modal of 2, with 26 maindeck entries at five or more. For a ramp-typal deck that top end is the plan, not the fault — the fault is that the mana base does not pay for it. Do not lower the curve; buy the mana.",
+      "reading": "Modal mana value 3 against a format modal of 2, with 26 maindeck entries at five or more. For a ramp-typal deck that top end is the plan, not the fault \u2014 the fault is that the mana base does not pay for it. Do not lower the curve; buy the mana. The repo has measured this exact substitution on this exact deck: twelve spells swapped for twelve averaging three mana cheaper moved turn-five mana by 0.02, while three lands and four cheap accelerants moved it +0.27.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
@@ -125,10 +121,6 @@
         {
           "rule": "strategy:deckbuilding.curve",
           "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
-        },
-        {
-          "rule": "strategy:deckbuilding.curve",
-          "quote": "MtGDS' EDHREC data puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
         }
       ]
     },
@@ -138,11 +130,11 @@
       "measured": {
         "value": 21
       },
-      "reading": "21 cards carry a ramp FUNCTION against a 10-12 band, which looks like nine to cut. The right restatement is that 21 carry the function while fourteen are dedicated slots: enumerating the audit's own list, one is the commander and six are Dragon creatures whose acceleration rides on a threat (Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone, Rapacious Dragon, Smaug the Magnificent) — bodies the deck would run for their attacks alone, so they are not slots spent on acceleration even though they legitimately fill the ramp count too. Fourteen is two over the band, not nine. Cutting ramp here would make the binding axis worse.",
+      "reading": "21 cards carry a ramp FUNCTION against a 10\u201312 band, which looks like nine to cut. The right restatement is that 21 carry the function while fourteen are dedicated slots: enumerating the audit's own list, one is the commander and six are Dragon creatures whose acceleration rides on a threat (Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone, Rapacious Dragon, Smaug the Magnificent) \u2014 bodies the deck would run for their attacks alone. Fourteen is two over the band, not nine. Cutting ramp here would make the binding axis worse.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
         },
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -156,11 +148,11 @@
       "measured": {
         "value": 5
       },
-      "reading": "5 is a floor and the audit says so under its own probe note. Reading the oracle text: Dragon's Hoard, Return of the Wildspeaker and Rishkar's Expertise are real advantage the taxonomy filed elsewhere, and so are Herald's Horn, Breaching Dragonstorm and Korlessa, Scale Singer, which the probe did not name. That is about ten or eleven. The three cycling lands and Sarkhan's loot are card-NEUTRAL and should not be counted. The pilot's 'card draw is solid' holds.",
+      "reading": "5 is a floor and the audit says so under its own probe note, which names Dragon's Hoard, Jetmir's Garden, Return of the Wildspeaker, Rishkar's Expertise, Sarkhan Fireblood, Sheltered Thicket and Ziatora's Proving Ground as functions the taxonomy filed elsewhere. Reading the oracle text: Dragon's Hoard, Return of the Wildspeaker and Rishkar's Expertise are real advantage, and so are Herald's Horn, Breaching Dragonstorm and Korlessa, Scale Singer, which the probe did not name. That is about ten or eleven. The three cycling lands and Sarkhan's loot are card-NEUTRAL and should not be counted. The pilot's 'card draw is solid' holds.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
         },
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -179,10 +171,6 @@
         {
           "rule": "strategy:deckbuilding.interaction-suite",
           "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
         }
       ]
     },
@@ -192,15 +180,11 @@
       "measured": {
         "value": 4
       },
-      "reading": "Graveyard is genuinely uncovered: the only card in the 99 whose oracle text contains the word 'graveyard' is Dragonlord Kolaghan, and it punishes a recast rather than answering a yard. The other three classes are less thin than the audit's per-class counts suggest — it credits only Generous Gift for artifact, enchantment and land, and Chaos Warp answers all three and is invisible to the measure.",
+      "reading": "Graveyard is genuinely uncovered: I regexed every oracle_text in cards.json and the only entry of the 95 containing the word 'graveyard' is Dragonlord Kolaghan, which punishes a recast rather than answering a yard. The other three classes are less thin than the audit's per-class counts suggest \u2014 it credits only Generous Gift for artifact, enchantment and land, and Chaos Warp answers all three and is invisible to the measure.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+          "quote": "cover the classes \u2014 creature, artifact, enchantment, graveyard, land \u2014 before doubling any"
         }
       ]
     },
@@ -215,10 +199,6 @@
         {
           "rule": "strategy:deckbuilding.interaction-suite",
           "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-        },
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
         }
       ]
     },
@@ -228,7 +208,7 @@
       "measured": {
         "value": 6
       },
-      "reading": "Six, at the top of the band, but not as cheap as a count suggests. Boros Charm is {R}{W} — two mana, neither free nor one. Deflecting Swat and Flawless Maneuver are free only 'if you control a commander', which means a commander PERMANENT, and this deck's is on the battlefield rarely: the goldfish never casts it in 7,170 of 10,000 iterations. (Cast is not controlled, so that is not the rate in either direction — Hellkite Courser and Sneak Attack can also put it there.) A strength on count and on quality; its cheapness is conditional in exactly the deck where the condition is hardest to meet.",
+      "reading": "Six, MID-band of the 5\u20137 this axis cites \u2014 the top is seven \u2014 and not as cheap as a count suggests. Boros Charm is {R}{W} \u2014 two mana, neither free nor one. Deflecting Swat and Flawless Maneuver are free only 'if you control a commander', which means a commander PERMANENT, and this deck's is on the battlefield rarely: the goldfish never casts it in 7,170 of 10,000 iterations. (Cast is not controlled, so that is not the rate in either direction \u2014 Hellkite Courser and Sneak Attack can also put it there.) A strength on quality and comfortably inside its band on count; its cheapness is conditional in exactly the deck where the condition is hardest to meet.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -246,7 +226,7 @@
       "measured": {
         "value": 4
       },
-      "reading": "Four cards carry a wincon role — Atarka World Render, Boros Charm, Dragonlord Kolaghan, Hellkite Tyrant — at the 3-5 floor. The count understates the deck: Dragon Tempest and Scourge of Valkas close games and carry removal:damage instead, and Terror of the Peaks carries NO removal role at all (threat:body, value:etb), which is why it is absent from deck-audit's 12-card interaction list. Those three are the entire damage leg of the entry kill. And the conversion is better evidenced than I first wrote: TWO checker-passed, non-withheld boards are lethal, not one. Stack 001 makes 255 damage available and kills both opponents on its board; stack 002 casts one Lathliss under Miirym, Panharmonicon, Terror of the Peaks and Dragon Tempest for 64 damage in 12 separately-targeted instances and kills the 32-life seat outright, with the 40-life seat surviving at 8. Both are entry-kill boards. The three withheld stacks — 003, 004 and 006 — kept their verdicts but describe boards v1.0.0 can no longer assemble.",
+      "reading": "Four cards carry a wincon role \u2014 Atarka World Render, Boros Charm, Dragonlord Kolaghan, Hellkite Tyrant \u2014 at the 3\u20135 floor, and the count understates the deck: Dragon Tempest and Scourge of Valkas close games and carry removal:damage instead, and Terror of the Peaks carries no removal role at all. Those three are the entire damage leg of the entry kill. The record moved twice since the last pass, both in the deck's favour. There are now FOUR presentable checker-passed stacks (001, 002, 005, 007; 003, 004 and 006 carry presentable: false), and stack 002's annotation \u2014 added as a sibling field with the checker-passed summary byte-identical \u2014 establishes that its 64 damage in twelve 'any target' instances may all name one seat, running 6, 12, 16, 20, 26, 32, 37, 42, so a fresh 40-life seat dies. Stack 001 separately kills a 38-life seat with three of its fifteen triggers. What no board does is kill TWO seats: 64 < 72. Against that, the pod run measures what the deck actually converts at a table: 26.30 mean combat damage dealt to players, MEDIAN 12.0, ci95 [18.82, 33.78], n=100, with 22 of 100 games at zero.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -263,12 +243,26 @@
       ]
     },
     {
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 27
+      },
+      "reading": "27 front-face creature copies. Reported, not scored \u2014 the base targets set no band for it, and the aggro template's 26\u201332 is a count for a deck that attacks on turn four, not one whose first attack the pod run puts at global turn 20.38 (ci95 [18.98, 21.79], n=81 of 100 games; the other 19 never declared an attack).",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        }
+      ]
+    },
+    {
       "axis": "tutors",
       "verdict": "adequate",
       "measured": {
         "value": 6
       },
-      "reading": "Six, mid-band, all six narrow. Three of them search for lands — Encroaching Dragonstorm, Nature's Lore, Skyshroud Claim — and Farseek and Fabled Passage do the same job outside the count. That is the pilot's whiff question, and it is answerable by enumeration: Farseek has 17 legal target copies in this list, Nature's Lore and Skyshroud Claim have 11 Forest-typed cards each, Encroaching Dragonstorm and Fabled Passage have the 9 basics. The thinnest of the five still starts on nine targets, so none can realistically whiff. Nature's Lore and Skyshroud Claim also put theirs in untapped.",
+      "reading": "Six, mid-band, all six narrow. Three of them search for lands \u2014 Encroaching Dragonstorm, Nature's Lore, Skyshroud Claim \u2014 and Farseek and Fabled Passage do the same job outside the count. That is the pilot's whiff question. Answered by enumeration AGAINST THE CURRENT 26 LAND ENTRIES, and scoped to them: Farseek has 17 legal target copies, Nature's Lore and Skyshroud Claim 11 Forest-typed cards each, Encroaching Dragonstorm and Fabled Passage the 9 basics. On the list as it stands the thinnest of the five starts on nine targets, so none whiffs in practice. That sentence does NOT survive the prescription unqualified: add_candidates[3] adds Prismatic Vista, a THIRD dedicated searcher of those same nine basics alongside Encroaching Dragonstorm and Fabled Passage, taking worst-case dedicated demand on the basics from three of nine to four of nine \u2014 still comfortable, but the enumeration above is about the current package and the post-swap package is what open_questions[2] asks about.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -286,11 +280,15 @@
       "measured": {
         "value": 4
       },
-      "reading": "Bracket floor 4 on four Game Changers (Enlightened Tutor, Smothering Tithe, Teferi's Protection, Worldly Tutor) plus combo content. Reported, not scored. Recomputed with bracket.assess: every proposed pair, and all six applied together, leave the floor at 4.",
+      "reading": "Bracket floor 4 on four Game Changers (Enlightened Tutor, Smothering Tithe, Teferi's Protection, Worldly Tutor) plus combo content. Reported, not scored. Recomputed with bracket.assess: every proposed pair, and all six applied together, leave the floor at 4. Worth naming beside the sim: the corpus sorts brackets mainly on expected game length, and a bracket 4 deck is described as \"lethal, consistent, and fast\" \u2014 this one first attacks at global turn 20.38 (ci95 [18.98, 21.79], n=81 of 100 games \u2014 the other 19 never declared an attack) and, in the 75 games where it was eliminated at all, went out at global turn 32.80 (ci95 [30.85, 34.75], n=75). The remaining 25 are the 12 wins plus survivals to the 300-second clock, so that figure describes three quarters of the sample and not the deck. Forge's AI caveat applies to both.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.power-level",
           "quote": "Contents give a floor, never a verdict."
+        },
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "the sharpest line between them is expected game length"
         }
       ]
     }
@@ -314,7 +312,7 @@
         "count": 9,
         "thinnest": false,
         "measured_rate": 0.82,
-        "reading": "The deepest component in the deck: 0.820 assembled, 0.712 by turn six, mean turn 2.647. On the corpus's opening-hand scale its nine copies price at deck-audit's 0.498 — above the 41%-at-seven line and just UNDER 54%-at-ten, not over it, so a single opener holds one about half the time and what carries the 0.820 is the turns after it. This is not where the deck fails.",
+        "reading": "The largest of the nine declared components \u2014 enumerating the sizes of the nine listed here: 9, 4, 2, 7, 7, 3, 5, 2, 8 \u2014 at 0.820 assembled, 0.712 by turn six, mean turn 2.647. Its nine copies price at deck-audit's 0.498 in an opener: above the 41%-at-seven line and just UNDER 54%-at-ten, so a single opener holds one about half the time and what carries the 0.820 is the turns after it. This is not where the deck fails.",
         "citations": [
           {
             "rule": "strategy:deckbuilding.redundancy-vs-tutors",
@@ -333,7 +331,13 @@
         "count": 4,
         "thinnest": true,
         "measured_rate": 0.518,
-        "reading": "Cost reduction is this deck's real acceleration — 24 Dragons in the 99 and a mana value 9 commander — and it is four cards: 25.8% of openers, 32.1% by turn three, 0.419 by turn six. Crossed with ramp, the turn-5-Ur-Dragon hand assembles 0.417 and only 0.285 by turn six."
+        "reading": "Cost reduction is this deck's real acceleration \u2014 24 Dragons in the 99 and a mana value 9 commander \u2014 and it is four cards: 25.8% of openers, 32.1% by turn three, 0.419 by turn six. Crossed with ramp, the turn-5-Ur-Dragon hand assembles 0.417 and only 0.285 by turn six.",
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41%"
+          }
+        ]
       },
       {
         "role": "mana",
@@ -344,7 +348,8 @@
         "count": 2,
         "thinnest": true,
         "measured_rate": 0.306,
-        "reading": "One of the THREE components deck-audit flags thin — the others are the entry kill's three-card damage leg and, since the combat kill's multiplier group was re-declared, its two-card multiplier leg — at 13.7% of openers. It is also the component mana_analysis is blind to by construction: both add mana spendable only on Dragon spells, which land_colors counts as zero sources. So the -15 on colour-sources and this 0.306 are measuring opposite halves of 'can I cast a Dragon' and neither one alone answers it."
+        "reading": "One of the three components deck-audit flags thin \u2014 the others are the entry kill's three-card damage leg and the combat kill's two-card multiplier leg \u2014 at 13.7% of openers. It is also the component mana_analysis is blind to by construction: manabase.land_colors counts restricted mana as ZERO sources, and both of these add mana spendable only on Dragon spells. So the -15 on colour-sources and this 0.306 measure opposite halves of 'can I cast a Dragon' and neither one alone answers it.",
+        "citations": []
       },
       {
         "role": "mana",
@@ -360,7 +365,8 @@
         "count": 7,
         "thinnest": true,
         "measured_rate": 0.732,
-        "reading": "Seven Treasure sources, drawn 0.732 / 0.618 by turn six. Turning model_treasures on took the commander from cast-by-turn-six 0.0% to 4.1% and 'never cast in ten turns' from 9,175 to 7,170 of 10,000 while mean available mana stayed 4.219 at turn five — a Treasure does not raise your average mana, it buys the one expensive turn. Five of the seven are unreadable to the model, so every Treasure-derived mana figure is a floor."
+        "reading": "Seven Treasure sources, drawn 0.732 / 0.618 by turn six. Turning model_treasures on took the commander from cast-by-turn-six 0.0% to 4.1% and 'never cast in ten turns' from 9,175 to 7,170 of 10,000 while mean available mana stayed 4.219 at turn five \u2014 a Treasure does not raise your average mana, it buys the one expensive turn. Five of the seven are unreadable to the model, so every Treasure-derived mana figure is a floor.",
+        "citations": []
       },
       {
         "role": "payoff",
@@ -376,7 +382,13 @@
         "count": 7,
         "thinnest": true,
         "measured_rate": 0.732,
-        "reading": "Seven, 0.732 drawn and 0.617 by turn six — the corpus's 41%-at-seven line comfortably beaten, and the group correctly keeps all seven. Read its label precisely, though: it asks whether a Dragon entering does ANYTHING, which a draw trigger or a token answers. Only three of the seven — Dragon Tempest, Terror of the Peaks, Scourge of Valkas — turn an entry into damage. That is why the entry kill's damage leg is three and not seven, and it is the distinction the old declaration collapsed."
+        "reading": "Seven, 0.732 drawn and 0.617 by turn six \u2014 the corpus's 41%-at-seven line comfortably beaten, and the group correctly keeps all seven. Read its label precisely: it asks whether a Dragon entering does ANYTHING, which a draw trigger or a token answers. Only three of the seven \u2014 Dragon Tempest, Terror of the Peaks, Scourge of Valkas \u2014 turn an entry into damage.",
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          }
+        ]
       },
       {
         "role": "payoff",
@@ -388,7 +400,8 @@
         "count": 3,
         "thinnest": true,
         "measured_rate": 0.24,
-        "reading": "THE ENTRY KILL's damage leg, and the component that gates the deck's only rules-evidenced kill: three cards, 19.9% of openers, 25.1% by turn three, and one of the three components deck-audit flags thin. It was declared as seven until the declaration was corrected — Miirym and Lathliss are token MAKERS, not damage payoffs; Temur Ascendancy draws; and Garruk's Uprising matched a text scan only through its trample reminder text. Correcting it took the whole target from 0.481 / 0.356 to 0.240 / 0.153."
+        "reading": "THE ENTRY KILL's damage leg, and the component that gates the deck's best-evidenced kill: three cards, 19.9% of openers, 25.1% by turn three, audit-flagged thin. Two of the three are on stack 002's board and one of them (Dragon Tempest) is on stack 001's, so this leg is where the checker-passed evidence lives as well as where the redundancy is thinnest.",
+        "citations": []
       },
       {
         "role": "piece",
@@ -402,7 +415,8 @@
         "count": 5,
         "thinnest": true,
         "measured_rate": 0.24,
-        "reading": "THE ENTRY KILL's multi-Dragon leg, and now the THICKER of its two halves at five cards, 31.2% of openers. The overlap I flagged in the first pass is gone, and it was the visible half of a worse defect: Miirym and Lathliss were also sitting in the damage leg, where neither belongs, and with that corrected they sit here alone. The target reads 0.240 assembled / 0.153 by turn six, and the gate is the other leg, not this one."
+        "reading": "THE ENTRY KILL's multi-Dragon leg, the thicker of its two halves at five cards, 31.2% of openers. The target reads 0.240 assembled / 0.153 by turn six, and the gate is the other leg.",
+        "citations": []
       },
       {
         "role": "piece",
@@ -413,7 +427,8 @@
         "count": 2,
         "thinnest": true,
         "measured_rate": 0.204,
-        "reading": "THE COMBAT KILL's multiplier leg, and the second mis-declared group this document has had to correct. It held four and two of them multiply nothing: Radiant Destiny is an additive anthem ('creatures you control of the chosen type get +1/+1', role payoff:typal) and Garruk's Uprising is trample plus two draw triggers (draw:engine, value:etb). Garruk's Uprising is literally the same card the entry kill's damage leg ejected last round, matched both times by its trample reminder text — one card, two text scans, two false positives, and I should have checked this leg when I checked that one. The leg is now Atarka, World Render (double strike on attack) and Thrakkus the Butcher (doubles Dragon power on attack): two cards, 13.7% of openers, and deck-audit flags it thin. Thrakkus also came out of the castable-Dragon leg, where he satisfied both halves of the target from one draw. The target fell from 0.411 / 0.290 to 0.204 / 0.128 — BELOW the entry kill's 0.240 / 0.153."
+        "reading": "THE COMBAT KILL's multiplier leg: two cards, 13.7% of openers, audit-flagged thin. The target is 0.204 assembled / 0.128 by turn six, 3.6 points below the entry kill on the assembled figure and 2.5 below by turn six \u2014 close, and both labels declare themselves UNVERIFIED. No passing stack names Atarka or Thrakkus: I grepped the game state of all seven stack files and neither appears in any of them, withheld or not.",
+        "citations": []
       },
       {
         "role": "protection",
@@ -430,13 +445,14 @@
         "count": 8,
         "thinnest": true,
         "measured_rate": 0.764,
-        "reading": "Eight, 0.764 drawn and 0.655 by turn six. Deeper than the payoff and the kill components — the deck is better at protecting the turn than at having one."
+        "reading": "Eight, 0.764 drawn and 0.655 by turn six. Deeper than the payoff and the kill components \u2014 the deck is better at protecting the turn than at having one.",
+        "citations": []
       }
     ],
     "single_points_of_failure": [
       {
         "component": "the mana base itself, shared by every other component",
-        "why": "Every declared component measures a DRAWN rate and the rates are healthy (0.306 to 0.820). Drawing is not casting. The one prerequisite they all share is unpriced by the declaration and is where the deck actually fails: 31 lands, land drops 0.670 on turn four and 0.525 on turn five, mean available mana 4.219 at turn five and 5.428 at turn eight, and the commander unlanded by turn ten in 7,170 of 10,000 iterations.",
+        "why": "Every declared component measures a DRAWN rate and the rates are healthy (0.306 to 0.820). Drawing is not casting. The one prerequisite they all share is unpriced by the declaration and is where the deck actually fails: 31 lands, land drops 0.670 on turn four and 0.525 on turn five, mean available mana 4.219 at turn five and 5.428 at turn eight, and the commander unlanded by turn ten in 7,170 of 10,000 iterations. The pod run is the third measurement and the only one taken at a table, and it separates on BOTH resource counts: 5.48 land drops a game (ci95 [5.15, 5.81], n=100) and 9.85 casts (ci95 [8.84, 10.86], n=100), with the win/loss split 7.25 against 5.24 on lands (diff 2.01, ci95 [0.52, 3.50], p 0.0002) and 15.92 against 9.02 on casts (diff 6.89, ci95 [2.28, 11.51], p 0.0001). Nine or ten spells over the eight-to-nine own turns this seat gets is about one a turn, in a list whose modal mana value is 3 \u2014 which is what a mana base short of its floor looks like from the far end. Forge's AI caveat applies to every seat including ours.",
         "closers": [
           "Sacred Foundry",
           "Mana Confluence",
@@ -447,7 +463,7 @@
         "citations": [
           {
             "rule": "strategy:deckbuilding.mana-base",
-            "quote": "Commander's usual 36–38 lands only works because rocks, dorks and land-ramp pay the remainder"
+            "quote": "Commander's usual 36\u201338 lands only works because rocks, dorks and land-ramp pay the remainder"
           },
           {
             "rule": "strategy:deckbuilding.curve",
@@ -461,7 +477,7 @@
       },
       {
         "component": "Cost reducer drawn (Urza's Incubator, Herald's Horn, Dragonspeaker Shaman, Dragonlord's Servant)",
-        "why": "Four copies for the job that makes a 24-Dragon list castable at all — 25.8% of openers against the corpus's 31%-at-five, and the crossed 'reducer + ramp' hand is 0.285 by turn six. Every Dragon above mana value five is priced assuming one of these four showed up.",
+        "why": "Four copies for the job that makes a 24-Dragon list castable at all \u2014 25.8% of openers against the corpus's 31%-at-five, and the crossed 'reducer + ramp' hand is 0.285 by turn six. Every Dragon above mana value five is priced assuming one of these four showed up.",
         "closers": [
           "Morophon, the Boundless",
           "Goreclaw, Terror of Qal Sisma"
@@ -477,18 +493,37 @@
   },
   "lean_into": [
     {
-      "what": "Build toward the Dragon Tempest board and widen its three-card damage leg. Worth flagging how this held up: it was written when the entry kill was the LESS likely of the deck's two plans, argued on evidence alone, and correcting the combat kill has since inverted the rates in its favour.",
-      "why": "Two checker-passed, non-withheld boards prove this plan and none proves the other. Stack 001: fifteen Faerie Dragon tokens enter as one event, Dragon Tempest triggers fifteen times at X=17, and its final_state spends the 255 available damage to kill BOTH opponents on that board — engine-critic notes 255 also exceeds the 120 a full table of three fresh seats holds. Stack 002: one Lathliss cast under Miirym, Panharmonicon, Terror of the Peaks and Dragon Tempest deals 64 in 12 separately-targeted instances, killing the 32-life seat. Against that, no passing stack names any combat-kill multiplier — all six files grepped for Atarka, Thrakkus, Radiant Destiny and Garruk's Uprising, and none appears in any of them, withheld or not. When this was written the entry kill was 0.240 / 0.153 against the combat kill's 0.411 / 0.290 and I recommended it anyway on the evidence; re-declaring the combat kill's multiplier leg moved it to 0.204 / 0.128, below the entry kill on both figures. The recommendation now holds for evidence AND rate. What neither stack proves: 001 grants the payoff, the connection and an above-median d20; 002 grants four permanents already down and kills 32, not 40.",
+      "what": "Build toward the Dragon Tempest board and widen its three-card damage leg.",
+      "why": "Three checker-passed, non-withheld boards now bear on this plan and none bears on the other. Stack 001: fifteen Faerie Dragon tokens enter as one event, Dragon Tempest triggers fifteen times at X=17, and its final_state kills the 30-life seat on the second trigger and the 38-life seat if three triggers were aimed there \u2014 255 damage available. Stack 002: one Lathliss cast under Miirym, Panharmonicon, Terror of the Peaks and Dragon Tempest deals 64 damage in 12 separately-targeted instances, kills the 32-life seat, AND \u2014 per the annotation added beside its byte-identical checker-passed summary \u2014 can kill a fresh 40-life seat instead, because all twelve instances read 'any target' and may every one name the same player: 6, 12, 16, 20, 26, 32, 37, 42, with that seat at 3 before the eighth so nothing fizzles. Stack 007 is 002's board minus Panharmonicon and settles the sibling question. Against that, no passing stack names any combat-kill multiplier. The rates agree with the evidence: THE ENTRY KILL 0.240 assembled / 0.153 by turn six against THE COMBAT KILL's 0.204 / 0.128 \u2014 3.6 points apart, both UNVERIFIED by their own labels, and never to be summed or averaged. What none of it proves: 001 grants the payoff, the connection and a d20 fixed at 15; 002 and 007 grant four and three permanents already on the battlefield with eight lands.",
       "evidence": {
         "stacks": [
           "001",
-          "002"
+          "002",
+          "007"
         ],
         "entry_kill_assembled_rate": 0.24,
         "entry_kill_by_turn_6_rate": 0.153,
         "combat_kill_assembled_rate": 0.204,
-        "combat_kill_by_turn_6_rate": 0.128,
-        "combat_kill_before_multiplier_correction": "0.411 assembled / 0.290 by turn six"
+        "combat_kill_by_turn_6_rate": 0.128
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "what": "HOLD PANHARMONICON. This reverses a cut this document previously proposed.",
+      "why": "The evidence that entry named as absent has arrived and it points the other way. Checker-passed stack 007 resolves stack 002's exact board with Panharmonicon removed and nothing else changed: Miirym triggers once instead of twice, ONE token copy enters instead of two, and the cascade produces 20 damage in 4 instances instead of 64 in 12 \u2014 20 of 64, a 68.75% loss, because the doubler was doubling Terror and both Dragon Tempest abilities on every entry as well as Miirym. The 32-life seat survives at 12, and 007's checker verified the margin cannot be closed: the only activated ability on the board other than the lands' mana abilities is the {1}{R} Dragon pump, the scenario's declared six mana pays Lathliss's eminence-reduced five and leaves exactly {1} against a two-mana cost, and partial payments are not allowed. So cutting Panharmonicon costs stack 002 its LETHALITY, not its margin, and among the four presentable checker-passed stacks it is the only board that both CASTS its Dragon from hand and can kill a fresh 40-life seat \u2014 001 kills a 30-life and a 38-life seat but casts nothing and grants a completed combat connection with a d20 fixed at 15, 005 cheats Drakuseth in with Sneak Attack for 17 and kills nobody, and 007 casts the same Lathliss for 20. The mana argument against it is real \u2014 four mana, no board, no mana, on the binding axis \u2014 and it is outweighed: the pod run measures this deck dealing a MEDIAN of 12.0 combat damage a game (mean 26.30, ci95 [18.82, 33.78], n=100, 22 games at zero). A deck that short of damage does not spend a proven kill for a land.",
+      "evidence": {
+        "stacks": [
+          "002",
+          "007"
+        ],
+        "stack_007_damage_total": 20,
+        "stack_002_damage_total": 64,
+        "combat_damage_dealt_median": 12.0
       },
       "citations": [
         {
@@ -499,7 +534,7 @@
     },
     {
       "what": "Buy one-shot mana and cost reduction, not more average mana.",
-      "why": "The measurement that moved today shows the mechanism exactly: model_treasures took the commander from cast-by-turn-six 0.0% to 4.1% and 'never cast' from 9,175 to 7,170 of 10,000 while mean available mana stayed identical at 4.219 on turn five. A deck with 26 maindeck entries at mana value five or more does not need a higher average; it needs one turn that spikes.",
+      "why": "The measurement shows the mechanism exactly: model_treasures took the commander from cast-by-turn-six 0.0% to 4.1% and 'never cast' from 9,175 to 7,170 of 10,000 while mean available mana stayed identical at 4.219 on turn five. A deck with 26 maindeck entries at mana value five or more does not need a higher average; it needs one turn that spikes. The repo has already tested the alternative on this deck and it failed: twelve spells swapped for twelve averaging three mana cheaper moved turn-five mana by 0.02, while three lands and four cheap accelerants moved it +0.27 and bought seven points of turn-five land drop.",
       "evidence": {
         "mean_available_mana_turn_5": 4.219,
         "commander_cast_by_turn_6_rate": 0.041
@@ -512,13 +547,111 @@
       ]
     },
     {
-      "what": "The land tutors are already reliable — the basics question the pilot asked has a clean answer.",
-      "why": "Enumerated from the 26 land entries: Farseek has 17 legal target copies — eleven nonbasics (Blood Crypt, Breeding Pool, Canopy Vista, Cinder Glade, Hallowed Fountain, Jetmir's Garden, Overgrown Tomb, Sheltered Thicket, Steam Vents, Stomping Ground, Ziatora's Proving Ground) plus 4 Mountain, 1 Island and 1 Plains; Breeding Pool counts because it is Forest ISLAND, which I dropped the first time while correctly counting its Forest half elsewhere; Nature's Lore and Skyshroud Claim have 11 Forest-typed cards; Fabled Passage has 9 basics. Nature's Lore and Skyshroud Claim also put theirs in UNTAPPED, which is the tempo answer to half the pilot's third question. Nine basics carries the CURRENT package: dedicated demand on basics is at most three (Encroaching Dragonstorm searches up to two, Fabled Passage one), and Farseek, Nature's Lore and Skyshroud Claim all have nonbasic options ahead of a basic. The prescription below adds a fourth consumer — add_candidates[3]'s Prismatic Vista also searches a basic — taking worst-case dedicated demand to four of nine, while the swap holds basics at nine inside 36 lands rather than 31. Still comfortable, but I first wrote this conclusion without the card I go on to prescribe. So: raising the basic count is not needed for whiff-proofing, and Prismatic Vista should be judged on the flexibility it buys rather than on making the tutors safer.",
+      "what": "You are not the archenemy at this table \u2014 and you are not the slowest deck at it either. Both seats that win this table out-drop you on land drops with disjoint intervals, and the one seat you are level with wins less than you do \u2014 and what separates your own wins is resource development rather than the attack step.",
+      "why": "THE POD, ENUMERATED ON EVERY SEAT. Combat damage TAKEN, all four: giada-angels 13.13 (ci95 [9.80, 16.46]), ur-dragon 21.99 ([17.12, 26.86]), baylen-tokens 31.49 ([27.24, 35.74]), vito 42.59 ([33.40, 51.78]). Ur-dragon is SECOND-lowest, not lowest \u2014 giada takes less and wins 39 \u2014 so low damage taken is not itself an advantage and the pod is not focusing this seat. PACE, all four, which the previous version of this entry compared only against another deck's run and therefore over-claimed: first attack ur-dragon 20.38 (ci95 [18.98, 21.79], n=81), vito 19.22 ([17.36, 21.08], n=69), baylen 18.67 ([17.27, 20.06], n=51), giada 13.28 ([12.29, 14.28], n=95). Per-game against ours \u2014 diff_means(opponent, ours), so a positive difference means WE attack later \u2014 only giada separates: diff +7.0985, ci95 [+5.3750, +8.8220], p 0.0001. Vito (diff +1.1653, ci95 [-1.1683, +3.4990], p 0.331) and baylen (diff +1.7160, ci95 [-0.2643, +3.6964], p 0.11) do not. The baylen interval was printed as [-3.70, 0.26] until this revision \u2014 the other orientation's, and the last surviving site of the sign defect recorded in gaps; its two neighbours were already right, and the two p-values are restated in this orientation as well, because permutation_p depends on argument order. 'Slowest deck at the table' is therefore false and is withdrawn; what survives is slower than giada, indistinguishable from vito and baylen, and second-lowest on damage taken. RESOURCES, all four: land drops ur-dragon 5.48 ([5.15, 5.81]), giada 6.79 ([6.31, 7.27]), vito 6.43 ([6.01, 6.85]), baylen 5.17 ([4.89, 5.45]). Both seats above us have disjoint intervals from ours and between them take 81 of the 100 wins; the one seat we are level with, baylen, takes 7. That is the same finding as the within-our-games one, arriving from the pod side. \n\nWITHIN OUR OWN GAMES, WITH THE SET NAMED FIRST AND THE PARTITION BALANCED. The record keeps eighteen numeric fields per seat per game. Every figure below is diff_means(losses, wins), ONE orientation throughout, so a positive difference means wins are higher; the previous version of this paragraph mixed two orientations and printed three intervals with the sign reversed. 18 = 9 + 8 + 1. NINE separate with an interval excluding zero: lands, casts, triggers, combat damage dealt to players, noncombat damage dealt to players, token resolutions, token attackers, commander damage max, and combat damage taken \u2014 that last one in the OTHER direction (23.97 in losses against 7.50 in wins, diff -16.47, ci95 [-23.35, -9.58]). EIGHT are null: activations, tokens observed, token blockers, token combat damage to players, tokens chumped, creatures lost, token damage share, and first attack (diff -1.62, ci95 [-4.87, 1.63]). ONE is UNTESTABLE rather than null, and the distinction matters: `eliminated_turn` is null in all twelve wins because a winner is never eliminated, so the field cannot separate the two groups even in principle and no test of it means anything. Seven of the nine are consequences of having won and cannot be read as causes \u2014 you deal damage, generate triggers and attack with tokens BECAUSE the game went your way. Exactly two sit upstream of all of it: lands (7.25 against 5.24, diff 2.01, ci95 [0.52, 3.50], p 0.0002) and casts (15.92 against 9.02, diff 6.89, ci95 [2.28, 11.51], p 0.0001). One further null is worth naming although it is NOT one of the eighteen, because this document leaned on it: turns survived (8.72 against 9.42, diff 0.70, ci95 [-0.66, 2.06]) is a quantity I derived from `eliminated_turn` and `global_turn`, not a field the record keeps. \n\nONE FINDING OR TWO \u2014 UNDECIDED BY THIS SAMPLE, AND HERE IS THE WORKING. Lands and casts correlate at Pearson r 0.6289 over the 100 games (r-squared 0.3956), so they share about two fifths of their variance and three fifths is unshared. The test that would separate them is residualising each against the other by OLS (casts = -0.5653 + 1.9006 x lands; lands = 3.4299 + 0.2081 x casts), and it kills BOTH \u2014 all three intervals below are diff_means(losses, wins), the same orientation as everything else in this entry. Casts after lands: -0.37 in losses against 2.70 in wins, diff +3.0711, ci95 [-0.9446, +7.0868]. Lands after casts: -0.07 against 0.51, diff +0.5765, ci95 [-0.7112, +1.8642]. The simplest normalisation agrees \u2014 casts per land drop, 1.73 against 2.24, diff +0.5022, ci95 [-0.0010, +1.0053], which includes zero by a thousandth at the low end. Not one of the three excludes zero, so at twelve wins this sample CANNOT tell the two apart, and the finding is reported as undecided rather than resolved. For the purposes of this document I LEAD ON LANDS, and the reason is not the residual test: land drops survive excluding the fourteen clock games, are corroborated from the pod side by two seats with disjoint intervals above us, and the 36-38 target never rested on the simulation at all. What I will not bury is which way the residuals lean \u2014 permutation p is 0.0121 for casts-after-lands against 0.1553 for lands-after-casts, and deck-skeptic sized the lean at 76.5% of detectable for casts-after-lands against 44.8% for lands-after-casts. That is a lean, not a finding, and open_questions[5] is where it goes rather than into a prescription. \n\nWHERE THE LEAN POINTS, AND WHY THIS DOCUMENT DOES NOT FOLLOW IT. If casts carries signal independent of lands, the deck-side thing that turns one turn's mana into more spells is COST REDUCTION \u2014 and that is this document's own second single point of failure: four cards (Urza's Incubator, Herald's Horn, Dragonspeaker Shaman, Dragonlord's Servant), 25.8% of openers against the corpus's 31%-at-five, 0.518 assembled and 0.419 by turn six, with the crossed reducer-plus-ramp hand at 0.417 and 0.285. It is UNFUNDED: all six adds below go to mana-base, colour-sources and interaction-breadth, and not one of them adds a fifth reducer. Saying so plainly is the point \u2014 the previous version of this paragraph wrote 'no new prescription follows', which dressed an UNDECIDED test up as a settled negative, and that is the wrong shape of sentence for a test that came back at 76.5% of detectable. Two reasons it is routed rather than prescribed, and the second is mechanical rather than a matter of taste. First, nothing may be sized off a lean; the SPOF stands on its own engine evidence and would be worth funding even if the residual test had come back flat. Second, this document's own rule is that an add must MOVE the axis it names, and I recomputed both closers this engine block already lists against (cards, roles): Goreclaw, Terror of Qal Sisma carries `ramp:cost-reduction` and moves ramp 21 to 22 \u2014 further OVER a band this document argues at axes[6] must not be cut \u2014 while Morophon, the Boundless, which is the bigger reducer by far, carries only `payoff:typal` and `threat:body` and moves NO computable axis at all. So the better card is invisible to every measure the gate can check and the visible one moves the wrong way. That is a defect in the measure rather than in the cards, it is not something to paper over with a swap nobody gets to review, and open_questions[5] routes it. \n\nLIMITS THE RECORD STATES ITSELF. 26 of the 63 attributed eliminations of our seat were by LIFE LOSS, which no blocker and no race answers. Every seat is Forge's AI, \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\". Both resource results survive dropping the 14 games that ran to the 300-second clock (rule: ms >= 300000; lands diff +2.1419, ci95 [+0.6469, +3.6369], p 0.0002; casts diff +7.6464, ci95 [+3.0278, +12.2650], p 0.0001, n=12 wins and 74 losses). And this is correlation inside one seeded AI-vs-AI sample, not a causal claim and not a rate for any other table.",
+      "evidence": {
+        "win_rate": 0.12,
+        "win_rate_ci95": [
+          0.07,
+          0.198
+        ],
+        "games": 100,
+        "numeric_fields_tested": 18,
+        "fields_separating": 9,
+        "lands_win_vs_loss": [
+          7.25,
+          5.2386
+        ],
+        "lands_diff_ci95": [
+          0.5241,
+          3.4986
+        ],
+        "casts_win_vs_loss": [
+          15.9167,
+          9.0227
+        ],
+        "casts_diff_ci95": [
+          2.2793,
+          11.5086
+        ],
+        "lands_casts_pearson_r": 0.6289,
+        "casts_residual_after_lands_ci95": [
+          -0.9446,
+          7.0868
+        ],
+        "lands_residual_after_casts_ci95": [
+          -0.7112,
+          1.8642
+        ],
+        "first_attack_turn_mean": 20.38,
+        "first_attack_turn_ci95": [
+          18.98,
+          21.79
+        ],
+        "first_attack_turn_n": 81,
+        "first_attack_vs_vito_p": 0.3282,
+        "first_attack_vs_giada_ci95": [
+          5.375,
+          8.822
+        ],
+        "eliminated_turn_mean": 32.8,
+        "eliminated_turn_ci95": [
+          30.85,
+          34.75
+        ],
+        "eliminated_turn_n": 75,
+        "eliminated_how": {
+          "damage": 37,
+          "life loss": 26
+        },
+        "orientation": "diff_means(losses, wins); a positive difference means wins are higher",
+        "casts_residual_after_lands_diff": 3.0711,
+        "lands_residual_after_casts_diff": 0.5765,
+        "casts_per_land_drop_diff": 0.5022,
+        "casts_per_land_drop_ci95": [
+          -0.001,
+          1.0053
+        ],
+        "residual_test": "undecided \u2014 no interval excludes zero",
+        "numeric_fields_partition": {
+          "exclude_zero": 9,
+          "null": 8,
+          "untestable": 1,
+          "total": 18
+        },
+        "downstream_fields_separating": 7,
+        "resource_fields_separating": 2,
+        "lands_diff": 2.0114,
+        "casts_diff": 6.8939,
+        "clock_dropped_lands_diff_ci95": [
+          0.6469,
+          3.6369
+        ],
+        "clock_dropped_casts_diff_ci95": [
+          3.0278,
+          12.265
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:whos-the-beatdown",
+          "quote": "Misassignment loses slowly and invisibly: playing control when you must race concedes the only axis you could have won on."
+        },
+        {
+          "rule": "strategy:multiplayer.pod-management",
+          "quote": "Manage pace toward the game length your deck wins"
+        }
+      ]
+    },
+    {
+      "what": "The land tutors are already reliable \u2014 the basics question the pilot asked has a clean answer for the CURRENT package.",
+      "why": "Enumerated from the 26 land entries: Farseek has 17 legal target copies \u2014 eleven nonbasics (Blood Crypt, Breeding Pool, Canopy Vista, Cinder Glade, Hallowed Fountain, Jetmir's Garden, Overgrown Tomb, Sheltered Thicket, Steam Vents, Stomping Ground, Ziatora's Proving Ground) plus 4 Mountain, 1 Island and 1 Plains; Breeding Pool counts because it is Forest Island. Nature's Lore and Skyshroud Claim have 11 Forest-typed cards and put theirs in UNTAPPED, which is the tempo answer to half the pilot's third question. Encroaching Dragonstorm and Fabled Passage draw on the 9 basics. Dedicated demand on the basics today is at most three (Dragonstorm up to two, Fabled Passage one) because Farseek, Nature's Lore and Skyshroud Claim all have nonbasic options ahead of a basic. THE QUALIFICATION THE PRESCRIPTION FORCES, stated here as well as at add_candidates[3] and axes[14]: Prismatic Vista is a THIRD dedicated searcher of those same nine basics \u2014 Encroaching Dragonstorm up to two, Fabled Passage one, this one \u2014 not a sixth searcher of the wider pool, taking worst-case dedicated demand from three of nine to four of nine \u2014 and the swap package holds basics at nine inside 36 lands rather than 31, which raises the basic SHARE of a smaller number to a share of a larger one. Conclusion, scoped: raising the basic COUNT is not needed for whiff-proofing either before or after the swap, and Prismatic Vista should be judged on the flexibility it buys rather than on making the tutors safer.",
       "evidence": {
         "farseek_targets": 17,
         "forest_typed_cards": 11,
         "basics": 9,
-        "basic_consumers_after_swap": 4
+        "basic_consumers_now": 2,
+        "basic_consumers_after_swap": 3
       },
       "citations": [
         {
@@ -531,8 +664,8 @@
   "cut_candidates": [
     {
       "card": "Cavern-Hoard Dragon",
-      "why": "Mana value 9, and its cost reduction is a tax on the OPPONENTS' artifact counts — in a pod without an artifact deck it is a nine-mana 6/6. Mean available mana is 5.428 on turn eight. The deck's binding constraint is deployment, and this is the single least deployable card in it.",
-      "cost_of_cutting": "The Treasure component drops 7 to 6, and the deck loses a hasty trampling flier that refuels the hoard on connection. It is also a body the combat model can see.",
+      "why": "Mana value 9, and its cost reduction is a tax on the OPPONENTS' artifact counts \u2014 in a pod without an artifact deck it is a nine-mana 6/6. Mean available mana is 5.428 on turn eight and the pod run measures 5.48 land drops a game (ci95 [5.15, 5.81], n=100). The deck's binding constraint is deployment, and this sits at the top of the curve: enumerating every printed mana value in cards.json, 9 is the joint-highest in the 99 alongside the commander, with Utvara Hellkite at 8 and five cards at 7 (Ancient Gold Dragon, Atarka, Drakuseth, Klauth, Old Gnawbone). Its only discount is a tax on someone else's board.",
+      "cost_of_cutting": "The ramp axis moves 21 to 20 (recomputed against (cards, roles) with the Shivan Reef swap applied), the Treasure component drops 7 to 6, and the deck loses a hasty trampling flier that refuels the hoard on connection. It is also a body the combat model can see.",
       "orphans_stack": [],
       "difficulty": "easy",
       "citations": [
@@ -543,22 +676,35 @@
       ]
     },
     {
+      "card": "Klauth, Unrivaled Ancient",
+      "why": "Seven mana for acceleration that is gated on attacking and then restricted. deck-facts names it one of five 'spells_only' restricted sources in this deck, so its mana cannot pay an activated ability's cost at all, only a spell's; and the trigger is 'whenever Klauth attacks', in a deck whose first attack the pod run puts at global turn 20.38 (ci95 [18.98, 21.79], n=81 of 100 games, with 19 games recording no attack at all). It is a ritual that asks you first to cast a seven-drop and then to attack with it, in a deck that reaches its first combat at global turn 20.38.",
+      "cost_of_cutting": "A hasty 4/4 flier \u2014 read from cards.json, not from reputation; the 6/6s in this 99 are Cavern-Hoard Dragon and Utvara Hellkite \u2014 and a ramp turn that is smaller than it sounds for the same reason: X is the total power of attacking creatures, so Klauth swinging alone adds four. Seven mana for a 4/4 that must survive to a combat step before it accelerates anything. The ramp AXIS does not move \u2014 recomputed against (cards, roles), cutting Klauth leaves it at 21, because deck-audit files it under ramp's `possible_uncounted` rather than in the count \u2014 so this cut removes a real function that the measure never credited, which is the honest way to state it. goldfish_metrics names it in combat_effects_not_modelled, so no declared target loses a member and no rate moves.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "unless the majority of your deck is mana ramp... you're probably only going to be able to cast ONE big-mana spell per game"
+        }
+      ]
+    },
+    {
       "card": "Dragonback Assault",
-      "why": "{3}{G}{U}{R} is three separate coloured pips at mana value six in the deck whose measured problem is coloured sources, and its own ETB deals 3 to each creature — which kills Dragonlord's Servant (1/3) and Dragonspeaker Shaman (2/2), two of the deck's cheap enablers; Korlessa, Scale Singer is 1/4 and survives it. It is the clearest case of a card whose cost fights the mana base.",
-      "cost_of_cutting": "A landfall token engine and a second small sweep; interaction drops 12 to 11, still over Walser's floor, and creature-class answers go 6 to 5.",
+      "why": "{3}{G}{U}{R} is three separate coloured pips at mana value six in the deck whose measured problem is coloured sources, and its own ETB deals 3 to each creature \u2014 which kills Dragonlord's Servant (1/3) and Dragonspeaker Shaman (2/2), two of the four cost reducers the engine's thinnest mana component rests on; Korlessa, Scale Singer is 1/4 and survives it. It is the clearest case of a card whose cost fights the mana base.",
+      "cost_of_cutting": "A landfall token engine and a second small sweep. Recomputed against (cards, roles) with the Prismatic Vista swap applied: interaction 12 to 11, still over Walser's floor, and creature-class answers 6 to 5. Across the full six-swap package interaction returns to 12, because Soul-Guide Lantern adds one back.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
+          "quote": "Duke's judgment layer, in 60-card terms: 17\u201318 sources for a colour you won't keep a hand without, 14\u201316 for a main colour, 10\u201313 for a secondary, 4\u20137 for a splash."
         }
       ]
     },
     {
       "card": "Dragonlord Kolaghan",
-      "why": "Its unique ability — an opponent losing 10 life for casting a creature or planeswalker whose name is already in their graveyard — is close to blank in most pods, so it is paying {4}{B}{R} for team haste. Enumerating the 99 for haste granted to OTHER creatures: three grant it broadly — Dragon Tempest (every entering flier), Temur Ascendancy (everything), and this — while Hellkite Courser grants it to the commander alone and Sneak Attack to the one creature it cheats in. And it is one of only two nonland cards in the deck that want black at all.",
-      "cost_of_cutting": "Team haste redundancy 3 to 2, which is real for a deck that wants its Dragons converting the turn they land; threat-density 4 to 3, still at the floor. It does NOT change interaction-breadth: it is the only card in the 99 that mentions a graveyard and it never answered one.",
+      "why": "Its unique ability \u2014 an opponent losing 10 life for casting a creature or planeswalker whose name is already in their graveyard \u2014 is close to blank in most pods, so it is paying {4}{B}{R} for team haste. Enumerating the 99 for haste granted to OTHER creatures: three grant it broadly \u2014 Dragon Tempest (every entering flier), Temur Ascendancy (everything), and this \u2014 while Hellkite Courser grants it to the commander alone and Sneak Attack to the one creature it cheats in. And it is one of only three cards in the 99 that want black at all, with the commander and Crux of Fate.",
+      "cost_of_cutting": "Team haste redundancy 3 to 2, which is real for a deck that wants its Dragons converting the turn they land; threat-density 4 to 3, recomputed against (cards, roles) with the Sacred Foundry swap applied \u2014 the floor of Zupke's 3\u20135 band, not below it, but the floor. It does NOT change interaction-breadth: it is the only card in the 99 that mentions a graveyard and it never answered one.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
@@ -570,16 +716,16 @@
     },
     {
       "card": "Eerie Interlude",
-      "why": "A three-mana instant whose value is entirely reactive, in a deck that already runs six protection pieces including Teferi's Protection and Heroic Intervention. Note what axes[11] establishes and this sentence originally contradicted: Deflecting Swat and Flawless Maneuver are free only while you control a commander, which this deck rarely does, so the suite is deep on count rather than cheap. The slot is worth more as a land.",
-      "cost_of_cutting": "The deck's only `recursion` card, and a genuine ETB re-trigger with Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Miirym — a real line the deck gives up, not just a fog.",
+      "why": "A three-mana instant whose value is entirely reactive, in a deck that already runs six protection pieces including Teferi's Protection and Heroic Intervention. Note what axes[11] establishes: Deflecting Swat and Flawless Maneuver are free only while you control a commander, which this deck rarely does, so the suite is deep on count rather than cheap. The slot is worth more as a land.",
+      "cost_of_cutting": "The deck's only `recursion` card, and a genuine ETB re-trigger with Dragon Tempest, Terror of the Peaks, Scourge of Valkas and Miirym \u2014 a real line the deck gives up, not just a fog. It is not one of the six the protection axis counts (deck-audit's list is Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Miirym, Teferi's Protection; Eerie Interlude's role is `recursion`), so recomputed against (cards, roles) protection stays at 6.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": []
     },
     {
       "card": "Utvara Hellkite",
-      "why": "Mana value 8. The goldfish never casts the 9-mana commander in 7,170 of 10,000 iterations and reaches 5.428 mean mana by turn eight; a card at 8 is being paid for in slots and almost never in play. I am recommending this one knowing what it costs, and the corrected entry kill strengthens rather than weakens it: the target's mean assembly turn moved from 3.968 to 4.983, so the leg this card sits in comes together later than the deck can pay for an eight-drop anyway.",
-      "cost_of_cutting": "Re-derived against the corrected target rather than carried over. THE ENTRY KILL's multi-Dragon leg drops 5 to 4 — 31.2% of openers to 25.8%, arithmetic unchanged because that leg is not the one that moved — but the target it feeds is now 0.240 assembled / 0.153 by turn six instead of 0.481 / 0.356, so the same redundancy is being taken out of a plan half as likely to happen. The deck also loses the one CREATURE-token maker whose own tokens re-trigger it: Utvara Hellkite triggers on a Dragon ATTACKING, so the 6/6 Dragons it makes trigger it again. Enumerating all eight creature-token makers in the 99 (Ancient Gold Dragon, Dragonback Assault, Generous Gift, Lathliss, Miirym, Sarkhan Fireblood, Swan Song, Utvara Hellkite), no other compounds: Lathliss and Miirym are both gated on a NONTOKEN Dragon entering, which stack 002's final_state confirms by noting Lathliss's ability 'never fires here: every later entry is a token'. I first wrote 'every token maker in the 99', which was short by seven: the deck holds fifteen token makers and the other seven make Treasures. The conclusion is unaffected — no Treasure maker is re-triggered by its own Treasures, Old Gnawbone included, because its 'create that many Treasure tokens' is gated on CREATURES dealing combat damage and a Treasure is not a creature. The entry still holds, because the gate is the three-card DAMAGE leg and not this one, and because mana value 8 is nominal redundancy in a deck measured as unable to deploy it. The conditional I attached last round is void: I made it turn on whether the pilot took the entry kill or the combat kill as plan A, and the combat kill has since fallen to 0.204 / 0.128, below the entry kill. The entry kill is plan A either way, so this is its own redundancy being spent with nothing to fall back on. If the pilot would rather not thin the proven plan at all, hold Utvara Hellkite and drop the sixth add (Soul-Guide Lantern), the most optional slot in this document.",
+      "why": "Mana value 8, and both models say the deck cannot pay for it. The goldfish never casts the 9-mana commander in 7,170 of 10,000 iterations and reaches 5.428 mean mana by turn eight; the pod run measures 5.48 land drops a game (ci95 [5.15, 5.81], n=100). Its own trigger is 'whenever a Dragon you control attacks' in a deck whose first attack is at global turn 20.38, so it is an eight-drop that then asks for a combat step. I am recommending this knowing what it costs.",
+      "cost_of_cutting": "THE ENTRY KILL's multi-Dragon leg drops 5 to 4 \u2014 31.2% of openers to 25.8% \u2014 and the target it feeds is 0.240 assembled / 0.153 by turn six, so the redundancy is being taken out of the deck's best-evidenced plan. The deck also loses the one CREATURE-token maker whose own tokens re-trigger it: Utvara triggers on a Dragon ATTACKING, so the 6/6 Dragons it makes trigger it again. Scoped precisely, because the previous version of this entry was short by seven: the deck holds FIFTEEN token makers, of which eight are creature-token makers (Ancient Gold Dragon, Dragonback Assault, Generous Gift, Lathliss, Miirym, Sarkhan Fireblood, Swan Song, Utvara Hellkite) and seven are Treasure makers (Atsushi, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone, Rapacious Dragon, Smaug the Magnificent, Smothering Tithe). No member of EITHER group other than Utvara is re-triggered by its own tokens: Lathliss and Miirym are gated on a NONTOKEN Dragon entering, which stack 002's final_state confirms ('never fires here: every later entry is a token'), and no Treasure maker is fed by a Treasure \u2014 Atsushi is a death trigger, Rapacious an ETB, Smaug an upkeep, Smothering Tithe an opponent's draw, Goldspan attacks-or-targeted, Old Gnawbone a CREATURE dealing combat damage, and Cavern-Hoard counts artifacts the DEFENDING player controls. If the pilot would rather not thin the proven plan at all, hold Utvara Hellkite and drop the sixth add (Soul-Guide Lantern), the most optional slot in this document.",
       "orphans_stack": [],
       "difficulty": "painful",
       "citations": [
@@ -588,16 +734,6 @@
           "quote": "5 copies is 31% of openers, 7 is 41%"
         }
       ]
-    },
-    {
-      "card": "Panharmonicon",
-      "why": "Four mana that adds no board presence and no mana, in the deck whose binding axis is mana-base — 31 lands against a 36-38 floor, land drops at 0.525 by turn five. That is the argument that discriminates: this is a slot rather than an effect, on the axis that is costing games. I had also argued it is 'only good on a board that is already ahead'; deck-skeptic is right that this is not a test, because it is equally true of Dragon Tempest, Terror of the Peaks and Scourge of Valkas — the leg lean_into[0] tells the pilot to WIDEN. I have withdrawn it rather than kept it alongside the correction, and the cut now rests on the mana argument alone.",
-      "cost_of_cutting": "Re-priced, because my first version badly understated it. Stack 002 is not a marginal board: checker-passed, not withheld, its whole scenario is in the 99 today, and it deals 64 damage in 12 separately-targeted instances and kills the 32-life opponent outright. Panharmonicon is what the 64 rests on — it doubles every trigger in that cascade, because each one is caused by a creature entering. So this cut deletes one of the deck's TWO checker-passed lethal boards, not merely a ceiling, and my earlier phrasing ('the Miirym and Terror of the Peaks ceilings both come down') never said so. It is also the deck's only trigger doubler. What the record cannot settle is whether 002 is lethal WITHOUT Panharmonicon: Miirym would make one Lathliss copy instead of two and the cascade roughly halves against a 32-life seat, so this cut may cost lethality or only margin. open_questions[0] now names Panharmonicon as the permanent to remove, and one resolve-stack run on that board prices this entry properly. Until it does, the cut stands on the mana argument alone — the most expensive on this list by a distance, and a pilot who values the proven board over the land slot should hold it, which is a reasonable call rather than a wrong one.",
-      "orphans_stack": [
-        "002"
-      ],
-      "difficulty": "painful",
-      "citations": []
     }
   ],
   "add_candidates": [
@@ -605,7 +741,7 @@
       "card": "Sacred Foundry",
       "closes": "mana-base (land copies 31 toward 36) and the red/white halves of colour-sources",
       "source": "pool",
-      "why": "Untapped for 2 life, and it carries the Mountain and Plains types, so it is a Farseek target as well as a land drop — one card serving the count, the two colours after red's own deficit, and the tutor package at once. Red is 53.9% of the pip load on 26 sources against a 36 target; white is 16 against 22.",
+      "why": "Untapped for 2 life, and it carries the Mountain and Plains types, so it is a Farseek target as well as a land drop \u2014 one card serving the count, the two colours after red's own deficit, and the tutor package at once. Red is 53.9% of the pip load on 26 sources against a 36 target; white is 16 against 22.",
       "evidence": {
         "combo_lines_opened": []
       },
@@ -617,7 +753,7 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "quote": "36\u201338 lands, 10\u201312 ramp, 10 card draw, 10\u201312 targeted removal, 3\u20134 board wipes"
         },
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -629,11 +765,11 @@
       "card": "Mana Confluence",
       "closes": "colour-sources on all five colours at once",
       "source": "pool",
-      "why": "Untapped, any colour, turn one. mana_analysis credits eleven sources with all five colours today — four lands (City of Brass, Command Tower, Exotic Orchard, Path of Ancestry) and seven nonland — and Reflecting Pool with none, because its output is conditional. This is a twelfth, and one of the few available untapped on turn one for Enlightened Tutor or Swords to Plowshares. The life cost is the price of the deck being five colours at 31 lands.",
+      "why": "Untapped, any colour, turn one. mana_analysis credits eleven sources with all five colours today \u2014 four lands (City of Brass, Command Tower, Exotic Orchard, Path of Ancestry) and seven nonland \u2014 and Reflecting Pool with none, because its output is conditional. This is a twelfth, and one of the few available untapped on turn one for Enlightened Tutor or Swords to Plowshares. The life cost is the price of the deck being five colours at 31 lands. Its natural cut has been re-paired since the previous version of this document: it was Panharmonicon, and stack 007 has since proved that cut deletes a checker-passed kill (lean_into[1]).",
       "evidence": {
         "combo_lines_opened": []
       },
-      "natural_cut": "Panharmonicon",
+      "natural_cut": "Klauth, Unrivaled Ancient",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -653,7 +789,7 @@
       "card": "Shivan Reef",
       "closes": "colour-sources (red and blue) and mana-base",
       "source": "pool",
-      "why": "Untapped red on turn one at one life, and untapped blue for Counterspell, Swan Song and Roiling Dragonstorm — U is 16 against a 22 target with nine land sources. It also taps for colourless with no life, which matters on the turns the deck is casting a generic-heavy Dragon.",
+      "why": "Untapped red on turn one at one life, and untapped blue for Counterspell, Swan Song and Roiling Dragonstorm \u2014 U is 16 against a 22 target with nine land sources. It also taps for colourless with no life, which matters on the turns the deck is casting a generic-heavy Dragon.",
       "evidence": {
         "combo_lines_opened": []
       },
@@ -665,7 +801,7 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Duke's judgment layer, in 60-card terms: 17–18 sources for a colour you won't keep a hand without, 14–16 for a main colour, 10–13 for a secondary, 4–7 for a splash."
+          "quote": "Duke's judgment layer, in 60-card terms: 17\u201318 sources for a colour you won't keep a hand without, 14\u201316 for a main colour, 10\u201313 for a secondary, 4\u20137 for a splash."
         }
       ]
     },
@@ -673,7 +809,7 @@
       "card": "Prismatic Vista",
       "closes": "mana-base, and the basics-versus-fixing tension the pilot asked about",
       "source": "pool",
-      "why": "This is the direct answer to 'how many basics do I run'. It makes each of the nine basics act as any basic, untapped, for one life — so the deck gets the flexibility of more basics without spending more slots on lands that produce one colour. State the cost the other way round from how I first wrote it: it COMPETES with Fabled Passage and Encroaching Dragonstorm for the same nine basics rather than feeding them — all three search that one pool, and in the worst case Encroaching Dragonstorm's two plus Fabled Passage's one plus this one take four of the nine. Nine is deep enough to absorb that, which is why it is a cost and not a whiff risk.",
+      "why": "This is the direct answer to 'how many basics do I run'. It makes each of the nine basics act as any basic, untapped, for one life \u2014 so the deck gets the flexibility of more basics without spending more slots on lands that produce one colour. State the cost the right way round: it COMPETES with Fabled Passage and Encroaching Dragonstorm for the same nine basics rather than feeding them. It is a THIRD dedicated searcher of that nine-card pool \u2014 Encroaching Dragonstorm up to two, Fabled Passage one, this one \u2014 taking worst-case dedicated demand from three of nine to four of nine. Farseek, Nature's Lore and Skyshroud Claim can each take a basic too but have nonbasic options ahead of one, so they are not counted in either figure. Nine is deep enough to absorb four, which is why this is a cost and not a whiff risk. It still moves mana-base, because that axis counts land copies and this is a 32nd.",
       "evidence": {
         "combo_lines_opened": []
       },
@@ -693,7 +829,7 @@
       "card": "Cavern of Souls",
       "closes": "mana-base, and the engine's Dragon-restricted mana component",
       "source": "pool",
-      "why": "Names Dragon and taps for any colour toward a Dragon spell, untapped, and those Dragons cannot be countered. State the trade honestly: manabase.land_colors counts restricted mana as ZERO sources, so this moves the land count and the castability of 24 Dragons and does NOT move colour-sources. That is the same measurement gap the audit already flags on Desolation of Smaug and Sarkhan, Fireblood, and this deck already accepts it on Unclaimed Territory and Maelstrom of the Spirit Dragon.",
+      "why": "Names Dragon and taps for any colour toward a Dragon spell, untapped, and those Dragons cannot be countered. State the trade honestly: manabase.land_colors counts restricted mana as ZERO sources, so this moves the land count and the castability of 24 Dragons and does NOT move colour-sources. That is the same measurement gap the audit flags on Desolation of Smaug and Sarkhan, Fireblood, and the deck already accepts it on Unclaimed Territory and Maelstrom of the Spirit Dragon. It would take the engine's thinnest component \u2014 Dragon-restricted mana, two cards, 0.306 assembled \u2014 to three.",
       "evidence": {
         "combo_lines_opened": []
       },
@@ -713,7 +849,7 @@
       "card": "Soul-Guide Lantern",
       "closes": "interaction-breadth",
       "source": "pool",
-      "why": "Ranked last and optional — the pilot did not ask for it. It is here because the breadth measure only sees a card carrying the `hate:graveyard` role, and most graveyard answers do not carry it. Recomputed against (cards, roles): Soul-Guide Lantern takes interaction-breadth 4 to 5 and interaction 12 to 13, while Bojuka Bog, Scavenger Grounds, Relic of Progenitus, Tormod's Crypt, Grafdigger's Cage and Unlicensed Hearse all leave the axis at 4 — six tested, none moves it. Do not buy one of those six expecting the number to change. One mana, replaces itself later.",
+      "why": "Ranked last and optional \u2014 the pilot did not ask for it, and neither the logged game nor the pod run shows a graveyard deck across the table (Alex on mono-red Tannuk, Tom on Merfolk; giada-angels, vito, baylen-tokens). It is here because the breadth measure only sees a card carrying the `hate:graveyard` role, and most graveyard answers do not carry it. Recomputed against (cards, roles): Soul-Guide Lantern takes interaction-breadth 4 to 5 and interaction 12 to 13, while Bojuka Bog, Scavenger Grounds, Relic of Progenitus, Tormod's Crypt, Grafdigger's Cage and Unlicensed Hearse all leave the axis at 4 \u2014 six tested, none moves it. Do not buy one of those six expecting the number to change. One mana, replaces itself later.",
       "evidence": {
         "combo_lines_opened": []
       },
@@ -725,88 +861,98 @@
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+          "quote": "cover the classes \u2014 creature, artifact, enchantment, graveyard, land \u2014 before doubling any"
         }
       ]
     }
   ],
   "open_questions": [
     {
-      "question": "Does either checker-passed lethal board survive being made from a NORMAL position, and does either kill a 40-life seat? Both grant the hard part. Stack 001 kills both opponents on its board but grants Dragon Tempest and Ancient Gold Dragon already down, combat damage already dealt, and a d20 fixed at 15 against a median of 10.5. Stack 002 actually CASTS its Dragon, which is the shape this question wants, but grants four permanents already on the battlefield — Miirym, Panharmonicon, Dragon Tempest, Terror of the Peaks — with eight lands, and its 64 damage kills the 32-life seat while the 40-life seat survives at 8. Resolve that same cascade with PANHARMONICON REMOVED — 002's exact board minus the doubler, which is the swap cut_candidates[5] proposes — and say two things: whether it is still lethal against the 32-life seat, and whether any version of it kills a seat at 40.",
+      "question": "Stack 001 fixes its d20 at 15 for determinism. What is the LOWEST roll that still kills the 30-life seat on that exact board, and the lowest that also kills the 38-life seat \u2014 and therefore what fraction of the twenty faces clears each bar? Resolve 001's board with the roll unfixed and report the thresholds.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "The pilot wrote 'the rest of the deck I am happy with', and the debrief recorded that as a disagreement with the artifacts. It is settleable rather than arguable, and the gap is now precise rather than general: the deck has two lethal boards on the record and neither has been shown to kill a fresh 40-life seat, 002 explicitly failing to. That is the difference between a deck that wins a pod and one that removes one player from it. It also prices a cut this document proposes: cut_candidates[5] removes Panharmonicon, and nothing on the record says whether that costs 002's lethality or only its margin."
+      "why_it_matters": "This diagnosis calls 001 a proven kill that grants an above-median d20, which is true and uninformative: 15 against a median of 10.5 sounds close to a miracle and the threshold may be far lower, because X for every Dragon Tempest trigger is (2 + the roll) and the trigger count is the roll. Whether the deck's best-evidenced kill needs a top-quartile roll or a coin flip changes how the whole entry-kill plan should be weighted against the combat kill \u2014 and nothing on the record says which."
     },
     {
-      "question": "THE ENTRY KILL's damage leg is now three cards — Dragon Tempest, Terror of the Peaks, Scourge of Valkas — at 19.9% of openers, and deck-audit flags it thin. Is three enough for the deck's only rules-evidenced kill, and what in the pool or the format would join that leg? Re-measure with a widened leg against today's 0.240 assembled / 0.153 by turn six.",
+      "question": "THE ENTRY KILL's damage leg is three cards \u2014 Dragon Tempest, Terror of the Peaks, Scourge of Valkas \u2014 at 19.9% of openers, and deck-audit flags it thin. Is three enough for the deck's best-evidenced kill, and what in the pool or the format would join that leg? Re-measure with a widened leg against today's 0.240 assembled / 0.153 by turn six.",
       "settled_by": "goldfish",
-      "why_it_matters": "The previous version of this question is ANSWERED, and the answer was worse than this diagnosis guessed. I flagged that Miirym and Lathliss sat in both any_of groups and that _target_met therefore scored one card as satisfying both, making 0.481 / 0.356 an upper bound. That was the visible half of the defect. The other half: neither card is a damage payoff at all — both are token makers, in a group labelled 'a per-dragon damage payoff'. Temur Ascendancy draws rather than damages, and Garruk's Uprising matched only through its trample reminder text. With the leg corrected to the three cards that convert an entry into damage, the target fell to 0.240 / 0.153, the mean assembly turn moved 3.968 to 4.983, and the entry kill briefly became the thinner of the deck's two declared kills. That has since inverted again: deck-skeptic found the same mis-declaration in THE COMBAT KILL's multiplier leg, and correcting it took that target to 0.204 / 0.128, back below the entry kill. Three cards is now the number the deck's proven plan rests on, and nothing has priced whether that is enough."
+      "why_it_matters": "Both declared kills are UNVERIFIED by their own labels and they sit 3.6 points apart on assembled rate (0.240 against 0.204), so neither is the plan by a margin worth defending. What separates them is evidence: three checker-passed boards bear on the entry kill and none on the combat kill. Widening the leg that gates the evidenced plan is the cheapest way to move a rate that the mana prescription below does not touch."
     },
     {
-      "question": "Re-goldfish the swapped list (31 lands to 36, five untapped or flexible sources in, six spells out) and report mean available mana at turn five (4.219 today), the turn-four and turn-five land-drop rates (0.670 / 0.525), and commander cast by turn six (0.041). Does five lands move them, and by how much?",
+      "question": "Re-goldfish the swapped list (31 lands to 36, five untapped or flexible sources in, five spells and one eight-drop out) and report mean available mana at turn five (4.219 today), the turn-four and turn-five land-drop rates (0.670 / 0.525), and commander cast by turn six (0.041). Does five lands move them, and by how much?",
       "settled_by": "goldfish",
-      "why_it_matters": "This diagnosis prescribes five lands on the strength of an axis gap and a land-drop curve. The goldfish can price the COUNT half of that directly. It cannot price the colour or the enters-tapped halves, so a flat result would not refute the colour argument — but a flat result on the count would mean the five slots should be spent differently."
+      "why_it_matters": "This diagnosis prescribes five lands on the strength of an axis gap, a land-drop curve and a 100-game pod run in which land drops are what separate the wins. The goldfish can price the COUNT half directly. It cannot price the colour or the enters-tapped halves, so a flat result would not refute the colour argument \u2014 but a flat result on the count would mean the five slots should be spent differently."
     },
     {
-      "question": "What does the literature say about the floor on basic-land count for a five-colour Commander deck running Farseek, Nature's Lore, Skyshroud Claim, Encroaching Dragonstorm and Fabled Passage — and running Prismatic Vista alongside them, as this diagnosis prescribes — at what point does whiff risk become material, and how does that trade against generic fixing?",
+      "question": "What does the literature say about the floor on basic-land count for a five-colour Commander deck running Farseek, Nature's Lore, Skyshroud Claim, Encroaching Dragonstorm and Fabled Passage \u2014 and running Prismatic Vista alongside them, as this diagnosis prescribes \u2014 at what point does whiff risk become material, and how does that trade against generic fixing?",
       "settled_by": "research-strategy",
-      "why_it_matters": "The pilot named this first of their three sub-questions. This diagnosis answers it by enumeration for THIS list — Farseek 17, Nature's Lore 11, Skyshroud Claim 11, Encroaching Dragonstorm 9, Fabled Passage 9, no whiff possible — but has no cited target to measure the nine basics against, and strategy.md's mana-base section does not set one. Include Prismatic Vista in the question: it is a fourth consumer of those nine basics, not a sixth searcher of the wider pool."
+      "why_it_matters": "The pilot named this first of their three sub-questions. This diagnosis answers it by enumeration for THIS list \u2014 Farseek 17, Nature's Lore 11, Skyshroud Claim 11, Encroaching Dragonstorm 9, Fabled Passage 9 \u2014 but has no cited target to measure the nine basics against, and strategy.md's mana-base section does not set one. The question must name the POST-SWAP package, which is the five above plus Prismatic Vista at 36 lands, not the current one."
+    },
+    {
+      "question": "THE COMBAT KILL is declared at 0.204 assembled / 0.128 by turn six on a two-card multiplier leg (Atarka, World Render and Thrakkus the Butcher) and has no passing stack at all. Resolve one board: an attacking Dragon under Thrakkus or Atarka, against a 40-life seat with a plausible blocker \u2014 is it lethal, and does Scourge of the Throne's additional combat phase belong in that leg as a third member?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The deck has two declared kills and every checker-passed board bears on only one of them, which is why this document keeps recommending the entry kill on evidence rather than on rate. One passing board would change that. The Scourge of the Throne half matters separately because a third member would change the leg's redundancy claim and its measured rate, and the goldfish declaration records this as an open judgement rather than a settled exclusion."
+    },
+    {
+      "question": "Fund the four-card cost-reducer component and re-measure. Add a fifth and a sixth reducer to `goldfish_targets.json`'s 'Cost reducer drawn' group \u2014 Morophon, the Boundless and Goreclaw, Terror of Qal Sisma are the two this diagnosis's engine block names as closers \u2014 and report what moves: the group's assembled and by-turn-six rates (0.518 / 0.419 today), the crossed 'Reducer + ramp assembled' target (0.417 / 0.285), commander cast by turn six (0.041) and mean available mana at turn five (4.219). Run it beside the five-land swap of open_questions[2] as well as instead of it, because the two buy the same turn by different routes.",
+      "settled_by": "goldfish",
+      "why_it_matters": "This is the one hole in this document's own prescription that this document does not close, and it is named rather than hidden. Four copies is under the corpus's 31%-at-five line for the job that makes a 24-Dragon list castable, and the residual test in lean_into[3] leans \u2014 undecided, 76.5% of detectable \u2014 toward casts carrying signal independent of land drops, which is what a reducer buys. It is unprescribed for a mechanical reason worth fixing upstream: recomputed against (cards, roles), Morophon moves no computable axis (`payoff:typal`, `threat:body`) and Goreclaw moves ramp 21 to 22, further over a band this diagnosis argues must not be cut. A goldfish can price the component directly and owes nothing to either axis."
+    },
+    {
+      "question": "Re-simulate against the same pod at a sample large enough to resolve the residual test in lean_into[3]: deck-skeptic sizes it at roughly 24 wins to settle whether casts carries signal independent of land drops, and roughly 48 to settle the reverse \u2014 about 200 and about 400 games at this deck's measured 0.12 win rate. Report the same eighteen-field sweep and the two OLS residuals.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The strongest evidence in this document is a correlation inside twelve wins, and the one question it cannot answer is whether mana and the spells it buys are one finding or two. Nothing here is sized off the undecided half, so the answer changes no swap below \u2014 but it decides whether the next prescription should buy lands or reducers, which is exactly the choice open_questions[5] opens. Routed as `goldfish` because the vocabulary has no value for a Forge run; the actual command is `manamap pilot simulate ur-dragon --vs giada-angels vito baylen-tokens --games 200`, and gaps names the A/B that would go beside it."
     }
   ],
   "gaps": [
-    "THE ORCHESTRATOR'S BRIEF WAS WRONG ON A LOAD-BEARING PREMISE, and it has since confirmed so. I was told 'three passing presentable stacks remain and none of them is a kill.' Stack 001 is checker-passed, carries no presentable: false, and its final_state kills BOTH opponents on its board — 'lethality confirmed' for the 30-life seat, and the 38-life seat as well; engine-critic has since found its 255 available damage exceeds the 120 a full table of three fresh seats holds. I used the narrower true claim throughout rather than the brief, and that claim still stands: no passing stack proves the deck ASSEMBLING and landing that kill from a normal board, because 001's scenario grants the payoff, the connection and an above-median d20.",
     "colour-sources and mana-base are not recomputed by validate-diagnosis (they need mana_analysis), so the five land adds are argued from the tracked mana_analysis.json figures and from oracle text, not from a re-derivation. A re-run of mana-analysis after the swap is the check.",
-    "No deck_recon.json exists for this deck, so nothing here is grounded in what other Ur-Dragon lists run. Whether five colours at 36 lands is what strong lists do, and whether they solve red density with fetch-plus-typed-dual packages instead, is unanswered.",
-    "The enters-tapped half of the pilot's question is measured (5 unconditional, 9 conditional of 31) but not PRICED: the goldfish does not model tapped lands, so nothing in the repo can say what Canopy Vista and Cinder Glade entering tapped on nine basics costs in turns.",
-    "One logged game is texture, not a rate. Entry 001's Blood Moon lockout is the reason this audit was asked for and is not evidence about the mana base's normal behaviour — no figure in this diagnosis comes from it. The rates come from the 10,000-iteration goldfish, the counts from deck-audit and cards.json, the colour figures from mana_analysis.json, and the bracket from bracket_report.json.",
-    "engine.json was failing its validator with 39 errors when this diagnosis was first written, and I was instructed to cite no card list or figure from it. That state has moved: `validate-engine ur-dragon` returns OK today — 7 stages, 95 cards placed, 0 unassigned, 4 of 13 lines verified by a passing stack. The policy stands regardless and I did not revisit it, so the gap is real: nothing in this document cites engine.json, and the engine block above is built from deck-audit's priced components and goldfish_targets.json alone. A reader wanting the engine's own view should read the re-modelled file, not this block.",
-    "A PATTERN IN MY OWN REVISIONS, recorded because across four rounds it was this document's most reliable defect class: a correction lands at some of the sites that carry it and not all of them. Four instances. (1) axes[12] and lean_into[0] were rewritten and the `verdict` kept asserting the superseded ranking for a full cycle. (2) Farseek 16 to 17 reached axes[13] and lean_into[2] but not open_questions[3]. (3) The corrected axes[11] reading on which protection spells are free left cut_candidates[3] still saying 'two free ones'. (4) add_candidates[3]'s Prismatic Vista correction left lean_into[2] and open_questions[3] concluding from the uncorrected version. Every one was caught by grepping every leaf for the changed token, never by re-reading prose — two by me, two by deck-skeptic. Whoever revises this artifact next should grep for the figure or phrase they are changing before deciding they have changed it."
+    "No deck_recon.json exists for this deck, so nothing here is grounded in what other Ur-Dragon lists run. Whether five colours at 36 lands is what strong lists do, and whether they solve red density with fetch-plus-typed-dual packages instead, is unanswered. Nothing in this document leans on a recon claim, dated or otherwise.",
+    "The enters-tapped half of the pilot's question is measured (5 unconditional, 9 conditional of 31) but not PRICED: the goldfish does not model tapped lands, and the Forge run records land-play events without their tapped status, so nothing in the repo can say what Canopy Vista and Cinder Glade entering tapped on nine basics costs in turns.",
+    "THE STRONGEST FIGURES IN THIS DOCUMENT ARE MINE, NOT THE RECORD'S, and they are flagged rather than smuggled. The run record publishes the seat's `lands` mean (5.48, ci95 [5.15, 5.81], n=100) and its `casts` mean (9.85, ci95 [8.84, 10.86], n=100) but neither split by outcome. Everything in lean_into[3]'s second and third paragraphs was computed by me from the record's own per-game `games[].per_seat['ur-dragon']` values using manamap.sim.stats.diff_means and permutation_p (seeded at 0, 10,000 iterations, so it replays): the eighteen-field partition, the win/loss splits on lands and casts, the eight nulls, the one untestable field, the Pearson r, the two OLS residuals and the clock-drop robustness check. ORIENTATION IS PART OF THE CLAIM, and it is stated because getting it wrong is how the previous revision shipped three intervals with the sign reversed while the conclusion they supported was correct: every figure is `diff_means(losses, wins)` and `permutation_p(losses, wins)`, so a positive difference means wins are higher, and an interval on a difference must contain that difference \u2014 the check that catches this in one glance. The argument order also changes the permutation p, because the test shuffles the pooled list and the pool is built as xs + ys, so every p here is quoted from that one orientation and no other. Two further things a reader should hold against those p-values: permutation_p is floored at 1/(10,000+1) by Phipson & Smyth, so a printed 0.0001 means 'no more extreme rearrangement was found' rather than one in ten thousand; and with twelve wins the interval, not the p, is the claim \u2014 which is why the residual test is reported as UNDECIDED rather than as a decision between lands and casts. All of it is correlation inside one AI-vs-AI sample of 100 seeded games, not a causal claim and not a rate for any other table.",
+    "The run corroborates the KIND of claim the mana-base axis makes and prices no COUNT. A correlation between resource development and winning is silent on whether the right number is 33, 36 or 38 lands; the 36\u201338 comes from strategy:deckbuilding.ratios and Burgess's 45 sources, both cited above, and open_questions[2] is what routes the count to a model that can price it. Nothing in this document infers a land count from the simulation.",
+    "Fourteen of the 100 games ran to the 300-second clock. The record's own assumption is that a game past the clock is recorded as a draw rather than dropped, and `won_by` reports 'all opponents have lost' 100 times while some outcomes carry an empty `lost` map \u2014 so a fraction of the sample is a truncated game read as a finish. No figure here was corrected for it and no figure here excludes those games.",
+    "A controlled A/B is the right check on the whole prescription and the diagnosis schema cannot route it: `settled_by` accepts only resolve-stack, research-strategy and goldfish. The run to make is `manamap pilot experiment ur-dragon --a <the current version> --b <the 36-land version> --vs giada-angels vito baylen-tokens`, on the pod this diagnosis reads, and the figures to compare are win rate, lands and first attack turn with their intervals.",
+    "One logged game is texture, not a rate. Entry 001's Blood Moon lockout is the reason this audit was asked for and is not evidence about the mana base's normal behaviour \u2014 no figure in this diagnosis comes from it, and the pilot has CLOSED that direction ('I am not calling this a deck problem in the sense of needing an answer to Blood Moon'), so nothing here proposes one. The rates come from the 10,000-iteration goldfish and the 100-game pod run, the counts from deck-audit and cards.json, the colour figures from mana_analysis.json, and the bracket from bracket_report.json.",
+    "This document cites no card list and no figure from engine.json. That policy was set when the file was failing its validator; `validate-engine ur-dragon` returns OK today (7 stages, 95 cards placed, 0 unassigned, 4 of 13 lines verified by a passing stack) and the policy was kept anyway rather than revisited, so the engine block above is built from deck-audit's priced components and goldfish_targets.json alone. A reader wanting the engine's own view should read that file, not this block.",
+    "card_roles.json classifies 96.8% of this deck \u2014 Chaos Warp, Rishkar's Expertise and Sneak Attack have no entry \u2014 so every role-derived axis count above is a floor by more than the usual margin, and the audit's own probe note names seven further cards whose card-advantage function the taxonomy filed elsewhere.",
+    "A CONTROLLED A/B IS THE RIGHT CHECK ON THE WHOLE PRESCRIPTION AND THE SCHEMA CANNOT ROUTE IT. `settled_by` accepts only resolve-stack, research-strategy and goldfish, so open_questions[6] routes the larger sample as `goldfish` and names the Forge command in its own text. The run that would actually price these six swaps is `manamap pilot experiment ur-dragon --a <the current version> --b <the 36-land version> --vs giada-angels vito baylen-tokens`, N per arm, comparing win rate, land drops, casts and first-attack turn with their intervals. Note what it cannot do: same seeds are not paired games, so the control is N.",
+    "THE ADD GATE CANNOT SEE THE DECK'S SECOND SINGLE POINT OF FAILURE, which is why one real hole in this prescription is routed rather than closed. `validate_diagnosis` recomputes only the seven role counts and `interaction-breadth`, and cost reduction has no axis of its own \u2014 it lands inside `ramp`, which this deck is deliberately OVER on. Recomputed against (cards, roles): Morophon, the Boundless moves nothing the gate can check and Goreclaw, Terror of Qal Sisma moves ramp 21 to 22, the wrong way. So the closer that would help most is invisible to the measure and the visible one is penalised by it. Neither card is prescribed here; both are named in the engine block and routed at open_questions[5].",
+    "A PATTERN IN MY OWN REVISIONS, recorded because across five rounds it has been this document's most reliable defect class: a correction lands at some of the sites that carry it and not all. FIVE instances. (1) axes and lean_into[0] were rewritten while `verdict` kept asserting the superseded ranking for a full cycle. (2) Farseek 16 to 17 reached two sites and not the third. (3) The corrected reading on which protection spells are free left a cut candidate still saying 'two free ones'. (4) The Prismatic Vista reversal left lean_into and an open question concluding from the uncorrected version. (5) THIS ROUND: the orientation fix was applied to lean_into[3]'s residual paragraph and missed one pair in the PACE paragraph of the same entry \u2014 the baylen first-attack comparison, whose difference was printed in one orientation and whose interval was printed in the other, so the interval could not contain the difference beside it. (The withdrawn numbers are quoted in the carried skeptic block and are deliberately not re-printed here in the 'diff X, ci95 [a, b]' form, so that the document-wide invariant below reads no retracted figure as a live claim.) THE SHARPER FORM, which is what makes this entry worth more than a confession: I asserted the diff-inside-interval invariant mechanically, and I asserted it over the FIVE pairs I had just edited. deck-skeptic found the failure by running the same invariant over all 22 pairs in the document. An invariant checked on the entry you just edited is not an invariant \u2014 it is a spellcheck of your own diff. This revision therefore runs it document-wide, over prose pairs ('diff X, ci95 [a, b]' and its variants) and over the machine-readable `*_diff` / `*_ci95` keys together, excluding only the carried `skeptic` block, which quotes the defects verbatim and must not be edited: 22 pairs, 1 failure before the fix and 0 after. Whoever revises this artifact next should grep every leaf for the figure or phrase they are changing, and should re-run any invariant over the WHOLE artifact rather than over the part they touched."
   ],
   "skeptic": {
-    "verdict": "fail",
-    "iteration": 3,
-    "terminal": true,
+    "verdict": "pass",
     "findings": [
       {
-        "where": "cut_candidates[4]",
-        "status": "miscounted",
-        "note": "THE VOLUNTEERED ENUMERATION IS NOT COMPLETE. The entry says 'Enumerating every token maker in the 99 (Ancient Gold Dragon, Dragonback Assault, Generous Gift, Lathliss, Miirym, Sarkhan Fireblood, Swan Song, Utvara Hellkite), no other compounds'. I regexed every oracle_text in cards.json for token creation: the set is FIFTEEN, not eight. The seven missing are all Treasure makers — Atsushi, the Blazing Sky, Cavern-Hoard Dragon, Goldspan Dragon, Old Gnawbone ('create that many Treasure tokens', which a 'create a/two/three' scan misses), Rapacious Dragon, Smaug the Magnificent and Smothering Tithe — and this document's own engine.components[3] is titled 'Seven Treasure sources', so it knows they exist. The eight listed are exactly the CREATURE-token makers. THE CONCLUSION SURVIVES and I checked it rather than assuming: no Treasure maker is re-triggered by its own Treasures — Atsushi is a death trigger, Rapacious an ETB, Smaug an upkeep, Smothering Tithe an opponent's draw, Goldspan attacks-or-targeted, Old Gnawbone a creature dealing combat damage (a Treasure is not a creature), and Cavern-Hoard counts artifacts the DEFENDING player controls, not yours. So 'the one token maker whose own tokens re-trigger it' is true over the full fifteen, and the nontoken gating on Lathliss and Miirym is confirmed by stack 002's final_state exactly as cited ('never fires here: every later entry is a token'). The fix is one word — 'every CREATURE-token maker in the 99' — and it matters because this repo has a documented history of a Treasure scoring as a body (goldfish's creature_body_count), so 'token maker' is precisely the term that has to be scoped here."
-      },
-      {
-        "where": "lean_into[2]",
-        "status": "over-claimed",
-        "note": "THE FOURTH SITE, and it is the same pattern a fourth time: a correction landing at one site and not at the two that draw the conclusion. add_candidates[3] was corrected THIS round to say Prismatic Vista 'COMPETES with Fabled Passage and Encroaching Dragonstorm for the same nine basics rather than feeding them … in the worst case … take four of the nine'. lean_into[2] still ends 'Nine basics is not the problem and raising it would trade fixing for whiff-proofing the deck does not need', and axes[13] still ends 'none can realistically whiff' — both enumerated against the CURRENT package, neither noting that this document's own prescription adds a fourth searcher of that nine-card pool. The enumerations themselves are right and I re-verified them: 9 basics (3 Forest, 4 Mountain, 1 Island, 1 Plains), Farseek 17 legal target copies, 11 Forest-typed, Fabled Passage and Encroaching Dragonstorm on the 9. The claim is true of the list as it stands and is stated without the qualification the prescription now requires. Compounding it, open_questions[3] routes research-strategy at 'a five-colour Commander deck running Farseek, Nature's Lore, Skyshroud Claim and Fabled Passage' — which omits Encroaching Dragonstorm, a basic-searcher this document names at axes[13], and omits Prismatic Vista, which it prescribes. The question that is supposed to set the basic-land floor is asked about a package the deck will not be running if the advice is taken. Fix: one clause in lean_into[2] ('and the sixth searcher this document adds does not change that, because …'), and name the post-swap package in open_questions[3]. No swap moves either way. (open_questions[3]'s '17 / 11 / 11 / 9' is separately correct — see my supported finding on it; this is a different defect in the same field.)"
-      },
-      {
-        "where": "cut_candidates[5]",
+        "where": "lean_into[3].why",
         "status": "supported",
-        "note": "RE-JUDGED ON ONE JUSTIFICATION, as asked, and it holds. Removing the 'already ahead' test does not weaken the entry, because that test was the bad one — it condemned Panharmonicon on a property the entry kill's own damage leg shares, and lean_into[0] tells the pilot to widen that leg. Withdrawing it outright rather than parking it beside a correction is the stronger move: a rebutted argument left in place still argues. What remains is the argument I named in round 2 as the one that discriminates, and it is cited and measured — four mana that adds no board presence and no mana, against a binding mana-base axis of 31 lands versus 36-38 and a turn-five land drop of 0.525. Crucially the entry does not claim the mana argument SETTLES it. It states the unsettled half plainly ('whether 002 is lethal WITHOUT Panharmonicon: Miirym would make one Lathliss copy instead of two and the cascade roughly halves'), routes the exact run that would settle it, and blesses the opposite decision ('a pilot who values the proven board over the land slot should hold it, which is a reasonable call rather than a wrong one'). open_questions[0] now names Panharmonicon as the permanent to remove and asks both halves — still lethal against 32, and does any version kill a 40 — which is the run I asked for. This is the correct posture for a painful cut whose cost cannot be settled from the record, and it is last-ranked on a list the repo treats as ranked rather than mandated. What I am endorsing: an honestly-priced candidate with its decisive evidence named and absent. What I am NOT endorsing, and neither does the entry: that the cut is right."
+        "note": "THE ROUND-3 DEFECT IS FIXED AND I RE-DERIVED IT RATHER THAN READING IT. From first_attack_turn per game, diff_means(baylen-tokens, ur-dragon) = +1.7160 with ci95 [-0.2643, +3.6964] \u2014 exactly what the sentence now prints, and the interval now contains the difference beside it. The sentence also states its own convention in place ('diff_means(opponent, ours), so a positive difference means WE attack later'), which is what makes the pair checkable without leaving the sentence, and its two neighbours re-derive under the same convention: giada +7.0985 ci95 [+5.3750, +8.8220] and vito +1.1653 ci95 [-1.1683, +3.4990]. The conclusion is unchanged and was never at risk \u2014 zero is inside baylen's interval under either sign, so 'indistinguishable from vito and baylen' stood before the fix and stands after it."
       },
       {
-        "where": "add_candidates[3]",
+        "where": "lean_into[3].why",
         "status": "supported",
-        "note": "The volunteered reversal is correct in direction and in arithmetic. I pulled Prismatic Vista from the corpus rather than memory — '{T}, Pay 1 life, Sacrifice this land: Search your library for a basic land card, put it onto the battlefield' (Land, colour identity empty, so legal and inside identity) — and read the two it is measured against out of cards.json: Fabled Passage searches 'a basic land card' and Encroaching Dragonstorm 'up to two basic land cards'. All three draw on the same pool, so COMPETES is right and 'feeds' was backwards. The pool is 9 (3 Forest, 4 Mountain, 1 Island, 1 Plains) and the worst case is 2 + 1 + 1 = 4 of 9, exactly as stated. 'Untapped' is right — Prismatic Vista has no tapped clause, unlike the other two. The card still moves mana-base, because that axis counts land copies in the 99 and this is a 32nd. See my lean_into[2] finding for the one place this correction did not reach."
+        "note": "THE TWO RESTATED P-VALUES ARE CORRECT AND THE RESTATEMENT WAS RIGHT TO MAKE UNASKED. Re-derived in the orientation the sentence now declares: permutation_p(vito, ours) = 0.331 and permutation_p(baylen, ours) = 0.11, both matching what is printed; giada is 0.0001 either way. The previous values, 0.3282 and 0.1109, are the (ours, opponent) orientation \u2014 I confirmed both in round 2 \u2014 so they were the same mixed-orientation defect wearing a different field, and correcting the interval while leaving them would have been this document's own recorded pattern landing one site short for the sixth time. The mechanism is real and I verified it at the source: permutation_p builds `pool = xs + ys` and shuffles under a fixed seed, so argument order selects a different permutation set even though the statistic is symmetric. This was not in my finding and it is the right call."
       },
       {
-        "where": "cut_candidates[3]",
+        "where": "gaps[12]",
         "status": "supported",
-        "note": "'Two free ones' is gone and replaced by a pointer at the correction rather than a silent edit: 'Deflecting Swat and Flawless Maneuver are free only while you control a commander, which this deck rarely does, so the suite is deep on count rather than cheap.' That is consistent with the corrected axes[11] and with the oracle text. I also checked whether the correction undercuts the cut it sits inside, since it makes the protection suite look worse: it does not. The cut argument rests on the COUNT — six, the top of Zupke's 5-7 band — not on cheapness, and Eerie Interlude is not one of the six (deck-audit's protection list is Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Miirym, Teferi's Protection; Eerie Interlude's role is `recursion`), so cutting it leaves protection at six. If anything the correction sharpens the cut: the deck wants cheaper protection and this is the three-mana one. cost_of_cutting still prices the real loss (the only recursion card, and the ETB re-trigger line), which I verified against card_roles.json in round 1."
+        "note": "THE INVARIANT IS NOW DOCUMENT-WIDE AND I RE-RAN IT RATHER THAN ACCEPTING THE COUNT. My own script over the whole artifact minus the carried `skeptic` block, reading both prose pairs and the machine-readable `*_diff` / `*_ci95` keys: 17 prose + 5 key = 22 pairs, ZERO failures, against 1 failure on the pre-fix document \u2014 the same 22 I counted in round 3, so the sweep the entry describes is the sweep it ran. The sharper lesson it draws is the correct one and is worth more than the confession around it: asserting the invariant over the five pairs it had just edited was a spellcheck of its own diff, and the failure sat in a sixth pair in the same entry. Recording the pattern at five instances with that generalisation, rather than as a fifth apology, is the right use of a gaps entry."
       },
       {
-        "where": "open_questions[3]",
+        "where": "gaps[12]",
         "status": "supported",
-        "note": "Round-2 finding discharged: '17 / 11 / 11 / 9 targets'. I swept every '16' in the artifact and the remaining five are all legitimate — W and U source counts against their 22 targets, and three verbatim citation quotes containing '14–16', '12-16' and '37-39'. The Farseek figure is now consistent across all three sites that carry it (axes[13], lean_into[2].why, lean_into[2].evidence.farseek_targets = 17). The separate defect in this same field — the package the question routes — is filed under lean_into[2]."
+        "note": "ON THE TENSION YOU ASKED ME TO CALL: the rewording preserves the record honestly, and I would have made the same call. The reasoning behind it is sound and generalises \u2014 a retracted figure printed in the same shape as a live one is indistinguishable to a mechanical checker, so re-printing '[-3.70, 0.26]' beside a 'diff 1.72' inside gaps would have made the document-wide invariant report a permanent failure on a figure that is deliberately wrong, and the next reviser's most likely response to a red check is to 'fix' it, which would delete the record of the defect. That is the same species as this repo's rule that a checker-passed artifact is annotated and never edited \u2014 which this document already applies correctly to stack 002. And nothing is actually lost: the retracted pair survives in THREE places I located by grep. Twice verbatim in the carried `skeptic` block, which is immutable evidence and which gaps[12] explicitly points at; and once in the body's own PACE sentence, 'The baylen interval was printed as [-3.70, 0.26] until this revision' \u2014 non-canonical, so no checker reads it as live, and sitting immediately beside the corrected figure, which is exactly where a reader comparing the two needs it. gaps[12] then describes the defect completely in words ('whose difference was printed in one orientation and whose interval was printed in the other, so the interval could not contain the difference beside it'), which is enough to reconstruct it without the numbers. Removing the canonical FORM while keeping the figure, the location and the description is not weakening the documentation; it is the only version of the documentation that survives its own checker."
       },
       {
-        "where": "gaps[5]",
+        "where": "skeptic",
         "status": "supported",
-        "note": "Round-2 finding discharged, and it re-ran the command rather than taking my word: 'validate-engine ur-dragon returns OK today — 7 stages, 95 cards placed, 0 unassigned, 4 of 13 lines verified by a passing stack', which is what I get. The claim is now past-tense and correctly scoped, the policy is intact and re-verified by me (nothing in this document cites a card list or figure from engine.json; the engine block reconciles to deck-audit and goldfish_targets alone), and it adds the right pointer — 'A reader wanting the engine's own view should read the re-modelled file, not this block.' That last sentence is the part that makes it a useful gap rather than a disclaimer."
+        "note": "The carried block is byte-identical to my round-3 file (`doc['skeptic'] == my file` is True; all 7 findings and the `fail` verdict intact), and the doctor was right to decline the instruction to edit the retracted pair where it appears there. I confirm the count it corrected you on: the bad pair appears ONCE in the body and TWICE inside the skeptic block. A skeptic's block quotes the defect verbatim as its evidence; editing it would put a corrected number under a finding that was made about the wrong one, which is the same failure as patching a checker-passed stack's text. Declining was correct."
       },
       {
-        "where": "verdict",
+        "where": "axes",
         "status": "supported",
-        "note": "Terminal check on the whole artifact for staleness, since three rounds of corrections is where stale text accumulates. Gate passes. Freshness re-confirmed: goldfish_metrics.json and mana_analysis.json both current on sha b544a740c197…, matching as_of_decklist_sha256, and the declaration figures in the document match the ones on disk exactly — THE ENTRY KILL 0.240 / 0.153, THE COMBAT KILL 0.204 / 0.128. I swept for every phrase this document has had to correct: no residual 'two free ones', no residual 'only good on a board that is already ahead', no residual 'one checker-passed resolution', no residual 'two components deck-audit flags thin', no residual Farseek 16, and every surviving mention of 0.411 / 0.290 or 'the LESS likely' is explicitly historical ('when this was written', 'has since inverted', an evidence key named combat_kill_before_multiplier_correction), which agents-common §9 permits and which is the right way to show a correction rather than bury it. For the record and not as a finding, since it sits outside this artifact: engine-critic's derivation that stack 001's lethal d20 threshold is 12 rather than 15 — 45% of rolls, not 5% — would make 001 markedly more reachable than open_questions[0] currently implies when it calls the fixed 15 'above-median'. Nothing the diagnosis says is wrong (the roll IS fixed at 15 in 001's scenario, and 15 IS above a median of 10.5), but a future round should read that threshold into open_questions[0], because it changes how hard the question is."
+        "note": "The edit is scoped as claimed and nothing I cleared in rounds 1-3 moved. All sixteen axis measured values still match a freshly re-run deck-audit; the evidence block's partition is unchanged at 9 + 8 + 1 = 18 with its orientation key intact; and the previously-cleared corrections are all still in place \u2014 Klauth 4/4, protection MID-band of 5-7, eliminated_turn n=75 with its interval, the fifteen token makers, the Prismatic Vista qualification at its four sites, seven open questions. Standing constraints all hold: zero occurrences of 'edgar' outside the skeptic block so no cross-deck ranking is possible, four presentable checker-passed stacks, both kill rates UNVERIFIED and 'never to be summed or averaged', the Forge AI caveat verbatim, and every sim figure carrying its interval and its N. Two items I recorded in round 3 for the orchestrator rather than as defects still stand as decisions above this artifact: open_questions[6] is `settled_by: goldfish` while naming a `simulate` run, which the entry discloses itself and which gaps handles the other way for the A/B; and open_questions[5]'s reducers must enter the LIST, not only the target group, or the goldfish cannot draw them and validate-goldfish-targets rejects the declaration. Neither is a false claim and neither blocks."
       }
-    ]
+    ],
+    "iterations": 3
   },
   "iterations": 3
 }
