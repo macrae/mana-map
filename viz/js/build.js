@@ -1241,21 +1241,21 @@
   //
   // The builder had `addSeed` writing into `deckState.seeds`, one of eight "set of cards"
   // containers. That container is gone with the scorer it fed. A card you want goes into
-  // the TRAY — which is Session's, is shared with Discover and Explore, and is the thing
+  // the LIBRARY — which is Session's, is shared with Discover and Explore, and is the thing
   // the brief exports to the sub-agent routine.
 
   function addCard(row) {
     if (typeof row !== 'number' || row < 0) return;
-    if (!Session.tray.has(row)) Session.tray.toggle(row);
+    if (!Session.library.has(row)) Session.library.toggle(row);
     if (active) renderPanel();
-    MM.setStatus((MM.cardRecord(row) || {}).n + ' added — ' + Session.tray.size +
-                 ' in the tray · Export brief hands them to the build loop');
+    MM.setStatus((MM.cardRecord(row) || {}).n + ' added — ' + Session.library.size +
+                 ' in the library · Export brief hands them to the build loop');
   }
 
-  /* Is this card already accounted for — in the loaded deck, or in the tray? Read by the
+  /* Is this card already accounted for — in the loaded deck, or in the library? Read by the
    * card panel's "+ Deck" button so it can say so rather than offering a no-op. */
   function isInDeck(row) {
-    if (Session.tray.has(row)) return true;
+    if (Session.library.has(row)) return true;
     if (!active || !nameToIdx) return false;
     const d = MM.allData[row];
     if (!d) return false;

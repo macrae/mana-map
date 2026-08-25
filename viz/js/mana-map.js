@@ -1293,12 +1293,12 @@
       html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — '
             + 'partners are ordered by how played they are.</p>';
     }
-    // The tray follows the card, not the mode. Keeping something you found in the atlas
+    // The library follows the card, not the mode. Keeping something you found in the atlas
     // is the same act as keeping something you walked to, so the control lives here
     // rather than only in the Discover panel.
-    const kept = Session.tray.has(row);
+    const kept = Session.library.has(row);
     html += '<button class="lens-btn discover-keep" onclick="MM.keep(' + row + ')">'
-          + (kept ? '✓ In tray' : '+ Keep this card') + '</button>';
+          + (kept ? '✓ In library' : '+ Keep this card') + '</button>';
     // One card is the commander, and everything reads it from Session: the gold ring on
     // the graph, the colour identity that decides what is legal, the exported brief.
     // Offered on legendary creatures only — the rule, not a preference.
@@ -1313,7 +1313,7 @@
     return html;
   }
 
-  // Toggle a card in the tray from any panel, then repaint whichever one is showing.
+  // Toggle a card in the library from any panel, then repaint whichever one is showing.
   /* Designate the commander. Writes Session, then asks the graph to re-ink so the ring
    * moves — `Force.setCommander` is a redraw, not a reseed, because changing your mind
    * about the commander must not cost you the graph. */
@@ -1352,7 +1352,7 @@
 
   function keep(row) {
     if (!window.Discovery || !Discovery.isReady()) return;
-    Session.tray.toggle(row);
+    Session.library.toggle(row);
     if (currentMode === 'explore' || currentMode === 'build') {
       updateViewerPanel();
     }

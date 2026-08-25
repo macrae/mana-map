@@ -63,7 +63,32 @@ window.Discovery = (function () {
     if (indexPromise) return indexPromise;
     indexPromise = fetch(urls.vizIndex)
       .then(r => { if (!r.ok) throw new Error('viz_index ' + r.status); return r.json(); })
-      .then(rows => { index = rows; return rows; });
+      .then(rows => {
+        index = rows;
+        /* Hand Session the card index and let it restore the saved library.
+         *
+         * HERE, and not at load: `session.js` runs before `mana-map.js` and has
+         * no name resolver of its own — reaching for `MM.*` at its top level
+         * would run inside that IIFE before `window.MM` exists, which is the
+         * boot-order failure that once broke four files from one mistake. This
+         * is the first moment a name CAN become a row, so it is the moment the
+         * library comes back. */
+        if (window.Session && Session.useCards) {
+          const report = Session.useCards({
+            nameOf: function (row) { return index[row] ? index[row].n : null; },
+            rowOf: rowByName,
+            // The corpus's own identity. Names are stable so this does not
+            // invalidate a save; it EXPLAINS a shortfall instead of causing one.
+            fingerprint: function () { return String(index.length); },
+          });
+          if (report && report.missing.length && window.MM) {
+            MM.setStatus(report.restored + ' cards restored to your library — '
+              + report.missing.length + ' no longer in the corpus: '
+              + report.missing.slice(0, 3).join(', '));
+          }
+        }
+        return rows;
+      });
     return indexPromise;
   }
 
@@ -320,9 +345,9 @@ window.Discovery = (function () {
 
     html += '<div class="discover-tray">' +
       '<button class="lens-btn" onclick="Discovery.toggleImport()">Paste a decklist</button>' +
-      '<span class="discover-traycount">' + Session.tray.size + ' in tray</span>' +
-      (Session.tray.size ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
-                     '<button class="lens-btn" onclick="Discovery.tray.clear()">Clear</button>' : '') +
+      '<span class="discover-traycount">' + Session.library.size + ' in library</span>' +
+      (Session.library.size ? '<button class="lens-btn" onclick="Discovery.exportBrief()">Export brief</button>' +
+                     '<button class="lens-btn" onclick="Discovery.library.clear()">Clear</button>' : '') +
       '</div>';
     /* START FROM CARDS YOU NAME.
      *
@@ -417,7 +442,7 @@ window.Discovery = (function () {
     // which is what makes deleting the old Find Similar / Find Synergies pair an
     // unification rather than the removal of a feature.
     // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
-    // every panel that shows a card can put it in the tray.
+    // every panel that shows a card can put it in the library.
     html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
 
     if (window.Force && Force.trailLength > 1) {
@@ -539,32 +564,34 @@ window.Discovery = (function () {
   /* Hand off to the walk chrome. The graph is already seeded and on screen, so this is
    * a change of panel plus one branch — not a mode switch that rebuilds anything. */
 
-  // ── the tray ───────────────────────────────────────────────────────────
+  // ── the library ────────────────────────────────────────────────────────
 
-  /* The tray is Session's; these are the mode's wrappers around it. The graph is
-   * where you are looking, the tray is what you are keeping, and it is the thing
-   * `brief()` exports. `toggleTray` and `clearTray` are NOT delegates — they add the
-   * repaint, because the panel belongs to the mode and not to Session. */
-  // The tray moved to Session. Its own comment here used to say it was "not another one
-  // of those" four set-of-cards ideas — which was true of its purpose and not of its
-  // storage, since it was a fifth array all the same. Session owns it now; this is the
-  // Discovery-flavoured view of it, and the repaint stays here because only Discovery
-  // knows which panel is showing.
-  function inTray(row) { return Session.tray.has(row); }
+  /* The library is Session's; these are the mode's wrappers around it. The graph
+   * is where you are LOOKING, the library is what you are KEEPING, and it is the
+   * thing `brief()` exports. `toggleLibrary` and `clearLibrary` are NOT
+   * delegates — they add the repaint, because the panel belongs to the mode and
+   * not to Session.
+   *
+   * It moved to Session, and it is called a library rather than a tray because in
+   * Magic your library IS your deck: the cards you gather while brewing are the
+   * deck you are gathering. Its own comment here used to say it was "not another
+   * one of those" four set-of-cards ideas — true of its purpose and not of its
+   * storage, since it was a fifth array all the same. */
+  function inLibrary(row) { return Session.library.has(row); }
 
-  function toggleTray(row) {
-    Session.tray.toggle(row);
+  function toggleLibrary(row) {
+    Session.library.toggle(row);
     render();
     if (window.Force && Force.isActive()) Force.renderPanel();
   }
 
-  function clearTray() { Session.tray.clear(); render(); }
+  function clearLibrary() { Session.library.clear(); render(); }
 
-  function trayNames() { return Session.tray.list.map(r => index[r].n); }
+  function libraryNames() { return Session.library.list.map(r => index[r].n); }
 
   /* The hand-off to the pilot loop. There is no backend and this plan does not add one:
    * the manuals are 6-10 serially dependent LLM subagents costing ~330k-1.7M tokens, and
-   * a static page on Pages cannot run Python. So the tray produces a BRIEF — the thing a
+   * a static page on Pages cannot run Python. So the library produces a BRIEF — the thing a
    * human pastes into Claude Code, where that loop already works. */
   /* THE BRIEF IS THE SCHEMA `build-deck` ALREADY READS, not a description of it.
    *
@@ -581,8 +608,8 @@ window.Discovery = (function () {
    *   - Budget is unsupported: prices are stripped from the card data. Saying so beats
    *     approximating it.
    *
-   * `must_include` is the TRAY — cards you deliberately kept — not the whole pool. The
-   * pool is context for the analyst; the tray is a claim that these belong in the 99.
+   * `must_include` is the LIBRARY — cards you deliberately kept — not the whole pool. The
+   * pool is context for the analyst; the library is a claim that these belong in the 99.
    */
   const BRACKET_DEFAULT = 3;      // mirrors config.py:BRACKET_DEFAULT
   const COMMANDER_SLOTS = 99;
@@ -602,10 +629,10 @@ window.Discovery = (function () {
     const onGraph = window.Force ? Force.rows() : [];
     const pool = onGraph.map(function (r) {
       const rec = index[r];
-      return rec ? { name: rec.n, source: Session.tray.has(r) ? 'kept' : 'found' } : null;
+      return rec ? { name: rec.n, source: Session.library.has(r) ? 'kept' : 'found' } : null;
     }).filter(Boolean);
 
-    const must = Session.tray.list.filter(function (r) { return r !== cmdRow; })
+    const must = Session.library.list.filter(function (r) { return r !== cmdRow; })
                                   .map(function (r) { return index[r].n; });
 
     const ci = [];
@@ -640,21 +667,21 @@ window.Discovery = (function () {
       doc._manamap.blocked = 'No commander set. `build-deck` requires one — open a '
         + 'legendary creature and choose "Set as commander".';
       // Keep the old heuristic as a suggestion, clearly labelled as a guess.
-      doc._manamap.commander_candidates = Session.tray.list
+      doc._manamap.commander_candidates = Session.library.list
         .filter(function (r) { return index[r] && index[r].s === 'Creature'; })
         .slice(0, 8).map(function (r) { return index[r].n; });
     }
     if (must.length > COMMANDER_SLOTS) {
       doc._manamap.truncated_must_include = must.length;
     }
-    // Loading a deck puts all 99 in the tray, so a rebuild can arrive with `must_include`
+    // Loading a deck puts all 99 in the library, so a rebuild can arrive with `must_include`
     // pinning almost every slot and the builder left with nothing to decide. Say so rather
-    // than letting the loop discover it: the fix is to Clear the tray and keep only what
+    // than letting the loop discover it: the fix is to Clear the library and keep only what
     // you actually insist on.
     if (must.length >= COMMANDER_SLOTS - 10) {
       doc._manamap.note = must.length + ' of ' + COMMANDER_SLOTS + ' slots are pinned by '
         + 'must_include, leaving ' + Math.max(0, COMMANDER_SLOTS - must.length)
-        + ' for the builder. Clear the tray and keep only what you insist on if you want '
+        + ' for the builder. Clear the library and keep only what you insist on if you want '
         + 'it to actually build.';
     }
 
@@ -721,7 +748,7 @@ window.Discovery = (function () {
     const cmdr = typeof o.commander === 'number' ? o.commander : -1;
     const seeds = cmdr >= 0 ? [cmdr].concat(rows.filter(r => r !== cmdr)) : rows;
     if (cmdr >= 0) Session.setCommander(cmdr);
-    if (o.tray) for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
+    if (o.library) for (const r of rows) if (!inLibrary(r)) Session.library.toggle(r);
 
     Force.newWalk(true);
     return Promise.resolve(
@@ -809,7 +836,7 @@ window.Discovery = (function () {
       return { resolved: 0, missing: missing, total: entries.length };
     }
 
-    for (const r of rows) if (!inTray(r)) Session.tray.toggle(r);
+    for (const r of rows) if (!inLibrary(r)) Session.library.toggle(r);
 
     if (window.Force) {
       // Pass `opts.deck`, exactly as `loadDeck` does. Without it a PASTED list — which is
@@ -866,10 +893,10 @@ window.Discovery = (function () {
 
         // Session is the one answer to "who is the commander" — the ring, the colour
         // identity and the exported brief all read it from there. `seedFromRows`
-        // writes it, along with the tray, the pin and the reseed.
+        // writes it, along with the library, the pin and the reseed.
         return seedFromRows(rows, (entry && entry.deck_name) || slug, {
           commander: cmdr,
-          tray: true,
+          library: true,
           deck: { rows: new Set(rows), commander: cmdr },
         }).then(() => {
           MM.setStatus(((entry && entry.deck_name) || slug) + ' — ' + rows.length +
@@ -973,8 +1000,8 @@ window.Discovery = (function () {
     enter, exit: exitMode, land, show, focus, setCurrent, reroll, onFilter, render, newGraph,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
-    tray: { get list() { return Session.tray.list; }, has: inTray, toggle: toggleTray,
-            clear: clearTray, names: trayNames },
+    library: { get list() { return Session.library.list; }, has: inLibrary, toggle: toggleLibrary,
+            clear: clearLibrary, names: libraryNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,
     seedFromRows, parseSeedNames, onSeedCards, toggleSeed,
     get current() { return current; },

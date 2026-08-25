@@ -30,9 +30,9 @@ python -m http.server 8000
 | `viz/js/mana-map.js` | Explore mode (~2,610 lines). IIFE; exposes shared state as `window.MM` |
 | `viz/js/drill.js` | Drill mode (~430 lines). IIFE; exposes `window.Drill`; depends on `MM` |
 | `viz/js/stage.js` | Shared canvas primitives (~260 lines). Surface, camera, labels, typed edges |
-| `viz/js/session.js` | Focus, tray, commander (~130 lines). One answer each; force registers as its graph provider |
+| `viz/js/session.js` | Focus, **library**, commander (~230 lines). One answer each; force registers as its graph provider |
 | `viz/js/force.js` | The graph engine (~1,430 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/discovery.js` | Discover — the front door (~990 lines). Landing card, relations, tray, import, seeding from named cards, `brief()` |
+| `viz/js/discovery.js` | Discover — the front door (~990 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
 | `viz/js/render/canvas.js` | The map renderer (~1,150 lines). The ONLY renderer; owns the aura + ambient drift |
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~1,300 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
@@ -292,7 +292,7 @@ participates in the same `getOverlayTraces` / `getDimmedIndices` / `dimsAll` con
 Build.
 
 **Arriving is not asking for it.** `setMode('explore')` must NOT auto-orient on a non-empty
-tray. Doing so — `if (Session.size()) orientTo(null, 'your walk')` — means walking three
+library. Doing so — `if (Session.size()) orientTo(null, 'your walk')` — means walking three
 cards in Discover and switching opens the atlas with almost all of itself at 8% alpha and the camera
 somewhere else. The lens is right; as an *entry* state it meant the atlas almost never got
 to be the atlas, and the dimming read as a rendering fault rather than as a lens. Entry now
@@ -512,7 +512,7 @@ was a *read* in Explore (`clearSelection` + `addToSelection`, opens a panel), a 
 list* in Build, and a *structural mutation of a graph* in Discover — because each mode wrote
 somewhere different.
 
-`Session` owns the **focus** and the **tray**, and is the interface everything asks.
+`Session` owns the **focus** and the **library**, and is the interface everything asks.
 
 **It does not own the graph's storage, deliberately.** `force.js` holds nodes as live d3
 bodies whose x/y/vx/vy are mutated every tick and whose identity d3 owns; a second
@@ -821,7 +821,7 @@ turns out to do nothing reads as broken rather than as a fact about the card. Sy
 exactly 10 partners for every card that has any, so the UI says it is a rule-based list
 rather than a ranking.
 
-### The tray, import, and the hand-off
+### The library, import, and the hand-off
 
 **The camera belongs to the user, and the layout arrives finished.**
 
@@ -870,8 +870,11 @@ shows that card's art, its relation counts, and a Keep button that adds the card
 clicked. `focus` is deliberately not `show` — `show` reseeds the graph, and opening a card you
 walked to must not discard the walk that reached it.
 
-**The tray** is a deliberately light selected-set, separate from the graph: the graph is
-where you are looking, the tray is what you are keeping. It is the fifth "set of cards"
+**The library** is a deliberately light selected-set, separate from the graph: the graph
+is where you are LOOKING, the library is what you are KEEPING. It is called a library
+rather than a basket or a tray because in Magic your library IS your deck — the cards you
+gather while brewing are the deck you are gathering. (Distinct from **the bench**, which
+is every deck you own.) It is the fifth "set of cards"
 idea in this codebase and the only one that exports.
 
 **Import** parses a pasted Moxfield export with `viz/js/decklist.js`, resolves names
@@ -885,7 +888,7 @@ Pinning uses `Force.pinCard`, not `focusCard`. `focusCard` *branches*, so import
 
 **Optimize is a brief, not a button.** There is no backend and this does not add one: the
 pilot loop is 6–10 serially dependent LLM subagents costing ~330k–1.7M tokens, and a
-static page cannot run Python. The tray emits a JSON brief (download + clipboard) naming
+static page cannot run Python. The library emits a JSON brief (download + clipboard) naming
 the cards and candidate commanders, which a human pastes into Claude Code where that loop
 already works. The brief says so in its own `next_step` field.
 

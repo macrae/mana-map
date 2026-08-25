@@ -11,8 +11,13 @@
  * That is why the modes felt like different products: a click meant a different thing in
  * each because each was writing to a different place.
  *
- * WHAT SESSION OWNS: the focus (one card, one answer) and the tray (the cards you kept).
- * It also owns the *question* "what graph am I holding" — but see below.
+ * WHAT SESSION OWNS: the focus (one card, one answer) and the LIBRARY (the cards you
+ * kept). It also owns the *question* "what graph am I holding" — but see below.
+ *
+ * It is a LIBRARY, not a basket or a tray. In Magic your library IS your deck, and the
+ * cards you gather while brewing are the deck you are gathering. "Basket" is shopping
+ * vocabulary for an act that is not shopping. Distinct from THE BENCH, which is every
+ * deck you own — one word per thing.
  *
  * WHAT SESSION DOES NOT OWN, DELIBERATELY: the graph's storage. `force.js` holds nodes as
  * live simulation bodies — d3 mutates x/y/vx/vy on every tick and owns their identity —
@@ -34,7 +39,7 @@ window.Session = (function () {
 
   let provider = null;          // the graph's storage — force.js registers itself
   let focusRow = -1;
-  const tray = [];
+  const library = [];
   const listeners = [];
 
   function emit(what) {
@@ -88,18 +93,106 @@ window.Session = (function () {
     emit('commander');
   }
 
-  // ── Tray: the cards you kept, and the thing you export ──────────────────
+  /* ── PERSISTENCE ────────────────────────────────────────────────────────
+   *
+   * The library survives navigation between surfaces, which is the whole point
+   * of it (PRD §7.1: "the connective tissue for the whole flow").
+   *
+   * IT STORES CARD NAMES. NEVER ROW INDICES. This is not a preference — the
+   * previous attempt at this, `localStorage['manamap-deck']`, was DELETED for
+   * storing raw positional row indices with no schema version. A Scryfall
+   * refresh reorders `cards.csv`, every row index shifts, and a saved deck
+   * silently reinterprets as different cards: no error, no warning, a plausible
+   * wrong answer. It also did no range check, so entering Build before the
+   * projection landed threw. Names are the stable key, the full "A // B" form is
+   * already the graph-key convention, and a name that no longer resolves is
+   * REPORTED rather than dropped.
+   *
+   * The resolver is INJECTED, exactly as the graph provider is, and for a
+   * concrete reason: `session.js` loads before `mana-map.js`, so reaching for
+   * `MM.*` here would run inside that module's IIFE before `window.MM` exists —
+   * the boot-order failure that once took out four files at once. Discovery
+   * owns the name index, so Discovery hands it over when it has one, and
+   * restore happens at that moment rather than at load.
+   */
+  const STORE_KEY = 'manamap-library';
+  const SCHEMA = 1;
 
-  function inTray(row) { return tray.indexOf(row) !== -1; }
+  let cards = null;               // {nameOf, rowOf, fingerprint}
+  let lastRestore = null;         // what happened, for a surface that wants to say
 
-  function toggleTray(row) {
-    const at = tray.indexOf(row);
-    if (at === -1) tray.push(row); else tray.splice(at, 1);
-    emit('tray');
+  function save() {
+    if (!cards || typeof localStorage === 'undefined') return;
+    try {
+      const names = library.map(cards.nameOf).filter(Boolean);
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        v: SCHEMA,
+        corpus: cards.fingerprint ? cards.fingerprint() : null,
+        cards: names,
+      }));
+    } catch (e) {
+      // A full or disabled localStorage must not break the session. Losing the
+      // saved copy is survivable; throwing out of a click handler is not.
+      console.warn('[session] could not save the library', e);
+    }
+  }
+
+  /* Register the card index and restore whatever was saved.
+   *
+   * Returns the restore report rather than emitting only, because the caller is
+   * the surface that can SHOW it — and a library that silently comes back two
+   * cards short is indistinguishable from one that came back whole. */
+  function useCards(api) {
+    cards = api;
+    let raw = null;
+    try {
+      raw = typeof localStorage === 'undefined' ? null : localStorage.getItem(STORE_KEY);
+    } catch (e) { raw = null; }
+    if (!raw) return (lastRestore = { restored: 0, missing: [], schema: null });
+
+    let doc;
+    try { doc = JSON.parse(raw); } catch (e) { doc = null; }
+    // An unknown schema is not upgraded and not guessed at. It is left on disk
+    // and ignored, so a newer build's data survives an older build reading it.
+    if (!doc || doc.v !== SCHEMA || !Array.isArray(doc.cards)) {
+      return (lastRestore = { restored: 0, missing: [], schema: doc && doc.v });
+    }
+
+    const missing = [];
+    library.length = 0;
+    for (const name of doc.cards) {
+      const row = cards.rowOf(name);
+      // The range check the deleted version did not have. `rowOf` answers -1 for
+      // a name this corpus does not carry, and a card that left the corpus is a
+      // fact worth saying rather than a silent shortfall.
+      if (typeof row !== 'number' || row < 0) { missing.push(name); continue; }
+      if (library.indexOf(row) === -1) library.push(row);
+    }
+    lastRestore = {
+      restored: library.length,
+      missing: missing,
+      // Informational: names are stable, so a corpus change does not invalidate
+      // the save. It explains a shortfall rather than causing one.
+      corpusChanged: !!(doc.corpus && cards.fingerprint &&
+                        doc.corpus !== cards.fingerprint()),
+    };
+    if (library.length) emit('library');
+    return lastRestore;
+  }
+
+  // ── The library: the cards you kept, and the thing you export ──────────
+
+  function inLibrary(row) { return library.indexOf(row) !== -1; }
+
+  function toggleLibrary(row) {
+    const at = library.indexOf(row);
+    if (at === -1) library.push(row); else library.splice(at, 1);
+    emit('library');
+    save();
     return at === -1;
   }
 
-  function clearTray() { tray.length = 0; emit('tray'); }
+  function clearLibrary() { library.length = 0; emit('library'); save(); }
 
   return {
     useGraph: useGraph,
@@ -116,13 +209,15 @@ window.Session = (function () {
     // commander
     get commander() { return commanderRow; },
     setCommander: setCommander,
-    // tray
-    tray: {
-      get list() { return tray.slice(); },
-      has: inTray,
-      toggle: toggleTray,
-      clear: clearTray,
-      get size() { return tray.length; },
+    // the library
+    library: {
+      get list() { return library.slice(); },
+      has: inLibrary,
+      toggle: toggleLibrary,
+      clear: clearLibrary,
+      get size() { return library.length; },
     },
+    useCards: useCards,
+    get restoreReport() { return lastRestore; },
   };
 })();

@@ -19,6 +19,8 @@ Needs: `pip install playwright && playwright install chromium` (skips cleanly wi
 
 from __future__ import annotations
 
+import json
+
 import pytest
 
 # F401: `page`, `discover_page` and `canvas_page` are pytest FIXTURES. They are
@@ -1467,7 +1469,7 @@ def test_a_real_moxfield_export_imports_completely(discover_page):
         const res = Discovery.importText(text);
         await new Promise(r => setTimeout(r, 3000));
         const expected = new Set(doc.cards.map(c => c.name));
-        const got = new Set(Discovery.tray.names());
+        const got = new Set(Discovery.library.names());
         const missingFromGraph = [...expected].filter(n => !got.has(n));
         return {
             resolved: res.resolved,
@@ -1509,19 +1511,19 @@ def test_import_keeps_the_discovery_chrome(discover_page):
     assert r["tray"], "the tray controls were erased by a walk-chrome render"
 
 
-def test_the_tray_is_its_own_thing(discover_page):
+def test_the_library_is_its_own_thing(discover_page):
     r = discover_page.evaluate("""async () => {
         const row = Discovery.current;
-        Discovery.tray.toggle(row);
-        const added = Discovery.tray.has(row);
-        Discovery.tray.toggle(row);
-        const removed = !Discovery.tray.has(row);
-        Discovery.tray.toggle(row);
-        Discovery.tray.toggle(Discovery.rowByName('Sol Ring'));
+        Discovery.library.toggle(row);
+        const added = Discovery.library.has(row);
+        Discovery.library.toggle(row);
+        const removed = !Discovery.library.has(row);
+        Discovery.library.toggle(row);
+        Discovery.library.toggle(Discovery.rowByName('Sol Ring'));
         await new Promise(r => setTimeout(r, 150));
-        const two = Discovery.tray.list.length;
-        Discovery.tray.clear();
-        return {added: added, removed: removed, two: two, cleared: Discovery.tray.list.length};
+        const two = Discovery.library.list.length;
+        Discovery.library.clear();
+        return {added: added, removed: removed, two: two, cleared: Discovery.library.list.length};
     }""")
     assert discover_page.js_errors == []
     assert r["added"] and r["removed"]
@@ -1872,16 +1874,16 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
         }
 
         const keep = document.querySelector('.discover-keep');
-        const trayBefore = Discovery.tray.list.length;
+        const libBefore = Discovery.library.list.length;
         if (keep) keep.click();
         await new Promise(r => setTimeout(r, 200));
 
         return {
             landing: landing, clicked: clicked, panel: title(),
             counts: Discovery.counts(Discovery.current),
-            trayBefore: trayBefore, trayAfter: Discovery.tray.list.length,
-            trayNames: Discovery.tray.names(),
-            keptTheRightCard: Discovery.tray.names().includes(clicked),
+            libBefore: libBefore, libAfter: Discovery.library.list.length,
+            trayNames: Discovery.library.names(),
+            keptTheRightCard: Discovery.library.names().includes(clicked),
             graphKept: Force.nodeCount >= nodesAfterBranch,
         };
     }""")
@@ -1893,7 +1895,7 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
         f"and Keep button would describe the wrong card"
     )
     assert r["counts"]["similar"] > 0, "the panel is not showing the clicked card's relations"
-    assert r["trayAfter"] == r["trayBefore"] + 1
+    assert r["libAfter"] == r["libBefore"] + 1
     assert r["keptTheRightCard"], f"the tray got {r['trayNames']} instead of the clicked card"
     assert r["graphKept"], "opening a card discarded the walk that reached it"
 
@@ -1913,7 +1915,7 @@ def test_a_checked_in_deck_loads_with_its_commander(discover_page):
                 ? Discovery.index[res.commander].n : null,
             panel: (document.querySelector('#deckInner .lens-title') || {}).textContent,
             membership: Force.membership(),
-            tray: Discovery.tray.list.length,
+            tray: Discovery.library.list.length,
             decks: Discovery.decks.map(d => d.slug),
         };
     }""")
@@ -1939,7 +1941,7 @@ def test_cards_you_brought_look_different_from_cards_you_found(discover_page):
         await Discovery.loadDeck('goblin-storm');
         await new Promise(r => setTimeout(r, 3000));
         const before = Force.membership();
-        for (const row of Discovery.tray.list.slice(0, 5)) {
+        for (const row of Discovery.library.list.slice(0, 5)) {
             Force.branchByRow(row, 'similar');
             await new Promise(r => setTimeout(r, 120));
         }
@@ -2267,7 +2269,7 @@ def test_a_relation_always_grows_the_graph(discover_page):
     assert r["stillHasIt"] and r["noBrowseSet"]
 
 
-def test_the_tray_follows_the_card_not_the_mode(discover_page):
+def test_the_library_follows_the_card_not_the_mode(discover_page):
     """Keeping something you found in the atlas is the same act as keeping something you
     walked to, so the control lives in the shared card HTML rather than only in Discover."""
     r = discover_page.evaluate("""async () => {
@@ -2277,21 +2279,21 @@ def test_the_tray_follows_the_card_not_the_mode(discover_page):
         MM.selectByName("Ashnod's Altar");
         await new Promise(r => setTimeout(r, 1000));
         const keep = document.querySelector('.discover-keep');
-        const before = Discovery.tray.list.length;
+        const before = Discovery.library.list.length;
         if (keep) keep.click();
         await new Promise(r => setTimeout(r, 400));
         return {
             hadButton: !!keep,
             before: before,
-            after: Discovery.tray.list.length,
+            after: Discovery.library.list.length,
             label: (document.querySelector('.discover-keep') || {}).textContent,
-            kept: Discovery.tray.names().includes("Ashnod's Altar"),
+            kept: Discovery.library.names().includes("Ashnod's Altar"),
         };
     }""")
     assert discover_page.js_errors == []
-    assert r["hadButton"], "no Keep control in the atlas — the tray is still Discover-only"
+    assert r["hadButton"], "no Keep control in the atlas — the library is still Discover-only"
     assert r["after"] == r["before"] + 1 and r["kept"]
-    assert "In tray" in (r["label"] or ""), "the control did not reflect the new state"
+    assert "In library" in (r["label"] or ""), "the control did not reflect the new state"
 
 
 def test_relations_survive_the_canvas_renderer(canvas_page):
@@ -3249,7 +3251,7 @@ def test_the_brief_is_the_schema_build_deck_reads(discover_page):
             await new Promise(r => setTimeout(r, 700));
         }
         Force.rows().filter(r => r !== edgar).slice(0, 6).forEach(function (r) {
-            if (!Session.tray.has(r)) Session.tray.toggle(r);
+            if (!Session.library.has(r)) Session.library.toggle(r);
         });
         const b = Discovery.brief();
         return {
@@ -3275,7 +3277,7 @@ def test_the_brief_is_the_schema_build_deck_reads(discover_page):
     assert r["commander"] == "Edgar Markov"
     assert r["bracket"] in range(1, 6), "bracket must be 1-5"
     assert isinstance(r["mustInclude"], list) and isinstance(r["mustExclude"], list)
-    assert len(r["mustInclude"]) == 6, "the tray is what must_include means"
+    assert len(r["mustInclude"]) == 6, "the library is what must_include means"
     assert not r["commanderInMustInclude"], (
         "the commander occupies its own slot and must not also be in must_include"
     )
@@ -5402,3 +5404,94 @@ def test_a_walk_can_be_linked_to(browser, viz_server):
         assert errors == []
     finally:
         page.close()
+
+
+# ── The library persists ───────────────────────────────────────────────────
+#
+# PRD §7.1: the library is "the connective tissue for the whole flow" and must
+# survive navigation between surfaces. It previously did not — `Session.tray`
+# was an in-memory array that died on every reload.
+
+
+def test_the_library_survives_a_reload(discover_page, viz_server):
+    """The whole point of persisting it."""
+    page = discover_page
+    kept = page.evaluate("""async () => {
+        const rows = ['Sol Ring', 'Command Tower', 'Rhystic Study']
+            .map(Discovery.rowByName).filter(r => r >= 0);
+        rows.forEach(r => { if (!Session.library.has(r)) Session.library.toggle(r); });
+        return Discovery.library.names();
+    }""")
+    assert len(kept) == 3
+
+    page.reload()
+    page.wait_for_function(
+        "() => window.Discovery && Discovery.isReady() && Discovery.current >= 0",
+        timeout=30000)
+    back = page.evaluate("Discovery.library.names()")
+    assert sorted(back) == sorted(kept), f"library did not survive: {back}"
+    assert page.js_errors == []
+
+
+def test_the_library_stores_names_not_row_indices(discover_page):
+    """THE bug that deleted the previous attempt at this.
+
+    `localStorage['manamap-deck']` stored raw positional row indices with no
+    schema version. A Scryfall refresh reorders `cards.csv`, every index shifts,
+    and a saved deck silently reinterprets as DIFFERENT CARDS — no error, no
+    warning, a plausible wrong answer.
+
+    Asserted against the stored bytes rather than the behaviour, because the
+    behaviour only diverges after a corpus refresh and by then it is too late.
+    """
+    page = discover_page
+    raw = page.evaluate("""() => {
+        Session.library.clear();
+        const r = Discovery.rowByName('Sol Ring');
+        Session.library.toggle(r);
+        return {stored: localStorage.getItem('manamap-library'), row: r};
+    }""")
+    doc = json.loads(raw["stored"])
+    assert doc["v"] == 1, "no schema version — the exact omission that sank the last one"
+    assert doc["cards"] == ["Sol Ring"], f"stored {doc['cards']!r}, expected names"
+    assert raw["row"] not in doc["cards"], "a row index reached the store"
+
+
+def test_a_card_that_left_the_corpus_is_reported_not_dropped(discover_page):
+    """A library that quietly comes back two cards short is indistinguishable
+    from one that came back whole. `rowOf` answers -1 for an unknown name — the
+    range check the deleted version did not have."""
+    page = discover_page
+    report = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 1, corpus: 'whatever',
+            cards: ['Sol Ring', 'A Card That Was Never Printed', 'Command Tower'],
+        }));
+        return Session.useCards({
+            nameOf: r => (MM.cardRecord(r) || {}).n || null,
+            rowOf: Discovery.rowByName,
+            fingerprint: () => 'now',
+        });
+    }""")
+    assert report["restored"] == 2
+    assert report["missing"] == ["A Card That Was Never Printed"]
+    assert report["corpusChanged"] is True, "a changed fingerprint must be visible"
+    assert page.js_errors == []
+
+
+def test_an_unknown_schema_is_ignored_rather_than_guessed_at(discover_page):
+    """A newer build's data must survive an older build reading it. Upgrading a
+    shape you do not know is how you turn someone's saved work into garbage."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 99, cards: ['Sol Ring'], somethingNew: true}));
+        const report = Session.useCards({
+            nameOf: r => (MM.cardRecord(r) || {}).n || null,
+            rowOf: Discovery.rowByName, fingerprint: () => 'now'});
+        return {report: report, stillThere: localStorage.getItem('manamap-library')};
+    }""")
+    assert out["report"]["restored"] == 0
+    assert out["report"]["schema"] == 99
+    assert "somethingNew" in out["stillThere"], "the unknown document was destroyed"
+    assert page.js_errors == []
