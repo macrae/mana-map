@@ -1212,9 +1212,9 @@ Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
 ## LEGACY — the magazine renderer (frozen; replaced by `docs/manual-v5-spec.md`)
 
 Until 2026-08-19 each deck was published as an **issue** of a magazine, *Pilot's Manual*.
-The renderer (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`, the
-constitution `STYLEv3.md`) still runs and still renders the nine decks from the artifacts it
-reads, and those artifacts — `issue_plan.json`, the panel keys and `card_roles` /
+The renderer (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`) still
+runs and still renders the nine decks from the artifacts it reads — its constitution,
+`STYLEv3.md`, was deleted on 2026-08-25 and lives in git (`git show 23e8cec:STYLEv3.md`), and those artifacts — `issue_plan.json`, the panel keys and `card_roles` /
 `mana_base` / `upgrades` in `manual_prose.json`, `considering.json` + its art sidecar —
 are **frozen**: no agent regenerates them (`magazine-editor`, `pilot-panel`,
 `manual-writer`, `pilot-coach` and `short-list-analyst` are retired), the cache has no
@@ -1233,9 +1233,13 @@ navigate it forever. Every section is signed by one of three columnists — `"Le
 Lin Marginal` (◆), `Counselor Vera Dictum` (✓), `Coach Sunny Brightside` (★) — and
 STYLEv3 L10 holds that every issue is the reader's first: no version numbers, no
 changelog voice, enforced by `validate_issue.validate_self_containment()`. The design
-authority is `STYLEv3.md` (editorial laws, the Commander Mandate, section specs,
-voice, component library); `docs/history/STYLE-v1-visual-research.md` and
-`-v2-editorial-method.md` are its archived sources.
+authority was `STYLEv3.md` (editorial laws, the Commander Mandate, section specs, voice,
+component library), with `STYLE-v1-visual-research.md` and `-v2-editorial-method.md` as
+its sources. All three were deleted on 2026-08-25 — `git show 23e8cec:STYLEv3.md` and
+`git show 23e8cec:docs/history/<file>`. The `STYLEv3 §N` citations left in the renderer's
+own comments still say which clause each piece implements; they simply resolve through git
+now, which is the right place for the constitution of something nobody is allowed to
+extend.
 
 - **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
   promises, evidence tiers, rhythm tags, component library. Changing it changes every

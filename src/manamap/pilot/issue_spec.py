@@ -32,7 +32,8 @@ from manamap.pilot.common import DECK_STATUSES, deck_status_of
 # them verbatim in the Flight Plan.
 #
 # v3.4 replaced a monotonic depth ramp with an identity-first one, on the
-# founder's reading of the shipped issues (docs/history/magazine-feedback-2026-08.md).
+# founder's reading of the shipped issues (deleted 2026-08-25;
+# `git show 23e8cec:docs/history/magazine-feedback-2026-08.md`).
 # The argument, in his words: "all commanders are built around a commander —
 # when you ask somebody what deck are you playing, they lead with who the
 # commander is." The book now opens the way a player hands you their deck. You

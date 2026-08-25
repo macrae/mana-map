@@ -697,7 +697,7 @@ every panel there does when its artifact is absent.
 | `docs/simulation.md` | The Forge engine: the spike, the harness, the parser, the pod, the bridge |
 | `docs/manual-v5-spec.md` | The compact deck page that replaces the magazine (spec) |
 | `docs/agent-audit-2026-08-19.md` | The agent audit behind the pivot |
-| `STYLEv3.md` | The LEGACY magazine's constitution — governs the frozen renderer only |
+| ~~`STYLEv3.md`~~ | The legacy magazine's constitution, **deleted 2026-08-25** with the rest of the magazine era. `git show 23e8cec:STYLEv3.md` |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
 | `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |

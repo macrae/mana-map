@@ -42,7 +42,6 @@ SURFACES = [
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",
     ROOT / "README.md",
-    ROOT / "STYLEv3.md",
     *sorted((ROOT / ".claude").rglob("*.md")),
     *[p for p in sorted((ROOT / "docs").glob("*.md"))
       if p.name not in DESIGN_RECORDS],

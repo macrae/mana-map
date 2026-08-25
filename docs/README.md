@@ -1,8 +1,10 @@
 # The documentation, sorted
 
-About 20,000 lines, and roughly two thirds of it is history. This page says which is
-which, so you do not read a design record — or the magazine era — as a description of
-the code. **Start with the vision; everything else is written against it.**
+About 7,500 lines, and 791 of them are history — two design records, kept because live
+things cite them. It used to be roughly two thirds history; the magazine era was deleted
+on 2026-08-25 and lives in git. This page says which doc is which, so you do not read a
+design record as a description of the code. **Start with the vision; everything else is
+written against it.**
 
 ## Start here
 
@@ -25,25 +27,36 @@ the code. **Start with the vision; everything else is written against it.**
 | [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 15 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |
 | [manual-v5-spec.md](manual-v5-spec.md) | 115 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
 
-The LEGACY magazine renderer's constitution is **[../STYLEv3.md](../STYLEv3.md)** (1,122
-lines), banner-marked SUPERSEDED: it governs `build_manual.py`, `design.py`,
-`issue_spec.py` and `validate_issue.py` only, which still render the nine frozen pages
-until manual-v5 replaces them. Nothing in it applies to the bench.
+The LEGACY magazine renderer's constitution, `STYLEv3.md`, was **deleted 2026-08-25**
+(`git show 23e8cec:STYLEv3.md`). It governed `build_manual.py`, `design.py`, `issue_spec.py`
+and `validate_issue.py`, which still render the nine frozen pages; nothing in it ever
+applied to the bench, and the compact Pilot's Manual that replaced the magazine
+(`build_page.py`) was never written against it.
 
 ## History — records, not description
 
-These document decisions and reasoning of their era. Parts of them describe code that was
-never written or has since been deleted. They are kept because the reasoning is worth more
-than the accuracy, and they are **excluded from the docs guards** for exactly that reason.
+Two files. They document decisions and reasoning of their era, parts of them describe code
+that was never written or has since been deleted, and they are **excluded from the docs
+guards** for exactly that reason: a design record deliberately quotes the numbers of its
+own time, and rewriting it would destroy the thing it is kept for.
 
 | | | |
 |---|---:|---|
-| [history/deck-builder-v2.md](history/deck-builder-v2.md) | 461 | The deck builder's design: bracket engine, role taxonomy, the architect ⇄ critic loop, and where the implementation departed from the plan. Moved 2026-08-19. |
-| [history/frontend-v2.md](history/frontend-v2.md) | 330 | A proposed deck-building surface, superseded first by the dossier and then by the bench. Moved 2026-08-19. |
-| [history/magazine-feedback-2026-08.md](history/magazine-feedback-2026-08.md) | 185 | Founder feedback on the magazine, verbatim, with what shipped against each thread. Moved 2026-08-19. |
-| [history/magazine-feedback-2026-08-13.md](history/magazine-feedback-2026-08-13.md) | 255 | The next round. Its §0 shows the previous round's "still open" list becoming this round's complaints. Moved 2026-08-19. |
-| [history/PLAN-2026-08-magazine-era.md](history/PLAN-2026-08-magazine-era.md) | 713 | The plan as it stood when nine magazine issues were the product, up to the pivot. |
-| [history/PLAN.md](history/PLAN.md), [history/STYLE-v1-visual-research.md](history/STYLE-v1-visual-research.md), [history/STYLE-v2-editorial-method.md](history/STYLE-v2-editorial-method.md) | 12,385 | An older planning doc, the 1990s games-magazine visual research the design language came from, and an editorial-method treatise. Archive. |
+| [history/deck-builder-v2.md](history/deck-builder-v2.md) | 461 | The deck builder's design: bracket engine, role taxonomy, the architect ⇄ critic loop, and where the implementation departed from the plan. **Load-bearing**: `deck-doctor`'s charter cites it for the hole recon exists to fill (no per-commander inclusion rates in any bulk data), and for why perishable meta claims stay out of `strategy.md`. |
+| [history/frontend-v2.md](history/frontend-v2.md) | 330 | A proposed deck-building surface, superseded first by the dossier and then by the bench. Cited by the `refresh-corpus` skill. |
+
+**Deleted 2026-08-25** — the magazine era, ~428 KB: `STYLEv3.md` (the constitution),
+`STYLE-v1-visual-research.md`, `STYLE-v2-editorial-method.md`, both
+`magazine-feedback-*.md`, `PLAN-2026-08-magazine-era.md` and an older `PLAN.md`. The
+magazine is not the product and has not been since the pivot; keeping its constitution and
+its editorial theory in the tree made a frozen renderer look like a live subsystem to
+anyone reading the docs.
+
+Nothing is lost — git holds all of it. `git show 23e8cec:STYLEv3.md` reads the
+constitution, and `git show 23e8cec:docs/history/<file>` any of the rest. **The `STYLEv3
+§N` citations in `issue_spec.py`, `design.py`, `validate_issue.py` and `build_index.py`
+were deliberately left in place**: they say which clause a piece of frozen code implements,
+which is still true, and they now resolve through git rather than through the tree.
 
 ## The files at the root that are not obviously docs
 

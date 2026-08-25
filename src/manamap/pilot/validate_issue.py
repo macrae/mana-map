@@ -245,7 +245,8 @@ _CONTINUITY_RE = re.compile(
 # strategy sections, and the tag is what grounding looks like in the agent's own
 # reasoning, so it leaks by a very natural mistake and nothing caught it: 68
 # occurrences reached the rendered HTML of all eight published issues before this
-# existed (docs/history/magazine-feedback-2026-08-13.md §2).
+# existed (deleted 2026-08-25; `git show
+# 23e8cec:docs/history/magazine-feedback-2026-08-13.md` §2).
 #
 # Matched anywhere, not just in parentheses. Every live occurrence happened to be a
 # trailing parenthetical, which made the cleanup mechanical — but a rule written to

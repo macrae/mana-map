@@ -388,5 +388,5 @@ Grouped by what they are about; the legacy renderer's lessons are last and are k
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions; the ONLY place test counts are stated
-- `STYLEv3.md` — LEGACY: the magazine's constitution; governs the frozen renderer only
+- ~~`STYLEv3.md`~~ — the magazine's constitution, **deleted 2026-08-25**. The renderer it governs is still frozen in `src/`, and its `STYLEv3 §N` comments now resolve through git: `git show 23e8cec:STYLEv3.md`
 - `docs/history/` — the magazine-era PLAN, the deck-builder v2 and frontend v2 design records, the founder/editor feedback records

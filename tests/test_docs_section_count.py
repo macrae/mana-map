@@ -26,7 +26,6 @@ ROOT = Path(__file__).resolve().parent.parent
 # record; the whole point of a design doc is that it dates.
 DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
 SURFACES = [
-    ROOT / "STYLEv3.md",
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",
     ROOT / "README.md",

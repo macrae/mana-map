@@ -2,7 +2,7 @@
 
 *The resume-here doc. `docs/vision.md` says what this is for; `CLAUDE.md` carries the
 gotchas; this says what exists and what is open. The magazine era's plan is archived
-verbatim at `docs/history/PLAN-2026-08-magazine-era.md`.*
+verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
 Last updated **2026-08-25**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
