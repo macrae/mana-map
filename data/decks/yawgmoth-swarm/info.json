@@ -24,6 +24,7 @@
     "target": 4,
     "within_target": true
   },
+  "paper": null,
   "record": {
     "games": 0,
     "win": 0,
@@ -180,6 +181,7 @@
   "simulation": null,
   "experiments": null,
   "next": [
+    "not marked as built in paper — if it is sleeved, `deck-version yawgmoth-swarm paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes yawgmoth-swarm add \"…\" --result win|loss --opponents N`",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
     "no simulation runs — `simulate yawgmoth-swarm --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"

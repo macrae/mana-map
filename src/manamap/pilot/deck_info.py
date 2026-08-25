@@ -162,6 +162,21 @@ def compose(slug):
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,
+        # WHETHER THIS DECK EXISTS IN PAPER, as the pilot asserted it.
+        #
+        # The AUTHORED half only — version, when, and the note. `paper_state`'s
+        # drift needs a git walk, and `info.json` is committed and omits
+        # everything git-derived because the commit that changes `decklist.txt`
+        # gets its sha after anything written alongside it. `paper()` is a plain
+        # file read of `deck_versions.json`, so this side of the split is free
+        # and CI can compute it.
+        #
+        # `_next` needs it for one reason: an UNLOCKED deck is not a dead deck,
+        # it is an UNKNOWN one, and telling the pilot to go and play something
+        # that may never have been sleeved is a quieter version of the defect
+        # that had this command recommending a deck whose cards were in another
+        # deck's sleeves.
+        "paper": versions_mod.paper(slug),
         "record": record,
         "goldfish": _goldfish(base),
         "engine": {"thesis": engine.get("thesis"),
@@ -279,6 +294,16 @@ def _next(info):
     if info["version"]["uncommitted"]:
         nxt.append("decklist.txt differs from every committed version — commit it so the "
                    "log can stamp games against a version (`deck-version` will then show it)")
+    # Three states, not two. LOCKED means the pilot said this exact list is
+    # sleeved; a dead `status` means it demonstrably is not; and ABSENT means
+    # nobody has said either way — which is most decks, and is the state every
+    # build plan sits in. Only the first earns "go and play it".
+    unknown = not closed and not info.get("paper")
+    if unknown:
+        nxt.append(f"not marked as built in paper — if it is sleeved, "
+                   f"`deck-version {slug} paper --note \"…\"` locks the list you hold "
+                   f"(then drift is computed on every swap); if it is not, it is a build "
+                   f"plan and the play/measure suggestions below need cardboard first")
     if info["record"]["games"] == 0 and not closed:
         nxt.append(f"nothing in the captain's log — play it, then "
                    f"`deck-notes {slug} add \"…\" --result win|loss --opponents N`")

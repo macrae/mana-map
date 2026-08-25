@@ -122,3 +122,70 @@ def test_a_superseded_deck_is_still_playable(bare_deck):
     info = deck_info.compose(SLUG)
     assert info["lifecycle"]["status"] == "superseded"
     assert any("play it" in n for n in info["next"])
+
+
+def test_an_unlocked_deck_is_not_the_same_as_a_dead_one(bare_deck):
+    """Three states, and only one of them earns "go and play it".
+
+    LOCKED is the pilot's assertion that this exact list is sleeved. A dead
+    `status` says it demonstrably is not. ABSENT says nobody has claimed either
+    — which is where every build plan sits, and where three decks sat while the
+    front door cheerfully told the pilot to go and play them.
+
+    This is the quiet half of the defect the broken-down test above covers. That
+    one was loud: the cards were provably in another deck's sleeves. This one
+    just does not know, and said nothing, which reads identically to knowing.
+    """
+    # The lock is written as the artifact rather than through `set_paper`,
+    # which needs a git history to hang the version off — correctly, since a
+    # lock is a claim about one exact list. `bare_deck` has no repo.
+    def lock(**kw):
+        (bare_deck / "deck_versions.json").write_text(json.dumps(
+            {"slug": SLUG, "paper": {"version": 1, "built_at": "2026-08-25", **kw},
+             "tags": {}}))
+
+    # No lock: say so, and say what would fix it.
+    info = deck_info.compose(SLUG)
+    assert info["paper"] is None
+    unlocked = [n for n in info["next"] if "not marked as built in paper" in n]
+    assert len(unlocked) == 1, "an unlocked deck must say it is unlocked"
+    assert f"deck-version {SLUG} paper" in unlocked[0], "name the command that fixes it"
+    # It informs, it does not withhold — an unbuilt deck is not a closed one.
+    assert any("play it" in n for n in info["next"])
+
+    # Locked: the question is answered, so the line goes.
+    lock(note="sleeved")
+    info = deck_info.compose(SLUG)
+    assert info["paper"]["note"] == "sleeved"
+    assert not any("not marked as built in paper" in n for n in info["next"])
+
+    # Dead: the lock is irrelevant, and the closed-loop line must not be joined
+    # by a second one telling the pilot to lock a deck that no longer exists.
+    (bare_deck / "deck_versions.json").write_text(json.dumps({"slug": SLUG, "tags": {}}))
+    (bare_deck / "issue.json").write_text(json.dumps(
+        {"commander": "Radagast of Rhosgobel", "status": "broken-down"}))
+    info = deck_info.compose(SLUG)
+    assert not any("not marked as built in paper" in n for n in info["next"])
+
+
+def test_the_lock_in_info_json_is_the_authored_half_only(bare_deck):
+    """`info.json` is committed and omits everything git-derived, because the
+    commit that changes `decklist.txt` receives its sha after anything written
+    in the same commit — so a stored version number is one behind forever.
+
+    `paper()` is a plain read of `deck_versions.json` and carries no drift, so
+    it is on the safe side of that split. If `in_sync` or `drift` ever appear
+    here, the artifact has started making a claim it cannot keep current.
+    """
+    (bare_deck / "deck_versions.json").write_text(json.dumps(
+        {"slug": SLUG, "tags": {},
+         "paper": {"version": 1, "sha": "abc123def456", "decklist_sha256": "0" * 64,
+                   "built_at": "2026-08-25", "note": "sleeved"}}))
+    info = deck_info.compose(SLUG)
+    assert set(info["paper"]) <= {"version", "sha", "decklist_sha256", "built_at", "note"}
+    assert "in_sync" not in info["paper"] and "drift" not in info["paper"]
+    # `bare_deck` is not a git repository, so this whole composition ran with no
+    # git available — which is the property that matters: CI can build
+    # `info.json`, lock included, and the drift stays where it can be kept
+    # current. The version block comes back empty here for exactly that reason.
+    assert info["version"]["current"] is None and info["version"]["of"] == 0
