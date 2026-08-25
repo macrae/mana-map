@@ -37,10 +37,14 @@ from collections import Counter
 from types import SimpleNamespace
 
 from manamap.pilot.card_pool import corpus_names
+from manamap.pilot import formats
 from manamap.pilot.common import deck_dir
 from manamap.pilot.fetch_deck import parse_decklist
 
-DECK_SIZE = 100
+# This module used to declare its own `DECK_SIZE = 100`, shadowing the one in
+# `config.py` — a name that resolved locally to something a reader would swear
+# came from the shared constant. The format spec is the one place now.
+DECK_SIZE = formats.DEFAULT.deck_size
 
 
 def _copies(entries):
@@ -121,7 +125,7 @@ def analyze(slug, text):
         blocking.append("no commander: put it under a `Commander:` header or mark the "
                         "line `*CMDR*`")
     if total != DECK_SIZE:
-        blocking.append(f"{total} cards, not {DECK_SIZE} — a Commander deck is the "
+        blocking.append(f"{total} cards, not {DECK_SIZE} — a {formats.DEFAULT.name} deck is the "
                         f"commander plus 99")
 
     # A name written twice is the characteristic paper-list error: you read the

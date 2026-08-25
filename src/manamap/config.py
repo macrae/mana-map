@@ -790,7 +790,13 @@ MASS_LAND_DENIAL = frozenset({
 # The deterministic builder. Every constant here has a home so it can be
 # tested and tuned — the browser prototype's equivalents were JS literals with
 # no derivation, no tests, and no way to reason about them.
-DECK_SIZE = 100
+# DECK_SIZE lives in `pilot/formats.py` now, with the rest of what makes a deck
+# LEGAL — size, singleton, commander count, colour identity. It is not a tuning
+# knob and it was one of four places that independently said "100". The
+# constants below stay here because they are the opposite kind of number: how a
+# deck should be SHAPED, which is judgement rather than rules. `config` cannot
+# import `formats` (everything imports `config`, including `pilot`), and that
+# layering is what settles which of the two owns a constant.
 DECK_BUILD_ALTERNATES = 3
 DECK_BUILD_MAX_BRACKET_PASSES = 10
 DECK_BUILD_MAX_ITERATIONS = 3      # architect ⇄ critic, mirrors RESOLVE_MAX_ITERATIONS

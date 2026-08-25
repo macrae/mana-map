@@ -1,33 +1,46 @@
-"""Pilot: validate a fetched deck's Commander invariants."""
+"""Pilot: validate a fetched deck against its format's rules.
 
+Every rule here reads `pilot/formats.py` rather than a literal. It used to
+hardcode `100`, `1..2 commanders` and singleton inline — correct for Commander,
+and the only copy of those numbers that no shared constant could reach.
+"""
+
+from manamap.pilot import formats
 from manamap.pilot.common import load_deck_cards, report_errors
 
 
-def validate(doc):
+def validate(doc, spec=None):
     """Return a list of human-readable error strings (empty = valid).
 
     Sideboard entries (tokens, art cards, spare copies) are excluded from the
-    100-card, singleton, and color-identity checks.
+    size, singleton and colour-identity checks.
     """
+    spec = spec or formats.DEFAULT
     errors = []
     cards = doc.get("cards", [])
     total = sum(c.get("quantity", 0) for c in cards)
-    if total != 100:
-        errors.append(f"Deck has {total} cards, expected exactly 100")
+    if total != spec.deck_size:
+        errors.append(f"Deck has {total} cards, expected exactly {spec.deck_size}")
 
     commanders = [c for c in cards if c.get("is_commander")]
-    if not 1 <= len(commanders) <= 2:
-        errors.append(
-            f"Expected 1-2 commanders flagged, found {len(commanders)} "
-            f"({', '.join(c['name'] for c in commanders) or 'none'})"
-        )
+    if spec.commanders:
+        # The upper bound is `commanders + 1` rather than a literal 2: Commander
+        # requires one and allows a partner pair, so the allowance is "one more
+        # than required" and stays true if a format ever required two.
+        lo, hi = spec.commanders, spec.commanders + 1
+        if not lo <= len(commanders) <= hi:
+            errors.append(
+                f"Expected {lo}-{hi} commanders flagged, found {len(commanders)} "
+                f"({', '.join(c['name'] for c in commanders) or 'none'})"
+            )
 
-    for c in cards:
-        is_basic = "Basic" in c.get("type_line", "")
-        if c.get("quantity", 0) > 1 and not is_basic:
-            errors.append(f"Singleton violation: {c['name']} x{c['quantity']}")
+    if spec.singleton:
+        for c in cards:
+            is_basic = spec.basics_exempt and "Basic" in c.get("type_line", "")
+            if c.get("quantity", 0) > spec.max_copies and not is_basic:
+                errors.append(f"Singleton violation: {c['name']} x{c['quantity']}")
 
-    if commanders:
+    if spec.colour_identity and commanders:
         identity = set()
         for c in commanders:
             identity.update(c.get("color_identity", []))
@@ -42,12 +55,9 @@ def validate(doc):
 
 
 def main(args):
+    spec = formats.get(getattr(args, "format", None))
     doc = load_deck_cards(args.slug)
-    errors = validate(doc)
+    errors = validate(doc, spec)
     report_errors(args.slug, errors)
     commanders = [c["name"] for c in doc["cards"] if c["is_commander"]]
-    print(f"OK: 100 cards, commander: {', '.join(commanders)}")
-
-
-if __name__ == "__main__":
-    raise SystemExit("Run via `manamap pilot validate-deck <slug>`.")
+    print(f"OK: {spec.deck_size} cards ({spec.name}), commander: {', '.join(commanders)}")

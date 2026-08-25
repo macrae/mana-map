@@ -23,6 +23,7 @@ Deterministic: same deck, same pool, same mana base.
 import math
 import re
 
+from manamap.pilot import formats
 from manamap.analysis.common import WUBRG
 from manamap.pilot.common import front_field, is_land
 
@@ -31,7 +32,11 @@ from manamap.pilot.common import front_field, is_land
 # to work on curve, so we size against the early turns.
 OPENING_HAND = 7
 SOURCE_TARGET_PROBABILITY = 0.90
-DECK_SIZE_AFTER_COMMANDER = 99
+# DERIVED, not written down. This was `99` — a second literal for `100 - 1`,
+# and a format where that arithmetic differs (a commander that starts on the
+# battlefield, a format with none at all) would have needed both changed and
+# would have got one. The name stays because the maths reads better with it.
+DECK_SIZE_AFTER_COMMANDER = formats.DEFAULT.library_size
 MAX_CASTING_TURN = 6
 
 # Colour requirements are planned against turn 3 at the earliest. Sizing to the

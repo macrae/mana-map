@@ -18,11 +18,11 @@ import json
 
 from manamap.config import (
     BRACKETS,
-    DECK_SIZE,
     DECKS_DIR,
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
+from manamap.pilot import formats
 from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     deck_dir, mtime_memo, report_errors, try_load_rules_db)
@@ -57,8 +57,10 @@ def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_repor
         return errors
 
     names = deck_card_names(plan)
-    if len(names) != DECK_SIZE:
-        errors.append(f"plan has {len(names)} cards, expected exactly {DECK_SIZE}")
+    # Legality, so it reads the format rather than a build constant.
+    spec = formats.DEFAULT
+    if len(names) != spec.deck_size:
+        errors.append(f"plan has {len(names)} cards, expected exactly {spec.deck_size}")
 
     # Singleton, basics excepted.
     seen = {}
@@ -342,7 +344,7 @@ def main(args):
     report_errors(path.name, errors)
     block = plan["bracket"]
     print(
-        f"OK   {path.name} — {plan['commander']}, {DECK_SIZE} cards, "
+        f"OK   {path.name} — {plan['commander']}, {formats.DEFAULT.deck_size} cards, "
         f"bracket {block['target']} ({BRACKETS[block['target']]['name']}), "
         f"floor {block.get('computed_floor')}"
     )

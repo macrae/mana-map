@@ -9,7 +9,8 @@ import pytest
 
 from conftest import requires_data, requires_deck
 
-from manamap.config import DECK_ROLE_BUDGET, DECK_SIZE, DECKS_DIR
+from manamap.config import DECK_ROLE_BUDGET, DECKS_DIR
+from manamap.pilot import formats
 from manamap.pilot import build_deck
 from manamap.pilot.card_pool import load_pool
 from manamap.pilot.build_deck import (
@@ -369,7 +370,7 @@ def test_decklist_text_is_deterministic():
 
 def test_role_budget_sums_to_the_deck_size():
     """36 lands + 63 spells + 1 commander = 100."""
-    assert sum(DECK_ROLE_BUDGET.values()) == DECK_SIZE - 1
+    assert sum(DECK_ROLE_BUDGET.values()) == formats.DEFAULT.library_size
 
 
 # ── Sideboard preservation ───────────────────────────────────────────────

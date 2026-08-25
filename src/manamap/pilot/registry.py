@@ -367,6 +367,12 @@ def add_pilot_parser(subparsers):
         if name == "deck-facts":
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
+        if name == "validate-deck":
+            # One format ships, and the flag exists anyway: it is the seam PRD
+            # §13 asks for, and a seam nobody can reach is a seam nobody tests.
+            from manamap.pilot.formats import FORMATS
+            cmd.add_argument("--format", default=None, choices=sorted(FORMATS),
+                             help="rules to validate against (default: commander)")
         if name == "commander-search":
             # Slugless for the same reason as `card-search`: a search is not
             # per-deck. The seed comes from names, a file, or a deck's own 99.
