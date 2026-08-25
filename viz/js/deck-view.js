@@ -721,18 +721,17 @@
       head.firstElementChild.appendChild(flag);
     }
 
+    // No magazine link. The surfaces are the workbench, the map, the dossier and
+    // the Pilot's Manual — the magazine is not a product any more, so pointing a
+    // pilot at it is offering them a page nobody maintains. The RENDERER is not
+    // deleted and the issues stay on disk: they are the record of what was
+    // published, and `issue.json` still carries the deck's `status`, which
+    // `deck_lifecycle` reads. What goes is the invitation, not the archive.
     var link = document.getElementById('issueLink');
-    if (!d.published) {
-      link.hidden = true;
-      link.removeAttribute('href');
-    } else {
-      link.hidden = false;
-      link.href = '../manuals/' + slug + '.html';
-    }
-    // The compact Pilot's Manual lives under manuals/p/ while it coexists with
-    // the magazine it replaces. Hidden rather than dead when a deck has none —
-    // the same rule the issue link follows, and for the same reason: a link that
-    // 404s is worse than a link that is not there.
+    if (link) link.remove();
+    // The compact Pilot's Manual lives under manuals/p/. Hidden rather than dead
+    // when a deck has none, because a link that 404s is worse than a link that is
+    // not there.
     var manual = document.getElementById('manualLink');
     if (manual) {
       // `has` rides on the MANIFEST entry, not on the artifacts object —

@@ -430,7 +430,14 @@ def test_walk_builds_a_graph_that_spreads(page):
     r = _walk(page, DECK_SEED)
     assert page.js_errors == [], f"the walk threw: {page.js_errors}"
     assert r["canvas"] and r["plotHidden"]
-    assert r["nodes"] == r["seeded"] == 97
+    # NOT a hardcoded count. This seeds from edgar-vampires/cards.json, and the
+    # deck is a real object that moves: the v1.0.0 paper check-in took it from 97
+    # distinct names to 96 and turned this red for a change it was never about.
+    # The property is that every seeded row becomes a node; the total is whatever
+    # the deck happens to be. The floor guards the case that would make the rest
+    # of the assertions vacuous — a seed that matched almost nothing.
+    assert r["nodes"] == r["seeded"], (r["nodes"], r["seeded"])
+    assert r["seeded"] >= 90, f"only {r['seeded']} of the deck matched the atlas"
     assert r["links"] > r["nodes"], "every card should carry links"
     # The layout must actually resolve. A collapsed graph reads as an empty canvas, which
     # is what happened when nodes were seeded at identical world positions — some regions
@@ -3437,48 +3444,82 @@ def _dossier(browser, viz_server, slug):
     return page
 
 
-def test_dossier_hides_the_issue_link_for_an_unpublished_deck(browser, viz_server):
-    """A deck is loadable as soon as it has a cards.json; an issue comes later.
+def test_no_live_surface_links_into_the_magazine(browser, viz_server):
+    """The magazine is not a product any more, so nothing may invite a pilot in.
 
-    `build-index` used to gate the whole manifest on `manuals/<slug>.html`, so an
-    unpublished deck was simply invisible. Admitting it exposed the other half:
-    the dossier linked to `../manuals/<slug>.html` unconditionally, sending every
-    unpublished deck to a 404. Source-assertion tests pass through this — the
-    string is still there, it just points at nothing.
+    These two surfaces used to carry an Archive link each — the dossier's
+    `#issueLink` to `../manuals/<slug>.html` and the workbench's to the
+    newsstand. The magazine renderer is NOT deleted and the issues stay on
+    disk: they are the record of what was published, and `issue.json` still
+    carries the deck's `status`, which `deck_lifecycle` reads. What went is the
+    invitation.
+
+    Asserted in a browser rather than by grepping the HTML, because the
+    dossier's link was built by `deck-view.js` at render time — a source
+    assertion would have passed on a page that still grew one.
     """
     import json
     from manamap.config import DECKS_DIR
 
     manifest = json.loads((DECKS_DIR / "index.json").read_text())
-    unpublished = [d for d in manifest["decks"] if d.get("published") is False]
-    if not unpublished:
-        pytest.skip("no unpublished deck in the manifest to check")
+    slug = manifest["decks"][0]["slug"]
 
-    page = _dossier(browser, viz_server, unpublished[0]["slug"])
+    page = _dossier(browser, viz_server, slug)
     try:
-        assert page.is_visible("#issueLink") is False
-        assert page.get_attribute("#issueLink", "href") is None
+        assert page.query_selector("#issueLink") is None
+        hrefs = page.eval_on_selector_all(
+            ".head-links a", "els => els.map(e => e.getAttribute('href'))")
+        assert not [h for h in hrefs if h and "manuals/" in h and "manuals/p/" not in h], hrefs
+    finally:
+        page.close()
+
+    page = browser.new_page()
+    page.goto(f"{viz_server}/viz/workbench.html")
+    page.wait_for_timeout(2500)
+    try:
+        hrefs = page.eval_on_selector_all(
+            "a", "els => els.map(e => e.getAttribute('href'))")
+        assert not [h for h in hrefs if h and "manuals/" in h and "manuals/p/" not in h], hrefs
     finally:
         page.close()
 
 
-def test_dossier_keeps_the_issue_link_for_a_published_deck(browser, viz_server):
-    """The guard must not fire on decks that did go to press."""
+def test_the_dossier_hides_a_manual_link_it_cannot_serve(browser, viz_server):
+    """A link that 404s is worse than a link that is not there.
+
+    The rule the deleted issue-link tests existed for, moved to the artifact it
+    now governs. A deck is loadable as soon as it has a `cards.json`; its
+    Pilot's Manual comes later, and `has.page` on the manifest entry is what
+    says whether one exists. Reading `d.has` instead of `d.entry.has` once hid
+    this link on every deck that had a manual — silently, since a hidden link
+    raises nothing.
+    """
     import json
     from manamap.config import DECKS_DIR
 
     manifest = json.loads((DECKS_DIR / "index.json").read_text())
-    published = [d for d in manifest["decks"] if d.get("published")]
-    if not published:
-        pytest.skip("no published deck in the manifest to check")
+    with_page = [d for d in manifest["decks"]
+                 if (d.get("has") or {}).get("page")]
+    without = [d for d in manifest["decks"]
+               if not (d.get("has") or {}).get("page")]
+    if not with_page:
+        pytest.skip("no deck in the manifest has a compact page")
 
-    slug = published[0]["slug"]
+    slug = with_page[0]["slug"]
     page = _dossier(browser, viz_server, slug)
     try:
-        assert page.is_visible("#issueLink") is True
-        assert page.get_attribute("#issueLink", "href") == f"../manuals/{slug}.html"
+        assert page.is_visible("#manualLink") is True
+        assert page.get_attribute("#manualLink", "href") == f"../manuals/p/{slug}.html"
     finally:
         page.close()
+
+    if without:
+        page = _dossier(browser, viz_server, without[0]["slug"])
+        try:
+            assert page.is_visible("#manualLink") is False
+            assert page.get_attribute("#manualLink", "href") is None
+        finally:
+            page.close()
 
 
 # ── The verified-line spotlight ──────────────────────────────────────────
