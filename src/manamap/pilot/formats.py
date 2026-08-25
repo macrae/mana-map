@@ -72,6 +72,22 @@ class FormatSpec:
     #: The key in Scryfall's `legalities` map, and the suffix of the
     #: `legal_<key>` column `extract` already writes into `cards.csv`.
     legality_key: str
+    #: Whether `build_deck` can actually BUILD this format, as opposed to
+    #: validating a list somebody else built.
+    #:
+    #: Only Commander, and the gap is real rather than a missing flag. The
+    #: builder is anchored on a commander at every step: colour identity comes
+    #: from it and gates the whole candidate pool, the similarity score is
+    #: seeded from its name, its mechanical tags drive synergy, the bracket
+    #: engine reads it, and `manabase` sizes against a 99-card library. A
+    #: constructed deck has no such anchor — you build around an archetype and
+    #: a colour pair — so this is a different build strategy, not a parameter.
+    #:
+    #: It exists because the UI offered a five-format picker in front of a
+    #: builder that only builds one, and "I tried to build a Standard deck and
+    #: nothing happened" is what that costs. A format the tool cannot build is
+    #: now something the tool SAYS it cannot build.
+    buildable: bool = False
 
     @property
     def library_size(self):
@@ -106,6 +122,7 @@ class FormatSpec:
 COMMANDER = FormatSpec(
     name="Commander", deck_size=100, exact_size=True, singleton=True, commanders=1,
     colour_identity=True, basics_exempt=True, legality_key="commander",
+    buildable=True,
 )
 
 

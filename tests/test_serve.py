@@ -163,3 +163,33 @@ def test_a_draft_writes_a_brief_and_nothing_else(tmp_path, monkeypatch):
     serve.call("build/save", {"slug": "zz", "commander": "Zur the Enchanter"})
     files = sorted(p.name for p in (tmp_path / "zz").iterdir())
     assert files == ["brief.json"], files
+
+
+def test_building_an_unbuildable_format_says_why(tmp_path, monkeypatch):
+    """It came back "brief.json has no commander" — true, useless, and blaming
+    the brief for a limitation of the BUILDER.
+
+    Defence in depth: the picker should not offer it, and this says so if
+    something else did.
+    """
+    import json as _json
+
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    (tmp_path / "zz").mkdir()
+    (tmp_path / "zz" / "brief.json").write_text(_json.dumps(
+        {"slug": "zz", "format": "standard"}))
+    with pytest.raises(ValueError) as e:
+        serve.call("build/run", {"slug": "zz"})
+    msg = str(e.value)
+    assert "cannot build Standard" in msg
+    assert "anchored on a commander" in msg, "it did not say WHY"
+    assert "validate-deck" in msg, "it did not say what CAN be done instead"
+
+
+def test_the_formats_endpoint_reports_buildability():
+    """The picker filters on it, so it has to travel."""
+    fmts = {f["key"]: f for f in serve.call("formats", {})["formats"]}
+    assert fmts["commander"]["buildable"] is True
+    assert fmts["standard"]["buildable"] is False

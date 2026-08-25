@@ -750,7 +750,16 @@
       return '<button class="lens-btn" onclick="Build.newDeck()">Start a new deck</button>';
     }
     const kept = Session.library.size;
-    const fmts = (newDeck.formats || []).map(f =>
+    /* ONLY FORMATS THE BUILDER CAN BUILD.
+     *
+     * The picker offered all five while `build_deck` builds one, so choosing
+     * Standard and pressing Build did nothing — the worst possible answer,
+     * because it reads as a broken button rather than as a limit. A menu is a
+     * promise; this one now only promises what it can keep, and the line below
+     * names what is missing instead of hiding it. */
+    const buildable = (newDeck.formats || []).filter(f => f.buildable !== false);
+    const notYet = (newDeck.formats || []).filter(f => f.buildable === false);
+    const fmts = buildable.map(f =>
       '<option value="' + esc(f.key) + '"' + (f.key === newDeck.fmt ? ' selected' : '') +
       '>' + esc(f.name) + ' — ' + f.deck_size + (f.exact_size ? '' : '+') +
       (f.singleton ? ', singleton' : ', 4-of') + '</option>').join('');
@@ -783,6 +792,11 @@
     }
     h += '<p class="lens-note">' + kept + ' card' + (kept === 1 ? '' : 's')
       + ' from your library will be kept in the 99.</p>';
+    if (notYet.length) {
+      h += '<p class="lens-note">' + notYet.map(f => esc(f.name)).join(', ')
+        + ' can be validated and searched, but not built yet — the builder is '
+        + 'anchored on a commander at every step.</p>';
+    }
     if (newDeck.saved) h += '<p class="lens-note">saved · ' + esc(newDeck.saved) + '</p>';
     if (newDeck.built) h += '<div class="lens-line-prose"><p>' + esc(newDeck.built) + '</p></div>';
     h += '<button class="lens-btn" onclick="Build.newDeckBuild()">Build the deck</button>';
@@ -888,7 +902,24 @@
   }
 
   function newDeckBuild() {
-    if (!newDeck || !newDeck.slug) return;
+    if (!newDeck) return;
+    // SAY WHAT IS MISSING. This was `if (!newDeck.slug) return;` — a silent
+    // early return, which is exactly "I pressed Build and nothing happened".
+    // A control that declines has to say why, or it reads as broken software.
+    if (!newDeck.slug) {
+      newDeck.built = 'give the deck a slug first — it is the folder its '
+        + 'artifacts live in, e.g. zur-voltron';
+      renderPanel();
+      return;
+    }
+    const spec = (newDeck.formats || []).find(f => f.key === newDeck.fmt);
+    if (spec && spec.buildable === false) {
+      newDeck.built = 'the builder cannot build ' + spec.name + ' yet — it is '
+        + 'anchored on a commander at every step. ' + spec.name + ' decks can be '
+        + 'validated and their pool searched, but not built.';
+      renderPanel();
+      return;
+    }
     newDeck.built = 'building…';
     renderPanel();
     Api.call('build/run', { slug: newDeck.slug }).then(function (r) {

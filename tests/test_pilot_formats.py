@@ -240,3 +240,30 @@ def test_the_combining_rule_is_measured_not_guessed():
     assert all(v == {"legal", "not_legal"} for v in disagreeing), (
         "a name is both banned and legal somewhere; the combining rule now has "
         "a real decision to make and 'any legal printing wins' is not it")
+
+
+def test_only_commander_is_buildable_and_the_spec_says_so():
+    """"I tried to build a Standard deck and nothing happened."
+
+    The UI offered a five-format picker in front of a builder that builds one.
+    The gap is real rather than a missing flag: `build_deck` is anchored on a
+    commander at every step — colour identity gates the candidate pool, the
+    similarity score is seeded from its name, its tags drive synergy, the
+    bracket engine reads it, and `manabase` sizes against a 99-card library. A
+    constructed deck has no such anchor.
+
+    So a format the tool cannot build is something the tool SAYS it cannot
+    build. Flip this the day the builder learns a second strategy.
+    """
+    assert formats.COMMANDER.buildable is True
+    for key in ("standard", "modern", "pioneer", "pauper"):
+        assert formats.FORMATS[key].buildable is False, key
+
+
+def test_buildable_is_not_the_same_question_as_legal():
+    """A format the builder cannot build is still fully validated and searched —
+    those are different capabilities and the vocabulary must not merge them."""
+    modern = formats.FORMATS["modern"]
+    assert modern.buildable is False
+    assert modern.legality_column == "legal_modern"
+    assert modern.deck_size == 60 and modern.max_copies == 4

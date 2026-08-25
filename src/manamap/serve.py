@@ -152,7 +152,8 @@ def _formats():
     return {"formats": [
         {"key": k, "name": s.name, "deck_size": s.deck_size,
          "exact_size": s.exact_size, "singleton": s.singleton,
-         "commanders": s.commanders, "colour_identity": s.colour_identity}
+         "commanders": s.commanders, "colour_identity": s.colour_identity,
+         "buildable": s.buildable}
         for k, s in sorted(formats.FORMATS.items())]}
 
 
@@ -205,10 +206,30 @@ def _build_save(slug=None, commander=None, theme=None, bracket=None,
 
 def _build_run(slug=None):
     """Turn a draft into a 99 and write `decklist.txt`. Deterministic, no agent."""
-    from manamap.pilot import build_deck
+    import json as _json
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import build_deck, formats
 
     if not slug:
         raise ValueError("build needs a slug")
+
+    # Refuse a format the builder cannot build, HERE, with the reason. Without
+    # this a Standard draft reached `load_brief` and came back "brief.json has
+    # no commander" — true, useless, and blaming the brief for a limitation of
+    # the builder. Defence in depth: the picker should not have offered it, and
+    # this says so if something else did.
+    path = DECKS_DIR / slug / "brief.json"
+    brief = _json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    spec = formats.get(brief.get("format"))
+    if not spec.buildable:
+        raise ValueError(
+            f"the builder cannot build {spec.name} yet — it is anchored on a "
+            f"commander at every step (colour identity, the similarity seed, "
+            f"the bracket engine, a 99-card mana base), and a constructed deck "
+            f"has no such anchor. {spec.name} decks can be VALIDATED "
+            f"(`validate-deck --format {brief.get('format')}`) and their pool "
+            f"searched, but not built.")
     plan = build_deck.build(slug)
     return {"slug": slug, "commander": plan["commander"],
             "cards": len(plan["slots"]) + sum(plan["land_counts"].values()) + 1,

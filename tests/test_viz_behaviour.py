@@ -5856,3 +5856,56 @@ def test_the_probe_happens_once(browser, viz_server):
         assert len(calls) <= 2, f"{len(calls)} API requests: {calls}"
     finally:
         page.close()
+
+
+def test_the_new_deck_form_never_declines_in_silence(browser, viz_server):
+    """"I tried to build a Standard deck and nothing happened."
+
+    `newDeckBuild` began `if (!newDeck.slug) return;` — a silent early return,
+    which is exactly that report. A control that declines has to say why, or it
+    reads as broken software rather than as a limit.
+
+    Driven through the real functions with the API stubbed, because the point is
+    the DECLINING path and a live server would build a deck instead.
+    """
+    page = browser.new_page(viewport={"width": 1280, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/index.html?mode=build")
+        page.wait_for_function("() => window.Build && window.Api && Api.probed",
+                               timeout=BOOT_TIMEOUT_MS)
+        said = page.evaluate("""async () => {
+            // Stub the API as present, with the real shape `formats` returns.
+            Object.defineProperty(Api, 'ready', {get: () => true, configurable: true});
+            Api.call = function (name) {
+                if (name === 'formats') return Promise.resolve({formats: [
+                    {key: 'commander', name: 'Commander', deck_size: 100,
+                     exact_size: true, singleton: true, commanders: 1,
+                     buildable: true},
+                    {key: 'standard', name: 'Standard', deck_size: 60,
+                     exact_size: false, singleton: false, commanders: 0,
+                     buildable: false}]});
+                return Promise.resolve({});
+            };
+            Build.newDeck();
+            await new Promise(r => setTimeout(r, 300));
+            const offered = [...document.querySelectorAll('#ndFmt option')]
+                .map(o => o.value);
+            Build.newDeckBuild();                 // no slug — the reported case
+            await new Promise(r => setTimeout(r, 150));
+            const complaint = (document.querySelector('.lens-line-prose') || {}).innerText;
+            const notes = [...document.querySelectorAll('.lens-note')]
+                .map(e => e.textContent).join(' | ');
+            return {offered, complaint, notes};
+        }""")
+        assert said["complaint"], "Build declined silently — the reported bug"
+        assert "slug" in said["complaint"].lower()
+        # A menu is a promise; it may only offer what it can keep.
+        assert said["offered"] == ["commander"], said["offered"]
+        assert "not built yet" in said["notes"], (
+            "the unbuildable formats vanished without explanation, which is a "
+            "different way of being silent")
+        assert errors == [], errors
+    finally:
+        page.close()
