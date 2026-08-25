@@ -62,11 +62,16 @@
    * invitation to open the deck, never a claim about it. */
   function evidenceChips(e, info) {
     var out = '';
-    var st = (info && info.status) || {};
-    if (st.games) {
-      var r = st.record || {};
+    // `record`, NOT `status`. `deck-info` writes the games under `info.record`
+    // and uses `info.status` for the stage counts, so reading `status.games`
+    // was a chip that had never rendered once — dead code that looked live,
+    // and by the time it was found two decks had a real logged game the front
+    // door structurally could not show. A logged game is the whole point of
+    // the bench; it does not get to be the thing that silently goes missing.
+    var r = (info && info.record) || {};
+    if (r.games) {
       var rec = [r.win || 0, r.loss || 0].join('–');
-      out += chip(st.games + ' game' + (st.games === 1 ? '' : 's') + ' · ' + rec, 'ok');
+      out += chip(r.games + ' game' + (r.games === 1 ? '' : 's') + ' · ' + rec, 'ok');
     }
     if (e.verified) out += chip(e.verified + ' verified line' + (e.verified === 1 ? '' : 's'));
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
@@ -82,23 +87,43 @@
     var art = e.image
       ? '<img class="wb-art" src="' + esc(e.image) + '" alt="" loading="lazy">'
       : '<div class="wb-art wb-art-none"></div>';
-    // The card is one link to the deck's own page. The manual gets its own small
-    // link INSIDE it rather than a second card-sized target — a card that opens
-    // two different things depending on where you click is the interaction bug
-    // this repo has already fixed once, in the atlas.
-    var manual = (e.has && e.has.page)
-      ? '<a class="wb-manual" href="../manuals/p/' + encodeURIComponent(e.slug)
-        + '.html">Pilot\'s Manual &rarr;</a>'
-      : '';
+    // THREE DESTINATIONS, ALL NAMED — and no card-sized hit area at all.
+    //
+    // The card used to be one big link to the dossier with the manual as a small
+    // link inside it, because "a card that opens two different things depending
+    // on where you click is the interaction bug this repo has already fixed
+    // once, in the atlas." That rule is right and this honours it rather than
+    // working around it: the answer to "I want the art to open the manual" is
+    // not to make the art mean something different from the body — it is to
+    // stop anything being implicit. Every destination is a labelled link, so
+    // there is no invisible target left to be surprised by.
+    //
+    // The title goes to the MANUAL because that is what a pilot opens a deck to
+    // read. The map link carries `?deck=`, the documented inbound contract that
+    // lands in Build with the deck loaded rather than on an unfiltered atlas.
+    var slug = encodeURIComponent(e.slug);
+    var hasPage = !!(e.has && e.has.page);
+    var title = esc(e.deck_name || e.slug);
+    var heading = hasPage
+      ? '<h3><a class="wb-title" href="../manuals/p/' + slug + '.html">' + title + '</a></h3>'
+      : '<h3>' + title + '</h3>';
+    // A link to a page that does not exist is worse than no link, so the manual
+    // is omitted rather than dead when a deck has none — the same rule the
+    // dossier's own manual link follows.
+    var links = '<nav class="wb-links">'
+      + (hasPage ? '<a href="../manuals/p/' + slug + '.html">Manual</a>' : '')
+      + '<a href="deck.html?deck=' + slug + '">Dossier</a>'
+      + '<a href="index.html?deck=' + slug + '">On the map</a>'
+      + '</nav>';
     return '<div class="wb-card' + (dead ? ' is-dead' : '') + '">'
-      + '<a class="wb-hit" href="deck.html?deck=' + encodeURIComponent(e.slug) + '">'
       + art
       + '<div class="wb-body">'
-      +   '<h3>' + esc(e.deck_name || e.slug) + '</h3>'
+      +   heading
       +   '<div class="wb-sub">' + esc(e.commander || '') + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
       +   '<div class="wb-chips">' + lockChips(e.paper) + evidenceChips(e, info) + '</div>'
-      + '</div></a>' + manual + '</div>';
+      +   links
+      + '</div></div>';
   }
 
   function rack(title, blurb, entries, infos) {

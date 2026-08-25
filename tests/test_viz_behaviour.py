@@ -4793,14 +4793,30 @@ def test_the_empty_state_names_the_command_that_fixes_it(browser, viz_server):
         page.close()
 
 
-def test_every_card_links_to_that_decks_dossier(browser, viz_server):
-    """`deck.html?deck=<slug>` is an inbound contract the dossier and every
-    published manual already rely on."""
-    page = _workbench(browser, viz_server, [_deck("alpha"), _deck("beta")])
+def test_every_card_offers_all_three_destinations_by_name(browser, viz_server):
+    """Three named links, and NOTHING implicit.
+
+    The card used to be one big invisible link to the dossier. The rule behind
+    that — "a card that opens two different things depending on where you click
+    is the interaction bug the atlas already fixed once" — is obeyed here by
+    deleting the invisible target rather than adding a second one.
+
+    `deck.html?deck=<slug>` and `index.html?deck=<slug>` are both inbound
+    contracts other surfaces already rely on: the dossier deep-links from every
+    manual, and the map reads `?deck=` on entry to land in Build with the deck
+    loaded rather than on an unfiltered 34,890-card atlas.
+    """
+    page = _workbench(browser, viz_server, [_deck("alpha", has={"page": True})])
     try:
         hrefs = page.eval_on_selector_all(
-            ".wb-hit", "els => els.map(e => e.getAttribute('href'))")
-        assert hrefs == ["deck.html?deck=alpha", "deck.html?deck=beta"], hrefs
+            ".wb-links a", "els => els.map(e => e.getAttribute('href'))")
+        assert hrefs == ["../manuals/p/alpha.html",
+                         "deck.html?deck=alpha",
+                         "index.html?deck=alpha"], hrefs
+        # The title is the manual, because that is what a pilot opens a deck to
+        # read — but it is a LABELLED link, not a hidden hit area.
+        assert page.get_attribute(".wb-title", "href") == "../manuals/p/alpha.html"
+        assert page.query_selector_all(".wb-hit") == []
     finally:
         page.close()
 
@@ -4817,10 +4833,16 @@ def test_the_manual_link_appears_only_when_there_is_a_manual(browser, viz_server
     ])
     try:
         links = page.eval_on_selector_all(
-            ".wb-manual", "els => els.map(e => e.getAttribute('href'))")
-        assert links == ["../manuals/p/withpage.html"], links
-        # and the card is still exactly one target to the dossier
-        assert page.eval_on_selector_all(".wb-hit", "els => els.length") == 2
+            ".wb-links a", "els => els.map(e => e.getAttribute('href'))")
+        # withpage gets three; nopage gets two, and the missing one is the
+        # manual rather than a dead link to a page that is not there.
+        assert links == ["../manuals/p/withpage.html",
+                         "deck.html?deck=withpage",
+                         "index.html?deck=withpage",
+                         "deck.html?deck=nopage",
+                         "index.html?deck=nopage"], links
+        # A deck with no manual does not get its title linked either.
+        assert page.eval_on_selector_all(".wb-title", "els => els.length") == 1
     finally:
         page.close()
 
@@ -4833,5 +4855,41 @@ def test_a_dead_deck_shows_its_headline_and_is_dimmed(browser, viz_server):
         assert page.text_content(".wb-dead").strip() == "RETIRED"
         opacity = page.eval_on_selector(".wb-card", "e => getComputedStyle(e).opacity")
         assert float(opacity) < 0.8, f"a retired deck should read as history, got {opacity}"
+    finally:
+        page.close()
+
+
+def test_the_games_chip_reads_the_key_deck_info_actually_writes(browser, viz_server):
+    """A logged game must reach the front door.
+
+    `deck-info` writes the record under `info.record` (deck_info.py:137-143);
+    `info.status` is the STAGE-COUNT block (deck_info.py:157-161). The workbench
+    read `info.status.games`, so the chip was dead code that had never rendered
+    once — and by the time it was found, edgar-vampires and ur-dragon each had a
+    real logged game the landing page structurally could not show.
+
+    The stub below is the true shape, copied from a committed `info.json`. That
+    is the whole point: a test written against the shape the READER expected
+    would have passed while the page stayed blank.
+    """
+    page = _workbench(browser, viz_server, [_deck("played"), _deck("unplayed")], infos={
+        "played": {"record": {"games": 3, "win": 1, "loss": 2, "draw": 0,
+                              "last_played": "2026-08-22", "undebriefed": []},
+                   "status": {"complete": 14, "of": 17, "stale": [], "invalid": [],
+                              "missing": []}},
+        "unplayed": {"record": {"games": 0, "win": 0, "loss": 0, "draw": 0,
+                                "last_played": None, "undebriefed": []},
+                     "status": {"complete": 4, "of": 17, "stale": [], "invalid": [],
+                                "missing": []}},
+    })
+    try:
+        # `innerText` reflects text-transform, and chips are set in caps.
+        chips = page.eval_on_selector_all(
+            ".wb-card", "els => els.map(e => e.innerText.toLowerCase())")
+        assert len(chips) == 2, chips
+        assert "3 games" in chips[0] and "1–2" in chips[0], chips[0]
+        # A deck with no games says nothing rather than "0 games · 0–0": an
+        # absence is not a result, and the empty state is the rack's job.
+        assert "game" not in chips[1].lower(), chips[1]
     finally:
         page.close()

@@ -249,18 +249,22 @@ details.case .body { padding: 0 14px 14px; }
 }
 .wb-empty code { color: var(--ink); font-family: var(--type); }
 
-/* The card is one hit area to the deck page; the manual is its own small link
-   inside it. A card that opens two different things depending on where you
-   click is the interaction bug the atlas already fixed once. */
+/* NOTHING ON THIS CARD IS AN IMPLICIT TARGET. The card used to be one big link
+   to the dossier, because "a card that opens two different things depending on
+   where you click is the interaction bug the atlas already fixed once." That
+   rule still holds — this obeys it by removing the invisible target rather than
+   adding a second one. Three named links, and the title is the manual. */
 .wb-card { display: flex; flex-direction: column; }
-.wb-hit { display: block; text-decoration: none; color: inherit; flex: 1; }
-.wb-manual {
-  display: block; padding: 8px 14px 11px; text-decoration: none;
-  border-top: 1px solid var(--rule); color: var(--y2k-blue);
-  font-family: var(--condensed); text-transform: uppercase;
+.wb-body { display: flex; flex-direction: column; flex: 1; }
+.wb-title { color: inherit; text-decoration: none; }
+.wb-title:hover { color: var(--y2k-blue); }
+.wb-links {
+  margin-top: auto; padding-top: 11px; display: flex; flex-wrap: wrap;
+  gap: 2px 14px; font-family: var(--condensed); text-transform: uppercase;
   letter-spacing: .05em; font-size: 11px;
 }
-.wb-manual:hover { background: var(--panel-hi); }
+.wb-links a { color: var(--y2k-blue); text-decoration: none; }
+.wb-links a:hover { text-decoration: underline; }
 
 /* A measurement made against a list the deck no longer holds. Amber, not red:
    the figure is true about the games that were played — it just does not
