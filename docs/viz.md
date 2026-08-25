@@ -1317,7 +1317,7 @@ scrolled into view as it appears.
 
 ## Future options (deliberately not done)
 
-ES-module migration / splitting the IIFEs, moving the ~17 inline styles in generated HTML into CSS, content-hash cache busting. Lint/format/CI intentionally not set up.
+ES-module migration / splitting the IIFEs, moving the ~17 inline styles in generated HTML into CSS, content-hash cache busting. Lint and format are deliberately absent; CI does exist (`.github/workflows/test.yml`) and deliberately does NOT run the browser suite.
 
 ## The graph engine (`viz/js/force.js`) — the first thing here that was not Plotly
 

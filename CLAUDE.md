@@ -351,7 +351,7 @@ Grouped by what they are about; the legacy renderer's lessons are last and are k
 
 - **The deck manifest is generated, not hand-kept**: `manamap pilot build-index` writes `data/decks/index.json` (deck list + each deck's passing stack filenames) because a browser can list neither `data/decks/` nor `stacks/`. `viz/deck.html` reads it; a test asserts it matches the artifacts. Add a deck, run `build-index`.
 - **`mana_analysis.json` is tracked and staleness-tested**: a decklist edit or a change to the maths needs `manamap pilot mana-analysis <slug>`, or `tests/test_pilot_mana_analysis.py` fails. Run it AFTER `goldfish`, since it embeds goldfish figures.
-- Lint/format/CI intentionally not set up; revisit if the project grows.
+- **CI runs `make test` on every push and PR** (`.github/workflows/test.yml`), plus one gate the suite cannot make for itself: `make manuals` followed by `git diff --exit-code -- manuals/ data/decks/index.json`, which is the determinism claim asserted from outside the code that asserts it. It runs the ENTRY POINT rather than a bare pytest, because otherwise the Makefile is the one thing nothing checks — and it was, until `make manuals` broke on CI's first run by assuming a `.venv` CI never creates. The **browser suite is deliberately excluded**: it needs a chromium download, takes four minutes, and asserts on real rendering under contention, which is how all five of its historical flakes were born — it stays a local pre-push gate. No cache flag is needed: the regenerate-and-compare cache lives in gitignored `.pytest_cache/`, so a fresh checkout runs everything for real by construction. Lint and format are still deliberately absent.
 
 ### LEGACY — the magazine renderer (frozen; lessons kept, code not extended)
 
