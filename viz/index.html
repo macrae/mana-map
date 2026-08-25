@@ -13,28 +13,43 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=32">
+<link rel="stylesheet" href="css/mana-map.css?v=41">
 </head>
 <body>
 
+<!-- The toolbar is MODE-AWARE. It used to show the same 17 controls in every
+     mode, so Discover — a graph of one card — carried nine type filters, a
+     density toggle and "Color by". `data-modes` names where a group belongs;
+     `mana-map.js` shows and hides on `setMode`. Nothing was deleted: every
+     control now appears where it does something.
+
+     The wordmark is gone from here too. The shell strip above already carries
+     it, and two wordmarks stacked is one of them being ignored. -->
 <div class="toolbar">
-  <h1>Mana Map</h1>
-  <div>
-    <label for="modeSelect">Mode</label>
-    <select id="modeSelect">
-      <option value="discover">Discover</option>
-      <option value="explore">Explore</option>
-      <option value="build">Build</option>
-    </select>
+  <!-- Mode is the primary navigation of this surface and was a <select>. Three
+       tabs, because three choices in a dropdown is a menu hiding a switch. -->
+  <div class="mode-tabs" id="modeTabs" role="tablist" aria-label="Mode">
+    <button class="mode-tab" data-mode="discover" role="tab">Discover</button>
+    <button class="mode-tab" data-mode="explore" role="tab">Explore</button>
+    <button class="mode-tab" data-mode="build" role="tab">Build</button>
   </div>
-  <div>
+  <!-- Kept, hidden, and still the thing every listener binds to: `setMode`
+       writes it, tests read it, and `?mode=` applies through it. Rewiring all
+       of that to the tabs would be a second source of truth for which mode is
+       current, which is the bug this repo keeps undoing. -->
+  <select id="modeSelect" hidden aria-hidden="true">
+    <option value="discover">Discover</option>
+    <option value="explore">Explore</option>
+    <option value="build">Build</option>
+  </select>
+  <div data-modes="explore">
     <label for="mapSelect">Map</label>
     <select id="mapSelect">
       <option value="ability">Abilities</option>
       <option value="default">Color + Type</option>
     </select>
   </div>
-  <div>
+  <div data-modes="explore build">
     <label for="colorBy">Color by</label>
     <select id="colorBy">
       <option value="supertype">Supertype</option>
@@ -47,8 +62,8 @@
     <label for="search">Search</label>
     <input id="search" type="text" placeholder="Card name..." autocomplete="off">
   </div>
-  <div class="toggles" id="toggles"></div>
-  <div class="topo-toggles">
+  <div class="toggles" id="toggles" data-modes="explore build"></div>
+  <div class="topo-toggles" data-modes="explore">
     <button class="toggle-btn" id="toggleContours" title="Density contours">Topo</button>
     <button class="toggle-btn active" id="toggleLabels" title="Region labels">Labels</button>
     <button class="toggle-btn active" id="toggleMotion"
@@ -74,15 +89,15 @@
 
 <!-- The shell first and dependency-free: it is the one thing that must paint
      even if the atlas never loads. -->
-<script src="js/shell.js?v=135"></script>
-<script src="js/stage.js?v=135"></script>
-<script src="js/session.js?v=135"></script>
-<script src="js/decklist.js?v=135"></script>
-<script src="js/discovery.js?v=135"></script>
-<script src="js/render/canvas.js?v=135"></script>
-<script src="js/mana-map.js?v=135"></script>
-<script src="js/drill.js?v=135"></script>
-<script src="js/force.js?v=135"></script>
-<script src="js/build.js?v=135"></script>
+<script src="js/shell.js?v=137"></script>
+<script src="js/stage.js?v=137"></script>
+<script src="js/session.js?v=137"></script>
+<script src="js/decklist.js?v=137"></script>
+<script src="js/discovery.js?v=137"></script>
+<script src="js/render/canvas.js?v=137"></script>
+<script src="js/mana-map.js?v=137"></script>
+<script src="js/drill.js?v=137"></script>
+<script src="js/force.js?v=137"></script>
+<script src="js/build.js?v=137"></script>
 </body>
 </html>

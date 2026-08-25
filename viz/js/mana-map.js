@@ -1867,6 +1867,15 @@
    * assuming it: `prefers-reduced-motion` means the map boots still, and a control that
    * showed "on" while nothing moved would read as a broken toggle rather than an honoured
    * system setting. The renderer owns the default; this only ever flips it. */
+  for (const tab of document.querySelectorAll('.mode-tab')) {
+    tab.addEventListener('click', function () {
+      const sel = document.getElementById('modeSelect');
+      const mode = this.getAttribute('data-mode');
+      if (sel) sel.value = mode;          // keep the one source of truth first
+      setMode(mode);
+    });
+  }
+
   document.getElementById('toggleMotion').addEventListener('click', function () {
     if (!mapCanvas) return;
     mapCanvas.setMotion(!mapCanvas.motion);
@@ -2010,10 +2019,36 @@
   // the other. Explore keeps the detail panel; Build hides it because its own panel needs
   // the width, and the Lens keeps it because clicking a lit deck card to read it is the
   // whole interaction.
+  /* Show only the controls this mode uses.
+   *
+   * The toolbar carried the same 17 controls in every mode, so Discover — a
+   * graph of ONE CARD — showed nine type filters, a density-contour toggle and
+   * "Color by", none of which act on anything there. Roughly half the surface
+   * was inert at any moment, which is most of why the atlas felt heavy.
+   *
+   * `data-modes` on a group names where it belongs; no attribute means always.
+   * Driven from markup rather than a list here, because a list in this file and
+   * the controls in the HTML are two places to remember, and the one that gets
+   * forgotten is the one nobody sees fail. */
+  function syncToolbar(mode) {
+    for (const el of document.querySelectorAll('.toolbar [data-modes]')) {
+      el.hidden = !el.getAttribute('data-modes').split(/\s+/).includes(mode);
+    }
+    for (const tab of document.querySelectorAll('.mode-tab')) {
+      const on = tab.getAttribute('data-mode') === mode;
+      tab.classList.toggle('is-on', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+  }
+
   function setMode(mode) {
     currentMode = mode;
+    // `modeSelect` stays the ONE answer to "which mode is current" — it is
+    // hidden now, but `?mode=` applies through it and the browser suite reads
+    // it. The tabs are a view of it, never a second source of truth.
     const sel = document.getElementById('modeSelect');
     if (sel && sel.value !== mode) sel.value = mode;
+    syncToolbar(mode);
     hideCardPopup();
     const detail = document.getElementById('detailPanel');
 

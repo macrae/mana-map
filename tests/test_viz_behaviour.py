@@ -647,7 +647,21 @@ def test_the_walk_panel_is_actually_on_screen(page):
         MM.setMode('discover');
         await new Promise(r => setTimeout(r, 2500));
         const panel = document.getElementById('deckPanel');
+        // The region seeds live behind a disclosure now — they are a way of
+        // starting somewhere ELSE, and nine equal-weight buttons above the card
+        // were most of why the landing read as heavy. This test is about
+        // GEOMETRY and hit-testing (are the buttons laid out off-screen?), not
+        // about whether a disclosure is open, so it opens the one it needs.
+        for (const d of document.querySelectorAll('#deckInner details')) d.open = true;
+        await new Promise(r => setTimeout(r, 120));
         const btn = document.querySelector('[onclick^="Force.walkRegion"]');
+        // …and scrolls it into view. `elementFromPoint` only sees the VIEWPORT,
+        // and the region list sits well down a scrolling panel now that the
+        // card leads. The invariant here is that the buttons are not laid out
+        // past the right edge — horizontal geometry — not that everything in a
+        // scrolling panel is visible at once, which no panel can promise.
+        btn.scrollIntoView({block: 'center'});
+        await new Promise(r => setTimeout(r, 120));
         const b = btn.getBoundingClientRect();
         const cx = Math.round(b.left + b.width / 2), cy = Math.round(b.top + b.height / 2);
         const hit = document.elementFromPoint(cx, cy);
@@ -5689,3 +5703,104 @@ def test_a_missing_reference_deck_says_so(browser, viz_server):
         assert errors == []
     finally:
         page.close()
+
+
+# ── The toolbar is mode-aware ──────────────────────────────────────────────
+
+
+def test_the_toolbar_shows_only_what_the_mode_uses(page):
+    """It carried the same 17 controls in every mode.
+
+    Discover is a graph of ONE CARD and was showing nine type-filter chips, a
+    density-contour toggle and "Color by" — none of which act on anything
+    there. Roughly half the surface was inert at any moment, which is most of
+    why the atlas felt heavy. Measured after: Discover 4, Build 14, Explore 19.
+    """
+    counts = {}
+    for mode in ("discover", "build", "explore"):
+        page.evaluate(f"MM.setMode('{mode}')")
+        page.wait_for_timeout(400)
+        counts[mode] = page.evaluate("""() => [...document.querySelectorAll(
+            '.toolbar select, .toolbar input, .toolbar button')]
+            .filter(e => e.offsetParent !== null).length""")
+    assert counts["discover"] < counts["build"] < counts["explore"], counts
+    assert counts["discover"] <= 6, (
+        f"Discover shows {counts['discover']} controls — it needs the mode tabs "
+        f"and a search box, and nothing that acts on a map it is not showing")
+    assert page.js_errors == []
+
+
+def test_the_mode_select_stays_the_one_source_of_truth(page):
+    """The tabs are a VIEW of `modeSelect`, never a second answer.
+
+    `?mode=` applies through it and the browser suite reads it; two places
+    holding "which mode is current" is the bug this repo keeps undoing.
+    """
+    page.evaluate("document.querySelector('.mode-tab[data-mode=\\'build\\']').click()")
+    page.wait_for_timeout(500)
+    assert page.evaluate("document.getElementById('modeSelect').value") == "build"
+    assert page.evaluate("MM.mode") == "build"
+    marked = page.eval_on_selector_all(
+        ".mode-tab.is-on", "els => els.map(e => e.getAttribute('data-mode'))")
+    assert marked == ["build"], marked
+    assert page.js_errors == []
+
+
+def test_the_landing_leads_with_the_card_and_its_relations(discover_page):
+    """The card used to render NINTH, under sixteen equal-weight buttons.
+
+    The landing is a card and what you can do with it; everything else is a way
+    of choosing a different card, which is a smaller question and now looks
+    like one. Asserted by ORDER on screen, not by DOM order — the fix is a flex
+    `order`, so reading the markup would pass while the page looked unchanged.
+    """
+    page = discover_page
+    pos = page.evaluate("""() => {
+        const y = s => { const e = document.querySelector(s);
+                         return e ? e.getBoundingClientRect().top : null; };
+        return {card: y('#deckInner .detail-card-image'),
+                relations: y('.discover-relations'),
+                keep: y('.discover-keep'),
+                details: y('#deckInner .detail-section'),
+                more: y('#deckInner details.discover-more')};
+    }""")
+    assert pos["card"] is not None and pos["relations"] is not None
+    assert pos["card"] < pos["relations"] < pos["keep"], pos
+    assert pos["relations"] < pos["details"], (
+        "the oracle text is between the card and the action again — every word "
+        "of it is already legible on the card image above")
+    assert pos["keep"] < pos["more"], "the ways to start elsewhere outrank Keep"
+    assert page.js_errors == []
+
+
+def test_the_card_is_not_clipped_by_its_art_crop_frame(discover_page):
+    """`.detail-card-image` is a 200px art-crop window with `overflow:hidden` —
+    right for a hover preview, wrong for a landing that leads with the card.
+
+    Capping the IMG alone overflowed that window and sliced the card through its
+    rules text, which reads as broken rather than as cropped. And removing the
+    frame's `min-height` then let it collapse to nothing, because making the
+    panel a column flex container had quietly made every child shrinkable.
+    """
+    page = discover_page
+    # Wait on the IMAGE's own readiness, not on a timer. `discover_page` waits
+    # for `Discovery.isReady()`, which is about the card INDEX; the art comes
+    # from Scryfall afterwards, and an unloaded <img> with `height:auto` measures
+    # 0. A sleep here would be the sixth member of this repo's flake family —
+    # every one a wait on the machine rather than on the behaviour.
+    page.wait_for_function(
+        """() => { const i = document.querySelector('#deckInner .detail-card-image img');
+                   return i && i.complete && i.naturalHeight > 0; }""",
+        timeout=BOOT_TIMEOUT_MS)
+    box = page.evaluate("""() => {
+        const w = document.querySelector('#deckInner .detail-card-image');
+        const i = w.querySelector('img');
+        return {wrap: w.getBoundingClientRect().height,
+                img: i.getBoundingClientRect().height,
+                natural: i.naturalHeight};
+    }""")
+    assert box["img"] > 250, f"the card is only {box['img']}px tall"
+    assert box["wrap"] >= box["img"] - 2, (
+        f"the frame ({box['wrap']}px) is shorter than the card ({box['img']}px) "
+        f"— it is clipping again")
+    assert page.js_errors == []

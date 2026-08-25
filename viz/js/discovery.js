@@ -339,6 +339,34 @@ window.Discovery = (function () {
       '<button class="lens-btn lens-btn-inline" onclick="Discovery.reroll()">Feeling lucky ↻</button>' +
       '</div>';
 
+    /* THE CARD LEADS.
+     *
+     * It used to render NINTH, under a deck picker, a paste box, an export
+     * button, a Clear, a seed box and three filter rows — sixteen equal-weight
+     * buttons above the one thing the front door is about. The landing is a
+     * card and its relations; everything else is a way of choosing a different
+     * card, which is a smaller question and now looks like one.
+     *
+     * GUARDED, because it moved above the `!rec` early return that used to
+     * protect it — the filters can exclude everything, and then there is no
+     * card to lead with.
+     */
+    if (rec) {
+      html += '<div class="lens-title">' + rec.n + '</div>';
+    // The relation buttons used to be built here. They now live in the shared card HTML
+    // (MM.buildRelationHtml) so every panel that shows a card gets the same control —
+    // which is what makes deleting the old Find Similar / Find Synergies pair an
+    // unification rather than the removal of a feature.
+    // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
+    // every panel that shows a card can put it in the library.
+      html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
+    }
+
+    /* Everything below is a way of choosing a DIFFERENT card, which is a
+     * smaller question than the card itself — so it is one collapsed block
+     * rather than nine buttons competing with the thing you came for. */
+    html += '<details class="discover-more"><summary>Start somewhere else</summary>';
+
     html += '<div class="discover-decks">' +
       '<select id="dcDeck" onchange="Discovery.onDeckPick(this.value)">' +
       '<option value="">Load one of my decks…</option>' +
@@ -387,7 +415,12 @@ window.Discovery = (function () {
     // one that was an actual defect — the truncation notice. Discovery has always
     // truncated a >500-card import to MAX_NODES and never said so.
     const graphN = window.Force ? Force.nodeCount : 0;
-    if (graphN) {
+    // The graph controls act on the walk you HAVE, so they close the "start
+    // somewhere else" block rather than hiding inside it — and they only exist
+    // once there is more than the landing card to act on.
+    html += '</details>';
+
+    if (graphN > 1) {
       const cut = Force.truncatedFrom;
       html += '<div class="deck-section">' +
         '<div class="lens-stats">' +
@@ -412,7 +445,7 @@ window.Discovery = (function () {
     // atlas; it never seeds the graph). Deleting The Walk without this would have deleted
     // the capability.
     if (regionSeeds.length) {
-      html += '<div class="deck-section"><div class="deck-section-title">Or start from a region</div>' +
+      html += '<details class="discover-more"><summary>Or start from a region</summary>' +
         regionSeeds.map(function (r) {
           return '<div class="lens-cand" onclick="Force.walkRegion(' +
             JSON.stringify(r.id).replace(/"/g, '&quot;') + ')">' +
@@ -420,6 +453,8 @@ window.Discovery = (function () {
             '<span class="lens-chip">' + r.count + '</span></div>';
         }).join('') + '</div>';
     }
+
+    html += '</details>';
 
     html += '<div class="discover-filters">' +
       '<select id="dcType" onchange="Discovery.onFilter(\'supertype\', this.value)">' +
@@ -439,14 +474,6 @@ window.Discovery = (function () {
       return;
     }
 
-    html += '<div class="lens-title">' + rec.n + '</div>';
-    // The relation buttons used to be built here. They now live in the shared card HTML
-    // (MM.buildRelationHtml) so every panel that shows a card gets the same control —
-    // which is what makes deleting the old Find Similar / Find Synergies pair an
-    // unification rather than the removal of a feature.
-    // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
-    // every panel that shows a card can put it in the library.
-    html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
 
     if (window.Force && Force.trailLength > 1) {
       html += '<div class="deck-section"><div class="deck-section-title">Where you have been ' +

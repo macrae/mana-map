@@ -546,3 +546,81 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .shell-library a:hover { text-decoration: underline; }
 .shell-empty { color: var(--rule, #3a3a52); }
 @media print { .shell { display: none; } }
+
+/* ── Mode tabs ─────────────────────────────────────────────────────────────
+   Three choices in a <select> is a menu hiding a switch, and mode is the
+   primary navigation of this surface. */
+.mode-tabs { display: flex; gap: 2px; }
+.mode-tab { font: inherit; font-size: 0.82rem; letter-spacing: 0.03em;
+  padding: 5px 13px; cursor: pointer; color: #8a8aa0;
+  background: #16162a; border: 1px solid #2a2a3e; border-radius: 3px; }
+.mode-tab:hover { color: #e8e8f0; border-color: #3a3a5a; }
+.mode-tab.is-on { color: #16162a; background: #c4a747; border-color: #c4a747;
+  font-weight: 600; }
+.toolbar [data-modes][hidden] { display: none; }
+
+/* ── "Start somewhere else" ────────────────────────────────────────────────
+   Nine buttons used to sit ABOVE the card the front door is about. They are
+   ways of choosing a DIFFERENT card, which is a smaller question, so they fold
+   away and read as one line until asked for. */
+.discover-more { margin: 12px 0; border-top: 1px solid #22223a; padding-top: 8px; }
+.discover-more > summary { cursor: pointer; list-style: none; color: #6f6f8a;
+  font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 4px 0; }
+.discover-more > summary::-webkit-details-marker { display: none; }
+.discover-more > summary::before { content: '+ '; color: #3f3f5a; }
+.discover-more[open] > summary::before { content: '\2212 '; }
+.discover-more > summary:hover { color: #c4a747; }
+/* The card leads, so its name gets display weight rather than section weight. */
+.lens-title { font-size: 1.15rem; letter-spacing: 0.01em; }
+
+/* The card leads — but the RELATIONS are the action, and the first cut put them
+   below the fold. Measured: a 749px viewport, a 532px card image, and
+   Similar/Synergy/Outclassed starting at 824px. Leading with the card is only
+   an improvement if what you do with it is still reachable, so the art is
+   capped at a size that keeps the three relations and Keep on screen. */
+/* `.detail-card-image` is a 200px ART-CROP window with `overflow:hidden` — the
+   right shape for a hover preview, and the wrong one for a landing that leads
+   with the card. Capping the IMG alone at 300px just overflowed that window and
+   sliced the card through its rules text, which reads as broken rather than as
+   cropped. In the Discover panel the frame sizes to the card instead. */
+#deckInner .detail-card-image { height: auto; max-height: none; overflow: visible;
+  display: flex; justify-content: center; background: none; padding: 0;
+  /* BOTH of these, and the second is the one that was actually binding.
+     `.detail-card-image` carries `min-height: 200px` (a floor for the art-crop
+     window), and a flex container's default `align-items: stretch` stretches
+     the image to that floor — overriding the image's own `height: auto`, which
+     is why raising `max-height` to 420 changed nothing at all. */
+  min-height: 0; align-items: flex-start; }
+/* Sized against the fold, not by eye. At 420px the card was a proper hero and
+   pushed Keep off a 749px viewport; at 380 the name, the card, all three
+   relations AND Keep sit above it together, which is the whole group a landing
+   needs to offer at once. Anything taller trades the action for the picture. */
+#deckInner .detail-card-image img { max-height: 380px; max-width: 100%;
+  width: auto; height: auto; display: block; border-radius: 10px; }
+.discover-relations { display: flex; gap: 6px; margin: 10px 0 6px; }
+.discover-relations .lens-btn { flex: 1; }
+.discover-keep { width: 100%; }
+
+/* THE ACTION FOLLOWS THE CARD, and the reading matter follows the action.
+   `buildCardDetailHtml` emits the oracle text, keywords and details between the
+   image and the relations — 304px of it, measured — which put Similar/Synergy/
+   Outclassed at 850px in a 749px viewport. Every word of that block is already
+   legible on the card image above it, so it is not hidden (nothing is lost);
+   it is ORDERED after the buttons, which is where a reader wants it anyway.
+   Presentation only: one flex order, no markup moved, and `buildCardDetailHtml`
+   stays the shared thing every panel renders. */
+#deckInner { display: flex; flex-direction: column; }
+/* `flex: none` on every child, because making `#deckInner` a column flex
+   container to reorder it also made every child SHRINKABLE — and the card
+   wrapper, once its `min-height` floor was removed, collapsed to nothing while
+   the image kept its size and drew over the buttons below. Reordering should
+   not change anyone's height. */
+#deckInner > * { order: 3; flex: none; }
+#deckInner > .deck-header { order: 0; }
+#deckInner > .lens-title { order: 1; }
+#deckInner > .detail-card-image { order: 1; }
+#deckInner > .detail-type { order: 1; }
+#deckInner > .discover-relations { order: 2; }
+#deckInner > .discover-keep { order: 2; }
+#deckInner > .lens-note { order: 2; }
