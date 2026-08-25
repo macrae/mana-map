@@ -232,3 +232,64 @@ def test_a_V_prefixed_miss_does_not_fall_through_to_sha_matching(repo, monkeypat
     assert dv.resolve(SLUG, "V9") is None, "a V-prefixed miss must be a miss"
     # …while a BARE number still falls through, because it may be a sha prefix
     assert dv.resolve(SLUG, "9") is not None
+
+
+# ── Release tags ───────────────────────────────────────────────────────────
+#
+# A tag is where the pilot says how big a change was (docs/pilot.md, "What a
+# version bump means"). The numbering from git is mechanical and says nothing
+# about size; the tag is the judgement, so it has to sort and mean what it says.
+
+
+def test_releases_sort_by_number_not_by_string():
+    """`v1.10.0` sorts BEFORE `v1.9.0` under plain lexical order — the tenth
+    minor bump files itself between the first and the second and stays there.
+
+    A deck reaches v1.10.0 by shipping ten changes that alter what it can do,
+    which is an ordinary year, so this is a bug with a date on it.
+    """
+    names = ["v1.9.0", "v1.10.0", "v1.2.0", "the-lock", "v2.0.0", "v1.0.0"]
+    assert sorted(names) != sorted(names, key=dv._tag_key), (
+        "lexical and semantic order agree here — pick a sharper case")
+    assert sorted(names, key=dv._tag_key) == [
+        "v1.0.0", "v1.2.0", "v1.9.0", "v1.10.0", "v2.0.0", "the-lock"], (
+        "releases must sort numerically, and nicknames after them")
+
+
+@pytest.mark.parametrize("name", ["v1.2", "v1", "1.2.3.4", "v2"])
+def test_a_near_miss_release_tag_is_refused(repo, name):
+    """Something that is nothing but digits and dots plainly MEANT to be a
+    release. Filed as a nickname it sorts alphabetically among the real ones and
+    looks correct until there are enough versions for the order to matter.
+    """
+    with pytest.raises(SystemExit) as e:
+        dv.tag(SLUG, name, ref="V1")
+    assert "release tag" in str(e.value)
+
+
+@pytest.mark.parametrize("name", ["the-lock", "3rd-rebuild", "2026-rebuild"])
+def test_a_nickname_that_starts_with_a_digit_is_still_a_nickname(repo, name):
+    """The near-miss rule reads the WHOLE name, not its first character. A first
+    cut matched `^v?\\d` and refused both of the last two, which are fine."""
+    dv.tag(SLUG, name, ref="V1")
+    doc = json.loads((repo / dv.TAGS_FILE).read_text())
+    assert name in doc["tags"]
+
+
+def test_a_tag_is_a_claim_about_one_list(repo):
+    """Re-tagging is a silent overwrite: the old version keeps its games and
+    loses its label, and every artifact that quoted the name now points at a
+    different 99."""
+    dv.tag(SLUG, "v1.0.0", ref="V1")
+    with pytest.raises(SystemExit) as e:
+        dv.tag(SLUG, "v1.0.0", ref="V2")
+    assert "one exact list" in str(e.value)
+
+    # Re-tagging the SAME version is idempotent, not an error — re-running a
+    # command must not fail because it already succeeded.
+    dv.tag(SLUG, "v1.0.0", ref="V1")
+
+    # And --force is the way to actually move it.
+    dv.tag(SLUG, "v1.0.0", ref="V2", force=True)
+    doc = json.loads((repo / dv.TAGS_FILE).read_text())
+    assert doc["tags"]["v1.0.0"]["version"] == 2

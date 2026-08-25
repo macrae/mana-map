@@ -30,6 +30,7 @@ unless `--write` is passed; git can always undo it, and `fetch-deck` must follow
 
 import hashlib
 import json
+import re
 from datetime import date
 
 from manamap.pilot import deck_history as dh
@@ -214,10 +215,39 @@ def set_paper(slug, ref=None, built_at=None, note=None, clear=False):
     return target
 
 
+# A RELEASE tag, in the pilot's semantics (docs/pilot.md "What a version bump
+# means"). `v` is optional so a hand-typed `1.2.0` is still a release.
+_RELEASE_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
+# ...and this is what a near-miss looks like: nothing but an optional `v`, digits
+# and dots, yet not a valid release. `v1.2`, `v1`, `1.2.3.4`. Caught rather than
+# silently filed as a nickname, because a nickname sorts alphabetically and would
+# then sit in the wrong place forever while looking exactly like a version.
+#
+# It requires the WHOLE name to be version-shaped, not merely to start with a
+# digit: `3rd-rebuild` and `2026-rebuild` are perfectly good nicknames, and a
+# first cut at this rule refused both.
+_NEARLY_RELEASE_RE = re.compile(r"^v?[\d.]+$")
+
+
+def _tag_key(name):
+    """Sort releases numerically, nicknames alphabetically, releases first.
+
+    Plain `sorted()` is lexical, so **`v1.10.0` sorts before `v1.9.0`** — the
+    tenth minor bump of a deck files itself between the first and the second and
+    stays there. A deck reaches v1.10.0 by shipping ten changes that alter what
+    it can do, which is a perfectly ordinary year of a deck's life, so this is a
+    bug with a date on it rather than a hypothetical.
+    """
+    m = _RELEASE_RE.match(name)
+    if m:
+        return (0, tuple(int(g) for g in m.groups()), "")
+    return (1, (), name)
+
+
 def _write_tags(path, doc):
     """One writer, so `paper` and `tags` cannot disagree about key order."""
     doc.setdefault("tags", {})
-    doc["tags"] = dict(sorted(doc["tags"].items()))
+    doc["tags"] = dict(sorted(doc["tags"].items(), key=lambda kv: _tag_key(kv[0])))
     ordered = {"slug": doc.get("slug")}
     if BASELINE_KEY in doc:
         ordered[BASELINE_KEY] = doc[BASELINE_KEY]
@@ -316,11 +346,20 @@ def report(slug):
             "unmatched_log_entries": unmatched, "notes": notes}
 
 
-def tag(slug, name, ref=None, note=None):
+def tag(slug, name, ref=None, note=None, force=False):
     """Name a version. Authored, tracked, never derived."""
     name = str(name or "").strip()
     if not name or "/" in name or " " in name:
         raise SystemExit("a tag is one word: letters, digits, dashes (e.g. the-lock)")
+    # A near-miss is refused rather than accepted as a nickname. `v1.2` files
+    # itself alphabetically among the release tags and looks correct in the
+    # listing; the mistake only surfaces once there are enough versions for the
+    # order to matter, which is long after the tag was written.
+    if _NEARLY_RELEASE_RE.match(name) and not _RELEASE_RE.match(name):
+        raise SystemExit(
+            f"{name!r} looks like a release tag but is not one — use "
+            f"vMAJOR.MINOR.PATCH (e.g. v1.2.0), or a name that does not start "
+            f"with a digit. See docs/pilot.md, 'What a version bump means'.")
     vers = versions(slug)
     if not vers:
         raise SystemExit(f"{slug}: no committed versions to tag")
@@ -336,6 +375,16 @@ def tag(slug, name, ref=None, note=None):
     path = deck_dir(slug) / TAGS_FILE
     doc = load_json(path) or {"slug": slug, "tags": {}}
     doc.setdefault("tags", {})
+    # Re-tagging is a silent overwrite: `tag v1.0.0` at a later version moves the
+    # name and the old version keeps its games while losing its label, so every
+    # artifact that quoted "v1.0.0" now names a different 99. A tag is a claim
+    # about one exact list.
+    prev = doc["tags"].get(name)
+    if prev and prev.get("version") != target["version"] and not force:
+        raise SystemExit(
+            f"{slug}: {name!r} already names {prev.get('version')} "
+            f"({prev.get('decklist_sha256', '')[:12]}) — a tag is a claim about one "
+            f"exact list. Pick another name, or pass --force to move it.")
     doc["tags"][name] = {"version": target["version"], "sha": target["sha"],
                          "decklist_sha256": target["decklist_sha256"],
                          "at": date.today().isoformat(), "note": note or ""}
@@ -447,7 +496,8 @@ def main(args):
     if action == "tag":
         if not args.ref:
             raise SystemExit("tag needs a name: `deck-version <slug> tag <name> [--at V4]`")
-        v = tag(slug, args.ref, ref=getattr(args, "at", None), note=getattr(args, "note", None))
+        v = tag(slug, args.ref, ref=getattr(args, "at", None),
+                note=getattr(args, "note", None), force=getattr(args, "force", False))
         print(f"{slug}: tagged V{v['version']} ({v['first_sha']}, {v['first_date']}) as "
               f"{args.ref!r} → {TAGS_FILE}")
         return

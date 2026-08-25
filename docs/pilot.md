@@ -311,6 +311,56 @@ working list; `tag <name> [--at V4] [--note]` writes the authored `deck_versions
 unless `--write`, after which `fetch-deck` → `goldfish` → `mana-analysis` and a commit.
 `deck-status` prints the current version in its header.
 
+### What a version bump means
+
+`deck-version` NUMBERS every list from git (V1, V2, V3…) and that numbering is
+mechanical: it counts content changes and says nothing about their size. A **tag** is
+where the pilot says how big a change was, and the vocabulary is semantic versioning
+with this deck's own meanings:
+
+| bump | what changed | examples |
+|---|---|---|
+| **PATCH** — `v1.0.1` | mana only. The deck does the same things; it does them more reliably. | a tapland for an untapped one, +1 land / −1 spell, a Signet for a dork, fixing a colour the audit says is short |
+| **MINOR** — `v1.1.0` | the deck can now do something it could not do before. | a new engine component, a new combo line, a single card that adds a capability (Gleaming Splendor) |
+| **MAJOR** — `v2.0.0` | it is a different deck wearing the same commander, or a different commander. | voltron → stax, a new commander, a large fraction of the 99 moving at once |
+
+The line between patch and minor is **capability, not card count**: twelve land swaps
+are a patch and one enchantment can be a minor. That is not a stylistic preference —
+it matches what the bench can actually measure. A mana change moves `mana-analysis`
+and `goldfish`'s resource curve and leaves `engine.json` alone; a capability change is
+one that ought to move the engine model or add a line worth resolving. If a proposed
+bump does not move the artifact its tier implies, the bump is probably the wrong tier.
+
+Keep it beside the measured finding in CLAUDE.md that **lowering a deck's curve does
+not make it faster; its mana base does** — twelve spells three mana cheaper moved
+ur-dragon's turn-five mana by 0.02, while three lands and four accelerants moved it
++0.27. A patch is the tier that most often buys the most.
+
+**Every slug starts at `v1.0.0`.** Zask → Blech → Hapatra is a lineage of *cardboard*,
+not versions of one deck: each has its own slug, its own artifacts, its own captain's
+log, and every key in the repo is the slug. A rebuild that takes a new commander takes
+a new slug and starts again at 1.0.0; the old deck is marked `broken-down` or
+`superseded` (see `DECK_STATUSES`) and keeps its own history intact.
+
+Tags are authored — `manamap pilot deck-version <slug> tag v1.1.0 --at V4 --note "…"`.
+A name that is nothing but digits and dots must be a well-formed release, so `v1.2` is
+**refused** rather than filed as a nickname: a nickname sorts alphabetically and would
+sit in the wrong place forever while looking exactly like a version. Releases sort
+numerically and nicknames alphabetically after them, because plain lexical order puts
+**`v1.10.0` before `v1.9.0`** — and a deck reaches its tenth minor bump in an ordinary
+year. Re-tagging an existing name at a different version is refused without `--force`:
+a tag is a claim about one exact list, and moving it silently re-points every artifact
+that ever quoted it.
+
+**Not yet automated, deliberately.** The tool should propose a tier and the pilot
+confirm it, and that needs three things the repo does not have: a diff between two
+*arbitrary* versions (every diff today is consecutive or against the working tree),
+`quantity_changes` carried into `versions()` (`history()` computes it and `versions()`
+drops it, so 36→37 Forests reads as no change at all), and a classifier that reports
+**evidence and never intent** — `deck_history` is explicit that *why* a card moved is
+not knowable from a commit. Until then the tier is the pilot's call, which is the
+honest arrangement rather than a stopgap.
+
 ### check-in — a paper deck arrives
 
 `manamap pilot check-in <slug> --from <file>` (or `-` for stdin) is how a rebuilt

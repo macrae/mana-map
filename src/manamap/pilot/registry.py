@@ -300,7 +300,12 @@ def add_pilot_parser(subparsers):
                                   "paper: mark the version you have SLEEVED (locked) / "
                                   "baseline: restart version numbering at the working list")
             cmd.add_argument("ref", nargs="?", default=None,
-                             help="V4, a tag name, or a sha prefix (tag: the new tag's name)")
+                             help="V4, a tag name, or a sha prefix. For `tag`: the new "
+                                  "name — vMAJOR.MINOR.PATCH for a release (patch = mana "
+                                  "only, minor = the deck can do something new, major = "
+                                  "the strategy or the commander changed; every slug "
+                                  "starts at v1.0.0), or any word not starting with a "
+                                  "digit for a nickname (the-lock)")
             cmd.add_argument("--at", default=None, dest="at",
                              help="tag: the version to name (default: the committed working list)")
             cmd.add_argument("--note", default=None,
@@ -309,6 +314,8 @@ def add_pilot_parser(subparsers):
                              help="paper: the date you sleeved it (default: today)")
             cmd.add_argument("--clear", action="store_true",
                              help="paper/baseline: withdraw it")
+            cmd.add_argument("--force", action="store_true",
+                             help="tag: move a name that already points at another version")
             cmd.add_argument("--full", action="store_true", help="show: print the whole decklist")
             cmd.add_argument("--write", action="store_true",
                              help="restore: actually write decklist.txt (default is a dry run)")
