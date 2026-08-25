@@ -56,6 +56,21 @@ def build_parser():
     for name, _, description in STEPS:
         subparsers.add_parser(name, help=description)
 
+    # NOT a pipeline step, deliberately. `eval-embeddings` is step 15 because it
+    # scores artifacts the pipeline just built; this one needs the network and a
+    # frozen EDHREC snapshot, so putting it in STEPS would make `manamap run`
+    # fetch eighty decklists on its way to a projection.
+    ecs = subparsers.add_parser(
+        "eval-commander-search",
+        help="Spike S1: can the embedding rank commanders from a 20-card seed?")
+    ecs.add_argument("--refresh", action="store_true",
+                     help="re-fetch the frozen candidate pool from EDHREC "
+                          "(a deliberate act — commit the result)")
+    ecs.add_argument("--per-identity", type=int, default=8, dest="per_identity",
+                     help="commanders per colour identity when refreshing (default 8)")
+    ecs.add_argument("--limit", type=int, default=None,
+                     help="cap the number of decks fetched when refreshing")
+
     add_pilot_parser(subparsers)
 
     return parser
@@ -68,6 +83,9 @@ def main():
         console.set_plain(True)
     if args.command == "run":
         run(start=args.start)
+    elif args.command == "eval-commander-search":
+        from manamap.analysis import eval_commander_search
+        eval_commander_search.main(args)
     elif args.command == "pilot":
         run_pilot_step(args)
     else:
