@@ -1,11 +1,14 @@
 """What a legal deck IS, as a parameter rather than an assumption.
 
-PRD §13: v1 is Commander, and the constraints should be **parameters, not
-assumptions**, because retrofitting format-awareness after the fact is
-expensive. This module is that parameter. It ships exactly one format and the
-point is not the second one — it is that the rules now have a name and a home.
+PRD §13: the constraints should be **parameters, not assumptions**, because
+retrofitting format-awareness after the fact is expensive. This module is that
+parameter — Commander plus the four 60-card constructed formats.
 
-They did not. Four places independently decided how big a Commander deck is:
+The parameters that vary, and all five differ on at least one: deck size and
+whether it is exact, the singleton rule, whether a commander is required,
+colour-identity enforcement, and the legal pool.
+
+BEFORE THIS, four places independently decided how big a Commander deck is:
 
     config.DECK_SIZE = 100              read by validate_build
     check_in.DECK_SIZE = 100            its OWN constant, shadowing config's
@@ -29,10 +32,11 @@ WHAT IS DELIBERATELY NOT HERE:
   ("name and rules unverified, confirm before scoping"). A format spec that
   encodes a guess is worse than one that omits it, because the guess is
   invisible once it is in a table.
-- **The legal card pool.** `legality_key` names the Scryfall field to consult
-  and nothing here reads it yet: legality is per-card data, the corpus already
-  carries it, and inventing a pool-filtering layer before a second format needs
-  one is the speculative half of this work.
+- **A pool-filtering layer.** There is none and there does not need to be:
+  `extract` already writes eight `legal_<format>` columns into `cards.csv`
+  straight from Scryfall, so a format's pool is a column lookup rather than a
+  rule to reimplement. Sizes today — Standard 4,887, Pauper 10,793, Pioneer
+  14,817, Modern 22,450, Commander 31,830.
 - **Deck-construction ratios.** `DECK_ROLE_BUDGET` and the curve targets stay in
   `config.py`. They are tuning, not legality — a 60-card Modern deck is legal
   with any curve, and mixing "what is allowed" with "what is good" is how a
@@ -50,6 +54,11 @@ class FormatSpec:
     name: str
     #: Total cards including any commander — the number a pilot counts.
     deck_size: int
+    #: Whether `deck_size` is EXACT or a MINIMUM, which is a real rules
+    #: distinction and not a nicety. Commander is exactly 100; constructed says
+    #: "at least sixty cards", and a 63-card Modern deck is legal. Enforcing an
+    #: exact 60 would reject legal decks while looking rigorous.
+    exact_size: bool
     #: At most one copy of any non-basic card.
     singleton: bool
     #: How many commanders the format requires. 0 for the 60-card formats.
@@ -60,8 +69,8 @@ class FormatSpec:
     #: singleton applies at all, but a format that banned that would be a
     #: silent-wrong-answer bug rather than an obvious one.
     basics_exempt: bool
-    #: The key in Scryfall's `legalities` map. Named, not consulted — see the
-    #: module docstring on why the pool filter is not built yet.
+    #: The key in Scryfall's `legalities` map, and the suffix of the
+    #: `legal_<key>` column `extract` already writes into `cards.csv`.
     legality_key: str
 
     @property
@@ -80,23 +89,68 @@ class FormatSpec:
         """Copies of one non-basic card. Singleton is a 1; everything else is 4."""
         return 1 if self.singleton else 4
 
+    @property
+    def legality_column(self):
+        """The `cards.csv` column carrying this format's legality."""
+        return f"legal_{self.legality_key}"
+
+    def size_error(self, total):
+        """Why `total` cards is illegal, or None."""
+        if self.exact_size:
+            return (None if total == self.deck_size
+                    else f"Deck has {total} cards, expected exactly {self.deck_size}")
+        return (None if total >= self.deck_size
+                else f"Deck has {total} cards, expected at least {self.deck_size}")
+
 
 COMMANDER = FormatSpec(
-    name="Commander",
-    deck_size=100,
-    singleton=True,
-    commanders=1,
-    colour_identity=True,
-    basics_exempt=True,
-    legality_key="commander",
+    name="Commander", deck_size=100, exact_size=True, singleton=True, commanders=1,
+    colour_identity=True, basics_exempt=True, legality_key="commander",
 )
 
-#: The only format the bench builds, validates and simulates today. Every
-#: caller reads this rather than a literal, so the day a second one arrives the
-#: work is threading a parameter and not finding the assumptions.
+
+def _constructed(name, key):
+    """A 60-card constructed format. Everything but the legal pool is shared.
+
+    `deck_size=60` with `exact_size=False`, because the rule is "at least
+    sixty" — a 63-card Modern deck is legal, and enforcing an exact 60 would
+    reject legal decks while looking rigorous. No commander, so no colour
+    identity: a constructed deck may play any colours it can cast.
+
+    PAUPER IS NOT FILTERED BY RARITY, and that is measured rather than assumed.
+    The PRD describes it as "commons only" (§13) and Scryfall's own
+    `legal_pauper` disagrees with that reading for **373 cards** — a card
+    printed at common ANYWHERE is pauper-legal even where this printing is not.
+    Consulting the legality column is both simpler and correct; a rarity filter
+    would look stricter and be wrong 373 times.
+    """
+    return FormatSpec(name=name, deck_size=60, exact_size=False, singleton=False,
+                      commanders=0, colour_identity=False, basics_exempt=True,
+                      legality_key=key)
+
+
+STANDARD = _constructed("Standard", "standard")
+MODERN = _constructed("Modern", "modern")
+PIONEER = _constructed("Pioneer", "pioneer")
+PAUPER = _constructed("Pauper", "pauper")
+
+#: Commander is what the bench BUILDS and SIMULATES; the others validate and
+#: filter. Default rather than only, and every caller reads this rather than a
+#: literal, so a 60-card deck is a parameter away rather than a rewrite.
+#:
+#: Sideboards are not modelled. Constructed allows fifteen and the bench has no
+#: concept of one — the sideboard was deleted from this repo deliberately. A
+#: `sideboard_size` here would be a field nothing reads, which is the kind of
+#: speculative completeness this module is trying to avoid.
 DEFAULT = COMMANDER
 
-FORMATS = {"commander": COMMANDER}
+FORMATS = {
+    "commander": COMMANDER,
+    "standard": STANDARD,
+    "modern": MODERN,
+    "pioneer": PIONEER,
+    "pauper": PAUPER,
+}
 
 
 def get(name=None):

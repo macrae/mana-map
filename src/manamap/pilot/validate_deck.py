@@ -19,8 +19,9 @@ def validate(doc, spec=None):
     errors = []
     cards = doc.get("cards", [])
     total = sum(c.get("quantity", 0) for c in cards)
-    if total != spec.deck_size:
-        errors.append(f"Deck has {total} cards, expected exactly {spec.deck_size}")
+    size_problem = spec.size_error(total)
+    if size_problem:
+        errors.append(size_problem)
 
     commanders = [c for c in cards if c.get("is_commander")]
     if spec.commanders:
@@ -51,7 +52,45 @@ def validate(doc, spec=None):
                     f"Color identity violation: {c['name']} is {sorted(outside)} "
                     f"outside commander identity {sorted(identity) or ['C']}"
                 )
+    errors.extend(illegal_cards(cards, spec))
     return errors
+
+
+def illegal_cards(cards, spec):
+    """Cards this format does not allow, from the corpus's own legality column.
+
+    NOTHING CHECKED THIS BEFORE. Every deck here is Commander and every card in
+    them is Commander-legal, so the gap was invisible — and it stops being
+    invisible the moment a 60-card format arrives, where a Modern deck holding
+    a Standard-rotated card is the commonest mistake there is.
+
+    The pool comes straight from Scryfall via `extract`'s `legal_<format>`
+    columns. No rule is reimplemented here, which matters most for Pauper: the
+    naive reading is "commons only" and it is wrong for 373 cards, because a
+    card printed at common anywhere is legal even where this printing is not.
+
+    Silent when the corpus is absent — a fresh clone must still be able to
+    validate structure, and a missing column is a missing MEASUREMENT rather
+    than a passing one. It says so instead of reporting nothing.
+    """
+    from manamap.pilot import card_pool
+
+    try:
+        status = card_pool.legality(spec.legality_column)
+    except ValueError:
+        return [f"cannot check {spec.name} legality: {spec.legality_column} not in "
+                f"cards.csv (re-run `manamap extract`)"]
+    except Exception:
+        return []                      # no corpus at all — structure still checks
+
+    out = []
+    for c in cards:
+        state = status.get(c["name"])
+        if state is None:            # not in the corpus at all — a different error
+            continue
+        if state != "legal":
+            out.append(f"{spec.name} legality: {c['name']} is {state}")
+    return out
 
 
 def main(args):

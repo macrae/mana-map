@@ -50,6 +50,61 @@ CORPUS_COLUMNS = [
 ]
 
 
+#: Legality is read ON DEMAND, not folded into `CORPUS_COLUMNS`.
+#:
+#: `legal_commander` is in the default parse because every deck here is a
+#: Commander deck. The other four formats' columns are not, because Commander is
+#: the overwhelmingly common path and widening the default parse for every
+#: `deck-facts` run to serve a rare one is the wrong trade — the comment above
+#: sizes the unread columns at ~30% of parse time, and this keeps that argument
+#: intact rather than eroding it a column at a time.
+def legality(column):
+    """`{card name: 'legal' | 'banned' | 'not_legal'}` for one format column.
+
+    Front faces are keyed too, because decklists carry them while `cards.csv`
+    keys the full "A // B" form — the same fallback every other name lookup in
+    this repo makes.
+    """
+    # `mtime_memo`, like every other view here, rather than a bare dict: a
+    # plain cache never invalidates, so a corpus refresh inside a long-running
+    # process would keep answering from the old file. Keyed per column so the
+    # four unused formats cost nothing.
+    return mtime_memo(OUTPUT_CSV_PATH, f"corpus:legality:{column}",
+                      lambda: _read_legality(column))
+
+
+def _read_legality(column):
+    """FIRST PRINTING DOES NOT WIN HERE, and that is the whole subtlety.
+
+    Every other name lookup in this repo takes the first row for a name, which
+    is right for identity: any printing of Sol Ring is Sol Ring. It is WRONG for
+    legality, because some printings are not tournament objects. `cards.csv`
+    carries two rows for Savage Lands — a store-championship promo (`fmsc`)
+    marked `not_legal`, and the real one (`msc`) marked `legal` — and the promo
+    sorts first, so first-wins reported a Commander staple as illegal and failed
+    ur-dragon and radagast on their own tracked decklists.
+
+    Combining rule, measured rather than guessed: across the whole corpus **16
+    names disagree between printings and every disagreement is exactly
+    {legal, not_legal}** — `banned` never co-occurs with either. So "any legal
+    printing makes it legal" is unambiguous today. `banned` is still checked
+    first, because it is a statement about the CARD rather than the printing and
+    a legal reprint must not launder it; that branch is unreachable on today's
+    data and is the correct answer if it ever stops being.
+    """
+    import pandas as pd
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", column])
+    seen = {}
+    for name, value in zip(frame["name"], frame[column]):
+        keys = [name] + ([name.split(" // ")[0]] if " // " in name else [])
+        for key in keys:
+            seen.setdefault(key, set()).add(value)
+    return {k: ("banned" if "banned" in v else
+                "legal" if "legal" in v else
+                next(iter(v))) for k, v in seen.items()}
+
+
 def _read_frame():
     import pandas as pd
 
