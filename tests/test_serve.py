@@ -272,3 +272,49 @@ def test_build_run_WRITES_and_says_what_it_wrote():
     assert "build_deck.main(" in src, (
         "the endpoint computes a plan without persisting it again")
     assert '"written"' in src, "it does not report what it wrote"
+
+
+def test_a_missing_brief_does_not_speak_in_CLI(tmp_path, monkeypatch):
+    """`load_brief` says "author it first" and prints the JSON to write.
+
+    Correct in a terminal, nonsense in a browser where nobody has a file open —
+    and it is what the pilot actually saw after a commander failed to resolve
+    and no draft was ever written. The endpoint owns the message its caller can
+    act on.
+    """
+    import manamap.config as config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    with pytest.raises(ValueError) as e:
+        serve.call("build/run", {"slug": "never-saved"})
+    msg = str(e.value)
+    assert "author it first" not in msg
+    assert "brief.json" not in msg, "it named an implementation file at the reader"
+    assert "commander" in msg, f"it did not say what to do: {msg!r}"
+
+
+def test_the_commander_picker_ranks_the_one_you_meant_first():
+    """A text box that refuses was the wrong control. The picker has no invalid
+    state to report — you type, real commanders appear, you choose one.
+
+    Names that START with the query come before names that merely contain it,
+    and shorter before longer, so "the ur" offers The Ur-Dragon before Scion of
+    the Ur-Dragon.
+    """
+    out = serve.call("commanders", {"q": "the ur", "limit": 5})["commanders"]
+    assert out[0] == "The Ur-Dragon", out
+    assert "Zur the Enchanter" in serve.call("commanders", {"q": "zur"})["commanders"]
+
+
+def test_the_picker_stays_quiet_until_there_is_something_to_match():
+    """One letter matches a thousand commanders; that is a list nobody reads."""
+    assert serve.call("commanders", {"q": "z"})["commanders"] == []
+    assert serve.call("commanders", {"q": ""})["commanders"] == []
+
+
+def test_the_picker_only_offers_things_that_can_be_commanders():
+    """Suggesting Zuran Orb to someone filling a commander field is a prefix
+    match and no help."""
+    out = serve.call("commanders", {"q": "zur", "limit": 8})["commanders"]
+    assert "Zuran Orb" not in out
+    assert "Zur's Weirding" not in out

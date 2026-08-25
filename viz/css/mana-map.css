@@ -624,3 +624,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 #deckInner > .discover-relations { order: 2; }
 #deckInner > .discover-keep { order: 2; }
 #deckInner > .lens-note { order: 2; }
+
+/* The commander picker: type, choose. No invalid state to report. */
+.nd-chosen { display: flex; align-items: baseline; gap: 10px; margin: 8px 0;
+  font-size: 0.95rem; color: #e8e8f0; }
+.nd-options { display: flex; flex-direction: column; gap: 3px; margin: 6px 0; }
+.nd-options .lens-btn { text-align: left; }

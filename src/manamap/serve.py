@@ -213,6 +213,45 @@ def _resolve_commander(name):
     return exact, near[:6]
 
 
+def _commanders(q=None, limit=8):
+    """Legendary creatures matching what has been typed so far. §7 — the picker.
+
+    A TEXT BOX THAT REFUSES IS THE WRONG CONTROL. Typing "zur" produced a 400
+    with suggestions nobody could click, no brief was written, and pressing
+    Build then reported a missing file — three messages for one unfinished
+    thought. A picker has no invalid state to report: you type, you see real
+    commanders, you choose one, and the name that reaches disk is the corpus's.
+
+    Ranked shortest-first among names that CONTAIN the query, with names that
+    START with it first. "zur" should offer Zur the Enchanter before Zurgo
+    Bellstriker, and both before a card that merely contains "zur" in the
+    middle.
+    """
+    import re
+
+    from manamap.pilot import card_pool
+
+    q = re.sub(r"[^a-z0-9]+", "", str(q or "").lower())
+    if len(q) < 2:
+        return {"query": q, "commanders": []}
+
+    frame = card_pool.load_frame()
+    out = []
+    for name, type_line in zip(frame["name"], frame["type_line"]):
+        t = str(type_line)
+        if "Legendary" not in t or "Creature" not in t:
+            continue
+        k = re.sub(r"[^a-z0-9]+", "", str(name).lower())
+        if q in k:
+            out.append((0 if k.startswith(q) else 1, len(name), name))
+    seen, ranked = set(), []
+    for _, _, name in sorted(out):
+        if name not in seen:
+            seen.add(name)
+            ranked.append(name)
+    return {"query": q, "commanders": ranked[:limit or 8]}
+
+
 def _build_save(slug=None, commander=None, theme=None, bracket=None,
                 library=(), fmt=None):
     """Create or update a DRAFT — a deck that exists as a brief and no more.
@@ -287,6 +326,13 @@ def _build_run(slug=None):
     # the builder. Defence in depth: the picker should not have offered it, and
     # this says so if something else did.
     path = DECKS_DIR / slug / "brief.json"
+    if not path.exists():
+        # `load_brief`'s own message tells the reader to "author it first" and
+        # prints the JSON to write — correct in a terminal, nonsense in a
+        # browser, where nobody has a file open. The endpoint owns the message
+        # its caller can act on.
+        raise ValueError(f"nothing saved for {slug!r} yet — choose a commander, "
+                         f"and the draft saves itself")
     brief = _json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     spec = formats.get(brief.get("format"))
     if not spec.buildable:
@@ -314,6 +360,9 @@ def _build_run(slug=None):
             "cards": len(plan["slots"]) + sum(plan["land_counts"].values()) + 1,
             "bracket": plan["bracket"],
             "role_budget_grounding": plan.get("role_budget_grounding"),
+            # Kept cards the commander cannot legally play. The pilot chose them
+            # on purpose, so the page has to say which ones could not come.
+            "must_include_illegal": plan.get("must_include_illegal") or [],
             "written": written,
             "slots": [{"name": s["name"], "role": s.get("role")} for s in plan["slots"]]}
 
@@ -413,6 +462,7 @@ ENDPOINTS = {
     "health": (lambda: {"ok": True, "api": 1}, {}),
     "formats": (_formats, {}),
     "decks": (_decks, {}),
+    "commanders": (_commanders, {"q": _str, "limit": _int}),
     "archetypes": (_archetypes, {"commander": _str, "theme": _str, "limit": _int}),
     "commander-search": (_commander_search, {
         "cards": _strlist, "space": _str, "limit": _int,

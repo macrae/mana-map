@@ -782,11 +782,32 @@
     // that makes a tool feel like it was written for one game.
     const spec = (newDeck.formats || []).find(f => f.key === newDeck.fmt);
     if (!spec || spec.commanders) {
-      h += '<input id="ndCmd" class="discover-import" placeholder="commander" '
-        + 'value="' + esc(newDeck.commander || '') + '" '
-        + 'oninput="Build.newDeckField(\'commander\', this.value)">';
-      h += '<button class="lens-btn" onclick="Build.newDeckStyles()">'
-        + 'How is it actually built?</button>';
+      /* A PICKER, not a text box that refuses.
+       *
+       * Typing "zur" used to produce a 400 with suggestions nobody could click,
+       * write no brief, and then report a missing file when Build was pressed —
+       * three messages for one unfinished thought. Now you type, real
+       * commanders appear, you choose one, and the name that reaches disk is
+       * the corpus's own. There is no invalid state left to report. */
+      if (newDeck.commander) {
+        h += '<div class="nd-chosen">' + esc(newDeck.commander)
+          + '<button class="lens-btn lens-btn-inline" '
+          + 'onclick="Build.newDeckField(\'commander\', \'\')">change</button></div>';
+        h += '<button class="lens-btn" onclick="Build.newDeckStyles()">'
+          + 'How is it actually built?</button>';
+      } else {
+        h += '<input id="ndCmd" class="discover-import" placeholder="commander — '
+          + 'start typing" value="' + esc(newDeck.cmdQuery || '') + '" '
+          + 'oninput="Build.commanderSearch(this.value)">';
+        if (newDeck.cmdOptions && newDeck.cmdOptions.length) {
+          h += '<div class="nd-options">' + newDeck.cmdOptions.map(n =>
+            '<button class="lens-btn" onclick="Build.pickCommander('
+            + JSON.stringify(n).replace(/"/g, '&quot;') + ')">'
+            + esc(n) + '</button>').join('') + '</div>';
+        } else if ((newDeck.cmdQuery || '').length >= 2) {
+          h += '<p class="lens-note">no legendary creature matches that yet</p>';
+        }
+      }
       if (newDeck.themes) {
         h += '<div class="discover-relations">' + newDeck.themes.slice(0, 6).map(t =>
           '<button class="lens-btn' + (t.slug === newDeck.theme ? ' is-on' : '') + '"'
@@ -900,6 +921,35 @@
     }, 600);
   }
 
+  /* Debounced 250ms: fast enough to feel live, slow enough that a five-letter
+   * name is one request rather than five. */
+  let cmdTimer = null;
+  function commanderSearch(q) {
+    if (!newDeck) return;
+    newDeck.cmdQuery = q;
+    clearTimeout(cmdTimer);
+    cmdTimer = setTimeout(function () {
+      if ((q || '').trim().length < 2) { newDeck.cmdOptions = []; renderPanel(); return; }
+      Api.call('commanders', { q: q, limit: 8 }).then(function (d) {
+        // Ignore a reply for a query that is no longer what is typed — the
+        // classic out-of-order autocomplete bug.
+        if (newDeck && newDeck.cmdQuery === q) {
+          newDeck.cmdOptions = d.commanders;
+          renderPanel();
+        }
+      }).catch(function () { /* leave the last options up */ });
+    }, 250);
+  }
+
+  function pickCommander(name) {
+    if (!newDeck) return;
+    newDeck.cmdOptions = [];
+    newDeck.cmdQuery = '';
+    newDeck.themes = null;                 // a different commander, different styles
+    newDeckField('commander', name);
+    renderPanel();
+  }
+
   function newDeckStyles() {
     if (!newDeck || !newDeck.commander) return;
     newDeck.themes = null;
@@ -923,6 +973,12 @@
       renderPanel();
       return;
     }
+    if (!newDeck.commander) {
+      newDeck.built = 'choose a commander first — start typing a name and pick '
+        + 'one from the list';
+      renderPanel();
+      return;
+    }
     const spec = (newDeck.formats || []).find(f => f.key === newDeck.fmt);
     if (spec && spec.buildable === false) {
       newDeck.built = 'the builder cannot build ' + spec.name + ' yet — it is '
@@ -934,8 +990,19 @@
     newDeck.built = 'building…';
     renderPanel();
     Api.call('build/run', { slug: newDeck.slug }).then(function (r) {
-      newDeck.built = r.commander + ' — ' + r.cards + ' cards, bracket '
+      let msg = r.commander + ' — ' + r.cards + ' cards, bracket '
         + (r.bracket || {}).target + '. ' + (r.role_budget_grounding || '');
+      // Cards you kept that this commander cannot legally play. Named, because
+      // you chose them on purpose and a silently smaller deck is a worse answer
+      // than a short explanation.
+      const bad = r.must_include_illegal || [];
+      if (bad.length) {
+        msg += '\n\nLeft out — outside ' + r.commander + "'s colours: "
+          + bad.map(function (b) {
+              return b.name + ' (' + b.outside.join('') + ')';
+            }).join(', ') + '.';
+      }
+      newDeck.built = msg;
       renderPanel();
     }).catch(function (e) { newDeck.built = e.message; renderPanel(); });
   }
@@ -1609,6 +1676,8 @@
     newDeckField,
     newDeckStyles,
     newDeckBuild,
+    commanderSearch,
+    pickCommander,
     resumeDraft,
     // A read-only probe for the browser suite: the prose a line was BUILT with,
     // so a test can compare what the panel printed against what the artifact

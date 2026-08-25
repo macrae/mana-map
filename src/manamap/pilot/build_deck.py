@@ -438,6 +438,47 @@ def role_budget_for(brief, roles):
                     f"provisional budget's total")
 
 
+def legal_must_includes(names, identity, frame):
+    """Split the must-includes into those the commander can legally play, and
+    those it cannot.
+
+    MUST-INCLUDES WERE NEVER IDENTITY-CHECKED. `fill_slots` pins them "whatever
+    their score" — before any budget line is consulted and before the candidate
+    pool's identity filter has any say, because they never pass through it. That
+    was survivable while a brief was hand-authored by someone who knew the
+    commander. It stopped being survivable the moment `must_include` came from
+    the LIBRARY, which holds whatever you kept while exploring 34,890 cards.
+
+    Measured on the report that found it: a Zur (WUB) build pinned `Grolnok, the
+    Omnivore` — mono-green — and the deck came out at 88 cards, because the mana
+    base then tried to support a colour the commander does not license and gave
+    up twelve lands short. One illegal card, and the failure surfaced as a
+    missing mana base.
+
+    DROPPED AND REPORTED, not silently removed and not fatal. The pilot
+    deliberately kept these cards, so the plan says which ones could not come
+    and why; building an illegal deck is worse than building a smaller library.
+    """
+    if not names:
+        return [], []
+    ident = {c for c in (identity or [])}
+    by_name = dict(zip(frame["name"], frame["color_identity"]))
+    keep, illegal = [], []
+    for name in names:
+        raw = by_name.get(name)
+        if raw is None:                       # not in the corpus; another check owns that
+            keep.append(name)
+            continue
+        card = {c.strip() for c in str(raw).split(",") if c.strip()}
+        outside = card - ident
+        if outside:
+            illegal.append({"name": name, "identity": sorted(card),
+                            "outside": sorted(outside)})
+        else:
+            keep.append(name)
+    return keep, illegal
+
+
 def fill_slots(scored, roles, budget, must_include, cmcs=None):
     """Fill each budget line with the best-scoring cards that satisfy it.
 
@@ -719,8 +760,9 @@ def build(slug):
 
     budget, grounding = role_budget_for(brief, roles)
     cmcs = dict(zip(spell_pool["name"], spell_pool["cmc"]))
+    keep, illegal = legal_must_includes(brief["must_include"], identity, df)
     slots, taken, effective_budget = fill_slots(
-        scored, roles, budget, brief["must_include"], cmcs=cmcs)
+        scored, roles, budget, keep, cmcs=cmcs)
     slots, completed = complete_combos(
         slots, scored, roles, details, {commander["name"]})
     slots, cut, report = enforce_bracket(
@@ -771,6 +813,9 @@ def build(slug):
             for g in budget if effective_budget.get(g) != budget[g]
         },
         "role_budget_grounding": grounding,
+        # Kept cards the commander cannot legally play. Named rather than
+        # dropped in silence — the pilot chose them on purpose.
+        "must_include_illegal": illegal,
         # Recorded so `validate-build` can re-derive the pool and prove every
         # non-basic name was actually owned. A build that silently reached
         # outside the collection is the one failure a paper pilot cannot use.

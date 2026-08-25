@@ -674,3 +674,60 @@ def test_a_built_deck_completes_a_combo_line_it_half_holds():
     names = {s["name"] for s in plan["slots"]} | {plan["commander"]}
     assert any(set(c["line"]) <= names for c in completions), \
         "at least one named line must be FULLY contained once the swap is made"
+
+
+# ── Must-includes are cards, and cards have colours ────────────────────────
+
+
+def test_a_must_include_outside_the_identity_is_dropped_and_named():
+    """MUST-INCLUDES WERE NEVER IDENTITY-CHECKED.
+
+    `fill_slots` pins them "whatever their score" — before any budget line is
+    consulted and without passing through the candidate pool's identity filter
+    at all. Survivable while a brief was hand-authored by someone who knew the
+    commander; not survivable once `must_include` comes from the LIBRARY, which
+    holds whatever you kept while exploring 34,890 cards.
+
+    Measured on the report that found it: a Zur (WUB) build pinned `Grolnok, the
+    Omnivore` — mono-green — and came out at 88 cards, because the mana base
+    then tried to support a colour the commander does not license and gave up
+    twelve lands short. ONE ILLEGAL CARD, and the failure surfaced as a missing
+    mana base rather than as an illegal card.
+    """
+    import pandas as pd
+
+    from manamap.pilot.build_deck import legal_must_includes
+
+    frame = pd.DataFrame({
+        "name": ["Ethereal Armor", "Grolnok, the Omnivore", "Sol Ring"],
+        "color_identity": ["W", "G, U", ""],
+    })
+    keep, illegal = legal_must_includes(
+        ["Ethereal Armor", "Grolnok, the Omnivore", "Sol Ring"], ["W", "U", "B"], frame)
+    assert keep == ["Ethereal Armor", "Sol Ring"]
+    assert len(illegal) == 1
+    assert illegal[0]["name"] == "Grolnok, the Omnivore"
+    assert illegal[0]["outside"] == ["G"], "it must say WHICH colour is the problem"
+
+
+def test_a_colourless_must_include_is_always_legal():
+    """Sol Ring goes in every deck, and an empty identity is a subset of all."""
+    import pandas as pd
+
+    from manamap.pilot.build_deck import legal_must_includes
+
+    frame = pd.DataFrame({"name": ["Sol Ring"], "color_identity": [""]})
+    keep, illegal = legal_must_includes(["Sol Ring"], ["W"], frame)
+    assert keep == ["Sol Ring"] and illegal == []
+
+
+def test_a_card_the_corpus_does_not_know_is_left_for_another_check():
+    """An unknown name is a different error with a different fix, and swallowing
+    it here would report "outside your colours" for a typo."""
+    import pandas as pd
+
+    from manamap.pilot.build_deck import legal_must_includes
+
+    frame = pd.DataFrame({"name": ["Sol Ring"], "color_identity": [""]})
+    keep, illegal = legal_must_includes(["Nonesuch Card"], ["W"], frame)
+    assert keep == ["Nonesuch Card"] and illegal == []
