@@ -1,0 +1,79 @@
+{
+  "id": "002",
+  "slug": "twelve-instances-where-the-damage-goes",
+  "deck": "ur-dragon",
+  "kind": "decision",
+  "title": "Twelve instances, three seats: where does the 64 go?",
+  "scenario": {
+    "board": {
+      "you": "Turn 8, precombat main, life 29. Battlefield: Miirym Sentinel Wyrm, Panharmonicon, Terror of the Peaks, Dragon Tempest, eight lands. Hand: Lathliss, Dragon Queen, and nothing else \u2014 no protection, no second threat. You cast Lathliss; this is stack 002's board and stack 002's cast, so the cascade is checker-passed: two nonlegendary 6/6 hasty copies and 64 damage in twelve separately aimed instances. They arrive in three waves and you choose targets a wave at a time. Wave one locks first and resolves last: Terror 6, Terror 6, then two Dragon Tempest triggers whose X you do not know yet. Then the first token's four: Terror 6, Terror 6, Tempest 4, Tempest 4. Then the second token's four: Terror 6, Terror 6, Tempest 5, Tempest 5. Resolution order runs first token, second token, wave-one Terror, wave-one Tempest \u2014 running total 6, 12, 16, 20, 26, 32, 37, 42, 48, 54, 59, 64.",
+      "table": "Player 2, go-wide tokens, at 32 with six 1/1s and the widest board at the table. Player 3, the control seat, at 40 with five untapped lands, has passed with mana up two turns running and has cast nothing since turn five. Player 4, at 27, tapped out, one 3/3 on board."
+    },
+    "question": "Every one of the twelve instances reads any target, and nothing forces them apart. Do you point the eight token-wave instances at the 40-life control seat and kill it, take stack 002's own assignment and kill the 32-life token seat while dropping the control seat to 8, or split the twelve so that both the 32-life and the 27-life seats die and the control seat is untouched?"
+  },
+  "branches": [
+    {
+      "choice": "Kill the 40-life control seat with the eight token-wave instances",
+      "line": "At wave one, point Terror 6, Terror 6 and both Tempest triggers at Player 2 \u2014 that is 22 once X resolves at 5 each. Then aim all eight token-wave instances at Player 3: 6, 6, 4, 4 from the first copy and 6, 6, 5, 5 from the second is 42, and they resolve before wave one. Player 3 is at 3 before the eighth instance and dead on it. Player 2 ends at 10, Player 4 untouched.",
+      "signals": "The control seat has spent two turns holding five mana and casting nothing. That is a sweeper or a counter, and it is the only thing at this table that undoes four permanents with one card.",
+      "coalition_risk": "Moderate and paid for. You eliminate a player and keep the widest board, so both survivors will look at you next \u2014 but neither has shown an answer to a board, and the seat that had one is gone.",
+      "coaching": "The ordering does the work here, so read it before you aim. Wave one locks its targets before anything resolves and then resolves LAST, so anything you point at a seat that dies in the meantime is removed on resolution \u2014 pointing all twelve at Player 3 wastes 22 damage. The eight token instances reach exactly 42, which is the whole reason this assignment costs you nothing: the wave-one 22 was always going elsewhere. Do not plan the token instances as 5 each. Two of them are capped at 4 because they sit above Miirym's second trigger on the stack and X is counted at resolution, so a plan built on 5s is two damage short of lethal. And do not aim wave one's Tempest triggers at a creature: you pick that target before you know X.",
+      "citations": [
+        {
+          "rule": "glossary:any-target",
+          "quote": "\u201cAny target\u201d is the same as \u201ctarget creature, player, planeswalker, or battle.\u201d"
+        },
+        {
+          "rule": "608.2h",
+          "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+        },
+        {
+          "rule": "608.2b",
+          "quote": "If all its targets, for every instance of the word \u201ctarget,\u201d are now illegal, the spell or ability doesn\u2019t resolve."
+        },
+        {
+          "rule": "704.5a",
+          "quote": "If a player has 0 or less life, that player loses the game."
+        }
+      ]
+    },
+    {
+      "choice": "Kill the 32-life token seat and drop the control seat to 8",
+      "line": "Point the first copy's four at Player 2 \u2014 6, 6, 4, 4 is 20 \u2014 then the second copy's two Terror triggers for 6 and 6, which is 32 and kills them. The second copy's Tempest pair, 5 and 5, plus wave one's 6, 6, 5, 5 go at Player 3: 32 total, leaving them at 8. This is the assignment stack 002 itself resolves.",
+      "signals": "The token seat is the widest board and the most visible threat, so killing it reads as the table-serving play and buys you goodwill from Player 4.",
+      "coalition_risk": "Low this turn, high next. You leave the seat with the answer alive at 8 with five untapped mana, and a player at 8 with a sweeper has every reason to use it on you.",
+      "coaching": "This is a real reading of the board and it is the reading the record carried until stack 007 was resolved: stack 002's summary says the 40-life opponent survives at 8, and that sentence is an assignment this resolution chose rather than a limit on the board. Stack 007 settled it \u2014 twelve instances that each read any target may all name one player. So the question is not whether you can kill the control seat but whether you should, and the case against this branch is what Player 3 does at 8 life. They are holding five untapped and have cast nothing for three turns. Your hand is empty after Lathliss and the protection suite is not in it. A wrath now costs you Miirym, Terror, Lathliss and both copies, and the 8 life you left them is enough to survive whatever Player 4's 3/3 does about it.",
+      "citations": [
+        {
+          "rule": "glossary:any-target",
+          "quote": "\u201cAny target\u201d is the same as \u201ctarget creature, player, planeswalker, or battle.\u201d"
+        },
+        {
+          "rule": "601.2c",
+          "quote": "The same target can\u2019t be chosen multiple times for any one instance of the word \u201ctarget\u201d on the spell."
+        }
+      ]
+    },
+    {
+      "choice": "Kill two seats \u2014 the 32 and the 27 \u2014 and leave the control seat at 40",
+      "line": "Wave one goes at Player 4: 6, 6, 5, 5 is 22, resolving last. The first copy's 6, 6, 4, 4 goes at Player 2, leaving them at 12; the second copy's Terror pair, 6 and 6, finishes them. The second copy's Tempest pair, 5 and 5, goes at Player 4, taking them to 17 before wave one resolves for 22. Two players eliminated, 5 damage spare, Player 3 untouched at 40.",
+      "signals": "Two eliminations in one cast is the largest swing available, and it is the only branch that uses the arithmetic the record does not state \u2014 64 kills 32 and 27 together because 59 fits inside it.",
+      "coalition_risk": "Total. You end the turn heads-up with the one seat that has been representing an answer for three turns, with an empty hand and everything you own on the battlefield.",
+      "coaching": "Check the arithmetic first, because it is not from a passing stack: 64 against a 32 and a 40 cannot kill both, which is what stack 002 states, and 64 against a 32 and a 27 can, which is arithmetic on the same twelve verified instances. That much holds. What does not is the position it leaves. Your hand is empty, one of the protection suite is in hand 65.5% of the time by turn six and is not here, and you are one-on-one with a seat holding five untapped that has cast nothing since turn five. Everything you own dies to one card, and then the game is a control deck against your top deck. Killing two players is the play when the survivor cannot punish an empty hand; this survivor is the only seat at the table who can.",
+      "citations": [
+        {
+          "rule": "glossary:any-target",
+          "quote": "\u201cAny target\u201d is the same as \u201ctarget creature, player, planeswalker, or battle.\u201d"
+        },
+        {
+          "rule": "704.5a",
+          "quote": "If a player has 0 or less life, that player loses the game."
+        }
+      ]
+    }
+  ],
+  "recommendation": {
+    "choice": "Kill the 40-life control seat with the eight token-wave instances",
+    "rationale": "Your board is four permanents and your hand is empty, so the seat that can undo the whole turn with one card is the seat to remove. It costs nothing to do it: the eight token-wave instances total exactly 42, and the wave-one 22 resolves last and would have fizzled into a dead player anyway, so it was always going somewhere else. Branch B is stack 002's own assignment and leaves that seat alive at 8 with five untapped \u2014 a player at 8 holding a sweeper is a player who uses it on you. Branch C kills two players and hands the survivor a one-on-one against an empty hand, with none of the protection suite in it. The mechanical points to hold on to: wave one locks before it knows X, two of the token instances are capped at 4 rather than 5 because they sit above Miirym's second trigger, and anything pointed at a seat that has already lost is removed on resolution."
+  }
+}

@@ -43,7 +43,9 @@ STAGES = [
     ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
     ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
-    ("prose",      "manual_prose.json",      None,  False, "the pilot's notes — `write-manual`"),
+    ("prose",      "manual_prose.json",
+     "decklist_sha256_prefix|decklist_sha256_12|as_of_decklist_sha256|decklist_sha256",
+     False, "the pilot's notes — `write-manual`"),
     ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent"),
     ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)"),
 ]
@@ -89,6 +91,33 @@ def _dig(doc, path):
         if cur:
             return cur
     return None
+
+
+# WHY manual_prose IS STAMP-CHECKED AND NOT CONTENT-CHECKED.
+#
+# The defect that prompted this was found by a human reading the rendered page,
+# not by any gate: ur-dragon's `manual_prose.json` survived a re-baseline and
+# went on coaching the pilot about Aggravated Assault — 18 mentions of a card
+# that had left the 99, plus goldfish figures from before `model_treasures` was
+# turned on. `deck-status` said `OK prose` throughout, because these five keys
+# have no validator and carried no stamp.
+#
+# The obvious fix is a CONTENT check: flag prose naming a card this deck used to
+# run and no longer does. It was built and measured before being rejected.
+# Fleet-wide it finds 45 names; DFC-normalising the faces (a front face is not a
+# departed card) drops that to 35 across 7 decks. But reading the singletons in
+# context kills it — heliod's "Lightning Greaves is the cheap version of the same
+# worry" is an UPGRADE being considered, gishath's "Ravenous Sailback, at 3 power,
+# does not" is a RULES COMPARISON, and yawgmoth's "Culling the Weak takes the
+# smallest engine class" is a SHORT-LIST entry. Prose legitimately discusses cards
+# the deck does not hold.
+#
+# The discriminator against ur-dragon's real staleness — "play it the turn it
+# wins", an instruction about a card you are holding — is SEMANTIC, and no regex
+# separates an instruction from a discussion. A validator that fires on correct
+# data trains its reader to ignore it, so the stamp ships and the content check
+# does not. Same verdict, same reasoning, as the four checks rejected on
+# 2026-08-24 at 46-of-57, 217-of-220, 2-of-4 and one-false-positive-fleet-wide.
 
 
 def _stamp_is_stale(stamped, truth):

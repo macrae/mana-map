@@ -20,7 +20,7 @@ Deterministic, no LLM, no network. It reads what an agent already wrote.
 import json
 
 from manamap.config import AGENT_ROUTINES
-from manamap.pilot.common import deck_dir
+from manamap.pilot.common import deck_dir, load_json
 
 # Which `.agent-out/` file each routine's agent writes. The agent name is the
 # filename by the handoff convention (agents return a path, never inline JSON).
@@ -78,6 +78,25 @@ def merge(slug, routine):
 
     for key in merged:
         doc[key] = payload[key]
+
+    # THE MERGE STAMPS, not the agent. `manual_prose.json` had no stamp on any
+    # of the nine decks, so `deck-status` could not tell a current file from one
+    # that had survived a re-baseline — and one had: ur-dragon's prose went on
+    # coaching the pilot about Aggravated Assault, 18 mentions of a card that
+    # had left the 99, with the row reading OK. A human found it by opening the
+    # rendered page.
+    #
+    # It is written here rather than trusted from the agent for two reasons.
+    # This function owns exactly `artifact_keys` and would otherwise drop a
+    # stamp the agent wrote — which is what happened the first time. And the
+    # merge is the moment the artifact BECOMES current, so it is the only place
+    # that can honestly assert what it is current against; an agent's stamp is a
+    # claim about a file it cannot see the final state of.
+    cards = load_json(base / "cards.json") or {}
+    truth = cards.get("decklist_sha256")
+    if truth:
+        doc["decklist_sha256_prefix"] = truth[:12]
+
     target.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
     return merged, missing, sorted(doc)
 
