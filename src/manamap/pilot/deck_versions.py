@@ -346,6 +346,36 @@ def report(slug):
             "unmatched_log_entries": unmatched, "notes": notes}
 
 
+def release_suggestion(slug, version):
+    """What to call this version, now that it exists in paper. Proposes only.
+
+    **v0.x is a list; v1.0.0 is a deck you can hold.** A deck lives on the bench
+    at v0.1.0, v0.4.2, whatever it takes — digital, unproven, freely rewritten.
+    Sleeving it is the act that makes it real, so that is where 1.0.0 belongs,
+    and the major version then means something physical rather than something a
+    maintainer felt.
+
+    THE TOOL PROPOSES AND THE PILOT CONFIRMS, which is why this prints a command
+    instead of writing a tag. `deck_history` is explicit that *why* a card moved
+    is not knowable from a commit; the same modesty applies to what a version
+    should be CALLED. Auto-tagging would also make `paper` non-idempotent — a
+    re-run would either fail on the duplicate or silently move the name.
+
+    Silent when the version already carries a release, and silent when the deck
+    has released before: proposing v1.0.0 to a deck already at v2.1.0 is worse
+    than proposing nothing.
+    """
+    have = [t for t in (version.get("tags") or []) if _RELEASE_RE.match(t)]
+    if have:
+        return []
+    doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
+    if any(_RELEASE_RE.match(t) for t in (doc.get("tags") or {})):
+        return []
+    return [f"  no release tag yet — sleeving it is what makes it 1.0.0:",
+            f"      manamap pilot deck-version {slug} tag v1.0.0 "
+            f"--at V{version['version']} --note \"…\""]
+
+
 def tag(slug, name, ref=None, note=None, force=False):
     """Name a version. Authored, tracked, never derived."""
     name = str(name or "").strip()
@@ -486,8 +516,10 @@ def main(args):
                       built_at=getattr(args, "built_at", None),
                       note=getattr(args, "note", None))
         state = paper_state(slug)
-        print(f"{slug}: LOCKED to V{v['version']} ({v['first_sha']}, {v['first_date']}) "
+        print(f"{slug}: SLEEVED at V{v['version']} ({v['first_sha']}, {v['first_date']}) "
               f"— built in paper, playable at a table → {TAGS_FILE}")
+        for line in release_suggestion(slug, v):
+            print(line)
         if state and state.get("in_sync") is False:
             d = state["drift"]
             print(f"  the repo has moved on: pull {len(d['pull'])}, add {len(d['add'])} "

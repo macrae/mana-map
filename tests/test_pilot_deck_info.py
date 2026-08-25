@@ -64,7 +64,9 @@ def test_json_and_print_agree_on_the_same_dict(bare_deck, capsys):
     assert set(out) >= {"slug", "version", "status", "record", "next"}
     deck_info.main(type("A", (), {"slug": SLUG, "as_json": False})())
     text = capsys.readouterr().out
-    assert "WORKBENCH — infodeck" in text and "NEXT" in text
+    # The deck names itself; the header used to say "WORKBENCH — <slug>", which
+    # named the landing page at the top of a per-deck command.
+    assert "INFODECK — " in text and "NEXT" in text
 
 
 @requires_deck
@@ -189,3 +191,47 @@ def test_the_lock_in_info_json_is_the_authored_half_only(bare_deck):
     # `info.json`, lock included, and the drift stays where it can be kept
     # current. The version block comes back empty here for exactly that reason.
     assert info["version"]["current"] is None and info["version"]["of"] == 0
+
+
+# ── Three states, three words ──────────────────────────────────────────────
+
+
+def test_the_three_states_read_as_three_words(bare_deck):
+    """A deck is sleeved, on the bench, or retired — and the front door says
+    which in the second line, before any figure.
+
+    The PRD calls the first "Pinned" (§3.1) and that word is deliberately NOT
+    used: the same document uses "pin" for the immutable decklist hash (§3.2),
+    and one word for a deck's physical existence and for a content sha is the
+    collision the ManaMap/Atlas rename exists to avoid.
+    """
+    info = deck_info.compose(SLUG)
+    assert deck_info.deck_state(info)[0] == deck_info.STATE_ON_BENCH
+
+    (bare_deck / "deck_versions.json").write_text(json.dumps(
+        {"slug": SLUG, "tags": {},
+         "paper": {"version": 1, "built_at": "2026-08-25", "note": "sleeved"}}))
+    info = deck_info.compose(SLUG)
+    state, why = deck_info.deck_state(info)
+    assert state == deck_info.STATE_SLEEVED
+    assert "V1" in why and "2026-08-25" in why
+
+    # Dead outranks sleeved: a broken-down deck may still carry an old lock, and
+    # "SLEEVED" over cards that are in another deck's sleeves is the exact lie
+    # this vocabulary exists to prevent.
+    (bare_deck / "issue.json").write_text(json.dumps(
+        {"commander": "Radagast of Rhosgobel", "status": "broken-down"}))
+    assert deck_info.deck_state(deck_info.compose(SLUG))[0] == deck_info.STATE_RETIRED
+
+
+def test_the_header_names_the_deck_not_the_landing_page(bare_deck, capsys):
+    """It read "WORKBENCH — <slug>" at the top of a per-deck command.
+
+    Harmless while "workbench" meant the whole bench; wrong once the Workbench
+    became one surface — the landing page — with the Atlas as a tool on it.
+    """
+    deck_info.main(type("A", (), {"slug": SLUG, "as_json": False, "write": False})())
+    out = capsys.readouterr().out
+    first = out.strip().splitlines()[0]
+    assert first.startswith(SLUG.upper()), first
+    assert "WORKBENCH" not in first

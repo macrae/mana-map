@@ -4145,7 +4145,19 @@ def test_hovering_names_the_card_under_the_cursor(page):
     the same coordinates rather than against a chosen row, so point density cannot make a
     correct popup look wrong.
     """
-    page.wait_for_timeout(800)
+    # STOP THE MAP FIRST. The atlas drifts — `proj()` adds a time term and
+    # `unproj()` inverts it exactly — so `pick(x, y)` is a function of the CLOCK
+    # as well as the cursor. This test hovers, waits 600 ms for the popup, and
+    # then asks `pick` the same question; on a moving field those are two
+    # different questions and the answers legitimately differ. It was a latent
+    # flake for exactly that reason, and was verified to fail with and without
+    # the change that first surfaced it.
+    #
+    # Freezing motion makes `pick` time-invariant, which turns this back into
+    # the geometry assertion it is supposed to be. Another wait would only move
+    # the odds.
+    page.evaluate("() => MM.mapRenderer.setMotion(false)")
+    page.wait_for_timeout(900)          # let the 700 ms motion ramp settle to rest
     box = page.evaluate(
         """() => {
             const r = document.querySelector('.map-canvas').getBoundingClientRect();
@@ -4726,7 +4738,7 @@ def test_the_workbench_splits_locked_from_the_bench(browser, viz_server):
     try:
         heads = page.eval_on_selector_all(
             ".wb-rack h2", "els => els.map(e => e.textContent.trim().split(' ')[0])")
-        assert heads == ["Locked", "On", "History"], heads
+        assert heads == ["Sleeved", "On", "History"], heads
         racks = page.eval_on_selector_all(
             ".wb-rack", "els => els.map(e => e.querySelectorAll('.wb-card').length)")
         assert racks == [1, 1, 1], racks

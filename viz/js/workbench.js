@@ -5,7 +5,7 @@
  * is authored, in `deck_versions.json`'s `paper` block, and it arrives here
  * through `data/decks/index.json` as `locked`.
  *
- * Two racks, and the split is the whole point. LOCKED decks are built in paper
+ * Three racks, and the split is the whole point. SLEEVED decks are built in paper
  * and sleeved; everything else is on the bench — build plans, broken-down lists,
  * decks being researched. A deck that exists only as JSON and a deck you can put
  * on a table are different objects, and the old picker (one line of text links)
@@ -358,7 +358,7 @@
       html = toggle + fleetTable(decks, infos, state.sort);
     } else {
       html = toggle
-        + rack('Locked', 'Built in paper and sleeved — you can play these tonight.',
+        + rack('Sleeved', 'Built in paper — you can play these tonight.',
                locked, infos)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
                + 'sleeved yet.', live, infos)

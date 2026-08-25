@@ -340,10 +340,42 @@ def _next(info):
     return nxt
 
 
+#: The three states a deck can be in, as words a reader can act on.
+#:
+#: NOT the on-disk vocabulary, deliberately: `paper` / `locked` stay exactly as
+#: they are in `deck_versions.json`, because renaming a tracked key migrates
+#: artifacts to change nothing a reader sees. Only the human-facing words are
+#: settled here, in one place, so three surfaces cannot each invent their own.
+#:
+#: "Pinned" is the PRD's word for the first of these (§3.1) and is NOT used,
+#: because the same document uses "pin" for the immutable decklist hash (§3.2) —
+#: one word for a deck's physical existence and for a content sha is the
+#: collision the ManaMap/Atlas rename was made to avoid. SLEEVED says the
+#: physical thing plainly and cannot be confused with a hash.
+STATE_SLEEVED = "SLEEVED"        # the pilot asserted this exact list is in paper
+STATE_ON_BENCH = "ON THE BENCH"  # a list, not yet sleeved — every build plan
+STATE_RETIRED = "RETIRED"        # broken-down / superseded / retired, one bucket
+
+
+def deck_state(info):
+    """Which of the three, and a short reason. See `STATE_*` above."""
+    if info.get("lifecycle"):
+        return STATE_RETIRED, info["lifecycle"]["headline"].lower()
+    if info.get("paper"):
+        p = info["paper"]
+        return STATE_SLEEVED, f"V{p.get('version')}, built {p.get('built_at')}"
+    return STATE_ON_BENCH, "nobody has said whether this exists in paper"
+
+
 def _print(info):
     ci = "".join(info["colour_identity"]) or "C"
-    print(f"WORKBENCH — {info['slug']} · {' / '.join(info['commander'] or [])} · {ci} · "
+    state, why = deck_state(info)
+    # The deck names itself. This line used to read "WORKBENCH — <slug>", which
+    # named the LANDING PAGE at the top of a per-deck command — harmless while
+    # "workbench" meant the whole bench, wrong once it became one surface.
+    print(f"{info['slug'].upper()} — {' / '.join(info['commander'] or [])} · {ci} · "
           f"{info['size']} cards ({info['lands']} lands)")
+    print(f"  {state} · {why}")
     if info["lifecycle"]:
         print(f"  ⚑ {info['lifecycle']['headline']} — {info['lifecycle']['body']}")
     print()

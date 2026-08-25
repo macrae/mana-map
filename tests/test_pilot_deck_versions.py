@@ -293,3 +293,52 @@ def test_a_tag_is_a_claim_about_one_list(repo):
     dv.tag(SLUG, "v1.0.0", ref="V2", force=True)
     doc = json.loads((repo / dv.TAGS_FILE).read_text())
     assert doc["tags"]["v1.0.0"]["version"] == 2
+
+
+# ── Sleeving proposes the release ──────────────────────────────────────────
+
+
+def test_sleeving_proposes_v1_0_0_when_there_is_no_release(repo):
+    """v0.x is a list; v1.0.0 is a deck you can hold.
+
+    A deck lives on the bench at v0.1.0, v0.4.2, whatever — digital, unproven,
+    freely rewritten. Sleeving it is the act that makes it real, so that is
+    where 1.0.0 belongs and the major version then means something physical.
+    """
+    v = dv.versions(SLUG)[0]
+    lines = dv.release_suggestion(SLUG, v)
+    assert lines, "a freshly sleeved deck with no release got no suggestion"
+    assert "v1.0.0" in " ".join(lines)
+    assert f"--at V{v['version']}" in " ".join(lines), "the proposal must name the version"
+
+
+def test_the_proposal_does_not_write_a_tag(repo):
+    """THE TOOL PROPOSES; THE PILOT CONFIRMS.
+
+    Auto-tagging would also make `paper` non-idempotent — a re-run would either
+    fail on the duplicate or silently move the name, and re-running a command
+    must not fail for having already succeeded.
+    """
+    dv.set_paper(SLUG, ref="V1", note="sleeved")
+    dv.release_suggestion(SLUG, dv.versions(SLUG)[0])
+    doc = json.loads((repo / dv.TAGS_FILE).read_text())
+    assert doc.get("tags") == {}, "the suggestion wrote a tag behind the pilot's back"
+
+
+def test_it_goes_quiet_once_the_deck_has_released(repo):
+    """Silent when this version carries a release, and silent when the DECK has
+    released before — proposing v1.0.0 to a deck already at v2.1.0 is worse than
+    proposing nothing."""
+    vs = dv.versions(SLUG)
+    dv.tag(SLUG, "v1.0.0", ref="V1")
+    assert dv.release_suggestion(SLUG, vs[0]) == [], "still proposing on a tagged version"
+    assert dv.release_suggestion(SLUG, vs[-1]) == [], (
+        "proposed v1.0.0 for a later version of a deck that has already released")
+
+
+def test_a_nickname_does_not_count_as_a_release(repo):
+    """`the-lock` is a name, not a version. A deck tagged only with nicknames
+    has still never released, and must still be offered 1.0.0."""
+    dv.tag(SLUG, "the-lock", ref="V1")
+    assert dv.release_suggestion(SLUG, dv.versions(SLUG)[0]), (
+        "a nickname suppressed the release proposal")
