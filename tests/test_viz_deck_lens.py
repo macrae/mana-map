@@ -187,7 +187,9 @@ def test_deck_html_busts_its_own_assets():
 
     html = (Path(__file__).resolve().parents[1] / "viz" / "deck.html").read_text()
     busts = dict(re.findall(r'(?:src|href)="(?:js|css)/([\w-]+)\.(?:js|css)\?v=(\d+)"', html))
-    assert set(busts) == {"deck-view", "tokens"}, busts
+    # `shell` joined when the navigation strip became shared across all three
+    # surfaces — it is dependency-free and loads first, so every page carries it.
+    assert set(busts) == {"deck-view", "tokens", "shell"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 

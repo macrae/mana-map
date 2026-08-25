@@ -5495,3 +5495,108 @@ def test_an_unknown_schema_is_ignored_rather_than_guessed_at(discover_page):
     assert out["report"]["schema"] == 99
     assert "somethingNew" in out["stillThere"], "the unknown document was destroyed"
     assert page.js_errors == []
+
+
+# ── The shell: one strip, three surfaces ───────────────────────────────────
+
+
+def _shell_page(browser, viz_server, path):
+    page = browser.new_page(viewport={"width": 1280, "height": 800})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.goto(f"{viz_server}{path}")
+    page.wait_for_selector("#shell .shell-nav", timeout=BOOT_TIMEOUT_MS)
+    page.js_errors = errors
+    return page
+
+
+@pytest.mark.parametrize("path,here", [
+    ("/viz/workbench.html", "Workbench"),
+    ("/viz/index.html", "Atlas"),
+])
+def test_the_shell_marks_where_you_are(browser, viz_server, path, here):
+    """The surface you are on is not a link.
+
+    A nav that offers to take you where you already are teaches the reader the
+    nav is decorative — and it must be MARKED, not merely unlinked, because an
+    unlinked word beside links reads as broken rather than as current.
+    """
+    page = _shell_page(browser, viz_server, path)
+    try:
+        current = page.locator("#shell .shell-here").first.inner_text()
+        assert current.strip().lower() == here.lower()
+        hrefs = page.eval_on_selector_all(
+            "#shell .shell-nav a", "els => els.map(e => e.getAttribute('href'))")
+        assert hrefs, "the shell offered no way out"
+        assert not any(path.endswith(h) for h in hrefs), \
+            f"the current surface is still a link: {hrefs}"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_shell_needs_neither_session_nor_the_atlas(browser, viz_server):
+    """It lives on `workbench.html`, which loads neither.
+
+    A shell that needed them would either pull 0.56 MB of card index onto a page
+    that draws no cards, or exist on one page and stop being a shell.
+    """
+    page = _shell_page(browser, viz_server, "/viz/workbench.html")
+    try:
+        state = page.evaluate("""() => ({
+            session: !!window.Session, mm: !!window.MM, shell: !!window.Shell,
+        })""")
+        assert state["shell"] is True
+        assert state["session"] is False and state["mm"] is False
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_library_count_crosses_surfaces(browser, viz_server):
+    """The count is readable with no corpus BECAUSE the library stores names.
+
+    Had it stored row indices — the form that got the previous attempt deleted —
+    a page would have to load the whole index to say "4". That is the quieter
+    second argument for names, and this test is where it is asserted.
+    """
+    page = _shell_page(browser, viz_server, "/viz/workbench.html")
+    try:
+        shown = page.evaluate("""() => {
+            localStorage.setItem('manamap-library', JSON.stringify({
+                v: 1, corpus: null,
+                cards: ['Sol Ring', 'Rhystic Study', 'Command Tower', 'Cyclonic Rift'],
+            }));
+            Shell.refresh();
+            return document.querySelector('.shell-library').innerText;
+        }""")
+        assert "4" in shown, f"shell shows {shown!r}"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_count_is_never_one_behind(discover_page):
+    """SAVE BEFORE EMIT, and this test exists because it was the other way.
+
+    The shell reads the count from `localStorage`, so emitting first meant it
+    read the PREVIOUS save: four cards in, three on the strip, permanently one
+    behind. It looked right at a glance — plausible number, wrong by one — and
+    is invisible unless you compare the strip against the store, which is what
+    this does.
+    """
+    page = discover_page
+    r = page.evaluate("""() => {
+        Session.library.clear();
+        const rows = ['Sol Ring', 'Rhystic Study', 'Command Tower', 'Cyclonic Rift']
+            .map(Discovery.rowByName).filter(x => x >= 0);
+        rows.forEach(x => Session.library.toggle(x));
+        const stored = JSON.parse(localStorage.getItem('manamap-library')).cards;
+        return {stored: stored.length,
+                shown: document.querySelector('.shell-library').innerText};
+    }""")
+    assert r["stored"] == 4
+    assert r["shown"].strip().startswith("4"), (
+        f"the strip says {r['shown']!r} while {r['stored']} are stored — "
+        f"save() must run before emit()")
+    assert page.js_errors == []

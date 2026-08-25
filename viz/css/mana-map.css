@@ -521,3 +521,28 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .curve-seg.is-on { outline: 1.5px solid #fff; outline-offset: -1px; }
 .curve-key-item.is-on { color: #fff; font-weight: 600; }
 .lens-bar-row.is-on { background: rgba(255,255,255,.09); }
+
+/* ── The shell: one navigation strip on every surface ──────────────────────
+   Injected by `viz/js/shell.js` above whatever header a page already has.
+   Global navigation and the library live here; page-specific actions stay in
+   the page's own `.head-links`, because those are about the thing you are
+   looking at rather than about where you are. */
+.shell { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  padding: 9px 22px; border-bottom: 1px solid var(--rule, #2a2a3e);
+  background: var(--ink-2, #12121e); font-family: var(--condensed, inherit);
+  font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.shell-brand { font-family: var(--display, inherit); letter-spacing: 0.02em;
+  color: var(--gold, #c4a747); text-transform: none; font-size: 0.9rem; }
+.shell-nav { display: flex; align-items: baseline; gap: 10px; }
+.shell-nav a { color: var(--dim, #8a8aa0); text-decoration: none;
+  border-bottom: 1px solid transparent; }
+.shell-nav a:hover { color: var(--fg, #e8e8f0); border-bottom-color: var(--gold, #c4a747); }
+/* The surface you are on is not a link, and it is marked rather than merely
+   unlinked — an unlinked word next to links reads as broken, not as current. */
+.shell-here { color: var(--fg, #e8e8f0); border-bottom: 1px solid var(--gold, #c4a747); }
+.shell-sep { color: var(--rule, #2a2a3e); }
+.shell-library { margin-left: auto; }
+.shell-library a { color: var(--gold, #c4a747); text-decoration: none; }
+.shell-library a:hover { text-decoration: underline; }
+.shell-empty { color: var(--rule, #3a3a52); }
+@media print { .shell { display: none; } }

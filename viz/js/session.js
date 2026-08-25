@@ -43,6 +43,13 @@ window.Session = (function () {
   const listeners = [];
 
   function emit(what) {
+    // The shell shows the library count and lives on every surface, including
+    // two that load neither Session nor the atlas. It is notified here rather
+    // than subscribing, because it must not depend on Session existing — the
+    // guard is what lets one strip serve three pages.
+    if (what === 'library' && window.Shell && Shell.refresh) {
+      try { Shell.refresh(); } catch (e) { /* the strip is never load-bearing */ }
+    }
     for (const fn of listeners) {
       try { fn(what); } catch (e) { console.error('[session] listener failed', e); }
     }
@@ -184,15 +191,26 @@ window.Session = (function () {
 
   function inLibrary(row) { return library.indexOf(row) !== -1; }
 
+  /* SAVE BEFORE EMIT, and the order is load-bearing.
+   *
+   * The shell shows the library count and reads it straight from
+   * `localStorage` — which is what lets it live on two pages that never load
+   * Session. Emitting first meant it read the PREVIOUS save: four cards in,
+   * three on the strip, permanently one behind. It looked right at a glance
+   * because the number was plausible and only wrong by one, and it is invisible
+   * unless you compare the strip against the store.
+   *
+   * So: persist, then announce. Any listener that reads the stored form is then
+   * reading the state the event is telling it about. */
   function toggleLibrary(row) {
     const at = library.indexOf(row);
     if (at === -1) library.push(row); else library.splice(at, 1);
-    emit('library');
     save();
+    emit('library');
     return at === -1;
   }
 
-  function clearLibrary() { library.length = 0; emit('library'); save(); }
+  function clearLibrary() { library.length = 0; save(); emit('library'); }
 
   return {
     useGraph: useGraph,
