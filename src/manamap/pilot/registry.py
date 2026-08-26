@@ -369,6 +369,11 @@ def add_pilot_parser(subparsers):
                              help="merge: apply despite unsourced cards (needs --reason)")
             cmd.add_argument("--reason", default=None,
                              help="merge: why the sourcing gate is being skipped")
+            cmd.add_argument("--proxy", action="store_true",
+                             help="count cards sleeved in your OTHER decks as "
+                                  "sourced — you own them, and proxying across "
+                                  "your own decks is logistics. Never applies to "
+                                  "cards nobody owns")
             cmd.add_argument("--json", action="store_true")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",

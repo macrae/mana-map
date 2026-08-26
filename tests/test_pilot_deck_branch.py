@@ -193,3 +193,30 @@ def test_a_deck_with_no_branches_says_nothing_about_them():
         info = deck_info.compose(slug)
         assert info["branches"] == []
         assert not any("branch" in n for n in info["next"]), info["next"]
+
+
+@needs_branch
+def test_a_card_in_another_deck_is_owned_not_bought():
+    """`elsewhere` IS A LOGISTICS PROBLEM, NOT AN OWNERSHIP ONE.
+
+    The first cut counted a card sleeved in another deck as unsourced, which
+    reads as "buy a second copy" — advice to spend money on something already in
+    the house. It stays its own state, because the trade-off is real, but
+    `--proxy` says the pilot will proxy across their own decks and that makes it
+    sourced.
+
+    `buy` is never proxiable here: that would be a claim about a card nobody
+    owns, which is a different decision.
+    """
+    plain = deck_branch.source(SLUG, BRANCH)
+    proxied = deck_branch.source(SLUG, BRANCH, proxy=True)
+    n_else = plain["counts"]["elsewhere"]
+    if not n_else:
+        pytest.skip("nothing sleeved elsewhere on this branch")
+    assert len(proxied["unsourced"]) == len(plain["unsourced"]) - n_else, (
+        "--proxy did not clear exactly the cards sleeved in other decks")
+    # A card nobody owns stays unsourced whatever the proxy policy is.
+    buys = {r["name"] for r in plain["cards"] if r["state"] == "buy"}
+    assert buys <= set(proxied["unsourced"]), (
+        "--proxy cleared a card that nobody owns")
+    assert proxied["owned_but_elsewhere"] == n_else

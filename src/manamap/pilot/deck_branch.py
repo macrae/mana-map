@@ -67,7 +67,23 @@ NAME_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,48}$")
 #: nothing in the repo computed before, and it is the one that changes a
 #: decision: a card sleeved in a LOCKED deck is not available at all.
 IN_DECK, BOX, ELSEWHERE, BUY = "in_deck", "box", "elsewhere", "buy"
+
+#: What counts as "you can put this in the deck tonight".
+#:
+#: `elsewhere` IS A LOGISTICS PROBLEM, NOT AN OWNERSHIP ONE, and the first cut
+#: got that wrong. A card sleeved in another deck is a card you OWN — the only
+#: question is whether you are willing to proxy it or unsleeve the other deck,
+#: and that is a fact about the pilot rather than about the card. Reported as
+#: unsourced it reads as "buy a second copy", which is advice to spend money on
+#: something already in the house.
+#:
+#: So it stays its own state — the trade-off is real and worth seeing — and
+#: `--proxy` says the pilot is happy to proxy across their own decks, which makes
+#: it sourced. `buy` is never proxiable here: that would be a claim about a card
+#: nobody owns, which is a different decision and not one this should make
+#: quietly.
 SOURCED = (IN_DECK, BOX)
+SOURCED_WITH_PROXY = (IN_DECK, BOX, ELSEWHERE)
 
 
 def branch_root(slug):
@@ -171,7 +187,7 @@ def _deck_holders(name, skip):
     return out
 
 
-def source(slug, branch):
+def source(slug, branch, proxy=False):
     """Where every card in the branch would come from. The reason this exists.
 
     OVER THE WHOLE LIST, not over the diff. Walking only the added cards makes
@@ -203,11 +219,13 @@ def source(slug, branch):
         rows.append({"name": name, "state": BUY, "where": None})
     counts = {s: sum(1 for r in rows if r["state"] == s)
               for s in (IN_DECK, BOX, ELSEWHERE, BUY)}
-    unsourced = [r["name"] for r in rows if r["state"] not in SOURCED]
+    ok = SOURCED_WITH_PROXY if proxy else SOURCED
+    unsourced = [r["name"] for r in rows if r["state"] not in ok]
     # `counts` are DISTINCT NAMES, not copies — you source Sol Ring once, and a
     # basic land is not a purchase at all.
     return {"slug": slug, "branch": branch, "cards": rows, "counts": counts,
             "unsourced": unsourced, "diff": d, "counts_are": "distinct names",
+            "proxy": proxy, "owned_but_elsewhere": counts[ELSEWHERE],
             "mergeable": not unsourced}
 
 
@@ -266,9 +284,9 @@ def new(slug, branch, text, why=None, at=None):
             "size": sum(e.get("quantity") or 1 for e in checked["entries"])}
 
 
-def merge(slug, branch, write=False, force=False, reason=None):
+def merge(slug, branch, write=False, force=False, reason=None, proxy=False):
     """Make the branch the deck's list. Refuses what it cannot honestly apply."""
-    s = source(slug, branch)
+    s = source(slug, branch, proxy=proxy)
     text = _list_text(slug, branch)
     checked = check_in.analyze(slug, text)
     blocking = list(checked["blocking"])
@@ -307,10 +325,14 @@ def _print_source(s):
     print(f"SOURCING — {s['slug']}/{s['branch']}  "
           f"+{len(s['diff']['add'])} -{len(s['diff']['out'])} vs the current list  "
           f"({s['diff']['size']} cards, {s['diff']['names']} distinct)")
+    owned = c[IN_DECK] + c[BOX] + c[ELSEWHERE]
     print(f"  in the deck {c[IN_DECK]} · in a box {c[BOX]} · "
-          f"sleeved elsewhere {c[ELSEWHERE]} · to buy {c[BUY]}\n")
+          f"sleeved elsewhere {c[ELSEWHERE]} · to buy {c[BUY]}")
+    print(f"  you already own {owned} of {sum(c.values())}"
+          + ("  (--proxy counts the elsewhere ones as sourced)"
+             if c[ELSEWHERE] and not s.get("proxy") else "") + "\n")
     for state, label in ((BOX, "IN A BOX — free"),
-                         (ELSEWHERE, "SLEEVED ELSEWHERE — a trade-off, not a purchase"),
+                         (ELSEWHERE, "SLEEVED ELSEWHERE — you own these; proxy or unsleeve"),
                          (BUY, "TO BUY")):
         rows = [r for r in s["cards"] if r["state"] == state]
         if not rows:
@@ -375,7 +397,7 @@ def main(args):
             print(f"    + {n}")
         return
     if action == "source":
-        s = source(slug, branch)
+        s = source(slug, branch, proxy=getattr(args, "proxy", False))
         if getattr(args, "json", False):
             print(json.dumps(s, indent=1)); return
         _print_source(s)
@@ -383,7 +405,8 @@ def main(args):
     if action == "merge":
         got = merge(slug, branch, write=getattr(args, "write", False),
                     force=getattr(args, "force", False),
-                    reason=getattr(args, "reason", None))
+                    reason=getattr(args, "reason", None),
+                    proxy=getattr(args, "proxy", False))
         if got["blocking"]:
             print(f"REFUSED — {slug}/{branch} cannot be merged:")
             for b in got["blocking"]:

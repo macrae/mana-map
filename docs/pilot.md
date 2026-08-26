@@ -74,7 +74,7 @@ manamap pilot deck-version <slug> [list] [--json]   # every list this deck has b
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
 manamap pilot deck-branch <slug> [list] | new <name> --from <file> [--why …]
 manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>
-manamap pilot deck-branch <slug> merge <name> [--write] [--force --reason …]
+manamap pilot deck-branch <slug> merge <name> [--write] [--proxy] [--force --reason …]
                                         #   a candidate 99 you cannot yet sleeve: diff it,
                                         #   price it against your boxes, MEASURE it
                                         #   (`--branch` on fetch-deck / bracket-check /
