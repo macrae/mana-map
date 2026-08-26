@@ -732,7 +732,14 @@ window.Discovery = (function () {
       return rec ? { name: rec.n, source: Session.library.has(r) ? 'kept' : 'found' } : null;
     }).filter(Boolean);
 
-    const must = Session.library.list.filter(function (r) { return r !== cmdRow; })
+    /* THE OPEN PILE, not the whole library. A brief is one deck's intent, and
+     * the library is now several piles — exporting all of them would put your
+     * artifact collection into a Zur build because both were kept. `zoneNames`
+     * is the active zone; the strip's count stays the whole library. */
+    const zoneRows = new Set(Session.library.zoneNames);
+    const must = Session.library.list
+      .filter(function (r) { return r !== cmdRow; })
+      .filter(function (r) { return zoneRows.has((index[r] || {}).n); })
                                   .map(function (r) { return index[r].n; });
 
     const ci = [];

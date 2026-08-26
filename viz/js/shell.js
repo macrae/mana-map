@@ -176,12 +176,27 @@ window.Shell = (function () {
     return libraryNames().map(function (n) { return { name: n, row: -1 }; });
   }
 
+  function lib() { return (window.Session && Session.library) || null; }
+
   function tile(e) {
-    // "Not in this corpus" is only sayable where there IS a corpus. On the
-    // workbench and the deck page nothing has resolved a name, so every row is
-    // -1 and flagging them would libel the whole library.
-    var canTell = !!(window.Session && Session.library && Session.library.resolvable);
+    // "Not in this corpus" is only sayable where there IS a corpus.
+    var canTell = !!(lib() && lib().resolvable);
     var known = !canTell || e.row >= 0;
+    var others = (lib() ? lib().zones : []).filter(function (z) {
+      return z.name !== (lib() && lib().active);
+    });
+    // MOVE IS A SELECT, NOT A DRAG. One card lives in one pile, so the whole
+    // operation is "which pile" — and a select says the available answers out
+    // loud, works by keyboard, and needs no drop target to aim at.
+    var move = others.length
+      ? '<select class="lib-move" title="Move to another pile" '
+        + 'onchange="Shell.move(' + jsStr(e.name) + ', this.value); this.value=\'\'">'
+        + '<option value="">move&hellip;</option>'
+        + others.map(function (z) {
+            return '<option value="' + esc(z.name) + '">' + esc(z.name) + '</option>';
+          }).join('')
+        + '</select>'
+      : '';
     return '<div class="lib-tile' + (known ? '' : ' lib-tile-unknown') + '">'
       + '<button class="lib-drop" title="Take out of your library" '
       +   'onclick="Shell.drop(' + jsStr(e.name) + ')">&times;</button>'
@@ -192,26 +207,57 @@ window.Shell = (function () {
       +   '<span class="lib-name">' + esc(e.name) + '</span>'
       + '</button>'
       + (known ? '' : '<span class="lib-flag">not in this corpus</span>')
+      + move
+      + '</div>';
+  }
+
+  /* The piles, as tabs. The count on each is the whole point of having them —
+   * a zone you cannot size at a glance is a folder, not a working surface. */
+  function zoneBar() {
+    var L = lib();
+    if (!L || !L.zones) return '';
+    var active = L.active;
+    return '<div class="lib-zones">'
+      + L.zones.map(function (z) {
+          return '<button class="lib-zone' + (z.name === active ? ' is-active' : '') + '"'
+            + ' onclick="Shell.zone(' + jsStr(z.name) + ')">'
+            + esc(z.name) + '<span class="lib-zone-n">' + z.count + '</span></button>';
+        }).join('')
+      + '<button class="lib-zone lib-zone-new" title="Start another pile" '
+      +   'onclick="Shell.newZone()">+</button>'
       + '</div>';
   }
 
   function drawerHtml() {
-    var es = entryList();
+    var L = lib();
+    var all = entryList();
+    var active = L ? L.active : null;
+    var shown = active ? all.filter(function (e) { return e.zone === active; }) : all;
     var head = '<div class="lib-head">'
       + '<span class="lib-title">Your library</span>'
-      + '<span class="lib-n">' + es.length + ' card' + (es.length === 1 ? '' : 's') + '</span>'
+      + '<span class="lib-n">' + all.length + ' card' + (all.length === 1 ? '' : 's')
+      +   (L && L.zones.length > 1 ? ' in ' + L.zones.length + ' piles' : '') + '</span>'
       + '<span class="lib-actions">'
-      +   (es.length ? '<button class="lib-btn" onclick="Shell.clear()">Clear</button>' : '')
+      +   (active ? '<button class="lib-btn" onclick="Shell.renameZone()">Rename</button>'
+      +             '<button class="lib-btn" onclick="Shell.dropZone()">Delete pile</button>' : '')
+      +   (shown.length ? '<button class="lib-btn" onclick="Shell.clear()">Empty pile</button>' : '')
       +   '<button class="lib-btn" onclick="Shell.toggle()">Close</button>'
-      + '</span></div>';
-    if (!es.length) {
-      return head + '<p class="lib-empty">Nothing kept yet. Open a card in the '
-        + '<a href="index.html">Atlas</a> and press <b>Keep this card</b> — '
-        + 'what you gather here becomes the deck you are building.</p>';
+      + '</span></div>' + zoneBar();
+    if (!shown.length) {
+      return head + '<p class="lib-empty">'
+        + (all.length
+            ? 'Nothing in <b>' + esc(active) + '</b> yet. Cards you keep land in the '
+              + 'pile that is open, so switch to another tab or keep something here.'
+            : 'Nothing kept yet. Open a card in the <a href="index.html">Atlas</a> and '
+              + 'press <b>Keep this card</b> — what you gather here becomes the deck '
+              + 'you are building.')
+        + '</p>';
     }
-    return head + '<div class="lib-grid">' + es.map(tile).join('') + '</div>';
+    return head + '<div class="lib-grid">' + shown.map(tile).join('') + '</div>';
   }
 
+  // One delegated listener for the whole grid; `error` does not bubble, so it
+  // is registered in the capture phase. Wired once, on first render.
   var errorsWired = false;
 
   function renderDrawer() {
@@ -325,15 +371,82 @@ window.Shell = (function () {
     location.href = 'index.html?cards=' + encodeURIComponent(name);
   }
 
-  /* CLEAR ASKS FIRST. It wipes work that took ten minutes to gather, it used to
-   * be unconfirmed, and it lived inside a collapsed block labelled "Start
-   * somewhere else" — a destructive control mislabelled by its container. */
+  /* CLEAR ASKS FIRST, and it now names the PILE rather than the library. It
+   * wipes work that took ten minutes to gather; with zones it could wipe work
+   * that has nothing to do with what you are looking at, so it is scoped to
+   * the open tab and says so in the question. */
   function clearAll() {
-    var n = libraryCount();
+    var L = lib();
+    if (!L) return;
+    var zone = L.active;
+    var n = L.entries.filter(function (e) { return e.zone === zone; }).length;
     if (!n) return;
     if (!window.confirm('Take all ' + n + ' card' + (n === 1 ? '' : 's')
-        + ' out of your library? This cannot be undone.')) return;
-    if (window.Session && Session.library) Session.library.clear();
+        + ' out of "' + zone + '"? This cannot be undone.')) return;
+    L.clearZone(zone);
+    render();
+  }
+
+  /* ── the piles ──────────────────────────────────────────────────────────
+   *
+   * `prompt` and `confirm` rather than inline editors, deliberately: these are
+   * rare, one-field operations on a page whose job is showing cards, and a
+   * bespoke rename widget would be more code than the feature. */
+  function zone(name) {
+    if (lib()) lib().setActive(name);
+    render();
+  }
+
+  function newZone() {
+    var name = window.prompt(
+      'Name the pile — what are you collecting?\n\n'
+      + 'Cards you keep land in whichever pile is open.', '');
+    if (name === null) return;
+    if (lib() && !lib().addZone(name)) {
+      if (String(name).trim()) window.alert('There is already a pile called "'
+        + String(name).trim() + '".');
+      return;
+    }
+    render();
+  }
+
+  function renameZone() {
+    var L = lib();
+    if (!L) return;
+    var name = window.prompt('Rename "' + L.active + '" to:', L.active);
+    if (name === null || String(name).trim() === L.active) return;
+    if (!L.renameZone(L.active, name)) {
+      window.alert('That name is empty or already taken.');
+      return;
+    }
+    render();
+  }
+
+  /* Deleting a pile MOVES its cards, and the confirmation says where they go —
+   * the alternative reads as "delete these cards", which is not what happens
+   * and not what anyone wants to find out afterwards. */
+  function dropZone() {
+    var L = lib();
+    if (!L) return;
+    var zones = L.zones;
+    if (zones.length < 2) {
+      window.alert('This is the only pile — a library needs somewhere to put '
+        + 'the next card. Make another first.');
+      return;
+    }
+    var here = L.active;
+    var n = L.entries.filter(function (e) { return e.zone === here; }).length;
+    var to = zones.filter(function (z) { return z.name !== here; })[0].name;
+    if (!window.confirm('Delete the pile "' + here + '"?'
+        + (n ? '\n\nIts ' + n + ' card' + (n === 1 ? '' : 's') + ' move to "'
+               + to + '" — nothing is thrown away.' : ''))) return;
+    L.removeZone(here);
+    render();
+  }
+
+  function move(name, zoneName) {
+    if (!zoneName || !lib()) return;
+    lib().move(name, zoneName);
     render();
   }
 
@@ -353,6 +466,11 @@ window.Shell = (function () {
     mount: mount,
     toggle: toggleDrawer,
     drop: drop,
+    zone: zone,
+    newZone: newZone,
+    renameZone: renameZone,
+    dropZone: dropZone,
+    move: move,
     open: openCard,
     clear: clearAll,
     get isOpen() { return open; },

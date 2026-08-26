@@ -701,3 +701,27 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .lib-tile-noart .lib-open::before { content: ""; display: block; width: 100%;
   aspect-ratio: 488 / 680; border-radius: 6px;
   background: var(--panel-hi, #2a2a4a); }
+
+/* ── Piles ─────────────────────────────────────────────────────────────────
+ * A zone you cannot size at a glance is a folder, not a working surface — so
+ * every tab carries its count.
+ */
+.lib-zones { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.lib-zone { display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font: inherit; font-size: 0.74rem; padding: 4px 11px; border-radius: 3px;
+  background: none; color: var(--ink-soft, #8a8aa0);
+  border: 1px solid var(--rule, #3a3a5a); }
+.lib-zone:hover { color: var(--ink, #e8e8f0); border-color: var(--gold, #c4a747); }
+.lib-zone.is-active { color: var(--paper, #12122a); background: var(--gold, #c4a747);
+  border-color: var(--gold, #c4a747); }
+.lib-zone-n { font-size: 0.64rem; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.lib-zone-new { font-size: 0.9rem; line-height: 1; padding: 3px 10px; }
+
+/* The move control sits under the name, and only appears on hover — it is the
+ * third thing a tile does and must not compete with the card. */
+.lib-move { width: 100%; margin-top: 4px; font: inherit; font-size: 0.62rem;
+  padding: 2px 4px; border-radius: 3px; cursor: pointer;
+  background: var(--panel-hi, #2a2a4a); color: var(--ink-soft, #8a8aa0);
+  border: 1px solid var(--rule, #3a3a5a);
+  opacity: 0; transition: opacity .12s; }
+.lib-tile:hover .lib-move, .lib-move:focus { opacity: 1; }

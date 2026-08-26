@@ -58,7 +58,9 @@ window.Session = (function () {
    * the grid renders the same list. They agree by construction rather than by
    * two readers being careful.
    */
-  const entries = [];             // [{name, row}] — row -1 = not in this corpus
+  const entries = [];      // [{name, row, zone}] — row -1 = not in this corpus
+  const zones = [];        // ordered zone names; zones[0] is where new cards land
+  let activeZone = null;   // the pile you are looking at and keeping into
   const listeners = [];
 
   function emit(what) {
@@ -142,7 +144,13 @@ window.Session = (function () {
    * restore happens at that moment rather than at load.
    */
   const STORE_KEY = 'manamap-library';
-  const SCHEMA = 1;
+  const SCHEMA = 2;
+  //: The pile a v1 library lands in, and the one a fresh library starts with.
+  //: "Unsorted" rather than "Library": the whole thing is the library, and a
+  //: pile named after its container tells the reader nothing about what is in
+  //: it. It also says the honest thing about cards kept before zones existed —
+  //: they were never sorted, because there was nowhere to sort them to.
+  const DEFAULT_ZONE = 'Unsorted';
 
   let cards = null;               // {nameOf, rowOf, fingerprint}
   let lastRestore = null;         // what happened, for a surface that wants to say
@@ -163,7 +171,14 @@ window.Session = (function () {
         // fingerprint — losing the one thing that can later EXPLAIN why a name
         // stopped resolving. Absent knowledge is not knowledge of absence.
         corpus: cards && cards.fingerprint ? cards.fingerprint() : storedCorpus(),
-        cards: entries.map(function (e) { return e.name; }),
+        active: activeZone,
+        zones: zones.map(function (z) {
+          return {
+            name: z,
+            cards: entries.filter(function (e) { return e.zone === z; })
+                          .map(function (e) { return e.name; }),
+          };
+        }),
       }));
     } catch (e) {
       // A full or disabled localStorage must not break the session. Losing the
@@ -216,30 +231,49 @@ window.Session = (function () {
     if (!raw) return null;
     let doc;
     try { doc = JSON.parse(raw); } catch (e) { doc = null; }
-    // An unknown schema is not upgraded and not guessed at. It is left on disk
-    // and ignored, so a newer build's data survives an older build reading it.
-    if (!doc || doc.v !== SCHEMA || !Array.isArray(doc.cards)) return { bad: doc && doc.v };
+    if (!doc) return { bad: null };
+    // A v1 document is UPGRADED, not ignored. The "unknown schema is left on
+    // disk" rule protects a NEWER save from an OLDER build; this is the other
+    // direction, where the data is ours and readable and refusing it would
+    // silently empty a real library. One pile, every card, nothing dropped.
+    if (doc.v === 1 && Array.isArray(doc.cards)) {
+      return {
+        v: SCHEMA, corpus: doc.corpus || null, active: DEFAULT_ZONE,
+        zones: [{ name: DEFAULT_ZONE, cards: doc.cards.slice() }],
+        migrated_from: 1,
+      };
+    }
+    if (doc.v !== SCHEMA || !Array.isArray(doc.zones)) return { bad: doc.v };
     return doc;
   }
 
-  /* LOAD AT BOOT, WITHOUT A CORPUS. This runs when the module evaluates, so the
-   * library exists on every page that loads this file — including the two that
-   * never load a card index.
-   *
-   * The first cut put restoring inside `useCards`, which only the Atlas calls,
-   * and the drawer on the workbench then opened on an empty library while the
-   * strip beside it counted eleven cards out of the same store. That is the
-   * original count-versus-contents bug wearing new clothes, and it is what the
-   * "names are canonical, rows are a resolution" rule exists to prevent: a name
-   * needs nothing to be held, so nothing should have to load before it is. */
+  /* Load names and their piles, WITHOUT a corpus. This runs at module
+   * evaluation, so the library exists on every page that loads this file. */
   function loadNames() {
     const doc = readStore();
-    if (!doc || doc.bad !== undefined) return;
-    entries.length = 0;
-    for (const name of doc.cards) {
-      if (!name || indexOfName(name) !== -1) continue;    // dedupe by name
-      entries.push({ name: String(name), row: -1 });
+    if (!doc || doc.bad !== undefined) {
+      if (!zones.length) { zones.push(DEFAULT_ZONE); activeZone = DEFAULT_ZONE; }
+      // The bad marker is RETURNED, not swallowed. A caller reporting "schema
+      // null" for a document that plainly says `v: 99` cannot tell "there was
+      // nothing" from "there was something I refused to guess at", and the
+      // second is the whole point of refusing.
+      return doc;
     }
+    entries.length = 0;
+    zones.length = 0;
+    for (const z of doc.zones) {
+      const name = String((z && z.name) || '').trim();
+      if (!name || zones.indexOf(name) !== -1) continue;
+      zones.push(name);
+      for (const card of (z.cards || [])) {
+        // Dedupe across the WHOLE library, not per zone: one card, one pile.
+        if (!card || indexOfName(card) !== -1) continue;
+        entries.push({ name: String(card), row: -1, zone: name });
+      }
+    }
+    if (!zones.length) zones.push(DEFAULT_ZONE);
+    activeZone = zones.indexOf(doc.active) !== -1 ? doc.active : zones[0];
+    return doc;
   }
 
   /* Register the card index and resolve what is already held.
@@ -249,36 +283,32 @@ window.Session = (function () {
    * cards short is indistinguishable from one that came back whole. */
   function useCards(api) {
     cards = api;
-    const doc = readStore();
+    const before = entries.length;
+    const doc = loadNames();            // re-read: another tab may have written
     if (!doc) return (lastRestore = { restored: 0, missing: [], schema: null });
     if (doc.bad !== undefined) {
       return (lastRestore = { restored: 0, missing: [], schema: doc.bad });
     }
 
-    const before = doc.cards.length;
-    loadNames();                       // re-read: another tab may have written
     const missing = [];
     for (const e of entries) {
       // A NAME THIS CORPUS CANNOT RESOLVE IS KEPT, NOT DROPPED. It used to be
-      // discarded from memory and left in the store, which is the worst of both:
-      // the strip counted a card no surface could show, forever. Now it is an
-      // entry with no row — the drawer draws it, says so, and lets you remove it.
+      // discarded from memory and left in the store, which is the worst of
+      // both: the strip counted a card no surface could show, forever.
       e.row = resolve(e.name);
       if (e.row < 0) missing.push(e.name);
     }
     lastRestore = {
       restored: entries.filter(function (e) { return e.row >= 0; }).length,
       missing: missing,
-      // Informational: names are stable, so a corpus change does not invalidate
-      // the save. It explains a shortfall rather than causing one.
+      migrated: doc.migrated_from || null,
       corpusChanged: !!(doc.corpus && cards && cards.fingerprint &&
                         doc.corpus !== cards.fingerprint()),
     };
-    // RECONCILE THE STORE, ONCE. Restoring used to be read-only, so a document
-    // holding a duplicate disagreed with memory on every reload of every page —
-    // permanently, because only `toggle` ever wrote. Skipped when nothing
-    // changed, so an ordinary boot touches nothing.
-    if (entries.length !== before) save();
+    // RECONCILE THE STORE ONCE — after a migration, or when a duplicate or a
+    // malformed zone was dropped on the way in. Skipped otherwise, so an
+    // ordinary boot touches nothing.
+    if (doc.migrated_from || entries.length !== before) save();
     if (entries.length) emit('library');
     return lastRestore;
   }
@@ -320,12 +350,15 @@ window.Session = (function () {
    * `build.js:resumeDraft` shipped exactly that: it restored a draft's
    * must-includes by toggling, so a repeated name cancelled itself out and the
    * status line then reported the count it had INTENDED to keep. */
-  function addToLibrary(rowOrName) {
+  function addToLibrary(rowOrName, zone) {
     const name = nameOf(rowOrName);
     if (!name || indexOfName(name) !== -1) return false;
     entries.push({
       name: name,
       row: typeof rowOrName === 'number' ? rowOrName : resolve(name),
+      // A card lands in the pile you are LOOKING at. Keeping is a gesture made
+      // from somewhere, and "somewhere" is the zone tab that is open.
+      zone: zones.indexOf(zone) !== -1 ? zone : activeZone,
     });
     commit();
     return true;
@@ -347,6 +380,79 @@ window.Session = (function () {
     return inLibrary(rowOrName)
       ? (removeFromLibrary(rowOrName), false)
       : addToLibrary(rowOrName);
+  }
+
+  /* ── the piles ──────────────────────────────────────────────────────────
+   *
+   * ONE CARD, ONE ZONE. A pile is the physical metaphor the library already
+   * runs on — the cards you are gathering — and a card is in one pile. That
+   * keeps every count unambiguous and makes "remove" mean one thing; the cost
+   * is that considering a card for two decks means picking one, which is what
+   * `move` is for.
+   */
+  function zoneCounts() {
+    return zones.map(function (z) {
+      return { name: z,
+               count: entries.filter(function (e) { return e.zone === z; }).length };
+    });
+  }
+
+  function addZone(name) {
+    const clean = String(name || '').trim().slice(0, 40);
+    if (!clean || zones.indexOf(clean) !== -1) return false;
+    zones.push(clean);
+    activeZone = clean;
+    commit();
+    return true;
+  }
+
+  function setActiveZone(name) {
+    if (zones.indexOf(name) === -1) return false;
+    activeZone = name;
+    commit();               // the open pile is state worth surviving a reload
+    return true;
+  }
+
+  function renameZone(from, to) {
+    const clean = String(to || '').trim().slice(0, 40);
+    const at = zones.indexOf(from);
+    if (at === -1 || !clean || zones.indexOf(clean) !== -1) return false;
+    zones[at] = clean;
+    for (const e of entries) if (e.zone === from) e.zone = clean;
+    if (activeZone === from) activeZone = clean;
+    commit();
+    return true;
+  }
+
+  /* Removing a pile MOVES its cards rather than destroying them. Deleting a
+   * label is a statement about the label; the cards were kept on purpose and
+   * nothing here asked about them. The last zone cannot go — a library with no
+   * pile has nowhere to put the next card. */
+  function removeZone(name) {
+    const at = zones.indexOf(name);
+    if (at === -1 || zones.length < 2) return false;
+    zones.splice(at, 1);
+    const fallback = zones[0];
+    for (const e of entries) if (e.zone === name) e.zone = fallback;
+    if (activeZone === name) activeZone = fallback;
+    commit();
+    return true;
+  }
+
+  function moveCard(name, zone) {
+    const at = indexOfName(name);
+    if (at === -1 || zones.indexOf(zone) === -1) return false;
+    entries[at].zone = zone;
+    commit();
+    return true;
+  }
+
+  function clearZone(name) {
+    const target = zones.indexOf(name) !== -1 ? name : activeZone;
+    for (let i = entries.length - 1; i >= 0; i--) {
+      if (entries[i].zone === target) entries.splice(i, 1);
+    }
+    commit();
   }
 
   function clearLibrary() { entries.length = 0; commit(); }
@@ -394,7 +500,26 @@ window.Session = (function () {
        * can differ in length, and that difference is the thing the drawer draws
        * rather than the thing that used to make two counters disagree. */
       get names() { return entries.map(function (e) { return e.name; }); },
-      get entries() { return entries.map(function (e) { return { name: e.name, row: e.row }; }); },
+      get entries() {
+        return entries.map(function (e) {
+          return { name: e.name, row: e.row, zone: e.zone };
+        });
+      },
+      /* The ACTIVE pile's names — what a brief exports, because a brief is one
+       * deck and the library is now several. `names` stays the whole library,
+       * which is what the strip counts. */
+      get zoneNames() {
+        return entries.filter(function (e) { return e.zone === activeZone; })
+                      .map(function (e) { return e.name; });
+      },
+      get zones() { return zoneCounts(); },
+      get active() { return activeZone; },
+      setActive: setActiveZone,
+      addZone: addZone,
+      renameZone: renameZone,
+      removeZone: removeZone,
+      move: moveCard,
+      clearZone: clearZone,
       get list() {
         return entries.filter(function (e) { return e.row >= 0; })
                       .map(function (e) { return e.row; });

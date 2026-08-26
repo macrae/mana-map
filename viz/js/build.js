@@ -749,7 +749,7 @@
     if (!newDeck || !newDeck.open) {
       return '<button class="lens-btn" onclick="Build.newDeck()">Start a new deck</button>';
     }
-    const kept = Session.library.size;
+    const kept = Session.library.zoneNames.length;   // the open pile
     /* ONLY FORMATS THE BUILDER CAN BUILD.
      *
      * The picker offered all five while `build_deck` builds one, so choosing
@@ -819,7 +819,10 @@
       }
     }
     h += '<p class="lens-note">' + kept + ' card' + (kept === 1 ? '' : 's')
-      + ' from your library will be kept in the 99.</p>';
+      + ' from <b>' + esc(Session.library.active) + '</b> will be kept in the 99.'
+      + (Session.library.zones.length > 1
+          ? ' Other piles are not included — switch piles in the library drawer.' : '')
+      + '</p>';
     if (notYet.length) {
       h += '<p class="lens-note">' + notYet.map(f => esc(f.name)).join(', ')
         + ' can be validated and searched, but not built yet — the builder is '
@@ -894,13 +897,15 @@
        * the card straight back out again. And the status then quoted
        * `names.length`, i.e. what it MEANT to keep, so it could print "2 card(s)
        * kept" beside a panel rendering one. Report what is actually held. */
-      Session.library.clear();
+      // Into the OPEN pile, and clearing only that one: resuming a draft
+      // replaces the deck you are gathering, never the piles beside it.
+      Session.library.clearZone(Session.library.active);
       let missing = 0;
       for (const n of names) {
         if (window.Discovery && Discovery.rowByName(n) < 0) missing++;
         Session.library.add(n);
       }
-      const kept = Session.library.size;
+      const kept = Session.library.zoneNames.length;
       newDeck.fmt = brief.format || newDeck.fmt;
       renderPanel();
       MM.setStatus(d.deck_name + ' — a draft, ' + kept + ' card(s) kept'
@@ -948,10 +953,11 @@
       Api.call('build/save', {
         slug: newDeck.slug, commander: newDeck.commander || null,
         theme: newDeck.theme || null, fmt: newDeck.fmt,
-        // `names`, not rows mapped back to names: a card the corpus cannot
-        // place is still one the pilot kept, and `list` holds only the placeable
-        // ones — so the round trip silently dropped it out of the saved draft.
-        library: Session.library.names,
+        // The OPEN PILE, not the whole library — a draft is one deck, and the
+        // library is several piles. `zoneNames` also keeps the property the
+        // last fix was for: a card the corpus cannot place is still one the
+        // pilot kept, and a rows-to-names round trip drops it.
+        library: Session.library.zoneNames,
       }).then(function (out) {
         newDeck.saved = out.slug;
         renderPanel();

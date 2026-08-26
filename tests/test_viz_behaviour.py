@@ -5482,9 +5482,14 @@ def test_the_library_stores_names_not_row_indices(discover_page):
         return {stored: localStorage.getItem('manamap-library'), row: r};
     }""")
     doc = json.loads(raw["stored"])
-    assert doc["v"] == 1, "no schema version — the exact omission that sank the last one"
-    assert doc["cards"] == ["Sol Ring"], f"stored {doc['cards']!r}, expected names"
-    assert raw["row"] not in doc["cards"], "a row index reached the store"
+    # The VERSION matters, not the number: its absence is the exact omission
+    # that sank the previous attempt, because a document with no schema cannot
+    # be upgraded — only guessed at. v2 added piles and upgraded v1 in place.
+    assert doc["v"], "no schema version — the exact omission that sank the last one"
+    assert doc["v"] >= 2
+    on_disk = _names_on_disk(doc)
+    assert on_disk == ["Sol Ring"], f"stored {on_disk!r}, expected names"
+    assert raw["row"] not in on_disk, "a row index reached the store"
 
 
 def test_a_card_that_left_the_corpus_is_reported_not_dropped(discover_page):
@@ -5638,7 +5643,7 @@ def test_the_count_is_never_one_behind(discover_page):
         const rows = ['Sol Ring', 'Rhystic Study', 'Command Tower', 'Cyclonic Rift']
             .map(Discovery.rowByName).filter(x => x >= 0);
         rows.forEach(x => Session.library.toggle(x));
-        const stored = JSON.parse(localStorage.getItem('manamap-library')).cards;
+        const stored = (d => !d ? null : (Array.isArray(d.cards) ? d.cards : (d.zones || []).reduce((a, z) => a.concat(z.cards || []), [])))(JSON.parse(localStorage.getItem('manamap-library') || 'null'));
         return {stored: stored.length,
                 shown: document.querySelector('.shell-library').innerText};
     }""")
@@ -6044,6 +6049,28 @@ def test_finish_is_offered_only_once_there_is_a_deck_to_finish(browser, viz_serv
 # different representations of one library.
 # ---------------------------------------------------------------------------
 
+# The stored library went v1 `{cards:[...]}` -> v2 `{zones:[{name, cards}]}`
+# when piles arrived. The tests below that assert on the stored BYTES read the
+# names through either shape — several of them MUST read bytes rather than
+# behaviour (the names-not-row-indices one only diverges after a corpus
+# refresh, by which time it is too late), and a schema move should not silently
+# turn them into assertions about nothing.
+
+
+def _names_on_disk(doc):
+    """The library's card names out of a stored document, either schema.
+
+    v1 kept a flat `cards`; v2 keeps `zones[].cards`. Tests that assert on the
+    stored BYTES go through here so a schema move does not quietly turn them
+    into assertions about nothing.
+    """
+    if doc is None:
+        return None
+    if isinstance(doc.get("cards"), list):
+        return doc["cards"]
+    return [c for z in (doc.get("zones") or []) for c in (z.get("cards") or [])]
+
+
 def _open_drawer(page):
     page.evaluate("() => { if (!Shell.isOpen) Shell.toggle(); }")
     page.wait_for_function("() => document.querySelector('.lib-head')", timeout=10000)
@@ -6149,7 +6176,7 @@ def test_two_rows_with_one_name_are_one_card(discover_page):
         });
         return {
             size: Session.library.size,
-            stored: JSON.parse(localStorage.getItem('manamap-library')).cards,
+            stored: (d => !d ? null : (Array.isArray(d.cards) ? d.cards : (d.zones || []).reduce((a, z) => a.concat(z.cards || []), [])))(JSON.parse(localStorage.getItem('manamap-library') || 'null')),
         };
     }""")
     assert out["size"] == 1, "one card, however many rows carry its name"
@@ -6178,7 +6205,7 @@ def test_a_card_goes_back_out_in_one_click(discover_page):
     after = page.evaluate("""() => ({
         size: Session.library.size,
         names: Session.library.names,
-        stored: JSON.parse(localStorage.getItem('manamap-library')).cards,
+        stored: (d => !d ? null : (Array.isArray(d.cards) ? d.cards : (d.zones || []).reduce((a, z) => a.concat(z.cards || []), [])))(JSON.parse(localStorage.getItem('manamap-library') || 'null')),
         strip: (document.querySelector('.shell-lib-btn') || {}).textContent,
     })""")
     assert after["size"] == 2
@@ -6272,7 +6299,7 @@ def test_the_drawer_works_where_there_is_no_corpus(browser, viz_server):
         page.wait_for_function("() => document.querySelectorAll('.lib-tile').length === 2",
                                timeout=10000)
         doc = page.evaluate("() => JSON.parse(localStorage.getItem('manamap-library'))")
-        assert len(doc["cards"]) == 2
+        assert len(_names_on_disk(doc)) == 2
         # A write from a page with no index must not erase the fingerprint: absent
         # knowledge is not knowledge of absence, and that value is what later
         # EXPLAINS a name that stopped resolving.
@@ -6363,7 +6390,7 @@ def test_an_unreadable_draft_does_not_empty_your_library(browser, viz_server):
             await new Promise(r => setTimeout(r, 1500));
             const status = (document.getElementById('status') || {}).textContent || '';
             return { before, sawDraft, status, after: Session.library.names,
-                     stored: JSON.parse(localStorage.getItem('manamap-library')).cards };
+                     stored: (d => !d ? null : (Array.isArray(d.cards) ? d.cards : (d.zones || []).reduce((a, z) => a.concat(z.cards || []), [])))(JSON.parse(localStorage.getItem('manamap-library') || 'null')) };
         }""")
         # Without these the test can pass by never running the code it is about.
         assert out["sawDraft"], "Build never saw the draft — the path did not run"
@@ -6508,3 +6535,121 @@ def test_the_dossier_offers_no_button_it_cannot_press(browser, viz_server):
         assert errors == [], errors
     finally:
         page.close()
+
+
+# ── Piles: one card, one zone ─────────────────────────────────────────────
+
+def test_a_v1_library_migrates_without_losing_a_card(discover_page):
+    """THE ONE THAT MATTERS: this runs against a real person's saved cards.
+
+    The "unknown schema is left on disk and ignored" rule protects a NEWER save
+    from an OLDER build. This is the other direction — the data is ours, it is
+    readable, and refusing it would silently empty a library somebody spent
+    months filling. Every card lands in one pile and nothing is dropped.
+    """
+    page = discover_page
+    out = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 1, corpus: '34890',
+            cards: ['Sol Ring', 'Rhystic Study', 'Command Tower'],
+        }));
+        location.reload();
+    }""")
+    page.wait_for_function(
+        "() => window.Discovery && Discovery.isReady() && Session.library.size === 3",
+        timeout=30000)
+    state = page.evaluate("""() => ({
+        names: Session.library.names,
+        zones: Session.library.zones,
+        active: Session.library.active,
+        stored: JSON.parse(localStorage.getItem('manamap-library')),
+        migrated: (Session.restoreReport || {}).migrated,
+    })""")
+    assert sorted(state["names"]) == ["Command Tower", "Rhystic Study", "Sol Ring"]
+    assert len(state["zones"]) == 1 and state["zones"][0]["count"] == 3
+    assert state["migrated"] == 1, "the upgrade was not reported"
+    # And it is WRITTEN, so the next boot is not a migration again.
+    assert state["stored"]["v"] == 2
+    assert state["stored"]["zones"][0]["cards"] == state["names"]
+    assert page.js_errors == []
+
+
+def test_a_kept_card_lands_in_the_pile_you_are_looking_at(discover_page):
+    """Keeping is a gesture made from somewhere, and "somewhere" is the open
+    tab. Anything else means sorting every card twice."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        Session.library.addZone('Artifacts');       // addZone makes it active
+        MM.keep(Discovery.rowByName('Sol Ring'));
+        Session.library.setActive(Session.library.zones[0].name);
+        MM.keep(Discovery.rowByName('Rhystic Study'));
+        return { zones: Session.library.zones, entries: Session.library.entries };
+    }""")
+    by_zone = {z["name"]: z["count"] for z in out["zones"]}
+    where = {e["name"]: e["zone"] for e in out["entries"]}
+    assert where["Sol Ring"] == "Artifacts", where
+    assert where["Rhystic Study"] != "Artifacts", where
+    assert sum(by_zone.values()) == 2
+    assert page.js_errors == []
+
+
+def test_deleting_a_pile_moves_its_cards_rather_than_destroying_them(discover_page):
+    """Deleting a LABEL is a statement about the label. The cards were kept on
+    purpose and nothing in that gesture asked about them."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        Session.library.addZone('Doomed');
+        ['Sol Ring', 'Rhystic Study'].forEach(n => Session.library.add(n));
+        const before = Session.library.size;
+        const ok = Session.library.removeZone('Doomed');
+        return { ok, before, after: Session.library.size,
+                 names: Session.library.names,
+                 zones: Session.library.zones.map(z => z.name) };
+    }""")
+    assert out["ok"] is True
+    assert out["after"] == out["before"] == 2, "cards went missing with the label"
+    assert "Doomed" not in out["zones"]
+    assert page.js_errors == []
+
+
+def test_the_last_pile_cannot_be_deleted(discover_page):
+    """A library with no pile has nowhere to put the next card."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        while (Session.library.zones.length > 1) {
+            Session.library.removeZone(Session.library.zones[1].name);
+        }
+        return { ok: Session.library.removeZone(Session.library.zones[0].name),
+                 zones: Session.library.zones.length };
+    }""")
+    assert out["ok"] is False and out["zones"] == 1
+    assert page.js_errors == []
+
+
+def test_the_brief_exports_one_pile_and_the_strip_counts_them_all(discover_page):
+    """A BRIEF IS ONE DECK. Exporting every pile would put an artifact
+    collection into a Zur build because both happened to be kept — which is the
+    whole reason piles exist. The strip counts the library because that is what
+    the library is."""
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        Session.library.setActive(Session.library.zones[0].name);
+        Session.library.add('Sol Ring');
+        Session.library.addZone('Somewhere else');
+        ['Rhystic Study', 'Command Tower'].forEach(n => Session.library.add(n));
+        Session.library.setActive('Somewhere else');
+        Session.setCommander(Discovery.rowByName('Zur the Enchanter'));
+        const brief = Discovery.brief();
+        return { must: brief.must_include, size: Session.library.size,
+                 strip: (document.querySelector('.shell-lib-btn') || {}).textContent };
+    }""")
+    assert sorted(out["must"]) == ["Command Tower", "Rhystic Study"], (
+        f"the brief took cards from another pile: {out['must']}")
+    assert "Sol Ring" not in out["must"]
+    assert out["size"] == 3, "the library is three cards across two piles"
+    assert "3" in out["strip"], f"the strip should count the library: {out['strip']!r}"
+    assert page.js_errors == []
