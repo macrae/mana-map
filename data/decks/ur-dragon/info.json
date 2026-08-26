@@ -14,23 +14,15 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 17,
     "stale": [
       "frame",
       "prose"
     ],
     "invalid": [],
-    "missing": [
-      "brief"
-    ],
-    "todo": [
-      {
-        "stage": "brief",
-        "what": "the written intent a build starts from",
-        "how": "manamap pilot brew ur-dragon --commander \"<name>\" --theme <style>"
-      }
-    ]
+    "missing": [],
+    "todo": []
   },
   "bracket": {
     "floor": 4,
@@ -46,12 +38,14 @@
     "note": "Pilot made the five swaps on the table 2026-08-25 and reported them the same day; checked in from that paper list. Sleeved at V2 / v1.0.1."
   },
   "record": {
-    "games": 1,
-    "win": 0,
+    "games": 2,
+    "win": 1,
     "loss": 1,
     "draw": 0,
-    "last_played": "2026-08-22",
-    "undebriefed": []
+    "last_played": "2026-08-25",
+    "undebriefed": [
+      "002"
+    ]
   },
   "goldfish": {
     "seed": 42,
@@ -282,6 +276,7 @@
   "experiments": null,
   "next": [
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",
