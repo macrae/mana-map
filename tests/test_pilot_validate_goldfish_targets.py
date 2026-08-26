@@ -126,3 +126,41 @@ def test_a_commander_is_never_reported_as_an_omission():
         for name in commanders:
             assert not any(f"'{name}'" in e for e in errors), (
                 f"{slug}: commander {name} reported as an undeclared component")
+
+
+def test_an_unedited_scaffold_is_reported_on_every_run(tmp_path, capsys):
+    """A scaffold that nobody rewrites is the `DECK_ROLE_BUDGET` failure exactly
+    — provisional, labelled provisional, and left in place for months. It is not
+    an ERROR (a gate that reddens a legitimate intermediate state teaches its
+    reader to ignore the gate), so it is SAID, every run, until the key goes."""
+    import json as _json
+
+    from manamap.pilot import validate_goldfish_targets as v
+
+    base = tmp_path / "d"
+    base.mkdir()
+    (base / "cards.json").write_text(_json.dumps(
+        {"cards": [{"name": "Sol Ring"}, {"name": "Cmd", "is_commander": True}]}))
+    (base / "goldfish_targets.json").write_text(_json.dumps({
+        "scaffolded": True,
+        "targets": [{"label": "RAMP drawn", "_from": "role:ramp",
+                     "need": [{"any_of": ["Sol Ring"]}]}],
+    }))
+
+    class A:
+        slug = "d"
+
+    import manamap.pilot.validate_goldfish_targets as mod
+
+    original = mod.deck_dir
+    mod.deck_dir = lambda slug: base
+    try:
+        mod.main(A())
+    except SystemExit:
+        pass
+    finally:
+        mod.deck_dir = original
+
+    out = capsys.readouterr().out + capsys.readouterr().err
+    assert "SCAFFOLD" in out, "an unedited draft went unreported"
+    assert "never edited" in out

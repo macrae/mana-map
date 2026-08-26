@@ -572,6 +572,49 @@ MEASURES = {
 }
 
 
+#: Authored files a page may DRAFT — never author. The distinction is the whole
+#: point: `scaffold-targets` writes a starting shape derived from contained
+#: combos and role axes, marked `"scaffolded": true`, and the validator says so
+#: on every run until a person edits it. Nothing here writes a claim the pilot
+#: has not made; it writes the blank page they were otherwise facing.
+#:
+#: `issue` is absent on purpose. Its three live keys are a deck's NAME and
+#: whether it is still sleeved — a fact about cardboard that no command can
+#: derive, and the exact class of claim the withdrawn rehearsal locks were
+#: withdrawn for.
+SCAFFOLDS = {
+    "targets": ("manamap.pilot.scaffold_targets", "goldfish_targets.json"),
+}
+
+
+def _scaffold(slug=None, stage=None):
+    """Write a starting version of an authored file, and refresh the dossier."""
+    if not slug:
+        raise ValueError("no slug")
+    if stage not in SCAFFOLDS:
+        raise ValueError(
+            f"{stage!r} has no draft this page can write — it drafts "
+            f"{', '.join(sorted(SCAFFOLDS))}. The rest are judgements somebody "
+            f"has to make.")
+    from manamap.config import DECKS_DIR
+
+    import importlib
+
+    module, artifact = SCAFFOLDS[stage]
+    base = DECKS_DIR / slug
+    if (base / artifact).exists():
+        raise ValueError(
+            f"{slug} already has {artifact} — a draft never overwrites one, "
+            f"because an authored file is the thing no command can rebuild")
+    importlib.import_module(module).scaffold(slug)
+
+    from manamap.pilot import deck_info
+
+    deck_info.main(_Args(slug=slug, write=True, as_json=False))
+    return {"slug": slug, "stage": stage, "wrote": artifact, "draft": True,
+            "info": json.loads((base / "info.json").read_text(encoding="utf-8"))}
+
+
 def _measure(slug=None, stage=None):
     """Run one deterministic measurement and hand back the refreshed dossier.
 
@@ -636,7 +679,9 @@ ENDPOINTS = {
     "deck/measure": (_measure, {"slug": _str, "stage": _str}),
     "deck/measures": (lambda: {"stages": {k: {"artifact": v[1], "needs": list(v[2]),
                                               "what": v[3]}
-                                         for k, v in MEASURES.items()}}, {}),
+                                         for k, v in MEASURES.items()},
+                               "drafts": sorted(SCAFFOLDS)}, {}),
+    "deck/scaffold": (_scaffold, {"slug": _str, "stage": _str}),
 }
 
 

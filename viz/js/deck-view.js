@@ -124,6 +124,7 @@
    * server's own table — the page does not decide what is cheap enough to
    * press, because that judgement belongs beside the commands. */
   var measures = null;
+  var drafts = [];          // authored files the server will DRAFT, never author
 
   function runnable(d, stage) {
     if (!measures || !measures[stage] || !window.Api || !Api.ready) return null;
@@ -152,8 +153,24 @@
         JSON.stringify(d.slug).replace(/"/g, '&quot;') + ', ' +
         JSON.stringify(stage).replace(/"/g, '&quot;') + ')">Measure it now</button>';
     } else if (run) {
+      /* A BLOCKED PANEL THAT CAN UNBLOCK ITSELF SAYS SO.
+       *
+       * "Needs goldfish_targets.json first" is true and is a dead end: that
+       * file is authored, and the pilot's next act was to invent a JSON shape
+       * from nothing. The server will DRAFT it — derived from contained combo
+       * lines and role axes, marked as a draft, and reported as an unedited
+       * scaffold by the validator on every run until somebody rewrites it. So
+       * the blocker becomes the button, and the button is honest about handing
+       * back a draft rather than an answer. */
+      var blocker = { 'goldfish_targets.json': 'targets' }[run.blockedBy[0]];
       action = '<p class="ev todo-blocked">Needs ' + esc(run.blockedBy.join(', ')) +
         ' first.</p>';
+      if (blocker && drafts.indexOf(blocker) !== -1 && todoFor(d, blocker)) {
+        action += '<button class="todo-run todo-draft" onclick="Deck.draft(this, ' +
+          JSON.stringify(d.slug).replace(/"/g, '&quot;') + ', ' +
+          JSON.stringify(blocker).replace(/"/g, '&quot;') +
+          ')">Draft it — a starting file to edit</button>';
+      }
     }
     return panel(id, title, promise, [], accent,
       '<div class="todo"><p class="todo-what">Not yet on this deck — ' +
@@ -973,6 +990,27 @@
         btn.parentElement.insertBefore(p, btn.nextSibling);
       });
     },
+    /* Write a starting version of an authored file. Same shape as `measure`,
+     * and separate on purpose: one runs a measurement, the other hands you a
+     * draft of something only you can finish, and a single verb for both would
+     * make a draft look like a result. */
+    draft: function (btn, slug, stage) {
+      if (btn.disabled) return;
+      btn.disabled = true;
+      var was = btn.textContent;
+      btn.textContent = 'Drafting…';
+      Api.call('deck/scaffold', { slug: slug, stage: stage }).then(function () {
+        btn.textContent = 'Drafted — reloading';
+        location.reload();
+      }).catch(function (e) {
+        btn.disabled = false;
+        btn.textContent = was;
+        var p = document.createElement('p');
+        p.className = 'ev todo-blocked';
+        p.textContent = String(e && e.message ? e.message : e);
+        btn.parentElement.insertBefore(p, btn.nextSibling);
+      });
+    },
     copy: function (btn) {
       var text = (btn.querySelector('code') || {}).textContent || '';
       var say = btn.querySelector('.todo-copy');
@@ -1005,6 +1043,7 @@
         if (!ok) return null;
         return Api.call('deck/measures', {}).then(function (r) {
           measures = r.stages || null;
+          drafts = r.drafts || [];
         });
       }).catch(function () { measures = null; })
         .then(function () { boot(); });

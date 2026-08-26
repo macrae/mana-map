@@ -1,0 +1,138 @@
+{
+ "_note": "SCAFFOLD — not a declaration. `manamap pilot scaffold-targets` derived these groups from contained combo lines and role axes; every label is a PLACEHOLDER and every group is a starting point to edit, not a finding. A goldfish group is a deck-specific functional set (\"the metronome bodies\", \"the flash traps\"), which is a different thing from a role: `ROLE_PATTERNS` answers what job a card does in any 99. Nothing here names a WIN LINE, because a machine guessing at one manufactures the exact claim `validate-goldfish-targets` exists to demand. Rewrite the labels, regroup the members, add the line this deck actually wins with, then run `manamap pilot validate-goldfish-targets <slug>` and delete \"scaffolded\".",
+ "scaffolded": true,
+ "targets": [
+  {
+   "label": "COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac",
+   "_from": "combo_details",
+   "need": [
+    {
+     "any_of": [
+      "Demonic Consultation"
+     ]
+    },
+    {
+     "any_of": [
+      "Laboratory Maniac"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "RAMP drawn — an accelerant of any kind",
+   "_from": "role:ramp",
+   "need": [
+    {
+     "any_of": [
+      "Bitterthorn, Nissa's Animus",
+      "Dauntless Scrapbot",
+      "Goldvein Pick",
+      "Jennika, Bad Apple Big Sister",
+      "Keeper of the Accord",
+      "Migratory Route",
+      "Misfortune Teller",
+      "Prying Blade",
+      "Scrounge for Eternity",
+      "Solemn Simulacrum",
+      "Strata Scythe",
+      "Sword of Hearth and Home",
+      "Sword of Wealth and Power",
+      "Sword of the Animist",
+      "The Restoration of Eiganjo // Architect of Restoration",
+      "Tivit, Seller of Secrets",
+      "Wayfarer's Bauble"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
+   "_from": "role:draw",
+   "need": [
+    {
+     "any_of": [
+      "Buster Sword",
+      "Insatiable Avarice",
+      "Kaito Shizuki",
+      "Thief's Knife",
+      "Treasure Chest"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "AN ANSWER drawn — interaction of any kind",
+   "_from": "role:removal",
+   "need": [
+    {
+     "any_of": [
+      "Black Mage's Rod",
+      "Dizzy Spell",
+      "Hammer of Ruin",
+      "Path to Exile",
+      "Sword of Fire and Ice",
+      "Toxic Deluge",
+      "Umezawa's Jitte",
+      "Urza's Sylex"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A TUTOR drawn",
+   "_from": "role:tutor",
+   "need": [
+    {
+     "any_of": [
+      "Bitterthorn, Nissa's Animus",
+      "Case of the Stashed Skeleton",
+      "Dauntless Scrapbot",
+      "Demonic Tutor",
+      "Diabolic Tutor",
+      "Dizzy Spell",
+      "Faerie Harbinger",
+      "Insatiable Avarice",
+      "Jennika, Bad Apple Big Sister",
+      "Kaito Shizuki",
+      "Keeper of the Accord",
+      "Kuldotha Forgemaster",
+      "Migratory Route",
+      "Muddle the Mixture",
+      "Plea for Guidance",
+      "Profane Tutor",
+      "Scour for Scrap",
+      "Scrounge for Eternity",
+      "Silver Surfer, Galactus's Herald",
+      "Solemn Simulacrum",
+      "Splinter's Technique",
+      "Strata Scythe",
+      "Sword of Hearth and Home",
+      "Sword of the Animist",
+      "Tamiyo's Journal",
+      "The Restoration of Eiganjo // Architect of Restoration",
+      "Treasure Chest",
+      "Urza's Sylex",
+      "Wayfarer's Bauble"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A FINISHER drawn — the cards that end games",
+   "_from": "role:wincon",
+   "need": [
+    {
+     "any_of": [
+      "Brotherhood Regalia",
+      "Iron Hills Blacksmith",
+      "Kaito Shizuki",
+      "Laboratory Maniac",
+      "Ratonhnhaké꞉ton",
+      "Sorin of House Markov // Sorin, Ravenous Neonate",
+      "Trailblazer's Boots"
+     ]
+    }
+   ]
+  }
+ ]
+}

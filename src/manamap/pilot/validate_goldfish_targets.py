@@ -220,10 +220,35 @@ def main(args):
         doc = json.load(f)
     errors = validate(doc, args.slug, base)
     groups = sum(len(t.get("need", []) or []) for t in doc.get("targets", []))
+
+    # AN UNEDITED SCAFFOLD IS REPORTED, NOT FAILED.
+    #
+    # `scaffold-targets` writes a starting file so a new deck is not a blank
+    # page. Its groups are role axes, which this module's own docstring records
+    # are NOT what a goldfish component is — so a scaffold that nobody rewrites
+    # would have the simulator reporting assembly rates for generic buckets
+    # while every reader believes it is measuring the engine. That is the
+    # `DECK_ROLE_BUDGET` failure exactly: provisional, labelled provisional, and
+    # left in place for months.
+    #
+    # It is not an ERROR, because a scaffold is a legitimate intermediate state
+    # and a gate that reddens one teaches its reader to ignore the gate. It is
+    # said on every run instead, so the state cannot go quiet.
+    scaffold_note = ""
+    if doc.get("scaffolded"):
+        derived = sum(1 for t in doc.get("targets", [])
+                      if str(t.get("_from", "")).startswith("role:"))
+        scaffold_note = (
+            f"\n     SCAFFOLD — never edited. {derived} of "
+            f"{len(doc.get('targets', []))} target(s) are role axes rather than "
+            f"this deck's components, and no win line is declared. Rewrite the "
+            f"labels, regroup, then delete \"scaffolded\".")
+
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('targets', []))} target(s), "
-        f"{groups} component group(s); sizes are redundancy claims ◆")
+        f"{groups} component group(s); sizes are redundancy claims ◆"
+        + scaffold_note)
 
 
 if __name__ == "__main__":

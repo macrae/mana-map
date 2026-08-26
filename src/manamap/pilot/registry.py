@@ -19,6 +19,8 @@ PILOT_STEPS = [
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
+    ("scaffold-targets", "manamap.pilot.scaffold_targets",
+     "A STARTING goldfish_targets.json, derived and marked as a draft to edit"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("validate-recon", "manamap.pilot.validate_recon",
@@ -110,7 +112,7 @@ _DECK_COMMANDS = {
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
-    "mana-analysis", "validate-strategic-frame",
+    "mana-analysis", "validate-strategic-frame", "scaffold-targets",
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
     "validate-recon",
     "diagnosis-report",
@@ -172,6 +174,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--rendered", action="store_true",
                              help="True scroll height via playwright (slower)")
+        if name == "scaffold-targets":
+            cmd.add_argument("--force", action="store_true",
+                             help="Overwrite an existing file (refused for an AUTHORED one)")
         if name == "build-deck":
             cmd.add_argument("--write-decklist", action="store_true", dest="write_decklist",
                              help="Also write decklist.txt for fetch-deck")

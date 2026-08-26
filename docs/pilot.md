@@ -100,6 +100,9 @@ manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
 manamap pilot validate-stack <slug> --scenario-only # preflight BEFORE spawning a resolver
+manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT — derived from
+                                        #   contained combo lines and role axes, marked
+                                        #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
 manamap pilot validate-goldfish-targets <slug>  # the DECLARATION itself: cards still in the 99,
                                         #   and any card in 2+ passing stacks with no component

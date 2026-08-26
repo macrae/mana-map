@@ -30,7 +30,7 @@
       {
         "stage": "targets",
         "what": "the engine DECLARATION: any_of groups, size = redundancy",
-        "how": "AUTHORED: data/decks/blar/goldfish_targets.json — the any_of groups the goldfish measures; `validate-goldfish-targets blar` checks it"
+        "how": "manamap pilot scaffold-targets blar   # a DRAFT to edit — the groups are yours to name; `validate-goldfish-targets blar` checks it"
       },
       {
         "stage": "goldfish",
@@ -75,7 +75,7 @@
       {
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/blar/issue.json — name, commander, and whether the deck is still sleeved"
+        "how": "AUTHORED: data/decks/blar/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
       },
       {
         "stage": "sim",

@@ -459,3 +459,7 @@ details.case .body { padding: 0 14px 14px; }
 .todo-run:hover:not(:disabled) { filter: brightness(1.12); }
 .todo-run:disabled { opacity: 0.6; cursor: default; }
 .todo-blocked { margin: 0 0 8px; color: var(--ink-soft); font-size: 0.76rem; }
+
+/* A DRAFT is not a measurement, and the button says so before it is pressed. */
+.todo-draft { background: transparent; color: var(--tier-coach);
+  border-color: var(--tier-coach); }

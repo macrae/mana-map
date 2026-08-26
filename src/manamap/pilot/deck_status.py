@@ -50,8 +50,8 @@ STAGES = [
     ("bracket",    "bracket_report.json",    None,  False, "computed power floor — `bracket-check`",
      "manamap pilot bracket-check {slug}"),
     ("targets",    "goldfish_targets.json",  None,  False, "the engine DECLARATION: any_of groups, size = redundancy",
-     "AUTHORED: data/decks/{slug}/goldfish_targets.json — the any_of groups the "
-     "goldfish measures; `validate-goldfish-targets {slug}` checks it"),
+     "manamap pilot scaffold-targets {slug}   # a DRAFT to edit — the groups are "
+     "yours to name; `validate-goldfish-targets {slug}` checks it"),
     ("goldfish",   "goldfish_metrics.json",  "meta.decklist_sha256", False, "seeded Monte Carlo — `goldfish`",
      "manamap pilot goldfish {slug}"),
     ("mana",       "mana_analysis.json",     "decklist_sha256",      False, "hypergeometric colour sources — run AFTER goldfish",
@@ -75,8 +75,10 @@ STAGES = [
     ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
      "manamap pilot deck-notes {slug} add \"<what happened>\" --result win|loss --opponents 3"),
     ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)",
-     "AUTHORED: data/decks/{slug}/issue.json — name, commander, and whether the "
-     "deck is still sleeved"),
+     'AUTHORED: data/decks/{slug}/issue.json — three keys matter now: '
+     '{{"deck_name": "…", "commander": "…"}} plus "status" once the deck stops '
+     'being sleeved (broken-down | superseded | retired). The cover/volume '
+     'fields are the frozen magazine renderer\'s and no live surface reads them.'),
 ]
 
 # Stages this development cycle added. Named explicitly so a deck built before

@@ -403,12 +403,25 @@ def test_a_stage_it_will_not_run_is_refused_with_the_reason():
     assert "bracket" in msg and "map" in msg, f"it did not say what it runs: {msg}"
 
 
-def test_a_measurement_states_its_dependency_rather_than_failing_inside_it():
+def test_a_measurement_states_its_dependency_rather_than_failing_inside_it(
+        tmp_path, monkeypatch):
     """`mana-analysis` embeds goldfish figures and `goldfish` reads an authored
     declaration. A button that fails because of an unstated dependency is worse
-    than one that explains itself — and the dossier renders this string."""
+    than one that explains itself — and the dossier renders this string.
+
+    The deck is CONSTRUCTED. A first version asserted against a tracked deck
+    that happened to have no targets, and it broke the moment that deck got
+    some — a precondition that drifts with the fleet is a test that quietly
+    stops testing what it says.
+    """
+    deck = tmp_path / "somedeck"
+    deck.mkdir()
+    (deck / "cards.json").write_text(json.dumps(
+        {"cards": [{"name": "Sol Ring"}]}))
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
+
     with pytest.raises(ValueError) as exc:
-        serve.call("deck/measure", {"slug": "zur-enchantress", "stage": "goldfish"})
+        serve.call("deck/measure", {"slug": "somedeck", "stage": "goldfish"})
     assert "goldfish_targets.json" in str(exc.value)
 
 
@@ -457,3 +470,24 @@ def test_measuring_refreshes_the_dossier_it_will_be_read_from(tmp_path, monkeypa
     on_disk = json.loads((deck / "info.json").read_text())
     assert on_disk["bracket"] == result["info"]["bracket"], (
         "the page was handed something the file does not say")
+
+
+def test_the_page_may_draft_an_authored_file_but_not_author_one():
+    """`issue.json`'s live keys are a deck's NAME and whether it is still
+    SLEEVED — a fact about cardboard no command can derive. That is the exact
+    class of claim the rehearsal locks were withdrawn for, so it has no draft
+    and the refusal says why in one line."""
+    assert set(serve.SCAFFOLDS) == {"targets"}, (
+        "something new became draftable — say in the SCAFFOLDS comment what "
+        "makes it derivable, and why it is not a claim the pilot has to make")
+    with pytest.raises(ValueError) as exc:
+        serve.call("deck/scaffold", {"slug": "radagast", "stage": "issue"})
+    assert "judgements somebody has to make" in str(exc.value)
+
+
+def test_a_draft_never_overwrites_what_is_already_there():
+    """The authored file is the one thing no command can rebuild, and the page
+    is the caller least able to know whether it was edited."""
+    with pytest.raises(ValueError) as exc:
+        serve.call("deck/scaffold", {"slug": "radagast", "stage": "targets"})
+    assert "already has goldfish_targets.json" in str(exc.value)

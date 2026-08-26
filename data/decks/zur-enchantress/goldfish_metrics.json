@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "commander": "Zur the Enchanter",
+    "commander_cmc": 4,
+    "deck": "zur-enchantress",
+    "decklist_sha256": "e71580a78c721fcba28496b0bf11ebfa223d93c7a304b6305d353e0e761f2111",
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+    ],
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.87,
+      "cast_turn_histogram": {
+        "10": 124,
+        "4": 7367,
+        "5": 758,
+        "6": 571,
+        "7": 411,
+        "8": 295,
+        "9": 208,
+        "not_by_max_turn": 266
+      },
+      "mean_cast_turn": 4.626,
+      "median_cast_turn": 4
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.999,
+      "10": 0.372,
+      "2": 0.997,
+      "3": 0.902,
+      "4": 0.772,
+      "5": 0.649,
+      "6": 0.54,
+      "7": 0.465,
+      "8": 0.414,
+      "9": 0.396
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.999,
+      "10": 6.505,
+      "2": 1.996,
+      "3": 2.898,
+      "4": 3.67,
+      "5": 4.319,
+      "6": 4.859,
+      "7": 5.324,
+      "8": 5.738,
+      "9": 6.133
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.246,
+      "10": 6.937,
+      "2": 0.684,
+      "3": 1.42,
+      "4": 1.598,
+      "5": 2.404,
+      "6": 3.454,
+      "7": 4.478,
+      "8": 5.391,
+      "9": 6.203
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 352,
+        "1": 1569,
+        "2": 2994,
+        "3": 2897,
+        "4": 1629,
+        "5": 471,
+        "6": 84,
+        "7": 4
+      },
+      "keep_first_seven_rate": 0.799,
+      "kept_hand_land_histogram": {
+        "0": 9,
+        "1": 77,
+        "2": 3751,
+        "3": 3582,
+        "4": 1984,
+        "5": 593,
+        "6": 4
+      },
+      "mean_mulligans": 0.243
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.027,
+        "assembled_rate_assisted": 0.663,
+        "by_turn_6_rate": 0.015,
+        "by_turn_6_rate_assisted": 0.451,
+        "label": "COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac",
+        "mean_turn": 5.565,
+        "mean_turn_assisted": 5.462
+      },
+      {
+        "assembled_rate": 0.968,
+        "assembled_rate_assisted": 0.998,
+        "by_turn_6_rate": 0.919,
+        "by_turn_6_rate_assisted": 0.987,
+        "label": "RAMP drawn — an accelerant of any kind",
+        "mean_turn": 1.771,
+        "mean_turn_assisted": 1.435
+      },
+      {
+        "assembled_rate": 0.603,
+        "assembled_rate_assisted": 0.932,
+        "by_turn_6_rate": 0.498,
+        "by_turn_6_rate_assisted": 0.845,
+        "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
+        "mean_turn": 3.094,
+        "mean_turn_assisted": 2.765
+      },
+      {
+        "assembled_rate": 0.774,
+        "assembled_rate_assisted": 0.969,
+        "by_turn_6_rate": 0.664,
+        "by_turn_6_rate_assisted": 0.914,
+        "label": "AN ANSWER drawn — interaction of any kind",
+        "mean_turn": 2.743,
+        "mean_turn_assisted": 2.362
+      },
+      {
+        "assembled_rate": 0.999,
+        "assembled_rate_assisted": 0.999,
+        "by_turn_6_rate": 0.992,
+        "by_turn_6_rate_assisted": 0.992,
+        "label": "A TUTOR drawn",
+        "mean_turn": 1.183,
+        "mean_turn_assisted": 1.183
+      },
+      {
+        "assembled_rate": 0.736,
+        "assembled_rate_assisted": 0.972,
+        "by_turn_6_rate": 0.621,
+        "by_turn_6_rate_assisted": 0.919,
+        "label": "A FINISHER drawn — the cards that end games",
+        "mean_turn": 2.881,
+        "mean_turn_assisted": 2.334
+      }
+    ]
+  }
+}
