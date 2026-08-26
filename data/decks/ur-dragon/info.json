@@ -12,12 +12,17 @@
     "G"
   ],
   "size": 100,
-  "lands": 31,
+  "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 11,
     "of": 17,
-    "stale": [],
-    "invalid": [],
+    "stale": [
+      "frame",
+      "prose"
+    ],
+    "invalid": [
+      "engine"
+    ],
     "missing": [
       "brief"
     ],
@@ -36,11 +41,11 @@
     "within_target": true
   },
   "paper": {
-    "version": 1,
-    "sha": "854221f5cf79",
-    "decklist_sha256": "b544a740c197e11532aee0c1d4d2ac4d3238a196a4996edf29824704dd8c46b7",
-    "built_at": "2026-08-24",
-    "note": ""
+    "version": 2,
+    "sha": "77f69d54115a",
+    "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a",
+    "built_at": "2026-08-25",
+    "note": "Pilot made the five swaps on the table 2026-08-25 and reported them the same day; checked in from that paper list. Sleeved at V2 / v1.0.1."
   },
   "record": {
     "games": 1,
@@ -53,8 +58,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 8.172,
-    "commander_cast_by_turn_6_pct": 4,
+    "commander_mean_cast_turn": 8.138,
+    "commander_cast_by_turn_6_pct": 6,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -62,35 +67,35 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 71
+        "by_turn_6_pct": 72
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 63
       },
       {
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "by_turn_6_pct": 28
-      },
-      {
-        "label": "Payoff + a castable dragon by mid-game",
         "by_turn_6_pct": 29
       },
       {
+        "label": "Payoff + a castable dragon by mid-game",
+        "by_turn_6_pct": 30
+      },
+      {
         "label": "Protection held for the big turn",
-        "by_turn_6_pct": 66
+        "by_turn_6_pct": 67
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 23
       },
       {
-        "label": "A Treasure source drawn — seven in the 99, of which the model can SPEND only two",
-        "by_turn_6_pct": 62
+        "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
+        "by_turn_6_pct": 56
       },
       {
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "by_turn_6_pct": 15
+        "by_turn_6_pct": 16
       },
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
@@ -98,20 +103,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.203,
+      "mean_kill_turn": 8.257,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 10,
-      "kill_by_turn_8_pct": 24,
+      "kill_by_turn_8_pct": 27,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 48,
+      "no_kill_by_max_turn_pct": 41,
       "kill_turn_histogram": {
-        "10": 1328,
-        "4": 31,
-        "5": 655,
-        "6": 266,
-        "7": 426,
-        "8": 1064,
-        "9": 1452
+        "10": 1540,
+        "4": 39,
+        "5": 709,
+        "6": 268,
+        "7": 467,
+        "8": 1185,
+        "9": 1730
       }
     }
   },
@@ -124,13 +129,11 @@
   "diagnosis": {
     "verdict": "Above the mana line this deck is in good shape and the pilot is right about it; below the line it is five lands short of the corpus's 36–38 — and the table corroborates the KIND of claim without pricing the number, because a 100-game correlation between resource development and winning sets no land count. open_questions[2] routes that half to the goldfish. In 100 seeded Forge games against the pilot's pod it won 12 — 0.12, ci95 [0.070, 0.198], n=100 — and made 5.48 land drops a game (ci95 [5.15, 5.81], n=100), and inside that sample what separates its wins from its losses is RESOURCE DEVELOPMENT — land drops and the casts they buy. Sweeping all eighteen numeric per-seat fields the record keeps per game, the partition is NINE separating with a Welch interval excluding zero, EIGHT null, and ONE untestable — `eliminated_turn`, which cannot separate wins from losses even in principle because a winner is never eliminated (all twelve wins carry null). Exactly two of the nine are resource counts rather than consequences of having won: land drops (7.25 against 5.24, diff 2.01, ci95 [0.52, 3.50], p 0.0002) and casts (15.92 against 9.02, diff 6.89, ci95 [2.28, 11.51], p 0.0001). The other seven are downstream. First-attack timing is one of the eight nulls; turns survived is null too but is a quantity I derived, not a field the record keeps. Both nulls this document previously enumerated are non-resource, which is why 'land drops' alone read as exclusive when it was not. lean_into[3] decides whether the two are one finding or two and shows the working — all of it under Forge's own caveat that its AI is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" and that every seat including ours is that AI. The binding axis is mana-base, 31 land copies against a 36–38 floor, with land drops falling 0.834 / 0.670 / 0.525 across turns three to five while 26 maindeck nonland entries cost five or more. The conversion above it is better evidenced than it has ever been: four presentable checker-passed stacks now rather than three, and stack 002's annotation establishes that the deck CAN kill a fresh 40-life seat — the claim this document previously carried the other way round.",
     "skeptic": "pass",
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": null,
     "under": [
-      "mana-base",
-      "mana-sources",
       "colour-sources",
       "card-advantage",
       "interaction-breadth"
@@ -251,7 +254,7 @@
     "runs": 1,
     "latest": "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892",
     "at": "2026-08-24",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "b544a740c197e11532aee0c1d4d2ac4d3238a196a4996edf29824704dd8c46b7",
     "games": 100,
     "vs": [
@@ -275,7 +278,11 @@
   },
   "experiments": null,
   "next": [
-    "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×3, resolve-stack ×9"
+    "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
+    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
+    "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×3, resolve-stack ×9",
+    "2 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
