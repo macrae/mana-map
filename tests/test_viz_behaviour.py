@@ -7358,3 +7358,37 @@ def test_the_roster_hover_is_css_and_actually_shows(browser, viz_server):
         "the preview has no downward anchor"
     src = pop.get_attribute("src") or ""
     assert "scryfall" in src, f"the preview image is not a Scryfall url: {src[:60]}"
+
+
+def test_the_vitals_panel_shows_measured_figures_with_their_intervals(browser, viz_server):
+    """A rate without its interval is the thing this repo refuses everywhere.
+
+    Two mistakes this guards, both of which rendered something that LOOKED fine:
+    `facts()` escapes its values, so a figure built as HTML arrived as the
+    literal text `<b>10.3%</b>`; and `deck_info` already had a `diag` variable
+    for `diagnosis.json`, one letter from `diagnostic.json`, so the second
+    assignment won and the panel said "not measured" over a file full of data.
+    """
+    page = _dossier(browser, viz_server, "ur-dragon")
+    page.wait_for_selector("#panel-vitals", timeout=25000)
+    got = page.evaluate(
+        """() => {
+             const p = document.getElementById('panel-vitals');
+             const dd = [...p.querySelectorAll('.facts dd')].map(n => n.textContent.trim());
+             return {
+               heads: [...p.querySelectorAll('h3')].map(h => h.textContent.trim()),
+               values: dd,
+               // Markup arriving as text is invisible to a "does it render" check.
+               literalMarkup: p.textContent.includes('<b>') || p.textContent.includes('<span'),
+               notMeasured: p.textContent.includes('Not measured'),
+               intervals: dd.filter(v => /\\[.*,.*\\]/.test(v)).length,
+               ciStyled: !!p.querySelector('.vit-ci'),
+             };
+         }""")
+    assert not got["literalMarkup"], "the panel is rendering HTML as text"
+    assert not got["notMeasured"], (
+        "the vitals say 'not measured' — info.json's diagnostic block is empty")
+    assert "Engine" in got["heads"], got["heads"]
+    assert got["intervals"] >= 3, (
+        f"only {got['intervals']} figures carry an interval: {got['values']}")
+    assert got["ciStyled"], "the interval is not distinguished from the figure"

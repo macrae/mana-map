@@ -348,6 +348,89 @@
     return panel('roster', title, promise, [], '#8a7fd0', body);
   }
 
+  /* ── THE VITALS ────────────────────────────────────────────────────────
+   *
+   * Strategy-relative by construction: every figure is read against what THIS
+   * deck declares, and nothing here ranks it against another deck. That is what
+   * makes a grade possible at all — the aggregate refusal in `benchmark.py`
+   * stands, because `speed` spans 400x across the fleet and would rank a combo
+   * deck last for playing correctly.
+   *
+   * The fleet band is shown as CONTEXT and never as the verdict.
+   */
+  // `pct` already exists at the top of this file and handles a non-number. A
+  // second `function pct` here would HOIST OVER IT and silently change every
+  // other panel's formatting — `node --check` is perfectly happy with two.
+  /* Like `facts`, but the VALUE is already HTML — a bold figure and a muted
+   * interval. `facts` escapes, correctly, because its twelve other callers pass
+   * plain text; widening it would make every one of them a place markup could
+   * arrive from data. */
+  function vitRows(pairs) {
+    var rows = pairs.filter(function (p) { return p[1] != null; })
+      .map(function (p) {
+        return '<dt>' + esc(p[0]) + '</dt><dd>' + p[1] + '</dd>';
+      }).join('');
+    return '<div class="facts"><dl>' + rows + '</dl></div>';
+  }
+
+  function reading(r) {
+    if (!r) return '<span class="ev">—</span>';
+    return '<b>' + pct(r.rate) + '</b> <span class="vit-ci">[' +
+      pct(r.ci95[0]) + ', ' + pct(r.ci95[1]) + ']</span>';
+  }
+
+  function vitalsPanel(d) {
+    var v = (d.info || {}).diagnostic;
+    if (!v) return absent('vitals', 'The vitals',
+                          'Engine online, stall risk and the mana under both.',
+                          '#4c8fbd', 'diagnostic', d);
+    var out = '';
+    var e = v.engine || {};
+    out += '<h3>Engine</h3>';
+    if (!e.available) {
+      out += '<p class="ev vit-absent">Not measured — ' + esc(e.why || '') + '</p>';
+    } else {
+      var rows = ['3', '5', '8'].map(function (t) {
+        return ['online by turn ' + t, reading((e.online_by_turn || {})[t])];
+      });
+      if (e.any_route_by_turn)
+        rows.push(['any kill route by 8', reading(e.any_route_by_turn['8'])]);
+      out += vitRows(rows);
+      if (e.bottleneck)
+        out += '<p class="vit-bottleneck"><b>Bottleneck:</b> ' +
+          esc(e.bottleneck.label) + ' — ' + reading(e.bottleneck.by_turn_three) +
+          ' by turn three</p>';
+      out += '<p class="ev">Measured against what this deck DECLARES, and counted ' +
+             'over per-iteration assembly — not composed from marginals, which ' +
+             'would understate an engine whose components share cards.</p>';
+    }
+    var s = v.stall || {};
+    if (s.two_in_a_row) {
+      out += '<h3>Stall</h3>' + vitRows([
+        ['two turns in a row with nothing castable', reading(s.two_in_a_row)],
+        ['mana-short / hand-empty',
+         esc((s.cause || {}).mana_short + ' / ' + (s.cause || {}).hand_empty)],
+      ]);
+      if (s.fleet) out += '<p class="ev">' + esc(s.fleet) + '</p>';
+    }
+    var m = v.mana || {};
+    if (m.missed_land_drop_by_five) {
+      out += '<h3>Mana</h3>' + vitRows([
+        ['missed a land drop by turn 5', reading(m.missed_land_drop_by_five)],
+        ['mulliganed', reading(m.mulliganed)],
+      ]);
+      if (m.fleet) out += '<p class="ev">' + esc(m.fleet) + '</p>';
+      if (m.correlated) out += '<p class="ev vit-note">' + esc(m.correlated) + '</p>';
+    }
+    var h = v.harness || {};
+    out += '<p class="ev vit-note">' + (h.iterations || '?') +
+      ' games, seed ' + (h.seed || '?') + '. No pod and no opponent: this ' +
+      'measures a DECK, not a table, and is not a win rate.</p>';
+    return panel('vitals', 'The vitals',
+                 'Engine online, stall risk and the mana under both.',
+                 [], '#4c8fbd', out);
+  }
+
   function briefPanel(d) {
     // From `d.info`, not a second fetch of brief.json: info.json is this page's
     // data model and the composition already carries the brief, so reading the
@@ -1065,7 +1148,7 @@
       nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
       questionsPanel(d),
-      briefPanel(d), branchPanel(d), constellationPanel(d), rosterPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      briefPanel(d), vitalsPanel(d), branchPanel(d), constellationPanel(d), rosterPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;

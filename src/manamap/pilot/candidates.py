@@ -63,9 +63,27 @@ def _read(doc, axis):
 
 
 def read_pool(spec, slug=None):
-    """Names to consider. A file of card names, or a decklist, or `-` for stdin."""
+    """Names to consider: a file, a decklist, `-` for stdin, or `library`.
+
+    `library` reads what the Atlas handed over — `data/decks/<slug>/pool.txt`,
+    written by the `pool/save` endpoint when you press "consider these" on a
+    pile. It is deliberately NOT the same slot as a brief's `must_include`: that
+    one promises the cards are in the 99, and a card you are considering has made
+    no such promise.
+    """
     if spec in (None, ""):
         return []
+    if spec == "library":
+        from manamap.pilot.common import deck_dir
+        path = deck_dir(slug) / "pool.txt"
+        if not path.exists():
+            raise SystemExit(
+                f"{path} not found — open the Atlas library, pick a pile and "
+                f"press 'consider these', or pass a file to --pool.")
+        text = path.read_text(encoding="utf-8")
+        from manamap.pilot.fetch_deck import parse_decklist
+        got = [e["name"] for e in parse_decklist(text)]
+        return got or [l.strip() for l in text.splitlines() if l.strip()]
     if spec == "-":
         import sys
         text = sys.stdin.read()

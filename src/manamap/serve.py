@@ -252,6 +252,36 @@ def _commanders(q=None, limit=8):
     return {"query": q, "commanders": ranked[:limit or 8]}
 
 
+POOL_FILE = "pool.txt"
+
+
+def _pool_save(slug=None, cards=()):
+    """Hand a pile of cards from the Atlas library over as CANDIDATES.
+
+    A POOL IS NOT A PROMISE, and the distinction is the whole reason this exists
+    beside `build/save`. That one writes the library into `must_include`, which
+    says "these cards are in the 99". A pool says "consider these" — it is the
+    input to `manamap pilot candidates`, which substitutes each one in, measures,
+    and reports what it did. The two must not share a slot: a card you are
+    considering is not a card you have committed to, and nothing downstream could
+    tell them apart afterwards.
+
+    Written as a plain decklist so the same reader the rest of the bench uses can
+    parse it — a pool pasted from the Atlas and a pool exported from paper cannot
+    then disagree about what is in it.
+    """
+    from manamap.pilot.common import deck_dir
+    if not slug:
+        raise ValueError("pool/save needs a slug")
+    names = [n for n in (cards or []) if n and n.strip()]
+    if not names:
+        raise ValueError("pool/save needs at least one card")
+    path = deck_dir(slug) / POOL_FILE
+    path.write_text("\n".join(dict.fromkeys(names)) + "\n", encoding="utf-8")
+    return {"slug": slug, "path": str(path), "cards": len(set(names)),
+            "next": f"manamap pilot candidates {slug} --pool library --axis stall"}
+
+
 def _build_save(slug=None, commander=None, theme=None, bracket=None,
                 library=(), fmt=None):
     """Create or update a DRAFT — a deck that exists as a brief and no more.
@@ -669,6 +699,7 @@ ENDPOINTS = {
     "build/save": (_build_save, {
         "slug": _str, "commander": _str, "theme": _str, "bracket": _int,
         "library": _strlist, "fmt": _str}),
+    "pool/save": (_pool_save, {"slug": _str, "cards": _strlist}),
     "build/run": (_build_run, {"slug": _str}),
     "build/finish": (_build_finish, {"slug": _str, "commit": _bool, "message": _str}),
     # The agent half. Started, then polled — an agent takes minutes.

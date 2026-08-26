@@ -85,10 +85,12 @@ manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
                                         #   interval; `--vs` adds the interval on the DIFFERENCE
-manamap pilot candidates <slug> --pool <file|-> [--axis A] [--cut CARD] [--limit N]
+manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] [--limit N]
                                         #   rank a pool by what each card MEASURABLY does:
                                         #   substitute, re-run, report the delta. Anything
-                                        #   under the MDE is marked as noise, not ranked
+                                        #   under the MDE is marked as noise, not ranked.
+                                        #   `--pool library` reads pool.txt, written by
+                                        #   the Atlas's "consider these" on a pile
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
 manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)

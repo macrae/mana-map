@@ -250,6 +250,7 @@ window.Shell = (function () {
       + '<span class="lib-actions">'
       +   (active ? '<button class="lib-btn" onclick="Shell.renameZone()">Rename</button>'
       +             '<button class="lib-btn" onclick="Shell.dropZone()">Delete pile</button>' : '')
+      +   (shown.length ? '<button class="lib-btn" onclick="Shell.consider()">Consider for a deck…</button>' : '')
       +   (shown.length ? '<button class="lib-btn" onclick="Shell.clear()">Empty pile</button>' : '')
       +   '<button class="lib-btn" onclick="Shell.toggle()">Close</button>'
       + '</span></div>' + zoneBar();
@@ -420,6 +421,41 @@ window.Shell = (function () {
     render();
   }
 
+  /* HAND THE OPEN PILE OVER AS CANDIDATES — not as a deck.
+   *
+   * `build/save` already sends the library to a brief's `must_include`, which
+   * PROMISES the cards are in the 99. This is the other claim: consider these.
+   * It writes `data/decks/<slug>/pool.txt`, which `manamap pilot candidates
+   * --pool library` reads to substitute each card in and measure what it does.
+   * The two must not share a slot — afterwards nothing could tell a card you
+   * committed to from one you were only weighing.
+   *
+   * ONE PILE, ONE QUESTION. It sends `zoneNames` and not the whole library, the
+   * same scope rule a brief keeps: exporting every pile would put an artifact
+   * collection into a Zur build.
+   */
+  function consider() {
+    // NOT `var lib = lib()` — that shadows the accessor and throws on the call,
+    // and `node --check` passes it happily because the syntax is fine.
+    var store = lib();
+    var names = store ? store.zoneNames() : [];
+    if (!names.length) { return; }
+    if (!window.Api || !Api.ready) {
+      // Absent, never broken: a deployed page has no server and says so rather
+      // than offering a control that quietly does nothing.
+      alert('This needs a local server — run `manamap serve`.');
+      return;
+    }
+    var slug = prompt('Consider these ' + names.length + ' card(s) for which deck?');
+    if (!slug) { return; }
+    Api.call('pool/save', { slug: slug.trim(), cards: names })
+      .then(function (r) {
+        alert('Saved ' + r.cards + ' candidate(s) to ' + r.path +
+              '\n\nNext:\n  ' + r.next);
+      })
+      .catch(function (e) { alert('Could not save the pool: ' + e.message); });
+  }
+
   function renameZone() {
     var L = lib();
     if (!L) return;
@@ -478,6 +514,7 @@ window.Shell = (function () {
     drop: drop,
     zone: zone,
     newZone: newZone,
+    consider: consider,
     renameZone: renameZone,
     dropZone: dropZone,
     move: move,

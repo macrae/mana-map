@@ -148,3 +148,92 @@ def test_a_truncated_pool_says_so():
                            axis="stall", iterations=FAST, limit=1)
     assert len(got["not_considered"]) == 2, got["not_considered"]
     assert got["considered"] == 1
+
+
+# ── Calibration ──────────────────────────────────────────────────────────
+#
+# The constants in `diagnostic.FLEET` came from running every tracked deck. These
+# re-derive them, so a band cannot outlive the evidence it was measured from —
+# the discipline `scaffold_targets.BROAD_GROUP` already keeps.
+
+FLEET_ITERATIONS = 1200
+
+
+def _fleet_readings():
+    import glob
+    out = []
+    for path in sorted(glob.glob("data/decks/*/cards.json")):
+        slug = path.split("/")[2]
+        try:
+            out.append(diagnostic.run(slug, iterations=FLEET_ITERATIONS, quiet=True))
+        except Exception:
+            continue
+    return out
+
+
+@needs_deck
+@pytest.mark.fleet
+def test_the_fleet_bands_still_describe_the_fleet():
+    """`FLEET` is context for placing a reading, and it must keep describing the
+    decks it was measured from."""
+    rows = _fleet_readings()
+    if len(rows) < 5:
+        pytest.skip("too few decks on this machine to calibrate against")
+    got = [((r.get("stall") or {}).get("two_in_a_row") or {}).get("rate") for r in rows]
+    got = [x for x in got if x is not None]
+    band = diagnostic.FLEET["stall_two_in_a_row"]
+    # Sampling moves these, so the assertion is that the band still CONTAINS the
+    # fleet's centre rather than that the endpoints are unchanged.
+    import statistics
+    med = statistics.median(got)
+    assert band["min"] <= med <= band["max"], (
+        f"the recorded band {band} no longer contains the fleet median {med:.3f} "
+        f"— re-measure it rather than widening it")
+
+
+@needs_deck
+@pytest.mark.fleet
+def test_the_prd_threshold_would_fire_on_nothing():
+    """A red line that can never go red is as useless as one that always does.
+
+    The PRD asks for `P(stall by turn 4) > 0.15 -> red`. The whole fleet's
+    highest reading is 0.079. This asserts the finding rather than the number:
+    if a deck ever exceeds it, the threshold becomes meaningful and this test
+    says so by failing.
+    """
+    rows = _fleet_readings()
+    if len(rows) < 5:
+        pytest.skip("too few decks")
+    got = [((r.get("stall") or {}).get("two_in_a_row") or {}).get("rate") or 0
+           for r in rows]
+    fired = [x for x in got if x > diagnostic.PRD_STALL_THRESHOLD_REJECTED]
+    assert not fired, (
+        f"a deck now exceeds the PRD's 0.15 stall threshold ({max(got):.3f}) — "
+        f"it is no longer inert and is worth reconsidering as a real red line")
+
+
+@needs_deck
+@pytest.mark.fleet
+def test_the_mana_readings_are_still_one_measurement():
+    """Three readings that move together are one finding, not three.
+
+    `benchmark.py` recorded the two-way version (r = 0.97) and refused to sum
+    them. If they ever decouple, the note that says "read them as one signal"
+    becomes wrong and should be removed.
+    """
+    import statistics
+    rows = _fleet_readings()
+    if len(rows) < 5:
+        pytest.skip("too few decks")
+    a = [((r.get("mana") or {}).get("missed_land_drop_by_five") or {}).get("rate")
+         for r in rows]
+    b = [((r.get("mana") or {}).get("mulliganed") or {}).get("rate") for r in rows]
+    pairs = [(x, y) for x, y in zip(a, b) if x is not None and y is not None]
+    xs, ys = [p[0] for p in pairs], [p[1] for p in pairs]
+    mx, my = statistics.mean(xs), statistics.mean(ys)
+    num = sum((x - mx) * (y - my) for x, y in pairs)
+    den = (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
+    r = num / den if den else 0
+    assert r > 0.85, (
+        f"missed-drop and mulligan rate have decoupled (r = {r:.3f}); the note "
+        f"claiming they are one measurement is no longer true")

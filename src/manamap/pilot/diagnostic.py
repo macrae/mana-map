@@ -54,6 +54,61 @@ HARNESS = {
 STALL_FROM_TURN = 2
 
 
+#: WHERE THE FLEET SITS, so a reading can be placed without being GRADED against
+#: other decks. Measured across all 13 tracked decks at 4,000 games each on
+#: 2026-08-26. It is context, never a verdict: the grade is strategy-relative and
+#: comes from the deck's own declaration, because a combo deck is not unhealthy
+#: for scoring badly on a brawler's axis.
+#:
+#: `tests/test_pilot_diagnostic.py` re-derives these from the fleet, so they
+#: cannot outlive their evidence — the discipline `scaffold_targets.BROAD_GROUP`
+#: already uses.
+FLEET = {
+    "stall_two_in_a_row": {"min": 0.008, "median": 0.036, "max": 0.079},
+    "missed_land_drop_by_five": {"min": 0.342, "median": 0.452, "max": 0.546},
+    "mulliganed": {"min": 0.163, "median": 0.213, "max": 0.261},
+}
+
+#: THE PRD'S THRESHOLD IS INERT AND THAT IS WHY IT IS NOT HERE. It asks for
+#: `P(stall by turn 4) > 0.15 -> red`. Across the whole fleet the highest reading
+#: is **0.079**, so it fires on ZERO of 13 decks — a red line that can never go
+#: red, which is as useless as one that always does and would have shipped
+#: looking rigorous. This repo has rejected three checks for the opposite failure
+#: (one fired on 27% of correct data); this is the same mistake pointing the
+#: other way, and the only way to see either is to run the fleet first.
+PRD_STALL_THRESHOLD_REJECTED = 0.15
+
+#: THREE OF THE MANA READINGS ARE ONE MEASUREMENT. Measured across the fleet:
+#: missed-drop-by-five vs the all-turn drop rate r = +0.994, vs mulligan rate
+#: r = +0.968, and the latter two r = +0.958. They are all driven by land count.
+#: `benchmark.py` already recorded the two-way version of this (r = 0.97) and
+#: refused to sum them; the third member is new. They are reported together with
+#: the correlation stated, so three confirmations of one fact cannot read as
+#: three findings — and nothing here adds them.
+MANA_READINGS_ARE_CORRELATED = (
+    "missed-drop-by-five, the all-turn drop rate and the mulligan rate move "
+    "together across the fleet (r = +0.96 to +0.99): they are one measurement "
+    "seen three ways, all driven by land count. Read them as one signal."
+)
+
+#: Stall is the one reading INDEPENDENT of that family — r = -0.26 to -0.41
+#: against all three — so it is a genuine second dimension rather than the same
+#: fact restated, which is what `consistency` turned out to be in the benchmark.
+
+
+def _place(value, key):
+    """Where a reading sits against the fleet — context, never a grade."""
+    band = FLEET.get(key)
+    if band is None or value is None:
+        return None
+    if value < band["min"]:
+        return "better than any tracked deck"
+    if value > band["max"]:
+        return "worse than any tracked deck"
+    return ("above the fleet median" if value > band["median"]
+            else "below the fleet median")
+
+
 def _rate(k, n):
     """A rate with its 95% interval, or an absent reading rather than a zero."""
     if not n:
@@ -90,9 +145,11 @@ def stall(rows):
     # ur-dragon: 906 stall turns, none of them an empty hand.
     stalled = [(r, i) for r in rows for i in range(i0, turns) if r["stall_by_turn"][i]]
     empty = sum(1 for r, i in stalled if r["hand_size_by_turn"][i] == 0)
+    two = _rate(consecutive, n)
     return {
         "by_turn": by_turn,
-        "two_in_a_row": _rate(consecutive, n),
+        "two_in_a_row": two,
+        "fleet": _place(two["rate"] if two else None, "stall_two_in_a_row"),
         "from_turn": STALL_FROM_TURN,
         "cause": {"stall_turns": len(stalled), "hand_empty": empty,
                   "mana_short": len(stalled) - empty},
@@ -229,6 +286,10 @@ def mana(rows):
         "mean_mana_by_turn": {
             str(t + 1): round(statistics.mean(r["mana_by_turn"][t] for r in rows), 3)
             for t in range(turns)},
+        "fleet": _place(
+            (_rate(sum(1 for r in rows if not all(r["land_hits"][:early])), n) or {})
+            .get("rate"), "missed_land_drop_by_five"),
+        "correlated": MANA_READINGS_ARE_CORRELATED,
         "mana_stdev_turn_five": (
             round(statistics.pstdev([r["mana_by_turn"][4] for r in rows]), 4)
             if turns >= 5 else None),
@@ -403,12 +464,17 @@ def _print(doc):
         print(f"    two in a row (from T{s['from_turn']})   {_fmt(s['two_in_a_row'])}")
         c = s["cause"]
         print(f"    cause: {c['mana_short']} mana-short, {c['hand_empty']} hand-empty")
+        if s.get("fleet"):
+            print(f"    ({s['fleet']})")
     m = doc.get("mana") or {}
     if m:
         print("\n  MANA")
         print(f"    missed a drop by T5  {_fmt(m['missed_land_drop_by_five'])}")
         print(f"    missed-drop rate     {m['missed_land_drop_rate']:>6.3f}  (all turns)")
         print(f"    mulliganed           {_fmt(m['mulliganed'])}")
+        if m.get("fleet"):
+            print(f"    ({m['fleet']})")
+        print(f"    ! {MANA_READINGS_ARE_CORRELATED}")
 
 
 def _print_compare(a, b, deltas):

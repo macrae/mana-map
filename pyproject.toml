@@ -64,7 +64,7 @@ testpaths = ["tests"]
 #   pytest -m browser -n 4          the viz suite
 #   pytest -m ""                    literally everything, the old default
 #   pytest --no-test-cache          nothing served from the cache (see conftest)
-addopts = "-q -m 'not browser and not forge' -n auto"
+addopts = "-q -m 'not browser and not forge and not fleet' -n auto"
 markers = [
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the
@@ -80,4 +80,9 @@ markers = [
     # repo (docs/simulation.md). Opt in with `pytest -m forge`; the harness's own
     # logic is tested without it.
     "forge: runs the Forge engine headless (slow; needs ~/.mana-map/forge)",
+    # Calibration: re-derives a constant by measuring EVERY tracked deck, which is
+    # ~13 goldfish runs per test. That is the only way a threshold can be held to
+    # the evidence it came from, and far too slow for the inner loop. Run with
+    # `pytest -m fleet`.
+    "fleet: re-derives a calibrated constant across every tracked deck (slow)",
 ]

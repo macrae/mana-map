@@ -154,6 +154,7 @@ def compose(slug):
     rx = prescriptions_of(slug)
     brief = load_json(base / "brief.json") or {}
     branches = _branches(slug)
+    vitals = load_json(base / "diagnostic.json") or {}
     bracket = load_json(base / "bracket_report.json") or {}
     engine = load_json(base / "engine.json") or {}
     diag = load_json(base / "diagnosis.json") or {}
@@ -215,6 +216,19 @@ def compose(slug):
         # incomplete for something optional — the same argument that keeps `sim`
         # a todo rather than a stage.
         "branches": branches,
+        # THE VITALS. Composed like everything else here; `diagnose --write` owns
+        # the figures. It is not a lifecycle stage for the same reason `sim` is
+        # not — optional, and adding one would mark twelve decks newly incomplete.
+        # `vitals`, NOT `diag` — that name was already the DIAGNOSIS, and
+        # `diagnosis.json` and `diagnostic.json` are one letter apart. The
+        # second assignment silently won and the dossier rendered "not
+        # measured" over a file full of data.
+        "diagnostic": ({"harness": vitals.get("harness"),
+                        "engine": vitals.get("engine"),
+                        "stall": vitals.get("stall"),
+                        "mana": vitals.get("mana"),
+                        "decklist_sha256": vitals.get("decklist_sha256")}
+                       if vitals else None),
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,

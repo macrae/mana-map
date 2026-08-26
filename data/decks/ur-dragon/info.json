@@ -733,6 +733,337 @@
       "has_cards": true
     }
   ],
+  "diagnostic": {
+    "harness": {
+      "version": 1,
+      "iterations": 1500,
+      "seed": 20260826,
+      "max_turn": 10
+    },
+    "engine": {
+      "available": true,
+      "required": [
+        "Ramp or fixing drawn",
+        "Dragon payoff drawn (per-dragon trigger engine)",
+        "Payoff + a castable dragon by mid-game"
+      ],
+      "routes": [
+        "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
+        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with"
+      ],
+      "online_by_turn": {
+        "1": {
+          "rate": 0.052,
+          "ci95": [
+            0.0419,
+            0.0644
+          ],
+          "n": 1500
+        },
+        "2": {
+          "rate": 0.076,
+          "ci95": [
+            0.0636,
+            0.0905
+          ],
+          "n": 1500
+        },
+        "3": {
+          "rate": 0.1033,
+          "ci95": [
+            0.0889,
+            0.1198
+          ],
+          "n": 1500
+        },
+        "4": {
+          "rate": 0.1333,
+          "ci95": [
+            0.1171,
+            0.1515
+          ],
+          "n": 1500
+        },
+        "5": {
+          "rate": 0.1653,
+          "ci95": [
+            0.1474,
+            0.185
+          ],
+          "n": 1500
+        },
+        "6": {
+          "rate": 0.198,
+          "ci95": [
+            0.1786,
+            0.2189
+          ],
+          "n": 1500
+        },
+        "7": {
+          "rate": 0.2373,
+          "ci95": [
+            0.2165,
+            0.2595
+          ],
+          "n": 1500
+        },
+        "8": {
+          "rate": 0.27,
+          "ci95": [
+            0.2481,
+            0.293
+          ],
+          "n": 1500
+        },
+        "9": {
+          "rate": 0.3107,
+          "ci95": [
+            0.2878,
+            0.3345
+          ],
+          "n": 1500
+        },
+        "10": {
+          "rate": 0.352,
+          "ci95": [
+            0.3282,
+            0.3765
+          ],
+          "n": 1500
+        }
+      },
+      "any_route_by_turn": {
+        "1": {
+          "rate": 0.1053,
+          "ci95": [
+            0.0908,
+            0.1219
+          ],
+          "n": 1500
+        },
+        "2": {
+          "rate": 0.136,
+          "ci95": [
+            0.1196,
+            0.1543
+          ],
+          "n": 1500
+        },
+        "3": {
+          "rate": 0.1653,
+          "ci95": [
+            0.1474,
+            0.185
+          ],
+          "n": 1500
+        },
+        "4": {
+          "rate": 0.1993,
+          "ci95": [
+            0.1799,
+            0.2203
+          ],
+          "n": 1500
+        },
+        "5": {
+          "rate": 0.2273,
+          "ci95": [
+            0.2068,
+            0.2492
+          ],
+          "n": 1500
+        },
+        "6": {
+          "rate": 0.2547,
+          "ci95": [
+            0.2333,
+            0.2773
+          ],
+          "n": 1500
+        },
+        "7": {
+          "rate": 0.294,
+          "ci95": [
+            0.2715,
+            0.3176
+          ],
+          "n": 1500
+        },
+        "8": {
+          "rate": 0.336,
+          "ci95": [
+            0.3125,
+            0.3603
+          ],
+          "n": 1500
+        },
+        "9": {
+          "rate": 0.3753,
+          "ci95": [
+            0.3512,
+            0.4001
+          ],
+          "n": 1500
+        },
+        "10": {
+          "rate": 0.4033,
+          "ci95": [
+            0.3788,
+            0.4284
+          ],
+          "n": 1500
+        }
+      },
+      "bottleneck": {
+        "label": "Payoff + a castable dragon by mid-game",
+        "by_turn_three": {
+          "rate": 0.19,
+          "ci95": [
+            0.1709,
+            0.2106
+          ],
+          "n": 1500
+        }
+      },
+      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
+    },
+    "stall": {
+      "by_turn": {
+        "1": {
+          "rate": 0.622,
+          "ci95": [
+            0.5972,
+            0.6462
+          ],
+          "n": 1500
+        },
+        "2": {
+          "rate": 0.236,
+          "ci95": [
+            0.2152,
+            0.2581
+          ],
+          "n": 1500
+        },
+        "3": {
+          "rate": 0.034,
+          "ci95": [
+            0.026,
+            0.0444
+          ],
+          "n": 1500
+        },
+        "4": {
+          "rate": 0.0087,
+          "ci95": [
+            0.0051,
+            0.0148
+          ],
+          "n": 1500
+        },
+        "5": {
+          "rate": 0.0027,
+          "ci95": [
+            0.001,
+            0.0068
+          ],
+          "n": 1500
+        },
+        "6": {
+          "rate": 0.002,
+          "ci95": [
+            0.0007,
+            0.0059
+          ],
+          "n": 1500
+        },
+        "7": {
+          "rate": 0.0013,
+          "ci95": [
+            0.0004,
+            0.0048
+          ],
+          "n": 1500
+        },
+        "8": {
+          "rate": 0.0013,
+          "ci95": [
+            0.0004,
+            0.0048
+          ],
+          "n": 1500
+        },
+        "9": {
+          "rate": 0.0007,
+          "ci95": [
+            0.0001,
+            0.0038
+          ],
+          "n": 1500
+        },
+        "10": {
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0026
+          ],
+          "n": 1500
+        }
+      },
+      "two_in_a_row": {
+        "rate": 0.034,
+        "ci95": [
+          0.026,
+          0.0444
+        ],
+        "n": 1500
+      },
+      "fleet": "below the fleet median",
+      "from_turn": 2,
+      "cause": {
+        "stall_turns": 430,
+        "hand_empty": 0,
+        "mana_short": 430
+      },
+      "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
+    },
+    "mana": {
+      "missed_land_drop_by_five": {
+        "rate": 0.46,
+        "ci95": [
+          0.4349,
+          0.4853
+        ],
+        "n": 1500
+      },
+      "missed_land_drop_rate": 0.3542,
+      "mulliganed": {
+        "rate": 0.2107,
+        "ci95": [
+          0.1908,
+          0.232
+        ],
+        "n": 1500
+      },
+      "mean_mana_by_turn": {
+        "1": 0.999,
+        "2": 2.139,
+        "3": 3.073,
+        "4": 3.875,
+        "5": 4.535,
+        "6": 5.076,
+        "7": 5.559,
+        "8": 5.99,
+        "9": 6.381,
+        "10": 6.759
+      },
+      "fleet": "above the fleet median",
+      "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+      "mana_stdev_turn_five": 1.0149
+    },
+    "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a"
+  },
   "bracket": {
     "floor": 4,
     "floor_name": "Optimized",
