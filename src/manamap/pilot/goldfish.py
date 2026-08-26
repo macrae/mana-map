@@ -846,7 +846,7 @@ class _Silent:
 
 def run(slug, iterations=None, seed=None, max_turn=None,
         model_treasures=None, model_combat=None, with_results=False, branch=None,
-        doc=None, quiet=False):
+        doc=None, quiet=False, targets_override=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
     `model_treasures` and `model_combat` default to None, meaning READ THE
@@ -899,7 +899,12 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     if targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
-        targets = targets_doc["targets"]
+        # AN OVERRIDE MUST REACH THE SIMULATION, NOT JUST THE REPORT. The first
+        # cut passed a modified declaration to the reporting layer while this
+        # loop still read the file — so `target_turns` was indexed by the FILE's
+        # targets and the override changed nothing. The tell was eight different
+        # candidates returning the identical 0.501.
+        targets = targets_override if targets_override is not None else targets_doc["targets"]
         declared_treasures = bool(targets_doc.get("model_treasures"))
         declared_combat = bool(targets_doc.get("model_combat"))
         # A target member not in the deck can never be drawn — it silently

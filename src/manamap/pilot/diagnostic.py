@@ -302,7 +302,8 @@ def run(slug, branch=None, iterations=None, seed=None, quiet=False):
                   iterations=iterations, seed=seed, quiet=quiet)
 
 
-def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False):
+def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
+           targets=None):
     """The same reading, taken on a list that need not be on disk.
 
     This is what lets a candidate be judged by SUBSTITUTION — put the card in,
@@ -310,9 +311,14 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False):
     is identical; only the source of the list changes.
     """
     from manamap.pilot import goldfish
-    targets_doc = load_json(deck_file(slug, "goldfish_targets.json", branch)) or {}
-    targets = targets_doc.get("targets") or []
+    # `targets` overrides the authored declaration FOR THIS RUN ONLY — the
+    # hypothetical a candidate sweep asks: if this card counted toward that
+    # component, how far would the engine move? Never written back.
+    if targets is None:
+        targets_doc = load_json(deck_file(slug, "goldfish_targets.json", branch)) or {}
+        targets = targets_doc.get("targets") or []
     got = goldfish.run(slug, branch=branch, with_results=True, doc=doc, quiet=quiet,
+                       targets_override=targets,
                        iterations=iterations or HARNESS["iterations"],
                        seed=seed if seed is not None else HARNESS["seed"],
                        max_turn=HARNESS["max_turn"])

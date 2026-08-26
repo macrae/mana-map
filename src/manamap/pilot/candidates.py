@@ -101,7 +101,8 @@ def read_pool(spec, slug=None):
 
 
 def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
-          iterations=SWEEP_ITERATIONS, limit=DEFAULT_LIMIT, progress=None):
+          iterations=SWEEP_ITERATIONS, limit=DEFAULT_LIMIT, progress=None,
+          join=None):
     """Baseline, then one substituted run per candidate."""
     if axis not in AXES:
         raise SystemExit(f"unknown axis {axis!r} — pick one of {', '.join(AXES)}")
@@ -118,9 +119,9 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
     for i, name in enumerate(considered):
         if progress:
             progress(i + 1, len(considered), name)
-        got = _with_swap(slug, branch, name, cut, axis, iterations)
+        got = _with_swap(slug, branch, name, cut, axis, iterations, join=join)
         if got and "rate" in got:
-            got["in_declaration"] = name in declared
+            got["in_declaration"] = (name in declared) or bool(join)
         if got is None:
             rows.append({"card": name, "skipped": "already in the list"})
             continue
@@ -133,6 +134,18 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
     # back at exactly 0.0833 against a 0.125 baseline — the same number, because
     # the only thing that changed was the card that came out. Say so rather than
     # letting three identical rows read as three weak results.
+    # IDENTICAL READINGS ARE A FINDING, NOT A FAULT — and this is the third time
+    # in this file's history that identical numbers were the tell.
+    #
+    # A goldfish target asks whether a card was DRAWN. So when `--as` widens a
+    # group, the SEVENTH member raises the draw probability by exactly the same
+    # amount whichever card it is: Anointed Procession and Primal Vigor both read
+    # +0.044 because the model counts draws, not effects. The answer is real —
+    # widening this component by one buys 4.4 points — and it is an answer to
+    # "how much is one more member worth", never to "which of these is best".
+    # Eight identical rows would otherwise read as a broken tool.
+    seen_rates = {r["rate"] for r in rows if "rate" in r}
+    identical = len(seen_rates) == 1 and len([r for r in rows if "rate" in r]) > 1
     off = [r["card"] for r in rows
            if "rate" in r and not r.get("in_declaration")]
     note = None
@@ -142,7 +155,15 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
                 f"displacing another card. To test a card AS an engine piece, add "
                 f"it to the relevant `any_of` group first, or measure it on an "
                 f"axis it can reach (stall, land_drop).")
-    return {"slug": slug, "branch": branch, "axis": axis, "note": note,
+    if identical:
+        note = ((note + " ") if note else "") + (
+            "EVERY CANDIDATE READ THE SAME. A goldfish target asks whether a card "
+            "was DRAWN, so widening a group by one raises its assembly rate by the "
+            "same amount whichever card you add. This measures what ONE MORE "
+            "MEMBER is worth — not which member. Choose between them on what they "
+            "do once resolved, which this model cannot see.")
+    return {"slug": slug, "branch": branch, "axis": axis, "note": note, "join": join,
+            "all_identical": identical,
             "lower_is_better": axis in LOWER_IS_BETTER,
             "baseline": b, "cut": cut, "iterations": iterations,
             "candidates": rows,
@@ -152,8 +173,21 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
             "mde": diagnostic._mde(b["rate"], b["n"], b["n"])}
 
 
-def _with_swap(slug, branch, name, cut, axis, iterations):
-    """Substitute one card into the list and re-measure. Returns the row."""
+def _with_swap(slug, branch, name, cut, axis, iterations, join=None):
+    """Substitute one card into the list and re-measure. Returns the row.
+
+    `join` NAMES A DECLARED TARGET THE CANDIDATE SHOULD COUNT TOWARD, and without
+    it a whole class of question is unaskable. A card the declaration does not
+    name cannot move an engine axis except by displacing something — so asking
+    "would this widen my thinnest component?" reads as noise, every time, for the
+    right reason. Measured on ur-dragon's treasure branch: the bottleneck is a
+    six-card multiplier group, and of twelve cards in the pilot's own library
+    exactly one is a multiplier and it is already in the deck.
+
+    So `join` adds the candidate to that group FOR THE MEASUREMENT ONLY. It is a
+    hypothetical — "if this card were a multiplier, how much would the engine
+    move" — and it is never written to the declaration, which stays authored.
+    """
     from manamap.pilot import goldfish
     doc = _load_cards(slug, branch)
     held = {c["name"] for c in doc["cards"]}
@@ -188,7 +222,12 @@ def _with_swap(slug, branch, name, cut, axis, iterations):
     if add is None:
         return {"card": name, "skipped": "not in the corpus"}
     swapped["cards"].append(add)
-    got = diagnostic.run_on(swapped, slug, branch=branch,
+    targets = None
+    if join:
+        targets = _joined_targets(slug, branch, join, name)
+        if targets is None:
+            return {"card": name, "skipped": f"no target matching {join!r}"}
+    got = diagnostic.run_on(swapped, slug, branch=branch, targets=targets,
                             iterations=iterations, quiet=True)
     r = _read(got, axis)
     if not r:
@@ -201,6 +240,22 @@ def _with_swap(slug, branch, name, cut, axis, iterations):
 
 def _in_declaration(name, declared):
     return name in declared
+
+
+def _joined_targets(slug, branch, label, name):
+    """The declaration with one card added to one group — for this run only."""
+    import copy
+    from manamap.pilot.common import deck_file
+    doc = load_json(deck_file(slug, "goldfish_targets.json", branch)) or {}
+    targets = copy.deepcopy(doc.get("targets") or [])
+    hit = [t for t in targets if label.lower() in t["label"].lower()]
+    if not hit:
+        return None
+    for g in (hit[0].get("need") or []):
+        if name not in g.get("any_of", []):
+            g.setdefault("any_of", []).append(name)
+        break
+    return targets
 
 
 def _declared_cards(slug, branch):
@@ -254,6 +309,7 @@ def main(args):
                 cut=getattr(args, "cut", None),
                 iterations=getattr(args, "iterations", None) or SWEEP_ITERATIONS,
                 limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
+                join=getattr(args, "join", None),
                 progress=None if getattr(args, "json", False) else tick)
     if getattr(args, "json", False):
         print(json.dumps(doc, indent=1, default=str)); return
@@ -265,6 +321,9 @@ def _print(doc):
     where = doc["slug"] + (f"/{doc['branch']}" if doc.get("branch") else "")
     arrow = "lower is better" if doc["lower_is_better"] else "higher is better"
     print(f"\nCANDIDATES — {where}   axis {doc['axis']} ({arrow})")
+    if doc.get("join"):
+        print(f"  counted toward '{doc['join']}' for the measurement — a "
+              f"hypothetical, not written to the declaration")
     print(f"  baseline {b['rate']:.3f} [{b['ci95'][0]:.3f}, {b['ci95'][1]:.3f}]"
           f"   {doc['iterations']} games each")
     print(f"  smallest difference this many games can see: {doc['mde']}\n")

@@ -336,6 +336,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--cut", default=None,
                              help="the card each candidate replaces (default: the "
                                   "most expensive spell the declaration does not name)")
+            cmd.add_argument("--as", dest="join", default=None, metavar="TARGET",
+                             help="count each candidate toward this declared "
+                                  "target for the measurement — the hypothetical "
+                                  "'if this were a multiplier, how far would the "
+                                  "engine move'. Never written to the declaration")
             cmd.add_argument("--limit", type=int, default=None)
             cmd.add_argument("--iterations", type=int, default=None)
             cmd.add_argument("--json", action="store_true")

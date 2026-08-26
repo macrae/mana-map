@@ -183,6 +183,11 @@ data/decks/<slug>/             all tracked:
                                log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                deck_versions.json    AUTHORED tags on git-derived versions — `deck-version tag`
+                               diagnostic.json       the VITALS — engine online against what the
+                                                     deck declares, stall, mana. `diagnose --write`
+                               pool.txt              CANDIDATES to consider, not a promise: written
+                                                     by the Atlas's "consider these" on a library
+                                                     pile, read by `candidates --pool library`
                                branches/<name>/      A CANDIDATE 99 you cannot yet sleeve —
                                  decklist.txt          the candidate list
                                  branch.json           name, opened, why, base version

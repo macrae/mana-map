@@ -237,3 +237,48 @@ def test_the_mana_readings_are_still_one_measurement():
     assert r > 0.85, (
         f"missed-drop and mulligan rate have decoupled (r = {r:.3f}); the note "
         f"claiming they are one measurement is no longer true")
+
+
+@needs_deck
+def test_an_override_reaches_the_simulation_not_just_the_report():
+    """`--as` asks a hypothetical: if this card counted toward that component,
+    how far would the engine move?
+
+    The first cut passed the modified declaration to the REPORTING layer while
+    the goldfish still read the file, so `target_turns` stayed indexed by the
+    file's targets and the override changed nothing. The tell was eight
+    different candidates returning the identical 0.501 — which is also what a
+    CORRECT run looks like, so the two are told apart by whether widening moves
+    the number at all.
+    """
+    from manamap.pilot import goldfish
+    from manamap.pilot.common import deck_file, load_json
+    doc = load_json(deck_file(SLUG, "goldfish_targets.json")) or {}
+    targets = doc.get("targets") or []
+    req = [t for t in targets if t.get("required")]
+    if not req:
+        pytest.skip("no required targets")
+    import copy
+    from manamap.pilot.common import load_deck_cards
+    widened = copy.deepcopy(targets)
+    held = [c["name"] for c in load_deck_cards(SLUG)["cards"]
+            if not c.get("is_commander")]
+    target = next(t for t in widened if t.get("required"))
+    group = target["need"][0]["any_of"]
+    # A card that is IN the deck and NOT already in the group — adding one the
+    # group already names is a no-op, which is how the first version of this
+    # test failed against working code.
+    extra = next(n for n in held if n not in group)
+    group.append(extra)
+    base = goldfish.run(SLUG, with_results=True, iterations=800, seed=3, quiet=True)
+    alt = goldfish.run(SLUG, with_results=True, iterations=800, seed=3, quiet=True,
+                       targets_override=widened)
+    i = widened.index(target)
+
+    def hits(res):
+        return sum(1 for r in res["_results"]
+                   if r["target_turns"][i] is not None and r["target_turns"][i] <= 3)
+
+    assert hits(alt) > hits(base), (
+        "widening a required group did not raise its assembly rate — the "
+        "override is not reaching the simulation")
