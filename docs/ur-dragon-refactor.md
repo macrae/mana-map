@@ -192,3 +192,43 @@ likely to dominate and the deck functions without him. Price before ordering.
    having *drawn* two sources by turn four — not of having two Treasures on board. Only a
    simulation separates those.
 4. **Is 36 lands right** now that five treasure-lands are in the mana base?
+
+---
+
+## 12. Addendum — the commander question, settled
+
+**The objection was right and sharper than "weak":** with twelve Dragons, Eminence saves ~12
+mana across a game, which is real — but the *second* ability reads *"whenever Dragons you
+control **attack**, draw that many cards"*, and this deck was rebuilt specifically to stop
+needing an attack step. The commander's payoff asked for the one thing the refactor removed.
+
+**Three alternatives were costed against the 63:**
+
+| commander | keeps | loses | what the command zone does |
+|---|---|---|---|
+| Mahadi, Emporium Master `{1}{B}{R}` mv3 | 43 | **21** | a Treasure per creature that died **table-wide** |
+| Ziatora, the Incinerator `{3}{B}{R}{G}` mv6 | 56 | 8 | sac a creature → damage + 3 Treasures |
+| **The Ur-Dragon** — kept | **64** | **0** | five-colour access |
+
+**No treasure commander exists that keeps both green and white.** Every three-plus-colour
+option including white is combat-gated or outlaw-typal. Mahadi is the best fit for a
+wipe-heavy pod and costs Doubling Season, Parallel Lives, Old Gnawbone and all the white.
+
+**Decision: keep The Ur-Dragon, and treat five-colour access as the axis** — which is only
+worth something if it is *spent*. Treasures tap for any colour, so the deck takes the best
+treasure card in every colour instead of staying inside three.
+
+**Measured, that means black.** Blue is deliberately left unspent: its best cards for this
+deck are colourless ones that need no splash at all. Two black additions:
+
+- **Black Market Connections** `{2}{B}` — *treasure, a card, and a 3/2 body, every turn,
+  choose one or more.* An enchantment, one pip, three jobs. The single best expression of
+  the brief's own "a card that does two jobs beats a card that does one".
+- **Pitiless Plunderer** `{3}{B}` — a Treasure whenever another creature you control dies,
+  so your own losses to the pod's wipes become fuel.
+
+Out: Rhystic Study (blue, and sleeved in sisay) and Crackle with Power (redundant beside
+Jaya's Immolating Inferno).
+
+**Final: 63 spells · 36 lands · 30 treasure sources · 92.8% to open with one · 14 cards doing
+three or more jobs · mean mana value 3.41 · colours used W B R G.**
