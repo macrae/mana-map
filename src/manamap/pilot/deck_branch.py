@@ -53,6 +53,7 @@ from manamap.pilot.common import (
     DECKS_DIR,
     deck_dir,
     deck_lifecycle,
+    expand_faces,
     load_json,
 )
 from manamap.pilot.deck_history import _entries
@@ -85,8 +86,45 @@ def _list_text(slug, branch=None):
     return (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8")
 
 
+def _canonical(slug, branch=None):
+    """decklist name -> the name every other artifact uses.
+
+    A DOUBLE-FACED CARD IS NAMED TWO WAYS AND BOTH ARE CORRECT. `cards.json` and
+    everything derived from it (deck_map, the graph) key the joined `A // B`
+    form; a decklist names whichever face the writer had in front of them, and
+    for transform cards it HAS to — Scryfall answers the joined name with a 404
+    and resolves the front face alone, so a decklist carrying `A // B` cannot be
+    fetched at all.
+
+    Left unreconciled the seam is silent and small: the roster joined
+    `deck_map`'s names to this module's and lost exactly two cards, under-marking
+    the additions 30 against 32 and the buy list 19 against 21. Nothing errors —
+    two cards simply render unmarked.
+    """
+    doc = load_json(deck_dir(slug, branch) / "cards.json")
+    if not doc:
+        return {}
+    out = {}
+    for c in (doc.get("cards") or []):
+        for face in expand_faces(c.get("name")):
+            out[face] = c["name"]
+    return out
+
+
 def meta(slug, branch):
     return load_json(deck_dir(slug, branch) / BRANCH_FILE) or {}
+
+
+def _named(slug, branch, text_slug, text_branch):
+    """Both lists in one vocabulary, preferring what the resolver settled on."""
+    canon = dict(_canonical(slug))
+    canon.update(_canonical(slug, branch))
+    def fix(entries):
+        out = {}
+        for n, q in entries.items():
+            out[canon.get(n, n)] = out.get(canon.get(n, n), 0) + q
+        return out
+    return fix(text_slug), fix(text_branch)
 
 
 def diff(slug, branch):
@@ -95,8 +133,8 @@ def diff(slug, branch):
     Named for the hands rather than the diff, the same way `paper_state` is:
     `add` is what goes in, `out` is what comes out.
     """
-    now = _entries(_list_text(slug))
-    cand = _entries(_list_text(slug, branch))
+    now, cand = _named(slug, branch,
+                       _entries(_list_text(slug)), _entries(_list_text(slug, branch)))
     # COPIES and NAMES are different numbers and the repo has been bitten by
     # conflating them: `size` is what the shuffler sees (36 basics are 36 cards),
     # `names` is what you have to source (36 Forests are one line on a buy list).
@@ -122,7 +160,10 @@ def _deck_holders(name, skip):
         doc = load_json(d / "cards.json")
         if not doc:
             continue
-        if any(c.get("name") == name for c in (doc.get("cards") or [])):
+        # Either face, for the same reason `_canonical` exists: the holder's
+        # cards.json keys the joined form and a decklist may not.
+        faces = expand_faces(name)
+        if any(expand_faces(c.get("name")) & faces for c in (doc.get("cards") or [])):
             life = deck_lifecycle(d.name)
             locked = bool(deck_versions.paper(d.name))
             out.append({"slug": d.name, "locked": locked,
@@ -141,15 +182,19 @@ def source(slug, branch):
     """
     d = diff(slug, branch)
     box = collection.owned_index()
-    in_deck = set(_entries(_list_text(slug)))
+    now, cand = _named(slug, branch,
+                       _entries(_list_text(slug)), _entries(_list_text(slug, branch)))
+    in_deck = set(now)
     rows = []
-    for name in sorted(_entries(_list_text(slug, branch))):
+    for name in sorted(cand):
         if name in in_deck:
             rows.append({"name": name, "state": IN_DECK, "where": None})
             continue
-        if name in box:
+        if any(f in box for f in expand_faces(name)):
             rows.append({"name": name, "state": BOX,
-                         "where": ", ".join(sorted(collection.sources_for(name)))})
+                         "where": ", ".join(sorted(
+                             f for face in expand_faces(name)
+                             for f in collection.sources_for(face)))})
             continue
         holders = _deck_holders(name, slug)
         if holders:
@@ -175,11 +220,19 @@ def report(slug, branch=None):
 def _one(slug, branch):
     s = source(slug, branch)
     m = meta(slug, branch)
+    add = set(s["diff"]["add"])
     return {"name": branch, "opened": m.get("opened"), "why": m.get("why"),
             "base_version": m.get("base_version"),
             "size": s["diff"]["size"], "add": len(s["diff"]["add"]),
             "out": len(s["diff"]["out"]), "counts": s["counts"],
             "unsourced": s["unsourced"], "mergeable": s["mergeable"],
+            # PER-CARD PROVENANCE, so a roster can mark a card without asking a
+            # second time. `is_new` is the diff's answer and `state` is the
+            # collection's; they are different questions and a card can be new
+            # and already in a box.
+            "cards": [{"name": r["name"], "state": r["state"],
+                       "where": r["where"], "is_new": r["name"] in add}
+                      for r in s["cards"]],
             "has_cards": (deck_dir(slug, branch) / "cards.json").exists()}
 
 

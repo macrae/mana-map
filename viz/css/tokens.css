@@ -523,3 +523,56 @@ details.case .body { padding: 0 14px 14px; }
 #panel-branches .branch-buy li { line-height: 1.7; }
 #panel-branches .branch-buy li::before { content: '\25CB '; color: #c4a747; }
 .branch-note { margin-top: 16px; }
+
+/* ── THE ROSTER ────────────────────────────────────────────────────────
+   The hover preview is CSS-only, ported from `pilot/design.py`'s card links:
+   no positioning code, no tooltip layer, and it works with JS disabled. */
+#panel-roster .rost-city {
+  display: flex; align-items: baseline; gap: 9px; margin: 22px 0 8px;
+  font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 700; color: var(--city-lt, #cfd6e2);
+}
+#panel-roster .rost-city:first-child { margin-top: 0; }
+.rost-chip { width: 10px; height: 10px; border-radius: 2px;
+  background: var(--city, #6b727e); flex-shrink: 0; }
+.rost-count { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  letter-spacing: 0; color: #8a93a3; font-weight: 400; }
+.rost-seal { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  color: #4a8b5c; letter-spacing: 0; }
+.rost-gloss { font-size: 0.88rem; color: #a8b0bc; margin: 0 0 8px; }
+#panel-roster .rost-list { list-style: none; margin: 0 0 4px; padding: 0;
+  columns: 2; column-gap: 26px; }
+@media (max-width: 620px) { #panel-roster .rost-list { columns: 1; } }
+.rost-row { line-height: 1.75; break-inside: avoid; display: flex;
+  align-items: baseline; gap: 6px; }
+.rost-new { color: #4a8b5c; font-weight: 700; }
+.rost-buy, .rost-have, .rost-elsewhere {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.06em; text-transform: uppercase; margin-left: auto;
+  white-space: nowrap;
+}
+.rost-buy { color: #c4a747; }
+.rost-have { color: #4a8b5c; }
+.rost-elsewhere { color: #8a93a3; }
+.rost-cmdr { margin: 0 0 18px; padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.09); font-size: 1.02rem; }
+/* The link, and its preview. */
+#panel-roster a.cardref, .rost-cmdr a.cardref {
+  position: relative; color: inherit; cursor: help;
+  text-decoration: underline dotted rgba(255,255,255,0.28);
+  text-underline-offset: 3px; outline: none;
+}
+#panel-roster a.cardref:hover, .rost-cmdr a.cardref:hover,
+#panel-roster a.cardref:focus, .rost-cmdr a.cardref:focus {
+  text-decoration-color: #c4a747;
+}
+.card-pop {
+  display: none; position: absolute; left: 0; z-index: 80;
+  /* A PREVIEW ANCHORED UPWARD SITS OFF THE TOP OF THE FIRST ROW. The manual's
+     CSS learned this on its swap list; a roster is a column of names, so it has
+     the problem on every group's first entry. Open downward throughout. */
+  top: 1.6em; width: 244px; max-width: 62vw;
+  border: 1px solid #38424f; border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.55); background: #0F1319;
+}
+a.cardref:hover .card-pop, a.cardref:focus .card-pop { display: block; }

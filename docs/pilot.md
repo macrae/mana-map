@@ -173,6 +173,14 @@ data/decks/<slug>/             all tracked:
                                log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                deck_versions.json    AUTHORED tags on git-derived versions — `deck-version tag`
+                               branches/<name>/      A CANDIDATE 99 you cannot yet sleeve —
+                                 decklist.txt          the candidate list
+                                 branch.json           name, opened, why, base version
+                                 cards.json            `fetch-deck --branch`
+                                 <measurements>.json   bracket / mana / goldfish / map,
+                                                       run with `--branch`, written here
+                                                       so they can never overwrite the
+                                                       deck's own
                                mana_analysis.json    mana-analysis (deterministic, no agent)
                                tutor_guide.json      pilot-notes (one wish per tutor)
                                considering.json      FROZEN legacy (The Short List; its rule lives in prescriptions now)

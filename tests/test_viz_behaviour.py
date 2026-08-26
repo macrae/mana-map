@@ -7274,3 +7274,87 @@ def test_the_branch_panel_prices_the_candidate_list(browser, viz_server):
     if "to source" in got["badge"]:
         assert got["buy"] > 0, "it says cards need sourcing and lists none"
         assert got["mark"] not in ("", "none"), f"buy-list marker never applied: {got['mark']!r}"
+
+
+def test_the_roster_lists_every_card_and_agrees_with_the_cli(browser, viz_server):
+    """THE ROSTER IS THE CONSTELLATION'S OTHER FORM, and must not lose a card.
+
+    Both read `deck_map.json` and both group by city; the roster is the list.
+    `render_the_99` ends with a `stray` group for anything the map could not
+    place, and this does the same — a roster that silently drops a card is worse
+    than no roster.
+
+    The counts are asserted against `info.json`, which is what the CLI reports.
+    They disagreed on first build by exactly two cards: a decklist names a
+    double-faced card by its front face (Scryfall 404s the joined form) while
+    `cards.json` keys `A // B`, so the join lost `Treasure Map` and
+    `Fable of the Mirror-Breaker` and under-marked the additions 30 against 32.
+    Nothing errored; two cards simply rendered unmarked.
+    """
+    page = _dossier(browser, viz_server, "ur-dragon")
+    page.wait_for_selector("#panel-roster .rost-row", timeout=25000)
+    got = page.evaluate(
+        """async () => {
+             const p = document.getElementById('panel-roster');
+             const info = await fetch('../data/decks/ur-dragon/info.json',
+                                      {cache: 'no-store'}).then(r => r.json());
+             const map = await fetch(
+               '../data/decks/ur-dragon/branches/treasure-v2/deck_map.json',
+               {cache: 'no-store'}).then(r => r.json()).catch(() => null);
+             const n = s => p.querySelectorAll(s).length;
+             const names = [...p.querySelectorAll('.rost-row a.cardref')]
+                             .map(a => a.textContent.trim());
+             const b = (info.branches || [])[0] || null;
+             return {
+               names, rows: n('.rost-row'),
+               newMarks: n('.rost-new'), buy: n('.rost-buy'),
+               box: n('.rost-have'), elsewhere: n('.rost-elsewhere'),
+               cities: n('.rost-city'),
+               branch: b, mapCards: map ? map.cards.filter(c => !c.commander).length : null,
+               // Every card ref carries a Scryfall image for the hover.
+               pops: n('.card-pop'),
+             };
+         }""")
+    assert got["cities"] > 0, "the roster rendered no city headings"
+    if got["mapCards"] is not None:
+        assert got["rows"] == got["mapCards"], (
+            f"the roster shows {got['rows']} cards, the map has {got['mapCards']} "
+            f"— a card was dropped")
+    assert len(set(got["names"])) == len(got["names"]), "a card is listed twice"
+    assert got["pops"] >= got["rows"], "some rows carry no hover preview"
+    b = got["branch"]
+    if b and b.get("counts"):
+        assert got["newMarks"] == b["add"], \
+            f"roster marks {got['newMarks']} additions, the CLI says {b['add']}"
+        assert got["buy"] == b["counts"]["buy"], \
+            f"roster marks {got['buy']} to buy, the CLI says {b['counts']['buy']}"
+        assert got["box"] == b["counts"]["box"]
+        assert got["elsewhere"] == b["counts"]["elsewhere"]
+
+
+def test_the_roster_hover_is_css_and_actually_shows(browser, viz_server):
+    """The preview is CSS-only, ported from the manual's card links.
+
+    Assert the COMPUTED display under a REAL mouse hover: a rule in a stylesheet
+    the page does not load renders a plain list that still looks fine, and a
+    synthesised event cannot tell you whether the element is reachable. Both
+    mistakes were made earlier in this same file's history.
+    """
+    page = _dossier(browser, viz_server, "ur-dragon")
+    page.wait_for_selector("#panel-roster .rost-row a.cardref", timeout=25000)
+    page.evaluate("() => document.getElementById('panel-roster').scrollIntoView()")
+    page.wait_for_timeout(400)
+    link = page.locator("#panel-roster .rost-row a.cardref").first
+    pop = link.locator(".card-pop")
+    assert pop.evaluate("e => getComputedStyle(e).display") == "none", \
+        "the preview is visible before anyone hovers"
+    link.hover()
+    page.wait_for_timeout(300)
+    assert pop.evaluate("e => getComputedStyle(e).display") == "block", \
+        "hovering a card name did not show its preview — is the rule in a loaded stylesheet?"
+    # It opens DOWNWARD: a roster is a column of names, and a preview anchored
+    # upward sits off the top of every group's first entry.
+    assert pop.evaluate("e => getComputedStyle(e).top") not in ("auto", ""), \
+        "the preview has no downward anchor"
+    src = pop.get_attribute("src") or ""
+    assert "scryfall" in src, f"the preview image is not a Scryfall url: {src[:60]}"

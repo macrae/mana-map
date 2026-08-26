@@ -237,6 +237,117 @@
                  [], '#7ba05b', body);
   }
 
+  /* ── THE ROSTER: the whole list, grouped like The 99 ───────────────────
+   *
+   * The dossier could show you a picture of the deck (the constellation), what
+   * it is trying to be (the brief) and what it costs (the branch) — and never
+   * the cards. `cards.json` was dropped from this page's fetches years ago as
+   * "read by nothing", and nothing replaced it.
+   *
+   * IT IS THE CONSTELLATION'S OTHER FORM, not a second artifact. Both read
+   * `deck_map.json`, both group by city, and both take their colour from
+   * `CITY_INK` AT THE SAME INDEX — which is the load-bearing part, copied from
+   * `design.py:city_head`'s argument: a grid grouped by city under plain
+   * headings is a second taxonomy the reader has to reconcile with the picture
+   * beside it. Same ink, same index, by construction.
+   *
+   * NO ENGINE-STAGE CHIPS, unlike the printed `card_tile`. A branch inherits the
+   * DECK's `engine.json`, which describes the old list, so a stage chip on a
+   * card the model never placed would be a claim nobody made.
+   */
+  function rosterFor(d) {
+    // A branch roster when there is one, otherwise the deck's own. The branch is
+    // the more interesting answer: it is the list you cannot yet sleeve.
+    var bs = ((d.info || {}).branches) || [];
+    var b = bs.filter(function (x) { return !x.unreadable && x.cards; })[0];
+    if (b && d.branchMap) return { map: d.branchMap, branch: b };
+    return { map: d.deckMap, branch: null };
+  }
+
+  function cardRef(name, prov) {
+    // Hover preview is CSS-only, the way the manual does it — no positioning
+    // code, no tooltip layer. The image comes from `Shell.cardImageUrl`, which
+    // already carries the double-faced-card front-face retry.
+    var url = (window.Shell && Shell.cardImageUrl)
+      ? Shell.cardImageUrl(name, 'normal') : null;
+    var pop = url ? '<img class="card-pop" src="' + esc(url) + '" alt="" loading="lazy">' : '';
+    var mark = '', tail = '';
+    if (prov) {
+      if (prov.is_new) mark = '<span class="rost-new" title="new in this branch">+</span>';
+      if (prov.state === 'buy') tail = '<span class="rost-buy">to buy</span>';
+      else if (prov.state === 'box') tail = '<span class="rost-have">in a box</span>';
+      else if (prov.state === 'elsewhere') {
+        var who = (prov.where || []).map(function (h) {
+          return h.slug + (h.locked ? ' ◆' : '');
+        }).join(', ');
+        tail = '<span class="rost-elsewhere">' + esc(who) + '</span>';
+      }
+    }
+    return '<li class="rost-row">' + mark +
+      '<a class="cardref" tabindex="0">' + esc(name) + pop + '</a>' + tail + '</li>';
+  }
+
+  function rosterPanel(d) {
+    var got = rosterFor(d);
+    var map = got.map;
+    if (!map || !map.cards || !map.regions)
+      return absent('roster', 'The roster', 'Every card, grouped by what it is like.',
+                    '#8a7fd0', 'map', d);
+    var prov = {};
+    (got.branch ? got.branch.cards : []).forEach(function (r) { prov[r.name] = r; });
+    var cityOf = {};
+    map.cards.forEach(function (c) { cityOf[c.name] = c.city; });
+    // Ordered by size, exactly as `render_the_99` does: the deck's centre of
+    // mass leads.
+    var cities = map.regions.filter(function (r) { return r.level === 0; })
+      .slice().sort(function (a, b) {
+        return (b.count - a.count) || (a.id < b.id ? -1 : 1);
+      });
+    var seen = {}, body = '';
+    cities.forEach(function (r) {
+      var index = parseInt(String(r.id).split('-').pop(), 10);
+      var members = map.cards.filter(function (c) {
+        return c.city === index && !c.commander;
+      });
+      if (!members.length) return;
+      var pair = CITY_INK[index % CITY_INK.length];
+      var seal = r.verified_count
+        ? '<span class="rost-seal" title="named in a verified line">✓' +
+          r.verified_count + '</span>' : '';
+      body += '<h3 class="rost-city" style="--city:' + pair[0] + ';--city-lt:' + pair[1] + '">' +
+        '<span class="rost-chip"></span>' + esc(r.label || r.fallback || r.id) +
+        '<span class="rost-count">' + members.length + '</span>' + seal + '</h3>';
+      if (r.gloss) body += '<p class="rost-gloss">' + esc(r.gloss) + '</p>';
+      body += '<ul class="rost-list">' + members.map(function (c) {
+        seen[c.name] = 1;
+        return cardRef(c.name, prov[c.name]);
+      }).join('') + '</ul>';
+    });
+    // A CARD THE MAP COULD NOT PLACE STILL GETS A SEAT. `render_the_99` ends
+    // with the same group, and a roster that silently drops a card is worse
+    // than no roster.
+    var stray = map.cards.filter(function (c) {
+      return !c.commander && !seen[c.name];
+    });
+    if (stray.length) {
+      body += '<h3 class="rost-city rost-stray"><span class="rost-chip"></span>Unplaced' +
+        '<span class="rost-count">' + stray.length + '</span></h3>' +
+        '<ul class="rost-list">' + stray.map(function (c) {
+          return cardRef(c.name, prov[c.name]);
+        }).join('') + '</ul>';
+    }
+    var cmdr = map.cards.filter(function (c) { return c.commander; });
+    if (cmdr.length)
+      body = '<p class="rost-cmdr">' + cmdr.map(function (c) {
+        return cardRef(c.name, prov[c.name]);
+      }).join('').replace(/<\/?li[^>]*>/g, '') + '</p>' + body;
+    var title = got.branch ? 'The roster — branch ' + esc(got.branch.name) : 'The roster';
+    var promise = got.branch
+      ? 'Every card in the candidate list, and where it comes from.'
+      : 'Every card, grouped by what it is like.';
+    return panel('roster', title, promise, [], '#8a7fd0', body);
+  }
+
   function briefPanel(d) {
     // From `d.info`, not a second fetch of brief.json: info.json is this page's
     // data model and the composition already carries the brief, so reading the
@@ -954,7 +1065,7 @@
       nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
       questionsPanel(d),
-      briefPanel(d), branchPanel(d), constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      briefPanel(d), branchPanel(d), constellationPanel(d), rosterPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
@@ -1046,7 +1157,19 @@
           // locked deck than on a build plan.
           d.entry = entry;
           d.slug = entry.slug;
-          render(entry.slug, d);
+          // A BRANCH'S MAP NEEDS A SECOND ROUND TRIP, and it is chained rather
+          // than batched because the branch's NAME only arrives with info.json,
+          // which is in the batch above. The alternative is naming branch files
+          // in the manifest the way `stack_files` are — worth doing if branches
+          // ever multiply, and overkill for a fetch that only fires on a deck
+          // that has one.
+          var bs = ((d.info || {}).branches) || [];
+          var b = bs.filter(function (x) { return !x.unreadable; })[0];
+          if (!b) { render(entry.slug, d); return; }
+          getJSON(BASE + entry.slug + '/branches/' + b.name + '/deck_map.json')
+            .then(function (m) { d.branchMap = m; })
+            .catch(function () { d.branchMap = null; })
+            .then(function () { render(entry.slug, d); });
         });
     }).catch(function (e) {
       document.getElementById('status').textContent = 'Could not load the dossier: ' + e;
