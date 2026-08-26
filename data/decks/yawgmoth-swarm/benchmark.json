@@ -1,0 +1,61 @@
+{
+ "slug": "yawgmoth-swarm",
+ "harness": {
+  "version": 1,
+  "iterations": 10000,
+  "seed": 42,
+  "max_turn": 10,
+  "model_treasures": true,
+  "model_combat": true
+ },
+ "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
+ "metrics": {
+  "mana_screw": {
+   "missed_land_drop_rate": 0.1998,
+   "worst_turn": "6",
+   "mulligan_rate": 0.184,
+   "mean_mulligans": 0.222,
+   "mana_at_turn_five": 4.606
+  },
+  "speed": {
+   "kill_by_turn_6": 0.001,
+   "kill_by_turn_8": 0.096,
+   "kill_by_turn_10": 0.577,
+   "never_kills_rate": 0.423,
+   "median_kill_turn": 9
+  },
+  "consistency": {
+   "mana_stdev_by_turn": {
+    "4": 0.7857,
+    "5": 0.9783,
+    "6": 1.207
+   },
+   "mana_stdev_turn_five": 0.9783,
+   "land_drops_by_six_stdev": 1.0689,
+   "basis": "spread across all games of a quantity every deck has — not of kill turn, which is censored by how often a deck kills at all"
+  },
+  "response": {
+   "answer_cards": 16,
+   "answer_share": 0.2025,
+   "classes_covered": 7,
+   "classes_possible": 15,
+   "classes": [
+    "protection:self",
+    "removal:damage",
+    "removal:debuff",
+    "removal:edict",
+    "removal:spot",
+    "removal:sweeper",
+    "stax"
+   ],
+   "basis": "card_roles.json over the 99 — CAPACITY, not performance"
+  }
+ },
+ "score": null,
+ "limits": [
+  "No pod, no opponent and no interaction: this measures a DECK, not a table. It is not a win rate and must not be shown beside one.",
+  "Nothing blocks and nothing removes, so every speed figure is a ceiling — the fastest this deck goes when unopposed.",
+  "`response` is CAPACITY from card_roles.json, not a measured response: a model with no table cannot observe one.",
+  "Uniform model flags override each deck's own declaration, which is what makes decks comparable and also what makes these figures differ from the deck's own tracked goldfish_metrics.json."
+ ]
+}

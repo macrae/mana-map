@@ -104,6 +104,14 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
+manamap pilot benchmark [<slug>|--all]  # THE STANDARD BENCHMARK (PRD §9): four measures
+                                        #   under ONE frozen configuration — fixed seed,
+                                        #   fixed iterations, UNIFORM model flags that
+                                        #   override each deck's own opt-in, because
+                                        #   comparability is the whole requirement.
+                                        #   Reads the 99, never the declaration. Emits NO
+                                        #   aggregate score: §14.1 is open and the fleet
+                                        #   spread says speed is not archetype-neutral.
 manamap pilot validate-goldfish-targets <slug>  # the DECLARATION itself: cards still in the 99,
                                         #   and any card in 2+ passing stacks with no component
 manamap pilot mana-analysis <slug>      # the mana audit, deterministic — run AFTER goldfish (embeds its figures)

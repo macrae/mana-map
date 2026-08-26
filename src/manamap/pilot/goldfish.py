@@ -805,8 +805,22 @@ def aggregate(results, targets, max_turn, model_treasures=False, model_combat=Fa
     }
 
 
-def run(slug, iterations=None, seed=None, max_turn=None):
-    """Run the goldfish simulation for a deck. Returns the metrics document."""
+def run(slug, iterations=None, seed=None, max_turn=None,
+        model_treasures=None, model_combat=None, with_results=False):
+    """Run the goldfish simulation for a deck. Returns the metrics document.
+
+    `model_treasures` and `model_combat` default to None, meaning READ THE
+    DECK'S DECLARATION — the opt-in described below, and the behaviour every
+    tracked `goldfish_metrics.json` was produced under. An explicit bool
+    OVERRIDES it, which exists for one caller: the benchmark.
+
+    A benchmark cannot read per-deck flags. Exactly one deck of twelve opts into
+    combat today, so aggregating the fleet's own metrics would rank a deck that
+    was measured with a kill clock against eleven that were not — the
+    "uncontrolled output cannot be aggregated" failure the PRD names. The
+    benchmark therefore runs its OWN uniform configuration and never writes to
+    the deck's tracked file.
+    """
     iterations = iterations or GOLDFISH_ITERATIONS
     seed = GOLDFISH_SEED if seed is None else seed
     max_turn = max_turn or GOLDFISH_MAX_TURN
@@ -833,14 +847,14 @@ def run(slug, iterations=None, seed=None, max_turn=None):
     # six unaffected decks stay byte-identical and nothing needs regenerating.
     # Remove this flag once every deck has been re-baselined; a permanently
     # optional model is one nobody committed to.
-    model_treasures = False
-    model_combat = False
+    declared_treasures = False
+    declared_combat = False
     if targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
         targets = targets_doc["targets"]
-        model_treasures = bool(targets_doc.get("model_treasures"))
-        model_combat = bool(targets_doc.get("model_combat"))
+        declared_treasures = bool(targets_doc.get("model_treasures"))
+        declared_combat = bool(targets_doc.get("model_combat"))
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -859,6 +873,12 @@ def run(slug, iterations=None, seed=None, max_turn=None):
     # deck — and the fact is usually load-bearing: ur-dragon's four Treasure
     # makers are all combat-triggered, so a goldfish that never attacks reports
     # zero and is right to.
+    # An explicit argument OVERRIDES the declaration; None means read it. The
+    # benchmark is the one caller that overrides, because uniform conditions are
+    # what makes decks comparable at all.
+    model_treasures = declared_treasures if model_treasures is None else bool(model_treasures)
+    model_combat = declared_combat if model_combat is None else bool(model_combat)
+
     unmodelled = sorted({
         c["name"] for c in doc.get("cards", [])
         if not c.get("is_commander") and treasure_profile(c)[1] == "unmodelled"
@@ -912,6 +932,15 @@ def run(slug, iterations=None, seed=None, max_turn=None):
                if model_combat and combat_unreadable else {}),
         },
         "metrics": aggregate(results, targets, max_turn, model_treasures, model_combat),
+        # OPT-IN, and default off so the returned document is byte-identical
+        # to every tracked `goldfish_metrics.json`. Two tests compare `run`'s
+        # output against the artifact directly, and they caught this the first
+        # time it was unconditional — which is exactly what they are for.
+        #
+        # The benchmark needs a SPREAD and `aggregate` reports means, so it asks
+        # for the rows rather than the shared artifact growing a stdev key to
+        # serve one caller.
+        **({"_results": results} if with_results else {}),
     }
 
 

@@ -1,0 +1,61 @@
+{
+ "slug": "blar",
+ "harness": {
+  "version": 1,
+  "iterations": 10000,
+  "seed": 42,
+  "max_turn": 10,
+  "model_treasures": true,
+  "model_combat": true
+ },
+ "decklist_sha256": "1c7a7d231a1f57b04916e3bb6581cf5d0efc261a13e788a46760096352210ee9",
+ "metrics": {
+  "mana_screw": {
+   "missed_land_drop_rate": 0.2288,
+   "worst_turn": "6",
+   "mulligan_rate": 0.201,
+   "mean_mulligans": 0.243,
+   "mana_at_turn_five": 4.317
+  },
+  "speed": {
+   "kill_by_turn_6": 0.0,
+   "kill_by_turn_8": 0.007,
+   "kill_by_turn_10": 0.197,
+   "never_kills_rate": 0.803,
+   "median_kill_turn": 10
+  },
+  "consistency": {
+   "mana_stdev_by_turn": {
+    "4": 0.59,
+    "5": 0.8678,
+    "6": 1.1039
+   },
+   "mana_stdev_turn_five": 0.8678,
+   "land_drops_by_six_stdev": 1.1039,
+   "basis": "spread across all games of a quantity every deck has — not of kill turn, which is censored by how often a deck kills at all"
+  },
+  "response": {
+   "answer_cards": 18,
+   "answer_share": 0.2093,
+   "classes_covered": 7,
+   "classes_possible": 15,
+   "classes": [
+    "protection:self",
+    "removal:damage",
+    "removal:fight",
+    "removal:spot",
+    "removal:sweeper",
+    "removal:tax",
+    "stax"
+   ],
+   "basis": "card_roles.json over the 99 — CAPACITY, not performance"
+  }
+ },
+ "score": null,
+ "limits": [
+  "No pod, no opponent and no interaction: this measures a DECK, not a table. It is not a win rate and must not be shown beside one.",
+  "Nothing blocks and nothing removes, so every speed figure is a ceiling — the fastest this deck goes when unopposed.",
+  "`response` is CAPACITY from card_roles.json, not a measured response: a model with no table cannot observe one.",
+  "Uniform model flags override each deck's own declaration, which is what makes decks comparable and also what makes these figures differ from the deck's own tracked goldfish_metrics.json."
+ ]
+}

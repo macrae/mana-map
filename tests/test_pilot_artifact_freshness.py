@@ -175,3 +175,27 @@ def test_info_json_never_carries_a_version_block(slug):
     doc = json.loads(path.read_text())
     assert "version" not in doc, "versions cannot be committed accurately"
     assert "_note" in doc and "one commit behind" in doc["_note"]
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _slugs("benchmark.json"))
+def test_benchmark_matches_a_fresh_run(slug):
+    """`benchmark.json` is tracked, so the workbench can read it on a static
+    host — and it is deterministic (fixed seed, fixed iterations, uniform
+    flags), so it must equal what a fresh run produces. A stale benchmark is a
+    ranking computed against a deck that no longer exists.
+    """
+    import io as _io
+    import contextlib
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import benchmark
+
+    path = DECKS_DIR / slug / "benchmark.json"
+    if not path.exists():
+        pytest.skip(f"{slug} has no benchmark record")
+    with contextlib.redirect_stdout(_io.StringIO()):
+        fresh = benchmark.measure(slug)
+    stored = json.loads(path.read_text())
+    assert stored == fresh, (
+        f"{slug}/benchmark.json is stale — `manamap pilot benchmark {slug}`")
