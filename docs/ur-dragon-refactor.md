@@ -245,3 +245,62 @@ Jaya's Immolating Inferno).
 
 **Final: 63 spells · 36 lands · 30 treasure sources · 92.8% to open with one · 14 cards doing
 three or more jobs · mean mana value 3.41 · colours used W B R G.**
+
+---
+
+## 13. Addendum — creatures are a mode, and the mana base is RGW only
+
+**Two corrections from the pilot, both of which tighten the deck.**
+
+### 13.1 Combat is a real second mode
+
+The refactor over-corrected. Creatures and combat damage are wanted — big fliers especially.
+What the deck must *not* do is **depend on creatures surviving**, because this pod wipes.
+
+The filter that expresses it: **value on entry or on death, never on persistence.** A wipe
+cannot undo a trigger that has already resolved.
+
+Three of the ten cut Dragons pass it and come back:
+
+- **Scourge of Valkas** `{2}{R}{R}{R}` — *whenever this or another Dragon you control **enters**,
+  it deals X damage to any target, X = Dragons you control.* Non-combat damage that scales
+  with the count, and it has already happened by the time a wrath resolves.
+- **Lathliss, Dragon Queen** `{4}{R}{R}` — a 5/5 Dragon token per nontoken Dragon entering.
+  Rebuilds through a wipe and feeds the two pingers.
+- **Glorybringer** `{3}{R}{R}` — flying **haste**, exert to deal 4. Immediate value; it does
+  not need to see your next turn.
+
+Still cut, because they need to persist or to attack: Atarka, Thrakkus, Scourge of the Throne,
+Wrathful Red Dragon, Moltensteel, Ancient Gold Dragon, Hellkite Courser.
+
+**Out for them:** Bootleggers' Stash (mv6, redundant at 29 sources) · Idol of Oblivion
+(Manufactor's Clues cover it) · **Blasphemous Act — which kills your own 15 Dragons.**
+Crux of Fate spares them, and is now a one-sided wipe.
+
+**The chain this creates.** Cast any Dragon → Lathliss makes a 5/5 token → **Scourge of Valkas
+and Terror of the Peaks each trigger on *both* the cast Dragon and the token.** Four damage
+triggers off one cast, none of them undoable by a wrath. That is combat-adjacent damage from
+creatures, without depending on the creatures.
+
+**Now: 26 creatures · 15 fliers · 15 Dragons** (Eminence saves 15) · 63 spells · mean MV 3.40.
+
+### 13.2 No Swamps. Black rides on Treasure.
+
+The mana base is **RGW only** — no Swamps, no black duals. Every black card is cast off a
+Treasure or a fixer, and the fixers are *better here than under any other commander*:
+
+| fixer | why it makes black |
+|---|---|
+| 27 Treasure sources | tap for any colour |
+| **Chromatic Lantern** | **all 36 lands gain "{T}: add any colour"** |
+| Commander's Sphere | any colour **in the commander's identity — WUBRG** |
+| Arcane Signet | same |
+| Mox Jasper | any colour while you control a Dragon (15) |
+
+**~31 ways to produce black with zero black lands** — and three of those four fixers are
+five-colour *because the commander is*. Under a Naya commander, your own Arcane Signet would
+only make RGW. **That is the third independent reason The Ur-Dragon earns the command zone.**
+
+Every off-colour card is one black pip and sorcery-speed, except **Crux of Fate** at
+`{3}{B}{B}` — two Treasures, and worth it, because with 15 Dragons "destroy all non-Dragon
+creatures" is a one-sided board wipe. P(two sources by turn four) = **85.3%**.
