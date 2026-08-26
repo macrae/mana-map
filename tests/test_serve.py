@@ -353,3 +353,107 @@ def test_finishing_does_not_commit_unless_asked():
     assert "commit_command" in src, "it does not offer the command it declined to run"
     # The default must be off at the signature, not merely in the body.
     assert "commit=False" in src.split("\n")[0] or "commit=False" in src[:200]
+
+
+# ── What a button may honestly run ────────────────────────────────────────
+#
+# The dossier prints, for each thing a deck does not have yet, the command that
+# would produce it. Some of those a page may simply RUN; most it may not, and
+# the difference is not a matter of taste — it is cost and determinism.
+
+
+def test_the_measure_list_holds_nothing_expensive():
+    """THE ALLOW-LIST IS THE FEATURE, and this is the guard on it.
+
+    Everything in `MEASURES` is deterministic, makes no model call, and writes
+    one artifact. What must never appear: `simulate` (45-62 minutes of Forge),
+    any agent loop (the cheapest measured routine is 54.5k tokens and
+    `candidate-pool` is 235k), anything that commits, and anything that writes
+    a file a PERSON is supposed to author.
+
+    Asserted against the module path rather than the key, because a key can be
+    renamed into innocence.
+    """
+    allowed = {
+        "manamap.pilot.bracket", "manamap.pilot.deck_map",
+        "manamap.pilot.goldfish", "manamap.pilot.mana_analysis",
+    }
+    for stage, (module, artifact, needs, what) in serve.MEASURES.items():
+        assert module in allowed, (
+            f"{stage} runs {module}, which is not on the deterministic list. "
+            f"If it belongs there, say why in the comment above MEASURES first.")
+        assert artifact.endswith(".json"), stage
+        assert isinstance(needs, tuple), stage
+        assert what and what[0].islower(), f"{stage}: `what` is a phrase, not a sentence"
+    for forbidden in ("sim", "simulate", "engine", "stacks", "experiment",
+                      "prose", "frame", "targets", "issue"):
+        assert forbidden not in serve.MEASURES, (
+            f"{forbidden!r} is an agent loop, a 45-minute simulation, or a file "
+            f"somebody has to write — it cannot be a button")
+
+
+def test_a_stage_it_will_not_run_is_refused_with_the_reason():
+    """A refusal names what it WILL do. `simulate` is the one a pilot is most
+    likely to reach for from this page, and 'no' on its own would read as a
+    bug."""
+    with pytest.raises(ValueError) as exc:
+        serve.call("deck/measure", {"slug": "radagast", "stage": "sim"})
+    msg = str(exc.value)
+    assert "sim" in msg
+    assert "bracket" in msg and "map" in msg, f"it did not say what it runs: {msg}"
+
+
+def test_a_measurement_states_its_dependency_rather_than_failing_inside_it():
+    """`mana-analysis` embeds goldfish figures and `goldfish` reads an authored
+    declaration. A button that fails because of an unstated dependency is worse
+    than one that explains itself — and the dossier renders this string."""
+    with pytest.raises(ValueError) as exc:
+        serve.call("deck/measure", {"slug": "zur-enchantress", "stage": "goldfish"})
+    assert "goldfish_targets.json" in str(exc.value)
+
+
+def test_measuring_refreshes_the_dossier_it_will_be_read_from(tmp_path, monkeypatch):
+    """The refresh is not a convenience.
+
+    `info.json` is composed from every other artifact, so a measurement leaves
+    it stale BY CONSTRUCTION — and the page renders `info.json`. Without the
+    re-emit the pilot presses a button, the command succeeds, and the dossier
+    goes on saying the thing they just measured is missing.
+
+    The stale state is CONSTRUCTED rather than assumed: whether a given tracked
+    deck happens to be missing a bracket report is not this test's subject, and
+    a precondition that drifts with the fleet is a test that stops testing.
+    """
+    import shutil
+
+    from manamap.config import DECKS_DIR
+
+    src = DECKS_DIR / "zur-enchantress"
+    if not (src / "cards.json").exists():
+        pytest.skip("needs a fetched deck")
+
+    dest = tmp_path / "decks"
+    dest.mkdir()
+    shutil.copytree(src, dest / "zur-enchantress")
+    deck = dest / "zur-enchantress"
+    (deck / "bracket_report.json").unlink(missing_ok=True)
+    stale = json.loads((deck / "info.json").read_text())
+    stale["bracket"] = None
+    stale["status"]["todo"] = [{"stage": "bracket", "what": "x", "how": "y"}]
+    (deck / "info.json").write_text(json.dumps(stale))
+
+    monkeypatch.setattr("manamap.config.DECKS_DIR", dest)
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", dest, raising=False)
+
+    result = serve.call("deck/measure",
+                        {"slug": "zur-enchantress", "stage": "bracket"})
+
+    assert (deck / "bracket_report.json").exists(), (
+        "the measurement did not land in the redirected directory")
+    # The returned dossier is the FRESH one, so the page never has to guess.
+    assert not any(t["stage"] == "bracket" for t in result["info"]["status"]["todo"]), (
+        "the artifact was written but info.json still says it is missing")
+    assert result["info"]["bracket"]["floor"]
+    on_disk = json.loads((deck / "info.json").read_text())
+    assert on_disk["bracket"] == result["info"]["bracket"], (
+        "the page was handed something the file does not say")

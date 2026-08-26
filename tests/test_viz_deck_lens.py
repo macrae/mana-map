@@ -191,7 +191,10 @@ def test_deck_html_busts_its_own_assets():
     # surfaces. `session` joined when the library drawer did: the strip can COUNT
     # the library out of localStorage, but taking a card back out is a write, and
     # only Session may write. Both are dependency-free and carry no data.
-    assert set(busts) == {"deck-view", "tokens", "shell", "session"}, busts
+    # `api` joined when the dossier gained the Measure buttons: a local server
+    # can RUN the deterministic measurements, and a static host cannot — the
+    # page has to know which one it is being.
+    assert set(busts) == {"deck-view", "tokens", "shell", "session", "api"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 

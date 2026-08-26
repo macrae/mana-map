@@ -12,17 +12,15 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 3,
+    "complete": 5,
     "of": 15,
     "stale": [],
     "invalid": [],
     "missing": [
-      "bracket",
       "targets",
       "goldfish",
       "mana",
       "frame",
-      "map",
       "engine",
       "stacks",
       "tutors",
@@ -31,11 +29,6 @@
       "issue"
     ],
     "todo": [
-      {
-        "stage": "bracket",
-        "what": "computed power floor — `bracket-check`",
-        "how": "manamap pilot bracket-check zur-enchantress"
-      },
       {
         "stage": "targets",
         "what": "the engine DECLARATION: any_of groups, size = redundancy",
@@ -55,11 +48,6 @@
         "stage": "frame",
         "what": "the strategist's read — `research-strategy` consult",
         "how": "/research-strategy — MODE consult, on zur-enchantress"
-      },
-      {
-        "stage": "map",
-        "what": "the constellation — `deck-map`",
-        "how": "manamap pilot deck-map zur-enchantress"
       },
       {
         "stage": "engine",
@@ -98,7 +86,12 @@
       }
     ]
   },
-  "bracket": null,
+  "bracket": {
+    "floor": 3,
+    "floor_name": "Upgraded",
+    "target": null,
+    "within_target": null
+  },
   "paper": null,
   "record": {
     "games": 0,

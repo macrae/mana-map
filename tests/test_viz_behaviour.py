@@ -6472,3 +6472,39 @@ def test_a_double_faced_card_still_gets_its_picture(discover_page):
                for u in asked), f"it never asked for the front face alone: {asked}"
     assert page.js_errors == [], (
         f"the tile threw — an inline handler that does not parse: {page.js_errors}")
+
+
+def test_the_dossier_offers_no_button_it_cannot_press(browser, viz_server):
+    """THE DEPLOYED SHAPE, asserted from the outside.
+
+    `viz_server` is a static file server with no `/api` — which is exactly
+    GitHub Pages. `Api.probe()` gets a 404, and a 404 is the deployed SHAPE
+    rather than a malfunction, so the page must render its static half: the
+    absent sections still say what they are and still print the command, and
+    there is no Measure button, because pressing one would do nothing.
+
+    The PRD's words for this: agent-dependent affordances are ABSENT, not
+    broken. This is where that is checked for the dossier.
+    """
+    page = browser.new_page()
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.goto(f"{viz_server}/viz/deck.html?deck=zur-enchantress")
+        page.wait_for_function("() => document.querySelectorAll('.panel').length > 2",
+                               timeout=25000)
+        state = page.evaluate("""() => ({
+            apiReady: !!(window.Api && Api.ready),
+            runButtons: document.querySelectorAll('.todo-run').length,
+            absent: document.querySelectorAll('.todo').length,
+            commands: document.querySelectorAll('.todo-cmd code').length,
+        })""")
+        assert state["apiReady"] is False, "a static host answered /api/health"
+        assert state["absent"] > 0, "nothing to check — the deck has every stage"
+        assert state["runButtons"] == 0, (
+            "the deployed page offered a button that cannot do anything")
+        assert state["commands"] > 0, (
+            "with no server the command is the whole affordance, and it is missing")
+        assert errors == [], errors
+    finally:
+        page.close()

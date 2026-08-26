@@ -451,3 +451,11 @@ details.case .body { padding: 0 14px 14px; }
 .todo-authored { font-size: 0.76rem; font-family: var(--type, monospace);
   color: var(--ink-soft); background: var(--paper); border: 1px solid var(--rule);
   border-radius: 3px; padding: 8px 10px; margin: 0; }
+
+.todo-run { display: block; width: 100%; margin: 0 0 8px; padding: 8px 10px;
+  cursor: pointer; border-radius: 3px; font: inherit; font-size: 0.78rem;
+  letter-spacing: 0.04em; background: var(--tier-data); border: 1px solid var(--tier-data);
+  color: var(--paper); }
+.todo-run:hover:not(:disabled) { filter: brightness(1.12); }
+.todo-run:disabled { opacity: 0.6; cursor: default; }
+.todo-blocked { margin: 0 0 8px; color: var(--ink-soft); font-size: 0.76rem; }

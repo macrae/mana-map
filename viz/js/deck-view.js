@@ -120,14 +120,44 @@
       '<code>' + esc(how) + '</code><span class="todo-copy">copy</span></button>';
   }
 
+  /* What the local server will run, if there is one. Populated once, from the
+   * server's own table — the page does not decide what is cheap enough to
+   * press, because that judgement belongs beside the commands. */
+  var measures = null;
+
+  function runnable(d, stage) {
+    if (!measures || !measures[stage] || !window.Api || !Api.ready) return null;
+    var m = measures[stage];
+    // `needs` is reported, not assumed. A button that fails because of an
+    // unstated dependency is worse than one that explains itself, and two of
+    // the four measurements genuinely have an order.
+    var missing = (m.needs || []).filter(function (n) {
+      var stem = n.replace('.json', '');
+      var byArtifact = { goldfish_targets: 'targets', goldfish_metrics: 'goldfish' };
+      var s = byArtifact[stem];
+      return s ? todoFor(d, s) !== null : false;
+    });
+    return { what: m.what, blockedBy: missing };
+  }
+
   function absent(id, title, promise, accent, stage, d, what) {
     var t = todoFor(d, stage);
     // Not a lifecycle stage, or the deck has it and something else is wrong:
     // stay silent rather than inventing a reason.
     if (!t) return '';
+    var run = runnable(d, stage);
+    var action = '';
+    if (run && !run.blockedBy.length) {
+      action = '<button class="todo-run" onclick="Deck.measure(this, ' +
+        JSON.stringify(d.slug).replace(/"/g, '&quot;') + ', ' +
+        JSON.stringify(stage).replace(/"/g, '&quot;') + ')">Measure it now</button>';
+    } else if (run) {
+      action = '<p class="ev todo-blocked">Needs ' + esc(run.blockedBy.join(', ')) +
+        ' first.</p>';
+    }
     return panel(id, title, promise, [], accent,
       '<div class="todo"><p class="todo-what">Not yet on this deck — ' +
-      esc(what || t.what) + '</p>' + command(t.how) + '</div>');
+      esc(what || t.what) + '</p>' + action + command(t.how) + '</div>');
   }
 
   function bracketPanel(d) {
@@ -915,6 +945,34 @@
    * documents (touching a global inside the IIFE that defines it aborts the
    * IIFE, so the global is never exported and every later file fails too). */
   window.Deck = {
+    /* Run one deterministic measurement and show the result.
+     *
+     * A RELOAD, not a re-render. The dossier composes fifteen artifacts at
+     * boot and a measurement writes two of them (its own, plus the `info.json`
+     * the server refreshes); patching the live object would be a second,
+     * partial version of that composition, free to disagree with the one the
+     * page was built from. Two seconds of work is not the place to invent a
+     * cache-coherence problem. */
+    measure: function (btn, slug, stage) {
+      if (btn.disabled) return;
+      btn.disabled = true;
+      var was = btn.textContent;
+      btn.textContent = 'Measuring…';
+      Api.call('deck/measure', { slug: slug, stage: stage }).then(function () {
+        btn.textContent = 'Done — reloading';
+        location.reload();
+      }).catch(function (e) {
+        // Named, never silent: the server refuses for real reasons (a missing
+        // dependency, a stage it will not run) and every one of them is
+        // something the pilot can act on.
+        btn.disabled = false;
+        btn.textContent = was;
+        var p = document.createElement('p');
+        p.className = 'ev todo-blocked';
+        p.textContent = String(e && e.message ? e.message : e);
+        btn.parentElement.insertBefore(p, btn.nextSibling);
+      });
+    },
     copy: function (btn) {
       var text = (btn.querySelector('code') || {}).textContent || '';
       var say = btn.querySelector('.todo-copy');
@@ -934,7 +992,28 @@
     },
   };
 
+  /* Ask ONCE whether there is a server, and what it will run.
+   *
+   * Both are absent on the deployed site, and that is a supported shape rather
+   * than a fault: the page renders its static half and prints the command. The
+   * boot does not WAIT on this — a probe that has to answer before anything
+   * draws would make the dossier's speed depend on a server it may not have.
+   */
+  function boot_() {
+    if (window.Api && Api.probe) {
+      Api.probe().then(function (ok) {
+        if (!ok) return null;
+        return Api.call('deck/measures', {}).then(function (r) {
+          measures = r.stages || null;
+        });
+      }).catch(function () { measures = null; })
+        .then(function () { boot(); });
+      return;
+    }
+    boot();
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else { boot(); }
+    document.addEventListener('DOMContentLoaded', boot_);
+  } else { boot_(); }
 })();

@@ -518,6 +518,98 @@ def _agents():
 
 
 #: name -> (function, {argument: coercion})
+# ── Measuring a deck from the page ────────────────────────────────────────
+#
+# THE ALLOW-LIST IS THE POINT, and what it excludes is the argument for it.
+# Every entry here is DETERMINISTIC, makes NO model call, and writes exactly one
+# artifact. Measured end to end on a 100-card deck, INCLUDING the `info.json`
+# refresh below: bracket 2.3s, map 1.9s. The refresh is the larger half of both
+# (bracket-check 512ms, deck-map 1150ms, deck-info --write 1513ms) because it
+# composes every artifact and runs the audit — which is worth knowing before
+# anyone tries to make this feel instant by trimming the command instead.
+#
+# (An earlier version of this comment claimed ~200ms from a timing loop whose
+# runs had all FAILED. A measurement of a command that did not do the work is
+# not a measurement of the command.)
+#
+# What is NOT here, deliberately: `simulate` (45-62 minutes of Forge), every
+# agent loop (`/analyze-engine`, `/resolve-stack` — the cheapest measured
+# routine is 54.5k tokens and `candidate-pool` is 235k), and the authored files
+# (`goldfish_targets.json`, `issue.json`), which are judgements a person makes
+# rather than work a machine does. The dossier prints THOSE as text and names
+# them, which is the whole reason a command travels with a stage: some of them
+# are for reading, not for pressing.
+#
+# `needs` is checked and reported rather than assumed. `mana-analysis` embeds
+# goldfish figures and must run after it; `goldfish` reads the authored
+# declaration and cannot run without one. A button that fails because of an
+# unstated dependency is worse than a button that explains itself.
+class _Args:
+    """An argparse namespace, without argparse.
+
+    The pilot commands take `args` and read attributes off it. `type("A", (), {…})()`
+    is the trick used twice above; naming it once is what stops the third caller
+    inventing a fourth spelling — and `getattr` defaults matter, because these
+    modules read optional flags (`--target`, `--json`) that a page never sends.
+    """
+
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+    def __getattr__(self, name):        # every unset flag is simply absent
+        return None
+
+
+MEASURES = {
+    "bracket": ("manamap.pilot.bracket", "bracket_report.json", (),
+                "the computed power floor"),
+    "map":     ("manamap.pilot.deck_map", "deck_map.json", (),
+                "the deck's own constellation"),
+    "goldfish": ("manamap.pilot.goldfish", "goldfish_metrics.json",
+                 ("goldfish_targets.json",), "seeded Monte Carlo development"),
+    "mana":    ("manamap.pilot.mana_analysis", "mana_analysis.json",
+                ("goldfish_metrics.json",), "colour sources and castability"),
+}
+
+
+def _measure(slug=None, stage=None):
+    """Run one deterministic measurement and hand back the refreshed dossier.
+
+    The refresh is not a convenience. `info.json` is composed from every other
+    artifact, so a measurement leaves it stale by construction — and the page
+    renders `info.json`. Running the command without re-emitting it would show
+    the pilot a dossier that still says the thing they just measured is missing.
+    """
+    if not slug:
+        raise ValueError("no slug")
+    if stage not in MEASURES:
+        raise ValueError(
+            f"{stage!r} is not something this page may run — "
+            f"it runs {', '.join(sorted(MEASURES))}. Everything else is an agent "
+            f"loop, a 45-minute simulation, or a file somebody has to write.")
+    from manamap.config import DECKS_DIR
+
+    module, artifact, needs, what = MEASURES[stage]
+    base = DECKS_DIR / slug
+    if not (base / "cards.json").exists():
+        raise ValueError(f"{slug} has no cards.json — finish the deck first")
+    for need in needs:
+        if not (base / need).exists():
+            raise ValueError(
+                f"{stage} needs {need} first, and this deck has none — "
+                f"see the dossier's own note on that step")
+
+    import importlib
+
+    mod = importlib.import_module(module)
+    mod.main(_Args(slug=slug))
+
+    from manamap.pilot import deck_info
+
+    deck_info.main(_Args(slug=slug, write=True, as_json=False))
+    return {"slug": slug, "stage": stage, "wrote": artifact, "what": what,
+            "info": json.loads((base / "info.json").read_text(encoding="utf-8"))}
+
 ENDPOINTS = {
     "health": (lambda: {"ok": True, "api": 1}, {}),
     "formats": (_formats, {}),
@@ -540,6 +632,11 @@ ENDPOINTS = {
     "agents": (_agents, {}),
     "ask": (_ask, {"question": _str, "agent": _str}),
     "job": (_job, {"id": _str}),
+    # Deterministic measurement, no model call. See MEASURES.
+    "deck/measure": (_measure, {"slug": _str, "stage": _str}),
+    "deck/measures": (lambda: {"stages": {k: {"artifact": v[1], "needs": list(v[2]),
+                                              "what": v[3]}
+                                         for k, v in MEASURES.items()}}, {}),
 }
 
 
