@@ -86,9 +86,12 @@ def test_reads_fall_back_to_the_deck_but_writes_do_not():
     branch that measured against no engine declaration would be reporting a
     different deck rather than a different list.
     """
-    # authored, branch has none -> falls back to the deck's
-    targets = deck_file(SLUG, "goldfish_targets.json", BRANCH)
-    assert targets == deck_dir(SLUG) / "goldfish_targets.json"
+    # A file the branch does NOT have falls back to the deck's. (Asserted with a
+    # name no branch will ever carry: `goldfish_targets.json` used to serve here
+    # and stopped the day the branch was given its own declaration, which is
+    # exactly the behaviour the fallback exists to allow.)
+    missing = deck_file(SLUG, "strategic_frame.json", BRANCH)
+    assert missing == deck_dir(SLUG) / "strategic_frame.json"
     # measured, branch has its own -> stays in the branch
     mana = deck_file(SLUG, "mana_analysis.json", BRANCH)
     assert mana.parent.name == BRANCH, mana

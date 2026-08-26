@@ -20,6 +20,7 @@ Model assumptions (v1):
   estimates are therefore conservative for decks that use them.
 """
 
+import contextlib
 import json
 import random
 import re
@@ -476,6 +477,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     treasure_online_by_turn = []
     commander_turn = None
     land_hits = []
+    # STALL: a turn on which NOTHING IN HAND COULD BE CAST AT ALL.
+    #
+    # THE OBVIOUS DEFINITION IS WRONG HERE AND WRONG BY A LOT. "A turn on which
+    # nothing was cast" measures the MODEL, not the deck: this is a resource
+    # simulation, so it casts rocks, tutors, extra-combat permanents and bodies
+    # and never casts a wipe, a counterspell or a targeted removal spell. Scored
+    # that way ur-dragon shows 6.4 dead turns in 10 while its hand grows to
+    # eleven cards — which is a description of what the model declines to
+    # represent, not of the deck stalling.
+    #
+    # So the question asked is CASTABILITY: with the mana this turn produced,
+    # was there any nonland card in hand you could legally have cast? That needs
+    # only mana value and available mana, so it is true of cards the model would
+    # never pick up, and it is the honest reading of the PRD's "no legal play".
+    #
+    # A LAND DROP IS NOT A PLAY. A turn spent playing a land and casting nothing
+    # is exactly the turn this measures.
+    stall_by_turn = []          # True on a turn with nothing castable
+    hand_size_by_turn = []      # a stall with cards left is a mana problem;
+                                # a stall with an empty hand is a draw problem
     mana_by_turn = []
     bodies_cum = 0
     bodies_by_turn = []
@@ -664,6 +685,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 
+        # Measured against the turn's FULL mana — lands, rocks and the
+        # Treasure stockpile — because a Treasure you are holding is mana you
+        # could have spent. `pool` has already been drawn down by the main
+        # phase, so this asks what was reachable at the START of it.
+        available = lands_in_play + rock_production + treasures
+        stall_by_turn.append(not any(
+            (not c["is_land"]) and c["cmc"] <= available for c in hand))
+        hand_size_by_turn.append(len(hand))
+
         tutors = sum(1 for t in tutor_ready_turns if t <= turn)
         for i, target in enumerate(targets):
             commander_cast = commander_turn is not None
@@ -677,6 +707,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "kept_hand_lands": kept_hand_lands,
         "mulligans": mulligans,
         "land_hits": land_hits,
+        "stall_by_turn": stall_by_turn,
+        "hand_size_by_turn": hand_size_by_turn,
         "mana_by_turn": mana_by_turn,
         "commander_turn": commander_turn,
         "bodies_by_turn": bodies_by_turn,
@@ -805,8 +837,16 @@ def aggregate(results, targets, max_turn, model_treasures=False, model_combat=Fa
     }
 
 
+class _Silent:
+    """A progress sink for a run inside a sweep, which draws its own."""
+
+    def advance(self, n=1):
+        pass
+
+
 def run(slug, iterations=None, seed=None, max_turn=None,
-        model_treasures=None, model_combat=None, with_results=False, branch=None):
+        model_treasures=None, model_combat=None, with_results=False, branch=None,
+        doc=None, quiet=False):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
     `model_treasures` and `model_combat` default to None, meaning READ THE
@@ -825,7 +865,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     seed = GOLDFISH_SEED if seed is None else seed
     max_turn = max_turn or GOLDFISH_MAX_TURN
 
-    doc = load_deck_cards(slug, branch)
+    # `doc` lets a caller measure a list that is not on disk — one card
+    # substituted, to find out what that card actually does. It changes nothing
+    # about the model; it only skips the read.
+    doc = doc if doc is not None else load_deck_cards(slug, branch)
     library, commanders = build_library(doc)
     if not commanders:
         raise SystemExit(f"No commander flagged in {slug}/cards.json")
@@ -868,7 +911,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             for group in target.get("need", []):
                 ghosts = [n for n in group.get("any_of", []) if n not in main_names]
                 if ghosts:
-                    print(f"  WARNING target '{target.get('label', '?')}' names "
+                    if not quiet:
+                        print(f"  WARNING target '{target.get('label', '?')}' names "
                           f"cards not in the maindeck (can never be drawn): "
                           f"{', '.join(ghosts)}")
 
@@ -912,7 +956,11 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # bit-identical and `tests/test_pilot_goldfish.py`'s determinism assertions
     # hold. Progress is drawn on stderr and nothing here reads it back.
     results = []
-    with console.task(f"Goldfishing {slug}", total=iterations, unit="sims") as t:
+    # A sweep runs this dozens of times; a progress bar per run is noise, and the
+    # sweep draws its own.
+    ctx = (contextlib.nullcontext(_Silent()) if quiet
+           else console.task(f"Goldfishing {slug}", total=iterations, unit="sims"))
+    with ctx as t:
         for _ in range(iterations):
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,

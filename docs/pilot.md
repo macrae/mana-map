@@ -81,6 +81,14 @@ manamap pilot deck-branch <slug> merge <name> [--write] [--force --reason …]
                                         #   mana-analysis / goldfish / deck-facts /
                                         #   deck-audit / deck-map), and merge only when
                                         #   every added card is sourced
+manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json] [--write]
+                                        #   the vitals: engine online against what the deck
+                                        #   DECLARES, stall risk, mana — every rate with its
+                                        #   interval; `--vs` adds the interval on the DIFFERENCE
+manamap pilot candidates <slug> --pool <file|-> [--axis A] [--cut CARD] [--limit N]
+                                        #   rank a pool by what each card MEASURABLY does:
+                                        #   substitute, re-run, report the delta. Anything
+                                        #   under the MDE is marked as noise, not ranked
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
 manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)

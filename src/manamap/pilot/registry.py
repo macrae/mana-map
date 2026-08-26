@@ -54,6 +54,12 @@ PILOT_STEPS = [
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("deck-info", "manamap.pilot.deck_info",
      "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
+    ("diagnose", "manamap.pilot.diagnostic",
+     "One diagnostic run: stall risk, engine online against what the deck DECLARES, "
+     "and the mana under both — every rate with its interval"),
+    ("candidates", "manamap.pilot.candidates",
+     "Rank a pool of cards by what each MEASURABLY does: substitute it in, re-run the "
+     "diagnostic, report the difference with an interval"),
     ("deck-branch", "manamap.pilot.deck_branch",
      "A candidate 99 you cannot yet sleeve: diff it, price it against your collection, "
      "measure it, and merge it only when the cards exist"),
@@ -124,7 +130,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "deck-version", "deck-branch", "diagnose", "candidates", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -318,10 +324,30 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map'):
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
+        if name == "candidates":
+            cmd.add_argument("--pool", default=None,
+                             help="a file of card names or a decklist; `-` for stdin")
+            cmd.add_argument("--axis", default="engine_online_3",
+                             help="engine_online_3|5|8, any_route_8, stall, land_drop")
+            cmd.add_argument("--cut", default=None,
+                             help="the card each candidate replaces (default: the "
+                                  "most expensive spell the declaration does not name)")
+            cmd.add_argument("--limit", type=int, default=None)
+            cmd.add_argument("--iterations", type=int, default=None)
+            cmd.add_argument("--json", action="store_true")
+        if name == "diagnose":
+            cmd.add_argument("--vs", default=None, metavar="REF",
+                             help="compare against another list — `main` for the "
+                                  "committed decklist, or a branch name")
+            cmd.add_argument("--iterations", type=int, default=None)
+            cmd.add_argument("--seed", type=int, default=None)
+            cmd.add_argument("--json", action="store_true")
+            cmd.add_argument("--write", action="store_true",
+                             help="write diagnostic.json beside the list it measured")
         if name == "deck-branch":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "new", "show", "diff", "source", "merge"],
