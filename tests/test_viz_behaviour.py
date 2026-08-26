@@ -19,6 +19,7 @@ Needs: `pip install playwright && playwright install chromium` (skips cleanly wi
 
 from __future__ import annotations
 
+import base64
 import json
 
 import pytest
@@ -1536,7 +1537,10 @@ def test_the_library_is_its_own_thing(discover_page):
         Discovery.library.toggle(Discovery.rowByName('Sol Ring'));
         await new Promise(r => setTimeout(r, 150));
         const two = Discovery.library.list.length;
-        Discovery.library.clear();
+        // `Session.library.clear`, not `Discovery.library.clear` — the latter was
+        // removed with the tray's unconfirmed Clear button. `Shell.clear` is the
+        // user-facing one and it asks first.
+        Session.library.clear();
         return {added: added, removed: removed, two: two, cleared: Discovery.library.list.length};
     }""")
     assert discover_page.js_errors == []
@@ -6198,7 +6202,18 @@ def test_opening_a_kept_card_does_not_delete_the_walk(discover_page):
         Session.library.add('Sol Ring');
         MM.relate(Discovery.current, 'similar');
     }""")
+    # Wait for the graph to STOP growing, not merely to have grown. `MM.relate`
+    # adds a card's relations asynchronously, so sampling on the first new node
+    # reads a count that is still climbing — and the assertion below then
+    # compares two different moments and calls the difference a deletion. This
+    # is the sixth of the family: a wait on the machine instead of on the
+    # behaviour.
     page.wait_for_function("() => Force.nodeCount > 1", timeout=15000)
+    page.wait_for_function(
+        """() => { const n = Force.nodeCount;
+                  if (window.__settle === n) return true;
+                  window.__settle = n; return false; }""",
+        timeout=20000, polling=400)
     before = page.evaluate("() => Force.nodeCount")
 
     _open_drawer(page)
@@ -6280,3 +6295,180 @@ def test_restoring_a_draft_keeps_a_repeated_card(discover_page):
     assert out["size"] == 2, f"a repeated name cancelled itself out: {out['names']}"
     assert "Sol Ring" in out["names"]
     assert page.js_errors == []
+
+
+def test_an_unreadable_draft_does_not_empty_your_library(browser, viz_server):
+    """RESUMING A DRAFT REPLACES YOUR LIBRARY, so it must read before it clears.
+
+    `resumeDraft` ran `Session.library.clear()` and only then looped over
+    `(brief && brief.must_include) || []`. A 404 is safe by luck — `build.js`'s
+    `getJSON` throws on `!res.ok`, so the `.catch` fires before any damage — but
+    a brief that LOADS and has no `must_include` is not. That is a documented,
+    reachable file: `load_brief`'s stated minimum is
+    `{"slug": …, "commander": …, "bracket": 3}`, with no card list at all, and
+    `brew --commander` scaffolds from that shape. Resuming one emptied the
+    library and reported "0 card(s) kept" as though that were the draft's
+    content.
+
+    Both halves are asserted: the unreadable brief (404) and the readable one
+    with nothing to restore.
+    """
+    import json as _json
+
+    page = browser.new_page()
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        page.route("**/data/decks/index.json*", lambda route: route.fulfill(
+            status=200, content_type="application/json",
+            body=_json.dumps({
+                "decks": [],
+                "drafts": [{"slug": "a-draft-that-was-deleted", "deck_name": "gone",
+                            "commander": "Zur the Enchanter", "theme": None,
+                            "bracket": None, "kept": 2, "started": "2026-08-25"}],
+            })))
+        # The directory is gone, so its brief is a 404 — which `getJSON` turns
+        # into a resolved `null` rather than a rejection.
+        # A brief that LOADS and carries no card list — the documented minimum
+        # shape, and the case a 404 does not cover.
+        # The trailing `*` is load-bearing: `build.js` cache-busts every fetch,
+        # so the URL carries `?v=` and a glob without it silently does not match
+        # — the request falls through to a real 404 and the test then measures
+        # the 404 path while believing it measures the other one. This repo has
+        # paid for that glob once already.
+        page.route("**/a-draft-that-was-deleted/brief.json*",
+                   lambda route: route.fulfill(
+                       status=200, content_type="application/json",
+                       body=_json.dumps({"slug": "a-draft-that-was-deleted",
+                                         "commander": "Zur the Enchanter",
+                                         "bracket": 3})))
+        page.goto(f"{viz_server}/viz/index.html")
+        page.wait_for_function(
+            "() => window.Discovery && Discovery.isReady() && window.Build",
+            timeout=30000)
+
+        out = page.evaluate("""async () => {
+            Session.library.clear();
+            ['Sol Ring', 'Rhystic Study'].forEach(n => Session.library.add(n));
+            const before = Session.library.names;
+            MM.setMode('build');
+            // Build reads the manifest lazily; resuming before it lands returns
+            // 'no draft "…"' and the destructive path never runs — which is a
+            // test that passes by not testing anything.
+            await new Promise(r => { const t = setInterval(() => {
+                if (Build.draftSlugs && Build.draftSlugs().length) { clearInterval(t); r(); }
+            }, 100); setTimeout(() => { clearInterval(t); r(); }, 15000); });
+            const sawDraft = Build.draftSlugs().indexOf('a-draft-that-was-deleted') !== -1;
+            Build.resumeDraft('a-draft-that-was-deleted');
+            await new Promise(r => setTimeout(r, 1500));
+            const status = (document.getElementById('status') || {}).textContent || '';
+            return { before, sawDraft, status, after: Session.library.names,
+                     stored: JSON.parse(localStorage.getItem('manamap-library')).cards };
+        }""")
+        # Without these the test can pass by never running the code it is about.
+        assert out["sawDraft"], "Build never saw the draft — the path did not run"
+        assert "could not be read" in out["status"], (
+            f"resumeDraft did not reach the guard: {out['status']!r}")
+        assert out["after"] == out["before"], (
+            f"an unreadable draft emptied the library: "
+            f"{out['before']} -> {out['after']}")
+        assert out["stored"] == out["before"], "and it wrote the loss to disk"
+        assert errors == [], errors
+    finally:
+        page.close()
+
+
+def test_a_new_deck_says_it_is_new_rather_than_showing_nothing(browser, viz_server):
+    """A deck built this afternoon and a deck nobody has touched both rendered
+    as a title and no chips — so the newest thing on the bench looked exactly
+    like the most neglected. That is the front door getting the one question it
+    exists to answer backwards."""
+    page = _workbench(
+        browser, viz_server,
+        [{"slug": "brand-new", "deck_name": "Brand New", "commander": "Zur the Enchanter"},
+         {"slug": "measured", "deck_name": "Measured", "commander": "Sisay",
+          "verified": 5}],
+        infos={"brand-new": {"status": {"complete": 3, "of": 15,
+                                        "todo": [{"stage": "bracket", "what": "x", "how": "y"}]}},
+               "measured": {"status": {"complete": 14, "of": 15, "todo": []},
+                            "record": {"games": 2, "win": 1, "loss": 1}}})
+    try:
+        # `inner_text` returns RENDERED text and the chips are uppercased in CSS,
+        # so compare case-insensitively rather than against the source string.
+        text = page.inner_text("body").lower()
+        assert "nothing measured yet" in text, (
+            "a brand-new deck is indistinguishable from a neglected one")
+        # And it must NOT appear on a deck that has evidence of its own.
+        # Located by heading rather than by `has_text`: the chip itself contains
+        # the word "measured", so filtering on it matched the OTHER card too.
+        cards = page.locator(".wb-card")
+        got = [cards.nth(i).inner_text().lower() for i in range(cards.count())]
+        measured = [c for c in got if c.startswith("measured")]
+        assert len(measured) == 1, got
+        assert "nothing measured yet" not in measured[0], (
+            "the new chip crowded out a deck's real evidence")
+        assert "verified line" in measured[0]
+    finally:
+        page.close()
+
+
+def test_a_double_faced_card_still_gets_its_picture(discover_page):
+    """Scryfall 404s the full `A // B` name for some layouts and resolves on the
+    front face alone — measured in this repo on
+    `Disciple of Freyalise // Garden of Freyalise`. The corpus keys the full
+    form because it is the graph key everywhere, so a tile built from a card's
+    own name asks for the one Scryfall may refuse.
+
+    THE FIRST IMPLEMENTATION NEVER RAN. The retry was built as an inline
+    `onerror` string carrying `JSON.stringify` output, so the attribute value
+    held a literal `"` that TERMINATED the attribute; the handler was truncated
+    mid-block and every tile threw `Unexpected end of input`. It is a delegated
+    listener now, with nothing interpolated into markup.
+
+    BOTH RESPONSES ARE STUBBED, deliberately. Asking the real Scryfall makes
+    this a test of somebody else's uptime and latency — it failed under `-n 4`
+    for exactly that reason — when the thing worth asserting is ours: that a
+    404 on the full name provokes exactly one retry on the front face.
+    """
+    page = discover_page
+    # A 1x1 PNG, so the browser really decodes an image and `naturalWidth`
+    # means what the assertion says it means.
+    png = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==")
+    asked = []
+
+    def scryfall(route):
+        url = route.request.url
+        asked.append(url)
+        # The full "A // B" form is the one Scryfall refuses.
+        if "%20%2F%2F%20" in url:
+            return route.fulfill(status=404, body="")
+        return route.fulfill(status=200, content_type="image/png", body=png)
+
+    page.route("https://api.scryfall.com/cards/named*", scryfall)
+
+    page.evaluate("""() => {
+        Session.library.clear();
+        Session.library.add('Ulvenwald Captive // Ulvenwald Abomination');
+        if (!Shell.isOpen) Shell.toggle();
+    }""")
+    page.wait_for_function(
+        """() => { const i = document.querySelector('.lib-tile img');
+                   return (i && i.complete && i.naturalWidth > 0) ||
+                          document.querySelector('.lib-tile-noart'); }""",
+        timeout=20000)
+
+    state = page.evaluate("""() => {
+        const i = document.querySelector('.lib-tile img');
+        return { drew: !!(i && i.naturalWidth > 0),
+                 retried: !!(i && i.dataset.retried),
+                 gaveUp: !!document.querySelector('.lib-tile-noart') };
+    }""")
+    assert state["retried"], f"the front-face retry never fired: {state}"
+    assert state["drew"] and not state["gaveUp"], f"no picture: {state}"
+    assert any("%20%2F%2F%20" in u for u in asked), "it never asked for the full name"
+    assert any("Ulvenwald%20Captive&" in u or "Ulvenwald%20Captive%26" in u
+               or u.endswith("Ulvenwald%20Captive") or "Ulvenwald%20Captive&format" in u
+               for u in asked), f"it never asked for the front face alone: {asked}"
+    assert page.js_errors == [], (
+        f"the tile threw — an inline handler that does not parse: {page.js_errors}")

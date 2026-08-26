@@ -870,7 +870,25 @@
      * brief, and copying them into the manifest would be a second copy to go
      * stale. */
     getJSON(DECK_BASE + slug + '/brief.json').then(function (brief) {
-      const names = (brief && brief.must_include) || [];
+      /* A BRIEF THAT COULD NOT BE READ MUST NOT EMPTY YOUR LIBRARY.
+       *
+       * `getJSON` swallows a 404 to `null` — this repo's own note about it — so
+       * a deleted or unreachable draft arrived here as `brief = null`, `names`
+       * fell back to `[]`, and `clear()` ran anyway. The `.catch` below never
+       * fired, because the promise RESOLVED; the failure was a value, not a
+       * throw. Observed for real: a tab still pointing at a draft that had been
+       * deleted wiped a library on load, with a status line reporting only that
+       * the brief could not be read — after the damage.
+       *
+       * So the clear is conditional on there being something to replace it
+       * with. Resuming a draft means picking up ITS cards; not being able to
+       * read them is a reason to keep yours. */
+      if (!brief || !Array.isArray(brief.must_include)) {
+        MM.setStatus(d.deck_name + ' — a draft, but its brief could not be read. '
+          + 'Your library is untouched.');
+        return;
+      }
+      const names = brief.must_include;
       /* ADD, NOT TOGGLE. Restoring a list by flipping each entry means a name
        * appearing twice — or two names the corpus resolves to one row — takes
        * the card straight back out again. And the status then quoted
@@ -888,7 +906,8 @@
       MM.setStatus(d.deck_name + ' — a draft, ' + kept + ' card(s) kept'
         + (missing ? ' (' + missing + ' no longer in the corpus)' : ''));
     }).catch(function () {
-      MM.setStatus(d.deck_name + ' — a draft (its brief could not be read)');
+      MM.setStatus(d.deck_name + ' — a draft (its brief could not be read). '
+        + 'Your library is untouched.');
     });
 
     if (window.Api && Api.ready) {
@@ -1742,6 +1761,9 @@
     commanderSearch,
     pickCommander,
     resumeDraft,
+    // For a test that must prove it exercised the draft path rather than
+    // passing because the manifest had not landed yet.
+    draftSlugs: function () { return ((manifest && manifest.drafts) || []).map(d => d.slug); },
     // A read-only probe for the browser suite: the prose a line was BUILT with,
     // so a test can compare what the panel printed against what the artifact
     // says without re-fetching and re-implementing the source ranking.

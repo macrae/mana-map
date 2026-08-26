@@ -28,26 +28,55 @@ from manamap.pilot.common import deck_dir, load_json, presentable, report_errors
 # The lifecycle, in dependency order. `sha` names the key an artifact stamps the
 # decklist hash into, when it stamps one — an artifact with no `sha` cannot be
 # checked for staleness and says so rather than being assumed current.
+#
+# `how` IS PART OF THE REGISTRY, not a second table somewhere else. The dossier
+# used to make an absent stage VANISH — `if (!b) return ''` in every panel — so a
+# freshly-built deck rendered as a thin one with nothing saying what was missing
+# or how to get it. Any mapping from stage to command written in JavaScript would
+# be a second copy of this sequence, which is the thing this file exists to be
+# the single statement of. So the command travels with the stage, and every
+# surface renders what it is given.
+#
+# A stage advanced by an agent names its SKILL (`/analyze-engine`), because that
+# is the honest instruction — there is no subcommand that writes an engine model.
+# A stage that is authored says so instead of naming a command that cannot exist.
 STAGES = [
-    ("brief",      "brief.json",             None,  False, "the written intent a build starts from"),
-    ("decklist",   "decklist.txt",           None,  True,  "the 99, tracked, and the identity everything else hangs on"),
-    ("cards",      "cards.json",             None,  True,  "Scryfall resolution with printings — `fetch-deck`"),
-    ("bracket",    "bracket_report.json",    None,  False, "computed power floor — `bracket-check`"),
-    ("targets",    "goldfish_targets.json",  None,  False, "the engine DECLARATION: any_of groups, size = redundancy"),
-    ("goldfish",   "goldfish_metrics.json",  "meta.decklist_sha256", False, "seeded Monte Carlo — `goldfish`"),
-    ("mana",       "mana_analysis.json",     "decklist_sha256",      False, "hypergeometric colour sources — run AFTER goldfish"),
+    ("brief",      "brief.json",             None,  False, "the written intent a build starts from",
+     "manamap pilot brew {slug} --commander \"<name>\" --theme <style>"),
+    ("decklist",   "decklist.txt",           None,  True,  "the 99, tracked, and the identity everything else hangs on",
+     "manamap pilot check-in {slug} --from <paper-list.txt>"),
+    ("cards",      "cards.json",             None,  True,  "Scryfall resolution with printings — `fetch-deck`",
+     "manamap pilot fetch-deck {slug}"),
+    ("bracket",    "bracket_report.json",    None,  False, "computed power floor — `bracket-check`",
+     "manamap pilot bracket-check {slug}"),
+    ("targets",    "goldfish_targets.json",  None,  False, "the engine DECLARATION: any_of groups, size = redundancy",
+     "AUTHORED: data/decks/{slug}/goldfish_targets.json — the any_of groups the "
+     "goldfish measures; `validate-goldfish-targets {slug}` checks it"),
+    ("goldfish",   "goldfish_metrics.json",  "meta.decklist_sha256", False, "seeded Monte Carlo — `goldfish`",
+     "manamap pilot goldfish {slug}"),
+    ("mana",       "mana_analysis.json",     "decklist_sha256",      False, "hypergeometric colour sources — run AFTER goldfish",
+     "manamap pilot mana-analysis {slug}"),
     ("frame",      "strategic_frame.json",
      "decklist_sha256_prefix|decklist_sha256_12|as_of_decklist_sha256|decklist_sha256",
-     False, "the strategist's read — `research-strategy` consult"),
-    ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`"),
-    ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop"),
-    ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier"),
-    ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`"),
+     False, "the strategist's read — `research-strategy` consult",
+     "/research-strategy — MODE consult, on {slug}"),
+    ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`",
+     "manamap pilot deck-map {slug}"),
+    ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop",
+     "/analyze-engine {slug}"),
+    ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier",
+     "/resolve-stack — one board, one rules domain, cited"),
+    ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`",
+     "/write-manual — the tutor guide is one of pilot-notes' artifacts"),
     ("prose",      "manual_prose.json",
      "decklist_sha256_prefix|decklist_sha256_12|as_of_decklist_sha256|decklist_sha256",
-     False, "the pilot's notes — `write-manual`"),
-    ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent"),
-    ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)"),
+     False, "the pilot's notes — `write-manual`",
+     "/write-manual {slug}"),
+    ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+     "manamap pilot deck-notes {slug} add \"<what happened>\" --result win|loss --opponents 3"),
+    ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)",
+     "AUTHORED: data/decks/{slug}/issue.json — name, commander, and whether the "
+     "deck is still sleeved"),
 ]
 
 # Stages this development cycle added. Named explicitly so a deck built before
@@ -148,13 +177,14 @@ def status(slug, validate=True):
     truth = cards.get("decklist_sha256")
 
     rows = []
-    for key, name, sha_path, required, what in STAGES:
+    for key, name, sha_path, required, what, how in STAGES:
         path = base / name
         if name.endswith("/"):
             files = sorted(path.glob("*.json")) if path.is_dir() else []
             passing = [f for f in files
                        if presentable(json.loads(f.read_text()))]
             rows.append({"stage": key, "artifact": name, "what": what,
+                         "how": how.format(slug=slug),
                          "state": "present" if passing else "missing",
                          "detail": f"{len(passing)} passing of {len(files)}",
                          "required": required, "new": key in ADDED_2026_08})
@@ -162,6 +192,7 @@ def status(slug, validate=True):
 
         if not path.exists():
             rows.append({"stage": key, "artifact": name, "what": what,
+                         "how": how.format(slug=slug),
                          "state": "missing", "detail": "", "required": required,
                          "new": key in ADDED_2026_08})
             continue
@@ -214,7 +245,8 @@ def status(slug, validate=True):
             elif ok is None and why:
                 detail = detail or why
 
-        rows.append({"stage": key, "artifact": name, "what": what, "state": state,
+        rows.append({"stage": key, "artifact": name, "what": what,
+                         "how": how.format(slug=slug), "state": state,
                      "detail": detail, "required": required,
                      "new": key in ADDED_2026_08})
 

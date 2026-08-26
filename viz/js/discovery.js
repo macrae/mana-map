@@ -685,8 +685,6 @@ window.Discovery = (function () {
 
   function toggleLibrary(row) { Session.library.toggle(row); }
 
-  function clearLibrary() { Session.library.clear(); }
-
   /* Straight from Session: `list` holds only the names this corpus could place,
    * and a name it could not is still a card the pilot kept. */
   function libraryNames() { return Session.library.names; }
@@ -1103,7 +1101,12 @@ window.Discovery = (function () {
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
     library: { get list() { return Session.library.list; }, has: inLibrary, toggle: toggleLibrary,
-            clear: clearLibrary, names: libraryNames },
+            // No `clear` here. Its only caller was the Clear button in the
+            // collapsed tray, and that moved to the drawer — where it ASKS
+            // FIRST. Leaving an unconfirmed one-call wipe exported, reachable
+            // from the console and from any future panel, is how the careful
+            // version gets bypassed by the convenient one.
+            names: libraryNames },
     brief, exportBrief, importText, onImport, toggleImport, rowByName,
     seedFromRows, parseSeedNames, onSeedCards, toggleSeed,
     get current() { return current; },

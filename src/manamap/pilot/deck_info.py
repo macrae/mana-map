@@ -158,7 +158,16 @@ def compose(slug):
                    "of": len(rows),
                    "stale": [r["stage"] for r in rows if r["state"] == "STALE"],
                    "invalid": [r["stage"] for r in rows if r["state"] == "INVALID"],
-                   "missing": [r["stage"] for r in rows if r["state"] == "missing"]},
+                   "missing": [r["stage"] for r in rows if r["state"] == "missing"],
+                   # WHAT EACH ABSENT STAGE IS, AND HOW TO GET IT — carried from
+                   # `deck_status.STAGES`, which is the one machine-readable
+                   # statement of the lifecycle. The dossier made an absent
+                   # section VANISH, so a freshly-built deck rendered as a thin
+                   # one and said nothing about the difference; the fix is not a
+                   # lookup table in JavaScript, which would be this sequence
+                   # written down twice.
+                   "todo": [{"stage": r["stage"], "what": r["what"], "how": r["how"]}
+                            for r in rows if r["state"] == "missing"]},
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,
@@ -327,6 +336,15 @@ def _next(info):
     if info["simulation"] is None and not closed:
         nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
                    f"(Forge; ◆ seeded)")
+        # SIMULATION IS NOT A LIFECYCLE STAGE and is not being made one here.
+        # Adding it to `STAGES` would change the denominator for all eleven decks
+        # in one commit and mark nine of them newly incomplete for a measurement
+        # that is optional and costs 45 minutes. It is a todo because the dossier
+        # has a panel for it and that panel used to vanish — which is the same
+        # defect, on an artifact that happens not to be a stage.
+        info["status"]["todo"].append({
+            "stage": "sim", "what": "how it does against your actual pod",
+            "how": f"manamap pilot simulate {slug} --vs <opponent> --games 12"})
     elif info["experiments"] is None and info["version"]["of"] > 1 and not closed:
         nxt.append(f"{info['version']['of']} versions and no experiment — "
                    f"`experiment {slug} --a V<n> --b working --vs <pod> --games N` measures a swap")

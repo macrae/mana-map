@@ -27,6 +27,68 @@
       "prose",
       "log",
       "issue"
+    ],
+    "todo": [
+      {
+        "stage": "targets",
+        "what": "the engine DECLARATION: any_of groups, size = redundancy",
+        "how": "AUTHORED: data/decks/kinnan/goldfish_targets.json — the any_of groups the goldfish measures; `validate-goldfish-targets kinnan` checks it"
+      },
+      {
+        "stage": "goldfish",
+        "what": "seeded Monte Carlo — `goldfish`",
+        "how": "manamap pilot goldfish kinnan"
+      },
+      {
+        "stage": "mana",
+        "what": "hypergeometric colour sources — run AFTER goldfish",
+        "how": "manamap pilot mana-analysis kinnan"
+      },
+      {
+        "stage": "frame",
+        "what": "the strategist's read — `research-strategy` consult",
+        "how": "/research-strategy — MODE consult, on kinnan"
+      },
+      {
+        "stage": "map",
+        "what": "the constellation — `deck-map`",
+        "how": "manamap pilot deck-map kinnan"
+      },
+      {
+        "stage": "engine",
+        "what": "how it RUNS — `analyze-engine` loop",
+        "how": "/analyze-engine kinnan"
+      },
+      {
+        "stage": "stacks",
+        "what": "checker-passed lines: the only fact tier",
+        "how": "/resolve-stack — one board, one rules domain, cited"
+      },
+      {
+        "stage": "tutors",
+        "what": "the tutor guide — `tutor-guide`",
+        "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
+      },
+      {
+        "stage": "prose",
+        "what": "the pilot's notes — `write-manual`",
+        "how": "/write-manual kinnan"
+      },
+      {
+        "stage": "log",
+        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+        "how": "manamap pilot deck-notes kinnan add \"<what happened>\" --result win|loss --opponents 3"
+      },
+      {
+        "stage": "issue",
+        "what": "authored identity: name, commander, status (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/kinnan/issue.json — name, commander, and whether the deck is still sleeved"
+      },
+      {
+        "stage": "sim",
+        "what": "how it does against your actual pod",
+        "how": "manamap pilot simulate kinnan --vs <opponent> --games 12"
+      }
     ]
   },
   "bracket": {

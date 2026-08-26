@@ -16,6 +16,18 @@
     "invalid": [],
     "missing": [
       "log"
+    ],
+    "todo": [
+      {
+        "stage": "log",
+        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+        "how": "manamap pilot deck-notes yawgmoth-swarm add \"<what happened>\" --result win|loss --opponents 3"
+      },
+      {
+        "stage": "sim",
+        "what": "how it does against your actual pod",
+        "how": "manamap pilot simulate yawgmoth-swarm --vs <opponent> --games 12"
+      }
     ]
   },
   "bracket": {

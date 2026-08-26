@@ -1,13 +1,11 @@
 {
-  "slug": "zur-enchantress",
+  "slug": "blar",
   "commander": [
-    "Zur the Enchanter"
+    "Radagast of Rhosgobel"
   ],
   "lifecycle": null,
   "colour_identity": [
-    "W",
-    "U",
-    "B"
+    "G"
   ],
   "size": 100,
   "lands": 36,
@@ -34,37 +32,37 @@
       {
         "stage": "bracket",
         "what": "computed power floor — `bracket-check`",
-        "how": "manamap pilot bracket-check zur-enchantress"
+        "how": "manamap pilot bracket-check blar"
       },
       {
         "stage": "targets",
         "what": "the engine DECLARATION: any_of groups, size = redundancy",
-        "how": "AUTHORED: data/decks/zur-enchantress/goldfish_targets.json — the any_of groups the goldfish measures; `validate-goldfish-targets zur-enchantress` checks it"
+        "how": "AUTHORED: data/decks/blar/goldfish_targets.json — the any_of groups the goldfish measures; `validate-goldfish-targets blar` checks it"
       },
       {
         "stage": "goldfish",
         "what": "seeded Monte Carlo — `goldfish`",
-        "how": "manamap pilot goldfish zur-enchantress"
+        "how": "manamap pilot goldfish blar"
       },
       {
         "stage": "mana",
         "what": "hypergeometric colour sources — run AFTER goldfish",
-        "how": "manamap pilot mana-analysis zur-enchantress"
+        "how": "manamap pilot mana-analysis blar"
       },
       {
         "stage": "frame",
         "what": "the strategist's read — `research-strategy` consult",
-        "how": "/research-strategy — MODE consult, on zur-enchantress"
+        "how": "/research-strategy — MODE consult, on blar"
       },
       {
         "stage": "map",
         "what": "the constellation — `deck-map`",
-        "how": "manamap pilot deck-map zur-enchantress"
+        "how": "manamap pilot deck-map blar"
       },
       {
         "stage": "engine",
         "what": "how it RUNS — `analyze-engine` loop",
-        "how": "/analyze-engine zur-enchantress"
+        "how": "/analyze-engine blar"
       },
       {
         "stage": "stacks",
@@ -79,22 +77,22 @@
       {
         "stage": "prose",
         "what": "the pilot's notes — `write-manual`",
-        "how": "/write-manual zur-enchantress"
+        "how": "/write-manual blar"
       },
       {
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
-        "how": "manamap pilot deck-notes zur-enchantress add \"<what happened>\" --result win|loss --opponents 3"
+        "how": "manamap pilot deck-notes blar add \"<what happened>\" --result win|loss --opponents 3"
       },
       {
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/zur-enchantress/issue.json — name, commander, and whether the deck is still sleeved"
+        "how": "AUTHORED: data/decks/blar/issue.json — name, commander, and whether the deck is still sleeved"
       },
       {
         "stage": "sim",
         "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate zur-enchantress --vs <opponent> --games 12"
+        "how": "manamap pilot simulate blar --vs <opponent> --games 12"
       }
     ]
   },
@@ -114,7 +112,6 @@
   "audit": {
     "archetype": null,
     "under": [
-      "card-advantage",
       "interaction-breadth"
     ],
     "over": [
@@ -131,9 +128,9 @@
   "simulation": null,
   "experiments": null,
   "next": [
-    "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`",
-    "no simulation runs — `simulate zur-enchantress --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "not marked as built in paper — if it is sleeved, `deck-version blar paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "nothing in the captain's log — play it, then `deck-notes blar add \"…\" --result win|loss --opponents N`",
+    "no simulation runs — `simulate blar --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

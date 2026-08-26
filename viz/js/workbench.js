@@ -83,6 +83,24 @@
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
     if ((e.experiments || []).length) out += chip((e.experiments || []).length + ' experiment');
     if ((e.prescriptions || []).length) out += chip((e.prescriptions || []).length + ' question');
+    /* NOTHING TO SHOW IS TWO DIFFERENT DECKS, and a bare card cannot tell them
+     * apart. A deck built this afternoon and a deck nobody has touched in six
+     * months both render as a title and no chips — so the newest thing on the
+     * bench looks exactly like the most neglected, which is the front door
+     * getting the one question it exists to answer backwards.
+     *
+     * Said only when there is genuinely nothing else on the card: the moment a
+     * deck has a game, a line or a run, its own evidence is the better answer
+     * and this would just be noise beside it. `todo` comes from
+     * `deck_status.STAGES` by way of `info.json` — the same list the dossier's
+     * absent sections read, so the two surfaces cannot disagree about how far
+     * along a deck is. */
+    if (!out) {
+      var todo = ((info && info.status && info.status.todo) || []).length;
+      var done = (info && info.status && info.status.complete) || 0;
+      if (todo) out += chip('new — ' + done + ' of ' + ((info.status.of) || 0)
+                            + ', nothing measured yet');
+    }
     return out;
   }
 

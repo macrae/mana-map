@@ -86,9 +86,54 @@
 
   // ── Panels ───────────────────────────────────────────────────────────
 
+  /* ── An absent section says what it is and how to get it ────────────────
+   *
+   * Every panel below opened with `if (!x) return ''`, so a section with no
+   * artifact VANISHED. On a deck with everything that is right — the page shows
+   * what has been measured. On a deck you built five minutes ago it is wrong in
+   * a way that matters: `zur-enchantress` rendered nine fewer sections than
+   * `radagast` and said nothing about the difference, so a NEW deck was
+   * indistinguishable from a BROKEN one, and the page gave no hint that the
+   * missing half is a sequence you can walk.
+   *
+   * The command comes from `deck_status.STAGES` by way of `info.status.todo`.
+   * It is deliberately NOT a lookup table here: that sequence is the one thing
+   * `deck_status` exists to be the single statement of, and a copy in JavaScript
+   * would be the second — free to drift, and drifting silently.
+   */
+  function todoFor(d, stage) {
+    var todo = (((d.info || {}).status || {}).todo) || [];
+    for (var i = 0; i < todo.length; i++) if (todo[i].stage === stage) return todo[i];
+    return null;
+  }
+
+  /* A command you can take away. There is no Run button: these write tracked
+   * artifacts and some of them cost 45 minutes or a quarter of a million
+   * tokens, so the page hands you the line rather than spending on your behalf.
+   */
+  function command(how) {
+    if (!how) return '';
+    if (how.indexOf('AUTHORED:') === 0) {
+      return '<p class="ev todo-authored">' + esc(how) + '</p>';
+    }
+    return '<button class="todo-cmd" title="Copy" onclick="Deck.copy(this)">' +
+      '<code>' + esc(how) + '</code><span class="todo-copy">copy</span></button>';
+  }
+
+  function absent(id, title, promise, accent, stage, d, what) {
+    var t = todoFor(d, stage);
+    // Not a lifecycle stage, or the deck has it and something else is wrong:
+    // stay silent rather than inventing a reason.
+    if (!t) return '';
+    return panel(id, title, promise, [], accent,
+      '<div class="todo"><p class="todo-what">Not yet on this deck — ' +
+      esc(what || t.what) + '</p>' + command(t.how) + '</div>');
+  }
+
   function bracketPanel(d) {
     var b = d.bracket;
-    if (!b) return '';
+    if (!b) return absent('bracket', 'Bracket', 'The power floor the contents are consistent with.',
+      'var(--tier-data)', 'bracket', d, 'the computed power floor, and what drives it');
     var drivers = (b.drivers || []).map(function (dr) {
       return '<li><b>Forces ' + esc(dr.forces) + '</b> — <span class="chip">' +
         esc(dr.signal) + '</span><span class="ev">' + esc(dr.detail) + '</span></li>';
@@ -114,7 +159,8 @@
 
   function manaPanel(d) {
     var m = d.mana;
-    if (!m) return '';
+    if (!m) return absent('mana', 'The mana', 'Hypergeometric colour sources.',
+      'var(--tier-data)', 'mana', d, 'colour sources and castability, priced against Karsten');
     var L = m.lands || {}, src = (m.sources || {}).lands || {};
     var pAll = (m.on_curve_probability || {}).with_rocks_and_dorks || {};
     var pLand = (m.on_curve_probability || {}).lands_only || {};
@@ -157,7 +203,8 @@
 
   function goldfishPanel(d) {
     var g = d.goldfish;
-    if (!g) return '';
+    if (!g) return absent('goldfish', 'The goldfish', 'Seeded Monte Carlo over resource development.',
+      'var(--tier-data)', 'goldfish', d, 'how fast it develops, over 10,000 seeded games');
     var m = g.metrics || {}, meta = g.meta || {};
     var oh = m.opening_hand || {}, cmd = m.commander || {};
     var targets = (m.targets || []).map(function (t) {
@@ -224,7 +271,8 @@
 
   function tutorPanel(d) {
     var t = d.tutors;
-    if (!t || !(t.tutors || []).length) return '';
+    if (!t || !(t.tutors || []).length) return absent('tutors', 'The tutors', 'What to fetch, and when.',
+      'var(--tier-coach)', 'tutors', d, 'what each tutor should go and get, by board state');
     var items = t.tutors.map(function (e) {
       var wishes = (e.targets || []).map(function (w) {
         return '<div class="step"><span class="n">→</span><b>' + esc(w.fetch) + '</b>' +
@@ -242,7 +290,8 @@
   }
 
   function stacksPanel(d) {
-    if (!d.stacks.length) return '';
+    if (!d.stacks.length) return absent('kill', 'The lines', 'Rules-verified, or not claimed.',
+      'var(--tier-verified)', 'stacks', d, 'a board resolved step by step with rules citations — the only fact tier');
     var cases = d.stacks.map(function (s) {
       var steps = ((s.resolution || {}).steps || []).map(function (st) {
         var cites = (st.citations || []).map(function (c) {
@@ -302,7 +351,9 @@
 
   function constellationPanel(d) {
     var map = d.deckMap;
-    if (!map || !map.cards || !map.cards.length) return '';
+    if (!map || !map.cards || !map.cards.length)
+      return absent('map', 'The constellation', "This deck's own layout, in function space.",
+        'var(--tier-data)', 'map', d, 'where this deck sits in function space, cut into cities');
     var W = 900, H = 560, PAD = 66;
     var xs = map.cards.map(function (c) { return c.x; });
     var ys = map.cards.map(function (c) { return c.y; });
@@ -508,7 +559,8 @@
 
   function enginePanel(d) {
     var e = d.engine;
-    if (!e) return '';
+    if (!e) return absent('engine', 'The engine', 'How the deck actually runs.',
+      'var(--tier-coach)', 'engine', d, 'the stages it converts through, and what carries between them');
     var lines = (e.lines || []).map(function (l) {
       var proved = !!l.verified_by;
       return '<span class="chip">' + (proved ? '✓' : '·') + '</span> ' +
@@ -533,7 +585,10 @@
     // number pass for a current one.
     var simStale = ((d.info || {}).simulation || {}).stale;
     var expStale = (((d.info || {}).experiments || {}).latest || {}).stale;
-    if (!runs.length && !exps.length) return '';
+    if (!runs.length && !exps.length)
+      return absent('table', 'At the table', 'Forge, seeded, against your own pod.',
+        'var(--tier-data)', 'sim', d);
+    
     var body = '';
     runs.forEach(function (run) {
       var me = ((run.analysis || {}).seats || {})[run.slug] || {};
@@ -853,6 +908,31 @@
       document.getElementById('status').textContent = 'Could not load the dossier: ' + e;
     });
   }
+
+  /* The one thing this page needs a global for: the copy button on an absent
+   * section's command. Assigned here, at the end, rather than referenced from
+   * anything that runs during evaluation — the boot-order trap `mana-map.js`
+   * documents (touching a global inside the IIFE that defines it aborts the
+   * IIFE, so the global is never exported and every later file fails too). */
+  window.Deck = {
+    copy: function (btn) {
+      var text = (btn.querySelector('code') || {}).textContent || '';
+      var say = btn.querySelector('.todo-copy');
+      var done = function (ok) {
+        if (!say) return;
+        say.textContent = ok ? 'copied' : 'select and copy';
+        setTimeout(function () { say.textContent = 'copy'; }, 1600);
+      };
+      // `navigator.clipboard` needs a secure context, and this page is served
+      // over plain http from localhost — which IS secure by the spec, but not
+      // everywhere it might be opened. Report the failure rather than looking
+      // like a button that does nothing.
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); },
+                                                 function () { done(false); });
+      } else { done(false); }
+    },
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);

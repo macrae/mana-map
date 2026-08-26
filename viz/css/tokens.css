@@ -428,3 +428,26 @@ details.case .body { padding: 0 14px 14px; }
 .lib-tile-noart .lib-open::before { content: ""; display: block; width: 100%;
   aspect-ratio: 488 / 680; border-radius: 6px;
   background: var(--panel-hi, #2a2a4a); }
+
+/* ── An absent section ─────────────────────────────────────────────────────
+ *
+ * Muted, so a page of them reads as a path rather than as a page of errors —
+ * the panel is present and quiet, which is the difference between "not yet"
+ * and "broken". Every panel used to vanish instead, so a deck built five
+ * minutes ago was indistinguishable from one that had lost its artifacts.
+ */
+.panel:has(.todo) { opacity: 0.72; }
+.panel:has(.todo):hover { opacity: 1; }
+.todo-what { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 10px; }
+.todo-cmd { display: flex; align-items: center; gap: 10px; width: 100%;
+  text-align: left; cursor: pointer; padding: 8px 10px; border-radius: 3px;
+  background: var(--paper); border: 1px solid var(--rule); color: inherit;
+  font: inherit; }
+.todo-cmd:hover { border-color: var(--tier-data); }
+.todo-cmd code { font-family: var(--type, monospace); font-size: 0.76rem;
+  color: var(--ink); word-break: break-word; flex: 1; }
+.todo-copy { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-soft); flex: none; }
+.todo-authored { font-size: 0.76rem; font-family: var(--type, monospace);
+  color: var(--ink-soft); background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 3px; padding: 8px 10px; margin: 0; }

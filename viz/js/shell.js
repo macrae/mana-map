@@ -110,12 +110,36 @@ window.Shell = (function () {
    * `Disciple of Freyalise // Garden of Freyalise`). So the first failure retries
    * the front face, and only the second gives up to a name plate. Both existing
    * image sites route through here and inherit the retry. */
-  function imgFallback() {
-    return 'if(!this.dataset.retried&&this.alt.indexOf(\' // \')>0)'
-      + '{this.dataset.retried=1;this.src=' + JSON.stringify('https://api.scryfall.com/cards/named?exact=')
-      + '+encodeURIComponent(this.alt.split(\' // \')[0])+' + JSON.stringify('&format=image&version=small') + ';}'
-      + 'else{this.onerror=null;this.parentElement.classList.add(\'lib-tile-noart\');'
-      + 'this.remove();}';
+  /* A DELEGATED LISTENER, NOT AN INLINE HANDLER, and the first version is why.
+   *
+   * It built the handler as a string containing `JSON.stringify(...)` output —
+   * so the attribute value carried a literal `"`, which TERMINATED the
+   * attribute. The handler was truncated mid-block, every tile threw
+   * `Unexpected end of input`, and the DFC retry it exists to perform never ran
+   * once. `mana-map.js`'s two inline handlers already know this and hand-escape
+   * with `.replace(/"/g, '&quot;')`; this needs no escaping because nothing is
+   * interpolated into markup at all.
+   *
+   * `error` does not bubble, so the listener is registered in the CAPTURE phase
+   * on the drawer — one listener for the whole grid rather than one per tile.
+   */
+  function onImageError(ev) {
+    var img = ev.target;
+    if (!img || img.tagName !== 'IMG' || !img.closest('.lib-tile')) return;
+    var name = img.getAttribute('alt') || '';
+    // A double-faced card 404s on its own full `A // B` name — the corpus keys
+    // that form because it is the graph key — while resolving on the front face
+    // alone. Measured on `Disciple of Freyalise // Garden of Freyalise`.
+    if (!img.dataset.retried && name.indexOf(' // ') > 0) {
+      img.dataset.retried = '1';
+      img.src = cardImageUrl(name.split(' // ')[0]);
+      return;
+    }
+    // Out of retries: leave the reserved box and the name, which is the whole
+    // of what the tile has to say.
+    var tile = img.closest('.lib-tile');
+    if (tile) tile.classList.add('lib-tile-noart');
+    img.remove();
   }
 
   /* ── the drawer ─────────────────────────────────────────────────────────
@@ -164,7 +188,7 @@ window.Shell = (function () {
       + '<button class="lib-open" title="' + esc(e.name) + '" '
       +   'onclick="Shell.open(' + jsStr(e.name) + ')">'
       +   '<img src="' + esc(cardImageUrl(e.name)) + '" alt="' + esc(e.name) + '" '
-      +     'loading="lazy" onerror="' + imgFallback() + '">'
+      +     'loading="lazy">'
       +   '<span class="lib-name">' + esc(e.name) + '</span>'
       + '</button>'
       + (known ? '' : '<span class="lib-flag">not in this corpus</span>')
@@ -188,9 +212,12 @@ window.Shell = (function () {
     return head + '<div class="lib-grid">' + es.map(tile).join('') + '</div>';
   }
 
+  var errorsWired = false;
+
   function renderDrawer() {
     var el = document.getElementById('shell-drawer');
     if (!el) return;
+    if (!errorsWired) { el.addEventListener('error', onImageError, true); errorsWired = true; }
     el.innerHTML = open ? drawerHtml() : '';
     el.style.display = open ? '' : 'none';
   }

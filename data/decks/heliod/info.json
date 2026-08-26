@@ -18,6 +18,23 @@
     "missing": [
       "brief",
       "log"
+    ],
+    "todo": [
+      {
+        "stage": "brief",
+        "what": "the written intent a build starts from",
+        "how": "manamap pilot brew heliod --commander \"<name>\" --theme <style>"
+      },
+      {
+        "stage": "log",
+        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+        "how": "manamap pilot deck-notes heliod add \"<what happened>\" --result win|loss --opponents 3"
+      },
+      {
+        "stage": "sim",
+        "what": "how it does against your actual pod",
+        "how": "manamap pilot simulate heliod --vs <opponent> --games 12"
+      }
     ]
   },
   "bracket": {
