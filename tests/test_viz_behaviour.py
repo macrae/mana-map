@@ -7200,3 +7200,42 @@ def test_the_camera_follows_only_when_the_card_leaves_the_view(canvas_page):
     assert not any(m["moved"] for m in stayed), (
         f"the camera moved on a step whose card was already visible: {out}")
     assert page.js_errors == []
+
+
+def test_the_brief_is_readable_on_the_dossier(browser, viz_server):
+    """THE BRIEF WAS A STAGED ARTIFACT WITH NO SURFACE.
+
+    `deck_status.STAGES` reports it, `build_deck` consumes it, and until now
+    neither `info.json` nor the dossier carried one — so the only way to read a
+    deck's own stated intent was to open the JSON. It renders from
+    `info.json`'s composition rather than a second fetch of `brief.json`,
+    because a second source is a source free to disagree.
+    """
+    page = _dossier(browser, viz_server, "ur-dragon")
+    page.wait_for_selector("#panel-brief", timeout=25000)
+    got = page.evaluate(
+        """() => {
+             const p = document.getElementById('panel-brief');
+             const li = p.querySelector('.brief-in li');
+             const lo = p.querySelector('.brief-out li');
+             return {
+               heads: [...p.querySelectorAll('h3')].map(h => h.textContent.trim()),
+               rules: p.querySelectorAll('.brief-rules li').length,
+               include: p.querySelectorAll('.brief-in li').length,
+               exclude: p.querySelectorAll('.brief-out li').length,
+               lede: (p.querySelector('.brief-lede') || {}).textContent || '',
+               caveat: (p.querySelector('.brief-caveat') || {}).textContent || '',
+               // The +/- markers come from CSS, and the first cut put them in a
+               // stylesheet deck.html does not load. A rule that never applies
+               // renders an unmarked list that still looks fine, so assert the
+               // COMPUTED value rather than the source.
+               inMark: li ? getComputedStyle(li, '::before').content : '',
+               outMark: lo ? getComputedStyle(lo, '::before').content : '',
+             };
+         }""")
+    assert got["include"] > 0 and got["exclude"] > 0, got
+    assert got["rules"] > 0, "the design rules did not render"
+    assert "+" in got["inMark"], f"must-include marker never applied: {got['inMark']!r}"
+    assert got["outMark"] not in ("", "none"), f"must-exclude marker missing: {got['outMark']!r}"
+    assert "measurement" in got["caveat"], "the panel does not say it is authored intent"
+    assert len(got["lede"]) > 100, "the playstyle did not render"

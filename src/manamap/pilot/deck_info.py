@@ -130,6 +130,7 @@ def compose(slug):
     log = read_log(slug)
     done = annotations(slug)
     rx = prescriptions_of(slug)
+    brief = load_json(base / "brief.json") or {}
     bracket = load_json(base / "bracket_report.json") or {}
     engine = load_json(base / "engine.json") or {}
     diag = load_json(base / "diagnosis.json") or {}
@@ -168,6 +169,23 @@ def compose(slug):
                    # written down twice.
                    "todo": [{"stage": r["stage"], "what": r["what"], "how": r["how"]}
                             for r in rows if r["state"] == "missing"]},
+        # THE BRIEF IS WHAT THE DECK IS TRYING TO BE, and it was a staged,
+        # tracked artifact with nowhere to read it: `deck_status` reports it,
+        # `build_deck` consumes it, and neither `info.json` nor the dossier had
+        # ever surfaced one. A deck whose brief and whose 99 disagree is the
+        # normal state DURING a refactor, and the page could not show the
+        # difference. Free-text fields are carried verbatim — this composes and
+        # computes nothing, same as every other key here.
+        "brief": ({"playstyle": brief.get("playstyle"),
+                   "commander_rationale": brief.get("commander_rationale"),
+                   "mana": brief.get("mana"),
+                   "design_rules": brief.get("design_rules") or [],
+                   "win_conditions": brief.get("win_conditions"),
+                   "targets": brief.get("targets") or {},
+                   "notes": brief.get("notes"),
+                   "must_include": brief.get("must_include") or [],
+                   "must_exclude": brief.get("must_exclude") or []}
+                  if brief else None),
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,

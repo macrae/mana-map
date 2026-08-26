@@ -177,6 +177,58 @@
       esc(what || t.what) + '</p>' + action + command(t.how) + '</div>');
   }
 
+  /* ── THE BRIEF: what the deck is TRYING to be ──────────────────────────
+   *
+   * A staged, tracked artifact that had no surface anywhere. `deck_status`
+   * reports it, `build_deck` consumes it, and neither `info.json` nor this page
+   * had ever shown one — so the only way to read a deck's own intent was to open
+   * the JSON. It is rendered FIRST among the reference panels because it is the
+   * thing every other panel is evidence for or against.
+   *
+   * It carries NO tier badge on purpose. A brief is neither measured (◆) nor
+   * rules-verified (✓) — it is authored intent, and giving it a badge would put
+   * an evidence mark on a statement of what somebody wants.
+   *
+   * THE DECK AND ITS BRIEF MAY DISAGREE, and during a refactor they always do.
+   * The panel says so rather than implying the 99 already matches.
+   */
+  function briefPanel(d) {
+    // From `d.info`, not a second fetch of brief.json: info.json is this page's
+    // data model and the composition already carries the brief, so reading the
+    // raw file here would be a second source free to disagree with the first.
+    var b = (d.info || {}).brief;
+    if (!b) return absent('brief', 'The brief', 'What this deck is trying to be.',
+                          '#c4a747', 'brief', d);
+    var out = '';
+    if (b.playstyle) out += '<p class="brief-lede">' + esc(b.playstyle) + '</p>';
+    if (b.commander_rationale)
+      out += '<h3>Why this commander</h3><p>' + esc(b.commander_rationale) + '</p>';
+    if (b.mana) out += '<h3>Mana</h3><p>' + esc(b.mana) + '</p>';
+    if (b.win_conditions) out += '<h3>How it wins</h3><p>' + esc(b.win_conditions) + '</p>';
+    if ((b.design_rules || []).length)
+      out += '<h3>Design rules</h3><ol class="brief-rules">' +
+        b.design_rules.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') +
+        '</ol>';
+    var t = b.targets || {}, keys = Object.keys(t);
+    if (keys.length) {
+      out += '<h3>Targets</h3>' + facts(keys.map(function (k) {
+        var v = t[k];
+        if (typeof v === 'number' && v > 0 && v < 1) v = pct(v, 1);
+        return [k.replace(/_/g, ' '), String(v)];
+      }));
+    }
+    if ((b.must_include || []).length)
+      out += '<h3>Must include <span class="ev">' + b.must_include.length + '</span></h3>' +
+        list(b.must_include.map(esc), 'brief-in');
+    if ((b.must_exclude || []).length)
+      out += '<h3>Must exclude <span class="ev">' + b.must_exclude.length + '</span></h3>' +
+        list(b.must_exclude.map(esc), 'brief-out');
+    if (b.notes) out += '<h3>Notes</h3><p class="ev">' + esc(b.notes) + '</p>';
+    out += '<p class="ev brief-caveat">Authored intent, not a measurement. The 99 and the ' +
+           'brief may disagree — during a rebuild they will.</p>';
+    return panel('brief', 'The brief', 'What this deck is trying to be.', [], '#c4a747', out);
+  }
+
   function bracketPanel(d) {
     var b = d.bracket;
     if (!b) return absent('bracket', 'Bracket', 'The power floor the contents are consistent with.',
@@ -857,7 +909,7 @@
       nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
       questionsPanel(d),
-      constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      briefPanel(d), constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;

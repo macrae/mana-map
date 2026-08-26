@@ -487,3 +487,20 @@ details.case .body { padding: 0 14px 14px; }
   border: 1px solid var(--rule, #3a3a5a);
   opacity: 0; transition: opacity .12s; }
 .lib-tile:hover .lib-move, .lib-move:focus { opacity: 1; }
+
+/* THE BRIEF — authored intent, so it reads as prose rather than as a readout.
+   Lives here because `tokens.css` is the ONLY stylesheet deck.html loads; a
+   separate deck.css would be a file nobody fetches, which this repo has already
+   had once with combo_graph.json. */
+.brief-lede { font-size: 1.02rem; line-height: 1.62; }
+#panel-brief h3 {
+  font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted, #8a93a3); margin: 20px 0 7px; font-weight: 700;
+}
+#panel-brief .brief-rules { margin: 0; padding-left: 1.25em; }
+#panel-brief .brief-rules li { margin-bottom: 7px; line-height: 1.55; }
+#panel-brief .brief-in, #panel-brief .brief-out { margin: 0; padding-left: 0; list-style: none; }
+#panel-brief .brief-in li, #panel-brief .brief-out li { line-height: 1.7; }
+#panel-brief .brief-in li::before { content: '+ '; color: #4a8b5c; font-weight: 700; }
+#panel-brief .brief-out li::before { content: '\2212 '; color: #b8564a; font-weight: 700; }
+.brief-caveat { margin-top: 20px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.09); }
