@@ -28,6 +28,7 @@ rate published without one is what this repo refuses everywhere else.
 """
 
 import json
+import math
 import statistics
 
 from manamap.pilot.common import deck_dir, deck_file, load_json
@@ -438,6 +439,137 @@ def _diff_rate(label, ra, rb):
             "mde": mde}
 
 
+# ── Reading the numbers ──────────────────────────────────────────────────
+#
+# AN INTERPRETATION IS WHERE A TOOL STARTS INVENTING THINGS, so every line here
+# is derived from a comparison by a stated rule and carries the measure it came
+# from. Nothing weighs one axis against another and nothing calls a trade good:
+# the trade is shown, and ruling on it is the pilot's.
+#
+# The distinction that does the most work is between "did not change" and
+# "could not be seen". They look identical on the page and they are opposite
+# findings — one is evidence of no effect, the other is evidence of nothing.
+
+#: One in N. A rate is hard to feel and a frequency is not: 0.593 is "three games
+#: in five", which is the sentence a pilot can hold at the table.
+def as_frequency(rate):
+    if rate is None:
+        return None
+    if rate <= 0.0:
+        return "never"
+    if rate >= 0.995:
+        return "every game"
+    # A RELATIVE TOLERANCE, because an absolute one lies at small rates. At 0.035
+    # absolute, both 0.039 and 0.053 round to "1 game in 20" — and the interval
+    # on that difference EXCLUDES ZERO, so the phrasing erased a real cost.
+    for denom in (2, 3, 4, 5, 6, 8, 10, 20, 50, 100):
+        num = round(rate * denom)
+        if num >= 1 and abs(num / denom - rate) <= max(0.008, rate * 0.10):
+            g = math.gcd(num, denom)          # "2 games in 50" is "1 game in 25"
+            num, denom = num // g, denom // g
+            return f"{num} game{'s' if num != 1 else ''} in {denom}"
+    return f"{rate:.0%} of games"
+
+
+def _pair(a, b):
+    """Both endpoints, phrased so they cannot collapse into each other.
+
+    A frequency is easier to hold than a rate, and it is a PRESENTATION AID: the
+    moment it would print the same words for two numbers a confidence interval
+    says are different, it has to give way to the numbers.
+    """
+    fa, fb = as_frequency(a), as_frequency(b)
+    if fa == fb:
+        return f"{a:.1%} -> {b:.1%}"
+    return f"{fa} -> {fb}"
+
+
+GAIN, COST, FLAT, UNSEEN, LIMIT, CAVEAT = (
+    "gain", "cost", "flat", "unseen", "limit", "caveat")
+
+#: Which direction is an improvement, per measure. Without this a lower stall
+#: reads as a loss.
+LOWER_IS_BETTER = ("stall", "missed", "mulligan")
+
+
+def _better_when_lower(label):
+    return any(w in label.lower() for w in LOWER_IS_BETTER)
+
+
+def interpret(a, b, deltas):
+    """Read a comparison: what moved, what it cost, what still limits it."""
+    out = []
+    for key, d in deltas.items():
+        if key.startswith("_"):
+            continue
+        improved = (d["delta"] < 0) if _better_when_lower(d["label"]) else (d["delta"] > 0)
+        if d["excludes_zero"]:
+            out.append({
+                "kind": GAIN if improved else COST,
+                "measure": d["label"],
+                "says": f"{d['label']}: {_pair(d['a'], d['b'])}",
+                "detail": (f"{d['delta']:+.3f}, and the interval on the difference "
+                           f"{d['ci95_diff']} excludes zero"),
+            })
+            continue
+        # NOT THE SAME FINDING, and they look identical on the page.
+        mde = d.get("mde")
+        if mde is not None and abs(d["delta"]) < mde:
+            out.append({
+                "kind": UNSEEN, "measure": d["label"],
+                "says": f"{d['label']}: no reading either way",
+                "detail": (f"the difference is {d['delta']:+.3f} and this many "
+                           f"games can only see {mde:.3f}. That is evidence of "
+                           f"NOTHING, not evidence of no change — run more games "
+                           f"if it matters."),
+            })
+        else:
+            out.append({
+                "kind": FLAT, "measure": d["label"],
+                "says": f"{d['label']}: unchanged",
+                "detail": (f"the difference is {d['delta']:+.3f} and the interval "
+                           f"{d['ci95_diff']} spans zero, which this many games "
+                           f"COULD have resolved — so it is flat, not unmeasured."),
+            })
+    e = (b.get("engine") or {})
+    if e.get("available") and e.get("bottleneck"):
+        bn = e["bottleneck"]
+        r = (bn.get("by_turn_three") or {}).get("rate")
+        out.append({
+            "kind": LIMIT, "measure": "engine bottleneck",
+            "says": f"what limits it now: {bn['label']}",
+            "detail": (f"assembled {as_frequency(r)} by turn three. Widening this "
+                       f"component is the change the engine figure is most "
+                       f"sensitive to — `candidates --as` prices it."),
+        })
+    if deltas.get("_engine_declarations_differ"):
+        out.append({
+            "kind": CAVEAT, "measure": "engine",
+            "says": "the two engine figures answer different questions",
+            "detail": ("each is measured against its own declaration, so the delta "
+                       "says each list meets ITS OWN intent more or less often — "
+                       "not that one is better at the same thing."),
+        })
+    out.append({
+        "kind": CAVEAT, "measure": "the model",
+        "says": "no pod, no opponent, no interaction",
+        "detail": ("this measures a DECK, not a table: nothing blocks, nothing "
+                   "removes and nobody is racing you. It cannot tell you whether "
+                   "the deck wins, only whether it does what it says."),
+    })
+    return out
+
+
+ICON = {GAIN: "+", COST: "-", FLAT: "=", UNSEEN: "?", LIMIT: ">", CAVEAT: "!"}
+
+
+def _print_reading(reading):
+    print("\n  THE READING")
+    for r in reading:
+        print(f"    {ICON[r['kind']]} {r['says']}")
+        print(f"        {r['detail']}")
+
+
 # ── CLI ──────────────────────────────────────────────────────────────────
 
 def _fmt(r):
@@ -522,8 +654,12 @@ def main(args):
                   seed=getattr(args, "seed", None))
         deltas = compare(alt, doc)
         if getattr(args, "json", False):
-            print(json.dumps({"a": alt, "b": doc, "deltas": deltas}, indent=1)); return
-        _print(doc); _print_compare(alt, doc, deltas); return
+            print(json.dumps({"a": alt, "b": doc, "deltas": deltas,
+                              "reading": interpret(alt, doc, deltas)}, indent=1)); return
+        _print(doc); _print_compare(alt, doc, deltas)
+        if not getattr(args, "no_read", False):
+            _print_reading(interpret(alt, doc, deltas))
+        return
     if getattr(args, "json", False):
         print(json.dumps(doc, indent=1)); return
     _print(doc)

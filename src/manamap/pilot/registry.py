@@ -350,6 +350,8 @@ def add_pilot_parser(subparsers):
                                   "committed decklist, or a branch name")
             cmd.add_argument("--iterations", type=int, default=None)
             cmd.add_argument("--seed", type=int, default=None)
+            cmd.add_argument("--no-read", action="store_true", dest="no_read",
+                             help="skip the plain-language reading of a --vs comparison")
             cmd.add_argument("--json", action="store_true")
             cmd.add_argument("--write", action="store_true",
                              help="write diagnostic.json beside the list it measured")

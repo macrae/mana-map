@@ -282,3 +282,60 @@ def test_an_override_reaches_the_simulation_not_just_the_report():
     assert hits(alt) > hits(base), (
         "widening a required group did not raise its assembly rate — the "
         "override is not reaching the simulation")
+
+
+def test_a_frequency_never_erases_a_difference_the_interval_shows():
+    """A frequency is easier to hold than a rate and it is a PRESENTATION AID.
+
+    At an absolute tolerance both 0.039 and 0.053 rounded to "1 game in 20" —
+    and the interval on that difference excludes zero, so the phrasing was
+    hiding a real cost behind identical words. The moment two numbers a
+    confidence interval separates would print the same, the numbers win.
+    """
+    assert diagnostic._pair(0.039, 0.053) != "1 game in 20 -> 1 game in 20"
+    a, b = diagnostic.as_frequency(0.039), diagnostic.as_frequency(0.053)
+    assert a != b or "%" in diagnostic._pair(0.039, 0.053)
+    # Fractions reduce: "2 games in 50" is "1 game in 25".
+    for rate in (0.04, 0.05, 0.1, 0.2, 0.25, 0.5, 0.6, 0.75):
+        got = diagnostic.as_frequency(rate)
+        if " in " in got:
+            num, denom = got.split(" in ")
+            import math
+            assert math.gcd(int(num.split()[0]), int(denom)) == 1, got
+
+
+def test_the_reading_tells_no_change_from_cannot_see():
+    """They look identical on the page and they are opposite findings."""
+    a = {"engine": {}, "stall": {}, "mana": {}}
+    b = dict(a)
+    # A difference smaller than the MDE: evidence of nothing.
+    unseen = {"x": {"label": "stall (2 in a row)", "a": 0.10, "b": 0.104,
+                    "delta": 0.004, "ci95_diff": [-0.02, 0.03],
+                    "excludes_zero": False, "mde": 0.02}}
+    got = diagnostic.interpret(a, b, unseen)
+    row = next(r for r in got if r["measure"] == "stall (2 in a row)")
+    assert row["kind"] == "unseen"
+    assert "evidence of NOTHING" in row["detail"]
+    # A difference the run COULD have resolved and did not: evidence of no change.
+    flat = {"x": {"label": "stall (2 in a row)", "a": 0.10, "b": 0.101,
+                  "delta": 0.001, "ci95_diff": [-0.004, 0.006],
+                  "excludes_zero": False, "mde": 0.0005}}
+    row = next(r for r in diagnostic.interpret(a, b, flat)
+               if r["measure"] == "stall (2 in a row)")
+    assert row["kind"] == "flat"
+    assert "COULD have resolved" in row["detail"]
+
+
+def test_the_reading_knows_which_direction_is_better():
+    """Without this, a lower stall reads as a loss."""
+    a = {"engine": {}}
+    worse_stall = {"x": {"label": "stall (2 in a row)", "a": 0.03, "b": 0.05,
+                         "delta": 0.02, "ci95_diff": [0.01, 0.03],
+                         "excludes_zero": True, "mde": 0.005}}
+    row = diagnostic.interpret(a, a, worse_stall)[0]
+    assert row["kind"] == "cost", "a higher stall was read as a gain"
+    better_engine = {"y": {"label": "engine online by turn 3", "a": 0.1, "b": 0.6,
+                           "delta": 0.5, "ci95_diff": [0.48, 0.52],
+                           "excludes_zero": True, "mde": 0.008}}
+    row = diagnostic.interpret(a, a, better_engine)[0]
+    assert row["kind"] == "gain"
