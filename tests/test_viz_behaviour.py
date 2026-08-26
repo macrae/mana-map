@@ -6934,3 +6934,269 @@ def test_role_is_offered_in_build_and_not_in_explore(canvas_page):
     # And the registry itself is untouched, which is what build.js reads.
     assert page.evaluate("() => !!(MM.GROUPINGS.role && MM.GROUPINGS.role.order.length)")
     assert page.js_errors == []
+
+
+# ── The legend, which had never been clickable ────────────────────────────
+
+def test_a_real_mouse_click_reaches_a_legend_row(canvas_page):
+    """IT NEVER HAS. `.map-legend` carries `pointer-events: none` so it does not
+    eat drags over the canvas beneath it, and nothing re-enabled it on the rows —
+    so clicks never reached the handler while `cursor: pointer` showed a hand
+    over an inert element.
+
+    It survived because every existing legend test dispatches `row.click()` in
+    JavaScript, which bypasses hit-testing entirely. This one uses Playwright's
+    real click, which does not.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    page.wait_for_selector(".map-legend-row", timeout=15000)
+
+    row = page.locator(".map-legend-row").first
+    key = row.get_attribute("data-key")
+    # The honest check: is the row what the browser finds at its own centre?
+    reachable = page.evaluate("""() => {
+        const r = document.querySelector('.map-legend-row');
+        const b = r.getBoundingClientRect();
+        const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+        return !!(hit && hit.closest('.map-legend-row'));
+    }""")
+    assert reachable, "a click at the row's own centre does not land on the row"
+
+    row.click()
+    page.wait_for_timeout(700)
+    assert page.evaluate("() => MM.legendGroups") == [key]
+    assert page.js_errors == []
+
+
+def test_the_legend_selects_more_than_one_group(canvas_page):
+    """Selecting one colour and selecting two are the same gesture. Empty means
+    everything, so there is no 'clear' state to explain — turn the last one off
+    and the map is whole again."""
+    page = canvas_page
+    page.evaluate("""() => {
+        MM.setMode('explore');
+        const s = document.getElementById('colorBy');
+        s.value = 'color'; s.dispatchEvent(new Event('change'));
+    }""")
+    page.wait_for_timeout(1800)
+
+    def click(key):
+        page.locator(f'.map-legend-row[data-key="{key}"]').click()
+        page.wait_for_timeout(700)
+
+    click("R")
+    click("U")
+    state = page.evaluate("""() => ({
+        groups: MM.legendGroups.slice().sort(),
+        active: document.querySelectorAll('.map-legend-row.is-active').length,
+        status: document.getElementById('status').textContent,
+        drill: document.getElementById('drillFiltered').textContent,
+    })""")
+    assert state["groups"] == ["R", "U"], state
+    assert state["active"] == 2
+
+    # THE THREE PREDICATES AGREE. The status count, the Drill button and
+    # `passesFilters` are one answer to "what did I narrow to".
+    count = int(state["status"].split()[0].replace(",", ""))
+    assert f"{count:,}" in state["drill"], (state["status"], state["drill"])
+    assert count < 34890, "a two-colour selection narrowed nothing"
+
+    click("R")
+    click("U")
+    assert page.evaluate("() => MM.legendGroups") == [], "the selection did not empty"
+    assert page.js_errors == []
+
+
+def test_a_legend_filter_recedes_the_rest_rather_than_erasing_it(canvas_page):
+    """Same two-sided shape as the spotlight test it replaces: `solid` must
+    collapse or nothing was narrowed, and total `lit` must hold or the
+    surroundings were erased — which is the failure the region focus already made
+    once, and the reason you could not tell where anything was."""
+    page = canvas_page
+    page.evaluate("""() => {
+        MM.setMode('explore');
+        const s = document.getElementById('colorBy');
+        s.value = 'color'; s.dispatchEvent(new Event('change'));
+    }""")
+    page.wait_for_timeout(1800)
+    before = _ink_strength(page)
+
+    page.locator('.map-legend-row[data-key="R"]').click()
+    page.wait_for_timeout(1200)
+    during = _ink_strength(page)
+
+    assert during["solid"] < before["solid"] * 0.6, (
+        f"the legend filter barely dimmed anything "
+        f"({before['solid']:.2f}% -> {during['solid']:.2f}% at full strength)")
+    assert during["lit"] > before["lit"] * 0.8, (
+        f"the rest was erased, not muted ({before['lit']:.2f}% -> {during['lit']:.2f}%)")
+    assert page.js_errors == []
+
+
+def test_changing_the_grouping_clears_a_selection_that_no_longer_means_anything(canvas_page):
+    """"Red" means nothing once the map is coloured by rarity. As a spotlight
+    that already dimmed the whole map with no active row; as a FILTER it would
+    select zero cards, leaving the atlas blank with nothing to click to undo."""
+    page = canvas_page
+    page.evaluate("""() => {
+        MM.setMode('explore');
+        const s = document.getElementById('colorBy');
+        s.value = 'color'; s.dispatchEvent(new Event('change'));
+    }""")
+    page.wait_for_timeout(1800)
+    page.locator('.map-legend-row[data-key="R"]').click()
+    page.wait_for_timeout(700)
+    assert page.evaluate("() => MM.legendGroups") == ["R"]
+
+    page.evaluate("""() => {
+        const s = document.getElementById('colorBy');
+        s.value = 'rarity'; s.dispatchEvent(new Event('change'));
+    }""")
+    page.wait_for_timeout(1500)
+    assert page.evaluate("() => MM.legendGroups") == [], (
+        "a selection outlived its key space and now filters on nothing")
+    assert page.evaluate("""() => {
+        const t = document.getElementById('status').textContent;
+        return /\\d/.test(t);
+    }"""), "the status stopped reporting a count"
+    assert page.js_errors == []
+
+
+# ── Walking a filtered set ────────────────────────────────────────────────
+
+def test_arrowing_a_filtered_set_walks_it(canvas_page):
+    """A FILTER IS A SET, AND A SET IS BROWSABLE.
+
+    Arrows used to give up when nothing was selected, so after narrowing the
+    atlas to 433 cards the only way to read one was to find its dot and click it.
+    Entering browse over the matches costs no new control — `browseSet` is
+    already an ordered list plus a cursor and the arrows already drive it.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2200)
+
+    page.keyboard.press("ArrowRight")
+    page.wait_for_function("() => MM.browseSet", timeout=25000)
+    state = page.evaluate("""() => ({
+        n: MM.browseSet.indices.length,
+        order: MM.browseSet.order,
+        card: MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n,
+        panel: document.getElementById('detailPanel').classList.contains('open'),
+    })""")
+    assert state["n"] > 300, f"browsed {state['n']} of a 433-card filter"
+    assert state["panel"], "the card was not rendered"
+    assert state["card"]
+    assert page.js_errors == []
+
+
+def test_the_walk_moves_by_proximity_not_by_list_order(canvas_page):
+    """The PROPERTY, not a hardcoded sequence — the ordering is a greedy walk
+    over a 128-d space and pinning card names would break on any retrain.
+
+    Measured live on the treasure filter: consecutive cosine 0.954 against
+    0.855 for a random pair drawn from the same set.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2200)
+    page.keyboard.press("ArrowRight")
+    page.wait_for_function("() => MM.browseSet && MM.browseSet.order === 'walk'",
+                           timeout=25000)
+
+    out = page.evaluate("""async () => {
+        const emb = await MM.getEmbeddings(), D = MM.EMBED_DIM;
+        const ix = MM.browseSet.indices;
+        const dot = (a, b) => { let v = 0;
+            for (let i = 0; i < D; i++) v += emb[a * D + i] * emb[b * D + i]; return v; };
+        let step = 0;
+        for (let i = 1; i < ix.length; i++) step += dot(ix[i - 1], ix[i]);
+        step /= ix.length - 1;
+        let rnd = 0, n = 3000;
+        for (let t = 0; t < n; t++) {
+            const a = ix[(Math.random() * ix.length) | 0];
+            const b = ix[(Math.random() * ix.length) | 0];
+            rnd += a === b ? 1 : dot(a, b);
+        }
+        return { step, rnd: rnd / n };
+    }""")
+    assert out["step"] > out["rnd"] + 0.05, (
+        f"consecutive cards are no nearer than random ones "
+        f"({out['step']:.4f} vs {out['rnd']:.4f}) — the order is not a walk")
+    assert page.js_errors == []
+
+
+def test_the_panel_says_which_ordering_it_is_using(canvas_page):
+    """Three orderings now share one slot, and the panel's own comment says the
+    label is "the only thing making this browsable". A third ordering with no
+    third branch would have it state, in confident prose, a sequence the cards
+    are not in."""
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2200)
+    page.keyboard.press("ArrowRight")
+    page.wait_for_function("() => MM.browseSet", timeout=25000)
+    page.keyboard.press("ArrowRight")
+    page.wait_for_timeout(900)
+
+    label = page.evaluate(
+        "() => (document.querySelector('.browse-order-label') || {}).textContent || ''")
+    order = page.evaluate("() => MM.browseSet.order")
+    if order == "walk":
+        assert "walk" in label.lower() and "nearest" in label.lower(), label
+    else:
+        assert "typical" in label.lower(), label
+    assert page.js_errors == []
+
+
+def test_the_camera_follows_only_when_the_card_leaves_the_view(canvas_page):
+    """Re-centring every step makes the atlas move constantly under a reader
+    holding a mental picture of where the set sits; never moving loses the
+    marker once the walk leaves the viewport. Proximity ordering is what makes
+    "only when needed" cheap — consecutive cards are near each other."""
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2200)
+    page.keyboard.press("ArrowRight")
+    page.wait_for_function("() => MM.browseSet", timeout=25000)
+
+    out = page.evaluate("""async () => {
+        const cam = () => JSON.stringify(MM.mapRenderer.getCamera());
+        // `getCamera().y` comes back DESCENDING (screen y grows downward), so the
+        // bounds must be normalised before they are compared — the exact bug
+        // this test found in the implementation.
+        const onScreen = () => {
+            const c = MM.mapRenderer.getCamera();
+            const b = MM.browseSet;
+            const d = MM.allData[b.indices[b.pos]];
+            const x0 = Math.min(c.x[0], c.x[1]), x1 = Math.max(c.x[0], c.x[1]);
+            const y0 = Math.min(c.y[0], c.y[1]), y1 = Math.max(c.y[0], c.y[1]);
+            const mx = (x1 - x0) * 0.09, my = (y1 - y0) * 0.09;
+            return d.x > x0 + mx && d.x < x1 - mx && d.y > y0 + my && d.y < y1 - my;
+        };
+        const moves = [];
+        for (let k = 0; k < 10; k++) {
+            const was = cam();
+            const wasVisible = onScreen();
+            document.dispatchEvent(new KeyboardEvent('keydown',
+                {key: 'ArrowRight', bubbles: true}));
+            // Long enough for an ANIMATED pan to settle. Sampling mid-flight
+            // reports the old bounds and every step then looks off-screen.
+            await new Promise(r => setTimeout(r, 1100));
+            moves.push({ wasVisible, moved: cam() !== was });
+        }
+        return moves;
+    }""")
+    # The card is on screen after a pan, so a step that begins visible should
+    # not move the camera. That is the whole contract.
+    stayed = [m for m in out if m["wasVisible"]]
+    assert stayed, "no step began with the card already in view"
+    assert not any(m["moved"] for m in stayed), (
+        f"the camera moved on a step whose card was already visible: {out}")
+    assert page.js_errors == []

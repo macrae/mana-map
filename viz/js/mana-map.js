@@ -276,7 +276,10 @@
     // would look like Escape did nothing.
     if (queryFocus) { clearQueryFocus(); return; }
     if (regionFocus) { clearRegionFocus(); return; }
-    if (legendFocus) { clearLegendFocus(); return; }
+    // The WHOLE legend selection, in one press. "Each press does exactly one
+    // visible thing" — and "the legend filter is gone" is one thing, where
+    // popping keys one at a time would be several presses for one intent.
+    if (legendKeys.size) { clearLegendFocus(); return; }
     if (orientation) { clearOrientation(); return; }
     clearSelection();
   }
@@ -291,6 +294,79 @@
   // ── Viewer Panel ──
 
   // ── Browse mode ──
+
+  /* Order a set as a WALK: start near the middle, then always step to the
+   * nearest card not yet visited. Browsing the result moves you through the
+   * neighbourhood rather than through an arbitrary list, which is the whole
+   * ergonomic point — consecutive cards are alike, so a filtered set reads as a
+   * tour instead of a shuffle.
+   *
+   * MATERIALISED UP FRONT, AND CAPPED, and the cap is why. A greedy tour is
+   * O(n²·d): measured against the real 128-d matrix that is 24M multiply-adds
+   * for 433 cards and 2,960M for 4,809. Computing each step lazily instead is
+   * ~55k — trivially fast — but `preloadNeighbourImages` reads `indices[pos+1]`
+   * to warm the next card's art, and its own comment says image latency is
+   * "most of what made the old panel feel slow to browse". A lazily-ordered
+   * walk would have nothing to preload. So the tour is built once, inside the
+   * async `enterBrowse` that already says "Ordering N cards…", and above the
+   * cap the existing centroid order stands — with the panel SAYING which,
+   * because a label that lies about the sequence is worse than no walk.
+   */
+  const WALK_MAX = 1000;
+
+  function orderByNearestWalk(rows) {
+    if (!embeddings || rows.length < 3) return null;
+    if (rows.length > WALK_MAX) return null;
+    const dim = EMBED_DIM;
+
+    const dot = (a, b) => {
+      const oa = a * dim, ob = b * dim;
+      let v = 0;
+      for (let i = 0; i < dim; i++) v += embeddings[oa + i] * embeddings[ob + i];
+      return v;
+    };
+
+    // Start from the most typical card — nearest the set's own centroid — so the
+    // walk opens in the middle of the cluster and works outward, rather than
+    // opening on an outlier and spending its first steps crossing the space.
+    const centroid = new Float64Array(dim);
+    for (const r of rows) {
+      const o = r * dim;
+      for (let i = 0; i < dim; i++) centroid[i] += embeddings[o + i];
+    }
+    let norm = 0;
+    for (let i = 0; i < dim; i++) norm += centroid[i] * centroid[i];
+    norm = Math.sqrt(norm) || 1;
+    for (let i = 0; i < dim; i++) centroid[i] /= norm;
+
+    let start = rows[0], bestSim = -Infinity;
+    for (const r of rows) {
+      const o = r * dim;
+      let v = 0;
+      for (let i = 0; i < dim; i++) v += embeddings[o + i] * centroid[i];
+      if (v > bestSim) { bestSim = v; start = r; }
+    }
+
+    const remaining = new Set(rows);
+    remaining.delete(start);
+    const out = [start];
+    const sims = [1];
+    let cur = start;
+    while (remaining.size) {
+      let next = null, best = -Infinity;
+      for (const r of remaining) {
+        const v = dot(cur, r);
+        if (v > best) { best = v; next = r; }
+      }
+      remaining.delete(next);
+      out.push(next);
+      // The cosine to the PREVIOUS card, not to a fixed anchor — a different
+      // quantity in the same slot, which is why the panel labels it.
+      sims.push(best);
+      cur = next;
+    }
+    return { indices: out, sims: sims };
+  }
 
   // Order a selection by distance from its own centroid in the 128-d embedding space,
   // furthest first — so you start on the least typical card in the box and walk inward
@@ -466,12 +542,27 @@
    * rather than a 34,322-entry array — the same distinction `dimsAll()` exists to make.
    * It composes with `regionFocus` through `spotlight()`, which is the single place that
    * decides whether a point is lit. */
-  let legendFocus = null;   // { key } | null
+  /* A SET, because selecting one colour and selecting two are the same gesture.
+   * Empty means everything, so there is no "clear" state to explain — you turn
+   * the last one off and the map is whole again.
+   *
+   * Still GROUP KEYS and not a row set, which is the point the original comment
+   * was making: the traces are already partitioned by category, so this stays
+   * one comparison per group and never touches the 34,890-entry opacity array.
+   * A Set of keys costs exactly what one key cost.
+   *
+   * It is a FILTER now, not only a spotlight: `narrowedTo` reads it, so `Drill`
+   * and its count follow the selection. What it is NOT is a hide — non-selected
+   * groups recede and stay drawn, the same choice the search filter makes and
+   * for the reason the region focus records ("a region only means something
+   * against its neighbours"). */
+  let legendKeys = new Set();
 
   function clearLegendFocus() {
-    if (!legendFocus) return;
-    legendFocus = null;
+    if (!legendKeys.size) return;
+    legendKeys.clear();
     render();
+    refreshDrillButton();
   }
 
   async function focusRegion(regionId) {
@@ -670,13 +761,21 @@
     if (rows.length === 0) return;
     setStatus(`Ordering ${rows.length.toLocaleString()} cards…`);
     await loadEmbeddings();          // no-op after the first call
-    browseSet = { indices: orderByCentroidDistance(rows), pos: 0, label: label || 'Selection',
-                  anchor: null, sims: null };
+    const walk = orderByNearestWalk(rows);
+    browseSet = walk
+      ? { indices: walk.indices, pos: 0, label: label || 'Selection',
+          anchor: null, sims: walk.sims, order: 'walk' }
+      : { indices: orderByCentroidDistance(rows), pos: 0, label: label || 'Selection',
+          anchor: null, sims: null, order: 'centroid' };
     selectedCards = [];              // browse replaces the 8-card stack, never coexists
     topCardIndex = 0;
     updateViewerPanel();
     updateSelectionHighlight();
-    setStatus(`${rows.length.toLocaleString()} cards — ordered furthest to nearest from the selection's centre`);
+    setStatus(rows.length.toLocaleString() + ' cards \u00b7 '
+      + (browseSet.order === 'walk'
+          ? '\u2190 \u2192 walks them nearest-to-nearest'
+          : 'ordered furthest to nearest from the centre')
+      + ' \u00b7 Esc to clear');
   }
 
   function browseCard() {
@@ -994,13 +1093,22 @@
     html += '<div class="browse-order">';
     html += '<span class="browse-order-bar"><span style="width:' +
       ((browseSet.pos / Math.max(n - 1, 1)) * 100).toFixed(1) + '%"></span></span>';
+    // THREE ORDERINGS, THREE LABELS. This was a two-way branch, and the comment
+    // above it says the label is "the only thing making this browsable" — so a
+    // third ordering with no third branch would have the panel state, in
+    // confident prose, a sequence the cards are not in.
     html += '<span class="browse-order-label">' + (nb
       ? (browseSet.pos === 0
           ? 'the anchor · ← → walks its ' + (n - 1) + ' nearest · Enter re-anchors here'
           : 'nearest → furthest from ' + escHtml(allData[browseSet.anchor].n) +
             (browseSet.sims ? ' · cosine ' + browseSet.sims[browseSet.pos].toFixed(3) : '') +
             ' · Enter re-anchors here')
-      : 'least typical → most typical · 128-dim distance from the selection’s centre') +
+      : browseSet.order === 'walk'
+        ? 'a walk through the set · each step is the nearest card not yet seen' +
+          (browseSet.sims && browseSet.pos > 0
+            ? ' · cosine ' + browseSet.sims[browseSet.pos].toFixed(3) + ' from the last'
+            : ' · starting at the most typical')
+        : 'least typical → most typical · 128-dim distance from the selection’s centre') +
       '</span>';
     html += '</div>';
 
@@ -1042,6 +1150,7 @@
       if (n < 2) return;
       browseSet.pos = ((browseSet.pos + delta) % n + n) % n;
       updateViewerPanel();
+      keepBrowseCardInView();
       // Fast path: nudge the marker. Falls back to a full rebuild only if the trace is
       // missing (first render, or a mode change tore it down).
       if (!moveBrowseMarker()) updateSelectionHighlight();
@@ -1078,6 +1187,42 @@
   // browse, which is a visible stutter on a keypress. One restyle of a single-point
   // trace instead. Returns false if the trace is not there, so the caller can fall back
   // to a full rebuild.
+  /* Pan only when the card has walked off screen.
+   *
+   * Re-centring every step makes the atlas move constantly under a reader who is
+   * trying to hold a mental picture of where the set sits; never moving loses
+   * the marker entirely once the walk leaves the viewport. Proximity ordering is
+   * what makes "only when needed" cheap — consecutive cards are near each other,
+   * so most steps need no pan at all.
+   */
+  function keepBrowseCardInView() {
+    if (!mapCanvas || !browseSet) return;
+    const cam = mapCanvas.getCamera();
+    if (!cam) return;
+    const p = cardPosition(browseSet.indices[browseSet.pos]);
+    if (!p) return;
+    /* NORMALISE THE BOUNDS. `getCamera().y` comes back DESCENDING — screen y
+     * grows downward, so a fitted view reports something like [8.2, -40.1].
+     * Comparing against them unordered makes every point fail the test, so the
+     * first version panned on every single step: the "always re-centre"
+     * behaviour, arrived at by accident. Caught by the test asserting the
+     * opposite. */
+    const x0 = Math.min(cam.x[0], cam.x[1]), x1 = Math.max(cam.x[0], cam.x[1]);
+    const y0 = Math.min(cam.y[0], cam.y[1]), y1 = Math.max(cam.y[0], cam.y[1]);
+    const w = x1 - x0, h = y1 - y0;
+    // A margin, so a card sitting exactly on the edge counts as off screen —
+    // technically visible and practically invisible are different things.
+    const mx = w * 0.08, my = h * 0.08;
+    if (p[0] > x0 + mx && p[0] < x1 - mx && p[1] > y0 + my && p[1] < y1 - my) return;
+    // Keep the camera's own y orientation rather than imposing ascending order,
+    // or the map flips vertically on the first pan.
+    const flip = cam.y[0] > cam.y[1];
+    mapCanvas.setCamera({
+      x: [p[0] - w / 2, p[0] + w / 2],
+      y: flip ? [p[1] + h / 2, p[1] - h / 2] : [p[1] - h / 2, p[1] + h / 2],
+    }, { animate: true });
+  }
+
   function moveBrowseMarker() {
     if (!mapCanvas || !browseSet) return false;
     const cur = browseSet.indices[browseSet.pos];
@@ -1100,7 +1245,11 @@
     if (!browseSet) return null;
     const ix = browseSet.indices;
     const drilling = typeof window.Drill !== 'undefined' && window.Drill.isActive();
+    // The ORDER rides in the key. Without it two different orderings of the same
+    // set with the same endpoints hash identically, and the full-set trace is
+    // skipped on a change that really did move every point.
     return 'b:' + ix.length + ':' + ix[0] + ':' + ix[ix.length - 1] +
+           ':' + (browseSet.order || '-') +
            ':' + (browseSet.anchor == null ? '-' : browseSet.anchor) +
            ':' + (drilling ? 'local' : 'world');
   }
@@ -1742,7 +1891,7 @@
       .map(tr => {
         const m = tr.marker || {};
         const c = Array.isArray(m.color) ? '#8a8a8a' : (m.color || '#666');
-        const on = legendFocus && legendFocus.key === tr.name;
+        const on = legendKeys.has(tr.name);
         return '<div class="map-legend-row' + (on ? ' is-active' : '') +
           '" role="button" tabindex="0" data-key="' + escHtml(tr.name) +
           '"><span class="map-legend-dot" style="background:' +
@@ -1759,8 +1908,12 @@
         const row = ev.target.closest('.map-legend-row');
         if (!row) return;
         const key = row.getAttribute('data-key');
-        legendFocus = (legendFocus && legendFocus.key === key) ? null : { key: key };
+        // ACCUMULATE. Click adds, click again removes, empty means everything.
+        if (legendKeys.has(key)) legendKeys.delete(key); else legendKeys.add(key);
         render();
+        // It narrows what Drill would re-map, so the button's count has to move
+        // with it — the "three predicates agree" contract the search filter set.
+        refreshDrillButton();
       });
     }
   }
@@ -1905,6 +2058,11 @@
    */
   function narrowedTo(d, i) {
     if (!activeSupertypes.has(d.s)) return false;
+    // The legend narrows too. It cannot contradict the supertype toggles, and
+    // the reason is structural rather than lucky: the legend is built from the
+    // TRACE LIST, so it only ever lists groups that survived `visible`. A
+    // hidden group has no row to click.
+    if (legendKeys.size && !legendKeys.has(grouping().keyOf(d))) return false;
     if (queryFocus && queryFocus.rows.size) return queryFocus.rows.has(i);
     return true;
   }
@@ -1951,6 +2109,12 @@
   // ── Event listeners ──
   document.getElementById('colorBy').addEventListener('change', e => {
     currentColorBy = e.target.value;
+    // A SELECTION DOES NOT SURVIVE ITS KEY SPACE. "Red" means nothing once the
+    // map is coloured by rarity, and as a filter it would select zero cards
+    // rather than merely lighting none — the map going blank with no active row
+    // and nothing to click to undo it. (It was already a live bug as a
+    // spotlight: everything dimmed to 9% with no row marked.)
+    legendKeys.clear();
     // A grouping whose data is not in the boot payload loads here, once. Selecting Role
     // before `card_roles.json` lands would otherwise colour all 34,322 cards
     // 'unclassified' and look like the roles file was wrong rather than absent.
@@ -2204,7 +2368,20 @@
     const back = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
     const fwd = e.key === 'ArrowRight' || e.key === 'ArrowDown';
     if (back || fwd) {
-      if (!browseSet && selectedCards.length === 0) return;
+      /* A FILTER IS A SET, AND A SET IS BROWSABLE. Arrows used to give up here
+       * when nothing was selected — so after narrowing the atlas to 433 cards
+       * the only way to read one was to find its dot and click it. Entering
+       * browse over the matches costs no new control: `browseSet` already is an
+       * ordered list plus a cursor, and the arrows already drive it. */
+      if (!browseSet && selectedCards.length === 0) {
+        if (currentMode === 'explore' && queryFocus && queryFocus.rows.size > 1) {
+          e.preventDefault();
+          enterBrowse(Array.from(queryFocus.rows), '"' + queryFocus.term + '"')
+            .then(function () { if (back) cycleSelection(-1); });
+          return;
+        }
+        return;
+      }
       e.preventDefault();
       cycleSelection(back ? -1 : 1);
       return;
@@ -2386,7 +2563,7 @@
     if (mode === 'explore') {
       clearOrientation();
       regionFocus = null;
-      legendFocus = null;
+      legendKeys.clear();
       clearSelection();
       if (mapCanvas) mapCanvas.fitToData();
     } else if (mode !== 'discover') {
@@ -2667,7 +2844,7 @@
      */
     const LIT = 0.95, UNLIT = 0.09;
     function spotlightFor(g) {
-      const groupLit = !legendFocus || g.key === legendFocus.key;
+      const groupLit = !legendKeys.size || legendKeys.has(g.key);
       // Two per-point sources now — a focused region and a search — and a point is
       // lit only if it survives both. Composing here rather than adding a second
       // dimming path is the whole reason this function exists.
@@ -2693,7 +2870,7 @@
       let opacity;
       if (dimsAll) {
         opacity = 0.08;
-      } else if (regionFocus || legendFocus || (queryFocus && queryFocus.rows.size)) {
+      } else if (regionFocus || legendKeys.size || (queryFocus && queryFocus.rows.size)) {
         // A spotlight, not a filter. Everything stays on screen at a low alpha so you can
         // still see WHERE the lit set sits — the question the atlas exists to answer, and
         // the one that hiding everything else destroyed.
@@ -2757,6 +2934,14 @@
       // see where YOUR cards are, not to be told how many exist.
       setStatus(orientationRows().length + ' cards from ' + orientation.label +
                 ' — highlighted in the full map · Esc to see everything');
+    } else if (currentMode === 'explore' && legendKeys.size) {
+      // Counts what the legend NARROWED to, not what is drawn. Saying "34,890
+      // cards shown" over a map where all but 2,431 have receded is the
+      // dishonesty the three-predicates rule exists to prevent.
+      let n = 0;
+      for (let i = 0; i < allData.length; i++) if (narrowedTo(allData[i], i)) n++;
+      setStatus(n.toLocaleString() + ' ' + Array.from(legendKeys).join(' + ')
+        + ' card' + (n === 1 ? '' : 's') + ' \u00b7 Esc to clear');
     } else if (currentMode === 'explore') {
       setStatus(`${filtered.length.toLocaleString()} cards shown`);
     }
@@ -2871,7 +3056,13 @@
     groupKey: function (d) { return grouping().keyOf(d); },
     groupColour: function (d) { const g = grouping(); return g.palette[g.keyOf(d)] || '#666'; },
     get regionFocus() { return regionFocus; },
-    get legendFocus() { return legendFocus; },
+    /* Kept as `{key}` for the FIRST selection so `build.js` and the browser
+     * suite read what they always read; `legendGroups` is the honest plural. */
+    get legendFocus() {
+      const first = legendKeys.values().next();
+      return first.done ? null : { key: first.value };
+    },
+    get legendGroups() { return Array.from(legendKeys); },
     /* ONE spotlight, reachable from more than the legend.
      *
      * `legendFocus` was private with a getter and no setter, so the legend was
@@ -2888,9 +3079,15 @@
      */
     focusGroup: function (key, groupingName) {
       var toggle = function () {
-        legendFocus = (legendFocus && legendFocus.key === key) ? null : { key: key };
+        // REPLACE, not accumulate. A role bar in Build says "show me this one",
+        // and it is mutually exclusive with a line spotlight there; only the
+        // legend accumulates. Keeping this single-select is what leaves
+        // `build.js` and its tests untouched.
+        const had = legendKeys.has(key) && legendKeys.size === 1;
+        legendKeys.clear();
+        if (!had) legendKeys.add(key);
         regroup();
-        return legendFocus;
+        return legendKeys.size ? { key: key } : null;
       };
       if (!groupingName || !GROUPINGS[groupingName] || groupingName === currentColorBy) {
         return Promise.resolve(toggle());
@@ -2950,7 +3147,11 @@
     filterLabel() {
       const on = Array.from(activeSupertypes);
       const types = on.length >= SUPERTYPES.length ? 'Everything' : on.join(' + ');
-      return queryFocus && queryFocus.total ? '"' + queryFocus.term + '"' : types;
+      if (queryFocus && queryFocus.total) return '"' + queryFocus.term + '"';
+      // The breadcrumb has to name what was drilled, or a legend-filtered drill
+      // is labelled "Everything" while showing one colour.
+      if (legendKeys.size) return Array.from(legendKeys).join(' + ');
+      return types;
     },
   };
 })();

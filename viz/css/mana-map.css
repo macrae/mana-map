@@ -454,6 +454,14 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .map-legend-row {
   display: flex; align-items: center; gap: 7px; padding: 1px 4px; white-space: nowrap;
   cursor: pointer; border-radius: 3px; opacity: 0.82;
+  /* THE ROWS HAD NEVER BEEN CLICKABLE WITH A MOUSE. The container sets
+     `pointer-events: none` so it does not eat drags over the canvas beneath it,
+     and nothing re-enabled it here — so clicks never reached the handler while
+     `cursor: pointer` showed a hand over an inert element. It survived because
+     the browser test dispatches `row.click()` in JS, which bypasses hit-testing
+     entirely. `.map-labels` two rules above does this correctly and is the
+     pattern. */
+  pointer-events: auto;
   transition: opacity 120ms ease, background 120ms ease;
 }
 .map-legend-row:hover { opacity: 1; background: rgba(255, 255, 255, 0.07); }
