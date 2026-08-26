@@ -22,7 +22,7 @@ that does one.** Thirteen cards in the 63 do three or more.
 | cards doing ≥3 jobs | — | **13** |
 | mean mana value | 3.63 | **3.38** |
 | RGW source demand | 132 | **80** |
-| alternate win conditions | 1 | **3** |
+| alternate win conditions | 1 | **1** (plus a sink) |
 
 **P(a treasure source in the opening seven) = 91.1%.** By turn three, **95.7%**.
 **P(two by turn four) = 83.7%** — which is what makes the off-colour splashes castable.
@@ -74,12 +74,24 @@ makes a Treasure, from a slot the deck was spending anyway.
 ## 4. Combos and alternate wins
 
 **Zero contained two-card infinites, and that is deliberate.** The deck is a bracket-3 engine,
-not a combo deck. What it has instead is **three alternate wins keyed to one resource**:
+not a combo deck.
 
-- **Hellkite Tyrant** — 20 artifacts, win at upkeep. *(already in the deck)*
-- **Revel in Riches** — 10 Treasures, win at upkeep. Also makes them.
-- **Jaya's Immolating Inferno** — X damage to *each* opponent; a legendary sorcery, and the
-  commander is legendary. The treasure sink that ends games.
+**ONE alternate win is keyed to the treasure engine, not three.** An earlier draft of this
+report claimed three and that was wrong:
+
+- **Revel in Riches** — 10 Treasures, win at your upkeep, and it *makes* them off opponents'
+  creatures dying. This is the only win the engine builds toward on its own.
+- **Jaya's Immolating Inferno** — X damage to *each* opponent. Not an alternate win: a
+  **treasure sink** that converts the engine into lethal. Legendary sorcery, and the
+  commander is legendary, so it is always castable.
+- **Hellkite Tyrant** — **a combat-gated steal, and the win clause is a rider on it.** The
+  trigger reads *"whenever THIS CREATURE deals combat damage to a player"*, so it needs a
+  six-mana 6/5 to resolve, survive to your next turn on a wipe-heavy table, and connect.
+  What it is really for is the theft: measured against the tracked pod, **abaddon runs 12
+  artifacts, giada-angels 12, vito 11, baylen-tokens 7** — a connect takes ~7–12 permanents
+  including their mana rocks, which is also what would carry you past twenty. Strong, and
+  **off the deck's own non-combat axis**; keep it as one of twelve Dragons and a threat that
+  demands an answer, not as a line the deck is building toward.
 
 **Near-misses worth knowing** (one card away from a Spellbook line): **Aggravated Assault**
 (4 lines — and it was cut from this deck in July), **Mechanized Production** (a second
@@ -186,8 +198,9 @@ likely to dominate and the deck functions without him. Price before ordering.
 
 ## 11. Open questions for the goldfish
 
-1. **Does it reach 20 artifacts** often enough for Hellkite Tyrant to be real, or is it a trap?
-2. **Does it reach 10 Treasures** for Revel in Riches?
+1. **Does it reach 10 Treasures** for Revel in Riches — the deck's one real alternate win?
+2. **Does Hellkite Tyrant ever connect?** Its value is the theft, and the theft needs combat.
+   If the answer is "rarely", it is a 6-mana 6/5 flier and should be judged as one.
 3. **Are two Treasures actually available** when a splash is wanted? 83.7% is the chance of
    having *drawn* two sources by turn four — not of having two Treasures on board. Only a
    simulation separates those.
