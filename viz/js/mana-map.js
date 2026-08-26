@@ -311,8 +311,15 @@
    * async `enterBrowse` that already says "Ordering N cards…", and above the
    * cap the existing centroid order stands — with the panel SAYING which,
    * because a label that lies about the sequence is worse than no walk.
+   *
+   * THE CAP IS MEASURED IN THE BROWSER, not inferred from the multiply-add
+   * count: 250 cards 83ms, 1,000 113ms, 1,500 238ms, 2,000 413ms. It is set to
+   * `Drill.MAX_DRILL` so one sentence covers both — if you can re-map a set,
+   * you can walk it — and 413ms sits inside the async "Ordering N cards…" the
+   * caller already shows. A first guess of 1,000 was half of what the machine
+   * will actually do.
    */
-  const WALK_MAX = 1000;
+  const WALK_MAX = 2000;
 
   function orderByNearestWalk(rows) {
     if (!embeddings || rows.length < 3) return null;
