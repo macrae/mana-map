@@ -98,17 +98,18 @@
       "why": "The treasure refactor: treasure is the engine, Dragons and combat are payoffs it buys. 23 cards to source, so it cannot be merged yet.",
       "base_version": 2,
       "size": 100,
-      "add": 32,
-      "out": 32,
+      "add": 34,
+      "out": 34,
       "counts": {
-        "in_deck": 63,
+        "in_deck": 61,
         "box": 7,
-        "elsewhere": 4,
+        "elsewhere": 6,
         "buy": 21
       },
       "unsourced": [
         "Academy Manufactor",
         "Ancient Copper Dragon",
+        "Anointed Procession",
         "Black Market Connections",
         "Bonehoard Dracosaur",
         "Charming Scoundrel",
@@ -118,6 +119,7 @@
         "Gadrak, the Crown-Scourge",
         "Jaya's Immolating Inferno",
         "Jolene, the Plunder Queen",
+        "Mondrak, Glory Dominus",
         "Monument to Endurance",
         "Parallel Lives",
         "Professional Face-Breaker",
@@ -145,6 +147,18 @@
           "name": "Ancient Copper Dragon",
           "state": "buy",
           "where": null,
+          "is_new": true
+        },
+        {
+          "name": "Anointed Procession",
+          "state": "elsewhere",
+          "where": [
+            {
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null
+            }
+          ],
           "is_new": true
         },
         {
@@ -358,12 +372,6 @@
           "is_new": false
         },
         {
-          "name": "Glorybringer",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
           "name": "Goldspan Dragon",
           "state": "in_deck",
           "where": null,
@@ -422,6 +430,18 @@
           "state": "in_deck",
           "where": null,
           "is_new": false
+        },
+        {
+          "name": "Mondrak, Glory Dominus",
+          "state": "elsewhere",
+          "where": [
+            {
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null
+            }
+          ],
+          "is_new": true
         },
         {
           "name": "Monument to Endurance",
@@ -527,12 +547,6 @@
         },
         {
           "name": "Reflecting Pool",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Return of the Wildspeaker",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -1317,7 +1331,7 @@
   "next": [
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
-    "branch `treasure-v2` needs 25 card(s) sourced — `manamap pilot deck-branch ur-dragon source treasure-v2`",
+    "branch `treasure-v2` needs 27 card(s) sourced — `manamap pilot deck-branch ur-dragon source treasure-v2`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",

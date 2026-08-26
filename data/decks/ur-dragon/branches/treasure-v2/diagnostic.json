@@ -1,0 +1,339 @@
+{
+ "slug": "ur-dragon",
+ "branch": "treasure-v2",
+ "harness": {
+  "version": 1,
+  "iterations": 10000,
+  "seed": 20260826,
+  "max_turn": 10
+ },
+ "decklist_sha256": "67563fb7a2849d5ed853b800e3fb871ba30e1a340a9c56b7877671cb312ddbdb",
+ "stall": {
+  "by_turn": {
+   "1": {
+    "rate": 0.5992,
+    "ci95": [
+     0.5896,
+     0.6088
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.2805,
+    "ci95": [
+     0.2718,
+     0.2894
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0485,
+    "ci95": [
+     0.0445,
+     0.0529
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0222,
+    "ci95": [
+     0.0195,
+     0.0253
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0108,
+    "ci95": [
+     0.009,
+     0.013
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0075,
+    "ci95": [
+     0.006,
+     0.0094
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0071,
+    "ci95": [
+     0.0056,
+     0.0089
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0073,
+    "ci95": [
+     0.0058,
+     0.0092
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0063,
+    "ci95": [
+     0.0049,
+     0.0081
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0058,
+    "ci95": [
+     0.0045,
+     0.0075
+    ],
+    "n": 10000
+   }
+  },
+  "two_in_a_row": {
+   "rate": 0.0528,
+   "ci95": [
+    0.0486,
+    0.0574
+   ],
+   "n": 10000
+  },
+  "fleet": "above the fleet median",
+  "from_turn": 2,
+  "cause": {
+   "stall_turns": 3960,
+   "hand_empty": 182,
+   "mana_short": 3778
+  },
+  "basis": "a turn on which no card in hand was castable with the mana that turn produced \u2014 not a turn on which nothing was cast"
+ },
+ "engine": {
+  "available": true,
+  "required": [
+   "TREASURE ONLINE \u2014 a generator on the battlefield",
+   "A MULTIPLIER \u2014 the thing that makes one trigger worth several"
+  ],
+  "routes": [
+   "THE DRAIN CLOCK: artifact-ETB damage plus something making them",
+   "REVEL: the ten-Treasure alternate win",
+   "THE DRAGON KILL: a per-creature damage payoff and the mana for it",
+   "THE SINK: treasure converted straight into lethal"
+  ],
+  "online_by_turn": {
+   "1": {
+    "rate": 0.4406,
+    "ci95": [
+     0.4309,
+     0.4504
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.5459,
+    "ci95": [
+     0.5361,
+     0.5556
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.5934,
+    "ci95": [
+     0.5837,
+     0.603
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.6351,
+    "ci95": [
+     0.6256,
+     0.6445
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.6764,
+    "ci95": [
+     0.6672,
+     0.6855
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.7131,
+    "ci95": [
+     0.7042,
+     0.7219
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.7466,
+    "ci95": [
+     0.738,
+     0.755
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.7722,
+    "ci95": [
+     0.7639,
+     0.7803
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.7979,
+    "ci95": [
+     0.7899,
+     0.8057
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.8216,
+    "ci95": [
+     0.814,
+     0.829
+    ],
+    "n": 10000
+   }
+  },
+  "any_route_by_turn": {
+   "1": {
+    "rate": 0.5659,
+    "ci95": [
+     0.5562,
+     0.5756
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.6599,
+    "ci95": [
+     0.6506,
+     0.6691
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.7085,
+    "ci95": [
+     0.6995,
+     0.7173
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.7514,
+    "ci95": [
+     0.7428,
+     0.7598
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.7853,
+    "ci95": [
+     0.7771,
+     0.7932
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.8174,
+    "ci95": [
+     0.8097,
+     0.8248
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.8437,
+    "ci95": [
+     0.8365,
+     0.8507
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.8676,
+    "ci95": [
+     0.8608,
+     0.8741
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.8888,
+    "ci95": [
+     0.8825,
+     0.8948
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.9057,
+    "ci95": [
+     0.8998,
+     0.9113
+    ],
+    "n": 10000
+   }
+  },
+  "bottleneck": {
+   "label": "A MULTIPLIER \u2014 the thing that makes one trigger worth several",
+   "by_turn_three": {
+    "rate": 0.6122,
+    "ci95": [
+     0.6026,
+     0.6217
+    ],
+    "n": 10000
+   }
+  },
+  "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
+ },
+ "mana": {
+  "missed_land_drop_by_five": {
+   "rate": 0.4463,
+   "ci95": [
+    0.4366,
+    0.4561
+   ],
+   "n": 10000
+  },
+  "missed_land_drop_rate": 0.3482,
+  "mulliganed": {
+   "rate": 0.2097,
+   "ci95": [
+    0.2018,
+    0.2178
+   ],
+   "n": 10000
+  },
+  "mean_mana_by_turn": {
+   "1": 0.999,
+   "2": 2.137,
+   "3": 3.06,
+   "4": 3.861,
+   "5": 4.528,
+   "6": 5.09,
+   "7": 5.573,
+   "8": 6.019,
+   "9": 6.426,
+   "10": 6.821
+  },
+  "fleet": "below the fleet median",
+  "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+  "mana_stdev_turn_five": 1.0272
+ },
+ "limits": [
+  "No pod, no opponent and no interaction: this measures a DECK, not a table. It is not a win rate.",
+  "Strategy-relative by construction \u2014 every figure is read against this deck's own declaration and never ranked against another deck.",
+  "A stall is a turn with nothing CASTABLE. The model does not cast wipes, counterspells or targeted removal, so 'nothing was cast' would measure the model rather than the deck."
+ ]
+}
