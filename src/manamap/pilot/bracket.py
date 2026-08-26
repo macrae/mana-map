@@ -287,7 +287,8 @@ def format_report(slug, report, target=None):
 
 
 def main(args):
-    doc = load_deck_cards(args.slug)
+    branch = getattr(args, "branch", None)
+    doc = load_deck_cards(args.slug, branch)
     cards = doc.get("cards", [])
     names = [c["name"] for c in cards]
     commanders = [c["name"] for c in cards if c.get("is_commander")]
@@ -296,7 +297,7 @@ def main(args):
     target = getattr(args, "target", None)
 
     report["slug"] = args.slug
-    out = deck_dir(args.slug) / "bracket_report.json"
+    out = deck_dir(args.slug, branch) / "bracket_report.json"
 
     # A deck's target bracket is a property of the DECK, not of this invocation.
     # Without this, `bracket-check <slug>` with no --target silently rewrote the

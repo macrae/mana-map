@@ -7239,3 +7239,38 @@ def test_the_brief_is_readable_on_the_dossier(browser, viz_server):
     assert got["outMark"] not in ("", "none"), f"must-exclude marker missing: {got['outMark']!r}"
     assert "measurement" in got["caveat"], "the panel does not say it is authored intent"
     assert len(got["lede"]) > 100, "the playstyle did not render"
+
+
+def test_the_branch_panel_prices_the_candidate_list(browser, viz_server):
+    """A branch is a plan with a price on it, and the dossier must show both.
+
+    The question a pilot has in front of a candidate deck is "what will this
+    cost me", and until branches existed nothing answered it anywhere. The panel
+    renders the four-way sourcing split and the buy list; the badge says which
+    of the two states it is in.
+    """
+    page = _dossier(browser, viz_server, "ur-dragon")
+    page.wait_for_selector("#panel-branches", timeout=25000)
+    got = page.evaluate(
+        """() => {
+             const p = document.getElementById('panel-branches');
+             const li = p.querySelector('.branch-buy li');
+             const rows = [...p.querySelectorAll('.facts dt, .facts div')]
+                            .map(n => n.textContent.trim().toLowerCase());
+             return {
+               badge: (p.querySelector('.branch-block') ||
+                       p.querySelector('.branch-ok') || {}).textContent || '',
+               buy: p.querySelectorAll('.branch-buy li').length,
+               // The marker is CSS; a rule in an unloaded stylesheet renders an
+               // unmarked list that still looks fine, so assert the computed value.
+               mark: li ? getComputedStyle(li, '::before').content : '',
+               text: p.textContent.toLowerCase(),
+             };
+         }""")
+    assert got["badge"], "the branch shows neither 'mergeable' nor a count to source"
+    assert "sleeved in another deck" in got["text"], \
+        "the panel does not distinguish a card in another deck from a purchase"
+    assert "to buy" in got["text"]
+    if "to source" in got["badge"]:
+        assert got["buy"] > 0, "it says cards need sourcing and lists none"
+        assert got["mark"] not in ("", "none"), f"buy-list marker never applied: {got['mark']!r}"

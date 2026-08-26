@@ -66,6 +66,7 @@ from manamap.pilot.common import (
     is_land,
     load_card_roles,
     load_combo_details,
+    deck_file,
     load_deck_cards,
     load_json,
 )
@@ -234,7 +235,7 @@ def _axis(name, value, unit, cards, how, low=None, high=None, extra=None,
 
 # ── Archetype ────────────────────────────────────────────────────────────
 
-def detect_archetype(slug, override=None):
+def detect_archetype(slug, override=None, branch=None):
     """Which archetype's budget applies, and how we decided.
 
     Never guessed from the cards: either the caller says so, or the strategic
@@ -243,7 +244,7 @@ def detect_archetype(slug, override=None):
     """
     if override:
         return {"archetype": override, "source": "--archetype"}
-    frame = load_json(deck_dir(slug) / "strategic_frame.json", default=None)
+    frame = load_json(deck_file(slug, "strategic_frame.json", branch), default=None)
     if frame:
         text = str(frame.get("archetype", "")).lower()
         for name, hints in _ARCHETYPE_HINTS:
@@ -605,19 +606,19 @@ def _closers(component, siblings, deck_names, identity, pool, roles, details):
     }
 
 
-def engine_activation(slug, cards, roles, identity, load_pool_fn):
+def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None):
     """The deck's own engine declaration, priced and measured.
 
     `goldfish_targets.json` is hand-authored and already says what the deck is
     trying to assemble; `goldfish_metrics.json` already says how often it does.
     Joining them by label is the whole trick.
     """
-    targets_doc = load_json(deck_dir(slug) / "goldfish_targets.json", default=None)
+    targets_doc = load_json(deck_file(slug, "goldfish_targets.json", branch), default=None)
     if not targets_doc:
         return {"available": False,
                 "reason": "no goldfish_targets.json — the deck has not declared "
                           "what it is trying to assemble"}
-    metrics = load_json(deck_dir(slug) / "goldfish_metrics.json", default=None) or {}
+    metrics = load_json(deck_file(slug, "goldfish_metrics.json", branch), default=None) or {}
     measured = {t["label"]: t for t in (metrics.get("metrics", {}).get("targets") or [])}
     deck_names = {c["name"] for c in cards}
 
@@ -672,7 +673,7 @@ def engine_activation(slug, cards, roles, identity, load_pool_fn):
 
 # ── Freshness ────────────────────────────────────────────────────────────
 
-def freshness(slug, doc):
+def freshness(slug, doc, branch=None):
     """Which derived artifacts were computed against the current decklist.
 
     A diagnosis of stale numbers is worse than none, and every artifact here
@@ -685,7 +686,7 @@ def freshness(slug, doc):
         "mana_analysis.json": (None, "decklist_sha256"),
     }
     for filename, (block, key) in checks.items():
-        art = load_json(deck_dir(slug) / filename, default=None)
+        art = load_json(deck_file(slug, filename, branch), default=None)
         if art is None:
             out["artifacts"][filename] = {"present": False}
             continue
@@ -697,7 +698,7 @@ def freshness(slug, doc):
     # bracket_report.json carries no stamp; report its presence so the caller
     # knows the power axis is answerable at all.
     out["artifacts"]["bracket_report.json"] = {
-        "present": (deck_dir(slug) / "bracket_report.json").exists(),
+        "present": deck_file(slug, "bracket_report.json", branch).exists(),
         "decklist_sha256": None, "current": None,
     }
     recon = load_json(deck_dir(slug) / "deck_recon.json", default=None)
@@ -795,19 +796,19 @@ def build_notes(audit):
 
 # ── Entry point ──────────────────────────────────────────────────────────
 
-def analyze(slug, archetype=None, load_pool_fn=None):
+def analyze(slug, archetype=None, load_pool_fn=None, branch=None):
     if load_pool_fn is None:
         from manamap.pilot.card_pool import load_pool as load_pool_fn
 
-    doc = load_deck_cards(slug)
+    doc = load_deck_cards(slug, branch)
     cards = doc.get("cards", [])
-    facts = deck_facts_mod.analyze(slug)
+    facts = deck_facts_mod.analyze(slug, branch)
     roles = load_card_roles() if CARD_ROLES_PATH.exists() else {}
-    mana = load_json(deck_dir(slug) / "mana_analysis.json", default=None)
-    goldfish = load_json(deck_dir(slug) / "goldfish_metrics.json", default=None)
-    bracket = load_json(deck_dir(slug) / "bracket_report.json", default=None)
+    mana = load_json(deck_file(slug, "mana_analysis.json", branch), default=None)
+    goldfish = load_json(deck_file(slug, "goldfish_metrics.json", branch), default=None)
+    bracket = load_json(deck_file(slug, "bracket_report.json", branch), default=None)
 
-    detected = detect_archetype(slug, archetype)
+    detected = detect_archetype(slug, archetype, branch)
     overrides, citation = archetype_overrides(detected["archetype"])
     detected["overrides"] = {k: list(v) for k, v in overrides.items()}
     if citation:
@@ -820,12 +821,12 @@ def analyze(slug, archetype=None, load_pool_fn=None):
         "slug": slug,
         "commander": facts["commander"],
         "archetype": detected,
-        "freshness": freshness(slug, doc),
+        "freshness": freshness(slug, doc, branch),
         "counts": facts["counts"],
         "roles": {"coverage": facts["roles"].get("coverage", 0.0),
                   "no_role": facts["roles"].get("no_role", [])},
         "axes": build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides),
-        "engine": engine_activation(slug, cards, roles, identity, load_pool_fn),
+        "engine": engine_activation(slug, cards, roles, identity, load_pool_fn, branch),
     }
     audit["notes"] = build_notes(audit)
     return audit
@@ -873,7 +874,7 @@ def format_report(audit):
 
 
 def main(args):
-    audit = analyze(args.slug, archetype=getattr(args, "archetype", None))
+    audit = analyze(args.slug, branch=getattr(args, "branch", None), archetype=getattr(args, "archetype", None))
     if getattr(args, "as_json", False):
         print(json.dumps(audit, indent=2, sort_keys=True, ensure_ascii=False))
     else:

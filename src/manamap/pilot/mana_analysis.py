@@ -26,6 +26,7 @@ from manamap.pilot.common import (
     deck_dir,
     expand_copies,
     is_land,
+    deck_file,
     load_deck_cards,
     load_json,
 )
@@ -83,8 +84,8 @@ def nonland_producer_kind(card):
     return "ramp:rock"
 
 
-def analyze(slug):
-    deck_doc = load_deck_cards(slug)
+def analyze(slug, branch=None):
+    deck_doc = load_deck_cards(slug, branch)
     entries = deck_doc["cards"]
     # Every count below is about the library the shuffler sees, so it runs on
     # COPIES: eleven Islands are eleven blue sources, not one. Counting entries
@@ -171,7 +172,7 @@ def analyze(slug):
             f"({tapped / len(lands):.0%}) — over the one-in-three budget the "
             f"deck builder allows itself.")
 
-    goldfish = load_json(deck_dir(slug) / "goldfish_metrics.json") or {}
+    goldfish = load_json(deck_file(slug, "goldfish_metrics.json", branch)) or {}
     metrics = goldfish.get("metrics", {})
 
     return {
@@ -231,8 +232,9 @@ def analyze(slug):
 
 
 def main(args):
-    result = analyze(args.slug)
-    out = deck_dir(args.slug) / "mana_analysis.json"
+    branch = getattr(args, "branch", None)
+    result = analyze(args.slug, branch)
+    out = deck_dir(args.slug, branch) / "mana_analysis.json"
     with open(out, "w") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
         f.write("\n")

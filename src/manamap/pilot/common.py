@@ -488,8 +488,25 @@ def deck_lifecycle(slug):
     return deck_status_of(load_json(DECKS_DIR / slug / "issue.json", {}))
 
 
-def deck_dir(slug):
-    """Return the deck directory for a slug, or fail with an actionable message."""
+BRANCHES_DIR = "branches"
+
+
+def deck_dir(slug, branch=None):
+    """The deck's directory, or one of its BRANCHES.
+
+    A branch is a candidate 99 the pilot cannot yet sleeve — designed, diffable
+    and measurable, but not the list being played. It is a deck-SHAPED directory
+    (`branches/<name>/decklist.txt`, `cards.json`, the measurements) rather than
+    a bare file, and the reason is this function: every read and write in the
+    package already resolves through it, so passing `branch=` makes scoping
+    STRUCTURAL. A measurement run against a branch physically cannot overwrite
+    the deck's tracked artifact, because it is writing to a different directory.
+
+    The alternative — one `branches/<name>.txt` plus per-command write plumbing —
+    is the silent-overwrite class `resolve_out_path` exists to stop, one level
+    up: a command that took `--branch` for reading and wrote through an
+    un-branched path would corrupt the real artifact with plausible numbers.
+    """
     path = DECKS_DIR / slug
     if not path.is_dir():
         raise FileNotFoundError(
@@ -497,15 +514,42 @@ def deck_dir(slug):
             f"(one '1 Card Name' per line, commander marked with a 'Commander:' "
             f"section header or a trailing *CMDR*)."
         )
-    return path
+    if branch is None:
+        return path
+    sub = path / BRANCHES_DIR / branch
+    if not sub.is_dir():
+        raise FileNotFoundError(
+            f"No branch '{branch}' on {slug}. "
+            f"`manamap pilot deck-branch {slug} list` shows what there is."
+        )
+    return sub
 
 
-def load_deck_cards(slug):
-    """Load a deck's cards.json, failing with a pointer to fetch-deck if absent."""
-    path = deck_dir(slug) / "cards.json"
+def deck_file(slug, name, branch=None):
+    """An artifact path, preferring a branch's own copy over the deck's.
+
+    READS FALL BACK; WRITES DO NOT. A branch has its own measurements — that is
+    the point — but it does not have its own AUTHORED files: nobody writes a
+    second `goldfish_targets.json` to try a candidate list, and a branch that
+    silently measured against no engine declaration would report a different
+    deck rather than a different list. So a read prefers the branch and falls
+    back to the deck, while every write goes to `deck_dir(slug, branch)` and can
+    never touch the tracked artifact.
+    """
+    if branch is not None:
+        candidate = deck_dir(slug, branch) / name
+        if candidate.exists():
+            return candidate
+    return deck_dir(slug) / name
+
+
+def load_deck_cards(slug, branch=None):
+    """Load a deck's (or a branch's) cards.json, pointing at fetch-deck if absent."""
+    path = deck_dir(slug, branch) / "cards.json"
     if not path.exists():
         raise FileNotFoundError(
-            f"{path} not found — run `manamap pilot fetch-deck {slug}` first."
+            f"{path} not found — run `manamap pilot fetch-deck {slug}"
+            + (f" --branch {branch}" if branch else "") + "` first."
         )
     with open(path) as f:
         return json.load(f)

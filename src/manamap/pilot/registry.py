@@ -54,6 +54,9 @@ PILOT_STEPS = [
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("deck-info", "manamap.pilot.deck_info",
      "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
+    ("deck-branch", "manamap.pilot.deck_branch",
+     "A candidate 99 you cannot yet sleeve: diff it, price it against your collection, "
+     "measure it, and merge it only when the cards exist"),
     ("deck-version", "manamap.pilot.deck_versions",
      "Every list this deck has been: numbered from git, tagged by you, joined to the games played on it"),
     ("prescribe", "manamap.pilot.prescribe",
@@ -121,7 +124,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "deck-version", "deck-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -311,6 +314,31 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--write", action="store_true",
                              help="write data/decks/<slug>/info.json for the deck page "
                                   "(committed, staleness-gated, no version block)")
+        # --branch: measure a CANDIDATE list without touching the deck's own
+        # artifacts. Scoping is structural rather than per-command — `deck_dir`
+        # resolves the branch directory, so a branch run writes beside the
+        # branch's own decklist and cannot overwrite the tracked one.
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map'):
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="run against a branch (see `deck-branch <slug> list`) "
+                                  "instead of the deck's own list")
+        if name == "deck-branch":
+            cmd.add_argument("action", nargs="?", default="list",
+                             choices=["list", "new", "show", "diff", "source", "merge"],
+                             help="list branches / new: open one from a list / show it / "
+                                  "diff it against the deck / source: where every added "
+                                  "card comes from / merge it into decklist.txt")
+            cmd.add_argument("name", nargs="?", default=None, help="the branch name")
+            cmd.add_argument("--from", dest="source", default=None,
+                             help="new: the candidate list (a file, or `-` for stdin)")
+            cmd.add_argument("--why", default=None, help="new: why this branch exists")
+            cmd.add_argument("--write", action="store_true",
+                             help="merge: actually write decklist.txt (dry run without it)")
+            cmd.add_argument("--force", action="store_true",
+                             help="merge: apply despite unsourced cards (needs --reason)")
+            cmd.add_argument("--reason", default=None,
+                             help="merge: why the sourcing gate is being skipped")
+            cmd.add_argument("--json", action="store_true")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "tag", "restore", "paper", "baseline"],

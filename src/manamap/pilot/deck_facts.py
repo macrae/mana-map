@@ -330,8 +330,8 @@ def build_notes(facts):
     return notes
 
 
-def analyze(slug):
-    doc = load_deck_cards(slug)
+def analyze(slug, branch=None):
+    doc = load_deck_cards(slug, branch)
     cards = doc.get("cards", [])
     names = [c["name"] for c in cards]
     commanders = [c["name"] for c in cards if c.get("is_commander")]
@@ -373,7 +373,7 @@ def analyze(slug):
 
 
 def main(args):
-    facts = analyze(args.slug)
+    facts = analyze(args.slug, getattr(args, "branch", None))
     text = json.dumps(facts, indent=2, sort_keys=True, ensure_ascii=False)
     out = getattr(args, "out", None)
     if out:

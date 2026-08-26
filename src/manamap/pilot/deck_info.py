@@ -119,6 +119,28 @@ def _open_questions(base):
     return out
 
 
+def _branches(slug):
+    """Open branches, with what each would cost to build.
+
+    Composes; computes nothing of its own. `deck_branch.source` is the one place
+    that answers where a card comes from, and it is the only reader of the
+    collection through `pilot/collection.py`.
+    """
+    try:
+        from manamap.pilot import deck_branch
+        rows = []
+        for name in deck_branch.names(slug):
+            try:
+                rows.append(deck_branch._one(slug, name))
+            except Exception:
+                # A branch whose list will not parse is a fact worth showing,
+                # not a reason the whole dossier fails to load.
+                rows.append({"name": name, "unreadable": True})
+        return rows
+    except Exception:
+        return []
+
+
 def compose(slug):
     base = deck_dir(slug)
     facts = facts_mod.analyze(slug)
@@ -131,6 +153,7 @@ def compose(slug):
     done = annotations(slug)
     rx = prescriptions_of(slug)
     brief = load_json(base / "brief.json") or {}
+    branches = _branches(slug)
     bracket = load_json(base / "bracket_report.json") or {}
     engine = load_json(base / "engine.json") or {}
     diag = load_json(base / "diagnosis.json") or {}
@@ -186,6 +209,12 @@ def compose(slug):
                    "must_include": brief.get("must_include") or [],
                    "must_exclude": brief.get("must_exclude") or []}
                   if brief else None),
+        # CANDIDATE LISTS the pilot cannot yet sleeve. A branch is not a stage
+        # and deliberately not in `deck_status.STAGES`: adding one would change
+        # the denominator for every deck at once and mark twelve newly
+        # incomplete for something optional — the same argument that keeps `sim`
+        # a todo rather than a stage.
+        "branches": branches,
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,
@@ -337,6 +366,19 @@ def _next(info):
     elif info["record"]["undebriefed"]:
         ids = info["record"]["undebriefed"]
         nxt.append(f"{len(ids)} logged game(s) not yet debriefed ({', '.join(ids)}) — `/debrief {slug}`")
+    # A branch that is fully sourced is a decision waiting to be taken; one that
+    # is not is a shopping list. Both are worth saying, and neither is a judgement
+    # about the deck.
+    for b in (info.get("branches") or []):
+        if b.get("unreadable"):
+            nxt.append(f"branch `{b['name']}` will not parse — fix "
+                       f"data/decks/{slug}/branches/{b['name']}/decklist.txt")
+        elif b.get("mergeable"):
+            nxt.append(f"branch `{b['name']}` is fully sourced (+{b['add']} -{b['out']}) — "
+                       f"`manamap pilot deck-branch {slug} merge {b['name']} --write`")
+        elif b.get("unsourced"):
+            nxt.append(f"branch `{b['name']}` needs {len(b['unsourced'])} card(s) sourced — "
+                       f"`manamap pilot deck-branch {slug} source {b['name']}`")
     if info["prescriptions"]["count"] > info["prescriptions"]["answered"]:
         nxt.append(f"{info['prescriptions']['count'] - info['prescriptions']['answered']} open "
                    f"prescription(s) — `/prescribe {slug}` runs the doctor ⇄ skeptic loop")

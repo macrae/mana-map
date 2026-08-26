@@ -135,7 +135,7 @@ def test_counts_are_entries_not_copies(tmp_path, monkeypatch):
     ]
     (deck / "cards.json").write_text(json.dumps({"cards": cards}))
     monkeypatch.setattr(common, "DECKS_DIR", tmp_path)
-    monkeypatch.setattr(df, "load_deck_cards", lambda slug: {"cards": cards})
+    monkeypatch.setattr(df, "load_deck_cards", lambda slug, branch=None: {"cards": cards})
 
     counts = df.analyze("toy")["counts"]
     assert counts["entries"] == 2 and counts["copies"] == 3

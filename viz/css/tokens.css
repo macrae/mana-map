@@ -504,3 +504,22 @@ details.case .body { padding: 0 14px 14px; }
 #panel-brief .brief-in li::before { content: '+ '; color: #4a8b5c; font-weight: 700; }
 #panel-brief .brief-out li::before { content: '\2212 '; color: #b8564a; font-weight: 700; }
 .brief-caveat { margin-top: 20px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.09); }
+
+/* Branches — a candidate 99, so it reads as a plan with a price on it. */
+#panel-branches .branch + .branch { margin-top: 26px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.09); }
+#panel-branches h3 { font-size: 1.05rem; margin: 0 0 6px;
+  display: flex; align-items: baseline; gap: 10px; }
+#panel-branches h4 { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted, #8a93a3); margin: 18px 0 7px; font-weight: 700; }
+.branch-ok { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #4a8b5c; border: 1px solid #4a8b5c;
+  border-radius: 3px; padding: 1px 6px; }
+.branch-block { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #c4a747; border: 1px solid #c4a747;
+  border-radius: 3px; padding: 1px 6px; }
+.branch-why { font-size: 0.94rem; line-height: 1.55; }
+#panel-branches .branch-buy { margin: 0; padding-left: 0; list-style: none; }
+#panel-branches .branch-buy li { line-height: 1.7; }
+#panel-branches .branch-buy li::before { content: '\25CB '; color: #c4a747; }
+.branch-note { margin-top: 16px; }

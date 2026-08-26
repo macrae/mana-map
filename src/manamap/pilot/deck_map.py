@@ -42,6 +42,7 @@ from manamap.pilot.build_index import line_cards
 from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     deck_dir,
+    deck_file,
     expand_faces,
     load_card_roles,
     load_deck_cards,
@@ -309,7 +310,7 @@ def near_edges(distance, k=2):
     return edges
 
 
-def verified_cards(slug, deck_names):
+def verified_cards(slug, deck_names, branch=None):
     """Cards a checker-passed stack's scenario actually names.
 
     Reuses `build_index.line_cards`, which already encodes the hard-won rule for
@@ -317,7 +318,7 @@ def verified_cards(slug, deck_names):
     that here would be a second answer to a question this repo has settled once.
     """
     found = set()
-    directory = deck_dir(slug) / "stacks"
+    directory = deck_file(slug, "stacks", branch)
     if not directory.is_dir():
         return found
     for path in sorted(directory.glob("*.json")):
@@ -331,8 +332,8 @@ def verified_cards(slug, deck_names):
 # ── Build ───────────────────────────────────────────────────────────────
 
 
-def build(slug):
-    deck = load_deck_cards(slug)
+def build(slug, branch=None):
+    deck = load_deck_cards(slug, branch)
     cards = deck["cards"]
     frame = load_frame()
     rows, names, missing = resolve_rows(cards, frame)
@@ -350,7 +351,7 @@ def build(slug):
 
     roles_by_name = load_card_roles()
     deck_names = {c["name"] for c in cards}
-    verified = verified_cards(slug, deck_names)
+    verified = verified_cards(slug, deck_names, branch)
     # The flag lives on the CARD, not on the deck header — cards.json's top level
     # is just {deck, decklist_sha256}. Reading a "commander" key off the header
     # returns None silently and the map loses its centre.
@@ -432,7 +433,7 @@ def build(slug):
 
 
 def main(args):
-    doc = build(args.slug)
+    doc = build(args.slug, getattr(args, "branch", None))
     errors = []
     if doc["meta"]["unresolved"]:
         errors.append(f"unresolved card names: {doc['meta']['unresolved']}")
@@ -441,7 +442,7 @@ def main(args):
     # caller actually chose a path; the default is the tracked artifact.
     requested = getattr(args, "out", None)
     out = (resolve_out_path(requested, args.slug, "deck-map") if requested
-           else deck_dir(args.slug) / ARTIFACT)
+           else deck_dir(args.slug, getattr(args, "branch", None)) / ARTIFACT)
     out.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
 
     cities = [r for r in doc["regions"] if r["level"] == 0]

@@ -333,9 +333,9 @@ def test_a_bare_rerun_inherits_the_recorded_target(tmp_path, monkeypatch):
         {"slug": "somedeck", "floor": 4, "target": 4, "within_target": True,
          "cut_candidates": []}))
 
-    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug: deck)
+    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug, branch=None: deck)
     monkeypatch.setattr(bracket_mod, "load_deck_cards",
-                        lambda slug: {"cards": [{"name": "Sol Ring",
+                        lambda slug, branch=None: {"cards": [{"name": "Sol Ring",
                                                  "quantity": 1}]})
     monkeypatch.setattr(bracket_mod, "load_reference", lambda: ({}, {}, {}))
     monkeypatch.setattr(bracket_mod, "assess",
@@ -360,9 +360,9 @@ def test_an_explicit_target_still_overrides_the_recorded_one(tmp_path, monkeypat
     (deck / "bracket_report.json").write_text(_json.dumps(
         {"slug": "somedeck", "floor": 4, "target": 4, "within_target": True}))
 
-    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug: deck)
+    monkeypatch.setattr(bracket_mod, "deck_dir", lambda slug, branch=None: deck)
     monkeypatch.setattr(bracket_mod, "load_deck_cards",
-                        lambda slug: {"cards": [{"name": "Sol Ring",
+                        lambda slug, branch=None: {"cards": [{"name": "Sol Ring",
                                                  "quantity": 1}]})
     monkeypatch.setattr(bracket_mod, "load_reference", lambda: ({}, {}, {}))
     monkeypatch.setattr(bracket_mod, "assess",

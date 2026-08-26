@@ -72,6 +72,15 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare block
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
+manamap pilot deck-branch <slug> [list] | new <name> --from <file> [--why …]
+manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>
+manamap pilot deck-branch <slug> merge <name> [--write] [--force --reason …]
+                                        #   a candidate 99 you cannot yet sleeve: diff it,
+                                        #   price it against your boxes, MEASURE it
+                                        #   (`--branch` on fetch-deck / bracket-check /
+                                        #   mana-analysis / goldfish / deck-facts /
+                                        #   deck-audit / deck-map), and merge only when
+                                        #   every added card is sourced
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
 manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)

@@ -34,7 +34,7 @@ from manamap.config import (
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_SEED,
 )
-from manamap.pilot.common import deck_dir, load_deck_cards
+from manamap.pilot.common import deck_dir, deck_file, load_deck_cards
 
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
@@ -806,7 +806,7 @@ def aggregate(results, targets, max_turn, model_treasures=False, model_combat=Fa
 
 
 def run(slug, iterations=None, seed=None, max_turn=None,
-        model_treasures=None, model_combat=None, with_results=False):
+        model_treasures=None, model_combat=None, with_results=False, branch=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
     `model_treasures` and `model_combat` default to None, meaning READ THE
@@ -825,13 +825,17 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     seed = GOLDFISH_SEED if seed is None else seed
     max_turn = max_turn or GOLDFISH_MAX_TURN
 
-    doc = load_deck_cards(slug)
+    doc = load_deck_cards(slug, branch)
     library, commanders = build_library(doc)
     if not commanders:
         raise SystemExit(f"No commander flagged in {slug}/cards.json")
     commander_cmc = int(commanders[0].get("cmc") or 0)
 
-    targets_path = deck_dir(slug) / "goldfish_targets.json"
+    # A branch inherits the deck's ENGINE DECLARATION unless it writes its own:
+    # nobody authors a second targets file to try a candidate list, and measuring
+    # a branch against no declaration would report a different deck rather than a
+    # different list.
+    targets_path = deck_file(slug, "goldfish_targets.json", branch)
     targets = []
     # OPT-IN, and for the same reason `OPTIONAL_DEPARTMENTS` existed: a model
     # that changes every deck's numbers at once cannot be landed on one deck
@@ -945,8 +949,9 @@ def run(slug, iterations=None, seed=None, max_turn=None,
 
 
 def main(args):
+    branch = getattr(args, "branch", None)
     doc = run(args.slug)
-    out = deck_dir(args.slug) / "goldfish_metrics.json"
+    out = deck_dir(args.slug, branch) / "goldfish_metrics.json"
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")

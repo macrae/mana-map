@@ -91,6 +91,52 @@
       "Moltensteel Dragon"
     ]
   },
+  "branches": [
+    {
+      "name": "treasure-v2",
+      "opened": "2026-08-26",
+      "why": "The treasure refactor: treasure is the engine, Dragons and combat are payoffs it buys. 23 cards to source, so it cannot be merged yet.",
+      "base_version": 2,
+      "size": 100,
+      "add": 32,
+      "out": 32,
+      "counts": {
+        "in_deck": 63,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 21
+      },
+      "unsourced": [
+        "Academy Manufactor",
+        "Ancient Copper Dragon",
+        "Black Market Connections",
+        "Bonehoard Dracosaur",
+        "Charming Scoundrel",
+        "Collector's Vault",
+        "Commander's Sphere",
+        "Fable of the Mirror-Breaker",
+        "Gadrak, the Crown-Scourge",
+        "Jaya's Immolating Inferno",
+        "Jolene, the Plunder Queen",
+        "Monument to Endurance",
+        "Parallel Lives",
+        "Professional Face-Breaker",
+        "Ragavan, Nimble Pilferer",
+        "Reckless Fireweaver",
+        "Reckoner Bankbuster",
+        "Revel in Riches",
+        "Smuggler's Share",
+        "Sword of Wealth and Power",
+        "The Reaver Cleaver",
+        "Treasure Map",
+        "Vandalblast",
+        "Weftstalker Ardent",
+        "Xorn"
+      ],
+      "mergeable": false,
+      "has_cards": true
+    }
+  ],
   "bracket": {
     "floor": 4,
     "floor_name": "Optimized",
@@ -344,6 +390,7 @@
   "next": [
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
+    "branch `treasure-v2` needs 25 card(s) sourced — `manamap pilot deck-branch ur-dragon source treasure-v2`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",

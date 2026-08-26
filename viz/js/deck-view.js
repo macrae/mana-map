@@ -192,6 +192,51 @@
    * THE DECK AND ITS BRIEF MAY DISAGREE, and during a refactor they always do.
    * The panel says so rather than implying the 99 already matches.
    */
+  /* ── BRANCHES: a candidate 99 the pilot cannot yet sleeve ──────────────
+   *
+   * Sits beside the brief, because a branch is what the brief looks like as a
+   * list. It renders the four-way sourcing split and, above all, THE BUY LIST —
+   * the question a pilot actually has in front of a candidate deck is "what is
+   * this going to cost me", and until now nothing answered it anywhere.
+   *
+   * No tier badge, same reason as the brief: a branch is intent, not evidence.
+   */
+  function branchPanel(d) {
+    var bs = ((d.info || {}).branches) || [];
+    if (!bs.length) return '';
+    var body = bs.map(function (b) {
+      if (b.unreadable) {
+        return '<div class="branch"><h3>' + esc(b.name) +
+               '</h3><p class="ev">This branch\u2019s list will not parse.</p></div>';
+      }
+      var c = b.counts || {};
+      var out = '<div class="branch"><h3>' + esc(b.name) +
+        (b.mergeable ? '<span class="branch-ok">mergeable</span>'
+                     : '<span class="branch-block">' + b.unsourced.length +
+                       ' to source</span>') + '</h3>';
+      if (b.why) out += '<p class="branch-why">' + esc(b.why) + '</p>';
+      out += facts([
+        ['opened', b.opened || '\u2014'],
+        ['vs the current list', '+' + b.add + ' \u2212' + b.out],
+        ['size', String(b.size)],
+        ['already in the deck', String(c.in_deck || 0)],
+        ['in a box', String(c.box || 0)],
+        ['sleeved in another deck', String(c.elsewhere || 0)],
+        ['to buy', String(c.buy || 0)],
+      ]);
+      if ((b.unsourced || []).length)
+        out += '<h4>Not yet sourced <span class="ev">' + b.unsourced.length +
+               '</span></h4>' + list(b.unsourced.map(esc), 'branch-buy');
+      out += '<p class="ev branch-note">A branch is a candidate list, not the deck. ' +
+             'It merges only when every added card is sourced \u2014 ' +
+             '<code>deck-branch ' + esc(d.slug) + ' merge ' + esc(b.name) + '</code>.</p>';
+      return out + '</div>';
+    }).join('');
+    return panel('branches', bs.length === 1 ? 'The branch' : 'Branches',
+                 'Candidate lists, and what they would cost to build.',
+                 [], '#7ba05b', body);
+  }
+
   function briefPanel(d) {
     // From `d.info`, not a second fetch of brief.json: info.json is this page's
     // data model and the composition already carries the brief, so reading the
@@ -909,7 +954,7 @@
       nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
       questionsPanel(d),
-      briefPanel(d), constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      briefPanel(d), branchPanel(d), constellationPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;

@@ -365,7 +365,11 @@ def resolve_entries(entries, by_name, by_printing=None):
 
 
 def main(args):
-    path = deck_dir(args.slug) / "decklist.txt"
+    # A BRANCH IS RESOLVED ONCE, HERE. Every downstream measurement reads
+    # cards.json through `load_deck_cards(slug, branch)`, so this is the only
+    # command that has to know a branch has its own list.
+    branch = getattr(args, "branch", None)
+    path = deck_dir(args.slug, branch) / "decklist.txt"
     if not path.exists():
         raise SystemExit(
             f"{path} not found — paste the decklist there (one card per line, "
@@ -373,7 +377,7 @@ def main(args):
         )
     text = path.read_text()
     decklist_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    out = deck_dir(args.slug) / "cards.json"
+    out = deck_dir(args.slug, branch) / "cards.json"
     if not getattr(args, "force", False) and is_up_to_date(out, decklist_sha256):
         print(f"  Already up to date — skipping Scryfall fetch ({out}).")
         print("  (The hash covers the decklist, not Scryfall's data — use "
