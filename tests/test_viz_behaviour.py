@@ -234,7 +234,15 @@ def test_browse_cycling_moves_the_marker(page):
 
 
 def test_filtering_does_not_reset_the_zoom(page):
-    """Before the fix: zoom to a span of 20.5, toggle a filter, get 116.6."""
+    """Before the fix: zoom to a span of 20.5, toggle a filter, get 116.6.
+
+    THE SEARCH HALF OF THIS CHANGED DELIBERATELY. When it was written, search
+    was a HIGHLIGHT — moving the camera would have been a bug, because you were
+    marking cards without narrowing anything. Search is a filter now and frames
+    its matches on purpose, so what has to hold is the pair: a filter TOGGLE
+    still leaves the camera alone, and a search that moved it puts it back when
+    the query is peeled. A framing with no way home is the actual hazard.
+    """
     result = page.evaluate("""async () => {
         const span = () => { const c = MM.mapRenderer.getCamera();
                              return Math.abs(c.x[1] - c.x[0]); };
@@ -246,12 +254,18 @@ def test_filtering_does_not_reset_the_zoom(page):
         const afterToggle = span();
         const s = document.getElementById('search');
         s.value = 'goblin'; s.dispatchEvent(new Event('input'));
-        await new Promise(r => setTimeout(r, 800));
-        return {zoomed, afterToggle, afterSearch: span()};
+        await new Promise(r => setTimeout(r, 1400));
+        const afterSearch = span();
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+        await new Promise(r => setTimeout(r, 1400));
+        return {zoomed, afterToggle, afterSearch, afterEscape: span()};
     }""")
     assert page.js_errors == []
     assert abs(result["afterToggle"] - result["zoomed"]) < 0.5, "a filter toggle reset the camera"
-    assert abs(result["afterSearch"] - result["zoomed"]) < 0.5, "a search reset the camera"
+    assert abs(result["afterSearch"] - result["zoomed"]) > 0.5, (
+        "a search no longer frames its matches — that is the feature, not a bug")
+    assert abs(result["afterEscape"] - result["zoomed"]) < 1.0, (
+        f"Escape left the camera at the query's framing: {result}")
 
 
 def test_map_switch_refits_the_camera(page):
@@ -6729,4 +6743,194 @@ def test_resuming_a_draft_gathers_a_card_held_in_another_pile(discover_page):
     assert sorted(out["named"]["inPile"]) == ["Rhystic Study", "Sol Ring"]
     assert out["unnamedMoved"] is False, "a bare add() moved a card between piles"
     assert out["solRingStillIn"] == "Zur voltron"
+    assert page.js_errors == []
+
+
+# ── The search box, which was doing nothing in Discover ───────────────────
+
+def _search(page, term, settle=1600):
+    page.evaluate("""(t) => {
+        const i = document.getElementById('search');
+        i.value = t; i.dispatchEvent(new Event('input'));
+    }""", term)
+    page.wait_for_timeout(settle)
+
+
+def test_discover_search_lands_you_on_the_card(discover_page):
+    """IT WAS DOING NOTHING AT ALL, which is what this fixes.
+
+    Typing set `searchTerm` and called the MAP's `render()` — but Discover hides
+    the atlas canvas, so the white diamonds it drew landed on a surface nobody
+    could see and the only observable effect was a status line. There was
+    nothing to click.
+    """
+    page = discover_page
+    _search(page, "craterhoof")
+    hits = page.locator(".search-pick")
+    assert hits.count() >= 1, "no results under the search box"
+    assert "Craterhoof" in hits.first.inner_text()
+
+    hits.first.click()
+    page.wait_for_function("() => Force.nodeCount === 1", timeout=15000)
+    state = page.evaluate("""() => ({
+        open: (MM.cardRecord(Discovery.current) || {}).n,
+        nodes: Force.nodeCount,
+        boxHidden: document.getElementById('searchResults').hidden,
+        input: document.getElementById('search').value,
+    })""")
+    assert state["open"] == "Craterhoof Behemoth"
+    assert state["nodes"] == 1, "the searched card should be the whole walk"
+    assert state["boxHidden"] and state["input"] == "", "the picker stayed open"
+    assert page.js_errors == []
+
+
+def test_adding_a_search_result_grows_the_walk_rather_than_replacing_it(discover_page):
+    """GROWING MUST NEVER BE ABLE TO DELETE — a new door onto the oldest trap here.
+
+    Two controls, never one: the name REPLACES (the explicit request that makes
+    replacement legitimate) and `+` ADOPTS. A single control that switched
+    between them silently destroyed walks twice, which `seedFromRows`' own
+    header records.
+    """
+    page = discover_page
+    _search(page, "craterhoof")
+    page.locator(".search-pick").first.click()
+    page.wait_for_function("() => Force.nodeCount === 1", timeout=15000)
+    kept = page.evaluate("() => Discovery.rowByName('Craterhoof Behemoth')")
+
+    _search(page, "sol ring")
+    plus = page.locator(".search-add")
+    assert plus.count() >= 1, "no + offered even though there is a walk to add to"
+    plus.first.click()
+    page.wait_for_function("() => Force.nodeCount > 1", timeout=15000)
+
+    after = page.evaluate("(r) => ({nodes: Force.nodeCount, keptSurvives: Force.hasRow(r)})", kept)
+    assert after["keptSurvives"], "adding a card destroyed the walk it was added to"
+    assert after["nodes"] == 2
+    assert page.js_errors == []
+
+
+def test_the_plus_is_absent_when_there_is_no_walk_to_add_to(discover_page):
+    """The same rule the seed textarea keeps: `+` only exists once there is
+    something to add to, so it can never be the control that starts a walk."""
+    page = discover_page
+    page.evaluate("() => Force.newWalk(true)")
+    page.wait_for_function("() => Force.nodeCount === 0", timeout=10000)
+    _search(page, "craterhoof")
+    assert page.locator(".search-pick").count() >= 1
+    assert page.locator(".search-add").count() == 0
+    assert page.js_errors == []
+
+
+def test_discover_search_works_before_the_projection_lands(discover_page):
+    """The whole point of Discover booting on 0.56 MB.
+
+    A picker built on `MM.allData` would do nothing for the first seconds of
+    every visit; this one reads `Discovery.index`, which is there from boot.
+    Asserted by searching with `allData` emptied.
+    """
+    page = discover_page
+    out = page.evaluate("""() => {
+        const saved = MM.allData.slice();
+        MM.allData.length = 0;
+        try { return Discovery.searchByName('craterhoof', 8).map(h => h.name); }
+        finally { MM.allData.push(...saved); }
+    }""")
+    assert out and "Craterhoof Behemoth" in out[0]
+    assert page.js_errors == []
+
+
+# ── Explore: search that filters ─────────────────────────────────────────
+
+def test_explore_search_narrows_the_atlas_and_says_which_field_hit(canvas_page):
+    """It used to HIGHLIGHT: a trace of white diamonds over 34,890 points left at
+    full opacity, findable only if you already knew where to look.
+
+    And the field is named because a count alone is not explicable — "treasure"
+    is 413 in oracle text and 390 as a keyword, "dragon" is 469 type lines. A
+    reader shown only the number cannot tell which question was answered.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2200)
+
+    state = page.evaluate("""() => ({
+        status: document.getElementById('status').textContent,
+        drill: document.getElementById('drillFiltered').textContent,
+    })""")
+    assert "match" in state["status"] and "treasure" in state["status"]
+    # Union across fields, not the old first-tier-wins cascade.
+    assert "ORACLE TEXT" in state["status"] or "KEYWORD" in state["status"], state["status"]
+    count = int(state["status"].split()[0].replace(",", ""))
+    assert count > 300, f"a filter that returns {count} is the cascade, not a union"
+    # THE THREE PREDICATES AGREE ABOUT WHAT IS NARROWED. Drill re-maps the
+    # matches even though every card stays drawn.
+    assert str(count) in state["drill"].replace(",", "") or \
+        f"{count:,}" in state["drill"], state["drill"]
+    assert page.js_errors == []
+
+
+def test_a_full_card_name_still_finds_that_card(canvas_page):
+    """The union has no exact-name shortcut, and this is why that is safe.
+
+    The shortcut was tried and removed: a card is named exactly "Treasure", so
+    asking to see treasure cards returned ONE while 390 carry the keyword. It
+    also bought nothing — a full card name unions to 1 or 3, because almost
+    nothing else says it.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "craterhoof behemoth", settle=2200)
+    status = page.evaluate("() => document.getElementById('status').textContent")
+    count = int(status.split()[0].replace(",", ""))
+    assert count <= 3, f"a full card name matched {count} cards: {status}"
+    assert page.js_errors == []
+
+
+def test_escape_peels_the_query_before_anything_else(canvas_page):
+    """It is the narrowing most recently asked for. Clearing a region first
+    would leave the query on and look like Escape did nothing."""
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1200)
+    _search(page, "treasure", settle=2000)
+    before = page.evaluate("() => document.getElementById('status').textContent")
+    assert "treasure" in before
+
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(900)
+    after = page.evaluate("""() => ({
+        status: document.getElementById('status').textContent,
+        input: document.getElementById('search').value,
+    })""")
+    assert "treasure" not in after["status"], after["status"]
+    assert after["input"] == "", "the box still holds a query it is no longer applying"
+    assert page.js_errors == []
+
+
+def test_role_is_offered_in_build_and_not_in_explore(canvas_page):
+    """MODE-SCOPED, NOT REMOVED. `build.js` reads `GROUPINGS.role.order` and
+    `.palette` at six call sites, so deleting the key is a TypeError at every
+    one — and deleting the OPTION breaks `MM.focusGroup(key, 'role')`, which
+    does `select.value = 'role'` when a Build role bar is clicked. With no such
+    option that assignment silently no-ops and the select disagrees with
+    `currentColorBy`, which is the failure its own comment warns about.
+    """
+    page = canvas_page
+    page.evaluate("() => MM.setMode('explore')")
+    page.wait_for_timeout(1000)
+    explore = page.evaluate("""() => [...document.getElementById('colorBy').options]
+        .filter(o => !o.hidden).map(o => o.value)""")
+    assert "role" not in explore, f"Explore still offers Role: {explore}"
+    assert "supertype" in explore and "color" in explore and "rarity" in explore
+
+    page.evaluate("() => MM.setMode('build')")
+    page.wait_for_timeout(1500)
+    build = page.evaluate("""() => [...document.getElementById('colorBy').options]
+        .filter(o => !o.hidden).map(o => o.value)""")
+    assert "role" in build, "Build lost Role — its role bars set the picker to it"
+    # And the registry itself is untouched, which is what build.js reads.
+    assert page.evaluate("() => !!(MM.GROUPINGS.role && MM.GROUPINGS.role.order.length)")
     assert page.js_errors == []

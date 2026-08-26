@@ -318,7 +318,9 @@
   function enterFiltered() {
     const rows = [];
     const all = MM.allData;
-    for (let i = 0; i < all.length; i++) if (MM.passesFilters(all[i])) rows.push(i);
+    // The row index is passed too: a search narrows by ROW, not by any property
+    // of the record, so a predicate that only sees the card cannot honour it.
+    for (let i = 0; i < all.length; i++) if (MM.passesFilters(all[i], i)) rows.push(i);
     if (rows.length > MAX_DRILL) {
       MM.setStatus(rows.length.toLocaleString() + ' cards is too many to re-map — filter below ' +
         MAX_DRILL.toLocaleString() + ', or box-select, or click a region label.');

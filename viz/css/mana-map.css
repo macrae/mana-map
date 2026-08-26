@@ -725,3 +725,23 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   border: 1px solid var(--rule, #3a3a5a);
   opacity: 0; transition: opacity .12s; }
 .lib-tile:hover .lib-move, .lib-move:focus { opacity: 1; }
+
+/* ── The search picker (Discover) ──────────────────────────────────────────
+ * Absolutely positioned inside the toolbar's wrapper so it hangs under the
+ * input rather than stretching the row.
+ */
+#searchWrap { position: relative; }
+.search-results { position: absolute; top: 100%; left: 0; z-index: 40;
+  min-width: 260px; max-width: 340px; margin-top: 4px; padding: 4px;
+  background: #16213e; border: 1px solid #3a3a5a; border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); }
+.search-hit { display: flex; gap: 4px; align-items: stretch; }
+.search-pick { flex: 1; text-align: left; cursor: pointer; font: inherit;
+  font-size: 0.78rem; padding: 5px 8px; border-radius: 3px;
+  background: none; border: 0; color: #e8e8f0; }
+.search-pick:hover { background: #2a2a4a; }
+.search-add { flex: none; width: 26px; cursor: pointer; font: inherit;
+  font-size: 0.9rem; line-height: 1; border-radius: 3px;
+  background: none; border: 1px solid #3a3a5a; color: #8a8aa0; }
+.search-add:hover { color: #c4a747; border-color: #c4a747; }
+.search-none { margin: 0; padding: 6px 8px; font-size: 0.75rem; color: #8a8aa0; }

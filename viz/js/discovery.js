@@ -277,6 +277,60 @@ window.Discovery = (function () {
     return nameMap;
   }
 
+  /* Rank cards by name against what has been typed. Client-side, on `index`.
+   *
+   * NO SERVER, and that is the whole reason this is not `Build.commanderSearch`.
+   * That picker calls `Api.call('commanders')`, which the deployed site does not
+   * have — and it would be unavailable in the one window this most needs to work:
+   * Discover boots on `viz_index.json` (0.56 MB) and the 12.9 MB projection lands
+   * behind it, so a search that needed `MM.allData` would do nothing for the first
+   * few seconds of every visit. A substring scan over 34,890 short strings is
+   * sub-millisecond and needs neither.
+   *
+   * Ranking is `serve.py:_commanders`' rule, ported rather than reinvented:
+   * normalise away punctuation, exact first, then starts-with, then shortest. The
+   * normalisation matters here — "Zur the Enchanter" should be found by "zurthe",
+   * and 9.2% of card names carry a comma.
+   */
+  function searchByName(query, limit) {
+    if (!index) return [];
+    const q = String(query || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+    if (q.length < 2) return [];
+    const hits = [];
+    for (let i = 0; i < index.length; i++) {
+      const name = index[i].n;
+      const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');
+      const at = key.indexOf(q);
+      if (at === -1) continue;
+      hits.push({ row: i, name: name, rank: key === q ? 0 : (at === 0 ? 1 : 2),
+                  len: name.length });
+      // 34,890 names is fast, but there is no reason to keep ranking once the
+      // list is deep enough to be certain of the top few.
+      if (hits.length > 400) break;
+    }
+    hits.sort(function (a, b) { return a.rank - b.rank || a.len - b.len; });
+    return hits.slice(0, limit || 8);
+  }
+
+  /* THE SEARCHED CARD BECOMES THE WALK. One card, then branch — which is what
+   * `show()` does for the landing and what "Start here" does for a typed list.
+   * Replacement is legitimate here because picking a result IS the explicit
+   * request; `addToWalk` is the other half, and they are two controls because a
+   * single one that switched silently destroyed walks twice. */
+  function startHere(row) {
+    if (row < 0 || !index[row]) return;
+    seedFromRows([row], index[row].n, {});
+    MM.setStatus(index[row].n + ' — pick a relation to grow the walk.');
+  }
+
+  function addToWalk(row) {
+    if (row < 0 || !index[row]) return;
+    Promise.resolve(seedFromRows([row], index[row].n, { replace: false })).then(function () {
+      MM.setStatus(index[row].n + ' added — ' + (window.Force ? Force.nodeCount : 0)
+        + ' cards on the walk.');
+    });
+  }
+
   function rowByName(name) {
     const m = ensureNameMap();
     if (!m) return -1;
@@ -1107,6 +1161,9 @@ window.Discovery = (function () {
     enter, exit: exitMode, land, show, focus, setCurrent, reroll, onFilter, render, newGraph,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },
+    searchByName: searchByName,
+    startHere: startHere,
+    addToWalk: addToWalk,
     library: { get list() { return Session.library.list; }, has: inLibrary, toggle: toggleLibrary,
             // No `clear` here. Its only caller was the Clear button in the
             // collapsed tray, and that moved to the drawer — where it ASKS

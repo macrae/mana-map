@@ -271,6 +271,10 @@
   // legend group, then the orientation lens, then the selection. Each press does exactly
   // one visible thing.
   function escapeOnce() {
+    // The query is peeled first because it is the narrowing the pilot most
+    // recently asked for, and because leaving it on while clearing a region
+    // would look like Escape did nothing.
+    if (queryFocus) { clearQueryFocus(); return; }
     if (regionFocus) { clearRegionFocus(); return; }
     if (legendFocus) { clearLegendFocus(); return; }
     if (orientation) { clearOrientation(); return; }
@@ -402,6 +406,61 @@
   // Drill is still reachable from the toolbar and from box-select, where asking for a
   // re-layout is explicit. A label click is a camera move.
   let regionFocus = null;   // { id, label, rows: Set }
+  /* What the search box has narrowed the atlas to. Same SHAPE as `regionFocus` on
+   * purpose — a row Set — so `spotlightFor` composes the two without a second
+   * dimming path. `field` is which tier hit, and it is shown, because "treasure"
+   * matching 413 cards through ORACLE TEXT and "flying" matching 3,361 through
+   * KEYWORD are different facts and a bare count cannot tell them apart. */
+  let queryFocus = null;    // { rows: Set, field, total, shown, term } | null
+
+  /* WHAT A FILTER MEANS, and the reason it is not the old tier cascade.
+   *
+   * The cascade stopped at the first tier that matched anything, which is right
+   * for FINDING A CARD and wrong for narrowing the atlas. Measured: "treasure"
+   * returned ONE card, because a card is named exactly "Treasure" and the exact
+   * tier fires first — while 390 cards carry the treasure KEYWORD and 413
+   * mention it in oracle text. A pilot asking to see treasure cards got one.
+   *
+   * So: an exact name match still wins alone, because typing a card's whole name
+   * is unambiguous. Everything else UNIONS across the fields, and the status
+   * names the two that contributed most — the counts overlap, so they are
+   * reported rather than summed.
+   */
+  const SEARCH_FIELDS = [
+    ['NAME', (d) => d.n],
+    ['TYPE', (d) => d.t],
+    ['KEYWORD', (d) => d.k],
+    ['ORACLE TEXT', (d) => d.o],
+  ];
+
+  function computeQuery(term) {
+    if (!term || term.length < 2) return null;
+    // Oracle, type and keyword live only in the projection. Without it the honest
+    // answer is "not yet", not an empty result set that looks like "none".
+    if (!allData.length) return { rows: new Set(), fields: [], total: 0, term, pending: true };
+
+    /* NO EXACT-NAME SHORTCUT, and it was tried. "An exact card name is
+     * unambiguous intent" sounds right and is wrong here: a card is named
+     * exactly "Treasure", so asking to see treasure cards returned ONE while
+     * 390 carry the keyword and 413 mention it. The shortcut also buys nothing —
+     * measured, a full card name unions to 1 ("Craterhoof Behemoth",
+     * "Counterspell") or 3 ("Sol Ring"), because almost nothing else says it.
+     * One rule, no special case, no surprising minimum. */
+    const rows = new Set();
+    const counts = [];
+    for (const [label, get] of SEARCH_FIELDS) {
+      let n = 0;
+      for (let i = 0; i < allData.length; i++) {
+        const d = allData[i];
+        if (!activeSupertypes.has(d.s)) continue;
+        const hay = get(d);
+        if (hay && hay.toLowerCase().includes(term)) { rows.add(i); n++; }
+      }
+      if (n) counts.push([label, n]);
+    }
+    counts.sort((a, b) => b[1] - a[1]);
+    return { rows, fields: counts, total: rows.size, term };
+  }
   /* A legend row you clicked. Deliberately a GROUP key and not a row set: the traces are
    * already partitioned by category, so "light up Planeswalkers" is one scalar per group
    * rather than a 34,322-entry array — the same distinction `dimsAll()` exists to make.
@@ -1783,6 +1842,11 @@
       // thing, and they drift the moment someone reorders the list for readability.
       const colourSel = document.getElementById('colorBy');
       if (colourSel) colourSel.value = currentColorBy;
+      // Explore does not get `setMode` at boot — only Discover has its chrome
+      // applied before the data lands, deliberately — so the per-mode option
+      // list is synced here too, or arriving on ?mode=explore shows an option
+      // that mode does not offer.
+      syncColourOptions(currentMode);
       initToggles();
       refreshDrillButton();
       // Only paint the scatter if that is what the user is looking at. Rendering 34,322
@@ -1825,11 +1889,33 @@
   // Shift arms the marquee on canvas; on Plotly it flips dragmode. Same gesture either way.
   function setCanvasSelectMode(on) { if (mapCanvas) mapCanvas.setSelectMode(on); }
 
+  /* WHAT THE PILOT IS NARROWED TO — which is NOT what is drawn, deliberately.
+   *
+   * `visible` in `render()` stays supertypes-only, so a search leaves every card
+   * on screen and merely dims the ones that did not match: a spotlight keeps
+   * context, and "where do treasure cards live" is unanswerable if the rest of
+   * the atlas disappears.
+   *
+   * This is the other question — what set has the pilot actually singled out —
+   * and it is what `Drill ⤓` re-maps and what the button counts. The two
+   * disagreeing is normal here and was a BUG when it happened by accident
+   * (`filtered` fed contours while the group loop re-tested `activeSupertypes`,
+   * so a new filter silently drew nothing). Named apart so the next reader does
+   * not helpfully collapse them back together.
+   */
+  function narrowedTo(d, i) {
+    if (!activeSupertypes.has(d.s)) return false;
+    if (queryFocus && queryFocus.rows.size) return queryFocus.rows.has(i);
+    return true;
+  }
+
   function refreshDrillButton() {
     const btn = document.getElementById('drillFiltered');
     if (!btn || typeof window.Drill === 'undefined') return;
     let n = 0;
-    for (let i = 0; i < allData.length; i++) if (activeSupertypes.has(allData[i].s)) n++;
+    // Follows `passesFilters`, never `visible` — see the note there. A query
+    // narrows what Drill would re-map even though every card stays drawn.
+    for (let i = 0; i < allData.length; i++) if (narrowedTo(allData[i], i)) n++;
     const cap = window.Drill.MAX_DRILL;
     const tooMany = n > cap;
     btn.textContent = 'Drill ' + n.toLocaleString() + ' ⤓';
@@ -1942,11 +2028,137 @@
     if (b && mapCanvas) b.classList.toggle('active', mapCanvas.motion);
   }
 
+  /* ── The search box, which does two different things ────────────────────
+   *
+   * IN DISCOVER IT WAS DOING NOTHING AT ALL, and that is what this fixes. Typing
+   * set `searchTerm` and called the MAP's `render()` — but Discover hides the
+   * atlas canvas (`#plot.force-mode`), so the white diamonds it drew landed on a
+   * surface nobody could see and the only observable effect was a status line.
+   * There was nothing to click.
+   *
+   * So in Discover the box becomes a PICKER: names ranked out of `Discovery.index`,
+   * click one to land on it. In Explore it keeps narrowing the atlas, which is a
+   * different question asked with the same control — but the two never both
+   * render, and each says which it is.
+   */
+  function renderSearchResults(term) {
+    const box = document.getElementById('searchResults');
+    if (!box) return;
+    if (currentMode !== 'discover' || !window.Discovery || !Discovery.isReady()
+        || term.length < 2) {
+      box.hidden = true;
+      box.innerHTML = '';
+      return;
+    }
+    const hits = Discovery.searchByName(term, 8);
+    if (!hits.length) {
+      box.hidden = false;
+      box.innerHTML = '<p class="search-none">no card matches that</p>';
+      return;
+    }
+    // "Is there a walk to add to" is read ONCE, so both the row and its `+` agree
+    // within a single render — the same reason `Discovery.render` hoists `graphN0`.
+    const hasWalk = window.Force ? Force.nodeCount > 0 : false;
+    box.hidden = false;
+    box.innerHTML = hits.map(function (h) {
+      const arg = JSON.stringify(h.row);
+      return '<div class="search-hit">'
+        + '<button class="search-pick" onclick="MM.searchPick(' + arg + ')">'
+        +   escHtml(h.name) + '</button>'
+        + (hasWalk
+            ? '<button class="search-add" title="Add to the walk instead of starting over"'
+              + ' onclick="MM.searchAdd(' + arg + ')">+</button>'
+            : '')
+        + '</div>';
+    }).join('');
+  }
+
+  /* Frame the matches from where they actually are.
+   *
+   * Copied in shape from `focusRegion`, and for its stated reason: the extent
+   * comes from the members' real coordinates rather than anything stored, so the
+   * camera agrees with what is drawn after the supertype filters have had their
+   * say. Skipped for a very large match set — framing 3,361 cards scattered
+   * across the atlas is the whole atlas, and animating to it is a jolt that
+   * changes nothing. */
+  const FRAME_QUERY_MAX = 1500;
+
+  /* Where the camera was before a search moved it. Saved ONCE per search
+   * session, not per keystroke — saving on every input would capture the
+   * already-framed view and Escape would restore you to the last query's
+   * framing rather than to where you were reading. */
+  let cameraBeforeQuery = null;
+
+  function frameQuery() {
+    if (!queryFocus || !queryFocus.rows.size || !mapCanvas) return;
+    if (queryFocus.rows.size > FRAME_QUERY_MAX) return;
+    if (!cameraBeforeQuery) cameraBeforeQuery = mapCanvas.getCamera();
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const i of queryFocus.rows) {
+      const d = allData[i];
+      if (!d) continue;
+      if (d.x < x0) x0 = d.x;
+      if (d.x > x1) x1 = d.x;
+      if (d.y < y0) y0 = d.y;
+      if (d.y > y1) y1 = d.y;
+    }
+    if (!isFinite(x0)) return;
+    const padX = Math.max((x1 - x0) * 0.12, 0.5);
+    const padY = Math.max((y1 - y0) * 0.12, 0.5);
+    mapCanvas.setCamera({ x: [x0 - padX, x1 + padX], y: [y0 - padY, y1 + padY] },
+                        { animate: true });
+  }
+
+  /* Peeling a query PUTS THE CAMERA BACK. A search frames its matches, so
+   * clearing one without restoring leaves the pilot zoomed into a corner with
+   * the whole atlas shown again and no idea why — the narrowing is gone but its
+   * side effect is not, which reads as the map having jumped on its own. */
+  function clearQueryFocus() {
+    queryFocus = null;
+    searchTerm = '';
+    const input = document.getElementById('search');
+    if (input) input.value = '';
+    closeSearchResults();
+    render();
+    refreshDrillButton();
+    if (cameraBeforeQuery && mapCanvas) {
+      mapCanvas.setCamera(cameraBeforeQuery, { animate: true });
+    }
+    cameraBeforeQuery = null;
+  }
+
+  function closeSearchResults() {
+    const box = document.getElementById('searchResults');
+    if (box) { box.hidden = true; box.innerHTML = ''; }
+  }
+
+  /* TWO CONTROLS, TWO ACTS. Clicking the name REPLACES the walk with that card —
+   * the explicit request that makes replacement legitimate. `+` GROWS it. A single
+   * control that switched between them silently is the bug `seedFromRows`' header
+   * records having shipped twice. */
+  function searchPick(row) {
+    if (window.Discovery) Discovery.startHere(row);
+    const input = document.getElementById('search');
+    if (input) input.value = '';
+    searchTerm = '';
+    closeSearchResults();
+  }
+
+  function searchAdd(row) {
+    if (window.Discovery) Discovery.addToWalk(row);
+  }
+
   document.getElementById('search').addEventListener('input', e => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
       searchTerm = e.target.value.trim().toLowerCase();
+      renderSearchResults(searchTerm);
+      // Explore narrows the atlas; Discover has no atlas on screen to narrow.
+      if (currentMode === 'discover') return;
+      queryFocus = computeQuery(searchTerm);
       render();
+      refreshDrillButton();
+      frameQuery();
     }, 300);
   });
 
@@ -2092,6 +2304,42 @@
     }
   }
 
+  /* WHICH GROUPINGS THE PICKER OFFERS, per mode.
+   *
+   * Role colouring is Build's language, not the atlas's: on 34,890 cards it paints
+   * mostly `unclassified`, and it costs a 0.39 MB lazy fetch to say so. Explore does
+   * not offer it.
+   *
+   * REMOVED FROM THE PICKER, NEVER FROM `MM.GROUPINGS`. `build.js` reads
+   * `GROUPINGS.role.order` and `.palette` through `familyPriority()`/`familyColour()`
+   * at six call sites, and deleting the key is a `TypeError` at every one — the role
+   * bars, their swatches, the segmented curve and the deck's map overlay.
+   *
+   * And the option cannot simply be deleted either: clicking a role bar in Build calls
+   * `MM.focusGroup(key, 'role')`, which does `select.value = 'role'`. With no such
+   * option that assignment SILENTLY NO-OPS and the select then disagrees with
+   * `currentColorBy` — "two controls disagreeing about one value is how a legend ends
+   * up lying", which is the failure `focusGroup`'s own comment warns about. So the
+   * option is present in Build and absent in Explore, and entering Explore while it is
+   * selected falls back rather than leaving a select showing a value it no longer has.
+   */
+  const MODE_GROUPINGS = { explore: ['supertype', 'color', 'rarity'] };
+
+  function syncColourOptions(mode) {
+    const sel = document.getElementById('colorBy');
+    if (!sel) return;
+    const allowed = MODE_GROUPINGS[mode];
+    for (const opt of sel.options) {
+      opt.hidden = !!(allowed && allowed.indexOf(opt.value) === -1);
+      opt.disabled = opt.hidden;
+    }
+    if (allowed && allowed.indexOf(currentColorBy) === -1) {
+      currentColorBy = allowed[0];
+      sel.value = currentColorBy;
+      regroup();
+    }
+  }
+
   function setMode(mode) {
     currentMode = mode;
     // `modeSelect` stays the ONE answer to "which mode is current" — it is
@@ -2100,6 +2348,7 @@
     const sel = document.getElementById('modeSelect');
     if (sel && sel.value !== mode) sel.value = mode;
     syncToolbar(mode);
+    syncColourOptions(mode);
     hideCardPopup();
     const detail = document.getElementById('detailPanel');
 
@@ -2419,9 +2668,18 @@
     const LIT = 0.95, UNLIT = 0.09;
     function spotlightFor(g) {
       const groupLit = !legendFocus || g.key === legendFocus.key;
-      if (!regionFocus) return groupLit ? LIT : UNLIT;          // scalar, free
+      // Two per-point sources now — a focused region and a search — and a point is
+      // lit only if it survives both. Composing here rather than adding a second
+      // dimming path is the whole reason this function exists.
+      const rowSets = [];
+      if (regionFocus) rowSets.push(regionFocus.rows);
+      if (queryFocus && queryFocus.rows.size) rowSets.push(queryFocus.rows);
+      if (!rowSets.length) return groupLit ? LIT : UNLIT;       // scalar, free
       if (!groupLit) return UNLIT;                              // scalar, free
-      return g.customdata.map(idx => regionFocus.rows.has(idx) ? LIT : UNLIT);
+      return g.customdata.map(function (idx) {
+        for (const rows of rowSets) if (!rows.has(idx)) return UNLIT;
+        return LIT;
+      });
     }
     /* Registry order, not hash order. `groups` is keyed by category, so `Object.values`
      * hands back whatever order the cards happened to arrive in — which made the legend
@@ -2435,7 +2693,7 @@
       let opacity;
       if (dimsAll) {
         opacity = 0.08;
-      } else if (regionFocus || legendFocus) {
+      } else if (regionFocus || legendFocus || (queryFocus && queryFocus.rows.size)) {
         // A spotlight, not a filter. Everything stays on screen at a low alpha so you can
         // still see WHERE the lit set sits — the question the atlas exists to answer, and
         // the one that hiding everything else destroyed.
@@ -2464,61 +2722,30 @@
     // Search highlight trace (index-tracking to avoid O(n²) indexOf). Suppressed while
     // drilling: it plots world coordinates, and a diamond at a world position on top of
     // a local layout would be pointing at nothing.
-    if (searchTerm.length >= 2 && !drilling) {
-      const term = searchTerm;
-      let matches = [];
-      let isOracleSearch = false;
-      let oracleTotal = 0;
-
-      // Tier 1: exact name match
-      for (let i = 0; i < allData.length; i++) {
-        const d = allData[i];
-        if (activeSupertypes.has(d.s) && d.n.toLowerCase() === term) matches.push({i, d});
-      }
-      // Tier 2: name starts with
-      if (!matches.length) {
-        for (let i = 0; i < allData.length; i++) {
-          const d = allData[i];
-          if (activeSupertypes.has(d.s) && d.n.toLowerCase().startsWith(term)) matches.push({i, d});
-        }
-      }
-      // Tier 3: name includes
-      if (!matches.length) {
-        for (let i = 0; i < allData.length; i++) {
-          const d = allData[i];
-          if (activeSupertypes.has(d.s) && d.n.toLowerCase().includes(term)) matches.push({i, d});
-        }
-      }
-      // Tier 4: oracle text includes (capped at 200)
-      if (!matches.length) {
-        const oracleMatches = [];
-        for (let i = 0; i < allData.length; i++) {
-          const d = allData[i];
-          if (activeSupertypes.has(d.s) && d.o && d.o.toLowerCase().includes(term)) oracleMatches.push({i, d});
-        }
-        oracleTotal = oracleMatches.length;
-        matches = oracleMatches.slice(0, 200);
-        isOracleSearch = matches.length > 0;
-      }
-
-      if (matches.length) {
-        const displayCount = isOracleSearch && oracleTotal > matches.length
-          ? matches.length + ' of ' + oracleTotal.toLocaleString()
-          : String(matches.length);
-        traces.push({
-          type: 'scattergl',
-          mode: 'markers',
-          name: `Search (${displayCount})`,
-          x: matches.map(m => m.d.x),
-          y: matches.map(m => m.d.y),
-          customdata: matches.map(m => m.i),
-          hoverinfo: 'none',
-          marker: { size: 8, opacity: 1, color: '#fff', symbol: 'diamond', line: { color: '#EA580C', width: 2 } },
-        });
-        const suffix = isOracleSearch ? ' (oracle text)' : '';
-        setStatus(`${displayCount} result${matches.length === 1 ? '' : 's'} for "${searchTerm}"${suffix} \u2014 ${filtered.length.toLocaleString()} cards shown`);
+    if (queryFocus && !drilling) {
+      /* THE MATCHES ARE LIT, NOT OVERLAID. This used to push a trace of white
+       * diamonds over 34,890 points left at full opacity — findable only if you
+       * already knew where to look, and no help at all in answering "where do
+       * treasure cards live". The spotlight above does the narrowing now; this
+       * only says what happened.
+       *
+       * The FIELD is named because a count on its own is not explicable: 413 for
+       * "treasure" is oracle text, 3,361 for "flying" is a keyword, and a pilot
+       * seeing only the number cannot tell which question was answered. */
+      if (queryFocus.pending) {
+        setStatus('Loading the card data to search \u2014 "' + searchTerm + '" in a moment');
+      } else if (queryFocus.total) {
+        // The two biggest contributors, named. They OVERLAP, so they are listed
+        // rather than summed — 413 oracle and 390 keyword is 433 cards, and a
+        // reader shown only "433" cannot tell which question was answered.
+        const by = queryFocus.fields.slice(0, 2)
+          .map(function (f) { return f[0] + ' ' + f[1].toLocaleString(); }).join(', ');
+        setStatus(queryFocus.total.toLocaleString() + ' card'
+          + (queryFocus.total === 1 ? '' : 's') + ' match "' + searchTerm + '"'
+          + ' \u00b7 ' + by + ' \u00b7 Esc to clear');
       } else {
-        setStatus(`No results for "${searchTerm}" \u2014 ${filtered.length.toLocaleString()} cards shown`);
+        setStatus('No cards match "' + searchTerm + '" \u2014 '
+          + filtered.length.toLocaleString() + ' shown');
       }
     } else if (drilling) {
       // The world count is a lie while drilling — those cards are not on screen, and
@@ -2602,6 +2829,8 @@
     get currentMap() { return currentMap; },
     escHtml,
     openCard,
+    searchPick,
+    searchAdd,
     buildHoverTextMinimal,
     renderManaSymbols,
     closeDetail: clearSelection,
@@ -2717,10 +2946,11 @@
       return palette[key] || '#666';
     },
     async getRegionData() { return loadRegionData(currentMap); },
-    passesFilters(d) { return activeSupertypes.has(d.s); },
+    passesFilters(d, i) { return narrowedTo(d, i); },
     filterLabel() {
       const on = Array.from(activeSupertypes);
-      return on.length >= SUPERTYPES.length ? 'Everything' : on.join(' + ');
+      const types = on.length >= SUPERTYPES.length ? 'Everything' : on.join(' + ');
+      return queryFocus && queryFocus.total ? '"' + queryFocus.term + '"' : types;
     },
   };
 })();

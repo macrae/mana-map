@@ -67,7 +67,11 @@ def test_world_anchored_layers_are_suppressed_while_drilling():
         "region labels are anchored to world centroids and must not render over a "
         "local layout"
     )
-    assert "searchTerm.length >= 2 && !drilling" in src, (
+    # The guard survives the search's rewrite from HIGHLIGHT to FILTER; only its
+    # spelling moved. There is no diamond trace to misplace any more — the
+    # matches are lit in place — but the status line still speaks in world
+    # counts, and a world count over a local layout is the same lie.
+    assert "if (queryFocus && !drilling) {" in src, (
         "the search highlight plots world coordinates and must not render over a "
         "local layout"
     )
