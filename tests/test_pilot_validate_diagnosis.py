@@ -454,3 +454,78 @@ def test_only_paired_swaps_are_applied_for_the_floor_check():
     errors = vd._validate_prescription_moves(
         doc, load_deck_cards("hapatra"), load_card_roles())
     assert errors == []
+
+
+# ── A diagnosis the pilot has ACTED ON ────────────────────────────────────
+
+def test_applying_the_advice_does_not_redden_the_gate(tmp_path):
+    """THE MOST BACKWARDS SIGNAL A GATE CAN GIVE.
+
+    `validate_diagnosis` detected staleness and then went on asking the CURRENT
+    deck about a document written for the previous one. Measured on ur-dragon
+    the day its five-land swap was applied: 16 errors, of which FIFTEEN were
+    "cut_candidates[N]: not in the maindeck" and "add_candidates[N]: already in
+    the maindeck" — every one of them a report that the prescription had been
+    carried out.
+
+    `validate_prescription` already worked the other way and said why: "a cut
+    since applied would read 'not in the maindeck' forever, and a gate that
+    reddens history teaches its reader to ignore it." This is that rule, moved
+    to the module the prescription borrows the rest of its checks from.
+
+    It is safe to PASS because nothing renders a diagnosis — `deck-view.js`
+    deliberately does not fetch it — and its one reader is the doctor, which
+    reads the stamp. `main` says STALE on every run so the state is never quiet.
+    """
+    from manamap.pilot import validate_diagnosis as vd
+
+    doc = {
+        "slug": "d", "as_of_decklist_sha256": "a" * 64,
+        "archetype": "x", "verdict": "y", "axes": [],
+        # Exactly the shape that used to produce fifteen errors: every cut has
+        # been made and every add is now in the deck.
+        "cut_candidates": [{"card": "Old Card", "why": "it was slow"}],
+        "add_candidates": [{"card": "New Land", "why": "mana", "closes": "mana-base"}],
+        "open_questions": [], "gaps": [], "skeptic": {}, "iterations": 1,
+        "engine": {}, "lean_into": [],
+    }
+    deck_doc = {
+        "decklist_sha256": "b" * 64,
+        "cards": [{"name": "New Land"}, {"name": "Cmd", "is_commander": True}],
+    }
+
+    assert vd.is_stale(doc, deck_doc)
+    errors = vd.validate(doc, deck_doc)
+    membership = [e for e in errors
+                  if "not in the maindeck" in e or "already in the maindeck" in e]
+    assert not membership, (
+        f"the gate reported the pilot taking the advice as {len(membership)} "
+        f"error(s): {membership}")
+
+
+def test_a_current_diagnosis_is_still_held_to_the_deck(tmp_path):
+    """The form-only path is for STALE documents only. A diagnosis stamped with
+    the deck it describes must still name cards the deck actually runs —
+    otherwise the relaxation would swallow the check it exists beside."""
+    from manamap.pilot import validate_diagnosis as vd
+
+    sha = "c" * 64
+    doc = {
+        "slug": "d", "as_of_decklist_sha256": sha,
+        "archetype": "x", "verdict": "y", "axes": [],
+        # Fully formed, so the check it reaches is MEMBERSHIP and not shape —
+        # a fixture that trips an earlier check would pass this test without
+        # exercising the thing it is named for.
+        "cut_candidates": [{"card": "Not In The Deck", "why": "n/a",
+                            "cost_of_cutting": "none", "difficulty": "easy"}],
+        "add_candidates": [], "open_questions": [], "gaps": [],
+        "skeptic": {"verdict": "pass"}, "iterations": 1,
+        "engine": {}, "lean_into": [],
+    }
+    deck_doc = {"decklist_sha256": sha,
+                "cards": [{"name": "Cmd", "is_commander": True}]}
+
+    assert not vd.is_stale(doc, deck_doc)
+    errors = vd.validate(doc, deck_doc)
+    assert any("not in the maindeck" in e for e in errors), (
+        "a CURRENT diagnosis may only name cards the deck runs")

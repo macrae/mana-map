@@ -481,6 +481,24 @@ def _validate_all_citations(doc, rules, sections):
 
 # ── Entry point ──────────────────────────────────────────────────────────
 
+def _form_only_cuts_and_adds(doc):
+    """Shape, not membership: the checks that hold whatever the deck now is."""
+    errors = []
+    for i, cut in enumerate(doc.get("cut_candidates") or []):
+        if not isinstance(cut, dict) or not cut.get("card"):
+            errors.append(f"cut_candidates[{i}]: no card named")
+        elif not cut.get("why"):
+            errors.append(f"cut_candidates[{i}] ({cut['card']}): no reason given")
+    for i, add in enumerate(doc.get("add_candidates") or []):
+        if not isinstance(add, dict) or not add.get("card"):
+            errors.append(f"add_candidates[{i}]: no card named")
+        else:
+            for key in ("why", "closes"):
+                if not add.get(key):
+                    errors.append(f"add_candidates[{i}] ({add['card']}): no {key}")
+    return errors
+
+
 def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
              strategy_sections=None):
     """Return a list of error strings (empty = the contract holds)."""
@@ -500,12 +518,16 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
     # fact. Say the fact, and stop re-deriving.
     stamped = doc.get("as_of_decklist_sha256")
     current = deck_doc.get("decklist_sha256")
-    if stamped and current and stamped != current:
-        errors.append(
-            f"diagnosis describes decklist {stamped[:12]} but cards.json is now "
-            f"{current[:12]} — every axis figure in it answers a question about a "
-            f"different deck. Re-run the diagnose-deck loop; axis re-derivation is "
-            f"skipped below because comparing the two would report noise.")
+    stale = bool(stamped and current and stamped != current)
+    if stale:
+        # STALE IS NOT WRONG, and it is REPORTED rather than failed — the rule
+        # `validate_prescription` already keeps, arrived at for the same reason.
+        # A diagnosis is a document about the deck as it stood; applying its
+        # advice is what makes it old, and failing it for that reddens the gate
+        # precisely when the pilot has done the right thing. It is safe to pass
+        # because nothing RENDERS a diagnosis — `deck-view.js` deliberately does
+        # not fetch it ("the diagnosis is a working artifact, not a page"), and
+        # its one reader is the doctor, which reads the stamp itself.
         measured_axes = None
 
     cards = deck_doc.get("cards", [])
@@ -513,14 +535,42 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
     errors += _validate_axes(doc, measured_axes)
-    errors += _validate_cuts(doc, main_names, commander_names, deck_path)
-    errors += _validate_adds(doc, main_names, commander_names)
-    errors += _validate_bracket_deltas(doc, main_names, commander_names)
-    errors += _validate_prescription_moves(doc, deck_doc, load_card_roles())
+    if not stale:
+        errors += _validate_cuts(doc, main_names, commander_names, deck_path)
+        errors += _validate_adds(doc, main_names, commander_names)
+        errors += _validate_bracket_deltas(doc, main_names, commander_names)
+        errors += _validate_prescription_moves(doc, deck_doc, load_card_roles())
+    else:
+        # A STALE DIAGNOSIS IS FORM-CHECKED ONLY, and the reason is that the
+        # alternative punishes the pilot for taking the advice.
+        #
+        # `validate_prescription` already worked this way and said why: "a cut
+        # since applied would read 'not in the maindeck' forever, and a gate
+        # that reddens history teaches its reader to ignore it." The diagnosis
+        # validator had the staleness DETECTION and not the consequence, so it
+        # kept asking the current deck about a document written for the previous
+        # one. Measured on ur-dragon the day its five-land swap was applied: 16
+        # errors, of which FIFTEEN were "cut_candidates[N]: not in the maindeck"
+        # and "add_candidates[N]: already in the maindeck" — every one of them a
+        # report that the prescription had been carried out.
+        #
+        # What survives is everything that is about the document rather than
+        # about the deck: required keys, closed sets, questions, the skeptic
+        # block, and every citation. A stale diagnosis must still be well formed
+        # and still quote `strategy.md` correctly; it simply may not be asked
+        # whether the deck it describes still exists.
+        errors += _form_only_cuts_and_adds(doc)
     errors += _validate_questions(doc)
     errors += _validate_skeptic(doc)
     errors += _validate_all_citations(doc, rules or {}, strategy_sections)
     return errors
+
+
+def is_stale(doc, deck_doc):
+    """Does this diagnosis describe a decklist the deck no longer has?"""
+    stamped = doc.get("as_of_decklist_sha256")
+    current = deck_doc.get("decklist_sha256")
+    return bool(stamped and current and stamped != current)
 
 
 def main(args):
@@ -548,13 +598,23 @@ def main(args):
                       rules=rules, strategy_sections=sections)
     weak = sum(1 for a in doc.get("axes", [])
                if a.get("verdict") in {"weakness", "liability"})
+    # Said on every run, not buried: a stale diagnosis passes its gate but must
+    # not be mistaken for the current read of the deck.
+    stale_note = ""
+    if is_stale(doc, deck_doc):
+        stale_note = (
+            f"\n     STALE — describes decklist "
+            f"{str(doc.get('as_of_decklist_sha256'))[:12]}, the deck is now "
+            f"{str(deck_doc.get('decklist_sha256'))[:12]}. Its figures answer a "
+            f"question about a different deck and its cut/add lists have been "
+            f"form-checked only. Re-run `/diagnose-deck {args.slug}`.")
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('axes', []))} axes ({weak} weak), "
         f"{len(doc.get('cut_candidates', []))} cut / "
         f"{len(doc.get('add_candidates', []))} add candidate(s), "
         f"{len(doc.get('open_questions', []))} open question(s); "
-        f"measurements ◆, verdicts ★")
+        f"measurements ◆, verdicts ★" + stale_note)
 
 
 if __name__ == "__main__":
