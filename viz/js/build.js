@@ -899,11 +899,14 @@
        * kept" beside a panel rendering one. Report what is actually held. */
       // Into the OPEN pile, and clearing only that one: resuming a draft
       // replaces the deck you are gathering, never the piles beside it.
-      Session.library.clearZone(Session.library.active);
+      const pile = Session.library.active;
+      Session.library.clearZone(pile);
       let missing = 0;
       for (const n of names) {
         if (window.Discovery && Discovery.rowByName(n) < 0) missing++;
-        Session.library.add(n);
+        // NAME THE PILE. Without it a must-include already sitting in another
+        // pile is deduped away and the draft comes back short.
+        Session.library.add(n, pile);
       }
       const kept = Session.library.zoneNames.length;
       newDeck.fmt = brief.format || newDeck.fmt;

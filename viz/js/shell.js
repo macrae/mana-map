@@ -78,7 +78,17 @@ window.Shell = (function () {
       var raw = localStorage.getItem(STORE_KEY);
       if (!raw) return [];
       var doc = JSON.parse(raw);
-      return doc && Array.isArray(doc.cards) ? doc.cards.slice() : [];
+      if (!doc) return [];
+      // BOTH SHAPES. v1 kept a flat `cards`; v2 keeps `zones[].cards`. This
+      // fallback was written against v1 and not revisited when piles landed,
+      // so a v2 document read as EMPTY — the strip saying "library empty" over
+      // a full library, in exactly the window before Session boots where this
+      // is the only reader there is. A fallback that silently answers zero is
+      // worse than no fallback, because zero is a plausible answer.
+      if (Array.isArray(doc.cards)) return doc.cards.slice();
+      return (doc.zones || []).reduce(function (all, z) {
+        return all.concat(z.cards || []);
+      }, []);
     } catch (e) {
       return [];
     }

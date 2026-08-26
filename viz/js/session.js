@@ -352,7 +352,26 @@ window.Session = (function () {
    * status line then reported the count it had INTENDED to keep. */
   function addToLibrary(rowOrName, zone) {
     const name = nameOf(rowOrName);
-    if (!name || indexOfName(name) !== -1) return false;
+    if (!name) return false;
+    const at = indexOfName(name);
+    if (at !== -1) {
+      /* ALREADY HELD — and what that means depends on whether a pile was NAMED.
+       *
+       * With no zone the caller is saying "keep this", and a card already kept
+       * is already kept. With an explicit zone they are saying "put it HERE",
+       * and library-wide dedupe made that a silent no-op: resuming a draft
+       * whose must-include sat in another pile gathered fewer cards than the
+       * brief named, reported the brief's count, and left the deck's own card
+       * filed under something else. Measured: a two-card brief gathered one.
+       */
+      const target = zones.indexOf(zone) !== -1 ? zone : null;
+      if (target && entries[at].zone !== target) {
+        entries[at].zone = target;
+        commit();
+        return true;
+      }
+      return false;
+    }
     entries.push({
       name: name,
       row: typeof rowOrName === 'number' ? rowOrName : resolve(name),

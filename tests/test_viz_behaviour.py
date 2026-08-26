@@ -6653,3 +6653,80 @@ def test_the_brief_exports_one_pile_and_the_strip_counts_them_all(discover_page)
     assert out["size"] == 3, "the library is three cards across two piles"
     assert "3" in out["strip"], f"the strip should count the library: {out['strip']!r}"
     assert page.js_errors == []
+
+
+def test_the_strips_fallback_reader_understands_piles(discover_page):
+    """A FALLBACK THAT SILENTLY ANSWERS ZERO IS WORSE THAN NO FALLBACK,
+    because zero is a plausible answer.
+
+    `libraryNames` prefers Session and drops to `localStorage` for the window
+    before Session boots — the only reader there is, in that window. It was
+    written against v1's flat `cards` and not revisited when piles landed, so a
+    v2 document read as EMPTY and the strip said "library empty" over a full
+    library.
+
+    Session is hidden for the duration, which is the only way to reach the
+    branch on a page that loads it.
+    """
+    page = discover_page
+    out = page.evaluate("""() => {
+        localStorage.setItem('manamap-library', JSON.stringify({
+            v: 2, corpus: '34890', active: 'Yawgmoth',
+            zones: [{name: 'Unsorted', cards: ['Sol Ring']},
+                    {name: 'Yawgmoth', cards: ['Blood Artist', 'Skullclamp']}],
+        }));
+        const saved = window.Session;
+        try {
+            delete window.Session;          // the pre-boot window, forced
+            return { count: Shell.libraryCount(), names: Shell.libraryNames() };
+        } finally { window.Session = saved; }
+    }""")
+    assert out["count"] == 3, (
+        f"the fallback read {out['count']} from a three-card v2 library")
+    assert sorted(out["names"]) == ["Blood Artist", "Skullclamp", "Sol Ring"]
+    assert page.js_errors == []
+
+
+def test_resuming_a_draft_gathers_a_card_held_in_another_pile(discover_page):
+    """Library-wide dedupe made "put it HERE" a silent no-op.
+
+    Resuming a draft clears the open pile and re-adds the brief's
+    must-includes. A card already sitting in a DIFFERENT pile was deduped away,
+    so the draft came back short, the status reported the brief's count rather
+    than what landed, and the deck's own card stayed filed under something
+    else. Measured before the fix: a two-card brief gathered one.
+
+    With a pile NAMED, `add` moves it. With no pile named it still no-ops,
+    because "keep this" said of a card already kept is not a request to move it.
+    """
+    page = discover_page
+    out = page.evaluate("""() => {
+        Session.library.clear();
+        while (Session.library.zones.length > 1) {
+            Session.library.removeZone(Session.library.zones[1].name);
+        }
+        Session.library.add('Sol Ring');                 // lands in pile one
+        Session.library.addZone('Zur voltron');          // now active
+        Session.library.add('Rhystic Study');
+
+        const pile = Session.library.active;
+        Session.library.clearZone(pile);
+        let gathered = 0;
+        for (const n of ['Sol Ring', 'Rhystic Study']) {
+            if (Session.library.add(n, pile)) gathered++;
+        }
+        const named = { gathered, inPile: Session.library.zoneNames };
+
+        // And the other half of the contract: no pile named, no move.
+        Session.library.setActive(Session.library.zones[0].name);
+        const moved = Session.library.add('Sol Ring');
+        return { named, unnamedMoved: moved,
+                 solRingStillIn: Session.library.entries
+                     .find(e => e.name === 'Sol Ring').zone };
+    }""")
+    assert out["named"]["gathered"] == 2, (
+        f"the brief named two cards and {out['named']['gathered']} landed")
+    assert sorted(out["named"]["inPile"]) == ["Rhystic Study", "Sol Ring"]
+    assert out["unnamedMoved"] is False, "a bare add() moved a card between piles"
+    assert out["solRingStillIn"] == "Zur voltron"
+    assert page.js_errors == []
