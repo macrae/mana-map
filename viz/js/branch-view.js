@@ -234,6 +234,111 @@
       '</ul></section>';
   }
 
+  /* THE VERDICT LEADS, because it is the question the page exists to answer.
+   * It is derived by `net_change.recommend` from the same document the table
+   * below it renders, so the two can never disagree — the reason this page
+   * computes nothing itself. */
+  function verdictPanel(nc) {
+    var r = nc && nc.recommendation;
+    if (!r) return '';
+    var cls = { 'merge': 'met', 'a trade': 'unresolved',
+                'do not merge': 'failed', 'inconclusive': 'unknown',
+                'no objective': 'unknown' }[r.state] || 'unknown';
+    var out = '<section class="panel verdict ' + cls + '"><h2>' +
+      esc(r.state.toUpperCase()) + '</h2>' +
+      '<p class="verdict-why">' + esc(r.because) + '</p>';
+    var groups = [['rose', 'Rose'], ['fell', 'Fell'],
+                  ['no_call', 'Could not tell apart']];
+    out += '<ul class="ledger">';
+    groups.forEach(function (g) {
+      var rows = r[g[0]] || [];
+      if (!rows.length) return;
+      out += '<li class="led-' + g[0] + '"><b>' + esc(g[1]) + '</b> ' +
+             esc(rows.join(' · ')) + '</li>';
+    });
+    out += '</ul>';
+    (r.notes || []).forEach(function (n) {
+      out += '<p class="ev">' + esc(n) + '</p>';
+    });
+    return out + '</section>';
+  }
+
+  /* THE STAGING AREA. Every row carries what the card COSTS as well as what it
+   * gains, badged apart — the pre-repair index rendered both the same red, so a
+   * card that charged you something looked identical to one that gave you
+   * something. Nothing here is measured; the panel says so. */
+  function swapsPanel(doc, slug, branch) {
+    if (!doc) return '';
+    var out = '<section class="panel swaps"><h2>Swaps to consider</h2>';
+    if (!doc.swaps.length) {
+      out += '<p class="ev">Nothing in this list has a candidate above the ' +
+             'strength floor. That is a real answer.</p>';
+      return out + '</section>';
+    }
+    out += '<p class="ev">Ranked by the obsolescence index\u2019s own strength. ' +
+           'It PROPOSES; nothing here has been measured.</p><ul class="swaplist">';
+    doc.swaps.forEach(function (r) {
+      var band = r.strength >= 0.65 ? 'strong'
+               : r.strength >= 0.4 ? 'mild' : 'weak';
+      out += '<li class="swap"><div class="swap-head">' +
+        '<span class="strength ' + band + '" title="0 = two different cards ' +
+        'that sort near each other. 1 = strictly better, cheaper, no strings. ' +
+        'The shipped data tops out at 0.95.">' + esc(r.strength.toFixed(2)) +
+        '</span> <span class="out">' + esc(r.out) + '</span>' +
+        ' <span class="arrow">&rarr;</span> <span class="in">' + esc(r['in']) +
+        '</span> <span class="src">' + esc(r.source || 'buy') + '</span></div>';
+      (r.gains || []).forEach(function (g) {
+        out += '<span class="badge gain">+ ' + esc(g) + '</span>';
+      });
+      (r.costs || []).forEach(function (c) {
+        out += '<span class="badge cost">\u2212 ' + esc(c) + '</span>';
+      });
+      (r.narrows || []).forEach(function (n) {
+        out += '<span class="badge cost">narrower: ' + esc(n) + '</span>';
+      });
+      if (r.played_more === false) {
+        out += '<span class="badge rank">played less</span>';
+      }
+      if (r.roles_disjoint) {
+        out += '<p class="ev warn">These two share no job (' +
+          esc((r.roles_out || []).join('/')) + ' \u2192 ' +
+          esc((r.roles_in || []).join('/')) + '). The SEARCH failed, not the ' +
+          'comparison \u2014 read both cards.</p>';
+      }
+      if (r.newly_combat_gated) {
+        out += '<p class="ev warn">It has to connect, and the card it replaces ' +
+          'does not. Efficient in a vacuum, wrong axis for a deck that does ' +
+          'not attack.</p>';
+      }
+      if (branch) {
+        out += '<div class="swap-act">' +
+          '<button type="button" data-act="stage" data-out="' + esc(r.out) +
+          '" data-in="' + esc(r['in']) + '" data-strength="' + esc(r.strength) +
+          '">accept</button></div>';
+      }
+      out += '</li>';
+    });
+    out += '</ul>';
+    (doc.notes || []).forEach(function (n) {
+      out += '<p class="ev">' + esc(n) + '</p>';
+    });
+    return out + '</section>';
+  }
+
+  function stagedPanel(meta) {
+    var rows = (meta && meta.staged) || [];
+    if (!rows.length) return '';
+    var out = '<section class="panel staged"><h2>Staged (' + rows.length +
+      ')</h2><p class="ev">A challenger starts as a copy of the deck. These are ' +
+      'the swaps that make it a different one.</p><ul class="cardlist">';
+    rows.forEach(function (r) {
+      out += '<li>\u2212 ' + esc(r.out) + ' &nbsp; + ' + esc(r['in']) +
+             (r.strength ? ' <span class="src">' + esc(r.strength) + '</span>' : '') +
+             '</li>';
+    });
+    return out + '</ul></section>';
+  }
+
   /* ── boot ───────────────────────────────────────────────────────────── */
 
   function main() {
@@ -267,18 +372,73 @@
           return;
         }
         document.getElementById('branchWhy').textContent = meta.why || '';
-        document.getElementById('objective').innerHTML = objectivePanel(meta, nc);
-        document.getElementById('panels').innerHTML = nc
+        document.getElementById('objective').innerHTML =
+          verdictPanel(nc) + objectivePanel(meta, nc);
+        document.getElementById('panels').innerHTML = stagedPanel(meta) + (nc
           ? (tablePanel(nc) + liftPanel(nc) + forgePanel(nc) +
              billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
           : (trailPanel(meta) + absent(
               'The net change',
               'This branch has not been measured against the deck yet. Until it ' +
               'is, there is nothing here to decide on.',
-              'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write'));
+              'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
+        loadSwaps(slug, name);
       });
   }
 
+  /* THE SERVER HALF, and it is strictly additive. Everything above renders from
+   * committed artifacts and works on a deployed page with no server at all;
+   * these are the verbs, and each one is gated on `Api.ready` with the CLI
+   * command named where it is absent — this page shipped loading `api.js` and
+   * never probing, so `Api.ready` was permanently false and the library
+   * drawer's own button reported "needs a local server" while one was running. */
+  function loadSwaps(slug, branch) {
+    var host = document.createElement('div');
+    host.id = 'swaps';
+    document.getElementById('panels').appendChild(host);
+    if (!window.Api || !Api.ready) {
+      host.innerHTML = absent(
+        'Swaps to consider',
+        'What in this list has a cheaper card doing its job. This one needs a ' +
+        'local server; the report above does not.',
+        'manamap pilot upgrades ' + slug + ' --branch ' + branch);
+      return;
+    }
+    Api.call('branch/upgrades', { slug: slug, branch: branch })
+      .then(function (doc) { host.innerHTML = swapsPanel(doc, slug, branch); })
+      .catch(function (e) {
+        host.innerHTML = absent('Swaps to consider', e.message,
+          'manamap pilot upgrades ' + slug + ' --branch ' + branch);
+      });
+  }
+
+  /* Delegated, because `swapsPanel` replaces the whole subtree. */
+  function wire() {
+    document.addEventListener('click', function (ev) {
+      var btn = ev.target.closest && ev.target.closest('[data-act="stage"]');
+      if (!btn) return;
+      var q = new URLSearchParams(location.search);
+      btn.disabled = true;
+      btn.textContent = 'staging\u2026';
+      Api.call('branch/stage', {
+        slug: q.get('deck'), branch: q.get('branch'),
+        out: btn.getAttribute('data-out'), card: btn.getAttribute('data-in'),
+        strength: btn.getAttribute('data-strength')
+      }).then(function () {
+        // A full reload rather than a partial repaint: staging changes the
+        // list, which changes every panel on this page.
+        location.reload();
+      }).catch(function (e) {
+        btn.disabled = false;
+        btn.textContent = 'accept';
+        btn.insertAdjacentHTML('afterend',
+          '<p class="ev todo-blocked">' + esc(e.message) + '</p>');
+      });
+    });
+  }
+
   if (window.Shell && Shell.mount) Shell.mount();
-  main();
+  wire();
+  // Probe WITHOUT blocking the first paint — the artifacts render either way.
+  if (window.Api && Api.probe) { Api.probe().then(main, main); } else { main(); }
 })();

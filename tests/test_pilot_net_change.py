@@ -233,3 +233,26 @@ def test_the_report_that_stopped_a_purchase_still_stops_it():
     assert got["state"] == "no objective"
     assert len(got["rose"]) == 3 and len(got["fell"]) == 4
     assert got["bill"]["buy"] == 21
+
+
+def test_a_table_where_nothing_moved_says_so():
+    """NINE BLANK ROWS IS A FINDING. Measured on a one-swap branch of ur-dragon:
+    every measure came back inside the MDE, which is the correct answer and
+    reads as a broken tool unless the report says it out loud."""
+    got = net_change.recommend(_ledger("not met", ["noise", "noise", "noise"]))
+    assert any("Nothing moved" in n for n in got["notes"])
+    assert any("minimum detectable difference" in n for n in got["notes"])
+    # THE MEASUREMENT IS DECK-LEVEL. On a barely-changed branch the blank table
+    # is arithmetic, not a verdict on the swaps — and the note says "unless it
+    # is a Game Changer or a table-warper", because some single cards do move a
+    # number and claiming otherwise would be a law where there is a tendency.
+    thin = dict(_ledger("not met", ["noise", "noise"]), staged=1)
+    note = " ".join(net_change.recommend(thin)["notes"])
+    assert "not a verdict on the swap" in note
+    assert "table-warper" in note, "the exception is stated, not hidden"
+    fat = dict(_ledger("not met", ["noise", "noise"]), staged=22)
+    assert "not a verdict on the swap" not in " ".join(
+        net_change.recommend(fat)["notes"])
+    # ...and it does not fire when something did move.
+    quiet = net_change.recommend(_ledger("met", ["better", "noise"]))
+    assert not any("Nothing moved" in n for n in quiet["notes"])

@@ -186,6 +186,7 @@ def build(slug, branch, iterations=None, seed=None):
 
     doc_meta = deck_branch.meta(slug, branch) or {}
     objective = doc_meta.get("objective")
+    staged = len(doc_meta.get("staged") or [])
     grade = None
     if objective:
         block, key, turn = candidates.OBJECTIVE_AXES.get(
@@ -201,6 +202,7 @@ def build(slug, branch, iterations=None, seed=None):
         "decklist_sha256": (b.get("decklist_sha256")),
         "objective": objective,
         "objective_grade": grade,
+        "staged": staged,
         "table": table,
         "engine_lift": {"champion": engine_lift(slug, None, it, sd),
                         "branch": engine_lift(slug, branch, it, sd)},
@@ -311,10 +313,34 @@ def recommend(doc):
            "rose": rose, "fell": fell, "no_call": no_call,
            "bill": (doc.get("bill") or {}).get("counts") or {}}
 
+    notes = []
+    # THE MEASUREMENT IS DECK-LEVEL: swap a handful of cards, measure the lift.
+    # One card USUALLY will not register — a 100-card singleton dilutes it below
+    # what the run can resolve — but that is a statement about the typical card,
+    # not a law. A Game Changer or a table-warper moves a number on its own, and
+    # some cards are. So a blank table on a barely-changed branch is arithmetic
+    # rather than a verdict on the swaps, and reading it as "these did nothing"
+    # is the wrong lesson from a correct measurement. Measured: a one-swap
+    # branch of ur-dragon returned noise on all nine rows.
+    staged = doc.get("staged")
+    if table and not rose and not fell:
+        head = (f"Nothing moved: all {len(no_call)} measures came back inside "
+                f"this run's minimum detectable difference.")
+        if staged is not None and 0 < staged <= 3:
+            notes.append(
+                f"{head} With {staged} swap(s) staged this branch is nearly the "
+                f"deck. A 100-card singleton dilutes one card below what this "
+                f"run can resolve unless it is a Game Changer or a table-warper "
+                f"— so this is not a verdict on the swap(s). Stage the rest of "
+                f"the treatment and measure the lift on the whole thing.")
+        else:
+            notes.append(
+                f"{head} The change is real and smaller than this run can "
+                f"resolve — an answer about its SIZE, not a failure to measure.")
+
     # THE REAL TABLE IS EVIDENCE THE RULE DOES NOT USE, and hiding it because the
     # rule ignores it would be the worse error. Named beside the verdict, never
     # folded into it.
-    notes = []
     f = doc.get("forge") or {}
     if f.get("available") and f.get("ci95"):
         lo, hi = f["ci95"]

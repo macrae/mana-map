@@ -469,4 +469,10 @@
       });
     });
   });
+
+  // The library drawer (shell.js) mounts itself on every surface, and its
+  // buttons reach the local server. Nothing probed here, so `Api.ready` was
+  // permanently false and the drawer reported "needs a local server" while one
+  // was running. Fire-and-forget — no paint waits on it.
+  if (window.Api && Api.probe) { Api.probe(); }
 })();

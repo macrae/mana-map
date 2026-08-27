@@ -227,3 +227,33 @@ def test_it_runs_against_a_branch_and_reads_the_branchs_own_list():
         assert r["out"] in held
         checked += 1
     assert checked >= 5
+
+
+@requires_data
+@requires_deck
+def test_the_notes_say_this_is_efficiency_and_not_impact():
+    """MEASURED, AND IT IS THE INDEX'S DEFINING LIMIT. It pairs cards that do the
+    same job more cheaply, so it cannot propose the card that moves a number:
+    across 149 rows on six decks it offered a Game Changer zero times. A reader
+    who expects a net-change delta from these swaps is expecting the wrong
+    thing, and the report has to say so rather than let them find out by
+    spending a run."""
+    blob = " ".join(upgrades.propose(SLUG, limit=200)["notes"])
+    assert "EFFICIENCY, NOT IMPACT" in blob
+    assert "Game Changer" in blob
+    assert "DECK-LEVEL" in blob
+    assert "table-warper" in blob, "a single card CAN register; some do"
+
+
+@requires_data
+@requires_deck
+def test_the_index_does_not_propose_game_changers():
+    """The claim above, held to the data rather than asserted in prose."""
+    from manamap.pilot import card_pool
+    corpus = card_pool.load_pool()
+    checked = 0
+    for slug in ("ur-dragon", "edgar-vampires", "gishath"):
+        for r in upgrades.propose(slug, limit=200)["swaps"]:
+            assert not (corpus.get(r["in"]) or {}).get("game_changer"), r["in"]
+            checked += 1
+    assert checked >= 50

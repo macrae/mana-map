@@ -659,3 +659,59 @@ pre.cmd { background: var(--panel-hi); border: 1px solid var(--rule);
   padding: 9px 11px; overflow-x: auto; font-size: 13px; margin: 8px 0 0; }
 .panel.limits ul { padding-left: 18px; margin: 0; }
 .panel.limits li { margin-bottom: 7px; color: var(--ink-soft); font-size: .92em; }
+
+/* ── The verdict, the staging area, and the swaps (branch.html) ──────────
+ *
+ * THE VERDICT LEADS because it is the question the page exists to answer, and
+ * it is the one block here that states a conclusion rather than a figure — so
+ * it gets the weight and everything under it stays quiet.
+ *
+ * GAINS AND COSTS ARE DIFFERENT COLOURS, which is the whole point. The
+ * obsolescence index shipped for months rendering every badge the same red, so
+ * a card that CHARGED you something looked identical to one that gave you
+ * something. Green for what you get, red for what you pay, and a warning line
+ * for the two flags that say the SEARCH failed rather than the comparison. */
+
+.panel.verdict h2 { font-family: var(--display); letter-spacing: .04em; }
+.panel.verdict.met         { border-left: 4px solid var(--tier-verified); }
+.panel.verdict.failed      { border-left: 4px solid var(--power-red); }
+.panel.verdict.unresolved  { border-left: 4px solid var(--burst-yellow); }
+.panel.verdict.unknown     { border-left: 4px solid var(--rule); }
+.verdict-why { font-size: 1.05rem; line-height: 1.5; margin: .4rem 0 .8rem; }
+
+ul.ledger { list-style: none; padding: 0; margin: .6rem 0; }
+ul.ledger li { padding: .18rem 0; font-size: .92rem; }
+ul.ledger li b { display: inline-block; min-width: 10.5rem; letter-spacing: .06em;
+                 text-transform: uppercase; font-size: .74rem; }
+.led-rose b    { color: var(--tier-verified); }
+.led-fell b    { color: var(--power-red); }
+.led-no_call b { color: var(--ink-soft); }
+
+ul.swaplist { list-style: none; padding: 0; margin: .6rem 0; }
+li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
+.swap-head { display: flex; flex-wrap: wrap; gap: .45rem; align-items: baseline; }
+.swap-head .out { color: var(--ink-soft); text-decoration: line-through; }
+.swap-head .in  { color: var(--ink); font-weight: 600; }
+.swap-head .arrow { color: var(--ink-soft); }
+.swap-head .src { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+                  color: var(--ink-soft); border: 1px solid var(--rule);
+                  padding: .05rem .35rem; border-radius: 2px; }
+.strength { font-family: var(--techno); font-size: .82rem; padding: .1rem .4rem;
+            border-radius: 2px; font-variant-numeric: tabular-nums; }
+.strength.strong { color: #fff; background: var(--tier-verified); }
+.strength.mild   { color: var(--paper); background: var(--burst-yellow); }
+.strength.weak   { color: var(--ink-soft); border: 1px solid var(--rule); }
+.badge.gain { color: var(--tier-verified); border-color: var(--tier-verified);
+              background: rgba(76,175,80,.12); }
+.badge.cost { color: var(--power-red); border-color: var(--power-red);
+              background: rgba(228,0,43,.12); }
+.badge.rank { color: var(--ink-soft); border-color: var(--rule); }
+.ev.warn { color: var(--burst-yellow); }
+.swap-act { margin-top: .35rem; }
+.swap-act button { font: inherit; font-size: .8rem; padding: .2rem .7rem;
+                   background: transparent; color: var(--ink);
+                   border: 1px solid var(--rule); border-radius: 2px;
+                   cursor: pointer; }
+.swap-act button:hover:not(:disabled) { border-color: var(--ink); }
+.swap-act button:disabled { opacity: .5; cursor: default; }
+.panel.staged ul.cardlist li { font-variant-numeric: tabular-nums; }

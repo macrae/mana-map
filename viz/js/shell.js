@@ -251,6 +251,7 @@ window.Shell = (function () {
       +   (active ? '<button class="lib-btn" onclick="Shell.renameZone()">Rename</button>'
       +             '<button class="lib-btn" onclick="Shell.dropZone()">Delete pile</button>' : '')
       +   (shown.length ? '<button class="lib-btn" onclick="Shell.consider()">Consider for a deck…</button>' : '')
+      +   (shown.length ? '<button class="lib-btn" onclick="Shell.treat()">Treat a deck…</button>' : '')
       +   (shown.length ? '<button class="lib-btn" onclick="Shell.clear()">Empty pile</button>' : '')
       +   '<button class="lib-btn" onclick="Shell.toggle()">Close</button>'
       + '</span></div>' + zoneBar();
@@ -435,10 +436,15 @@ window.Shell = (function () {
    * collection into a Zur build.
    */
   function consider() {
-    // NOT `var lib = lib()` — that shadows the accessor and throws on the call,
-    // and `node --check` passes it happily because the syntax is fine.
+    // TWO WAYS TO GET THIS LINE WRONG AND BOTH SHIPPED HERE.
+    // `var lib = lib()` shadows the accessor and throws on the call. And
+    // `zoneNames` is a GETTER on Session.library (session.js), not a method —
+    // calling it threw `TypeError: store.zoneNames is not a function` on every
+    // press of this button, so the pile -> pool.txt pipe had never once worked.
+    // `node --check` passes both happily; nothing tested `consider()` or
+    // `pool/save`, which is why it took an audit rather than a use to find.
     var store = lib();
-    var names = store ? store.zoneNames() : [];
+    var names = store ? store.zoneNames : [];
     if (!names.length) { return; }
     if (!window.Api || !Api.ready) {
       // Absent, never broken: a deployed page has no server and says so rather
@@ -454,6 +460,48 @@ window.Shell = (function () {
               '\n\nNext:\n  ' + r.next);
       })
       .catch(function (e) { alert('Could not save the pool: ' + e.message); });
+  }
+
+  /* OPEN A CHALLENGER FROM THIS PILE.
+   *
+   * `consider` hands a pile over as candidates and stops there — the pilot then
+   * goes to a terminal, opens a branch, stages swaps and measures. This does the
+   * first step so the rest has somewhere to happen: a branch identical to the
+   * deck, the pile attached, and the workbench open on it.
+   *
+   * IT ASKS FOR AN OBJECTIVE and refuses without one. That is not ceremony: the
+   * Ur-Dragon treasure branch stated "treasure is the engine", achieved it 4.4x
+   * over, and lost on the purpose nobody wrote down. A branch that cannot be
+   * falsified gets graded on whether it did what it does.
+   */
+  function treat() {
+    var store = lib();
+    var names = store ? store.zoneNames : [];
+    if (!names.length) { return; }
+    if (!window.Api || !Api.ready) {
+      alert('This needs a local server — run `manamap serve`.');
+      return;
+    }
+    Api.call('decks', {}).then(function (r) {
+      var decks = (r && r.decks ? r.decks : r) || [];
+      var slugs = decks.map(function (d) { return d.slug || d; });
+      var slug = prompt('Treat which deck with these ' + names.length +
+                        ' card(s)?\n\n' + slugs.join(', '));
+      if (!slug) { return; }
+      var branch = prompt('Name the branch:', 'treatment');
+      if (!branch) { return; }
+      var why = prompt('In a sentence, what is this treatment for?') || '';
+      var obj = prompt(
+        'The objective it must meet — <measure> <op> <number>.\n\n' +
+        'e.g. hoard_8 >= 6.0   ·   kill_by_8 >= 0.30   ·   stall <= 0.03\n\n' +
+        'A branch that cannot be falsified gets graded on whether it did what ' +
+        'it does, not on whether it was worth doing.');
+      if (!obj) { return; }
+      return Api.call('branch/new', {
+        slug: slug.trim(), name: branch.trim(), objective: obj.trim(),
+        why: why, cards: names
+      }).then(function (got) { location.href = got.url; });
+    }).catch(function (e) { alert('Could not open the branch: ' + e.message); });
   }
 
   function renameZone() {
@@ -515,6 +563,7 @@ window.Shell = (function () {
     zone: zone,
     newZone: newZone,
     consider: consider,
+    treat: treat,
     renameZone: renameZone,
     dropZone: dropZone,
     move: move,

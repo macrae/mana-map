@@ -84,6 +84,10 @@ def _int(v):
     return None if v in (None, "") else int(v)
 
 
+def _float(v):
+    return None if v in (None, "") else float(v)
+
+
 def _bool(v):
     return bool(v) and str(v).lower() not in ("false", "0", "no")
 
@@ -547,7 +551,170 @@ def _agents():
                        for n in names]}
 
 
-#: name -> (function, {argument: coercion})
+# ── The branch: a challenger deck, from the page ──────────────────────────
+#
+# THE READ HALF ALREADY SHIPPED. `viz/branch.html` renders a decision beautifully
+# and could cause none of it — every verb lived in the CLI, so the page was a
+# report about work you had to go elsewhere to do.
+#
+# MERGE AND DELETE STAY IN THE CLI, deliberately. A merge rewrites the tracked
+# `decklist.txt`, runs the regeneration chain and is what `deck-version` numbers;
+# a button that spends cardboard is the one thing this bridge must not become.
+# The page prints the command instead, which is the same `absent()` idiom it
+# already uses for everything it cannot run.
+
+
+def _branch_new(slug=None, name=None, objective=None, why=None, cards=()):
+    """Open a challenger identical to the champion, plus a goal it must meet.
+
+    IT STARTS AS A COPY, with zero swaps staged. A branch that begins as a
+    different list has already made the decisions the report exists to weigh, and
+    there is no baseline to measure the first swap against.
+
+    The objective is REQUIRED here for the same reason `deck-branch new` demands
+    one: a branch that cannot be falsified gets graded on whether it did what it
+    does. It arrives as the string a pilot confirmed — `<measure> <op> <number>`
+    — and `parse_objective` is the only thing that reads it, so the page cannot
+    invent an axis the bench does not compute.
+    """
+    from manamap.pilot import deck_branch
+    from manamap.pilot.common import deck_dir
+    if not slug:
+        raise ValueError("branch/new needs a slug")
+    if not name:
+        raise ValueError("branch/new needs a branch name")
+    if not objective:
+        raise ValueError(
+            "branch/new needs an objective — `<measure> <op> <number>`, e.g. "
+            "`hoard_8 >= 6.0`. A branch that cannot be falsified gets graded on "
+            "whether it did what it does.")
+    src = deck_dir(slug) / "decklist.txt"
+    if not src.exists():
+        raise ValueError(f"{slug} has no decklist.txt — there is nothing to branch")
+    parsed = deck_branch.parse_objective(objective)
+    parsed["why"] = why or ""
+    got = deck_branch.new(slug, name, src.read_text(encoding="utf-8"),
+                          why=why, objective=parsed)
+    # The pile rides along, so "treat this deck with these cards" is one act.
+    # It is still a POOL and not a promise — same slot `pool/save` writes.
+    pool = None
+    if cards:
+        pool = _pool_save(slug=slug, cards=cards)
+    return {"slug": slug, "branch": name, "objective": parsed,
+            "size": got["size"], "warnings": got["warnings"], "pool": pool,
+            "url": f"branch.html?deck={slug}&branch={name}"}
+
+
+def _branch_upgrades(slug=None, branch=None, min_strength=None, owned=None):
+    """What in this list has a cheaper card doing its job. Deterministic."""
+    from manamap.pilot import upgrades
+    from manamap.pilot.candidates import read_pool
+    if not slug:
+        raise ValueError("branch/upgrades needs a slug")
+    pool = []
+    try:
+        pool = read_pool("library", slug)
+    except SystemExit:
+        pass                       # no pile handed over; the inward half stands
+    return upgrades.propose(slug, branch=branch, pool=pool,
+                            min_strength=min_strength or upgrades.DEFAULT_MIN_STRENGTH,
+                            limit=upgrades.DEFAULT_LIMIT,
+                            owned_only=bool(owned))
+
+
+def _branch_stage(slug=None, branch=None, out=None, card=None, strength=None,
+                  undo=None):
+    """Accept or reverse one swap. `card` rather than `in`, which is a keyword."""
+    from manamap.pilot import deck_branch
+    if not (slug and branch):
+        raise ValueError("branch/stage needs a slug and a branch")
+    if undo:
+        return deck_branch.unstage(slug, branch, out, card)
+    if not (out and card):
+        raise ValueError(
+            "a swap is one card out and one card in — `out` and `card`")
+    return deck_branch.stage(slug, branch, out, card, strength=strength,
+                             why="staged from the branch workbench")
+
+
+#: What a LOCAL job costs, in the currency that matters for one: wall clock.
+#: Same discipline as `AGENT_COSTS` — the page says it before it spends it.
+LOCAL_COSTS = {
+    "net-change": "~15s — two 10,000-game diagnostic runs, no model call. "
+                  "Resolves the branch against Scryfall first if a staged swap "
+                  "left it stale.",
+}
+
+
+def _local_job(label, fn):
+    """Run a deterministic command in the background, and report it like a job.
+
+    `MEASURES` is the synchronous path and its charter is sub-3-second work.
+    `net-change` is 14s of Monte Carlo, which is not an agent and is also not a
+    request that should block — so it borrows the job machinery the agent half
+    already has, and the page polls it with the code it already has.
+    """
+    import uuid
+
+    job_id = uuid.uuid4().hex[:12]
+    with _JOB_LOCK:
+        JOBS[job_id] = {"id": job_id, "state": "running", "agent": None,
+                        "question": label, "output": "", "error": None,
+                        "result": None, "cost": LOCAL_COSTS.get(label, "unmeasured")}
+
+    def run():
+        try:
+            got = fn()
+            with _JOB_LOCK:
+                JOBS[job_id].update(state="done", result=got, code=0)
+        except BaseException as exc:            # noqa: BLE001 - reported, not raised
+            with _JOB_LOCK:
+                JOBS[job_id].update(state="failed", code=1,
+                                    error=str(exc) or type(exc).__name__)
+
+    # SNAPSHOT BEFORE STARTING. Reading the record back after the thread is
+    # running is a race: a fast job finishes first and the caller is handed
+    # `done` for a job it was told to poll. An agent takes minutes so `_ask`
+    # never shows it; a 40ms local job shows it every time.
+    started = dict(JOBS[job_id])
+    threading.Thread(target=run, daemon=True).start()
+    return started
+
+
+def _branch_net_change(slug=None, branch=None):
+    """The report a purchase rests on. Started, then polled."""
+    from manamap.pilot import net_change
+    from manamap.pilot.common import deck_dir
+    if not (slug and branch):
+        raise ValueError("branch/net-change needs a slug and a branch")
+    if not (deck_dir(slug, branch) / "decklist.txt").exists():
+        raise ValueError(f"no branch {branch!r} on {slug}")
+
+    def run():
+        # A MEASUREMENT MUST BE OF THE LIST AS IT STANDS. Staging a swap changes
+        # `decklist.txt` and leaves the branch's `cards.json` describing the list
+        # before the swap — and a figure computed from that is a real
+        # measurement of a deck nobody has. `is_up_to_date` compares the sha, so
+        # this re-resolves only when it must; the terminal names the command
+        # instead, because a terminal has one and a page does not.
+        import hashlib
+
+        from manamap.pilot import fetch_deck
+        base = deck_dir(slug, branch)
+        text = (base / "decklist.txt").read_text(encoding="utf-8")
+        sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        if not fetch_deck.is_up_to_date(base / "cards.json", sha):
+            fetch_deck.main(_Args(slug=slug, branch=branch))
+        doc = net_change.build(slug, branch)
+        (deck_dir(slug, branch) / net_change.ARTIFACT).write_text(
+            json.dumps(doc, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        return {"recommendation": doc["recommendation"],
+                "objective_grade": doc.get("objective_grade")}
+
+    return _local_job("net-change", run)
+
+
+#: name -> (function, {argument: coercion})#: name -> (function, {argument: coercion})
 # ── Measuring a deck from the page ────────────────────────────────────────
 #
 # THE ALLOW-LIST IS THE POINT, and what it excludes is the argument for it.
@@ -700,6 +867,16 @@ ENDPOINTS = {
         "slug": _str, "commander": _str, "theme": _str, "bracket": _int,
         "library": _strlist, "fmt": _str}),
     "pool/save": (_pool_save, {"slug": _str, "cards": _strlist}),
+    # The branch: open it, read what to swap, stage a swap, measure the result.
+    # `merge` and `delete` are absent on purpose — see the note above.
+    "branch/new": (_branch_new, {"slug": _str, "name": _str, "objective": _str,
+                                 "why": _str, "cards": _strlist}),
+    "branch/upgrades": (_branch_upgrades, {"slug": _str, "branch": _str,
+                                           "min_strength": _float, "owned": _bool}),
+    "branch/stage": (_branch_stage, {"slug": _str, "branch": _str, "out": _str,
+                                     "card": _str, "strength": _float,
+                                     "undo": _bool}),
+    "branch/net-change": (_branch_net_change, {"slug": _str, "branch": _str}),
     "build/run": (_build_run, {"slug": _str}),
     "build/finish": (_build_finish, {"slug": _str, "commit": _bool, "message": _str}),
     # The agent half. Started, then polled — an agent takes minutes.

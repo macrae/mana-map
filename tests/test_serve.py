@@ -491,3 +491,107 @@ def test_a_draft_never_overwrites_what_is_already_there():
     with pytest.raises(ValueError) as exc:
         serve.call("deck/scaffold", {"slug": "radagast", "stage": "targets"})
     assert "already has goldfish_targets.json" in str(exc.value)
+
+
+# ── the pile, and the branch verbs ───────────────────────────────────────
+
+@pytest.fixture
+def decks(tmp_path, monkeypatch):
+    """A deck directory the bridge can write into, isolated from the real one."""
+    from manamap import config
+    from manamap.pilot import common, deck_branch
+    d = tmp_path / "decks"
+    (d / "zur").mkdir(parents=True)
+    for mod in (config, common, deck_branch):
+        if hasattr(mod, "DECKS_DIR"):
+            monkeypatch.setattr(mod, "DECKS_DIR", d)
+    return d
+
+
+def test_a_pile_reaches_the_bench_as_a_pool(decks):
+    """THE PIPE THIS ENDPOINT EXISTS FOR, AND IT HAD NEVER WORKED.
+
+    `Shell.consider()` called `store.zoneNames()` — a GETTER on Session.library
+    — so every press raised `TypeError: store.zoneNames is not a function`.
+    `node --check` passes it, and nothing tested either half: `pool/save` had no
+    test at all until this one, which is why an audit found it rather than a
+    use.
+    """
+    got = serve.call("pool/save", {"slug": "zur", "cards": ["Sol Ring", "Mystic Remora"]})
+    assert got["cards"] == 2
+    body = (decks / "zur" / "pool.txt").read_text()
+    assert "Sol Ring" in body and "Mystic Remora" in body
+    # `candidates` reads it back through the same parser the rest of the bench
+    # uses, so a pool from the Atlas and one from paper cannot disagree.
+    from manamap.pilot.candidates import read_pool
+    assert set(read_pool("library", "zur")) == {"Sol Ring", "Mystic Remora"}
+
+
+def test_a_pool_is_not_a_promise(decks):
+    """`build/save` writes `must_include` — "these cards are in the 99".
+    `pool/save` says "consider these". Different slots, deliberately: nothing
+    downstream could tell them apart afterwards."""
+    serve.call("pool/save", {"slug": "zur", "cards": ["Sol Ring"]})
+    assert (decks / "zur" / "pool.txt").exists()
+    assert not (decks / "zur" / "brief.json").exists()
+
+
+@pytest.mark.parametrize("payload,expect", [
+    ({}, "slug"),
+    ({"slug": "zur"}, "branch name"),
+    ({"slug": "zur", "name": "t"}, "objective"),
+])
+def test_opening_a_branch_refuses_with_a_sentence(decks, payload, expect):
+    with pytest.raises(ValueError) as e:
+        serve.call("branch/new", payload)
+    assert expect in str(e.value)
+
+
+def test_a_branch_cannot_aim_at_an_axis_the_bench_does_not_compute(decks):
+    """`parse_objective` is the only reader, so the page cannot invent one."""
+    (decks / "zur" / "decklist.txt").write_text("1 Sol Ring\n")
+    with pytest.raises(SystemExit):
+        serve.call("branch/new", {"slug": "zur", "name": "t",
+                                  "objective": "vibes >= 9"})
+
+
+def test_the_branch_verbs_are_present_and_merge_is_not(decks):
+    """A merge rewrites the tracked decklist, runs the regeneration chain and is
+    what `deck-version` numbers. A button that spends cardboard is the one thing
+    this bridge must not become — the page prints the command instead."""
+    for name in ("branch/new", "branch/upgrades", "branch/stage",
+                 "branch/net-change"):
+        assert name in serve.ENDPOINTS
+    for name in ("branch/merge", "branch/delete"):
+        assert name not in serve.ENDPOINTS
+
+
+def test_a_slow_deterministic_job_is_polled_and_priced(decks):
+    """`MEASURES` is the synchronous path and its charter is sub-3-second work.
+    net-change is ~14s of Monte Carlo, which is not an agent and is also not a
+    request that should block — so it borrows the job machinery, and the page
+    polls it with the code it already has."""
+    got = serve._local_job("net-change", lambda: {"ok": True})
+    assert got["state"] == "running"
+    assert "no model call" in got["cost"], "priced before it is spent"
+    import time
+    for _ in range(50):
+        row = serve.call("job", {"id": got["id"]})
+        if row["state"] != "running":
+            break
+        time.sleep(0.05)
+    assert row["state"] == "done" and row["result"] == {"ok": True}
+
+
+def test_a_failing_local_job_reports_the_reason_rather_than_hanging(decks):
+    def boom():
+        raise ValueError("no branch 'nope' on zur")
+    got = serve._local_job("net-change", boom)
+    import time
+    for _ in range(50):
+        row = serve.call("job", {"id": got["id"]})
+        if row["state"] != "running":
+            break
+        time.sleep(0.05)
+    assert row["state"] == "failed"
+    assert "no branch" in row["error"]

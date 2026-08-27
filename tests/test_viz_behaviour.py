@@ -7466,3 +7466,68 @@ def test_an_unknown_branch_names_the_command_instead_of_breaking(browser, viz_se
         assert "deck-branch ur-dragon list" in body
     finally:
         page.close()
+
+
+@pytest.mark.browser
+def test_the_verdict_leads_the_branch_page(browser, viz_server):
+    """THE QUESTION THE PAGE EXISTS TO ANSWER, and it is the acceptance case.
+
+    ur-dragon's treasure branch is the report that stopped a purchase: hoard
+    @T10 +5.09, and damage, board power, turn-6 kill and stall all worse, on a
+    bill of 21 cards to buy. The page must not say merge.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    assert page.js_errors == []
+    body = page.inner_text("body").lower()
+    assert "no objective" in body
+    assert "rose" in body and "fell" in body
+    # The ledger names the measures on both sides rather than a single score.
+    assert "hoard @t10" in body and "damage @t10" in body
+    # A verdict panel exists and is not the merge one.
+    assert page.locator("section.panel.verdict").count() == 1
+    assert page.locator("section.panel.verdict.met").count() == 0
+    page.close()
+
+
+@pytest.mark.browser
+def test_the_swaps_panel_names_the_command_when_there_is_no_server(browser,
+                                                                   viz_server):
+    """ABSENT, NEVER BROKEN. The browser suite serves static files with no
+    `/api`, which is the DEPLOYED shape — so the panel that needs a server must
+    say what it is and how to get it, not render blank."""
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    assert page.js_errors == []
+    swaps = page.locator("#swaps")
+    assert swaps.count() == 1
+    text = swaps.inner_text().lower()
+    assert "local server" in text
+    assert "manamap pilot upgrades ur-dragon" in text
+    page.close()
+
+
+@pytest.mark.browser
+def test_a_pile_can_be_handed_over_without_throwing(browser, viz_server):
+    """THE DEFECT THIS EXISTS AGAINST, and it shipped for months.
+
+    `Shell.consider()` read `store.zoneNames()` — a GETTER, not a method — so
+    every press raised `TypeError: store.zoneNames is not a function` before it
+    reached the server check. `node --check` passes that happily and no test
+    touched it. Here the pile is real and `Api.ready` is false (this suite has
+    no `/api`), so the correct behaviour is the "needs a local server" notice
+    and NO exception.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    got = page.evaluate("""() => {
+      Session.library.add('Sol Ring');
+      const names = Session.library.zoneNames;
+      let alerted = null;
+      window.alert = (m) => { alerted = m; };
+      let threw = null;
+      try { Shell.consider(); } catch (e) { threw = String(e); }
+      return { n: names.length, threw, alerted };
+    }""")
+    assert got["n"] >= 1, "the pile must be non-empty for the path to run"
+    assert got["threw"] is None, got["threw"]
+    assert "local server" in (got["alerted"] or "")
+    assert page.js_errors == []
+    page.close()
