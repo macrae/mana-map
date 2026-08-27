@@ -53,3 +53,32 @@ def test_spearman_handles_ties():
     assert calibrate._spearman([1, 2, 3], [1, 2, 3]) == pytest.approx(1.0)
     assert calibrate._spearman([1, 2, 3], [3, 2, 1]) == pytest.approx(-1.0)
     assert calibrate._spearman([1, 1, 2], [5, 5, 9]) == pytest.approx(1.0)
+
+
+def test_runs_against_a_different_pod_are_dropped_not_pooled():
+    """A WIN RATE IS AGAINST SOMEBODY.
+
+    The first cut summed every tracked run regardless of who was at the table.
+    Measured on what exists: kianne's 24 games are 12 against the standard pod
+    and 12 in a 1v1 against giada alone — a different game, no politics and no
+    second threat — while radagast's 28 are 20 standard and 8 against a pod of
+    our OWN decks. Pooling those gives a number that is not a win rate against
+    anything.
+    """
+    record, pod, dropped = calibrate.forge_record()
+    assert pod, "no pod chosen"
+    assert dropped, "nothing was dropped — this fleet has mixed pods"
+    # the 1v1 must not be in the pooled figure
+    assert all(len(d["pod"]) >= 1 for d in dropped)
+    assert not any(set(d["pod"]) == set(pod) for d in dropped)
+
+
+def test_the_pod_is_chosen_by_games_not_by_run_count():
+    """One 100-game run is better evidence than three 8-game ones, and counting
+    RUNS would prefer the noise."""
+    rows = [("a", frozenset({"x"}), 1, 100), ("b", frozenset({"y"}), 0, 8),
+            ("c", frozenset({"y"}), 0, 8), ("d", frozenset({"y"}), 0, 8)]
+    import unittest.mock as mock
+    with mock.patch.object(calibrate, "_seat_rows", lambda: rows):
+        _, pod, _ = calibrate.forge_record()
+    assert pod == ["x"], pod

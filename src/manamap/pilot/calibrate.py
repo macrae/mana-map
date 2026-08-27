@@ -43,9 +43,44 @@ MEASURES = {
 }
 
 
-def forge_record():
-    """Wins and games per OUR seat, across every tracked sim run."""
+def forge_record(pod=None):
+    """Wins and games per OUR seat, POOLED ONLY WITHIN ONE POD.
+
+    A WIN RATE IS AGAINST SOMEBODY, and the first cut of this function summed
+    every tracked run regardless. Measured on what exists: kianne's 24 games are
+    12 against the standard pod and **12 in a 1v1 against giada alone** — a
+    different game, with no politics and no second threat — while radagast's 28
+    are 20 against the standard pod and **8 against a pod of our OWN decks**.
+    Pooling those produces a number that is not a win rate against anything.
+
+    So runs are grouped by their opponent set and only the MODAL pod is kept.
+    Modal rather than hardcoded, because the canonical table is whatever the
+    pilot has actually been playing and a constant here would go stale silently.
+    Everything dropped is reported: a smaller sample the caller knows about
+    beats a larger one it does not.
+    """
+    by_pod = {}
+    for seat, opponents, wins, games in _seat_rows():
+        by_pod.setdefault(opponents, []).append((seat, wins, games))
+    if not by_pod:
+        return {}, None, []
+    if pod is None:
+        # Most GAMES, not most runs: one 100-game run is better evidence than
+        # three 8-game ones, and counting runs would prefer the noise.
+        pod = max(by_pod, key=lambda k: sum(g for _, _, g in by_pod[k]))
     got = {}
+    for seat, wins, games in by_pod.get(pod, []):
+        a, b = got.get(seat, (0, 0))
+        got[seat] = (a + wins, b + games)
+    dropped = [{"pod": sorted(k), "games": sum(g for _, _, g in v),
+                "seats": sorted({s for s, _, _ in v})}
+               for k, v in by_pod.items() if k != pod]
+    return got, sorted(pod), dropped
+
+
+def _seat_rows():
+    """(our seat, frozenset of opponents, wins, games) per tracked run."""
+    out = []
     for path in sorted(glob.glob("data/decks/**/sim/*.json", recursive=True)):
         if "logs" in path:
             continue
@@ -56,7 +91,8 @@ def forge_record():
         analysis = doc.get("analysis") or {}
         n = (analysis.get("games") or (doc.get("summary") or {}).get("games")
              or len(doc.get("games") or []) or 0)
-        for seat, row in (analysis.get("seats") or {}).items():
+        seats = analysis.get("seats") or {}
+        for seat, row in seats.items():
             if row.get("wins") is None:
                 continue
             # Only OUR decks: an opponent seat is a fetched EDHREC average list
@@ -65,9 +101,8 @@ def forge_record():
                 deck_dir(seat.split("@")[0])
             except Exception:
                 continue
-            a, b = got.get(seat, (0, 0))
-            got[seat] = (a + row["wins"], b + n)
-    return got
+            out.append((seat, frozenset(seats) - {seat}, row["wins"], n))
+    return out
 
 
 def _spearman(xs, ys):
@@ -94,7 +129,7 @@ def _spearman(xs, ys):
 
 def calibrate(iterations=3000):
     from manamap.pilot import goldfish
-    record = forge_record()
+    record, pod, dropped = forge_record()
     usable = {s: v for s, v in record.items() if v[1] >= MIN_GAMES}
     rows = []
     for seat, (wins, games) in sorted(usable.items()):
@@ -114,7 +149,8 @@ def calibrate(iterations=3000):
                      "win_rate": round(wins / games, 4), **vals})
 
     doc = {"decks": rows, "min_decks": MIN_DECKS, "min_games": MIN_GAMES,
-           "eligible": len(rows), "with_any_forge_data": len(record)}
+           "eligible": len(rows), "with_any_forge_data": len(record),
+           "pod": pod, "dropped_other_pods": dropped}
     if len(rows) < MIN_DECKS:
         short = MIN_DECKS - len(rows)
         doc["verdict"] = "NOT ANSWERABLE"
@@ -125,9 +161,9 @@ def calibrate(iterations=3000):
             f"at n=10, 0.65). Reporting a coefficient here would publish a null "
             f"as a finding.")
         doc["what_it_would_take"] = (
-            f"{short} more deck(s) with {MIN_GAMES}+ games each — roughly "
-            f"{short} runs of `manamap pilot simulate <slug> --vs <pod> "
-            f"--games {MIN_GAMES}`.")
+            f"{short} more deck(s) with {MIN_GAMES}+ games each against THIS "
+            f"pod — `manamap pilot simulate <slug> --vs "
+            f"{' '.join(pod or ['<pod>'])} --games {MIN_GAMES}`.")
         return doc
     doc["verdict"] = "measured"
     doc["spearman"] = {
@@ -147,7 +183,11 @@ def main(args):
     for r in doc["decks"]:
         print(f"  {r['seat']:30} {r['win_rate']:>10.3f} {r['games']:>6} " +
               "".join(f"{r[k]:>11.3f}" for k in MEASURES))
-    print(f"\n  {doc['with_any_forge_data']} seat(s) have any Forge games; "
+    print(f"\n  pod: {', '.join(doc['pod'] or ['—'])}")
+    for d in doc["dropped_other_pods"]:
+        print(f"  dropped {d['games']:>4} game(s) vs a DIFFERENT pod "
+              f"({', '.join(d['pod'])}) — a win rate is against somebody")
+    print(f"  {doc['with_any_forge_data']} seat(s) have games vs this pod; "
           f"{doc['eligible']} have {doc['min_games']}+.")
     if doc["verdict"] == "NOT ANSWERABLE":
         print(f"\n  VERDICT: NOT ANSWERABLE")
