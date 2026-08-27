@@ -18,24 +18,26 @@
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
       "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
     ],
+    "restricted_mana_counted_as_free": [
+      "Delighted Halfling (1)"
+    ],
     "seed": 42
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.991,
+      "cast_by_turn_6_rate": 0.996,
       "cast_turn_histogram": {
-        "10": 8,
-        "2": 1469,
-        "3": 8028,
-        "4": 219,
-        "5": 127,
-        "6": 64,
-        "7": 42,
-        "8": 21,
-        "9": 17,
-        "not_by_max_turn": 5
+        "2": 2723,
+        "3": 7026,
+        "4": 119,
+        "5": 58,
+        "6": 38,
+        "7": 22,
+        "8": 7,
+        "9": 6,
+        "not_by_max_turn": 1
       },
-      "mean_cast_turn": 2.963,
+      "mean_cast_turn": 2.778,
       "median_cast_turn": 3
     },
     "iterations": 10000,
@@ -53,27 +55,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 8.267,
-      "2": 2.22,
-      "3": 3.187,
-      "4": 4.063,
-      "5": 4.894,
-      "6": 5.869,
-      "7": 6.552,
-      "8": 7.161,
-      "9": 7.727
+      "10": 9.573,
+      "2": 2.357,
+      "3": 3.52,
+      "4": 4.551,
+      "5": 5.78,
+      "6": 6.866,
+      "7": 7.657,
+      "8": 8.339,
+      "9": 8.967
     },
     "mean_bodies_by_turn": {
-      "1": 0.238,
-      "10": 6.37,
-      "2": 0.859,
-      "3": 1.11,
-      "4": 2.218,
-      "5": 3.157,
-      "6": 4.066,
-      "7": 4.77,
-      "8": 5.372,
-      "9": 5.891
+      "1": 0.172,
+      "10": 5.771,
+      "2": 0.561,
+      "3": 0.856,
+      "4": 1.807,
+      "5": 2.856,
+      "6": 3.743,
+      "7": 4.381,
+      "8": 4.915,
+      "9": 5.362
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -100,22 +102,22 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.679,
-        "assembled_rate_assisted": 0.679,
-        "by_turn_6_rate": 0.558,
-        "by_turn_6_rate_assisted": 0.558,
+        "assembled_rate": 0.68,
+        "assembled_rate_assisted": 0.68,
+        "by_turn_6_rate": 0.563,
+        "by_turn_6_rate_assisted": 0.563,
         "label": "Sisay online with a multi-colour mana engine (only Jegantha adds all five off one activation)",
-        "mean_turn": 4.219,
-        "mean_turn_assisted": 4.219
+        "mean_turn": 4.093,
+        "mean_turn_assisted": 4.093
       },
       {
         "assembled_rate": 0.525,
         "assembled_rate_assisted": 0.525,
-        "by_turn_6_rate": 0.419,
-        "by_turn_6_rate_assisted": 0.419,
+        "by_turn_6_rate": 0.422,
+        "by_turn_6_rate_assisted": 0.422,
         "label": "Sisay online with a three-colour legend to grow her",
-        "mean_turn": 4.395,
-        "mean_turn_assisted": 4.395
+        "mean_turn": 4.276,
+        "mean_turn_assisted": 4.276
       },
       {
         "assembled_rate": 0.747,

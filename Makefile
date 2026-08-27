@@ -83,7 +83,7 @@ serve:  ## Serve the map and the manuals (PORT=8000 by default)
 
 manuals:  ## Re-render every published issue (deterministic; should be a no-op)
 	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
-	  test -f data/decks/$$slug/issue.json && $(MANAMAP) pilot build-manual $$slug; \
+	  if test -f data/decks/$$slug/issue.json; then $(MANAMAP) pilot build-manual $$slug; fi; \
 	done
 	$(MANAMAP) pilot build-index
 

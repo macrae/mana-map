@@ -945,100 +945,100 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6245,
+          "rate": 0.6493,
           "ci95": [
-            0.615,
-            0.6339
+            0.6399,
+            0.6586
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2362,
+          "rate": 0.2492,
           "ci95": [
-            0.228,
-            0.2446
+            0.2408,
+            0.2578
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0396,
+          "rate": 0.0468,
           "ci95": [
-            0.036,
-            0.0436
+            0.0428,
+            0.0511
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0118,
+          "rate": 0.0137,
           "ci95": [
-            0.0099,
-            0.0141
+            0.0116,
+            0.0162
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0036,
+          "rate": 0.0047,
           "ci95": [
-            0.0026,
-            0.005
+            0.0035,
+            0.0062
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0016,
+          "rate": 0.002,
           "ci95": [
-            0.001,
-            0.0026
+            0.0013,
+            0.0031
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0009,
+          "rate": 0.0015,
           "ci95": [
-            0.0005,
-            0.0017
+            0.0009,
+            0.0025
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0005,
+          "rate": 0.0012,
           "ci95": [
-            0.0002,
-            0.0012
+            0.0007,
+            0.0021
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0004,
+          "rate": 0.001,
           "ci95": [
-            0.0002,
-            0.001
+            0.0005,
+            0.0018
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0003,
+          "rate": 0.0007,
           "ci95": [
-            0.0001,
-            0.0009
+            0.0003,
+            0.0014
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0393,
+        "rate": 0.0467,
         "ci95": [
-          0.0357,
-          0.0433
+          0.0427,
+          0.051
         ],
         "n": 10000
       },
       "fleet": "above the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 2949,
-        "hand_empty": 2,
-        "mana_short": 2947
+        "stall_turns": 3208,
+        "hand_empty": 16,
+        "mana_short": 3192
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
@@ -1062,19 +1062,19 @@
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.142,
-        "3": 3.069,
-        "4": 3.864,
-        "5": 4.527,
-        "6": 5.093,
-        "7": 5.58,
-        "8": 6.016,
-        "9": 6.424,
-        "10": 6.817
+        "2": 2.215,
+        "3": 3.256,
+        "4": 4.278,
+        "5": 5.017,
+        "6": 5.64,
+        "7": 6.179,
+        "8": 6.669,
+        "9": 7.127,
+        "10": 7.576
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.029
+      "mana_stdev_turn_five": 1.1975
     },
     "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a"
   },
@@ -1104,8 +1104,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 8.138,
-    "commander_cast_by_turn_6_pct": 6,
+    "commander_mean_cast_turn": 7.935,
+    "commander_cast_by_turn_6_pct": 10,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -1149,20 +1149,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.257,
+      "mean_kill_turn": 8.255,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 10,
-      "kill_by_turn_8_pct": 27,
+      "kill_by_turn_8_pct": 34,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 41,
+      "no_kill_by_max_turn_pct": 31,
       "kill_turn_histogram": {
-        "10": 1540,
-        "4": 39,
-        "5": 709,
-        "6": 268,
-        "7": 467,
-        "8": 1185,
-        "9": 1730
+        "10": 1603,
+        "4": 64,
+        "5": 547,
+        "6": 400,
+        "7": 694,
+        "8": 1642,
+        "9": 1939
       }
     }
   },

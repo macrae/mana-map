@@ -99,7 +99,41 @@ _NONCREATURE_TOKENS = ("treasure", "clue", "food", "blood", "gold", "powerstone"
                        "map", "incubator", "junk", "shard")
 
 _TOKEN_RE = re.compile(r"create (\w+)(?: [\w/+-]+)* tokens?", re.IGNORECASE)
-_TAP_ADD_RE = re.compile(r"\{T\}: Add ((?:\{[WUBRGC0-9]\})+)")
+# A TAP-FOR-MANA ABILITY, WRITTEN THREE WAYS, AND THE FIRST CUT SAW ONE.
+# The old pattern was `\{T\}: Add ((?:\{[WUBRGC0-9]\})+)` — an explicit symbol
+# list and nothing else. So `{T}: Add {C}{C}` parsed and `{T}: Add one mana of
+# any color` did not, which is **Arcane Signet, Birds of Paradise, Relic of
+# Legends and Sanctum Weaver**: 71 of the fleet's 110 tap-for-mana cards, 65%,
+# reading zero. ur-dragon's model could see 2 of its 11 non-land mana, and
+# turn-seven mana came out ~19% low on every deck measured.
+#
+# It is NOT a stated assumption — the module's assumption list says rituals and
+# cost reducers are unmodelled and says nothing about rocks, because nobody
+# knew. A silent half-working regex is the most expensive kind: it produces a
+# number, the number is plausible, and it is wrong by a fifth.
+#
+# `[^:\n]*` lets a cost precede the tap (`{1}, {T}: Add …`) while refusing to
+# cross a colon or a line, so a `{T}` in one ability cannot bind to an `: Add`
+# in another. The `{T}` requirement is load-bearing and stays: Phyrexian Altar
+# is `Sacrifice a creature: Add one mana`, which is not free repeatable mana and
+# must not be counted as a rock.
+_TAP_ADD_RE = re.compile(r"\{T\}[^:\n]*: ?Add ([^.\n]+)", re.IGNORECASE)
+#: A COST THAT CONSUMES THE PERMANENT IS NOT A RATE. Widening the pattern to
+#: catch "Add one mana of any color" also caught **Jeweled Lotus**, whose
+#: ability reads `{T}, Sacrifice this artifact: Add three mana` — the model
+#: would have collected three mana from it every turn, forever. Same for
+#: Kaleidostone, Lotus Bloom and Transmogrant Altar. `produced_mana` answers
+#: "per turn, repeatably", so an ability that eats its own source, exiles or
+#: discards is worth zero here and belongs to a one-shot channel that does not
+#: exist. A mana cost in the activation ({1}, {T}: …) is fine — filters are
+#: real rocks.
+_CONSUMING_COST = re.compile(r"sacrifice|exile|discard", re.IGNORECASE)
+#: Mana that can only be spent on some things. See the meta note in `run`.
+_RESTRICTED_MANA_RE = re.compile(r"Spend this mana only", re.IGNORECASE)
+#: Written-out quantities. `X` is board-dependent (Sanctum Weaver counts
+#: enchantments, Selvala reads a power), so it takes the conservative 1 — the
+#: same call `treasure_profile` makes for "for each" and "equal to".
+_MANA_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "x": 1}
 
 # Deliberately the SAME pattern as ROLE_PATTERNS["tutor:unrestricted"] in
 # config.py. A second definition of "what is a tutor" would let the sim and the
@@ -329,10 +363,15 @@ def combat_profile(card):
     combat_trigger = _ATTACKS_RE.search(text) or _COMBAT_DMG_RE.search(text)
     if combat_trigger:
         window = text[combat_trigger.start():combat_trigger.start() + 220]
-        mana = _TAP_ADD_RE.search(window) or re.search(
-            r"add ((?:\{[WUBRGC0-9]\})+)", window, re.IGNORECASE)
-        if mana:
-            profile["attack_mana"] = _mana_pips(mana.group(1))
+        # `_TAP_ADD_RE` now captures the whole clause rather than a symbol run,
+        # so route it through the one parser instead of counting pips here —
+        # two readers of one pattern is the divergence this file has paid for.
+        got = produced_mana(window)
+        if not got:
+            plain = re.search(r"add ((?:\{[WUBRGC0-9]\})+)", window, re.IGNORECASE)
+            got = _mana_pips(plain.group(1)) if plain else 0
+        if got:
+            profile["attack_mana"] = got
         if re.search(r"treasure token", window, re.IGNORECASE):
             n = _TREASURE_N_RE.search(window)
             word = (n.group(1).lower() if n else "a")
@@ -388,7 +427,24 @@ def produced_mana(oracle_text):
     match = _TAP_ADD_RE.search(oracle_text or "")
     if not match:
         return 0
-    return len(re.findall(r"\{[WUBRGC0-9]\}", match.group(1)))
+    # The activation cost is everything from `{T}` back to the clause start.
+    cost = (oracle_text or "")[max(0, match.start() - 40):match.start()
+                               + match.group(0).index(":")]
+    if _CONSUMING_COST.search(cost):
+        return 0
+    body = match.group(1)
+    # ALTERNATIVES ARE A CHOICE, NOT A SUM. `Add {R}, {G}, or {W}` is ONE mana
+    # and counting the symbols gives three; `Add {U} or {C}{U}` is two, not
+    # three. So take the LARGEST CONSECUTIVE RUN rather than the total — which
+    # is also exactly what the old narrow pattern did by accident, since
+    # `(?:\{..\})+` stopped at the first comma. Widening the match without
+    # this reintroduced the bug as an overcount on every dual-choice rock.
+    runs = [len(re.findall(r"\{[WUBRGC0-9]\}", r))
+            for r in re.findall(r"(?:\{[WUBRGC0-9]\})+", body)]
+    if runs:
+        return max(runs)
+    word = re.match(r"\s*(one|two|three|four|five|X)\b", body, re.IGNORECASE)
+    return _MANA_WORDS[word.group(1).lower()] if word else 0
 
 
 def body_count(card):
@@ -1018,6 +1074,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         c["name"] for c in doc.get("cards", [])
         if not c.get("is_commander") and _blind(c)
     })
+    restricted = sorted({
+        f"{c['name']} ({produced_mana(c.get('oracle_text'))})"
+        for c in doc.get("cards", [])
+        if "Land" not in (c.get("type_line") or "")
+        and produced_mana(c.get("oracle_text"))
+        and _RESTRICTED_MANA_RE.search(c.get("oracle_text") or "")
+    })
     if not model_treasures:
         visible = sorted({
             c["name"] for c in doc.get("cards", [])
@@ -1066,6 +1129,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             "model_assumptions": MODEL_ASSUMPTIONS + (
                 TREASURE_ASSUMPTIONS if model_treasures else []) + (
                 COMBAT_ASSUMPTIONS if model_combat else []),
+            # RESTRICTED MANA IS COUNTED AS FREE, AND THE READER SHOULD KNOW.
+            # `spend()` is a scalar, so it cannot represent "only to cast
+            # Dragon spells". Delighted Halfling's legendary-only mana is very
+            # nearly free in a Commander deck; Throne of Eldraine's four is not.
+            # Same contract as the Treasure blind spots: the assumption is
+            # NAMED rather than silently made or silently dropped.
+            **({"restricted_mana_counted_as_free": restricted} if restricted else {}),
             **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
             **({"combat_effects_not_modelled": combat_unreadable}
                if model_combat and combat_unreadable else {}),
