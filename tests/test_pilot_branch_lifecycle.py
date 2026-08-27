@@ -62,20 +62,45 @@ def test_grading_has_three_states_and_the_third_is_the_honest_one():
 # ── the round trip ───────────────────────────────────────────────────────
 
 @pytest.fixture
-def probe(tmp_path):
+def sandbox(tmp_path, monkeypatch):
+    """A COPY of the deck, in a temp data dir.
+
+    THESE TESTS MERGE, AND A MERGE OVERWRITES `decklist.txt`. Run against the
+    real deck they raced `test_a_branch_run_never_touches_the_decks_own_artifacts`
+    under `-n auto` — one test writing the file another was asserting had not
+    changed. Both were correct; the hazard was mine, and a marker would only
+    have hidden it. `MANAMAP_DATA_DIR` is the override the repo already has for
+    exactly this, and `deck_dir` resolves through `config.DECKS_DIR`, so
+    repointing it isolates every writer at once.
+    """
+    import shutil
+
+    from manamap import config
+    from manamap.pilot import common, deck_versions
+    real = config.DECKS_DIR / SLUG
+    if not (real / "decklist.txt").exists():
+        pytest.skip(f"no {SLUG} fixture")
+    decks = tmp_path / "decks"
+    shutil.copytree(real, decks / SLUG,
+                    ignore=shutil.ignore_patterns("branches", "sim"))
+    for mod in (config, common, deck_branch, deck_versions):
+        if hasattr(mod, "DECKS_DIR"):
+            monkeypatch.setattr(mod, "DECKS_DIR", decks)
+    # Versions are a git walk over the REAL repo path; in a sandbox there is no
+    # history, so the branch records `base_version: None` and that is honest.
+    monkeypatch.setattr(deck_versions, "report", lambda slug: {"current_version": None})
+    return decks
+
+
+@pytest.fixture
+def probe(sandbox):
     """A branch identical to the deck, so a merge is a provable no-op."""
-    from manamap.pilot.common import deck_dir
-    src = deck_dir(SLUG) / "decklist.txt"
     name = "pytest-probe"
-    root = deck_branch.branch_root(SLUG) / name
-    if root.exists():
-        deck_branch.delete(SLUG, name, force=True)
+    src = sandbox / SLUG / "decklist.txt"
     deck_branch.new(SLUG, name, src.read_text(),
                     why="pytest", objective={"axis": "kill_by_8", "op": ">=",
                                              "value": 0.3, "why": "pytest"})
-    yield name
-    if root.exists():
-        deck_branch.delete(SLUG, name, force=True)
+    return name
 
 
 @requires_deck
@@ -109,23 +134,24 @@ def test_merge_records_that_it_landed(probe):
     assert got["written"] is True
     doc = deck_branch.meta(SLUG, probe)
     assert doc["merged"]["at"] and doc["merged"]["decklist_sha256"]
-    assert doc["merged"]["into_version_before"] is not None
+    # The KEY, not a value: versions are a git walk, and a sandbox has no
+    # history, so recording None here is the truthful answer rather than a
+    # fabricated number. Asserting non-None would demand the code invent one.
+    assert "into_version_before" in doc["merged"]
 
 
 @requires_deck
-def test_merging_an_identical_list_leaves_the_deck_byte_identical(probe):
+def test_merging_an_identical_list_leaves_the_deck_byte_identical(probe, sandbox):
     """THE CONTROL. The probe IS the deck, so a merge must be a no-op — if the
     canonical render or the backup path ever mangles the list, this is where it
     shows, and not in a deck the pilot then plays."""
-    from manamap.pilot.common import deck_dir
-    path = deck_dir(SLUG) / "decklist.txt"
+    path = sandbox / SLUG / "decklist.txt"
     before = path.read_bytes()
     deck_branch.merge(SLUG, probe, write=True, run_chain=False)
     assert path.read_bytes() == before
     assert path.with_suffix(".txt.bak").exists(), (
         "merge overwrote the deck's tracked list with no backup — check-in has "
         "made one since it shipped and merge never did")
-    path.with_suffix(".txt.bak").unlink()
 
 
 @requires_deck
@@ -136,8 +162,6 @@ def test_deleting_an_unmerged_branch_is_refused(probe):
         deck_branch.delete(SLUG, probe)
     assert "never merged" in str(e.value)
     deck_branch.merge(SLUG, probe, write=True, run_chain=False)
-    from manamap.pilot.common import deck_dir
-    (deck_dir(SLUG) / "decklist.txt.bak").unlink(missing_ok=True)
     assert deck_branch.delete(SLUG, probe)["deleted"]
 
 

@@ -235,7 +235,13 @@ data/decks/<slug>/             all tracked:
                                                      pile, read by `candidates --pool library`
                                branches/<name>/      A CANDIDATE 99 you cannot yet sleeve —
                                  decklist.txt          the candidate list
-                                 branch.json           name, opened, why, base version
+                                 branch.json           v2: the OBJECTIVE the branch must meet,
+                                                       the commit trail, and `merged` once it lands
+                                 net_change.json       THE REPORT A PURCHASE RESTS ON — the branch
+                                                       against the deck, every row with its MDE, the
+                                                       objective GRADED, the engine lift, Forge and
+                                                       the bill. `net-change --write`, gated by
+                                                       `validate-net-change`
                                  cards.json            `fetch-deck --branch`
                                  <measurements>.json   bracket / mana / goldfish / map,
                                                        run with `--branch`, written here

@@ -30,7 +30,8 @@ import pytest
 # down with an unrelated-looking "fixture not found".
 from conftest_viz import await_projection  # noqa: F401
 from conftest_viz import (  # noqa: F401
-    BOOT_TIMEOUT_MS, canvas_page, corpus_count, discover_page, page, still_page,
+    BOOT_TIMEOUT_MS, _record, canvas_page, corpus_count, discover_page, page,
+    still_page,
 )
 
 pytestmark = pytest.mark.browser
@@ -7392,3 +7393,76 @@ def test_the_vitals_panel_shows_measured_figures_with_their_intervals(browser, v
     assert got["intervals"] >= 3, (
         f"only {got['intervals']} figures carry an interval: {got['values']}")
     assert got["ciStyled"], "the interval is not distinguished from the figure"
+
+
+# ── The branch workbench ─────────────────────────────────────────────────
+
+def _branch_page(browser, viz_server, slug, branch):
+    page = browser.new_page(viewport={"width": 1440, "height": 1200})
+    errors: list[str] = []
+    add = _record(errors)
+    page.on("pageerror", lambda e: add(e))
+    # A 404 on an OPTIONAL artifact is the page probing, not a fault — a branch
+    # with no net_change.json is a normal state the page renders a panel for.
+    page.on("console",
+            lambda m: add(m.text)
+            if m.type == "error" and "Failed to load resource" not in m.text
+            else None)
+    page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
+    page.wait_for_timeout(2200)
+    page.js_errors = errors
+    return page
+
+
+@pytest.mark.browser
+def test_the_branch_page_renders_the_decision(browser, viz_server):
+    """A REAL RENDER, not a source assertion.
+
+    This repo's own record: a `ReferenceError` that killed drill mode outright
+    passed all 13 source-grepping drill tests. The branch page is the surface a
+    spending decision is read on, so it gets a real browser or it gets nothing.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    try:
+        assert not page.js_errors, page.js_errors
+        body = page.inner_text("body").lower()
+        # The measured table, the lift, the bill — the three things that decide
+        # it. Lower-cased because `.panel h2` uppercases in CSS, and asserting
+        # the source casing would be testing my own string rather than the page.
+        assert "measured" in body
+        assert "does the engine make it win?" in body
+        assert "the bill" in body
+        assert "already own" in body
+        # And the figures are TEXT, not markup arriving as data — the `facts()`
+        # escaping defect one page over.
+        assert "<b>" not in body and "&amp;" not in body
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_a_branch_with_no_objective_says_so_rather_than_hiding_the_panel(
+        browser, viz_server):
+    """AN ABSENT SECTION MUST SAY WHAT IT IS. treasure-v2 predates the
+    requirement, so it cannot be graded — and a page that simply omitted the
+    panel would read as a rendering fault on the surface whose job is telling
+    you whether the change is worth making."""
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    try:
+        body = page.inner_text("body").lower()
+        assert "objective" in body
+        assert "cannot be graded" in body
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_an_unknown_branch_names_the_command_instead_of_breaking(browser, viz_server):
+    page = _branch_page(browser, viz_server, "ur-dragon", "no-such-branch")
+    try:
+        assert not page.js_errors, page.js_errors
+        body = page.inner_text("body").lower()
+        assert "no such branch" in body
+        assert "deck-branch ur-dragon list" in body
+    finally:
+        page.close()

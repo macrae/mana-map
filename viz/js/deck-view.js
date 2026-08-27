@@ -210,7 +210,14 @@
                '</h3><p class="ev">This branch\u2019s list will not parse.</p></div>';
       }
       var c = b.counts || {};
-      var out = '<div class="branch"><h3>' + esc(b.name) +
+      // THE DOSSIER SUMMARISES; branch.html decides. This panel is about a deck
+      // that EXISTS and a branch is a proposal with a bill attached, so the
+      // decision surface is its own page and this links to it rather than
+      // growing into the busiest panel here.
+      var href = 'branch.html?deck=' + encodeURIComponent(d.slug) +
+                 '&branch=' + encodeURIComponent(b.name);
+      var out = '<div class="branch"><h3><a href="' + href + '">' + esc(b.name) +
+        '</a>' +
         (b.mergeable ? '<span class="branch-ok">mergeable</span>'
                      : '<span class="branch-block">' + b.unsourced.length +
                        ' to source</span>') + '</h3>';
@@ -229,7 +236,9 @@
                '</span></h4>' + list(b.unsourced.map(esc), 'branch-buy');
       out += '<p class="ev branch-note">A branch is a candidate list, not the deck. ' +
              'It merges only when every added card is sourced \u2014 ' +
-             '<code>deck-branch ' + esc(d.slug) + ' merge ' + esc(b.name) + '</code>.</p>';
+             '<code>deck-branch ' + esc(d.slug) + ' merge ' + esc(b.name) + '</code>.<br>' +
+             '<a href="' + href + '">The net change, and whether it met its ' +
+             'objective \u2192</a></p>';
       return out + '</div>';
     }).join('');
     return panel('branches', bs.length === 1 ? 'The branch' : 'Branches',

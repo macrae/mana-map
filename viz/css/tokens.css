@@ -585,3 +585,77 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display: block; }
 .vit-bottleneck { margin: 12px 0 6px; }
 .vit-note { margin-top: 12px; font-size: 0.84rem; }
 .vit-absent { margin: 0; }
+
+/* ── The branch workbench (branch.html) ──────────────────────────────────
+ *
+ * One screen for a decision a refactor asks you to make. It reuses `.panel`,
+ * `.ev` and the era palette rather than inventing a second visual language —
+ * the dossier and this page describe the same deck and must not look like two
+ * products. What is new here is the OBJECTIVE, which leads, and the BILL, which
+ * is the only place in the viz that talks about money. */
+
+#objective { margin-bottom: 22px; }
+.panel.objective { border-top-color: var(--ink-soft); }
+.panel.objective.met { border-top-color: var(--slime-green); }
+.panel.objective.failed { border-top-color: var(--power-red); }
+.panel.objective.unresolved { border-top-color: var(--burst-yellow); }
+.panel.objective.none { border-top-color: var(--rule); }
+.obj-expr code { font-size: 17px; letter-spacing: .02em; }
+.obj-result { font-size: 20px; margin: 10px 0 4px; }
+.obj-reading { font-family: var(--mono, monospace); }
+
+#panels { display: grid; gap: 22px; grid-template-columns: 1fr; }
+@media (min-width: 1020px) {
+  #panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #panels > .panel:nth-child(1), #panels > .panel.limits { grid-column: 1 / -1; }
+}
+
+/* Wide content scrolls inside its own box; the page body never scrolls sideways. */
+.tablewrap { overflow-x: auto; }
+table.netchange { border-collapse: collapse; width: 100%; min-width: 460px; }
+table.netchange th, table.netchange td {
+  padding: 5px 10px; border-bottom: 1px solid var(--rule); text-align: left;
+}
+table.netchange th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); }
+table.netchange td.n, table.netchange th.n {
+  text-align: right; font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px;
+}
+tr.v-better td.verdict { color: var(--slime-green); }
+tr.v-worse  td.verdict { color: var(--power-red); }
+tr.v-noise  td.verdict { color: var(--ink-soft); }
+
+.lifts, .forge { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: 12px; }
+.lift, .forge > div { background: var(--panel-hi); border: 1px solid var(--rule); padding: 12px 14px; }
+.lift .who, .forge .who { font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-soft); }
+.lift .big, .forge .big { font-size: 30px; font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; line-height: 1.15; }
+.lift.good .big { color: var(--slime-green); }
+.lift.bad  .big { color: var(--power-red); }
+.warn { color: var(--burst-yellow); font-size: .9em; }
+
+.tiles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 12px 0; }
+.tile { background: var(--panel-hi); border: 1px solid var(--rule); padding: 12px 14px; }
+.tile .k { font-size: 28px; font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.tile .t { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); margin-top: 2px; }
+/* Only the buy tile is red. `elsewhere` is a trade-off, not money. */
+.tile.s-buy .k { color: var(--power-red); }
+.lede { font-size: 17px; margin: 10px 0; }
+
+ul.cardlist { columns: 2; column-gap: 26px; padding-left: 18px; margin: 8px 0 14px; }
+ul.cardlist li { margin: 0 0 3px; break-inside: avoid; font-size: 14px; }
+@media (max-width: 620px) { ul.cardlist { columns: 1; } }
+
+.commit { border-left: 2px solid var(--rule); padding-left: 12px; margin: 12px 0; }
+.commit p { margin: 2px 0 0; }
+.merged { color: var(--slime-green); font-size: .9em; }
+
+.panel.absent { border-top-color: var(--rule); opacity: .82; }
+pre.cmd { background: var(--panel-hi); border: 1px solid var(--rule);
+  padding: 9px 11px; overflow-x: auto; font-size: 13px; margin: 8px 0 0; }
+.panel.limits ul { padding-left: 18px; margin: 0; }
+.panel.limits li { margin-bottom: 7px; color: var(--ink-soft); font-size: .92em; }
