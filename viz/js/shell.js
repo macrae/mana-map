@@ -491,17 +491,100 @@ window.Shell = (function () {
       var branch = prompt('Name the branch:', 'treatment');
       if (!branch) { return; }
       var why = prompt('In a sentence, what is this treatment for?') || '';
-      var obj = prompt(
+      return objectiveFor(slug.trim(), why).then(function (obj) {
+        if (!obj) { return; }
+        return Api.call('branch/new', {
+          slug: slug.trim(), name: branch.trim(), objective: obj,
+          why: why, cards: names
+        }).then(function (got) { location.href = got.url; });
+      });
+    }).catch(function (e) { alert('Could not open the branch: ' + e.message); });
+  }
+
+  /* THE DOCTOR PROPOSES, THE PILOT CONFIRMS.
+   *
+   * `<measure> <op> <number>` is a vocabulary, and asking a pilot to produce one
+   * from memory in a `prompt()` is asking them to guess at `OBJECTIVE_AXES` and
+   * at what number their deck could plausibly reach. The doctor reads the
+   * deck's CURRENT readings and proposes one axis with that reading beside it;
+   * the pilot accepts it or types their own. It writes nothing either way.
+   *
+   * A REFUSAL IS AN ANSWER. "Make it better" names no axis, and the charter
+   * returns `axis: null` with the alternatives rather than guessing — so this
+   * falls through to the manual prompt with the doctor's own reasoning shown,
+   * which is more than the pilot had before they asked.
+   */
+  function objectiveFor(slug, direction) {
+    var manual = function (hint) {
+      return prompt(
+        (hint ? hint + '\n\n' : '') +
         'The objective it must meet — <measure> <op> <number>.\n\n' +
         'e.g. hoard_8 >= 6.0   ·   kill_by_8 >= 0.30   ·   stall <= 0.03\n\n' +
         'A branch that cannot be falsified gets graded on whether it did what ' +
         'it does, not on whether it was worth doing.');
-      if (!obj) { return; }
-      return Api.call('branch/new', {
-        slug: slug.trim(), name: branch.trim(), objective: obj.trim(),
-        why: why, cards: names
-      }).then(function (got) { location.href = got.url; });
-    }).catch(function (e) { alert('Could not open the branch: ' + e.message); });
+    };
+    if (!direction || !Api.has('branch/objective')) {
+      return Promise.resolve(manual());
+    }
+    if (!confirm('Ask the deck doctor to turn that into a measurable ' +
+                 'objective?\n\n' + OBJECTIVE_PRICE +
+                 '\n\nCancel to type one yourself.')) {
+      return Promise.resolve(manual());
+    }
+    return Api.call('branch/objective', { slug: slug, direction: direction })
+      .then(function (job) { return pollJob(job.id); })
+      .then(function (row) {
+        var got = readObjective(row);
+        if (!got || !got.objective || !got.objective.axis) {
+          return manual('The doctor could not resolve that into one axis' +
+                        (got && got.unresolved ? ':\n' + got.unresolved : '.'));
+        }
+        var o = got.objective;
+        var expr = o.axis + ' ' + o.op + ' ' + o.value;
+        var msg = 'The doctor proposes:\n\n  ' + expr +
+          (got.current_reading != null
+            ? '\n  (now ' + got.current_reading + ')' : '') +
+          (got.why ? '\n\n' + got.why : '') +
+          '\n\nOK to use it. Cancel to type your own.';
+        return confirm(msg) ? expr : manual();
+      })
+      .catch(function (e) { return manual('The doctor could not be reached: ' +
+                                          e.message); });
+  }
+
+  var OBJECTIVE_PRICE = '~8-15k tokens. It writes nothing; you confirm.';
+
+  function pollJob(id) {
+    return new Promise(function (resolve, reject) {
+      var tick = function () {
+        Api.call('job', { id: id }).then(function (row) {
+          if (row.state === 'running') { setTimeout(tick, 2000); return; }
+          if (row.state === 'failed') { reject(new Error(row.error || 'failed')); return; }
+          resolve(row);
+        }).catch(reject);
+      };
+      tick();
+    });
+  }
+
+  /* The agent returns a PATH and a summary, per the shared charter — never the
+   * JSON inline. Its own object is the thing to read; this pulls the first
+   * JSON object out of the reply if the agent inlined one anyway, and returns
+   * null rather than guessing when it did not. */
+  function readObjective(row) {
+    var text = String(row && row.output || '');
+    var i = text.indexOf('{');
+    while (i !== -1) {
+      for (var j = text.length; j > i; j--) {
+        if (text.charAt(j - 1) !== '}') { continue; }
+        try {
+          var got = JSON.parse(text.slice(i, j));
+          if (got && typeof got === 'object' && 'objective' in got) { return got; }
+        } catch (e) { /* not this span */ }
+      }
+      i = text.indexOf('{', i + 1);
+    }
+    return null;
   }
 
   function renameZone() {
@@ -564,6 +647,9 @@ window.Shell = (function () {
     newZone: newZone,
     consider: consider,
     treat: treat,
+    // Exposed for the browser suite: the confirm-and-fall-through path
+    // is the half of `treat` worth driving, and the rest is prompts.
+    __objectiveFor: objectiveFor,
     renameZone: renameZone,
     dropZone: dropZone,
     move: move,

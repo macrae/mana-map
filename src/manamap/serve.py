@@ -605,6 +605,41 @@ def _branch_new(slug=None, name=None, objective=None, why=None, cards=()):
             "url": f"branch.html?deck={slug}&branch={name}"}
 
 
+#: MODE objective reads `deck-info` and `diagnose --json` and writes one small
+#: object. It does not run the audit, which is what makes the diagnose figure an
+#: overstatement here — and a price that overstates still trains a pilot to
+#: distrust the number.
+OBJECTIVE_COST = ("~8-15k tokens — it reads the deck's current readings and "
+                  "proposes ONE axis. It writes nothing; you confirm.")
+
+
+def _branch_objective(slug=None, direction=None):
+    """A sentence about strategy -> a falsifiable objective. PROPOSES ONLY.
+
+    THE MODE IS BUILT HERE, NOT PASSED IN. A page that could name its own mode
+    could ask the doctor for a diagnosis under an objective's price, and the
+    whole point of stating a cost before spending it is that the cost is the
+    real one.
+    """
+    if not slug:
+        raise ValueError("branch/objective needs a slug")
+    if not (direction or "").strip():
+        raise ValueError(
+            "branch/objective needs a sentence — what is this treatment FOR? "
+            "It is the thing the objective has to be a measurable version of.")
+    prompt = (
+        f"MODE: objective\n\nslug: {slug}\n\n"
+        f"The pilot's direction, verbatim:\n{direction.strip()}\n\n"
+        f"Follow the MODE: objective section of your charter exactly. Propose "
+        f"one axis from candidates.OBJECTIVE_AXES with the deck's CURRENT "
+        f"reading beside it. Write nothing but your own scratchpad file.")
+    got = _ask(question=prompt, agent="deck-doctor")
+    with _JOB_LOCK:
+        JOBS[got["id"]]["cost"] = OBJECTIVE_COST
+    got["cost"] = OBJECTIVE_COST
+    return got
+
+
 def _branch_upgrades(slug=None, branch=None, min_strength=None, owned=None):
     """What in this list has a cheaper card doing its job. Deterministic."""
     from manamap.pilot import upgrades
@@ -871,6 +906,7 @@ ENDPOINTS = {
     # `merge` and `delete` are absent on purpose — see the note above.
     "branch/new": (_branch_new, {"slug": _str, "name": _str, "objective": _str,
                                  "why": _str, "cards": _strlist}),
+    "branch/objective": (_branch_objective, {"slug": _str, "direction": _str}),
     "branch/upgrades": (_branch_upgrades, {"slug": _str, "branch": _str,
                                            "min_strength": _float, "owned": _bool}),
     "branch/stage": (_branch_stage, {"slug": _str, "branch": _str, "out": _str,

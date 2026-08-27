@@ -135,6 +135,12 @@ manamap pilot assess <slug> [--branch N] --pool <file|library|->
                                         #   does it cost, what is it GATED on, does it feed a
                                         #   declared component, and can any model here even
                                         #   SEE it. Names what is worth measuring
+# The browser can now do the whole loop: the Atlas library's "Treat a deck…"
+# opens a branch from a pile (`branch/new`), the deck doctor turns a sentence
+# into a falsifiable objective (`branch/objective`, MODE objective, proposes
+# only), `branch/upgrades` ranks the swaps, `branch/stage` accepts one, and
+# `branch/net-change` measures the whole branch. MERGE AND DELETE STAY HERE —
+# a merge rewrites decklist.txt and runs the regeneration chain.
 manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->] [--owned]
                                         #   WHAT IN THIS LIST HAS A CHEAPER CARD DOING ITS
                                         #   JOB. The obsolescence index read deck-aware:

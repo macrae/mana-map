@@ -7531,3 +7531,74 @@ def test_a_pile_can_be_handed_over_without_throwing(browser, viz_server):
     assert "local server" in (got["alerted"] or "")
     assert page.js_errors == []
     page.close()
+
+
+@pytest.mark.browser
+def test_a_direction_that_does_not_resolve_falls_through_to_the_pilot(browser,
+                                                                     viz_server):
+    """A REFUSAL IS AN ANSWER, and it must not be a dead end.
+
+    "Make it better" names no axis. The charter returns `axis: null` rather than
+    guessing, and the page then shows the doctor's own reasoning and lets the
+    pilot type one — which is more than they had before they asked. Driven
+    against a stubbed Api, because this suite serves static files with no /api.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    got = page.evaluate("""async () => {
+      const calls = [];
+      window.Api = {
+        ready: true,
+        has: () => true,
+        call: (name, p) => {
+          calls.push(name);
+          if (name === 'branch/objective') return Promise.resolve({id: 'j1'});
+          if (name === 'job') return Promise.resolve({
+            state: 'done',
+            output: 'wrote the file. ' + JSON.stringify({
+              objective: {axis: null}, unresolved: 'faster than what?'})});
+          return Promise.resolve({});
+        }
+      };
+      window.confirm = () => true;
+      let asked = null;
+      window.prompt = (m) => { asked = m; return 'kill_by_8 >= 0.30'; };
+      const out = await Shell.__objectiveFor('ur-dragon', 'make it better');
+      return {out, asked, calls};
+    }""")
+    assert got["calls"] == ["branch/objective", "job"]
+    assert "could not resolve" in got["asked"]
+    assert "faster than what?" in got["asked"], "the doctor's reasoning is shown"
+    assert got["out"] == "kill_by_8 >= 0.30", "the pilot's own answer is used"
+    assert page.js_errors == []
+    page.close()
+
+
+@pytest.mark.browser
+def test_a_proposed_objective_is_confirmed_before_it_is_used(browser, viz_server):
+    """The doctor proposes; the pilot confirms. Declining must not silently
+    accept the proposal, which is the failure mode of a confirm nobody reads."""
+    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    got = page.evaluate("""async () => {
+      window.Api = {
+        ready: true, has: () => true,
+        call: (name) => name === 'job'
+          ? Promise.resolve({state: 'done', output: JSON.stringify({
+              objective: {axis: 'hoard_8', op: '>=', value: 6},
+              current_reading: 3.9, why: 'treasure is the engine'})})
+          : Promise.resolve({id: 'j1'})
+      };
+      // Two confirms per run: 'ask the doctor?' then 'use this proposal?'.
+      const shown = [];
+      window.prompt = () => 'stall <= 0.03';
+      window.confirm = (m) => { shown.push(m); return true; };
+      const accepted = await Shell.__objectiveFor('d', 'lean on treasure');
+      window.confirm = (m) => { shown.push(m); return shown.length === 3; };
+      const declined = await Shell.__objectiveFor('d', 'lean on treasure');
+      return {accepted, declined, shown};
+    }""")
+    assert got["accepted"] == "hoard_8 >= 6"
+    assert "now 3.9" in got["shown"][1], "a threshold means nothing without the reading"
+    assert "treasure is the engine" in got["shown"][1]
+    assert got["declined"] == "stall <= 0.03", "declining hands it back to the pilot"
+    assert page.js_errors == []
+    page.close()

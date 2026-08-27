@@ -595,3 +595,25 @@ def test_a_failing_local_job_reports_the_reason_rather_than_hanging(decks):
         time.sleep(0.05)
     assert row["state"] == "failed"
     assert "no branch" in row["error"]
+
+
+def test_the_objective_mode_is_built_here_and_not_passed_in(decks, monkeypatch):
+    """A page that could name its own mode could ask the doctor for a full
+    diagnosis under an objective's price. Stating a cost before spending it only
+    means something if the cost is the real one."""
+    seen = {}
+    monkeypatch.setattr(serve, "_spawn",
+                        lambda *a, **k: seen.update(args=a, kw=k))
+    got = serve.call("branch/objective",
+                     {"slug": "zur", "direction": "lean harder on treasure"})
+    assert got["agent"] == "deck-doctor"
+    assert "MODE: objective" in got["question"]
+    assert "lean harder on treasure" in got["question"]
+    assert "writes nothing" in got["cost"] and "confirm" in got["cost"]
+
+
+def test_an_objective_needs_a_sentence_to_translate(decks):
+    for payload in ({"slug": "zur"}, {"slug": "zur", "direction": "   "}):
+        with pytest.raises(ValueError) as e:
+            serve.call("branch/objective", payload)
+        assert "what is this treatment FOR" in str(e.value)
