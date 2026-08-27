@@ -13,6 +13,7 @@ import pytest
 
 from manamap.pilot import deck_history as dh
 from manamap.sim import experiment as ex
+from conftest import ROOT
 
 SLUG = "xdeck"
 V1 = "1 Radagast of Rhosgobel *CMDR*\n1 Craterhoof Behemoth\n30 Forest\n"
@@ -145,7 +146,7 @@ def test_a_figure_with_no_per_game_values_says_so_rather_than_implying_precision
 
 def test_the_tracked_artifact_carries_the_honesty_lines():
     doc = json.load(open("data/decks/radagast/experiments/v1-vs-v5-x-giada-angels-vito-n10-a50f20db-s577662891.json")) \
-        if __import__("pathlib").Path("data/decks/radagast/experiments").is_dir() else None
+        if (ROOT / "data/decks/radagast/experiments").is_dir() else None
     if doc is None:
         pytest.skip("no tracked experiment (fresh clone)")
     assert any("NOT PAIRED" in a.upper() for a in doc["assumptions"])

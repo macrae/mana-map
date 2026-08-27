@@ -26,6 +26,8 @@ def test_a_deck_below_the_game_threshold_is_excluded_not_downweighted():
     against a fleet that spans 0.00-0.21, purely on n. Including it flipped the
     sign of the only rank correlation available."""
     got = calibrate.calibrate(iterations=50)
+    if not got["decks"]:
+        pytest.skip("no Forge data on this checkout")
     for row in got["decks"]:
         assert row["games"] >= calibrate.MIN_GAMES, row
 

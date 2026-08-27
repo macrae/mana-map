@@ -4,6 +4,7 @@ from conftest import requires_deck
 
 from manamap.pilot.mana_analysis import land_classes, nonland_producer_kind
 from manamap.pilot.manabase import land_colors
+from conftest import ROOT
 
 
 def test_tapped_snow_dual_carries_all_its_classes():
@@ -126,7 +127,7 @@ def test_tracked_mana_analysis_artifacts_are_current():
     from pathlib import Path
     from manamap.pilot.mana_analysis import analyze
 
-    for path in sorted(Path("data/decks").glob("*/mana_analysis.json")):
+    for path in sorted((ROOT / "data/decks").glob("*/mana_analysis.json")):
         tracked = json.loads(path.read_text())
         assert tracked == analyze(path.parent.name), (
             f"{path} is stale — re-run `manamap pilot mana-analysis "

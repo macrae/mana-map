@@ -9,6 +9,7 @@ does.
 
 from manamap.pilot.issue_spec import COPY_DEPARTMENTS, DEPARTMENT_IDS
 from manamap.pilot.validate_issue import validate_identity, validate_plan
+from conftest import ROOT
 
 GOOD_IDENTITY = {
     "volume": 1,
@@ -398,7 +399,7 @@ def test_every_prose_key_the_renderer_reads_is_voice_mapped():
     from pathlib import Path
 
     from manamap.pilot.issue_spec import PROSE_KEY_DEPARTMENT
-    src = Path("src/manamap/pilot/build_manual.py").read_text()
+    src = (ROOT / "src/manamap/pilot/build_manual.py").read_text()
     rendered = set(re.findall(r'prose\(prose_doc, "(\w+)"', src))
     # `pilots_log` carries a voice per turn and is checked by a different path;
     # `card_roles` is a dict the renderer reads directly rather than via prose().

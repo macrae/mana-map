@@ -69,16 +69,38 @@ def test_any_versus_all_across_several_oracle_patterns():
 
 @requires_data
 def test_unranked_cards_sort_last_but_are_not_dropped():
-    """A card with no EDHREC rank is usually just new — and a new set's answer to
-    a problem is exactly what a search like this should be able to surface."""
+    """The ordering, and the premise MEASURED rather than assumed.
+
+    The docstring used to say "a card with no EDHREC rank is usually just new".
+    Measured on this corpus that is false: **2,259 names are unranked and 19 of
+    them are commander-legal (0.8%)** — unranked overwhelmingly means acorn,
+    Alchemy or otherwise not legal, which `search` correctly drops and counts in
+    `meta["commander_illegal_skipped"]`.
+
+    So the testable property is the ORDERING (unranked sorts last, never
+    dropped from a legal result set), and it needs a probe that actually has a
+    legal unranked member. Basic lands are the reliable one.
+
+    The loop also had no guard: an empty result set exercised nothing, and
+    `seen_unranked` was assigned and then never asserted — so the half of the
+    title that says "are not dropped" was checked nowhere.
+    """
     rows, _ = card_search.search(oracle=[r"\bproliferate\b"], limit=500)
     ranks = [r["edhrec_rank"] for r in rows]
+    assert len(ranks) > 20, f"only {len(ranks)} rows — this proves nothing"
     seen_unranked = False
     for r in ranks:
         if r is None:
             seen_unranked = True
         else:
             assert not seen_unranked, "a ranked card sorted after an unranked one"
+
+    # NOT DROPPED — the other half of the title, on a probe that has a legal
+    # unranked member. `Wastes` and the snow basics carry no EDHREC rank.
+    lands, _ = card_search.search(names=[r"^(Snow-Covered )?Wastes$"], limit=50)
+    assert lands, "the basics probe matched nothing"
+    assert any(r["edhrec_rank"] is None for r in lands), (
+        "a legal card with no EDHREC rank was dropped from the result set")
 
 
 @requires_data

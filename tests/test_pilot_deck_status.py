@@ -48,8 +48,41 @@ def test_a_gate_row_is_not_counted_as_a_lifecycle_stage():
 @requires_deck
 def test_a_failing_gate_names_the_artifact_not_a_dash():
     """A gate row has no stage, so the fleet view reported "FAILS ITS GATE: —",
-    which tells a reader nothing about what to fix."""
+    which tells a reader nothing about what to fix.
+
+    THE LOOP USED TO PASS PRECISELY WHEN NOTHING WAS WRONG: `invalid` and
+    `stale` are empty on a healthy fleet, so it could only fail by accident and
+    proved nothing on every green run. A synthetic failing row exercises the
+    naming, and the fleet loop keeps its coverage with a count that proves it
+    ran at all.
+    """
     from manamap.pilot.deck_status import fleet
-    for row in fleet():
+    rows = fleet()
+    assert rows, "the fleet is empty — this test cannot see the bug it guards"
+    for row in rows:
         for name in row["invalid"] + row["stale"]:
             assert name and name != "—", row["slug"]
+
+    # THE PROPERTY, DRIVEN THROUGH THE PRINTER, on a row that IS failing —
+    # which the fleet loop above cannot supply on a healthy checkout. A
+    # `hasattr` fallback here would be the same vacuous shape one level down.
+    import argparse
+    import io
+    from contextlib import redirect_stdout
+
+    from manamap.pilot import deck_status
+    row = {"slug": "synthetic", "done": 3, "total": 15, "stale": [],
+           "invalid": ["engine.json"], "pending_open": 0,
+           "pending_partial": 0, "pending_applied": 0}
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        original, deck_status.fleet = deck_status.fleet, lambda: [row]
+        try:
+            deck_status._fleet_main(argparse.Namespace(slug=None, as_json=False))
+        except SystemExit:
+            pass
+        finally:
+            deck_status.fleet = original
+    out = buf.getvalue()
+    assert "FAILS ITS GATE: engine.json" in out, out
+    assert "FAILS ITS GATE: —" not in out

@@ -6,6 +6,7 @@ import pytest
 
 from conftest import requires_data, requires_deck
 from manamap.pilot import close
+from conftest import ROOT
 
 SLUG, BRANCH = "ur-dragon", "treasure-v2"
 
@@ -69,11 +70,14 @@ def test_the_broad_signature_guard_is_rederived_from_the_fleet():
     roles = load_card_roles()
     freq = close._role_frequency(roles)
     common, rarest = [], []
-    for tp in sorted(glob.glob("data/decks/*/goldfish_targets.json")):
+    for tp in sorted(glob.glob(str(ROOT / "data/decks/*/goldfish_targets.json"))):
         slug = tp.split("/")[2]
         try:
             held = {c["name"] for c in load_deck_cards(slug)["cards"]}
-        except Exception:
+        except FileNotFoundError:
+            # ONLY a missing fixture is skippable. A bare `except Exception`
+            # made a deck that CRASHES the code under test indistinguishable
+            # from one that is absent — the failure this suite exists to see.
             continue
         for t in (json.load(open(tp)).get("targets") or []):
             for g in (t.get("need") or []):

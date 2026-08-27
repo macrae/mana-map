@@ -10,6 +10,7 @@ import pytest
 
 from conftest import requires_deck
 from manamap.pilot import goldfish
+from conftest import ROOT
 
 F = frozenset
 
@@ -81,7 +82,7 @@ def test_the_simulation_agrees_with_the_closed_form_about_which_decks_are_screwe
     import glob
     import json
     binding, drop = [], []
-    for p in sorted(glob.glob("data/decks/*/mana_analysis.json")):
+    for p in sorted(glob.glob(str(ROOT / "data/decks/*/mana_analysis.json"))):
         slug = p.split("/")[2]
         oc = (json.load(open(p)).get("on_curve_probability") or {}).get(
             "with_rocks_and_dorks") or {}
@@ -90,7 +91,10 @@ def test_the_simulation_agrees_with_the_closed_form_about_which_decks_are_screwe
         try:
             a = goldfish.run(slug, iterations=600, quiet=True, model_colors=False)
             b = goldfish.run(slug, iterations=600, quiet=True, model_colors=True)
-        except Exception:
+        except FileNotFoundError:
+            # ONLY a missing fixture is skippable. A bare `except Exception`
+            # made a deck that CRASHES the code under test indistinguishable
+            # from one that is absent — the failure this suite exists to see.
             continue
         ra = a["metrics"]["commander"]["cast_by_turn_6_rate"]
         rb = b["metrics"]["commander"]["cast_by_turn_6_rate"]

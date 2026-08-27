@@ -16,6 +16,7 @@ import json
 import pytest
 
 from manamap.pilot.common import _MTIME_MEMO, clear_memo, mtime_memo
+from conftest import ROOT
 
 
 @pytest.fixture(autouse=True)
@@ -110,7 +111,7 @@ def test_only_card_pool_reads_the_corpus():
 
     allowed = {"card_pool.py"}
     offenders = []
-    for path in sorted(pathlib.Path("src/manamap/pilot").glob("*.py")):
+    for path in sorted((ROOT / "src/manamap/pilot").glob("*.py")):
         if path.name in allowed:
             continue
         text = path.read_text()

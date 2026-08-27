@@ -10,6 +10,7 @@ import pytest
 
 from manamap.pilot import candidates, diagnostic
 from manamap.pilot.common import DECKS_DIR
+from conftest import ROOT
 
 SLUG = "ur-dragon"
 FAST = 400
@@ -22,40 +23,68 @@ def _has(slug):
 needs_deck = pytest.mark.skipif(not _has(SLUG), reason=f"no {SLUG} fixture")
 
 
-@needs_deck
-def test_engine_online_is_measured_not_multiplied():
-    """P(A and B) is not P(A)P(B) when A and B share cards, and the components of
-    an engine always do.
+def _rows(pairs, turns=10):
+    """Per-iteration rows shaped as `goldfish.run(with_results=True)` returns.
 
-    Measured on ur-dragon at 3000 games: the joint is 0.1010 by turn three
-    against a product of marginals of 0.0582 — **1.74x**. A product would
-    understate the engine by 42% and would look entirely plausible doing it. If
-    this ever stops differing, the joint has quietly become a product.
+    `pairs` is one (turn_a, turn_b) per iteration — the turn each required
+    target was assembled, or None for never.
     """
+    return [{"target_turns": list(p), "stall_by_turn": [False] * turns}
+            for p in pairs]
+
+
+REQUIRED_TWO = [{"label": "A", "required": True, "need": []},
+                {"label": "B", "required": True, "need": []}]
+
+
+def test_engine_online_is_counted_not_multiplied():
+    """P(A and B) is not P(A)P(B) when A and B share cards, and an engine's
+    components always do. Measured on ur-dragon at 3000 games the joint is
+    0.1010 by turn three against a product of marginals of 0.0582 — 1.74x, so a
+    product would understate the engine by 42% and look plausible doing it.
+
+    THIS TEST USED TO PROVE ARITHMETIC. It re-implemented the `required` filter
+    and the joint count out of `diagnostic.py` and never called
+    `diagnostic.engine()` — so changing `_engine` to multiply its marginals left
+    it green. It also skipped when no deck declared `required`, which is 1 of 13,
+    putting the flagship metric's only control one artifact edit from never
+    running at all.
+
+    Driven through the production function on rows built so the two answers
+    cannot coincide: A and B are perfectly correlated, so the joint is 0.5 and
+    the product of marginals is 0.25.
+    """
+    rows = _rows([(1, 1)] * 50 + [(None, None)] * 50)
+    got = diagnostic.engine(rows, REQUIRED_TWO)
+    assert got["available"] is True
+    assert got["online_by_turn"]["3"]["rate"] == pytest.approx(0.5), (
+        f"expected the COUNTED joint (0.5); a product of marginals would give "
+        f"0.25 and got {got['online_by_turn']['3']['rate']}")
+
+
+def test_the_joint_and_the_product_disagree_on_the_real_deck_too():
+    """The synthetic case proves the code counts; this proves it MATTERS on a
+    real declaration. No skip: a deck with no `required` marking is a fixture
+    problem and must fail loudly rather than pass quietly."""
     from manamap.pilot import goldfish
     from manamap.pilot.common import deck_file, load_json
     targets = (load_json(deck_file(SLUG, "goldfish_targets.json")) or {}).get("targets") or []
     req = [i for i, t in enumerate(targets) if t.get("required")]
-    if not req:
-        pytest.skip("no required targets declared on this deck")
+    assert req, (
+        f"{SLUG} declares no `required` target, so the engine figure cannot be "
+        f"computed for it — pick a fixture deck that can, rather than skipping")
     rows = goldfish.run(SLUG, with_results=True, iterations=1500,
                         seed=diagnostic.HARNESS["seed"], max_turn=10,
                         quiet=True)["_results"]
-    n = len(rows)
-
-    def met(r, i, turn):
-        v = r["target_turns"][i]
-        return v is not None and v <= turn
-
-    joint = sum(1 for r in rows if all(met(r, i, 3) for i in req)) / n
+    joint = diagnostic.engine(rows, targets)["online_by_turn"]["3"]["rate"]
     product = 1.0
     for i in req:
-        product *= sum(1 for r in rows if met(r, i, 3)) / n
-    assert joint > product, (
-        f"the joint ({joint:.4f}) is not above the product of marginals "
-        f"({product:.4f}) — components that share cards should be positively "
-        f"correlated, so this suggests the joint is being composed rather than "
-        f"counted")
+        one = [dict(t, required=(j == i)) for j, t in enumerate(targets)]
+        product *= diagnostic.engine(rows, one)["online_by_turn"]["3"]["rate"]
+    assert joint > product * 1.1, (
+        f"the joint ({joint:.4f}) is not meaningfully above the product of "
+        f"marginals ({product:.4f}) — components that share cards are "
+        f"positively correlated, so this suggests it is being composed")
 
 
 @needs_deck
@@ -162,7 +191,7 @@ FLEET_ITERATIONS = 1200
 def _fleet_readings():
     import glob
     out = []
-    for path in sorted(glob.glob("data/decks/*/cards.json")):
+    for path in sorted(glob.glob(str(ROOT / "data/decks/*/cards.json"))):
         slug = path.split("/")[2]
         try:
             out.append(diagnostic.run(slug, iterations=FLEET_ITERATIONS, quiet=True))

@@ -241,58 +241,78 @@ class TestParentAssignment:
         assert "parent" not in l1[0]
 
     def test_empty_l1(self):
+        """No assertion at all, once. "should not raise" is a real property —
+        assert it, and assert the l0 list came back untouched."""
         l0 = [{"id": "l0_0", "cx": 0.0, "cy": 0.0}]
-        assign_parents(l0, [])  # should not raise
+        assign_parents(l0, [])
+        assert l0 == [{"id": "l0_0", "cx": 0.0, "cy": 0.0}]
 
 
 # ── Output format ───────────────────────────────────────────────────────
 
 
+REGION_PATHS = [REGIONS_DEFAULT_PATH, REGIONS_ABILITY_PATH]
+
+
 class TestOutputFormat:
+    """THE SCHEMA, ASSERTED AGAINST THE TRACKED ARTIFACTS.
 
-    def _make_region(self, **overrides):
-        region = {
-            "id": "l0_0",
-            "level": 0,
-            "label": "White Creatures",
-            "short": "White",
-            "cx": 12.45,
-            "cy": -8.32,
-            "span": 8.7,
-            "count": 2847,
-            "top_tags": ["etb", "lifegain"],
-        }
-        region.update(overrides)
-        return region
+    These four tests used to build a region dict with a local helper and then
+    assert that the helper's own keys were present. Zero production code was
+    touched; `cluster_regions` could stop emitting `short` entirely and all four
+    stayed green. The artifacts are tracked — `regions_default.json` and
+    `regions_ability.json` — so the schema can be checked against what actually
+    ships, which is the only version anything reads.
+    """
 
-    def test_json_serializable(self):
-        region = self._make_region()
-        output = {"meta": {"map": "default", "card_count": 100, "l0_count": 1, "l1_count": 0}, "regions": [region]}
-        serialized = json.dumps(output)
-        restored = json.loads(serialized)
-        assert restored["regions"][0]["label"] == "White Creatures"
+    L0_FIELDS = ("id", "level", "label", "short", "cx", "cy", "span", "count",
+                 "top_tags")
 
-    def test_required_fields_l0(self):
-        region = self._make_region()
-        for field in ("id", "level", "label", "short", "cx", "cy", "span", "count", "top_tags"):
-            assert field in region
+    def _regions(self, path):
+        if not path.exists():
+            pytest.skip(f"{path.name} not generated (run `manamap cluster-regions`)")
+        return json.loads(path.read_text(encoding="utf-8"))["regions"]
 
-    def test_required_fields_l1(self):
-        region = self._make_region(id="l1_3", level=1, parent="l0_0")
-        assert region["parent"] == "l0_0"
-        assert region["level"] == 1
+    @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+    def test_every_l0_region_carries_the_required_fields(self, path):
+        regions = self._regions(path)
+        l0 = [r for r in regions if r["level"] == 0]
+        assert l0, f"{path.name} has no level-0 regions"
+        for region in l0:
+            missing = [f for f in self.L0_FIELDS if f not in region]
+            assert not missing, f"{region.get('id')} lacks {missing}"
 
-    def test_short_label_present(self):
-        region = self._make_region()
-        assert isinstance(region["short"], str)
-        assert len(region["short"]) > 0
-        assert len(region["short"]) <= len(region["label"])
+    @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+    def test_every_l1_region_names_a_parent_that_exists(self, path):
+        regions = self._regions(path)
+        ids = {r["id"] for r in regions}
+        l1 = [r for r in regions if r["level"] == 1]
+        assert l1, f"{path.name} has no level-1 regions"
+        for region in l1:
+            assert region.get("parent") in ids, (
+                f"{region['id']} names parent {region.get('parent')!r}, which "
+                f"is not a region in this file")
+
+    @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+    def test_the_short_label_is_a_shortening(self, path):
+        """`short` is what the map draws when a name will not fit. A `short`
+        longer than its own `label` is not a shortening."""
+        checked = 0
+        for region in self._regions(path):
+            if "short" not in region:
+                continue
+            checked += 1
+            assert isinstance(region["short"], str) and region["short"]
+            assert len(region["short"]) <= len(region["label"]), region["id"]
+        assert checked > 10, f"only {checked} regions carry a short label"
+
+    @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+    def test_the_artifact_round_trips_through_json(self, path):
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        assert json.loads(json.dumps(doc)) == doc
 
 
 # ── Membership (the tracked artifacts) ──────────────────────────────────
-
-
-REGION_PATHS = [REGIONS_DEFAULT_PATH, REGIONS_ABILITY_PATH]
 
 
 @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)

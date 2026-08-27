@@ -153,12 +153,17 @@ def test_every_magnitude_figure_carries_an_interval():
     number here published bare, and the shape must match the other blocks or
     `candidates._read` and `compare` would each need a special case."""
     got = _read(_doc([_card("Doubler", DOUBLER, qty=8)]))
+    checked = 0
     for key, series in got["output"].items():
         if key in ("available", "basis", "why"):
             continue
         for turn, cell in series.items():
+            checked += 1
             assert set(cell) >= {"rate", "ci95", "n"}, (key, turn, cell)
             assert cell["ci95"][0] <= cell["rate"] <= cell["ci95"][1], (key, turn)
+    # NON-EMPTY GUARD. An unavailable output block yields zero assertions, so
+    # "every magnitude figure carries an interval" was checked on nothing.
+    assert checked > 10, f"only {checked} cell(s) examined"
 
 
 def test_an_ablation_without_a_placebo_measures_the_library_shrinking():

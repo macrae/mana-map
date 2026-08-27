@@ -160,14 +160,20 @@ def test_excludes_combo_partners(mock_combo):
 @patch("manamap.analysis.synergy.load_combo_partners", return_value={})
 def test_no_self_synergy(mock_combo):
     """A card should not synergize with itself."""
+    # A LONE CARD PRODUCES AN EMPTY GRAPH, so the old `if "Self Card" in graph:`
+    # guard meant this test never checked anything at all. It needs a partner to
+    # have a graph, and then the property — that the card is not its own partner
+    # — is actually reachable.
     df = make_df([
         ("Self Card", "blink, etb"),
+        ("Other Card", "blink, etb"),
     ])
     graph = build_synergy_graph(df)
-
-    if "Self Card" in graph:
-        partner_names = [p["partner"] for p in graph["Self Card"]]
-        assert "Self Card" not in partner_names
+    assert "Self Card" in graph, (
+        "the card is not in the graph at all, so nothing about its partners "
+        "was checked — an empty graph passed this test")
+    partner_names = [p["partner"] for p in graph["Self Card"]]
+    assert "Self Card" not in partner_names
 
 
 @patch("manamap.analysis.synergy.load_combo_partners", return_value={})

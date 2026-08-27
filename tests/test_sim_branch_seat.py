@@ -11,6 +11,7 @@ seats' counts correct beside it, which is exactly the shape that gets believed.
 import pytest
 
 from manamap.sim import forge
+from conftest import ROOT
 
 
 def test_a_branch_seat_resolves_to_its_own_directory():
@@ -38,11 +39,14 @@ def test_the_forge_name_flattens_but_the_tally_still_finds_the_seat():
     seats = ["ur-dragon@treasure-v2", "vito"]
     outcomes = [{"winner": "ur-dragon-treasure-v2"}, {"winner": "vito"},
                 {"winner": "ur-dragon-treasure-v2"}]
-    wins = {s: sum(1 for o in outcomes if o["winner"] == forge.deck_meta_name(s))
-            for s in seats}
+    # THROUGH THE PRODUCTION TALLY. This test used to build its own correct copy
+    # of `forge.py`'s expression — character for character, the very expression
+    # the bug lived in — so a regression to `o["winner"] == s` left it green.
+    wins = forge.tally_wins(outcomes, seats)
     assert wins["ur-dragon@treasure-v2"] == 2, (
         "the branch seat's wins were not found — the tally is matching the raw "
         "slug against a Forge name that flattens it")
+    assert wins["vito"] == 1, "a plain seat stopped being counted"
 
 
 def test_a_tracked_branch_run_agrees_with_its_own_analysis():
@@ -51,7 +55,7 @@ def test_a_tracked_branch_run_agrees_with_its_own_analysis():
     contradicting each other by eleven games."""
     import glob
     import json
-    hits = glob.glob("data/decks/*/branches/*/sim/*.json")
+    hits = glob.glob(str(ROOT / "data/decks/*/branches/*/sim/*.json"))
     if not hits:
         pytest.skip("no branch run on this machine")
     for path in hits:

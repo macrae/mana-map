@@ -12,10 +12,11 @@ import json
 import pytest
 
 from manamap.sim import pilot_quality as pq
+from conftest import ROOT
 
 
 def _runs():
-    return glob.glob("data/decks/**/sim/*.json", recursive=True)
+    return glob.glob(str(ROOT / "data/decks/**/sim/*.json"), recursive=True)
 
 
 def test_it_reads_the_record_not_the_logs():

@@ -81,10 +81,26 @@ def test_a_double_faced_card_resolves_from_either_face():
 
 @needs
 def test_an_off_identity_card_is_refused_before_anything_else():
-    got = A.assess(SLUG, ["Counterspell"], branch=BRANCH)
-    row = got["cards"][0]
-    if not row.get("legal", True):
-        assert "colour identity" in row["verdict"]
+    """THIS TEST HAD NEVER ASSERTED ANYTHING.
+
+    It was guarded by `if not row.get("legal", True)` — so if `assess` ever
+    stopped refusing an off-identity card the guard went false and the test
+    passed silently. Worse, `SLUG` is FIVE-COLOUR ur-dragon, so Counterspell is
+    on-identity and the branch never ran even once.
+
+    Refusal needs a deck that can refuse. radagast is mono-green.
+    """
+    mono = "radagast"
+    if not (DECKS_DIR / mono / "cards.json").exists():
+        pytest.skip(f"no {mono} fixture")
+    row = A.assess(mono, ["Counterspell"])["cards"][0]
+    assert row["legal"] is False, (
+        "a mono-green deck accepted Counterspell — the identity check is not "
+        "running, and on a five-colour deck nothing would show it")
+    assert "colour identity" in row["verdict"]
+    # And the control: an on-identity card must NOT be refused, or the check
+    # could be a constant `False` and still pass the line above.
+    assert A.assess(mono, ["Llanowar Elves"])["cards"][0]["legal"] is True
 
 
 def test_an_unknown_name_is_reported_not_dropped():

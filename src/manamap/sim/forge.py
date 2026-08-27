@@ -199,6 +199,24 @@ def deck_meta_name(slug):
     return slug.replace(BRANCH_SEP, "-")
 
 
+
+def tally_wins(outcomes, seats):
+    """Wins per SEAT SLUG, matching on the Forge name.
+
+    EXTRACTED SO A TEST CAN DRIVE IT. This expression lived inline, and the test
+    guarding it built its own correct copy — so a regression to
+    `o["winner"] == s` left the test green while the bug it was written for
+    reappeared. The bug: a branch seat is written to Forge as
+    `ur-dragon-treasure-v2` because `@` has no business in a deck registry, so
+    the outcome names the flattened form while `seats` holds the slug. A bare
+    `==` matched every OTHER seat and silently scored ours zero — the run
+    reported "wins 0" for a list that had won ELEVEN of a hundred, with the
+    other three seats correct beside it, which is exactly the shape that gets
+    believed.
+    """
+    return {s: sum(1 for o in outcomes if o["winner"] == deck_meta_name(s))
+            for s in seats}
+
 def install_named(meta_name, decklist_text, decks_dir=None):
     """Install an arbitrary list under an explicit Forge meta name (experiments)."""
     decks_dir = decks_dir or FORGE_DECKS_DIR
@@ -398,8 +416,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # zero. The run reported "wins 0" for a list that had won ELEVEN of a
     # hundred, with the other three seats' counts all correct beside it, which is
     # exactly the shape that gets believed.
-    wins = {s: sum(1 for o in outcomes if o["winner"] == deck_meta_name(s))
-            for s in seats}
+    wins = tally_wins(outcomes, seats)
     draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
     frame = load_json(deck_dir(split_seat(slug)[0]) / "strategic_frame.json") or {}
     record = {
