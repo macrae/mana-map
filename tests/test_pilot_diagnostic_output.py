@@ -10,7 +10,7 @@ import copy
 
 import pytest
 
-from conftest import requires_deck
+from conftest import A_BRANCH, requires_branch, requires_deck
 from manamap.pilot import candidates, diagnostic
 
 DOUBLER = ("If an effect would create one or more tokens under your control, "
@@ -115,21 +115,35 @@ def test_absent_is_absent_and_names_the_flag_rather_than_reading_zero():
 
 
 @requires_deck
-def test_the_declared_multipliers_do_not_all_read_alike(tmp_path):
-    """The real thing, on the real branch: remove each declared multiplier and
-    the hoard must not come back identical eight times."""
+def test_a_magnitude_axis_separates_cards_a_membership_axis_cannot(tmp_path):
+    """WHY MAGNITUDE AXES EXIST. A goldfish target asks whether a card was
+    DRAWN, so every member of a component moves it by the same amount — all
+    eight of one deck's declared multipliers returned an identical +0.039. A
+    magnitude axis reads what the deck PRODUCED, so it can tell them apart.
+
+    On the DECK, not a branch. This used to remove four cards by name that
+    existed only in the treasure refactor; once that was deleted it removed
+    nothing and got four identical reads — passing vacuously would have been
+    just as bad as failing. A branch is supposed to change and supposed to be
+    thrown away (PLAN.md, the 2026-08-27 issue), so the subject is the pinned
+    list and the removals are asserted to have actually happened.
+    """
     from manamap.pilot.common import load_deck_cards
-    doc = load_deck_cards("ur-dragon", branch="treasure-v2")
-    names = ["Anointed Procession", "Mondrak, Glory Dominus", "Jolene, the "
-             "Plunder Queen", "Academy Manufactor"]
+    doc = load_deck_cards("ur-dragon")
+    held = {c["name"] for c in doc["cards"]}
+    names = [n for n in ("Goldspan Dragon", "Old Gnawbone", "Rapacious Dragon",
+                         "Smothering Tithe", "Atsushi, the Blazing Sky")
+             if n in held]
+    assert len(names) >= 3, f"the fixture deck no longer runs these: {names}"
     got = []
     for name in names:
         d2 = copy.deepcopy(doc)
         d2["cards"] = [c for c in d2["cards"] if c["name"] != name]
-        r = diagnostic.run_on(d2, "ur-dragon", branch="treasure-v2",
-                              iterations=1500, quiet=True)
+        # A REMOVAL THAT REMOVED NOTHING IS NOT A MEASUREMENT.
+        assert len(d2["cards"]) < len(doc["cards"]), f"{name} was not removed"
+        r = diagnostic.run_on(d2, "ur-dragon", iterations=1500, quiet=True)
         got.append(r["output"]["hoard_by_turn"]["10"]["rate"])
-    assert max(got) - min(got) > 0.1, f"all four read alike: {got}"
+    assert len(set(got)) > 1, f"every removal read alike: {got}"
 
 
 @requires_deck
@@ -139,7 +153,7 @@ def test_the_magnitude_means_agree_with_the_goldfish_that_owns_them():
     stays the owner of the figure, so the two must agree; if they ever drift,
     this document is publishing a second opinion under the first one's name."""
     from manamap.pilot import goldfish
-    got = goldfish.run("ur-dragon", branch="treasure-v2", with_results=True,
+    got = goldfish.run("ur-dragon", with_results=True,
                        quiet=True, iterations=400, seed=diagnostic.HARNESS["seed"],
                        max_turn=diagnostic.HARNESS["max_turn"])
     block = diagnostic.output(got)

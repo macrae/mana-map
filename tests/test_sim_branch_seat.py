@@ -11,12 +11,14 @@ seats' counts correct beside it, which is exactly the shape that gets believed.
 import pytest
 
 from manamap.sim import forge
-from conftest import ROOT
+from conftest import A_BRANCH, ROOT, requires_branch
 
 
 def test_a_branch_seat_resolves_to_its_own_directory():
-    base, branch = forge.split_seat("ur-dragon@treasure-v2")
-    assert (base, branch) == ("ur-dragon", "treasure-v2")
+    # A LITERAL ON BOTH SIDES: this parses a seat string and touches no disk, so
+    # it must not depend on which branches happen to exist.
+    base, branch = forge.split_seat("ur-dragon@some-branch")
+    assert (base, branch) == ("ur-dragon", "some-branch")
     assert forge.split_seat("vito") == ("vito", None)
 
 
@@ -24,10 +26,10 @@ def test_a_branch_run_is_filed_beside_the_list_it_measured():
     """A branch's win rate under the champion's name is the silent-overwrite
     class this repo keeps finding."""
     from manamap.pilot.common import DECKS_DIR
-    if not (DECKS_DIR / "ur-dragon" / "branches" / "treasure-v2").is_dir():
-        pytest.skip("no branch fixture")
-    out = forge._out_dir("ur-dragon@treasure-v2")
-    assert "branches" in out.parts and "treasure-v2" in out.parts
+    if A_BRANCH is None:
+        pytest.skip("no branch on ur-dragon")
+    out = forge._out_dir(f"ur-dragon@{A_BRANCH}")
+    assert "branches" in out.parts and A_BRANCH in out.parts
     assert forge._out_dir("ur-dragon") == DECKS_DIR / "ur-dragon" / forge.SIM_DIR
 
 

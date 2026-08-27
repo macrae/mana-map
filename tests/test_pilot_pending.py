@@ -25,6 +25,7 @@ import pytest
 from manamap.config import DECKS_DIR
 from manamap.pilot import validate_pending as vp
 
+
 DECK = {"cards": [{"name": "Swamp", "quantity": 21}, {"name": "City of Brass"},
                   {"name": "Exotic Orchard"}, {"name": "Sol Ring"}]}
 NAMES = {c["name"] for c in DECK["cards"]}
@@ -224,5 +225,10 @@ def test_the_validator_map_is_the_one_the_test_suite_gates_on():
     """Two maps that can disagree about what is gated is the same defect as two
     records of what is applied. The artifact test imports this one."""
     from manamap.pilot.deck_status import VALIDATED
-    from tests.test_pilot_tracked_artifacts_validate import GATED  # noqa: F401
+    # A SIBLING IMPORT, not a package one. `tests/` has no `__init__.py`,
+    # so `import tests.x` only resolves when the rootdir happens to be on
+    # sys.path — true under some invocations and not others, which makes
+    # this test pass or fail on how it was launched rather than on what
+    # it asserts. conftest puts `tests/` on the path for every worker.
+    from test_pilot_tracked_artifacts_validate import GATED  # noqa: F401
     assert set(VALIDATED) <= set(GATED)

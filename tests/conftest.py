@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pytest
 
+
 from manamap import config
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +38,36 @@ requires_deck = pytest.mark.skipif(
 requires_strategy = pytest.mark.skipif(
     not config.STRATEGY_INDEX_PATH.exists(),
     reason="requires the strategy DB (run `manamap pilot build-strategy-db`)",
+)
+
+def _a_branch(slug):
+    """The name of any branch on this deck, or None.
+
+    A BRANCH IS A PILOT ARTIFACT, NOT A FIXTURE. Sixteen tests hardcoded
+    `ur-dragon/treasure-v2` and all sixteen failed the day the pilot deleted it
+    — correctly deleted, the treasure refactor was measured and abandoned. A
+    suite that requires one particular candidate 99 to exist forever is a suite
+    that punishes the pilot for using the tool. These tests need A branch, not
+    THAT branch, so they take whichever one is there and skip when there is
+    none.
+    """
+    root = config.DECKS_DIR / slug / "branches"
+    if not root.is_dir():
+        return None
+    got = sorted(d.name for d in root.iterdir()
+                 if (d / "decklist.txt").exists())
+    return got[0] if got else None
+
+
+#: The deck the branch-shaped tests measure against, and any branch it has.
+BRANCH_SLUG = "ur-dragon"
+A_BRANCH = _a_branch(BRANCH_SLUG)
+
+requires_branch = pytest.mark.skipif(
+    A_BRANCH is None,
+    reason=(f"requires a branch on {BRANCH_SLUG} "
+            f"(`manamap pilot deck-branch {BRANCH_SLUG} new <name> --from <file> "
+            f"--objective \"<measure> <op> <number>\"`)"),
 )
 
 requires_roles = pytest.mark.skipif(

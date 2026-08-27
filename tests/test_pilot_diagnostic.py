@@ -10,7 +10,7 @@ import pytest
 
 from manamap.pilot import candidates, diagnostic
 from manamap.pilot.common import DECKS_DIR
-from conftest import ROOT
+from conftest import A_BRANCH, ROOT, requires_branch
 
 SLUG = "ur-dragon"
 FAST = 400
@@ -370,6 +370,7 @@ def test_the_reading_knows_which_direction_is_better():
     assert row["kind"] == "gain"
 
 
+@requires_branch
 @needs_deck
 def test_a_source_is_blind_only_if_every_channel_is_blind():
     """`treasure_sources_not_modelled` exists so a low hoard figure is LEGIBLE,
@@ -382,11 +383,11 @@ def test_a_source_is_blind_only_if_every_channel_is_blind():
     """
     from manamap.pilot import goldfish
     from manamap.pilot.common import load_deck_cards
-    doc = load_deck_cards(SLUG, "treasure-v2")
+    doc = load_deck_cards(SLUG, A_BRANCH)
     names = {c["name"] for c in doc["cards"]}
     if "Xorn" not in names:
         pytest.skip("no multiplier in this branch to test with")
-    got = goldfish.run(SLUG, branch="treasure-v2", iterations=20, quiet=True,
+    got = goldfish.run(SLUG, branch=A_BRANCH, iterations=20, quiet=True,
                        model_treasures=True, model_combat=True)
     blind = set((got.get("meta") or {}).get("treasure_sources_not_modelled") or [])
     # A multiplier IS modelled — `treasure_bonus` feeds every creation event.
@@ -396,7 +397,7 @@ def test_a_source_is_blind_only_if_every_channel_is_blind():
         if n in names:
             assert n not in blind, f"{n} is simulated via attack_treasure"
     # With combat OFF the same card genuinely is blind, and must be named.
-    off = goldfish.run(SLUG, branch="treasure-v2", iterations=20, quiet=True,
+    off = goldfish.run(SLUG, branch=A_BRANCH, iterations=20, quiet=True,
                        model_treasures=True, model_combat=False)
     blind_off = set((off.get("meta") or {}).get("treasure_sources_not_modelled") or [])
     if "Goldspan Dragon" in names:

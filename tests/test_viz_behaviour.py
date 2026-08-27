@@ -24,6 +24,8 @@ import json
 
 import pytest
 
+from conftest import A_BRANCH, requires_branch
+
 # F401: `page`, `discover_page` and `canvas_page` are pytest FIXTURES. They are
 # used by name in test signatures, never called here, so every unused-import
 # check reports all three — and removing them takes the whole browser suite
@@ -7422,7 +7424,7 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
     passed all 13 source-grepping drill tests. The branch page is the surface a
     spending decision is read on, so it gets a real browser or it gets nothing.
     """
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     try:
         assert not page.js_errors, page.js_errors
         body = page.inner_text("body").lower()
@@ -7447,7 +7449,7 @@ def test_a_branch_with_no_objective_says_so_rather_than_hiding_the_panel(
     requirement, so it cannot be graded — and a page that simply omitted the
     panel would read as a rendering fault on the surface whose job is telling
     you whether the change is worth making."""
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     try:
         body = page.inner_text("body").lower()
         assert "objective" in body
@@ -7476,7 +7478,7 @@ def test_the_verdict_leads_the_branch_page(browser, viz_server):
     @T10 +5.09, and damage, board power, turn-6 kill and stall all worse, on a
     bill of 21 cards to buy. The page must not say merge.
     """
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     assert page.js_errors == []
     body = page.inner_text("body").lower()
     assert "no objective" in body
@@ -7495,7 +7497,7 @@ def test_the_swaps_panel_names_the_command_when_there_is_no_server(browser,
     """ABSENT, NEVER BROKEN. The browser suite serves static files with no
     `/api`, which is the DEPLOYED shape — so the panel that needs a server must
     say what it is and how to get it, not render blank."""
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     assert page.js_errors == []
     swaps = page.locator("#swaps")
     assert swaps.count() == 1
@@ -7516,7 +7518,7 @@ def test_a_pile_can_be_handed_over_without_throwing(browser, viz_server):
     no `/api`), so the correct behaviour is the "needs a local server" notice
     and NO exception.
     """
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     got = page.evaluate("""() => {
       Session.library.add('Sol Ring');
       const names = Session.library.zoneNames;
@@ -7543,7 +7545,7 @@ def test_a_direction_that_does_not_resolve_falls_through_to_the_pilot(browser,
     pilot type one — which is more than they had before they asked. Driven
     against a stubbed Api, because this suite serves static files with no /api.
     """
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     got = page.evaluate("""async () => {
       const calls = [];
       window.Api = {
@@ -7577,7 +7579,7 @@ def test_a_direction_that_does_not_resolve_falls_through_to_the_pilot(browser,
 def test_a_proposed_objective_is_confirmed_before_it_is_used(browser, viz_server):
     """The doctor proposes; the pilot confirms. Declining must not silently
     accept the proposal, which is the failure mode of a confirm nobody reads."""
-    page = _branch_page(browser, viz_server, "ur-dragon", "treasure-v2")
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     got = page.evaluate("""async () => {
       window.Api = {
         ready: true, has: () => true,

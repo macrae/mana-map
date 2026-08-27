@@ -41,7 +41,7 @@ from manamap.pilot import (
     validate_tutor_guide,
 )
 
-from conftest import SRC, requires_deck
+from conftest import SRC, requires_branch, requires_deck
 
 # Everything a validator in GATED can read. The pilot tree is a verified closure
 # of the code (nothing under it imports outside `manamap.pilot` / `manamap.config`);
@@ -157,6 +157,7 @@ def test_tracked_artifact_passes_its_validator(case, capsys, unchanged, request)
                         f"{capsys.readouterr().out}")
 
 
+@requires_branch
 def test_every_branch_artifact_a_validator_can_reach_is_gated():
     """NON-EMPTY GUARD, and a real one — the branch cases exist to catch a class
     this repo has already been bitten by, and a parametrize that silently yields

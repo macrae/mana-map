@@ -7,10 +7,10 @@ tests hold the survivors to the cards that killed the rejects.
 
 import pytest
 
-from conftest import requires_data, requires_deck
+from conftest import A_BRANCH, requires_branch, requires_data, requires_deck
 from manamap.pilot import upgrades
 
-SLUG, BRANCH = "ur-dragon", "treasure-v2"
+SLUG, BRANCH = "ur-dragon", A_BRANCH
 
 
 # --------------------------------------------------------------------------
@@ -215,6 +215,7 @@ def test_the_flags_fire_on_the_fleet_at_the_rate_they_were_measured_at():
     assert 0 < combat < seen * 0.25, f"{combat}/{seen} newly combat-gated"
 
 
+@requires_branch
 @requires_data
 @requires_deck
 def test_it_runs_against_a_branch_and_reads_the_branchs_own_list():

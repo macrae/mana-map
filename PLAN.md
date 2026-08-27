@@ -112,6 +112,43 @@ suggestions that would need a deck to shuffle.
 
 ## Open work
 
+### ISSUE — unit tests must not depend on an experimental deck
+
+**Opened 2026-08-27, by the pilot, and it is a rule rather than a chore.**
+
+> *"we shouldn't be writing tests for decks that are experimental/feature
+> branches — we can have tests to assert the functions that support that work,
+> but we don't need to test the actual deck via unit tests. Stats, math, etc. is
+> what we will apply to those decks. Not until they are merged and pinned do
+> they get tests."*
+
+**What happened.** Twenty tests across nine files hardcoded
+`ur-dragon/treasure-v2` as a data fixture — `close`'s component search, `assess`'s
+triage, the diagnostic's magnitude series, the branch-scoping controls, the
+net-change report. The treasure refactor was measured, found worse, and deleted,
+which is the tool working exactly as designed. All twenty failed. Deleting a
+branch is a first-class pilot action and the suite punished it.
+
+**The rule.** A branch is a candidate 99 that is *supposed* to change and
+*supposed* to be thrown away. Only a **merged and pinned** deck is stable enough
+to assert against. What a test may assert about branch machinery is the
+FUNCTION — that a branched write lands in the branch directory, that reads fall
+back and writes never do, that a swap is one-for-one — and those need a
+**synthetic branch in a `tmp_path` sandbox**, which
+`tests/test_pilot_branch_lifecycle.py::sandbox` already demonstrates.
+
+**What is done and what is not.** `conftest.requires_branch` / `A_BRANCH` now
+take *whichever* branch exists rather than one name, so the suite no longer
+names a specific experiment — that is a stopgap, not the fix. The fix is to
+rebuild these tests on synthetic fixtures and delete the assertions that were
+only ever about the treasure deck's contents (the `MULTIPLIER` component, the
+treasure cards `assess` was triaging). Until then they are gated and some of
+them will skip.
+
+**Related invariant** (below): a tracked artifact needs a gate in the same
+commit. That is still true — but the gate belongs on the artifact's SHAPE and
+its producing function, never on one experimental deck's numbers.
+
 ### Next, in order
 
 1. **Paper check-ins, one deck at a time** — **only the pilot can do this**, and it is

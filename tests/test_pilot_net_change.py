@@ -9,10 +9,10 @@ import json
 
 import pytest
 
-from conftest import requires_deck
+from conftest import A_BRANCH, requires_branch, requires_deck
 from manamap.pilot import net_change, validate_net_change
 
-SLUG, BRANCH = "ur-dragon", "treasure-v2"
+SLUG, BRANCH = "ur-dragon", A_BRANCH
 
 
 def _doc():
@@ -23,6 +23,7 @@ def _doc():
     return json.loads(path.read_text())
 
 
+@requires_branch
 @requires_deck
 def test_it_reproduces_the_report_the_decision_was_made_on():
     """THE FIXTURE IS THE DECISION. These are the figures that stopped a
@@ -41,6 +42,7 @@ def test_it_reproduces_the_report_the_decision_was_made_on():
     assert damage["delta"] < 0 and damage["verdict"] == "worse", damage
 
 
+@requires_branch
 @requires_deck
 def test_the_engine_lift_is_the_measurement_that_decided_it():
     """The champion's declared engine makes it win; the branch's makes it win
@@ -55,6 +57,7 @@ def test_the_engine_lift_is_the_measurement_that_decided_it():
     assert "win LESS" in b["reading"]
 
 
+@requires_branch
 @requires_deck
 def test_an_underpowered_forge_run_says_so():
     """12 v 11 wins over 201 games cannot resolve a 1-point difference. A delta
@@ -215,6 +218,7 @@ def test_the_real_table_is_named_beside_the_verdict_and_never_folded_into_it():
     assert any("cannot separate" in n for n in got["notes"])
 
 
+@requires_branch
 @requires_deck
 def test_the_report_that_stopped_a_purchase_still_stops_it():
     """THE ACCEPTANCE CASE, and it is a decision already made by hand.
@@ -225,7 +229,7 @@ def test_the_report_that_stopped_a_purchase_still_stops_it():
     conclusion from the artifact that produced it is the proof.
     """
     from manamap.pilot.common import deck_dir
-    path = (deck_dir(SLUG, "treasure-v2") / net_change.ARTIFACT)
+    path = (deck_dir(SLUG, A_BRANCH) / net_change.ARTIFACT)
     if not path.exists():
         pytest.skip("no tracked net_change.json")
     got = net_change.recommend(json.loads(path.read_text()))

@@ -13,12 +13,14 @@ import json
 
 import pytest
 
+from conftest import A_BRANCH, requires_branch
+
 from manamap.pilot import deck_branch
 from manamap.pilot.common import (
     DECKS_DIR, deck_dir, deck_file, load_deck_cards)
 
 SLUG = "ur-dragon"
-BRANCH = "treasure-v2"
+BRANCH = A_BRANCH
 
 def _tree(path):
     """sha256 of every tracked-ish file in a deck dir, EXCLUDING its branches."""
@@ -102,9 +104,19 @@ def test_a_branch_run_measured_the_branch_and_not_the_deck():
 
     from manamap.pilot import goldfish, mana_analysis
 
+    # A BRANCH THAT DIFFERS, BUILT HERE. This control needs a candidate list
+    # that is not the deck's, and it used to borrow whichever experimental
+    # branch happened to be on disk — so it failed the day the pilot deleted
+    # one, and would have passed vacuously the day a branch was opened as an
+    # exact copy. A branch is supposed to change and supposed to be thrown
+    # away (PLAN.md, the 2026-08-27 issue); the fixture is ours to make.
     branch_sha = load_deck_cards(SLUG, BRANCH)["decklist_sha256"]
     deck_sha = load_deck_cards(SLUG)["decklist_sha256"]
-    assert branch_sha != deck_sha, "fixture: the branch and the deck are the same list"
+    if branch_sha == deck_sha:
+        pytest.skip(
+            f"{SLUG}/{BRANCH} is currently an exact copy of the deck, so this "
+            f"control cannot tell a branched read from an unbranched one. It "
+            f"needs a branch with at least one staged swap.")
 
     def args(**kw):
         ns = argparse.Namespace(slug=SLUG, branch=BRANCH, out=None, json=False,
