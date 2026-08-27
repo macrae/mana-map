@@ -19,14 +19,29 @@ would be the same check twice. What no other gate asserts:
      reading as no difference.
   4. AN OBJECTIVE, IF PRESENT, IS GRADED — and the grade is one of the four
      states, never a bare boolean.
+  5. A RECOMMENDATION NAMES ROWS THAT EXIST, and is one of the five states.
+
+WHAT IT DELIBERATELY DOES NOT CHECK is whether the recommendation follows the
+rule. `net_change.recommend` derives it from this same document, so re-deriving
+it here would be a test that re-derives the rule it is testing — the failure
+this repo has shipped four times, once guarding the flagship metric. The rule is
+held to fixtures in `tests/test_pilot_net_change.py`; what a GATE can add is that
+the summary does not name a measure the table never carried.
 """
 
 import json
 
 from manamap.pilot.common import deck_dir, report_errors
 
+
+def net_change_states():
+    from manamap.pilot.net_change import STATES as S
+    return S
+
 ARTIFACT = "net_change.json"
 STATES = {"met", "not met", "not resolvable", "not measured"}
+#: Read from the module that writes them, so the two cannot drift.
+RECOMMENDATION_STATES = set(net_change_states())
 
 
 def validate(doc):
@@ -80,6 +95,26 @@ def validate(doc):
     if grade and grade.get("state") not in STATES:
         errors.append(f"objective_grade.state {grade.get('state')!r} is not one of "
                       f"{sorted(STATES)}")
+
+    rec = doc.get("recommendation")
+    if rec is not None:
+        if rec.get("state") not in RECOMMENDATION_STATES:
+            errors.append(
+                f"recommendation.state {rec.get('state')!r} is not one of "
+                f"{sorted(RECOMMENDATION_STATES)}")
+        if not (rec.get("because") or "").strip():
+            errors.append(
+                "recommendation: no `because` — a verdict with no sentence "
+                "behind it is the thing this report exists not to be")
+        # A SUMMARY THAT NAMES A MEASURE THE TABLE NEVER CARRIED is the one
+        # inconsistency a gate can see without re-deriving the rule.
+        measured = {r.get("measure") for r in table}
+        for key in ("rose", "fell", "no_call"):
+            for name in rec.get(key) or []:
+                if name not in measured:
+                    errors.append(
+                        f"recommendation.{key} names {name!r}, which is not a "
+                        f"row in the table")
     return errors
 
 

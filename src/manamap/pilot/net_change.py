@@ -195,7 +195,7 @@ def build(slug, branch, iterations=None, seed=None):
             objective, cell["rate"] if cell else None,
             mde=diagnostic.mde(cell) if cell else None)
 
-    return {
+    doc = {
         "slug": slug, "branch": branch,
         "harness": {"iterations": it, "seed": sd},
         "decklist_sha256": (b.get("decklist_sha256")),
@@ -215,6 +215,10 @@ def build(slug, branch, iterations=None, seed=None):
             "Card advantage is measured nowhere in this suite.",
         ],
     }
+    # Derived from the finished document, so it can never disagree with the rows
+    # it summarises — the same reason `deck_info` composes and computes nothing.
+    doc["recommendation"] = recommend(doc)
+    return doc
 
 
 def main(args):
@@ -238,10 +242,116 @@ def main(args):
         print(f"\n  Wrote {out}")
 
 
+#: The states a recommendation may be in. A merge decision is not a scalar, and
+#: five words is the whole vocabulary.
+STATES = ("merge", "a trade", "do not merge", "inconclusive", "no objective")
+
+
+def recommend(doc):
+    """Sort the table into what rose, what fell, and what the run cannot tell.
+
+    THE AXES MOVE IN BOTH DIRECTIONS ON PURPOSE, so a single number would have to
+    weight them and every weight here would be invented — this repo deleted a
+    six-factor card scorer for exactly that. What a pilot needs instead is the
+    LEDGER plus a rule stated plainly enough to argue with:
+
+        objective met, nothing fell      -> merge
+        objective met, something fell    -> a trade; name both sides and the bill
+        objective not met                -> do not merge
+        objective stated but unreadable  -> inconclusive, and say WHY it is
+        no objective at all              -> no objective; the ledger still stands
+
+    THE LAST TWO ARE DIFFERENT AND WERE ONE STATE IN THE FIRST DRAFT. A branch
+    that stated a goal the run could not read has been falsifiable all along and
+    simply was not measured; a branch that stated none never could be. Collapsing
+    them would let the second borrow the credibility of the first, which is the
+    Ur-Dragon treasure branch's exact failure — it hit "treasure is the engine"
+    4.4x over and missed the purpose nobody wrote down.
+
+    NOTHING HERE RE-MEASURES. Every row's `verdict` was set against its own MDE in
+    `build`; this reads them.
+    """
+    table = doc.get("table") or []
+    rose = [r["measure"] for r in table if r["verdict"] == "better"]
+    fell = [r["measure"] for r in table if r["verdict"] == "worse"]
+    no_call = [r["measure"] for r in table if r["verdict"] == "noise"]
+
+    objective, grade = doc.get("objective"), doc.get("objective_grade") or {}
+    state = grade.get("state")
+    if not objective:
+        out = ("no objective",
+               "This branch never stated what it was for, so nothing here can "
+               "say whether it worked — only what changed.")
+    elif state == "met":
+        if fell:
+            out = ("a trade",
+                   f"You buy {_and(rose)} and pay {_and(fell)}.")
+        else:
+            out = ("merge",
+                   f"The objective is met and nothing measured here got worse"
+                   + (f"; {_and(rose)} improved." if rose else "."))
+    elif state == "not met":
+        out = ("do not merge",
+               f"The objective is not met"
+               + (f" — {grade.get('why')}" if grade.get("why") else ".")
+               + (f" {_and(rose).capitalize()} improved anyway, which is a "
+                  f"different branch's case." if rose else ""))
+    elif state == "not resolvable":
+        out = ("inconclusive",
+               f"The miss is smaller than this run can see. "
+               f"{grade.get('why', '')} A larger N is the only thing that "
+               f"settles it.")
+    else:                                            # "not measured", or absent
+        out = ("inconclusive",
+               f"The objective names {objective.get('axis')}, and this list has "
+               f"no reading for it. That is a missing measurement, not a failure "
+               f"— the axis may need a model flag set in goldfish_targets.json.")
+
+    got = {"state": out[0], "because": out[1],
+           "rose": rose, "fell": fell, "no_call": no_call,
+           "bill": (doc.get("bill") or {}).get("counts") or {}}
+
+    # THE REAL TABLE IS EVIDENCE THE RULE DOES NOT USE, and hiding it because the
+    # rule ignores it would be the worse error. Named beside the verdict, never
+    # folded into it.
+    notes = []
+    f = doc.get("forge") or {}
+    if f.get("available") and f.get("ci95"):
+        lo, hi = f["ci95"]
+        notes.append(
+            f"Forge, against a real pod: {f['delta']:+.3f} win rate, "
+            f"CI [{lo:+.3f}, {hi:+.3f}] — "
+            + ("this run cannot separate the two lists."
+               if (lo <= 0 <= hi) else "the difference excludes zero."))
+    lift = (doc.get("engine_lift") or {}).get("branch") or {}
+    if lift.get("available") and lift.get("excludes_zero") is False:
+        notes.append(
+            "The branch's own engine does not measurably change whether it "
+            "wins — its lift spans zero, so a bigger engine is not yet a "
+            "better deck.")
+    got["notes"] = notes
+    return got
+
+
+def _and(names):
+    if not names:
+        return "nothing"
+    if len(names) == 1:
+        return names[0]
+    return ", ".join(names[:-1]) + " and " + names[-1]
+
+
 def _print(doc):
     h = doc["harness"]
     print(f"\nNET CHANGE — {doc['slug']} vs branch {doc['branch']}"
           f"   ({h['iterations']:,} games each, seed {h['seed']})")
+
+    rec = doc.get("recommendation")
+    if rec:
+        print(f"\n  ==> {rec['state'].upper()}")
+        print(f"      {rec['because']}")
+        for n in rec.get("notes") or []:
+            print(f"      {n}")
 
     o, g = doc.get("objective"), doc.get("objective_grade")
     print("\n  OBJECTIVE")

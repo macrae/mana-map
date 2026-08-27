@@ -118,3 +118,118 @@ def test_an_objective_stated_and_never_graded_is_an_error():
 def test_an_empty_table_claims_nothing():
     assert any("claims nothing" in e
                for e in validate_net_change.validate(_minimal(table=[])))
+
+
+# ── the recommendation: a ledger plus a rule you can argue with ──────────
+
+def _ledger(grade_state, verdicts, objective=True):
+    """A net-change document with the rows a rule reads and nothing else.
+
+    Drives `net_change.recommend` — the production function — rather than
+    re-deriving the rule, which is the test this repo has shipped four times.
+    """
+    table = [{"measure": f"m{i}", "champion": 1.0, "branch": 1.0,
+              "delta": 0.5, "mde": 0.1, "verdict": v}
+             for i, v in enumerate(verdicts)]
+    return {
+        "table": table,
+        "objective": ({"axis": "hoard_8", "op": ">=", "value": 6.0}
+                      if objective else None),
+        "objective_grade": ({"state": grade_state, "why": "because"}
+                            if objective else None),
+        "bill": {"counts": {"buy": 21, "box": 7}},
+    }
+
+
+def test_the_ledger_sorts_every_row_and_loses_none():
+    got = net_change.recommend(_ledger("met", ["better", "worse", "noise", "better"]))
+    assert got["rose"] == ["m0", "m3"]
+    assert got["fell"] == ["m1"]
+    assert got["no_call"] == ["m2"]
+
+
+def test_objective_met_and_nothing_lost_is_a_merge():
+    got = net_change.recommend(_ledger("met", ["better", "noise"]))
+    assert got["state"] == "merge"
+    assert "nothing measured here got worse" in got["because"]
+
+
+def test_objective_met_with_something_lost_is_a_trade_that_names_both_sides():
+    """A metric falling is not a veto — it is a price. The report's job is to
+    put both halves in one sentence so the pilot can decide."""
+    got = net_change.recommend(_ledger("met", ["better", "worse"]))
+    assert got["state"] == "a trade"
+    assert "buy" in got["because"] and "pay" in got["because"]
+    assert "m0" in got["because"] and "m1" in got["because"]
+    assert got["bill"] == {"buy": 21, "box": 7}
+
+
+def test_objective_not_met_is_a_refusal_even_when_other_things_improved():
+    """THE UR-DRAGON FAILURE, as a rule. That branch hit its stated engine
+    figure 4.4x over while getting worse at the thing it was for."""
+    got = net_change.recommend(_ledger("not met", ["better", "better"]))
+    assert got["state"] == "do not merge"
+    assert "different branch's case" in got["because"]
+
+
+def test_a_miss_the_run_cannot_see_is_inconclusive_not_a_failure():
+    got = net_change.recommend(_ledger("not resolvable", ["noise"]))
+    assert got["state"] == "inconclusive"
+    assert "larger N" in got["because"]
+
+
+def test_an_unreadable_objective_is_inconclusive_and_names_the_axis():
+    """DIFFERENT FROM HAVING NO OBJECTIVE, and one state in the first draft.
+    A branch that stated a goal the run could not read has been falsifiable all
+    along; collapsing the two lets a branch that stated nothing borrow the
+    credibility of one that did."""
+    got = net_change.recommend(_ledger("not measured", ["better"]))
+    assert got["state"] == "inconclusive"
+    assert "hoard_8" in got["because"]
+    assert got["state"] != net_change.recommend(
+        _ledger(None, ["better"], objective=False))["state"]
+
+
+def test_no_objective_says_the_ledger_still_stands():
+    got = net_change.recommend(_ledger(None, ["better", "worse"], objective=False))
+    assert got["state"] == "no objective"
+    assert "only what changed" in got["because"]
+    assert got["rose"] and got["fell"], "the ledger is still reported"
+
+
+def test_every_state_is_declared():
+    seen = {net_change.recommend(_ledger(g, ["better", "worse"]))["state"]
+            for g in ("met", "not met", "not resolvable", "not measured")}
+    seen.add(net_change.recommend(_ledger("met", ["better"]))["state"])
+    seen.add(net_change.recommend(_ledger(None, ["better"], objective=False))["state"])
+    assert seen == set(net_change.STATES)
+
+
+def test_the_real_table_is_named_beside_the_verdict_and_never_folded_into_it():
+    """Forge is evidence the rule does not use. Hiding it because the rule
+    ignores it would be the worse error."""
+    doc = _ledger("met", ["better"])
+    doc["forge"] = {"available": True, "delta": -0.011, "ci95": [-0.102, 0.080]}
+    got = net_change.recommend(doc)
+    assert got["state"] == "merge", "the note must not change the verdict"
+    assert any("cannot separate" in n for n in got["notes"])
+
+
+@requires_deck
+def test_the_report_that_stopped_a_purchase_still_stops_it():
+    """THE ACCEPTANCE CASE, and it is a decision already made by hand.
+
+    ur-dragon's treasure branch: hoard @T10 +5.09, and damage, board power,
+    turn-6 kill and stall all worse, against a bill of 21 cards to buy. The
+    pilot read that report and did not spend the money. Reproducing the
+    conclusion from the artifact that produced it is the proof.
+    """
+    from manamap.pilot.common import deck_dir
+    path = (deck_dir(SLUG, "treasure-v2") / net_change.ARTIFACT)
+    if not path.exists():
+        pytest.skip("no tracked net_change.json")
+    got = net_change.recommend(json.loads(path.read_text()))
+    assert got["state"] != "merge"
+    assert got["state"] == "no objective"
+    assert len(got["rose"]) == 3 and len(got["fell"]) == 4
+    assert got["bill"]["buy"] == 21
