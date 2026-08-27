@@ -211,6 +211,8 @@ Grouped by what they are about; the legacy renderer's lessons are last and are k
 - **Roles ≠ mechanical tags**: `MECHANICAL_TAGS` is a retrieval vocabulary ("what is this card like"); `ROLE_PATTERNS` answers "what job does it do in a 99". One `ramp` tag versus five `ramp:rock|dork|land|ritual|cost-reduction` roles is the canonical difference — a curve model that conflates a Signet with a Dark Ritual is wrong.
 - **Index alignment**: `projection[i]` == `cards.csv[i]` == `embeddings[i]`. Never partially regenerate after the card count changes; re-run from the changed step onward.
 - **No Git LFS on `data/`**: GitHub Pages serves LFS pointers, which would break the deployed viz. Large tracked JSON/bin files are intentional.
+- **The obsolescence index publishes a MEASURE, not a verdict.** `compare_with[].strength` runs 0.0–1.0, multiplicative so two problems compound, and the pilot sets the line. It shipped for months as **"Obsoleted By"** with **36.5% of 22,753 pairs failing a purely mechanical check** — costs reported as advantages, restrictions invisible, 8.2% commander-illegal. The retrieval half was always fine (82% share a real role); the judgement half was not. `manamap eval-obsolescence` is the harness, and a change that does not move its separation figure did not do anything. → `docs/gotchas-analysis.md`
+- **A trigger pattern's `.*` sits where the subject noun lives.** `when .* dies` makes *"whenever a Goblin you control dies"* and *"whenever another creature dies"* byte-identical, so a tribal deck's payoff reads as a generic one. The gate is the substring the regex throws away — recover it outside `MECHANICAL_TAGS`, which is model-facing. → `docs/gotchas-analysis.md`
 - **Two embedding spaces, two different jobs.** `embeddings.npy` is the **layout** space (colour/type) and feeds `projection_2d.json` only; `embeddings_ability.npy` is the **function** space and is the sole source of similarity — Find Similar, the walk and drill all read it whichever map is displayed. Similarity must never follow the displayed map: the layout space knows only colour and type, so asking it for neighbours returns arbitrary same-colour cards.
 
 ### The rules that bite whatever you are touching
@@ -257,6 +259,7 @@ about to touch.
 |---|---|---|
 | `docs/gotchas-viz.md` | anything under `viz/` | 57 KB |
 | `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 99 KB |
+| `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions | 12 KB |
 | `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 48 KB |
 | `docs/gotchas-magazine-legacy.md` | the frozen renderer (it is not extended) | 18 KB |
 

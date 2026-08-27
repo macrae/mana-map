@@ -289,17 +289,56 @@ not in the ordering.
 
 ## Power creep (`src/manamap/analysis/power_creep.py`)
 
-Card B obsoletes Card A only if **all** hold:
-1. Same supertype (Land and Unknown never compared)
-2. Cosine similarity gate in ability embedding space — **tiered**: 1-tag cards need >= 0.98 (`OBSOLESCENCE_SINGLE_TAG_THRESHOLD`), 2+-tag cards >= 0.75 (`OBSOLESCENCE_SIMILARITY_THRESHOLD`). Keeps iconic single-tag upgrades (Doom Blade → Fatal Push, sim 0.999) while filtering false positives.
-3. B.cmc <= A.cmc
-4. B's color requirement same or easier (pip comparison)
-5. B has all of A's mechanical tags (superset)
-6. B has same or better power/toughness (creatures)
-7. B has at least one concrete advantage
-8. B printed later than A
+Writes `data/obsolescence_index.json`: for each anchor card A, up to
+`OBSOLESCENCE_MAX_REPLACEMENTS` (5) cards that do the same job, each with a
+**`strength` from 0.0 to 1.0**. It is a comparison, not a verdict — the schema key
+is `compare_with`, and the pilot decides what a difference is worth.
 
-Exclusions: cards with < `OBSOLESCENCE_MIN_TAGS` (1) tags, empty/NaN mana cost (augments, tokens), modifier stats (`+2`) parse to None. Up to `OBSOLESCENCE_MAX_REPLACEMENTS` (5) per card, sorted by similarity then advantage count. Batch matrix multiply per supertype group for performance.
+**Retrieval — which pairs are considered at all.** Both cards must share a
+supertype (Land and Unknown are never compared), clear a cosine gate in the
+*ability* embedding space — **tiered**: 1-tag cards need >= 0.98
+(`OBSOLESCENCE_SINGLE_TAG_THRESHOLD`), 2+-tag cards >= 0.75
+(`OBSOLESCENCE_SIMILARITY_THRESHOLD`), which keeps Doom Blade → Fatal Push
+(sim 0.999) while filtering false positives — and B must have all of A's
+mechanical tags, cost no more (`effective_cost`, which discounts Phyrexian
+pips), have a same-or-easier colour requirement, same-or-better power/toughness,
+and be printed later than A.
+
+**`newer` is a gate; rank is not.** Printed-later is what makes the relation
+antisymmetric — drop it and every pair appears twice. It predicts "actually
+played more" only 67.7% of the time, so it is weak evidence of strength and is
+never presented as any. EDHREC rank is *reported* and never filtered on:
+Storm Crow is genuinely outclassed by a card nobody plays.
+
+**Judgement — two hard gates, everything else priced.**
+
+1. **Legality** (`legal_commander`, combined so any legal printing wins). An
+   illegal card is not a candidate in any degree.
+2. **Nothing to compare on.** Tags are valenced through `config.TAG_VALENCE`
+   into `gain` / `cost` / `context`; a pair whose only claimed advantage was a
+   COST (`discard`, `sacrifice`, `mill`) has no gains left and is dropped.
+   `DEFAULT_TAG_VALENCE = "context"`, so an unvalenced tag is a *difference* and
+   never an advantage.
+
+Everything else multiplies into `strength` via `OBSOLESCENCE_PENALTIES` —
+tribal gate 0.30, added restriction 0.55, ability costs more 0.45, a cost tag
+0.75, played less 0.90 — starting from a base that rises with how much cheaper
+B is and how many distinct gains it has. Multiplicative, so two problems
+compound rather than averaging out.
+
+**The entry is symmetric**: `{strength, gains, costs, narrows, edhrec_rank,
+played_more, released_at, name, similarity}` — what the card costs you as well
+as what it gains.
+
+Exclusions: cards with < `OBSOLESCENCE_MIN_TAGS` (1) tags, empty/NaN mana cost
+(augments, tokens), modifier stats (`+2`) parse to None. Batch matrix multiply
+per supertype group for performance; every oracle-text scan is precomputed into
+the per-card record, because the comparison itself is O(n²).
+
+**`manamap eval-obsolescence` scores the index against how it is known to be
+wrong** — the failure classes, the strength histogram, the separation between
+detectably-bad and clean pairs, and the retrieval check. The full audit that
+produced it, and the four fixture failures, are in `docs/gotchas-analysis.md`.
 
 ## Region clustering (`src/manamap/analysis/cluster_regions.py`)
 
