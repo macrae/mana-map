@@ -21,27 +21,28 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
-      "Cost reducers and rituals are not modeled (conservative).",
+      "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+      "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "527e7eb9a757",
+    "model_version": "bf1b5851dc0e",
     "seed": 42
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.119,
+      "cast_by_turn_6_rate": 0.186,
       "cast_turn_histogram": {
-        "10": 904,
-        "3": 6,
-        "4": 101,
-        "5": 336,
-        "6": 748,
-        "7": 1093,
-        "8": 1290,
-        "9": 953,
-        "not_by_max_turn": 4569
+        "10": 943,
+        "3": 7,
+        "4": 187,
+        "5": 605,
+        "6": 1058,
+        "7": 1218,
+        "8": 1328,
+        "9": 956,
+        "not_by_max_turn": 3698
       },
-      "mean_cast_turn": 7.766,
+      "mean_cast_turn": 7.51,
       "median_cast_turn": 8
     },
     "iterations": 10000,
@@ -59,27 +60,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.772,
+      "10": 7.771,
       "2": 2.138,
-      "3": 3.425,
-      "4": 4.428,
-      "5": 5.17,
-      "6": 5.802,
-      "7": 6.343,
-      "8": 6.846,
-      "9": 7.312
+      "3": 3.423,
+      "4": 4.412,
+      "5": 5.167,
+      "6": 5.798,
+      "7": 6.339,
+      "8": 6.844,
+      "9": 7.311
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 4.696,
+      "10": 4.834,
       "2": 0.086,
-      "3": 0.486,
-      "4": 1.072,
-      "5": 1.73,
-      "6": 2.359,
-      "7": 2.961,
-      "8": 3.533,
-      "9": 4.128
+      "3": 0.475,
+      "4": 1.106,
+      "5": 1.78,
+      "6": 2.432,
+      "7": 3.065,
+      "8": 3.659,
+      "9": 4.263
     },
     "opening_hand": {
       "first_seven_land_histogram": {

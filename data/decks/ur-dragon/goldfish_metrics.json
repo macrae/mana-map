@@ -27,7 +27,8 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
-      "Cost reducers and rituals are not modeled (conservative).",
+      "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+      "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
       "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
       "Only Treasure triggers a goldfish can see are modeled — upkeep, landfall and cast (recurring), Saga chapters, plus enters-the-battlefield (once). Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
@@ -36,7 +37,7 @@
       "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
       "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens."
     ],
-    "model_version": "527e7eb9a757",
+    "model_version": "bf1b5851dc0e",
     "seed": 42,
     "treasure_sources_not_modelled": [
       "Atsushi, the Blazing Sky",
@@ -47,66 +48,67 @@
     "combat": {
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.651,
+        "10": 0.805,
         "2": 0.0,
         "3": 0.0,
         "4": 0.004,
-        "5": 0.041,
-        "6": 0.082,
-        "7": 0.147,
-        "8": 0.299,
-        "9": 0.488
+        "5": 0.036,
+        "6": 0.107,
+        "7": 0.273,
+        "8": 0.505,
+        "9": 0.687
       },
       "kill_turn_histogram": {
-        "10": 1634,
-        "4": 41,
-        "5": 370,
-        "6": 408,
-        "7": 651,
-        "8": 1521,
-        "9": 1885
+        "10": 1178,
+        "4": 36,
+        "5": 326,
+        "6": 707,
+        "7": 1660,
+        "8": 2319,
+        "9": 1820
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 19.044,
-        "2": 0.191,
-        "3": 1.229,
-        "4": 2.949,
-        "5": 5.262,
-        "6": 7.773,
-        "7": 10.464,
-        "8": 13.285,
-        "9": 16.177
+        "10": 23.165,
+        "2": 0.214,
+        "3": 1.511,
+        "4": 4.38,
+        "5": 7.818,
+        "6": 10.997,
+        "7": 14.172,
+        "8": 17.226,
+        "9": 20.229
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 20.469,
-        "2": 0.007,
-        "3": 0.258,
-        "4": 1.589,
-        "5": 3.596,
-        "6": 6.214,
-        "7": 9.261,
-        "8": 12.719,
-        "9": 16.453
+        "10": 25.933,
+        "2": 0.018,
+        "3": 0.444,
+        "4": 2.179,
+        "5": 5.426,
+        "6": 9.38,
+        "7": 13.345,
+        "8": 17.463,
+        "9": 21.658
       },
-      "mean_kill_turn": 8.371,
-      "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.349
+      "mean_kill_turn": 7.998,
+      "median_kill_turn": 8,
+      "no_kill_by_max_turn_rate": 0.195
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.094,
+      "cast_by_turn_6_rate": 0.18,
       "cast_turn_histogram": {
-        "10": 989,
-        "4": 32,
-        "5": 161,
-        "6": 749,
-        "7": 1059,
-        "8": 1082,
-        "9": 1128,
-        "not_by_max_turn": 4800
+        "10": 961,
+        "3": 1,
+        "4": 93,
+        "5": 480,
+        "6": 1224,
+        "7": 1399,
+        "8": 1320,
+        "9": 1156,
+        "not_by_max_turn": 3366
       },
-      "mean_cast_turn": 7.988,
+      "mean_cast_turn": 7.61,
       "median_cast_turn": 8
     },
     "iterations": 10000,
@@ -124,27 +126,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.6,
+      "10": 7.597,
       "2": 2.221,
-      "3": 3.271,
-      "4": 4.288,
-      "5": 5.035,
-      "6": 5.659,
-      "7": 6.199,
-      "8": 6.696,
+      "3": 3.265,
+      "4": 4.253,
+      "5": 5.026,
+      "6": 5.655,
+      "7": 6.196,
+      "8": 6.694,
       "9": 7.155
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 4.292,
-      "2": 0.111,
-      "3": 0.387,
-      "4": 0.826,
-      "5": 1.381,
-      "6": 1.949,
-      "7": 2.525,
-      "8": 3.121,
-      "9": 3.711
+      "10": 4.995,
+      "2": 0.116,
+      "3": 0.452,
+      "4": 1.15,
+      "5": 1.921,
+      "6": 2.583,
+      "7": 3.22,
+      "8": 3.831,
+      "9": 4.418
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -265,27 +267,27 @@
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.146,
-        "2": 0.0,
-        "3": 0.002,
-        "4": 0.01,
-        "5": 0.057,
-        "6": 0.085,
-        "7": 0.103,
-        "8": 0.116,
-        "9": 0.132
-      },
-      "mean_treasures_in_hoard_by_turn": {
-        "1": 0.0,
-        "10": 1.442,
+        "10": 0.149,
         "2": 0.0,
         "3": 0.003,
         "4": 0.035,
-        "5": 0.186,
-        "6": 0.418,
-        "7": 0.576,
-        "8": 0.761,
-        "9": 1.054
+        "5": 0.072,
+        "6": 0.095,
+        "7": 0.108,
+        "8": 0.121,
+        "9": 0.137
+      },
+      "mean_treasures_in_hoard_by_turn": {
+        "1": 0.0,
+        "10": 1.887,
+        "2": 0.0,
+        "3": 0.012,
+        "4": 0.11,
+        "5": 0.348,
+        "6": 0.56,
+        "7": 0.741,
+        "8": 0.995,
+        "9": 1.381
       }
     }
   }

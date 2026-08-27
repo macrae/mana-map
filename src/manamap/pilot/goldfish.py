@@ -90,7 +90,14 @@ MODEL_ASSUMPTIONS = [
     # creature. A model that saw the 5 would cover 3.4% of the axis while
     # letting this list claim draw was modelled, which is worse than the
     # refusal.
-    "Cost reducers and rituals are not modeled (conservative).",
+    "STATIC cost reduction IS modeled: a commander's eminence from the command "
+    "zone (live from turn one, unremovable) and typed reducers once they are on "
+    "the battlefield. It pays GENERIC only and is floored at the coloured pip "
+    "count, because a discount can never pay a pip. A reduction that SCALES "
+    "with a board state (Animar, Rakdos, Hamza) is refused rather than counted "
+    "flat, and cost reduction on artifacts, noncreature spells or a colour is "
+    "not modeled at all.",
+    "Rituals are not modeled (conservative).",
     "Extra card draw is NOT modeled: one card per turn, always. That "
     "understates every deck, but by an amount proportional to how much draw it "
     "runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. "
@@ -580,6 +587,169 @@ def body_count(card):
     return bodies
 
 
+#: STATIC COST REDUCTION — `<Type> spells you cast cost {N} less to cast`.
+#:
+#: THE MODEL SAID "cost reducers are not modeled (conservative)" AND FOR THIS
+#: FLEET THAT IS NOT CONSERVATIVE, IT IS WRONG ABOUT THE THESIS. The Ur-Dragon's
+#: eminence takes {1} off every Dragon spell from the COMMAND ZONE — always on,
+#: from turn one, unremovable — which is 22 of its 24 creatures and takes the
+#: mean Dragon from 5.73 to 4.73. Four more reducers sit in the 99 and read as
+#: vanilla bodies. A mv5 Dragon with eminence and one Dragonlord's Servant costs
+#: 3 in paper and 5 in the model, so every figure about when a threat lands was
+#: measured in a world where the commander's ability does not exist.
+#:
+#: Same class as the two already in the record: the model could not see 65% of
+#: the fleet's mana rocks, and the mana model was colourless.
+#:
+#: The subtype capture is CASE-SENSITIVE and deliberate: `Dragon` is a creature
+#: type and `dragon` in flavour prose is not.
+_COST_REDUCTION_RE = re.compile(
+    r"(?P<other>other )?(?P<what>[A-Z][a-z]+) spells"
+    r"(?: you cast)?(?P<chosen> of the chosen type)? cost "
+    r"\{(?P<amount>\d)\} less to cast")
+
+#: What a reduction applies to when the card says "the chosen type". A real
+#: player names the type they built around, so the model resolves it to the
+#: deck's most common creature subtype — stated, because it is a choice the
+#: model is making on the pilot's behalf.
+CHOSEN_TYPE = "\x00chosen"
+
+
+#: A REDUCTION THAT SCALES IS NOT A RATE, and the corpus sweep is what caught it.
+#: `Creature spells you cast cost {1} less to cast FOR EACH …` — Hamza counts
+#: +1/+1 counters, Animar counts counters on itself and starts at zero, and
+#: Rakdos counts life the opponents lost this turn, which in a solitaire model
+#: is zero forever. The regex stops at "to cast" and would have reported a flat
+#: 1 for all three: a plausible number that is wrong, which is the Jeweled Lotus
+#: failure exactly. Refused, and named as unmodelled rather than counted.
+_SCALING_REDUCTION_RE = re.compile(r"\A for each\b")
+
+#: WHAT A REDUCTION CAN APPLY TO, checked against the corpus's own creature
+#: types rather than a word list. The sweep found the regex capturing
+#: `Noncreature` (7 cards), `Artifact` (7), `Equipment` (5), `Enchantment` (4)
+#: and six colour words (14) — none of them creature subtypes, all of them
+#: silently matching nothing once tested against a card's subtypes. A silent
+#: half-working matcher is the most expensive kind, so these are REFUSED here
+#: instead of quietly reducing nothing. Artifact and noncreature reduction is
+#: real and simply not modelled; saying so is the difference.
+_ALL_CREATURES = ("Creature",)
+
+
+def cost_reduction(card, creature_types=None):
+    """`(amount, applies_to, excludes_self)` for a static reducer, else None.
+
+    `applies_to` is a creature subtype, `CHOSEN_TYPE`, or None for every
+    creature spell. GENERIC ONLY — a reduction can never pay a coloured pip,
+    which is why the caller floors the result at the pip count rather than at
+    zero.
+    """
+    text = card.get("oracle_text") or ""
+    got = _COST_REDUCTION_RE.search(text)
+    if not got:
+        return None
+    if _SCALING_REDUCTION_RE.match(text[got.end():]):
+        return None
+    what = got.group("what")
+    if got.group("chosen"):
+        applies = CHOSEN_TYPE
+    elif what in _ALL_CREATURES:
+        applies = None
+    elif creature_types is not None and what not in creature_types:
+        return None
+    elif creature_types is None and what in _NOT_A_CREATURE_TYPE:
+        return None
+    else:
+        applies = what
+    return (int(got.group("amount")), applies, bool(got.group("other")))
+
+
+def _corpus_creature_types():
+    """The corpus's own creature types, memoised.
+
+    `analysis.common.creature_types` is the one scan, shared with `assess` and
+    `power_creep`, so the triage that WARNS a pilot and the model that PRICES
+    their deck cannot drift on what a tribe is. Returns None when there is no
+    corpus, and `cost_reduction` then falls back to its own refusal list — a
+    unit test with no data behind it still rejects the right words.
+    """
+    global _CREATURE_TYPES_CACHE
+    if _CREATURE_TYPES_CACHE is _UNSET:
+        try:
+            from manamap.analysis import common as _acommon
+            from manamap.pilot import card_pool
+            _CREATURE_TYPES_CACHE = _acommon.creature_types(card_pool.load_frame())
+        except Exception:                      # pragma: no cover - defensive
+            _CREATURE_TYPES_CACHE = None
+    return _CREATURE_TYPES_CACHE or None
+
+
+_UNSET = object()
+_CREATURE_TYPES_CACHE = _UNSET
+
+
+def reduced_cost(card, reductions, chosen=None):
+    """What this spell costs with these static reducers in play.
+
+    GENERIC ONLY, floored at the coloured pip count. A cost reduction can never
+    pay a coloured pip — `{4}{W}{U}{B}{R}{G}` with three reducers out is still
+    five mana, not two — and flooring at zero instead would have made a
+    five-colour commander look castable off two lands.
+    """
+    total = 0
+    for amount, applies, excludes_self in reductions:
+        # `is_commander` is NOT a key `classify` emits — the commander is never
+        # in the library — so it stays a `.get`. Everything else is subscripted,
+        # because `test_every_signal_the_model_sets_is_read_by_something` counts
+        # a subscript as the proof a flag is acted on and a `.get` would let a
+        # key look read while nothing used it.
+        if excludes_self and card.get("is_commander"):
+            continue
+        if applies is None:
+            if card["is_creature"]:
+                total += amount
+        elif applies is CHOSEN_TYPE:
+            if chosen and chosen in card["subtypes"]:
+                total += amount
+        elif applies in card["subtypes"]:
+            total += amount
+    return max(len(card["pips"]), int(card["cmc"]) - total)
+
+
+#: The fallback when no corpus is loaded — the classes the sweep actually found,
+#: so a unit test with no corpus behind it still refuses the right words.
+_NOT_A_CREATURE_TYPE = frozenset({
+    "Noncreature", "Artifact", "Equipment", "Enchantment", "Aura", "Vehicle",
+    "Lair", "Lesson", "Arcane", "Historic", "Legendary", "Commander",
+    "Planeswalker", "Multicolored", "Colorless",
+    "White", "Blue", "Black", "Red", "Green",
+})
+
+
+def subtypes_of(type_line):
+    """The subtypes after the em dash. `Legendary Creature — Dragon` -> {Dragon}."""
+    if "\u2014" not in (type_line or ""):
+        return frozenset()
+    tail = type_line.split("\u2014", 1)[1].split("//")[0]
+    return frozenset(w for w in tail.split() if w[:1].isupper())
+
+
+def chosen_type_for(cards):
+    """The creature subtype a player would name. Most common wins; ties by name.
+
+    Deterministic, because everything in this model must be: a tie broken by
+    dict order would make two identical decks measure differently.
+    """
+    counts = {}
+    for c in cards:
+        if "Creature" not in (c.get("type_line") or ""):
+            continue
+        for t in subtypes_of(c.get("type_line")):
+            counts[t] = counts.get(t, 0) + 1
+    if not counts:
+        return None
+    return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
+
+
 def classify(card):
     """Return a compact sim-card dict for one physical copy."""
     type_line = card.get("type_line", "")
@@ -622,6 +792,12 @@ def classify(card):
         # Rides on the card always and is read only under `model_treasures`, so
         # a non-opted deck stays byte-identical — the `creature_bodies` rule.
         "treasure_doubler": bool(TOKEN_DOUBLER_RE.search(text)),
+        # Static cost reduction, and what this card IS so a reduction can be
+        # tested against it. Both ride along always and are read only when a
+        # reducer is actually in play, so a deck with none stays byte-identical.
+        "reduces": cost_reduction(card, _corpus_creature_types()),
+        "subtypes": subtypes_of(type_line),
+        "is_creature": "Creature" in type_line,
     }
 
 
@@ -660,7 +836,9 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_treasures=False, model_combat=False,
-                  model_colors=False, commander_pips=None):
+                  model_colors=False, commander_pips=None,
+                  command_zone_reduction=(), chosen_type=None,
+                  commander_subtypes=frozenset()):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -688,6 +866,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
     lands_in_play = 0
     rock_production = 0
+    # EMINENCE IS ON FROM TURN ONE. It works from the command zone, so it is
+    # live before the commander is ever cast and cannot be removed — which is
+    # exactly why leaving it unmodelled mispriced the whole deck rather than
+    # just its late game. Reducers cast from hand are appended as they land.
+    reductions = list(command_zone_reduction)
+    commander_card = {"is_commander": True, "is_creature": True,
+                      "subtypes": commander_subtypes, "cmc": commander_cmc,
+                      "pips": commander_pips or ()}
     # One colour-set per untapped producer, parallel to the two counts above.
     # Only maintained under `model_colors`; empty otherwise, so `can_pay` is
     # never reached and the colourless arithmetic is untouched.
@@ -795,12 +981,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool = 0
             return True
 
-        if commander_turn is None and spend(commander_cmc, commander_pips):
+        # A REDUCER ON THE BATTLEFIELD DOES CUT THE COMMANDER'S COST. Eminence
+        # says "OTHER Dragon spells", so it never pays for itself — but
+        # Dragonlord's Servant takes {1} off The Ur-Dragon like any other Dragon
+        # spell, and a nine-drop commander is exactly where that matters.
+        if commander_turn is None and spend(
+                reduced_cost(commander_card, reductions, chosen_type),
+                commander_pips):
             commander_turn = turn
+
+        # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
+        # to fall through this hole, after Aggravated Assault and Primal Vigor.
+        # Urza's Incubator and Herald's Horn are artifacts with `produces` 0 and
+        # `bodies` 0, so every existing loop skips them and they would sit in
+        # hand for ten turns while being the deck's stated curve fixer. Cast
+        # BEFORE anything else affordable, because a reducer's whole value is
+        # what it makes the rest of the turn cost.
+        for card in sorted((c for c in hand if c["reduces"] and c["bodies"] == 0
+                            and c["produces"] == 0),
+                           key=lambda c: c["cmc"]):
+            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                reductions.append(card["reduces"])
+                hand.remove(card)
 
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0), key=lambda c: c["cmc"]):
-            if spend(card["cmc"], card["pips"]):
+            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                if card["reduces"]:
+                    reductions.append(card["reduces"])
                 rock_production += card["produces"]
                 if model_colors:
                     # A rock adds as many sources as it makes mana.
@@ -860,10 +1068,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     treasure_bonus += 1
 
         # Spend what's left on bodies, cheapest-first.
-        for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
-            if spend(card["cmc"], card["pips"]):
+        for card in sorted((c for c in hand if c["bodies"] > 0),
+                           key=lambda c: reduced_cost(c, reductions, chosen_type)):
+            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 hand.remove(card)
+                # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
+                # also reduce; from here on they pay for every Dragon behind them.
+                if card["reduces"]:
+                    reductions.append(card["reduces"])
                 if model_combat:
                     combat = card["combat"]
                     if combat["is_creature"]:
@@ -1212,6 +1425,20 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     commander_pips = cast_pips(
         front_field(commanders[0], "mana_cost") or "") if commanders else []
 
+    # THE COMMAND ZONE IS A SOURCE OF STATIC EFFECTS, and this is the first one
+    # the model reads. Eminence is live from turn one whether or not the
+    # commander is ever cast, and it cannot be answered — the single most
+    # load-bearing fact about a deck built on it.
+    creature_types = _corpus_creature_types()
+    chosen_type = chosen_type_for(doc["cards"])
+    command_zone_reduction = []
+    commander_subtypes = frozenset()
+    for c in commanders:
+        got = cost_reduction(c, creature_types)
+        if got:
+            command_zone_reduction.append(got)
+        commander_subtypes |= subtypes_of(c.get("type_line") or "")
+
     # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
     # `treasure_profile` alone while the model has three ways to see a Treasure:
     # the trigger table, `treasure_bonus` (an adder — Xorn, Jolene),
@@ -1285,6 +1512,9 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         for _ in range(iterations):
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,
+                              command_zone_reduction=command_zone_reduction,
+                              chosen_type=chosen_type,
+                              commander_subtypes=commander_subtypes,
                               model_treasures=model_treasures,
                               model_combat=model_combat,
                               model_colors=model_colors,

@@ -93,76 +93,36 @@
   },
   "branches": [
     {
-      "name": "treasure-v2",
-      "opened": "2026-08-26",
-      "why": "The treasure refactor: treasure is the engine, Dragons and combat are payoffs it buys. 23 cards to source, so it cannot be merged yet.",
+      "name": "eminence-v3",
+      "opened": "2026-08-27",
+      "why": "Converge on eminence: every dragon shifts left by one from the command zone, permanently, where nothing can remove it. Two win conditions already in the deck — ETB/attack-trigger burn (Terror of the Peaks, Scourge of Valkas, Dragon Tempest) and Ur-Dragon commander damage. Stays big-dragon heavy; this is not a pivot to small dragons. Cut counterspells, stack interaction and non-flyer removal; add dorks, a protection package, flyer-only removal, and just enough low-end dragons to move the first-castable-dragon turn. Treasures stay as incidental ramp, never an engine.",
       "base_version": 2,
       "size": 100,
-      "add": 34,
-      "out": 34,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 61,
-        "box": 7,
-        "elsewhere": 6,
-        "buy": 21
+        "in_deck": 95,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0
       },
-      "unsourced": [
-        "Academy Manufactor",
-        "Ancient Copper Dragon",
-        "Anointed Procession",
-        "Black Market Connections",
-        "Bonehoard Dracosaur",
-        "Charming Scoundrel",
-        "Collector's Vault",
-        "Commander's Sphere",
-        "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-        "Gadrak, the Crown-Scourge",
-        "Jaya's Immolating Inferno",
-        "Jolene, the Plunder Queen",
-        "Mondrak, Glory Dominus",
-        "Monument to Endurance",
-        "Parallel Lives",
-        "Professional Face-Breaker",
-        "Ragavan, Nimble Pilferer",
-        "Reckless Fireweaver",
-        "Reckoner Bankbuster",
-        "Revel in Riches",
-        "Smuggler's Share",
-        "Sword of Wealth and Power",
-        "The Reaver Cleaver",
-        "Treasure Map // Treasure Cove",
-        "Vandalblast",
-        "Weftstalker Ardent",
-        "Xorn"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "cards": [
         {
-          "name": "Academy Manufactor",
-          "state": "buy",
+          "name": "Ancient Gold Dragon",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
-        },
-        {
-          "name": "Ancient Copper Dragon",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
-          "name": "Anointed Procession",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null
-            }
-          ],
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Atarka, World Render",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -180,40 +140,22 @@
           "is_new": false
         },
         {
-          "name": "Beast Within",
-          "state": "box",
-          "where": "Golgari Parts, Green",
-          "is_new": true
-        },
-        {
-          "name": "Black Market Connections",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "yawgmoth-swarm",
-              "locked": false,
-              "status": null
-            }
-          ],
-          "is_new": true
-        },
-        {
           "name": "Blood Crypt",
           "state": "in_deck",
           "where": null,
           "is_new": false
         },
         {
-          "name": "Bonehoard Dracosaur",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "gishath",
-              "locked": false,
-              "status": null
-            }
-          ],
-          "is_new": true
+          "name": "Boros Charm",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Breaching Dragonstorm",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
           "name": "Breeding Pool",
@@ -240,12 +182,6 @@
           "is_new": false
         },
         {
-          "name": "Charming Scoundrel",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
           "name": "Chromatic Lantern",
           "state": "in_deck",
           "where": null,
@@ -264,22 +200,16 @@
           "is_new": false
         },
         {
-          "name": "Collector's Vault",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
           "name": "Command Tower",
           "state": "in_deck",
           "where": null,
           "is_new": false
         },
         {
-          "name": "Commander's Sphere",
-          "state": "buy",
+          "name": "Counterspell",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Crux of Fate",
@@ -294,19 +224,49 @@
           "is_new": false
         },
         {
-          "name": "Demonic Tutor",
-          "state": "box",
-          "where": "Hapatra",
-          "is_new": true
+          "name": "Desolation of Smaug",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
-          "name": "Doubling Season",
-          "state": "box",
-          "where": "Green",
-          "is_new": true
+          "name": "Dovin's Veto",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Dragon Tempest",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Dragon's Hoard",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Dragonlord's Servant",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Dragonspeaker Shaman",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
           "name": "Drakuseth, Maw of Flames",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Encroaching Dragonstorm",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -322,12 +282,6 @@
           "state": "in_deck",
           "where": null,
           "is_new": false
-        },
-        {
-          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-          "state": "buy",
-          "where": null,
-          "is_new": true
         },
         {
           "name": "Fabled Passage",
@@ -354,12 +308,6 @@
           "is_new": false
         },
         {
-          "name": "Gadrak, the Crown-Scourge",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
           "name": "Garruk's Uprising",
           "state": "in_deck",
           "where": null,
@@ -367,6 +315,12 @@
         },
         {
           "name": "Generous Gift",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Glorybringer",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -384,7 +338,19 @@
           "is_new": false
         },
         {
+          "name": "Hellkite Courser",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
           "name": "Hellkite Tyrant",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Herald's Horn",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -396,10 +362,10 @@
           "is_new": false
         },
         {
-          "name": "Jaya's Immolating Inferno",
-          "state": "buy",
+          "name": "Island",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Jetmir's Garden",
@@ -408,10 +374,10 @@
           "is_new": false
         },
         {
-          "name": "Jolene, the Plunder Queen",
-          "state": "buy",
+          "name": "Korlessa, Scale Singer",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Lathliss, Dragon Queen",
@@ -432,22 +398,16 @@
           "is_new": false
         },
         {
-          "name": "Mondrak, Glory Dominus",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null
-            }
-          ],
-          "is_new": true
+          "name": "Miirym, Sentinel Wyrm",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
-          "name": "Monument to Endurance",
-          "state": "buy",
+          "name": "Moltensteel Dragon",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -486,22 +446,10 @@
           "is_new": false
         },
         {
-          "name": "Parallel Lives",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
           "name": "Path of Ancestry",
           "state": "in_deck",
           "where": null,
           "is_new": false
-        },
-        {
-          "name": "Pitiless Plunderer",
-          "state": "box",
-          "where": "Hapatra",
-          "is_new": true
         },
         {
           "name": "Plains",
@@ -516,16 +464,10 @@
           "is_new": false
         },
         {
-          "name": "Professional Face-Breaker",
-          "state": "buy",
+          "name": "Radiant Destiny",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
-        },
-        {
-          "name": "Ragavan, Nimble Pilferer",
-          "state": "buy",
-          "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Rapacious Dragon",
@@ -534,31 +476,49 @@
           "is_new": false
         },
         {
-          "name": "Reckless Fireweaver",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
-          "name": "Reckoner Bankbuster",
-          "state": "buy",
-          "where": null,
-          "is_new": true
-        },
-        {
           "name": "Reflecting Pool",
           "state": "in_deck",
           "where": null,
           "is_new": false
         },
         {
-          "name": "Revel in Riches",
-          "state": "buy",
+          "name": "Relic of Legends",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
+        },
+        {
+          "name": "Return of the Wildspeaker",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Rishkar's Expertise",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Roiling Dragonstorm",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
           "name": "Sacred Foundry",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Sarkhan's Triumph",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Sarkhan, Fireblood",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -576,6 +536,12 @@
           "is_new": false
         },
         {
+          "name": "Scourge of the Throne",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
           "name": "Sheltered Thicket",
           "state": "in_deck",
           "where": null,
@@ -586,12 +552,6 @@
           "state": "in_deck",
           "where": null,
           "is_new": false
-        },
-        {
-          "name": "Skullclamp",
-          "state": "box",
-          "where": "Hapatra",
-          "is_new": true
         },
         {
           "name": "Skyshroud Claim",
@@ -612,10 +572,10 @@
           "is_new": false
         },
         {
-          "name": "Smuggler's Share",
-          "state": "buy",
+          "name": "Sneak Attack",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sol Ring",
@@ -642,16 +602,10 @@
           "is_new": false
         },
         {
-          "name": "Sword of Wealth and Power",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "zur-enchantress",
-              "locked": false,
-              "status": null
-            }
-          ],
-          "is_new": true
+          "name": "Swan Song",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
           "name": "Swords to Plowshares",
@@ -666,16 +620,16 @@
           "is_new": false
         },
         {
-          "name": "Terror of the Peaks",
+          "name": "Temur Ascendancy",
           "state": "in_deck",
           "where": null,
           "is_new": false
         },
         {
-          "name": "The Reaver Cleaver",
-          "state": "buy",
+          "name": "Terror of the Peaks",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "The Ur-Dragon",
@@ -684,25 +638,19 @@
           "is_new": false
         },
         {
-          "name": "Tireless Provisioner",
-          "state": "box",
-          "where": "Green, Mystery Booster 2",
-          "is_new": true
-        },
-        {
-          "name": "Toxic Deluge",
-          "state": "box",
-          "where": "Hapatra",
-          "is_new": true
-        },
-        {
-          "name": "Treasure Map // Treasure Cove",
-          "state": "buy",
+          "name": "Thrakkus the Butcher",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Unclaimed Territory",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
+        },
+        {
+          "name": "Urza's Incubator",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -714,28 +662,16 @@
           "is_new": false
         },
         {
-          "name": "Vandalblast",
-          "state": "elsewhere",
-          "where": [
-            {
-              "slug": "goblin-storm",
-              "locked": true,
-              "status": null
-            }
-          ],
-          "is_new": true
+          "name": "Worldly Tutor",
+          "state": "in_deck",
+          "where": null,
+          "is_new": false
         },
         {
-          "name": "Weftstalker Ardent",
-          "state": "buy",
+          "name": "Wrathful Red Dragon",
+          "state": "in_deck",
           "where": null,
-          "is_new": true
-        },
-        {
-          "name": "Xorn",
-          "state": "buy",
-          "where": null,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ziatora's Proving Ground",
@@ -953,92 +889,92 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.2304,
+          "rate": 0.2314,
           "ci95": [
-            0.2223,
-            0.2388
+            0.2232,
+            0.2398
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0397,
+          "rate": 0.047,
           "ci95": [
-            0.036,
-            0.0437
+            0.043,
+            0.0513
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0111,
+          "rate": 0.0138,
           "ci95": [
-            0.0092,
-            0.0133
+            0.0117,
+            0.0163
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0044,
+          "rate": 0.0068,
           "ci95": [
-            0.0033,
-            0.0059
+            0.0054,
+            0.0086
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0019,
+          "rate": 0.0038,
           "ci95": [
-            0.0012,
-            0.003
+            0.0028,
+            0.0052
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0014,
+          "rate": 0.0034,
           "ci95": [
-            0.0008,
-            0.0023
+            0.0024,
+            0.0047
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.001,
+          "rate": 0.0028,
           "ci95": [
-            0.0005,
-            0.0018
+            0.0019,
+            0.004
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0009,
+          "rate": 0.0026,
           "ci95": [
-            0.0005,
-            0.0017
+            0.0018,
+            0.0038
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0007,
+          "rate": 0.002,
           "ci95": [
-            0.0003,
-            0.0014
+            0.0013,
+            0.0031
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0397,
+        "rate": 0.0478,
         "ci95": [
-          0.036,
-          0.0437
+          0.0438,
+          0.0522
         ],
         "n": 10000
       },
       "fleet": "above the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 2915,
-        "hand_empty": 14,
-        "mana_short": 2901
+        "stall_turns": 3136,
+        "hand_empty": 65,
+        "mana_short": 3071
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
@@ -1063,18 +999,18 @@
       "mean_mana_by_turn": {
         "1": 0.999,
         "2": 2.215,
-        "3": 3.256,
-        "4": 4.278,
-        "5": 5.017,
-        "6": 5.64,
-        "7": 6.179,
-        "8": 6.669,
-        "9": 7.127,
-        "10": 7.576
+        "3": 3.252,
+        "4": 4.245,
+        "5": 5.01,
+        "6": 5.635,
+        "7": 6.176,
+        "8": 6.667,
+        "9": 7.126,
+        "10": 7.575
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1975
+      "mana_stdev_turn_five": 1.1983
     },
     "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a"
   },
@@ -1104,8 +1040,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.988,
-    "commander_cast_by_turn_6_pct": 9,
+    "commander_mean_cast_turn": 7.61,
+    "commander_cast_by_turn_6_pct": 18,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -1149,20 +1085,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.371,
-      "median_kill_turn": 9,
-      "kill_by_turn_6_pct": 8,
-      "kill_by_turn_8_pct": 30,
+      "mean_kill_turn": 7.998,
+      "median_kill_turn": 8,
+      "kill_by_turn_6_pct": 11,
+      "kill_by_turn_8_pct": 50,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 35,
+      "no_kill_by_max_turn_pct": 20,
       "kill_turn_histogram": {
-        "10": 1634,
-        "4": 41,
-        "5": 370,
-        "6": 408,
-        "7": 651,
-        "8": 1521,
-        "9": 1885
+        "10": 1178,
+        "4": 36,
+        "5": 326,
+        "6": 707,
+        "7": 1660,
+        "8": 2319,
+        "9": 1820
       }
     }
   },
@@ -1337,7 +1273,7 @@
   "next": [
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
-    "branch `treasure-v2` needs 27 card(s) sourced — `manamap pilot deck-branch ur-dragon source treasure-v2`",
+    "branch `eminence-v3` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge eminence-v3 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",

@@ -21,10 +21,11 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
-      "Cost reducers and rituals are not modeled (conservative).",
+      "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+      "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "527e7eb9a757",
+    "model_version": "bf1b5851dc0e",
     "restricted_mana_counted_as_free": [
       "Throne of Eldraine (4)"
     ],
@@ -32,20 +33,20 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.9,
+      "cast_by_turn_6_rate": 0.907,
       "cast_turn_histogram": {
-        "10": 92,
+        "10": 80,
         "2": 713,
         "3": 110,
-        "4": 7002,
-        "5": 665,
-        "6": 506,
-        "7": 342,
-        "8": 246,
-        "9": 151,
-        "not_by_max_turn": 173
+        "4": 7061,
+        "5": 679,
+        "6": 512,
+        "7": 328,
+        "8": 231,
+        "9": 136,
+        "not_by_max_turn": 150
       },
-      "mean_cast_turn": 4.352,
+      "mean_cast_turn": 4.328,
       "median_cast_turn": 4
     },
     "iterations": 10000,
@@ -63,7 +64,7 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.51,
+      "10": 7.511,
       "2": 2.138,
       "3": 3.059,
       "4": 3.956,
@@ -75,15 +76,15 @@
     },
     "mean_bodies_by_turn": {
       "1": 0.393,
-      "10": 8.605,
+      "10": 8.632,
       "2": 1.262,
       "3": 2.311,
-      "4": 2.662,
-      "5": 3.962,
-      "6": 5.213,
-      "7": 6.238,
-      "8": 7.12,
-      "9": 7.901
+      "4": 2.661,
+      "5": 3.98,
+      "6": 5.248,
+      "7": 6.279,
+      "8": 7.156,
+      "9": 7.936
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -110,13 +111,13 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.661,
-        "assembled_rate_assisted": 0.661,
-        "by_turn_6_rate": 0.496,
-        "by_turn_6_rate_assisted": 0.496,
+        "assembled_rate": 0.663,
+        "assembled_rate_assisted": 0.663,
+        "by_turn_6_rate": 0.502,
+        "by_turn_6_rate_assisted": 0.502,
         "label": "Zada online with a cantrip drawn",
-        "mean_turn": 5.266,
-        "mean_turn_assisted": 5.266
+        "mean_turn": 5.243,
+        "mean_turn_assisted": 5.243
       },
       {
         "assembled_rate": 0.6,
