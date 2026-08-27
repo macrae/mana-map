@@ -85,6 +85,11 @@ manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
                                         #   interval; `--vs` adds the interval on the DIFFERENCE
+manamap pilot assess <slug> [--branch N] --pool <file|library|->
+                                        #   TRIAGE FIRST, before spending: is it legal, what
+                                        #   does it cost, what is it GATED on, does it feed a
+                                        #   declared component, and can any model here even
+                                        #   SEE it. Names what is worth measuring
 manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] [--limit N]
                                         #   rank a pool by what each card MEASURABLY does:
                                         #   substitute, re-run, report the delta. Anything
