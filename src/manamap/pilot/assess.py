@@ -35,6 +35,7 @@ import re
 
 from manamap.pilot.common import (
     deck_file, expand_faces, load_deck_cards, load_json)
+from manamap.sim import pod_behaviour
 
 #: What a card is gated on — the question "will this deck ever turn it on".
 COMBAT, OPPONENT, DEATH, ACTIVATED, RECURRING, ONESHOT = (
@@ -195,6 +196,9 @@ def assess(slug, pool, branch=None):
         need = {t for t in re.findall(r"\b([A-Z][a-z]+)s?\b(?= you control)", text)
                 if t in CREATURE_TYPES}
         row["needs_type"] = sorted(need - types)
+        # HOW OFTEN WOULD THIS HAVE FIRED AGAINST THE POD? A goldfish cannot
+        # answer it, but Forge already played those turns — see pod_behaviour.
+        row["pod_rate"] = pod_behaviour.rate_for(text) if gate == OPPONENT else None
         eq = cheapest.get(job)
         row["cheaper_than_ours"] = bool(eq and mv < eq[1])
         row["ours_cheapest"] = f"{eq[0]} (mv{int(eq[1])})" if eq else None
@@ -215,9 +219,20 @@ def _verdict(row, slug, branch):
         return ("combat-gated: it needs a creature to connect. Efficient in a "
                 "vacuum, wrong axis for a deck that wins without attacking")
     if row["gate"] == OPPONENT:
-        return ("opponent-gated: NO MODEL HERE CAN SEE IT. A goldfish has no "
-                "opponents, so it is worth zero in every figure — judge it by "
-                "reading the card, and say so")
+        # The goldfish still cannot see it. But the QUESTION — how often would
+        # this have fired at my table — is answerable from the sim runs, and a
+        # measured frequency beats "unmeasurable" by the whole width of the
+        # decision. It reversed a recommendation the first time it was asked.
+        est = row.get("pod_rate")
+        head = ("opponent-gated: no goldfish figure can price it "
+                "(a solitaire model has no opponents)")
+        if not est:
+            return head + " — judge it by reading the card, and say so"
+        if est["per_round"] is None:
+            return (f"{head}, but the trigger is bounded: {est['bound']} "
+                    f"({est['basis']})")
+        return (f"{head}, but it would fire about {est['per_round']} times a "
+                f"round against your pod — {est['basis']}")
     if row["job"] in ("treasure", "multiplier") and row["cheaper_than_ours"]:
         return (f"cheaper than anything in the list doing that job "
                 f"({row['ours_cheapest']}) — worth measuring")

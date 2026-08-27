@@ -46,16 +46,20 @@ def test_gating_is_read_from_the_card():
 
 
 @needs
-def test_it_names_what_no_model_here_can_see():
+def test_it_names_what_no_model_here_can_see_and_then_estimates_it_anyway():
     """A card that taxes what opponents do is worth exactly zero in a solitaire
-    goldfish. Recommending it is legitimate; implying the recommendation is
-    measured is not."""
+    goldfish, and the verdict must keep saying so — implying the recommendation
+    is a goldfish figure would be the lie. But the pilot's real question is how
+    often it would fire at THEIR table, and Forge already played those turns, so
+    the verdict carries a measured frequency beside the disclaimer."""
     got = A.assess(SLUG, ["Smothering Tithe", "Monologue Tax"], branch=BRANCH)
     for row in got["cards"]:
         if row.get("in_list"):
             continue
         assert row["gate"] == A.OPPONENT
-        assert "NO MODEL HERE CAN SEE IT" in row["verdict"]
+        assert "no goldfish figure can price it" in row["verdict"]
+        assert row["pod_rate"]["per_round"] is not None
+        assert str(row["pod_rate"]["per_round"]) in row["verdict"]
 
 
 @needs
