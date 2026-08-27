@@ -60,6 +60,8 @@ PILOT_STEPS = [
     ("assess", "manamap.pilot.assess",
      "Triage a pile of cards against one deck before spending: legality, cost, what it does, "
      "what it is gated on, whether any model here can see it, and what it would replace"),
+    ("calibrate", "manamap.pilot.calibrate",
+     "Does the model track real outcomes? Refuses below a usable sample"),
     ("close", "manamap.pilot.close",
      "Turn the diagnostic's bottleneck into a candidate pool"),
     ("candidates", "manamap.pilot.candidates",

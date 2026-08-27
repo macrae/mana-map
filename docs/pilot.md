@@ -85,6 +85,13 @@ manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
                                         #   interval; `--vs` adds the interval on the DIFFERENCE
+manamap pilot calibrate [--iterations N] [--json]
+                                        #   DOES THE MODEL PREDICT ANYTHING? Correlates every
+                                        #   deck's goldfish figures against its real Forge win
+                                        #   rate. REFUSES a coefficient below 10 decks with
+                                        #   20+ games each and says what would close the gap —
+                                        #   a Spearman on five points is a null wearing a
+                                        #   finding's clothes
 manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--owned] [--write]
                                         #   the bottleneck becomes a POOL. Seeds from the
                                         #   component the diagnostic named and mines the
