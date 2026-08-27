@@ -434,6 +434,86 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
 
 # ── Comparison ───────────────────────────────────────────────────────────
 
+#: How many placebo removals an ablation draws. Four is enough to bracket the
+#: band on the fleet's spreads and cheap enough that nobody skips the control.
+PLACEBO_DRAWS = 4
+
+
+def ablate(doc, slug, names, axis_block, axis_key, axis_turn, branch=None,
+           iterations=None, seed=None, targets=None, placebos=PLACEBO_DRAWS):
+    """Remove a set of cards, measure, AND MEASURE A PLACEBO OF THE SAME SIZE.
+
+    WHY THE PLACEBO IS NOT OPTIONAL. Taking N cards out shrinks the library, so
+    every card left is drawn more often — the deck gets FASTER by construction.
+    Measured on ur-dragon's treasure branch, removing any 8 non-declared cards
+    raised turn-8 damage by **+0.92 on average**, and removing the 8 declared
+    multipliers raised it by **+1.26**: a gap of 0.34 against an MDE of 0.56.
+    Read without the control that is "cutting your multipliers kills faster",
+    which is a plausible, well-shaped, interval-backed and entirely wrong
+    finding — it is deck size wearing a card effect's clothes.
+
+    The same run on the HOARD axis is the opposite: the placebos all move UP
+    (+0.67 to +1.06) and the multipliers move DOWN (-0.77), so that effect is
+    real and the direction alone says so.
+
+    A verdict is therefore relative to the placebo BAND, never to the baseline.
+    `candidates` is unaffected — it substitutes one-for-one and holds the size
+    fixed, which is exactly why it never needed this.
+    """
+    import copy
+    import random
+
+    def read(d):
+        cell = ((d.get(axis_block) or {}).get(axis_key) or {})
+        if axis_turn:
+            cell = cell.get(axis_turn) or {}
+        return cell
+
+    def run_without(drop):
+        d2 = copy.deepcopy(doc)
+        d2["cards"] = [c for c in d2["cards"] if c["name"] not in drop]
+        return read(run_on(d2, slug, branch=branch, iterations=iterations,
+                           seed=seed, quiet=True, targets=targets))
+
+    base = read(run_on(doc, slug, branch=branch, iterations=iterations,
+                       seed=seed, quiet=True, targets=targets))
+    if not base:
+        return {"available": False, "why": "the baseline has no reading on that axis"}
+    got = run_without(set(names))
+    delta = round(got["rate"] - base["rate"], 4)
+
+    declared = set(names)
+    pool = [c["name"] for c in doc["cards"]
+            if not c.get("is_commander")
+            and "Land" not in (c.get("type_line") or "")
+            and c["name"] not in declared and (c.get("quantity") or 1) == 1]
+    band = []
+    if len(pool) >= len(names):
+        rng = random.Random(seed if seed is not None else HARNESS["seed"])
+        for _ in range(placebos):
+            r = run_without(set(rng.sample(pool, len(names))))
+            band.append(round(r["rate"] - base["rate"], 4))
+    if not band:
+        return {"available": True, "baseline": base["rate"], "delta": delta,
+                "placebo": None,
+                "verdict": "no placebo was possible — too few comparable cards "
+                           "to remove, so this delta cannot be separated from "
+                           "the effect of a smaller library"}
+    lo, hi = min(band), max(band)
+    inside = lo <= delta <= hi
+    return {
+        "available": True, "baseline": base["rate"], "delta": delta,
+        "n_removed": len(names),
+        "placebo": {"draws": len(band), "band": [lo, hi],
+                    "mean": round(sum(band) / len(band), 4)},
+        "mde": mde(base),
+        "verdict": ("inside the placebo band — this is the LIBRARY GETTING "
+                    "SMALLER, not these cards" if inside else
+                    "outside the placebo band — a real effect of these cards"),
+        "real": not inside,
+    }
+
+
 def compare(a, b):
     """Two readings, and the difference with an interval on the DIFFERENCE.
 

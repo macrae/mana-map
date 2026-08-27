@@ -132,3 +132,37 @@ def test_every_magnitude_figure_carries_an_interval():
         for turn, cell in series.items():
             assert set(cell) >= {"rate", "ci95", "n"}, (key, turn, cell)
             assert cell["ci95"][0] <= cell["rate"] <= cell["ci95"][1], (key, turn)
+
+
+def test_an_ablation_without_a_placebo_measures_the_library_shrinking():
+    """THE CONTROL THAT CAUGHT A WRONG FINDING.
+
+    Removing N cards makes every remaining card come up sooner, so a group
+    removal reads as an improvement on any speed axis whatever the cards did.
+    Here the removed cards are inert filler — a correct ablation must call that
+    inside the placebo band rather than an effect.
+    """
+    filler = [_card(f"Filler{i}", "Draw a card.", cmc=5) for i in range(8)]
+    # The placebo needs comparable singles to draw FROM, or the control cannot
+    # run — which the function reports rather than skipping silently.
+    spare = [_card(f"Spare{i}", "Draw a card.", cmc=5) for i in range(10)]
+    doc = _doc(filler + spare + [_card("Doubler", DOUBLER, qty=6)])
+    got = diagnostic.ablate(doc, "ur-dragon",
+                            [c["name"] for c in filler],
+                            "output", "hoard_by_turn", "8",
+                            iterations=400, targets=TARGETS, placebos=2)
+    assert got["available"]
+    assert got["placebo"] is not None, "the control did not run"
+    assert set(got["placebo"]) >= {"draws", "band", "mean"}
+    assert "placebo band" in got["verdict"]
+
+
+def test_an_ablation_says_so_when_no_placebo_was_possible():
+    """Silence here would be the worst outcome: a delta with no control reads
+    exactly like a delta with one."""
+    doc = _doc([_card("Doubler", DOUBLER, qty=4)])
+    got = diagnostic.ablate(doc, "ur-dragon", ["Doubler", "Engine"],
+                            "output", "hoard_by_turn", "6",
+                            iterations=200, targets=TARGETS)
+    assert got["placebo"] is None
+    assert "cannot be separated" in got["verdict"]
