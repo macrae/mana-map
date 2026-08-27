@@ -164,3 +164,38 @@ def test_an_unedited_scaffold_is_reported_on_every_run(tmp_path, capsys):
     out = capsys.readouterr().out + capsys.readouterr().err
     assert "SCAFFOLD" in out, "an unedited draft went unreported"
     assert "never edited" in out
+
+
+def test_a_declaration_with_no_required_marking_says_so(capsys, monkeypatch, tmp_path):
+    """NO `required` SILENTLY DISABLES THE FLAGSHIP METRIC.
+
+    `diagnostic.engine` needs to know which components the deck cannot do
+    without; absent that it withholds the figure — correctly, and out of sight
+    of anyone running the validator, which printed a clean OK over it. Measured
+    2026-08-26: 1 of 13 decks carried the marking, so `engine_online` and every
+    axis built on it were validated on a sample of one.
+
+    Reported, never failed: a declaration without it is a legitimate older file,
+    and a gate that reddens twelve correct artifacts teaches its reader to
+    ignore the gate. Driven through `main` — a test that re-derives the rule
+    is testing itself.
+    """
+    import argparse
+
+    unmarked = _doc(["Sol Ring", "Mana Crypt"])
+    marked = {"targets": [dict(unmarked["targets"][0], required=True)]}
+
+    def run(payload):
+        path = tmp_path / "goldfish_targets.json"
+        path.write_text(json.dumps(payload))
+        monkeypatch.setattr(vgt, "deck_dir", lambda *a, **k: tmp_path)
+        try:
+            vgt.main(argparse.Namespace(slug="x", branch=None))
+        except SystemExit:
+            pass
+        return capsys.readouterr().out
+
+    assert "NO `required` MARKING" in run(unmarked)
+    out = run(marked)
+    assert "NO `required` MARKING" not in out
+    assert out.startswith("OK"), out

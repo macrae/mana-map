@@ -244,11 +244,34 @@ def main(args):
             f"this deck's components, and no win line is declared. Rewrite the "
             f"labels, regroup, then delete \"scaffolded\".")
 
+    # NO `required` MARKING SILENTLY DISABLES THE FLAGSHIP METRIC, and the
+    # validator used to print a clean OK over it. `diagnostic.engine` needs to
+    # know which components the deck cannot do without; absent that it withholds
+    # the figure — correctly, and out of sight of anyone running this. Measured
+    # 2026-08-26: **1 of 13 decks** carries the marking, so `engine_online` and
+    # every axis built on it were validated on a sample of one.
+    #
+    # REPORTED, NOT FAILED — same reasoning as the scaffold note above. A
+    # declaration without it is a legitimate older file, not a broken one, and a
+    # gate that reddens twelve correct artifacts teaches its reader to ignore
+    # the gate. Saying it on every run is what keeps the state from going quiet.
+    required_note = ""
+    targets = doc.get("targets", [])
+    if targets and not any(t.get("required") for t in targets):
+        routes = sum(1 for t in targets if t.get("route"))
+        required_note = (
+            f"\n     NO `required` MARKING — `diagnose` cannot report an engine "
+            f"figure for this deck and withholds it silently. Mark the "
+            f"component(s) the deck cannot function without with "
+            f"\"required\": true; the alternative kills take \"route\": "
+            f"\"<name>\" and are counted as a union"
+            + (f" ({routes} already carry a route)." if routes else "."))
+
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('targets', []))} target(s), "
         f"{groups} component group(s); sizes are redundancy claims ◆"
-        + scaffold_note)
+        + required_note + scaffold_note)
 
 
 if __name__ == "__main__":
