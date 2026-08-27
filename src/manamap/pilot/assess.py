@@ -35,6 +35,7 @@ import re
 
 from manamap.pilot.common import (
     deck_file, expand_faces, load_deck_cards, load_json)
+from manamap.pilot import goldfish
 from manamap.sim import pod_behaviour
 
 #: What a card is gated on — the question "will this deck ever turn it on".
@@ -60,9 +61,19 @@ _GATES = (
     (RECURRING, re.compile(r"[Ww]henever|[Aa]t the beginning")),
 )
 
+# TRIAGE IS DELIBERATELY BROADER THAN THE MODEL, and the two shared halves are
+# IMPORTED so they cannot drift again. This pattern once matched five wordings
+# while `goldfish._TRE_EXTRA_RE` matched one, which is how the goldfish came to
+# price 2 of the 8 multipliers ur-dragon's treasure branch declares. The extra
+# terms here are on purpose: Panharmonicon and Academy Manufactor ARE
+# multipliers for a deck and are not ones this model can price, so triage should
+# surface them and the simulation should name them blind.
 _MULTIPLIER = re.compile(
-    r"twice that many|those tokens plus|additional Treasure token|"
-    r"plus a Treasure, Clue|triggers an additional time", re.I)
+    "|".join((goldfish.TREASURE_BONUS_RE.pattern,
+              goldfish.TOKEN_DOUBLER_RE.pattern,
+              r"twice that many", r"those tokens plus",
+              r"additional Treasure token", r"plus a Treasure, Clue",
+              r"triggers an additional time")), re.I)
 _TREASURE = re.compile(r"[Cc]reate.{0,45}Treasure")
 
 

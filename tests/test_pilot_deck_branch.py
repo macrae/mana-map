@@ -14,7 +14,8 @@ import json
 import pytest
 
 from manamap.pilot import deck_branch
-from manamap.pilot.common import DECKS_DIR, deck_dir, deck_file
+from manamap.pilot.common import (
+    DECKS_DIR, deck_dir, deck_file, load_deck_cards)
 
 SLUG = "ur-dragon"
 BRANCH = "treasure-v2"
@@ -54,7 +55,7 @@ def test_a_branch_run_never_touches_the_decks_own_artifacts():
     """
     import argparse
 
-    from manamap.pilot import bracket, deck_map, mana_analysis
+    from manamap.pilot import bracket, deck_map, goldfish, mana_analysis
 
     root = deck_dir(SLUG)
     before = _tree(root)
@@ -68,7 +69,7 @@ def test_a_branch_run_never_touches_the_decks_own_artifacts():
             setattr(ns, k, v)
         return ns
 
-    for mod in (bracket, mana_analysis, deck_map):
+    for mod in (bracket, mana_analysis, deck_map, goldfish):
         mod.main(args())
 
     after = _tree(root)
@@ -76,6 +77,56 @@ def test_a_branch_run_never_touches_the_decks_own_artifacts():
     added = sorted(set(after) - set(before))
     assert not changed, f"a branch run rewrote the deck's own artifact(s): {changed}"
     assert not added, f"a branch run created file(s) in the deck's directory: {added}"
+
+
+@needs_branch
+def test_a_branch_run_measured_the_branch_and_not_the_deck():
+    """THE OTHER HALF OF THE CONTROL, AND IT WAS MISSING FOR AS LONG AS
+    BRANCHES HAVE EXISTED.
+
+    `test_a_branch_run_never_touches_the_decks_own_artifacts` proves the WRITE
+    landed in the right directory. It cannot see a command that reads the
+    CHAMPION and writes to the BRANCH — the file appears exactly where it
+    should, holding the wrong deck's numbers.
+
+    `goldfish.main` did precisely that: `run(args.slug)` with no `branch=`,
+    beside a `deck_dir(args.slug, branch)` on the write path. On ur-dragon's
+    treasure branch it understated the turn-10 hoard 5.29 -> 1.32 — a factor of
+    four — and the artifact's own `meta.decklist_sha256` named the champion's
+    list the whole time, because nothing compared it to anything.
+
+    So compare it. Every measurement a branch writes must record the BRANCH's
+    decklist sha, which is cheap, exact, and catches the entire class.
+    """
+    import argparse
+
+    from manamap.pilot import goldfish, mana_analysis
+
+    branch_sha = load_deck_cards(SLUG, BRANCH)["decklist_sha256"]
+    deck_sha = load_deck_cards(SLUG)["decklist_sha256"]
+    assert branch_sha != deck_sha, "fixture: the branch and the deck are the same list"
+
+    def args(**kw):
+        ns = argparse.Namespace(slug=SLUG, branch=BRANCH, out=None, json=False,
+                                as_json=False, force=False, archetype=None,
+                                seed=None, iterations=None, max_turn=None)
+        for k, v in kw.items():
+            setattr(ns, k, v)
+        return ns
+
+    for mod, name in ((goldfish, "goldfish_metrics.json"),
+                      (mana_analysis, "mana_analysis.json")):
+        mod.main(args())
+        doc = json.loads((deck_dir(SLUG, BRANCH) / name).read_text())
+        # The two artifacts stamp it at different depths — goldfish under
+        # `meta`, mana-analysis at the top. Read both rather than normalising
+        # the files: they are tracked, and tidying them to suit a test would
+        # rewrite artifacts nobody asked to change.
+        got = (doc.get("decklist_sha256")
+               or (doc.get("meta") or {}).get("decklist_sha256"))
+        assert got == branch_sha, (
+            f"{name} was written into the branch but measured "
+            f"{'the deck' if got == deck_sha else 'something else'}: {got}")
 
 
 @needs_branch

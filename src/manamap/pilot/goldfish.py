@@ -157,9 +157,32 @@ _TRE_SAGA_RE     = re.compile(r"Enchantment — Saga|add a lore counter", re.IGN
 # One-shot, on resolution.
 _TRE_ETB_RE      = re.compile(r"when (?:this creature|this artifact|[A-Z][\w' ,-]{2,30}) enters",
                               re.IGNORECASE)
-# Xorn: "instead create those tokens plus an additional Treasure token."
-_TRE_EXTRA_RE = re.compile(r"instead create those tokens plus an additional Treasure",
-                           re.IGNORECASE)
+# TWO KINDS OF MULTIPLIER, AND CONFLATING THEM IS WRONG IN BOTH DIRECTIONS.
+# Xorn and Jolene ADD one Treasure to every Treasure event; Anointed Procession,
+# Parallel Lives, Doubling Season and Mondrak DOUBLE whatever the event makes.
+# They coincide only when the event makes exactly one, which is why an additive
+# stand-in for doubling reads almost right and is not.
+#
+# These are PUBLIC because `assess._MULTIPLIER` is the other reader of the same
+# concept and the two had diverged silently: this module matched one wording and
+# assess matched five, so the goldfish priced 2 of the 8 multipliers ur-dragon's
+# treasure branch DECLARES and counted the other 6 as drawn-and-inert. That is
+# the `front_field` defect one subsystem over — two halves of one idea drifting
+# because nothing made them share a definition. They live here rather than in
+# config because this module owns the Treasure model; config owns the frozen,
+# model-facing vocabulary and adding to it invalidates a trained net.
+TREASURE_BONUS_RE = re.compile(r"instead create those tokens plus an additional Treasure",
+                               re.IGNORECASE)
+#: "it creates twice that many of those tokens instead" and Mondrak's inversion
+#: of the same sentence. Deliberately keyed on TOKENS — Panharmonicon doubles
+#: ETB TRIGGERS and Academy Manufactor converts Clue/Food events into Treasure
+#: ones; both are real multipliers for a deck and neither is this one, so they
+#: stay blind and get NAMED rather than folded in where they would read as right.
+TOKEN_DOUBLER_RE = re.compile(
+    r"creates twice that many of those tokens|twice that many of those tokens are created",
+    re.IGNORECASE)
+#: Kept so the old private name still resolves for anything reading it.
+_TRE_EXTRA_RE = TREASURE_BONUS_RE
 
 
 def treasure_profile(card):
@@ -404,7 +427,11 @@ def classify(card):
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
         "treasure_trigger": None if is_land else treasure_profile(card)[1],
         # Xorn makes no Treasure of its own; it adds one to every event.
-        "treasure_bonus": bool(_TRE_EXTRA_RE.search(text)),
+        "treasure_bonus": bool(TREASURE_BONUS_RE.search(text)),
+        # Anointed Procession et al. make none either, and DOUBLE every event.
+        # Rides on the card always and is read only under `model_treasures`, so
+        # a non-opted deck stays byte-identical — the `creature_bodies` rule.
+        "treasure_doubler": bool(TOKEN_DOUBLER_RE.search(text)),
     }
 
 
@@ -473,6 +500,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     treasures = 0                 # a STOCKPILE: each one is spendable once
     treasure_engines = []         # (per_event, trigger) for modelled sources in play
     treasure_bonus = 0            # Xorn-style +N per creation event
+    # Procession-style xN. Multiplicative and applied AFTER the additive bonus,
+    # which is the order a player would choose: replacement effects on one event
+    # are ordered by the affected player, and (n + 1) x 2 beats n x 2 + 1. A
+    # goldfish assumes the pilot takes the better line.
+    treasure_multiplier = 1
     treasures_by_turn = []
     treasure_online_by_turn = []
     commander_turn = None
@@ -536,7 +568,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if trigger == "landfall" and not land_hits[-1]:
                 continue
             if trigger in ("upkeep", "landfall"):
-                treasures += per_event + treasure_bonus
+                treasures += (per_event + treasure_bonus) * treasure_multiplier
 
         pool = lands_in_play + rock_production
         # Reported WITHOUT the stockpile, so this series keeps meaning exactly
@@ -625,12 +657,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     pass
                 elif card["treasure_bonus"]:
                     treasure_bonus += 1
+                if model_treasures and card["treasure_doubler"]:
+                    # Two doublers is x4, not x3 — each replaces the other's
+                    # output, which is why this compounds rather than sums.
+                    treasure_multiplier *= 2
                 if not model_treasures:
                     pass
                 elif card["treasure_trigger"] in ("upkeep", "landfall"):
                     treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
                 elif card["treasure_trigger"] in ("etb", "cast"):
-                    treasures += card["treasure_n"] + treasure_bonus
+                    treasures += ((card["treasure_n"] + treasure_bonus)
+                                  * treasure_multiplier)
         bodies_by_turn.append(bodies_cum)
 
         # ── Combat step ────────────────────────────────────────────────────
@@ -934,8 +971,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
 
     # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
     # `treasure_profile` alone while the model has three ways to see a Treasure:
-    # the trigger table, `treasure_bonus` (a multiplier — Xorn, Jolene) and
-    # `combat.attack_treasure` (Goldspan, Old Gnawbone, Ragavan) once
+    # the trigger table, `treasure_bonus` (an adder — Xorn, Jolene),
+    # `treasure_doubler` (Procession, Mondrak) and `combat.attack_treasure` (Goldspan, Old Gnawbone, Ragavan) once
     # `model_combat` is on. Reported from one channel it named nineteen sources
     # on ur-dragon's treasure branch as invisible when six of them were being
     # simulated — and the whole point of the list is that a low hoard figure
@@ -945,8 +982,11 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         # entries, and the derived fields only exist on a built library entry.
         if treasure_profile(c)[1] != "unmodelled":
             return False
-        if _TRE_EXTRA_RE.search(c.get("oracle_text") or ""):
-            return False                       # a multiplier: Xorn, Jolene
+        text = c.get("oracle_text") or ""
+        if TREASURE_BONUS_RE.search(text):
+            return False                       # an adder: Xorn, Jolene
+        if TOKEN_DOUBLER_RE.search(text):
+            return False                       # a doubler: Procession, Mondrak
         if model_combat and combat_profile(c).get("attack_treasure"):
             return False                       # Goldspan, Old Gnawbone, Ragavan
         return True
@@ -1022,7 +1062,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
 
 def main(args):
     branch = getattr(args, "branch", None)
-    doc = run(args.slug)
+    # BRANCHED WRITE, UN-BRANCHED READ — the mirror of the defect
+    # `resolve_out_path` documents, and it silently filed the CHAMPION's
+    # measurement under the branch's name for as long as branches have existed.
+    # On ur-dragon's treasure branch that understated the turn-10 hoard 5.29 ->
+    # 1.32, a factor of four, in a file whose own `meta.decklist_sha256` said
+    # which list it had really measured. Nothing read that field.
+    doc = run(args.slug, branch=branch)
     out = deck_dir(args.slug, branch) / "goldfish_metrics.json"
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)

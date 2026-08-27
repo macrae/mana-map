@@ -142,3 +142,88 @@ def test_the_opt_in_omits_the_keys_entirely_rather_than_zeroing_them(tmp_path, m
                               [], 6, model_treasures=True)
     assert "treasure" in m_on
     assert "engine_online_rate_by_turn" in m_on["treasure"]
+
+
+# ── Doubling: multiplicative, and it is not the adder ────────────────────
+
+DOUBLER = ("If an effect would create one or more tokens under your control, "
+           "it creates twice that many of those tokens instead.")
+ADDER = ("If you would create one or more Treasure tokens, instead create "
+         "those tokens plus an additional Treasure token.")
+
+
+def test_a_token_doubler_is_classified_apart_from_an_adder():
+    """TWO REGEXES FOR ONE CONCEPT IS WHAT PRODUCED THIS.
+
+    The model matched only the Xorn wording, so it priced 2 of the 8
+    multipliers ur-dragon's treasure branch DECLARES and counted the other 6 as
+    drawn-and-inert — while `assess._MULTIPLIER` matched five patterns, one
+    module over. They share a definition now.
+    """
+    assert goldfish.classify(_card("X", DOUBLER))["treasure_doubler"] is True
+    assert goldfish.classify(_card("X", DOUBLER))["treasure_bonus"] is False
+    assert goldfish.classify(_card("X", ADDER))["treasure_bonus"] is True
+    assert goldfish.classify(_card("X", ADDER))["treasure_doubler"] is False
+
+
+def test_doubling_is_multiplicative_and_an_additive_stand_in_is_wrong():
+    """THE CONTROL THAT SEPARATES THE TWO MODELS.
+
+    They agree when an event makes exactly one token, which is why an additive
+    stand-in reads almost right — and disagree the moment it makes three. A
+    three-Treasure event under a doubler is SIX, not four.
+    """
+    land = {"name": "Mountain", "oracle_text": "", "cmc": 0,
+            "type_line": "Basic Land — Mountain", "quantity": 34}
+    src = _card("Engine", "At the beginning of your upkeep, create three "
+                          "Treasure tokens.", cmc=2)
+    src["quantity"] = 20
+    dbl = _card("Procession", DOUBLER, cmc=2)
+    dbl["quantity"] = 20
+    plain = _run([land, src], True, turns=8)
+    with_dbl = _run([land, src, dbl], True, turns=8)
+    a, b = max(plain["treasures_by_turn"]), max(with_dbl["treasures_by_turn"])
+    assert b >= 2 * a, (
+        f"a doubler on a three-token event produced {b} against a plain {a}; "
+        f"an additive +1 model would land near {a} + turns, not 2x")
+
+
+def test_two_doublers_compound_rather_than_sum():
+    """Each replacement replaces the other's output, so two is x4, not x3."""
+    land = {"name": "Mountain", "oracle_text": "", "cmc": 0,
+            "type_line": "Basic Land — Mountain", "quantity": 30}
+    src = _card("Engine", "At the beginning of your upkeep, create a Treasure "
+                          "token.", cmc=1)
+    src["quantity"] = 15
+    one = _card("Procession", DOUBLER, cmc=1); one["quantity"] = 10
+    two = _card("Parallel", DOUBLER, cmc=1); two["quantity"] = 10
+    a = max(_run([land, src, one], True, turns=9)["treasures_by_turn"])
+    b = max(_run([land, src, one, two], True, turns=9)["treasures_by_turn"])
+    assert b > a, f"a second doubler changed nothing: {a} -> {b}"
+
+
+def test_a_trigger_doubler_is_not_a_token_doubler():
+    """Panharmonicon doubles ETB TRIGGERS and Academy Manufactor converts a
+    Clue/Food event into a Treasure one. Both are real multipliers for a deck
+    and neither is THIS one — folding them in would be wrong in a way that
+    reads as right, so they stay blind and get named instead."""
+    pan = _card("Panharmonicon", "If an artifact or creature entering causes a "
+                "triggered ability of a permanent you control to trigger, that "
+                "ability triggers an additional time.")
+    manu = _card("Academy Manufactor", "If you would create a Clue, Food, or "
+                 "Treasure token, instead create one of each.")
+    for card in (pan, manu):
+        got = goldfish.classify(card)
+        assert got["treasure_doubler"] is False, card["name"]
+        assert got["treasure_bonus"] is False, card["name"]
+
+
+def test_a_doubler_produces_nothing_with_the_model_off():
+    land = {"name": "Mountain", "oracle_text": "", "cmc": 0,
+            "type_line": "Basic Land — Mountain", "quantity": 30}
+    src = _card("Engine", "At the beginning of your upkeep, create a Treasure "
+                          "token.", cmc=2)
+    src["quantity"] = 20
+    dbl = _card("Procession", DOUBLER, cmc=2); dbl["quantity"] = 10
+    off = _run([land, src, dbl], False, turns=8)
+    assert max(off["treasures_by_turn"]) == 0
