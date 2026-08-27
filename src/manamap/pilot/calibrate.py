@@ -42,6 +42,32 @@ MEASURES = {
     "cmdr_turn": ("commander", "mean_cast_turn", None),
 }
 
+#: WHICH WAY EACH MEASURE SHOULD POINT IF THE MODEL IS TRACKING ANYTHING.
+#: Without this the command reports its strongest correlation as its best
+#: result, and on the first real run that was **`cmdr_turn` at +0.760** — i.e.
+#: decks whose commander casts LATER win MORE. Read as a validation that is
+#: "cast your commander later"; read honestly it is an expensive commander
+#: standing in for an expensive DECK (gishath 7.8, ur-dragon 8.0 and edgar 6.5
+#: are three of the four best win rates; hapatra 2.1, sisay 3.2 and radagast 3.9
+#: are three of the four worst). A correlation with the WRONG SIGN is evidence
+#: of a confound, never of the model working, and the two look identical in a
+#: table of coefficients.
+EXPECTED = {"kill_by_8": +1, "damage_8": +1, "mana_7": +1, "cmdr_turn": -1}
+
+#: Two-tailed p<0.05 critical values for Spearman's rho. A coefficient below the
+#: line is not a weak finding, it is no finding — and printing it bare is how a
+#: null gets read as one.
+RHO_CRITICAL = {8: 0.738, 9: 0.700, 10: 0.648, 11: 0.618, 12: 0.587,
+                13: 0.560, 14: 0.538, 15: 0.521, 16: 0.503, 18: 0.475,
+                20: 0.450, 25: 0.400, 30: 0.364}
+
+
+def critical_rho(n):
+    """The |rho| this many decks needs to clear p<0.05, two-tailed."""
+    if n < min(RHO_CRITICAL):
+        return 1.0
+    return RHO_CRITICAL[min(RHO_CRITICAL, key=lambda k: abs(k - n))]
+
 
 def forge_record(pod=None):
     """Wins and games per OUR seat, POOLED ONLY WITHIN ONE POD.
@@ -166,10 +192,38 @@ def calibrate(iterations=3000):
             f"{' '.join(pod or ['<pod>'])} --games {MIN_GAMES}`.")
         return doc
     doc["verdict"] = "measured"
-    doc["spearman"] = {
-        name: round(_spearman([r["win_rate"] for r in rows],
+    n = len(rows)
+    doc["critical_rho"] = critical_rho(n)
+    out = {}
+    for name in MEASURES:
+        rho = round(_spearman([r["win_rate"] for r in rows],
                               [r[name] for r in rows]), 3)
-        for name in MEASURES}
+        agrees = (rho >= 0) == (EXPECTED[name] > 0)
+        out[name] = {
+            "rho": rho,
+            "expected_direction": "higher is better" if EXPECTED[name] > 0
+                                  else "lower is better",
+            "sign_agrees": agrees,
+            "significant": abs(rho) >= doc["critical_rho"],
+            "reading": (
+                "tracks the outcome" if agrees and abs(rho) >= doc["critical_rho"]
+                else "points the right way but does not clear significance at "
+                     f"n={n}" if agrees
+                else "WRONG SIGN — this is evidence of a confound, not of the "
+                     "model working"),
+        }
+    doc["spearman"] = out
+    # A win rate at n=20 has a 95% interval about +/-0.18 wide against a fleet
+    # spanning 0.00-0.30, and two seats carry 100+ games while nine carry ~20.
+    # A rank correlation weights them equally; saying so is cheaper than
+    # pretending otherwise.
+    doc["limits"] = [
+        f"n={n} decks. |rho| must reach {doc['critical_rho']} for p<0.05.",
+        "Unequal samples: two seats carry 100+ games and the rest ~20, and a "
+        "rank correlation weights them equally.",
+        "Forge's AI is a weak pilot (see sim/pilot_quality); this measures "
+        "whether the model tracks THAT table, not a human one.",
+    ]
     return doc
 
 
@@ -194,9 +248,14 @@ def main(args):
         print(f"    {doc['why']}")
         print(f"    {doc['what_it_would_take']}")
         return
-    print(f"\n  Spearman(Forge win rate, model figure), n={doc['eligible']}:")
+    print(f"\n  Spearman(Forge win rate, model figure), n={doc['eligible']}"
+          f"   (|rho| >= {doc['critical_rho']} for p<0.05)")
     for k, v in doc["spearman"].items():
-        print(f"    {k:14} {v:+.3f}")
+        mark = "  " if v["sign_agrees"] else "!!"
+        print(f"  {mark}{k:14} {v['rho']:+.3f}  ({v['expected_direction']})"
+              f"  {v['reading']}")
+    for line in doc["limits"]:
+        print(f"\n  · {line}")
 
 
 if __name__ == "__main__":

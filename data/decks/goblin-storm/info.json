@@ -28,11 +28,6 @@
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
         "how": "manamap pilot deck-notes goblin-storm add \"<what happened>\" --result win|loss --opponents 3"
-      },
-      {
-        "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate goblin-storm --vs <opponent> --games 12"
       }
     ]
   },
@@ -162,12 +157,42 @@
       "settled_by": "resolve-stack"
     }
   ],
-  "simulation": null,
+  "simulation": {
+    "runs": 1,
+    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-a209c8f5-s718550261",
+    "at": "2026-08-26",
+    "stale": false,
+    "ran_on_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+    "games": 20,
+    "vs": [
+      "giada-angels",
+      "vito",
+      "baylen-tokens"
+    ],
+    "win_rate": 0.05,
+    "win_rate_ci95": [
+      0.009,
+      0.236
+    ],
+    "piloting": {
+      "comparable": true,
+      "lands_ratio": 1.042,
+      "casts_ratio": 0.989,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
+    },
+    "eliminated_by": {
+      "vito": 5,
+      "baylen-tokens": 5,
+      "giada-angels": 6
+    },
+    "mean_round": 16.8,
+    "token_damage_share": 0.23,
+    "tokens_observed": 2.35
+  },
   "experiments": null,
   "next": [
     "nothing in the captain's log — play it, then `deck-notes goblin-storm add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×6",
-    "no simulation runs — `simulate goblin-storm --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

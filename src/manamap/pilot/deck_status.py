@@ -297,8 +297,20 @@ VALIDATED = {
     "deck_map.json": "manamap.pilot.validate_deck_map",
     "deck_recon.json": "manamap.pilot.validate_recon",
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
+    # `diagnostic.json` — the vitals — was tracked, written by `diagnose
+    # --write`, and reported by nothing: no validator, no freshness test, no row
+    # here. It is composed from the goldfish, so it goes stale on every model
+    # change, which made it the artifact whose staleness was least visible.
+    "diagnostic.json": "manamap.pilot.validate_diagnostic",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
+    # NOT a lifecycle stage, and that is exactly why it was missing: the test
+    # hand-added `GATED["build_plan.json"] = validate_build` because there was
+    # no `STAGES` row to hang it on. That left the TEST knowing about a gate the
+    # status command did not — the two-maps divergence this map was extracted to
+    # end, still open for one artifact. `deck_status` renders a validator with
+    # no stage as a GATE row, so it belongs here.
+    "build_plan.json": "manamap.pilot.validate_build",
     "log_annotations.json": "manamap.pilot.validate_debrief",
     "pending.json": "manamap.pilot.validate_pending",
     "strategic_frame.json": "manamap.pilot.validate_strategic_frame",

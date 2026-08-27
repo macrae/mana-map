@@ -13,7 +13,7 @@
   "lands": 36,
   "status": {
     "complete": 8,
-    "of": 15,
+    "of": 16,
     "stale": [],
     "invalid": [],
     "missing": [
@@ -60,11 +60,6 @@
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
         "how": "AUTHORED: data/decks/zur-enchantress/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
-      },
-      {
-        "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate zur-enchantress --vs <opponent> --games 12"
       }
     ]
   },
@@ -150,12 +145,42 @@
     "latest": null
   },
   "open_questions": [],
-  "simulation": null,
+  "simulation": {
+    "runs": 1,
+    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-fa9e5d82-s204682626",
+    "at": "2026-08-27",
+    "stale": false,
+    "ran_on_decklist_sha256": "e71580a78c721fcba28496b0bf11ebfa223d93c7a304b6305d353e0e761f2111",
+    "games": 20,
+    "vs": [
+      "giada-angels",
+      "vito",
+      "baylen-tokens"
+    ],
+    "win_rate": 0.0,
+    "win_rate_ci95": [
+      0.0,
+      0.161
+    ],
+    "piloting": {
+      "comparable": true,
+      "lands_ratio": 1.171,
+      "casts_ratio": 0.764,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
+    },
+    "eliminated_by": {
+      "giada-angels": 11,
+      "vito": 2,
+      "baylen-tokens": 1
+    },
+    "mean_round": 17.3,
+    "token_damage_share": 0.28,
+    "tokens_observed": 0.65
+  },
   "experiments": null,
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`",
-    "no simulation runs — `simulate zur-enchantress --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

@@ -85,6 +85,10 @@ manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
                                         #   interval; `--vs` adds the interval on the DIFFERENCE
+manamap pilot validate-diagnostic <slug> [--branch N]
+                                        #   the vitals' form: every rate carries its
+                                        #   interval, and an unavailable block is ABSENT
+                                        #   rather than zeroed
 manamap pilot calibrate [--iterations N] [--json]
                                         #   DOES THE MODEL PREDICT ANYTHING? Correlates every
                                         #   deck's goldfish figures against its real Forge win

@@ -82,3 +82,35 @@ def test_the_pod_is_chosen_by_games_not_by_run_count():
     with mock.patch.object(calibrate, "_seat_rows", lambda: rows):
         _, pod, _ = calibrate.forge_record()
     assert pod == ["x"], pod
+
+
+def test_a_correlation_with_the_wrong_sign_is_a_confound_not_a_result():
+    """THE FIRST REAL RUN'S STRONGEST NUMBER WAS ITS WORST.
+
+    With 11 decks the table led with `cmdr_turn` at **+0.760** — decks whose
+    commander casts LATER win MORE. As a validation that reads "cast your
+    commander later"; honestly it is an expensive commander standing in for an
+    expensive DECK (gishath 7.8, ur-dragon 8.0, edgar 6.5 are three of the four
+    best win rates; hapatra 2.1, sisay 3.2, radagast 3.9 three of the four
+    worst). In a bare table of coefficients a confound and a finding look
+    identical, so every measure declares which way it should point.
+    """
+    assert calibrate.EXPECTED["cmdr_turn"] < 0, "casting sooner is better"
+    assert calibrate.EXPECTED["kill_by_8"] > 0
+    got = calibrate.calibrate(iterations=200)
+    if got["verdict"] != "measured":
+        pytest.skip("not enough Forge data on this checkout")
+    for name, cell in got["spearman"].items():
+        assert set(cell) >= {"rho", "sign_agrees", "significant", "reading"}
+        wrong = not cell["sign_agrees"]
+        assert wrong == ("WRONG SIGN" in cell["reading"]), (name, cell)
+
+
+def test_significance_is_reported_against_the_sample_size():
+    """0.585 at n=11 is not a weak finding, it is no finding — the critical
+    value is 0.618. Printing a coefficient bare is how a null gets read as one.
+    """
+    assert calibrate.critical_rho(11) == pytest.approx(0.618)
+    assert calibrate.critical_rho(30) < calibrate.critical_rho(11)
+    # A sample too small for any honest verdict must demand a perfect rank.
+    assert calibrate.critical_rho(3) == 1.0

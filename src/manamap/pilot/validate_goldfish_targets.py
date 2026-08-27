@@ -149,13 +149,14 @@ def _validate_membership(doc, main_names, commander_names):
     return errors
 
 
-def _validate_win_line_coverage(doc, slug, main_names, commander_names, base):
+def _validate_win_line_coverage(doc, slug, main_names, commander_names, base,
+                                branch=None):
     """A card carrying two or more passing stacks belongs to some component."""
     declared = _declared_names(doc)
     deck_doc = None
     basics = set()
     try:
-        deck_doc = load_deck_cards(slug)
+        deck_doc = load_deck_cards(slug, branch)
         basics = {c["name"] for c in deck_doc.get("cards", [])
                   if "Basic Land" in str(c.get("type_line", ""))}
     except Exception:                      # pragma: no cover — fresh clone
@@ -188,14 +189,14 @@ def _validate_win_line_coverage(doc, slug, main_names, commander_names, base):
     return errors
 
 
-def validate(doc, slug, base):
+def validate(doc, slug, base, branch=None):
     """Return a list of error strings (empty = the declaration holds)."""
     errors = _validate_shape(doc)
     if errors:
         return errors                      # shape first; the rest would cascade
 
     try:
-        deck_doc = load_deck_cards(slug)
+        deck_doc = load_deck_cards(slug, branch)
     except Exception:                      # pragma: no cover — fresh clone
         return errors
     cards = deck_doc.get("cards", [])
@@ -205,12 +206,13 @@ def validate(doc, slug, base):
     errors += _validate_shared_leg(doc)
     errors += _validate_membership(doc, main_names, commander_names)
     errors += _validate_win_line_coverage(doc, slug, main_names,
-                                          commander_names, base)
+                                          commander_names, base, branch)
     return errors
 
 
 def main(args):
-    base = deck_dir(args.slug)
+    branch = getattr(args, "branch", None)
+    base = deck_dir(args.slug, branch)
     path = base / "goldfish_targets.json"
     if not path.exists():
         raise SystemExit(
@@ -218,7 +220,7 @@ def main(args):
             f"block. Author it before running `manamap pilot goldfish {args.slug}`.")
     with open(path) as f:
         doc = json.load(f)
-    errors = validate(doc, args.slug, base)
+    errors = validate(doc, args.slug, base, branch)
     groups = sum(len(t.get("need", []) or []) for t in doc.get("targets", []))
 
     # AN UNEDITED SCAFFOLD IS REPORTED, NOT FAILED.
@@ -238,11 +240,23 @@ def main(args):
     if doc.get("scaffolded"):
         derived = sum(1 for t in doc.get("targets", [])
                       if str(t.get("_from", "")).startswith("role:"))
-        scaffold_note = (
-            f"\n     SCAFFOLD — never edited. {derived} of "
-            f"{len(doc.get('targets', []))} target(s) are role axes rather than "
-            f"this deck's components, and no win line is declared. Rewrite the "
-            f"labels, regroup, then delete \"scaffolded\".")
+        if not derived:
+            # THE FLAG OUTLIVED THE SCAFFOLD. No target is a role axis any
+            # more, so somebody did the rewrite and left the marker — and the
+            # old wording ("0 of 6 target(s) are role axes") read as an
+            # accusation of the opposite. `validate-goldfish-targets` reports an
+            # unedited draft on every run by design; saying it about an edited
+            # one is the same failure one door over.
+            scaffold_note = (
+                "\n     The \"scaffolded\" flag outlived the scaffold — no "
+                "target is a role axis any more, so this file WAS rewritten. "
+                "Delete the flag; while it is set every run reports a draft.")
+        else:
+            scaffold_note = (
+                f"\n     SCAFFOLD — never edited. {derived} of "
+                f"{len(doc.get('targets', []))} target(s) are role axes rather "
+                f"than this deck's components, and no win line is declared. "
+                f"Rewrite the labels, regroup, then delete \"scaffolded\".")
 
     # NO `required` MARKING SILENTLY DISABLES THE FLAGSHIP METRIC, and the
     # validator used to print a clean OK over it. `diagnostic.engine` needs to

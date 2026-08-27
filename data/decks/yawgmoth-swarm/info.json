@@ -11,7 +11,7 @@
   "lands": 36,
   "status": {
     "complete": 14,
-    "of": 19,
+    "of": 20,
     "stale": [],
     "invalid": [],
     "missing": [
@@ -22,11 +22,6 @@
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
         "how": "manamap pilot deck-notes yawgmoth-swarm add \"<what happened>\" --result win|loss --opponents 3"
-      },
-      {
-        "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate yawgmoth-swarm --vs <opponent> --games 12"
       }
     ]
   },
@@ -248,13 +243,44 @@
       "settled_by": "goldfish"
     }
   ],
-  "simulation": null,
+  "simulation": {
+    "runs": 1,
+    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-5863d86b-s1482938475",
+    "at": "2026-08-27",
+    "stale": false,
+    "ran_on_decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
+    "games": 20,
+    "vs": [
+      "giada-angels",
+      "vito",
+      "baylen-tokens"
+    ],
+    "win_rate": 0.1,
+    "win_rate_ci95": [
+      0.028,
+      0.301
+    ],
+    "piloting": {
+      "comparable": true,
+      "lands_ratio": 1.043,
+      "casts_ratio": 0.818,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
+    },
+    "eliminated_by": {
+      "giada-angels": 8,
+      "vito": 5,
+      "baylen-tokens": 1
+    },
+    "mean_round": 17.1,
+    "token_damage_share": 0.08,
+    "tokens_observed": 0.7
+  },
   "experiments": null,
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version yawgmoth-swarm paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes yawgmoth-swarm add \"…\" --result win|loss --opponents N`",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
-    "no simulation runs — `simulate yawgmoth-swarm --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "5 versions and no experiment — `experiment yawgmoth-swarm --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

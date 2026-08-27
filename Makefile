@@ -62,8 +62,13 @@ setup: $(VENV)  ## Create .venv and install everything, in the order that works
 	@echo ""
 	@echo "Done. Try:  make test"
 
+# PYTEST_ARGS lets CI ask for a skip report without a second full run. A bare
+# `make test` is unchanged; CI passes `-rs` so a green run has to say what it
+# did not check.
+PYTEST_ARGS ?=
+
 test:  ## The inner loop: non-browser, parallel, cached (~20s)
-	$(PYTEST)
+	$(PYTEST) $(PYTEST_ARGS)
 
 test-fresh:  ## Same, but nothing served from the cache — trust this one
 	$(PYTEST) --no-test-cache

@@ -95,8 +95,10 @@ def illegal_cards(cards, spec):
 
 def main(args):
     spec = formats.get(getattr(args, "format", None))
-    doc = load_deck_cards(args.slug)
+    doc = load_deck_cards(args.slug, getattr(args, "branch", None))
     errors = validate(doc, spec)
-    report_errors(args.slug, errors)
+    report_errors(args.slug + (f"@{args.branch}"
+                               if getattr(args, "branch", None) else ""),
+                  errors)
     commanders = [c["name"] for c in doc["cards"] if c["is_commander"]]
     print(f"OK: {spec.deck_size} cards ({spec.name}), commander: {', '.join(commanders)}")

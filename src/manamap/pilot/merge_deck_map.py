@@ -106,7 +106,7 @@ if __name__ == "__main__":
 # ── Validation, callable on its own ─────────────────────────────────────
 
 
-def validate(slug):
+def validate(slug, branch=None):
     """Form-check a named map. Returns a list of errors.
 
     Checks only what is mechanically checkable — a name's wit is not. What IS
@@ -114,7 +114,7 @@ def validate(slug):
     same name, which makes a reader assume they misread the map, and a
     neighbourhood repeating its parent, which says the split found nothing.
     """
-    doc = json.loads((deck_dir(slug) / ARTIFACT).read_text())
+    doc = json.loads((deck_dir(slug, branch) / ARTIFACT).read_text())
     regions = doc.get("regions", [])
     errors = []
 
@@ -170,10 +170,12 @@ def validate(slug):
 
 
 def main_validate(args):
-    errors = validate(args.slug)
-    doc = json.loads((deck_dir(args.slug) / ARTIFACT).read_text())
+    branch = getattr(args, "branch", None)
+    where = args.slug + (f"@{branch}" if branch else "")
+    errors = validate(args.slug, branch)
+    doc = json.loads((deck_dir(args.slug, branch) / ARTIFACT).read_text())
     cities = [r for r in doc["regions"] if r["level"] == 0]
     named = sum(1 for r in cities if r.get("label"))
-    report_errors(f"deck map for {args.slug}", errors,
-                  f"OK   deck map for {args.slug} — {len(cities)} cities "
+    report_errors(f"deck map for {where}", errors,
+                  f"OK   deck map for {where} — {len(cities)} cities "
                   f"({named} agent-named), {len(doc['cards'])} cards placed")

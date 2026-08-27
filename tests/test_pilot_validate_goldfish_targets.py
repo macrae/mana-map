@@ -153,7 +153,9 @@ def test_an_unedited_scaffold_is_reported_on_every_run(tmp_path, capsys):
     import manamap.pilot.validate_goldfish_targets as mod
 
     original = mod.deck_dir
-    mod.deck_dir = lambda slug: base
+    # takes (slug, branch) now — a one-arg stub is the same shape of
+    # half-plumbing this pass exists to remove.
+    mod.deck_dir = lambda slug, branch=None: base
     try:
         mod.main(A())
     except SystemExit:

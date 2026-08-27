@@ -70,7 +70,18 @@ INPUTS = (SRC, CARD_ROLES_PATH, COMBO_DETAILS_PATH,
 # no `STAGES` row for `deck-status` to hang a verdict on.
 GATED = {name: importlib.import_module(dotted)
          for name, dotted in VALIDATED.items()}
-GATED["build_plan.json"] = validate_build
+
+
+def test_the_test_does_not_know_about_a_gate_the_status_command_lacks():
+    """THE HAND-PATCH IS GONE, AND THIS KEEPS IT GONE.
+
+    `GATED["build_plan.json"] = validate_build` used to sit here, so the TEST
+    knew about a gate `deck-status` did not — the exact two-maps divergence the
+    `VALIDATED` map was extracted to end, left open for one artifact. Any future
+    addition goes in `deck_status.VALIDATED` where both readers see it.
+    """
+    assert "build_plan.json" in VALIDATED
+    assert set(GATED) == set(VALIDATED)
 
 # Both read the corpus through `card_pool`, the only reader of the gitignored
 # `cards.csv` — `validate_build` for the declared pool, `validate_recon` to prove
@@ -78,11 +89,43 @@ GATED["build_plan.json"] = validate_build
 NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
 
 
+#: Validators that can be pointed at a branch. The rest take a slug only, so a
+#: branch copy of their artifact is genuinely ungatable until they learn one —
+#: named here rather than skipped silently, because "no case" and "no gate" look
+#: identical from the outside.
+BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json"}
+
+
 def _cases():
+    """(slug, branch, artifact) for every tracked copy — DECKS AND BRANCHES.
+
+    THE BRANCH TREE WAS GATED BY NOTHING. Nine tests globbed
+    `DECKS_DIR.iterdir()` at top level and none reached `branches/`, so ten
+    tracked files under `ur-dragon/branches/treasure-v2/` had no validator and no
+    freshness test — in a subsystem where this repo has already caught an
+    artifact being measured against the wrong decklist.
+    """
     if not DECKS_DIR.is_dir():
         return []
-    return [(d.name, art) for d in sorted(DECKS_DIR.iterdir()) if d.is_dir()
-            for art in sorted(GATED) if (d / art).exists()]
+    out = []
+    for d in sorted(DECKS_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        for art in sorted(GATED):
+            if (d / art).exists():
+                out.append((d.name, None, art))
+        for b in sorted((d / "branches").glob("*")):
+            if not b.is_dir():
+                continue
+            for art in sorted(set(GATED) & BRANCH_AWARE):
+                if (b / art).exists():
+                    out.append((d.name, b.name, art))
+    return out
+
+
+def _case_id(case):
+    slug, branch, art = case
+    return f"{slug}@{branch}/{art}" if branch else f"{slug}/{art}"
 
 
 # Two validators reach through `validate_stack.load_strategy_sections` and report
@@ -95,21 +138,35 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 
 
 @requires_deck
-@pytest.mark.parametrize("slug,artifact", _cases())
-def test_tracked_artifact_passes_its_validator(slug, artifact, capsys, unchanged,
-                                               request):
+@pytest.mark.parametrize("case", _cases(), ids=_case_id)
+def test_tracked_artifact_passes_its_validator(case, capsys, unchanged, request):
     """A tracked artifact that fails its own gate is a published error."""
+    slug, branch, artifact = case
     if artifact in NEEDS_STRATEGY and not STRATEGY_INDEX_PATH.exists():
         pytest.skip("requires the strategy DB (run `manamap pilot build-strategy-db`)")
     if artifact in NEEDS_CORPUS and not OUTPUT_CSV_PATH.exists():
         pytest.skip("requires the card corpus (run `manamap extract`)")
     unchanged(*INPUTS, DECKS_DIR / slug)
     try:
-        GATED[artifact].main(type("Args", (), {"slug": slug})())
+        GATED[artifact].main(
+            type("Args", (), {"slug": slug, "branch": branch})())
     except SystemExit as exit_:
         if exit_.code:
-            pytest.fail(f"{slug}/{artifact} fails its validator:\n"
+            pytest.fail(f"{_case_id(case)} fails its validator:\n"
                         f"{capsys.readouterr().out}")
+
+
+def test_every_branch_artifact_a_validator_can_reach_is_gated():
+    """NON-EMPTY GUARD, and a real one — the branch cases exist to catch a class
+    this repo has already been bitten by, and a parametrize that silently yields
+    zero of them would pass forever while gating nothing."""
+    branch_cases = [c for c in _cases() if c[1]]
+    if not any((DECKS_DIR / d.name / "branches").is_dir()
+               for d in DECKS_DIR.iterdir() if d.is_dir()):
+        pytest.skip("no branches on this checkout")
+    assert branch_cases, (
+        "a branch exists and no branch artifact is gated — the recursion in "
+        "`_cases` has regressed to the top-level glob it replaced")
 
 
 def _deck_slugs():
@@ -188,3 +245,75 @@ def test_every_tracked_simulation_run_passes_its_validator(slug, capsys, unchang
     except SystemExit as exit_:
         if exit_.code:
             pytest.fail(f"{slug} simulation runs fail their validator:\n{capsys.readouterr().out}")
+
+
+# ── The two validators that were wired into nothing ──────────────────────
+#
+# THIRD INSTANCE of a defect class this file's own header documents twice.
+# `validate_issue` gates 9 `issue.json` + 9 `issue_plan.json` and reaches into
+# `manual_prose.json` and `tutor_guide.json`; `validate_strategy` gates
+# `strategy.md` and `CHANGELOG.md`, both tracked. Neither was ever run by a
+# test. `deck_status.py` even carries a comment recording `validate-issue`
+# failing live on ur-dragon while `deck-status` reported the deck green.
+#
+# Like `validate_stack`, `validate_issue` takes a SLUG and walks several files,
+# so it cannot ride the filename-keyed map — which is exactly why it was skipped.
+
+#: Decks whose issue fails today, with the reason. STRICT xfail: if one starts
+#: passing, this list is wrong and the test says so rather than going quiet.
+#:
+#: NOT hand-patched. Both are agent-authored prose, and `magazine-editor` was
+#: retired in the 2026-08 pivot — there is no agent left to re-spawn, so the
+#: honest options are to mark them or to delete the artifacts. Marking keeps the
+#: gate live for the other seven and blocks a tenth from joining them.
+ISSUE_XFAIL = {
+    "edgar-vampires":
+        "prose predates THE LOCK's 12 swaps — captions and the roster name "
+        "Sacred Foundry, Diabolic Intent, Demonic Tutor and Cavern of Souls, "
+        "all cut. Fixing it means re-writing copy a retired agent authored.",
+    "ur-dragon":
+        "quotes '31 lands' in three places — the DISTINCT-CARD count, where "
+        "the deck runs 36 copies. The copies-vs-entries defect this repo "
+        "documents, live in tracked prose.",
+}
+
+
+def _issue_slugs():
+    if not DECKS_DIR.is_dir():
+        return []
+    return sorted(d.name for d in DECKS_DIR.iterdir()
+                  if d.is_dir() and (d / "issue.json").exists())
+
+
+@requires_deck
+@pytest.mark.parametrize("slug", _issue_slugs())
+def test_every_tracked_issue_passes_validate_issue(slug, capsys, unchanged, request):
+    if slug in ISSUE_XFAIL:
+        request.node.add_marker(
+            pytest.mark.xfail(strict=True, reason=ISSUE_XFAIL[slug]))
+    unchanged(*INPUTS, DECKS_DIR / slug)
+    from manamap.pilot import validate_issue
+    try:
+        validate_issue.main(type("Args", (), {"slug": slug, "strict": False})())
+    except SystemExit as exit_:
+        if exit_.code:
+            pytest.fail(f"{slug} fails validate-issue:\n{capsys.readouterr().out}")
+
+
+def test_the_issue_gate_actually_has_cases():
+    """NON-EMPTY GUARD. Nine issues are tracked; a parametrize that yields zero
+    would pass forever while gating nothing — which is the state this test was
+    added to end."""
+    assert len(_issue_slugs()) >= 5, _issue_slugs()
+
+
+def test_the_strategy_doc_passes_its_validator(capsys):
+    """`strategy.md` and `CHANGELOG.md` are tracked, and every `strategy:<id>`
+    citation in the fleet resolves against them. Ungated until now."""
+    from manamap.pilot import validate_strategy
+    try:
+        validate_strategy.main(type("Args", (), {})())
+    except SystemExit as exit_:
+        if exit_.code:
+            pytest.fail(f"strategy.md fails its validator:\n"
+                        f"{capsys.readouterr().out}")

@@ -60,6 +60,8 @@ PILOT_STEPS = [
     ("assess", "manamap.pilot.assess",
      "Triage a pile of cards against one deck before spending: legality, cost, what it does, "
      "what it is gated on, whether any model here can see it, and what it would replace"),
+    ("validate-diagnostic", "manamap.pilot.validate_diagnostic",
+     "Form-check diagnostic.json: every rate carries its interval"),
     ("calibrate", "manamap.pilot.calibrate",
      "Does the model track real outcomes? Refuses below a usable sample"),
     ("close", "manamap.pilot.close",
@@ -137,7 +139,8 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
+    "validate-diagnostic", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -331,7 +334,11 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close'):
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close',
+                    # The validators too: a branch's artifacts were gated by
+                    # NOTHING, because no validator could be pointed at one.
+                    'validate-deck', 'validate-deck-map',
+                    'validate-goldfish-targets', 'validate-diagnostic'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")

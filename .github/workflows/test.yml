@@ -14,6 +14,10 @@ on:
   push:
     branches: [main]
   pull_request:
+  # The corpus job below is weekly. Everything else is per-push.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -43,6 +47,23 @@ jobs:
           pip install llvmlite==0.41.1 numba==0.58.1
           pip install -e ".[dev]"
 
+      - name: Cache the sentence-transformer used by the strategy DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-minilm
+
+      - name: Build the strategy DB
+        # WITHOUT THIS, CI DOES NOT RUN THE CITATION CONTRACT — and that test's
+        # own docstring calls it "the load-bearing promise of this whole
+        # project … an unrun validator here is worse than an unrun validator
+        # anywhere else". It gates on `data/strategy/strategy_index.json`, which
+        # is gitignored, so on a fresh checkout it skipped: all 60 stacks and 18
+        # decisions, plus the `tutor_guide.json` and `diagnosis.json`
+        # validators. `strategy.md` IS tracked and the built index is 69 KB, so
+        # the only cost is a cached model download.
+        run: manamap pilot build-strategy-db
+
       - name: Test
         # `make test`, NOT a bare pytest — CI must exercise the entry point
         # CONTRIBUTING tells people to use, or the Makefile is the one thing
@@ -50,10 +71,15 @@ jobs:
         # because it assumed a `.venv` that CI never creates.
         #
         # The fast suite. Most data-gated tests still run — the artifacts they
-        # need are tracked on purpose, so 129 of 1,489 skip without a pipeline
-        # run, each labelled with the command that would enable it. `-n auto` is
-        # already the default in pyproject.
-        run: make test
+        # need are tracked on purpose. `-n auto` is already the default in
+        # pyproject.
+        #
+        # `-rs` PRINTS THE SKIP REASONS, because "CI is green" used to mean
+        # "everything ran" and it did not: the corpus (`data/cards.csv`,
+        # `data/embeddings.npy`) is gitignored and needs a 600 MB Scryfall
+        # download, so the tests that need it still cannot run here. What CI
+        # cannot check, it must at least NAME — see the scheduled job below.
+        run: make test PYTEST_ARGS=-rs
 
       - name: The manuals must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it
@@ -61,3 +87,43 @@ jobs:
         run: |
           make manuals
           git diff --exit-code -- manuals/ data/decks/index.json
+
+  # ── THE GATES A PER-PUSH RUN CANNOT REACH ────────────────────────────────
+  #
+  # `data/cards.csv` and the embeddings are gitignored and come from a 600 MB
+  # Scryfall download, so the validators that need the corpus —
+  # `build_plan.json`, `deck_recon.json`, and the `bracket_report.json` /
+  # `info.json` freshness gates — skip on every push. They were running NOWHERE.
+  #
+  # Weekly is the honest compromise: not on the critical path, but somewhere.
+  # It does NOT run the models (no train, no embed) — `extract` alone writes
+  # `cards.csv`, which is what those gates actually need.
+  corpus-gates:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install llvmlite==0.41.1 numba==0.58.1
+          pip install -e ".[dev]"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-minilm
+      - name: Build the strategy DB
+        run: manamap pilot build-strategy-db
+      - name: Download and extract the corpus
+        # Steps 1-2 only. The bulk file is large; `extract` writes cards.csv.
+        run: |
+          manamap download
+          manamap extract
+      - name: Every gate, including the ones a push cannot reach
+        run: make test PYTEST_ARGS=-rs

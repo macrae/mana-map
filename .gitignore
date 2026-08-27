@@ -60,6 +60,9 @@ data/decks/*/experiments/logs/
 # by `make demo` immediately before anything reads it.
 data/decks/*/versions.json
 
-# check-in writes a safety copy of the previous list before overwriting it.
-# It is a local undo, not an artifact — the previous list is already in git.
-*.txt.bak
+# A POOL IS SCRATCH. `pool.txt` is "consider these" — written by the Atlas's
+# `pool/save` AND by `close --write`, read by `assess` and
+# `candidates --pool library`, and re-derivable in one command. It was TRACKED
+# with two writers and no gate, which is the one wrong option: a committed file
+# nothing validates and either surface can silently overwrite.
+data/decks/*/pool.txt

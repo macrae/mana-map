@@ -23,7 +23,7 @@ import pytest
 
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OUTPUT_CSV_PATH)
-from manamap.pilot import bracket, deck_info, goldfish, mana_analysis
+from manamap.pilot import bracket, diagnostic, deck_info, goldfish, mana_analysis
 
 from conftest import SRC, requires_deck, requires_data
 
@@ -50,15 +50,42 @@ CODE = (SRC,)
 
 
 def _slugs(artifact):
+    """Every place this artifact is tracked — DECKS AND THEIR BRANCHES.
+
+    THE BRANCH TREE WAS INVISIBLE TO EVERY GATE. Nine tests globbed
+    `DECKS_DIR.iterdir()` at top level and none reached `branches/`, so the ten
+    tracked files under `ur-dragon/branches/treasure-v2/` were validated by
+    nothing and freshness-gated by nothing — including the one artifact this
+    repo has already caught being measured against the WRONG DECKLIST
+    (`goldfish.main` read the champion and wrote to the branch, understating the
+    turn-10 hoard by a factor of four).
+
+    Returns `(slug, branch)` pairs; `branch` is None for the deck itself.
+    """
     if not DECKS_DIR.is_dir():
         return []
-    return sorted(d.name for d in DECKS_DIR.iterdir()
-                  if d.is_dir() and (d / artifact).exists())
+    out = []
+    for d in sorted(DECKS_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        if (d / artifact).exists():
+            out.append((d.name, None))
+        for b in sorted((d / "branches").glob("*")):
+            if b.is_dir() and (b / artifact).exists():
+                out.append((d.name, b.name))
+    return out
 
 
-def _roundtrip(slug, artifact, rerun, tmp_path):
+def _id(target):
+    slug, branch = target
+    return f"{slug}@{branch}" if branch else slug
+
+
+def _roundtrip(target, artifact, rerun, tmp_path):
     """Recompute in place, compare to the tracked copy, restore either way."""
-    path = DECKS_DIR / slug / artifact
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    path = root / artifact
     backup = tmp_path / artifact
     shutil.copy2(path, backup)
     try:
@@ -71,8 +98,8 @@ def _roundtrip(slug, artifact, rerun, tmp_path):
 
 @requires_deck
 @requires_data
-@pytest.mark.parametrize("slug", _slugs("bracket_report.json"))
-def test_bracket_report_matches_a_fresh_run(slug, tmp_path, unchanged):
+@pytest.mark.parametrize("target", _slugs("bracket_report.json"), ids=_id)
+def test_bracket_report_matches_a_fresh_run(target, tmp_path, unchanged):
     """The one artifact with no stamp of its own.
 
     `--target` adds `target`/`within_target`/`cut_candidates`, so the rerun has
@@ -80,26 +107,31 @@ def test_bracket_report_matches_a_fresh_run(slug, tmp_path, unchanged):
     with a target looks stale against a rerun without one, which is a false
     alarm rather than a finding.
     """
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
     # Bracket also reads three global artifacts outside the deck directory.
-    unchanged(*CODE, DECKS_DIR / slug, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
+    unchanged(*CODE, root, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
               COMBO_DETAILS_PATH)
-    tracked = json.loads((DECKS_DIR / slug / "bracket_report.json").read_text())
-    target = tracked.get("target")
+    tracked = json.loads((root / "bracket_report.json").read_text())
+    # NOT `target` — that is this test's parametrize argument now, and shadowing
+    # it handed `_roundtrip` an int. Two meanings of one word in one scope.
+    bracket_target = tracked.get("target")
 
     def rerun():
-        bracket.main(type("Args", (), {"slug": slug, "target": target,
+        bracket.main(type("Args", (), {"slug": slug, "branch": branch,
+                                       "target": bracket_target,
                                        "as_json": False})())
 
-    fresh, old = _roundtrip(slug, "bracket_report.json", rerun, tmp_path)
+    fresh, old = _roundtrip(target, "bracket_report.json", rerun, tmp_path)
     assert fresh == old, (
-        f"{slug}/bracket_report.json is stale — rerun "
+        f"{_id(target)}/bracket_report.json is stale — rerun "
         f"`manamap pilot bracket-check {slug}"
-        f"{f' --target {target}' if target else ''}` and commit it.")
+        f"{f' --target {bracket_target}' if bracket_target else ''}` and commit it.")
 
 
 @requires_deck
-@pytest.mark.parametrize("slug", _slugs("goldfish_metrics.json"))
-def test_goldfish_metrics_match_a_fresh_run(slug, tmp_path, unchanged):
+@pytest.mark.parametrize("target", _slugs("goldfish_metrics.json"), ids=_id)
+def test_goldfish_metrics_match_a_fresh_run(target, tmp_path, unchanged):
     """Seeded and deterministic, so a difference is a real change in the model
     or in the deck — never noise.
 
@@ -107,37 +139,67 @@ def test_goldfish_metrics_match_a_fresh_run(slug, tmp_path, unchanged):
     run to re-derive nine files that move only when a decklist or the simulator
     does. That determinism is exactly what makes it safe to cache.
     """
-    unchanged(*CODE, DECKS_DIR / slug)
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root)
 
     def rerun():
-        goldfish.main(type("Args", (), {"slug": slug})())
+        goldfish.main(type("Args", (), {"slug": slug, "branch": branch})())
 
-    fresh, old = _roundtrip(slug, "goldfish_metrics.json", rerun, tmp_path)
+    fresh, old = _roundtrip(target, "goldfish_metrics.json", rerun, tmp_path)
     assert fresh == old, (
-        f"{slug}/goldfish_metrics.json is stale — rerun "
+        f"{_id(target)}/goldfish_metrics.json is stale — rerun "
         f"`manamap pilot goldfish {slug}` and commit it.")
 
 
 @requires_deck
-@pytest.mark.parametrize("slug", _slugs("mana_analysis.json"))
-def test_mana_analysis_matches_a_fresh_run(slug, tmp_path, unchanged):
+@pytest.mark.parametrize("target", _slugs("mana_analysis.json"), ids=_id)
+def test_mana_analysis_matches_a_fresh_run(target, tmp_path, unchanged):
     """Run AFTER goldfish in the real pipeline — it embeds goldfish figures —
     but the tracked copies are consistent, so order does not matter here."""
-    unchanged(*CODE, DECKS_DIR / slug)
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root)
 
     def rerun():
-        mana_analysis.main(type("Args", (), {"slug": slug})())
+        mana_analysis.main(type("Args", (), {"slug": slug, "branch": branch})())
 
-    fresh, old = _roundtrip(slug, "mana_analysis.json", rerun, tmp_path)
+    fresh, old = _roundtrip(target, "mana_analysis.json", rerun, tmp_path)
     assert fresh == old, (
-        f"{slug}/mana_analysis.json is stale — rerun "
+        f"{_id(target)}/mana_analysis.json is stale — rerun "
         f"`manamap pilot mana-analysis {slug}` and commit it.")
+
+
+@requires_deck
+@pytest.mark.parametrize("target", _slugs("diagnostic.json"), ids=_id)
+def test_diagnostic_matches_a_fresh_run(target, tmp_path, unchanged):
+    """The vitals. Seeded and deterministic like the goldfish it composes, so a
+    difference is a real change in the model or the deck — never noise.
+
+    It was TRACKED and gated by nothing: no validator, no freshness test, no
+    `deck_status` row. Composed from the goldfish, so it goes stale on every
+    model change — the artifact whose staleness was least visible.
+    """
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root)
+
+    def rerun():
+        diagnostic.main(type("Args", (), {
+            "slug": slug, "branch": branch, "write": True, "as_json": False,
+            "iterations": None, "seed": None, "vs": None})())
+
+    fresh, old = _roundtrip(target, "diagnostic.json", rerun, tmp_path)
+    assert fresh == old, (
+        f"{_id(target)}/diagnostic.json is stale — rerun `manamap pilot "
+        f"diagnose {slug}" + (f" --branch {branch}" if branch else "")
+        + " --write` and commit it.")
 
 
 @requires_data
 @requires_deck
-@pytest.mark.parametrize("slug", _slugs("info.json"))
-def test_info_json_matches_a_fresh_run(slug, tmp_path, unchanged):
+@pytest.mark.parametrize("target", _slugs("info.json"), ids=_id)
+def test_info_json_matches_a_fresh_run(target, tmp_path, unchanged):
     """`info.json` is what the deck page fetches, and it is the only COMMITTED
     artifact composed from every other one — status, bracket, goldfish, engine,
     audit, diagnosis, sim, experiments, prescriptions and the derived `next`.
@@ -150,25 +212,29 @@ def test_info_json_matches_a_fresh_run(slug, tmp_path, unchanged):
     The version block is absent by construction (`deck_info.fetchable`), so this test
     cannot fail on a git walk that a committed copy could never keep up with.
     """
-    unchanged(*CODE, DECKS_DIR / slug, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
               COMBO_DETAILS_PATH)
 
     def rerun():
-        deck_info.main(type("Args", (), {"slug": slug, "write": True})())
+        deck_info.main(type("Args", (), {"slug": slug, "branch": branch, "write": True})())
 
-    fresh, old = _roundtrip(slug, "info.json", rerun, tmp_path)
+    fresh, old = _roundtrip(target, "info.json", rerun, tmp_path)
     assert fresh == old, (
-        f"{slug}/info.json is stale — rerun `manamap pilot deck-info {slug} --write` "
+        f"{_id(target)}/info.json is stale — rerun `manamap pilot deck-info {slug} --write` "
         f"and commit it.")
 
 
 @requires_deck
-@pytest.mark.parametrize("slug", _slugs("info.json"))
-def test_info_json_never_carries_a_version_block(slug):
+@pytest.mark.parametrize("target", _slugs("info.json"), ids=_id)
+def test_info_json_never_carries_a_version_block(target):
     """A committed version number is one commit behind FOREVER — the commit that
     changes `decklist.txt` gets its sha after anything written in the same commit.
     A wrong version is worse than an absent one, because the captain's log stamps
     games against it. The page reads a deploy-time `versions.json` instead."""
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
     path = DECKS_DIR / slug / "info.json"
     if not path.exists():
         pytest.skip(f"{slug} has no info.json yet")
@@ -178,13 +244,16 @@ def test_info_json_never_carries_a_version_block(slug):
 
 
 @requires_deck
-@pytest.mark.parametrize("slug", _slugs("benchmark.json"))
-def test_benchmark_matches_a_fresh_run(slug):
+@pytest.mark.parametrize("target", _slugs("benchmark.json"), ids=_id)
+def test_benchmark_matches_a_fresh_run(target):
     """`benchmark.json` is tracked, so the workbench can read it on a static
     host — and it is deterministic (fixed seed, fixed iterations, uniform
     flags), so it must equal what a fresh run produces. A stale benchmark is a
     ranking computed against a deck that no longer exists.
     """
+    # `benchmark` has no branch concept — it freezes ONE harness so decks are
+    # comparable, and a branch is not a deck. `_slugs` still yields the tuple.
+    slug, _branch = target
     import io as _io
     import contextlib
 
@@ -198,4 +267,4 @@ def test_benchmark_matches_a_fresh_run(slug):
         fresh = benchmark.measure(slug)
     stored = json.loads(path.read_text())
     assert stored == fresh, (
-        f"{slug}/benchmark.json is stale — `manamap pilot benchmark {slug}`")
+        f"{_id(target)}/benchmark.json is stale — `manamap pilot benchmark {slug}`")
