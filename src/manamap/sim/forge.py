@@ -527,6 +527,12 @@ def main(args):
           f"{', '.join(args.vs)} in {rec['wall_seconds']}s on {rec['jobs']} JVM(s)")
     print(f"  wins {s['wins']}  draws {s['draws']}  win rate {s['win_rate']}  "
           f"mean round {s['mean_round']} (global turn {s['mean_global_turn']})")
+    # COMPUTED AT PRINT TIME, NEVER WRITTEN INTO THE RECORD — the same rule
+    # `targeting` follows, so adding this moved no tracked run. It is derived
+    # from the record, so it reads the same from a fresh checkout.
+    from manamap.sim import pilot_quality
+    for line in pilot_quality.render(pilot_quality.from_record(rec)):
+        print(line)
     if rec["nonzero_exit_jobs"]:
         print(f"  WARNING {rec['nonzero_exit_jobs']} JVM(s) exited non-zero — read the logs")
     print(f"  → {path}  (logs: {rec['logs']})")
