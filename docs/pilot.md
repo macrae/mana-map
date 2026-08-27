@@ -130,6 +130,17 @@ manamap pilot assess <slug> [--branch N] --pool <file|library|->
                                         #   does it cost, what is it GATED on, does it feed a
                                         #   declared component, and can any model here even
                                         #   SEE it. Names what is worth measuring
+manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->] [--owned]
+                                        #   WHAT IN THIS LIST HAS A CHEAPER CARD DOING ITS
+                                        #   JOB. The obsolescence index read deck-aware:
+                                        #   ranked by its own 0-1 strength, filtered to the
+                                        #   identity, what you own and what you already run.
+                                        #   Every row carries what the card COSTS you as
+                                        #   well as what it gains, and two measured flags —
+                                        #   the two cards share no job (the SEARCH failed,
+                                        #   5.68% of strong pairs) and the replacement is
+                                        #   newly combat-gated (7.62%). It PROPOSES;
+                                        #   `candidates` measures
 manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] [--limit N]
                                         #   rank a pool by what each card MEASURABLY does:
                                         #   substitute, re-run, report the delta. Anything

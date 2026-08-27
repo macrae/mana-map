@@ -70,6 +70,9 @@ PILOT_STEPS = [
      "Does the model track real outcomes? Refuses below a usable sample"),
     ("close", "manamap.pilot.close",
      "Turn the diagnostic's bottleneck into a candidate pool"),
+    ("upgrades", "manamap.pilot.upgrades",
+     "What in this list has a cheaper card doing its job — the obsolescence index, "
+     "read deck-aware. Proposes comparisons with BOTH sides; `candidates` measures"),
     ("candidates", "manamap.pilot.candidates",
      "Rank a pool of cards by what each MEASURABLY does: substitute it in, re-run the "
      "diagnostic, report the difference with an interval"),
@@ -144,6 +147,7 @@ _DECK_COMMANDS = {
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
+    "upgrades",
     "validate-diagnostic", "net-change", "validate-net-change", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
@@ -338,7 +342,7 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close',
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close', 'upgrades',
                     # The validators too: a branch's artifacts were gated by
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',
@@ -368,6 +372,23 @@ def add_pilot_parser(subparsers):
         if name == "assess":
             cmd.add_argument("--pool", default=None,
                              help="a file of card names, a decklist, , or ")
+            cmd.add_argument("--json", action="store_true")
+        if name == "upgrades":
+            cmd.add_argument("--pool", default=None,
+                             help="a pile to cross against the list: a file of "
+                                  "card names, a decklist, `library` for the "
+                                  "Atlas's pool.txt, or `-` for stdin. A pile "
+                                  "card with no comparison is REPORTED, never "
+                                  "silently dropped")
+            cmd.add_argument("--min-strength", dest="min_strength", type=float,
+                             default=None, metavar="F",
+                             help="floor on the index's 0-1 strength "
+                                  "(default 0.4; nothing under it is a claim)")
+            cmd.add_argument("--limit", type=int, default=None)
+            cmd.add_argument("--owned", action="store_true",
+                             help="only replacements in a box (collection.py; "
+                                  "never deck membership)")
+            cmd.add_argument("--out", default=None, metavar="PATH")
             cmd.add_argument("--json", action="store_true")
         if name == "candidates":
             cmd.add_argument("--pool", default=None,
