@@ -41,6 +41,33 @@ def _read(doc, iterations=600):
                              quiet=True, targets=TARGETS)
 
 
+def test_there_is_exactly_one_combat_axis():
+    """MEASURED THE SAME DAY IT SHIPPED AS THREE.
+
+    Across 13 decks at a uniform harness: power@6 vs damage@8 r=+0.97, vs
+    kill@10 r=+0.98; damage@8 vs kill@8 r=+0.92. Three axes that rank
+    identically are a trap rather than a redundancy — sweep on one, sweep on
+    another, get the same order, read it as confirmation. The hoard is NOT part
+    of that family (r=0.08 to 0.25), which is what makes it a real second axis.
+    """
+    combat = [a for a in candidates.AXES
+              if candidates.AXIS_NEEDS.get(a) == "model_combat"]
+    assert combat == ["damage_8"], combat
+    treasure = [a for a in candidates.AXES
+                if candidates.AXIS_NEEDS.get(a) == "model_treasures"]
+    assert treasure, "the hoard axis went with them; it is independent"
+
+
+def test_the_report_still_shows_every_series_and_names_the_correlation():
+    """Dropping them as AXES must not drop them as READINGS — a pilot wants the
+    kill clock even though it cannot be ranked on. Same shape as the mana note.
+    """
+    got = _read(_doc([_card("Doubler", DOUBLER, qty=8)]))
+    assert "board_power_by_turn" in got["output"]
+    assert "kill_by_turn" in got["output"]
+    assert "one dimension" in diagnostic.COMBAT_READINGS_ARE_CORRELATED
+
+
 def test_the_axis_registry_holds_both_kinds():
     assert set(candidates.MAGNITUDE_AXES) <= set(candidates.AXES)
     for axis in candidates.MAGNITUDE_AXES:

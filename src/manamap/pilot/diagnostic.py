@@ -86,6 +86,17 @@ PRD_STALL_THRESHOLD_REJECTED = 0.15
 #: refused to sum them; the third member is new. They are reported together with
 #: the correlation stated, so three confirmations of one fact cannot read as
 #: three findings — and nothing here adds them.
+#: MEASURED across 13 decks at a uniform harness with both models on:
+#: board power@6 vs damage@8 r=+0.97, vs kill@10 r=+0.98; damage@8 vs kill@8
+#: r=+0.92. One dimension, three views. The hoard is NOT part of it (r=0.08 to
+#: 0.25 against all three), which is what makes it a real second axis rather
+#: than `consistency`'s mistake again.
+COMBAT_READINGS_ARE_CORRELATED = (
+    "board power, damage and kill rate move together across the fleet "
+    "(r = +0.86 to +0.98): they are one dimension seen three ways. Read them "
+    "as one signal, and rank on only one of them — `damage_8` is the axis, "
+    "because a kill rate floors out on decks that rarely kill.")
+
 MANA_READINGS_ARE_CORRELATED = (
     "missed-drop-by-five, the all-turn drop rate and the mulligan rate move "
     "together across the fleet (r = +0.96 to +0.99): they are one measurement "
@@ -801,6 +812,8 @@ def _print(doc):
                 cells = "   ".join(f"T{t} {series[t]['rate']:>6.2f}"
                                    for t in ("6", "8", "10") if t in series)
                 print(f"    {label:20} {cells}")
+            if any(k in o for k in ("board_power_by_turn", "kill_by_turn")):
+                print(f"    ! {COMBAT_READINGS_ARE_CORRELATED}")
             # THE ONLY AXIS THAT CAN RANK WITHIN A COMPONENT, and the reason it
             # exists is worth carrying next to the numbers.
             print("    ! a membership axis asks whether a card was DRAWN, so it "

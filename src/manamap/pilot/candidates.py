@@ -61,16 +61,25 @@ AXES = {
     # magnitude
     "hoard_6": ("output", "hoard_by_turn", "6"),
     "hoard_10": ("output", "hoard_by_turn", "10"),
+    # ONE COMBAT AXIS, BECAUSE THERE IS ONE COMBAT DIMENSION. Shipped as three
+    # and measured across 13 decks at a uniform harness the same day:
+    # power@6 vs damage@8 r=+0.97, power@6 vs kill@10 r=+0.98, damage@8 vs
+    # kill@8 r=+0.92. Three axes that rank identically are a trap rather than a
+    # redundancy — sweep on one, sweep on another, get the same order, and read
+    # it as confirmation. That is the "three confirmations of one fact reading
+    # as three findings" failure this repo already documents for the mana
+    # family. `damage_8` is the survivor because it has no floor effect:
+    # heliod's kill@8 is 0.001 and cannot discriminate anything, while damage
+    # still separates decks that never close. All the series are still REPORTED
+    # in `diagnostic.output` — they are free and a reader wants them — they are
+    # simply not three things to rank on.
     "damage_8": ("output", "damage_by_turn", "8"),
-    "board_power_6": ("output", "board_power_by_turn", "6"),
-    "kill_by_8": ("output", "kill_by_turn", "8"),
 }
 #: Which axes need a deck to have opted into a model, and the flag to name when
 #: it has not. A bare "no reading" would send the pilot looking for a bug.
 AXIS_NEEDS = {
     "hoard_6": "model_treasures", "hoard_10": "model_treasures",
-    "damage_8": "model_combat", "board_power_6": "model_combat",
-    "kill_by_8": "model_combat",
+    "damage_8": "model_combat",
 }
 MAGNITUDE_AXES = tuple(AXIS_NEEDS)
 #: Axes where DOWN is better, so the ranking does not reward a worse deck.
