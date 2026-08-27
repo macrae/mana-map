@@ -110,3 +110,14 @@ def test_opponent_gated_means_opponent_agency_not_opponent_as_a_target():
                      "{2}. If they don't, you create a Treasure token.") == A.OPPONENT
     assert A.gate_of("At the beginning of your upkeep, each opponent may create "
                      "a Treasure token.") == A.OPPONENT
+
+
+def test_the_tribe_is_named_in_english():
+    """"needs Fishs" makes a correct verdict read like broken software, which is
+    the whole cost of a sentence a tool says out loud. Invariant plurals and the
+    -es rule, and nothing over-claimed: a Rhino pluralises normally."""
+    assert A._plural("Fish") == "Fish"
+    assert A._plural("Fox") == "Foxes"
+    assert A._plural("Dwarf") == "Dwarves"
+    assert A._plural("Rhino") == "Rhinos"
+    assert A._plural("Dragon") == "Dragons"

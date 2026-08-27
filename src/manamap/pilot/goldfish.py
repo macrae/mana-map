@@ -628,6 +628,29 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     else:
                         extra_combat_free += 1
 
+        # A TREASURE MULTIPLIER IS NEITHER A ROCK, A TUTOR NOR A BODY — the
+        # same hole Aggravated Assault fell through two loops up. `bodies` is
+        # the model's proxy for "is this worth casting", and it happens to be 1
+        # for Anointed Procession, Parallel Lives and Doubling Season (their
+        # text reads as token creation) and 0 for Primal Vigor, which is the
+        # identical card. So Primal Vigor sat in hand for ten turns while
+        # carrying the flag that says it changes what the deck produces, and a
+        # candidate sweep read it as byte-identical to a card that does nothing.
+        # A flag the model set is a claim the model must act on.
+        if model_treasures:
+            for card in sorted((c for c in hand if not c["is_land"]
+                                and c["bodies"] == 0 and c["produces"] == 0
+                                and not c["tutor"]
+                                and (c["treasure_doubler"] or c["treasure_bonus"])),
+                               key=lambda c: c["cmc"]):
+                if not spend(card["cmc"]):
+                    continue
+                hand.remove(card)
+                if card["treasure_doubler"]:
+                    treasure_multiplier *= 2
+                if card["treasure_bonus"]:
+                    treasure_bonus += 1
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
             if spend(card["cmc"]):

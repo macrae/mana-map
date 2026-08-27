@@ -121,9 +121,17 @@ CREATURE_TYPES = _Lazy()
 #: English plurals for the handful of tribes that are not `+s`.
 _IRREGULAR = {"Dwarf": "Dwarves", "Elf": "Elves", "Wolf": "Wolves",
               "Thief": "Thieves", "Scout": "Scouts"}
+#: Creature types whose plural is the singular. "needs Fishs" is a small thing
+#: that makes a correct verdict read like broken software, which is the whole
+#: cost of a sentence a tool says out loud.
+_INVARIANT = {"Fish", "Sheep", "Moose", "Aetherborn", "Efreet", "Djinn"}
 
 
 def _plural(t):
+    if t in _INVARIANT:
+        return t
+    if t.endswith(("s", "x", "z", "ch", "sh")):
+        return t + "es"
     return _IRREGULAR.get(t, t + "s")
 
 

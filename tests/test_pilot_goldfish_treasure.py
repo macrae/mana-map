@@ -227,3 +227,38 @@ def test_a_doubler_produces_nothing_with_the_model_off():
     dbl = _card("Procession", DOUBLER, cmc=2); dbl["quantity"] = 10
     off = _run([land, src, dbl], False, turns=8)
     assert max(off["treasures_by_turn"]) == 0
+
+
+def test_a_multiplier_that_is_not_a_rock_tutor_or_body_still_gets_cast():
+    """THE AGGRAVATED ASSAULT HOLE, ONE CARD CLASS OVER.
+
+    The cast loop spends on rocks, tutors, extra-combat permanents and bodies.
+    A token doubler is none of those. `bodies` is the model's proxy for "worth
+    casting" and it happens to be 1 for Anointed Procession and 0 for Primal
+    Vigor — the identical card — so Primal Vigor sat in hand for ten turns while
+    carrying the flag that says it changes what the deck produces, and a
+    candidate sweep read it as byte-identical to a blank.
+
+    A flag the model set is a claim the model must act on.
+    """
+    land = {"name": "Mountain", "oracle_text": "", "cmc": 0,
+            "type_line": "Basic Land — Mountain", "quantity": 32}
+    src = _card("Engine", "At the beginning of your upkeep, create three "
+                          "Treasure tokens.", cmc=2)
+    src["quantity"] = 18
+    # An enchantment whose ONLY property is the doubler flag: no body, no mana,
+    # no tutor. Exactly the shape that was silently uncastable.
+    inert = _card("Vigor", "If one or more tokens would be created, twice that "
+                           "many of those tokens are created instead.",
+                  cmc=3, type_line="Enchantment")
+    inert["quantity"] = 12
+    cl = goldfish.classify(inert)
+    assert cl["treasure_doubler"] is True
+    assert cl["bodies"] == 0 and cl["produces"] == 0 and not cl["tutor"], (
+        "fixture drifted: this card must be uncastable by the other loops, "
+        "or the test is not exercising the hole")
+
+    plain = max(_run([land, src], True, turns=9)["treasures_by_turn"])
+    with_it = max(_run([land, src, inert], True, turns=9)["treasures_by_turn"])
+    assert with_it > plain, (
+        f"a doubler carrying no body was never cast: {plain} -> {with_it}")
