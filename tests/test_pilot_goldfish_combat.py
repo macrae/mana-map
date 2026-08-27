@@ -205,3 +205,51 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
         f"only {checked} of {len(decks)} decks are un-opted — if the fleet is "
         "being re-baselined, retire this invariant deliberately rather than "
         "letting it quietly stop checking anything")
+
+
+def _profile(name, text, type_line="Creature"):
+    return goldfish.combat_profile({"name": name, "oracle_text": text,
+                                    "type_line": type_line, "cmc": 4})
+
+
+def test_whenever_you_attack_is_an_attack_trigger():
+    """`_ATTACKS_RE` matched "whenever <NAME> attacks" and not "whenever YOU
+    attack" — a phrasing 180 corpus cards use, including Karlach. It gates the
+    whole combat profile, so a card written that way had its attack mana,
+    treasures, draw and damage all read as nothing.
+
+    Fleet impact when it was fixed: ZERO — no tracked artifact moved, asserted
+    across every deck and the branch. Worth having anyway, and worth saying:
+    the corpus number is not the fleet number, and quoting one for the other is
+    how "34 of 50 invisible" became a finding about 1 card.
+    """
+    assert goldfish._ATTACKS_RE.search("Whenever you attack, create a Treasure.")
+    assert goldfish._ATTACKS_RE.search("Whenever Karlach attacks, untap.")
+    assert not goldfish._ATTACKS_RE.search("Destroy target creature.")
+
+
+def test_an_extra_combat_the_model_cannot_place_is_named():
+    """IT FELL THROUGH BOTH BRANCHES AND SET NOTHING.
+
+    Not activated (no mana cost binds) and not triggered on an attack: a
+    one-shot spell, or a permanent keyed on being blocked, on exert, on
+    landfall, on a loyalty ability. The model has no channel for those — a
+    boundary, not a bug — but the card contributed nothing to the clock AND
+    appeared in no not-modelled list, so a low kill figure was illegible.
+    """
+    spell = _profile("Seize the Day",
+                     "Untap target creature. After this main phase, there is "
+                     "an additional combat phase.", "Sorcery")
+    assert spell["extra_combat_cost"] is None
+    assert not spell["extra_combat_free"]
+    assert spell["unreadable"] == "Seize the Day"
+
+    # The two the model CAN place must not be swept into the list with it.
+    bought = _profile("Aggravated Assault",
+                      "{3}{R}{R}: Untap all creatures you control. After this "
+                      "main phase, there is an additional combat phase.")
+    assert bought["extra_combat_cost"] == 5 and not bought["unreadable"]
+    free = _profile("Scourge of the Throne",
+                    "Whenever Scourge of the Throne attacks, untap it. After "
+                    "this combat phase, there is an additional combat phase.")
+    assert free["extra_combat_free"] and not free["unreadable"]

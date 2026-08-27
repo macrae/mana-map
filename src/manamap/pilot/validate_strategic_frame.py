@@ -87,11 +87,14 @@ def main(args):
     with open(path) as f:
         doc = json.load(f)
     errors = validate(doc, slug=args.slug)
+    from manamap.pilot.model_staleness import note as _stale_note
+    _stale = _stale_note(args.slug, doc if isinstance(doc, dict) else {},
+                         getattr(args, "branch", None))
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('engines', []))} engine(s), "
         f"{len(doc.get('candidate_missing_lines', []))} candidate line(s), "
-        f"form holds")
+        f"form holds" + _stale)
 
 
 if __name__ == "__main__":

@@ -608,13 +608,16 @@ def main(args):
             f"{str(deck_doc.get('decklist_sha256'))[:12]}. Its figures answer a "
             f"question about a different deck and its cut/add lists have been "
             f"form-checked only. Re-run `/diagnose-deck {args.slug}`.")
+    from manamap.pilot.model_staleness import note as _stale_note
+    _stale = _stale_note(args.slug, doc if isinstance(doc, dict) else {},
+                         getattr(args, "branch", None))
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('axes', []))} axes ({weak} weak), "
         f"{len(doc.get('cut_candidates', []))} cut / "
         f"{len(doc.get('add_candidates', []))} add candidate(s), "
         f"{len(doc.get('open_questions', []))} open question(s); "
-        f"measurements ◆, verdicts ★" + stale_note)
+        f"measurements ◆, verdicts ★" + stale_note + _stale)
 
 
 if __name__ == "__main__":

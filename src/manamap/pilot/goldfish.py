@@ -22,6 +22,7 @@ Model assumptions (v1):
 
 import contextlib
 import json
+import pathlib
 import random
 import re
 
@@ -39,6 +40,30 @@ from manamap.pilot import manabase
 from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
+#: THE MODEL'S OWN IDENTITY, SO STALENESS BECOMES DECIDABLE.
+#:
+#: Every artifact here stamped the DECK (`decklist_sha256`), the seed, the
+#: iteration count and the turn limit — and nothing identified the model that
+#: produced the figures. So a number computed today and one computed before a
+#: model fix were indistinguishable, and when the fleet was regenerated after
+#: the mana-rock and colour fixes it left **39 stale figures in authored prose
+#: across four decks** with `validate-diagnosis`, `validate-strategic-frame` and
+#: `validate-tutor-guide` all passing. The decklist sha had not moved, so
+#: nothing could tell.
+#:
+#: A sha over THIS FILE's bytes. The same trick `tests/conftest.py:unchanged()`
+#: and `pilot/agent_cache.py` already use, and deliberately not a hand-kept
+#: integer: a version somebody has to remember to bump is one that will not be.
+#: It is coarse on purpose — a comment edit bumps it, which costs a regeneration
+#: nobody needed. The alternative is a curated list of "model-facing" lines,
+#: which is exactly the judgement call that goes wrong silently.
+def model_version():
+    """First 12 hex of a sha256 over the simulator's source."""
+    import hashlib
+    return hashlib.sha256(
+        pathlib.Path(__file__).read_bytes()).hexdigest()[:12]
+
+
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
     "Draw every turn including turn 1 (multiplayer Commander).",
@@ -53,7 +78,24 @@ MODEL_ASSUMPTIONS = [
     "any_of group. Consumed once, mana paid, and a tutor that puts the card on "
     "top of the library costs a turn. Reported as the *_assisted figures; the "
     "unassisted figures beside them exclude tutors entirely.",
-    "Cost reducers, rituals, and extra card draw are not modeled (conservative).",
+    # "CONSERVATIVE" IS TRUE OF SPEED AND FALSE OF COMPARABILITY, and the old
+    # one-word claim hid the difference. Drawing one card a turn understates
+    # every deck's speed, which is safe; but the size of the understatement
+    # scales with how much draw a deck RUNS — heliod 16 cards, gishath 7 — so
+    # the bias is not neutral ACROSS decks, and `benchmark` ranks decks.
+    #
+    # Modelling it was measured and refused: of 146 draw cards on this fleet,
+    # **5 are unconditional**. The other 141 are triggers, activations and
+    # costs — Rhystic Study needs opponents, Yawgmoth needs a sac outlet and a
+    # creature. A model that saw the 5 would cover 3.4% of the axis while
+    # letting this list claim draw was modelled, which is worse than the
+    # refusal.
+    "Cost reducers and rituals are not modeled (conservative).",
+    "Extra card draw is NOT modeled: one card per turn, always. That "
+    "understates every deck, but by an amount proportional to how much draw it "
+    "runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. "
+    "`meta.card_advantage` reports how much of each list this hides. Card "
+    "advantage is measured nowhere in this suite.",
 ]
 
 # Appended only for a deck that opts in. Stating "Treasures are modelled" on a
@@ -132,6 +174,8 @@ _TAP_ADD_RE = re.compile(r"\{T\}[^:\n]*: ?Add ([^.\n]+)", re.IGNORECASE)
 _CONSUMING_COST = re.compile(r"sacrifice|exile|discard", re.IGNORECASE)
 #: Mana that can only be spent on some things. See the meta note in `run`.
 _RESTRICTED_MANA_RE = re.compile(r"Spend this mana only", re.IGNORECASE)
+#: Any card that draws beyond the draw step. Counted, never modelled.
+_DRAW_RE = re.compile(r"\bdraw (a|two|three|four|X|that many) card", re.I)
 #: Written-out quantities. `X` is board-dependent (Sanctum Weaver counts
 #: enchantments, Selvala reads a power), so it takes the conservative 1 — the
 #: same call `treasure_profile` makes for "for each" and "equal to".
@@ -215,7 +259,7 @@ TREASURE_BONUS_RE = re.compile(r"instead create those tokens plus an additional 
 #: ones; both are real multipliers for a deck and neither is this one, so they
 #: stay blind and get NAMED rather than folded in where they would read as right.
 TOKEN_DOUBLER_RE = re.compile(
-    r"creates twice that many of those tokens|twice that many of those tokens are created",
+    r"creates twice that many of those tokens|twice that many of those tokens are created|(?:twice|three times) that many (?:of those )?(?:creature )?tokens are created",
     re.IGNORECASE)
 #: Kept so the old private name still resolves for anything reading it.
 _TRE_EXTRA_RE = TREASURE_BONUS_RE
@@ -269,7 +313,7 @@ _HASTE_RE = re.compile(r"\bhaste\b", re.IGNORECASE)
 # "create a 1/1 red Dragon creature token", "create two 2/2 ... tokens"
 _TOKEN_PT_RE = re.compile(r"create (\w+) ([\dX]+)/([\dX]+)([^.]*?)tokens?", re.IGNORECASE)
 _ATTACKS_RE = re.compile(
-    r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}|one or more [\w ]+ you control) attacks",
+    r"whenever you attack\b|whenever (?:this creature|[A-Z][\w' ,-]{2,30}|one or more [\w ]+ you control) attacks",
     re.IGNORECASE)
 _COMBAT_DMG_RE = re.compile(
     r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}) deals combat damage to a player",
@@ -420,6 +464,21 @@ def combat_profile(card):
             profile["extra_combat_cost"] = _mana_pips(activated.group(1))
         elif combat_trigger:
             profile["extra_combat_free"] = True
+        else:
+            # AN EXTRA COMBAT THIS MODEL CANNOT PLACE, AND IT WAS SILENT.
+            # Neither activated (no mana cost binds) nor triggered on an attack:
+            # a one-shot spell ("After this main phase, there is an additional
+            # combat phase"), or a permanent keyed on being BLOCKED, on exert,
+            # on landfall, or on a loyalty ability. The model has no channel for
+            # any of those, which is a boundary rather than a bug — but it fell
+            # through both branches and set nothing, so the card contributed
+            # nothing to the clock AND appeared in no not-modelled list.
+            #
+            # Corpus-wide that is 32 cards; on this fleet it is ONE
+            # (goblin-storm's Great Train Heist). Naming it is what keeps a low
+            # kill figure legible, the same contract
+            # `treasure_sources_not_modelled` keeps.
+            profile["unreadable"] = card.get("name")
 
     return profile
 
@@ -1179,6 +1238,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         c["name"] for c in doc.get("cards", [])
         if not c.get("is_commander") and _blind(c)
     })
+    # HOW MUCH OF THIS LIST THE DRAW ASSUMPTION HIDES. Not a list of names:
+    # unlike a Treasure blind spot there is no figure here to make legible —
+    # card advantage is measured nowhere — so what a reader needs is the SIZE
+    # of the gap, which is what makes two decks' figures comparable or not.
+    draw_cards = sum(
+        c.get("quantity", 1) for c in doc.get("cards", [])
+        if not c.get("is_commander") and _DRAW_RE.search(c.get("oracle_text") or ""))
     restricted = sorted({
         f"{c['name']} ({produced_mana(c.get('oracle_text'))})"
         for c in doc.get("cards", [])
@@ -1230,6 +1296,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             "deck": slug,
             "decklist_sha256": doc.get("decklist_sha256"),
             "seed": seed,
+            "model_version": model_version(),
             "iterations": iterations,
             "max_turn": max_turn,
             "commander": commanders[0]["name"],
@@ -1243,6 +1310,14 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             # nearly free in a Commander deck; Throne of Eldraine's four is not.
             # Same contract as the Treasure blind spots: the assumption is
             # NAMED rather than silently made or silently dropped.
+            "card_advantage": {
+                "cards_that_draw": draw_cards,
+                "modelled": 0,
+                "why": "one card per turn, always — see model_assumptions. The "
+                       "understatement is proportional to this count, so two "
+                       "decks with different counts are not directly comparable "
+                       "on any speed figure.",
+            },
             **({"restricted_mana_counted_as_free": restricted} if restricted else {}),
             **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
             **({"combat_effects_not_modelled": combat_unreadable}

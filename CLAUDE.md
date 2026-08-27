@@ -228,7 +228,7 @@ wrong first attempt, the number — is in the page named beside it.
 **Changing a matcher or a model**
 - **Widening a pattern needs a CORPUS SWEEP in the same commit** — newly matched, newly dropped, and the extreme tail read card by card. Skipped once, it billed Jeweled Lotus three mana every turn forever and counted `Add {R}, {G}, or {W}` as three. → `docs/gotchas-bench.md`
 - **A flag the model sets is a claim the model must ACT ON.** `treasure_doubler` shipped set-and-unread; fifteen candidates returned byte-identical −0.026. `tests/test_metric_hygiene.py` checks this now.
-- **A model change makes every derived artifact stale and nothing records which model produced it.** Regenerate the fleet, and expect prose to go stale silently — 39 figures did, with three validators passing. → `docs/gotchas-bench.md`
+- **A model change makes every derived artifact stale.** `meta.model_version` (a sha over `goldfish.py`) makes that decidable; the three prose validators REPORT it and never fail on it. Regenerate the fleet after any model change. The 39 figures already stale predate stamping and report as unknown, not stale. → `docs/gotchas-bench.md`
 - **Adding a metric requires re-running the independence check.** Three magnitude axes shipped that were one axis at r = 0.92–0.98. → `tests/test_metric_hygiene.py`
 
 **Branches, paths and artifacts**

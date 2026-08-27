@@ -1,5 +1,10 @@
 {
   "meta": {
+    "card_advantage": {
+      "cards_that_draw": 10,
+      "modelled": 0,
+      "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
+    },
     "commander": "Zur the Enchanter",
     "commander_cmc": 4,
     "deck": "zur-enchantress",
@@ -16,8 +21,10 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
-      "Cost reducers, rituals, and extra card draw are not modeled (conservative)."
+      "Cost reducers and rituals are not modeled (conservative).",
+      "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
+    "model_version": "527e7eb9a757",
     "seed": 42
   },
   "metrics": {

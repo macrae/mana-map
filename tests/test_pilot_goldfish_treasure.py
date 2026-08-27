@@ -262,3 +262,20 @@ def test_a_multiplier_that_is_not_a_rock_tutor_or_body_still_gets_cast():
     with_it = max(_run([land, src, inert], True, turns=9)["treasures_by_turn"])
     assert with_it > plain, (
         f"a doubler carrying no body was never cast: {plain} -> {with_it}")
+
+
+def test_a_token_tripler_is_a_multiplier_too():
+    """Ojer Taq creates THREE times that many. The pattern read only "twice",
+    so the format's biggest token multiplier scored as inert.
+
+    Fleet impact: zero — no deck runs one. A corpus gap and an insurance fix,
+    which is the honest description.
+    """
+    ojer = ("If one or more creature tokens would be created under your "
+            "control, three times that many of those tokens are created "
+            "instead.")
+    assert goldfish.classify(_card("Ojer Taq", ojer))["treasure_doubler"] is True
+    # And the exclusions hold: a Clue/Food converter is still not a doubler.
+    manu = ("If you would create a Clue, Food, or Treasure token, instead "
+            "create one of each.")
+    assert goldfish.classify(_card("Academy Manufactor", manu))["treasure_doubler"] is False

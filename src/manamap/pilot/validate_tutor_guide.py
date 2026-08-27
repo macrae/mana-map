@@ -161,10 +161,13 @@ def main(args):
     errors = validate(doc, deck_doc, try_load_rules_db(),
                       load_strategy_sections())
     n_targets = sum(len(e.get("targets") or []) for e in doc.get("tutors", []))
+    from manamap.pilot.model_staleness import note as _stale_note
+    _stale = _stale_note(args.slug, doc if isinstance(doc, dict) else {},
+                         getattr(args, "branch", None))
     report_errors(
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('tutors', []))} tutor(s), "
-        f"{n_targets} wish(es); coaching ★")
+        f"{n_targets} wish(es); coaching ★" + _stale)
 
 
 if __name__ == "__main__":
