@@ -38,7 +38,9 @@ def test_a_tracked_run_yields_a_piloting_reading(path):
         m = q[metric]
         assert m["ours"] >= 0 and m["pod_mean"] > 0
         assert 0 < m["ratio"] < 5, f"{path}: implausible ratio {m['ratio']}"
-    assert isinstance(q["comparable"], bool)
+    # None is a legitimate verdict: too few games to say. The RATES are always
+    # reported, which is what lets a reader check the verdict rather than take it.
+    assert q["comparable"] in (True, False, None)
     assert q["reading"]
 
 
@@ -48,7 +50,7 @@ def test_the_verdict_follows_the_ratio_and_says_which():
         "seats": [{"slug": "ours"}, {"slug": "them"}],
         "games": [{"round": 10,
                    "per_seat": {"ours": {"lands": 2, "casts": 5},
-                                "them": {"lands": 8, "casts": 10}}}],
+                                "them": {"lands": 8, "casts": 10}}}] * 10,
     }
     q = pq.from_record(rec)
     assert q["comparable"] is False
@@ -61,6 +63,55 @@ def test_the_verdict_follows_the_ratio_and_says_which():
         "seats": [{"slug": "ours"}, {"slug": "them"}],
         "games": [{"round": 10,
                    "per_seat": {"ours": {"lands": 7, "casts": 10},
-                                "them": {"lands": 7, "casts": 10}}}],
+                                "them": {"lands": 7, "casts": 10}}}] * 10,
     }
     assert pq.from_record(even)["comparable"] is True
+
+
+def test_casts_are_reported_but_never_scored():
+    """A check that fires on correct data is worse than no check.
+
+    Casts per turn is confounded by the deck's own curve — across every tracked
+    run, corr(mean mana value, casts ratio) = -0.50. Scored, it flagged radagast
+    NOT COMPARABLE at 0.84 against a 0.85 line on a deck whose only fault is a
+    mean mana value of 2.97. A land drop is not confounded that way: every deck
+    wants its land every turn whatever it costs.
+    """
+    rec = {
+        "seats": [{"slug": "ours"}, {"slug": "them"}],
+        # Land drops equal; casts far behind, as an expensive deck's would be.
+        "games": [{"round": 10,
+                   "per_seat": {"ours": {"lands": 7, "casts": 4},
+                                "them": {"lands": 7, "casts": 10}}}] * 10,
+    }
+    q = pq.from_record(rec)
+    assert q["comparable"] is True, "a low cast rate alone must not fail a seat"
+    assert q["verdict_from"] == pq.LANDS
+    assert q[pq.CASTS]["ratio"] < pq.COMPARABLE      # still reported
+    assert "confounded" in q["casts_note"]
+
+
+def test_one_game_yields_no_verdict():
+    """The n=1 smoke run reads 0.60 on land drops, which is a shuffle."""
+    rec = {
+        "seats": [{"slug": "ours"}, {"slug": "them"}],
+        "games": [{"round": 10, "per_seat": {"ours": {"lands": 4, "casts": 5},
+                                             "them": {"lands": 8, "casts": 9}}}],
+    }
+    q = pq.from_record(rec)
+    assert q["comparable"] is None
+    assert "too few" in q["reading"]
+
+
+def test_no_tracked_run_is_flagged_by_accident():
+    """Run the verdict over every tracked run: a false positive here would teach
+    its reader to ignore the flag."""
+    bad = []
+    for path in _runs():
+        rec = json.load(open(path))
+        q = pq.from_record(rec)
+        if q and q["comparable"] is False:
+            bad.append((path, q[pq.LANDS]["ratio"]))
+    assert not bad, (
+        f"the piloting gate fires on tracked run(s): {bad}. Check it is a true "
+        f"positive before widening the threshold.")

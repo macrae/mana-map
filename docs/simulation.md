@@ -44,6 +44,35 @@ Also measured: **throughput** ~6 s per 2-seat game, ~30 s per 4-seat game on thi
 from `decklist.txt` through the repo's own `parse_decklist` so it cannot disagree with
 `fetch-deck`. 33,617 cards load; no card in the four decks failed to resolve.
 
+## The verdict on the AI, measured rather than quoted (2026-08-26)
+
+Asked directly whether the simulation is legitimate, the logs were read. **The rules
+engine is correct and the pilot is poor, and those are separable** — which is why this
+subsystem stays and why its win rate is demoted rather than trusted.
+
+**Rules — sound.** `Whenever an artifact you control enters, Reckless Fireweaver deals 1
+damage to each opponent. [Zone Changer: Treasure Token (427)]` is a treasure deck's whole
+thesis firing correctly. Treasures are sacrificed for mana, combat triggers resolve, and
+Revel in Riches won four games outright without anyone piloting toward it.
+
+**Piloting — poor, and NOT TUNABLE.** 0.67 land drops per own turn, 9.2 casts a game,
+first attack on turn 17, keystone cast in 27 of 100 games. Forge's four `res/ai/*.ai`
+profiles carry ~200 knobs whose land-related entries are all Strip Mine, Scry, Explore and
+Momir edge cases — there is no knob for making a land drop or for sequencing, that is Java.
+The aggro profiles were already measured (2026-08-19) to make a hold-up deck worse.
+
+**But the weakness is UNIFORM, and that is the finding.** Every run contains its own
+control — the other seats, same games, same engine. Our seat came in at **90–97% of the
+pod's rate**, and the AI played the champion and a very different branch alike (lands 5.5
+vs 6.0, casts 9.9 vs 9.2). A uniform weakness leaves an A/B between two of your own lists
+against one pod substantially intact, both played equally badly; it rescues no absolute win
+rate.
+
+**So `sim/pilot_quality.py` measures it on every run** rather than repeating a caveat, and
+`info.json` carries the reading so **a win rate never appears on any surface without it**.
+
+---
+
 **Forge's own caveat, verbatim from its `docs/AI.md`:** the AI "is *not* trained", is
 "best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo
 decks". One run printed an `AI eval thread at timeout` trace (its think-time cap; the game

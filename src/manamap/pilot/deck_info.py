@@ -303,10 +303,31 @@ def _simulation(slug):
             "games": r.get("games_completed"),
             "vs": [s["slug"] for s in r.get("seats", [])[1:]],
             "win_rate": me.get("win_rate"), "win_rate_ci95": me.get("win_rate_ci95"),
+            # A WIN RATE NEVER TRAVELS WITHOUT THE PILOTING READING. Forge's AI
+            # is documented as untrained and measured here at 0.67 land drops per
+            # own turn — so the number is only readable beside whether OUR seat
+            # was handled like the rest of the table. Every surface that shows one
+            # shows this.
+            "piloting": _piloting(r),
             "eliminated_by": me.get("eliminated_by"),
             "mean_round": (r.get("summary") or {}).get("mean_round"),
             "token_damage_share": (tok.get("token_damage_share") or {}).get("mean"),
             "tokens_observed": (tok.get("tokens_observed") or {}).get("mean")}
+
+
+def _piloting(rec):
+    """Was the AI playing this deck, or holding it? Derived, never stored."""
+    try:
+        from manamap.sim import pilot_quality
+        q = pilot_quality.from_record(rec)
+        if not q:
+            return None
+        return {"comparable": q["comparable"],
+                "lands_ratio": q[pilot_quality.LANDS]["ratio"],
+                "casts_ratio": q[pilot_quality.CASTS]["ratio"],
+                "reading": q["reading"]}
+    except Exception:
+        return None
 
 
 def _experiments(slug):
@@ -519,7 +540,10 @@ def _print(info):
         print(f"  simulated  {sm['runs']} run(s)"
               + ("  ** STALE — measured on a list this deck no longer holds **" if sm.get("stale") else "")
               + f" · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
-              f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']} · mean round {sm['mean_round']} · "
+              f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']}"
+              + ("" if (sm.get("piloting") or {}).get("comparable", True)
+                 else " (AI PILOTED OUR SEAT WORSE THAN THE POD)")
+              + f" · mean round {sm['mean_round']} · "
               f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
     xp = info["experiments"]
     if xp:

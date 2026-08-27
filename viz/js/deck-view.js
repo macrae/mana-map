@@ -929,7 +929,11 @@
     
     var body = '';
     runs.forEach(function (run) {
-      var me = ((run.analysis || {}).seats || {})[run.slug] || {};
+      // A BRANCH SEAT IS FLATTENED FOR FORGE (`@` -> `-`), so looking the seat
+      // up by its raw slug finds nothing — the same mistake that printed
+      // `wins 0` for a list that had won eleven.
+      var seats = (run.analysis || {}).seats || {};
+      var me = seats[run.slug] || seats[String(run.slug).replace('@', '-')] || {};
       var rows = [
         ['Table', (run.seats || []).slice(1).map(function (s) { return s.slug; }).join(', ')],
         ['Games', run.games_completed],
@@ -937,6 +941,15 @@
         ['Eliminated turn', figure(me.eliminated_turn)],
         ['Combat damage dealt', figure(me.combat_damage_dealt_to_players)]
       ];
+      // A WIN RATE NEVER TRAVELS WITHOUT THE PILOTING READING. Forge's AI is
+      // untrained and measured at two thirds of a land drop per turn; the number
+      // is only readable beside whether OUR seat was handled like the table.
+      var pq = ((d.info || {}).simulation || {}).piloting;
+      if (pq) {
+        rows.push(['AI piloted our seat',
+          (pq.comparable ? 'comparably' : 'WORSE than the pod') +
+          ' — ' + Math.round(pq.lands_ratio * 100) + '% of the pod\'s land drops']);
+      }
       var cd = me.commander_damage;
       if (cd) {
         rows.push(['Cmdr damage on one seat', figure(cd.max_on_one_defender)]);

@@ -26,10 +26,17 @@ two of YOUR OWN lists against the same pod substantially intact: both are played
 equally badly. It does not rescue an absolute win rate, and it never makes a
 Forge result a claim about how the deck plays in your hands.
 
-Lands and casts per own turn are the two signals, chosen because they are the
-ones that separated: they need no card knowledge, they are recorded for every
-seat, and a deck that is not making land drops is not being piloted whatever else
-is true of it.
+THE VERDICT RESTS ON LAND DROPS ALONE, AND CASTS ARE CONTEXT. Both are reported,
+but only one is a piloting measure. **Casts per turn is confounded by the deck's
+own curve** — measured across every tracked run, `corr(mean mana value, casts
+ratio) = -0.50`: an expensive deck casts fewer spells while being played
+perfectly well. Scoring on it flagged radagast NOT COMPARABLE at 0.84 against a
+0.85 line, on a deck whose only fault is a mean mana value of 2.97 and a run of
+twenty games. That is a check firing on correct data, which this repo has
+rejected three times before.
+
+A land drop is not confounded that way: every deck wants its land every turn
+whatever it costs, so a seat that is not making them is not being piloted.
 """
 
 #: Below this share of the pod's own rate, our seat was handled worse than the
@@ -44,6 +51,10 @@ is true of it.
 COMPARABLE = 0.85
 
 LANDS, CASTS = "lands_per_turn", "casts_per_turn"
+
+#: Below this many games the rates are one table's variance. The n=1 smoke run
+#: reads 0.60 on land drops, which is a shuffle rather than a finding.
+MIN_GAMES = 8
 
 
 def from_record(rec):
@@ -87,8 +98,22 @@ def from_record(rec):
         ratio = (per[ours][metric] / mean_pod) if mean_pod else None
         out[metric] = {"ours": per[ours][metric], "pod_mean": round(mean_pod, 3),
                        "ratio": round(ratio, 3) if ratio else None}
-    ratios = [out[m]["ratio"] for m in (LANDS, CASTS) if out[m]["ratio"]]
-    out["comparable"] = bool(ratios) and min(ratios) >= COMPARABLE
+    # A SINGLE GAME CANNOT SUPPORT A VERDICT. The n=1 smoke run reads 0.60 on
+    # land drops, which is one game's variance and not a finding.
+    turns = per[ours]["turns"]
+    if per[ours]["games"] < MIN_GAMES:
+        out["comparable"] = None
+        out["reading"] = (f"only {per[ours]['games']} game(s) — too few to say "
+                          f"whether the AI played this seat like the rest. The "
+                          f"rates are reported; the verdict is withheld.")
+        return out
+    ratio = out[LANDS]["ratio"]
+    out["comparable"] = bool(ratio) and ratio >= COMPARABLE
+    out["verdict_from"] = LANDS
+    out["casts_note"] = (
+        "reported, not scored: casts per turn is confounded by the deck's own "
+        "curve (corr with mean mana value = -0.50 across tracked runs), so an "
+        "expensive deck casts fewer spells while being piloted fine.")
     out["reading"] = (
         "our seat was handled about as well as the pod, so an A/B between two of "
         "your own lists against this table is played equally badly on both sides "
@@ -111,6 +136,8 @@ def render(q):
         m = q[metric]
         lines.append(f"    {label:26} ours {m['ours']:.2f}  pod {m['pod_mean']:.2f}"
                      f"  ({m['ratio']:.0%} of the pod's rate)")
-    lines.append("    " + ("COMPARABLE" if q["comparable"] else "NOT COMPARABLE"))
+    lines.append("    " + ("COMPARABLE" if q["comparable"]
+                           else "NOT ENOUGH GAMES" if q["comparable"] is None
+                           else "NOT COMPARABLE"))
     lines.append("    " + q["reading"])
     return lines
