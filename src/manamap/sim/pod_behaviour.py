@@ -84,6 +84,16 @@ POD = {"casts_per_turn": 1.09, "second_spell_rate": 0.232, "n_seat_games": 1143}
 #: never as a figure — the honest thing a missing measurement can say.
 SECOND_DRAW_BOUND = "at most the second-spell rate, and in practice well below it"
 
+#: WHAT EACH ESTIMATE RESTS ON. Quoting the measured spell rate under an upkeep
+#: trigger is a citation to evidence that had no part in the answer — the reader
+#: cannot then tell which numbers are load-bearing.
+BASIS = {
+    "per_opponent_draw": "one draw step per opponent per round, by rule — nothing measured",
+    "second_spell": "a second spell on {second_spell_rate:.1%} of opponent turns (measured, n={n})",
+    "per_opponent_cast": "{casts_per_turn} spells per opponent turn (measured, n={n})",
+    "each_upkeep": "one of your upkeeps per round, by rule — nothing measured",
+}
+
 TRIGGERS = (
     ("per_opponent_draw", re.compile(
         r"whenever an opponent draws a card|whenever a player draws a card", re.I),
@@ -94,6 +104,11 @@ TRIGGERS = (
      lambda pod, n: n * pod["second_spell_rate"]),
     ("per_opponent_cast", re.compile(r"whenever an opponent casts", re.I),
      lambda pod, n: n * pod["casts_per_turn"]),
+    # ONCE A ROUND, BUT AGAINST EVERY SEAT. A frequency alone distorts this
+    # class: Master of Ceremonies fires on one upkeep where Smothering Tithe
+    # fires on three draw steps, so it reads as a third the card — but each
+    # firing resolves against each opponent, so the throughput is comparable.
+    # `scales` carries that, and the caller must say it.
     ("each_upkeep", re.compile(r"at the beginning of your upkeep", re.I),
      lambda pod, n: 1.0),
 )
@@ -108,9 +123,9 @@ def rate_for(text, opponents=DEFAULT_OPPONENTS, pod=None):
                 return {"pattern": name, "per_round": None,
                         "bound": SECOND_DRAW_BOUND,
                         "basis": f"{opponents} opponents; Forge does not log draws"}
+            scales = bool(re.search(r"each (?:opponent|player)", text or ""))
             return {"pattern": name, "per_round": round(fn(pod, opponents), 2),
-                    "basis": (f"{opponents} opponents at "
-                              f"{pod['casts_per_turn']} spells/turn, a second on "
-                              f"{pod['second_spell_rate']:.1%} of turns "
-                              f"(measured, n={pod.get('n_seat_games', '?')})")}
+                    "scales_with_opponents": scales,
+                    "basis": f"{opponents} opponents; " + BASIS[name].format(
+                        n=pod.get("n_seat_games", "?"), **pod)}
     return None

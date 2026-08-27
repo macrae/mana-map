@@ -51,3 +51,37 @@ def test_the_constants_cannot_outlive_their_evidence():
 
 def test_no_logs_means_no_observation_rather_than_a_zero():
     assert pb.observed(logs=[]) is None
+
+
+def test_an_upkeep_trigger_carries_its_pod_scaling():
+    """A frequency alone distorts this class.
+
+    Master of Ceremonies fires on one upkeep where Smothering Tithe fires on
+    three draw steps — one-third the rate — but each firing resolves against
+    each opponent, so the throughput is comparable. Reporting only the rate
+    ranks it below a card it matches.
+    """
+    est = pb.rate_for("At the beginning of your upkeep, each opponent may "
+                      "create a Treasure token.")
+    assert est["per_round"] == 1.0
+    assert est["scales_with_opponents"] is True
+
+
+def test_a_per_opponent_trigger_does_not_claim_to_scale_twice():
+    est = pb.rate_for("Whenever an opponent casts their second spell each turn, "
+                      "you create a Treasure token.")
+    assert est["scales_with_opponents"] is False
+
+
+def test_the_basis_names_only_evidence_that_bore_on_the_answer():
+    """An upkeep trigger owes nothing to the measured spell rate, and quoting it
+    there leaves a reader unable to tell which figures are load-bearing."""
+    upkeep = pb.rate_for("At the beginning of your upkeep, create a Treasure")
+    spell = pb.rate_for("Whenever an opponent casts their second spell each turn")
+    # NB: "nothing measured" contains "measured" — a bare substring test here
+    # passes on the string that disproves it, which is the trap on this repo's
+    # list five times over. Assert the whole phrase.
+    assert "nothing measured" in upkeep["basis"]
+    assert "by rule" in upkeep["basis"]
+    assert "(measured, n=" in spell["basis"]
+    assert "by rule" not in spell["basis"]

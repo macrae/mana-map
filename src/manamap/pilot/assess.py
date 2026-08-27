@@ -43,7 +43,18 @@ COMBAT, OPPONENT, DEATH, ACTIVATED, RECURRING, ONESHOT = (
 
 _GATES = (
     (COMBAT, re.compile(r"combat damage|attacks|becomes? blocked|deals damage to a player", re.I)),
-    (OPPONENT, re.compile(r"an opponent|each opponent|opponents? (?:cast|draw)", re.I)),
+    # OPPONENT MEANS OPPONENT AGENCY, NEVER OPPONENT AS A TARGET. The first cut
+    # matched "each opponent" anywhere, which is the wording every drain payoff
+    # in the game uses — it classed 8 of this branch's 95 cards as gated on the
+    # pod, and 5 were wrong: Reckless Fireweaver (the branch's OWN drain, gated
+    # on your artifacts entering), Terror of the Peaks, Revel in Riches,
+    # Weftstalker Ardent, and Exotic Orchard, which is a land. A card is gated on
+    # the opponents only when THEY have to do something first.
+    (OPPONENT, re.compile(
+        r"whenever an opponent|whenever a player|whenever another player|"
+        r"each opponent (?:may|chooses|who)|an opponent (?:casts|draws|plays|"
+        r"sacrifices|attacks|gains|searches)|opponent who (?:drew|had|controls)",
+        re.I)),
     (DEATH, re.compile(r"\bdies\b|would die|leaves the battlefield|put into a graveyard", re.I)),
     (ACTIVATED, re.compile(r"\{\d*\}?\s*,?\s*\{T\}|Sacrifice this|as an additional cost", re.I)),
     (RECURRING, re.compile(r"[Ww]henever|[Aa]t the beginning")),
@@ -231,8 +242,14 @@ def _verdict(row, slug, branch):
         if est["per_round"] is None:
             return (f"{head}, but the trigger is bounded: {est['bound']} "
                     f"({est['basis']})")
+        # A per-round frequency is not throughput when one firing touches every
+        # seat — saying only "1.0" ranks an upkeep tax below a per-draw one that
+        # it actually matches. The scaling rides with the number, never instead.
+        each = (" — and each firing resolves against EACH opponent, so at this "
+                "table one trigger is worth up to 3"
+                if est.get("scales_with_opponents") else "")
         return (f"{head}, but it would fire about {est['per_round']} times a "
-                f"round against your pod — {est['basis']}")
+                f"round against your pod{each} — {est['basis']}")
     if row["job"] in ("treasure", "multiplier") and row["cheaper_than_ours"]:
         return (f"cheaper than anything in the list doing that job "
                 f"({row['ours_cheapest']}) — worth measuring")

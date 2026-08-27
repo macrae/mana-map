@@ -90,3 +90,23 @@ def test_an_off_identity_card_is_refused_before_anything_else():
 def test_an_unknown_name_is_reported_not_dropped():
     got = A.assess(SLUG, ["Nonesuch Cardname Here"], branch=None)
     assert "not in the corpus" in got["cards"][0]["verdict"]
+
+
+@needs
+def test_opponent_gated_means_opponent_agency_not_opponent_as_a_target():
+    """MEASURED BEFORE IT SHIPPED, AND THE FIRST CUT FAILED IT.
+
+    Matching "each opponent" anywhere is the wording every drain payoff in the
+    game uses: it classed 8 of this branch's 95 cards as gated on the pod and 5
+    were wrong — Reckless Fireweaver is the branch's OWN drain, gated on your
+    artifacts entering, and Exotic Orchard is a land. A card is gated on the
+    opponents only when THEY have to act first.
+    """
+    assert A.gate_of("Whenever an artifact you control enters, Reckless "
+                     "Fireweaver deals 1 damage to each opponent.") != A.OPPONENT
+    assert A.gate_of("{T}: Add one mana of any color that a land an opponent "
+                     "controls could produce.") != A.OPPONENT
+    assert A.gate_of("Whenever an opponent draws a card, that player may pay "
+                     "{2}. If they don't, you create a Treasure token.") == A.OPPONENT
+    assert A.gate_of("At the beginning of your upkeep, each opponent may create "
+                     "a Treasure token.") == A.OPPONENT
