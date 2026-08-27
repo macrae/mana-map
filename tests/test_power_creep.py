@@ -1,5 +1,9 @@
 """Tests for power creep / obsolescence detection (power_creep.py)."""
 
+import pytest
+
+from conftest import requires_data
+
 import numpy as np
 import pandas as pd
 
@@ -107,7 +111,7 @@ def test_strictly_better_lower_cmc():
     ])
     result = find_strictly_better(df)
     assert "Cancel" in result
-    replacements = [r["name"] for r in result["Cancel"]["obsoleted_by"]]
+    replacements = [r["name"] for r in result["Cancel"]["compare_with"]]
     assert "Counterspell" in replacements
 
 
@@ -119,10 +123,10 @@ def test_strictly_better_creature_stats():
     ])
     result = find_strictly_better(df)
     assert "Old Bear" in result
-    assert result["Old Bear"]["obsoleted_by"][0]["name"] == "New Bear"
-    advantages = result["Old Bear"]["obsoleted_by"][0]["advantages"]
-    assert "Better Power" in advantages
-    assert "Better Toughness" in advantages
+    assert result["Old Bear"]["compare_with"][0]["name"] == "New Bear"
+    advantages = result["Old Bear"]["compare_with"][0]["gains"]
+    assert "more power" in advantages
+    assert "more toughness" in advantages
 
 
 def test_not_strictly_better_different_supertype():
@@ -173,8 +177,11 @@ def test_strictly_better_additional_ability():
     ])
     result = find_strictly_better(df)
     assert "Base Card" in result
-    advantages = result["Base Card"]["obsoleted_by"][0]["advantages"]
-    assert any("Additional" in a for a in advantages)
+    # The extra tag is named PLAINLY now, not wrapped in "Additional: …" — and
+    # only a tag whose valence is a GAIN lands in `gains` at all. `draw` is one;
+    # `discard` would land in `costs` and dock the score.
+    gains = result["Base Card"]["compare_with"][0]["gains"]
+    assert "draw" in gains, gains
 
 
 def test_vanilla_cards_excluded():
@@ -218,7 +225,7 @@ def test_max_5_replacements():
     df = pd.DataFrame(cards)
     result = find_strictly_better(df)
     if "Old Draw" in result:
-        assert len(result["Old Draw"]["obsoleted_by"]) <= 5
+        assert len(result["Old Draw"]["compare_with"]) <= 5
 
 
 # ── parse_stat modifier rejection ──
@@ -319,7 +326,7 @@ def test_similarity_score_in_output():
     embs = np.ones((2, 128), dtype=np.float32)  # identical -> sim = 1.0
     result = find_strictly_better(df, ability_embeddings=embs, similarity_threshold=0.5)
     assert "Card A" in result
-    assert "similarity" in result["Card A"]["obsoleted_by"][0]
+    assert "similarity" in result["Card A"]["compare_with"][0]
 
 
 def test_sort_by_similarity():
@@ -334,8 +341,8 @@ def test_sort_by_similarity():
     embs[1, 0] = 0.95; embs[1, 1] = 0.31  # Close Match (high sim)
     embs[2, 0] = 0.8; embs[2, 1] = 0.6    # Far Match (lower sim)
     result = find_strictly_better(df, ability_embeddings=embs, similarity_threshold=0.5)
-    if "Base" in result and len(result["Base"]["obsoleted_by"]) >= 2:
-        sims = [r["similarity"] for r in result["Base"]["obsoleted_by"]]
+    if "Base" in result and len(result["Base"]["compare_with"]) >= 2:
+        sims = [r["similarity"] for r in result["Base"]["compare_with"]]
         assert sims == sorted(sims, reverse=True)
 
 
@@ -396,3 +403,126 @@ def test_multi_tag_uses_base_threshold():
     result = find_strictly_better(df, ability_embeddings=embs,
                                   similarity_threshold=0.75, single_tag_threshold=0.98)
     assert "Card A" in result
+
+
+# ── The 2026-08 repair: read the card, and publish a degree ──────────────
+#
+# The audit that prompted it, over all 22,753 pairs the index then published:
+#   15.5%  a COST reported as an advantage (`Additional: discard`)
+#   22.9%  the replacement ADDS a restriction the original lacks
+#   29.9%  of ability-pairs, the replacement's ability costs MORE
+#    8.2%  the replacement is commander-illegal
+#   30.8%  played LESS than the card it claimed to outclass
+#   82.0%  share a real functional role — the RETRIEVAL half was fine
+#
+# The module read tags, cost, stats and a date and never opened `oracle_text`.
+
+from manamap.analysis import power_creep as pc
+
+
+def _rec(name, text="", cmc=0.0, mana_cost="", power=None, toughness=None,
+         rank=None, tribes=None, restrictions=None, activation=None):
+    return {"name": name, "text": text, "cmc": cmc, "mana_cost": mana_cost,
+            "power": power, "toughness": toughness, "edhrec_rank": rank,
+            "effective_cost": pc.effective_cost(cmc, mana_cost),
+            "tribes": tribes if tribes is not None else set(),
+            "restrictions": (restrictions if restrictions is not None
+                             else pc.restrictions(text)),
+            "activation": activation}
+
+
+def test_phyrexian_mana_is_read_as_the_discount_it_is():
+    """Dismember is a one-mana spell, and the index compared it on mana value 3.
+
+    `preprocess.parse_mana_pips` counts `{B/P}` as a full black pip and says so
+    deliberately — that is right for CASTABILITY, where the pip is payable with
+    mana. It is wrong for a COST COMPARISON. Same one-concept-two-questions
+    split as `cast_pips` vs `manabase.count_pips`.
+    """
+    assert pc.effective_cost(3.0, "{1}{B/P}{B/P}") == 1.0
+    assert pc.effective_cost(2.0, "{1}{B}") == 2.0
+    # NaN is a float and NaN is TRUTHY, so `mana_cost or ""` does not catch a
+    # missing cell — the trap every other pandas read in this module guards.
+    assert pc.effective_cost(2.0, float("nan")) == 2.0
+
+
+def test_a_tribal_gate_is_seen_where_the_tag_vocabulary_is_blind():
+    """THE FAILURE THE CAVEAT IS ACTUALLY ABOUT.
+
+    `MECHANICAL_TAGS["death_trigger"]` is `when .* dies`, and the `.*` sits
+    exactly where the subject noun lives — so "whenever a Goblin you control
+    dies" and "whenever another creature you control dies" produce byte-identical
+    tag sets. The gate was the substring the regex threw away.
+    """
+    types = {"Goblin", "Vampire", "Elf"}
+    assert pc.tribal_gates(
+        "Whenever a Goblin you control dies, each opponent loses 1 life.",
+        types) == {"Goblin"}
+    assert pc.tribal_gates(
+        "Whenever another creature you control dies, each opponent loses 1 life.",
+        types) == set()
+    # THE HARD CASE, and it must NOT fire: the Vampire is who gets the counter,
+    # not what the trigger is gated on.
+    assert pc.tribal_gates(
+        "Whenever this creature or another creature dies, put a +1/+1 counter "
+        "on each Vampire you control.", types) == set()
+
+
+def test_a_tag_has_a_sign():
+    """`Additional: discard` was published as a reason to make the swap, so
+    "discard a card for hexproof" read as an upgrade over unconditional
+    hexproof. `context` is the honest default and is reported as a DIFFERENCE."""
+    gains, costs, context = pc.valence({"draw", "discard", "tokens"})
+    assert gains == ["draw"] and costs == ["discard"] and context == ["tokens"]
+
+
+def test_the_strength_ranks_the_documented_failures_below_a_clean_pair():
+    """CALIBRATION, against the four cases `pool_facts` documents.
+
+    The weights are not free parameters: each is anchored here, so one cannot be
+    tuned until these stop meaning anything.
+    """
+    plain = _rec("A", "Whenever another creature you control dies, drain 1.",
+                 cmc=3.0, rank=500)
+    clean = _rec("B", "Whenever another creature you control dies, drain 1.",
+                 cmc=2.0, rank=400)
+    good = pc.obsolescence_strength(plain, clean, ["costs 1 less"], [], None, None)
+
+    tribal = _rec("C", "Whenever a Goblin you control dies, drain 1.",
+                  cmc=2.0, rank=400, tribes={"Goblin"})
+    narrow = pc.obsolescence_strength(plain, tribal, ["costs 1 less"], [], None, None)
+
+    costly = _rec("D", "Whenever another creature dies, drain 1.",
+                  cmc=2.0, rank=400)
+    charged = pc.obsolescence_strength(plain, costly, ["costs 1 less"],
+                                       ["discard"], None, None)
+
+    paid = pc.obsolescence_strength(_rec("E", cmc=2.0, rank=500, activation=0),
+                                    _rec("F", cmc=2.0, rank=400, activation=2),
+                                    ["more toughness"], [], 0, 2)
+
+    assert good > narrow, "a tribal gate must cost more than it gains"
+    assert good > charged, "a card that charges you must rank below one that does not"
+    assert good > paid, "a free ability replaced by a paid one is not an upgrade"
+    assert narrow < 0.35, f"a tribal narrowing scored {narrow}"
+    for score in (good, narrow, charged, paid):
+        assert 0.0 <= score <= 1.0
+
+
+@requires_data
+def test_the_index_publishes_a_degree_and_it_separates():
+    """The score must rank the pairs with a detectable problem BELOW the rest,
+    or it is decoration. Measured at the repair: 0.271 against 0.630."""
+    from manamap.analysis import eval_obsolescence
+    got = eval_obsolescence.collect()
+    if got is None:
+        pytest.skip("requires the card corpus")
+    strength = got["strength"]
+    if strength["separation"] is None:
+        pytest.skip("no scored pairs on this index")
+    assert strength["separation"] > 0.15, (
+        f"the score separates the bad pairs from the good by only "
+        f"{strength['separation']} — it is not carrying its own weight")
+    # And retrieval must not have been traded away for precision: the embedding
+    # was already finding cards that do the same job 82% of the time.
+    assert got["role_agreement"]["share"] > 0.70, got["role_agreement"]

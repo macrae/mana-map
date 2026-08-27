@@ -86,3 +86,37 @@ def load_first_embeddings(*paths):
         except FileNotFoundError:
             continue
     return None, None
+
+#: Real creature types that in rules text always mean the TOKEN. `Artifact
+#: Creature — Treasure Dog` exists, so the corpus honestly reports Treasure as a
+#: creature type — but "Treasures you control" is never tribal, and reading it as
+#: one told a pilot a perfectly castable card was dead.
+TOKEN_TYPE_NAMES = frozenset({
+    "Treasure", "Clue", "Food", "Blood", "Powerstone", "Map",
+    "Junk", "Incubator", "Gold", "Shard", "Lander"})
+
+
+def creature_types(df):
+    """Every real creature type in the corpus, from the type lines.
+
+    HERE RATHER THAN IN `pilot/`, because `analysis/` may not import `pilot/` —
+    `pilot` imports this module. `assess._creature_types` is the same scan and
+    wraps it in a lazy set; both read this so a tribe list cannot drift between
+    the triage that warns a pilot and the index that ranks cards for them.
+
+    PER FACE, and the Creature test has to be on the FACE: checking the whole
+    line and then reading the front face harvests `Treasure` and `Clue` off
+    artifact fronts whose BACK is a creature.
+    """
+    # A frame with no type lines has no tribes to find — a synthetic fixture,
+    # not a defect. Raising here would make every unit test of the caller carry
+    # a column it has no opinion about.
+    if "type_line" not in getattr(df, "columns", []):
+        return set()
+    out = set()
+    for line in df["type_line"].dropna().unique():
+        for face in str(line).split("//"):
+            if "Creature" not in face or "—" not in face:
+                continue
+            out.update(face.split("—", 1)[1].split())
+    return {t for t in out if t[:1].isupper()} - TOKEN_TYPE_NAMES

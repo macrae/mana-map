@@ -215,17 +215,17 @@ class TestObsolescenceIndex:
 
     def test_entries_have_required_fields(self):
         for card_name, data in list(self.index.items())[:10]:
-            assert "obsoleted_by" in data
-            for rep in data["obsoleted_by"]:
+            assert "compare_with" in data
+            for rep in data["compare_with"]:
                 assert "name" in rep
-                assert "advantages" in rep
-                assert isinstance(rep["advantages"], list)
-                assert len(rep["advantages"]) > 0
+                assert "gains" in rep
+                assert isinstance(rep["gains"], list)
+                assert len(rep["gains"]) > 0
 
     def test_entries_have_similarity(self):
         """Obsolescence entries should include similarity scores."""
         for card_name, data in list(self.index.items())[:10]:
-            for rep in data["obsoleted_by"]:
+            for rep in data["compare_with"]:
                 assert "similarity" in rep, f"Missing similarity for {card_name} -> {rep['name']}"
                 assert 0.0 <= rep["similarity"] <= 1.0
 

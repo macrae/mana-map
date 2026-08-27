@@ -152,7 +152,18 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .obsolescence-item:last-child { margin-bottom: 0; }
 .obsolescence-name { font-size: 0.85rem; color: #e0e0e0; font-weight: 600; }
 .obsolescence-advantages { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
-.obsolescence-badge { background: #3a1a1a; color: #F87171; border-radius: 3px; padding: 2px 6px; font-size: 0.65rem; }
+/* A GAIN AND A COST MUST NOT LOOK ALIKE. Every badge was the same red, so a
+   card that CHARGED you something rendered identically to one that gave you
+   something — which is how "discard a card for hexproof" read as an upgrade. */
+.obsolescence-badge { background: #16301f; color: #6EE7A0; border-radius: 3px; padding: 2px 6px; font-size: 0.65rem; }
+.obsolescence-badge.cost { background: #3a1a1a; color: #F87171; }
+.obsolescence-badge.rank { background: #2a2418; color: #D9B44A; }
+/* The measure leads, and its band is legible without reading the number. */
+.obsolescence-strength { float: right; font-variant-numeric: tabular-nums;
+  font-size: 0.7rem; padding: 1px 6px; border-radius: 3px; cursor: help; }
+.obsolescence-strength.strong { background: #16301f; color: #6EE7A0; }
+.obsolescence-strength.mild   { background: #2a2418; color: #D9B44A; }
+.obsolescence-strength.weak   { background: #2a1a1a; color: #9A7E7E; }
 
 /* ── Keyboard Hint ───────────────────────────────────────────────────── */
 .keyboard-hint { font-size: 0.6rem; color: #555; text-align: center; padding: 6px 0 2px; }

@@ -598,6 +598,58 @@ OBSOLESCENCE_SINGLE_TAG_THRESHOLD = 0.98
 OBSOLESCENCE_MIN_TAGS = 1
 OBSOLESCENCE_MAX_REPLACEMENTS = 5
 
+# ── What the obsolescence comparison must READ, and could not ────────────
+#
+# A SEPARATE DICT, NOT AN ADDITION TO `MECHANICAL_TAGS`. That vocabulary is
+# model-facing: touching it invalidates `model_ability.pt` and forces a retrain of
+# steps 3-5. This is consumed only by `power_creep`, so it needs `regen-analysis`
+# and nothing more — exactly the argument that made `ROLE_PATTERNS` its own dict.
+#
+# THE DEFECT IT REPAIRS. `MECHANICAL_TAGS`' trigger patterns are `when .* dies`,
+# `whenever .* attacks`, `whenever .* deals damage` — and the `.*` sits precisely
+# where the subject noun lives. So "whenever a Goblin you control dies" and
+# "whenever a creature dies" produce byte-identical tag sets, `a.tags <= b.tags` is
+# trivially true in both directions, and the index offered Boggart Mischief (drains
+# only on a GOBLIN) as a replacement for Bastion of Remembrance (drains on any
+# creature) in a box with almost no Goblins. **The gate was the substring the regex
+# threw away.** Measured across the published index: 22.9% of replacements add a
+# restriction the original does not have.
+RESTRICTION_PATTERNS = {
+    # "Activate only during your turn", "only any time you could cast a sorcery"
+    "timing": r"only (?:during|as a sorcery|any time you could|on your turn)",
+    # "as long as you control", "only if you have", "unless" that is NOT free
+    "conditional": r"\bas long as\b|\bonly if\b",
+    "additional cost": r"as an additional cost",
+    "sacrifice cost": r"sacrifice (?:a|an|another|two|three)\b",
+    "discard cost": r"discard (?:a|an|two|three|\d+)\b",
+    "life cost": r"pay \d+ life",
+    "exile cost": r"exile (?:a|another|two|\d+)[^.]{0,30}?(?:from your hand|you control)",
+}
+
+#: THE SIGN OF A TAG, which `MECHANICAL_TAGS` does not carry. The index reported
+#: every tag B has and A lacks as `Additional: <tag>` and called it an ADVANTAGE —
+#: so "discard a card for hexproof" read as an upgrade over unconditional hexproof
+#: (Soul of the Rapids -> Prognostic Sphinx), and 15.5% of published pairs counted
+#: a price as a gain.
+#:
+#: `context` is the honest default and the largest bucket: whether `tokens` or
+#: `mill` is a gain depends on the deck. A context tag is reported as a DIFFERENCE
+#: and never as an advantage — the same absent-is-absent discipline the goldfish
+#: keeps, applied to a comparison.
+TAG_VALENCE = {
+    # Unambiguously a price the card charges you.
+    "discard": "cost", "sacrifice": "cost", "counters_minus": "cost",
+    # Unambiguously something the card gives you.
+    "draw": "gain", "lifegain": "gain", "ramp": "gain", "protection": "gain",
+    "cost_reduction": "gain", "evasion_flying": "gain", "evasion_trample": "gain",
+    "evasion_menace": "gain", "evasion_unblockable": "gain", "anthem": "gain",
+    "removal": "gain", "counterspell": "gain", "tutor": "gain", "copy": "gain",
+    "counters_plus": "gain", "etb": "gain",
+    # Everything else is context: `mill` is a wincon or a drawback, `tokens` is a
+    # payoff or noise, `tap_ability` is a rate or a restriction.
+}
+DEFAULT_TAG_VALENCE = "context"
+
 # ── Region Clustering ──────────────────────────────────────────────────
 REGIONS_DEFAULT_PATH = DATA_DIR / "regions_default.json"
 REGIONS_ABILITY_PATH = DATA_DIR / "regions_ability.json"

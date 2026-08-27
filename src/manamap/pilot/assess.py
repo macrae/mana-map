@@ -86,25 +86,13 @@ TOKEN_NAMES = {"Treasure", "Clue", "Food", "Blood", "Powerstone", "Map",
 
 
 def _creature_types():
+    """The corpus's real creature types. The scan lives in `analysis/common` so
+    this and `power_creep`'s tribal gate cannot drift — the triage that warns a
+    pilot and the index that ranks cards for them must agree on what a tribe is.
+    """
+    from manamap.analysis.common import creature_types
     from manamap.pilot import card_pool
-    frame = card_pool.load_frame()
-    out = set()
-    for line in frame["type_line"].dropna().unique():
-        # PER FACE, and the Creature test has to be on the FACE. Checking the
-        # whole line then reading the front face harvested `Treasure` and `Clue`
-        # off artifact fronts whose BACK is a creature — so "Treasures you
-        # control" read as a tribe and the triage told a pilot a card was dead.
-        for face in str(line).split("//"):
-            if "Creature" not in face or "—" not in face:
-                continue
-            out.update(face.split("—", 1)[1].split())
-    # THE ARTIFACT-TOKEN NAMES ARE REAL CREATURE TYPES AND ALMOST NEVER TRIBES.
-    # `Artifact Creature — Treasure Dog` exists, so the corpus honestly reports
-    # Treasure as a creature type — but "Treasures you control" in rules text
-    # means the TOKEN every time, and a deck's cards.json never lists a token, so
-    # the tribe check read Alchemist's Talent as needing a tribe the deck runs
-    # none of and called a perfectly castable card dead.
-    return {t for t in out if t[:1].isupper()} - TOKEN_NAMES
+    return creature_types(card_pool.load_frame())
 
 
 class _Lazy(set):

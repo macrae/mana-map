@@ -1595,16 +1595,50 @@
     }
     if (!obsolescenceIndex[cardName]) return '';
     const data = obsolescenceIndex[cardName];
-    if (!data.obsoleted_by || data.obsoleted_by.length === 0) return '';
+    // `compare_with` since the 2026-08 repair; `obsoleted_by` is the pre-repair
+    // key, read so an older index still renders rather than silently showing
+    // nothing.
+    const rows = (data.compare_with || data.obsoleted_by || [])
+      .slice().sort(function (x, y) {
+        return (y.strength || 0) - (x.strength || 0);
+      });
+    if (rows.length === 0) return '';
 
+    // NOT "Obsoleted By". That was a VERDICT about all contexts, published to
+    // users on data where 36.5% of pairs failed a purely mechanical check —
+    // costs counted as advantages, restrictions unread, illegal cards offered.
+    // The data supports a COMPARISON and the pilot supplies the context.
     let html = '<div class="obsolescence-section">';
-    html += '<div class="obsolescence-title">Obsoleted By</div>';
-    for (const rep of data.obsoleted_by.slice(0, 3)) {
+    html += '<div class="obsolescence-title">Compare with</div>';
+    for (const rep of rows.slice(0, 3)) {
       html += '<div class="obsolescence-item">';
       html += '<span class="obsolescence-name clickable" onclick="MM.selectByName(\'' + escHtml(rep.name).replace(/'/g, "\\'") + '\')">' + escHtml(rep.name) + '</span>';
+      // THE STRENGTH LEADS. 0.0 is "these two cards merely sort near each
+      // other"; 1.0 is "strictly better, cheaper, no strings". The index stopped
+      // claiming a verdict because it could not support one — it publishes the
+      // degree and the reader supplies the context a corpus cannot.
+      if (typeof rep.strength === 'number') {
+        const band = rep.strength >= 0.65 ? 'strong'
+                   : rep.strength >= 0.4 ? 'mild' : 'weak';
+        html += '<span class="obsolescence-strength ' + band + '" title="' +
+                'How strongly this card outclasses the one you are looking at. ' +
+                '0 = not at all, 1 = strictly better and cheaper.">' +
+                rep.strength.toFixed(2) + '</span>';
+      }
       html += '<div class="obsolescence-advantages">';
-      for (const adv of rep.advantages) {
-        html += '<span class="obsolescence-badge">' + escHtml(adv) + '</span>';
+      // BOTH SIDES, and the costs are marked. A one-sided list is how "discard
+      // a card for hexproof" read as an upgrade over unconditional hexproof.
+      for (const gain of (rep.gains || rep.advantages || [])) {
+        html += '<span class="obsolescence-badge">+ ' + escHtml(gain) + '</span>';
+      }
+      for (const cost of (rep.costs || [])) {
+        html += '<span class="obsolescence-badge cost">\u2212 ' + escHtml(cost) + '</span>';
+      }
+      for (const n of (rep.narrows || [])) {
+        html += '<span class="obsolescence-badge cost">narrower: ' + escHtml(n) + '</span>';
+      }
+      if (rep.played_more === false) {
+        html += '<span class="obsolescence-badge rank">played less</span>';
       }
       html += '</div>';
       html += '</div>';

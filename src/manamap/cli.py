@@ -65,6 +65,12 @@ def build_parser():
         help="Serve viz/ AND a local /api the deployed site does not have")
     srv.add_argument("--port", type=int, default=8000)
 
+    # Also not a pipeline step, and for the same shape of reason as the two
+    # below: it SCORES an artifact the pipeline built rather than building one.
+    subparsers.add_parser(
+        "eval-obsolescence",
+        help="Score the obsolescence index against its known failure classes")
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -91,6 +97,9 @@ def main():
     elif args.command == "serve":
         from manamap import serve
         serve.main(args)
+    elif args.command == "eval-obsolescence":
+        from manamap.analysis import eval_obsolescence
+        eval_obsolescence.main(args)
     elif args.command == "eval-commander-search":
         from manamap.analysis import eval_commander_search
         eval_commander_search.main(args)

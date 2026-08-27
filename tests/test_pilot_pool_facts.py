@@ -274,18 +274,24 @@ def test_line_identity_is_the_union_of_its_pieces():
 
 def test_obsolescence_only_reports_replacements_you_own():
     index = {
-        "Sol Ring": {"obsoleted_by": [
-            {"name": "Command Tower", "advantages": ["Lower CMC"], "similarity": 0.9},
-            {"name": "Mana Crypt", "advantages": ["Free"], "similarity": 0.95},
+        "Sol Ring": {"compare_with": [
+            {"name": "Command Tower", "gains": ["Lower CMC"], "similarity": 0.9},
+            {"name": "Mana Crypt", "gains": ["Free"], "similarity": 0.95},
         ]},
     }
     out = pool_facts.obsolete_in_pool({"Sol Ring": 1, "Command Tower": 1}, index)
-    assert out == [{"card": "Sol Ring",
-                    "replaced_by": [{"name": "Command Tower", "advantages": ["Lower CMC"]}]}]
+    # THE SHAPE CARRIES BOTH SIDES AND THE MEASURE NOW. A one-sided
+    # `advantages` list is how a card that CHARGED you something read as pure
+    # upside.
+    assert len(out) == 1 and out[0]["card"] == "Sol Ring"
+    row = out[0]["compare_with"][0]
+    assert row["name"] == "Command Tower"
+    assert set(row) >= {"name", "strength", "gains", "costs", "narrows",
+                        "played_more"}
 
 
 def test_obsolescence_is_empty_when_nothing_is_owned():
-    index = {"Sol Ring": {"obsoleted_by": [{"name": "Mana Crypt", "advantages": [], "similarity": 1}]}}
+    index = {"Sol Ring": {"compare_with": [{"name": "Mana Crypt", "gains": [], "similarity": 1}]}}
     assert pool_facts.obsolete_in_pool({"Sol Ring": 1}, index) == []
 
 
@@ -365,10 +371,14 @@ def test_in_box_upgrades_are_flagged_as_candidates():
     facts = {
         "resolution": {"unresolved": []}, "identities": [],
         "combos": {"total": 0, "reported": 0}, "bracket": {},
-        "obsolescence": [{"card": "Bastion of Remembrance", "replaced_by": []}],
+        "obsolescence": [{"card": "Bastion of Remembrance", "compare_with": []}],
     }
     notes = pool_facts.build_notes(facts)
-    assert any("CANDIDATES" in n and "restriction clauses" in n for n in notes)
+    # The caveat says what the data now supports: a STRENGTH, not a verdict,
+    # and the classes it reads. It must still refuse to be read as fact.
+    assert any("CANDIDATE" in n.upper() and "STRENGTH" in n.upper()
+               for n in notes), notes
+    assert any("cannot read a card" in n for n in notes), notes
 
 
 def test_no_upgrade_caveat_when_there_are_no_upgrades():

@@ -153,7 +153,11 @@ def build_tables(df, embeddings, synergy, obsolescence, name_index):
                 syn_reason[row, slot] = reason_index[labels[0]]
 
         entry = obsolescence.get(name)
-        better = entry.get("obsoleted_by", []) if entry else []
+        # `compare_with` since the 2026-08 repair; `obsoleted_by` is the pre-repair
+        # key and is read so an older index still parses rather than silently
+        # yielding nothing — the "fallback that answers zero" failure.
+        better = ((entry.get("compare_with") or
+                   entry.get("obsoleted_by") or []) if entry else [])
         resolved = [name_index[b["name"]] for b in better if b.get("name") in name_index]
         slots, k = _pad(resolved, NEIGHBOURS_K_OBSOLETE)
         obs_idx[row] = slots

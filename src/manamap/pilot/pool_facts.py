@@ -303,33 +303,49 @@ def contained_combos(pool, cards, details):
 
 
 def obsolete_in_pool(pool, index):
-    """Owned cards a *different owned card* outclasses — candidate free upgrades.
+    """Owned cards that another owned card is worth COMPARING against.
 
-    CANDIDATES, not verdicts. `obsolescence_index.json` compares tags, mana value,
-    colour, stats and date; it does not read restriction clauses, so a card whose
-    ability is gated on a creature type reads as a superset of one that isn't.
-    Four of the first eight it produced on a real box were wrong in that exact
-    way — the damaging one offered Boggart Mischief (drains only when a *Goblin*
-    dies, in a box with almost no Goblins) as a replacement for Bastion of
-    Remembrance, which drains on any creature. Two more inverted the direction
-    for a sacrifice deck, and one compared Dismember on mana value while ignoring
-    that Phyrexian mana makes it a one-mana spell.
+    CANDIDATES, not verdicts — and the index says so in its own schema now.
+    Before the 2026-08 repair it published `obsoleted_by` with a one-sided
+    `advantages` list, and 36.5% of those pairs failed a purely mechanical
+    check: it never read restriction clauses, never checked legality, counted a
+    cost as a gain, and compared Dismember on mana value while ignoring that
+    Phyrexian makes it a one-mana spell. Four of the first eight results on a
+    real box were wrong that way — the damaging one offered Boggart Mischief
+    (drains only when a *Goblin* dies, in a box with almost no Goblins) over
+    Bastion of Remembrance, which drains on any creature.
 
-    Same failure shape as counting mana sources by grepping oracle text: the
-    index answers a structural question and gets read as a functional one.
+    Those classes now feed a STRENGTH from 0 to 1 rather than a gate, because a
+    gate throws away every near-miss and the coarse restriction classes cancel.
+    What is still true, and is why this stays a candidate list: a text-derived
+    comparison cannot read a card.
     """
     out = []
     for name in sorted(pool):
         entry = index.get(name)
         if not entry:
             continue
-        better = [e for e in entry.get("obsoleted_by", []) if e["name"] in pool]
+        # `compare_with` since the 2026-08 repair; `obsoleted_by` is the
+        # pre-repair key, read so an older index still parses rather than
+        # silently yielding nothing.
+        better = [e for e in (entry.get("compare_with")
+                              or entry.get("obsoleted_by") or [])
+                  if e["name"] in pool]
         if better:
             out.append({
                 "card": name,
-                "replaced_by": [
-                    {"name": e["name"], "advantages": e.get("advantages", [])}
-                    for e in sorted(better, key=lambda e: -e.get("similarity", 0))[:3]
+                # BOTH SIDES, AND THE MEASURE. The old shape carried
+                # `advantages` only, so a replacement that CHARGED you something
+                # read as pure upside.
+                "compare_with": [
+                    {"name": e["name"],
+                     "strength": e.get("strength"),
+                     "gains": e.get("gains") or e.get("advantages", []),
+                     "costs": e.get("costs", []),
+                     "narrows": e.get("narrows", []),
+                     "played_more": e.get("played_more")}
+                    for e in sorted(better,
+                                    key=lambda e: -(e.get("strength") or 0))[:3]
                 ],
             })
     return out
@@ -535,11 +551,13 @@ def build_notes(facts):
 
     if facts.get("obsolescence"):
         notes.append(
-            f"The {len(facts['obsolescence'])} in-box upgrade(s) are CANDIDATES. "
-            f"obsolescence_index.json compares tags, mana value, colour and stats — it "
-            f"does not read restriction clauses, so an ability gated on a creature type "
-            f"looks like a superset of one that isn't. Read the two oracle texts before "
-            f"acting on any of them."
+            f"The {len(facts['obsolescence'])} in-box comparison(s) are "
+            f"CANDIDATES and carry a STRENGTH from 0 to 1, not a verdict. "
+            f"The index reads restriction "
+            f"clauses, tribal gates, activation costs and legality now, and "
+            f"reports what a card COSTS you as well as what it gains — but it "
+            f"still cannot read a card, and whether a difference is worth taking "
+            f"depends on the deck. Anything under ~0.4 is a weak claim."
         )
 
     floor = facts["bracket"].get("floor")
@@ -591,10 +609,19 @@ def format_report(facts):
         out.append(f"         -> {'; '.join(c['produces'][:3])}")
 
     if facts["obsolescence"]:
-        out += ["", f"  in-box upgrades ({len(facts['obsolescence'])}):"]
+        out += ["", f"  in-box cards worth comparing "
+               f"({len(facts['obsolescence'])}), strongest first:"]
         for o in facts["obsolescence"][:10]:
-            best = o["replaced_by"][0]
-            out.append(f"    {o['card']} -> {best['name']} ({', '.join(best['advantages'])})")
+            best = o["compare_with"][0]
+            st = best.get("strength")
+            line = f"    {o['card']} -> {best['name']}"
+            line += f"  [{st:.2f}]" if st is not None else ""
+            line += f"  +{', '.join(best['gains'])}" if best["gains"] else ""
+            if best.get("costs"):
+                line += f"  -{', '.join(best['costs'])}"
+            if best.get("narrows"):
+                line += f"  narrower: {', '.join(best['narrows'])}"
+            out.append(line)
 
     out += ["", f"  archetype signal (top {len(facts['archetypes'])} mechanical tags):"]
     out.append("    " + ", ".join(f"{a['tag']} {a['cards']}" for a in facts["archetypes"]))

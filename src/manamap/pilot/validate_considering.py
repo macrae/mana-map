@@ -127,7 +127,9 @@ def _validate_obsolescence(doc):
     for i, entry in enumerate(doc.get("ten", [])):
         for deck_card in (entry.get("evidence") or {}).get("obsoletes") or []:
             reps = {r["name"]
-                    for r in (index.get(deck_card) or {}).get("obsoleted_by", [])}
+                    for r in ((index.get(deck_card) or {}).get("compare_with")
+                              or (index.get(deck_card) or {}).get("obsoleted_by")
+                              or [])}
             if entry.get("card") not in reps:
                 errors.append(
                     f"ten[{i}] ({entry.get('card')}): claims to obsolete "
