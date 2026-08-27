@@ -23,7 +23,8 @@ import pytest
 
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OUTPUT_CSV_PATH)
-from manamap.pilot import bracket, diagnostic, deck_info, goldfish, mana_analysis
+from manamap.pilot import (
+    bracket, deck_info, diagnostic, goldfish, mana_analysis, net_change)
 
 from conftest import SRC, requires_deck, requires_data
 
@@ -168,6 +169,28 @@ def test_mana_analysis_matches_a_fresh_run(target, tmp_path, unchanged):
     assert fresh == old, (
         f"{_id(target)}/mana_analysis.json is stale — rerun "
         f"`manamap pilot mana-analysis {slug}` and commit it.")
+
+
+@requires_deck
+@pytest.mark.parametrize("target", _slugs("net_change.json"), ids=_id)
+def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
+    """The document a purchase rests on. Deterministic under a fixed seed, so a
+    difference is a real change in the model or in either list — and a report
+    that no longer describes the lists it compares is worse than none, because
+    it was already acted on."""
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root, DECKS_DIR / slug)
+
+    def rerun():
+        net_change.main(type("Args", (), {
+            "slug": slug, "branch": branch, "write": True, "as_json": False,
+            "json": False, "iterations": None, "seed": None})())
+
+    fresh, old = _roundtrip(target, "net_change.json", rerun, tmp_path)
+    assert fresh == old, (
+        f"{_id(target)}/net_change.json is stale — rerun `manamap pilot "
+        f"net-change {slug} --branch {branch} --write` and commit it.")
 
 
 @requires_deck

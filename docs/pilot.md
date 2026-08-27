@@ -89,6 +89,17 @@ manamap pilot validate-diagnostic <slug> [--branch N]
                                         #   the vitals' form: every rate carries its
                                         #   interval, and an unavailable block is ABSENT
                                         #   rather than zeroed
+manamap pilot net-change <slug> --branch N [--write] [--json]
+                                        #   THE REPORT A PURCHASE RESTS ON: the branch
+                                        #   against the deck at a shared harness, every
+                                        #   row with its MDE, the objective GRADED, and
+                                        #   the one measurement nothing else computes —
+                                        #   does assembling the declared engine make the
+                                        #   list win? Plus Forge, and the bill
+manamap pilot validate-net-change <slug> --branch N
+                                        #   nothing under the MDE may be ranked, and an
+                                        #   engine lift must say whether its interval
+                                        #   excludes zero
 manamap pilot calibrate [--iterations N] [--json]
                                         #   DOES THE MODEL PREDICT ANYTHING? Correlates every
                                         #   deck's goldfish figures against its real Forge win
@@ -96,6 +107,16 @@ manamap pilot calibrate [--iterations N] [--json]
                                         #   20+ games each and says what would close the gap —
                                         #   a Spearman on five points is a null wearing a
                                         #   finding's clothes
+manamap pilot deck-branch <slug> [list|new|show|diff|source|commit|log|merge|delete]
+                                        #   THE GIT WORKFLOW FOR A DECK. `new` demands an
+                                        #   --objective (`<measure> <op> <number>`) because
+                                        #   a branch that cannot be falsified gets graded on
+                                        #   whether it did what it does. `commit` freezes a
+                                        #   list with a message and is allowed while cards
+                                        #   are unsourced; `merge` is not — the gap between
+                                        #   them is cardboard. Merge backs up, runs the
+                                        #   chain, records that it landed, and NAMES what
+                                        #   is now stale
 manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--owned] [--write]
                                         #   the bottleneck becomes a POOL. Seeds from the
                                         #   component the diagnostic named and mines the

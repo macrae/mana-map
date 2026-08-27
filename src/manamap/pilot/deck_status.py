@@ -302,6 +302,10 @@ VALIDATED = {
     # here. It is composed from the goldfish, so it goes stale on every model
     # change, which made it the artifact whose staleness was least visible.
     "diagnostic.json": "manamap.pilot.validate_diagnostic",
+    # A branch artifact, and the first one in this map. It is reached because
+    # the validator test now recurses into `branches/*` — before that the whole
+    # branch tree was gated by nothing.
+    "net_change.json": "manamap.pilot.validate_net_change",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
     # NOT a lifecycle stage, and that is exactly why it was missing: the test

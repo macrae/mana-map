@@ -62,6 +62,10 @@ PILOT_STEPS = [
      "what it is gated on, whether any model here can see it, and what it would replace"),
     ("validate-diagnostic", "manamap.pilot.validate_diagnostic",
      "Form-check diagnostic.json: every rate carries its interval"),
+    ("validate-net-change", "manamap.pilot.validate_net_change",
+     "Form-check net_change.json: nothing under the MDE is ranked"),
+    ("net-change", "manamap.pilot.net_change",
+     "What a branch costs, what it buys, and whether it met its objective"),
     ("calibrate", "manamap.pilot.calibrate",
      "Does the model track real outcomes? Refuses below a usable sample"),
     ("close", "manamap.pilot.close",
@@ -140,7 +144,7 @@ _DECK_COMMANDS = {
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
-    "validate-diagnostic", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "validate-diagnostic", "net-change", "validate-net-change", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -338,10 +342,17 @@ def add_pilot_parser(subparsers):
                     # The validators too: a branch's artifacts were gated by
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',
-                    'validate-goldfish-targets', 'validate-diagnostic'):
+                    'validate-goldfish-targets', 'validate-diagnostic',
+                    'net-change', 'validate-net-change'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
+        if name == "net-change":
+            cmd.add_argument("--iterations", type=int, default=None)
+            cmd.add_argument("--seed", type=int, default=None)
+            cmd.add_argument("--write", action="store_true",
+                             help="write net_change.json beside the branch")
+            cmd.add_argument("--json", action="store_true")
         if name == "close":
             cmd.add_argument("--component", default=None, metavar="SUBSTRING",
                              help="which declared component to close "

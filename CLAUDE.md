@@ -167,7 +167,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 18 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (78 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (80 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
