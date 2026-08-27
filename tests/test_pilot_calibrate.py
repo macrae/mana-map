@@ -14,7 +14,7 @@ def test_it_refuses_a_verdict_below_a_usable_sample(monkeypatch):
     the failure this repo has rejected in three other places. So below the
     threshold it reports the GAP and what would close it, and no coefficient.
     """
-    monkeypatch.setattr(calibrate, "forge_record", lambda: {})
+    monkeypatch.setattr(calibrate, "forge_record", lambda *a, **k: ({}, [], []))
     got = calibrate.calibrate(iterations=50)
     assert got["verdict"] == "NOT ANSWERABLE"
     assert "spearman" not in got
@@ -35,7 +35,7 @@ def test_it_correlates_our_decks_and_never_the_pod():
     """An opponent seat is a fetched EDHREC average list with no goldfish
     figures of its own — giada-angels wins 41% and correlating it against
     nothing would be the easiest way to manufacture a relationship."""
-    record = calibrate.forge_record()
+    record, _pod, _dropped = calibrate.forge_record()
     assert record, "no tracked sim runs — this test cannot see the bug"
     assert not any(s.startswith(("giada", "vito", "baylen")) for s in record), record
 
