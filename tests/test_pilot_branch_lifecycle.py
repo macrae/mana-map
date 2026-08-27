@@ -195,3 +195,91 @@ def test_branch_sim_logs_are_not_tracked():
         ["git", "ls-files", "data/decks/*/branches/*/sim/*.json"],
         cwd=ROOT, capture_output=True, text=True).stdout.split()
     assert records, "the branch sim records went untracked with the logs"
+
+
+#: A real card ur-dragon does not run. Staging refuses a card already in the
+#: list, so the fixture has to be one that is not — Sol Ring is in the 99.
+ABSENT = "Llanowar Elves"
+
+
+# ── staging: the swap is the unit ────────────────────────────────────────
+
+@requires_deck
+def test_a_swap_is_one_edit_that_says_what_it_displaced(probe):
+    """A card added and a card cut are two edits a reader has to pair up by
+    hand. A swap is one edit that already carries the pairing, which is what
+    lets a report name WHICH swaps bought the delta rather than reporting that
+    the list changed somehow."""
+    before = deck_branch._parsed(SLUG, probe)
+    out = next(e["name"] for e in before if not e.get("is_commander"))
+    got = deck_branch.stage(SLUG, probe, out, ABSENT, strength=0.71,
+                            why="pytest")
+    assert got["out"] == out and got["in"] == ABSENT
+    assert got["staged"] == 1
+    after = deck_branch._parsed(SLUG, probe)
+    names = {e["name"] for e in after}
+    assert ABSENT in names and out not in names
+    # ONE FOR ONE. The list is never briefly a 98 that some command measures,
+    # and a substitution is exactly what `candidates` prices — which is why it
+    # needs no placebo.
+    assert (sum(int(e.get("quantity") or 1) for e in after)
+            == sum(int(e.get("quantity") or 1) for e in before))
+    row = deck_branch.meta(SLUG, probe)["staged"][0]
+    assert row["out"] == out and row["in"] == ABSENT
+    assert row["strength"] == 0.71, "the provenance of the swap, not a claim"
+
+
+@requires_deck
+def test_staging_writes_through_the_check_in_refusals(probe):
+    """Editing decklist.txt directly skips singleton, size, commander and the
+    corpus check. All four are exactly the refusals a paper list gets."""
+    before = deck_branch._parsed(SLUG, probe)
+    out = next(e["name"] for e in before if not e.get("is_commander"))
+    held = next(e["name"] for e in before
+                if not e.get("is_commander") and e["name"] != out)
+    with pytest.raises(SystemExit) as e:
+        deck_branch.stage(SLUG, probe, out, held)
+    assert "already in" in str(e.value)
+    with pytest.raises(SystemExit) as e:
+        deck_branch.stage(SLUG, probe, "Not A Real Card", ABSENT)
+    assert "nothing to swap out" in str(e.value)
+
+
+@requires_deck
+def test_the_commander_is_not_swappable(probe):
+    """Changing it is a different deck, not a swap — the identity, the whole
+    candidate pool and every declared component move with it."""
+    entries = deck_branch._parsed(SLUG, probe)
+    cmd = next(e["name"] for e in entries if e.get("is_commander"))
+    with pytest.raises(SystemExit) as e:
+        deck_branch.stage(SLUG, probe, cmd, ABSENT)
+    assert "COMMANDER" in str(e.value)
+
+
+@requires_deck
+def test_a_staged_swap_can_be_put_back(probe):
+    """A staging area you cannot back out of is a decision, not a draft."""
+    before = deck_branch._list_text(SLUG, probe)
+    out = next(e["name"] for e in deck_branch._parsed(SLUG, probe)
+               if not e.get("is_commander"))
+    deck_branch.stage(SLUG, probe, out, ABSENT)
+    got = deck_branch.unstage(SLUG, probe, out, ABSENT)
+    assert got["staged"] == 0
+    assert deck_branch.meta(SLUG, probe)["staged"] == []
+    names = {e["name"] for e in deck_branch._parsed(SLUG, probe)}
+    assert out in names and ABSENT not in names
+    with pytest.raises(SystemExit) as e:
+        deck_branch.unstage(SLUG, probe, out, ABSENT)
+    assert "Nothing staged" in str(e.value)
+
+
+@requires_deck
+def test_staging_never_touches_the_decks_own_list(probe):
+    """The branched-write rule, on a new writer. Three instances of a branched
+    write with an unbranched read have shipped; a write is the other half."""
+    deck_path = deck_branch.deck_dir(SLUG) / "decklist.txt"
+    before = deck_path.read_text()
+    out = next(e["name"] for e in deck_branch._parsed(SLUG, probe)
+               if not e.get("is_commander"))
+    deck_branch.stage(SLUG, probe, out, ABSENT)
+    assert deck_path.read_text() == before

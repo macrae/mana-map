@@ -354,6 +354,156 @@ def _write_meta(slug, branch, doc):
         json.dumps(doc, indent=1) + "\n", encoding="utf-8")
 
 
+def _parsed(slug, branch=None):
+    """The decklist as ENTRIES, not as a name->copies map.
+
+    `deck_history._entries` is the right reader for a diff and the wrong one
+    here: it collapses to `{name: copies}` and throws away `is_commander`, the
+    set code, the collector number and the foil marker. Rendering from that would
+    drop the `Commander:` header — the list would still be 100 cards and would no
+    longer be a Commander deck — and would silently re-resolve a Secret Lair to
+    its cheapest reprint on the next `fetch-deck`.
+    """
+    from manamap.pilot.fetch_deck import parse_decklist
+    return parse_decklist(_list_text(slug, branch))
+
+
+def _resolve_in_list(entries, name):
+    """Which entry is this card, allowing for either face of a DFC.
+
+    Same seam `_canonical` closes one function up: the library holds `A // B`
+    and a pilot types whichever face they are looking at.
+    """
+    for e in entries:
+        if e["name"] == name:
+            return e
+    for e in entries:
+        if name in expand_faces(e["name"]) or e["name"] in expand_faces(name):
+            return e
+    return None
+
+
+def stage(slug, branch, out_name, in_name, strength=None, why=None):
+    """One card out, one card in — the staging area, and its provenance.
+
+    THE SWAP IS THE UNIT, not the card. A card added and a card cut are two edits
+    a reader has to pair up by hand; a swap is one edit that already says what it
+    displaced, and `net-change` can then name WHICH swaps bought the delta rather
+    than reporting a list that changed somehow.
+
+    ONE FOR ONE, ALWAYS. The list stays at its legal size through every
+    intermediate state, so a branch is never briefly a 98 that some command
+    measures. It also means the sweep in `candidates` prices exactly this — a
+    substitution, which needs no placebo because the library never shrinks.
+
+    It writes through `check_in.analyze`, so a staged swap gets the same refusals
+    a paper list gets: singleton, size, commander, and a name the corpus does not
+    know. Editing `decklist.txt` directly would skip all four.
+    """
+    path = branch_root(slug) / branch
+    if not path.is_dir():
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    entries = _parsed(slug, branch)
+    out_e = _resolve_in_list(entries, out_name)
+    if out_e is None:
+        raise SystemExit(
+            f"{out_name!r} is not in {slug}/{branch} — nothing to swap out. "
+            f"`deck-branch {slug} diff {branch}` shows what is.")
+    if out_e.get("is_commander"):
+        raise SystemExit(
+            f"{out_e['name']} is the COMMANDER. Changing it is a different deck, "
+            f"not a swap — open a new branch from a new list.")
+    if _resolve_in_list(entries, in_name) is not None:
+        raise SystemExit(f"{in_name!r} is already in {slug}/{branch}.")
+
+    staged_entries = []
+    for e in entries:
+        if e is out_e:
+            # Basics carry a quantity; a singleton does not. Decrement rather
+            # than delete, or swapping one Mountain would cut all of them.
+            left = int(e.get("quantity") or 1) - 1
+            if left > 0:
+                staged_entries.append(dict(e, quantity=left))
+            continue
+        staged_entries.append(e)
+    staged_entries.append({"name": in_name, "quantity": 1})
+
+    text = check_in.render_decklist(staged_entries)
+    checked = check_in.analyze(slug, text)
+    if checked["blocking"]:
+        raise SystemExit("Refusing to stage that swap:\n  - "
+                         + "\n  - ".join(checked["blocking"]))
+    (path / "decklist.txt").write_text(
+        check_in.render_decklist(checked["entries"]), encoding="utf-8")
+
+    doc = meta(slug, branch) or {"slug": slug, "branch": branch, "v": 2}
+    doc.setdefault("staged", []).append({
+        "at": datetime.date.today().isoformat(),
+        "out": out_e["name"], "in": in_name,
+        "strength": strength, "why": why or ""})
+    _write_meta(slug, branch, doc)
+    return {"slug": slug, "branch": branch, "out": out_e["name"], "in": in_name,
+            "staged": len(doc["staged"]), "warnings": checked["warnings"]}
+
+
+def unstage(slug, branch, out_name=None, in_name=None):
+    """Put a staged swap back. Reverses the most recent match.
+
+    A staging area you cannot back out of is a decision, not a draft.
+    """
+    path = branch_root(slug) / branch
+    if not path.is_dir():
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    doc = meta(slug, branch) or {}
+    staged = doc.get("staged") or []
+    if not staged:
+        raise SystemExit(f"Nothing staged on {slug}/{branch}.")
+    hit = None
+    for i in range(len(staged) - 1, -1, -1):
+        row = staged[i]
+        if ((out_name is None or row["out"] == out_name)
+                and (in_name is None or row["in"] == in_name)):
+            hit = i
+            break
+    if hit is None:
+        raise SystemExit(
+            f"No staged swap matches that on {slug}/{branch} — "
+            f"`deck-branch {slug} log {branch}` lists them.")
+    row = staged[hit]
+    entries = _parsed(slug, branch)
+    in_e = _resolve_in_list(entries, row["in"])
+    if in_e is None:
+        raise SystemExit(
+            f"{row['in']} is no longer in the list, so this swap cannot be "
+            f"reversed cleanly. Edit decklist.txt and drop the record by hand.")
+    rebuilt = []
+    for e in entries:
+        if e is in_e:
+            left = int(e.get("quantity") or 1) - 1
+            if left > 0:
+                rebuilt.append(dict(e, quantity=left))
+            continue
+        rebuilt.append(e)
+    back = _resolve_in_list(rebuilt, row["out"])
+    if back is not None:
+        rebuilt = [dict(e, quantity=int(e.get("quantity") or 1) + 1)
+                   if e is back else e for e in rebuilt]
+    else:
+        rebuilt.append({"name": row["out"], "quantity": 1})
+
+    checked = check_in.analyze(slug, check_in.render_decklist(rebuilt))
+    if checked["blocking"]:
+        raise SystemExit("Refusing to unstage that swap:\n  - "
+                         + "\n  - ".join(checked["blocking"]))
+    (path / "decklist.txt").write_text(
+        check_in.render_decklist(checked["entries"]), encoding="utf-8")
+    staged.pop(hit)
+    doc["staged"] = staged
+    _write_meta(slug, branch, doc)
+    return {"slug": slug, "branch": branch, "out": row["out"], "in": row["in"],
+            "staged": len(staged)}
+
+
 def commit(slug, branch, message):
     """Freeze this candidate list with a message. NOT a merge.
 
@@ -584,6 +734,28 @@ def main(args):
         for w in got["warnings"]:
             print(f"  warning: {w}")
         print(f"  next: `manamap pilot deck-branch {slug} source {branch}`")
+        return
+    if action in ("stage", "unstage"):
+        out_name = getattr(args, "swap_out", None)
+        in_name = getattr(args, "swap_in", None)
+        if action == "stage" and not (out_name and in_name):
+            raise SystemExit(
+                f"A swap is ONE CARD OUT AND ONE CARD IN:\n"
+                f'  manamap pilot deck-branch {slug} stage {branch} '
+                f'--out "<card>" --in "<card>"\n'
+                f"`manamap pilot upgrades {slug} --branch {branch}` proposes them.")
+        if action == "stage":
+            got = stage(slug, branch, out_name, in_name,
+                        strength=getattr(args, "strength", None),
+                        why=getattr(args, "why", None))
+            print(f"Staged on {slug}/{branch}:  - {got['out']}  + {got['in']}")
+        else:
+            got = unstage(slug, branch, out_name, in_name)
+            print(f"Unstaged on {slug}/{branch}:  + {got['out']}  - {got['in']}")
+        print(f"  {got['staged']} swap(s) staged. Nothing is measured yet — "
+              f"`manamap pilot net-change {slug} --branch {branch}`")
+        for w in got.get("warnings") or []:
+            print(f"  warning: {w}")
         return
     if action == "commit":
         got = commit(slug, branch, getattr(args, "message", None))

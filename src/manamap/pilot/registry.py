@@ -420,14 +420,27 @@ def add_pilot_parser(subparsers):
         if name == "deck-branch":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "new", "show", "diff", "source",
+                                      "stage", "unstage",
                                       "commit", "log", "merge", "delete"],
                              help="list branches / new: open one from a list / show it / "
-                                  "diff it against the deck / source: where every added "
-                                  "card comes from / merge it into decklist.txt")
+                                  "diff it against the deck / stage: one card out, one in / "
+                                  "source: where every added card comes from / "
+                                  "merge it into decklist.txt")
             cmd.add_argument("name", nargs="?", default=None, help="the branch name")
             cmd.add_argument("--from", dest="source", default=None,
                              help="new: the candidate list (a file, or `-` for stdin)")
-            cmd.add_argument("--why", default=None, help="new: why this branch exists")
+            cmd.add_argument("--why", default=None,
+                             help="new: why this branch exists; stage: why this swap")
+            # THE SWAP IS THE UNIT. `--out` and `--in` are one edit that already
+            # says what it displaced, so `net-change` can name which swaps bought
+            # the delta. `in` is a keyword, hence the dest.
+            cmd.add_argument("--out", dest="swap_out", default=None, metavar="CARD",
+                             help="stage/unstage: the card leaving the list")
+            cmd.add_argument("--in", dest="swap_in", default=None, metavar="CARD",
+                             help="stage/unstage: the card taking its place")
+            cmd.add_argument("--strength", type=float, default=None,
+                             help="stage: the `upgrades` strength behind this swap, "
+                                  "recorded as provenance and never as a claim")
             cmd.add_argument("--objective", default=None, metavar="EXPR",
                              help='new: what would make this branch worth merging, '
                                   'as `<measure> <op> <number>` — e.g. '

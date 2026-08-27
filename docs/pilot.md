@@ -107,7 +107,7 @@ manamap pilot calibrate [--iterations N] [--json]
                                         #   20+ games each and says what would close the gap —
                                         #   a Spearman on five points is a null wearing a
                                         #   finding's clothes
-manamap pilot deck-branch <slug> [list|new|show|diff|source|commit|log|merge|delete]
+manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|merge|delete]
                                         #   THE GIT WORKFLOW FOR A DECK. `new` demands an
                                         #   --objective (`<measure> <op> <number>`) because
                                         #   a branch that cannot be falsified gets graded on
@@ -116,7 +116,12 @@ manamap pilot deck-branch <slug> [list|new|show|diff|source|commit|log|merge|del
                                         #   are unsourced; `merge` is not — the gap between
                                         #   them is cardboard. Merge backs up, runs the
                                         #   chain, records that it landed, and NAMES what
-                                        #   is now stale
+                                        #   is now stale. `stage --out X --in Y` is
+                                        #   THE STAGING AREA: one card out, one in, ONE
+                                        #   FOR ONE so the list is never briefly a 98,
+                                        #   written through check-in's own refusals and
+                                        #   recorded with its provenance so a report can
+                                        #   name WHICH swaps bought the delta
 manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--owned] [--write]
                                         #   the bottleneck becomes a POOL. Seeds from the
                                         #   component the diagnostic named and mines the
