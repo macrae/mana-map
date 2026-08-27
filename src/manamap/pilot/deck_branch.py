@@ -45,7 +45,9 @@ attached.
 
 import datetime
 import json
+import hashlib
 import re
+import shutil
 
 from manamap.pilot import check_in, collection
 from manamap.pilot.common import (
@@ -254,7 +256,64 @@ def _one(slug, branch):
             "has_cards": (deck_dir(slug, branch) / "cards.json").exists()}
 
 
-def new(slug, branch, text, why=None, at=None):
+#: A BRANCH THAT CANNOT BE FALSIFIED GETS GRADED ON WHETHER IT DID WHAT IT DOES.
+#: The Ur-Dragon treasure branch said "treasure is the engine" and achieved that —
+#: 4.4x the hoard — while missing the purpose nobody wrote down, which was winning.
+#: It was measured for a week before anyone could say it had failed, because there
+#: was nothing it could fail against.
+#:
+#: So an objective names a MEASURE, a DIRECTION and a NUMBER, and the measure has to
+#: be one the bench already computes: the vocabulary is `candidates.AXES`, which is a
+#: registry, is independence-checked fleet-wide by `tests/test_metric_hygiene.py`, and
+#: cannot silently grow a second name for the same thing.
+_OBJECTIVE_RE = re.compile(
+    r"^\s*([a-z_0-9]+)\s*(>=|<=|>|<)\s*(-?\d+(?:\.\d+)?)\s*$")
+
+_OPS = {">=": lambda a, b: a >= b, "<=": lambda a, b: a <= b,
+        ">": lambda a, b: a > b, "<": lambda a, b: a < b}
+
+
+def parse_objective(text):
+    """`"kill_by_8 >= 0.30"` -> {axis, op, value}. Raises with the vocabulary."""
+    from manamap.pilot import candidates
+    m = _OBJECTIVE_RE.match(text or "")
+    if not m:
+        raise SystemExit(
+            f"--objective must read `<measure> <op> <number>`, e.g. "
+            f'"kill_by_8 >= 0.30". Got: {text!r}')
+    axis, op, value = m.group(1), m.group(2), float(m.group(3))
+    if axis not in candidates.OBJECTIVE_AXES:
+        raise SystemExit(
+            f"'{axis}' is not something the bench measures. Pick one of:\n  "
+            + "\n  ".join(sorted(candidates.OBJECTIVE_AXES))
+            + "\n(`candidates.OBJECTIVE_AXES` — wider than what a SWEEP may rank "
+              "on, because a correlated measure is a fine thing to aim at and a "
+              "useless thing to sort by.)")
+    return {"axis": axis, "op": op, "value": value}
+
+
+def grade_objective(objective, reading, mde=None):
+    """met / not met / not resolvable, given a measured value.
+
+    NOT RESOLVABLE IS A THIRD STATE AND IT IS THE HONEST ONE. A reading that
+    misses by less than the run could detect has not failed — the run could not
+    see it. Reporting that as "not met" is the same error as reporting a null as
+    a finding, which this repo refuses in three other places.
+    """
+    if reading is None:
+        return {"state": "not measured",
+                "why": "the axis has no reading on this list"}
+    hit = _OPS[objective["op"]](reading, objective["value"])
+    miss = abs(reading - objective["value"])
+    if not hit and mde is not None and miss < mde:
+        return {"state": "not resolvable", "reading": reading, "shortfall": round(miss, 4),
+                "why": (f"missed by {miss:.4f}, which is under the {mde:.4f} this run "
+                        f"could detect — evidence of nothing, not evidence of failure")}
+    return {"state": "met" if hit else "not met", "reading": reading,
+            "shortfall": None if hit else round(miss, 4)}
+
+
+def new(slug, branch, text, why=None, at=None, objective=None):
     if not NAME_RE.match(branch or ""):
         raise SystemExit(
             f"'{branch}' is not a usable branch name — lowercase letters, digits, "
@@ -275,8 +334,14 @@ def new(slug, branch, text, why=None, at=None):
         check_in.render_decklist(checked["entries"]), encoding="utf-8")
     from manamap.pilot import deck_versions
     doc = {"slug": slug, "branch": branch,
+           # v2: an objective and a commit trail. v1 files (objective absent)
+           # still load — the grading section is simply absent for them, which
+           # is the honest report for a branch that never stated one.
+           "v": 2,
            "opened": (at or datetime.date.today().isoformat()),
            "why": why or "",
+           "objective": objective,
+           "commits": [],
            # What it was branched FROM, so a stale branch is visible as one.
            "base_version": deck_versions.report(slug).get("current_version")}
     (path / BRANCH_FILE).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
@@ -284,7 +349,83 @@ def new(slug, branch, text, why=None, at=None):
             "size": sum(e.get("quantity") or 1 for e in checked["entries"])}
 
 
-def merge(slug, branch, write=False, force=False, reason=None, proxy=False):
+def _write_meta(slug, branch, doc):
+    (branch_root(slug) / branch / BRANCH_FILE).write_text(
+        json.dumps(doc, indent=1) + "\n", encoding="utf-8")
+
+
+def commit(slug, branch, message):
+    """Freeze this candidate list with a message. NOT a merge.
+
+    THE TWO-STEP IS THE PILOT'S OWN DISTINCTION: a commit says "this is the deck
+    I am committed to running"; a merge says "this is the deck". The gap between
+    them is CARDBOARD — you can decide on a list months before you own it.
+    So a commit is allowed with unsourced cards and a merge is not, which is
+    exactly the gate `source()` already enforces.
+
+    It records the decklist sha, so a commit names one exact 99 and a later edit
+    is visibly a different one.
+    """
+    import hashlib
+    path = branch_root(slug) / branch
+    if not path.is_dir():
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    if not (message or "").strip():
+        raise SystemExit(
+            "A commit needs a message. It is the only record of WHY this list "
+            "and not the last one.")
+    text = _list_text(slug, branch)
+    sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    doc = meta(slug, branch) or {"slug": slug, "branch": branch}
+    commits = doc.setdefault("commits", [])
+    if commits and commits[-1].get("decklist_sha256") == sha:
+        raise SystemExit(
+            f"The list has not changed since the last commit "
+            f"({commits[-1]['at']}: {commits[-1]['message'][:48]}). "
+            f"Edit the list, or say something new about the same one by "
+            f"deleting that entry.")
+    commits.append({"at": datetime.date.today().isoformat(),
+                    "decklist_sha256": sha, "message": message.strip()})
+    doc.setdefault("v", 2)
+    _write_meta(slug, branch, doc)
+    s = source(slug, branch)
+    return {"slug": slug, "branch": branch, "n": len(commits),
+            "decklist_sha256": sha, "message": message.strip(),
+            "unsourced": len(s["unsourced"]),
+            "mergeable": not s["unsourced"]}
+
+
+def log(slug, branch):
+    doc = meta(slug, branch) or {}
+    return {"slug": slug, "branch": branch,
+            "objective": doc.get("objective"), "why": doc.get("why"),
+            "opened": doc.get("opened"), "base_version": doc.get("base_version"),
+            "commits": doc.get("commits") or [], "merged": doc.get("merged")}
+
+
+def delete(slug, branch, force=False):
+    """Remove a branch. Refuses an unmerged one without `--force`.
+
+    A branch holds measurements that cost real time — a 100-game Forge run is
+    45 minutes — so deleting one that was never merged is throwing away the
+    evidence for a decision nobody recorded.
+    """
+    import shutil
+    path = branch_root(slug) / branch
+    if not path.is_dir():
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    doc = meta(slug, branch) or {}
+    if not doc.get("merged") and not force:
+        raise SystemExit(
+            f"'{branch}' was never merged. Deleting it discards its "
+            f"measurements and whatever decision they supported — "
+            f"`--force` if that is what you mean.")
+    shutil.rmtree(path)
+    return {"slug": slug, "branch": branch, "deleted": str(path)}
+
+
+def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
+          run_chain=True):
     """Make the branch the deck's list. Refuses what it cannot honestly apply."""
     s = source(slug, branch, proxy=proxy)
     text = _list_text(slug, branch)
@@ -312,9 +453,60 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False):
            "warnings": checked["warnings"], "source": s, "written": False}
     if blocking or not write:
         return out
-    (deck_dir(slug) / "decklist.txt").write_text(
-        check_in.render_decklist(checked["entries"]), encoding="utf-8")
+    # A BACKUP FIRST, the way `check_in.apply` does. Merge overwrites the deck's
+    # tracked list; check-in has made a `.txt.bak` since it shipped and merge
+    # never did, which is the more destructive of the two.
+    target = deck_dir(slug) / "decklist.txt"
+    if target.exists():
+        shutil.copy(target, target.with_suffix(".txt.bak"))
+    target.write_text(check_in.render_decklist(checked["entries"]), encoding="utf-8")
     out["written"] = True
+
+    # THE CHAIN, because a merge that leaves the figures behind makes the deck
+    # read stale forever — `goldfish_metrics.json` and `mana_analysis.json` stamp
+    # the decklist sha. `check_in.apply` has run it since it shipped; merge
+    # printed "next: fetch-deck" and hoped.
+    if run_chain:
+        from types import SimpleNamespace
+        from manamap.pilot import fetch_deck, goldfish, mana_analysis
+        ran = []
+        for name, mod in (("fetch-deck", fetch_deck), ("goldfish", goldfish),
+                          ("mana-analysis", mana_analysis)):
+            try:
+                mod.main(SimpleNamespace(slug=slug, branch=None))
+                ran.append(name)
+            except Exception as exc:                    # pragma: no cover - env
+                out.setdefault("chain_failed", []).append(f"{name}: {exc}")
+                break
+        out["chain"] = ran
+
+    # THE BRANCH RECORDS THAT IT LANDED. Without this the branch survives
+    # untouched, `diff` reads +0 -0 forever, and nothing links the resulting
+    # version back to the work that produced it.
+    from manamap.pilot import deck_versions
+    doc = meta(slug, branch) or {"slug": slug, "branch": branch}
+    doc["merged"] = {
+        "at": datetime.date.today().isoformat(),
+        "decklist_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        # The version this became. It is minted from git by the COMMIT the pilot
+        # makes next, so at merge time we can only name what it was merged INTO.
+        "into_version_before": deck_versions.report(slug).get("current_version"),
+    }
+    if reason:
+        doc["merged"]["forced_reason"] = reason
+    _write_meta(slug, branch, doc)
+
+    # WHAT IS NOW STALE. The registry already carries the command for each stage,
+    # so this reads `deck_status` rather than keeping a second list that can
+    # disagree with it.
+    try:
+        from manamap.pilot import deck_status
+        rep = deck_status.report(slug)
+        out["stale"] = [{"stage": r["key"], "how": r.get("how", "")}
+                        for r in rep.get("stages", [])
+                        if r.get("state") == "STALE"]
+    except Exception:                                   # pragma: no cover - env
+        out["stale"] = []
     return out
 
 
@@ -374,11 +566,61 @@ def main(args):
     if not branch:
         raise SystemExit(f"`deck-branch {slug} {action}` needs a branch name.")
     if action == "new":
-        got = new(slug, branch, check_in.read_list(args.source), why=getattr(args, "why", None))
+        raw = getattr(args, "objective", None)
+        if not raw:
+            raise SystemExit(
+                "A branch needs an --objective: `<measure> <op> <number>`, e.g.\n"
+                '  --objective "kill_by_8 >= 0.30"\n'
+                "A branch that cannot be falsified gets graded on whether it did "
+                "what it does. The Ur-Dragon treasure branch said 'treasure is the "
+                "engine', achieved that 4.4x over, and missed the purpose nobody "
+                "wrote down.")
+        objective = parse_objective(raw)
+        objective["why"] = getattr(args, "why", None) or ""
+        got = new(slug, branch, check_in.read_list(args.source),
+                  why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
+        print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}")
         for w in got["warnings"]:
             print(f"  warning: {w}")
         print(f"  next: `manamap pilot deck-branch {slug} source {branch}`")
+        return
+    if action == "commit":
+        got = commit(slug, branch, getattr(args, "message", None))
+        print(f"Committed #{got['n']} on {slug}/{branch}  "
+              f"[{got['decklist_sha256'][:12]}]")
+        print(f"  {got['message']}")
+        print("  " + ("mergeable" if got["mergeable"] else
+                      f"{got['unsourced']} card(s) still to source — a commit is a "
+                      f"decision, a merge needs the cardboard"))
+        return
+    if action == "log":
+        got = log(slug, branch)
+        if getattr(args, "json", False):
+            print(json.dumps(got, indent=1)); return
+        o = got.get("objective") or {}
+        print(f"BRANCH — {slug}/{branch}   opened {got['opened']}"
+              f"   from V{got.get('base_version')}")
+        if o:
+            print(f"  objective: {o['axis']} {o['op']} {o['value']}"
+                  + (f"   — {o['why']}" if o.get("why") else ""))
+        else:
+            print("  objective: NONE — this branch predates the requirement and "
+                  "cannot be graded")
+        if not got["commits"]:
+            print("\n  no commits yet — `deck-branch "
+                  f"{slug} commit {branch} -m \"…\"`")
+        for i, c in enumerate(got["commits"], 1):
+            print(f"\n  #{i}  {c['at']}  [{c['decklist_sha256'][:12]}]")
+            print(f"      {c['message']}")
+        m = got.get("merged")
+        if m:
+            print(f"\n  MERGED {m['at']} into the list after V"
+                  f"{m.get('into_version_before')}")
+        return
+    if action == "delete":
+        got = delete(slug, branch, force=getattr(args, "force", False))
+        print(f"Deleted {got['deleted']}")
         return
     if action == "show":
         print(_list_text(slug, branch), end="")
@@ -417,9 +659,23 @@ def main(args):
         if not got["written"]:
             print(f"{slug}/{branch} is mergeable. `--write` applies it.")
             return
-        print(f"Merged {branch} into {slug}/decklist.txt")
-        print("  NOT COMMITTED — the commit is what `deck-version` numbers and what the")
+        print(f"Merged {branch} into {slug}/decklist.txt  "
+              f"(previous list kept as decklist.txt.bak)")
+        if got.get("chain"):
+            print(f"  recomputed: {', '.join(got['chain'])}")
+        for failed in got.get("chain_failed") or []:
+            print(f"  CHAIN FAILED — {failed}")
+        stale = got.get("stale") or []
+        if stale:
+            # WHAT THE MERGE COULD NOT REDO. The chain covers the deterministic
+            # figures; every narrative artifact was written about the OLD list
+            # and no command can regenerate it — that is an agent's work, and
+            # naming it here is the difference between a merge that finishes and
+            # one that quietly leaves the deck describing a deck you deleted.
+            print(f"\n  STALE — written against the previous list ({len(stale)}):")
+            for row in stale:
+                print(f"    {row['stage']:10} {row['how']}")
+        print("\n  NOT COMMITTED — the commit is what `deck-version` numbers and what the")
         print("  captain's log stamps games against, so it stays yours:")
-        print(f"      git add data/decks/{slug}/decklist.txt && \\")
+        print(f"      git add data/decks/{slug} && \\")
         print(f"        git commit -m \"{slug}: merge branch {branch}\"")
-        print(f"  then: `manamap pilot fetch-deck {slug}`")

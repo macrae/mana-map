@@ -47,6 +47,13 @@ data/decks/*/.agent-out/
 # Forge simulation: the raw game logs are samples, large, and regenerable; the run
 # record beside them (data/decks/<slug>/sim/<run-id>.json) is tracked.
 data/decks/*/sim/logs/
+# THE SAME RULE, ONE LEVEL DOWN. The pattern above does not match
+# `data/decks/<slug>/branches/<name>/sim/logs/`, so a branch's logs were TRACKED
+# while the deck's own were ignored — 12 MB of them, committed the day branches
+# shipped. A path rule written before a directory level existed does not learn
+# about it, and nothing complains: the files are valid, just enormous.
+data/decks/*/branches/*/sim/logs/
+data/decks/*/branches/*/sim/scenarios/
 # sim-scenario drafts: a lifted board with no question yet; `--stack` promotes a posed one
 # into stacks/ (tracked).
 data/decks/*/sim/scenarios/

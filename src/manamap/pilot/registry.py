@@ -387,7 +387,8 @@ def add_pilot_parser(subparsers):
                              help="write diagnostic.json beside the list it measured")
         if name == "deck-branch":
             cmd.add_argument("action", nargs="?", default="list",
-                             choices=["list", "new", "show", "diff", "source", "merge"],
+                             choices=["list", "new", "show", "diff", "source",
+                                      "commit", "log", "merge", "delete"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / source: where every added "
                                   "card comes from / merge it into decklist.txt")
@@ -395,6 +396,14 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--from", dest="source", default=None,
                              help="new: the candidate list (a file, or `-` for stdin)")
             cmd.add_argument("--why", default=None, help="new: why this branch exists")
+            cmd.add_argument("--objective", default=None, metavar="EXPR",
+                             help='new: what would make this branch worth merging, '
+                                  'as `<measure> <op> <number>` — e.g. '
+                                  '"kill_by_8 >= 0.30". Required: a branch that '
+                                  'cannot be falsified gets graded on whether it '
+                                  'did what it does.')
+            cmd.add_argument("-m", "--message", default=None,
+                             help="commit: why this list and not the last one")
             cmd.add_argument("--write", action="store_true",
                              help="merge: actually write decklist.txt (dry run without it)")
             cmd.add_argument("--force", action="store_true",

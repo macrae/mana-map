@@ -82,6 +82,26 @@ AXIS_NEEDS = {
     "damage_8": "model_combat",
 }
 MAGNITUDE_AXES = tuple(AXIS_NEEDS)
+#: WHAT A BRANCH MAY AIM AT — WIDER THAN WHAT A SWEEP MAY RANK ON, on purpose.
+#:
+#: `AXES` is deliberately narrow: three combat measures correlate at r = 0.92-0.98,
+#: so ranking on more than one is three confirmations of one fact wearing three
+#: names. That argument is about RANKING and does not transfer to STATING A GOAL.
+#: A pilot's objective is "kill by turn eight", not "8.4 damage at turn eight" —
+#: and a correlated measure is a perfectly good thing to aim at even when it is a
+#: useless thing to sort by.
+#:
+#: Same one-concept-two-questions split as `cast_pips` vs `manabase.count_pips`
+#: and `bodies` vs `creature_bodies`. Forcing them into one vocabulary would make
+#: the honest goal unsayable to protect a ranking nobody is doing here.
+OBJECTIVE_AXES = dict(AXES, **{
+    "kill_by_6": ("output", "kill_by_turn", "6"),
+    "kill_by_8": ("output", "kill_by_turn", "8"),
+    "kill_by_10": ("output", "kill_by_turn", "10"),
+    "board_power_6": ("output", "board_power_by_turn", "6"),
+    "hoard_8": ("output", "hoard_by_turn", "8"),
+})
+
 #: Axes where DOWN is better, so the ranking does not reward a worse deck.
 LOWER_IS_BETTER = {"stall", "land_drop"}
 
