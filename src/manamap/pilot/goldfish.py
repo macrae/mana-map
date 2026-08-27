@@ -932,9 +932,28 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     model_treasures = declared_treasures if model_treasures is None else bool(model_treasures)
     model_combat = declared_combat if model_combat is None else bool(model_combat)
 
+    # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
+    # `treasure_profile` alone while the model has three ways to see a Treasure:
+    # the trigger table, `treasure_bonus` (a multiplier — Xorn, Jolene) and
+    # `combat.attack_treasure` (Goldspan, Old Gnawbone, Ragavan) once
+    # `model_combat` is on. Reported from one channel it named nineteen sources
+    # on ur-dragon's treasure branch as invisible when six of them were being
+    # simulated — and the whole point of the list is that a low hoard figure
+    # should be LEGIBLE, so over-reporting it is the same failure as omitting it.
+    def _blind(c):
+        # Computed from the card, not read off it: these are raw cards.json
+        # entries, and the derived fields only exist on a built library entry.
+        if treasure_profile(c)[1] != "unmodelled":
+            return False
+        if _TRE_EXTRA_RE.search(c.get("oracle_text") or ""):
+            return False                       # a multiplier: Xorn, Jolene
+        if model_combat and combat_profile(c).get("attack_treasure"):
+            return False                       # Goldspan, Old Gnawbone, Ragavan
+        return True
+
     unmodelled = sorted({
         c["name"] for c in doc.get("cards", [])
-        if not c.get("is_commander") and treasure_profile(c)[1] == "unmodelled"
+        if not c.get("is_commander") and _blind(c)
     })
     if not model_treasures:
         visible = sorted({

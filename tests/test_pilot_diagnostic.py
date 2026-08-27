@@ -339,3 +339,39 @@ def test_the_reading_knows_which_direction_is_better():
                            "excludes_zero": True, "mde": 0.008}}
     row = diagnostic.interpret(a, a, better_engine)[0]
     assert row["kind"] == "gain"
+
+
+@needs_deck
+def test_a_source_is_blind_only_if_every_channel_is_blind():
+    """`treasure_sources_not_modelled` exists so a low hoard figure is LEGIBLE,
+    which makes over-reporting it the same failure as omitting it.
+
+    It was built from `treasure_profile` alone while the model has three ways to
+    see a Treasure: the trigger table, `treasure_bonus` (a multiplier) and
+    `combat.attack_treasure` once `model_combat` is on. On ur-dragon's treasure
+    branch it named nineteen sources invisible when eight were being simulated.
+    """
+    from manamap.pilot import goldfish
+    from manamap.pilot.common import load_deck_cards
+    doc = load_deck_cards(SLUG, "treasure-v2")
+    names = {c["name"] for c in doc["cards"]}
+    if "Xorn" not in names:
+        pytest.skip("no multiplier in this branch to test with")
+    got = goldfish.run(SLUG, branch="treasure-v2", iterations=20, quiet=True,
+                       model_treasures=True, model_combat=True)
+    blind = set((got.get("meta") or {}).get("treasure_sources_not_modelled") or [])
+    # A multiplier IS modelled — `treasure_bonus` feeds every creation event.
+    assert "Xorn" not in blind, "a multiplier was reported as invisible"
+    # An attack trigger IS modelled once combat is on.
+    for n in ("Goldspan Dragon", "Ragavan, Nimble Pilferer"):
+        if n in names:
+            assert n not in blind, f"{n} is simulated via attack_treasure"
+    # With combat OFF the same card genuinely is blind, and must be named.
+    off = goldfish.run(SLUG, branch="treasure-v2", iterations=20, quiet=True,
+                       model_treasures=True, model_combat=False)
+    blind_off = set((off.get("meta") or {}).get("treasure_sources_not_modelled") or [])
+    if "Goldspan Dragon" in names:
+        assert "Goldspan Dragon" in blind_off, (
+            "with no combat model an attack trigger produces nothing and must "
+            "be named, or a low hoard figure is illegible")
+    assert len(blind_off) > len(blind)
