@@ -297,6 +297,90 @@ def mana(rows):
     }
 
 
+def output(got):
+    """The MAGNITUDE series, carried through from the goldfish that owns them.
+
+    WHY THIS BLOCK HAD TO EXIST. Every other axis here is a MEMBERSHIP axis: a
+    goldfish target asks whether a card was DRAWN, so the ninth member of a
+    component raises assembly by the same amount whichever card it is. Measured
+    on ur-dragon's treasure branch, all eight declared multipliers returned the
+    identical +0.039 — a true answer to "what is one more member worth" and no
+    answer at all to "which member", which is the question a pilot actually
+    asks. Magnitude is the axis that can separate them, and the goldfish has
+    been emitting it all along with nothing exposing it.
+
+    ABSENT ⇒ ABSENT, NEVER ZERO. A deck without `model_treasures` has no hoard
+    and one without `model_combat` has no clock; the key is missing rather than
+    0.0, which is a measurement nobody made. Same contract as the flags.
+    """
+    m = got.get("metrics") or {}
+    rows = got.get("_results") or []
+    out = {}
+    # EVERY FIGURE HERE CARRIES ITS INTERVAL, in the same {rate, ci95, n} shape
+    # every other block uses — so `candidates._read`, `compare` and the report
+    # need no special case for a mean, and a magnitude axis cannot quietly
+    # become the one number in this document published bare.
+    #
+    # Derived from the per-iteration rows rather than restated from `metrics`,
+    # because a mean with no dispersion beside it cannot produce one. A test
+    # asserts these means agree with the goldfish's own to 3dp, so the goldfish
+    # stays the owner of the figure in fact as well as in principle.
+    def series(field, present):
+        if not present or not rows:
+            return None
+        turns = sorted({t for r in rows for t in range(len(r.get(field) or []))})
+        got_series = {}
+        for t in turns:
+            xs = [(r.get(field) or [0] * (t + 1))[t] for r in rows
+                  if len(r.get(field) or []) > t]
+            if not xs:
+                continue
+            mean, sd = st._mean_sd(xs)
+            half = (st.t_crit(len(xs) - 1) * sd / (len(xs) ** 0.5)
+                    if len(xs) > 1 and sd else 0.0)
+            got_series[str(t + 1)] = {
+                "rate": round(mean, 4),
+                "ci95": [round(mean - half, 4), round(mean + half, 4)],
+                # The spread rides along because an MDE for a MEAN needs it —
+                # p(1-p) is a proportion's variance and a hoard of 6.5 has none.
+                "sd": round(sd, 4),
+                "n": len(xs)}
+        return got_series or None
+
+    tre = m.get("treasure") or {}
+    hoard = series("treasures_by_turn", tre.get("mean_treasures_in_hoard_by_turn"))
+    if hoard:
+        out["hoard_by_turn"] = hoard
+    com = m.get("combat") or {}
+    for field, name, present in (
+            ("damage_by_turn", "damage_by_turn", com.get("mean_damage_by_turn")),
+            ("board_power_by_turn", "board_power_by_turn",
+             com.get("mean_board_power_by_turn"))):
+        got_series = series(field, present)
+        if got_series:
+            out[name] = got_series
+    # A kill is a RATE, not a mean — it is the share of games closed by turn N,
+    # so it takes a Wilson bound like every other proportion here.
+    if com.get("kill_by_turn_rate") and rows:
+        kills = {}
+        for t in range(1, (HARNESS["max_turn"]) + 1):
+            k = sum(1 for r in rows
+                    if r.get("kill_turn") is not None and r["kill_turn"] <= t)
+            kills[str(t)] = _rate(k, len(rows))
+        out["kill_by_turn"] = kills
+    if not out:
+        return {"available": False,
+                "why": "no magnitude series — this deck opts into neither "
+                       "`model_treasures` nor `model_combat` in "
+                       "goldfish_targets.json, so there is no hoard and no "
+                       "clock to read. That is an absent measurement, not a zero."}
+    out["available"] = True
+    out["basis"] = ("means over the same iterations as every other figure here; "
+                    "a mean over a skewed sample describes no single game, so "
+                    "read a difference rather than a level")
+    return out
+
+
 def run(slug, branch=None, iterations=None, seed=None, quiet=False):
     from manamap.pilot.common import load_deck_cards
     return run_on(load_deck_cards(slug, branch), slug, branch=branch,
@@ -335,6 +419,7 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "stall": stall(rows),
         "engine": engine(rows, targets, missing),
         "mana": mana(rows),
+        "output": output(got),
         "limits": [
             "No pod, no opponent and no interaction: this measures a DECK, not "
             "a table. It is not a win rate.",
@@ -417,6 +502,22 @@ def _mde(p_a, n_a, n_b):
     # z(0.975) + z(0.80) = 1.9600 + 0.8416
     import math
     return round(2.8016 * math.sqrt(p_a * (1 - p_a) * (1 / n_a + 1 / n_b)), 4)
+
+
+def mde(cell, n_a=None, n_b=None):
+    """The smallest difference this design could see — for a rate OR a mean.
+
+    A PROPORTION and a MEAN do not share a formula, and using the proportion's
+    on a mean is not a bad approximation but a domain error: `p(1-p)` under a
+    hoard of 6.5 is negative. Whichever a cell is, it carries what its own MDE
+    needs — `sd` on a mean, nothing extra on a rate.
+    """
+    n_a = n_a or cell.get("n")
+    n_b = n_b or n_a
+    if cell.get("sd") is not None:
+        # z(0.975) + z(0.80), the same constant the proportion branch uses.
+        return round(2.8016 * cell["sd"] * math.sqrt(1 / n_a + 1 / n_b), 4)
+    return _mde(cell["rate"], n_a, n_b)
 
 
 def _diff_rate(label, ra, rb):
@@ -604,6 +705,30 @@ def _print(doc):
         print(f"    cause: {c['mana_short']} mana-short, {c['hand_empty']} hand-empty")
         if s.get("fleet"):
             print(f"    ({s['fleet']})")
+    o = doc.get("output") or {}
+    if o:
+        print("\n  OUTPUT  (magnitude — what the deck produced, not what it drew)")
+        if not o.get("available"):
+            print(f"    not measured — {o.get('why', '')[:88]}")
+        else:
+            for key, label in (("hoard_by_turn", "treasures in hoard"),
+                               ("board_power_by_turn", "board power"),
+                               ("damage_by_turn", "damage dealt"),
+                               ("kill_by_turn", "killed by")):
+                series = o.get(key)
+                if not series:
+                    continue
+                cells = "   ".join(f"T{t} {series[t]['rate']:>6.2f}"
+                                   for t in ("6", "8", "10") if t in series)
+                print(f"    {label:20} {cells}")
+            # THE ONLY AXIS THAT CAN RANK WITHIN A COMPONENT, and the reason it
+            # exists is worth carrying next to the numbers.
+            print("    ! a membership axis asks whether a card was DRAWN, so it "
+                  "reads alike for every")
+            print("      member of one component. These read what the deck "
+                  "PRODUCED, which is what")
+            print("      separates them. Means over a skewed sample: compare "
+                  "differences, not levels.")
     m = doc.get("mana") or {}
     if m:
         print("\n  MANA")

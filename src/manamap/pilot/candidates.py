@@ -42,6 +42,15 @@ SWEEP_ITERATIONS = 2000
 #: Reported, never silent. A truncated list reads as "these are all of them".
 DEFAULT_LIMIT = 40
 
+# TWO KINDS OF AXIS, AND ONLY ONE CAN RANK WITHIN A COMPONENT.
+# A MEMBERSHIP axis (`engine_online_*`, `any_route_*`) asks whether a card was
+# DRAWN, so the ninth member of a group moves it by the same amount whichever
+# card it is — measured on ur-dragon's treasure branch, all eight declared
+# multipliers returned the identical +0.039. That is a true answer to "what is
+# one more member worth" and no answer at all to "which member".
+# A MAGNITUDE axis reads what the deck actually produced, so it can separate
+# them. The goldfish has emitted these series all along and nothing exposed
+# them; they arrive through `diagnostic.output`.
 AXES = {
     "engine_online_3": ("engine", "online_by_turn", "3"),
     "engine_online_5": ("engine", "online_by_turn", "5"),
@@ -49,7 +58,21 @@ AXES = {
     "any_route_8": ("engine", "any_route_by_turn", "8"),
     "stall": ("stall", "two_in_a_row", None),
     "land_drop": ("mana", "missed_land_drop_by_five", None),
+    # magnitude
+    "hoard_6": ("output", "hoard_by_turn", "6"),
+    "hoard_10": ("output", "hoard_by_turn", "10"),
+    "damage_8": ("output", "damage_by_turn", "8"),
+    "board_power_6": ("output", "board_power_by_turn", "6"),
+    "kill_by_8": ("output", "kill_by_turn", "8"),
 }
+#: Which axes need a deck to have opted into a model, and the flag to name when
+#: it has not. A bare "no reading" would send the pilot looking for a bug.
+AXIS_NEEDS = {
+    "hoard_6": "model_treasures", "hoard_10": "model_treasures",
+    "damage_8": "model_combat", "board_power_6": "model_combat",
+    "kill_by_8": "model_combat",
+}
+MAGNITUDE_AXES = tuple(AXIS_NEEDS)
 #: Axes where DOWN is better, so the ranking does not reward a worse deck.
 LOWER_IS_BETTER = {"stall", "land_drop"}
 
@@ -107,6 +130,16 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
     if axis not in AXES:
         raise SystemExit(f"unknown axis {axis!r} — pick one of {', '.join(AXES)}")
     base = diagnostic.run(slug, branch=branch, iterations=iterations, quiet=True)
+    # ABSENT ⇒ SAY WHICH FLAG, never a bare "no reading". The figure is missing
+    # because the deck declined to model that half, which is a fact about the
+    # declaration and not about the card being weighed.
+    out = base.get("output") or {}
+    if axis in AXIS_NEEDS and not out.get("available"):
+        raise SystemExit(
+            f"{axis!r} needs a magnitude reading and this list has none: "
+            f"set \"{AXIS_NEEDS[axis]}\": true in goldfish_targets.json, "
+            f"re-run `goldfish`, then ask again. "
+            f"(An absent figure is not a zero.)")
     b = _read(base, axis)
     if not b:
         raise SystemExit(
@@ -170,7 +203,7 @@ def sweep(slug, pool, axis="engine_online_3", branch=None, cut=None,
             "considered": len(considered),
             # SAID OUT LOUD. A silently truncated list reads as the whole pool.
             "not_considered": dropped,
-            "mde": diagnostic._mde(b["rate"], b["n"], b["n"])}
+            "mde": diagnostic.mde(b)}
 
 
 def _with_swap(slug, branch, name, cut, axis, iterations, join=None):
