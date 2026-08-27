@@ -64,8 +64,25 @@ DELTA_KEYS = (
 
 
 def resolve_arm(slug, ref):
-    """A ref → {ref, label, decklist_text, decklist_sha256}. `working` is the file."""
-    if str(ref).strip().lower() == "working":
+    """A ref → {ref, label, decklist_text, decklist_sha256}.
+
+    Three kinds of ref, because there are three ways a list exists here:
+    `working` is the file on disk, `V4`/a tag/a sha is a version out of git, and
+    **`@<branch>` is a candidate list that is in neither** — designed, measurable,
+    and deliberately not committed to `decklist.txt` because the cards are not
+    all in the pilot's hands yet. Without this the most useful A/B in the system
+    is unsayable: the branch you are considering against the deck you are
+    playing, same pod, same seed.
+    """
+    ref_s = str(ref).strip()
+    if ref_s.startswith("@"):
+        from manamap.pilot.common import deck_dir as _dd
+        branch = ref_s[1:]
+        text = (_dd(slug, branch) / "decklist.txt").read_text(encoding="utf-8")
+        return {"ref": ref_s, "label": f"branch {branch}",
+                "decklist_text": text,
+                "decklist_sha256": hashlib.sha256(text.encode()).hexdigest()}
+    if ref_s.lower() == "working":
         text = (deck_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
         return {"ref": "working", "label": "working copy",
                 "decklist_text": text,

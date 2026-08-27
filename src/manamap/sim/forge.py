@@ -69,13 +69,49 @@ ASSUMPTIONS = [
 _OPPONENT_ROOTS = ("opponents", "decks")     # data/opponents/<slug> first (S3), then a deck
 
 
+#: A BRANCH IS A SEAT. `ur-dragon@treasure-v2` sits down at the table exactly as
+#: `ur-dragon` does — it is a list, and Forge does not care where the list came
+#: from. That also makes the most interesting run expressible in the existing
+#: grammar: a branch against its own champion, same pod, same seed.
+BRANCH_SEP = "@"
+
+
+def split_seat(slug):
+    """`ur-dragon@treasure-v2` -> ('ur-dragon', 'treasure-v2')."""
+    if BRANCH_SEP in slug:
+        base, branch = slug.split(BRANCH_SEP, 1)
+        return base, branch or None
+    return slug, None
+
+
 def seat_dir(slug):
-    """A seat is a deck under data/opponents/ (the pod) or data/decks/ (your own)."""
+    """A seat is a deck under data/opponents/ (the pod), data/decks/ (your own),
+    or a BRANCH of one of your own (`<slug>@<branch>`)."""
+    base, branch = split_seat(slug)
+    if branch:
+        from manamap.pilot.common import deck_dir as _dd
+        p = _dd(base, branch)
+        if (p / "decklist.txt").exists():
+            return p
+        raise SystemExit(f"no decklist.txt for branch {branch!r} of {base!r}")
     for root in _OPPONENT_ROOTS:
         p = DECKS_DIR.parent / root / slug
         if (p / "decklist.txt").exists():
             return p
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
+
+
+def _out_dir(slug):
+    """Where a run record goes — BESIDE THE LIST IT MEASURED.
+
+    A branch run must never land in the deck's own `sim/`: the record carries the
+    figures, and a branch's win rate filed under the champion's name is the
+    silent-overwrite class this repo keeps finding. `deck_dir(base, branch)`
+    resolves it structurally, the same way every other `--branch` command scopes.
+    """
+    from manamap.pilot.common import deck_dir as _dd
+    base, branch = split_seat(slug)
+    return _dd(base, branch) / SIM_DIR
 
 
 def commanders_from_text(decklist_text):
@@ -152,7 +188,15 @@ def dck_from_text(meta_name, decklist_text, who="the list"):
 def to_dck(slug):
     """Forge .dck text for a seat directory."""
     text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
-    return dck_from_text(f"{SIM_DECK_PREFIX}{slug}", text, who=slug)
+    # `@` is legal in a filename on this platform and is asking for trouble in
+    # Forge's own deck registry, so the seat's meta name flattens it. The RECORD
+    # still carries the seat as written, because that is what identifies the list.
+    return dck_from_text(f"{SIM_DECK_PREFIX}{deck_meta_name(slug)}", text, who=slug)
+
+
+def deck_meta_name(slug):
+    """A Forge-safe name for a seat, branch included."""
+    return slug.replace(BRANCH_SEP, "-")
 
 
 def install_named(meta_name, decklist_text, decks_dir=None):
@@ -168,7 +212,7 @@ def install_deck(slug, decks_dir=None):
     """Write the seat's .dck where Forge's sim mode looks. Returns the meta name."""
     decks_dir = decks_dir or FORGE_DECKS_DIR
     decks_dir.mkdir(parents=True, exist_ok=True)
-    name = f"{SIM_DECK_PREFIX}{slug}"
+    name = f"{SIM_DECK_PREFIX}{deck_meta_name(slug)}"
     (decks_dir / f"{name}.dck").write_text(to_dck(slug), encoding="utf-8")
     return name
 
@@ -301,7 +345,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
     rid = run_id(slug, opponents, games, seed_base)
-    out_dir = deck_dir(slug) / SIM_DIR
+    out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
     if record_path.exists() and not force and not dry_run:
@@ -347,9 +391,17 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     commanders = {f"Ai({i + 1})-{names[i]}": set(cmd_by_slug[s])
                   for i, s in enumerate(seats) if cmd_by_slug.get(s)}
     facts, analysis = sim_parse.analyze_logs(texts, label, commanders)
-    wins = {s: sum(1 for o in outcomes if o["winner"] == s) for s in seats}
+    # MATCH ON THE FORGE NAME, NOT THE SEAT SLUG. A branch seat is written to
+    # Forge as `ur-dragon-treasure-v2` because `@` has no business in a deck
+    # registry — so the outcome names the flattened form while `seats` holds the
+    # slug, and a bare `==` matched every OTHER seat and silently scored ours
+    # zero. The run reported "wins 0" for a list that had won ELEVEN of a
+    # hundred, with the other three seats' counts all correct beside it, which is
+    # exactly the shape that gets believed.
+    wins = {s: sum(1 for o in outcomes if o["winner"] == deck_meta_name(s))
+            for s in seats}
     draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
-    frame = load_json(deck_dir(slug) / "strategic_frame.json") or {}
+    frame = load_json(deck_dir(split_seat(slug)[0]) / "strategic_frame.json") or {}
     record = {
         "run_id": record_path.stem, "slug": slug, "at": date.today().isoformat(),
         "engine": {"forge": forge_version(home), "java": _java_version()},
@@ -383,7 +435,7 @@ def analyze(slug, run_id_or_path):
     """Re-derive a run's analysis from its kept logs and rewrite the record. The logs
     are gitignored, so this works only where the run was made; `validate-sim` uses the
     same path to prove the tracked analysis is what the logs say."""
-    base = deck_dir(slug) / SIM_DIR
+    base = _out_dir(slug)
     path = base / (run_id_or_path if str(run_id_or_path).endswith(".json") else f"{run_id_or_path}.json")
     if not path.exists():
         raise SystemExit(f"{slug}: no run record {path.name} under {SIM_DIR}/")
@@ -407,6 +459,16 @@ def analyze(slug, run_id_or_path):
         record_commanders(rec))
     rec["analysis"] = analysis
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
+    # SUMMARY IS RE-DERIVED TOO, or `--analyze` cannot repair a wrong headline.
+    # It did not, and the run that scored a branch seat zero kept saying zero
+    # through a re-derivation that had the right numbers in `analysis` all along.
+    seats = [x["slug"] for x in rec["seats"]]
+    outcomes = [g for g in rec["games"] if g.get("winner") or g.get("draw")]
+    wins = {x: sum(1 for g in outcomes if g.get("winner") == deck_meta_name(x))
+            for x in seats}
+    n = len(outcomes) or None
+    rec["summary"] = dict(rec.get("summary") or {}, wins=wins,
+                          win_rate=(round(wins[slug] / n, 3) if n else None))
     path.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
     return path, rec
 
@@ -420,7 +482,7 @@ def _java_version():
 
 
 def list_runs(slug):
-    base = deck_dir(slug) / SIM_DIR
+    base = _out_dir(slug)
     return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
 
 
@@ -429,7 +491,7 @@ def main(args):
     if getattr(args, "analyze", None):
         path, rec = analyze(slug, args.analyze)
         a = rec["analysis"]
-        me = a["seats"].get(slug, {})
+        me = a["seats"].get(deck_meta_name(slug), {})
         print(f"{slug}: re-derived {a['games']} game(s) from logs → {path.name}")
         print(f"  win rate {me.get('win_rate')} ci95 {me.get('win_rate_ci95')} · "
               f"token damage share {me.get('tokens', {}).get('token_damage_share')}")
@@ -467,7 +529,7 @@ def main(args):
           f"mean round {s['mean_round']} (global turn {s['mean_global_turn']})")
     if rec["nonzero_exit_jobs"]:
         print(f"  WARNING {rec['nonzero_exit_jobs']} JVM(s) exited non-zero — read the logs")
-    print(f"  → {path.relative_to(deck_dir(slug))}  (logs: {rec['logs']})")
+    print(f"  → {path}  (logs: {rec['logs']})")
     me = rec["analysis"]["seats"].get(slug, {})
     print(f"  ci95 {me.get('win_rate_ci95')} · eliminated by {me.get('eliminated_by')} · "
           f"token damage share {(me.get('tokens') or {}).get('token_damage_share', {}).get('mean')}")

@@ -346,7 +346,9 @@ def build_scenario(slug, rec, game_index, turn, step_text, game, label):
 
 
 def lift(slug, run_id, game_index, turn, step_text=None, to_stack=False):
-    base = deck_dir(slug) / SIM_DIR
+    # A branch keeps its runs beside its own list, never in the deck's `sim/`.
+    from manamap.sim.forge import _out_dir
+    base = _out_dir(slug)
     rec_path = base / f"{run_id}.json"
     if not rec_path.exists():
         raise SystemExit(f"{slug}: no run {run_id!r} under {SIM_DIR}/")

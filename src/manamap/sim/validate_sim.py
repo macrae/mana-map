@@ -69,7 +69,9 @@ def validate(rec, slug, logs_text=None):
 
 def main(args):
     slug = args.slug
-    base = deck_dir(slug) / SIM_DIR
+    # A branch keeps its runs beside its own list, never in the deck's `sim/`.
+    from manamap.sim.forge import _out_dir
+    base = _out_dir(slug)
     paths = sorted(base.glob("*.json")) if base.is_dir() else []
     if not paths:
         print(f"OK   {slug} — no simulation runs")
