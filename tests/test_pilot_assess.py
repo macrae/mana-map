@@ -121,3 +121,23 @@ def test_the_tribe_is_named_in_english():
     assert A._plural("Dwarf") == "Dwarves"
     assert A._plural("Rhino") == "Rhinos"
     assert A._plural("Dragon") == "Dragons"
+
+
+@needs
+def test_it_names_the_cards_no_channel_of_the_model_can_see():
+    """STEP 6 OF THE ORDER, WHICH ONLY COVERED OPPONENT-GATED CARDS BEFORE.
+
+    A sweep prices what the goldfish simulates and prices everything else only
+    by displacement — which reads as noise and costs a full run per card to say
+    so. Measured on the 29-card pool `close` proposed for the treasure branch,
+    14 were invisible: Mana Reflection doubles MANA rather than tokens, and
+    Oath of Lieges and Greener Pastures are land-matters cards the centroid
+    pulled in on similar phrasing. Naming them is 16 runs not spent.
+    """
+    got = A.assess(SLUG, ["Mana Reflection", "Primal Vigor"], branch=BRANCH)
+    by = {r["card"]: r for r in got["cards"]}
+    assert by["Mana Reflection"]["model_sees"] == []
+    assert "NO CHANNEL" in by["Mana Reflection"]["verdict"]
+    # Primal Vigor is the control: same shelf, and the model DOES see it.
+    assert "treasure doubler" in by["Primal Vigor"]["model_sees"]
+    assert "NO CHANNEL" not in by["Primal Vigor"]["verdict"]

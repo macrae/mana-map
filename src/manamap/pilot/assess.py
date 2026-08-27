@@ -229,12 +229,48 @@ def assess(slug, pool, branch=None):
         # HOW OFTEN WOULD THIS HAVE FIRED AGAINST THE POD? A goldfish cannot
         # answer it, but Forge already played those turns — see pod_behaviour.
         row["pod_rate"] = pod_behaviour.rate_for(text) if gate == OPPONENT else None
+        # WHICH CHANNELS OF THE MODEL CAN SEE THIS CARD AT ALL. Step 6 of the
+        # order above, and until now it only covered opponent-gated cards. It
+        # is the same question for every card: a sweep can price what the
+        # goldfish simulates and can price everything else ONLY by displacement,
+        # which reads as noise and costs a full run per card to say so. Measured
+        # on a 29-card pool `close` proposed: 14 were invisible — Mana
+        # Reflection doubles MANA not tokens, Oath of Lieges and Greener
+        # Pastures are land-matters cards the centroid pulled in on similar
+        # phrasing. Naming them here is 14 runs not spent.
+        row["model_sees"] = _channels(
+            {"name": name, "oracle_text": text, "cmc": mv,
+             "type_line": str(r.get("type_line") or ""),
+             "mana_cost": str(r.get("mana_cost") or ""),
+             "power": r.get("power"), "toughness": r.get("toughness")})
         eq = cheapest.get(job)
         row["cheaper_than_ours"] = bool(eq and mv < eq[1])
         row["ours_cheapest"] = f"{eq[0]} (mv{int(eq[1])})" if eq else None
         rows.append(dict(row, verdict=_verdict(row, slug, branch)))
     return {"slug": slug, "branch": branch, "cards": rows,
             "axes": sorted(axes), "identity": sorted(identity)}
+
+
+def _channels(card):
+    """The goldfish's own reading of a card, as a list of channel names."""
+    try:
+        got = goldfish.classify(card)
+    except Exception:                              # pragma: no cover - defensive
+        return None
+    out = []
+    if got.get("treasure_doubler"):
+        out.append("treasure doubler")
+    if got.get("treasure_bonus"):
+        out.append("treasure adder")
+    if got.get("treasure_trigger") not in (None, "unmodelled"):
+        out.append(f"treasure on {got['treasure_trigger']}")
+    if got.get("produces"):
+        out.append("mana")
+    if got.get("bodies"):
+        out.append("body")
+    if got.get("tutor"):
+        out.append("tutor")
+    return out
 
 
 def _verdict(row, slug, branch):
@@ -269,6 +305,11 @@ def _verdict(row, slug, branch):
                 if est.get("scales_with_opponents") else "")
         return (f"{head}, but it would fire about {est['per_round']} times a "
                 f"round against your pod{each} — {est['basis']}")
+    if row.get("model_sees") == []:
+        return ("NO CHANNEL OF THE MODEL CAN SEE THIS. It is legal and on-axis "
+                "by name, but the goldfish simulates none of what it does, so a "
+                "sweep can only price it by displacement — which reads as noise "
+                "and costs a full run to say so. Judge it by reading the card")
     if row["job"] in ("treasure", "multiplier") and row["cheaper_than_ours"]:
         return (f"cheaper than anything in the list doing that job "
                 f"({row['ours_cheapest']}) — worth measuring")
