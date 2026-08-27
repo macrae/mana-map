@@ -35,7 +35,9 @@ from manamap.config import (
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_SEED,
 )
-from manamap.pilot.common import deck_dir, deck_file, load_deck_cards
+from manamap.pilot import manabase
+from manamap.pilot.common import (
+    deck_dir, deck_file, front_field, load_deck_cards)
 
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
@@ -422,6 +424,70 @@ def combat_profile(card):
     return profile
 
 
+#: THE MODEL WAS COLOURLESS, AND `mana_analysis` HAS ALWAYS SAID IT MATTERED.
+#: `spend()` took a scalar, so a five-colour Ur-Dragon and a mono-green Radagast
+#: with the same land count had identical curves. Measured against the closed
+#: form one module over, the BINDING colour is available on curve 56%-99% of the
+#: time across the fleet (median 82%; ur-dragon's black is 56%) — and the
+#: simulation was casting at 100%. That is the largest single accuracy gap in
+#: the resource model, and it ran OPPOSITE to the rock blindness above, so the
+#: two partly cancelled and the total stayed plausible while both halves were
+#: wrong.
+#: A PIP, FOR CASTING. `manabase.count_pips` answers a different question and
+#: answers it correctly: it half-charges a hybrid to each side, which is right
+#: for SIZING a base (a {W/U} spell really is castable off either, so charging
+#: both a full pip over-builds). For CASTABILITY a hybrid is one pip payable two
+#: ways, and half a pip is not a thing you can pay. Same split as `bodies` vs
+#: `creature_bodies` two functions down — one concept, two questions, and
+#: forcing them into one reader is how this file has been bitten before.
+_CAST_PIP_RE = re.compile(r"\{([^}]+)\}")
+
+
+def cast_pips(mana_cost):
+    """One entry per coloured pip: the set of colours that can pay it."""
+    out = []
+    for symbol in _CAST_PIP_RE.findall(mana_cost or ""):
+        inner = symbol.upper()
+        # {2/W} is payable with two generic OR one white; a goldfish that has
+        # the mana always has the two, so it never constrains a colour.
+        if any(ch.isdigit() for ch in inner):
+            continue
+        colours = frozenset(c for c in inner.split("/") if c in "WUBRG")
+        if colours:
+            out.append(colours)
+    return out
+
+
+def can_pay(pips, sources, wildcards=0):
+    """Can these coloured pips be paid from these sources?
+
+    `pips` is a list of colour-sets (one per pip), `sources` one colour-set per
+    untapped producer, `wildcards` the Treasures, which make any colour.
+    GREEDY, MOST-CONSTRAINED PIP FIRST, and each pip takes the source with the
+    FEWEST colours that can pay it — the standard assignment heuristic, exact at
+    these sizes (a Commander cost is a handful of pips against a dozen sources).
+    """
+    if not pips:
+        return True
+    used = [False] * len(sources)
+    def supply(pip):
+        return sum(1 for c in sources if c & pip)
+    for pip in sorted(pips, key=supply):
+        best = -1
+        for i, c in enumerate(sources):
+            if used[i] or not (c & pip):
+                continue
+            if best < 0 or len(c) < len(sources[best]):
+                best = i
+        if best >= 0:
+            used[best] = True
+        elif wildcards > 0:
+            wildcards -= 1
+        else:
+            return False
+    return True
+
+
 def produced_mana(oracle_text):
     """Mana a persistent '{T}: Add ...' producer yields per turn (0 if none)."""
     match = _TAP_ADD_RE.search(oracle_text or "")
@@ -483,6 +549,15 @@ def classify(card):
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
         "treasure_trigger": None if is_land else treasure_profile(card)[1],
         # Xorn makes no Treasure of its own; it adds one to every event.
+        # WHAT IT PRODUCES and WHAT IT COSTS, in colours. Both ride along
+        # always and are READ only under `model_colors`, so the colourless path
+        # stays byte-identical — the `creature_bodies` rule. `land_colors` is
+        # `manabase`'s and is deliberately restriction-aware: Haven of the
+        # Spirit Dragon taps for {C} in a Vampire deck, and counting it as five
+        # sources is how a mana base comes out looking fine and cannot cast its
+        # spells.
+        "colors": frozenset(manabase.land_colors(card)),
+        "pips": cast_pips(front_field(card, "mana_cost") or ""),
         "treasure_bonus": bool(TREASURE_BONUS_RE.search(text)),
         # Anointed Procession et al. make none either, and DOUBLE every event.
         # Rides on the card always and is read only under `model_treasures`, so
@@ -525,7 +600,8 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
-                  model_treasures=False, model_combat=False):
+                  model_treasures=False, model_combat=False,
+                  model_colors=False, commander_pips=None):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -553,6 +629,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
     lands_in_play = 0
     rock_production = 0
+    # One colour-set per untapped producer, parallel to the two counts above.
+    # Only maintained under `model_colors`; empty otherwise, so `can_pay` is
+    # never reached and the colourless arithmetic is untouched.
+    sources = []
     treasures = 0                 # a STOCKPILE: each one is spendable once
     treasure_engines = []         # (per_event, trigger) for modelled sources in play
     treasure_bonus = 0            # Xorn-style +N per creation event
@@ -611,8 +691,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
         land_index = next((i for i, c in enumerate(hand) if c["is_land"]), None)
         if land_index is not None:
-            hand.pop(land_index)
+            played = hand.pop(land_index)
             lands_in_play += 1
+            if model_colors:
+                sources.append(played["colors"])
             land_hits.append(True)
         else:
             land_hits.append(False)
@@ -634,10 +716,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         treasures_by_turn.append(treasures)
         treasure_online_by_turn.append(bool(treasure_engines))
 
-        def spend(cost):
-            """Pay from lands and rocks first, then break Treasures. Returns True."""
+        def spend(cost, pips=None):
+            """Pay from lands and rocks first, then break Treasures.
+
+            Under `model_colors` the colour requirement is checked too, against
+            the sources actually in play, with Treasures as wildcards. Refusing
+            here is the whole point: it is the turn the deck has the mana and
+            not the colour, which every figure in this model used to ignore.
+            """
             nonlocal pool, treasures
             if pool + treasures < cost:
+                return False
+            if model_colors and pips and not can_pay(pips, sources, treasures):
                 return False
             if cost <= pool:
                 pool -= cost
@@ -646,13 +736,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool = 0
             return True
 
-        if commander_turn is None and spend(commander_cmc):
+        if commander_turn is None and spend(commander_cmc, commander_pips):
             commander_turn = turn
 
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0), key=lambda c: c["cmc"]):
-            if spend(card["cmc"]):
+            if spend(card["cmc"], card["pips"]):
                 rock_production += card["produces"]
+                if model_colors:
+                    # A rock adds as many sources as it makes mana.
+                    sources.extend([card["colors"] or frozenset()] * card["produces"])
                 hand.remove(card)
 
         # Cast tutors before bodies: a tutor is a setup spell, and it competes
@@ -661,7 +754,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
             if card["tutor_needs_body"] and bodies_cum < 1:
                 continue
-            if not spend(card["tutor_cmc"]):
+            if not spend(card["tutor_cmc"], card["pips"]):
                 continue
             hand.remove(card)
             tutor_ready_turns.append(turn + card["tutor_delay"])
@@ -677,7 +770,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and (c["combat"]["extra_combat_cost"] is not None
                                      or c["combat"]["extra_combat_free"])),
                                key=lambda c: c["cmc"]):
-                if spend(card["cmc"]):
+                if spend(card["cmc"], card["pips"]):
                     hand.remove(card)
                     if card["combat"]["extra_combat_cost"] is not None:
                         extra_combat_costs.append(card["combat"]["extra_combat_cost"])
@@ -699,7 +792,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and not c["tutor"]
                                 and (c["treasure_doubler"] or c["treasure_bonus"])),
                                key=lambda c: c["cmc"]):
-                if not spend(card["cmc"]):
+                if not spend(card["cmc"], card["pips"]):
                     continue
                 hand.remove(card)
                 if card["treasure_doubler"]:
@@ -709,7 +802,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0), key=lambda c: c["cmc"]):
-            if spend(card["cmc"]):
+            if spend(card["cmc"], card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 hand.remove(card)
                 if model_combat:
@@ -962,7 +1055,7 @@ class _Silent:
 
 def run(slug, iterations=None, seed=None, max_turn=None,
         model_treasures=None, model_combat=None, with_results=False, branch=None,
-        doc=None, quiet=False, targets_override=None):
+        doc=None, quiet=False, targets_override=None, model_colors=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
     `model_treasures` and `model_combat` default to None, meaning READ THE
@@ -1012,6 +1105,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # optional model is one nobody committed to.
     declared_treasures = False
     declared_combat = False
+    # Bound before the branch: a deck with no declaration still has colours,
+    # and reading it only inside the `if` made every declaration-less deck
+    # (which is the benchmark's whole fleet path) raise UnboundLocalError.
+    targets_doc = {}
     if targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
@@ -1047,6 +1144,14 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # what makes decks comparable at all.
     model_treasures = declared_treasures if model_treasures is None else bool(model_treasures)
     model_combat = declared_combat if model_combat is None else bool(model_combat)
+    # COLOUR IS NOT OPTIONAL THE WAY TREASURES ARE. Every deck has colours and a
+    # colourless mana model is simply wrong; the flag exists so the change can
+    # be measured against the old behaviour and against `mana_analysis`'s
+    # closed form, not so a deck can decline to have colours.
+    declared_colors = bool((targets_doc or {}).get("model_colors", True))
+    model_colors = declared_colors if model_colors is None else bool(model_colors)
+    commander_pips = cast_pips(
+        front_field(commanders[0], "mana_cost") or "") if commanders else []
 
     # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
     # `treasure_profile` alone while the model has three ways to see a Treasure:
@@ -1114,7 +1219,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         for _ in range(iterations):
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,
-                              model_treasures=model_treasures, model_combat=model_combat))
+                              model_treasures=model_treasures,
+                              model_combat=model_combat,
+                              model_colors=model_colors,
+                              commander_pips=commander_pips))
             t.advance()
 
     return {
