@@ -85,6 +85,14 @@ manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
                                         #   interval; `--vs` adds the interval on the DIFFERENCE
+manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--owned] [--write]
+                                        #   the bottleneck becomes a POOL. Seeds from the
+                                        #   component the diagnostic named and mines the
+                                        #   corpus two ways — the centroid of its members in
+                                        #   the FUNCTION space, and the rarest role two or
+                                        #   more of them share. Reported separately because
+                                        #   they disagree, and the disagreement is the
+                                        #   information; `--write` fills pool.txt
 manamap pilot assess <slug> [--branch N] --pool <file|library|->
                                         #   TRIAGE FIRST, before spending: is it legal, what
                                         #   does it cost, what is it GATED on, does it feed a

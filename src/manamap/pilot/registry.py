@@ -60,6 +60,8 @@ PILOT_STEPS = [
     ("assess", "manamap.pilot.assess",
      "Triage a pile of cards against one deck before spending: legality, cost, what it does, "
      "what it is gated on, whether any model here can see it, and what it would replace"),
+    ("close", "manamap.pilot.close",
+     "Turn the diagnostic's bottleneck into a candidate pool"),
     ("candidates", "manamap.pilot.candidates",
      "Rank a pool of cards by what each MEASURABLY does: substitute it in, re-run the "
      "diagnostic, report the difference with an interval"),
@@ -133,7 +135,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-branch", "diagnose", "assess", "candidates", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -327,10 +329,22 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess'):
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
+        if name == "close":
+            cmd.add_argument("--component", default=None, metavar="SUBSTRING",
+                             help="which declared component to close "
+                                  "(default: the diagnostic's own bottleneck)")
+            cmd.add_argument("--limit", type=int, default=None)
+            cmd.add_argument("--owned", action="store_true",
+                             help="only cards in a box (collection.py; never "
+                                  "deck membership)")
+            cmd.add_argument("--write", action="store_true",
+                             help="write data/decks/<slug>/pool.txt for "
+                                  "`assess`/`candidates --pool library`")
+            cmd.add_argument("--json", action="store_true")
         if name == "assess":
             cmd.add_argument("--pool", default=None,
                              help="a file of card names, a decklist, , or ")
