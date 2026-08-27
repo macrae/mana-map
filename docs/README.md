@@ -17,6 +17,22 @@ written against it.**
 | **[data-artifacts.md](data-artifacts.md)** | 85 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
 | **[testing.md](testing.md)** | 553 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
 
+## The gotchas — every measurement this project has paid for
+
+Extracted from `CLAUDE.md` verbatim in the 2026-08-27 compaction: that file went
+**239 KB to 25 KB** because it loads into every session, and 218 of its bullets
+were the full record of a defect rather than the rule a session needs before it
+touches code. **Nothing was reworded and no number was lost** — the split is
+asserted both ways, by numeric token and by verbatim bullet. `CLAUDE.md` keeps a
+digest of the rules that bite whatever you are touching; these hold the evidence.
+
+| | | |
+|---|---:|---|
+| [gotchas-viz.md](gotchas-viz.md) | 76 | The canvas renderer, the force graph, the three modes, the library and its piles, the shell, the atlas drift. Read before touching `viz/`. |
+| [gotchas-bench.md](gotchas-bench.md) | 99 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
+| [gotchas-evidence.md](gotchas-evidence.md) | 46 | Stacks, citations, `engine.json`, the deck map, and every validator's reasoning — **including the checks prototyped and REJECTED for firing on correct data**. Read before adding a validator or a claim. |
+| [gotchas-magazine-legacy.md](gotchas-magazine-legacy.md) | 23 | The frozen renderer. Its code is not extended; the layout and prose lessons outlive it. |
+
 ## Reference, by subsystem
 
 | | | |
