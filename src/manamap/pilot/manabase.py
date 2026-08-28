@@ -284,6 +284,12 @@ def enters_tapped(card):
     return "enters tapped" in text or "enters the battlefield tapped" in text
 
 
+#: A land that always enters tapped and then asks a price to STAY. The clause is
+#: about survival, never about the tempo cost of entering.
+_SAC_UNLESS_RE = re.compile(
+    r"sacrifice (?:it|this land|[^,.\n]{0,40}?) unless [^.\n]*")
+
+
 def enters_tapped_unconditionally(card):
     """Does it ALWAYS enter tapped, with no escape and no condition?
 
@@ -302,6 +308,23 @@ def enters_tapped_unconditionally(card):
     text = str(card.get("oracle_text", "") or "").lower()
     if not enters_tapped(card):
         return False
+    # AN "UNLESS" ATTACHED TO A SACRIFICE IS A COST TO KEEP THE LAND, NOT A WAY
+    # TO HAVE IT ENTER UNTAPPED. Archway Commons reads "This land enters tapped.
+    # When this land enters, sacrifice it unless you pay {1}" — it ALWAYS enters
+    # tapped, and paying {1} only stops it dying. The bare `"unless" in text`
+    # test read that second sentence as a condition on the first and reported it
+    # as an untapped source, which is how `mana-fit` came to offer it as a
+    # tempo-free five-colour land. Eleven lands in the corpus share the wording
+    # (Rupture Spire, Transguild Promenade, Gateway Plaza, Command Bridge,
+    # Public Thoroughfare and the five Karoo bounce-lands); a corpus sweep of
+    # all 1,266 lands flags exactly those eleven and drops none.
+    #
+    # SCOPING TO THE SENTENCE INSTEAD DOES NOT WORK, and the sweep is what says
+    # so: the shockland idiom spans two sentences — "As this land enters, you
+    # may pay 2 life. If you don't, it enters tapped." — so a sentence-scoped
+    # test flags all ten shocks plus Multiversal Passage and The Black Gate,
+    # the exact overstatement this function exists to prevent.
+    text = _SAC_UNLESS_RE.sub(" ", text)
     if "unless" in text:
         return False
     # Shocklands: "you may pay 2 life. If you don't, it enters tapped."

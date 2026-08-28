@@ -90,16 +90,17 @@ manamap pilot validate-diagnostic <slug> [--branch N]
                                         #   interval, and an unavailable block is ABSENT
                                         #   rather than zeroed
 manamap pilot net-change <slug> --branch N [--write] [--json]
-                                        #   THE REPORT A PURCHASE RESTS ON: the branch
-                                        #   against the deck at a shared harness, every
-                                        #   row with its MDE, the objective GRADED, and
-                                        #   the one measurement nothing else computes —
-                                        #   does assembling the declared engine make the
-                                        #   list win? Plus Forge, and the bill
+                                        #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
+                                        #   (every swap, with the reason it was staged,
+                                        #   lands split from spells), the objective
+                                        #   GRADED, every row with its MDE and a plain-
+                                        #   language reading, WHAT EACH ROW MEASURES and
+                                        #   why we care, the deterministic mana half,
+                                        #   Forge, and REWARD / RISK / COST
 manamap pilot validate-net-change <slug> --branch N
-                                        #   nothing under the MDE may be ranked, and an
-                                        #   engine lift must say whether its interval
-                                        #   excludes zero
+                                        #   nothing under the MDE may be ranked, nothing
+                                        #   over it may be called noise, and an
+                                        #   unavailable block owes a reason
 manamap pilot calibrate [--iterations N] [--json]
                                         #   DOES THE MODEL PREDICT ANYTHING? Correlates every
                                         #   deck's goldfish figures against its real Forge win
@@ -150,7 +151,15 @@ manamap pilot mana-fit <slug> [--branch N] [--owned]
                                         #   covers at once. Run it whenever the nonland half
                                         #   moves — the shortfall changes the moment a spell
                                         #   does. Composes `mana-analysis`, never recomputes;
-                                        #   names a SPLASH whose target is driven by one card
+                                        #   names a SPLASH whose target is driven by one card.
+                                        #   THIS AND `mana-analysis` ARE THE WHOLE OF THE
+                                        #   EVIDENCE FOR A LAND SWAP: the goldfish plays the
+                                        #   first land in hand and credits its colours the
+                                        #   same turn, so it has no tapped state and cannot
+                                        #   rank two lands that make the same colours — a
+                                        #   twelve-land `candidates` sweep returned two
+                                        #   distinct readings, with an always-tapped land
+                                        #   tying one that never enters tapped
 manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->] [--owned]
                                         #   WHAT IN THIS LIST HAS A CHEAPER CARD DOING ITS
                                         #   JOB. The obsolescence index read deck-aware:
@@ -270,10 +279,12 @@ data/decks/<slug>/             all tracked:
                                  branch.json           v2: the OBJECTIVE the branch must meet,
                                                        the commit trail, and `merged` once it lands
                                  net_change.json       THE REPORT A PURCHASE RESTS ON — the branch
-                                                       against the deck, every row with its MDE, the
-                                                       objective GRADED, the engine lift, Forge and
-                                                       the bill. `net-change --write`, gated by
-                                                       `validate-net-change`
+                                                       against the deck, every row with its MDE and
+                                                       its DEFINITION, the objective GRADED, the
+                                                       mana half, Forge, and reward/risk/cost.
+                                                       `net-change --write`, gated by
+                                                       `validate-net-change`; rendered by
+                                                       `viz/branch.html`
                                  cards.json            `fetch-deck --branch`
                                  <measurements>.json   bracket / mana / goldfish / map,
                                                        run with `--branch`, written here

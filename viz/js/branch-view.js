@@ -78,49 +78,108 @@
     return out + '</section>';
   }
 
+  /* EVERY ROW CARRIES ITS OWN DEFINITION, because a figure whose meaning is not
+   * on the page beside it gets guessed at, and the guesses go one way: a mean
+   * read as a rate, a clock read as a win rate, a hoard read as mana. All three
+   * have happened on this bench. `reads_as` and `what`/`why_we_care` are built
+   * by `net_change.build` and travel in the artifact, so this page still
+   * computes nothing. */
   function tablePanel(nc) {
     if (!nc) return '';
     var rows = (nc.table || []).map(function (r) {
-      return '<tr class="v-' + esc(r.verdict) + '"><td>' + esc(r.measure) +
+      var head = '<tr class="v-' + esc(r.verdict) + '"><td>' + esc(r.measure) +
+        (r.better_is ? ' <span class="ev">' + esc(r.better_is) +
+                       ' is better</span>' : '') +
         '</td><td class="n">' + num(r.champion) + '</td><td class="n">' +
         num(r.branch) + '</td><td class="n">' + signed(r.delta) +
         '</td><td class="verdict">' + esc(r.verdict) +
         (r.verdict === 'noise' ? ' <span class="ev">MDE ' + num(r.mde) + '</span>' : '') +
         '</td></tr>';
+      if (!r.reads_as && !r.what) return head;
+      return head + '<tr class="reading"><td colspan="5">' +
+        (r.reads_as ? '<p class="reads">' + esc(r.reads_as) + '</p>' : '') +
+        (r.what ? '<details><summary>What is this, and why do we care?</summary>' +
+          '<p>' + esc(r.what) + '</p>' +
+          (r.scale ? '<p class="ev">Scale: ' + esc(r.scale) + '</p>' : '') +
+          '<p class="ev"><b>Why:</b> ' + esc(r.why_we_care) + '</p></details>' : '') +
+        '</td></tr>';
+    }).join('');
+    var derived = ((nc.definitions || {}).derived || []).map(function (d) {
+      return '<details><summary>' + esc(d.name) + '</summary><p>' +
+        esc(d.what) + '</p><p class="ev"><b>Why:</b> ' + esc(d.why) +
+        '</p></details>';
     }).join('');
     return '<section class="panel"><h2>Measured</h2>' +
       '<p class="ev">' + esc(nc.harness.iterations.toLocaleString()) +
       ' games each, shared seed. A delta smaller than the run could detect is ' +
-      'marked noise rather than ranked.</p>' +
+      'marked noise rather than ranked — that is no answer, not no change.</p>' +
       '<div class="tablewrap"><table class="netchange"><thead><tr><th>Measure</th>' +
       '<th class="n">Deck</th><th class="n">Branch</th><th class="n">&Delta;</th>' +
-      '<th>Verdict</th></tr></thead><tbody>' + rows + '</tbody></table></div></section>';
+      '<th>Verdict</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      (derived ? '<h3>The figures that are not rows</h3>' + derived : '') +
+      '</section>';
   }
 
-  function liftPanel(nc) {
-    if (!nc || !nc.engine_lift) return '';
-    var out = '<section class="panel"><h2>Does the engine make it win?</h2>' +
-      '<p class="ev">The kill rate in games where a list’s declared engine ' +
-      'came online by turn three, minus the rate in games where it did not. ' +
-      'The only test of whether a stated engine does anything.</p><div class="lifts">';
-    ['champion', 'branch'].forEach(function (who) {
-      var e = nc.engine_lift[who] || {};
-      var label = who === 'champion' ? 'The deck' : 'The branch';
-      if (!e.available) {
-        out += '<div class="lift"><div class="who">' + esc(label) + '</div>' +
-               '<p class="ev">' + esc(e.why || 'not measured') + '</p></div>';
-        return;
+  /* VALUE AND RISK, SIDE BY SIDE AND NEVER MERGED. The four risk kinds are the
+   * point: a row that fell is a priced cost, a row inside the MDE is an open
+   * question, and an effect this harness cannot see is neither. All three read
+   * alike as prose, so each one is badged with what kind of claim it is. */
+  var RISK_COPY = {
+    paid: 'measured cost',
+    unresolved: 'no answer',
+    unmeasured: 'the model cannot see this',
+    structural: 'true of the whole harness'
+  };
+
+  function ledgerPanel(nc) {
+    var r = nc && nc.recommendation;
+    if (!r || (!r.reward && !r.risk)) return '';
+    var out = '<section class="panel ledger-panel"><h2>Reward, risk and cost</h2>';
+
+    out += '<h3>The reward <span class="ev">(' + (r.reward || []).length +
+           ')</span></h3>';
+    if (!(r.reward || []).length) {
+      out += '<p class="ev">Nothing beat its own minimum detectable ' +
+             'difference.</p>';
+    } else {
+      out += '<ul class="ledger-list">' + r.reward.map(function (x) {
+        return '<li class="gain"><b>' + esc(x.measure) + '</b>' +
+          '<span class="reads">' + esc(x.reads_as) + '</span>' +
+          (x.why_we_care ? '<span class="ev">' + esc(x.why_we_care) +
+                           '</span>' : '') + '</li>';
+      }).join('') + '</ul>';
+    }
+
+    out += '<h3>The risk <span class="ev">(' + (r.risk || []).length +
+           ')</span></h3><ul class="ledger-list">' +
+      (r.risk || []).map(function (x) {
+        return '<li class="risk k-' + esc(x.kind) + '">' +
+          '<span class="kind">' + esc(RISK_COPY[x.kind] || x.kind) + '</span>' +
+          '<b>' + esc(x.what) + '</b>' +
+          (x.detail ? '<span class="reads">' + esc(x.detail) + '</span>' : '') +
+          (x.cards && x.cards.length
+            ? '<span class="ev">' + esc(x.cards.join(', ')) + '</span>' : '') +
+          (x.why_it_matters ? '<span class="ev">' + esc(x.why_it_matters) +
+                              '</span>' : '') + '</li>';
+      }).join('') + '</ul>';
+
+    var c = r.cost;
+    if (c) {
+      out += '<h3>The cost</h3><p class="lede">' + esc(c.reads_as) + '</p>';
+      if (c.mergeable === false) {
+        out += '<p class="ev warn">NOT MERGEABLE YET — <code>deck-branch ' +
+               'merge</code> refuses while any card is unsourced. That is a ' +
+               'question about cardboard, not about whether the branch is ' +
+               'right.</p>';
       }
-      out += '<div class="lift ' + (e.lift > 0 ? 'good' : 'bad') + '">' +
-        '<div class="who">' + esc(label) + '</div>' +
-        '<div class="big">' + signed(e.lift) + '</div>' +
-        '<div class="ev">' + num(e.offline.kill_rate) + ' &rarr; ' +
-        num(e.online.kill_rate) + ' &nbsp;·&nbsp; CI [' + signed(e.ci95[0]) +
-        ', ' + signed(e.ci95[1]) + ']' +
-        (e.excludes_zero ? '' : ' &nbsp;·&nbsp; spans zero') + '</div>' +
-        '<p class="ev">' + esc(e.reading) + '</p></div>';
-    });
-    return out + '</div></section>';
+      if ((c.free_to_raid || []).length) {
+        out += '<p class="ev">Free to take, because the deck it sits in is ' +
+               'already apart: ' + esc(c.free_to_raid.map(function (x) {
+                 return x.name + ' (' + x.decks.join(', ') + ')';
+               }).join('; ')) + '.</p>';
+      }
+    }
+    return out + '</section>';
   }
 
   function forgePanel(nc) {
@@ -325,18 +384,36 @@
     return out + '</section>';
   }
 
-  function stagedPanel(meta) {
-    var rows = (meta && meta.staged) || [];
-    if (!rows.length) return '';
-    var out = '<section class="panel staged"><h2>Staged (' + rows.length +
+  /* THE SWAPS, SPLIT THE WAY THE EVIDENCE SPLITS. A spell swap moves the nine
+   * sampled rows; a land swap moves only the deterministic mana block, because
+   * the model has no tapped state and cannot rank two lands that make the same
+   * colours. Rendered together, a land pass borrows credit from a spell pass.
+   * Each `why` was written when the swap was staged, before any figure above
+   * existed, so it cannot have been fitted to them. */
+  function stagedPanel(meta, nc) {
+    var ch = nc && nc.changes;
+    var groups = ch
+      ? [['Spells', ch.spells || []], ['Lands', ch.lands || []]]
+      : [['Staged', (meta && meta.staged) || []]];
+    var total = groups.reduce(function (a, g) { return a + g[1].length; }, 0);
+    if (!total) return '';
+    var out = '<section class="panel staged"><h2>The change (' + total +
       ')</h2><p class="ev">A challenger starts as a copy of the deck. These are ' +
-      'the swaps that make it a different one.</p><ul class="cardlist">';
-    rows.forEach(function (r) {
-      out += '<li>\u2212 ' + esc(r.out) + ' &nbsp; + ' + esc(r['in']) +
-             (r.strength ? ' <span class="src">' + esc(r.strength) + '</span>' : '') +
-             '</li>';
+      'the swaps that make it a different one, each with the reason it was ' +
+      'staged.</p>';
+    groups.forEach(function (g) {
+      if (!g[1].length) return;
+      out += '<h3>' + esc(g[0]) + ' <span class="ev">(' + g[1].length +
+             ')</span></h3><ul class="swaplist">';
+      g[1].forEach(function (r) {
+        out += '<li><span class="pair"><span class="out">\u2212 ' + esc(r.out) +
+               '</span><span class="in">+ ' + esc(r['in']) + '</span></span>' +
+               (r.why ? '<span class="ev">' + esc(r.why) + '</span>' : '') +
+               '</li>';
+      });
+      out += '</ul>';
     });
-    return out + '</ul></section>';
+    return out + '</section>';
   }
 
   /* ── boot ───────────────────────────────────────────────────────────── */
@@ -374,8 +451,8 @@
         document.getElementById('branchWhy').textContent = meta.why || '';
         document.getElementById('objective').innerHTML =
           verdictPanel(nc) + objectivePanel(meta, nc);
-        document.getElementById('panels').innerHTML = stagedPanel(meta) + (nc
-          ? (tablePanel(nc) + liftPanel(nc) + forgePanel(nc) +
+        document.getElementById('panels').innerHTML = stagedPanel(meta, nc) + (nc
+          ? (tablePanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
              billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
           : (trailPanel(meta) + absent(
               'The net change',

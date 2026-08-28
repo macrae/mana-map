@@ -273,6 +273,33 @@ _OPS = {">=": lambda a, b: a >= b, "<=": lambda a, b: a <= b,
         ">": lambda a, b: a > b, "<": lambda a, b: a < b}
 
 
+#: AXES A BRANCH MAY NOT AIM AT, and the refusal is the most expensive lesson on
+#: this page. A membership axis asks whether the parts named in
+#: `goldfish_targets.json` were DRAWN — and that file is authored. The pilot who
+#: sets the objective also writes the declaration it is graded against, so the
+#: axis can be moved without touching a single card.
+#:
+#: MEASURED ON ONE LIST, ONE SEED, 10,000 GAMES. Three defensible declarations of
+#: the same Ur-Dragon deck, each graded by the engine lift against kill-by-T8:
+#:
+#:   ramp + a loosely worded payoff        lift +0.007  [-0.003, +0.017]  spans zero
+#:   discount + ramp + burn, all required  lift -0.036  [-0.052, -0.020]  REAL
+#:   ramp + burn                           lift +0.014  [+0.005, +0.023]  REAL
+#:
+#: Same cards, same games. The middle row says assembling the engine makes the
+#: deck WIN LESS, at an interval excluding zero, and it is not wrong — a second
+#: cost reducer is a card and three mana that deals no damage when eminence
+#: already pays the discount for free. But an axis whose SIGN a JSON edit can
+#: flip is not something a spending decision may rest on.
+#:
+#: The declaration stays: it is a good description of a deck, it drives the
+#: `*_assisted` figures, and the engine lift still reports against it as a
+#: diagnostic. What it may not do is be the thing a branch is graded on. Aim at
+#: an OUTPUT — damage, a clock, board power, the hoard — which no wording moves.
+MEMBERSHIP_AXES = ("engine_online_3", "engine_online_5", "engine_online_8",
+                   "any_route_8")
+
+
 def parse_objective(text):
     """`"kill_by_8 >= 0.30"` -> {axis, op, value}. Raises with the vocabulary."""
     from manamap.pilot import candidates
@@ -289,6 +316,17 @@ def parse_objective(text):
             + "\n(`candidates.OBJECTIVE_AXES` — wider than what a SWEEP may rank "
               "on, because a correlated measure is a fine thing to aim at and a "
               "useless thing to sort by.)")
+    if axis in MEMBERSHIP_AXES:
+        raise SystemExit(
+            f"'{axis}' asks whether the parts named in goldfish_targets.json "
+            f"were DRAWN, and that file is authored — the same hand writes the "
+            f"declaration and the objective, so this axis can be moved without "
+            f"touching a card. Measured on ur-dragon: three defensible "
+            f"declarations of one list gave lifts of +0.007 (spans zero), "
+            f"-0.036 (REAL) and +0.014 (REAL) over the same 10,000 games.\n"
+            f"Aim at an OUTPUT instead, which no wording moves:\n  "
+            + "\n  ".join(sorted(a for a in candidates.OBJECTIVE_AXES
+                                  if a not in MEMBERSHIP_AXES)))
     return {"axis": axis, "op": op, "value": value}
 
 

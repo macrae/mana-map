@@ -1,18 +1,18 @@
 {
   "slug": "ur-dragon",
-  "decklist_sha256": "4f5787d428bacd108f25b0e01567b16c7b687b977b9052f9d003ec0bbef2b6ea",
+  "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
   "lands": {
     "total": 36,
     "entries": 32,
-    "enters_tapped": 16,
-    "enters_tapped_always": 4,
+    "enters_tapped": 12,
+    "enters_tapped_always": 1,
     "classes": {
       "basic": 8,
       "fetch": 2,
-      "fixing": 9,
-      "tapped": 16,
-      "untapped-dual": 9,
-      "utility": 9
+      "fixing": 13,
+      "tapped": 12,
+      "untapped-dual": 13,
+      "utility": 10
     },
     "list": [
       {
@@ -147,6 +147,21 @@
         "produces": []
       },
       {
+        "name": "Forbidden Orchard",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Forest",
         "copies": 2,
         "classes": [
@@ -157,12 +172,17 @@
         ]
       },
       {
-        "name": "Hallowed Fountain",
+        "name": "Gemstone Mine",
         "copies": 1,
         "classes": [
-          "tapped"
+          "fixing",
+          "untapped-dual",
+          "utility"
         ],
         "produces": [
+          "B",
+          "G",
+          "R",
           "U",
           "W"
         ]
@@ -175,19 +195,6 @@
         ],
         "produces": [
           "U"
-        ]
-      },
-      {
-        "name": "Jetmir's Garden",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "G",
-          "R",
-          "W"
         ]
       },
       {
@@ -291,18 +298,6 @@
         ]
       },
       {
-        "name": "Savage Lands",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "B",
-          "G",
-          "R"
-        ]
-      },
-      {
         "name": "Shivan Reef",
         "copies": 1,
         "classes": [
@@ -323,6 +318,22 @@
         "produces": [
           "B",
           "R"
+        ]
+      },
+      {
+        "name": "Spire of Industry",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
         ]
       },
       {
@@ -359,6 +370,22 @@
         ]
       },
       {
+        "name": "Tarnished Citadel",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Unclaimed Territory",
         "copies": 1,
         "classes": [
@@ -366,42 +393,29 @@
           "untapped-dual"
         ],
         "produces": []
-      },
-      {
-        "name": "Ziatora's Proving Ground",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "G",
-          "R"
-        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 11,
-      "U": 11,
-      "B": 11,
-      "R": 22,
-      "G": 15
+      "W": 13,
+      "U": 14,
+      "B": 13,
+      "R": 23,
+      "G": 16
     },
     "nonland": {
       "W": 4,
       "U": 4,
       "B": 5,
       "R": 5,
-      "G": 6
+      "G": 5
     },
     "total": {
-      "W": 15,
-      "U": 15,
-      "B": 16,
-      "R": 27,
+      "W": 17,
+      "U": 18,
+      "B": 18,
+      "R": 28,
       "G": 21
     },
     "producers": [
@@ -494,14 +508,6 @@
         "produces": []
       },
       {
-        "name": "Scaled Nurturer",
-        "kind": "ramp:dork",
-        "cmc": 2.0,
-        "produces": [
-          "G"
-        ]
-      },
-      {
         "name": "Sol Ring",
         "kind": "ramp:rock",
         "cmc": 1.0,
@@ -518,23 +524,23 @@
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 23.0,
+      "total_pips": 21.0,
       "max_pips": 2,
-      "cards": 21,
+      "cards": 19,
       "earliest_turn": 1,
       "effective_pips": 1
     },
     "R": {
-      "total_pips": 48.0,
+      "total_pips": 52.0,
       "max_pips": 3,
-      "cards": 31,
+      "cards": 33,
       "earliest_turn": 2,
       "effective_pips": 2
     },
     "U": {
-      "total_pips": 5.0,
+      "total_pips": 4.0,
       "max_pips": 1,
-      "cards": 5,
+      "cards": 4,
       "earliest_turn": 2,
       "effective_pips": 1
     },
@@ -549,23 +555,23 @@
   "shares": {
     "B": {
       "pip_share": 0.033,
-      "source_share": 0.157
+      "source_share": 0.165
     },
     "G": {
-      "pip_share": 0.256,
-      "source_share": 0.214
+      "pip_share": 0.231,
+      "source_share": 0.203
     },
     "R": {
-      "pip_share": 0.533,
-      "source_share": 0.314
+      "pip_share": 0.571,
+      "source_share": 0.291
     },
     "U": {
-      "pip_share": 0.056,
-      "source_share": 0.157
+      "pip_share": 0.044,
+      "source_share": 0.177
     },
     "W": {
-      "pip_share": 0.122,
-      "source_share": 0.157
+      "pip_share": 0.121,
+      "source_share": 0.165
     }
   },
   "source_targets": {
@@ -577,50 +583,50 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.67,
-      "U": 0.67,
-      "B": 0.352,
-      "R": 0.639,
-      "G": 0.787
+      "W": 0.734,
+      "U": 0.762,
+      "B": 0.441,
+      "R": 0.667,
+      "G": 0.81
     },
     "with_rocks_and_dorks": {
-      "W": 0.787,
-      "U": 0.787,
-      "B": 0.563,
-      "R": 0.764,
+      "W": 0.831,
+      "U": 0.849,
+      "B": 0.636,
+      "R": 0.785,
       "G": 0.895
     }
   },
   "ramp": {
     "ramp:cost-reduction": 5,
-    "ramp:dork": 7,
+    "ramp:dork": 6,
     "ramp:land": 2,
     "ramp:rock": 5
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.38,
+      "10": 0.372,
       "2": 0.996,
-      "3": 0.905,
-      "4": 0.776,
-      "5": 0.645,
-      "6": 0.542,
-      "7": 0.463,
-      "8": 0.422,
-      "9": 0.388
+      "3": 0.906,
+      "4": 0.775,
+      "5": 0.65,
+      "6": 0.544,
+      "7": 0.47,
+      "8": 0.414,
+      "9": 0.383
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.249,
-      "2": 2.248,
-      "3": 3.56,
-      "4": 4.837,
-      "5": 5.893,
-      "6": 6.713,
-      "7": 7.411,
-      "8": 8.053,
-      "9": 8.659
+      "10": 9.176,
+      "2": 2.233,
+      "3": 3.55,
+      "4": 4.826,
+      "5": 5.875,
+      "6": 6.683,
+      "7": 7.376,
+      "8": 8.001,
+      "9": 8.592
     }
   },
   "assumptions": [
@@ -630,11 +636,10 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 11 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 16.",
-    "G: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 21.",
-    "R: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 27.",
-    "U: 11 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 15.",
-    "W: 11 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 15.",
-    "16 of 36 lands enter tapped (44%) — over the one-in-three budget the deck builder allows itself."
+    "B: 13 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 18.",
+    "G: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 21.",
+    "R: 23 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 28.",
+    "U: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 18.",
+    "W: 13 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 17."
   ]
 }

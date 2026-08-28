@@ -71,14 +71,17 @@ def validate(doc):
                 f"{where}: delta {row['delta']} clears the MDE {row['mde']} and is "
                 f"reported as noise")
 
-    for who, lift in (doc.get("engine_lift") or {}).items():
-        if not lift.get("available"):
-            if not lift.get("why"):
-                errors.append(f"engine_lift.{who}: unavailable with no reason given")
+    # ABSENT MEANS ABSENT, AND IT OWES A REASON. This used to be checked on the
+    # engine-lift block alone, so deleting that block took the whole rule with
+    # it and left `mana` and `forge` free to report `available: false` with no
+    # explanation — a blank section a reader cannot tell from a measured
+    # nothing. Stated once, over every block that has the key.
+    for name in ("mana", "forge"):
+        block = doc.get(name) or {}
+        if "available" not in block:
             continue
-        for key in ("lift", "ci95", "excludes_zero", "reading"):
-            if key not in lift:
-                errors.append(f"engine_lift.{who}: no {key!r}")
+        if not block["available"] and not str(block.get("why") or "").strip():
+            errors.append(f"{name}: unavailable with no reason given")
 
     f = doc.get("forge") or {}
     if f.get("available"):

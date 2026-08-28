@@ -283,3 +283,65 @@ def test_a_card_in_another_deck_is_owned_not_bought():
     assert buys <= set(proxied["unsourced"]), (
         "--proxy cleared a card that nobody owns")
     assert proxied["owned_but_elsewhere"] == n_else
+
+
+# --------------------------------------------------------------------------
+# A BRANCH MAY NOT AIM AT A MEMBERSHIP AXIS
+#
+# The most expensive lesson the objective vocabulary carries. `engine_online_*`
+# asks whether the parts named in `goldfish_targets.json` were drawn, and that
+# file is authored — the same hand writes the declaration and the objective it
+# is graded against.
+# --------------------------------------------------------------------------
+
+@pytest.mark.parametrize("axis", deck_branch.MEMBERSHIP_AXES)
+def test_an_authored_axis_may_not_be_a_branch_objective(axis):
+    with pytest.raises(SystemExit) as e:
+        deck_branch.parse_objective(f"{axis} >= 0.22")
+    assert "authored" in str(e.value)
+    assert "without touching a card" in str(e.value)
+
+
+@pytest.mark.parametrize("expr,axis", [
+    ("damage_8 >= 40", "damage_8"),
+    ("kill_by_8 >= 0.75", "kill_by_8"),
+    ("board_power_6 >= 12", "board_power_6"),
+    ("stall <= 0.05", "stall"),
+])
+def test_an_output_axis_is_still_a_legal_objective(expr, axis):
+    """The refusal is scoped. A figure the deck PRODUCES is exactly what a
+    branch should aim at, and narrowing the vocabulary to nothing would be the
+    worse error."""
+    assert deck_branch.parse_objective(expr)["axis"] == axis
+
+
+def test_the_refusal_names_what_to_aim_at_instead():
+    """A refusal that does not say what to do next gets worked around."""
+    with pytest.raises(SystemExit) as e:
+        deck_branch.parse_objective("engine_online_5 >= 0.22")
+    text = str(e.value)
+    assert "damage_8" in text and "kill_by_8" in text
+    for axis in deck_branch.MEMBERSHIP_AXES:
+        assert f"\n  {axis}" not in text, f"{axis} offered as a replacement"
+
+
+def test_every_membership_axis_is_a_real_axis():
+    """A name in this tuple that the bench does not measure guards nothing, and
+    would go on guarding nothing silently."""
+    from manamap.pilot import candidates
+    for axis in deck_branch.MEMBERSHIP_AXES:
+        assert axis in candidates.OBJECTIVE_AXES, axis
+
+
+def test_no_tracked_branch_is_still_graded_on_an_authored_axis():
+    """The guard stops a NEW one; this catches an old one that predates it."""
+    import glob
+    import json
+    checked = 0
+    for path in glob.glob("data/decks/*/branches/*/branch.json"):
+        axis = ((json.load(open(path)) or {}).get("objective") or {}).get("axis")
+        if axis is None:
+            continue
+        assert axis not in deck_branch.MEMBERSHIP_AXES, path
+        checked += 1
+    assert checked >= 1, "no branch carries an objective to check"

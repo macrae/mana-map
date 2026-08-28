@@ -7293,13 +7293,22 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
             assert "net-change" in body, "an absent report must name the command"
             assert "objective" in body, "a branch states one before it is measured"
             return
-        # The measured table, the lift, the bill — the three things that decide
-        # it. Lower-cased because `.panel h2` uppercases in CSS, and asserting
-        # the source casing would be testing my own string rather than the page.
+        # The measured table, the ledger, the bill — the three things that
+        # decide it. Lower-cased because `.panel h2` uppercases in CSS, and
+        # asserting the source casing would be testing my own string rather
+        # than the page.
         assert "measured" in body
-        assert "does the engine make it win?" in body
+        assert "reward, risk and cost" in body
         assert "the bill" in body
         assert "already own" in body
+        # THE ENGINE LIFT WAS DELETED 2026-08-28: it split games by the
+        # `required` flags in an AUTHORED declaration, so three defensible
+        # wordings of one Ur-Dragon list gave lifts of +0.007, -0.036 and
+        # +0.014 over the same 10,000 games. The page must not show it again.
+        assert "does the engine make it win?" not in body
+        # Every row states what it measures and how to read it, so a mean is
+        # never taken for a rate nor a clock for a win rate.
+        assert "what is this, and why do we care?" in body
         # And the figures are TEXT, not markup arriving as data — the `facts()`
         # escaping defect one page over.
         assert "<b>" not in body and "&amp;" not in body

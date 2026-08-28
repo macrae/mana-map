@@ -40,22 +40,27 @@
       "why": "Converge on eminence: every dragon shifts left by one from the command zone, permanently, where nothing can remove it. Two win conditions already in the deck — ETB/attack-trigger burn (Terror of the Peaks, Scourge of Valkas, Dragon Tempest) and Ur-Dragon commander damage. Stays big-dragon heavy; this is not a pivot to small dragons. Cut counterspells, stack interaction and non-flyer removal; add dorks, a protection package, flyer-only removal, and just enough low-end dragons to move the first-castable-dragon turn. Treasures stay as incidental ramp, never an engine.",
       "base_version": 2,
       "size": 100,
-      "add": 13,
-      "out": 12,
+      "add": 18,
+      "out": 17,
       "counts": {
-        "in_deck": 83,
+        "in_deck": 78,
         "box": 6,
-        "elsewhere": 3,
-        "buy": 4
+        "elsewhere": 6,
+        "buy": 6
       },
       "unsourced": [
         "Bloom Tender",
         "Delighted Halfling",
         "Faeburrow Elder",
         "Firespitter Whelp",
+        "Forbidden Orchard",
         "Gadrak, the Crown-Scourge",
         "Ganax, Astral Hunter",
-        "Thunderbreak Regent"
+        "Solphim, Mayhem Dominus",
+        "Spire of Industry",
+        "Tarnished Citadel",
+        "Thunderbreak Regent",
+        "Twinflame Tyrant"
       ],
       "mergeable": false,
       "cards": [
@@ -313,6 +318,43 @@
           "is_new": false
         },
         {
+          "name": "Forbidden Orchard",
+          "state": "elsewhere",
+          "where": [
+            {
+              "slug": "blar",
+              "locked": false,
+              "status": null
+            },
+            {
+              "slug": "gishath",
+              "locked": false,
+              "status": null
+            },
+            {
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down"
+            },
+            {
+              "slug": "kinnan",
+              "locked": false,
+              "status": null
+            },
+            {
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired"
+            },
+            {
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": null
+            }
+          ],
+          "is_new": true
+        },
+        {
           "name": "Forest",
           "state": "in_deck",
           "where": null,
@@ -337,6 +379,12 @@
           "is_new": false
         },
         {
+          "name": "Gemstone Mine",
+          "state": "box",
+          "where": "Green, Mystery Booster 2",
+          "is_new": true
+        },
+        {
           "name": "Generous Gift",
           "state": "in_deck",
           "where": null,
@@ -350,12 +398,6 @@
         },
         {
           "name": "Goldspan Dragon",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -386,18 +428,6 @@
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Jetmir's Garden",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Korlessa, Scale Singer",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -529,18 +559,6 @@
           "is_new": false
         },
         {
-          "name": "Savage Lands",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Scaled Nurturer",
-          "state": "box",
-          "where": "Green, Radagast Parts",
-          "is_new": true
-        },
-        {
           "name": "Scourge of Valkas",
           "state": "in_deck",
           "where": null,
@@ -589,6 +607,39 @@
           "is_new": false
         },
         {
+          "name": "Solphim, Mayhem Dominus",
+          "state": "buy",
+          "where": null,
+          "is_new": true
+        },
+        {
+          "name": "Spire of Industry",
+          "state": "elsewhere",
+          "where": [
+            {
+              "slug": "blar",
+              "locked": false,
+              "status": null
+            },
+            {
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down"
+            },
+            {
+              "slug": "kinnan",
+              "locked": false,
+              "status": null
+            },
+            {
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": null
+            }
+          ],
+          "is_new": true
+        },
+        {
           "name": "Steam Vents",
           "state": "in_deck",
           "where": null,
@@ -611,6 +662,23 @@
           "state": "in_deck",
           "where": null,
           "is_new": false
+        },
+        {
+          "name": "Tarnished Citadel",
+          "state": "elsewhere",
+          "where": [
+            {
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down"
+            },
+            {
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": null
+            }
+          ],
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -649,6 +717,12 @@
           "is_new": true
         },
         {
+          "name": "Twinflame Tyrant",
+          "state": "buy",
+          "where": null,
+          "is_new": true
+        },
+        {
           "name": "Unclaimed Territory",
           "state": "in_deck",
           "where": null,
@@ -668,12 +742,6 @@
         },
         {
           "name": "Worldly Tutor",
-          "state": "in_deck",
-          "where": null,
-          "is_new": false
-        },
-        {
-          "name": "Ziatora's Proving Ground",
           "state": "in_deck",
           "where": null,
           "is_new": false
@@ -1273,7 +1341,7 @@
   "next": [
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
-    "branch `eminence-v3` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source eminence-v3`",
+    "branch `eminence-v3` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source eminence-v3`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",

@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-08-25**. Everything below is committed and pushed to `main` except
+Last updated **2026-08-28**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -111,6 +111,47 @@ suggestions that would need a deck to shuffle.
 | **The paper lock's third state** | UNLOCKED is not dead. Four of eleven decks are unlocked and now say so; three rehearsal locks withdrawn | `docs/pilot.md` |
 
 ## Open work
+
+### RULE — a branch is graded on what the deck PRODUCES, never on an authored file
+
+**Set 2026-08-28, by measurement.** `net-change` carried an ENGINE LIFT: kill
+rate in the games where every component marked `required` in
+`goldfish_targets.json` was assembled by T3, minus the rate where it was not,
+with a Newcombe interval on the difference. The statistics were right. The input
+was not: **that file is authored, and the same hand writes the declaration and
+reads the verdict.** Three defensible declarations of one Ur-Dragon list, same
+10,000 games, same seed, against kill-by-T8 — **+0.007 (spans zero), −0.036
+(REAL), +0.014 (REAL)**. One of them says at an interval excluding zero that
+assembling the engine makes the deck win less.
+
+**Deleted, with the guard in the same commit.** `deck_branch.MEMBERSHIP_AXES`
+refuses `engine_online_*` and `any_route_*` as branch objectives and names the
+output axes instead; a test walks every tracked `branch.json` so an old one
+cannot survive it. `goldfish_targets.json` stays — it drives the `*_assisted`
+figures and the target table, which are hypergeometric and real. It just does
+not get to grade anything. Full record: `docs/gotchas-bench.md`.
+
+Ur-Dragon's objective moved from `engine_online_5 >= 0.22` (met **4.4x over**
+while the lift spanned zero) to **`damage_8 >= 40.0`** — the opponent's starting
+life, a number with meaning outside this branch. v1.0.1 reads 30.81 and misses.
+
+### OPEN — three diagnoses are stale and need the doctor, not a patch
+
+`gishath`, `goblin-storm` and `yawgmoth-swarm` fail
+`validate-diagnosis` on `axes[].colour-sources.measured.value`: the `manabase`
+correctness fixes moved the audit's figure underneath a diagnosis whose PROSE
+names the old number ("Green 26, red 20, white 20 against a 36 target"; "Four
+sources above the Karsten yardstick"). goblin-storm's reading even describes the
+colour-identity fallback that no longer exists — the number moved *because* the
+doctor's complaint was fixed.
+
+**Patching `measured.value` is forbidden** — it would leave prose contradicting
+its own figure, which is "a fresh claim under an old byline". These need a
+`/diagnose-deck` re-run each, which is an agent spend and the pilot's call.
+Until then `make test` is 3 red on exactly these three. **`diagnosis.json`
+carries `as_of_decklist_sha256` but no AUDIT stamp**, which is why a code change
+leaves it looking current — the same class `meta.model_version` solved for the
+goldfish, unsolved here.
 
 ### RULE — a retired deck is not a downstream target
 
@@ -454,3 +495,10 @@ engine is a finding.
 - **A critic's findings become mechanical checks**, or its work is re-spent every run.
 - **Name what a gate cannot see** rather than papering it with string matching.
 - A sim figure travels with its interval, its N and its limits — or it does not travel.
+- **A measure computed from an authored file is not evidence, however tight its
+  interval.** A branch objective names an OUTPUT the deck produces.
+- **Every figure carries its definition in the report that prints it** — a number a
+  reader has to look up gets guessed at, and the guesses go one way.
+- **When you delete a producer, grep the validator** for the only place its contract
+  was enforced. Removing the engine lift silently took "an unavailable block owes a
+  reason" with it.

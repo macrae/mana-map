@@ -69,6 +69,21 @@ MODEL_ASSUMPTIONS = [
     "Draw every turn including turn 1 (multiplayer Commander).",
     "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
     "One land drop per turn when available.",
+    # MEASURED, NOT ASSUMED. A `candidates` sweep of twelve lands against
+    # ur-dragon returned exactly TWO distinct readings: 45.304 for every
+    # five-colour land and 44.027 for every restricted one. Grand Coliseum,
+    # which always enters tapped, read identically to Forbidden Orchard,
+    # which never does — the byte-identical tell this repo already uses to
+    # catch a flag nothing acts on. The loop plays the FIRST land in hand
+    # and credits its colours the same turn, so there is no tapped state to
+    # act on. Modelling it would slow every deck's early turns and restate
+    # every published figure on the fleet, so it is named here rather than
+    # changed quietly.
+    "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one "
+    "played. A tapland costs nothing here and no land is ever chosen over "
+    "another, so this model CANNOT rank two lands that make the same "
+    "colours — `mana-analysis` and `mana-fit` are what answer a land "
+    "question, and they are deterministic for exactly this reason.",
     "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
     "Commander cast on first affordable turn (highest spending priority).",
     "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
@@ -459,8 +474,19 @@ _ETB_TRIGGER_RE = re.compile(
     re.IGNORECASE)
 #: Terror of the Peaks — damage equal to the ENTERING creature's power.
 _ETB_DMG_POWER_RE = re.compile(
-    r"damage equal to (?:that|its) creature'?s? power|"
-    r"damage equal to that creature's power", re.IGNORECASE)
+    r"damage equal to (?:that creature'?s?|its) power", re.IGNORECASE)
+#: A FIXED AMOUNT PER ARRIVAL — Impact Tremors, Purphoros, Warleader's Call.
+#: All three read as nothing until this existed, and the tell was four
+#: candidates returning byte-identical 55.44 alongside a control card the model
+#: openly does not read.
+#:
+#: "each opponent" IS COUNTED ONCE. This model has one opponent at 40 life, so a
+#: card that hits each of three seats is understated threefold here — the same
+#: direction every other choice in this file takes, and stated rather than
+#: silently corrected.
+_ETB_DMG_FIXED_RE = re.compile(
+    r"deals (\d+) damage to (?:each opponent|any target|that player)",
+    re.IGNORECASE)
 #: Scourge of Valkas and Dragon Tempest — X damage where X counts a board.
 _ETB_DMG_COUNT_RE = re.compile(
     r"deals? X damage[^.\n]{0,60}?where X is the number of", re.IGNORECASE)
@@ -470,6 +496,19 @@ _ETB_DMG_COUNT_RE = re.compile(
 #: six, because a copy made a copy made a copy. The rules already had the
 #: brake; the model just had to read it.
 _ETB_NONTOKEN_RE = re.compile(r"another nontoken", re.IGNORECASE)
+#: A COPY EFFECT USUALLY CHARGES FOR ITSELF, and the first cut charged nothing.
+#: Flameshadow Conjuring and Minion Reflector both say "you MAY PAY {R}" / "{2}"
+#: per trigger; firing them free reported 130.91 damage at turn ten against a
+#: 56.43 baseline, which is a plausible number and wrong twice over.
+_ETB_OPTIONAL_COST_RE = re.compile(
+    r"you may pay ((?:\{[WUBRGC0-9]\})+)", re.IGNORECASE)
+#: AND A COPY IS LEGENDARY UNLESS THE CARD SAYS OTHERWISE. Miirym says "except
+#: the token isn't legendary" and is played for exactly that; Flameshadow does
+#: not, so a copy of any of the 12 legendary creatures in this deck dies to the
+#: legend rule before it does anything. Modelling the copy without the rule
+#: hands a five-colour legendary deck a doubled board it never gets.
+_ETB_COPY_NONLEGENDARY_RE = re.compile(
+    r"(?:except )?(?:the token |it )?(?:isn't|is not) legendary", re.IGNORECASE)
 #: Miirym — a token that is a COPY of the creature that entered.
 _ETB_COPY_RE = re.compile(r"token that'?s? a copy of", re.IGNORECASE)
 
@@ -501,9 +540,12 @@ ETB_CHAIN_LIMIT = 12
 #: attackers are Dragons and generous in one where they are not — so it is
 #: recorded in `model_assumptions` rather than hidden, and a deck without the
 #: flag is byte-identical.
+#: `(?:\w+ )?` is Solphim, Mayhem Dominus: "would deal NONCOMBAT damage to an
+#: opponent". One adjective was the whole difference between a doubler the model
+#: prices and one it reads as a vanilla body.
 _DAMAGE_DOUBLER_RE = re.compile(
-    r"would deal damage to[^.\n]{0,80}?(?:opponent|player|permanent)[^.\n]{0,80}?"
-    r"deals? double that damage", re.IGNORECASE)
+    r"would deal (?:\w+ )?damage to[^.\n]{0,80}?(?:opponent|player|permanent)"
+    r"[^.\n]{0,80}?deals? double that damage", re.IGNORECASE)
 _TEAM_DOUBLE_STRIKE_RE = re.compile(
     r"(?:creatures?|dragons?)[^.\n]{0,60}?you control[^.\n]{0,60}?"
     r"(?:gains?|have|has) double strike", re.IGNORECASE)
@@ -547,9 +589,12 @@ def combat_profile(card):
         # under model_combat, so a deck that does not opt in is byte-identical.
         "etb_damage_self_power": False,
         "etb_damage_count": False,
+        "etb_damage_fixed": 0,
         "etb_token_power": 0,
         "etb_token_bodies": 0,
         "etb_copy": False,
+        "etb_copy_cost": 0,
+        "etb_copy_keeps_legendary": True,
         "etb_nontoken_only": False,
         "unreadable": None,
     }
@@ -561,9 +606,15 @@ def combat_profile(card):
             profile["etb_damage_self_power"] = True
         if _ETB_DMG_COUNT_RE.search(win):
             profile["etb_damage_count"] = True
+        fixed = _ETB_DMG_FIXED_RE.search(win)
+        if fixed:
+            profile["etb_damage_fixed"] = int(fixed.group(1))
         profile["etb_nontoken_only"] = bool(_ETB_NONTOKEN_RE.search(win))
         if _ETB_COPY_RE.search(win):
             profile["etb_copy"] = True
+            cost = _ETB_OPTIONAL_COST_RE.search(win)
+            profile["etb_copy_cost"] = _mana_pips(cost.group(1)) if cost else 0
+            profile["etb_copy_keeps_legendary"] = not _ETB_COPY_NONLEGENDARY_RE.search(win)
         else:
             for tok in _TOKEN_PT_RE.finditer(win):
                 if any(k in (tok.group(4) or "").lower() for k in _NONCREATURE_TOKENS):
@@ -1207,7 +1258,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         treasure_online_by_turn.append(bool(treasure_engines))
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
-                             is_token=False):
+                             is_token=False, is_legendary=False):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -1236,6 +1287,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     continue
                 if eng["etb_damage_self_power"]:
                     etb_damage += power
+                if eng["etb_damage_fixed"]:
+                    etb_damage += eng["etb_damage_fixed"]
                 if eng["etb_damage_count"]:
                     # X is "the number of Dragons you control". The board is
                     # counted whole rather than by subtype — exact in a deck
@@ -1243,6 +1296,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # stated in model_assumptions.
                     etb_damage += len(battlefield)
                 if eng["etb_copy"]:
+                    # A COPY IS LEGENDARY UNLESS THE CARD STRIPS IT. Miirym says
+                    # "except the token isn't legendary" and is played for
+                    # exactly that; Flameshadow Conjuring does not, so a copy of
+                    # a legendary creature dies to the legend rule before it
+                    # does anything — and 12 of this deck's creatures are
+                    # legendary.
+                    if is_legendary and eng["etb_copy_keeps_legendary"]:
+                        continue
+                    # And it usually charges. "You may pay {R}" is a cost, not a
+                    # formality: firing it free reported 130.91 damage at turn
+                    # ten against a 56.43 baseline.
+                    if eng["etb_copy_cost"] and not spend(eng["etb_copy_cost"]):
+                        continue
                     spawned.append((power, haste, mult))
                 elif eng["etb_token_bodies"]:
                     each = eng["etb_token_power"] // max(eng["etb_token_bodies"], 1)
@@ -1294,7 +1360,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_combat and commander_combat and commander_combat["is_creature"]:
                 creature_entered(commander_combat["power"], turn,
                                  commander_combat["haste"],
-                                 2 if commander_combat["double_strike"] else 1)
+                                 2 if commander_combat["double_strike"] else 1,
+                                 is_legendary=True)
                 if commander_combat["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= commander_combat["team_damage_multiplier"]
                 if any((commander_combat["attack_mana"],
@@ -1334,11 +1401,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and not c["is_land"] and not c["tutor"]
                                 and any((c["combat"]["etb_damage_self_power"],
                                          c["combat"]["etb_damage_count"],
+                                         c["combat"]["etb_damage_fixed"],
                                          c["combat"]["etb_token_bodies"],
-                                         c["combat"]["etb_copy"]))),
+                                         c["combat"]["etb_copy"],
+                                         # A DAMAGE DOUBLER THAT IS NOT A BODY
+                                         # fell through here too — Gratuitous
+                                         # Violence and Dictate of the Twin Gods
+                                         # are enchantments, read correctly and
+                                         # never cast.
+                                         c["combat"]["team_damage_multiplier"] > 1))),
                                key=lambda c: c["cmc"]):
                 if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                    etb_engines.append(card["combat"])
+                    if any((card["combat"]["etb_damage_self_power"],
+                            card["combat"]["etb_damage_count"],
+                            card["combat"]["etb_damage_fixed"],
+                            card["combat"]["etb_token_bodies"],
+                            card["combat"]["etb_copy"])):
+                        etb_engines.append(card["combat"])
+                    if card["combat"]["team_damage_multiplier"] > 1:
+                        team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
                     hand.remove(card)
 
         # Cast rocks cheapest-first; they produce starting next turn.
@@ -1434,11 +1515,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # ENTERING creature's power and it is not another creature.
                     if any((combat["etb_damage_self_power"],
                             combat["etb_damage_count"],
+                            combat["etb_damage_fixed"],
                             combat["etb_token_bodies"], combat["etb_copy"])):
                         etb_engines.append(combat)
                     if combat["is_creature"]:
-                        creature_entered(combat["power"], turn, combat["haste"],
-                                         2 if combat["double_strike"] else 1)
+                        creature_entered(
+                            combat["power"], turn, combat["haste"],
+                            2 if combat["double_strike"] else 1,
+                            is_legendary="Legendary" in (card.get("type_line") or ""))
                     if combat["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= combat["team_damage_multiplier"]
                     # Creature tokens arrive with summoning sickness too, and

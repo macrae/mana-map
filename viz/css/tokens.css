@@ -626,6 +626,41 @@ tr.v-better td.verdict { color: var(--slime-green); }
 tr.v-worse  td.verdict { color: var(--power-red); }
 tr.v-noise  td.verdict { color: var(--ink-soft); }
 
+/* THE DEFINITION TRAVELS WITH THE FIGURE. A reading sits under its own row and
+   the full definition folds away behind a <details>, so the table still scans
+   in one pass while nothing has to be looked up off-page. */
+tr.reading td { border-bottom: 1px solid var(--rule); padding-top: 0; }
+tr.reading .reads { margin: 0 0 4px; font-size: 13px; color: var(--ink); }
+tr.reading details { font-size: 13px; }
+tr.reading summary { cursor: pointer; color: var(--ink-soft); font-size: 12px; }
+tr.reading details p { margin: 6px 0 0; max-width: 68ch; }
+
+/* REWARD AND RISK NEVER MERGE. Each risk is badged with WHAT KIND of claim it
+   is, because a measured cost, an unresolved row and an effect the harness
+   cannot see read alike as prose and are not the same statement at all. */
+.ledger-list { list-style: none; padding: 0; margin: 8px 0 16px;
+  display: grid; gap: 10px; }
+.ledger-list li { background: var(--panel-hi); border: 1px solid var(--rule);
+  border-left-width: 3px; padding: 10px 12px; }
+.ledger-list li b { display: block; }
+.ledger-list .reads { display: block; font-size: 13px; margin-top: 3px;
+  font-variant-numeric: tabular-nums; }
+.ledger-list li.gain { border-left-color: var(--slime-green); }
+.ledger-list li.risk.k-paid { border-left-color: var(--power-red); }
+.ledger-list li.risk.k-unresolved { border-left-color: var(--burst-yellow); }
+.ledger-list li.risk.k-unmeasured { border-left-color: var(--ink-soft); }
+.ledger-list li.risk.k-structural { border-left-color: var(--rule); }
+.ledger-list .kind { display: block; font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px; }
+
+/* Out and in on one line, the reason under it in the evidence voice. */
+ul.swaplist { list-style: none; padding: 0; margin: 6px 0 14px;
+  display: grid; gap: 8px; }
+ul.swaplist li { font-size: 14px; }
+ul.swaplist .pair { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+ul.swaplist .out { color: var(--power-red); }
+ul.swaplist .in { color: var(--slime-green); }
+
 .lifts, .forge { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: 12px; }
 .lift, .forge > div { background: var(--panel-hi); border: 1px solid var(--rule); padding: 12px 14px; }
 .lift .who, .forge .who { font-size: 11px; letter-spacing: .1em;

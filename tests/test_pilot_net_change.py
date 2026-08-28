@@ -49,31 +49,6 @@ def test_every_row_is_consistent_with_its_own_minimum_detectable_difference():
 
 @requires_branch
 @requires_deck
-def test_the_engine_lift_states_whether_its_interval_excludes_zero():
-    """The lift is the one measurement computed here rather than composed.
-    Published without saying whether its interval excludes zero it is a number
-    with no claim attached — so both arms carry that, or say why they cannot.
-
-    The SIGN is not asserted. Which way a branch's engine moves is a fact about
-    that branch, and the previous version required it to be negative because
-    the treasure refactor's was.
-    """
-    doc = _doc()
-    for who in ("champion", "branch"):
-        e = doc["engine_lift"][who]
-        if not e.get("available"):
-            assert e.get("why"), f"{who}: unavailable with no reason"
-            continue
-        for key in ("lift", "ci95", "excludes_zero", "reading"):
-            assert key in e, f"{who}: no {key!r}"
-        assert isinstance(e["excludes_zero"], bool)
-        lo, hi = e["ci95"]
-        assert (lo > 0 or hi < 0) == e["excludes_zero"], e
-        assert ("win LESS" in e["reading"]) == (e["lift"] < 0), e
-
-
-@requires_branch
-@requires_deck
 def test_an_underpowered_forge_run_says_so():
     """12 v 11 wins over 201 games cannot resolve a 1-point difference. A delta
     printed without its MDE reads as 'no difference' when it means 'we could not
@@ -93,7 +68,7 @@ def _minimal(**over):
     doc = {"slug": "x", "branch": "b", "harness": {}, "limits": [],
            "table": [{"measure": "m", "champion": 1.0, "branch": 1.0,
                       "delta": 0.001, "mde": 0.05, "verdict": "noise"}],
-           "engine_lift": {}, "forge": {"available": False, "why": "none"}}
+           "forge": {"available": False, "why": "none"}}
     doc.update(over)
     return doc
 
@@ -113,16 +88,18 @@ def test_a_row_that_clears_the_mde_may_not_be_called_noise():
     assert any("reported as noise" in e for e in validate_net_change.validate(bad))
 
 
-def test_an_engine_lift_must_state_whether_its_interval_excludes_zero():
-    bad = _minimal(engine_lift={"branch": {"available": True, "lift": -0.03,
-                                           "ci95": [-0.05, -0.01],
-                                           "reading": "…"}})
-    assert any("excludes_zero" in e for e in validate_net_change.validate(bad))
+@pytest.mark.parametrize("block", ["mana", "forge"])
+def test_an_unavailable_block_owes_a_reason(block):
+    """ABSENT MEANS ABSENT, AND IT OWES A REASON — a blank section a reader
+    cannot tell from a measured nothing.
 
-
-def test_an_unavailable_block_owes_a_reason():
-    bad = _minimal(engine_lift={"branch": {"available": False}})
+    This rule lived on the engine-lift block alone, so deleting that block took
+    the rule with it and left `mana` and `forge` free to go quiet. It is stated
+    per-block now for exactly that reason."""
+    bad = _minimal(**{block: {"available": False}})
     assert any("no reason given" in e for e in validate_net_change.validate(bad))
+    ok = _minimal(**{block: {"available": False, "why": "no run yet"}})
+    assert not any("no reason given" in e for e in validate_net_change.validate(ok))
 
 
 def test_an_objective_stated_and_never_graded_is_an_error():
@@ -338,3 +315,267 @@ def test_the_mana_block_agrees_with_mana_analysis_rather_than_recomputing():
         assert r["target"][0] == theirs["source_targets"][r["colour"]], r
         checked += 1
     assert checked == 5
+
+
+# --------------------------------------------------------------------------
+# THE DEFINITIONS. A figure whose meaning is not on the page beside it gets
+# guessed at, and the guesses go one way: a mean read as a rate, a clock read
+# as a win rate, a hoard read as mana. All three have happened on this bench.
+# --------------------------------------------------------------------------
+
+def test_every_row_the_report_can_render_has_a_definition_and_a_reason():
+    """`ROWS` and `METRICS` are two lists that must not drift apart. A row with
+    no entry renders a bare number under a heading promising definitions."""
+    for label, *_ in net_change.ROWS:
+        spec = net_change.METRICS.get(label)
+        assert spec, f"{label} is rendered and has no definition"
+        assert spec["what"].strip() and spec["why"].strip()
+        assert spec["unit"] in ("rate", "mean"), label
+
+
+def test_no_definition_exists_for_a_row_that_is_never_rendered():
+    """The inverse. A definition for a row nobody shows is a claim about output
+    that is not true, and it is how the registry rots without failing."""
+    rendered = {label for label, *_ in net_change.ROWS}
+    assert set(net_change.METRICS) == rendered
+
+
+def test_a_clock_is_never_described_as_a_win_rate():
+    """The single most consequential misreading available here: `killed by T6`
+    is measured against ONE opponent at 40 life who never blocks. A reader who
+    takes 0.318 for a win rate has overestimated the deck by the whole size of
+    a pod."""
+    for label in ("killed by T6", "killed by T10"):
+        assert "CLOCK" in net_change.METRICS[label]["scale"]
+        assert "never a win rate" in net_change.METRICS[label]["scale"]
+
+
+def test_a_rate_reads_as_games_per_hundred_and_a_mean_keeps_its_units():
+    rate = {"measure": "killed by T6", "champion": 0.177, "branch": 0.318,
+            "delta": 0.141, "mde": 0.02, "verdict": "better"}
+    assert net_change.reads_as(rate) == (
+        "18 games in 100 -> 32 in 100, a swing of 14 games per 100")
+    mean = {"measure": "damage @T10", "champion": 51.658, "branch": 77.314,
+            "delta": 25.656, "mde": 3.0, "verdict": "better"}
+    got = net_change.reads_as(mean)
+    assert "51.66 -> 77.31" in got and "+50%" in got
+    assert "games in 100" not in got, "a mean is not a rate"
+
+
+def test_a_no_call_row_says_no_answer_rather_than_no_change():
+    """`noise` is the most misread word in the report. The run did not find
+    nothing; it could not resolve what it found."""
+    row = {"measure": "hoard @T10", "champion": 1.881, "branch": 1.987,
+           "delta": 0.105, "mde": 0.138, "verdict": "noise"}
+    got = net_change.reads_as(row)
+    assert "no call" in got and "0.138" in got
+    assert "smaller than" in got
+
+
+def test_a_champion_reading_of_zero_does_not_divide_by_it():
+    """A deck that does no damage at all is a real reading, and a percentage
+    change against zero is not."""
+    row = {"measure": "damage @T10", "champion": 0.0, "branch": 4.2,
+           "delta": 4.2, "mde": 1.0, "verdict": "better"}
+    assert "%" not in net_change.reads_as(row)
+
+
+# --------------------------------------------------------------------------
+# VALUE, RISK, COST — the three the ledger owed and did not carry
+# --------------------------------------------------------------------------
+
+def _skeleton(**over):
+    doc = {"table": [], "bill": {"counts": {}, "cards": []},
+           "objective": None, "objective_grade": {},
+           "mana": {}, "forge": {"available": False, "why": "no run"},
+           "blind_spots": []}
+    doc.update(over)
+    return doc
+
+
+def test_the_risk_block_separates_a_measured_loss_from_an_unmeasured_one():
+    """THE DISTINCTION THE WHOLE BLOCK EXISTS FOR. A row that fell and an
+    effect the harness cannot see read alike on a page and are not remotely the
+    same claim — one is a priced cost, the other is an open question rendered
+    beside a confidence interval."""
+    doc = _skeleton(
+        table=[{"measure": "hoard @T6", "champion": 0.538, "branch": 0.439,
+                "delta": -0.1, "mde": 0.02, "verdict": "worse",
+                "reads_as": "0.54 -> 0.44", "why_we_care": "x"}],
+        blind_spots=[{"class": "removal", "cards": ["Swords to Plowshares"],
+                      "headline": "1 card(s) carrying a removal effect",
+                      "why": "no opponents"}])
+    kinds = [r["kind"] for r in net_change.risk(doc)]
+    assert "paid" in kinds and "unmeasured" in kinds
+    assert "structural" in kinds, "the goldfish caveat is always owed"
+
+
+def test_an_unmeasured_effect_is_scoped_to_the_effect_and_not_the_card():
+    """Solphim is a `protection:self` body AND a damage doubler the combat
+    model prices at +7 damage. Filing the whole card under "unmeasured" would
+    understate the branch the line exists to warn about."""
+    doc = _skeleton(blind_spots=[
+        {"class": "protection", "cards": ["Solphim, Mayhem Dominus"],
+         "headline": "1 card(s) carrying a protection effect", "why": "y"}])
+    entry = next(r for r in net_change.risk(doc) if r["kind"] == "unmeasured")
+    assert "EFFECT" in entry["why_it_matters"]
+    assert "still measured" in entry["why_it_matters"]
+
+
+def test_a_colour_that_went_backwards_is_a_paid_cost_no_sampled_row_can_see():
+    doc = _skeleton(mana={"colours": [
+        {"colour": "G", "gap": [0, -1], "delta": -1},
+        {"colour": "R", "gap": [-10, -8], "delta": +2}]})
+    entry = next(r for r in net_change.risk(doc)
+                 if r["what"] == "colour sources went backwards")
+    assert entry["kind"] == "paid"
+    assert "G gap +0 -> -1" in entry["detail"]
+    assert "R" not in entry["detail"], "a colour that improved is not a risk"
+
+
+def test_the_reward_block_only_carries_rows_that_beat_their_own_mde():
+    doc = _skeleton(table=[
+        {"measure": "damage @T10", "verdict": "better", "reads_as": "a",
+         "why_we_care": "b"},
+        {"measure": "hoard @T10", "verdict": "noise", "reads_as": "c",
+         "why_we_care": "d"},
+        {"measure": "hoard @T6", "verdict": "worse", "reads_as": "e",
+         "why_we_care": "f"}])
+    assert [r["measure"] for r in net_change.reward(doc)] == ["damage @T10"]
+
+
+def test_a_card_in_a_retired_deck_is_not_a_deck_you_have_to_take_apart():
+    """`elsewhere` is two costs wearing one integer. A card in a broken-down or
+    retired deck is loose cardboard; one in a deck that is still together costs
+    that deck the card, and a pilot deciding whether to pull sleeves needs the
+    two apart."""
+    doc = _skeleton(bill={"counts": {"elsewhere": 2, "buy": 1}, "cards": [
+        {"name": "Faeburrow Elder", "state": "elsewhere",
+         "where": [{"slug": "sisay", "status": "retired"}]},
+        {"name": "Bloom Tender", "state": "elsewhere",
+         "where": [{"slug": "kinnan", "status": None}]},
+        {"name": "Twinflame Tyrant", "state": "buy", "where": None}]})
+    got = net_change.cost(doc)
+    assert [r["name"] for r in got["free_to_raid"]] == ["Faeburrow Elder"]
+    assert [r["name"] for r in got["must_unsleeve"]] == ["Bloom Tender"]
+    assert got["buy_cards"] == ["Twinflame Tyrant"]
+    assert "cost nothing" in got["reads_as"]
+
+
+def test_a_card_in_several_decks_reports_only_the_ones_still_together():
+    """Forbidden Orchard sits in six decks, two of them apart. Naming all six
+    overstates what merging disturbs."""
+    doc = _skeleton(bill={"counts": {}, "cards": [
+        {"name": "Forbidden Orchard", "state": "elsewhere", "where": [
+            {"slug": "blar", "status": None},
+            {"slug": "hapatra", "status": "broken-down"},
+            {"slug": "sisay", "status": "retired"}]}]})
+    entry = net_change.cost(doc)["must_unsleeve"][0]
+    assert entry["decks"] == ["blar"]
+
+
+def test_every_state_that_frees_a_card_is_declared():
+    """A status that means "already apart" and is not in this tuple silently
+    becomes a deck the pilot is told to take apart."""
+    assert net_change.FREE_TO_RAID == ("retired", "broken-down")
+
+
+# --------------------------------------------------------------------------
+# THE CHANGE and the blind spots, against the real branch
+# --------------------------------------------------------------------------
+
+@requires_branch
+@requires_deck
+def test_the_report_names_the_swaps_rather_than_counting_them():
+    """"21 staged" is not a description of a treatment."""
+    ch = net_change.changes(SLUG, BRANCH)
+    assert ch["count"] == len(ch["spells"]) + len(ch["lands"])
+    assert ch["count"] >= 1
+    checked = 0
+    for row in ch["spells"] + ch["lands"]:
+        assert row["out"] and row["in"]
+        checked += 1
+    assert checked >= 1
+
+
+@requires_branch
+@requires_deck
+def test_a_land_swap_is_filed_apart_from_a_spell_swap():
+    """They are answered by different halves of this report: a spell swap moves
+    the nine sampled rows, a land swap moves only the deterministic mana block.
+    Mixed together, a land pass borrows credit from a spell pass."""
+    from manamap.pilot import card_pool
+    pool = card_pool.load_pool()
+    ch = net_change.changes(SLUG, BRANCH)
+    checked = 0
+    for row in ch["lands"]:
+        assert any("Land" in ((pool.get(row[side]) or {}).get("type_line") or "")
+                   for side in ("out", "in")), row
+        checked += 1
+    for row in ch["spells"]:
+        for side in ("out", "in"):
+            assert "Land" not in ((pool.get(row[side]) or {}).get("type_line") or "")
+        checked += 1
+    assert checked >= 2
+
+
+@requires_branch
+@requires_deck
+def test_a_land_swap_always_declares_that_the_model_cannot_rank_lands():
+    """MEASURED, and it is why the note is mandatory rather than advisory: a
+    twelve-land `candidates` sweep returned exactly two distinct readings, with
+    an always-tapped land tying one that never enters tapped. Nine rows of
+    intervals beside a land swap read as an accounting of it and are silent."""
+    ch = net_change.changes(SLUG, BRANCH)
+    if not ch["lands"]:
+        pytest.skip("this branch stages no land swap")
+    spots = net_change.blind_spots(SLUG, BRANCH, ch)
+    land = next((b for b in spots if b["class"] == "land"), None)
+    assert land, "a land swap with no land blind-spot note"
+    assert "no tapped state" in land["why"]
+
+
+def test_every_blind_class_owes_a_sentence():
+    """A class in the map with no explanation renders a warning nobody can act
+    on."""
+    for head, why in net_change.BLIND.items():
+        assert why.strip() and head == head.lower()
+
+
+def test_the_report_never_reads_the_authored_declaration():
+    """THE ENGINE LIFT WAS DELETED 2026-08-28 AND MUST NOT COME BACK BY HABIT.
+
+    It split games by whether the components marked `required` in
+    `goldfish_targets.json` had been drawn. That file is authored, so the same
+    hand wrote the target and read the verdict: three defensible declarations
+    of one Ur-Dragon list, over the same 10,000 games, gave +0.007 (spanning
+    zero), -0.036 (REAL) and +0.014 (REAL) — one of them saying at an interval
+    excluding zero that assembling the engine made the deck win LESS.
+
+    A figure whose sign a JSON edit can flip is not evidence however tight its
+    interval, and it sat in the block a spending decision reads first.
+    """
+    import inspect
+    src = inspect.getsource(net_change)
+    assert "def engine_lift" not in src
+    assert '"engine_lift"' not in src
+    # The lift is the only thing that ever read `required`. Anything that starts
+    # reading it again has re-introduced an authored input to a measured report.
+    body = src[src.index("def build("):]
+    assert '"required"' not in body and "get(\"required\")" not in body
+
+
+def test_the_deleted_figure_leaves_its_reason_behind():
+    """A deletion with no record gets undone by the next person who notices the
+    gap. The measurement that justified it lives in the module docstring."""
+    assert "AUTHORED" in net_change.__doc__
+    assert "-0.036" in net_change.__doc__ and "+0.014" in net_change.__doc__
+
+
+@requires_branch
+@requires_deck
+def test_no_written_report_still_carries_the_deleted_block():
+    doc = _doc()
+    assert "engine_lift" not in doc
+    blob = json.dumps(doc)
+    assert "online_by_turn" not in blob
