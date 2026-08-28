@@ -105,8 +105,30 @@ Nothing here needs the page; this is the bench's reason to exist.
 ⇄ the skeptic, scoped to your question, reading the log, the sim and the audit:
 ranked adds that close a named axis, cuts priced, accumulated under `prescriptions/`.
 `/diagnose-deck` is the whole reading when you want all of it rather than an answer.
-Applying a swap is your act, by hand — then phase 1 again (commit → a new version),
-phase 2 (re-measure), and the log keeps going.
+
+**13 — Change it, on a branch, and PROPOSE it.** A candidate 99 lives at
+`branches/<name>/` — `deck-branch <slug> new … --objective "<measure> <op> <n>"`,
+then `stage --out X --in Y`, then `net-change --branch <name>`, which is the report
+a purchase rests on. When you accept it:
+
+```bash
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --why "…" [--proxy] [--ordered "…"]
+```
+
+**That is the merge request, and it is the phase this runbook was missing.** The
+decision is frozen (which list, which report, which grade); the blocker is LIVE and
+is recomputed from your boxes on every read, so a proposal un-blocks itself when a
+card lands in one. `deck-branch <slug> show <name>` prints the pull list — buy,
+unsleeve, proxy, free — and `deck-info` names the state. Merging is still your act:
+
+```bash
+manamap pilot deck-branch <slug> merge <name> --write   # refuses until the cards exist
+git add … && git commit                                 # this is what mints the version
+manamap pilot deck-version <slug> tag v1.0.2 && … paper # the tag, then the sleeves
+```
+
+Then phase 1 again (commit → a new version), phase 2 (re-measure), and the log keeps
+going.
 
 ## Gates, in the order they catch things
 
@@ -121,6 +143,8 @@ manamap pilot validate-tutor-guide <slug>
 manamap pilot validate-sim <slug>             # run records; analysis re-derived from logs
 manamap pilot validate-debrief <slug>         # the log's annotations, held to the log
 manamap pilot validate-prescription <slug>    # every question the doctor answered
+manamap pilot validate-branch <slug> --branch N  # the objective is falsifiable; a
+                                              #   proposal freezes what it accepted
 manamap pilot validate-considering <slug>     # LEGACY: frozen Short Lists on published decks
 manamap pilot validate-issue <slug>           # LEGACY: the magazine plan on published decks
 .venv/bin/python -m pytest -m "not browser and not forge" -n auto

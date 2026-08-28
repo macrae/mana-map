@@ -201,6 +201,56 @@
    *
    * No tier badge, same reason as the brief: a branch is intent, not evidence.
    */
+  /* Three states where there were two. `mergeable` / `N to source` could not
+   * tell a decision from an experiment — both rendered as a shopping list. The
+   * state comes from `deck_branch.branch_state`, which derives it and stores
+   * nothing, so a proposal un-blocks itself when a card lands in a box. */
+  /* THE PULL LIST. `source()` has computed this since branches shipped and
+   * nothing presented it as a list you take to a shop or a box. The buckets are
+   * separate because they cost different things: BUY is money, UNSLEEVE takes a
+   * deck apart, PROXY is a decision already recorded, FREE is cardboard already
+   * in a pile. One number read as one problem. */
+  var PULL = [
+    ['buy', 'To buy', 'nobody owns a copy'],
+    ['unsleeve', 'To unsleeve', 'out of a deck that is still together'],
+    ['proxy', 'Proxied', 'you decided to move these across your own decks'],
+    ['free', 'Free', 'only in a broken-down or retired deck'],
+    ['box', 'From a box', 'already yours']
+  ];
+
+  function pullList(pl) {
+    var out = '<h4>The pull list <span class="ev">' +
+      (pl.blocking ? pl.blocking + ' still blocking' : 'nothing left to find') +
+      '</span></h4>';
+    if (pl.procurement && pl.procurement.note) {
+      out += '<p class="ev">' + esc(pl.procurement.note) + '</p>';
+    }
+    PULL.forEach(function (g) {
+      var rows = pl[g[0]] || [];
+      if (!rows.length) return;
+      out += '<h5 class="pull-head">' + esc(g[1]) + ' <span class="ev">(' +
+        rows.length + ') ' + esc(g[2]) + '</span></h5>' +
+        '<ul class="pull-list pull-' + g[0] + '">' + rows.map(function (r) {
+          return '<li>' + esc(r.name) + ((r.where || []).length
+            ? ' <span class="ev">' + esc(r.where.join(', ')) + '</span>' : '') +
+            '</li>';
+        }).join('') + '</ul>';
+    });
+    return out;
+  }
+
+  function branchBadge(b) {
+    if (b.proposal && b.state) {
+      var cls = b.state === 'PROPOSED · READY' ? 'branch-ok'
+        : (b.state === 'PROPOSED · BLOCKED' ? 'branch-wait' : 'branch-block');
+      return '<span class="' + cls + '">' + esc(b.state) + ' \u2192 ' +
+             esc(b.proposal.as_version) + '</span>';
+    }
+    return b.mergeable ? '<span class="branch-ok">mergeable</span>'
+      : '<span class="branch-block">' + (b.unsourced || []).length +
+        ' to source</span>';
+  }
+
   function branchPanel(d) {
     var bs = ((d.info || {}).branches) || [];
     if (!bs.length) return '';
@@ -218,9 +268,7 @@
                  '&branch=' + encodeURIComponent(b.name);
       var out = '<div class="branch"><h3><a href="' + href + '">' + esc(b.name) +
         '</a>' +
-        (b.mergeable ? '<span class="branch-ok">mergeable</span>'
-                     : '<span class="branch-block">' + b.unsourced.length +
-                       ' to source</span>') + '</h3>';
+        branchBadge(b) + '</h3>';
       if (b.why) out += '<p class="branch-why">' + esc(b.why) + '</p>';
       out += facts([
         ['opened', b.opened || '\u2014'],
@@ -231,9 +279,12 @@
         ['sleeved in another deck', String(c.elsewhere || 0)],
         ['to buy', String(c.buy || 0)],
       ]);
-      if ((b.unsourced || []).length)
+      if (b.proposal && b.pull_list) {
+        out += pullList(b.pull_list);
+      } else if ((b.unsourced || []).length) {
         out += '<h4>Not yet sourced <span class="ev">' + b.unsourced.length +
                '</span></h4>' + list(b.unsourced.map(esc), 'branch-buy');
+      }
       out += '<p class="ev branch-note">A branch is a candidate list, not the deck. ' +
              'It merges only when every added card is sourced \u2014 ' +
              '<code>deck-branch ' + esc(d.slug) + ' merge ' + esc(b.name) + '</code>.<br>' +
@@ -293,10 +344,14 @@
       if (prov.state === 'buy') tail = '<span class="rost-buy">to buy</span>';
       else if (prov.state === 'box') tail = '<span class="rost-have">in a box</span>';
       else if (prov.state === 'elsewhere') {
+        /* `free` means every deck holding it is broken down or retired — the
+         * card is loose, so it costs nothing and blocks nothing. Rendered the
+         * same as a contested one it read as a deck to take apart. */
         var who = (prov.where || []).map(function (h) {
-          return h.slug + (h.locked ? ' ◆' : '');
+          return h.slug + (h.locked ? ' ◆' : '') + (h.apart ? ' (in a pile)' : '');
         }).join(', ');
-        tail = '<span class="rost-elsewhere">' + esc(who) + '</span>';
+        tail = '<span class="rost-' + (prov.free ? 'have' : 'elsewhere') + '">' +
+               esc(who) + '</span>';
       }
     }
     return '<li class="rost-row">' + mark +
@@ -1096,6 +1151,20 @@
     head += caseFact('Sleeved',
       paper ? 'V' + paper.version + (paper.built_at ? ' \u00b7 ' + paper.built_at : '')
             : 'not marked as built in paper');
+    /* A PROPOSAL BELONGS IN THE CASE FILE, and the branch panel stays at the
+     * foot where it was deliberately put ("a branch is a deck that does not
+     * exist"). The difference is that a PROPOSED branch is not speculative —
+     * the pilot has accepted it and is waiting on cardboard — so the fact that
+     * this deck is about to become v1.0.2 is a fact about the deck. */
+    var proposed = ((info.branches || []).filter(function (b) {
+      return b.proposal && b.state !== 'MERGED';
+    }))[0];
+    if (proposed) {
+      var pl = proposed.pull_list || {};
+      head += caseFact('Proposed',
+        proposed.proposal.as_version + ' \u00b7 ' + esc(proposed.state) +
+        (pl.blocking ? ' \u00b7 ' + pl.blocking + ' card(s) still to find' : ''));
+    }
     head += caseFact('Record', rec.games
       ? rec.games + ' game(s) \u00b7 ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
       : 'no games logged');

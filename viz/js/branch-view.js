@@ -257,7 +257,11 @@
                  'height="680" src="' + esc(img) + '" alt=""></span>' : '') +
           '</a>' + (r.where && r.where.length
             ? ' <span class="ev">in ' + esc(r.where.map(function (w) {
-                return w.slug + (w.locked ? ' (locked)' : '');
+                /* One shape, two kinds: a box names itself, a deck names its
+                 * slug and whether it is sleeved or already in a pile. */
+                return w.kind === 'box' ? w.name
+                  : w.slug + (w.locked ? ' (locked)' : '') +
+                    (w.apart ? ' (in a pile)' : '');
               }).join(', ')) + '</span>' : '') + '</li>';
       }).join('') + '</ul>';
   }
@@ -297,6 +301,60 @@
    * It is derived by `net_change.recommend` from the same document the table
    * below it renders, so the two can never disagree — the reason this page
    * computes nothing itself. */
+  /* THE STATE BANNER. A branch had two observable conditions before `propose`
+   * existed — the directory is there, or `merged` is — so one the pilot had
+   * DECIDED ON rendered identically to a half-finished experiment. This is the
+   * decision; `verdictPanel` below it is the report the decision rests on, and
+   * the two stay separate on purpose: one is what the bench measured, the other
+   * is what a human did about it. */
+  var STATE_CLASS = {
+    'PROPOSED \u00b7 READY': 'met',
+    'PROPOSED \u00b7 BLOCKED': 'unresolved',
+    'PROPOSED \u00b7 STALE': 'failed',
+    'PROPOSED \u00b7 OUTRUN': 'failed',
+    'MERGED': 'met',
+    'OPEN': 'unknown'
+  };
+
+  function proposalPanel(meta, slug, name) {
+    var p = meta && meta.proposal;
+    if (!p) return '';
+    /* The live STATE is derived server-side by `deck_branch.branch_state` and
+     * travels on `info.json`; this page has only `branch.json`, so it renders
+     * what the proposal FROZE and leaves blocked-ness to the deck page. Whether
+     * a card is in a box is a fact about a collection this page cannot read. */
+    var a = p.accepted_on || {};
+    var out = '<section class="panel proposal ' +
+      (STATE_CLASS[meta.state] || 'unresolved') + '">' +
+      '<h2>Proposed as ' + esc(p.as_version) + '</h2>' +
+      '<p class="lede">Accepted ' + esc(p.at) +
+      (p.why ? ' \u2014 ' + esc(p.why) : '') + '</p>';
+    if (a.state) {
+      out += '<p class="ev">On the net change: <b>' + esc(a.state) + '</b>' +
+        (a.objective ? ', objective <code>' + esc(a.objective.axis) + ' ' +
+          esc(a.objective.op) + ' ' + esc(a.objective.value) + '</code> ' +
+          esc(String(a.grade || '').toUpperCase()) +
+          (a.reading != null ? ' at ' + num(a.reading) : '') : '') + '.</p>';
+    }
+    if (p.forced_reason) {
+      out += '<p class="ev warn">Accepted over a DO NOT MERGE \u2014 ' +
+             esc(p.forced_reason) + '</p>';
+    }
+    if (p.proxy && p.proxy.length) {
+      out += '<p class="ev">Proxying ' + p.proxy.length +
+             ' across your own decks: ' + esc(p.proxy.join(', ')) + '.</p>';
+    }
+    if (p.procurement && p.procurement.note) {
+      out += '<p class="ev">Procurement: ' + esc(p.procurement.note) + '</p>';
+    }
+    out += '<p class="ev">Nothing is merged. What is left is cardboard \u2014 the ' +
+      'deck\u2019s dossier carries the pull list, because what you still need ' +
+      'depends on your boxes and this page cannot read them. ' +
+      '<code>manamap pilot deck-branch ' + esc(slug) + ' merge ' + esc(name) +
+      ' --write</code></p>';
+    return out + '</section>';
+  }
+
   function verdictPanel(nc) {
     var r = nc && nc.recommendation;
     if (!r) return '';
@@ -450,7 +508,8 @@
         }
         document.getElementById('branchWhy').textContent = meta.why || '';
         document.getElementById('objective').innerHTML =
-          verdictPanel(nc) + objectivePanel(meta, nc);
+          proposalPanel(meta, slug, name) + verdictPanel(nc) +
+          objectivePanel(meta, nc);
         document.getElementById('panels').innerHTML = stagedPanel(meta, nc) + (nc
           ? (tablePanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
              billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
@@ -519,6 +578,7 @@
   // branch is now required to state one, so the case cannot be reached through
   // live data. Testing it needs the builder, not a deck.
   window.Branch = {
+    __proposalPanel: proposalPanel,
     __objectivePanel: objectivePanel,
     __verdictPanel: verdictPanel,
     __swapsPanel: swapsPanel

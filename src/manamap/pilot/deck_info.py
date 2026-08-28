@@ -120,18 +120,26 @@ def _open_questions(base):
 
 
 def _branches(slug):
-    """Open branches, with what each would cost to build.
+    """Open branches: their state, what each would cost, and the pull list.
 
     Composes; computes nothing of its own. `deck_branch.source` is the one place
     that answers where a card comes from, and it is the only reader of the
-    collection through `pilot/collection.py`.
+    collection through `pilot/collection.py`; `deck_branch.branch_state` is the
+    one place that decides whether a branch is an experiment, a decision waiting
+    on cardboard, or ready to merge.
+
+    This is what puts a PROPOSAL on a static page. The deck dossier and the
+    workbench both read `info.json` and neither can run a command, so the state
+    and the pull list have to travel in the artifact — and both are derived on
+    write, so the blocker a page shows is the blocker at the moment it was
+    written rather than a stored claim that can go quietly wrong.
     """
     try:
         from manamap.pilot import deck_branch
         rows = []
         for name in deck_branch.names(slug):
             try:
-                rows.append(deck_branch._one(slug, name))
+                rows.append(deck_branch.one(slug, name))
             except Exception:
                 # A branch whose list will not parse is a fact worth showing,
                 # not a reason the whole dossier fails to load.
@@ -401,13 +409,45 @@ def _next(info):
     elif info["record"]["undebriefed"]:
         ids = info["record"]["undebriefed"]
         nxt.append(f"{len(ids)} logged game(s) not yet debriefed ({', '.join(ids)}) — `/debrief {slug}`")
+    from manamap.pilot import deck_branch
+
     # A branch that is fully sourced is a decision waiting to be taken; one that
     # is not is a shopping list. Both are worth saying, and neither is a judgement
     # about the deck.
+    #
+    # A PROPOSED BRANCH IS A DIFFERENT SENTENCE FROM AN OPEN ONE, and until
+    # `propose` existed this loop could not tell them apart: "needs 12 card(s)
+    # sourced" is what it said about a branch nobody had an opinion on and about
+    # one the pilot had accepted as the next version. The state does the talking
+    # now; `deck_branch.branch_state` is the only thing that decides it.
     for b in (info.get("branches") or []):
+        prop = b.get("proposal") or {}
+        as_v = prop.get("as_version")
         if b.get("unreadable"):
             nxt.append(f"branch `{b['name']}` will not parse — fix "
                        f"data/decks/{slug}/branches/{b['name']}/decklist.txt")
+        elif b.get("state") == deck_branch.PROPOSED_BLOCKED:
+            pl = b.get("pull_list") or {}
+            bits = [f"{len(pl.get(k) or [])} to {v}"
+                    for k, v in (("buy", "buy"), ("unsleeve", "unsleeve"))
+                    if pl.get(k)]
+            nxt.append(f"`{b['name']}` is PROPOSED as {as_v} and waiting on "
+                       f"cardboard — {pl.get('blocking', 0)} card(s)"
+                       + (f" ({', '.join(bits)})" if bits else "")
+                       + f" — `manamap pilot deck-branch {slug} show {b['name']}` "
+                         f"has the pull list")
+        elif b.get("state") == deck_branch.PROPOSED_READY:
+            nxt.append(f"`{b['name']}` is PROPOSED as {as_v} and every card is "
+                       f"sourced — `manamap pilot deck-branch {slug} merge "
+                       f"{b['name']} --write`")
+        elif b.get("state") == deck_branch.PROPOSED_STALE:
+            nxt.append(f"`{b['name']}` was proposed as {as_v} and the list has "
+                       f"changed since — re-run `net-change` and propose again, "
+                       f"or `deck-branch {slug} withdraw {b['name']}`")
+        elif b.get("state") == deck_branch.PROPOSED_OUTRUN:
+            nxt.append(f"`{b['name']}` was proposed as {as_v} against "
+                       f"V{prop.get('base_version')} and the deck has moved on — "
+                       f"{as_v} may be taken; re-measure and propose again")
         elif b.get("mergeable"):
             nxt.append(f"branch `{b['name']}` is fully sourced (+{b['add']} -{b['out']}) — "
                        f"`manamap pilot deck-branch {slug} merge {b['name']} --write`")

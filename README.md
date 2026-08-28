@@ -32,6 +32,7 @@ anyone else is supported.
   "how fast does it go off?"        goldfish                      mean t4.19, 89% by t6
   "what do strong lists run?"       deck-recon, /prescribe        ranked, cited, skeptic-checked
   "what would fix this axis?"       deck-audit + card-search      candidates that move the number
+  "is this change worth buying?"    net-change, then propose      a trade, priced, and a pull list
 ```
 
 **`experiment` is the flagship.** Two versions of a deck, the same table, the same N, the
@@ -40,13 +41,14 @@ whether the intervals overlap. Same seeds are **not** paired games (a changed li
 every shuffle), so seeds buy per-arm replayability and the control is N. An A/A is refused
 with the reason.
 
-## Two frontends over one data layer
+## Four pages over one data layer
 
 **The workbench** (`viz/workbench.html`) — **the landing page**: every deck you own, in
-racks by whether it is sleeved, or as one fleet table across record, stages, evidence,
-table and open work — sortable by *recently played*, *needs game logs*, *needs analysis*
-and *optimisations identified*. Each deck carries a derived **next**, and three named
-links: its Pilot's Manual, its dossier, and where it sits on the map.
+racks by whether it is sleeved, **waiting on cardboard**, on the bench or history; or as
+one fleet table across record, stages, evidence, table and open work — sortable by
+*recently played*, *needs game logs*, *needs analysis*, *optimisations identified* and
+*waiting on cardboard*. Each deck carries a derived **next**, and three named links: its
+Pilot's Manual, its dossier, and where it sits on the map.
 
 **The card atlas** — every Magic oracle card (~34,900) embedded by two small neural nets.
 It opens on **one card**: hover it, click a relation, and its neighbours join a
@@ -63,6 +65,12 @@ open questions, and the deck's own constellation. It renders `info.json` — the
 `deck-info` composes — rather than re-deriving anything, so it cannot disagree with the
 command that owns each figure.
 
+**The branch workbench** (`viz/branch.html?deck=<slug>&branch=<name>`) — one candidate 99
+and the decision about it: what it would become and what it was accepted on, the verdict,
+every measured row with its definition and a plain-language reading, reward / risk / cost,
+and the bill. A branch is a deck that does not exist, so it gets its own page rather than
+growing into the dossier.
+
 ## The commands behind it
 
 - `simulate <slug> --vs <pod> --games N` — N seeded Forge games: win rate with its interval,
@@ -75,6 +83,10 @@ command that owns each figure.
 - `card-search` — deterministic mining over the corpus: identity, oracle/name regex, role,
   cmc, and `--owned` against your physical boxes.
 - `deck-info <slug>` — the whole join, and a derived **next**.
+- `deck-branch` — a candidate 99 you cannot yet sleeve: stage swaps, measure it against the
+  deck with `net-change`, then **`propose`** it as the next version and wait for the
+  cardboard. The decision is frozen; the blocker is recomputed from your boxes on every
+  read, so a proposal un-blocks itself when a card lands in one.
 - `deck-version` — every list the deck has been, from git, joined to the games played on it.
 - `deck-notes add` → `/debrief` → `/prescribe` — the table, structured, then answered.
 - `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved with
@@ -267,6 +279,8 @@ Then the loop the bench exists for — all CLI except the two agents:
 
 | | | |
 |---|---|---|
+| `manamap pilot deck-branch <slug> new/stage/…` → `net-change --branch` | a candidate 99, measured against the deck | **yes** |
+| `manamap pilot deck-branch <slug> propose <name> --as v1.0.2` | accept it, and wait for the cardboard | **yes** |
 | `manamap pilot deck-version <slug> [tag …]` | commit the list; every version numbered from git | **yes** |
 | `manamap pilot fetch-opponent "<commander>"` / `simulate <slug> --vs <pod> --games N` | your table, in Forge, seeded | **yes** |
 | `manamap pilot deck-notes <slug> add "…" --result win\|loss` | the captain's log | **yes** |
@@ -293,12 +307,15 @@ Experiment  decklist → fetch-deck → goldfish ─┐
             pod       → fetch-opponent ───────┼→ simulate / experiment → parse → analysis
                                               └→ sim-scenario → /resolve-stack → ✓
 
+Change      decklist → deck-branch new → stage → net-change → propose → merge → a version
+                                                        └ blocked on cardboard, derived
+
 Surface     artifacts → deck-info --write → info.json ─┐
             build-index → index.json ──────────────────┴→ viz/deck.html
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (82 pilot subcommands). All constants live in
+`manamap pilot <cmd>` drives the rest (83 pilot subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 ## Simulation — the centre of the bench
@@ -612,9 +629,9 @@ image URLs get their cache-busters stripped.
 ## Testing
 
 ```bash
-make test          # the inner loop: non-browser, parallel, cached   ~22 s
-make test-fresh    # same, nothing served from the cache             ~29 s
-make test-browser  # the playwright suite                            ~4 min
+make test          # the inner loop: non-browser, parallel, cached   ~2.5 min
+make test-fresh    # same, nothing served from the cache             ~2.3 min
+make test-browser  # the playwright suite                            ~7 min
 ```
 
 A bare `pytest` is `make test`. Four test files recompute an artifact and compare it to
@@ -623,9 +640,9 @@ a hash of their inputs *and* of the code that produces them, recorded only on a 
 kept in gitignored `.pytest_cache/` where they cannot reach another machine or CI. The run
 prints how many it skipped. `make test-fresh` is the one to trust before a PR.
 
-A fresh clone runs **1,360 of the 1,488 fast tests** green in 20 s; the 129 it skips
-gate on artifacts that are gitignored and built locally, and each says which command
-would enable it.
+A fresh clone skips the cases that gate on gitignored artifacts built locally, and each
+one says which command would enable it — so a clone runs green and faster than a developed
+checkout. Current counts and the measured timings live in `docs/testing.md`.
 
 Counts and the per-file inventory live in `docs/testing.md` — they move on almost every
 commit, so restating them here would be one more thing to drift. Five skip markers in `tests/conftest.py` gate on the last

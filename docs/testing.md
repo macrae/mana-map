@@ -1,10 +1,10 @@
 # Testing
 
 ```bash
-make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~22 s
+make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~2.5 min
 pytest -m forge      # ONE real Forge game (~10 s; needs ~/.mana-map/forge)
-make test-fresh      # same, nothing served from the cache            ~29 s
-make test-browser    # playwright, -n 4, plus the one serial_only test ~4 min
+make test-fresh      # same, nothing served from the cache            ~2.3 min
+make test-browser    # playwright, -n 4, plus the one serial_only test ~7 min
 make test-all        # test-fresh + test-browser
 pytest -n0 -k NAME   # a single test; worker startup outweighs the split
 pytest -m ""         # literally everything, browser included         ~10 min
@@ -28,20 +28,27 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
-### Measured 2026-08-15, idle 8-core machine
+### Measured 2026-08-28, idle 8-core machine
 
 | | |
 |---|---:|
-| `make test` — cold cache | **36 s** |
-| `make test` — warm cache | **22 s** |
-| `make test-fresh` | **29 s** |
-| serial, before any of this work | 86.5 s |
-| `make test-browser` (`-n 4`) | 234 s |
-| **a fresh clone, cold** | **20 s** (1,360 passed, 129 gate-skipped) — measured 2026-08-24 |
+| `make test` — warm cache | **149 s** (2,462 collected; 2,316 passed, 136 skipped) |
+| `make test-fresh` — nothing cached | **136 s** |
+| `make test-browser` (`-n 4`) | **400 s** (223 passed) |
 
-A fresh clone is FASTER than a developed checkout, which is not a paradox: 129
-cases gate on gitignored artifacts a clone has not generated, and the expensive
-`requires_data` ones are among them.
+**The suite got slower because it got bigger, not because it regressed.** These
+numbers were 22 s and 234 s on 2026-08-15; the fast suite has roughly doubled
+since, and the regenerate-and-compare cases — which re-run 10,000-iteration
+goldfish simulations and compare byte for byte — dominate the wall clock. Warm
+and fresh are now within 10% of each other because most of what the cache saves
+has been outgrown by what it does not cover.
+
+A fresh clone is FASTER than a developed checkout, which is not a paradox:
+the cases that gate on gitignored artifacts a clone has not generated are
+skipped, and the expensive `requires_data` ones are among them. The last
+end-to-end clone measurement was **20 s (1,360 passed, 129 gate-skipped) on
+2026-08-24** — kept for the lesson below rather than as a current figure, since
+the suite has grown since.
 
 **That fresh-clone number is measured by actually doing it** — `git clone` into
 an empty directory, `make setup`, `make test` — and the first time anyone did,
@@ -52,13 +59,13 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-25: **2,052 tests** across 86 files — 1,889 fast, 162 browser and 1 `forge`
+As of 2026-08-28: **2,688 tests** across 115 files — 2,462 fast, 225 browser and 1 `forge`
 (a real Forge game, opt-in). One is a deliberately unmet `xfail(strict=True)` ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
-Why the count cannot be checked mechanically: **307 of those cases do not exist in the
-source** — there are 1,716 `def test_` functions and 2,023 collected cases, the difference
+Why the count cannot be checked mechanically: **616 of those cases do not exist in the
+source** — there are 2,072 `def test_` functions and 2,688 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -118,7 +125,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (162) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (225) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the

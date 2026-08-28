@@ -488,6 +488,28 @@ def deck_lifecycle(slug):
     return deck_status_of(load_json(DECKS_DIR / slug / "issue.json", {}))
 
 
+def deck_is_apart(slug):
+    """Is this deck's cardboard LOOSE — no longer assembled into a deck?
+
+    THE ONE PLACE THAT ANSWERS IT, and it arrived after four had grown their own
+    answer: `UNPLAYABLE_STATUSES` here, `deck_info.STATE_RETIRED`,
+    `net_change.FREE_TO_RAID`, and `deck_branch._deck_holders`, which carried the
+    holder's status and did nothing with it. None of them disagreed yet. Four
+    places that CAN disagree about one fact is the divergence this repo keeps
+    paying for, and it was already costing something: `deck-branch merge` refused
+    Ur-Dragon on twelve cards, four of which sit in `sisay` and `hapatra` — decks
+    that do not physically exist. The pilot was being told to unsleeve a deck that
+    is already in a pile.
+
+    `superseded` is deliberately NOT in the set, and that is the whole reason this
+    reuses `UNPLAYABLE_STATUSES` rather than naming its own: a superseded list can
+    still be sleeved and played, so its cards are still spoken for. "Cannot be
+    played" and "its cards are free" are the same question asked twice.
+    """
+    life = deck_lifecycle(slug)
+    return bool(life and life[0] in UNPLAYABLE_STATUSES)
+
+
 BRANCHES_DIR = "branches"
 
 

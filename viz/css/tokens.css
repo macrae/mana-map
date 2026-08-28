@@ -781,3 +781,30 @@ details.log-all > summary { cursor: pointer; font-size: .8rem;
                             letter-spacing: .06em; text-transform: uppercase;
                             color: var(--ink-soft); }
 details.log-all > summary:hover { color: var(--ink); }
+
+/* ── A PROPOSAL: decided, measured, waiting on cardboard ─────────────────
+   Three states where the branch panel had two. `branch-wait` is the new one
+   and it is deliberately the caution colour rather than the failure colour:
+   blocked is not wrong, it is a shopping trip. */
+.branch-wait {
+  margin-left: 8px; font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--burst-yellow);
+}
+.panel.proposal { border-left: 3px solid var(--burst-yellow); }
+.panel.proposal.met { border-left-color: var(--slime-green); }
+.panel.proposal.failed { border-left-color: var(--power-red); }
+.panel.proposal.unknown { border-left-color: var(--rule); }
+
+/* The pull list. Each bucket costs a different thing, so each reads apart. */
+h5.pull-head {
+  margin: 10px 0 2px; font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+ul.pull-list { list-style: none; padding-left: 14px; margin: 2px 0 8px; }
+ul.pull-list li { font-size: 14px; margin: 0 0 2px; }
+ul.pull-list li::before { content: "◯"; margin-right: 7px; color: var(--ink-soft); }
+ul.pull-buy li::before { content: "$"; color: var(--power-red); }
+ul.pull-unsleeve li::before { content: "✂"; color: var(--burst-yellow); }
+ul.pull-proxy li::before { content: "⇄"; color: var(--ink-soft); }
+ul.pull-free li::before { content: "✓"; color: var(--slime-green); }
+ul.pull-box li::before { content: "✓"; color: var(--slime-green); }

@@ -12,9 +12,11 @@ would be the same check twice. What no other gate asserts:
   1. EVERY MEASURED ROW CARRIES ITS MDE, and a row whose delta is under it is
      marked `noise` rather than ranked. A report that ranks noise is how a
      spending decision gets made on a coin flip.
-  2. AN ENGINE LIFT STATES WHETHER ITS INTERVAL EXCLUDES ZERO. The lift is the
-     measurement that decided the Ur-Dragon question; published without that it
-     is a number with no claim attached.
+  2. AN UNAVAILABLE BLOCK OWES A REASON. A blank section a reader cannot tell
+     from a measured nothing is the `absent means ABSENT` rule applied to a
+     whole block rather than to a figure. The rule used to live on the
+     engine-lift block alone, so deleting that block took it with it and left
+     `mana` and `forge` free to go quiet; it is stated per-block now.
   3. A FORGE BLOCK STATES ITS MDE, so an underpowered run says so instead of
      reading as no difference.
   4. AN OBJECTIVE, IF PRESENT, IS GRADED — and the grade is one of the four

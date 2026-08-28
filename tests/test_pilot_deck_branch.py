@@ -13,7 +13,7 @@ import json
 
 import pytest
 
-from conftest import A_BRANCH, requires_branch
+from conftest import A_BRANCH, requires_branch, requires_deck
 
 from manamap.pilot import deck_branch
 from manamap.pilot.common import (
@@ -222,22 +222,34 @@ def test_the_branch_reaches_info_json_and_the_next_line():
     """A branch nobody can see is a branch nobody acts on.
 
     `info.json` is the dossier's data model, so the composition is what puts the
-    sourcing split on the page — and `next` is what tells the pilot which of the
-    two states the branch is in: a decision waiting to be taken, or a shopping
-    list.
+    sourcing split on the page — and `next` is what tells the pilot which state
+    the branch is in. That used to be two states and is now six: an experiment
+    and a decision the pilot has ACCEPTED said the same sentence, which is the
+    whole reason `propose` exists.
     """
-    from manamap.pilot import deck_info
+    from manamap.pilot import deck_branch, deck_info
     info = deck_info.compose(SLUG)
     rows = info.get("branches") or []
     assert any(b["name"] == BRANCH for b in rows), "the branch is absent from info.json"
     b = next(x for x in rows if x["name"] == BRANCH)
     assert set(b["counts"]) == {"in_deck", "box", "elsewhere", "buy"}
+    assert b["state"] in deck_branch.BRANCH_STATES
     joined = " ".join(info["next"])
     assert BRANCH in joined, f"`next` never mentions the branch: {info['next']}"
-    if b["mergeable"]:
-        assert "merge" in joined
-    else:
-        assert "source" in joined
+
+    # WHAT THE LINE SAYS FOLLOWS FROM THE STATE, and every state owes a line —
+    # a branch that reached `next` with nothing to say about it would render as
+    # a bare name.
+    expect = {
+        deck_branch.PROPOSED_BLOCKED: "waiting on cardboard",
+        deck_branch.PROPOSED_READY: "every card is sourced",
+        deck_branch.PROPOSED_STALE: "the list has changed",
+        deck_branch.PROPOSED_OUTRUN: "moved on",
+        deck_branch.MERGED: BRANCH,
+    }.get(b["state"], "merge" if b["mergeable"] else "source")
+    assert expect in joined, f"{b['state']} says nothing useful: {info['next']}"
+    if b.get("proposal"):
+        assert b["proposal"]["as_version"] in joined
 
 
 def test_a_deck_with_no_branches_says_nothing_about_them():
@@ -276,8 +288,13 @@ def test_a_card_in_another_deck_is_owned_not_bought():
     n_else = plain["counts"]["elsewhere"]
     if not n_else:
         pytest.skip("nothing sleeved elsewhere on this branch")
-    assert len(proxied["unsourced"]) == len(plain["unsourced"]) - n_else, (
-        "--proxy did not clear exactly the cards sleeved in other decks")
+    # A `free` card was NEVER unsourced — every deck holding it is broken down
+    # or retired, so there is nothing to proxy and nothing to unsleeve. Counting
+    # it here is what made this arithmetic wrong the moment that landed.
+    contested = n_else - plain["free"]
+    assert len(proxied["unsourced"]) == len(plain["unsourced"]) - contested, (
+        "--proxy did not clear exactly the cards sleeved in decks that are "
+        "still together")
     # A card nobody owns stays unsourced whatever the proxy policy is.
     buys = {r["name"] for r in plain["cards"] if r["state"] == "buy"}
     assert buys <= set(proxied["unsourced"]), (
@@ -345,3 +362,82 @@ def test_no_tracked_branch_is_still_graded_on_an_authored_axis():
         assert axis not in deck_branch.MEMBERSHIP_AXES, path
         checked += 1
     assert checked >= 1, "no branch carries an objective to check"
+
+
+# ──────────────────────────────────────────────────────────────────────────
+# `deck_is_apart` — one predicate where four modules had grown their own
+# ──────────────────────────────────────────────────────────────────────────
+
+def test_a_broken_down_or_retired_deck_is_apart():
+    """`merge` refused ur-dragon on twelve cards, four of which sit in decks
+    that do not physically exist. The pilot was being told to unsleeve a deck
+    already in a pile."""
+    from manamap.pilot.common import deck_is_apart
+    assert deck_is_apart("sisay") and deck_is_apart("hapatra")
+
+
+def test_a_deck_that_is_still_together_is_not_apart():
+    """The control. Without it the predicate could be "always true"."""
+    from manamap.pilot.common import deck_is_apart
+    assert not deck_is_apart("ur-dragon")
+    assert not deck_is_apart("no-such-deck-anywhere")
+
+
+def test_superseded_is_deliberately_not_apart():
+    """A superseded list can still be sleeved and played, so its cards are
+    spoken for. This is why the predicate reuses `UNPLAYABLE_STATUSES` rather
+    than naming its own set — "cannot be played" and "its cards are free" are
+    the same question asked twice."""
+    from manamap.pilot.common import UNPLAYABLE_STATUSES
+    assert "superseded" not in UNPLAYABLE_STATUSES
+    assert UNPLAYABLE_STATUSES == frozenset({"broken-down", "retired"})
+
+
+def test_the_cost_block_reads_the_branch_answer_rather_than_deriving_a_second():
+    """FOUR PLACES ANSWERED THIS AND COULD DISAGREE. `net_change.FREE_TO_RAID`
+    held its own copy of a set `common.UNPLAYABLE_STATUSES` already had. It is
+    gone: `deck_branch.source` derives `free` and `apart` once, and `cost` reads
+    them. Driven through the production function, so re-introducing a local list
+    that disagreed with the row would fail here.
+    """
+    from manamap.pilot import net_change
+    assert not hasattr(net_change, "FREE_TO_RAID")
+    doc = {"bill": {"counts": {}, "cards": [
+        {"name": "Loose", "state": "elsewhere", "free": True,
+         "where": [{"kind": "deck", "slug": "sisay", "status": "retired",
+                    "apart": True}]},
+        {"name": "Spoken For", "state": "elsewhere", "free": False,
+         "where": [{"kind": "deck", "slug": "kinnan", "status": None,
+                    "apart": False}]}]}}
+    got = net_change.cost(doc)
+    assert [r["name"] for r in got["free_to_raid"]] == ["Loose"]
+    assert [r["name"] for r in got["must_unsleeve"]] == ["Spoken For"]
+    # And a card in BOTH kinds of home names only the deck still together.
+    doc["bill"]["cards"] = [{"name": "Both", "state": "elsewhere", "free": False,
+                             "where": [{"kind": "deck", "slug": "hapatra",
+                                        "status": "broken-down", "apart": True},
+                                       {"kind": "deck", "slug": "blar",
+                                        "status": None, "apart": False}]}]
+    assert net_change.cost(doc)["must_unsleeve"][0]["decks"] == ["blar"]
+
+
+@requires_deck
+def test_every_where_row_is_one_shape():
+    """`where` was a STRING for a box row and a LIST OF DICTS for an elsewhere
+    row, so every consumer had to know which state it was in before it could
+    read the field. Five of them did."""
+    from manamap.pilot import deck_branch
+    checked = 0
+    for slug in ("ur-dragon",):
+        for name in deck_branch.names(slug):
+            for r in deck_branch.source(slug, name)["cards"]:
+                assert isinstance(r["where"], list), r
+                assert isinstance(r["free"], bool)
+                for w in r["where"]:
+                    assert w["kind"] in ("box", "deck"), w
+                    if w["kind"] == "deck":
+                        assert set(w) >= {"slug", "locked", "status", "apart"}
+                    else:
+                        assert "name" in w
+                checked += 1
+    assert checked >= 20

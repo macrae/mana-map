@@ -64,6 +64,9 @@ PILOT_STEPS = [
      "Form-check diagnostic.json: every rate carries its interval"),
     ("validate-net-change", "manamap.pilot.validate_net_change",
      "Form-check net_change.json: nothing under the MDE is ranked"),
+    ("validate-branch", "manamap.pilot.validate_branch",
+     "Form-check branch.json: the objective is falsifiable and a proposal "
+     "freezes what it was accepted on"),
     ("net-change", "manamap.pilot.net_change",
      "What a branch costs, what it buys, and whether it met its objective"),
     ("calibrate", "manamap.pilot.calibrate",
@@ -151,7 +154,7 @@ _DECK_COMMANDS = {
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
-    "validate-diagnostic", "net-change", "validate-net-change", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
 
@@ -350,7 +353,7 @@ def add_pilot_parser(subparsers):
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',
                     'validate-goldfish-targets', 'validate-diagnostic',
-                    'net-change', 'validate-net-change'):
+                    'net-change', 'validate-net-change', 'validate-branch'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
@@ -428,11 +431,13 @@ def add_pilot_parser(subparsers):
         if name == "deck-branch":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "new", "show", "diff", "source",
-                                      "stage", "unstage",
-                                      "commit", "log", "merge", "delete"],
+                                      "stage", "unstage", "commit", "log",
+                                      "propose", "withdraw", "merge", "delete"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / stage: one card out, one in / "
                                   "source: where every added card comes from / "
+                                  "propose: accept it as the deck's next version "
+                                  "and wait for the cardboard / withdraw it / "
                                   "merge it into decklist.txt")
             cmd.add_argument("name", nargs="?", default=None, help="the branch name")
             cmd.add_argument("--from", dest="source", default=None,
@@ -462,7 +467,22 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="merge: apply despite unsourced cards (needs --reason)")
             cmd.add_argument("--reason", default=None,
-                             help="merge: why the sourcing gate is being skipped")
+                             help="merge: why the sourcing gate is being skipped; "
+                                  "propose: why the report is being overridden")
+            cmd.add_argument("--as", dest="as_version", default=None,
+                             metavar="VERSION",
+                             help="propose: the release tag this list is meant to "
+                                  "become, e.g. v1.0.2. Required — a proposal that "
+                                  "does not say what it intends to become cannot "
+                                  "be found to have been outrun by another merge.")
+            cmd.add_argument("--ordered", default=None, metavar="NOTE",
+                             help="propose: a free-text note about procurement "
+                                  '("6 ordered 2026-08-28 via TCGplayer"). A NOTE '
+                                  "only: ownership means a box, so nothing here "
+                                  "moves the blocker")
+            cmd.add_argument("--anyway", action="store_true",
+                             help="propose: accept a branch the net change says "
+                                  "DO NOT MERGE (needs --reason)")
             cmd.add_argument("--proxy", action="store_true",
                              help="count cards sleeved in your OTHER decks as "
                                   "sourced — you own them, and proxying across "

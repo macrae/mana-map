@@ -697,12 +697,6 @@ def risk(doc):
     return out
 
 
-#: A deck in one of these states is not competing for cardboard: its cards are
-#: already loose. `deck_status` owns the vocabulary; this is the subset that
-#: means "nothing has to be unsleeved to take this card".
-FREE_TO_RAID = ("retired", "broken-down")
-
-
 def cost(doc):
     """The bill, said in money and in sleeves rather than in four integers.
 
@@ -723,10 +717,13 @@ def cost(doc):
         if row.get("state") == "buy":
             buy.append(row["name"])
         elif row.get("state") == "elsewhere":
+            # `free` AND `apart` ARE THE BRANCH'S ANSWER, NOT A SECOND ONE HERE.
+            # This block used to carry `FREE_TO_RAID = ("retired", "broken-down")`
+            # — a fourth copy of a set `common.UNPLAYABLE_STATUSES` already held.
+            # `deck_branch.source` now derives both and this reads them.
             homes = row.get("where") or []
-            live = sorted({h["slug"] for h in homes
-                           if (h.get("status") not in FREE_TO_RAID)})
-            (contested if live else loose).append(
+            live = sorted({h["slug"] for h in homes if not h.get("apart")})
+            (loose if row.get("free") else contested).append(
                 {"name": row["name"],
                  "decks": live or sorted({h["slug"] for h in homes})})
 

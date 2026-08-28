@@ -1,13 +1,16 @@
 """Pilot: a candidate 99 you cannot yet sleeve (`branches/<name>/`).
 
-    manamap pilot deck-branch <slug> list|new|show|diff|source|merge
+    manamap pilot deck-branch <slug> list | new | show | diff | source
+                                     | stage | unstage | commit | log
+                                     | propose | withdraw | merge | delete
 
 THE GAP THIS FILLS. A deck had exactly two states: the list in `decklist.txt`,
 and nothing. `decklist.txt` is tracked, so writing it MINTS A VERSION, and the
 captain's log stamps games against versions — which makes a version you cannot
 physically play a version that lies. So a refactor that needs cards you have not
-bought had nowhere to live. The Ur-Dragon treasure rebuild is 34 out and 35 in
-with 23 cards to source; it was designed, measured, briefed, and unappliable.
+bought had nowhere to live. The first one, a 34-out/35-in Ur-Dragon treasure
+rebuild with 23 cards to source, was designed, measured, briefed and unappliable
+(and, once measured, abandoned — which is the loop working).
 
 A BRANCH IS A WHOLE LIST, NOT A QUEUE OF SWAPS. `pending.json` already holds
 decided-but-unapplied in/out pairs and is right for a three-land swap decided on
@@ -33,6 +36,24 @@ no second answer: deck membership is reported as INFORMATION beside ownership,
 never folded into it. That distinction is why `collection.include_decks=True`
 exists and why no gate uses it.
 
+THE THREE STEPS, AND WHY THERE ARE THREE. A COMMIT freezes one exact list with a
+message and is allowed while cards are still missing — it says "this is the deck
+I am committed to running". A PROPOSAL says "this is the deck, and I am waiting
+for the cardboard": it names the version the list means to become, freezes the
+net-change report it was accepted on, and is the merge-request stage. A MERGE
+says "this is the deck" and rewrites `decklist.txt`.
+
+The gap between the first two is judgement; the gap between the last two is
+CARDBOARD. Before `propose` there was nowhere to put the difference, so a branch
+the pilot had accepted rendered identically to a half-finished experiment, and
+`deck-info` said the same sentence about both.
+
+EVERY STATE IS DERIVED AND NONE IS STORED — see `branch_state`. A proposal's
+blocker is recomputed from the collection on every read, so a card landing in a
+box un-blocks it with nobody touching the branch. `validate_pending` earned that
+rule: "closure is DERIVED, never declared … a hand-set flag is precisely how
+HISTORY.md became append-only and append-forgotten."
+
 MERGE IS THE MOMENT THE DECK CHANGES, so it refuses on unsourced cards. It
 reuses `check_in.analyze`'s blocking checks verbatim rather than restating them,
 writes `decklist.txt`, and prints the commit command WITHOUT committing — the
@@ -54,6 +75,7 @@ from manamap.pilot.common import (
     BRANCHES_DIR,
     DECKS_DIR,
     deck_dir,
+    deck_is_apart,
     deck_lifecycle,
     expand_faces,
     load_json,
@@ -168,7 +190,7 @@ def _deck_holders(name, skip):
     A card in a deck is not a card you own — `collection.py` is the only
     ownership answer and it means a box. This is reported alongside so the pilot
     can see the trade-off, and it carries the holder's lifecycle because a
-    finished deck is not a donor.
+    finished deck is not a donor — and a BROKEN-DOWN one is not a deck.
     """
     from manamap.pilot import deck_versions
     out = []
@@ -184,8 +206,12 @@ def _deck_holders(name, skip):
         if any(expand_faces(c.get("name")) & faces for c in (doc.get("cards") or [])):
             life = deck_lifecycle(d.name)
             locked = bool(deck_versions.paper(d.name))
-            out.append({"slug": d.name, "locked": locked,
-                        "status": life[0] if life else None})
+            out.append({"kind": "deck", "slug": d.name, "locked": locked,
+                        "status": life[0] if life else None,
+                        # DERIVED HERE ONCE so no consumer has to know which
+                        # statuses mean "in a pile" — three of them grew their
+                        # own list before `deck_is_apart` existed.
+                        "apart": deck_is_apart(d.name)})
     return out
 
 
@@ -206,52 +232,99 @@ def source(slug, branch, proxy=False):
     rows = []
     for name in sorted(cand):
         if name in in_deck:
-            rows.append({"name": name, "state": IN_DECK, "where": None})
+            rows.append({"name": name, "state": IN_DECK, "where": [], "free": False})
             continue
+        boxes = sorted({f for face in expand_faces(name)
+                        for f in collection.sources_for(face)})
         if any(f in box for f in expand_faces(name)):
-            rows.append({"name": name, "state": BOX,
-                         "where": ", ".join(sorted(
-                             f for face in expand_faces(name)
-                             for f in collection.sources_for(face)))})
+            rows.append({"name": name, "state": BOX, "free": False,
+                         "where": [{"kind": "box", "name": b} for b in boxes]})
             continue
         holders = _deck_holders(name, slug)
         if holders:
-            rows.append({"name": name, "state": ELSEWHERE, "where": holders})
+            # A HOLDER THAT IS IN A PILE IS NOT A HOLDER. If every deck that has
+            # this card is broken down or retired, the card is loose cardboard:
+            # nothing has to be unsleeved and nothing has to be bought. Reported
+            # as a blocker it told the pilot to take apart a deck that is already
+            # apart — four of Ur-Dragon's twelve. `deck_is_apart` is the one place
+            # that decides; see its docstring for the three that used to.
+            rows.append({"name": name, "state": ELSEWHERE, "where": holders,
+                         "free": all(h["apart"] for h in holders)})
             continue
-        rows.append({"name": name, "state": BUY, "where": None})
+        rows.append({"name": name, "state": BUY, "where": [], "free": False})
     counts = {s: sum(1 for r in rows if r["state"] == s)
               for s in (IN_DECK, BOX, ELSEWHERE, BUY)}
-    ok = SOURCED_WITH_PROXY if proxy else SOURCED
-    unsourced = [r["name"] for r in rows if r["state"] not in ok]
+    # `proxy` IS EITHER "ALL OF THEM" OR A NAMED FEW. It shipped as a bare flag,
+    # which is the only shape a per-invocation option can have; a PROPOSAL records
+    # which specific cards the pilot agreed to move across their own decks, and
+    # honouring that means asking about those cards rather than about the state.
+    # A card nobody owns is never proxiable either way — that would be a claim
+    # about cardboard that does not exist.
+    named = None if isinstance(proxy, bool) else {n for n in (proxy or [])}
+    def _ok(r):
+        if r["state"] in SOURCED or r["free"]:
+            return True
+        if r["state"] != ELSEWHERE:
+            return False
+        return bool(proxy) if named is None else (r["name"] in named)
+    unsourced = [r["name"] for r in rows if not _ok(r)]
     # `counts` are DISTINCT NAMES, not copies — you source Sol Ring once, and a
     # basic land is not a purchase at all.
     return {"slug": slug, "branch": branch, "cards": rows, "counts": counts,
             "unsourced": unsourced, "diff": d, "counts_are": "distinct names",
-            "proxy": proxy, "owned_but_elsewhere": counts[ELSEWHERE],
+            "proxy": sorted(named) if named is not None else bool(proxy),
+            "owned_but_elsewhere": counts[ELSEWHERE],
+            "free": sum(1 for r in rows if r["free"]),
             "mergeable": not unsourced}
 
 
 def report(slug, branch=None):
     if branch:
-        return {"slug": slug, "branches": [_one(slug, branch)]}
-    return {"slug": slug, "branches": [_one(slug, b) for b in names(slug)]}
+        return {"slug": slug, "branches": [one(slug, branch)]}
+    return {"slug": slug, "branches": [one(slug, b) for b in names(slug)]}
 
 
-def _one(slug, branch):
-    s = source(slug, branch)
+def recorded_proxy(doc):
+    """The cards a PROPOSAL says the pilot will move across their own decks.
+
+    `--proxy` was a per-invocation flag and was never persisted, so `list`,
+    `deck-info` and the web roster all showed the non-proxy verdict however the
+    pilot had decided — and `merge` asked again every time. A proposal is the
+    place that decision belongs, and this is the one reader of it.
+    """
+    return (doc or {}).get("proposal", {}).get("proxy") or False
+
+
+def one(slug, branch):
+    """One branch, summarised for `list`, `info.json` and the web roster.
+
+    PUBLIC because it has been called across a module boundary since it shipped —
+    `deck_info._branches` reaches for it by its underscore name. A private helper
+    that two modules depend on is a contract wearing a disclaimer.
+    """
     m = meta(slug, branch)
+    s = source(slug, branch, proxy=recorded_proxy(m))
     add = set(s["diff"]["add"])
+    # ONE `source()` PAYS FOR ALL THREE. It walks the collection and every other
+    # deck's cards.json, and `list` renders a row per branch — passing it through
+    # rather than letting each helper fetch its own keeps that cost at one.
+    state, state_why = branch_state(slug, branch, doc=m, src=s)
     return {"name": branch, "opened": m.get("opened"), "why": m.get("why"),
+            "state": state, "state_why": state_why,
+            "proposal": m.get("proposal"),
+            "pull_list": pull_list(slug, branch, doc=m, src=s),
             "base_version": m.get("base_version"),
             "size": s["diff"]["size"], "add": len(s["diff"]["add"]),
             "out": len(s["diff"]["out"]), "counts": s["counts"],
             "unsourced": s["unsourced"], "mergeable": s["mergeable"],
+            "free": s["free"],
             # PER-CARD PROVENANCE, so a roster can mark a card without asking a
             # second time. `is_new` is the diff's answer and `state` is the
             # collection's; they are different questions and a card can be new
             # and already in a box.
             "cards": [{"name": r["name"], "state": r["state"],
-                       "where": r["where"], "is_new": r["name"] in add}
+                       "where": r["where"], "free": r["free"],
+                       "is_new": r["name"] in add}
                       for r in s["cards"]],
             "has_cards": (deck_dir(slug, branch) / "cards.json").exists()}
 
@@ -292,10 +365,11 @@ _OPS = {">=": lambda a, b: a >= b, "<=": lambda a, b: a <= b,
 #: already pays the discount for free. But an axis whose SIGN a JSON edit can
 #: flip is not something a spending decision may rest on.
 #:
-#: The declaration stays: it is a good description of a deck, it drives the
-#: `*_assisted` figures, and the engine lift still reports against it as a
-#: diagnostic. What it may not do is be the thing a branch is graded on. Aim at
-#: an OUTPUT — damage, a clock, board power, the hoard — which no wording moves.
+#: The declaration stays: it is a good description of a deck and it drives the
+#: `*_assisted` figures and the target table, which are hypergeometric and real.
+#: What it may not do is be the thing a branch is graded on. Aim at an OUTPUT —
+#: damage, a clock, board power, the hoard — which no wording moves. The lift
+#: itself was deleted from `net-change` the same day, for the same reason.
 MEMBERSHIP_AXES = ("engine_online_3", "engine_online_5", "engine_online_8",
                    "any_route_8")
 
@@ -591,6 +665,261 @@ def log(slug, branch):
             "commits": doc.get("commits") or [], "merged": doc.get("merged")}
 
 
+#: THE STATES A BRANCH CAN BE IN, and the first enumerated set it has ever had.
+#: Before this, a branch had exactly two observable conditions — the directory
+#: exists, or `merged` is present — and `delete` was the only code in the repo
+#: that read `merged`. A branch the pilot had DECIDED ON was byte-identical to a
+#: half-finished experiment nobody had looked at.
+#:
+#: Every one of these is DERIVED and none is stored. That is the rule
+#: `validate_pending` earned the hard way — "closure is DERIVED, never declared …
+#: a hand-set flag is precisely how HISTORY.md became append-only and
+#: append-forgotten" — and it is what makes a proposal un-block itself: the
+#: blocker is recomputed from the collection on every read, so dropping a card
+#: into `data/collection/` clears it without anyone touching the branch.
+OPEN = "OPEN"
+PROPOSED_BLOCKED = "PROPOSED · BLOCKED"
+PROPOSED_READY = "PROPOSED · READY"
+PROPOSED_STALE = "PROPOSED · STALE"
+PROPOSED_OUTRUN = "PROPOSED · OUTRUN"
+MERGED = "MERGED"
+
+BRANCH_STATES = (OPEN, PROPOSED_BLOCKED, PROPOSED_READY, PROPOSED_STALE,
+                 PROPOSED_OUTRUN, MERGED)
+
+
+def branch_state(slug, branch, doc=None, src=None):
+    """Which of `BRANCH_STATES`, and one sentence saying why.
+
+    Computes nothing it can read. `src` and `doc` are accepted so a caller that
+    already paid for `source()` — which walks the collection AND every other
+    deck's `cards.json` — does not pay twice; `list` renders one row per branch
+    and would otherwise do it N times.
+
+    STALE and OUTRUN are the two that could not be asked before, and they are
+    the merge-request half of this:
+
+    * **STALE** — the list moved after the pilot accepted it. The proposal
+      freezes `decklist_sha256`, so a swap staged afterwards is visible as one.
+      Same idiom `commit` already uses to refuse an unchanged list.
+    * **OUTRUN** — something else merged first, so the version this proposal
+      claims is taken. `base_version` has been written by `new()` since branches
+      shipped and **no code has ever compared it to anything**; this is the
+      comparison it was written for.
+    """
+    doc = meta(slug, branch) if doc is None else doc
+    if doc.get("merged"):
+        m = doc["merged"]
+        return MERGED, f"merged {m.get('at')} into the list after V{m.get('into_version_before')}"
+    prop = doc.get("proposal")
+    if not prop:
+        return OPEN, "no proposal — this is an experiment, not a decision"
+
+    from manamap.pilot import deck_versions
+    current = deck_versions.report(slug).get("current_version")
+    if prop.get("base_version") != current:
+        return (PROPOSED_OUTRUN,
+                f"proposed against V{prop.get('base_version')} and the deck is now "
+                f"V{current} — {prop.get('as_version')} may be taken; re-measure "
+                f"and propose again")
+
+    live = _sha_of_list(slug, branch)
+    if prop.get("decklist_sha256") != live:
+        return (PROPOSED_STALE,
+                "the list has changed since it was proposed — re-run `net-change` "
+                "and propose again, or `unstage` back to what was accepted")
+
+    src = source(slug, branch, proxy=recorded_proxy(doc)) if src is None else src
+    if src["unsourced"]:
+        return (PROPOSED_BLOCKED,
+                f"{len(src['unsourced'])} card(s) still to find")
+    return (PROPOSED_READY,
+            f"every card is sourced — `deck-branch {slug} merge {branch} --write`")
+
+
+def _sha_of_list(slug, branch):
+    """The branch's list as it stands. One definition, used by commit and propose."""
+    return hashlib.sha256(
+        (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8")
+        .encode("utf-8")).hexdigest()
+
+
+def pull_list(slug, branch, doc=None, src=None):
+    """WHAT THE PILOT ACTUALLY DOES NEXT — the shopping trip, in four buckets.
+
+    `source()` has computed this data since branches shipped and nothing ever
+    presented it as a list you take to a shop or a box. A proposal's whole point
+    is that it hands you one.
+
+    The buckets answer different questions and cost different things: BUY is
+    money, UNSLEEVE takes a deck apart, PROXY is a decision the pilot already
+    recorded on the proposal, and FREE is cardboard sitting in a pile. Rendered
+    as one number they read as one problem, which is how `elsewhere` came to
+    mean both "unsleeve kianne" and "it is in the hapatra pile".
+    """
+    doc = meta(slug, branch) if doc is None else doc
+    prop = doc.get("proposal") or {}
+    proxied = set(prop.get("proxy") or [])
+    src = source(slug, branch, proxy=recorded_proxy(doc)) if src is None else src
+
+    buy, unsleeve, proxy, free, box = [], [], [], [], []
+    for r in src["cards"]:
+        if r["state"] == IN_DECK:
+            continue
+        if r["state"] == BOX:
+            box.append({"name": r["name"],
+                        "where": [w["name"] for w in r["where"]]})
+        elif r["state"] == BUY:
+            buy.append({"name": r["name"]})
+        elif r["free"]:
+            free.append({"name": r["name"],
+                         "where": sorted({h["slug"] for h in r["where"]})})
+        else:
+            live = sorted({h["slug"] for h in r["where"] if not h["apart"]})
+            (proxy if r["name"] in proxied else unsleeve).append(
+                {"name": r["name"], "where": live})
+    return {"buy": buy, "unsleeve": unsleeve, "proxy": proxy,
+            "free": free, "box": box,
+            "blocking": len(src["unsourced"]),
+            "procurement": prop.get("procurement")}
+
+
+def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
+            anyway=False, reason=None, at=None):
+    """Accept this branch as the deck's next version, and wait for the cardboard.
+
+    THE STAGE THE BENCH HAD NO ROOM FOR. `commit`'s own docstring names the gap —
+    "a commit says 'this is the deck I am committed to running'; a merge says
+    'this is the deck'. The gap between them is CARDBOARD" — and `deck_info._next`
+    names it again: "a branch that is fully sourced is a decision waiting to be
+    taken; one that is not is a shopping list." Neither had anywhere to put it, so
+    a decided branch and an abandoned one rendered identically and the decision
+    lived in the pilot's head until they opened another deck.
+
+    IT MEASURES NOTHING. It records that a human said yes, freezes WHAT they said
+    yes to, and gets out of the way. Everything downstream — blocked, ready,
+    stale, outrun — is derived on read.
+
+    Two shas, because they answer different questions. `decklist_sha256` is the
+    list the pilot accepted; `accepted_on.decklist_sha256` is the list the report
+    measured. They must match to propose, and the first going out of date
+    afterwards is exactly what STALE means.
+    """
+    import datetime
+
+    from manamap.pilot import deck_versions
+    path = branch_root(slug) / branch
+    if not path.is_dir():
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    doc = meta(slug, branch) or {"slug": slug, "branch": branch}
+    if doc.get("merged"):
+        raise SystemExit(
+            f"{slug}/{branch} is already merged ({doc['merged'].get('at')}). "
+            f"There is nothing left to propose.")
+    if doc.get("proposal"):
+        p = doc["proposal"]
+        raise SystemExit(
+            f"{slug}/{branch} is already proposed as {p.get('as_version')} "
+            f"({p.get('at')}). `deck-branch {slug} withdraw {branch}` first.")
+
+    # THE TAG IS `deck_versions`' VOCABULARY, NOT A SECOND ONE. Its regexes
+    # already refuse `v1.2` and `1.2.3.4`, and a second copy here would drift.
+    if not deck_versions._RELEASE_RE.match(as_version or ""):
+        raise SystemExit(
+            f"--as must be a release tag like `v1.0.2`. Got: {as_version!r}"
+            + ("  (a near miss — releases are MAJOR.MINOR.PATCH)"
+               if deck_versions._NEARLY_RELEASE_RE.match(as_version or "") else ""))
+    existing = deck_versions.tags(slug) or {}
+    if as_version in existing:
+        raise SystemExit(
+            f"{as_version} already names V{existing[as_version].get('version')} "
+            f"on {slug}. A tag is a claim about one exact list — pick the next one.")
+
+    # A PROPOSAL RESTS ON A MEASUREMENT. Without one this is a preference, and
+    # the report is the only thing that can say what the branch costs and buys.
+    nc = load_json(deck_dir(slug, branch) / "net_change.json") or {}
+    if not nc:
+        raise SystemExit(
+            f"Nothing has measured {slug}/{branch}. A proposal is an acceptance of "
+            f"the net change, so there has to be one:\n"
+            f"  manamap pilot net-change {slug} --branch {branch} --write")
+    live = _sha_of_list(slug, branch)
+    if nc.get("decklist_sha256") and nc["decklist_sha256"] != live:
+        raise SystemExit(
+            f"net_change.json measured a different list than the one on disk. "
+            f"Re-run it before accepting:\n"
+            f"  manamap pilot net-change {slug} --branch {branch} --write")
+    rec = nc.get("recommendation") or {}
+    if rec.get("state") == "do not merge" and not anyway:
+        raise SystemExit(
+            f"The net change says DO NOT MERGE — {rec.get('because', '')}\n"
+            f"`--anyway --reason \"…\"` records why you are proposing it regardless.")
+    if anyway and not reason:
+        raise SystemExit("--anyway needs --reason: overriding the report should "
+                         "say what it is assuming.")
+
+    grade = nc.get("objective_grade") or {}
+    prop = {
+        "at": (at or datetime.date.today().isoformat()),
+        "as_version": as_version,
+        "why": why or "",
+        "base_version": deck_versions.report(slug).get("current_version"),
+        "decklist_sha256": live,
+        "accepted_on": {
+            "decklist_sha256": nc.get("decklist_sha256"),
+            "state": rec.get("state"),
+            "objective": nc.get("objective"),
+            "grade": grade.get("state"),
+            "reading": grade.get("reading"),
+            "harness": nc.get("harness"),
+        },
+    }
+    if proxy:
+        # NAMED CARDS, NOT A BOOLEAN. `--proxy` has been a per-invocation flag
+        # since branches shipped and was never persisted, so `list`, `deck-info`
+        # and the web roster all showed the non-proxy verdict however the pilot
+        # had decided. A decision about specific cardboard is recorded as
+        # specific cardboard.
+        s = source(slug, branch)
+        prop["proxy"] = sorted(
+            r["name"] for r in s["cards"]
+            if r["state"] == ELSEWHERE and not r["free"])
+    if ordered:
+        # A NOTE AND NOTHING ELSE. No date is parsed, no state is derived, and
+        # the blocker does not move: ownership means a BOX (`collection.py`), and
+        # an `ordered` state would make `owned_names()` return cards that are not
+        # in the house. It is here so the pilot does not buy the same six twice.
+        prop["procurement"] = {"at": (at or datetime.date.today().isoformat()),
+                               "note": ordered}
+    if reason:
+        prop["forced_reason"] = reason
+    doc["proposal"] = prop
+    doc["v"] = max(int(doc.get("v") or 2), 3)
+    _write_meta(slug, branch, doc)
+    return {"slug": slug, "branch": branch, "proposal": prop,
+            "state": branch_state(slug, branch, doc=doc),
+            "pull_list": pull_list(slug, branch, doc=doc)}
+
+
+def withdraw(slug, branch):
+    """Take the proposal back. The "changes requested" path.
+
+    Deletes the block and nothing else — the branch stays open, measured and
+    measurable. A withdrawn proposal is not a failure state and is deliberately
+    not recorded as one: the branch's own trail (`staged`, `commits`) already
+    says what happened to the list, and a graveyard of withdrawn intentions is
+    the `HISTORY.md` failure again.
+    """
+    doc = meta(slug, branch)
+    if not doc:
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    prop = doc.pop("proposal", None)
+    if not prop:
+        raise SystemExit(f"{slug}/{branch} is not proposed — nothing to withdraw.")
+    _write_meta(slug, branch, doc)
+    return {"slug": slug, "branch": branch, "withdrew": prop}
+
+
 def delete(slug, branch, force=False):
     """Remove a branch. Refuses an unmerged one without `--force`.
 
@@ -615,7 +944,11 @@ def delete(slug, branch, force=False):
 def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
           run_chain=True):
     """Make the branch the deck's list. Refuses what it cannot honestly apply."""
-    s = source(slug, branch, proxy=proxy)
+    # A RECORDED PROPOSAL ANSWERS THE PROXY QUESTION ALREADY. `--proxy` still
+    # works and still means "all of them"; without it, a proposal's named cards
+    # are honoured rather than re-asked at the last gate.
+    s = source(slug, branch,
+               proxy=proxy or recorded_proxy(meta(slug, branch)))
     text = _list_text(slug, branch)
     checked = check_in.analyze(slug, text)
     blocking = list(checked["blocking"])
@@ -627,7 +960,7 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
             if r["state"] == ELSEWHERE:
                 where = ", ".join(
                     h["slug"] + (" (LOCKED)" if h["locked"] else "") for h in r["where"])
-                detail.append(f"{n} — sleeved in {where}")
+                detail.append(f"{n} — sleeved in {where}")   # `free` never lands here
             else:
                 detail.append(n)
         blocking.append(
@@ -687,14 +1020,29 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # WHAT IS NOW STALE. The registry already carries the command for each stage,
     # so this reads `deck_status` rather than keeping a second list that can
     # disagree with it.
+    #
+    # THIS BLOCK HAD NEVER RUN. It called `deck_status.report(slug)` — a function
+    # that does not exist; the module defines `status`, `fleet`, `_fleet_main`
+    # and `main` — and the bare `except` below swallowed the AttributeError, so
+    # `out["stale"]` was unconditionally `[]` and the "written against the
+    # previous list" block in the CLI has never printed once. Two more bugs sat
+    # behind it: rows key their name as `stage`, not `key`, and `status()`
+    # returns a LIST rather than `{"stages": [...]}`. Nothing caught it because
+    # no branch in this repo has ever been merged, and a bare `except` around
+    # three chained assumptions cannot fail loudly enough to be noticed.
+    #
+    # The `except` stays — a missing corpus or strategy DB genuinely makes some
+    # gates unrunnable and a merge must not die for it — but it is now narrow
+    # enough that a typo cannot hide inside it.
     try:
         from manamap.pilot import deck_status
-        rep = deck_status.report(slug)
-        out["stale"] = [{"stage": r["key"], "how": r.get("how", "")}
-                        for r in rep.get("stages", [])
-                        if r.get("state") == "STALE"]
-    except Exception:                                   # pragma: no cover - env
+        rows = deck_status.status(slug)
+    except Exception as exc:                            # pragma: no cover - env
         out["stale"] = []
+        out["stale_unavailable"] = str(exc)
+    else:
+        out["stale"] = [{"stage": r["stage"], "how": r.get("how", "")}
+                        for r in rows if r.get("state") == "STALE"]
     return out
 
 
@@ -720,16 +1068,42 @@ def _print_source(s):
         print(f"  {label} ({len(rows)}):")
         for r in rows:
             if state == ELSEWHERE:
-                where = ", ".join(h["slug"] + (" — LOCKED" if h["locked"] else "")
-                                  for h in r["where"])
-                print(f"    {r['name']:38} {where}")
+                where = ", ".join(
+                    h["slug"] + (" (LOCKED)" if h["locked"] else "")
+                    + (" (in a pile)" if h["apart"] else "") for h in r["where"])
+                print(f"    {r['name']:38} {where}"
+                      + ("   FREE" if r["free"] else ""))
             elif state == BOX:
-                print(f"    {r['name']:38} {r['where']}")
+                print(f"    {r['name']:38} "
+                      + ", ".join(w["name"] for w in r["where"]))
             else:
                 print(f"    {r['name']}")
         print()
     print("  MERGEABLE" if s["mergeable"]
           else f"  NOT MERGEABLE — {len(s['unsourced'])} card(s) unsourced")
+
+
+def _print_pull_list(pl, slug, branch, as_version):
+    print(f"\n  THE PULL LIST — {branch}, proposed as {as_version}"
+          f"      ({pl['blocking']} blocking)")
+    order = (("BUY", pl["buy"], "nobody owns a copy — this is the money"),
+             ("UNSLEEVE", pl["unsleeve"],
+              "these come out of a deck that is still together"),
+             ("PROXY", pl["proxy"],
+              "you decided to move these across your own decks"),
+             ("FREE", pl["free"],
+              "only in a retired or broken-down deck — nothing to disturb"),
+             ("FROM A BOX", pl["box"], "already yours, nothing to do"))
+    for label, rows, note in order:
+        if not rows:
+            continue
+        extra = ""
+        if label == "BUY" and pl.get("procurement"):
+            extra = f"      noted: {pl['procurement']['note']}"
+        print(f"\n    {label} ({len(rows)})   {note}{extra}")
+        for r in rows:
+            where = ", ".join(r.get("where") or [])
+            print(f"      {r['name'][:36]:38} {where}")
 
 
 def main(args):
@@ -745,7 +1119,10 @@ def main(args):
             return
         print(f"BRANCHES — {slug} ({len(doc['branches'])})")
         for b in doc["branches"]:
-            mark = "mergeable" if b["mergeable"] else f"{len(b['unsourced'])} to source"
+            mark = b.get("state") or (
+                "mergeable" if b["mergeable"] else f"{len(b['unsourced'])} to source")
+            if b.get("proposal"):
+                mark += f"  → {b['proposal']['as_version']}"
             print(f"  {b['name']:24} opened {b['opened']}  +{b['add']:<3} -{b['out']:<3} "
                   f"[{b['size']:>3}]  {mark}")
             if b["why"]:
@@ -828,11 +1205,59 @@ def main(args):
             print(f"\n  MERGED {m['at']} into the list after V"
                   f"{m.get('into_version_before')}")
         return
+    if action == "propose":
+        got = propose(slug, branch,
+                      getattr(args, "as_version", None),
+                      why=getattr(args, "why", None),
+                      proxy=bool(getattr(args, "proxy", False)),
+                      ordered=getattr(args, "ordered", None),
+                      anyway=bool(getattr(args, "anyway", False)),
+                      reason=getattr(args, "reason", None))
+        if getattr(args, "json", False):
+            print(json.dumps(got, indent=1)); return
+        p = got["proposal"]
+        state, why = got["state"]
+        print(f"\n{state} — {slug}/{branch} as {p['as_version']}")
+        print(f"  {why}")
+        if p.get("why"):
+            print(f"  {p['why']}")
+        a = p["accepted_on"]
+        print(f"\n  accepted on the net change: {a.get('state')}"
+              + (f", objective {a['objective']['axis']} {a['objective']['op']} "
+                 f"{a['objective']['value']} {a.get('grade', '').upper()}"
+                 f" at {a.get('reading')}" if a.get("objective") else ""))
+        if p.get("proxy"):
+            print(f"  proxying {len(p['proxy'])}: {', '.join(p['proxy'])}")
+        _print_pull_list(got["pull_list"], slug, branch, p["as_version"])
+        print(f"\n  Nothing is merged. When the cardboard lands:\n"
+              f"      manamap pilot deck-branch {slug} merge {branch} --write\n"
+              f"  To take it back:  deck-branch {slug} withdraw {branch}")
+        return
+    if action == "withdraw":
+        got = withdraw(slug, branch)
+        w = got["withdrew"]
+        print(f"Withdrew the proposal on {slug}/{branch} "
+              f"({w.get('as_version')}, made {w.get('at')}).")
+        print("  The branch is untouched and still measured.")
+        return
     if action == "delete":
         got = delete(slug, branch, force=getattr(args, "force", False))
         print(f"Deleted {got['deleted']}")
         return
     if action == "show":
+        doc = meta(slug, branch)
+        state, why = branch_state(slug, branch, doc=doc)
+        prop = doc.get("proposal")
+        print(f"BRANCH — {slug}/{branch}   {state}")
+        print(f"  {why}")
+        if prop:
+            print(f"  proposed {prop['at']} as {prop['as_version']}"
+                  + (f" — {prop['why']}" if prop.get("why") else ""))
+            _print_pull_list(pull_list(slug, branch, doc=doc), slug, branch,
+                             prop["as_version"])
+            print()
+        # The list itself still prints, because `show` has always been the way to
+        # read a branch's 99 and a state line above it does not replace that.
         print(_list_text(slug, branch), end="")
         return
     if action == "diff":

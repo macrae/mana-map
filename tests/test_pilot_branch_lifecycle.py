@@ -290,3 +290,383 @@ def test_staging_never_touches_the_decks_own_list(probe):
                if not e.get("is_commander"))
     deck_branch.stage(SLUG, probe, out, ABSENT)
     assert deck_path.read_text() == before
+
+
+# ──────────────────────────────────────────────────────────────────────────
+# THE PROPOSAL — a branch that is DECIDED and waiting on cardboard
+#
+# Before `propose`, a branch had two observable conditions: the directory
+# exists, or `merged` is present — and `delete` was the only code in the repo
+# that read `merged`. A branch the pilot had accepted was byte-identical to a
+# half-finished experiment nobody had looked at, and `deck-info` said the same
+# sentence about both.
+#
+# EVERY STATE BELOW IS DERIVED AND NONE IS STORED. That is what makes a
+# proposal un-block itself: drop a card into a box and the blocker shrinks
+# without anyone touching the branch. Fixtures only — no test pins a real
+# experimental branch, which is the standing rule.
+# ──────────────────────────────────────────────────────────────────────────
+
+import hashlib
+
+
+def _branch(tmp_path, monkeypatch, cards, *, proposal=None, merged=None,
+            base_version=2, current_version=2, apart=(), boxed=(), held=None):
+    """A branch on disk, with the deck's version and collection stubbed.
+
+    Everything `branch_state` reads is faked at its source rather than at the
+    function, so the test drives the production path and not a mock of it.
+    """
+    from manamap.pilot import deck_branch as db
+    from manamap.pilot import deck_versions
+
+    root = tmp_path / "decks" / "d" / "branches" / "b"
+    root.mkdir(parents=True)
+    text = "".join(f"1 {c}\n" for c in cards)
+    (root / "decklist.txt").write_text(text, encoding="utf-8")
+    doc = {"slug": "d", "branch": "b", "v": 3, "opened": "2026-01-01",
+           "objective": {"axis": "damage_8", "op": ">=", "value": 40.0}}
+    if proposal is not None:
+        doc["proposal"] = dict(
+            {"at": "2026-01-02", "as_version": "v1.0.2",
+             "base_version": base_version,
+             "decklist_sha256": hashlib.sha256(text.encode()).hexdigest(),
+             "accepted_on": {"decklist_sha256": "x", "state": "a trade"}},
+            **proposal)
+    if merged is not None:
+        doc["merged"] = merged
+    (root / "branch.json").write_text(json.dumps(doc), encoding="utf-8")
+
+    monkeypatch.setattr(db, "meta", lambda s, b: doc)
+    monkeypatch.setattr(db, "deck_dir", lambda s, b=None: root)
+    monkeypatch.setattr(deck_versions, "report",
+                        lambda s: {"current_version": current_version})
+
+    def fake_source(slug, branch, proxy=False):
+        rows, unsourced = [], []
+        for c in cards:
+            if c in boxed:
+                rows.append({"name": c, "state": db.BOX, "free": False,
+                             "where": [{"kind": "box", "name": "A"}]})
+            elif c in apart:
+                rows.append({"name": c, "state": db.ELSEWHERE, "free": True,
+                             "where": [{"kind": "deck", "slug": "old",
+                                        "locked": False, "status": "retired",
+                                        "apart": True}]})
+            else:
+                rows.append({"name": c, "state": db.BUY, "free": False, "where": []})
+                unsourced.append(c)
+        if held is not None:
+            unsourced = list(held)
+        return {"cards": rows, "unsourced": unsourced,
+                "mergeable": not unsourced, "counts": {}, "free": len(apart)}
+
+    monkeypatch.setattr(db, "source", fake_source)
+    return doc
+
+
+def test_a_branch_with_no_proposal_is_an_experiment_not_a_decision(
+        tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], boxed=["Sol Ring"])
+    state, why = db.branch_state("d", "b")
+    assert state == db.OPEN
+    assert "experiment" in why
+
+
+def test_a_proposal_with_cards_outstanding_is_blocked(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring", "Mana Crypt"], proposal={})
+    state, why = db.branch_state("d", "b")
+    assert state == db.PROPOSED_BLOCKED
+    assert "2 card(s)" in why
+
+
+def test_a_proposal_with_everything_sourced_is_ready_to_merge(
+        tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={}, boxed=["Sol Ring"])
+    state, why = db.branch_state("d", "b")
+    assert state == db.PROPOSED_READY
+    assert "merge" in why
+
+
+def test_a_card_only_in_a_broken_down_deck_does_not_block(tmp_path, monkeypatch):
+    """3a, AND ITS CONTROL IS THE TEST BELOW.
+
+    `deck-branch merge` refused Ur-Dragon on twelve cards, four of which sit in
+    `sisay` and `hapatra` — decks that do not physically exist. The pilot was
+    being told to unsleeve a deck that is already in a pile.
+    """
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={}, apart=["Sol Ring"])
+    assert db.branch_state("d", "b")[0] == db.PROPOSED_READY
+
+
+def test_a_card_in_a_deck_that_is_still_together_does_block(tmp_path, monkeypatch):
+    """THE CONTROL. Without it the fix above could be "nothing ever blocks"."""
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
+            held=["Sol Ring"])
+    assert db.branch_state("d", "b")[0] == db.PROPOSED_BLOCKED
+
+
+def test_a_list_that_moves_after_it_was_accepted_goes_stale(
+        tmp_path, monkeypatch):
+    """The merge-request "new commits pushed" case, and it is mechanical: the
+    proposal freezes the sha it was accepted on."""
+    from manamap.pilot import deck_branch as db
+    doc = _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
+                  boxed=["Sol Ring"])
+    assert db.branch_state("d", "b")[0] == db.PROPOSED_READY
+    doc["proposal"]["decklist_sha256"] = "something else entirely"
+    state, why = db.branch_state("d", "b")
+    assert state == db.PROPOSED_STALE
+    assert "changed since" in why
+
+
+def test_a_deck_that_moved_on_outruns_the_proposal(tmp_path, monkeypatch):
+    """THE MERGE-CONFLICT ANALOGUE, and it closes a real hole: `base_version`
+    has been written by `new()` since branches shipped and NO CODE HAS EVER
+    COMPARED IT TO ANYTHING. If another branch merges first, the version this
+    proposal claims is taken."""
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
+            boxed=["Sol Ring"], base_version=2, current_version=3)
+    state, why = db.branch_state("d", "b")
+    assert state == db.PROPOSED_OUTRUN
+    assert "V2" in why and "V3" in why
+
+
+def test_merged_outranks_everything(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
+            merged={"at": "2026-02-01", "into_version_before": 2},
+            base_version=1, current_version=9)
+    assert db.branch_state("d", "b")[0] == db.MERGED
+
+
+def test_every_state_the_function_can_return_is_declared():
+    """A state a caller cannot enumerate is one the frontend will not style."""
+    from manamap.pilot import deck_branch as db
+    for name in ("OPEN", "PROPOSED_BLOCKED", "PROPOSED_READY", "PROPOSED_STALE",
+                 "PROPOSED_OUTRUN", "MERGED"):
+        assert getattr(db, name) in db.BRANCH_STATES
+    assert len(set(db.BRANCH_STATES)) == len(db.BRANCH_STATES)
+
+
+# ── the pull list ────────────────────────────────────────────────────────
+
+def test_the_pull_list_separates_costs_that_are_not_the_same_cost(
+        tmp_path, monkeypatch):
+    """BUY is money, UNSLEEVE takes a deck apart, PROXY is a decision already
+    recorded, FREE is cardboard in a pile. Reported as one integer they read as
+    one problem — which is how `elsewhere` came to mean both "unsleeve kianne"
+    and "it is in the hapatra pile"."""
+    from manamap.pilot import deck_branch as db
+    _branch(tmp_path, monkeypatch, ["Buy Me", "In A Box", "Loose"],
+            proposal={}, boxed=["In A Box"], apart=["Loose"])
+    pl = db.pull_list("d", "b")
+    assert [r["name"] for r in pl["buy"]] == ["Buy Me"]
+    assert [r["name"] for r in pl["box"]] == ["In A Box"]
+    assert [r["name"] for r in pl["free"]] == ["Loose"]
+    assert pl["unsleeve"] == [] and pl["proxy"] == []
+
+
+def test_a_proxied_card_is_filed_under_proxy_not_unsleeve(tmp_path, monkeypatch):
+    """`--proxy` was a per-invocation flag and was never persisted, so `list`,
+    `deck-info` and the web roster showed the non-proxy verdict however the
+    pilot had decided. A proposal records the CARDS, not a boolean."""
+    from manamap.pilot import deck_branch as db
+
+    def source(slug, branch, proxy=False):
+        return {"cards": [{"name": "Bloom Tender", "state": db.ELSEWHERE,
+                           "free": False,
+                           "where": [{"kind": "deck", "slug": "kinnan",
+                                      "locked": False, "status": None,
+                                      "apart": False}]}],
+                "unsourced": [], "mergeable": True, "counts": {}, "free": 0}
+
+    _branch(tmp_path, monkeypatch, ["Bloom Tender"],
+            proposal={"proxy": ["Bloom Tender"]})
+    monkeypatch.setattr(db, "source", source)
+    pl = db.pull_list("d", "b")
+    assert [r["name"] for r in pl["proxy"]] == ["Bloom Tender"]
+    assert pl["unsleeve"] == []
+
+
+def test_the_recorded_proxy_is_names_and_never_a_boolean():
+    from manamap.pilot import deck_branch as db
+    assert db.recorded_proxy({"proposal": {"proxy": ["A", "B"]}}) == ["A", "B"]
+    assert db.recorded_proxy({"proposal": {}}) is False
+    assert db.recorded_proxy({}) is False
+    assert db.recorded_proxy(None) is False
+
+
+# ── propose and withdraw: the refusals ───────────────────────────────────
+
+def _proposable(tmp_path, monkeypatch, *, nc=None, tags=None, current=2):
+    """A branch that `propose` would accept, so each test can break one thing."""
+    from manamap.pilot import deck_branch as db
+    from manamap.pilot import deck_versions
+
+    root = tmp_path / "b"
+    root.mkdir(parents=True)
+    text = "1 Sol Ring\n"
+    (root / "decklist.txt").write_text(text, encoding="utf-8")
+    sha = hashlib.sha256(text.encode()).hexdigest()
+    doc = {"slug": "d", "branch": "b", "v": 2, "opened": "2026-01-01"}
+    report = {"decklist_sha256": sha, "recommendation": {"state": "a trade"},
+              "objective": {"axis": "damage_8", "op": ">=", "value": 40.0},
+              "objective_grade": {"state": "met", "reading": 46.4},
+              "harness": {"iterations": 10000, "seed": 1}}
+    if nc is not None:
+        report = nc
+
+    monkeypatch.setattr(db, "branch_root", lambda s: tmp_path)
+    monkeypatch.setattr(db, "meta", lambda s, b: doc)
+    monkeypatch.setattr(db, "deck_dir", lambda s, b=None: root)
+    monkeypatch.setattr(db, "_write_meta", lambda s, b, d: doc.update(d))
+    monkeypatch.setattr(db, "load_json", lambda p, *a, **k: report)
+    monkeypatch.setattr(db, "pull_list",
+                        lambda s, b, doc=None, src=None: {"blocking": 0})
+    monkeypatch.setattr(db, "branch_state",
+                        lambda s, b, doc=None, src=None: (db.PROPOSED_READY, "ok"))
+    monkeypatch.setattr(db, "source", lambda s, b, proxy=False: {
+        "cards": [], "unsourced": [], "mergeable": True, "counts": {}, "free": 0})
+    monkeypatch.setattr(deck_versions, "report",
+                        lambda s: {"current_version": current})
+    monkeypatch.setattr(deck_versions, "tags", lambda s: tags or {})
+    return doc
+
+
+def test_a_proposal_freezes_the_report_it_was_accepted_on(tmp_path, monkeypatch):
+    """The evidence and the decision are the same act, so the decision carries
+    the evidence. A proposal that only said "yes" could not later be shown to
+    have been made against a list that has since moved."""
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch)
+    got = db.propose("d", "b", "v1.0.2", why="because", at="2026-01-02")
+    p = got["proposal"]
+    assert p["as_version"] == "v1.0.2" and p["why"] == "because"
+    assert p["decklist_sha256"] and p["accepted_on"]["decklist_sha256"]
+    assert p["accepted_on"]["state"] == "a trade"
+    assert p["accepted_on"]["grade"] == "met"
+    assert p["base_version"] == 2
+
+
+def test_a_proposal_needs_a_measurement(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch, nc={})
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.2")
+    assert "net-change" in str(e.value)
+
+
+def test_a_report_that_measured_a_different_list_is_refused(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch,
+                nc={"decklist_sha256": "stale", "recommendation": {"state": "merge"}})
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.2")
+    assert "different list" in str(e.value)
+
+
+def test_a_do_not_merge_needs_a_reason_to_override(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    text_sha = hashlib.sha256(b"1 Sol Ring\n").hexdigest()
+    _proposable(tmp_path, monkeypatch,
+                nc={"decklist_sha256": text_sha,
+                    "recommendation": {"state": "do not merge", "because": "worse"}})
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.2")
+    assert "DO NOT MERGE" in str(e.value)
+    with pytest.raises(SystemExit) as e2:
+        db.propose("d", "b", "v1.0.2", anyway=True)
+    assert "--reason" in str(e2.value)
+    got = db.propose("d", "b", "v1.0.2", anyway=True, reason="the log disagrees")
+    assert got["proposal"]["forced_reason"] == "the log disagrees"
+
+
+@pytest.mark.parametrize("bad", ["1.0", "v1", "latest", "v1.2.3.4", ""])
+def test_a_version_that_is_not_a_release_tag_is_refused(tmp_path, monkeypatch, bad):
+    """`deck_versions` owns this vocabulary and already refuses near misses. A
+    second copy of the regex here would drift from it."""
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch)
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", bad)
+    assert "release tag" in str(e.value)
+
+
+def test_a_version_already_taken_is_refused(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch, tags={"v1.0.2": {"version": 2}})
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.2")
+    assert "already names V2" in str(e.value)
+
+
+def test_proposing_twice_is_refused_and_withdraw_is_the_way_back(
+        tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    doc = _proposable(tmp_path, monkeypatch)
+    db.propose("d", "b", "v1.0.2", at="2026-01-02")
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.3")
+    assert "already proposed" in str(e.value) and "withdraw" in str(e.value)
+    got = db.withdraw("d", "b")
+    assert got["withdrew"]["as_version"] == "v1.0.2"
+    assert "proposal" not in doc
+    # And the branch is untouched: its objective and trail survive.
+    assert doc["opened"] == "2026-01-01"
+
+
+def test_withdrawing_nothing_says_so(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch)
+    with pytest.raises(SystemExit) as e:
+        db.withdraw("d", "b")
+    assert "not proposed" in str(e.value)
+
+
+def test_a_merged_branch_cannot_be_proposed(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    doc = _proposable(tmp_path, monkeypatch)
+    doc["merged"] = {"at": "2026-02-01"}
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.3")
+    assert "already merged" in str(e.value)
+
+
+# ── 3b: the interface the merge post-amble depends on ────────────────────
+
+def test_deck_status_exposes_what_merge_reads_from_it():
+    """THE ASSERTION WHOSE ABSENCE LET A WHOLE BLOCK NEVER RUN.
+
+    `merge()` called `deck_status.report(slug)` — a function that does not
+    exist — inside a bare `except`, so `out["stale"]` was unconditionally `[]`
+    and the "written against the previous list" warning has never printed once.
+    Two more bugs sat behind it: rows key their name as `stage`, not `key`, and
+    `status()` returns a LIST rather than `{"stages": [...]}`. Nothing caught it
+    because no branch in this repo has ever been merged.
+
+    This drives the real interface rather than re-deriving it, so re-introducing
+    any of the three failures fails here.
+    """
+    from manamap.pilot import deck_status
+    assert not hasattr(deck_status, "report"), (
+        "merge() assumed this existed; if it is added, fix the call site too")
+    assert callable(deck_status.status)
+
+
+@requires_deck
+def test_the_stale_rows_merge_reports_are_shaped_the_way_it_reads_them():
+    from manamap.pilot import deck_status
+    rows = deck_status.status(SLUG)
+    assert isinstance(rows, list) and rows
+    checked = 0
+    for r in rows:
+        assert "stage" in r and "state" in r, r
+        checked += 1
+    assert checked >= 10

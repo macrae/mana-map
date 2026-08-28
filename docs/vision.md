@@ -146,7 +146,11 @@ seeded Forge games, one record) · *experiment* (two versions, one table, one ar
 *stack* (a scenario + its cited resolution + the checker's verdict) · *game state v2*
 (seats that can act; CR step names; actions) · *the log* (authored), *the debrief*
 (derived) · *prescription* (one question to the doctor) · *recon* (dated field
-reconnaissance) · *the collection* (your physical boxes, `data/collection/`) ·
+reconnaissance) · *the collection* (your physical boxes, `data/collection/`) · *branch* (a candidate
+99 you cannot yet sleeve) · *proposal* (a branch the pilot has ACCEPTED and cannot
+merge yet — the decision is frozen, the blocker is cardboard and is recomputed on
+every read) · *the pull list* (what a proposal still needs: buy / unsleeve / proxy
+/ free) ·
 *the doctor / the skeptic / the resolver / the checker / the engineer / the critic*
 (agents, always in pairs where a claim reaches a decklist or a ✓).
 

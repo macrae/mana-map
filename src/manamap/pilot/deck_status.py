@@ -306,6 +306,10 @@ VALIDATED = {
     # the validator test now recurses into `branches/*` — before that the whole
     # branch tree was gated by nothing.
     "net_change.json": "manamap.pilot.validate_net_change",
+    # THE LAST TRACKED PILOT ARTIFACT THAT HAD NO GATE. It holds the objective a
+    # branch is graded against and the pilot's acceptance of it, and nothing
+    # checked either until `propose` shipped.
+    "branch.json": "manamap.pilot.validate_branch",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
     # NOT a lifecycle stage, and that is exactly why it was missing: the test

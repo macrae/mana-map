@@ -24,7 +24,7 @@ supported. The magazine that used to be the product is a frozen legacy renderer 
 compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 69 `manamap pilot`
+Scale (derived; `tests/test_docs_counts.py` polices these): 83 `manamap pilot`
 subcommands, 21 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
@@ -134,6 +134,19 @@ not get to grade anything. Full record: `docs/gotchas-bench.md`.
 Ur-Dragon's objective moved from `engine_online_5 >= 0.22` (met **4.4x over**
 while the lift spanned zero) to **`damage_8 >= 40.0`** — the opponent's starting
 life, a number with meaning outside this branch. v1.0.1 reads 30.81 and misses.
+
+### DONE — the merge request: `propose`
+
+**2026-08-28.** A branch is now `OPEN` / `PROPOSED · BLOCKED` / `READY` / `STALE`
+/ `OUTRUN` / `MERGED`, all derived and none stored, so a proposal un-blocks
+itself as cards land in a box. `deck-branch <slug> propose <name> --as v1.0.2`
+freezes the decision (which list, which report, which grade) and hands over a
+**pull list** split by what each bucket costs. `validate-branch` gates it —
+`branch.json` was the last tracked pilot artifact without one.
+
+Ur-Dragon's `eminence-v3` is proposed as **v1.0.2**, blocked on **6 cards**
+(down from 12: four sat in decks that do not physically exist, and five more the
+pilot had already agreed to proxy). Full record: `docs/gotchas-bench.md`.
 
 ### OPEN — three diagnoses are stale and need the doctor, not a patch
 

@@ -1,7 +1,7 @@
 {
  "slug": "ur-dragon",
  "branch": "eminence-v3",
- "v": 2,
+ "v": 3,
  "opened": "2026-08-27",
  "why": "Converge on eminence: every dragon shifts left by one from the command zone, permanently, where nothing can remove it. Two win conditions already in the deck \u2014 ETB/attack-trigger burn (Terror of the Peaks, Scourge of Valkas, Dragon Tempest) and Ur-Dragon commander damage. Stays big-dragon heavy; this is not a pivot to small dragons. Cut counterspells, stack interaction and non-flyer removal; add dorks, a protection package, flyer-only removal, and just enough low-end dragons to move the first-castable-dragon turn. Treasures stay as incidental ramp, never an engine.",
  "objective": {
@@ -171,5 +171,39 @@
    },
    "why_changed": "the axis was met 4.4x over while the branch's engine lift spanned zero \u2014 the objective was grading assembly of a declaration rather than the burn the deck is built for"
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-08-28",
+  "as_version": "v1.0.2",
+  "why": "measured, accepted, waiting on cardboard",
+  "base_version": 2,
+  "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+  "accepted_on": {
+   "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+   "state": "a trade",
+   "objective": {
+    "axis": "damage_8",
+    "op": ">=",
+    "value": 40.0,
+    "why": "THE ENGINE, AND THE THING IT EXISTS TO DO. Eminence shifts every Dragon left by one from the command zone, permanently, where nothing can remove it; ramp \u2014 dorks, rocks, lands \u2014 turns that discount into more than one Dragon a turn; and then the Dragons burn the table down, on entry (Terror of the Peaks, Scourge of Valkas, Dragon Tempest, Firespitter Whelp), in combat with haste and double strike (Temur Ascendancy, Scourge of the Throne, Atarka, Thrakkus), and doubled on the way out (Twinflame Tyrant, Solphim). We cometh to burn your fields down.\n\nMEASURED ON THE OUTPUT, NOT ON THE ASSEMBLY, and that is a correction. The old objective was `engine_online_5 >= 0.22` \u2014 a membership axis asking whether the parts were DRAWN. It was met 4.4x over while the engine lift spanned zero, because a declaration can always be made easy enough to hit. `damage_8` has no ceiling and cannot be gamed by rewording a target.\n\n40.0 IS THE OPPONENT'S STARTING LIFE, not a number read off this branch. The claim is: by the end of turn eight, the average game has burned one whole opponent down. v1.0.1 reads 30.81 and misses it."
+   },
+   "grade": "met",
+   "reading": 46.4414,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "proxy": [
+   "Bloom Tender",
+   "Delighted Halfling",
+   "Forbidden Orchard",
+   "Spire of Industry",
+   "Tarnished Citadel"
+  ],
+  "procurement": {
+   "at": "2026-08-28",
+   "note": "6 ordered 2026-08-28 via TCGplayer"
+  }
+ }
 }

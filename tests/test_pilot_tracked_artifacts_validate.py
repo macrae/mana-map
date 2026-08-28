@@ -94,7 +94,7 @@ NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
 #: named here rather than skipped silently, because "no case" and "no gate" look
 #: identical from the outside.
 BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
-                "net_change.json"}
+                "net_change.json", "branch.json"}
 
 
 def _is_retired(deck_dir):

@@ -101,6 +101,10 @@ manamap pilot validate-net-change <slug> --branch N
                                         #   nothing under the MDE may be ranked, nothing
                                         #   over it may be called noise, and an
                                         #   unavailable block owes a reason
+manamap pilot validate-branch <slug> --branch N
+                                        #   the objective is falsifiable and names an
+                                        #   axis the deck PRODUCES; a proposal says what
+                                        #   it means to become and freezes both shas
 manamap pilot calibrate [--iterations N] [--json]
                                         #   DOES THE MODEL PREDICT ANYTHING? Correlates every
                                         #   deck's goldfish figures against its real Forge win
@@ -142,6 +146,28 @@ manamap pilot assess <slug> [--branch N] --pool <file|library|->
 # only), `branch/upgrades` ranks the swaps, `branch/stage` accepts one, and
 # `branch/net-change` measures the whole branch. MERGE AND DELETE STAY HERE —
 # a merge rewrites decklist.txt and runs the regeneration chain.
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2 [--why "…"]
+                              [--proxy] [--ordered "…"] [--anyway --reason "…"]
+                                        #   THE MERGE REQUEST: accept this branch as the
+                                        #   deck's next version and wait for the cardboard.
+                                        #   Freezes the DECISION (which list, which report,
+                                        #   which grade) and leaves the BLOCKER live — it
+                                        #   is recomputed from your boxes on every read, so
+                                        #   a card landing in one clears it with nobody
+                                        #   touching the branch. Refuses an unmeasured
+                                        #   branch, a report that measured a different
+                                        #   list, and a taken version tag.
+                                        #   `--proxy` records WHICH cards you will move
+                                        #   across your own decks (it was a bare flag and
+                                        #   was never persisted, so every surface showed
+                                        #   the non-proxy verdict however you had decided).
+                                        #   `--ordered` is a NOTE and nothing else:
+                                        #   ownership means a box, so it never moves the
+                                        #   blocker — it is there so you do not buy the
+                                        #   same six cards twice.
+manamap pilot deck-branch <slug> withdraw <name>
+                                        #   take the proposal back; the branch stays open,
+                                        #   measured and measurable
 manamap pilot mana-fit <slug> [--branch N] [--owned]
                                         #   RIGHT-SIZE THE MANA TO THE SPELLS THAT ARE
                                         #   ACTUALLY IN THE LIST. `mana-analysis` measures
@@ -276,8 +302,13 @@ data/decks/<slug>/             all tracked:
                                                      pile, read by `candidates --pool library`
                                branches/<name>/      A CANDIDATE 99 you cannot yet sleeve —
                                  decklist.txt          the candidate list
-                                 branch.json           v2: the OBJECTIVE the branch must meet,
-                                                       the commit trail, and `merged` once it lands
+                                 branch.json           v3: the OBJECTIVE the branch must meet,
+                                                       the commit trail, the PROPOSAL (the
+                                                       version it means to become, the report
+                                                       it was accepted on, the cards you will
+                                                       proxy) and `merged` once it lands.
+                                                       Gated by `validate-branch` — it was the
+                                                       last tracked pilot artifact with none
                                  net_change.json       THE REPORT A PURCHASE RESTS ON — the branch
                                                        against the deck, every row with its MDE and
                                                        its DEFINITION, the objective GRADED, the

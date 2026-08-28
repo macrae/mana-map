@@ -64,6 +64,24 @@
          + chip('pull ' + d.pull.length + ' · add ' + d.add.length, 'warn');
   }
 
+  /* AN OPEN PROPOSAL, which the landing page could not see at all. A branch
+   * surfaced here only as prose in `info.next[0]`, in the fleet table, if it
+   * happened to sort first — so the one thing the pilot is actively waiting on
+   * was the least visible thing on the bench. */
+  function proposalOf(info) {
+    return ((info && info.branches) || []).filter(function (b) {
+      return b.proposal && b.state !== 'MERGED';
+    })[0] || null;
+  }
+
+  function proposalChip(info) {
+    var b = proposalOf(info);
+    if (!b) return '';
+    var left = (b.pull_list || {}).blocking || 0;
+    return chip(b.proposal.as_version + ' proposed' + (left ? ' · ' + left + ' out' : ' · ready'),
+                left ? 'warn' : 'ok');
+  }
+
   /* What the bench knows about this deck. Counts only — a number here is an
    * invitation to open the deck, never a claim about it. */
   function evidenceChips(e, info) {
@@ -145,7 +163,8 @@
       +   heading
       +   '<div class="wb-sub">' + esc(e.commander || '') + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
-      +   '<div class="wb-chips">' + lockChips(e.paper) + evidenceChips(e, info) + '</div>'
+      +   '<div class="wb-chips">' + lockChips(e.paper) + proposalChip(info)
+      +     evidenceChips(e, info) + '</div>'
       +   links
       + '</div></div>';
   }
@@ -205,6 +224,16 @@
                 + ((i && i.diagnosis && i.diagnosis.stale) ? 1 : 0)
                 + ((st.invalid || []).length) + ((st.stale || []).length);
         return [e.status ? 1 : 0, -(missing + bad * 3)];
+      }
+    },
+    cardboard: {
+      label: 'Waiting on cardboard',
+      key: function (e, i) {
+        var b = proposalOf(i);
+        // Proposals first, the closest to ready first inside that — a deck one
+        // card away is a different errand from one eight cards away.
+        return [e.status ? 1 : 0, b ? 0 : 1,
+                b ? ((b.pull_list || {}).blocking || 0) : 1e9];
       }
     },
     optimisations: {
@@ -416,8 +445,19 @@
     if (state.view === 'table') {
       html = toggle + fleetTable(decks, infos, state.sort);
     } else {
+      // WAITING ON CARDBOARD SITS ABOVE SLEEVED, because it is the only rack
+      // that names something the pilot is blocked on rather than something they
+      // could do. A deck appears here AND in its own rack — the chip marks it
+      // wherever it is, the rack collects everything you are waiting for.
+      var waiting = decks.filter(function (e) {
+        return proposalOf(infos[e.slug]);
+      });
       html = toggle
         + draftRack(drafts)
+        + rack('Waiting on cardboard',
+               'Decided, measured and accepted — these are lists you cannot '
+               + 'sleeve yet. The pull list is on each deck\u2019s dossier.',
+               waiting, infos)
         + rack('Sleeved', 'Built in paper — you can play these tonight.',
                locked, infos)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '

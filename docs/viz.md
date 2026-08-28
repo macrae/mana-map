@@ -1,22 +1,31 @@
 # Visualization
 
-Static frontend in `viz/` — no build tooling. **Two independent pages** that share a
-directory and nothing else:
+Static frontend in `viz/` — no build tooling. **Four pages in two families**, sharing a
+directory and, between the families, nothing else:
 
 - **`index.html` — the card map.** One renderer: `<canvas>` + d3 v7 throughout, the atlas
   via `js/render/canvas.js` and the graph modes via `js/force.js`. Plotly is gone. Dark theme
   (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
-- **`deck.html` — the deck dossier.** No `mana-map.js` at all; the design tokens in
-  `css/tokens.css` (ported from `pilot/design.py`, the legacy page's stylesheet) plus Google
-  Fonts. This is the surface the workbench's deck page grows into (notes, versions, sim,
-  prescriptions, the compact manual as a tab — `docs/manual-v5-spec.md`).
+- **`workbench.html` — the landing page.** Every deck, racked by whether it is sleeved,
+  waiting on cardboard, on the bench or history; or one fleet table with five sorts. Reads
+  every deck's `info.json`.
+- **`deck.html` — the deck dossier.** One deck, one screen.
+- **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
+  the measured table with each row's definition, reward/risk/cost, the bill.
+
+The last three share `css/tokens.css` (ported from `pilot/design.py`, the legacy page's
+stylesheet) plus Google Fonts, load no `mana-map.js`, and export no globals except test
+hooks. **They compute nothing**: every figure is composed by the Python and read out of a
+committed artifact, which is what lets them work on a static host.
 
 ## Serving
 
 ```bash
 python -m http.server 8000
-# http://localhost:8000/viz/index.html               the card map
-# http://localhost:8000/viz/deck.html?deck=heliod    a deck's dossier
+# http://localhost:8000/viz/workbench.html                       the landing page
+# http://localhost:8000/viz/index.html                           the card map
+# http://localhost:8000/viz/deck.html?deck=heliod                a deck's dossier
+# http://localhost:8000/viz/branch.html?deck=X&branch=Y          a candidate 99
 ```
 
 **Must serve from the repo root**: the JS fetches `../data/<file>` relative to `viz/`. This mirrors the GitHub Pages deployment, which serves the repo as-is — `viz/` and `data/` must stay top-level siblings, and all fetch URLs must remain `../data/<name>`.
@@ -27,22 +36,27 @@ python -m http.server 8000
 |------|------|
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
 | `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~520 lines) |
-| `viz/js/mana-map.js` | Explore mode (~2,610 lines). IIFE; exposes shared state as `window.MM` |
+| `viz/js/mana-map.js` | Explore mode (~3,200 lines). IIFE; exposes shared state as `window.MM` |
 | `viz/js/drill.js` | Drill mode (~430 lines). IIFE; exposes `window.Drill`; depends on `MM` |
 | `viz/js/stage.js` | Shared canvas primitives (~260 lines). Surface, camera, labels, typed edges |
-| `viz/js/session.js` | Focus, **library**, commander (~230 lines). One answer each; force registers as its graph provider |
+| `viz/js/session.js` | Focus, **library**, commander (~560 lines). One answer each; force registers as its graph provider |
 | `viz/js/force.js` | The graph engine (~1,430 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/discovery.js` | Discover — the front door (~990 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
+| `viz/js/discovery.js` | Discover — the front door (~1,180 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
 | `viz/js/render/canvas.js` | The map renderer (~1,150 lines). The ONLY renderer; owns the aura + ambient drift |
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
-| `viz/js/build.js` | Build (~1,300 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
+| `viz/js/build.js` | Build (~1,780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~330 lines). Shared by `deck.html` AND `workbench.html` |
-| `viz/js/deck-view.js` | The dossier (~860 lines). IIFE; no globals exported, no `MM` dependency |
+| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~810 lines). Shared by `deck.html`, `workbench.html` AND `branch.html` |
+| `viz/js/deck-view.js` | The dossier (~1,580 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
-| `viz/js/workbench.js` | The workbench (~410 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
+| `viz/js/workbench.js` | The landing page (~520 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
+| `viz/branch.html` | Branch shell: the objective mount and the panel grid |
+| `viz/js/branch-view.js` | The branch workbench (~590 lines). IIFE; exposes `window.Branch` for the browser suite |
+| `viz/js/shell.js` | The library drawer (~660 lines), mounted on every page; `Shell.cardImageUrl` is the name-only art helper |
+| `viz/js/api.js` | The local-server probe (~105 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
 
-**Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html` loads only `deck-view.js` and shares no code with the map.
+**Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html`, `workbench.html` and `branch.html` share `shell.js`, `session.js` and
+`api.js` with each other and no code at all with the map.
 
 ## The three map modes
 

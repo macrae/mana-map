@@ -448,13 +448,20 @@ def test_a_card_in_a_retired_deck_is_not_a_deck_you_have_to_take_apart():
     """`elsewhere` is two costs wearing one integer. A card in a broken-down or
     retired deck is loose cardboard; one in a deck that is still together costs
     that deck the card, and a pilot deciding whether to pull sleeves needs the
-    two apart."""
+    two apart.
+
+    `free` and `apart` are `deck_branch.source`'s answer, not a second one here:
+    this block used to carry its own `FREE_TO_RAID`, which was a fourth copy of
+    a set `common.UNPLAYABLE_STATUSES` already held.
+    """
     doc = _skeleton(bill={"counts": {"elsewhere": 2, "buy": 1}, "cards": [
-        {"name": "Faeburrow Elder", "state": "elsewhere",
-         "where": [{"slug": "sisay", "status": "retired"}]},
-        {"name": "Bloom Tender", "state": "elsewhere",
-         "where": [{"slug": "kinnan", "status": None}]},
-        {"name": "Twinflame Tyrant", "state": "buy", "where": None}]})
+        {"name": "Faeburrow Elder", "state": "elsewhere", "free": True,
+         "where": [{"kind": "deck", "slug": "sisay", "status": "retired",
+                    "apart": True}]},
+        {"name": "Bloom Tender", "state": "elsewhere", "free": False,
+         "where": [{"kind": "deck", "slug": "kinnan", "status": None,
+                    "apart": False}]},
+        {"name": "Twinflame Tyrant", "state": "buy", "free": False, "where": []}]})
     got = net_change.cost(doc)
     assert [r["name"] for r in got["free_to_raid"]] == ["Faeburrow Elder"]
     assert [r["name"] for r in got["must_unsleeve"]] == ["Bloom Tender"]
@@ -466,18 +473,25 @@ def test_a_card_in_several_decks_reports_only_the_ones_still_together():
     """Forbidden Orchard sits in six decks, two of them apart. Naming all six
     overstates what merging disturbs."""
     doc = _skeleton(bill={"counts": {}, "cards": [
-        {"name": "Forbidden Orchard", "state": "elsewhere", "where": [
-            {"slug": "blar", "status": None},
-            {"slug": "hapatra", "status": "broken-down"},
-            {"slug": "sisay", "status": "retired"}]}]})
+        {"name": "Forbidden Orchard", "state": "elsewhere", "free": False,
+         "where": [
+             {"kind": "deck", "slug": "blar", "status": None, "apart": False},
+             {"kind": "deck", "slug": "hapatra", "status": "broken-down",
+              "apart": True},
+             {"kind": "deck", "slug": "sisay", "status": "retired",
+              "apart": True}]}]})
     entry = net_change.cost(doc)["must_unsleeve"][0]
     assert entry["decks"] == ["blar"]
 
 
-def test_every_state_that_frees_a_card_is_declared():
-    """A status that means "already apart" and is not in this tuple silently
-    becomes a deck the pilot is told to take apart."""
-    assert net_change.FREE_TO_RAID == ("retired", "broken-down")
+def test_the_cost_block_no_longer_decides_what_apart_means():
+    """ONE PREDICATE, ONE HOME. Four modules answered "is this deck in a pile"
+    and could disagree; `common.deck_is_apart` decides, `deck_branch.source`
+    derives it per row, and this reads the row."""
+    assert not hasattr(net_change, "FREE_TO_RAID")
+    from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_is_apart
+    assert UNPLAYABLE_STATUSES == frozenset({"broken-down", "retired"})
+    assert callable(deck_is_apart)
 
 
 # --------------------------------------------------------------------------

@@ -13,9 +13,10 @@ citations (`/resolve-stack`). Around that: a deterministic builder, `deck-audit`
 axes, `card-search` over the corpus, dated `deck-recon`, versions from git, a captain's log,
 and agents that turn a question into a priced, checked answer.
 
-**Two frontends over one data layer**: the card atlas (`viz/index.html`) and the **deck
-page** (`viz/deck.html?deck=<slug>`) — the workbench surface, rendering `info.json` with
-sim figures that carry their intervals. The magazine that used to be the product is a
+**Four pages over one data layer**: the landing page (`viz/workbench.html`), the card
+atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`) and the branch
+workbench (`viz/branch.html`) — all rendering committed artifacts, with sim figures that
+carry their intervals. The magazine that used to be the product is a
 **frozen legacy renderer** until the compact deck page (`docs/manual-v5-spec.md`) replaces
 it. Runs locally on a Mac; the Python makes zero LLM calls.
 
@@ -102,6 +103,9 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #                    what to do next — composes, computes nothing.
                       #                    `--write` emits info.json, which the DECK PAGE
                       #                    fetches (committed, staleness-gated, no versions)
+                      #   deck_branch.py   a candidate 99 you cannot yet sleeve: stage,
+                      #                    commit, measure, PROPOSE (the merge request —
+                      #                    decision frozen, blocker live), merge
                       #   deck_versions.py every list the deck has been, numbered from
                       #                    git (reuses deck_history), TAGGED in an authored
                       #                    file, JOINED to the log by decklist sha
@@ -120,20 +124,27 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   collection/         # a PHYSICAL card collection (COLLECTION_DIR); the only
                       #   ownership question left, and it is about cardboard.
                       #   MANAMAP_COLLECTION_DIR overrides it
-viz/                  # static frontend. THREE pages, one data layer:
-                      #   workbench.html  THE LANDING PAGE — every deck, racked by whether
-                      #                   it is SLEEVED, or one fleet table sorted by
-                      #                   played / needs-logs / needs-analysis /
-                      #                   optimisations. Reads every info.json.
-                      #   deck.html       one deck's dossier: next / status / versions /
-                      #                   audit / engine / sim + experiments /
-                      #                   prescriptions / log / questions, over info.json
+viz/                  # static frontend. FOUR pages, one data layer:
+                      #   workbench.html  THE LANDING PAGE — every deck, racked by
+                      #                   SLEEVED / waiting on cardboard / on the bench /
+                      #                   history, or one fleet table sorted by played /
+                      #                   needs-logs / needs-analysis / optimisations /
+                      #                   waiting-on-cardboard. Reads every info.json.
+                      #   deck.html       one deck's dossier: case file / log / next /
+                      #                   status / versions / audit / engine / sim +
+                      #                   experiments / prescriptions / questions, and
+                      #                   branches LAST, over info.json
+                      #   branch.html     one candidate 99: the PROPOSAL, the verdict,
+                      #                   the measured table with each row's definition,
+                      #                   reward/risk/cost, the bill
                       #   index.html      the atlas + the graph
                       # THREE modes on index.html: discover (the FRONT DOOR — one random
                       # card OR cards you name, click a relation, grow a graph) / explore
                       # (the 34K atlas, live-lit with what you hold) / build (a deck or
                       # pool: graph by default, map by toggle), plus drill, orthogonal.
                       #   workbench.js  the landing page (no MM, no map — like deck-view)
+                      #   branch-view.js  the branch workbench, over branch.json +
+                      #                 net_change.json
                       #   discovery.js  landing, relations, library, deck load, import,
                       #                 seedFromRows (named cards / ?cards=), brief
                       #   build.js      Build mode — a lens over a deck/pool (window.Build)
@@ -167,7 +178,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 18 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (82 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (83 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
@@ -179,6 +190,8 @@ manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)
 manamap pilot experiment <slug> --a V1 --b working --vs <pod> --games N   # THE CONTROLLED A/B
+manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
 manamap pilot build-page <slug> && manamap pilot build-index   # the Pilot's Manual + the manifest
@@ -197,6 +210,8 @@ python -m http.server 8000    # or plain static, FROM REPO ROOT (no Build agents
 # http://localhost:8000/viz/index.html?cards=1)%20Sol%20Ring,%202)%20Zur%20the%20Enchanter
 #                                                   a walk seeded from cards you name
 # http://localhost:8000/viz/deck.html?deck=heliod   a deck's dossier
+# http://localhost:8000/viz/branch.html?deck=ur-dragon&branch=eminence-v3
+#                                                   a candidate 99 and its net change
 # http://localhost:8000/manuals/p/heliod.html       its Pilot's Manual (printable, no JS)
 # http://localhost:8000/manuals/index.html          legacy magazine rack (frozen, unlinked)
 ```
@@ -241,6 +256,8 @@ wrong first attempt, the number — is in the page named beside it.
 - **A branched write needs a branched READ.** Three instances now, the third committed inside the commit fixing the class: `goldfish.main` measured the champion and filed it under the branch, understating turn-10 hoard by 4×. Every branch measurement must record the branch's own `decklist_sha256`. → `docs/gotchas-bench.md`
 - **`--out` on a per-deck command is slug-scoped, and a shell redirect cannot be policed.** Concurrent agents overwrote each other's views seven times across two sessions. → `docs/gotchas-bench.md`
 - **A new tracked artifact needs a gate in the same commit** — a validator, a freshness test, or both — and a `deck_status.VALIDATED` entry so the status command sees what the tests see. → `docs/gotchas-evidence.md`
+- **ONE PREDICATE, ONE HOME.** Four modules had grown their own answer to "is this deck in a pile" — `common.UNPLAYABLE_STATUSES`, `deck_info.STATE_RETIRED`, `net_change.FREE_TO_RAID` and `deck_branch._deck_holders`, which carried the status and did nothing with it. None disagreed yet and it was already costing something: `deck-branch merge` refused Ur-Dragon on 12 cards, 4 of which sit in decks that do not physically exist. `common.deck_is_apart` decides; everything else reads the row. → `docs/gotchas-bench.md`
+- **A DECIDED BRANCH IS NOT AN EXPERIMENT, and until `propose` shipped they rendered identically.** A branch had two observable states — the directory exists, or `merged` is present — and `delete` was the only reader of `merged`. `deck_branch.branch_state` derives six and stores none, so a proposal un-blocks itself when a card lands in a box. `base_version` had been written since branches shipped and **no code had ever compared it to anything**; that comparison is `PROPOSED · OUTRUN`. → `docs/pilot.md`
 - **Count COPIES, not decklist entries.** `cards.json` stores basics as one entry with `quantity: N`; counting entries once published "18 lands" for a 33-land deck. Use `common.expand_copies()`. → `docs/gotchas-bench.md`
 
 **Tests**
@@ -262,10 +279,10 @@ about to touch.
 | page | read before touching | size |
 |---|---|---|
 | `docs/gotchas-viz.md` | anything under `viz/` | 57 KB |
-| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 99 KB |
-| `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions | 12 KB |
-| `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 48 KB |
-| `docs/gotchas-magazine-legacy.md` | the frozen renderer (it is not extended) | 18 KB |
+| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 121 KB |
+| `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions | 8 KB |
+| `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 50 KB |
+| `docs/gotchas-magazine-legacy.md` | the frozen renderer (it is not extended) | 17 KB |
 
 
 ### Data artifacts
