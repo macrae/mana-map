@@ -10,14 +10,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 5,
+    "complete": 7,
     "of": 16,
     "stale": [],
     "invalid": [],
     "missing": [
       "targets",
-      "goldfish",
-      "mana",
       "frame",
       "engine",
       "stacks",
@@ -31,16 +29,6 @@
         "stage": "targets",
         "what": "the engine DECLARATION: any_of groups, size = redundancy",
         "how": "manamap pilot scaffold-targets blar   # a DRAFT to edit — the groups are yours to name; `validate-goldfish-targets blar` checks it"
-      },
-      {
-        "stage": "goldfish",
-        "what": "seeded Monte Carlo — `goldfish`",
-        "how": "manamap pilot goldfish blar"
-      },
-      {
-        "stage": "mana",
-        "what": "hypergeometric colour sources — run AFTER goldfish",
-        "how": "manamap pilot mana-analysis blar"
       },
       {
         "stage": "frame",
@@ -112,7 +100,13 @@
     "last_played": null,
     "undebriefed": []
   },
-  "goldfish": null,
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 4.294,
+    "commander_cast_by_turn_6_pct": 91,
+    "targets": []
+  },
   "engine": null,
   "diagnosis": null,
   "audit": {

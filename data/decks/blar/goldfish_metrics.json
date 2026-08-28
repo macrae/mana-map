@@ -1,14 +1,14 @@
 {
   "meta": {
     "card_advantage": {
-      "cards_that_draw": 14,
+      "cards_that_draw": 12,
       "modelled": 0,
       "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
     },
-    "commander": "Zada, Hedron Grinder",
+    "commander": "Radagast of Rhosgobel",
     "commander_cmc": 4,
-    "deck": "goblin-storm",
-    "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+    "deck": "blar",
+    "decklist_sha256": "1c7a7d231a1f57b04916e3bb6581cf5d0efc261a13e788a46760096352210ee9",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -35,110 +35,81 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.907,
+      "cast_by_turn_6_rate": 0.913,
       "cast_turn_histogram": {
-        "10": 81,
-        "2": 709,
-        "3": 114,
-        "4": 7056,
-        "5": 677,
-        "6": 512,
-        "7": 329,
-        "8": 230,
-        "9": 140,
-        "not_by_max_turn": 152
+        "10": 70,
+        "3": 1470,
+        "4": 6585,
+        "5": 652,
+        "6": 424,
+        "7": 313,
+        "8": 216,
+        "9": 130,
+        "not_by_max_turn": 140
       },
-      "mean_cast_turn": 4.331,
+      "mean_cast_turn": 4.294,
       "median_cast_turn": 4
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.382,
-      "2": 0.996,
-      "3": 0.9,
-      "4": 0.774,
-      "5": 0.637,
-      "6": 0.542,
-      "7": 0.469,
-      "8": 0.413,
-      "9": 0.39
+      "1": 1.0,
+      "10": 0.367,
+      "2": 0.997,
+      "3": 0.904,
+      "4": 0.772,
+      "5": 0.644,
+      "6": 0.539,
+      "7": 0.465,
+      "8": 0.416,
+      "9": 0.397
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.511,
-      "2": 2.138,
-      "3": 3.059,
-      "4": 3.956,
-      "5": 4.618,
-      "6": 5.413,
-      "7": 5.989,
-      "8": 6.515,
-      "9": 7.017
+      "1": 1.0,
+      "10": 8.074,
+      "2": 1.997,
+      "3": 3.211,
+      "4": 4.141,
+      "5": 4.888,
+      "6": 5.791,
+      "7": 6.447,
+      "8": 7.029,
+      "9": 7.565
     },
     "mean_bodies_by_turn": {
-      "1": 0.369,
-      "10": 8.62,
-      "2": 1.231,
-      "3": 2.279,
-      "4": 2.629,
-      "5": 3.955,
-      "6": 5.228,
-      "7": 6.262,
-      "8": 7.141,
-      "9": 7.921
+      "1": 0.068,
+      "10": 2.66,
+      "2": 0.216,
+      "3": 0.392,
+      "4": 0.519,
+      "5": 1.027,
+      "6": 1.516,
+      "7": 1.881,
+      "8": 2.172,
+      "9": 2.428
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 369,
-        "1": 1642,
-        "2": 3003,
-        "3": 2820,
-        "4": 1563,
-        "5": 521,
-        "6": 76,
-        "7": 6
+        "0": 349,
+        "1": 1568,
+        "2": 3058,
+        "3": 2835,
+        "4": 1631,
+        "5": 468,
+        "6": 86,
+        "7": 5
       },
-      "keep_first_seven_rate": 0.791,
+      "keep_first_seven_rate": 0.799,
       "kept_hand_land_histogram": {
-        "0": 25,
-        "1": 70,
-        "2": 3711,
-        "3": 3565,
-        "4": 1974,
-        "5": 649,
-        "6": 6
+        "0": 6,
+        "1": 72,
+        "2": 3805,
+        "3": 3541,
+        "4": 1994,
+        "5": 579,
+        "6": 3
       },
-      "mean_mulligans": 0.255
+      "mean_mulligans": 0.243
     },
-    "targets": [
-      {
-        "assembled_rate": 0.663,
-        "assembled_rate_assisted": 0.663,
-        "by_turn_6_rate": 0.501,
-        "by_turn_6_rate_assisted": 0.501,
-        "label": "Zada online with a cantrip drawn",
-        "mean_turn": 5.245,
-        "mean_turn_assisted": 5.245
-      },
-      {
-        "assembled_rate": 0.6,
-        "assembled_rate_assisted": 0.6,
-        "by_turn_6_rate": 0.487,
-        "by_turn_6_rate_assisted": 0.487,
-        "label": "Early token maker drawn",
-        "mean_turn": 3.184,
-        "mean_turn_assisted": 3.184
-      },
-      {
-        "assembled_rate": 0.265,
-        "assembled_rate_assisted": 0.265,
-        "by_turn_6_rate": 0.169,
-        "by_turn_6_rate_assisted": 0.169,
-        "label": "Storm payoff plus ritual drawn",
-        "mean_turn": 4.914,
-        "mean_turn_assisted": 4.914
-      }
-    ]
+    "targets": []
   }
 }

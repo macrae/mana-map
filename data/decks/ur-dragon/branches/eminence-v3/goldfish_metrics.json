@@ -1,19 +1,17 @@
 {
   "meta": {
     "card_advantage": {
-      "cards_that_draw": 8,
+      "cards_that_draw": 7,
       "modelled": 0,
       "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
     },
     "combat_effects_not_modelled": [
-      "Ancient Gold Dragon",
-      "Atarka, World Render",
-      "Thrakkus the Butcher"
+      "Ancient Gold Dragon"
     ],
     "commander": "The Ur-Dragon",
     "commander_cmc": 9,
     "deck": "ur-dragon",
-    "decklist_sha256": "26e52bb855d67289b80cfbb583f9cc4bbeda9a7dddc676e85a3c58b2b6e4b7e0",
+    "decklist_sha256": "4f5787d428bacd108f25b0e01567b16c7b687b977b9052f9d003ec0bbef2b6ea",
     "iterations": 10000,
     "max_turn": 10,
     "model_assumptions": [
@@ -25,269 +23,274 @@
       "Commander cast on first affordable turn (highest spending priority).",
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
-      "Unrestricted tutors ('search your library for a card') are modeled as wildcards: a tutor that has been drawn and is affordable fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the old literal 'a card' match missed entirely — fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does not count, because this model only knows 'drawn and affordable'; nor does a land fetch, which is ramp and has no channel here yet. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering creature's power (Terror of the Peaks), X damage where X counts your board (Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY of what entered (Miirym). Every arrival fires them — cast, token or copy — and a copy is itself an arrival, so they compound, which is the deck working rather than a bug. A payoff worded 'another NONTOKEN' does not re-trigger on its own tokens, which is the brake the rules already had. A chain is capped at 12 deep. X counts the whole board rather than one subtype: exact where the creatures are Dragons, generous otherwise.",
+      "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
       "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
       "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
       "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
-      "Only Treasure triggers a goldfish can see are modeled — upkeep, landfall and cast (recurring), Saga chapters, plus enters-the-battlefield (once). Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+      "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
-      "Attacks with every creature that is not summoning-sick; haste is read from the type line. There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
       "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+      "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
       "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens."
     ],
-    "model_version": "49d6364277e6",
+    "model_version": "ce9cc942cee3",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
     "seed": 42,
     "treasure_sources_not_modelled": [
-      "Atsushi, the Blazing Sky"
+      "Atsushi, the Blazing Sky",
+      "Gadrak, the Crown-Scourge",
+      "Ganax, Astral Hunter"
     ]
   },
   "metrics": {
     "combat": {
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.804,
+        "10": 0.931,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.005,
-        "5": 0.04,
-        "6": 0.121,
-        "7": 0.304,
-        "8": 0.538,
-        "9": 0.702
+        "4": 0.004,
+        "5": 0.063,
+        "6": 0.265,
+        "7": 0.545,
+        "8": 0.754,
+        "9": 0.87
       },
       "kill_turn_histogram": {
-        "10": 1029,
-        "4": 46,
-        "5": 349,
-        "6": 820,
-        "7": 1821,
-        "8": 2343,
-        "9": 1637
+        "10": 613,
+        "4": 39,
+        "5": 595,
+        "6": 2011,
+        "7": 2808,
+        "8": 2090,
+        "9": 1154
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 23.14,
-        "2": 0.298,
-        "3": 1.857,
-        "4": 4.692,
-        "5": 8.196,
-        "6": 11.584,
-        "7": 14.631,
-        "8": 17.524,
-        "9": 20.361
+        "10": 36.047,
+        "2": 0.451,
+        "3": 2.02,
+        "4": 5.597,
+        "5": 10.651,
+        "6": 16.134,
+        "7": 21.599,
+        "8": 26.79,
+        "9": 31.565
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 26.537,
-        "2": 0.011,
-        "3": 0.558,
-        "4": 2.563,
-        "5": 5.862,
-        "6": 9.995,
-        "7": 14.211,
-        "8": 18.28,
-        "9": 22.37
+        "10": 57.46,
+        "2": 0.012,
+        "3": 0.771,
+        "4": 3.262,
+        "5": 8.672,
+        "6": 16.674,
+        "7": 26.234,
+        "8": 36.474,
+        "9": 46.949
       },
-      "mean_kill_turn": 7.876,
-      "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.196
+      "mean_kill_turn": 7.314,
+      "median_kill_turn": 7,
+      "no_kill_by_max_turn_rate": 0.069
     },
     "commander": {
       "cast_by_turn_6_rate": 0.301,
       "cast_turn_histogram": {
-        "10": 759,
-        "3": 85,
-        "4": 608,
-        "5": 976,
-        "6": 1339,
-        "7": 1500,
-        "8": 1245,
-        "9": 976,
-        "not_by_max_turn": 2512
+        "10": 806,
+        "3": 90,
+        "4": 579,
+        "5": 1006,
+        "6": 1338,
+        "7": 1428,
+        "8": 1272,
+        "9": 1027,
+        "not_by_max_turn": 2454
       },
-      "mean_cast_turn": 7.003,
+      "mean_cast_turn": 7.039,
       "median_cast_turn": 7
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.368,
-      "2": 0.997,
-      "3": 0.903,
+      "10": 0.38,
+      "2": 0.996,
+      "3": 0.905,
       "4": 0.776,
-      "5": 0.65,
-      "6": 0.539,
-      "7": 0.462,
-      "8": 0.425,
-      "9": 0.382
+      "5": 0.645,
+      "6": 0.542,
+      "7": 0.463,
+      "8": 0.422,
+      "9": 0.388
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.202,
-      "2": 2.253,
-      "3": 3.607,
-      "4": 4.862,
-      "5": 5.91,
-      "6": 6.7,
-      "7": 7.395,
-      "8": 8.039,
-      "9": 8.624
+      "10": 9.249,
+      "2": 2.248,
+      "3": 3.56,
+      "4": 4.837,
+      "5": 5.893,
+      "6": 6.713,
+      "7": 7.411,
+      "8": 8.053,
+      "9": 8.659
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 5.021,
-      "2": 0.151,
-      "3": 0.569,
-      "4": 1.26,
-      "5": 2.043,
-      "6": 2.745,
-      "7": 3.351,
-      "8": 3.921,
-      "9": 4.48
+      "10": 6.067,
+      "2": 0.168,
+      "3": 0.577,
+      "4": 1.322,
+      "5": 2.231,
+      "6": 3.086,
+      "7": 3.878,
+      "8": 4.633,
+      "9": 5.357
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 364,
-        "1": 1731,
-        "2": 3015,
-        "3": 2762,
-        "4": 1585,
-        "5": 465,
-        "6": 71,
-        "7": 7
+        "0": 395,
+        "1": 1723,
+        "2": 2952,
+        "3": 2833,
+        "4": 1488,
+        "5": 505,
+        "6": 100,
+        "7": 4
       },
-      "keep_first_seven_rate": 0.783,
+      "keep_first_seven_rate": 0.778,
       "kept_hand_land_histogram": {
-        "0": 20,
-        "1": 61,
-        "2": 3800,
-        "3": 3544,
-        "4": 1966,
-        "5": 601,
-        "6": 8
+        "0": 18,
+        "1": 82,
+        "2": 3723,
+        "3": 3642,
+        "4": 1879,
+        "5": 652,
+        "6": 4
       },
-      "mean_mulligans": 0.261
+      "mean_mulligans": 0.271
     },
     "targets": [
       {
-        "assembled_rate": 0.529,
-        "assembled_rate_assisted": 0.529,
-        "by_turn_6_rate": 0.427,
-        "by_turn_6_rate_assisted": 0.427,
+        "assembled_rate": 0.528,
+        "assembled_rate_assisted": 0.725,
+        "by_turn_6_rate": 0.425,
+        "by_turn_6_rate_assisted": 0.602,
         "label": "Cost reducer drawn (the deck's real curve fixer)",
-        "mean_turn": 3.275,
-        "mean_turn_assisted": 3.275
+        "mean_turn": 3.31,
+        "mean_turn_assisted": 3.484
       },
       {
         "assembled_rate": 0.925,
-        "assembled_rate_assisted": 0.925,
-        "by_turn_6_rate": 0.852,
-        "by_turn_6_rate_assisted": 0.852,
+        "assembled_rate_assisted": 0.96,
+        "by_turn_6_rate": 0.847,
+        "by_turn_6_rate_assisted": 0.897,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 2.129,
-        "mean_turn_assisted": 2.129
+        "mean_turn": 2.149,
+        "mean_turn_assisted": 2.074
       },
       {
-        "assembled_rate": 0.733,
-        "assembled_rate_assisted": 0.733,
-        "by_turn_6_rate": 0.623,
-        "by_turn_6_rate_assisted": 0.623,
+        "assembled_rate": 0.778,
+        "assembled_rate_assisted": 0.874,
+        "by_turn_6_rate": 0.667,
+        "by_turn_6_rate_assisted": 0.771,
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
-        "mean_turn": 2.837,
-        "mean_turn_assisted": 2.837
+        "mean_turn": 2.725,
+        "mean_turn_assisted": 2.736
       },
       {
-        "assembled_rate": 0.485,
-        "assembled_rate_assisted": 0.485,
-        "by_turn_6_rate": 0.355,
-        "by_turn_6_rate_assisted": 0.355,
+        "assembled_rate": 0.482,
+        "assembled_rate_assisted": 0.688,
+        "by_turn_6_rate": 0.349,
+        "by_turn_6_rate_assisted": 0.526,
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "mean_turn": 4.139,
-        "mean_turn_assisted": 4.139
+        "mean_turn": 4.207,
+        "mean_turn_assisted": 4.235
       },
       {
-        "assembled_rate": 0.445,
-        "assembled_rate_assisted": 0.445,
-        "by_turn_6_rate": 0.308,
-        "by_turn_6_rate_assisted": 0.308,
+        "assembled_rate": 0.531,
+        "assembled_rate_assisted": 0.705,
+        "by_turn_6_rate": 0.375,
+        "by_turn_6_rate_assisted": 0.529,
         "label": "Payoff + a castable dragon by mid-game",
-        "mean_turn": 4.493,
-        "mean_turn_assisted": 4.493
+        "mean_turn": 4.334,
+        "mean_turn_assisted": 4.3
       },
       {
-        "assembled_rate": 0.733,
-        "assembled_rate_assisted": 0.733,
-        "by_turn_6_rate": 0.625,
-        "by_turn_6_rate_assisted": 0.625,
+        "assembled_rate": 0.667,
+        "assembled_rate_assisted": 0.81,
+        "by_turn_6_rate": 0.555,
+        "by_turn_6_rate_assisted": 0.695,
         "label": "Protection held for the big turn",
-        "mean_turn": 2.838,
-        "mean_turn_assisted": 2.838
+        "mean_turn": 3.005,
+        "mean_turn_assisted": 3.103
       },
       {
-        "assembled_rate": 0.298,
-        "assembled_rate_assisted": 0.298,
-        "by_turn_6_rate": 0.233,
-        "by_turn_6_rate_assisted": 0.233,
+        "assembled_rate": 0.302,
+        "assembled_rate_assisted": 0.586,
+        "by_turn_6_rate": 0.235,
+        "by_turn_6_rate_assisted": 0.464,
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
-        "mean_turn": 3.565,
-        "mean_turn_assisted": 3.565
+        "mean_turn": 3.616,
+        "mean_turn_assisted": 4.089
       },
       {
-        "assembled_rate": 0.526,
-        "assembled_rate_assisted": 0.526,
-        "by_turn_6_rate": 0.425,
-        "by_turn_6_rate_assisted": 0.425,
+        "assembled_rate": 0.52,
+        "assembled_rate_assisted": 0.72,
+        "by_turn_6_rate": 0.416,
+        "by_turn_6_rate_assisted": 0.593,
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
-        "mean_turn": 3.312,
-        "mean_turn_assisted": 3.312
+        "mean_turn": 3.298,
+        "mean_turn_assisted": 3.524
       },
       {
         "assembled_rate": 0.247,
-        "assembled_rate_assisted": 0.247,
-        "by_turn_6_rate": 0.155,
-        "by_turn_6_rate_assisted": 0.155,
+        "assembled_rate_assisted": 0.473,
+        "by_turn_6_rate": 0.157,
+        "by_turn_6_rate_assisted": 0.312,
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "mean_turn": 5.011,
-        "mean_turn_assisted": 5.011
+        "mean_turn": 4.94,
+        "mean_turn_assisted": 5.134
       },
       {
-        "assembled_rate": 0.178,
-        "assembled_rate_assisted": 0.178,
+        "assembled_rate": 0.184,
+        "assembled_rate_assisted": 0.421,
         "by_turn_6_rate": 0.112,
-        "by_turn_6_rate_assisted": 0.112,
+        "by_turn_6_rate_assisted": 0.272,
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-        "mean_turn": 4.978,
-        "mean_turn_assisted": 4.978
+        "mean_turn": 5.151,
+        "mean_turn_assisted": 5.32
       }
     ],
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.151,
+        "10": 0.155,
         "2": 0.0,
         "3": 0.002,
-        "4": 0.033,
-        "5": 0.071,
-        "6": 0.097,
-        "7": 0.112,
-        "8": 0.125,
-        "9": 0.138
+        "4": 0.031,
+        "5": 0.07,
+        "6": 0.098,
+        "7": 0.115,
+        "8": 0.129,
+        "9": 0.143
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 2.062,
+        "10": 2.029,
         "2": 0.0,
         "3": 0.004,
-        "4": 0.083,
-        "5": 0.259,
-        "6": 0.46,
-        "7": 0.709,
-        "8": 1.039,
-        "9": 1.494
+        "4": 0.075,
+        "5": 0.24,
+        "6": 0.433,
+        "7": 0.682,
+        "8": 1.02,
+        "9": 1.472
       }
     }
   }

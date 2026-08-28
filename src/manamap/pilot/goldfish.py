@@ -73,11 +73,28 @@ MODEL_ASSUMPTIONS = [
     "Commander cast on first affordable turn (highest spending priority).",
     "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
     "Target assembly counts cards DRAWN by a turn (cast cards still count).",
-    "Unrestricted tutors ('search your library for a card') are modeled as "
-    "wildcards: a tutor that has been drawn and is affordable fills ONE missing "
-    "any_of group. Consumed once, mana paid, and a tutor that puts the card on "
-    "top of the library costs a turn. Reported as the *_assisted figures; the "
-    "unassisted figures beside them exclude tutors entirely.",
+    "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the "
+    "top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the "
+    "old literal 'a card' match missed entirely — fills ONE missing any_of "
+    "group. Consumed once, mana paid, and a tutor that puts the card on top of "
+    "the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does "
+    "not count, because this model only knows 'drawn and affordable'; nor does "
+    "a land fetch, which is ramp and has no channel here yet. Reported as the "
+    "*_assisted figures; the unassisted figures beside them exclude tutors "
+    "entirely.",
+    "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering "
+    "creature's power (Terror of the Peaks), X damage where X counts your board "
+    "(Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY "
+    "of what entered (Miirym). Every arrival fires them — cast, token or copy — "
+    "and a copy is itself an arrival, so they compound, which is the deck "
+    "working rather than a bug. A payoff worded 'another NONTOKEN' does not "
+    "re-trigger on its own tokens, which is the brake the rules already had. A "
+    "chain is capped at 12 deep. X counts the whole board rather than one "
+    "subtype: exact where the creatures are Dragons, generous otherwise.",
+    "The COMMANDER joins the battlefield when cast, attacks, and fires its own "
+    "triggers. It used to be a mana sink and a flag — cast, then dropped — so a "
+    "10/10 flier contributed no power and never swung. Commander tax, death and "
+    "recasting are still not modelled: it is cast once and it stays.",
     # "CONSERVATIVE" IS TRUE OF SPEED AND FALSE OF COMPARABILITY, and the old
     # one-word claim hid the difference. Drawing one card a turn understates
     # every deck's speed, which is safe; but the size of the understatement
@@ -113,8 +130,9 @@ TREASURE_ASSUMPTIONS = [
     "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands "
     "and rocks fall short, and gone once broken. Reported separately from "
     "mean_available_mana_by_turn, which still means repeatable mana per turn.",
-    "Only Treasure triggers a goldfish can see are modeled — upkeep, landfall "
-    "and cast (recurring), Saga chapters, plus enters-the-battlefield (once). "
+    "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall "
+    "are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield "
+    "trigger pays out ONCE, when its own source resolves. "
     "Combat- and opponent-gated sources produce NOTHING here, because this model "
     "has no combat and no opponents; they are named in "
     "meta.treasure_sources_not_modelled so a low hoard figure is legible.",
@@ -126,13 +144,22 @@ COMBAT_ASSUMPTIONS = [
     "no interaction. This is a goldfish in the literal sense, so `kill_turn` is "
     "the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
     "Attacks with every creature that is not summoning-sick; haste is read from "
-    "the type line. There is nothing to block, so nothing is ever held back — in "
+    "the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in "
     "a real four-player game you would keep blockers, which makes this an "
     "optimistic clock and a pessimistic board.",
     "Attack triggers, combat-damage triggers and additional combat phases are "
     "modelled, which is what makes Treasure sources gated on combat produce here "
     "when they produce nothing without this flag. Effects the parser cannot read "
     "are named in meta.combat_effects_not_modelled.",
+    "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules "
+    "do: doubling the power, swinging twice and doubling the damage dealt is "
+    "eight times, not four. Three wordings are read — a replacement effect on "
+    "damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a "
+    "power doubling (Thrakkus). A grant worded 'each Dragon you control' is "
+    "treated as applying to the WHOLE team: exact in a deck whose attackers are "
+    "Dragons, generous in one where they are not. A creature's own double strike "
+    "multiplies only itself. Board power is unaffected — a double-striker is not "
+    "a bigger creature.",
     "Bodies count CREATURES only under this flag. Without it a Treasure token "
     "scores as a creature, which inflates `mean_bodies_by_turn` for any deck "
     "that makes non-creature tokens.",
@@ -194,6 +221,44 @@ _MANA_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "x": 1}
 # has paid for before. Narrow tutors ("search your library for a LAND card") are
 # excluded on purpose — they cannot fetch a missing combo half.
 _TUTOR_RE = re.compile(r"search your library for a card", re.IGNORECASE)
+#: A TYPED TUTOR IS STILL A TUTOR, and `_TUTOR_RE`'s literal "a card" matched
+#: none of them. Sarkhan's Triumph ("a Dragon creature card"), Worldly Tutor ("a
+#: creature card") and Enlightened Tutor ("an artifact or enchantment card") all
+#: read as `tutor: False`, so ur-dragon's `*_assisted` figures were computed as
+#: if it ran ZERO tutors while `model_assumptions` said tutors were modelled — a
+#: number produced, plausible and wrong.
+#:
+#: THREE GUARDS, each bought by the corpus sweep. Widening naively took 114
+#: cards to 881:
+#:   `\A`          the tutor must be the SPELL'S OWN EFFECT, not an activated
+#:                 ability, ETB or death trigger. Without it Birthing Pod, Academy
+#:                 Rector and Amrou Scout become free wildcards, which they are
+#:                 not — the model treats a tutor as "drawn and affordable".
+#:   instant/sorcery  same reason, from the other side.
+#:   not a land    482 of the 767 new matches were land fetches. Cultivate and
+#:                 Farseek are RAMP, and pricing them belongs in the land-ramp
+#:                 channel, not here. Counting them as wildcards would let a
+#:                 basic-land search fill an engine component.
+#: Net: 114 -> 165.
+_TYPED_TUTOR_RE = re.compile(
+    r"\Asearch your library for (?:a|an|up to \w+) [\w' -]{0,30}?card",
+    re.IGNORECASE)
+_TUTOR_LAND_RE = re.compile(
+    r"\b(land|Plains|Island|Swamp|Mountain|Forest|basic)\b", re.IGNORECASE)
+
+
+def is_tutor(card):
+    """Does casting this card fetch a card the deck was missing?"""
+    text = (card.get("oracle_text") or "").strip()
+    if _TUTOR_RE.search(text):
+        return True
+    type_line = card.get("type_line") or ""
+    if not ("Instant" in type_line or "Sorcery" in type_line):
+        return False
+    got = _TYPED_TUTOR_RE.match(text)
+    if not got:
+        return False
+    return not _TUTOR_LAND_RE.search(text[:got.end() + 20])
 # Vampiric Tutor and Insatiable Avarice fetch to the TOP of the library, not to
 # hand: the card arrives on the next draw, so the wildcard lands a turn later.
 # The printed wording is "put that card on top." with no "of your library", so
@@ -374,6 +439,81 @@ def creature_body_count(card):
     return bodies
 
 
+#: THE ENTERS-THE-BATTLEFIELD PAYOFF, which this model had no channel for at
+#: all. ETB was read for Treasure and nothing else (`_TRE_ETB_RE`), so a deck
+#: whose stated win condition is "ETB and attack-trigger burn" had the ETB half
+#: measured at ZERO: Terror of the Peaks and Scourge of Valkas read as vanilla
+#: bodies and Dragon Tempest read as nothing whatever.
+#:
+#: The trigger, then four payloads read from a window after it — the same shape
+#: `_ATTACKS_RE` and its window already use, so there is one idiom here and not
+#: two.
+#: The `(?!lands?\b)` is what the corpus sweep bought. Without it the lazy noun
+#: run swallowed "land ", so every LANDFALL payoff — Omnath, Rampaging Baloths,
+#: Titania, Zektar Shrine Expedition — read as a creature-entering payoff and
+#: would have fired on each creature cast. A landfall trigger is a different
+#: event and this channel must not claim it.
+_ETB_TRIGGER_RE = re.compile(
+    r"whenever (?:this creature or )?(?:another|a|one or more)\s+"
+    r"(?:nontoken\s+)?(?!lands?\b)[\w ]{0,24}?you control enters",
+    re.IGNORECASE)
+#: Terror of the Peaks — damage equal to the ENTERING creature's power.
+_ETB_DMG_POWER_RE = re.compile(
+    r"damage equal to (?:that|its) creature'?s? power|"
+    r"damage equal to that creature's power", re.IGNORECASE)
+#: Scourge of Valkas and Dragon Tempest — X damage where X counts a board.
+_ETB_DMG_COUNT_RE = re.compile(
+    r"deals? X damage[^.\n]{0,60}?where X is the number of", re.IGNORECASE)
+#: "another NONTOKEN Dragon you control enters" — Lathliss and Miirym both say
+#: it, and it is what stops the board exploding: their own token copies do not
+#: re-trigger them. Without this the first cut produced 67,000 damage by turn
+#: six, because a copy made a copy made a copy. The rules already had the
+#: brake; the model just had to read it.
+_ETB_NONTOKEN_RE = re.compile(r"another nontoken", re.IGNORECASE)
+#: Miirym — a token that is a COPY of the creature that entered.
+_ETB_COPY_RE = re.compile(r"token that'?s? a copy of", re.IGNORECASE)
+
+#: A board that makes tokens that make damage that makes tokens terminates, but
+#: only because this says so. Miirym's copy is itself a Dragon entering, which
+#: fires Scourge and Tempest again — that is the deck working, not a bug, so the
+#: guard has to be a stated depth rather than a silent one. Same shape as the
+#: `phases > 20` runaway guard on extra combats.
+ETB_CHAIN_LIMIT = 12
+
+#: DAMAGE MULTIPLICATION, WHICH THIS MODEL COULD NOT SEE AT ALL. Three different
+#: rules produce one measured effect, and every one of them was landing in
+#: `combat_effects_not_modelled`:
+#:
+#:   Twinflame Tyrant  "If a source you control would deal damage to an opponent
+#:                     … it deals double that damage instead" — a replacement
+#:                     effect on EVERYTHING you deal.
+#:   Atarka            "Whenever a Dragon you control attacks, it gains double
+#:                     strike" — the team swings twice.
+#:   Thrakkus          "double the power of each Dragon you control" — the team
+#:                     hits twice as hard.
+#:
+#: They STACK MULTIPLICATIVELY by the real rules: double the power, swing twice,
+#: then double the damage dealt is eight times, not four. So the model multiplies
+#: rather than adds.
+#:
+#: THE APPROXIMATION, SAID OUT LOUD: a grant worded "each Dragon you control"
+#: is treated as applying to the whole team. That is exact in a deck whose
+#: attackers are Dragons and generous in one where they are not — so it is
+#: recorded in `model_assumptions` rather than hidden, and a deck without the
+#: flag is byte-identical.
+_DAMAGE_DOUBLER_RE = re.compile(
+    r"would deal damage to[^.\n]{0,80}?(?:opponent|player|permanent)[^.\n]{0,80}?"
+    r"deals? double that damage", re.IGNORECASE)
+_TEAM_DOUBLE_STRIKE_RE = re.compile(
+    r"(?:creatures?|dragons?)[^.\n]{0,60}?you control[^.\n]{0,60}?"
+    r"(?:gains?|have|has) double strike", re.IGNORECASE)
+_TEAM_POWER_DOUBLE_RE = re.compile(
+    r"double the power of each[^.\n]{0,40}?you control", re.IGNORECASE)
+#: The keyword on the card itself — its own damage counts twice, and nobody
+#: else's. A different scope from the three above and kept separate for it.
+_SELF_DOUBLE_STRIKE_RE = re.compile(r"(?:^|[\s,;(])double strike", re.IGNORECASE)
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -400,8 +540,47 @@ def combat_profile(card):
         "damage_scales_with_treasure": False,
         "extra_combat_free": False,
         "extra_combat_cost": None,
+        # x2 per source, multiplied together across everything in play.
+        "team_damage_multiplier": 1,
+        "double_strike": False,
+        # The enters-the-battlefield family. Read for every card, acted on only
+        # under model_combat, so a deck that does not opt in is byte-identical.
+        "etb_damage_self_power": False,
+        "etb_damage_count": False,
+        "etb_token_power": 0,
+        "etb_token_bodies": 0,
+        "etb_copy": False,
+        "etb_nontoken_only": False,
         "unreadable": None,
     }
+
+    etb = _ETB_TRIGGER_RE.search(text)
+    if etb:
+        win = text[etb.start():etb.start() + 220]
+        if _ETB_DMG_POWER_RE.search(win):
+            profile["etb_damage_self_power"] = True
+        if _ETB_DMG_COUNT_RE.search(win):
+            profile["etb_damage_count"] = True
+        profile["etb_nontoken_only"] = bool(_ETB_NONTOKEN_RE.search(win))
+        if _ETB_COPY_RE.search(win):
+            profile["etb_copy"] = True
+        else:
+            for tok in _TOKEN_PT_RE.finditer(win):
+                if any(k in (tok.group(4) or "").lower() for k in _NONCREATURE_TOKENS):
+                    continue
+                word = tok.group(1).lower()
+                count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
+                profile["etb_token_bodies"] += count
+                profile["etb_token_power"] += count * _stat(tok.group(2))
+
+    if (_DAMAGE_DOUBLER_RE.search(text) or _TEAM_DOUBLE_STRIKE_RE.search(text)
+            or _TEAM_POWER_DOUBLE_RE.search(text)):
+        profile["team_damage_multiplier"] = 2
+    elif is_creature and _SELF_DOUBLE_STRIKE_RE.search(text):
+        # Its OWN damage twice. `elif` because a card that grants the team
+        # double strike and also has it would otherwise be counted twice for
+        # its own body — the grant already covers it.
+        profile["double_strike"] = True
 
     # Creature tokens this card makes, with their power.
     for match in _TOKEN_PT_RE.finditer(text):
@@ -458,6 +637,11 @@ def combat_profile(card):
         if not any((profile["attack_mana"], profile["attack_treasure"],
                     profile["attack_draw"], profile["damage_scales_with_treasure"],
                     profile["attack_damage"], profile["attack_token_bodies"],
+                    # A multiplier IS priced now, so a card carrying one must
+                    # not be reported as unreadable — that list is a promise
+                    # about what the figures leave out.
+                    profile["team_damage_multiplier"] > 1,
+                    profile["double_strike"],
                     # Checked against the FULL text, not the window: Scourge of
                     # the Throne's reminder clause pushes "additional combat
                     # phase" past 220 characters, and flagging a card whose
@@ -745,8 +929,28 @@ _NOT_A_CREATURE_TYPE = frozenset({
 })
 
 
-def subtypes_of(type_line):
-    """The subtypes after the em dash. `Legendary Creature — Dragon` -> {Dragon}."""
+#: "Changeling (This card is every creature type.)" — and it is every type in
+#: EVERY ZONE, so a changeling SPELL on the stack is a Dragon spell and takes a
+#: Dragon's discount. 61 of them are legal here and the type line says
+#: `Shapeshifter`, so reading it literally makes every one of them invisible to
+#: eminence, to Lathliss and Miirym's "another Dragon enters", and to a tribal
+#: cost reducer. Universal Automaton is a {1} Dragon that this deck casts for
+#: nothing; the model would have priced it at one.
+_CHANGELING_RE = re.compile(r"\bchangeling\b|is every creature type", re.IGNORECASE)
+
+
+def subtypes_of(type_line, oracle_text=None):
+    """The subtypes after the em dash. `Legendary Creature — Dragon` -> {Dragon}.
+
+    A CHANGELING IS EVERY CREATURE TYPE, which is a rules fact rather than a
+    heuristic, so it answers the corpus's whole type list. Falls back to the
+    literal type line when no corpus is loaded — a unit test with no data behind
+    it still gets the printed types.
+    """
+    if oracle_text and _CHANGELING_RE.search(oracle_text):
+        every = _corpus_creature_types()
+        if every:
+            return frozenset(every)
     if "\u2014" not in (type_line or ""):
         return frozenset()
     tail = type_line.split("\u2014", 1)[1].split("//")[0]
@@ -763,6 +967,11 @@ def chosen_type_for(cards):
     for c in cards:
         if "Creature" not in (c.get("type_line") or ""):
             continue
+        # A CHANGELING IS EVERY TYPE, so it must not vote on which type the deck
+        # is built around — it would add one to all 383 of them and the argmax
+        # would become alphabetical noise.
+        if _CHANGELING_RE.search(c.get("oracle_text") or ""):
+            continue
         for t in subtypes_of(c.get("type_line")):
             counts[t] = counts.get(t, 0) + 1
     if not counts:
@@ -775,8 +984,8 @@ def classify(card):
     type_line = card.get("type_line", "")
     text = card.get("oracle_text") or ""
     is_land = "Land" in type_line and "Creature" not in type_line.split("//")[0]
-    is_tutor = bool(not is_land and _TUTOR_RE.search(text))
-    mode_cost = _TUTOR_MODE_COST_RE.search(text) if is_tutor else None
+    is_tutor_card = bool(not is_land and is_tutor(card))
+    mode_cost = _TUTOR_MODE_COST_RE.search(text) if is_tutor_card else None
     return {
         "name": card["name"],
         "is_land": is_land,
@@ -795,10 +1004,10 @@ def classify(card):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
-        "tutor": is_tutor,
+        "tutor": is_tutor_card,
         # A top-of-library tutor delivers on the next draw step, not this turn.
-        "tutor_delay": 1 if is_tutor and _TUTOR_TO_TOP_RE.search(text) else 0,
-        "tutor_needs_body": bool(is_tutor and _TUTOR_SAC_RE.search(text)),
+        "tutor_delay": 1 if is_tutor_card and _TUTOR_TO_TOP_RE.search(text) else 0,
+        "tutor_needs_body": bool(is_tutor_card and _TUTOR_SAC_RE.search(text)),
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
         "treasure_trigger": None if is_land else treasure_profile(card)[1],
         # Xorn makes no Treasure of its own; it adds one to every event.
@@ -823,7 +1032,7 @@ def classify(card):
         # Priced at CAST TIME from the colours actually in play, so it enters
         # the rock loop (`produces > 0`) and its real output is computed there.
         "scales_with_colors": bool(_SCALING_COLOR_MANA_RE.search(text)),
-        "subtypes": subtypes_of(type_line),
+        "subtypes": subtypes_of(type_line, text),
         "is_creature": "Creature" in type_line,
     }
 
@@ -865,7 +1074,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_treasures=False, model_combat=False,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
-                  commander_subtypes=frozenset()):
+                  commander_subtypes=frozenset(), commander_combat=None):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -898,6 +1107,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # exactly why leaving it unmodelled mispriced the whole deck rather than
     # just its late game. Reducers cast from hand are appended as they land.
     reductions = list(command_zone_reduction)
+    team_damage_multiplier = 1
+    etb_engines = []              # payoffs in play that fire on a creature entering
+    etb_damage = 0                # noncombat damage dealt this turn by those
+    etb_chain_hits = 0            # times the chain guard stopped a cascade
+    bodies_cum_bump = [0]         # tokens spawned by an ETB payoff, counted once
     commander_card = {"is_commander": True, "is_creature": True,
                       "subtypes": commander_subtypes, "cmc": commander_cmc,
                       "pips": commander_pips or ()}
@@ -941,8 +1155,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     bodies_cum = 0
     bodies_by_turn = []
     # Combat state. `battlefield` holds one entry per creature that can attack:
-    # (power, turn_it_arrived, has_haste). Kept only under model_combat so the
-    # resource-only path allocates nothing extra.
+    # (power, turn_it_arrived, has_haste, own_damage_multiplier) — the fourth is
+    # 2 for a double-striker and 1 otherwise, and is SEPARATE from the board-wide
+    # `team_damage_multiplier` because the two have different scopes and stack.
+    # Kept only under model_combat so the resource-only path allocates nothing.
     battlefield = []
     combat_engines = []           # per-attack triggers of creatures in play
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -980,6 +1196,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if trigger in ("upkeep", "landfall"):
                 treasures += (per_event + treasure_bonus) * treasure_multiplier
 
+        etb_damage = 0
+        bodies_cum_bump[0] = 0
         pool = lands_in_play + rock_production
         # Reported WITHOUT the stockpile, so this series keeps meaning exactly
         # what it has always meant: repeatable mana per turn. Treasures are a
@@ -987,6 +1205,52 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         mana_by_turn.append(pool)
         treasures_by_turn.append(treasures)
         treasure_online_by_turn.append(bool(treasure_engines))
+
+        def creature_entered(power, arrived, haste=False, mult=1, depth=0,
+                             is_token=False):
+            """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
+
+            Casting a creature, a token being made and a copy being made are the
+            same event to Terror of the Peaks — the model used to have three
+            separate `battlefield.append` sites and no payoff at any of them.
+
+            IT RECURSES ON PURPOSE. Miirym's copy is a Dragon entering, which
+            fires Scourge and Tempest again and raises X for the next one; that
+            compounding IS the deck. `ETB_CHAIN_LIMIT` stops it and the depth is
+            reported, because a loop that terminates silently cannot be told
+            from one that never ran.
+            """
+            nonlocal etb_damage, etb_chain_hits
+            battlefield.append((power, arrived, haste, mult))
+            if not model_combat or depth >= ETB_CHAIN_LIMIT:
+                if depth >= ETB_CHAIN_LIMIT:
+                    etb_chain_hits += 1
+                return
+            spawned = []
+            for eng in etb_engines:
+                # "another NONTOKEN Dragon you control enters" — a token copy
+                # does not re-trigger the thing that made it. This is the brake
+                # the rules already had, and without it the board compounds
+                # without bound.
+                if is_token and eng["etb_nontoken_only"]:
+                    continue
+                if eng["etb_damage_self_power"]:
+                    etb_damage += power
+                if eng["etb_damage_count"]:
+                    # X is "the number of Dragons you control". The board is
+                    # counted whole rather than by subtype — exact in a deck
+                    # whose creatures are Dragons, generous otherwise, and
+                    # stated in model_assumptions.
+                    etb_damage += len(battlefield)
+                if eng["etb_copy"]:
+                    spawned.append((power, haste, mult))
+                elif eng["etb_token_bodies"]:
+                    each = eng["etb_token_power"] // max(eng["etb_token_bodies"], 1)
+                    for _ in range(eng["etb_token_bodies"]):
+                        spawned.append((each, False, 1))
+            for pw, hs, mt in spawned:
+                bodies_cum_bump[0] += 1
+                creature_entered(pw, arrived, hs, mt, depth + 1, is_token=True)
 
         def spend(cost, pips=None):
             """Pay from lands and rocks first, then break Treasures.
@@ -1016,6 +1280,33 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 reduced_cost(commander_card, reductions, chosen_type),
                 commander_pips):
             commander_turn = turn
+            # THE COMMANDER USED TO BE CAST AND THEN DROPPED. It set this flag,
+            # spent the mana, and never joined the battlefield — so a 10/10
+            # flier contributed no power, never attacked, and fired none of its
+            # own triggers. On The Ur-Dragon that is an entire stated win
+            # condition (commander damage) measured as zero, and it is also why
+            # Hellkite Courser, whose whole text is "put a commander onto the
+            # battlefield", read as a vanilla body.
+            #
+            # Commander tax, death and recasting stay out of scope and stay
+            # named: it is cast once, it stays, which is the same generous
+            # direction the rest of this model takes.
+            if model_combat and commander_combat and commander_combat["is_creature"]:
+                creature_entered(commander_combat["power"], turn,
+                                 commander_combat["haste"],
+                                 2 if commander_combat["double_strike"] else 1)
+                if commander_combat["team_damage_multiplier"] > 1:
+                    team_damage_multiplier *= commander_combat["team_damage_multiplier"]
+                if any((commander_combat["attack_mana"],
+                        commander_combat["attack_damage"],
+                        commander_combat["attack_treasure"],
+                        commander_combat["attack_draw"],
+                        commander_combat["attack_token_bodies"])):
+                    combat_engines.append(commander_combat)
+                if commander_combat["extra_combat_free"]:
+                    extra_combat_free += 1
+                if commander_combat["extra_combat_cost"] is not None:
+                    extra_combat_costs.append(commander_combat["extra_combat_cost"])
 
         # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
         # to fall through this hole, after Aggravated Assault and Primal Vigor.
@@ -1030,6 +1321,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 reductions.append(card["reduces"])
                 hand.remove(card)
+
+        # AN ETB PAYOFF THAT IS NOT A BODY falls through every other loop —
+        # Dragon Tempest is an enchantment with `bodies` 0 and `produces` 0, so
+        # it sat in hand for ten turns while being half of the deck's stated win
+        # condition. Fourth card to find this hole, after Aggravated Assault,
+        # Primal Vigor and the cost reducers. Cast early: its whole value is
+        # what the creatures behind it are worth.
+        if model_combat:
+            for card in sorted((c for c in hand
+                                if c["bodies"] == 0 and c["produces"] == 0
+                                and not c["is_land"] and not c["tutor"]
+                                and any((c["combat"]["etb_damage_self_power"],
+                                         c["combat"]["etb_damage_count"],
+                                         c["combat"]["etb_token_bodies"],
+                                         c["combat"]["etb_copy"]))),
+                               key=lambda c: c["cmc"]):
+                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    etb_engines.append(card["combat"])
+                    hand.remove(card)
 
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0), key=lambda c: c["cmc"]):
@@ -1116,14 +1426,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     reductions.append(card["reduces"])
                 if model_combat:
                     combat = card["combat"]
+                    # REGISTERED BEFORE IT ENTERS, and that is correct for the
+                    # printed wording: Scourge of Valkas says "whenever THIS
+                    # CREATURE or another Dragon you control enters", so it does
+                    # see itself. Terror of the Peaks says "another", and its
+                    # own entry deals nothing because the damage is the
+                    # ENTERING creature's power and it is not another creature.
+                    if any((combat["etb_damage_self_power"],
+                            combat["etb_damage_count"],
+                            combat["etb_token_bodies"], combat["etb_copy"])):
+                        etb_engines.append(combat)
                     if combat["is_creature"]:
-                        battlefield.append((combat["power"], turn, combat["haste"]))
+                        creature_entered(combat["power"], turn, combat["haste"],
+                                         2 if combat["double_strike"] else 1)
+                    if combat["team_damage_multiplier"] > 1:
+                        team_damage_multiplier *= combat["team_damage_multiplier"]
                     # Creature tokens arrive with summoning sickness too, and
                     # they arrive on the turn their maker resolved.
                     if combat["token_bodies"]:
                         each = combat["token_power"] // max(combat["token_bodies"], 1)
                         for _ in range(combat["token_bodies"]):
-                            battlefield.append((each, turn, False))
+                            creature_entered(each, turn, False, 1, is_token=True)
                     if combat["extra_combat_free"]:
                         extra_combat_free += 1
                     if combat["extra_combat_cost"] is not None:
@@ -1149,6 +1472,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 elif card["treasure_trigger"] in ("etb", "cast"):
                     treasures += ((card["treasure_n"] + treasure_bonus)
                                   * treasure_multiplier)
+        bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
 
         # ── Combat step ────────────────────────────────────────────────────
@@ -1156,7 +1480,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # phase fires the attack triggers again, which is what makes an
         # additional combat phase worth more than its own power.
         if model_combat:
-            attackers = [p for p, arrived, haste in battlefield
+            # DOUBLE STRIKE IS PER CREATURE; the team multiplier is per board.
+            # Kept apart because they have different scopes and stack: a
+            # double-striker under Twinflame Tyrant deals its power four times.
+            attackers = [p * mult for p, arrived, haste, mult in battlefield
                          if haste or arrived < turn]
             swing = sum(attackers)
             phases = 1 + extra_combat_free
@@ -1195,11 +1522,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         each = (engine["attack_token_power"]
                                 // max(engine["attack_token_bodies"], 1))
                         for _ in range(engine["attack_token_bodies"]):
-                            battlefield.append((each, turn, False))
+                            creature_entered(each, turn, False, 1, is_token=True)
                         bodies_cum += engine["attack_token_bodies"]
+            # THE REPLACEMENT EFFECT APPLIES LAST, to everything this deck
+            # dealt — combat swings and the attack triggers alike, because
+            # Twinflame Tyrant says "a source you control" and an attack
+            # trigger is one.
+            # ETB damage is NONCOMBAT and already happened this main phase, so
+            # it is added before the multiplier rather than per combat phase —
+            # Twinflame Tyrant says "a source you control", and a Terror trigger
+            # is one, but it fires once per creature and not once per swing.
+            dealt += etb_damage
+            dealt *= team_damage_multiplier
             opponent_life -= dealt
             damage_by_turn.append(dealt)
-            board_power_by_turn.append(sum(p for p, _, _ in battlefield))
+            # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
+            # creature, so the multiplier belongs to the damage series and
+            # never to this one.
+            board_power_by_turn.append(sum(p for p, _, _, _ in battlefield))
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 
@@ -1466,6 +1806,9 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # the model reads. Eminence is live from turn one whether or not the
     # commander is ever cast, and it cannot be answered — the single most
     # load-bearing fact about a deck built on it.
+    # The commander's own combat profile — it is a creature like any other and
+    # was the only one the loop never put on the battlefield.
+    commander_combat = combat_profile(commanders[0]) if commanders else None
     creature_types = _corpus_creature_types()
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
@@ -1474,7 +1817,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         got = cost_reduction(c, creature_types)
         if got:
             command_zone_reduction.append(got)
-        commander_subtypes |= subtypes_of(c.get("type_line") or "")
+        commander_subtypes |= subtypes_of(c.get("type_line") or "",
+                                          c.get("oracle_text") or "")
 
     # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
     # `treasure_profile` alone while the model has three ways to see a Treasure:
@@ -1549,6 +1893,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         for _ in range(iterations):
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,
+                              commander_combat=commander_combat,
                               command_zone_reduction=command_zone_reduction,
                               chosen_type=chosen_type,
                               commander_subtypes=commander_subtypes,

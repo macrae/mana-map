@@ -243,8 +243,33 @@ def land_colors(card):
     for clause in re.findall(r"add[^.\n]*", lowered):
         for symbol in re.findall(r"\{([wubrg])\}", clause):
             produced.add(symbol.upper())
-    if not produced and not restricted:
-        produced.update(c for c in str(card.get("color_identity", "")) if c in WUBRG)
+    # NO COLOUR-IDENTITY FALLBACK. It used to read: if nothing parsed, credit
+    # the card with its own colour identity. That is wrong in every case it
+    # fires, and the set it was presumed to exist for — a card whose production
+    # text the parser genuinely misses — is EMPTY. Enumerated before removal:
+    #
+    #   LANDS, 60 of them. 59 are `{T}: Add {C}` and take their colour from an
+    #   unrelated ACTIVATION COST — Goblin Burrows reads red off `{1}{R}, {T}:
+    #   pump a Goblin`, Blighted Woodland green off a `{3}{G}` sacrifice,
+    #   Hanweir Battlements red off `{R}: haste`. The 60th, Lander Rizzi, has no
+    #   `add` clause at all and produces no mana whatsoever.
+    #
+    #   NON-LANDS, 129 that survive `nonland_producer_kind` and are counted.
+    #   ZERO have a coloured `add` this parser should have caught.
+    #
+    # Found by two `deck-doctor` runs independently — goblin-storm's red land
+    # count was 33 and is 31; yawgmoth-swarm's Pawn of Ulamog was a black source
+    # because it is a black card. The same family as the reminder-text defect
+    # above: something other than this card's own mana ability deciding what
+    # mana it makes.
+    #
+    # A SCALING DORK NOW RETURNS NOTHING HERE, and that is the correct half of a
+    # split. Bloom Tender and Faeburrow Elder tap for "each colour among
+    # permanents you control", which has no answer without a board — so the
+    # STATIC reader understates (the documented safe direction: understating a
+    # source is recoverable, overstating produces a deck that cannot cast its
+    # spells) and `goldfish`, which has a board, prices them from it through
+    # `scales_with_colors`. Two questions, two answers.
     return produced
 
 

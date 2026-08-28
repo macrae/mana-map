@@ -50,6 +50,18 @@ from conftest import SRC, requires_deck, requires_data
 CODE = (SRC,)
 
 
+def _is_retired(deck_dir):
+    """Broken-down, superseded or retired — `deck_info.STATE_RETIRED`'s bucket."""
+    import json as _json
+    info = deck_dir / "info.json"
+    if not info.exists():
+        return False
+    try:
+        return bool((_json.loads(info.read_text()) or {}).get("lifecycle"))
+    except Exception:                            # pragma: no cover - defensive
+        return False
+
+
 def _slugs(artifact):
     """Every place this artifact is tracked — DECKS AND THEIR BRANCHES.
 
@@ -68,6 +80,12 @@ def _slugs(artifact):
     out = []
     for d in sorted(DECKS_DIR.iterdir()):
         if not d.is_dir():
+            continue
+        if _is_retired(d):
+            # A RETIRED DECK'S ARTIFACTS ARE HISTORY, NOT CLAIMS. Nothing plays
+            # the list, so a model correction leaves them "stale" forever and
+            # the only way to green the gate is regenerating a document about a
+            # deck nobody will shuffle. The pilot's rule, 2026-08-27.
             continue
         if (d / artifact).exists():
             out.append((d.name, None))

@@ -107,6 +107,53 @@ def engine_lift(slug, branch, iterations, seed):
                         "declared engine competes with the kill for cards and mana")}
 
 
+def mana(slug, branch):
+    """The colour half, which the nine goldfish rows cannot see.
+
+    THE REPORT DECIDED A PURCHASE WITHOUT IT. `ROWS` is derived from the
+    goldfish, and the goldfish measures development, not castability by colour —
+    so a branch that cut three counterspells (blue pips) and added six dorks
+    changed its whole pip distribution and the report said nothing. Every
+    figure here is `mana_analysis`'s, composed rather than recomputed, for the
+    reason `mana_fit` composes it too: two modules that can disagree about one
+    number is the divergence this repo keeps paying for.
+
+    NOT IN `table`, and deliberately. Those rows carry a Newcombe interval on
+    the difference; a source count is a deterministic hypergeometric claim with
+    no sampling error at all, and giving it a `verdict` alongside them would
+    make a different KIND of number look like the same kind.
+    """
+    from manamap.pilot import mana_analysis
+    try:
+        a = mana_analysis.analyze(slug)
+        b = mana_analysis.analyze(slug, branch)
+    except Exception as exc:                     # noqa: BLE001 - reported
+        return {"available": False, "why": f"mana-analysis could not run: {exc}"}
+
+    rows = []
+    for c in "WUBRG":
+        ta, tb = a["source_targets"].get(c, 0), b["source_targets"].get(c, 0)
+        ha, hb = a["sources"]["total"].get(c, 0), b["sources"]["total"].get(c, 0)
+        # THE GAP IS THE FIGURE, not the count. A colour whose target moved
+        # because the pips moved is the whole point of running this after a
+        # spell change, and `have` alone hides it.
+        rows.append({"colour": c, "target": [ta, tb], "have": [ha, hb],
+                     "gap": [ha - ta, hb - tb], "delta": (hb - tb) - (ha - ta)})
+    return {
+        "available": True,
+        "colours": rows,
+        "lands": [a["lands"]["total"], b["lands"]["total"]],
+        "enters_tapped_always": [a["lands"]["enters_tapped_always"],
+                                 b["lands"]["enters_tapped_always"]],
+        "on_curve": {c: [a["on_curve_probability"]["with_rocks_and_dorks"].get(c),
+                         b["on_curve_probability"]["with_rocks_and_dorks"].get(c)]
+                     for c in "WUBRG"},
+        "note": ("Deterministic, not sampled — Karsten's tables against the pip "
+                 "distribution each list actually has. No interval, because "
+                 "there is no sampling error to carry."),
+    }
+
+
 def deck_file_or_none(slug, branch):
     from manamap.pilot.common import deck_file
     return deck_file(slug, "goldfish_targets.json", branch)
@@ -206,6 +253,7 @@ def build(slug, branch, iterations=None, seed=None):
         "table": table,
         "engine_lift": {"champion": engine_lift(slug, None, it, sd),
                         "branch": engine_lift(slug, branch, it, sd)},
+        "mana": mana(slug, branch),
         "forge": forge(slug, branch),
         "bill": deck_branch.source(slug, branch),
         "limits": [
@@ -408,6 +456,24 @@ def _print(doc):
               f"[{e['ci95'][0]:+.3f}, {e['ci95'][1]:+.3f}]"
               f"   {'real' if e['excludes_zero'] else 'spans zero'}")
         print(f"    {'':10} {e['reading']}")
+
+    m = doc.get("mana") or {}
+    print("\n  THE MANA, AND THE NINE ROWS ABOVE CANNOT SEE IT")
+    if not m.get("available"):
+        print(f"    {m.get('why', 'not measured')}")
+    else:
+        print(f"    {'':2} {'target':>13} {'have':>13} {'gap':>13}   on curve")
+        for r in m["colours"]:
+            t, h, g = r["target"], r["have"], r["gap"]
+            oc = m["on_curve"][r["colour"]]
+            arrow = "" if g[1] == g[0] else ("  " + f"{r['delta']:+d}")
+            print(f"    {r['colour']:2} {t[0]:>6} -> {t[1]:<5} {h[0]:>6} -> {h[1]:<5} "
+                  f"{g[0]:>+6} -> {g[1]:<+5}  "
+                  f"{(oc[0] or 0):.3f} -> {(oc[1] or 0):.3f}{arrow}")
+        print(f"    lands {m['lands'][0]} -> {m['lands'][1]} "
+              f"({m['enters_tapped_always'][0]} -> {m['enters_tapped_always'][1]} "
+              f"always tapped)")
+        print(f"    {m['note']}")
 
     f = doc["forge"]
     print("\n  THE REAL TABLE")

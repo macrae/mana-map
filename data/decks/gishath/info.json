@@ -15,7 +15,9 @@
     "complete": 13,
     "of": 17,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "—"
+    ],
     "missing": [
       "brief",
       "log"
@@ -54,8 +56,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.51,
-    "commander_cast_by_turn_6_pct": 19,
+    "commander_mean_cast_turn": 7.516,
+    "commander_cast_by_turn_6_pct": 18,
     "targets": [
       {
         "label": "Ramp or fixing drawn",
@@ -195,6 +197,7 @@
   },
   "experiments": null,
   "next": [
+    "1 artifact(s) fail their own gate (—) — `deck-status gishath` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version gishath paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes gishath add \"…\" --result win|loss --opponents N`",
     "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×3",

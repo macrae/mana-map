@@ -219,7 +219,84 @@ def test_the_reminder_fix_is_scoped_to_the_cards_the_sweep_found():
         loud = dict(info, name=name, oracle_text=text.replace("(", " ").replace(")", " "))
         if manabase.land_colors(loud) and not manabase.land_colors(stripped):
             moved += 1
-    assert 15 <= moved <= 40, (
-        f"{moved} cards read mana colours from reminder text alone; the sweep "
-        f"found 24, all Treasure-makers. A different number means the parser "
-        f"changed and the tail needs reading again.")
+    # THE NUMBER MOVED WHEN THE FALLBACK WENT, and that is the finding rather
+    # than a regression. With the colour-identity fallback in place a card whose
+    # only coloured text was a reminder still got colours BOTH ways — from the
+    # reminder, or from its own identity — so the two readings agreed and it did
+    # not count. 24 was what the defect looked like through the fallback; 356 is
+    # its real size. Both fixes were needed and neither alone was enough.
+    assert 300 <= moved <= 420, (
+        f"{moved} cards read mana colours from reminder text alone; measured at "
+        f"356 once the colour-identity fallback was removed. A different number "
+        f"means the parser changed and the tail needs reading again.")
+
+
+@requires_data
+def test_a_land_is_credited_only_with_mana_it_can_actually_make():
+    """THE COLOUR-IDENTITY FALLBACK IS GONE, and the set it was presumed to
+    exist for was EMPTY.
+
+    `land_colors` used to end: if nothing parsed, credit the card with its own
+    colour identity. Enumerated before removal — 60 lands relied on it, 59 of
+    them `{T}: Add {C}` taking their colour from an unrelated ACTIVATION COST,
+    and the 60th with no `add` clause at all. Of 129 counted non-lands, ZERO had
+    a coloured `add` the parser should have caught.
+
+    Found independently by two `deck-doctor` runs: goblin-storm's red land count
+    was 33 and is 31; yawgmoth-swarm's Pawn of Ulamog was a black source because
+    it is a black card.
+    """
+    from manamap.pilot import card_pool, manabase
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+
+    def colours(name):
+        return manabase.land_colors(
+            dict(pool[name], name=name, oracle_text=o.get(name, "")))
+
+    # Taps for {C}; the colour was coming from a pump/sacrifice cost.
+    for name in ("Goblin Burrows", "Kher Keep", "Blighted Woodland"):
+        if name in pool:
+            assert not colours(name), f"{name} makes only colourless mana"
+    # ...and a real dual, a real five-colour land and a real dork still read.
+    assert colours("Command Tower") == set("WUBRG")
+    assert colours("Blood Crypt") == {"B", "R"}
+    assert colours("Birds of Paradise") == set("WUBRG")
+
+
+@requires_data
+def test_the_fallback_removal_is_measured_not_assumed():
+    """A REMOVAL SHIPS WITH ITS SWEEP, same rule as a widening. If any land ever
+    needs the fallback again, this fails and the tail gets read card by card
+    instead of the behaviour being restored on a hunch."""
+    import re
+    from manamap.pilot import card_pool, manabase
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+    add = re.compile(r"add[^.\n]*(\{[wubrg]\}|one mana of any colou?r)", re.I)
+    stranded = []
+    checked = 0
+    for name, info in pool.items():
+        if "Land" not in (info.get("type_line") or ""):
+            continue
+        checked += 1
+        text = o.get(name) or ""
+        card = dict(info, name=name, oracle_text=text)
+        # RESTRICTED MANA IS DELIBERATELY NOTHING — Haven of the Spirit Dragon
+        # taps for {C} in a Vampire deck, and counting it as five sources is how
+        # a mana base looks fine and cannot cast its spells. 35 lands say "spend
+        # this mana only" and are correctly excluded; the first cut of this test
+        # missed that and reported them as a regression.
+        if manabase.RESTRICTED_MANA in text.lower():
+            continue
+        # A PROMISE IN REMINDER TEXT IS NOT A PROMISE. `Treasure Map` says
+        # "one mana of any color" only inside the Treasure token's reminder;
+        # reading it here would assert back the exact defect this file's other
+        # test exists against.
+        text = manabase._REMINDER_RE.sub(" ", text)
+        # A land whose text promises unrestricted coloured mana must still read
+        # as producing some.
+        if add.search(text) and not manabase.land_colors(card):
+            stranded.append(name)
+    assert checked >= 1000, "the corpus is not loaded"
+    assert not stranded, (
+        f"{len(stranded)} land(s) promise coloured mana and now read as making "
+        f"none: {stranded[:8]}")

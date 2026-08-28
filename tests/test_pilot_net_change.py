@@ -25,36 +25,51 @@ def _doc():
 
 @requires_branch
 @requires_deck
-def test_it_reproduces_the_report_the_decision_was_made_on():
-    """THE FIXTURE IS THE DECISION. These are the figures that stopped a
-    purchase; a rewrite that moves one is a regression, not an improvement.
+def test_every_row_is_consistent_with_its_own_minimum_detectable_difference():
+    """THE CONTRACT, NOT ONE EXPERIMENT'S FIGURES.
 
-    Signs and magnitudes, not exact values — the harness is fixed but the
-    goldfish is a simulation and this must not become a brittle golden file.
+    This asserted the treasure branch's exact numbers — hoard @T10 delta > 4.0,
+    killed by T6 worse, damage @T10 negative — as "the decision fixture". That
+    branch was measured, found worse and deleted, and a test may not pin an
+    experimental deck (PLAN.md, the 2026-08-27 issue). What must hold for ANY
+    report is the thing a spending decision rests on: a row is ranked only when
+    the run could actually see it.
     """
     doc = _doc()
-    by = {r["measure"]: r for r in doc["table"]}
-    hoard = by["hoard @T10"]
-    assert hoard["delta"] > 4.0 and hoard["verdict"] == "better", hoard
-    kill6 = by["killed by T6"]
-    assert kill6["delta"] < -0.03 and kill6["verdict"] == "worse", kill6
-    damage = by["damage @T10"]
-    assert damage["delta"] < 0 and damage["verdict"] == "worse", damage
+    checked = 0
+    for r in doc["table"]:
+        assert r["mde"] is not None, r
+        under = abs(r["delta"]) <= r["mde"]
+        assert (r["verdict"] == "noise") == under, (
+            f"{r['measure']}: delta {r['delta']} against MDE {r['mde']} is "
+            f"reported {r['verdict']!r}")
+        checked += 1
+    assert checked >= 5, "a report with almost no rows decides nothing"
 
 
 @requires_branch
 @requires_deck
-def test_the_engine_lift_is_the_measurement_that_decided_it():
-    """The champion's declared engine makes it win; the branch's makes it win
-    LESS, and both intervals exclude zero. Nothing else in the suite says this,
-    which is the whole reason this figure is computed here."""
+def test_the_engine_lift_states_whether_its_interval_excludes_zero():
+    """The lift is the one measurement computed here rather than composed.
+    Published without saying whether its interval excludes zero it is a number
+    with no claim attached — so both arms carry that, or say why they cannot.
+
+    The SIGN is not asserted. Which way a branch's engine moves is a fact about
+    that branch, and the previous version required it to be negative because
+    the treasure refactor's was.
+    """
     doc = _doc()
-    a = doc["engine_lift"]["champion"]
-    b = doc["engine_lift"]["branch"]
-    assert a["available"] and b["available"]
-    assert a["lift"] > 0 and a["excludes_zero"], a
-    assert b["lift"] < 0, b
-    assert "win LESS" in b["reading"]
+    for who in ("champion", "branch"):
+        e = doc["engine_lift"][who]
+        if not e.get("available"):
+            assert e.get("why"), f"{who}: unavailable with no reason"
+            continue
+        for key in ("lift", "ci95", "excludes_zero", "reading"):
+            assert key in e, f"{who}: no {key!r}"
+        assert isinstance(e["excludes_zero"], bool)
+        lo, hi = e["ci95"]
+        assert (lo > 0 or hi < 0) == e["excludes_zero"], e
+        assert ("win LESS" in e["reading"]) == (e["lift"] < 0), e
 
 
 @requires_branch
@@ -221,22 +236,23 @@ def test_the_real_table_is_named_beside_the_verdict_and_never_folded_into_it():
 @requires_branch
 @requires_deck
 def test_the_report_that_stopped_a_purchase_still_stops_it():
-    """THE ACCEPTANCE CASE, and it is a decision already made by hand.
-
-    ur-dragon's treasure branch: hoard @T10 +5.09, and damage, board power,
-    turn-6 kill and stall all worse, against a bill of 21 cards to buy. The
-    pilot read that report and did not spend the money. Reproducing the
-    conclusion from the artifact that produced it is the proof.
+    """A REAL REPORT, HELD TO THE RULE. This named the treasure branch's own
+    figures; that branch is deleted, so what survives is the rule applied to
+    whatever report is on disk — the ledger accounts for every row, and the
+    verdict follows the OBJECTIVE rather than the count of improvements.
     """
-    from manamap.pilot.common import deck_dir
-    path = (deck_dir(SLUG, A_BRANCH) / net_change.ARTIFACT)
-    if not path.exists():
-        pytest.skip("no tracked net_change.json")
-    got = net_change.recommend(json.loads(path.read_text()))
-    assert got["state"] != "merge"
-    assert got["state"] == "no objective"
-    assert len(got["rose"]) == 3 and len(got["fell"]) == 4
-    assert got["bill"]["buy"] == 21
+    doc = _doc()
+    got = doc.get("recommendation") or net_change.recommend(doc)
+    assert got["state"] in net_change.STATES
+    measures = {r["measure"] for r in doc["table"]}
+    named = set(got["rose"]) | set(got["fell"]) | set(got["no_call"])
+    assert named == measures, "the ledger must account for every measured row"
+    grade = (doc.get("objective_grade") or {}).get("state")
+    if grade == "not met":
+        # THE RULE THAT MATTERS: improvements elsewhere do not buy a merge.
+        assert got["state"] == "do not merge", got
+    if got["state"] == "merge":
+        assert not got["fell"], "a merge with something worse is a trade"
 
 
 def test_a_table_where_nothing_moved_says_so():
@@ -260,3 +276,65 @@ def test_a_table_where_nothing_moved_says_so():
     # ...and it does not fire when something did move.
     quiet = net_change.recommend(_ledger("met", ["better", "noise"]))
     assert not any("Nothing moved" in n for n in quiet["notes"])
+
+
+@requires_branch
+@requires_deck
+def test_the_report_carries_the_mana_half_the_goldfish_rows_cannot_see():
+    """THE REPORT DECIDED A PURCHASE WITHOUT IT.
+
+    `ROWS` is derived from the goldfish, which measures development and not
+    castability by colour. So a branch that cut three counterspells (blue pips)
+    and added six dorks changed its entire pip distribution and the report said
+    nothing at all — the pilot had to be told separately that the nine rows do
+    not cover it. On the real branch this immediately showed the dork swaps
+    costing a white and a blue source, because three of the five dorks added
+    contribute nothing to a STATIC count (two scale with the board, one is
+    restricted mana).
+    """
+    doc = _doc()
+    m = doc.get("mana")
+    assert m is not None, "no mana block at all"
+    if not m.get("available"):
+        assert m.get("why")
+        return
+    seen = set()
+    for r in m["colours"]:
+        seen.add(r["colour"])
+        # THE GAP IS THE FIGURE, not the count: a target moves when the pips
+        # move, which is the whole reason this runs after a spell change.
+        for key in ("target", "have", "gap"):
+            assert len(r[key]) == 2, r
+        assert r["gap"][0] == r["have"][0] - r["target"][0], r
+        assert r["gap"][1] == r["have"][1] - r["target"][1], r
+        assert r["delta"] == r["gap"][1] - r["gap"][0], r
+    assert seen == set("WUBRG")
+    assert len(m["lands"]) == 2 and len(m["enters_tapped_always"]) == 2
+    # NOT A `table` ROW, and deliberately: those carry a Newcombe interval on
+    # the difference, and a source count is deterministic with no sampling
+    # error. Giving it a verdict beside them would make a different KIND of
+    # number look like the same kind.
+    assert "verdict" not in m
+    assert not any(r["measure"].lower().startswith(("w ", "colour"))
+                   for r in doc["table"])
+    assert "no sampling error" in m["note"]
+
+
+@requires_branch
+@requires_deck
+def test_the_mana_block_agrees_with_mana_analysis_rather_than_recomputing():
+    """One owner per figure. `mana_fit` learned this the expensive way — its
+    first cut recomputed and reported 53 red sources against mana-analysis's
+    27 — and this composes the same module for the same reason."""
+    from manamap.pilot import mana_analysis
+    doc = _doc()
+    m = doc.get("mana") or {}
+    if not m.get("available"):
+        pytest.skip("no mana block on this checkout")
+    theirs = mana_analysis.analyze(SLUG)
+    checked = 0
+    for r in m["colours"]:
+        assert r["have"][0] == theirs["sources"]["total"][r["colour"]], r
+        assert r["target"][0] == theirs["source_targets"][r["colour"]], r
+        checked += 1
+    assert checked == 5

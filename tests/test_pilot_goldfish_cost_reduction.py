@@ -302,3 +302,71 @@ def test_a_scaling_dork_is_priced_from_the_board_and_never_overstated():
         made = max(1, min(len(colors), 5))
         assert 1 <= made <= 5
         assert made <= max(1, min(n_colors, 5))
+
+
+# ── a changeling is every creature type, in every zone ───────────────────
+
+def test_a_changeling_is_every_creature_type():
+    """"Changeling (This card is every creature type.)" is a rules fact, and it
+    holds in EVERY ZONE — so a changeling SPELL on the stack is a Dragon spell
+    and takes a Dragon's discount.
+
+    `subtypes_of` read the type line, which says `Shapeshifter`. That made all
+    61 legal changelings invisible to eminence, to Lathliss and Miirym's
+    "whenever another Dragon you control enters", and to any tribal cost
+    reducer. Universal Automaton is a {1} card that The Ur-Dragon casts for
+    NOTHING; the model priced it at one.
+    """
+    every = goldfish.subtypes_of(
+        "Creature — Shapeshifter",
+        "Changeling (This card is every creature type.)")
+    plain = goldfish.subtypes_of("Creature — Dragon", "Flying")
+    assert plain == {"Dragon"}
+    if not goldfish._corpus_creature_types():
+        pytest.skip("no corpus; the literal type line is the documented fallback")
+    assert "Dragon" in every and "Goblin" in every
+    assert len(every) > 100, "a changeling answers the corpus's whole type list"
+
+
+def test_a_changeling_takes_the_commanders_discount():
+    """The consequence, priced. A {1} changeling under an eminence commander
+    costs nothing, and the floor is the coloured pip count as always."""
+    free = {"cmc": 1, "pips": [], "is_creature": True,
+            "subtypes": goldfish.subtypes_of(
+                "Artifact Creature — Shapeshifter",
+                "Changeling (This card is every creature type.)")}
+    if "Dragon" not in free["subtypes"]:
+        pytest.skip("no corpus loaded")
+    assert goldfish.reduced_cost(free, [(1, "Dragon", True)]) == 0
+    # ...and a coloured pip still cannot be discounted away.
+    coloured = dict(free, cmc=1, pips=[{"B"}])
+    assert goldfish.reduced_cost(coloured, [(1, "Dragon", True)]) == 1
+
+
+@requires_data
+def test_a_changeling_does_not_vote_on_the_decks_chosen_type():
+    """A card that is all 383 creature types would add one to every count, and
+    the argmax would become alphabetical noise rather than the type the deck is
+    built around. `Urza's Incubator` names that type, so getting it wrong
+    mis-prices every reducer in the deck."""
+    deck = [{"type_line": "Creature — Dragon", "oracle_text": "Flying"}] * 3
+    deck += [{"type_line": "Creature — Shapeshifter",
+              "oracle_text": "Changeling (This card is every creature type.)"}] * 9
+    assert goldfish.chosen_type_for(deck) == "Dragon"
+
+
+@requires_data
+def test_the_changeling_sweep_is_scoped():
+    """A PATTERN SHIPS WITH ITS SWEEP. Changelings are a closed, small set; if
+    this count moves, something else now matches the keyword and has to be read
+    before it is believed."""
+    from manamap.pilot import card_pool
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+    hits = [n for n in pool if goldfish._CHANGELING_RE.search(o.get(n) or "")]
+    assert 50 <= len(hits) <= 140, (
+        f"{len(hits)} cards read as changelings; the corpus search found 61 "
+        f"legal in a five-colour identity. A different number means the "
+        f"matcher changed.")
+    # It must not fire on a card that merely mentions creature types.
+    for name in ("Terror of the Peaks", "Sol Ring", "Command Tower"):
+        assert not goldfish._CHANGELING_RE.search(o.get(name) or ""), name

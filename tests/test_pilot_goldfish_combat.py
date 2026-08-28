@@ -29,7 +29,7 @@ import pytest
 
 from manamap.pilot import goldfish
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 
 def _card(name, text, cmc=3, type_line="Creature — Dragon", power="4",
@@ -187,6 +187,22 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     from manamap.config import DATA_DIR
     decks = sorted(p.parent.name for p in (DATA_DIR / "decks").glob("*/goldfish_metrics.json"))
     assert decks, "no tracked goldfish metrics found"
+    # A RETIRED DECK IS OUT OF SCOPE AND OUT OF THE DENOMINATOR. Its metrics are
+    # history: nothing plays the list, so a model correction leaves them behind
+    # for good and regenerating them measures a deck nobody will shuffle. The
+    # pilot's rule, 2026-08-27. Counting them in `decks` would then make the
+    # coverage guard below unsatisfiable.
+    def _retired(slug):
+        info = DATA_DIR / "decks" / slug / "info.json"
+        if not info.exists():
+            return False
+        try:
+            return bool((json.loads(info.read_text()) or {}).get("lifecycle"))
+        except Exception:                        # pragma: no cover - defensive
+            return False
+
+    decks = [d for d in decks if not _retired(d)]
+    assert decks, "every tracked deck is retired"
     checked = 0
     for slug in decks:
         targets = DATA_DIR / "decks" / slug / "goldfish_targets.json"
@@ -253,3 +269,235 @@ def test_an_extra_combat_the_model_cannot_place_is_named():
                     "Whenever Scourge of the Throne attacks, untap it. After "
                     "this combat phase, there is an additional combat phase.")
     assert free["extra_combat_free"] and not free["unreadable"]
+
+
+# ── damage multiplication ────────────────────────────────────────────────
+
+def _prof(name, text, type_line="Creature — Dragon", power=4):
+    return goldfish.combat_profile(
+        {"name": name, "oracle_text": text, "type_line": type_line,
+         "power": power, "toughness": power})
+
+
+def test_three_wordings_one_effect_and_the_model_read_none_of_them():
+    """THE DEFECT THIS EXISTS AGAINST. `combat_effects_not_modelled` named
+    Atarka, Thrakkus and Hellkite Tyrant on ur-dragon — the model could see NO
+    form of damage multiplication, so a damage doubler measured as a vanilla
+    body and a card that triples the deck's output looked like a downgrade.
+
+    Three different rules, one measured effect:
+      replacement on damage dealt  — Twinflame Tyrant
+      granted double strike        — Atarka, World Render
+      power doubling               — Thrakkus the Butcher
+    """
+    assert _prof("Twinflame Tyrant",
+                 "Flying If a source you control would deal damage to an "
+                 "opponent or a permanent an opponent controls, it deals double "
+                 "that damage instead.")["team_damage_multiplier"] == 2
+    assert _prof("Atarka, World Render",
+                 "Flying, trample Whenever a Dragon you control attacks, it "
+                 "gains double strike until end of turn."
+                 )["team_damage_multiplier"] == 2
+    assert _prof("Thrakkus the Butcher",
+                 "Trample Whenever Thrakkus attacks, double the power of each "
+                 "Dragon you control until end of turn."
+                 )["team_damage_multiplier"] == 2
+
+
+def test_a_card_with_no_multiplier_is_untouched():
+    """The widening rule: a deck without one of these must measure exactly as
+    it did before."""
+    for name, text in (("Terror of the Peaks", "Flying Whenever another creature "
+                        "you control enters, this creature deals damage equal to "
+                        "that creature's power to any target."),
+                       ("Glorybringer", "Flying, haste You may exert this "
+                        "creature as it attacks.")):
+        got = _prof(name, text)
+        assert got["team_damage_multiplier"] == 1
+        assert got["double_strike"] is False
+
+
+def test_own_double_strike_is_per_creature_and_never_the_team():
+    """Different scope, kept apart. A creature that merely HAS double strike
+    multiplies itself; one that GRANTS it multiplies everyone, and treating the
+    first as the second would double a whole board off one keyword."""
+    self_only = _prof("Boros Swiftblade", "Double strike")
+    assert self_only["double_strike"] is True
+    assert self_only["team_damage_multiplier"] == 1
+    granted = _prof("Atarka, World Render",
+                    "Whenever a Dragon you control attacks, it gains double "
+                    "strike until end of turn.")
+    assert granted["team_damage_multiplier"] == 2
+    # A card that grants AND has it is not counted twice for its own body.
+    assert granted["double_strike"] is False
+
+
+def test_a_multiplier_is_no_longer_reported_as_unreadable():
+    """`combat_effects_not_modelled` is a PROMISE about what the figures leave
+    out. A card whose effect is now priced must leave that list, or the list is
+    a liar in the more dangerous direction."""
+    got = _prof("Thrakkus the Butcher",
+                "Trample Whenever Thrakkus attacks, double the power of each "
+                "Dragon you control until end of turn.")
+    assert got["unreadable"] is None
+
+
+@requires_deck
+def test_multipliers_stack_multiplicatively_because_the_rules_do():
+    """Double the power, swing twice, then double the damage dealt is EIGHT
+    times, not four. Driven through the simulator rather than asserted: a deck
+    holding all three must out-damage the same deck holding one."""
+    import copy
+    from manamap.pilot import card_pool
+    from manamap.pilot.common import load_deck_cards
+
+    doc = load_deck_cards("ur-dragon")
+    pool, oracle = card_pool.load_pool(), card_pool.corpus_oracle()
+
+    def with_only(keep):
+        d = copy.deepcopy(doc)
+        drop = {"Atarka, World Render", "Thrakkus the Butcher"} - set(keep)
+        d["cards"] = [c for c in d["cards"] if c["name"] not in drop]
+        return goldfish.run("ur-dragon", doc=d, quiet=True, iterations=1500,
+                            seed=99)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+
+    both = with_only({"Atarka, World Render", "Thrakkus the Butcher"})
+    one = with_only({"Atarka, World Render"})
+    assert both > one, (
+        f"two multipliers ({both}) must out-damage one ({one}); if they are "
+        f"equal the multiplier is being added or overwritten, not multiplied")
+
+
+# ── the enters-the-battlefield payoff ────────────────────────────────────
+
+def test_the_model_had_no_etb_damage_channel_at_all():
+    """THE DEFECT THIS EXISTS AGAINST, and it is the largest of the session.
+
+    ETB was read for Treasure and nothing else. ur-dragon's stated win condition
+    is "ETB and attack-trigger burn (Terror of the Peaks, Scourge of Valkas,
+    Dragon Tempest)" and all three were priced at ZERO — the first two as vanilla
+    bodies, the third as nothing whatever, because an enchantment with no body
+    and no mana falls through every cast loop.
+    """
+    terror = _prof("Terror of the Peaks",
+                   "Flying Whenever another creature you control enters, this "
+                   "creature deals damage equal to that creature's power to any "
+                   "target.")
+    assert terror["etb_damage_self_power"] is True
+
+    scourge = _prof("Scourge of Valkas",
+                    "Flying Whenever this creature or another Dragon you "
+                    "control enters, it deals X damage to any target, where X "
+                    "is the number of Dragons you control.")
+    assert scourge["etb_damage_count"] is True
+
+    tempest = _prof("Dragon Tempest",
+                    "Whenever a creature you control with flying enters, it "
+                    "gains haste until end of turn. Whenever a Dragon you "
+                    "control enters, it deals X damage to any target, where X "
+                    "is the number of Dragons you control.",
+                    type_line="Enchantment", power=None)
+    assert tempest["etb_damage_count"] is True
+
+
+def test_a_token_maker_and_a_copier_are_read_apart():
+    lathliss = _prof("Lathliss, Dragon Queen",
+                     "Flying Whenever another nontoken Dragon you control "
+                     "enters, create a 5/5 red Dragon creature token with flying.")
+    assert lathliss["etb_token_bodies"] == 1 and lathliss["etb_token_power"] == 5
+    assert lathliss["etb_copy"] is False
+
+    miirym = _prof("Miirym, Sentinel Wyrm",
+                   "Flying, ward {2} Whenever another nontoken Dragon you "
+                   "control enters, create a token that's a copy of it, except "
+                   "the token isn't legendary.")
+    assert miirym["etb_copy"] is True
+    assert miirym["etb_token_bodies"] == 0, "a copy is not a fixed-size token"
+
+
+def test_nontoken_is_the_brake_the_rules_already_had():
+    """WITHOUT THIS THE BOARD EXPLODES. The first cut produced 67,000 damage by
+    turn six, because Miirym's copy re-triggered Miirym. Both Lathliss and
+    Miirym say "another NONTOKEN Dragon", so their own tokens do not re-trigger
+    them — the rules stop it, and the model simply had to read the word."""
+    miirym = _prof("Miirym, Sentinel Wyrm",
+                   "Whenever another nontoken Dragon you control enters, create "
+                   "a token that's a copy of it.")
+    assert miirym["etb_nontoken_only"] is True
+    # Terror of the Peaks has no such clause, so tokens DO trigger it.
+    terror = _prof("Terror of the Peaks",
+                   "Whenever another creature you control enters, this creature "
+                   "deals damage equal to that creature's power to any target.")
+    assert terror["etb_nontoken_only"] is False
+
+
+def test_a_landfall_payoff_is_not_a_creature_payoff():
+    """THE CORPUS SWEEP BOUGHT THIS. The lazy noun run swallowed "land ", so
+    Omnath, Rampaging Baloths, Titania and Zektar Shrine Expedition all read as
+    creature-entering payoffs and would have fired on every creature cast.
+    71 matches became 44 once the lookahead went in."""
+    omnath = _prof("Omnath, Locus of Rage",
+                   "Landfall — Whenever a land you control enters, create a 5/5 "
+                   "red Elemental creature token.")
+    assert omnath["etb_token_bodies"] == 0
+    assert omnath["etb_damage_count"] is False
+
+
+@requires_data
+def test_the_etb_sweep_is_scoped():
+    """A PATTERN SHIPS WITH ITS SWEEP. If this moves, something else matches and
+    the tail needs reading card by card before the figures are believed."""
+    from manamap.pilot import card_pool
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+    n = 0
+    for name, info in pool.items():
+        got = goldfish.combat_profile(
+            dict(info, name=name, oracle_text=o.get(name, "")))
+        if any((got["etb_damage_self_power"], got["etb_damage_count"],
+                got["etb_token_bodies"], got["etb_copy"])):
+            n += 1
+    assert 30 <= n <= 60, (
+        f"{n} cards carry an ETB payoff; measured at 44 after the landfall "
+        f"lookahead (71 before it).")
+
+
+@requires_deck
+def test_the_payoffs_move_the_damage_they_are_played_for():
+    """Driven through the simulator. Removing the three declared payoffs must
+    cost real damage — if it does not, the channel is not wired to the loop."""
+    import copy
+    from manamap.pilot.common import load_deck_cards
+    doc = load_deck_cards("ur-dragon")
+    without = copy.deepcopy(doc)
+    without["cards"] = [c for c in without["cards"]
+                        if c["name"] not in ("Terror of the Peaks",
+                                             "Scourge of Valkas", "Dragon Tempest")]
+    a = goldfish.run("ur-dragon", quiet=True, iterations=1500, seed=7
+                     )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    b = goldfish.run("ur-dragon", doc=without, quiet=True, iterations=1500, seed=7
+                     )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    assert a > b, f"cutting all three payoffs did not lower damage ({a} vs {b})"
+
+
+@requires_deck
+def test_the_commander_is_on_the_battlefield_and_swings():
+    """It used to be cast and dropped — a flag and a mana sink. A 10/10 flier
+    that never attacked, which is an entire stated win condition measured as
+    zero."""
+    import copy
+    from manamap.pilot.common import load_deck_cards
+    doc = load_deck_cards("ur-dragon")
+    real = goldfish.combat_profile
+    try:
+        # Re-introduce the bug: a commander with no combat profile cannot join
+        # the battlefield, which is exactly the old behaviour.
+        goldfish.combat_profile = lambda c: dict(real(c), is_creature=False)
+        without = goldfish.run("ur-dragon", doc=copy.deepcopy(doc), quiet=True,
+                               iterations=1200, seed=11
+                               )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    finally:
+        goldfish.combat_profile = real
+    with_cmd = goldfish.run("ur-dragon", quiet=True, iterations=1200, seed=11
+                            )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    assert with_cmd > without, (
+        f"the commander contributes nothing to damage ({with_cmd} vs {without})")
