@@ -524,6 +524,26 @@ def cast_pips(mana_cost):
     return out
 
 
+#: A DORK WHOSE OUTPUT IS THE BOARD, NOT A FIXED LIST.
+#:
+#: `_TAP_ADD_RE` wants `{T}: Add <symbols>`. Bloom Tender and Faeburrow Elder
+#: say `{T}: For each color among permanents you control, add one mana of that
+#: color` — so the two best dorks a five-colour deck can run read as producing
+#: NOTHING, while the conditional rocks they replace counted as five sources
+#: each. That is the same silent-half-working shape as the 65% of mana rocks
+#: this model could not see.
+#:
+#: The corpus sweep is why this is two lines rather than a family: of 34,084
+#: cards, exactly FIVE have a `{T}` mana ability the old regex misses, and only
+#: these two are this shape. The other three are correctly excluded — Charmed
+#: Pendant pays with a mill, Idol of False Gods makes a token that sacrifices
+#: itself (the Jeweled Lotus rule: a cost that consumes the source is not a
+#: rate), and Rainbow Dash is an acorn card.
+_SCALING_COLOR_MANA_RE = re.compile(
+    r"\{T\}[^:\n]*: ?[^.\n]*for each colou?r among permanents you control,? "
+    r"add one mana of that colou?r", re.IGNORECASE)
+
+
 def can_pay(pips, sources, wildcards=0):
     """Can these coloured pips be paid from these sources?
 
@@ -764,7 +784,11 @@ def classify(card):
         # What it actually costs to USE the tutor mode, which is what decides
         # when the wildcard comes online.
         "tutor_cmc": int(card.get("cmc") or 0) + (int(mode_cost.group(1)) if mode_cost else 0),
-        "produces": 0 if "Land" in type_line else produced_mana(card.get("oracle_text")),
+        # A SCALING DORK PRODUCES AT LEAST ONE. Without this it never reaches
+        # the rock loop at all, which is how it came to read as zero.
+        "produces": 0 if "Land" in type_line else (
+            produced_mana(card.get("oracle_text"))
+            or (1 if _SCALING_COLOR_MANA_RE.search(text) else 0)),
         "bodies": 0 if "Land" in type_line else body_count(card),
         # Creature-only body count and the combat profile ride along always;
         # they are READ only under `model_combat`, so a non-opted deck is
@@ -796,6 +820,9 @@ def classify(card):
         # tested against it. Both ride along always and are read only when a
         # reducer is actually in play, so a deck with none stays byte-identical.
         "reduces": cost_reduction(card, _corpus_creature_types()),
+        # Priced at CAST TIME from the colours actually in play, so it enters
+        # the rock loop (`produces > 0`) and its real output is computed there.
+        "scales_with_colors": bool(_SCALING_COLOR_MANA_RE.search(text)),
         "subtypes": subtypes_of(type_line),
         "is_creature": "Creature" in type_line,
     }
@@ -1009,10 +1036,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 if card["reduces"]:
                     reductions.append(card["reduces"])
-                rock_production += card["produces"]
+                made, colors = card["produces"], card["colors"] or frozenset()
+                if card["scales_with_colors"]:
+                    # SNAPSHOT AT CAST, and deliberately the conservative end of
+                    # the range: it counts the colours on the board the turn it
+                    # resolves and never grows, so a Faeburrow Elder cast on two
+                    # colours and living to see five is UNDERSTATED. Understating
+                    # is recoverable; overstating is how a mana base comes out
+                    # looking fine and cannot cast its spells.
+                    colors = frozenset().union(*sources) if sources else frozenset()
+                    made = max(1, min(len(colors), 5))
+                rock_production += made
                 if model_colors:
                     # A rock adds as many sources as it makes mana.
-                    sources.extend([card["colors"] or frozenset()] * card["produces"])
+                    sources.extend([colors] * made)
                 hand.remove(card)
 
         # Cast tutors before bodies: a tutor is a setup spell, and it competes

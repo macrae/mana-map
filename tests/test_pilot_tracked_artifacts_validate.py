@@ -97,6 +97,30 @@ BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
                 "net_change.json"}
 
 
+def _is_retired(deck_dir):
+    """Broken-down, superseded or retired — one bucket, `deck_info.STATE_RETIRED`.
+
+    A RETIRED DECK'S ARTIFACTS ARE HISTORY, NOT CLAIMS. Nothing plays it and
+    nothing derives from it, so holding its documents to today's model is the
+    "gate that reddens history" that `validate_prescription` already refused to
+    be. Measured the day it bit: a correctness fix to `manabase.land_colors`
+    moved the colour-source count on six decks, and three of them — hapatra,
+    radagast, sisay — were broken down or belong to someone else. Regenerating
+    those meant re-running an agent over a deck nobody will play.
+
+    The pilot's rule, 2026-08-27: "if a deck is deprecated, broken down, exclude
+    it from these downstream tasks."
+    """
+    import json as _json
+    info = deck_dir / "info.json"
+    if not info.exists():
+        return False
+    try:
+        return bool((_json.loads(info.read_text()) or {}).get("lifecycle"))
+    except Exception:                            # pragma: no cover - defensive
+        return False
+
+
 def _cases():
     """(slug, branch, artifact) for every tracked copy — DECKS AND BRANCHES.
 
@@ -111,6 +135,8 @@ def _cases():
     out = []
     for d in sorted(DECKS_DIR.iterdir()):
         if not d.is_dir():
+            continue
+        if _is_retired(d):
             continue
         for art in sorted(GATED):
             if (d / art).exists():

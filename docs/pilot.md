@@ -141,6 +141,16 @@ manamap pilot assess <slug> [--branch N] --pool <file|library|->
 # only), `branch/upgrades` ranks the swaps, `branch/stage` accepts one, and
 # `branch/net-change` measures the whole branch. MERGE AND DELETE STAY HERE —
 # a merge rewrites decklist.txt and runs the regeneration chain.
+manamap pilot mana-fit <slug> [--branch N] [--owned]
+                                        #   RIGHT-SIZE THE MANA TO THE SPELLS THAT ARE
+                                        #   ACTUALLY IN THE LIST. `mana-analysis` measures
+                                        #   the gap and stops; this prices it per colour and
+                                        #   proposes the lands, rocks and dorks that close
+                                        #   it, ranked by how many SHORT colours each one
+                                        #   covers at once. Run it whenever the nonland half
+                                        #   moves — the shortfall changes the moment a spell
+                                        #   does. Composes `mana-analysis`, never recomputes;
+                                        #   names a SPLASH whose target is driven by one card
 manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->] [--owned]
                                         #   WHAT IN THIS LIST HAS A CHEAPER CARD DOING ITS
                                         #   JOB. The obsolescence index read deck-aware:

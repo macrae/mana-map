@@ -25,7 +25,7 @@
       "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "bf1b5851dc0e",
+    "model_version": "49d6364277e6",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -33,20 +33,20 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.954,
+      "cast_by_turn_6_rate": 0.955,
       "cast_turn_histogram": {
-        "10": 44,
+        "10": 42,
         "2": 1539,
-        "3": 6532,
-        "4": 846,
-        "5": 386,
-        "6": 239,
-        "7": 133,
-        "8": 90,
-        "9": 68,
+        "3": 6542,
+        "4": 847,
+        "5": 389,
+        "6": 236,
+        "7": 129,
+        "8": 89,
+        "9": 64,
         "not_by_max_turn": 123
       },
-      "mean_cast_turn": 3.253,
+      "mean_cast_turn": 3.246,
       "median_cast_turn": 3
     },
     "iterations": 10000,
@@ -64,27 +64,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 9.493,
+      "10": 10.87,
       "2": 2.277,
-      "3": 3.44,
-      "4": 4.435,
-      "5": 5.598,
-      "6": 6.695,
-      "7": 7.528,
-      "8": 8.229,
-      "9": 8.876
+      "3": 3.582,
+      "4": 4.712,
+      "5": 6.258,
+      "6": 7.595,
+      "7": 8.556,
+      "8": 9.381,
+      "9": 10.135
     },
     "mean_bodies_by_turn": {
       "1": 0.078,
-      "10": 5.462,
-      "2": 0.307,
-      "3": 0.537,
-      "4": 1.374,
-      "5": 2.335,
-      "6": 3.227,
-      "7": 3.919,
-      "8": 4.502,
-      "9": 5.002
+      "10": 5.201,
+      "2": 0.271,
+      "3": 0.508,
+      "4": 1.31,
+      "5": 2.273,
+      "6": 3.142,
+      "7": 3.782,
+      "8": 4.319,
+      "9": 4.776
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -113,11 +113,11 @@
       {
         "assembled_rate": 0.672,
         "assembled_rate_assisted": 0.672,
-        "by_turn_6_rate": 0.541,
-        "by_turn_6_rate_assisted": 0.541,
+        "by_turn_6_rate": 0.542,
+        "by_turn_6_rate_assisted": 0.542,
         "label": "Sisay online with a multi-colour mana engine (only Jegantha adds all five off one activation)",
-        "mean_turn": 4.418,
-        "mean_turn_assisted": 4.418
+        "mean_turn": 4.409,
+        "mean_turn_assisted": 4.409
       },
       {
         "assembled_rate": 0.517,
@@ -125,8 +125,8 @@
         "by_turn_6_rate": 0.402,
         "by_turn_6_rate_assisted": 0.402,
         "label": "Sisay online with a three-colour legend to grow her",
-        "mean_turn": 4.602,
-        "mean_turn_assisted": 4.602
+        "mean_turn": 4.596,
+        "mean_turn_assisted": 4.596
       },
       {
         "assembled_rate": 0.747,

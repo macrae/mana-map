@@ -25,7 +25,7 @@
       "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "bf1b5851dc0e",
+    "model_version": "49d6364277e6",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -33,20 +33,20 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.893,
+      "cast_by_turn_6_rate": 0.901,
       "cast_turn_histogram": {
-        "10": 84,
+        "10": 74,
         "2": 370,
-        "3": 2776,
-        "4": 4626,
-        "5": 702,
-        "6": 452,
-        "7": 328,
-        "8": 240,
-        "9": 165,
-        "not_by_max_turn": 257
+        "3": 3185,
+        "4": 4385,
+        "5": 659,
+        "6": 410,
+        "7": 302,
+        "8": 225,
+        "9": 156,
+        "not_by_max_turn": 234
       },
-      "mean_cast_turn": 4.14,
+      "mean_cast_turn": 4.06,
       "median_cast_turn": 4
     },
     "iterations": 10000,
@@ -64,27 +64,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 7.462,
+      "10": 7.873,
       "2": 2.274,
-      "3": 3.39,
-      "4": 4.282,
-      "5": 4.975,
-      "6": 5.596,
-      "7": 6.097,
-      "8": 6.568,
-      "9": 7.021
+      "3": 3.518,
+      "4": 4.446,
+      "5": 5.223,
+      "6": 5.889,
+      "7": 6.42,
+      "8": 6.92,
+      "9": 7.401
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 2.586,
-      "2": 0.153,
-      "3": 0.378,
-      "4": 0.642,
-      "5": 1.147,
-      "6": 1.554,
-      "7": 1.859,
-      "8": 2.124,
-      "9": 2.358
+      "10": 2.443,
+      "2": 0.098,
+      "3": 0.296,
+      "4": 0.574,
+      "5": 1.073,
+      "6": 1.467,
+      "7": 1.758,
+      "8": 2.008,
+      "9": 2.229
     },
     "opening_hand": {
       "first_seven_land_histogram": {

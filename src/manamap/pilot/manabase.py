@@ -198,6 +198,10 @@ def achieved_probability(requirements, sources):
 
 RESTRICTED_MANA = "spend this mana only"
 
+#: Oracle reminder text, which is always parenthesised and never a rule this
+#: card has. See `land_colors`.
+_REMINDER_RE = re.compile(r"\([^)]*\)")
+
 
 def land_colors(card):
     """Which colours a land can produce *for general purposes*.
@@ -214,7 +218,15 @@ def land_colors(card):
     the restriction is nearly free — understating a source is recoverable,
     overstating one produces a deck that cannot cast its spells.
     """
-    text = str(card.get("oracle_text", "") or "")
+    # REMINDER TEXT IS NOT THIS CARD'S ABILITY. Prosperous Innkeeper has no mana
+    # ability at all; it creates a Treasure, and the Treasure's reminder text —
+    # `(It's an artifact with "{T}, Sacrifice this token: Add one mana of any
+    # color.")` — was being read as the creature's own, making it a five-colour
+    # source. 24 cards in the corpus read colours from reminder text alone,
+    # every one a Treasure-maker, and `Goldvein Pick` and `Prying Blade` are in
+    # zur-enchantress today. Parentheses in oracle text are always reminder
+    # text, so stripping them is exact rather than a heuristic.
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
     type_line = str(card.get("type_line", "") or "")
     produced = set()
     for basic, colour in (("Plains", "W"), ("Island", "U"), ("Swamp", "B"),

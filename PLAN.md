@@ -112,6 +112,76 @@ suggestions that would need a deck to shuffle.
 
 ## Open work
 
+### RULE — a retired deck is not a downstream target
+
+**Set by the pilot, 2026-08-27:** *"if a deck is deprecated, broken down,
+exclude it from these downstream tasks."*
+
+A `manabase` correctness fix moved the colour-source figure on six decks, and
+three of them — `hapatra` and `radagast` (broken-down), `sisay` (retired, and
+not the pilot's deck) — got an agent re-run each before the rule was stated.
+That is real tokens spent regenerating a document about a deck nobody will play.
+
+**A retired deck's artifacts are HISTORY, NOT CLAIMS.** Nothing derives from
+them and nothing plays the list, so holding them to today's model is the "gate
+that reddens history" `validate_prescription` already refused to be.
+`deck_info.STATE_RETIRED` buckets broken-down, superseded and retired together
+and is the one place that decides; `tests/test_pilot_tracked_artifacts_validate`
+now skips a deck with a `lifecycle` block, and any fleet fan-out should do the
+same.
+
+**The related rule, same day:** every optimisation happens in a BRANCH. Nothing
+touches a main `decklist.txt` — measurements of the existing list are not
+optimisations, and regenerating them after a model change is required, but the
+list itself moves only through `deck-branch merge`.
+
+### ISSUE — `land_colors` credits mana it cannot actually make
+
+**Opened 2026-08-27. Found by the `yawgmoth-swarm` doctor mid-run, which is the
+loop working: an agent re-derived a figure and disbelieved it.**
+
+Two stacked defects, both the class the reminder-text fix already closed once —
+**text describing ANOTHER object's ability read as this card's own.**
+
+1. **A quoted token ability counts as a mana source.** `Pawn of Ulamog` creates
+   an Eldrazi Spawn with `"Sacrifice this token: Add {C}."` —
+   `nonland_producer_kind` matches the quoted clause and calls it `ramp:dork`.
+   It is also one-shot and self-sacrificing, which is the Jeweled Lotus rule
+   `goldfish._CONSUMING_COST` already enforces and `manabase` does not.
+2. **The colour then comes from COLOUR IDENTITY, not from the ability.**
+   `land_colors` ends `if not produced and not restricted: produced.update(
+   color_identity)`. `{C}` is not a coloured symbol, so nothing parses and the
+   fallback credits Pawn of Ulamog with **B — because it is a black card.**
+
+**AND THE FALLBACK IS THE BIG ONE — it is systematically wrong for LANDS.**
+Measured across the corpus: **60 land entries** get their colours only from that
+fallback, and the pattern is always the same — the land taps for `{C}` and its
+colour identity comes from an ACTIVATION COST it has nothing to do with
+producing. `Goblin Burrows` is `{T}: Add {C}` plus `{1}{R}, {T}: pump a Goblin`,
+and reads as a **red source**. So does `Kher Keep`. `Kor Haven` reads white off
+`{1}{W}, {T}: prevent damage`; `Blighted Woodland` reads green off a `{3}{G}`
+sacrifice. None of them makes a single coloured mana. Two doctors found this
+independently on two different decks in the same batch, which is the corroboration
+— goblin-storm's true repeatable red land count is **31, not 33**.
+
+Whether the fallback has any legitimate case is the open question: it exists for
+a land whose production text does not parse, and nobody has enumerated those. The
+fix must not be "delete the fallback" until that set is known, which is the same
+discipline that kept the quoted-text class from being a blanket strip.
+
+**Scope, measured:** 8 further cards read mana colours only from text inside
+quotation marks. They are NOT uniformly wrong — `Worldknit` and `Paradise
+Mantle` grant `{T}: Add one mana of any color` to permanents you control, which
+is real fixing. The wrong ones are token abilities. So the fix is not "strip
+quotes"; it is to separate *granting an ability to something you control* from
+*describing a token you may create*.
+
+**Not fixed on discovery, on purpose.** Six `deck-doctor` runs were in flight
+against the current model. Changing `land_colors` mid-batch would have made
+every one of them stale on arrival and wasted the spend. A model change and a
+regeneration of the artifacts that depend on it belong in one commit — which is
+the same rule that made this batch necessary in the first place.
+
 ### ISSUE — unit tests must not depend on an experimental deck
 
 **Opened 2026-08-27, by the pilot, and it is a rule rather than a chore.**

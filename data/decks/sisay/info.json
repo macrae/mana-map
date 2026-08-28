@@ -21,7 +21,9 @@
     "complete": 13,
     "of": 17,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "—"
+    ],
     "missing": [
       "brief",
       "log"
@@ -60,8 +62,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.253,
-    "commander_cast_by_turn_6_pct": 95,
+    "commander_mean_cast_turn": 3.246,
+    "commander_cast_by_turn_6_pct": 96,
     "targets": [
       {
         "label": "Sisay online with a multi-colour mana engine (only Jegantha adds all five off one activation)",
@@ -192,6 +194,7 @@
   "experiments": null,
   "next": [
     "retired — the play/measure loop is closed for this deck (retired); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
+    "1 artifact(s) fail their own gate (—) — `deck-status sisay` names them; fix before anything else reads them",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

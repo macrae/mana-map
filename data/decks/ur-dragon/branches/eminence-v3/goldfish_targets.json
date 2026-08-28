@@ -1,0 +1,200 @@
+{
+ "targets": [
+  {
+   "label": "Cost reducer drawn (the deck's real curve fixer)",
+   "need": [
+    {
+     "any_of": [
+      "Urza's Incubator",
+      "Herald's Horn",
+      "Dragonspeaker Shaman",
+      "Dragonlord's Servant"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Ramp or fixing drawn",
+   "need": [
+    {
+     "any_of": [
+      "Sol Ring",
+      "Arcane Signet",
+      "Chromatic Lantern",
+      "Dragon's Hoard",
+      "Farseek",
+      "Nature's Lore",
+      "Skyshroud Claim",
+      "Birds of Paradise",
+      "Ignoble Hierarch",
+      "Faeburrow Elder",
+      "Bloom Tender",
+      "Delighted Halfling",
+      "Scaled Nurturer"
+     ]
+    }
+   ],
+   "required": true
+  },
+  {
+   "label": "Dragon payoff drawn (per-dragon trigger engine)",
+   "need": [
+    {
+     "any_of": [
+      "Dragon Tempest",
+      "Terror of the Peaks",
+      "Scourge of Valkas",
+      "Lathliss, Dragon Queen",
+      "Miirym, Sentinel Wyrm",
+      "Temur Ascendancy",
+      "Garruk's Uprising"
+     ]
+    }
+   ],
+   "required": true
+  },
+  {
+   "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
+   "need": [
+    {
+     "any_of": [
+      "Urza's Incubator",
+      "Herald's Horn",
+      "Dragonspeaker Shaman",
+      "Dragonlord's Servant"
+     ]
+    },
+    {
+     "any_of": [
+      "Sol Ring",
+      "Arcane Signet",
+      "Chromatic Lantern",
+      "Dragon's Hoard",
+      "Farseek",
+      "Nature's Lore",
+      "Skyshroud Claim",
+      "Birds of Paradise",
+      "Ignoble Hierarch",
+      "Faeburrow Elder",
+      "Bloom Tender",
+      "Delighted Halfling",
+      "Scaled Nurturer"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Payoff + a castable dragon by mid-game",
+   "need": [
+    {
+     "any_of": [
+      "Dragon Tempest",
+      "Terror of the Peaks",
+      "Scourge of Valkas",
+      "Miirym, Sentinel Wyrm",
+      "Temur Ascendancy",
+      "Firespitter Whelp"
+     ]
+    },
+    {
+     "any_of": [
+      "Goldspan Dragon",
+      "Thrakkus the Butcher",
+      "Lathliss, Dragon Queen",
+      "Glorybringer",
+      "Smaug the Magnificent",
+      "Thunderbreak Regent"
+     ]
+    }
+   ],
+   "required": true
+  },
+  {
+   "label": "Protection held for the big turn",
+   "need": [
+    {
+     "any_of": [
+      "Teferi's Protection",
+      "Heroic Intervention",
+      "Flawless Maneuver",
+      "Boros Charm",
+      "Deflecting Swat",
+      "Lightning Greaves",
+      "Swiftfoot Boots"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
+   "need": [
+    {
+     "any_of": [
+      "Desolation of Smaug",
+      "Sarkhan, Fireblood"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A Treasure source drawn \u2014 six in the 99, of which the model can SPEND only two",
+   "need": [
+    {
+     "any_of": [
+      "Atsushi, the Blazing Sky",
+      "Goldspan Dragon",
+      "Old Gnawbone",
+      "Smaug the Magnificent"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE ENTRY KILL (UNVERIFIED \u2014 no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
+   "need": [
+    {
+     "any_of": [
+      "Dragon Tempest",
+      "Terror of the Peaks",
+      "Scourge of Valkas"
+     ]
+    },
+    {
+     "any_of": [
+      "Ancient Gold Dragon",
+      "Miirym, Sentinel Wyrm",
+      "Lathliss, Dragon Queen",
+      "Sarkhan, Fireblood",
+      "Utvara Hellkite"
+     ]
+    }
+   ],
+   "route": "entry"
+  },
+  {
+   "label": "THE COMBAT KILL (UNVERIFIED \u2014 no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
+   "need": [
+    {
+     "any_of": [
+      "Atarka, World Render",
+      "Thrakkus the Butcher"
+     ]
+    },
+    {
+     "any_of": [
+      "Goldspan Dragon",
+      "Lathliss, Dragon Queen",
+      "Glorybringer",
+      "Smaug the Magnificent",
+      "Thunderbreak Regent"
+     ]
+    }
+   ],
+   "route": "combat"
+  }
+ ],
+ "model_treasures": true,
+ "model_combat": true,
+ "_note": "Authored for branch eminence-v3 by the pilot: protection names the equipment rather than the counterspells that were cut, and the payoff group names the two dragons added for it. Cards the branch no longer runs are removed \u2014 a declaration that names them measures a different deck.",
+ "_required_note": "`required` marks the components this deck cannot function without; `route` marks alternative ways to close, which are counted as a UNION rather than multiplied together. Both are JUDGEMENTS about what the deck needs \u2014 the measurement is `manamap pilot diagnose`, and it reports an ABSENT engine figure rather than a zero when nothing here is marked."
+}

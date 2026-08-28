@@ -70,6 +70,9 @@ PILOT_STEPS = [
      "Does the model track real outcomes? Refuses below a usable sample"),
     ("close", "manamap.pilot.close",
      "Turn the diagnostic's bottleneck into a candidate pool"),
+    ("mana-fit", "manamap.pilot.mana_fit",
+     "Right-size lands, rocks and dorks against the pip distribution the list "
+     "actually has. Run it whenever the nonland half moves"),
     ("upgrades", "manamap.pilot.upgrades",
      "What in this list has a cheaper card doing its job — the obsolescence index, "
      "read deck-aware. Proposes comparisons with BOTH sides; `candidates` measures"),
@@ -147,7 +150,7 @@ _DECK_COMMANDS = {
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
-    "upgrades",
+    "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
 
@@ -342,7 +345,7 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close', 'upgrades',
+        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close', 'upgrades', 'mana-fit',
                     # The validators too: a branch's artifacts were gated by
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',
@@ -372,6 +375,11 @@ def add_pilot_parser(subparsers):
         if name == "assess":
             cmd.add_argument("--pool", default=None,
                              help="a file of card names, a decklist, , or ")
+            cmd.add_argument("--json", action="store_true")
+        if name == "mana-fit":
+            cmd.add_argument("--owned", action="store_true",
+                             help="only propose cards in a box (collection.py)")
+            cmd.add_argument("--limit", type=int, default=None)
             cmd.add_argument("--json", action="store_true")
         if name == "upgrades":
             cmd.add_argument("--pool", default=None,

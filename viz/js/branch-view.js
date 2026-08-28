@@ -437,6 +437,16 @@
     });
   }
 
+  // Exposed for the browser suite. The absent-objective render is a CONTRACT —
+  // a branch with none must say so rather than drop the panel — and every real
+  // branch is now required to state one, so the case cannot be reached through
+  // live data. Testing it needs the builder, not a deck.
+  window.Branch = {
+    __objectivePanel: objectivePanel,
+    __verdictPanel: verdictPanel,
+    __swapsPanel: swapsPanel
+  };
+
   if (window.Shell && Shell.mount) Shell.mount();
   wire();
   // Probe WITHOUT blocking the first paint — the artifacts render either way.

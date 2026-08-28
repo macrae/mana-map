@@ -177,8 +177,8 @@
     "verified_lines": 11
   },
   "diagnosis": {
-    "verdict": "The staples pass bought exactly what it claimed: RENEWABLE FODDER is now nine members drawn in 82.3% of games (72.2% by turn 6), the drain layer matches it at 82.3%, mean bodies at turn 6 is 4.239 in the committed artifact, and every mana axis is at target with the turn-3 land drop landing 91.6%. What binds is unchanged in name and narrower in content: interaction-breadth at 2 of 5 classes — zero artifact answers by enumeration of all 80 entries' oracle text — while three of the six declared kills are commander-gated and the recursion kills sit directly under the format's artifact-based graveyard hate. Behind it, fast mana (3 cards, 43.6%) is the smallest and lowest-rated multi-card engine class. The prescription is the prior diagnosis's two unapplied adds, re-validated against the new 99 with new natural cuts: Gate to Phyrexia and Culling the Weak.",
-    "skeptic": "pass",
+    "verdict": "The grind layer is genuinely well built: fodder and drain both at 82.3% drawn, outlets 78.5%, ignition 73.8%, turn-3 land drop 91.6%. The mana still functions after the reminder-text fix, but with a much thinner margin than the tracked diagnosis claimed — colour-sources is +2 over Karsten's target, not +5, which removes any land from the cut list and does NOT change what binds. What binds is unchanged: interaction-breadth at 2 of 5 classes, with artifact at zero by enumeration over all 80 entries, while this deck's own hosers (Grafdigger's Cage, Cursed Totem) are artifacts and three of six declared kills are commander-gated. The first table run adds one usable fact and one non-fact: the pod's clock is long (mean round 17.1, our seat eliminated at global turn 30.44), so the assisted assembly rates and not the by-turn-6 rates are the number that matters; and the 0.1 win rate is not a measurement, because Forge's own AI notes say it is 'pretty bad for most combo decks'.",
+    "skeptic": null,
     "stale": false
   },
   "audit": {
@@ -219,27 +219,32 @@
     },
     {
       "from": "diagnosis",
-      "question": "RESOLVED by stack 014 (checker pass at iteration 1, 22 citations): does KILL F function as declared? Yes, with one correction — 'unbounded' is REFUTED. Yawgmoth's draw is mandatory ('and draw a card', no 'may'), so every activation consumes a library card: ~55 activations available mid-game, lethal to the pod in ~30 (per two-activation cycle each opponent loses 2 to the drain and the Messenger-targeted seat 4, at net-zero life to the pilot), leaving ~25 cards of margin. goldfish_targets' KILL F label now carries the corrected wording: 'stack 014, library-bounded, lethal in ~30 activations'.",
+      "question": "Under an opposing Grafdigger's Cage, do KILL A (stack 009), KILL B (011), KILL D (010) and KILL F (014) still function? A and B recast Gravecrawler from the graveyard; D and F return creature cards to the battlefield from the graveyard via undying.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Under Grafdigger's Cage, do KILL A (009), KILL B (011), KILL D (010) and now KILL F still function? A and B cast Gravecrawler from the graveyard, D and F return creature cards from the graveyard via undying — all four look Cage-shaped, which is the concrete case for Gate to Phyrexia.",
+      "question": "Under an opposing Cursed Totem, what survives of the outlet component? Five of its eight members are creatures whose ability is activated (Viscera Seer, Carrion Feeder, Woe Strider, Yahenni, Warren Soultrader) and Yawgmoth himself is shut off; three are artifacts (Ashnod's Altar, Phyrexian Altar, Blasting Station).",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Under an opposing Cursed Totem, what survives of the outlet component? Five of its eight members are creatures with activated abilities, and Yawgmoth himself is shut off.",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "How often does the deck assemble ANY of its six kills? The audit's schema states it cannot express the union, and averaging would invent a number the simulation never measured.",
+      "question": "Does the corrected black-source count warrant a 37th land? The audit reads 38 sources against a target of 36; of the five nonland sources, Dark Ritual is one-shot and Pawn of Ulamog is credited only through mana_analysis's colour-identity fallback, since its sole mana clause is an Eldrazi Spawn token's 'Sacrifice this token: Add {C}'.",
       "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Should the fast-mana any_of be re-curated after the purchase lands — adding Culling the Weak if bought, and deciding whether Jet Medallion belongs (it accelerates Yawgmoth to an effective 3 but is cost-reduction, not mana)?",
+      "question": "How often does the deck assemble ANY of its six kills? The audit states its schema cannot express the union, and averaging the six would invent a number the simulation never measured.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Should the fast-mana any_of group be re-curated — adding Culling the Weak if it lands, and deciding whether Jet Medallion belongs, since it accelerates Yawgmoth to an effective three mana but is cost reduction rather than mana?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is Withering Torment worth a third slot alongside Gate to Phyrexia? The two are named as closers for the same single point of failure, and the deck's declared noncreature-answer group is one card (Feed the Swarm) at 17.1%. Re-curating that group to name the two or three real answers would give the question a measured rate to argue against instead of a count.",
       "settled_by": "goldfish"
     }
   ],
@@ -279,7 +284,7 @@
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version yawgmoth-swarm paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes yawgmoth-swarm add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
+    "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×5",
     "5 versions and no experiment — `experiment yawgmoth-swarm --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

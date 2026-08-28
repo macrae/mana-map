@@ -1,8 +1,8 @@
 {
  "slug": "yawgmoth-swarm",
  "as_of_decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
- "archetype": "An aristocrats sacrifice engine that kills by drain; strategic_frame.json declares 'combo' and the artifacts agree \u2014 five tutors, six declared kill lines, fourteen checker-passed stacks. The 30 creatures read as an aggro count only because in this deck the fodder IS the combo. COUNTING CONVENTION, held on every axis below: every figure is deck-audit's, taken over all 100 copies. Where the audit files a card's function under possible_uncounted (card-advantage, protection) the number is carried unchanged and the reading says what the oracle text shows.",
- "verdict": "The staples pass bought exactly what it claimed: RENEWABLE FODDER is now nine members drawn in 82.3% of games (72.2% by turn 6), the drain layer matches it at 82.3%, mean bodies at turn 6 is 4.239 in the committed artifact, and every mana axis is at target with the turn-3 land drop landing 91.6%. What binds is unchanged in name and narrower in content: interaction-breadth at 2 of 5 classes \u2014 zero artifact answers by enumeration of all 80 entries' oracle text \u2014 while three of the six declared kills are commander-gated and the recursion kills sit directly under the format's artifact-based graveyard hate. Behind it, fast mana (3 cards, 43.6%) is the smallest and lowest-rated multi-card engine class. The prescription is the prior diagnosis's two unapplied adds, re-validated against the new 99 with new natural cuts: Gate to Phyrexia and Culling the Weak.",
+ "archetype": "An aristocrats sacrifice engine that kills by drain. strategic_frame.json declares 'combo' and the artifacts agree: five tutors, six declared kill lines, fourteen checker-passed stacks. The 30 creatures read as an aggro count only because in this deck the fodder IS the combo. COUNTING CONVENTION, held on every axis below: every figure is deck-audit's, taken over all 100 copies, carried unrounded. Where the audit files a card's function under possible_uncounted (card-advantage, protection) the number is carried unchanged and the reading says what the oracle text shows.",
+ "verdict": "The grind layer is genuinely well built: fodder and drain both at 82.3% drawn, outlets 78.5%, ignition 73.8%, turn-3 land drop 91.6%. The mana still functions after the reminder-text fix, but with a much thinner margin than the tracked diagnosis claimed \u2014 colour-sources is +2 over Karsten's target, not +5, which removes any land from the cut list and does NOT change what binds. What binds is unchanged: interaction-breadth at 2 of 5 classes, with artifact at zero by enumeration over all 80 entries, while this deck's own hosers (Grafdigger's Cage, Cursed Totem) are artifacts and three of six declared kills are commander-gated. The first table run adds one usable fact and one non-fact: the pod's clock is long (mean round 17.1, our seat eliminated at global turn 30.44), so the assisted assembly rates and not the by-turn-6 rates are the number that matters; and the 0.1 win rate is not a measurement, because Forge's own AI notes say it is 'pretty bad for most combo decks'.",
  "axes": [
   {
    "axis": "mana-base",
@@ -10,7 +10,7 @@
    "measured": {
     "value": 36
    },
-   "reading": "36 land copies, the floor of the 36-38 window after Nykthos replaced a Swamp. At target with nothing to spare; no land is a safe cut.",
+   "reading": "36 land copies, the floor of the 36-38 window. At target with nothing to spare; no land is a safe cut, and the corrected colour count below makes that stricter than it was.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -24,7 +24,7 @@
    "measured": {
     "value": 42
    },
-   "reading": "42 copies against a Burgess target of 36 (31 + 1 colour + commander at 4). Six persistent nonland producers ride on top of 36 lands.",
+   "reading": "42 copies against a Burgess target of 36 (31 + 1 colour + commander at 4). Six persistent nonland producers ride on top of 36 lands, and the axis explicitly excludes rituals and Treasure makers from the count.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.mana-base",
@@ -38,7 +38,7 @@
    "measured": {
     "value": 2
    },
-   "reading": "Two unconditional taplands (Bojuka Bog, Path of Ancestry) against a cap of eight. The mana is essentially untapped.",
+   "reading": "Two unconditional taplands (Bojuka Bog, Path of Ancestry) against a cap of eight; Castle Locthwain is conditional. The mana is essentially untapped.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.mana-base",
@@ -48,11 +48,11 @@
   },
   {
    "axis": "colour-sources",
-   "verdict": "strength",
+   "verdict": "adequate",
    "measured": {
-    "value": 5
+    "value": 2
    },
-   "reading": "41 black sources against Karsten's 36 \u2014 five over target even though the restriction-aware counter gives Nykthos no unconditional credit. Its devotion upside is uncounted on purpose; the decklist comment block accepts that cost explicitly.",
+   "reading": "38 black sources against Karsten's 36, two over \u2014 down from the five the tracked diagnosis carried, because the reminder-text fix stopped crediting Treasure makers with the token's mana ability. The mana still works (on-curve 0.925 with rocks and dorks, 0.869 on lands alone), but this is now a watched axis rather than a strength, and it is the reason no land appears in the cut list.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -66,7 +66,7 @@
    "measured": {
     "value": 12
    },
-   "reading": "12 copies, the top of the 10-12 window after Jet Medallion and Pawn of Ulamog replaced Arcane Signet. Note for the adds below: Culling the Weak carries ramp:ritual and would take this to 13, one over the window \u2014 that cost is stated in its entry, not hidden.",
+   "reading": "12 copies, the top of the 10-12 window. Note for the adds below: Culling the Weak carries ramp:ritual and would take this to 13, one over the window \u2014 that cost is stated in its entry, not hidden.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -80,7 +80,7 @@
    "measured": {
     "value": 5
    },
-   "reading": "Five counted against a target of ten, but the audit's probe names five more the taxonomy files elsewhere \u2014 Yawgmoth himself (a card per activation), Black Market Connections, Castle Locthwain, Ayara, Plumb the Forbidden. The functional count is roughly ten; the number carried here is the audit's five.",
+   "reading": "Five counted against a target of ten, but the audit's probe names five more the taxonomy files elsewhere \u2014 Yawgmoth himself (a card per activation), Black Market Connections, Castle Locthwain, Ayara, Plumb the Forbidden. The functional count is roughly ten; the number carried here is the audit's five, uncounted cards excluded.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.ratios",
@@ -94,7 +94,7 @@
    "measured": {
     "value": 12
    },
-   "reading": "12 copies against a floor of 8 after Snuff Out left. Depth is fine; the problem on this suite is breadth, read below.",
+   "reading": "12 copies against a floor of 8, inside a 17-copy interactive suite. Depth is fine; the problem on this suite is breadth, read below.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -108,7 +108,7 @@
    "measured": {
     "value": 3
    },
-   "reading": "Three, inside the 1-3 window after Toxic Deluge left, and all three (Black Sun's Zenith, Soul Snuffers, The Meathook Massacre) double as engine ignition, so none is a dead slot.",
+   "reading": "Three, at the top of the 1-3 window, and all three (Black Sun's Zenith, Soul Snuffers, The Meathook Massacre) also appear in the ignition component, so none is a dead slot.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -122,7 +122,7 @@
    "measured": {
     "value": 3
    },
-   "reading": "Three counted against a 4-6 window, and two of the three (Sedgemoor Witch, Yahenni) protect only themselves \u2014 the cards that can hold Yawgmoth on the battlefield through removal are Lightning Greaves plus two the taxonomy cannot see, Supernatural Stamina (no role entry) and Malakir Rebirth (filed ramp:ritual). This axis matters more than it did: KILL D, E and F are commander-gated, and KILL E is now the declared primary.",
+   "reading": "Three counted against a 4-6 window, and two of the three (Sedgemoor Witch's ward, Yahenni's indestructible) protect only themselves. Enumerated over the 99, the cards that respond to removal aimed at Yawgmoth on the battlefield are Lightning Greaves, Supernatural Stamina (no role entry) and Malakir Rebirth (filed ramp:ritual); Animate Dead, Victimize, Phyrexian Reclamation and Agadeem's Awakening at X>=4 recover him afterwards, at the cost of the turn. This matters because KILL D, E and F are commander-gated and E is the declared primary.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.threat-density",
@@ -136,7 +136,7 @@
    "measured": {
     "value": 13
    },
-   "reading": "13 copies against a floor of 3; nine of them are the drain layer every kill routes through.",
+   "reading": "13 copies against a floor of 3; nine of them are the drain layer every declared kill routes through.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.threat-density",
@@ -150,7 +150,7 @@
    "measured": {
     "value": 30
    },
-   "reading": "30 front-face creature copies, up two from the staples pass. Informational: in this deck the creature count is the fodder supply, not an aggro plan."
+   "reading": "30 front-face creature copies. Informational: in this deck the creature count is the fodder supply, not an aggro plan \u2014 the table run bears that out, with 6.9 mean combat damage dealt (ci95 [3.0, 10.8], n=20)."
   },
   {
    "axis": "interaction-breadth",
@@ -158,7 +158,7 @@
    "measured": {
     "value": 2
    },
-   "reading": "Two of five classes (creature, enchantment). The heuristic's floor is real but corrects in only one place: Bojuka Bog (filed land:tapped) covers graveyard once, invisibly. Artifact is genuinely zero \u2014 enumerated over all 80 entries' oracle text, nothing in the 99 destroys or exiles an opposing artifact \u2014 and the format's cheap graveyard hosers (Grafdigger's Cage) and outlet hosers (Cursed Totem) are artifacts. This is the binding axis.",
+   "reading": "Two of five classes (creature 14, enchantment 1). The heuristic's floor corrects in one place only: Bojuka Bog covers graveyard once as a one-shot land it cannot see. Re-enumerated over all 80 entries' oracle text for this diagnosis: no card destroys or exiles an opposing artifact, no card targets an opposing land, and Feed the Swarm is the single card that can destroy an opposing noncreature permanent. This is the binding axis, because this deck's own hosers are artifacts.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.interaction-suite",
@@ -172,7 +172,7 @@
    "measured": {
     "value": 0.916
    },
-   "reading": "Turn-3 land drop lands 91.6% of the time; keep-first-seven 81.6%. The commander casts by turn 6 in 91% of sims, mean cast turn 4.301.",
+   "reading": "Turn-3 land drop lands 91.6% of the time, keep-first-seven 81.6%. The mana development question is settled; the conversion question is not.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.mana-base",
@@ -186,7 +186,7 @@
    "measured": {
     "value": 3
    },
-   "reading": "Modal mana value 3 with 17 two-drops and 19 three-drops and nothing at 8+. One above the corpus's modal 2, appropriate for a deck whose commander is the four-drop it curves toward.",
+   "reading": "Modal mana value 3 with 17 two-drops, 19 three-drops and nothing at 8+. One above the corpus's modal 2, appropriate for a deck whose commander is the four-drop it curves toward.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.curve",
@@ -200,7 +200,7 @@
    "measured": {
     "value": 4
    },
-   "reading": "Bracket floor 4 on four Game Changers (Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor) plus eleven contained two-card infinites. Reported, not scored; both proposed swaps leave it at 4 (recomputed with bracket.assess).",
+   "reading": "Bracket floor 4 on four Game Changers (Ancient Tomb, Demonic Tutor, Necropotence, Vampiric Tutor) plus combo content and contained two-card infinites. Reported, not scored; both proposed swaps recompute to 4.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.power-level",
@@ -214,7 +214,7 @@
    "measured": {
     "value": 5
    },
-   "reading": "Five, inside the combo archetype's 4-8 window, and they are the deck's real consistency: every kill's assisted rate is a multiple of its unassisted one.",
+   "reading": "Five, inside the combo archetype's 4-8 window, and they are the deck's real consistency: every declared kill's assisted rate is a multiple of its unassisted one.",
    "citations": [
     {
      "rule": "strategy:deckbuilding.archetype-selection",
@@ -224,7 +224,7 @@
   }
  ],
  "engine": {
-  "declared": "Turn a renewable body into a death trigger, over and over, until nine stacked drains have taken the table's life total \u2014 Yawgmoth one free outlet among eight, and six declared kills on top: two Gravecrawler loops (A, B), the Exquisite Blood pair (C), the Mikaeus line (D), the Nest engine as primary (E, stacks 002/003/004), and the undying pair (F, stack 014, library-bounded \u2014 lethal in ~30 activations).",
+  "declared": "Turn a renewable body into a death trigger, over and over, until stacked drains have taken the table's life total \u2014 Yawgmoth one free outlet among nine, with six declared kills on top: two Gravecrawler loops (A, B), the Exquisite Blood pair (C), the Mikaeus line (D), the Nest of Scarabs engine as primary (E, stacks 002/003/004), and the undying pair (F, stack 014, library-bounded).",
   "components": [
    {
     "role": "payoff",
@@ -242,7 +242,7 @@
     "count": 9,
     "thinnest": false,
     "measured_rate": 0.823,
-    "reading": "Nine drains, drawn 82.3% of games and by turn 6 in 72.0%. Still the deck's best-built layer; every kill feeds it."
+    "reading": "Nine drains, drawn 82.3% of games and 72.0% by turn 6. Tied with the fodder layer at 0.823 as the best-measured class in the deck, and all six declared kills name a drain component."
    },
    {
     "role": "fodder",
@@ -260,7 +260,7 @@
     "count": 9,
     "thinnest": false,
     "measured_rate": 0.823,
-    "reading": "Nine renewable-fodder sources after Ophiomancer and Pawn of Ulamog joined \u2014 82.3% drawn, up from 73.6% in the prior diagnosis. The staples pass closed the gap deck_recon.json named; this component is no longer the archetype's known weakness in this list."
+    "reading": "Nine renewable-fodder sources at 82.3%, 72.2% by turn 6. deck_recon.json (as_of 2026-08-03) named this as the archetype's load-bearing weakness and named Ophiomancer and Pawn of Ulamog as the fix; both are in the 99 and the component is no longer thin."
    },
    {
     "role": "outlet",
@@ -277,7 +277,7 @@
     "count": 8,
     "thinnest": false,
     "measured_rate": 0.785,
-    "reading": "Eight free repeatable outlets not counting the commander, 78.5%. The deck mulligans to a class here, not to a card."
+    "reading": "Eight free repeatable outlets not counting the commander, 78.5%. The deck mulligans to a class here, not to a card. Enumerated by type: five are creatures with activated abilities (Viscera Seer, Carrion Feeder, Woe Strider, Yahenni, Warren Soultrader), three are artifacts (Ashnod's Altar, Phyrexian Altar, Blasting Station)."
    },
    {
     "role": "ignition",
@@ -294,7 +294,7 @@
     "count": 8,
     "thinnest": false,
     "measured_rate": 0.738,
-    "reading": "Eight ways to place the first -1/-1 counter, 73.8%. Three double as the sweeper suite, so the sweeper slots are never dead."
+    "reading": "Eight ways to place the first -1/-1 counter, 73.8%. Three double as the sweeper suite, so no sweeper slot is dead."
    },
    {
     "role": "mana",
@@ -320,7 +320,7 @@
     "count": 3,
     "thinnest": false,
     "measured_rate": 0.436,
-    "reading": "Fast mana, and of the seven multi-card components the audit prices on their own this is both the smallest (3 cards) and uniquely the lowest-rated (43.6% against 61.2% for the next two). It is the turn-2-Yawgmoth enabler \u2014 the sim casts him on turn 2 in 7.2% of games \u2014 and it is where Culling the Weak is aimed. The audit's role-route closers (Arcane Signet, Fellwar Stone, Thought Vessel) are generic rocks; Arcane Signet was cut in the staples pass as strictly worse than Jet Medallion in mono-black, and that closer list is not a recommendation to re-add it."
+    "reading": "Fast mana. Of the seven targets the audit prices as a standalone class (sizes 9, 9, 8, 8, 5, 5, 3 at rates 0.823, 0.823, 0.785, 0.738, 0.612, 0.612, 0.436), this is both the smallest and the lowest-rated. It is where Culling the Weak is aimed. The audit's role-route closers (Arcane Signet, Fellwar Stone, Thought Vessel) are generic rocks and are not a recommendation here \u2014 deck_recon.json's mono-black finding prefers colour-specific rituals and cost reduction."
    },
    {
     "role": "piece",
@@ -334,7 +334,7 @@
     "count": 5,
     "thinnest": false,
     "measured_rate": 0.612,
-    "reading": "Five tutors, 61.2%. The reason every kill's assisted rate is multiples of its unassisted one."
+    "reading": "Five tutors, 61.2%. The reason every declared kill's assisted rate is a multiple of its unassisted one \u2014 KILL E goes 13.5% to 58.8%."
    },
    {
     "role": "protection",
@@ -344,7 +344,7 @@
     "count": 1,
     "thinnest": false,
     "measured_rate": 0.171,
-    "reading": "One card is the whole component, at 17.1% unassisted and 67.1% with a tutor spent on it \u2014 a tutor spent on defence instead of a kill half."
+    "reading": "One card is the whole component, 17.1% unassisted and 67.0% with a tutor spent on it \u2014 a tutor spent on defence instead of a kill half. It answers a creature or an enchantment and cannot touch an artifact."
    },
    {
     "role": "piece",
@@ -354,7 +354,7 @@
     "count": 1,
     "thinnest": true,
     "measured_rate": 0.17,
-    "reading": "Lowest measured rate of any component here (17.0%, against Feed the Swarm's 17.1% and Bastion's 17.8% \u2014 all three are the structural floor for one named card). Both unbounded kills (A, B) route through it."
+    "reading": "17.0%, the lowest measured rate of the three one-card components the audit prices on their own (Gravecrawler 0.17, Feed the Swarm 0.171, Bastion of Remembrance 0.178). Both unbounded kills (A, B) route through it."
    },
    {
     "role": "piece",
@@ -364,13 +364,13 @@
     "count": 1,
     "thinnest": false,
     "measured_rate": 0.178,
-    "reading": "Named in the scenario of five checker-passed stacks (002, 004, 009, 010, 011), second only to Nest of Scarabs at twelve. Redundant as a drain (nine of those), not as the specific drain the verified boards resolved with."
+    "reading": "Named in five of the fourteen checker-passed stack scenarios (002, 004, 009, 010, 011); by the same count Nest of Scarabs appears in twelve and Yawgmoth in nine. Redundant as a drain \u2014 there are nine \u2014 not as the specific drain those verified boards resolved with."
    }
   ],
   "single_points_of_failure": [
    {
-    "component": "Feed the Swarm \u2014 the deck's only answer to a noncreature permanent",
-    "why": "17.1% unassisted, 67.1% assisted. It answers a creature or an enchantment; nothing in the 99 destroys or exiles an opposing artifact (enumerated over all 80 entries), and nothing answers a land. Bojuka Bog covers graveyard once, as a one-shot land the breadth heuristic cannot see. The artifact class is exactly where this deck's hosers live.",
+    "component": "Feed the Swarm \u2014 the deck's answer to a noncreature permanent",
+    "why": "17.1% unassisted, 67.0% assisted, and re-enumerated for this diagnosis over all 80 entries' oracle text: it is the only card in the 99 that destroys or exiles an opposing noncreature permanent, and it cannot hit an artifact. Nothing in the 99 answers an artifact and nothing answers a land. That is exactly where this archetype's hosers live \u2014 Grafdigger's Cage stops Gravecrawler recasting from the yard and the undying returns, Cursed Totem shuts off five of the eight outlets plus Yawgmoth himself.",
     "closers": [
      "Gate to Phyrexia",
      "Withering Torment"
@@ -384,18 +384,18 @@
    },
    {
     "component": "Gravecrawler",
-    "why": "A named card is 7.1% of an opening seven and both unbounded kills are built on it. The prior skeptic run established from oracle text that neither in-format lookalike substitutes: Nether Traitor only triggers on ANOTHER creature dying, and Forsaken Miner returns on committing a crime, which sacrificing your own creature is not. No add raises this 17.0% without a new stack.",
+    "why": "A named card is 7.1% of an opening seven and both unbounded kills are built on it. Read from oracle text, the in-format lookalikes do not substitute in this shell: Nether Traitor triggers only when ANOTHER creature dies, and Forsaken Miner returns on committing a crime, which sacrificing your own creature is not. No add raises this 17.0% without a new declared line and a new stack.",
     "closers": [],
     "citations": [
      {
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
      }
     ]
    },
    {
     "component": "Yawgmoth on the engine turn",
-    "why": "Three of the six declared kills (D, E, F) are commander-gated, including the primary. The gate is a timing tax, not an access problem \u2014 he recasts from the zone \u2014 but KILL E's 38.9% by-turn-6 assisted rate assumes he survives a rotation, and the cards that can hold him on the battlefield through a removal spell number three: Lightning Greaves plus the two instants the taxonomy cannot see (Supernatural Stamina, Malakir Rebirth). Recovering him afterwards from the graveyard (Victimize, Animate Dead, Phyrexian Reclamation) exists but costs the turn the gate is taxing. Mikaeus remains the only undying-GRANTER in the 99 (only Butcher Ghoul and Geralf's Messenger carry undying natively), but KILL F (stack 014, checker-passed, library-bounded \u2014 lethal to the pod in ~30 activations of the ~55 available) gives the undying loop a route that does not need him, which lowers the single-point weight the prior diagnosis put on Mikaeus alone.",
+    "why": "Three of the six declared kills (D, E, F) are commander-gated, including the primary. The gate is a timing tax rather than an access problem \u2014 he recasts from the command zone \u2014 but KILL E's 38.8% assisted by-turn-6 rate assumes he survives a rotation, and only three cards in the 99 can keep Yawgmoth on the battlefield through a removal spell or return him to it immediately: Lightning Greaves (shroud), Supernatural Stamina and Malakir Rebirth (return on death). Enumerated over every protection-shaped line in the 99, nothing else reaches him: Sedgemoor Witch's ward and Yahenni's indestructible are self-only, and Mikaeus grants undying to other NON-HUMAN creatures while Yawgmoth is a Human Cleric. Two of the three are invisible to the protection axis, which is why it reads 3 rather than 5.",
     "closers": [],
     "citations": [
      {
@@ -403,89 +403,86 @@
       "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
      }
     ]
+   },
+   {
+    "component": "Every declared kill contains a one-card component",
+    "why": "Enumerated from the audit's own component lists: KILL A (Warren Soultrader, Gravecrawler), B (Gravecrawler, Phyrexian Altar), C (Exquisite Blood), D (Mikaeus), E (Nest of Scarabs), F (Butcher Ghoul, Geralf's Messenger). The audit says this outright \u2014 a named card is 7.1% of an opening seven, and that is the ceiling on those lines, not a defect in the simulation. It is why the tutors are load-bearing and why the assisted rates are the ones to plan against.",
+    "closers": [],
+    "citations": [
+     {
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+     }
+    ]
    }
   ]
  },
  "lean_into": [
   {
-   "what": "The grind layer the staples pass bought. Fodder and drain both sit at 82.3% drawn; mean bodies at turn 6 is 4.239.",
-   "why": "This is the game the deck actually plays most sessions: attrition value from Yawgmoth's draw while the tutors find a kill half. The pass deliberately bought 'the grind engine that runs while Yawgmoth digs, not the pop-off' \u2014 the measurements say it worked.",
+   "what": "The grind layer. Fodder and drain both sit at 82.3% drawn, outlets 78.5%, ignition 73.8%.",
+   "why": "This is the game the deck plays most sessions: attrition value from Yawgmoth's draw while the tutors find a kill half. All six classes the audit prices at size 5 or more clear 60% (drain 0.823, fodder 0.823, outlet 0.785, ignition 0.738, engine mana 0.612, tutors 0.612); the deck does not mulligan to a card, it mulligans to a class.",
    "evidence": {
     "fodder_assembled_rate": 0.823,
     "drain_assembled_rate": 0.823,
-    "mean_bodies_turn_6": 4.239,
-    "prior_fodder_rate": 0.736
+    "outlet_assembled_rate": 0.785,
+    "ignition_assembled_rate": 0.738
    },
    "citations": [
     {
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
     }
    ]
   },
   {
-   "what": "KILL E is the deck's primary realized line \u2014 sequence toward it, not toward the flashier unbounded loops.",
-   "why": "It is the best-measured kill by a wide margin: 13.5% unassisted / 58.8% assisted assembled (7.5% / 38.9% by turn 6), against 6.6%/42.6% for KILL C and single digits for everything else. Its stacks (002/003/004) are checker-passed, and Yawgmoth works from the zone.",
+   "what": "Sequence toward KILL E and plan against the ASSISTED rates, not the by-turn-6 ones.",
+   "why": "KILL E is the best-measured kill by a wide margin: 13.5% unassisted and 58.8% assisted, against 6.6%/42.6% for KILL C and single digits unassisted for A, B, D and F. Its mean assembly turn is 6.27. The one table run says the pod does not punish that: the game ran to mean round 17.1 (ci95 [15.72, 18.48], n=20) and our seat was eliminated at global turn 30.44 (ci95 [27.75, 33.13], n=16). Against this table the deck has the turns; what it needs is the tutor pointed at the right half.",
    "evidence": {
     "kill_e": {
      "assembled_rate": 0.135,
      "assembled_rate_assisted": 0.588,
      "by_turn_6_rate": 0.075,
-     "by_turn_6_rate_assisted": 0.389,
-     "mean_turn": 6.267
+     "by_turn_6_rate_assisted": 0.388,
+     "mean_turn": 6.27
     },
     "kill_c": {
      "assembled_rate": 0.066,
-     "assembled_rate_assisted": 0.426,
-     "by_turn_6_rate": 0.041,
-     "by_turn_6_rate_assisted": 0.273,
-     "mean_turn": 5.085
+     "assembled_rate_assisted": 0.426
     },
     "kill_a": {
      "assembled_rate": 0.013,
-     "assembled_rate_assisted": 0.182,
-     "by_turn_6_rate": 0.005,
-     "by_turn_6_rate_assisted": 0.084,
-     "mean_turn": 6.896
+     "assembled_rate_assisted": 0.182
     },
     "kill_b": {
      "assembled_rate": 0.006,
-     "assembled_rate_assisted": 0.12,
-     "by_turn_6_rate": 0.002,
-     "by_turn_6_rate_assisted": 0.041,
-     "mean_turn": 7.246
+     "assembled_rate_assisted": 0.12
     },
     "kill_d": {
      "assembled_rate": 0.046,
-     "assembled_rate_assisted": 0.343,
-     "by_turn_6_rate": 0.019,
-     "by_turn_6_rate_assisted": 0.162,
-     "mean_turn": 7.056
+     "assembled_rate_assisted": 0.343
     },
     "kill_f": {
      "assembled_rate": 0.018,
-     "assembled_rate_assisted": 0.269,
-     "by_turn_6_rate": 0.007,
-     "by_turn_6_rate_assisted": 0.124,
-     "mean_turn": 7.066
-    }
+     "assembled_rate_assisted": 0.269
+    },
+    "sim_run": "giada-angels-vs-vito-vs-baylen-tokens-n20-5863d86b-s1482938475"
    }
   },
   {
-   "what": "Spend the tutors on kill halves, and hold the three commander protectors for the engine turn.",
-   "why": "Five tutors inside the combo window are why every kill's assisted rate is a multiple of its unassisted one. And the prior diagnosis's lean 'stop paying for commander protection you do not need' is REVERSED by the new declarations: with D, E and F commander-gated, Greaves, Supernatural Stamina and Malakir Rebirth are engine-turn cards, not value plays.",
+   "what": "Hold Lightning Greaves, Supernatural Stamina and Malakir Rebirth for the engine turn rather than spending them as value.",
+   "why": "KILL D, E and F are commander-gated and E is the declared primary, so the three cards that answer removal aimed at Yawgmoth are engine-turn cards. The protection axis reads 3 against a 4-6 window and two of those three are invisible to it, so the axis understates the function while still pointing at the right slot count.",
    "evidence": {
-    "tutor_rate": 0.612,
     "commander_gated_kills": [
      "KILL D",
      "KILL E",
      "KILL F"
-    ]
+    ],
+    "protection_measured": 3
    },
    "citations": [
     {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+     "rule": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
     }
    ]
   }
@@ -493,8 +490,8 @@
  "cut_candidates": [
   {
    "card": "Grave Pact",
-   "why": "Four mana that does nothing the turn it lands, appears in zero checker-passed scenarios and zero declared kill lines, and overlaps a 12-copy interaction suite that is 50% over its floor. The staples pass held Deathgreeter explicitly so Grave Pact could keep its slot \u2014 the pilot has voted once, and this entry respects that by staying ranked, not mandated. It is still the weakest four-drop by artifact evidence.",
-   "cost_of_cutting": "The deck's only repeatable non-targeting removal engine (sole removal:edict role in the 99); against hexproof or ward boards the remaining non-targeting answers are the three sweepers. With nine renewable fodder sources it triggers often, which is precisely why it is painful and not easy.",
+   "why": "Four mana that does nothing on the turn it lands, in zero of the fourteen checker-passed stack scenarios and in none of the six declared kill lines, inside a removal count of 12 against a floor of 8. It is the slot the artifact answer has to come from: the mana axes leave no land available, and cutting from any engine component would trade a measured rate for a breadth class.",
+   "cost_of_cutting": "It is the only removal:edict in the 99 and the only card that makes opponents sacrifice anything, so cutting it removes the deck's repeatable non-targeting removal ENGINE. What remains against a hexproof or ward board is the three sweepers (Black Sun's Zenith, Soul Snuffers, The Meathook Massacre), all one-shot, plus combat-dependent effects (Massacre Girl's wither, Ophiomancer's deathtouch Snake). With nine renewable fodder sources it triggers constantly, and the one table run points the other way from this cut: our seat was eliminated by damage in 9 of the 14 attributed eliminations, and giada-angels \u2014 the aggro seat Grave Pact taxes hardest \u2014 was the attributed killer 8 times. The two breakdowns are reported separately in the record and are not joined here. Interaction goes 12 to 11.",
    "orphans_stack": [],
    "difficulty": "painful",
    "citations": [
@@ -506,14 +503,14 @@
   },
   {
    "card": "Victimize",
-   "why": "Recursion is five deep by enumeration (Agadeem's Awakening, Persist, Phyrexian Reclamation, Reassembling Skeleton, Victimize) and Victimize appears in zero checker-passed scenarios. Its job on the combo turn \u2014 return bodies to the battlefield \u2014 is covered for nonlegends by Persist at one mana less, for legends (Mikaeus) by Animate Dead, and at scale by Agadeem's Awakening; Persist alone does not cover it, because Persist reads 'nonlegendary'.",
-   "cost_of_cutting": "The only recursion that returns TWO creatures for one card, and one of three ways in the 99 to put a legendary creature card (Mikaeus, KILL D's piece) from graveyard to battlefield \u2014 Animate Dead and Agadeem's Awakening at X>=6 are the others, since Persist is nonlegendary-only. Cutting it leaves two legend routes, one of them seven-plus mana. Its sacrifice cost is itself a death trigger for the drain layer. Recursion class goes 5 to 4.",
+   "why": "Recursion is five by the taxonomy (Agadeem's Awakening, Persist, Phyrexian Reclamation, Reassembling Skeleton, Victimize) and functionally six, because Animate Dead does the same job while filed buff:attached / removal:debuff / value:etb. Victimize is in zero of the fourteen checker-passed stack scenarios, and at three mana sorcery speed it is the slowest member of that class.",
+   "cost_of_cutting": "It is the CHEAPEST card in the 99 that returns two creature cards to the battlefield at once \u2014 the other multi-return is Agadeem's Awakening, which needs X to cover each returned card's mana value \u2014 and one of the routes that can put a legendary creature (Mikaeus, KILL D's piece, or Yawgmoth himself) from graveyard to battlefield; Persist reads 'nonlegendary', so the remaining legend routes are Animate Dead and Agadeem's Awakening at X>=4, the latter at seven or more mana. Its sacrifice cost is itself a death trigger for the drain layer. Recursion goes 5 to 4 by the taxonomy.",
    "orphans_stack": [],
    "difficulty": "contested",
    "citations": [
     {
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
     }
    ]
   }
@@ -523,9 +520,9 @@
    "card": "Gate to Phyrexia",
    "closes": "interaction-breadth",
    "source": "pool",
-   "why": "The artifact class is zero by enumeration and this deck's hosers are artifacts: Grafdigger's Cage sits on both Gravecrawler loops and the undying returns, Cursed Totem on the creature-outlet class. Gate converts the resource this deck has most of \u2014 a renewable body \u2014 into artifact destruction every upkeep, and its roles (removal:spot, sac-cost, sac-outlet) mean the breadth heuristic sees it. Verified against cards.csv: identity B, Commander-legal, not in the 99. MARGINAL frame: takes breadth 2 to 3 with the full package applied \u2014 Culling the Weak touches no breadth class, so the two adds do not overlap.",
+   "why": "The artifact class is zero, re-enumerated over all 80 entries for this diagnosis, and this deck's hosers are artifacts: Grafdigger's Cage sits on both Gravecrawler loops and the undying returns, Cursed Totem on five of the eight outlets plus Yawgmoth. Gate converts the resource this deck has most of \u2014 a renewable body, drawn 82.3% of games \u2014 into artifact destruction every upkeep. Its roles are removal:spot, sac-cost, sac-outlet, so the breadth heuristic can see it and the interaction count holds at 12 when it replaces Grave Pact. It would also take the noncreature-answer component from one card to two, once goldfish_targets is re-curated to name it. Verified against data/cards.csv: colour identity B, Commander-legal, not in the 99.",
    "evidence": {
-    "recon_support": "deck_recon.json (as_of 2026-08-03) known_failure_modes: graveyard hate blanks the recursion half, and mono-black 'cannot answer a resolved artifact or enchantment except through Feed the Swarm / Withering Torment'."
+    "recon_support": "deck_recon.json (as_of 2026-08-03) known_failure_modes: 'Graveyard hate blanks the recursion half' and mono-black 'cannot answer a resolved artifact or enchantment except through Feed the Swarm / Withering Torment'."
    },
    "natural_cut": "Grave Pact",
    "bracket_delta": {
@@ -543,9 +540,9 @@
    "card": "Culling the Weak",
    "closes": "engine component: Fast mana drawn (the turn-2-Yawgmoth enabler)",
    "source": "recon",
-   "why": "The fast-mana class is 3 cards at 43.6% \u2014 uniquely the smallest and lowest multi-card component \u2014 and Culling is the colour-specific ritual deck_recon.json names for exactly this archetype: it converts a body (drawn 82.3% of games) into BBBB for one mana. Concentration, not redundancy: it accelerates the commander AND the double-pip combo turns. Stated cost: it carries ramp:ritual, so the ramp axis goes 12 to 13, one over the 10-12 window. Verified against cards.csv: identity B, Commander-legal, not in the 99.",
+   "why": "Fast mana is three cards at 43.6%, both the smallest and the lowest-rated of the seven classes the audit prices standalone. Culling turns a body \u2014 drawn 82.3% of games \u2014 into BBBB for one mana, which is concentration rather than redundancy: it accelerates the commander and it pays for the double-pip combo turns. Stated costs, not hidden: it carries ramp:ritual, so ramp goes 12 to 13, one over the 10-12 window; and it is one-shot, so it does not thicken the colour-sources margin that the reminder-text fix just narrowed to +2. Verified against data/cards.csv: colour identity B, Commander-legal, not in the 99.",
    "evidence": {
-    "recon_support": "deck_recon.json finding: 'Mono-black lists solve their mana with colour-specific cost reduction and rituals rather than generic rocks' \u2014 cards named include Culling the Weak (widely agreed).",
+    "recon_support": "deck_recon.json finding (widely agreed): 'Mono-black lists solve their mana with colour-specific cost reduction and rituals rather than generic rocks, because Yawgmoth's own cost and the combo turns are BB-heavy' \u2014 cards named include Culling the Weak.",
     "component_rate": 0.436
    },
    "natural_cut": "Victimize",
@@ -555,102 +552,53 @@
    },
    "citations": [
     {
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
     }
    ]
   }
  ],
  "open_questions": [
   {
-   "question": "RESOLVED by stack 014 (checker pass at iteration 1, 22 citations): does KILL F function as declared? Yes, with one correction \u2014 'unbounded' is REFUTED. Yawgmoth's draw is mandatory ('and draw a card', no 'may'), so every activation consumes a library card: ~55 activations available mid-game, lethal to the pod in ~30 (per two-activation cycle each opponent loses 2 to the drain and the Messenger-targeted seat 4, at net-zero life to the pilot), leaving ~25 cards of margin. goldfish_targets' KILL F label now carries the corrected wording: 'stack 014, library-bounded, lethal in ~30 activations'.",
+   "question": "Under an opposing Grafdigger's Cage, do KILL A (stack 009), KILL B (011), KILL D (010) and KILL F (014) still function? A and B recast Gravecrawler from the graveyard; D and F return creature cards to the battlefield from the graveyard via undying.",
    "settled_by": "resolve-stack",
-   "why_it_matters": "All six declared kills are now grounded in checker-passed artifacts. KILL F is fact, but a library-bounded fact \u2014 it kills the pod with margin and must never be presented as an unbounded loop. The reduction of Mikaeus's single-point weight that leaned on this line now stands on a verified stack."
+   "why_it_matters": "If four of six declared kills die to one two-mana artifact the deck cannot remove, the Gate to Phyrexia add is undersold here rather than oversold, and it stops being a marginal breadth patch."
   },
   {
-   "question": "Under Grafdigger's Cage, do KILL A (009), KILL B (011), KILL D (010) and now KILL F still function? A and B cast Gravecrawler from the graveyard, D and F return creature cards from the graveyard via undying \u2014 all four look Cage-shaped, which is the concrete case for Gate to Phyrexia.",
+   "question": "Under an opposing Cursed Totem, what survives of the outlet component? Five of its eight members are creatures whose ability is activated (Viscera Seer, Carrion Feeder, Woe Strider, Yahenni, Warren Soultrader) and Yawgmoth himself is shut off; three are artifacts (Ashnod's Altar, Phyrexian Altar, Blasting Station).",
    "settled_by": "resolve-stack",
-   "why_it_matters": "If all four die to one two-mana artifact the deck cannot answer, the Gate add is undersold here, not oversold."
+   "why_it_matters": "Determines whether the artifact-answer gap is only about graveyard hate or also collapses the outlet class the deck mulligans to."
   },
   {
-   "question": "Under an opposing Cursed Totem, what survives of the outlet component? Five of its eight members are creatures with activated abilities, and Yawgmoth himself is shut off.",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Determines whether the artifact-answer gap is merely about graveyard hate or also about the outlet class."
-  },
-  {
-   "question": "How often does the deck assemble ANY of its six kills? The audit's schema states it cannot express the union, and averaging would invent a number the simulation never measured.",
+   "question": "Does the corrected black-source count warrant a 37th land? The audit reads 38 sources against a target of 36; of the five nonland sources, Dark Ritual is one-shot and Pawn of Ulamog is credited only through mana_analysis's colour-identity fallback, since its sole mana clause is an Eldrazi Spawn token's 'Sacrifice this token: Add {C}'.",
    "settled_by": "goldfish",
-   "why_it_matters": "The per-line rates (0.6%-13.5% unassisted) understate the deck's real conversion; the union is the number a pilot actually experiences."
+   "why_it_matters": "The deck is at 36 lands, the floor of the window, and turn-3 land drop is 91.6%. If the honest count is nearer 36 than 38 the margin is gone, and adding a one-shot ritual (Culling the Weak) does not restore it."
   },
   {
-   "question": "Should the fast-mana any_of be re-curated after the purchase lands \u2014 adding Culling the Weak if bought, and deciding whether Jet Medallion belongs (it accelerates Yawgmoth to an effective 3 but is cost-reduction, not mana)?",
+   "question": "How often does the deck assemble ANY of its six kills? The audit states its schema cannot express the union, and averaging the six would invent a number the simulation never measured.",
    "settled_by": "goldfish",
-   "why_it_matters": "The 43.6% figure is only as good as the declared group; a stale declaration would leave the next diagnosis prescribing against a number the deck has already moved."
+   "why_it_matters": "The per-line rates (0.6% to 13.5% unassisted) understate the deck's real conversion, and the union is the number a pilot actually experiences at the table."
+  },
+  {
+   "question": "Should the fast-mana any_of group be re-curated \u2014 adding Culling the Weak if it lands, and deciding whether Jet Medallion belongs, since it accelerates Yawgmoth to an effective three mana but is cost reduction rather than mana?",
+   "settled_by": "goldfish",
+   "why_it_matters": "The 43.6% figure is only as good as the declared group; a stale declaration leaves the next diagnosis prescribing against a number the deck has already moved."
+  },
+  {
+   "question": "Is Withering Torment worth a third slot alongside Gate to Phyrexia? The two are named as closers for the same single point of failure, and the deck's declared noncreature-answer group is one card (Feed the Swarm) at 17.1%. Re-curating that group to name the two or three real answers would give the question a measured rate to argue against instead of a count.",
+   "settled_by": "goldfish",
+   "why_it_matters": "Gate covers the missing class and takes the answer count from one to two; a third answer is diversification and needs a third priced cut on a deck at target on every other countable axis. Without a re-curated group there is no measured rate to price that trade."
   }
  ],
  "gaps": [
-  "No candidate_pool.json exists for this deck; Gate to Phyrexia was verified directly against data/cards.csv rather than drawn from a scored pool. A pool run scoped to artifact answers and to sacrifice-for-black-mana effects might name better candidates than the two carried forward here.",
-  "deck_recon.json is as_of 2026-08-03 and predates the staples pass: its finding that this deck runs neither top fodder engine, and its Nykthos-on-the-bench claim, are both satisfied by commit a2a1645. It is leaned on only where still true of the new 99 (the Culling the Weak finding, the Feed the Swarm finding, the failure modes). This diagnosis leans on a dated recon artifact, eight days old.",
-  "Supernatural Stamina and Plumb the Forbidden have no entry in card_roles.json; Malakir Rebirth is filed ramp:ritual. All three show engine-relevant functions in oracle text that no axis can count, which is why protection and card-advantage are read as floors.",
-  "bracket_report.json carries no decklist_sha256 (audit freshness reports current: null), so the power figure could not be staleness-checked from the freshness block; the base floor and both swap deltas were recomputed from the current 99 with bracket.assess and all return 4.",
-  "The decklist comment block quotes mean bodies t6 4.34 from the sandbox verification; the committed seeded artifact says 4.239. The committed figure is the one carried here \u2014 the sandbox number is not reproducible from tracked artifacts.",
-  "The audit computes closers only for one-card components, so tutors and engine mana (both 61.2%) have no pool route in any artifact; they are named as the next-thinnest classes rather than prescribed for."
- ],
- "skeptic": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "cut_candidates[1]",
-    "status": "supported",
-    "note": "RESOLVED iteration 2. cost_of_cutting now reads 'one of three ways in the 99', naming Animate Dead and Agadeem's Awakening at X>=6, and re-weighs the cost as 'leaves two legend routes, one of them seven-plus mana'. Count verified correct against card_roles.json (recursion enumeration) and oracle text (Agadeem's Awakening carries no legendary restriction). One precision note, checked and let stand: the Agadeem route is {X}{B}{B}{B} at X>=6 = nine mana for Mikaeus, so 'seven-plus' is a true lower bound (9>=7), loose in the direction that UNDERSTATES the cut's cost \u2014 it errs against the doctor's own argument, and no reader is misled toward the prescription."
-   },
-   {
-    "where": "engine.single_points_of_failure[2]",
-    "status": "supported",
-    "note": "RESOLVED iteration 2 (conditional hedge), superseded iteration 3: stack 014 (checker pass, iteration 1, 22 citations, contract verified with validate-stack) now grounds the claim, and the sentence is correctly indicative \u2014 'KILL F (stack 014, checker-passed, library-bounded \u2014 lethal to the pod in ~30 activations of the ~55 available) gives the undying loop a route that does not need him'. Every figure matches the stack's own verdict block. unverified-line no longer applies: the line is verified, and the bound is stated wherever the line is used."
-   },
-   {
-    "where": "axes",
-    "status": "supported",
-    "note": "Re-ran deck-audit 2026-08-11: all 16 measured.values match today's audit exactly (36/42/2/5/12/5/12/3/3/13/30/2/0.916/3/4/5) and every reading agrees with its value. card-advantage and protection carry the audit count unchanged while naming the probe cards (Yawgmoth, Ayara, BMC, Castle Locthwain, Plumb the Forbidden; Yawgmoth) \u2014 the floor/ceiling trap is avoided, and the counting convention is declared up front."
-   },
-   {
-    "where": "verdict",
-    "status": "supported",
-    "note": "goldfish_metrics.json /metrics/mean_bodies_by_turn/6 = 4.239; decklist.txt:105 quotes the sandbox 4.34. The doctor carried the committed 4.239 and flagged the discrepancy in gaps[4] \u2014 correct per the freshness rule. Also verified: fodder/drain 0.823 with by-turn-6 0.722/0.720, land-drop t3 0.916, keep-7 0.816, commander mean cast 4.301, cast-by-6 0.91, turn-2 cast 718/10000 = 7.2%."
-   },
-   {
-    "where": "lean_into[2]",
-    "status": "supported",
-    "note": "The reversal is grounded, not narrative. HEAD's prior diagnosis lean 'Stop paying for commander protection you do not need' rested on only KILL D being commander-gated (of four kills). goldfish_targets.json now declares commander:true on D, E, F (3 of 6), the audit carries the flags, and stacks 002/003/004 (KILL E, all checker-passed) each hold Yawgmoth in their scenario block \u2014 the gating is verified in artifacts, and E is the primary. Prior fodder rate 0.736 also confirmed in the HEAD copy."
-   },
-   {
-    "where": "cut_candidates[0]",
-    "status": "supported",
-    "note": "Grave Pact appears in zero of the 13 checker-passed scenarios (grepped all stack files \u2014 zero mentions anywhere), is the sole removal:edict in the 99 per card_roles.json, and sits in no declared kill line. orphans_stack [] is correct, cost_of_cutting is a real cost distinct from why, and 'painful' is justified. The cut list does not dodge the job."
-   },
-   {
-    "where": "add_candidates",
-    "status": "supported",
-    "note": "Both adds verified against cards.csv: identity B, Commander-legal, absent from the 99. Gate to Phyrexia's oracle destroys a target artifact and its roles (removal:spot) make it visible to the breadth heuristic, so 'closes interaction-breadth 2->3' is a claim the measure credits; my own oracle-text enumeration over all 80 entries found zero artifact answers, confirming the class is genuinely empty. Culling the Weak's ramp:ritual cost (12->13, one over window) is stated, not hidden, and deck_recon.json (as_of 2026-08-03) names it verbatim with confidence 'widely agreed'. Nykthos is correctly left alone despite zero restriction-aware credit \u2014 the adjudicated trap is avoided."
-   },
-   {
-    "where": "citations",
-    "status": "supported",
-    "note": "Fetched all nine cited strategy sections; every quote is verbatim and none is used against its section's own caveats \u2014 ratios' 'counts of functions, not cards' ending is honored (card-advantage read as functional ~10 at a counted 5), power-level's 'floor, never a verdict' is respected, and redundancy-vs-tutors' 7.1%-named-card arithmetic matches every SPOF odds figure."
-   },
-   {
-    "where": "engine.components",
-    "status": "supported",
-    "note": "All ten component memberships and sizes match goldfish_targets.json declarations exactly (validate-goldfish-targets: OK, 16 targets / 27 groups); all measured rates match goldfish_metrics targets. Fast mana (3 cards, 0.436) is genuinely the smallest and lowest-rated multi-card component. The four one-card components are priced as the structural 7.1%-per-named-card floor, not called defects. All six kill-rate blocks in lean_into[1].evidence match the committed metrics digit for digit."
-   },
-   {
-    "where": "archetype + engine.declared + open_questions[0]",
-    "status": "supported",
-    "note": "Iteration 3, scoped to the stack-014 revision. Read the stack: checker verdict pass at iteration 1, 22 resolution citations; VERDICT verbatim: 'unbounded' refuted because Yawgmoth's draw is mandatory \u2014 ~55 activations available (~27 cycles), lethal to the pod in ~30 (per two-activation cycle: 2 each to Zulaport, +4 to the Messenger-targeted seat), ~25 cards of margin. All four edits state exactly this: archetype 'fourteen checker-passed stacks' (14 stack files, all pass), engine.declared '(F, stack 014, library-bounded \u2014 lethal in ~30 activations)', SPOF[2] indicative with the bound inline, open_questions[0] RESOLVED with the correct arithmetic and citation count. Cross-artifact consistency also checked: goldfish_targets.json KILL F label carries the corrected wording as open_questions[0] claims, goldfish_metrics.json carries the SAME updated label with rates unchanged (0.018/0.269/0.007/0.124/7.066 \u2014 membership untouched, so the measured figures legitimately stand), and a fresh deck-audit joins the new label cleanly. Nothing anywhere still calls F unbounded; 'unbounded' now attaches only to A and B (stacks 009/011), which is correct. Full re-read confirms every other leaf byte-identical to the iteration-2 review; validate-diagnosis OK."
-   }
-  ],
-  "iteration_2_note": "Re-read the full merged diagnosis.json after the two in-place corrections: every section other than cut_candidates[1].cost_of_cutting and engine.single_points_of_failure[2].why is byte-identical to the iteration-1 review (archetype, verdict, all 16 axes, all 10 engine components, SPOF[0]/[1], lean_into, cut_candidates[0], add_candidates, open_questions, gaps). validate-diagnosis: OK \u2014 16 axes (2 weak), 2 cut / 2 add, 5 open questions.",
-  "iteration_3_note": "Scoped verification of the stack-014 revision only. The four edited leaves accurately quote stack 014's verdict; goldfish_targets + goldfish_metrics label update is consistent and rate-preserving; validate-stack yawgmoth-swarm --stack 014: contract holds, checker pass; validate-diagnosis: OK. Final verdict pass."
- }
+  "The captain's log is EMPTY \u2014 `deck-notes yawgmoth-swarm list` returns no entries and there is no log_annotations.json. Nothing in this diagnosis rests on a played game; every behavioural claim is goldfish or simulation.",
+  "The one simulation run (giada-angels-vs-vito-vs-baylen-tokens-n20-5863d86b-s1482938475, 20 games) reports a 0.1 win rate with ci95 [0.028, 0.301]. That figure is NOT read as a measurement of this deck: the run's own assumptions block quotes Forge's docs saying the AI is 'pretty bad for most combo decks', and this deck's archetype is combo. Only the clock figures (round 17.1, elimination at global turn 30.44) and the elimination attribution are used, and even those come from an AI piloting our seat.",
+  "The 44.15 mean combat damage taken (ci95 [26.34, 61.96]) against giada-angels' 13.65 taken (ci95 [8.4, 18.9]) looks like a real separation on the marginals, but no interval on the DIFFERENCE was computed and the marginals alone do not license a comparison. It is recorded, not concluded from.",
+  "mana_analysis credits Pawn of Ulamog as a black source through land_colors' colour-identity fallback, although its only mana clause is the Eldrazi Spawn token's 'Sacrifice this token: Add {C}'. That is the same defect class the reminder-text fix just closed, differing only in that the granted ability sits in quotation marks rather than parentheses. The audit's figure of 2 is carried unchanged here; the bench should decide whether the fallback needs the same treatment.",
+  "deck_recon.json is as_of 2026-08-03, twenty-four days old, and predates the staples pass. Its fodder finding (Ophiomancer, Pawn of Ulamog) and its drain-redundancy finding (Marauding Blight-Priest, The Meathook Massacre) are already satisfied by the current 99. It is leaned on only for the mono-black mana finding, the Feed the Swarm finding and the failure modes.",
+  "No candidate_pool.json exists for this deck; Gate to Phyrexia and Culling the Weak were verified directly against data/cards.csv rather than drawn from a scored pool. A pool run scoped to artifact answers and to sacrifice-for-black-mana effects might name better candidates.",
+  "bracket_report.json carries no decklist_sha256, so the audit's freshness block reports current: null for it. The floor of 4 and both swap deltas were recomputed from the current 99 with bracket.assess and all return 4.",
+  "Supernatural Stamina and Plumb the Forbidden have no entry in card_roles.json, and Malakir Rebirth is filed ramp:ritual. All three carry engine-relevant functions no axis can count, which is why protection and card-advantage are read as floors rather than as verdicts.",
+  "The audit computes closers only for one-card components, so the tutor and engine-mana classes (both 61.2%) have no pool route in any artifact; they are named as the next-thinnest classes rather than prescribed for."
+ ]
 }

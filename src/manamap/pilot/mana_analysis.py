@@ -30,6 +30,7 @@ from manamap.pilot.common import (
     load_deck_cards,
     load_json,
 )
+from manamap.pilot import manabase
 from manamap.pilot.manabase import (
     WUBRG,
     achieved_probability,
@@ -75,7 +76,12 @@ def nonland_producer_kind(card):
     """ramp:rock / ramp:dork / ramp:ritual for a nonland mana source, else None."""
     if is_land(card):
         return None
-    if not _MANA_SOURCE_RE.search(str(card.get("oracle_text", "") or "")):
+    # REMINDER TEXT IS NOT THIS CARD'S ABILITY — the same fix `land_colors` got,
+    # and this is the GATE, so without it a Treasure-maker still counts as a
+    # dork producing nothing. Prosperous Innkeeper creates a Treasure and has no
+    # mana ability of its own; its reminder text describes the token's.
+    if not _MANA_SOURCE_RE.search(
+            manabase._REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))):
         return None
     front_type = front_face(card.get("type_line", ""))
     for supertype, kind in ROLE_MANA_BY_SUPERTYPE.items():

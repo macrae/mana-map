@@ -715,3 +715,34 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
 .swap-act button:hover:not(:disabled) { border-color: var(--ink); }
 .swap-act button:disabled { opacity: .5; cursor: default; }
 .panel.staged ul.cardlist li { font-variant-numeric: tabular-nums; }
+
+/* ── The case file (deck.html) ───────────────────────────────────────────
+ *
+ * The top of the dossier, and it describes the CHECKED-IN LIST ONLY. This page
+ * once opened by calling a deck a "non-creature treasure engine" — the design
+ * brief of a branch that was measured, found worse and deleted, still being
+ * composed into `info.json`. Explorations sit at the foot now, behind their own
+ * net-change report. */
+
+.panel.casefile { border-left: 4px solid var(--tier-data); }
+.case-grid { display: grid; gap: .5rem 1.4rem; margin: .6rem 0 .9rem;
+             grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.case-cell { display: flex; flex-direction: column; gap: .1rem; }
+.case-k { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+          color: var(--ink-soft); }
+.case-v { font-size: .95rem; font-variant-numeric: tabular-nums; }
+.case-thesis { font-size: 1.02rem; line-height: 1.5; margin: .5rem 0 .2rem;
+               border-left: 2px solid var(--rule); padding-left: .8rem; }
+.case-stale { color: var(--burst-yellow); font-size: .86rem; margin-top: .7rem; }
+
+/* The captain's log leads now, so its shape has to read at a glance. */
+.log-sum { font-size: 1.02rem; margin: .4rem 0 .6rem; }
+.log-sum .log-n { font-family: var(--techno); font-size: 1.5rem;
+                  color: var(--tier-coach); }
+.log-todo { color: var(--burst-yellow); }
+.log-last { margin: .3rem 0; line-height: 1.5; }
+details.log-all { margin-top: .7rem; }
+details.log-all > summary { cursor: pointer; font-size: .8rem;
+                            letter-spacing: .06em; text-transform: uppercase;
+                            color: var(--ink-soft); }
+details.log-all > summary:hover { color: var(--ink); }

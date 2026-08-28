@@ -82,8 +82,8 @@
     "verified_lines": 10
   },
   "diagnosis": {
-    "verdict": "This deck functions and it converts. Mana is at or over target on every mana axis, the turn-3 land drop lands 90% of the time, and five checker-passed stacks record what the board actually does — including a mana-positive Haze of Rage loop that needs no commander at all. What limits it is the shape of its interaction, not the amount. I read all 13 oracle texts on the audit's interaction axis: 11 can point at an opposing permanent, and nearly all of that is damage, which never touches an enchantment, a land or a graveyard. A search of all 79 entries for destroy / exile target / target permanent / gain control / counter / return target returns four cards, and only Chaos Warp answers an opposing enchantment or land — a named singleton, which the corpus prices at 10.1% by ten cards seen.",
-    "skeptic": "pass",
+    "verdict": "It functions, and five checker-passed stacks record what its board actually does. Mana is at or over target on every mana axis and the turn-3 land drop lands 90%; the reminder-text fix did not create a mana problem, it narrowed a cushion from 7 sources above the Karsten yardstick to 4. What limits it is conversion. The ceiling assembles 26.5% because the storm target is an AND of two independent four-card groups, and the 60% swarm floor that has to carry the other games does not close — the pod run's median combat damage dealt is 6.5 against 28.5 taken over a mean 16.8 rounds, and the deck's ten reach cards are filed by the taxonomy as removal, which is why threat-density reads 2.",
+    "skeptic": null,
     "stale": false
   },
   "audit": {
@@ -133,23 +133,23 @@
     },
     {
       "from": "diagnosis",
-      "question": "Which section governs the protection budget? strategy:deckbuilding.threat-density states \"5-7 protection slots\" with no archetype condition, while strategy:deckbuilding.interaction-suite budgets answers-to-answers at 2-4 generic / 4-6 combo / 6-8 Voltron. config.DECK_AXIS_TARGETS['protection'] hardwires the former, which is why the axis reads UNDER at 2.",
-      "settled_by": "research-strategy"
-    },
-    {
-      "from": "diagnosis",
-      "question": "On a board of Pashalik Mons, Boggart Shenanigans and N Goblin tokens, how much damage does casting Blasphemous Act actually convert into, and where can it be pointed? Boggart Shenanigans reads \"target player or planeswalker\" and Pashalik Mons reads \"any target\"; both are leaves-the-battlefield triggers under CR 603.10a.",
+      "question": "On a board of Impact Tremors, Boggart Shenanigans, Pashalik Mons and N Goblin tokens, how much life loss does Blasphemous Act actually convert into, and can all of it be aimed at one player? Boggart Shenanigans reads \"target player or planeswalker\" and Pashalik Mons reads \"any target\", both as leaves-the-battlefield triggers.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Does adding Jeska's Will to the ritual group move the \"Storm payoff plus ritual\" target's measured assembly, and by how much against the current 26.5% / 16.9% by turn 6?",
+      "question": "Add a fourth goldfish target for the reach kill — an any_of of the each-opponent damage payoffs (Impact Tremors, General Kreat, Boggart Shenanigans, Pashalik Mons) ANDed with the existing token group — and measure it.",
       "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Do Reiterate's in-deck lines work in this 99 — Reiterate + Mana Geyser, Reiterate + Seething Song + Storm-Kiln Artist, Reiterate + Seething Song + Ruby Medallion?",
-      "settled_by": "resolve-stack"
+      "question": "Does widening the ritual any_of group to five (Jeska's Will) and to six (Pyretic Ritual) move the storm target's 26.5% / 16.9%-by-turn-6, and by how much, with the payoff group left at four?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Which section governs the protection budget? strategy:deckbuilding.threat-density states \"5-7 protection slots\" with no archetype condition, while strategy:deckbuilding.interaction-suite budgets answers-to-answers at 2-4 generic / 4-6 combo / 6-8 Voltron. config.DECK_AXIS_TARGETS['protection'] hardwires the former, which is why this axis reads UNDER at 2 on a deck with one commander-gated target of three.",
+      "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
@@ -192,7 +192,7 @@
   "experiments": null,
   "next": [
     "nothing in the captain's log — play it, then `deck-notes goblin-storm add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×6"
+    "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

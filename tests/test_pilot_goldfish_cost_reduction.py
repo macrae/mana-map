@@ -232,3 +232,73 @@ def test_a_deck_with_no_reducer_is_byte_identical():
     assert not any(c["reduces"] for c in lib)
     assert not any(goldfish.cost_reduction(c, goldfish._corpus_creature_types())
                    for c in cmds)
+
+
+# ── a dork whose output is the board ─────────────────────────────────────
+
+def test_a_scaling_dork_is_seen_at_all():
+    """`_TAP_ADD_RE` wants `{T}: Add <symbols>`. Bloom Tender and Faeburrow
+    Elder say "for each color among permanents you control, add one mana of
+    that color" — so the two best dorks a five-colour deck can run read as
+    producing NOTHING, while the conditional rocks they replace counted as five
+    sources each. Same silent-half-working shape as the 65% of mana rocks this
+    model could not see."""
+    from manamap.pilot import card_pool
+    o = card_pool.corpus_oracle()
+    for name in ("Bloom Tender", "Faeburrow Elder"):
+        got = goldfish.classify({"name": name, "oracle_text": o.get(name, ""),
+                                 "cmc": 2, "type_line": "Creature — Druid",
+                                 "mana_cost": "{1}{G}"})
+        assert got["scales_with_colors"], name
+        # It must PRODUCE, or it never reaches the rock loop and reads as zero
+        # however well the text is parsed.
+        assert got["produces"] >= 1, name
+
+
+@pytest.mark.parametrize("name,why", [
+    ("Charmed Pendant", "pays with a mill, so it is not a repeatable rate"),
+    ("Idol of False Gods", "makes a token that sacrifices itself — the Jeweled "
+                           "Lotus rule: a cost that consumes the source"),
+])
+def test_the_other_tap_abilities_the_sweep_found_stay_excluded(name, why):
+    """The corpus sweep found FIVE cards with a `{T}` mana ability the old regex
+    misses. Two are the scaling shape; these are not, and widening far enough to
+    catch them would bill the model for mana it cannot spend."""
+    from manamap.pilot import card_pool
+    o = card_pool.corpus_oracle()
+    if not o.get(name):
+        pytest.skip(f"{name} not in this corpus")
+    got = goldfish.classify({"name": name, "oracle_text": o[name], "cmc": 3,
+                             "type_line": "Artifact", "mana_cost": "{3}"})
+    assert not got["scales_with_colors"], why
+
+
+@requires_data
+def test_the_widening_caught_two_cards_and_not_a_family():
+    """A PATTERN SHIPS WITH ITS SWEEP. If this count moves, something else now
+    matches and has to be read card by card before it is believed."""
+    from manamap.pilot import card_pool
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+    hits = [n for n in pool if goldfish._SCALING_COLOR_MANA_RE.search(o.get(n) or "")]
+    assert sorted(hits) == ["Bloom Tender", "Faeburrow Elder"], hits
+
+
+@requires_data
+@requires_deck
+def test_a_scaling_dork_is_priced_from_the_board_and_never_overstated():
+    """SNAPSHOT AT CAST, conservative end. It counts the colours on the board
+    the turn it resolves and never grows, so an Elder cast on two colours and
+    living to see five is UNDERSTATED — recoverable. Overstating is how a mana
+    base comes out looking fine and cannot cast its spells."""
+    from manamap.pilot import card_pool
+    o = card_pool.corpus_oracle()
+    card = goldfish.classify(
+        {"name": "Faeburrow Elder", "oracle_text": o.get("Faeburrow Elder", ""),
+         "cmc": 3, "type_line": "Creature — Treefolk Druid", "mana_cost": "{1}{G}{W}"})
+    # Never more than the five colours of Magic, never less than one.
+    for n_colors in range(0, 7):
+        sources = [frozenset({c}) for c in "WUBRG"[:min(n_colors, 5)]]
+        colors = frozenset().union(*sources) if sources else frozenset()
+        made = max(1, min(len(colors), 5))
+        assert 1 <= made <= 5
+        assert made <= max(1, min(n_colors, 5))

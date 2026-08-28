@@ -71,7 +71,15 @@ def test_json_and_print_agree_on_the_same_dict(bare_deck, capsys):
 
 @requires_deck
 def test_a_real_deck_composes_every_panel():
-    info = deck_info.compose("radagast")
+    """A LIVE DECK, not a broken-down one. This composed `radagast`, which is
+    broken-down — its cards are not sleeved and its artifacts are history, so
+    holding them to today's model reddens the gate for a deck nobody plays. The
+    pilot's rule, 2026-08-27: a deprecated deck is excluded from downstream
+    tasks. `test_a_broken_down_deck_is_not_told_to_go_and_play_it` below still
+    covers the retired path, on a synthetic fixture."""
+    info = deck_info.compose("heliod")
+    if info.get("lifecycle"):
+        pytest.skip("heliod has been retired; point this at a live deck")
     assert info["engine"]["critic"] == "pass" and info["engine"]["verified_lines"] >= 1
     assert info["goldfish"]["commander_mean_cast_turn"] is not None
     assert info["bracket"]["floor"] is not None and info["audit"]["archetype"]

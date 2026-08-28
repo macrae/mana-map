@@ -241,8 +241,15 @@
              'objective \u2192</a></p>';
       return out + '</div>';
     }).join('');
-    return panel('branches', bs.length === 1 ? 'The branch' : 'Branches',
-                 'Candidate lists, and what they would cost to build.',
+    // NAMED FOR WHAT THEY ARE. "Branches" reads as part of the deck; these are
+    // proposals that may never be built, and one of them — ur-dragon's treasure
+    // refactor — was measured, found worse and deleted after its design brief
+    // had already spent weeks describing the deck on this very page.
+    return panel('branches',
+                 bs.length === 1 ? 'Further exploration' : 'Further explorations',
+                 'Candidate lists that are NOT this deck. Each links to its own '
+                 + 'net-change report \u2014 what it costs, what it buys, and '
+                 + 'whether it met the objective it declared.',
                  [], '#7ba05b', body);
   }
 
@@ -1057,6 +1064,81 @@
       'var(--tier-coach)', list(items));
   }
 
+  /* THE CASE FILE — what a pilot sitting down with this deck needs first.
+   *
+   * IT DESCRIBES THE CHECKED-IN LIST AND NOTHING ELSE. The dossier once opened
+   * by calling ur-dragon a "non-creature treasure engine with an RGW-only mana
+   * base" — the design brief of a BRANCH that was measured, found worse and
+   * deleted, still sitting in `brief.json` and composed into `info.json` by
+   * `deck-info`. The deck it described has 24 creatures, runs two black duals
+   * and holds none of the cards the brief named. Explorations belong at the
+   * FOOT of this page, behind their own net-change report; the top is the deck
+   * you can actually shuffle.
+   *
+   * STALENESS IS SHOWN, NOT HIDDEN. `deck_status` already computes which
+   * artifacts describe an older list — `info.status.stale` — and the page used
+   * to render those sections with no mark at all, which is how prose about a
+   * different deck reads as current.
+   */
+  function caseFilePanel(d) {
+    var info = d.info || {};
+    if (!info.slug) return '';
+    var v = info.version || {};
+    var rec = info.record || {};
+    var paper = (d.entry || {}).paper;
+    var stale = (info.status || {}).stale || [];
+    var eng = info.engine || {};
+
+    var head = '<div class="case-grid">';
+    head += caseFact('Commander', (info.commander || []).join(' / ') || '\u2014');
+    head += caseFact('Colours', (info.colour_identity || []).join('') || 'C');
+    head += caseFact('The 99', info.size + ' cards \u00b7 ' + info.lands + ' lands');
+    head += caseFact('Sleeved',
+      paper ? 'V' + paper.version + (paper.built_at ? ' \u00b7 ' + paper.built_at : '')
+            : 'not marked as built in paper');
+    head += caseFact('Record', rec.games
+      ? rec.games + ' game(s) \u00b7 ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
+      : 'no games logged');
+    var br = info.bracket || {};
+    head += caseFact('Bracket', br.floor != null
+      ? 'floor ' + br.floor + (br.floor_name ? ' (' + br.floor_name + ')' : '') +
+        ' \u00b7 target ' + (br.target != null ? br.target : '\u2014')
+      : '\u2014');
+    head += '</div>';
+
+    var body = head;
+    // THE THESIS, and it must say whose it is. A one-line engine thesis is the
+    // fastest true sentence about a deck; an absent one says so rather than
+    // leaving the reader to assume the deck has no plan.
+    if (eng.thesis) {
+      body += '<p class="case-thesis">' + esc(eng.thesis) + '</p>';
+      body += '<p class="ev">\u2605 the engineer\u2019s reading of the machine' +
+              (eng.critic ? ' \u00b7 critic: ' + esc(eng.critic) : '') + '</p>';
+    } else {
+      body += '<p class="ev">No engine model yet \u2014 nothing here states what ' +
+              'this deck is trying to do. <code>/analyze-engine ' +
+              esc(info.slug) + '</code></p>';
+    }
+    if (!info.brief || !Object.keys(info.brief || {}).length) {
+      body += '<p class="ev">No brief authored for this list. A brief is the ' +
+              'written intent a build starts from; this deck has none, which is ' +
+              'absent rather than empty.</p>';
+    }
+    if (stale.length) {
+      body += '<p class="case-stale">\u26a0 ' + esc(stale.join(', ')) +
+        ' describe an older list. Those sections below are history, not the ' +
+        'deck as it stands.</p>';
+    }
+    return panel('casefile', 'Case file',
+      'The deck as checked in \u2014 explorations are at the foot of this page.',
+      ['data'], 'var(--tier-data)', body);
+  }
+
+  function caseFact(k, v) {
+    return '<div class="case-cell"><span class="case-k">' + esc(k) +
+           '</span><span class="case-v">' + esc(v) + '</span></div>';
+  }
+
   function logPanel(d) {
     var entries = d.log || [];
     // A LOCKED deck with no games is not "nothing to show" — it is the most
@@ -1078,7 +1160,38 @@
         + 'then reads it and routes what it raises to the loop that can settle '
         + 'it — a goldfish run, a rules resolution, a question to the doctor.</p>');
     }
+    // SUMMARY FIRST, THEN THE ENTRIES. The log is the only thing on this page
+    // written by a person who was actually at the table, and it was rendered as
+    // an undifferentiated list halfway down. What a reader wants first is the
+    // shape — how many games, how they went, how many still have nobody's
+    // reading on them — and the entries on demand.
     var notes = (d.debrief || {}).entries || {};
+    var wins = 0, losses = 0, undebriefed = 0;
+    entries.forEach(function (e) {
+      if (e.result === 'win') wins++;
+      else if (e.result === 'loss') losses++;
+      if (!notes[e.id]) undebriefed++;
+    });
+    var last = entries[entries.length - 1] || {};
+    var summary = '<div class="log-sum">'
+      + '<span class="log-n">' + entries.length + '</span> game(s) logged'
+      + ' \u00b7 <b>' + wins + 'W ' + losses + 'L</b>'
+      + (last.at ? ' \u00b7 last ' + esc(last.at.slice(0, 10)) : '')
+      + (undebriefed ? ' \u00b7 <span class="log-todo">' + undebriefed
+                       + ' not yet debriefed</span>' : '')
+      + '</div>';
+    // The most recent entry rides ABOVE the fold, because "what happened last
+    // time" is the question that brought the pilot here.
+    if (last.text) {
+      summary += '<p class="log-last"><b>' + esc((last.at || '').slice(0, 10))
+        + '</b> ' + (last.result ? '<span class="chip">' + esc(last.result)
+                                   + '</span> ' : '')
+        + esc(last.text) + '</p>';
+      var ln = notes[last.id];
+      if (ln && ln.summary) {
+        summary += '<p class="ev">' + esc(ln.summary) + '</p>';
+      }
+    }
     var items = entries.slice().reverse().map(function (e) {
       var n = notes[e.id];
       return '<b>' + esc(e.at ? e.at.slice(0, 10) : e.id) + '</b> ' +
@@ -1087,9 +1200,14 @@
         (n ? '<span class="ev">' + esc(n.summary || '') + '</span>'
            : '<span class="ev">not yet debriefed</span>');
     });
+    var body = summary;
+    if (entries.length > 1) {
+      body += '<details class="log-all"><summary>All ' + entries.length
+        + ' entries</summary>' + list(items) + '</details>';
+    }
     return panel('log', 'The captain\'s log',
       'What happened at the table, in the pilot\'s words.', ['coach'],
-      'var(--tier-coach)', list(items));
+      'var(--tier-coach)', body);
   }
 
   function questionsPanel(d) {
@@ -1166,12 +1284,23 @@
 
     // Workbench first, reference second: the questions a pilot sits down with are
     // "where is this, and what do I do", not "what shape is the mana curve".
+    // THE CASE FILE AND THE LOG LEAD, AND THE EXPLORATIONS COME LAST.
+    //
+    // The old order opened with `next` and buried the log at position nine,
+    // between the threat table and the open questions — so the one artifact
+    // written by a person who was at the table sat below four derived ones. And
+    // `branchPanel` sat in the middle of the reference half, where a PROPOSAL
+    // read as a property of the deck. A branch is a deck that does not exist;
+    // it belongs at the foot, behind its own net-change report.
     var html = [
-      nextPanel(d), statusPanel(d), recordPanel(d), auditPanel(d),
-      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d), logPanel(d),
+      caseFilePanel(d), logPanel(d), nextPanel(d),
+      statusPanel(d), recordPanel(d), auditPanel(d),
+      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
       questionsPanel(d),
-      briefPanel(d), vitalsPanel(d), branchPanel(d), constellationPanel(d), rosterPanel(d), bracketPanel(d), manaPanel(d), goldfishPanel(d),
-      tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
+      briefPanel(d), vitalsPanel(d), constellationPanel(d), rosterPanel(d),
+      bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d),
+      branchPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
     var bits = [d.stacks.length + ' verified line(s)'];

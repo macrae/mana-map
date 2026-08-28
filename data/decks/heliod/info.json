@@ -93,7 +93,7 @@
     "verified_lines": 4
   },
   "diagnosis": {
-    "verdict": "It functions, it never runs out of cards, and it knows how it wins: turn-three land drops at 0.866, 39 mana sources against a Burgess target of 37, 22 card-advantage copies against a floor of 10, and six checker-passed stacks including a complete table kill. What limits it is white mana at the point of deployment. The deck holds 20 white sources against a target of 36 — short 16, against blue's 5 — and its own commander is {2}{W}{W}. The measured cost is the number to argue with: the probability of two white sources by turn three is 0.41 off lands alone and 0.58 counting rocks, where blue is 0.742 and 0.839. The payoff-timing problem the previous reading named is still real and still second: 75.4% of games have drawn a table-draw engine by turn six and 41.2% have drawn both halves of the pair.",
+    "verdict": "The engine turns over and the deck never runs out of cards: the table-draw half is drawn in 85.2% of goldfish games, the punisher half in 67.2%, both in 56.7%, on a 0.866 turn-three land-drop rate and six checker-passed stacks. What binds is white mana at the point of deployment — 18 white sources against a target of 36, and a measured 0.515 probability of two white sources on curve against blue's 0.804, in a deck whose commander costs {2}{W}{W}. Behind that sits a ceiling the mana fix does not touch: the verified Reservoir kill assembles in 0.7% of goldfish games, and in the deck's one 20-game pod run it dealt a median 0 combat damage and no elimination in the run was attributed to it. Buy the colour first; the kill is a separate question and it is asked in open_questions.",
     "skeptic": null,
     "stale": false
   },
@@ -147,12 +147,12 @@
     },
     {
       "from": "diagnosis",
-      "question": "Re-run mana-analysis and goldfish on the list with the basics at 11 Islands / 6 Plains and the four mana adds applied (Chromatic Lantern, Sea of Clouds, City of Brass, Mystic Gate), and report colour-sources, on_curve_probability and the turn-three land-drop rate against the current -16 / W 0.58 / 0.866.",
+      "question": "Re-run mana-analysis and goldfish on the list with the basics at 11 Islands / 6 Plains and the four mana adds applied (Sea of Clouds, Floodfarm Verge, Mystic Gate, Chromatic Lantern), and report colour-sources, on_curve_probability and the turn-three land-drop rate against the current -18 / W 0.515 / 0.866.",
       "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "goldfish_targets.json declares no target for the deck's primary verified kill. 'Win condition access' lists Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Add a target requiring Hullbreaker Horror AND a cheap rock AND Aetherflux Reservoir and measure it.",
+      "question": "goldfish_targets.json's 'Win condition access' group names Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Should that group be split into 'Approach access' and 'Reservoir access', and both measured?",
       "settled_by": "goldfish"
     },
     {
@@ -162,7 +162,12 @@
     },
     {
       "from": "diagnosis",
-      "question": "Teferi's Protection cast on the turn before yours: 'Until your next turn, your life total can't change', and the permanents phase in before your untap step. Do the restriction and the phased-out board both end before your first main phase, so it can be held on an opponent's end step and the Aetherflux Reservoir ledger still run on your own turn?",
+      "question": "With Forced Fruition cut, does the punisher clock still resolve as stack 003 proved it does? Build the equivalent board — Iron Maiden and Ebony Owl Netsuke with Howling Mine or Font of Mythos as the gift — and resolve an opponent's upkeep under a Naturalize on the gift.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Teferi's Protection cast on the turn BEFORE yours: 'Until your next turn, your life total can't change', and the phased-out permanents phase in before your untap step. Do the restriction and the phase-out both end before your first main phase, so it can be held on an opponent's end step and the Aetherflux Reservoir ledger still run on your own turn?",
       "settled_by": "resolve-stack"
     },
     {
@@ -211,7 +216,7 @@
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version heliod paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes heliod add \"…\" --result win|loss --opponents N`",
-    "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×4",
+    "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
     "5 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
