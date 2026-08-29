@@ -88,6 +88,38 @@ MODEL_ASSUMPTIONS = [
     "Commander cast on first affordable turn (highest spending priority).",
     "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
     "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+    "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four "
+    "channels are modelled — a card's own ETB draw, an instant or sorcery that "
+    "draws, an upkeep trigger, and an ARRIVAL trigger that draws when other "
+    "creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which "
+    "rides the same single door the ETB damage payoffs use. Activated draw "
+    "(needs a spending policy this model has no opinion on), X-based draw "
+    "(board-dependent), and death- or attack-triggered draw (no deaths, and "
+    "attacks only under `model_combat`) are NOT modelled and the cards are "
+    "named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — "
+    "'if you control an artifact', 'you may draw' — is treated as unmodelled "
+    "rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus "
+    "carry one.",
+    "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a "
+    "2/3 that draws 'whenever one or more OTHER creatures you control with "
+    "power 2 or less enter'; registered before its own entry it passed its own "
+    "gate and drew a card it does not draw, overstating edgar-vampires by 22% "
+    "at turn eight. The deferral applies to every card and not only the ones "
+    "worded 'other', which understates Tocasia's Welcome and two relatives by "
+    "one draw on the turn they land.",
+    "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The "
+    "channel rides the one door onto the battlefield, which `model_combat` also "
+    "uses to spawn token copies and ETB-payoff tokens — those are real "
+    "additional arrivals that do not exist in the resource-only model. Measured "
+    "on edgar-vampires: 1.264 extra cards by turn ten with both flags against "
+    "1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, "
+    "because every call to that door sat inside `if model_combat:` and a "
+    "draw-only deck silently lost three quarters of its arrival draws.",
+    "HELD-UP INTERACTION is reported as two series and both are FLOORS. This "
+    "model casts everything it can afford every turn, so `interaction_castable` "
+    "is what a pilot developing at full speed has left over, not what a pilot "
+    "choosing to hold up two mana would have. A low figure is therefore a real "
+    "finding and a high one is unambiguous good news.",
     "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the "
     "top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the "
     "old literal 'a card' match missed entirely — fills ONE missing any_of "
@@ -178,6 +210,21 @@ COMBAT_ASSUMPTIONS = [
     "Bodies count CREATURES only under this flag. Without it a Treasure token "
     "scores as a creature, which inflates `mean_bodies_by_turn` for any deck "
     "that makes non-creature tokens.",
+    "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' "
+    "(Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are "
+    "the same event, the same cadence and the same number against one opponent "
+    "at 40 life, and only the second was priced until 2026-08-28. They are NOT "
+    "the same in the rules — lifelink, damage prevention and 'whenever an "
+    "opponent loses life' all separate them — and this model has none of those. "
+    "Nine corpus cards read through this channel, plus Mirkwood Bats through a "
+    "token-creation channel of its own.",
+    "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. "
+    "Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance "
+    "and Elas il-Kor all key on a creature DYING, and nothing dies in this "
+    "model: no blockers, no removal, no sacrifice outlets. Their contribution "
+    "is ABSENT, not zero, and a deck whose kill runs through them is understated "
+    "here by however much that line is worth. `simulate` against a real pod is "
+    "where that number lives.",
 ]
 
 _NUMBER_WORDS = {
@@ -223,8 +270,307 @@ _TAP_ADD_RE = re.compile(r"\{T\}[^:\n]*: ?Add ([^.\n]+)", re.IGNORECASE)
 _CONSUMING_COST = re.compile(r"sacrifice|exile|discard", re.IGNORECASE)
 #: Mana that can only be spent on some things. See the meta note in `run`.
 _RESTRICTED_MANA_RE = re.compile(r"Spend this mana only", re.IGNORECASE)
-#: Any card that draws beyond the draw step. Counted, never modelled.
+#: Any card that draws beyond the draw step. The COUNT — 12 on edgar-vampires,
+#: against a modelled 0 for the first year this file existed.
 _DRAW_RE = re.compile(r"\bdraw (a|two|three|four|X|that many) card", re.I)
+
+# ── Card draw ─────────────────────────────────────────────────────────────
+#
+# WHY THIS ARRIVED LATE AND WHAT IT IS FOR. `card_advantage` reported
+# `{"cards_that_draw": 12, "modelled": 0}` and the loop drew exactly one card a
+# turn whatever the list said, so two decks differing by twelve draw spells
+# goldfished identically. The pilot's most-repeated table failure — "vampires on
+# board, nothing in hand, no way to rebuild" — was the one thing the model was
+# structurally incapable of seeing.
+#
+# THE SWEEP IS WHY THE TIERS ARE WHERE THEY ARE. 3,942 corpus cards draw. Sorted
+# by how the text words it:
+#
+#     other, not modelled     2031   death/attack/discard-triggered, conditional
+#     activated, not modelled 1001   "{1}{B}, {T}: Draw a card" — needs a policy
+#     ETB, modelled            348   "When ~ enters, you draw a card"
+#     X-based, not modelled     302   "draw X cards where X is..." — board-dependent
+#     spell, modelled           187   an instant or sorcery that draws N
+#     recurring, modelled        73   "at the beginning of your upkeep, draw"
+#     arrival, modelled          33   "whenever a creature you control enters, draw"
+#
+# So 641 of 3,942 are priced and 3,301 are NAMED. That ratio is the honest state
+# of it and `draw_not_modelled` carries the names per deck, the same contract
+# `treasure_sources_not_modelled` and `combat_effects_not_modelled` already keep.
+# Measured on edgar-vampires the ratio is brutal and is a FINDING rather than a
+# defect: of its twelve, exactly ONE (Night's Whisper) is unconditional.
+#
+# THE ARRIVAL CHANNEL IS THE ONE THAT EARNS ITS KEEP. It rides the same single
+# door onto the battlefield the ETB damage payoffs use, so "bodies convert into
+# cards" — Welcoming Vampire, Caretaker's Talent, Tocasia's Welcome — becomes a
+# measurable claim instead of a hope.
+_ETB_DRAW_RE = re.compile(
+    r"when(?:ever)? (?:this creature|this artifact|this enchantment|"
+    r"[A-Z][\w' ,-]{2,30}) enters[^.]{0,60}?,? (?:you )?draw "
+    r"(a|one|two|three|four|five) cards?", re.I)
+_RECURRING_DRAW_RE = re.compile(
+    r"at the beginning of your (?:upkeep|draw step|end step)[^.]{0,80}?,? "
+    r"(?:you )?draw (a|one|two|three) cards?", re.I)
+#: Anchored to a SENTENCE START and requiring "draw", never "draws" — otherwise
+#: "target player draws a card" and "each player draws" score as your own draw.
+_SPELL_DRAW_RE = re.compile(
+    r"(?:^|\.\s|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
+#: THE BODIES-INTO-CARDS FAMILY. 33 cards, and the qualifier between "you
+#: control" and "enters" is load-bearing in BOTH directions: Welcoming Vampire
+#: draws off a 1/1 token ("power 2 or less") and Garruk's Uprising must not
+#: ("power 4 or greater"). Reading the trigger and ignoring its condition would
+#: hand every token deck a draw engine it does not have.
+_ARRIVAL_DRAW_RE = re.compile(
+    r"whenever (?:this creature or )?(?:another |a |one or more )?"
+    r"(?:other )?(?:nontoken )?([\w' ]{0,28}?)you control"
+    r"([^.,]{0,44}?)enters?[^.]{0,60}?,\s*(?:you )?draw (a|one|two) cards?", re.I)
+_DRAW_POWER_MAX_RE = re.compile(r"power (\d+) or less", re.I)
+_DRAW_POWER_MIN_RE = re.compile(r"power (\d+) or greater", re.I)
+_DRAW_ONCE_RE = re.compile(r"once each turn", re.I)
+#: A qualifier this model cannot evaluate. Named, never guessed: "with defender",
+#: "of the chosen type", "named Gladewalker Ritualist", "with mana value 3 or
+#: less". Firing on these would invent a draw engine; ignoring them silently
+#: would hide one.
+_DRAW_QUALIFIER_OK_RE = re.compile(
+    r"^\s*(?:with power \d+ or (?:less|greater)\s*)?$", re.I)
+#: A DRAW THIS MODEL CANNOT PROMISE. 39 of the 348 ETB-draw matches carry a
+#: condition inside the trigger itself — "if you control an artifact", "if
+#: you've cast two or more spells this turn", "you MAY draw" — and Selvala's is
+#: not even your draw ("its controller may draw a card"). Reading the trigger
+#: and ignoring its gate is the same defect the ETB life-loss channel above was
+#: built to avoid, one clause further in. They go to `unmodelled`.
+_DRAW_CONDITIONAL_RE = re.compile(r"\b(?:if|unless|you may|its controller)\b", re.I)
+#: A COST THIS MODEL CANNOT PAY. 39 instants and sorceries word their draw as
+#: "As an additional cost to cast this spell, sacrifice a creature. Draw two
+#: cards" — Village Rites, Deadly Dispute, Altar's Reap, Costly Plunder. The
+#: sentence-anchored spell pattern reads the second sentence and sees a free
+#: draw-2. There is no sacrifice in this model and no discard, so the cost is
+#: unpayable and the card is `unmodelled`, not free. Caught on the FIRST branch
+#: measured with the draw model on: edgar-vampires' drain refactor adds both
+#: Village Rites and Deadly Dispute, and they are precisely the cards whose
+#: whole point is that they COST a body.
+_DRAW_ADDITIONAL_COST_RE = re.compile(
+    r"as an additional cost to cast", re.I)
+_DRAW_WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+
+
+# ── Sacrifice and death ───────────────────────────────────────────────────
+#
+# THE HOLE THIS FILLS IS THE BIGGEST ONE THIS MODEL HAS EVER HAD. Nothing died
+# here: no blockers, no removal, no sacrifice outlets. So every death-triggered
+# card in a deck was priced at exactly zero, and on edgar-vampires' drain
+# refactor that is TWENTY OF NINETY-NINE CARDS — Blood Artist, Zulaport
+# Cutthroat, Cruel Celebrant, Bastion of Remembrance, Viscera Seer, Ashnod's
+# Altar, Phyrexian Tower, Skullclamp, Woe Strider. The deck's entire stated
+# engine, contributing nothing to any published figure.
+#
+# WHAT IS MODELLED: a FREE, repeatable sacrifice outlet converting creature
+# TOKENS into whatever the death payoffs in play pay out — life loss (which is
+# damage here, same as the arrival channel), a card, or a Treasure.
+#
+# WHAT IS NOT, AND WHY THE POLICY IS THE HARD PART. A real pilot sacrifices in
+# response to a wipe or for lethal, and this model has neither. Any fixed rule
+# is wrong somewhere: keep every token and the drain never fires; sacrifice
+# every token and the board never grows. So the rule is stated rather than
+# tuned, and the two extremes BRACKET the truth — a run without the flag is the
+# floor, a run with it is the ceiling, and the deck's real value is between.
+#
+#   THE POLICY: after combat has swung, sacrifice creature TOKENS to a free
+#   outlet while any death payoff is in play. Nontoken creatures are never
+#   sacrificed — a pilot does not feed Blood Artist to the Altar.
+#
+# Sacrificing after `attackers` is snapshotted is what makes it a conversion of
+# a token that has ALREADY attacked rather than a trade against this turn's
+# swing.
+_FREE_SAC_OUTLET_RE = re.compile(
+    r"(?:^|[.\n] )sacrifice (?:a|another) "
+    r"(?:creature|creature or artifact|artifact or creature)[^:.\n]{0,20}:",
+    re.IGNORECASE)
+#: A COSTED OUTLET IS NOT A FREE ONE. 180 corpus cards put mana or a tap symbol
+#: in front of the colon — Phyrexian Tower, Indulgent Aristocrat, Acolyte of
+#: Aclazotz — and a tap symbol also caps it at once a turn. Counting those as
+#: free would hand this deck an engine it has to pay for; they are NAMED in
+#: `meta.sacrifice` instead. 48 outlets in the corpus are genuinely free.
+_COSTED_SAC_OUTLET_RE = re.compile(
+    r"(?:\{[^}]+\}|\{T\})[^:.\n]{0,40}?sacrifice (?:a|an|another)[^:.\n]{0,30}:",
+    re.IGNORECASE)
+#: "Whenever [this creature or] another creature you control dies". The self-only
+#: form ("When THIS creature dies") is deliberately not read: this model only
+#: sacrifices tokens, and a token is never the card carrying the trigger.
+_DEATH_TRIGGER_RE = re.compile(
+    r"whenever (?:this creature or another|another|a|one or more)"
+    r"[\w' ]{0,26}?(?:you control )?dies", re.IGNORECASE)
+_DEATH_DRAIN_RE = re.compile(
+    r"each opponent loses (\d+) life|target player loses (\d+) life",
+    re.IGNORECASE)
+_DEATH_DRAW_RE = re.compile(r"(?:you )?draw (a|one|two) cards?", re.IGNORECASE)
+_DEATH_TREASURE_RE = re.compile(r"create a treasure token", re.IGNORECASE)
+#: A runaway guard, the same shape as `ETB_CHAIN_LIMIT`. A death payoff that
+#: makes a token is a loop, and a loop that terminates silently cannot be told
+#: from one that never ran.
+SAC_LIMIT_PER_TURN = 20
+
+
+#: EMINENCE THAT MINTS A BODY, and the reason this file existed for a year
+#: without it: `command_zone_reduction` reads the commander for COST REDUCTION
+#: (The Ur-Dragon's eminence), and Edgar Markov's eminence does something else
+#: entirely — "whenever you cast another Vampire spell, if Edgar is in the
+#: command zone or on the battlefield, create a 1/1 black Vampire creature
+#: token". It is live from turn one, it cannot be removed, and it is the deck's
+#: whole token engine. Unmodelled, every one of those tokens was missing: the
+#: bodies, the arrival-damage payoffs they fire, the arrival DRAW they fire, and
+#: the fuel the sacrifice model eats. `deck-audit`'s engine brief describes it in
+#: prose and the simulation could not see it.
+#:
+#: 92 corpus cards carry this shape and exactly ONE is a commander on this
+#: bench, so implementing it moves edgar-vampires and no other deck.
+_CAST_TOKEN_RE = re.compile(
+    r"whenever you cast (?:another |a |an )?([\w' ]{0,20}?)spell[^.]{0,80}?"
+    r"create (a|two|three) ([\w/+\- ]{0,40}?)creature token", re.IGNORECASE)
+_PT_RE = re.compile(r"(\d+)/(\d+)")
+
+
+#: A TOKEN DOUBLER, FOR CREATURE TOKENS. `treasure_doubler` has existed since
+#: the Treasure model and its own comment calls the shape "Procession-style xN"
+#: — but it was only ever applied to Treasures, so Anointed Procession, Parallel
+#: Lives, Doubling Season and Mondrak doubled nothing that fights.
+#:
+#: On edgar-vampires that is THREE cards (Anointed Procession, Elspeth Storm
+#: Slayer, Mondrak) and it compounds with the commander's eminence, which mints
+#: a token on every other Vampire cast. `deck-audit`'s engine brief for this deck
+#: says it in one line — "eminence mints a free body every time you cast a
+#: Vampire and the doublers turn one mint into four" — and neither half of that
+#: sentence was in the simulation.
+#:
+#: 11 corpus cards match; the six TRIPLERS ("three times that many") are left
+#: alone rather than read as x2, and two conditional matches are excluded: Kaya,
+#: Geist Hunter doubles only "until end of turn" off a -2, and Hosting Season is
+#: gated on a calendar date.
+_TOKEN_DOUBLER_RE = re.compile(
+    r"if (?:an effect would create )?one or more tokens would be created"
+    r"[^.]{0,80}?twice that many|if an effect would create one or more tokens"
+    r"[^.]{0,80}?twice that many", re.IGNORECASE)
+_TOKEN_DOUBLER_TEMPORARY_RE = re.compile(
+    r"until end of turn|this turn|while it's", re.IGNORECASE)
+
+
+def token_doubler(card):
+    """Does this permanent double every token you create, for good?"""
+    text = card.get("oracle_text", "") or ""
+    m = _TOKEN_DOUBLER_RE.search(text)
+    if not m:
+        return False
+    # The condition is scoped to the clause, the same lesson the ETB life-loss
+    # channel records: a -2 that doubles "until end of turn" is not a doubler.
+    window = text[max(0, m.start() - 90):m.end()]
+    return not _TOKEN_DOUBLER_TEMPORARY_RE.search(window)
+
+
+def cast_token_profile(card):
+    """The commander's "cast an X spell -> make a token" trigger, or None.
+
+    Returns `{subtype, bodies, power}`. `subtype` is the spell type that
+    triggers it, matched against a cast card's own subtypes; an empty subtype
+    means any spell and is left unmodelled rather than fired on everything.
+    """
+    text = card.get("oracle_text", "") or ""
+    m = _CAST_TOKEN_RE.search(text)
+    if not m:
+        return None
+    subtype = (m.group(1) or "").strip()
+    if not subtype:
+        return None
+    pt = _PT_RE.search(m.group(3) or "")
+    return {"subtype": subtype,
+            "bodies": _DRAW_WORDS[m.group(2).lower()],
+            "power": int(pt.group(1)) if pt else 1}
+
+
+def sac_outlet_profile(card):
+    """Is this a FREE repeatable sacrifice outlet, a costed one, or neither."""
+    text = card.get("oracle_text", "") or ""
+    if _FREE_SAC_OUTLET_RE.search(text):
+        return "free"
+    if _COSTED_SAC_OUTLET_RE.search(text):
+        return "costed"
+    return None
+
+
+def death_profile(card):
+    """What fires when ANOTHER creature you control dies.
+
+    `unreadable` marks a card that clearly has a death trigger whose effect this
+    parser cannot price — surfaced in the metrics rather than silently zero, the
+    same contract the Treasure and combat models keep.
+    """
+    text = card.get("oracle_text", "") or ""
+    out = {"death_drain": 0, "death_draw": 0, "death_treasure": 0,
+           "unreadable": None}
+    m = _DEATH_TRIGGER_RE.search(text)
+    if not m:
+        return out
+    clause = text[m.start():m.start() + 170]
+    drain = _DEATH_DRAIN_RE.search(clause)
+    if drain:
+        out["death_drain"] = int(drain.group(1) or drain.group(2))
+    draw = _DEATH_DRAW_RE.search(clause)
+    if draw:
+        out["death_draw"] = _DRAW_WORDS[draw.group(1).lower()]
+    if _DEATH_TREASURE_RE.search(clause):
+        out["death_treasure"] = 1
+    if not any((out["death_drain"], out["death_draw"], out["death_treasure"])):
+        out["unreadable"] = card.get("name")
+    return out
+
+
+def is_death_engine(prof):
+    """One predicate, one home — the same lesson `is_etb_engine` records."""
+    return bool(prof["death_drain"] or prof["death_draw"] or prof["death_treasure"])
+
+
+def draw_profile(card):
+    """How many cards this card draws, and through which channel.
+
+    `unmodelled` is set when the card clearly draws but through a channel this
+    model has no event for. Those are surfaced in `meta.draw_not_modelled`
+    rather than silently scoring zero — the whole reason this function exists is
+    that a silent zero was indistinguishable from a deck with no draw in it.
+    """
+    text = card.get("oracle_text", "") or ""
+    type_line = card.get("type_line", "") or ""
+    out = {"etb_draw": 0, "spell_draw": 0, "recurring_draw": 0,
+           "arrival_draw": 0, "arrival_draw_once": False,
+           "arrival_power_min": None, "arrival_power_max": None,
+           "unmodelled": None}
+    if not _DRAW_RE.search(text):
+        return out
+
+    m = _ARRIVAL_DRAW_RE.search(text)
+    if m and _DRAW_QUALIFIER_OK_RE.match(m.group(2) or ""):
+        out["arrival_draw"] = _DRAW_WORDS[m.group(3).lower()]
+        out["arrival_draw_once"] = bool(_DRAW_ONCE_RE.search(text))
+        lo = _DRAW_POWER_MIN_RE.search(m.group(2) or "")
+        hi = _DRAW_POWER_MAX_RE.search(m.group(2) or "")
+        out["arrival_power_min"] = int(lo.group(1)) if lo else None
+        out["arrival_power_max"] = int(hi.group(1)) if hi else None
+
+    etb = _ETB_DRAW_RE.search(text)
+    if etb and not _DRAW_CONDITIONAL_RE.search(etb.group(0)):
+        out["etb_draw"] = _DRAW_WORDS[etb.group(1).lower()]
+    rec = _RECURRING_DRAW_RE.search(text)
+    if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)):
+        out["recurring_draw"] = _DRAW_WORDS[rec.group(1).lower()]
+    if ("Instant" in type_line or "Sorcery" in type_line) and not out["etb_draw"]:
+        sp = _SPELL_DRAW_RE.search(text)
+        if sp and not _DRAW_ADDITIONAL_COST_RE.search(text):
+            out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
+
+    if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
+                out["arrival_draw"])):
+        out["unmodelled"] = card.get("name")
+    return out
+
+
 #: Written-out quantities. `X` is board-dependent (Sanctum Weaver counts
 #: enchantments, Selvala reads a power), so it takes the conservative 1 — the
 #: same call `treasure_profile` makes for "for each" and "equal to".
@@ -468,9 +814,23 @@ def creature_body_count(card):
 #: Titania, Zektar Shrine Expedition — read as a creature-entering payoff and
 #: would have fired on each creature cast. A landfall trigger is a different
 #: event and this channel must not claim it.
+#: THE LOOKAHEAD BLOCKS THE WORD "land" AND ALSO EVERY LAND TYPE, and the
+#: second half arrived 2026-08-28 with its own sweep. `(?!lands?\b)` was written
+#: for "whenever a land you control enters" and let "whenever a MOUNTAIN you
+#: control enters" straight through, so a landfall trigger named by basic type
+#: read as a creature-arrival payoff. Fourteen corpus cards, and two of them
+#: were actively scoring: Dread Presence billed 2 damage per CREATURE arrival
+#: off a Swamp trigger, and Koth, Fire of Resistance — a PLANESWALKER — billed 4
+#: off an emblem's Mountain trigger. Both surfaced in a candidate search for
+#: this channel, which is how they were found.
+#:
+#: The sweep only NARROWS: 438 matches to 424, nothing newly matched, and all
+#: fourteen read one by one as genuine landfall.
 _ETB_TRIGGER_RE = re.compile(
     r"whenever (?:this creature or )?(?:another|a|one or more)\s+"
-    r"(?:nontoken\s+)?(?!lands?\b)[\w ]{0,24}?you control enters",
+    r"(?:nontoken\s+)?(?!lands?\b|mountains?\b|swamps?\b|plains\b|islands?\b"
+    r"|forests?\b|gates?\b|caves?\b|deserts?\b|towns?\b|spheres?\b)"
+    r"[\w ]{0,24}?you control enters",
     re.IGNORECASE)
 #: Terror of the Peaks — damage equal to the ENTERING creature's power.
 _ETB_DMG_POWER_RE = re.compile(
@@ -496,6 +856,78 @@ _ETB_DMG_COUNT_RE = re.compile(
 #: six, because a copy made a copy made a copy. The rules already had the
 #: brake; the model just had to read it.
 _ETB_NONTOKEN_RE = re.compile(r"another nontoken", re.IGNORECASE)
+#: "EACH OPPONENT LOSES N LIFE" IS THE SAME QUANTITY AS DAMAGE HERE, and until
+#: this existed it read as ZERO. The gate was the literal word "damage": Impact
+#: Tremors ("deals 1 damage to each opponent") was priced and Corpse Knight
+#: ("each opponent loses 1 life") — the same event, the same 1, the same
+#: per-arrival cadence — was worth nothing. Measured on edgar-vampires, where
+#: the pilot's stated engine is exactly this: `combat_profile` read four of the
+#: deck's payoffs and returned NOTHING READ for six, so `damage_8` scored the
+#: combat plan the pilot wants to CUT and was blind to the drain plan they want
+#: to DEEPEN. A branch aimed at that axis would have been graded on the wrong
+#: half of the deck.
+#:
+#: The two are NOT the same in the rules — lifelink, damage prevention and
+#: "whenever an opponent loses life" all tell them apart — and this model has
+#: none of those. It has one opponent at 40 life and asks how fast it reaches 0.
+#: The field is kept separate from `etb_damage_fixed` rather than folded into it
+#: so that a later model which does care can tell the channels apart.
+_ETB_LIFE_LOSS_RE = re.compile(
+    r"each opponent loses (\d+) life", re.IGNORECASE)
+#: A Saga chapter that drains only "this turn" is not a per-arrival engine.
+#: One card in the sweep (Thunder of Unity) and it would have been over-read.
+_ETB_THIS_TURN_RE = re.compile(r"\bthis turn\b", re.IGNORECASE)
+#: WHERE THE CLAUSE THE TRIGGER INTRODUCES ENDS. The life-loss payload is read
+#: from HERE and not from the 220-char window the damage payloads use, and the
+#: corpus sweep is the whole argument for the asymmetry — the uniform fix is
+#: worse in one direction or the other whichever one you pick:
+#:
+#:   life loss, 220-char window -> 12 matched, 2 of them WRONG. Elas il-Kor
+#:     ("...enters, you gain 1 life. Whenever another creature you control DIES,
+#:     each opponent loses 1 life") would have drained on every arrival, and
+#:     Underworld Coinsmith's is an ACTIVATED ability behind {W}{B} and 1 life.
+#:   life loss, clause-scoped -> 10 matched, and all ten read correctly card by
+#:     card. Minus Thunder of Unity above: 9.
+#:   damage, clause-scoped -> would LOSE 3 of 16 that are correct today.
+#:     Crossbones ("...enters, put a +1/+1 counter on Crossbones. He deals 2
+#:     damage to each opponent.") puts the payload in a SECOND SENTENCE, which
+#:     is the shockland lesson exactly: the idiom spans the boundary.
+#:
+#: So the scope belongs to the payload, not to the module. This is the same
+#: finding `manabase.enters_tapped_unconditionally` recorded when sentence
+#: scoping flagged all ten shocklands.
+_ETB_CLAUSE_END_RE = re.compile(
+    r"(?:\.\s|\bwhenever\b|\bat the beginning\b|\bwhen )", re.IGNORECASE)
+_ETB_CLAUSE_HEAD_RE = re.compile(r"enters[^,]{0,40},", re.IGNORECASE)
+#: MIRKWOOD BATS, and in the whole 34,900-card corpus it is the only one. The
+#: trigger is token CREATION rather than a permanent entering, so
+#: `_ETB_TRIGGER_RE` never saw it — and it is a named member of edgar-vampires'
+#: kill leg, priced by checker-passed stack 011. A channel for one card is worth
+#: it when the card is load-bearing and the alternative is scoring it zero; the
+#: count is stated here so nobody has to guess how wide it is.
+#:
+#: Bats says "create OR SACRIFICE a token" and this model has no sacrifice, so
+#: only the creation half is read — an understatement, the same direction every
+#: other choice in this file takes. It also fires on NONCREATURE tokens (a Blood
+#: token counts) and the model only makes creature tokens, which understates it
+#: again.
+_TOKEN_CREATED_TRIGGER_RE = re.compile(
+    r"whenever you create (?:or sacrifice )?(?:one or more |a |an |another )?"
+    r"[\w ]{0,20}?tokens?", re.IGNORECASE)
+_TOKEN_CLAUSE_HEAD_RE = re.compile(r"tokens?[^,]{0,40},", re.IGNORECASE)
+
+
+def _etb_clause(text, start, head=_ETB_CLAUSE_HEAD_RE):
+    """The clause one trigger introduces, from `start` to the next trigger.
+
+    Skips past the trigger's own subject (up to the comma that ends it) so that
+    a boundary word inside the CONDITION — "whenever another creature you
+    control enters" — does not end the clause before the effect begins.
+    """
+    rest = text[start:]
+    m = head.search(rest)
+    end = _ETB_CLAUSE_END_RE.search(rest, m.end() if m else 0)
+    return rest[:end.start()] if end else rest
 #: A COPY EFFECT USUALLY CHARGES FOR ITSELF, and the first cut charged nothing.
 #: Flameshadow Conjuring and Minion Reflector both say "you MAY PAY {R}" / "{2}"
 #: per trigger; firing them free reported 130.91 damage at turn ten against a
@@ -556,6 +988,20 @@ _TEAM_POWER_DOUBLE_RE = re.compile(
 _SELF_DOUBLE_STRIKE_RE = re.compile(r"(?:^|[\s,;(])double strike", re.IGNORECASE)
 
 
+#: WHAT MAKES A CARD AN ETB ENGINE. Listed twice in the loop before this
+#: existed — once for a cast creature, once for a cast noncreature — so adding a
+#: payoff channel meant remembering both, and the two new drain channels are
+#: exactly the change that would have been made in one place and not the other.
+_ETB_ENGINE_FIELDS = ("etb_damage_self_power", "etb_damage_count",
+                      "etb_damage_fixed", "etb_life_loss_fixed",
+                      "token_created_life_loss", "etb_token_bodies", "etb_copy")
+
+
+def is_etb_engine(combat):
+    """Does this card fire on something arriving? One predicate, one home."""
+    return any(combat[f] for f in _ETB_ENGINE_FIELDS)
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -590,6 +1036,11 @@ def combat_profile(card):
         "etb_damage_self_power": False,
         "etb_damage_count": False,
         "etb_damage_fixed": 0,
+        # Life loss on arrival, and on token creation. Same quantity as damage
+        # against one opponent at 40; kept apart so a model that grows lifelink
+        # or damage prevention can tell them apart. See _ETB_LIFE_LOSS_RE.
+        "etb_life_loss_fixed": 0,
+        "token_created_life_loss": 0,
         "etb_token_power": 0,
         "etb_token_bodies": 0,
         "etb_copy": False,
@@ -598,6 +1049,13 @@ def combat_profile(card):
         "etb_nontoken_only": False,
         "unreadable": None,
     }
+
+    tok = _TOKEN_CREATED_TRIGGER_RE.search(text)
+    if tok:
+        made = _etb_clause(text, tok.start(), head=_TOKEN_CLAUSE_HEAD_RE)
+        drained = _ETB_LIFE_LOSS_RE.search(made)
+        if drained and not _ETB_THIS_TURN_RE.search(made):
+            profile["token_created_life_loss"] = int(drained.group(1))
 
     etb = _ETB_TRIGGER_RE.search(text)
     if etb:
@@ -609,6 +1067,13 @@ def combat_profile(card):
         fixed = _ETB_DMG_FIXED_RE.search(win)
         if fixed:
             profile["etb_damage_fixed"] = int(fixed.group(1))
+        # READ FROM THE CLAUSE, NOT THE WINDOW — the sweep at _ETB_CLAUSE_END_RE
+        # is the argument. A `deals N damage` payload two sentences downstream
+        # still belongs to the trigger (Crossbones); a `loses N life` two
+        # sentences downstream belongs to a DIFFERENT trigger (Elas il-Kor).
+        drain = _ETB_LIFE_LOSS_RE.search(_etb_clause(text, etb.start()))
+        if drain and not _ETB_THIS_TURN_RE.search(_etb_clause(text, etb.start())):
+            profile["etb_life_loss_fixed"] = int(drain.group(1))
         profile["etb_nontoken_only"] = bool(_ETB_NONTOKEN_RE.search(win))
         if _ETB_COPY_RE.search(win):
             profile["etb_copy"] = True
@@ -1055,6 +1520,10 @@ def classify(card):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
+        "draw": draw_profile(card),
+        "death": death_profile(card),
+        "token_doubler": token_doubler(card),
+        "sac_outlet": sac_outlet_profile(card),
         "tutor": is_tutor_card,
         # A top-of-library tutor delivers on the next draw step, not this turn.
         "tutor_delay": 1 if is_tutor_card and _TUTOR_TO_TOP_RE.search(text) else 0,
@@ -1122,10 +1591,12 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
-                  model_treasures=False, model_combat=False,
+                  model_treasures=False, model_combat=False, model_draw=False,
+                  model_sacrifice=False,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
-                  commander_subtypes=frozenset(), commander_combat=None):
+                  commander_subtypes=frozenset(), commander_combat=None,
+                  commander_cast_token=None, interaction_names=frozenset()):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -1149,6 +1620,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         deck = deck[7:]
 
     kept_hand_lands = sum(1 for c in hand if c["is_land"])
+    # A STRICTER KEEP TEST, REPORTED AND NEVER ENFORCED. `keepable` asks only
+    # "2-5 lands", which is the rule this model mulligans by and changing it
+    # would restate every figure on every deck. This asks the question the
+    # pilot's log actually raises about a two-land keep going fifth: COULD THIS
+    # HAND HAVE DONE SOMETHING BY TURN THREE — is there a nonland card whose
+    # cost the lands in this hand can reach by then?
+    #
+    # Lands in hand are capped at 3 because you get three land drops by turn 3,
+    # and no draws are assumed: it is a property of the SEVEN CARDS KEPT, not a
+    # forecast. That makes it a floor, like every other figure here.
+    _reach = min(kept_hand_lands, 3)
+    keep_can_act_by_t3 = any(
+        (not c["is_land"]) and c["cmc"] <= _reach for c in hand)
     seen = {c["name"] for c in hand}
 
     lands_in_play = 0
@@ -1160,6 +1644,54 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     reductions = list(command_zone_reduction)
     team_damage_multiplier = 1
     etb_engines = []              # payoffs in play that fire on a creature entering
+    # DRAW. `draw_engines` holds permanents that keep drawing — an upkeep
+    # trigger or an arrival trigger; `drawn_extra_by_turn` is the series the
+    # whole model was built for, and it is CUMULATIVE EXTRA cards: the one-a-turn
+    # draw step is not in it, because every deck gets that and a series that
+    # includes it hides the difference it exists to show.
+    # INTERACTION HELD UP. Two series, because they answer different halves of
+    # the same failure and the pilot's own diagnosis turned on which half it was:
+    # "Deflecting Swat and Teferi's Protection sat in my hand uncast for the
+    # entire game ... my mana was spent casting vampires, so there was never
+    # open mana to hold up."
+    #   _in_hand    — you drew it. A draw problem if this is low.
+    #   _castable   — you drew it AND the turn ended with enough mana unspent to
+    #                 cast it. A MANA problem if this is low while the first is
+    #                 high, which is the structural claim the log makes.
+    #
+    # MEASURED AT THE END OF THE MAIN PHASE, which is the moment the decision is
+    # actually made: you commit your mana to the board or you keep it up, and
+    # you choose before combat. Extra combat phases are paid for BELOW this
+    # point and attack triggers add mana below it too, so neither is counted —
+    # on a deck with Aggravated Assault the float measured here is larger than
+    # what survives the turn. edgar-vampires has no extra-combat effect, so the
+    # figure is exact for it.
+    #
+    # AND IT IS A FLOOR AGAINST THE SPENDING POLICY: the model casts everything
+    # it can afford, cheapest-first, every turn. A real pilot holding up two
+    # mana would score higher. So a LOW figure says "this deck cannot afford to
+    # hold up interaction while developing at full speed", which is the question
+    # asked, and a high one is unambiguous good news.
+    interaction_in_hand_by_turn = []
+    interaction_castable_by_turn = []
+    # SACRIFICE. `death_engines` are the payoffs in play; `free_sac_outlet` is
+    # whether anything can convert a token for nothing. Both are needed — a
+    # drain with no outlet never fires and an outlet with no payoff is a worse
+    # board.
+    # TOKEN DOUBLERS, MULTIPLICATIVE. Two doublers is x4 and not x3 — each
+    # replaces the other's output, exactly as `treasure_multiplier` documents
+    # for the Treasure side. Three doublers is x8, which is what this deck's
+    # engine brief means by "the doublers turn one mint into four".
+    token_multiplier = 1
+    death_engines = []
+    free_sac_outlet = False
+    sacrifices = 0
+    sacrifices_by_turn = []
+    sac_cap_hits = 0
+    draw_engines = []
+    drawn_extra = 0
+    drawn_extra_by_turn = []
+    arrival_draw_used = set()     # ids of `once each turn` engines, per turn
     etb_damage = 0                # noncombat damage dealt this turn by those
     etb_chain_hits = 0            # times the chain guard stopped a cascade
     bodies_cum_bump = [0]         # tokens spawned by an ETB payoff, counted once
@@ -1249,6 +1781,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
         etb_damage = 0
         bodies_cum_bump[0] = 0
+        arrival_draw_used = set()
+
+        def draw_n(n):
+            """Take n off the top. The deck running out is a real outcome and
+            is not an error: a goldfish that decks itself has answered the
+            question about steam more loudly than any rate could."""
+            nonlocal drawn_extra
+            for _ in range(int(n)):
+                if not deck:
+                    return
+                got = deck.pop(0)
+                hand.append(got)
+                seen.add(got["name"])
+                drawn_extra += 1
+
+        # Recurring draw engines already in play fire in the upkeep, BEFORE the
+        # mana is spent, so a card drawn this way is castable this turn.
+        if model_draw:
+            for eng in draw_engines:
+                if eng["recurring_draw"]:
+                    draw_n(eng["recurring_draw"])
+
         pool = lands_in_play + rock_production
         # Reported WITHOUT the stockpile, so this series keeps meaning exactly
         # what it has always meant: repeatable mana per turn. Treasures are a
@@ -1272,7 +1826,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             from one that never ran.
             """
             nonlocal etb_damage, etb_chain_hits
-            battlefield.append((power, arrived, haste, mult))
+            battlefield.append((power, arrived, haste, mult, is_token))
+            # BODIES INTO CARDS, on the same door the damage payoffs use.
+            # The power condition is honoured in both directions: Welcoming
+            # Vampire ("power 2 or less") draws off a 1/1 token, Garruk's
+            # Uprising ("power 4 or greater") must not.
+            if model_draw:
+                for i, eng in enumerate(draw_engines):
+                    n = eng["arrival_draw"]
+                    if not n:
+                        continue
+                    lo, hi = eng["arrival_power_min"], eng["arrival_power_max"]
+                    if lo is not None and power < lo:
+                        continue
+                    if hi is not None and power > hi:
+                        continue
+                    if eng["arrival_draw_once"]:
+                        if i in arrival_draw_used:
+                            continue
+                        arrival_draw_used.add(i)
+                    draw_n(n)
             if not model_combat or depth >= ETB_CHAIN_LIMIT:
                 if depth >= ETB_CHAIN_LIMIT:
                     etb_chain_hits += 1
@@ -1289,6 +1862,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     etb_damage += power
                 if eng["etb_damage_fixed"]:
                     etb_damage += eng["etb_damage_fixed"]
+                if eng["etb_life_loss_fixed"]:
+                    # Corpse Knight. Same event, same cadence and same number as
+                    # Impact Tremors above; it read as zero until the payload
+                    # regex learned the second way of wording it.
+                    etb_damage += eng["etb_life_loss_fixed"]
+                if is_token and eng["token_created_life_loss"]:
+                    # Mirkwood Bats, and only on CREATURE tokens, because those
+                    # are the only tokens this model makes. Bats also fires on a
+                    # Blood token and on a sacrifice, and neither exists here.
+                    etb_damage += eng["token_created_life_loss"]
                 if eng["etb_damage_count"]:
                     # X is "the number of Dragons you control". The board is
                     # counted whole rather than by subtype — exact in a deck
@@ -1312,7 +1895,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     spawned.append((power, haste, mult))
                 elif eng["etb_token_bodies"]:
                     each = eng["etb_token_power"] // max(eng["etb_token_bodies"], 1)
-                    for _ in range(eng["etb_token_bodies"]):
+                    # DOUBLED HERE TOO. A payoff that makes a token on arrival
+                    # is a token-creation event like any other, and a doubler
+                    # that missed this site would double the printed token
+                    # makers and not the engine's own.
+                    for _ in range(eng["etb_token_bodies"] * token_multiplier):
                         spawned.append((each, False, 1))
             for pw, hs, mt in spawned:
                 bodies_cum_bump[0] += 1
@@ -1412,11 +1999,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          c["combat"]["team_damage_multiplier"] > 1))),
                                key=lambda c: c["cmc"]):
                 if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                    if any((card["combat"]["etb_damage_self_power"],
-                            card["combat"]["etb_damage_count"],
-                            card["combat"]["etb_damage_fixed"],
-                            card["combat"]["etb_token_bodies"],
-                            card["combat"]["etb_copy"])):
+                    if is_etb_engine(card["combat"]):
                         etb_engines.append(card["combat"])
                     if card["combat"]["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
@@ -1495,42 +2078,109 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["treasure_bonus"]:
                     treasure_bonus += 1
 
+        # A DRAW SPELL IS NEITHER A ROCK, A TUTOR, A BODY NOR AN ETB PAYOFF —
+        # the fifth card to fall through every loop here, after Aggravated
+        # Assault, Primal Vigor, the cost reducers and Dragon Tempest. Night's
+        # Whisper is a sorcery with `bodies` 0 and `produces` 0, so it sat in
+        # hand for ten turns while being the only unconditional card advantage
+        # in edgar-vampires. Cast BEFORE bodies, cheapest first: a cantrip you
+        # cast first can find the body, and one you cast last cannot.
+        if model_draw:
+            for card in sorted((c for c in hand if not c["is_land"]
+                                and c["bodies"] == 0 and c["produces"] == 0
+                                and not c["tutor"]
+                                and any((c["draw"]["spell_draw"],
+                                         c["draw"]["etb_draw"],
+                                         c["draw"]["recurring_draw"],
+                                         c["draw"]["arrival_draw"]))),
+                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
+                hand.remove(card)
+                draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+                if card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]:
+                    draw_engines.append(card["draw"])
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
                            key=lambda c: reduced_cost(c, reductions, chosen_type)):
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 hand.remove(card)
+                # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
+                # is built on: "a vampire that draws is better than a sorcery
+                # that draws — same effect, plus a body, plus an eminence
+                # trigger".
+                #
+                # THE ENGINE IS REGISTERED AFTER ITS OWN ARRIVAL, and the first
+                # cut of this registered it before. Welcoming Vampire is a 2/3
+                # that draws "whenever one or more OTHER creatures you control
+                # with power 2 or less enter" — its own power is 2, so it passed
+                # its own gate and drew a card it does not draw. Deferred, and
+                # appended below once `creature_entered` has fired.
+                #
+                # It is deferred for EVERY card and not only the ones worded
+                # "other", which understates Tocasia's Welcome and its two
+                # relatives by one draw apiece on the turn they land. That is
+                # the direction every other choice in this file takes.
+                pending_draw_engine = None
+                if model_draw:
+                    draw_n(card["draw"]["etb_draw"])
+                    if (card["draw"]["recurring_draw"]
+                            or card["draw"]["arrival_draw"]):
+                        pending_draw_engine = card["draw"]
                 # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
                 # also reduce; from here on they pay for every Dragon behind them.
                 if card["reduces"]:
                     reductions.append(card["reduces"])
+                combat = card["combat"]
+                # THE DOOR OPENS FOR EITHER MODEL, and it used to open only for
+                # combat. `creature_entered` is where the arrival-draw channel
+                # lives (Welcoming Vampire, Caretaker's Talent, Tocasia's
+                # Welcome), and every call to it sat inside `if model_combat:` —
+                # so a deck opting into `model_draw` ALONE lost three quarters
+                # of its arrival draws and reported the smaller number without
+                # saying anything. Measured on edgar-vampires: 1.264 extra cards
+                # by turn ten with both flags, 0.323 with draw alone.
+                #
+                # A deck with `model_combat` on is byte-identical either way —
+                # the disjunction is already true — and a deck with neither flag
+                # never reaches here at all.
+                arrivals_matter = model_combat or model_draw
                 if model_combat:
-                    combat = card["combat"]
                     # REGISTERED BEFORE IT ENTERS, and that is correct for the
                     # printed wording: Scourge of Valkas says "whenever THIS
                     # CREATURE or another Dragon you control enters", so it does
                     # see itself. Terror of the Peaks says "another", and its
                     # own entry deals nothing because the damage is the
                     # ENTERING creature's power and it is not another creature.
-                    if any((combat["etb_damage_self_power"],
-                            combat["etb_damage_count"],
-                            combat["etb_damage_fixed"],
-                            combat["etb_token_bodies"], combat["etb_copy"])):
+                    if is_etb_engine(combat):
                         etb_engines.append(combat)
-                    if combat["is_creature"]:
-                        creature_entered(
-                            combat["power"], turn, combat["haste"],
-                            2 if combat["double_strike"] else 1,
-                            is_legendary="Legendary" in (card.get("type_line") or ""))
+                if arrivals_matter and combat["is_creature"]:
+                    creature_entered(
+                        combat["power"], turn, combat["haste"],
+                        2 if combat["double_strike"] else 1,
+                        is_legendary="Legendary" in (card.get("type_line") or ""))
+                # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
+                # whether or not the commander has ever been cast. "Another"
+                # is why the commander's own arrival does not trigger it — it
+                # is not in this loop.
+                if (arrivals_matter and commander_cast_token
+                        and commander_cast_token["subtype"] in card["subtypes"]):
+                    minted = commander_cast_token["bodies"] * token_multiplier
+                    for _ in range(minted):
+                        creature_entered(commander_cast_token["power"], turn,
+                                         False, 1, is_token=True)
+                    bodies_cum += minted
+                # Creature tokens arrive with summoning sickness too, and they
+                # arrive on the turn their maker resolved.
+                if arrivals_matter and combat["token_bodies"]:
+                    each = combat["token_power"] // max(combat["token_bodies"], 1)
+                    for _ in range(combat["token_bodies"] * token_multiplier):
+                        creature_entered(each, turn, False, 1, is_token=True)
+                if model_combat:
                     if combat["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= combat["team_damage_multiplier"]
-                    # Creature tokens arrive with summoning sickness too, and
-                    # they arrive on the turn their maker resolved.
-                    if combat["token_bodies"]:
-                        each = combat["token_power"] // max(combat["token_bodies"], 1)
-                        for _ in range(combat["token_bodies"]):
-                            creature_entered(each, turn, False, 1, is_token=True)
                     if combat["extra_combat_free"]:
                         extra_combat_free += 1
                     if combat["extra_combat_cost"] is not None:
@@ -1539,6 +2189,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             combat["attack_draw"], combat["damage_scales_with_treasure"],
                             combat["attack_damage"], combat["attack_token_bodies"])):
                         combat_engines.append(combat)
+                if pending_draw_engine is not None:
+                    draw_engines.append(pending_draw_engine)
+                if card["token_doubler"]:
+                    token_multiplier *= 2
+                if model_sacrifice:
+                    if is_death_engine(card["death"]):
+                        death_engines.append(card["death"])
+                    if card["sac_outlet"] == "free":
+                        free_sac_outlet = True
                 # Casting it turns its Treasure engine on for later turns, and
                 # an ETB or cast trigger pays out immediately.
                 if not model_treasures:
@@ -1558,6 +2217,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                   * treasure_multiplier)
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
+        drawn_extra_by_turn.append(drawn_extra)
+        sacrifices_by_turn.append(sacrifices)
+        held = [c for c in hand if c["name"] in interaction_names]
+        interaction_in_hand_by_turn.append(bool(held))
+        interaction_castable_by_turn.append(
+            any(c["cmc"] <= pool + treasures for c in held))
 
         # ── Combat step ────────────────────────────────────────────────────
         # Nothing blocks, so every creature that can attack does. Each combat
@@ -1567,7 +2232,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # DOUBLE STRIKE IS PER CREATURE; the team multiplier is per board.
             # Kept apart because they have different scopes and stack: a
             # double-striker under Twinflame Tyrant deals its power four times.
-            attackers = [p * mult for p, arrived, haste, mult in battlefield
+            attackers = [p * mult for p, arrived, haste, mult, _tok in battlefield
                          if haste or arrived < turn]
             swing = sum(attackers)
             phases = 1 + extra_combat_free
@@ -1616,6 +2281,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # it is added before the multiplier rather than per combat phase —
             # Twinflame Tyrant says "a source you control", and a Terror trigger
             # is one, but it fires once per creature and not once per swing.
+            # SACRIFICE, AFTER THE SWING IS SNAPSHOTTED. `attackers` was taken
+            # above, so a token converted here has already attacked — this is a
+            # conversion, not a trade against this turn's combat.
+            if model_sacrifice and free_sac_outlet and death_engines:
+                kept, n_sac = [], 0
+                for entry in battlefield:
+                    is_tok = entry[4]
+                    if not is_tok or n_sac >= SAC_LIMIT_PER_TURN:
+                        kept.append(entry)
+                        continue
+                    n_sac += 1
+                    for eng in death_engines:
+                        # Life loss is damage here for the same reason the
+                        # arrival channel says so: one opponent, 40 life.
+                        etb_damage += eng["death_drain"]
+                        draw_n(eng["death_draw"])
+                        if model_treasures:
+                            treasures += eng["death_treasure"]
+                if n_sac >= SAC_LIMIT_PER_TURN:
+                    sac_cap_hits += 1
+                battlefield[:] = kept
+                sacrifices += n_sac
             dealt += etb_damage
             dealt *= team_damage_multiplier
             opponent_life -= dealt
@@ -1623,7 +2310,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
             # creature, so the multiplier belongs to the damage series and
             # never to this one.
-            board_power_by_turn.append(sum(p for p, _, _, _ in battlefield))
+            board_power_by_turn.append(sum(p for p, _, _, _, _ in battlefield))
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 
@@ -1647,6 +2334,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     return {
         "first_seven_lands": first_seven_lands,
         "kept_hand_lands": kept_hand_lands,
+        "keep_can_act_by_t3": keep_can_act_by_t3,
         "mulligans": mulligans,
         "land_hits": land_hits,
         "stall_by_turn": stall_by_turn,
@@ -1654,6 +2342,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "mana_by_turn": mana_by_turn,
         "commander_turn": commander_turn,
         "bodies_by_turn": bodies_by_turn,
+        "drawn_extra_by_turn": drawn_extra_by_turn,
+        "sacrifices_by_turn": sacrifices_by_turn,
+        "sac_cap_hits": sac_cap_hits,
+        "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
+        "interaction_castable_by_turn": interaction_castable_by_turn,
         "target_turns": target_turns,
         "target_turns_unassisted": target_turns_unassisted,
         "treasures_by_turn": treasures_by_turn,
@@ -1668,7 +2361,8 @@ def _round(x):
     return round(x, 3)
 
 
-def aggregate(results, targets, max_turn, model_treasures=False, model_combat=False):
+def aggregate(results, targets, max_turn, model_treasures=False,
+              model_combat=False, model_draw=False, model_sacrifice=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -1720,6 +2414,9 @@ def aggregate(results, targets, max_turn, model_treasures=False, model_combat=Fa
             "first_seven_land_histogram": _histogram("first_seven_lands"),
             "kept_hand_land_histogram": _histogram("kept_hand_lands"),
             "keep_first_seven_rate": _round(sum(1 for r in results if r["mulligans"] == 0) / n),
+            # THE STRICTER THRESHOLD, beside the loose one it does not replace.
+            "keep_can_act_by_t3_rate": _round(
+                sum(1 for r in results if r["keep_can_act_by_t3"]) / n),
             "mean_mulligans": _round(sum(r["mulligans"] for r in results) / n),
         },
         "land_drop_hit_rate_by_turn": {
@@ -1734,6 +2431,31 @@ def aggregate(results, targets, max_turn, model_treasures=False, model_combat=Fa
             "median_cast_turn": cast_values[len(cast_values) // 2] if cast_values else None,
             "cast_by_turn_6_rate": _round(sum(1 for t in cast_values if t <= 6) / n),
         },
+        # THE SERIES THIS MODEL EXISTED WITHOUT FOR A YEAR. Cumulative cards
+        # drawn BEYOND the one-a-turn draw step, so it is zero for a deck with
+        # no readable draw and the difference between two lists is the whole
+        # of it. Absent, not zero, when the deck has not opted in.
+        # HOW MANY TOKENS THE POLICY ATE. Reported so the reader can see the
+        # size of the assumption rather than only its consequence: a run showing
+        # 30 sacrifices by turn ten is a very different claim from one showing 3.
+        **({"mean_sacrifices_by_turn": {
+            str(t): _round(sum(r["sacrifices_by_turn"][t - 1] for r in results) / n)
+            for t in turns},
+            "sac_cap_hit_rate": _round(
+                sum(1 for r in results if r.get("sac_cap_hits")) / n)}
+           if model_sacrifice else {}),
+        **({"mean_extra_cards_drawn_by_turn": {
+            str(t): _round(sum(r["drawn_extra_by_turn"][t - 1] for r in results) / n)
+            for t in turns}} if model_draw else {}),
+        # HELD-UP INTERACTION, both halves. A low `castable` against a high
+        # `in_hand` is a MANA problem and not a drawing problem, which is the
+        # distinction the pilot's own diagnosis turned on.
+        "interaction_in_hand_by_turn": {
+            str(t): _round(sum(r["interaction_in_hand_by_turn"][t - 1] for r in results) / n)
+            for t in turns},
+        "interaction_castable_by_turn": {
+            str(t): _round(sum(r["interaction_castable_by_turn"][t - 1] for r in results) / n)
+            for t in turns},
         "mean_bodies_by_turn": {
             str(t): _round(sum(r["bodies_by_turn"][t - 1] for r in results) / n) for t in turns
         },
@@ -1787,7 +2509,8 @@ class _Silent:
 
 
 def run(slug, iterations=None, seed=None, max_turn=None,
-        model_treasures=None, model_combat=None, with_results=False, branch=None,
+        model_treasures=None, model_combat=None, model_draw=None,
+        model_sacrifice=None, with_results=False, branch=None,
         doc=None, quiet=False, targets_override=None, model_colors=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
@@ -1838,6 +2561,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # optional model is one nobody committed to.
     declared_treasures = False
     declared_combat = False
+    declared_draw = False
+    declared_sacrifice = False
     # Bound before the branch: a deck with no declaration still has colours,
     # and reading it only inside the `if` made every declaration-less deck
     # (which is the benchmark's whole fleet path) raise UnboundLocalError.
@@ -1853,6 +2578,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         targets = targets_override if targets_override is not None else targets_doc["targets"]
         declared_treasures = bool(targets_doc.get("model_treasures"))
         declared_combat = bool(targets_doc.get("model_combat"))
+        declared_draw = bool(targets_doc.get("model_draw"))
+        declared_sacrifice = bool(targets_doc.get("model_sacrifice"))
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -1877,6 +2604,18 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # what makes decks comparable at all.
     model_treasures = declared_treasures if model_treasures is None else bool(model_treasures)
     model_combat = declared_combat if model_combat is None else bool(model_combat)
+    model_draw = declared_draw if model_draw is None else bool(model_draw)
+    model_sacrifice = (declared_sacrifice if model_sacrifice is None
+                       else bool(model_sacrifice))
+    # LOUD, NOT SILENT. The drain half of this model is DAMAGE, and damage only
+    # exists under `model_combat`. A deck that sets one flag and not the other
+    # would otherwise get the draw and the Treasures and silently lose the
+    # payoff it turned the flag on for — which is exactly the defect the arrival
+    # channel shipped with and had to be found by measurement.
+    if model_sacrifice and not model_combat and not quiet:
+        print("  WARNING model_sacrifice is set without model_combat: death "
+              "DRAIN is damage and there is no damage series without combat, "
+              "so only the draw and Treasure halves will be read.")
     # COLOUR IS NOT OPTIONAL THE WAY TREASURES ARE. Every deck has colours and a
     # colourless mana model is simply wrong; the flag exists so the change can
     # be measured against the old behaviour and against `mana_analysis`'s
@@ -1897,12 +2636,14 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
     commander_subtypes = frozenset()
+    commander_cast_token = None
     for c in commanders:
         got = cost_reduction(c, creature_types)
         if got:
             command_zone_reduction.append(got)
         commander_subtypes |= subtypes_of(c.get("type_line") or "",
                                           c.get("oracle_text") or "")
+        commander_cast_token = commander_cast_token or cast_token_profile(c)
 
     # A CARD IS BLIND ONLY IF EVERY CHANNEL IS BLIND. This list was built from
     # `treasure_profile` alone while the model has three ways to see a Treasure:
@@ -1937,6 +2678,32 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     draw_cards = sum(
         c.get("quantity", 1) for c in doc.get("cards", [])
         if not c.get("is_commander") and _DRAW_RE.search(c.get("oracle_text") or ""))
+    # WHAT COUNTS AS INTERACTION IS DECK_AUDIT'S QUESTION AND IT ALREADY OWNS
+    # THE ANSWER. `SUITE_ROLES` is removal + sweepers + protection + stax — the
+    # wider "interactive suite" rather than the removal count, because the two
+    # cards the pilot's log names are Deflecting Swat and Teferi's Protection
+    # and both are protection. Imported lazily: deck_audit reaches for goldfish
+    # figures and a module-level import would close the loop.
+    interaction_names = frozenset()
+    draw_unmodelled = []
+    try:
+        from manamap.pilot.common import load_card_roles
+        from manamap.pilot.deck_audit import SUITE_ROLES
+        roles = load_card_roles()
+        suite = set(SUITE_ROLES)
+        interaction_names = frozenset(
+            c["name"] for c in doc.get("cards", [])
+            if not c.get("is_commander") and suite & set(roles.get(c["name"], [])))
+    except Exception:
+        # A missing card_roles.json is not a reason to lose the whole run; the
+        # series simply reports against an empty set and says so below.
+        interaction_names = frozenset()
+    for c in doc.get("cards", []):
+        if c.get("is_commander"):
+            continue
+        d = draw_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
+        if d["unmodelled"]:
+            draw_unmodelled.append(d["unmodelled"])
     restricted = sorted({
         f"{c['name']} ({produced_mana(c.get('oracle_text'))})"
         for c in doc.get("cards", [])
@@ -1981,8 +2748,12 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               command_zone_reduction=command_zone_reduction,
                               chosen_type=chosen_type,
                               commander_subtypes=commander_subtypes,
+                              commander_cast_token=commander_cast_token,
                               model_treasures=model_treasures,
                               model_combat=model_combat,
+                              model_draw=model_draw,
+                              model_sacrifice=model_sacrifice,
+                              interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips))
             t.advance()
@@ -2008,18 +2779,33 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             # NAMED rather than silently made or silently dropped.
             "card_advantage": {
                 "cards_that_draw": draw_cards,
-                "modelled": 0,
-                "why": "one card per turn, always — see model_assumptions. The "
-                       "understatement is proportional to this count, so two "
-                       "decks with different counts are not directly comparable "
-                       "on any speed figure.",
+                "modelled": (draw_cards - len(draw_unmodelled)) if model_draw else 0,
+                "why": ("ETB, spell, upkeep and arrival draw are modelled; "
+                        "activated, X-based, death- and attack-triggered draw "
+                        "are not, and the cards are named in "
+                        "`draw_not_modelled`. Read the two numbers together: a "
+                        "deck whose count is twelve and whose modelled figure "
+                        "is one has almost no UNCONDITIONAL card advantage, "
+                        "which is a finding about the deck."
+                        if model_draw else
+                        "one card per turn, always — see model_assumptions. "
+                        "The understatement is proportional to this count, so "
+                        "two decks with different counts are not directly "
+                        "comparable on any speed figure."),
+                **({"draw_not_modelled": sorted(draw_unmodelled)}
+                   if model_draw and draw_unmodelled else {}),
             },
+            # WHAT THE HELD-UP SERIES WAS MEASURED AGAINST. An empty set would
+            # make both series read a flat zero, which is indistinguishable from
+            # a deck that runs no interaction.
+            "interaction_suite_counted": sorted(interaction_names),
             **({"restricted_mana_counted_as_free": restricted} if restricted else {}),
             **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
             **({"combat_effects_not_modelled": combat_unreadable}
                if model_combat and combat_unreadable else {}),
         },
-        "metrics": aggregate(results, targets, max_turn, model_treasures, model_combat),
+        "metrics": aggregate(results, targets, max_turn, model_treasures,
+                             model_combat, model_draw, model_sacrifice),
         # OPT-IN, and default off so the returned document is byte-identical
         # to every tracked `goldfish_metrics.json`. Two tests compare `run`'s
         # output against the artifact directly, and they caught this the first

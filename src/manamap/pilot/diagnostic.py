@@ -308,6 +308,78 @@ def mana(rows):
     }
 
 
+def _mean_cell(xs):
+    """A MEAN with its interval and its spread. The spread rides along because
+    an MDE for a mean needs it — `p(1-p)` is a proportion's variance."""
+    if not xs:
+        return None
+    mean, sd = st._mean_sd(xs)
+    half = (st.t_crit(len(xs) - 1) * sd / (len(xs) ** 0.5)
+            if len(xs) > 1 and sd else 0.0)
+    return {"rate": round(mean, 4),
+            "ci95": [round(mean - half, 4), round(mean + half, 4)],
+            "sd": round(sd, 4), "n": len(xs)}
+
+
+def steam(rows, got):
+    """DOES THE DECK KEEP GOING, AND CAN IT AFFORD TO ANSWER ANYTHING.
+
+    The three questions edgar-vampires' captain's log kept asking that nothing
+    in this module could answer: "I ran out of steam", "the interaction never
+    got cast", "a two-land keep going fifth".
+
+    `extra_cards` is ABSENT rather than zero when the deck has not opted into
+    `model_draw` — the series is a flat zero on the unopted path and a reader
+    cannot tell that from a deck with no draw in it, which is the one thing
+    this block exists to distinguish.
+    """
+    if not rows:
+        return None
+    n = len(rows)
+    turns = len(rows[0]["mana_by_turn"])
+    opted = bool((got.get("metrics") or {}).get("mean_extra_cards_drawn_by_turn"))
+    T = range(turns)
+
+    in_hand = {str(t + 1): _rate(
+        sum(1 for r in rows if r["interaction_in_hand_by_turn"][t]), n) for t in T}
+    castable = {str(t + 1): _rate(
+        sum(1 for r in rows if r["interaction_castable_by_turn"][t]), n) for t in T}
+    # CONDITIONAL, AND IT IS THE INTERPRETABLE ONE. Cutting three interaction
+    # spells lowers `castable` without anything about the mana changing, so the
+    # raw series answers "how much interaction do you run" and this one answers
+    # the question actually asked: WHEN you hold one, can you afford it? Its
+    # denominator is the games where you held one, which is why it carries its
+    # own interval rather than being a division a reader does by hand.
+    conditional = {}
+    for t in T:
+        held = sum(1 for r in rows if r["interaction_in_hand_by_turn"][t])
+        ok = sum(1 for r in rows if r["interaction_castable_by_turn"][t])
+        conditional[str(t + 1)] = _rate(ok, held)
+    return {
+        "extra_cards_by_turn": (
+            {str(t + 1): _mean_cell([r["drawn_extra_by_turn"][t] for r in rows])
+             for t in T} if opted else None),
+        "extra_cards_unavailable": None if opted else (
+            "this deck does not opt into `model_draw` in goldfish_targets.json, "
+            "so every draw beyond the one-a-turn draw step is unmodelled. That "
+            "is an absent measurement, not a zero."),
+        "interaction_in_hand_by_turn": in_hand,
+        "interaction_castable_by_turn": castable,
+        "castable_given_in_hand_by_turn": conditional,
+        "keep_can_act_by_t3": _rate(
+            sum(1 for r in rows if r["keep_can_act_by_t3"]), n),
+        "basis": (
+            "`castable` is the mana left at the END OF THE MAIN PHASE — the "
+            "moment the decision is made, before combat. Extra combat phases "
+            "are paid for after it and attack triggers add mana after it, so on "
+            "a deck with Aggravated Assault this float is larger than what "
+            "survives the turn. It is also a FLOOR against the spending policy: "
+            "the model casts everything it can afford every turn, so a pilot "
+            "choosing to hold up two mana would score higher. A low figure is a "
+            "real finding; a high one is unambiguous good news."),
+    }
+
+
 def output(got):
     """The MAGNITUDE series, carried through from the goldfish that owns them.
 
@@ -430,6 +502,7 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "stall": stall(rows),
         "engine": engine(rows, targets, missing),
         "mana": mana(rows),
+        "steam": steam(rows, got),
         "output": output(got),
         "limits": [
             "No pod, no opponent and no interaction: this measures a DECK, not "

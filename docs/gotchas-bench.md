@@ -165,3 +165,85 @@ Extracted verbatim from `CLAUDE.md` — every measurement here was in that file 
 - **THE MERGE POST-AMBLE HAD NEVER RUN ONCE.** It called `deck_status.report(slug)` — a function that does not exist; the module defines `status`, `fleet`, `_fleet_main` and `main` — inside a bare `except`, so `out["stale"]` was unconditionally `[]` and the *"written against the previous list"* warning has never printed. **Two more bugs sat behind it**: rows key their name as `stage`, not `key`, and `status()` returns a list rather than `{"stages": [...]}`. Three wrong assumptions stacked, and none of them could surface, because **no branch in this repo has ever been merged** and a bare `except` around a chain cannot fail loudly enough to be noticed. The `except` stays — a missing corpus genuinely makes some gates unrunnable and a merge must not die for it — but it is narrow enough now that a typo cannot hide in it, and `test_deck_status_exposes_what_merge_reads_from_it` asserts the interface rather than re-deriving it.
 
 - **`branch.json` was the last tracked pilot artifact with no gate**, and it holds the objective a branch is graded against. `validate-branch` closes it, and folds in the `MEMBERSHIP_AXES` ban that had been living as a loose test. It also gates `objective_history` — a key nothing writes or reads, hand-added when Ur-Dragon's objective moved off an authored axis. An ungated key that only ever arrives by hand is the shape a typo lives in forever.
+
+## The simulation could not see the deck, 2026-08-29
+
+One day's work on edgar-vampires, and every finding here was paid for by
+measuring rather than reading. The order matters: each fix exposed the next,
+and the last one invalidated the conclusions the first five had produced.
+
+- **THE COMMANDER'S EMINENCE MINTED NOTHING, AND IT WAS THE WHOLE AXIS.**
+  `command_zone_reduction` reads a commander for COST REDUCTION — The Ur-Dragon
+  discounts Dragons — and there was no channel for the other kind. Edgar
+  Markov's eminence says *"whenever you cast another Vampire spell, if Edgar is
+  in the command zone or on the battlefield, create a 1/1 black Vampire creature
+  token"*: live from turn one, unremovable, and the deck's entire token engine.
+  Unmodelled, every one of those tokens was absent — the bodies, the
+  arrival-damage payoffs they fire, the arrival draw they fire, and the fuel the
+  sacrifice model eats. **`mean_bodies_by_turn` at ten was understated by 50%
+  (9.3 against 14.0).** `deck-audit`'s engine brief described it in prose the
+  whole time. 92 corpus cards carry the shape; exactly one is a commander on
+  this bench, so the fix moves one deck.
+
+- **THE TOKEN DOUBLERS DOUBLED ONLY TREASURES.** `treasure_doubler` shipped with
+  the Treasure model and its own comment calls the shape *"Procession-style xN"* —
+  and it was never applied to creature tokens. Anointed Procession, Elspeth
+  Storm Slayer and Mondrak all sat in this 99 doubling nothing that fights. The
+  deck's engine brief reads *"eminence mints a free body every time you cast a
+  Vampire and the doublers turn one mint into four"*, and **neither half of that
+  sentence was in the simulation.** Nine corpus doublers; the six TRIPLERS are
+  left alone rather than read as x2, and two conditional matches are excluded —
+  Kaya, Geist Hunter doubles only *"until end of turn"* off a -2, and Hosting
+  Season is gated on a calendar date.
+
+- **NOTHING DIED, SO A FIFTH OF THE DECK SCORED ZERO.** No blockers, no removal,
+  no sacrifice outlets — so every death-triggered card was priced at exactly
+  nothing. On this list that is **20 of 99 cards**: Blood Artist, Zulaport
+  Cutthroat, Cruel Celebrant, Bastion of Remembrance, Viscera Seer, Ashnod's
+  Altar, Phyrexian Tower, Woe Strider, Skullclamp. `model_sacrifice` converts
+  creature TOKENS to a free outlet after combat has swung. **The policy is a
+  choice and is stated rather than tuned**: a real pilot sacrifices in response
+  to a wipe or for lethal and this model has neither, so keeping every token and
+  sacrificing every token BRACKET the truth — the run without the flag is the
+  floor, the run with it the ceiling.
+
+- **`(?!lands?\b)` BLOCKED THE WORD, NOT THE FIVE TYPE NAMES.** The ETB trigger
+  matched *"Whenever a Mountain you control enters"*, so a landfall payoff named
+  by basic type read as a payoff for CREATURES entering. Fourteen corpus cards,
+  two of them actively scoring: Dread Presence billed 2 damage per creature
+  arrival off a Swamp trigger, and **Koth, Fire of Resistance — a PLANESWALKER —
+  billed 4** off an emblem's Mountain trigger. Both surfaced in a candidate
+  search for the very channel they were corrupting. The sweep only narrows: 438
+  matches to 424, nothing newly matched.
+
+- **AN ARRIVAL-DRAW ENGINE SAW ITS OWN ARRIVAL**, and the code comment claimed
+  the opposite of what the code did. Welcoming Vampire is a 2/3 that draws
+  *"whenever one or more OTHER creatures you control with power 2 or less
+  enter"* — its own power is 2, so registering the engine before its own entry
+  passed its own gate. Worth 22% of the turn-eight figure. And the same channel
+  **silently required `model_combat`**: every call to the one door onto the
+  battlefield sat inside `if model_combat:`, so a deck opting into `model_draw`
+  alone lost three quarters of its arrival draws — 1.264 extra cards by turn ten
+  against 0.323 — and reported the smaller number without a word.
+
+- **AND THEN THE TABLE OVERRULED ALL OF IT.** With eminence, the doublers, the
+  sacrifice engine, the death triggers and four draw channels all modelled, the
+  goldfish preferred a go-wide refactor on damage, kill rate and card advantage.
+  Forge, 400 games per arm against the pilot's own pod at one seed, said the
+  refactor won **31/400 against the champion's 50/400** — a difference of
+  -0.0475 with a Newcombe interval of [-0.0899, -0.0056] that **excludes zero**.
+  The mechanism is one number: **combat damage dealt to players fell from 29.07
+  to 18.20**. The goldfish has NO BLOCKERS, so it rewards a wide board of 1/1s
+  that a real table simply blocks, and the refactor had cut every lord and
+  anthem — the cards that make a small body connect.
+  **That single missing assumption outweighed every gap closed above.** A
+  go-wide or token strategy must be judged in Forge from the start; the goldfish
+  is a resource model and its verdict on board QUALITY is not evidence.
+
+- **A 100-GAME FORGE RUN IS NOT A RESULT.** The champion read 18/100 at a
+  hundred games and **50/400 — 12.5% — at four hundred**, so the first estimate
+  of the refactor's cost (-0.103) was more than double the properly powered one
+  (-0.0475). `damage_on_wipe` told the same story: 0.0 over 9 wipes became 0.32
+  over 37. MDE against an 0.18 baseline is 42 points at 20 games per arm, 17.5
+  at 100, and 8.5 at 400. The deck's one historical experiment ran at 20 per arm
+  and returned an interval spanning zero, which is the design and not the deck.

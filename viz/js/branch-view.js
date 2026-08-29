@@ -29,6 +29,15 @@
       .catch(function () { return null; });
   }
 
+  /* A CARD NAME IS A LINK EVERYWHERE ON THIS PAGE, and it is `Shell`'s so that
+   * deck.html and workbench.html get the same one. This file used to carry its
+   * own `cardref` + `card-pop` markup inside `cardList` and nowhere else, so the
+   * bill showed you a card and the diff — the panel whose entire content is
+   * card names — showed you sixty strings. */
+  function card(name) {
+    return window.Shell && Shell.cardLink ? Shell.cardLink(name) : esc(name);
+  }
+
   function num(v, dp) {
     if (v == null) return '—';
     return Number(v).toFixed(dp == null ? 3 : dp);
@@ -242,20 +251,16 @@
       '</section>';
   }
 
-  /* Art through `Shell.cardImageUrl`, which already carries the DFC front-face
-   * retry — a NAME is the only card identity this page ever has, which is what
-   * lets it draw real cards with no corpus loaded. The hover is CSS-only,
-   * ported from the roster: no positioning code, no tooltip layer. */
+  /* Names through `card()`, which is `Shell.cardLink`. This list used to build
+   * its own `cardref` + `card-pop` markup — a second hover mechanism living in
+   * one function on one panel, while every other card name on the page was
+   * inert text. One idiom, one home. */
   function cardList(title, rows) {
     if (!rows.length) return '';
     return '<h3>' + esc(title) + ' <span class="ev">(' + rows.length + ')</span></h3>' +
       '<ul class="cardlist">' + rows.map(function (r) {
-        var img = window.Shell ? Shell.cardImageUrl(r.name, 'small') : '';
-        return '<li><a class="cardref" href="index.html?cards=' +
-          encodeURIComponent(r.name) + '">' + esc(r.name) +
-          (img ? '<span class="card-pop"><img loading="lazy" width="488" ' +
-                 'height="680" src="' + esc(img) + '" alt=""></span>' : '') +
-          '</a>' + (r.where && r.where.length
+        return '<li>' + card(r.name) +
+          (r.where && r.where.length
             ? ' <span class="ev">in ' + esc(r.where.map(function (w) {
                 /* One shape, two kinds: a box names itself, a deck names its
                  * slug and whether it is sleeved or already in a pile. */
@@ -401,8 +406,8 @@
         '<span class="strength ' + band + '" title="0 = two different cards ' +
         'that sort near each other. 1 = strictly better, cheaper, no strings. ' +
         'The shipped data tops out at 0.95.">' + esc(r.strength.toFixed(2)) +
-        '</span> <span class="out">' + esc(r.out) + '</span>' +
-        ' <span class="arrow">&rarr;</span> <span class="in">' + esc(r['in']) +
+        '</span> <span class="out">' + card(r.out) + '</span>' +
+        ' <span class="arrow">&rarr;</span> <span class="in">' + card(r['in']) +
         '</span> <span class="src">' + esc(r.source || 'buy') + '</span></div>';
       (r.gains || []).forEach(function (g) {
         out += '<span class="badge gain">+ ' + esc(g) + '</span>';
@@ -442,13 +447,136 @@
     return out + '</section>';
   }
 
-  /* THE SWAPS, SPLIT THE WAY THE EVIDENCE SPLITS. A spell swap moves the nine
-   * sampled rows; a land swap moves only the deterministic mana block, because
-   * the model has no tapped state and cannot rank two lands that make the same
-   * colours. Rendered together, a land pass borrows credit from a spell pass.
-   * Each `why` was written when the swap was staged, before any figure above
-   * existed, so it cannot have been fitted to them. */
-  function stagedPanel(meta, nc) {
+  /* THE MERGE-REQUEST DIFF, and it is the first thing on the page after the
+   * verdict — the deck equivalent of "Files changed". The panel it replaced
+   * read `branch.json`'s `staged` list, so a branch opened with
+   * `new --from <list>` — which stages nothing and sets the whole 99 at once —
+   * rendered as "The change (0)" while the report beneath it measured all 35
+   * cards. The cards coming IN showed up on the bill; the cards going OUT
+   * appeared nowhere on the page. A diff that omits its deletions is not a diff.
+   *
+   * COUNTS ARE NAMES, THE DECK SIZE IS COPIES, and they are different numbers.
+   * Cutting one of four Swamps removes no NAME, so "18 out, 21 in" sits happily
+   * beside "100 -> 100 cards" and both are true. The header says both, because
+   * a reader given only the first will read it as a deck that grew by three.
+   *
+   * Lands and spells stay apart for the reason the evidence does: a spell swap
+   * moves the sampled rows, a land swap moves only the deterministic mana
+   * block, and rendered together a land pass borrows a spell pass's credit. */
+  var STATE_WORD = { buy: 'buy', box: 'in a box', elsewhere: 'in another deck',
+                     in_deck: 'already here' };
+
+  /* THE REASON PRINTS ONCE, against the card that was argued FOR. A staged swap
+   * is one decision about two cards; printing its `why` on both sides shows the
+   * reader the same sentence twice and still leaves them guessing which removal
+   * paid for which addition. So the `-` row points at its opposite number and
+   * the `+` row carries the argument. */
+  function diffRows(rows, sign) {
+    var adding = sign === '+';
+    return '<ul class="difflist">' + rows.map(function (r) {
+      var tag = r.state
+        ? '<span class="chip ' + esc(r.state) + '">' +
+          esc(STATE_WORD[r.state] || r.state) + '</span>' : '';
+      var link = r.pair
+        ? '<span class="paired">' + (adding ? '\u2190 ' : '\u2192 ') +
+          card(r.pair) + '</span>' : '';
+      return '<li class="' + (adding ? 'add' : 'del') + '">' +
+             '<span class="sign">' + sign + '</span>' +
+             '<span class="cname">' + card(r.name) + '</span>' +
+             '<span class="mv">mv' + (r.cmc == null ? '?' : r.cmc) + '</span>' +
+             tag + link +
+             (adding && r.why ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
+             '</li>';
+    }).join('') + '</ul>';
+  }
+
+  /* "Swamp 4 -> 2", in the removals column. The card is still in the list, so
+   * it gets no +/- sign of its own — what changed is how many. */
+  function countRows(rows) {
+    if (!rows.length) return '';
+    return '<ul class="difflist">' + rows.map(function (r) {
+      var down = r.delta < 0;
+      return '<li class="' + (down ? 'del' : 'add') + ' countrow">' +
+             '<span class="sign">' + (down ? '\u2212' : '+') + '</span>' +
+             '<span class="cname">' + card(r.name) + '</span>' +
+             '<span class="mv">' + r.from + ' \u2192 ' + r.to + '</span>' +
+             '<span class="chip count">' + (down ? '' : '+') + r.delta +
+             ' cop' + (Math.abs(r.delta) === 1 ? 'y' : 'ies') + '</span></li>';
+    }).join('') + '</ul>';
+  }
+
+  function netChangePanel(meta, nc) {
+    var d = nc && nc.changes && nc.changes.diff;
+    if (!d) return stagedFallback(meta, nc);
+    var c = d.counts;
+    /* THE HEADLINE COUNTS COPIES, because that is what you sleeve and it is the
+     * only pair of numbers that balances. It used to count NAMES and read
+     * "18 out, 21 in" for a change that was 21 for 21 — cutting one of two
+     * Plains and two of four Swamps removes three cards and no names, so three
+     * removals were missing from the page. The name counts stay underneath,
+     * where the gap between the two is an explanation rather than a puzzle. */
+    var co = c.out_copies == null ? c.out : c.out_copies;
+    var ci = c.in_copies == null ? c['in'] : c.in_copies;
+    var out = '<section class="panel netchange"><h2>Net change</h2>' +
+      '<p class="headline"><span class="del">\u2212 ' + co + ' out</span>' +
+      '<span class="add">+ ' + ci + ' in</span>' +
+      '<span class="ev">' + d.base_size + ' \u2192 ' + d.size + ' cards' +
+      (d.base_size === d.size ? '' : '  \u26a0 the deck changed size') +
+      '</span></p>' +
+      '<p class="ev">' + co + ' cards out and ' + ci + ' in, across ' +
+      c.out + ' name(s) removed and ' + c['in'] + ' added: ' + d.base_names +
+      ' \u2192 ' + d.names + ' distinct cards, ' + d.base_size + ' \u2192 ' +
+      d.size + ' copies. A basic cut from four to two changes no name.</p>';
+
+    [['Spells', 'spell', c.spells_out, c.spells_in],
+     ['Lands', 'land', c.lands_out, c.lands_in]].forEach(function (g) {
+      var outs = d.out.filter(function (r) { return r.kind === g[1]; });
+      var ins = d['in'].filter(function (r) { return r.kind === g[1]; });
+      if (!outs.length && !ins.length) return;
+      /* A COPY COUNT THAT MOVED IS A REMOVAL TOO. Rendered in the column it
+       * belongs to rather than a third list, so the two sides still add up. */
+      var chg = (d.changed || []).filter(function (r) { return r.kind === g[1]; });
+      var lost = chg.filter(function (r) { return r.delta < 0; });
+      var gained = chg.filter(function (r) { return r.delta > 0; });
+      if (!outs.length && !ins.length && !chg.length) return;
+      /* COPIES, THE SAME UNIT AS THE HEADLINE. Counting rows here gave the
+       * lands "(-3 / +4)" while the panel above said 21 for 21 — two units in
+       * one panel, which is the defect `net_change.METRICS` exists to stop.
+       * A name gone takes all its copies with it; a name that merely shrank
+       * takes the difference. */
+      var copiesOut = outs.reduce(function (a, r) { return a + (r.copies || 1); }, 0) +
+        lost.reduce(function (a, r) { return a - r.delta; }, 0);
+      var copiesIn = ins.reduce(function (a, r) { return a + (r.copies || 1); }, 0) +
+        gained.reduce(function (a, r) { return a + r.delta; }, 0);
+      out += '<h3>' + esc(g[0]) + ' <span class="ev">(\u2212' + copiesOut +
+             ' / +' + copiesIn + ')</span></h3><div class="diffcols">' +
+             '<div>' + (outs.length || lost.length
+                        ? diffRows(outs, '\u2212') + countRows(lost)
+                        : '<p class="ev">nothing removed</p>') + '</div>' +
+             '<div>' + (ins.length || gained.length
+                        ? diffRows(ins, '+') + countRows(gained)
+                        : '<p class="ev">nothing added</p>') + '</div>' +
+             '</div>';
+    });
+
+    /* HOW MUCH OF THIS NOBODY ARGUED FOR, CARD BY CARD. A `why` is written when
+     * a swap is STAGED, before any figure below exists, so it cannot have been
+     * fitted to them. A branch opened from a whole list has none, and that is
+     * worth saying out loud rather than rendering as blank space. */
+    var u = d.unexplained || {};
+    if (u.out || u['in']) {
+      out += '<p class="ev unexplained">' + (u.out + u['in']) +
+        ' of ' + (c.out + c['in']) + ' cards carry no recorded reason \u2014 ' +
+        'they arrived with the branch\u2019s opening list rather than through ' +
+        '<code>deck-branch stage</code>, which is what records a why. The ' +
+        'branch\u2019s own rationale is at the top of this page.</p>';
+    }
+    return out + '</section>';
+  }
+
+  /* A branch measured before `card_diff` shipped has no `diff` block. Render
+   * what it does have rather than an empty page. */
+  function stagedFallback(meta, nc) {
     var ch = nc && nc.changes;
     var groups = ch
       ? [['Spells', ch.spells || []], ['Lands', ch.lands || []]]
@@ -456,16 +584,15 @@
     var total = groups.reduce(function (a, g) { return a + g[1].length; }, 0);
     if (!total) return '';
     var out = '<section class="panel staged"><h2>The change (' + total +
-      ')</h2><p class="ev">A challenger starts as a copy of the deck. These are ' +
-      'the swaps that make it a different one, each with the reason it was ' +
-      'staged.</p>';
+      ')</h2><p class="ev">Staged swaps only \u2014 this branch was measured ' +
+      'before the full diff was recorded.</p>';
     groups.forEach(function (g) {
       if (!g[1].length) return;
       out += '<h3>' + esc(g[0]) + ' <span class="ev">(' + g[1].length +
              ')</span></h3><ul class="swaplist">';
       g[1].forEach(function (r) {
-        out += '<li><span class="pair"><span class="out">\u2212 ' + esc(r.out) +
-               '</span><span class="in">+ ' + esc(r['in']) + '</span></span>' +
+        out += '<li><span class="pair"><span class="out">\u2212 ' + card(r.out) +
+               '</span><span class="in">+ ' + card(r['in']) + '</span></span>' +
                (r.why ? '<span class="ev">' + esc(r.why) + '</span>' : '') +
                '</li>';
       });
@@ -510,7 +637,7 @@
         document.getElementById('objective').innerHTML =
           proposalPanel(meta, slug, name) + verdictPanel(nc) +
           objectivePanel(meta, nc);
-        document.getElementById('panels').innerHTML = stagedPanel(meta, nc) + (nc
+        document.getElementById('panels').innerHTML = netChangePanel(meta, nc) + (nc
           ? (tablePanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
              billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
           : (trailPanel(meta) + absent(

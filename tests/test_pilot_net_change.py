@@ -10,7 +10,7 @@ import json
 import pytest
 
 from conftest import A_BRANCH, requires_branch, requires_deck
-from manamap.pilot import net_change, validate_net_change
+from manamap.pilot import deck_branch, net_change, validate_net_change
 
 SLUG, BRANCH = "ur-dragon", A_BRANCH
 
@@ -593,3 +593,186 @@ def test_no_written_report_still_carries_the_deleted_block():
     assert "engine_lift" not in doc
     blob = json.dumps(doc)
     assert "online_by_turn" not in blob
+
+
+# --------------------------------------------------------------------------
+# card_diff — the merge-request view of a branch
+# --------------------------------------------------------------------------
+
+@requires_branch
+@requires_deck
+def test_the_diff_is_derived_from_the_LISTS_and_not_from_the_staged_swaps():
+    """THE BUG THIS FUNCTION EXISTS FOR. `changes()` reads `branch.json`'s
+    `staged` array, and a branch opened with `new --from <list>` sets its whole
+    99 at once and stages NOTHING. So a 17-for-17 refactor rendered as "The
+    change (0)" while the report beneath it measured all 34 cards, and the cards
+    going OUT appeared nowhere on the page at all."""
+    d = net_change.card_diff(SLUG, BRANCH)
+    staged = len((deck_branch.meta(SLUG, BRANCH) or {}).get("staged") or [])
+    assert d["counts"]["out"] and d["counts"]["in"], "a branch differs from its deck"
+    assert d["counts"]["out"] + d["counts"]["in"] > staged, (
+        "the diff must see cards that were never staged")
+    # And it agrees with the function that owns the question.
+    raw = deck_branch.diff(SLUG, BRANCH)
+    assert {r["name"] for r in d["out"]} == set(raw["out"])
+    assert {r["name"] for r in d["in"]} == set(raw["add"])
+    # SPELLS BEFORE LANDS, THEN UP THE CURVE, THEN BY NAME — a render order, not
+    # an alphabetical one. Reading a diff by mana value is how you see that a
+    # refactor lowered the curve; alphabetical hides it.
+    for side in (d["out"], d["in"]):
+        keys = [(r["kind"] != "spell", r["cmc"], r["name"]) for r in side]
+        assert keys == sorted(keys), "stable, and ordered the way it is read"
+
+
+@requires_branch
+@requires_deck
+def test_the_diff_counts_NAMES_and_says_so_beside_the_deck_size():
+    """COUNT COPIES, NOT DECKLIST ENTRIES — the repo's own gotcha, in the one
+    place the two numbers sit side by side. Cutting one of four Swamps removes
+    no NAME, so "18 out, 21 in" is true at the same time as "100 -> 100 cards",
+    and a reader given only the first reads a deck that grew by three."""
+    d = net_change.card_diff(SLUG, BRANCH)
+    assert d["size"] == d["base_size"], "a legal branch is the same size"
+    assert d["counts"]["out"] != d["counts"]["in"] or True  # may or may not differ
+    # The size and the name count are BOTH carried, which is what lets the
+    # renderer explain the discrepancy instead of leaving it to be guessed at.
+    for k in ("size", "base_size", "names", "base_names"):
+        assert isinstance(d[k], int) and d[k] > 0, k
+
+
+@requires_branch
+@requires_deck
+def test_every_row_carries_what_the_renderer_needs():
+    d = net_change.card_diff(SLUG, BRANCH)
+    checked = 0
+    for r in d["out"] + d["in"]:
+        assert r["kind"] in ("land", "spell")
+        assert isinstance(r["cmc"], int)
+        assert "why" in r and "pair" in r, "absent keys, not missing ones"
+        checked += 1
+    assert checked >= 10
+    # Only the INCOMING cards have a physical location to report; asking where
+    # a card you are removing "is" is a question about the deck you already own.
+    assert all("state" not in r for r in d["out"])
+    assert all("state" in r for r in d["in"])
+
+
+@requires_branch
+@requires_deck
+def test_the_diff_and_the_bill_cannot_disagree_about_what_must_be_bought():
+    """Two lists of the same cards on one page is two chances to be wrong."""
+    bill = deck_branch.source(SLUG, BRANCH)
+    d = net_change.card_diff(SLUG, BRANCH, bill)
+    by_name = {r["name"]: r.get("state") for r in bill["cards"]}
+    checked = 0
+    for r in d["in"]:
+        assert r["state"] == by_name.get(r["name"]), r["name"]
+        checked += 1
+    assert checked >= 10
+
+
+@requires_branch
+@requires_deck
+def test_a_staged_swap_pairs_BOTH_ways_and_the_reason_is_recoverable():
+    """A staged swap is ONE decision about TWO cards. Rendered as two columns
+    the pairing is lost, and printing the `why` on both sides shows the reader
+    the same sentence twice while still leaving them guessing which removal paid
+    for which addition."""
+    meta = deck_branch.meta(SLUG, BRANCH) or {}
+    staged = [r for r in (meta.get("staged") or []) if r.get("out") and r.get("in")]
+    if not staged:
+        pytest.skip("this branch has no staged swaps")
+    d = net_change.card_diff(SLUG, BRANCH)
+    outs = {r["name"]: r for r in d["out"]}
+    ins = {r["name"]: r for r in d["in"]}
+    checked = 0
+    for row in staged:
+        o, i = outs.get(row["out"]), ins.get(row["in"])
+        if not (o and i):
+            continue          # the swap may have been superseded by a later one
+        assert o["pair"] == row["in"] and i["pair"] == row["out"]
+        assert i["why"] == row.get("why"), "the argument rides with the addition"
+        checked += 1
+    assert checked >= 1
+
+
+@requires_branch
+@requires_deck
+def test_how_much_of_the_branch_nobody_argued_for_is_COUNTED():
+    """A card with no recorded reason is reported, not left blank. The count is
+    the honest measure of how much of a branch is argued for card by card, and a
+    branch opened from a whole list starts at all of it."""
+    d = net_change.card_diff(SLUG, BRANCH)
+    u = d["unexplained"]
+    assert u["out"] == sum(1 for r in d["out"] if not r["why"])
+    assert u["in"] == sum(1 for r in d["in"] if not r["why"])
+    assert u["out"] + u["in"] <= d["counts"]["out"] + d["counts"]["in"]
+
+
+@requires_branch
+@requires_deck
+def test_the_written_report_carries_the_diff():
+    """It is what `branch.html` renders as its headline panel."""
+    d = (_doc().get("changes") or {}).get("diff")
+    assert d, "net_change.json must carry the diff"
+    assert d["out"] and d["in"] and d["counts"]["out"] >= 1
+
+
+@requires_branch
+@requires_deck
+def test_the_two_sides_of_the_diff_BALANCE_in_copies():
+    """THE QUESTION THAT FOUND THE BUG: "how can we have 18 out and 21 in?"
+
+    They could, and the panel was wrong to show it. A name-level diff cannot see
+    a basic cut from four copies to two — the name is still there — so three of
+    twenty-one removals were missing from the page while the deck size sat
+    unchanged at 100. Counted in COPIES, which is what gets sleeved, the two
+    sides balance for any legal branch and the arithmetic is checkable.
+    """
+    d = net_change.card_diff(SLUG, BRANCH)
+    c = d["counts"]
+    assert c["out_copies"] and c["in_copies"]
+    assert d["base_size"] - c["out_copies"] + c["in_copies"] == d["size"], (
+        "copies out and in must reconcile the two deck sizes")
+    # A legal branch is the same size as its deck, so the two sides are equal.
+    # NO FIGURE IS PINNED: this ran against ur-dragon while carrying
+    # edgar-vampires' 21, which is both wrong and the standing rule about not
+    # writing tests against an experimental branch's numbers.
+    if d["base_size"] == d["size"]:
+        assert c["out_copies"] == c["in_copies"]
+
+
+@requires_branch
+@requires_deck
+def test_a_copy_count_that_moved_is_reported_as_a_change():
+    """RE-INTRODUCING THE CONDITION. `changed` is what the name diff cannot see;
+    without it those cards are removals that appear nowhere."""
+    d = net_change.card_diff(SLUG, BRANCH)
+    names = {r["name"] for r in d["out"]} | {r["name"] for r in d["in"]}
+    for r in d["changed"]:
+        assert r["from"] != r["to"] and r["delta"] == r["to"] - r["from"]
+        assert r["name"] not in names, (
+            "a card in `changed` is in BOTH lists — it is not an add or a cut")
+    # And the group totals a renderer sums are reconcilable from the rows alone.
+    for kind in ("spell", "land"):
+        outs = [r for r in d["out"] if r["kind"] == kind]
+        ins = [r for r in d["in"] if r["kind"] == kind]
+        chg = [r for r in d["changed"] if r["kind"] == kind]
+        co = sum(r["copies"] for r in outs) + sum(-r["delta"] for r in chg if r["delta"] < 0)
+        ci = sum(r["copies"] for r in ins) + sum(r["delta"] for r in chg if r["delta"] > 0)
+        assert co >= 0 and ci >= 0
+    assert sum(r["copies"] for r in d["out"]) + sum(
+        -r["delta"] for r in d["changed"] if r["delta"] < 0) == d["counts"]["out_copies"]
+
+
+@requires_branch
+@requires_deck
+def test_every_row_carries_its_own_copy_count():
+    """A renderer that sums rows assuming one apiece is right about 96 of 99
+    cards and wrong about exactly the ones this bug was made of."""
+    d = net_change.card_diff(SLUG, BRANCH)
+    checked = 0
+    for r in d["out"] + d["in"]:
+        assert isinstance(r["copies"], int) and r["copies"] >= 1, r["name"]
+        checked += 1
+    assert checked >= 10

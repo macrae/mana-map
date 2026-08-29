@@ -68,6 +68,10 @@ ROWS = (
     ("stall, 2 in a row", "stall", "two_in_a_row", None, -1),
     ("missed drop by T5", "mana", "missed_land_drop_by_five", None, -1),
     ("mulliganed", "mana", "mulliganed", None, -1),
+    # STEAM — the three the captain's log kept asking for and nothing measured.
+    ("extra cards by T8", "steam", "extra_cards_by_turn", "8", +1),
+    ("interaction affordable @T6", "steam", "castable_given_in_hand_by_turn", "6", +1),
+    ("hand can act by T3", "steam", "keep_can_act_by_t3", None, +1),
 )
 
 
@@ -79,6 +83,55 @@ ROWS = (
 #: says what they are. `scale` is the yardstick the number is only meaningful
 #: against — 40 life for damage, the fleet band for the three consistency rows.
 METRICS = {
+    "extra cards by T8": {
+        "unit": "mean",
+        "scale": "against the 8 cards every deck draws for free by then",
+        "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the "
+                "end of turn 8, averaged over every game. Counts only draw the "
+                "model can price — a card's own ETB draw, an instant or sorcery "
+                "that draws, an upkeep trigger, and a trigger that draws when "
+                "other creatures or tokens enter. Activated, X-based, "
+                "sacrifice-gated and death-triggered draw are NOT counted and "
+                "the cards are named in the goldfish artifact.",
+        "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the "
+               "most-repeated line in this deck's log, and until 2026-08-28 the "
+               "model could not see it: it drew one card a turn whatever the "
+               "list said. Read it against the count of draw cards, not alone — "
+               "a deck listing twelve draw sources whose modelled figure is one "
+               "has almost no UNCONDITIONAL card advantage, and that is a fact "
+               "about the deck rather than a limit of the parser.",
+    },
+    "interaction affordable @T6": {
+        "unit": "rate",
+        "scale": "conditional on holding one — the denominator is games where "
+                 "an answer was in hand, not all games",
+        "what": "Of the games where an answer was in hand on turn 6, the share "
+                "where the turn also ended with enough unspent mana to cast it. "
+                "The suite is removal + sweepers + protection, the same set "
+                "`deck-audit` counts.",
+        "why": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and "
+               "Teferi's Protection sat in my hand uncast for the entire game "
+               "... my mana was spent casting vampires, so there was never open "
+               "mana to hold up.\" This is that claim as a number. It is "
+               "CONDITIONAL on purpose: the raw castable rate falls when you "
+               "simply cut interaction, which answers a different question. "
+               "Measured at the END OF THE MAIN PHASE, before combat is paid "
+               "for. And it is a FLOOR — the model casts everything it can "
+               "afford every turn, so a pilot choosing to hold up scores higher.",
+    },
+    "hand can act by T3": {
+        "unit": "rate",
+        "scale": "against the keep rate itself — this is a property of the "
+                 "seven cards kept, assuming no draws",
+        "what": "The share of kept opening hands containing a nonland card the "
+                "hand's own lands can pay for by turn three, counting at most "
+                "three land drops and no draws.",
+        "why": "A stricter threshold than the 2-5 lands rule the model actually "
+               "mulligans by, and it is REPORTED rather than enforced, so it "
+               "cannot restate a figure on any deck. It separates \"this hand "
+               "had lands\" from \"this hand could do something\" — the "
+               "distinction behind a two-land keep that never got going.",
+    },
     "hoard @T10": {
         "unit": "mean",
         "what": "Treasures sitting in the hoard at the end of turn 10, averaged "
@@ -238,6 +291,117 @@ def mana(slug, branch):
     }
 
 
+def card_diff(slug, branch, bill=None):
+    """THE MERGE-REQUEST DIFF: every card out, every card in, against the deck.
+
+    WHY THIS IS NOT `changes()`. That function reads `branch.json`'s `staged`
+    list, which only holds swaps made with `deck-branch stage`. A branch opened
+    with `new --from <list>` sets its whole 99 at once and stages NOTHING, so a
+    17-for-17 refactor rendered as "The change (0)" while the report underneath
+    it measured all 34 cards. The page showed the incoming cards on the bill and
+    the outgoing cards NOWHERE — a diff that omits the deletions.
+
+    So the diff is derived from the two lists, the way git derives one, and the
+    staged `why` is joined onto it where there is one. A card with no recorded
+    reason is REPORTED AS UNEXPLAINED rather than left blank: the count is the
+    honest measure of how much of this branch is argued for card by card.
+
+    Lands and spells stay separated for the reason `changes()` already gives —
+    a spell swap moves the sampled rows, a land swap moves only the
+    deterministic mana block, and mixing them lets one borrow the other's credit.
+    """
+    from manamap.pilot import card_pool
+    pool = card_pool.load_pool()
+    d = deck_branch.diff(slug, branch)
+    meta = deck_branch.meta(slug, branch) or {}
+    # PAIRING SURVIVES THE TWO COLUMNS. A staged swap is one decision about two
+    # cards, and a diff laid out as two lists loses that: rendered naively the
+    # `why` prints once on each side, so the reader sees the same sentence twice
+    # and still cannot tell which removal paid for which addition. Each row
+    # carries the name of its opposite number instead, and the reason is printed
+    # once against the card that was ARGUED FOR.
+    why_out, why_in, pair = {}, {}, {}
+    for row in meta.get("staged") or []:
+        if row.get("out"):
+            why_out[row["out"]] = row.get("why")
+        if row.get("in"):
+            why_in[row["in"]] = row.get("why")
+        if row.get("out") and row.get("in"):
+            pair[row["out"]] = row["in"]
+            pair[row["in"]] = row["out"]
+    state = {r["name"]: r.get("state")
+             for r in ((bill or {}).get("cards") or [])}
+
+    base = deck_branch._entries(deck_branch._list_text(slug))
+    cand = deck_branch._entries(deck_branch._list_text(slug, branch))
+
+    def row(name, why_map, with_state):
+        info = pool.get(name) or {}
+        tl = info.get("type_line") or ""
+        out = {"name": name,
+               "cmc": int(float(info.get("cmc") or 0)),
+               "type_line": tl,
+               "kind": "land" if "Land" in tl else "spell",
+               "why": why_map.get(name),
+               "pair": pair.get(name)}
+        # HOW MANY, because a name is not a card count. Every row the renderer
+        # sums has to carry its own copies or the group totals silently assume
+        # one apiece — which is true of 96 of these 99 and wrong about the ones
+        # that matter.
+        out["copies"] = (cand if with_state else base).get(name, 1)
+        if with_state:
+            # Where the card physically is, straight off the bill — so the diff
+            # and the bill can never disagree about what has to be bought.
+            out["state"] = state.get(name)
+        return out
+
+    outs = [row(n, why_out, False) for n in d["out"]]
+    ins = [row(n, why_in, True) for n in d["add"]]
+
+    # A COPY CUT IS A CARD CUT, and a name-level diff cannot see it. Cutting one
+    # of two Plains and two of four Swamps removes three cards and no NAMES, so
+    # the panel read "18 out, 21 in" for a change that was 21 for 21 — three
+    # removals invisible on the page. That is the same defect as the one this
+    # function was written for (a diff that omits its deletions), one scale down,
+    # and it is exactly the trap `common.expand_copies` exists for.
+    changed = []
+    for name in sorted(set(base) & set(cand)):
+        if base[name] != cand[name]:
+            info = pool.get(name) or {}
+            tl = info.get("type_line") or ""
+            changed.append({"name": name, "from": base[name], "to": cand[name],
+                            "delta": cand[name] - base[name],
+                            "kind": "land" if "Land" in tl else "spell",
+                            "cmc": int(float(info.get("cmc") or 0))})
+    copies_out = sum(base[r["name"]] for r in outs) + sum(
+        -c["delta"] for c in changed if c["delta"] < 0)
+    copies_in = sum(cand[r["name"]] for r in ins) + sum(
+        c["delta"] for c in changed if c["delta"] > 0)
+    key = lambda r: (r["kind"] != "spell", r["cmc"], r["name"])
+    outs.sort(key=key)
+    ins.sort(key=key)
+    return {
+        "out": outs, "in": ins, "changed": changed,
+        "counts": {
+            # COPIES first, because that is what a pilot sleeves and what makes
+            # the two sides balance. The name counts stay beside them so the
+            # difference between the two is legible rather than a discrepancy.
+            "out_copies": copies_out, "in_copies": copies_in,
+            "out": len(outs), "in": len(ins),
+            "spells_out": sum(1 for r in outs if r["kind"] == "spell"),
+            "spells_in": sum(1 for r in ins if r["kind"] == "spell"),
+            "lands_out": sum(1 for r in outs if r["kind"] == "land"),
+            "lands_in": sum(1 for r in ins if r["kind"] == "land"),
+        },
+        "size": d["size"], "base_size": d["base_size"],
+        "names": d["names"], "base_names": d["base_names"],
+        # THE HONEST NUMBER. How much of this branch nobody wrote a reason for,
+        # card by card. A branch opened from a list starts at 100%.
+        "unexplained": {"out": sum(1 for r in outs if not r["why"]),
+                        "in": sum(1 for r in ins if not r["why"])},
+    }
+
+
 def changes(slug, branch):
     """THE SWAPS THEMSELVES, which the report used to state only as a count.
 
@@ -377,10 +541,17 @@ def forge(slug, branch):
         f"data/decks/{slug}/branches/{branch}/sim/*.json",
         deck_branch_seat(slug, branch))
     if not (a_n and b_n):
+        # A BRANCH CAN BE PUT AT A REAL TABLE, and the seat grammar is how.
+        # `simulate` takes no `--branch` FLAG, which is what made this look
+        # unreachable — but `sim/forge.py` splits a seat on `@`, so
+        # `simulate edgar-vampires@drain-engine --vs …` resolves the branch's
+        # own decklist and files the run under `branches/<name>/sim/`, which is
+        # exactly the path this function reads.
+        where = f"{slug}@{branch}" if (branch and a_n) else slug
         return {"available": False,
-                "why": ("no Forge run on " +
-                        ("the branch" if a_n else "the deck") +
-                        " — `manamap pilot simulate` puts both at a table")}
+                "why": (f"no Forge run on {'the branch' if a_n else 'the deck'}"
+                        f" — `manamap pilot simulate {where} --vs <pod>` puts "
+                        f"it at a table and writes where this reads")}
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)
     m = stats.mde_proportion(a_w / a_n, a_n, b_n) or {}
     return {"available": True,
@@ -435,6 +606,8 @@ def build(slug, branch, iterations=None, seed=None):
     doc_meta = deck_branch.meta(slug, branch) or {}
     objective = doc_meta.get("objective")
     change_doc = changes(slug, branch)
+    bill_doc = deck_branch.source(slug, branch)
+    change_doc["diff"] = card_diff(slug, branch, bill_doc)
     staged = len(doc_meta.get("staged") or [])
     grade = None
     if objective:
@@ -459,7 +632,7 @@ def build(slug, branch, iterations=None, seed=None):
         "table": table,
         "mana": mana(slug, branch),
         "forge": forge(slug, branch),
-        "bill": deck_branch.source(slug, branch),
+        "bill": bill_doc,
         "limits": [
             "The goldfish has no opponents and nothing blocks: its kill turn is a "
             "CLOCK, not a win rate, and it cannot see interaction, removal or any "
@@ -467,7 +640,16 @@ def build(slug, branch, iterations=None, seed=None):
             "Nothing here reads `goldfish_targets.json`'s `required` flags. The "
             "engine lift did, and was deleted for it: the declaration is "
             "authored, so the same hand set the target and read the verdict.",
-            "Card advantage is measured nowhere in this suite.",
+            "Card advantage is measured only where the model can price it. "
+            "Activated, X-based, sacrifice-gated and death-triggered draw are "
+            "unmodelled and named per deck in `goldfish_metrics.json`; on a "
+            "sacrifice-based list that is most of it.",
+            "Death-triggered DRAIN is not modelled at all — nothing dies in "
+            "this simulation. Blood Artist, Zulaport Cutthroat and Bastion of "
+            "Remembrance contribute nothing to any damage or kill row here. A "
+            "branch built on them is understated by however much that line is "
+            "worth, and `simulate` against a real pod is the only place it can "
+            "be measured.",
         ],
     }
     # Derived from the finished document, so it can never disagree with the rows

@@ -808,3 +808,54 @@ ul.pull-unsleeve li::before { content: "✂"; color: var(--burst-yellow); }
 ul.pull-proxy li::before { content: "⇄"; color: var(--ink-soft); }
 ul.pull-free li::before { content: "✓"; color: var(--slime-green); }
 ul.pull-box li::before { content: "✓"; color: var(--slime-green); }
+
+/* ── The merge-request diff ──────────────────────────────────────────────
+   The deck equivalent of "Files changed", and the first thing on branch.html
+   after the verdict. Two columns so the removals and the additions read as
+   one change rather than two lists; on a narrow screen they stack, because a
+   two-column diff at 380px is one column with the words broken in half. */
+.panel.netchange .headline { display: flex; flex-wrap: wrap; gap: 16px;
+  align-items: baseline; margin: 0 0 10px; font-variant-numeric: tabular-nums; }
+.panel.netchange .headline .del { color: var(--power-red); font-weight: 700;
+  font-size: 1.15rem; }
+.panel.netchange .headline .add { color: var(--slime-green); font-weight: 700;
+  font-size: 1.15rem; }
+.panel.netchange h3 { margin: 20px 0 8px; font-size: 0.78rem;
+  letter-spacing: 0.1em; text-transform: uppercase; }
+.diffcols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 720px) { .diffcols { grid-template-columns: 1fr; } }
+ul.difflist { margin: 0; padding: 0; list-style: none; }
+ul.difflist li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px;
+  padding: 3px 8px; border-radius: 3px; line-height: 1.55;
+  font-variant-numeric: tabular-nums; }
+/* A tint, not a fill: the sign and the colour already carry the direction, and
+   a saturated row behind forty cards is a wall. */
+ul.difflist li.del { background: color-mix(in srgb, var(--power-red) 8%, transparent); }
+ul.difflist li.add { background: color-mix(in srgb, var(--slime-green) 8%, transparent); }
+ul.difflist .sign { font-weight: 700; width: 0.9em; flex: none; }
+ul.difflist li.del .sign { color: var(--power-red); }
+ul.difflist li.add .sign { color: var(--slime-green); }
+ul.difflist .cname { flex: 1 1 auto; min-width: 0; }
+ul.difflist .mv { color: var(--ink-soft); font-size: 0.8rem; flex: none; }
+ul.difflist .chip { flex: none; font-size: 0.68rem; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 1px 6px; border-radius: 9px;
+  border: 1px solid currentColor; opacity: 0.85; }
+ul.difflist .chip.buy { color: var(--power-red); }
+ul.difflist .chip.box { color: var(--slime-green); }
+ul.difflist .chip.elsewhere { color: var(--burst-yellow); }
+ul.difflist .why { flex: 1 0 100%; font-size: 0.8rem; padding-left: 1.6em; }
+.panel.netchange .unexplained { margin-top: 16px; padding-top: 10px;
+  border-top: 1px solid var(--rule); }
+ul.difflist .paired { flex: 1 0 100%; padding-left: 1.6em; font-size: 0.78rem;
+  color: var(--ink-soft); font-style: italic; }
+
+/* A card name you can inspect. Underlined on hover only — a report that names
+   sixty cards and underlines all of them is a page of blue. */
+a.cardname { color: inherit; text-decoration: none; border-bottom: 1px dotted
+  color-mix(in srgb, currentColor 45%, transparent); cursor: help; }
+a.cardname:hover, a.cardname:focus-visible { border-bottom-style: solid;
+  text-decoration: none; }
+img.cardpop { position: fixed; width: 223px; z-index: 9000; border-radius: 11px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55); pointer-events: none; }
+img.cardpop[hidden] { display: none; }
+ul.difflist .chip.count { color: var(--ink-soft); }

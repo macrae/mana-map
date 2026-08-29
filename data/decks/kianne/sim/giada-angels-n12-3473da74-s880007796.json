@@ -302,6 +302,83 @@
             51.02
           ]
         },
+        "noncombat_damage_dealt_to_players": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 12,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "damage_dealt_total": {
+          "mean": 4.83,
+          "median": 3.0,
+          "min": 0,
+          "max": 24,
+          "n": 12,
+          "ci95": [
+            1.14,
+            8.53
+          ]
+        },
+        "life_gained": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 12,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "life_lost": {
+          "mean": 42.0,
+          "median": 41.5,
+          "min": 7,
+          "max": 60,
+          "n": 12,
+          "ci95": [
+            33.88,
+            50.12
+          ]
+        },
+        "creatures_lost": {
+          "mean": 1.08,
+          "median": 1.0,
+          "min": 0,
+          "max": 3,
+          "n": 12,
+          "ci95": [
+            0.42,
+            1.74
+          ]
+        },
+        "activations": {
+          "mean": 2.67,
+          "median": 2.0,
+          "min": 0,
+          "max": 9,
+          "n": 12,
+          "ci95": [
+            1.27,
+            4.06
+          ]
+        },
+        "triggers": {
+          "mean": 6.5,
+          "median": 5.0,
+          "min": 1,
+          "max": 17,
+          "n": 12,
+          "ci95": [
+            3.6,
+            9.4
+          ]
+        },
         "first_attack_turn": {
           "mean": 8.33,
           "median": 9,
@@ -481,6 +558,83 @@
             8.53
           ]
         },
+        "noncombat_damage_dealt_to_players": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 12,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "damage_dealt_total": {
+          "mean": 45.42,
+          "median": 42.0,
+          "min": 29,
+          "max": 62,
+          "n": 12,
+          "ci95": [
+            39.81,
+            51.02
+          ]
+        },
+        "life_gained": {
+          "mean": 18.75,
+          "median": 15.0,
+          "min": 0,
+          "max": 46,
+          "n": 12,
+          "ci95": [
+            8.15,
+            29.35
+          ]
+        },
+        "life_lost": {
+          "mean": 2.83,
+          "median": 0.0,
+          "min": 0,
+          "max": 18,
+          "n": 12,
+          "ci95": [
+            -0.12,
+            5.79
+          ]
+        },
+        "creatures_lost": {
+          "mean": 0.58,
+          "median": 1.0,
+          "min": 0,
+          "max": 1,
+          "n": 12,
+          "ci95": [
+            0.29,
+            0.87
+          ]
+        },
+        "activations": {
+          "mean": 1.67,
+          "median": 2.0,
+          "min": 0,
+          "max": 4,
+          "n": 12,
+          "ci95": [
+            0.93,
+            2.4
+          ]
+        },
+        "triggers": {
+          "mean": 6.75,
+          "median": 5.0,
+          "min": 0,
+          "max": 19,
+          "n": 12,
+          "ci95": [
+            3.61,
+            9.89
+          ]
+        },
         "first_attack_turn": {
           "mean": 7.0,
           "median": 6.0,
@@ -603,6 +757,10 @@
           "games_dealing_any": 11
         }
       }
+    },
+    "wipe_recovery": {
+      "available": false,
+      "why": "no turn in 12 game(s) lost 5+ permanents across 2+ seats. That is an absent measurement, not a claim that the pod runs no wipes."
     },
     "our_cumulative_combat_damage_by_round": [
       {
@@ -859,6 +1017,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 11,
+          "permanents_lost_by_turn": {
+            "9": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 6
           },
@@ -885,6 +1046,11 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {
+            "7": 1,
+            "10": 1,
+            "12": 1
+          },
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -920,6 +1086,7 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -944,6 +1111,7 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 13
           },
@@ -979,6 +1147,7 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1003,6 +1172,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 8,
+          "permanents_lost_by_turn": {
+            "12": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 5
           },
@@ -1038,6 +1210,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "permanents_lost_by_turn": {
+            "12": 1
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1062,6 +1237,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "permanents_lost_by_turn": {
+            "12": 1
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1095,6 +1273,7 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1119,6 +1298,7 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 8
           },
@@ -1154,6 +1334,7 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 9,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -1180,6 +1361,7 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 17
           },
@@ -1215,6 +1397,7 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 16
           },
@@ -1241,6 +1424,7 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 10,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1274,6 +1458,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 5,
+          "permanents_lost_by_turn": {
+            "3": 1
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1298,6 +1485,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "permanents_lost_by_turn": {
+            "6": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 12
           },
@@ -1333,6 +1523,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "permanents_lost_by_turn": {
+            "9": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 13
           },
@@ -1359,6 +1552,11 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 12,
+          "permanents_lost_by_turn": {
+            "6": 1,
+            "8": 1,
+            "13": 1
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1392,6 +1590,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 9,
+          "permanents_lost_by_turn": {
+            "18": 1
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1416,6 +1617,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {
+            "18": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 9
           },
@@ -1451,6 +1655,10 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 7,
+          "permanents_lost_by_turn": {
+            "10": 1,
+            "19": 1
+          },
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 20
           },
@@ -1477,6 +1685,9 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 6,
+          "permanents_lost_by_turn": {
+            "10": 1
+          },
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 16
           },
@@ -1512,6 +1723,7 @@
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "permanents_lost_by_turn": {},
           "commander_damage_by_defender": {
             "Ai(1)-mm-kianne": 20
           },
@@ -1538,6 +1750,9 @@
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": 10,
+          "permanents_lost_by_turn": {
+            "14": 2
+          },
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,

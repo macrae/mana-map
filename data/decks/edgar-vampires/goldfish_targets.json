@@ -1,216 +1,222 @@
 {
-  "_note": "Re-derived 2026-08-24, twice in one day, and the second pass is the one that matters. FIRST: every checker-passed proof of THE GO-WIDE KILL opens by CASTING a two-mana Vampire to fire eminence and no group named that leg, so `validate-goldfish-targets` had been reporting Gifted Aetherborn in three passing stacks and no component. The leg is the thirteen Vampire creatures at mana value <=2 \u2014 the class castable alongside the rest of the plan rather than instead of it \u2014 added both as its own group and as a third `need` on the kill. It is not free: 13 of 99 is 84.8% by turn six.\n\nSECOND: the payoff leg was wrong in BOTH directions and three agents found it independently. It counted Blood Artist and Cruel Celebrant, which trigger on a creature DYING and cannot fire on the entry event stack 009 kills from; and it omitted MIRKWOOD BATS, which arrived with the v1.0.0 paper list and sits in no component at all. Bats keys on CREATION ('whenever you create or sacrifice a token') rather than on 'enters', which is why both the declaration and a first oracle sweep missed it. So the group is split by trigger EVENT rather than relabelled: six creation-keyed payoffs are the kill's leg, and the two death drains keep a component of their own \u2014 they are a REACHABLE line, not a dead one, because Skullclamp kills a 1/1 token for {1} and Indulgent Aristocrat's sac outlet carries no tap symbol. That correction came from `engine-critic`, against an earlier draft of this note that claimed the deck could not manufacture the death.\n\nStack 011 (checker-passed) prices Bats: it triggers ONCE PER TOKEN, not once per creation event, so the count tracks tokens in the final modified event and never the number of doublers. It also settles that Vampire Socialite's counter does NOT apply to the tokens whose creation caused the first life loss of the turn \u2014 the ability has only triggered when they enter \u2014 while the Vampire spell itself, resolving later, does get it.\n\nCathars' Crusade is still deliberately NOT a token multiplier: it puts counters on creatures, it does not create tokens. Forerunner of the Legion is still NOT in the infinite's group: it TUTORS to the top rather than drawing, and this file models no tutors anywhere. Stack 009 verified the payoff group composing \u2014 nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.\n\nA CAVEAT ON THE CREATION LEG'S LABEL, raised by the tutor guide against this file and recorded here rather than only downstream. The label says 'fires when a token is CREATED', and five of its six members actually key on a CREATURE ENTERING (Purphoros, Impact Tremors, Warleader's Call, Corpse Knight, Witty Roastmaster); only Mirkwood Bats keys on creation. Inside this target's scope the two coincide \u2014 every checker-passed kill proof is about creature tokens from eminence, and a created creature token enters at the moment it is created \u2014 which is why the membership is right and the measured rate is right. It comes apart OUTSIDE that scope, in both directions: on a NONCREATURE token (Voldaren Epicure's Blood token) Bats fires and the other five do not; on a SACRIFICED token Bats fires alone; and on the non-token Vampire spell itself the five fire and Bats does not. Do not read the label as a claim about any of those cases. The label is kept as written because `closes` fields in diagnosis.json and engine.json resolve against it by string, and renaming it would mean hand-editing agent output to keep a reference alive \u2014 which this repo forbids for a better reason than this one is worth.\n\nSHARED-LEG CORRECTION, 2026-08-24, found by ur-dragon's deck-engineer on a fleet scan and confirmed on 2 of 9 decks. Charismatic Conqueror sat in BOTH the multiplier leg and the castable-Vampire leg of THE GO-WIDE KILL, and `_target_met` marks a need met if any named card is in hand \u2014 so one drawn card satisfied two of the kill's three needs and the target reported a rate it had not earned. It is removed from the CASTABLE leg and kept in the MULTIPLIER leg, because a card should be counted where its job is scarcer: seven multipliers against thirteen castable Vampires. Measured cost of the correction: assembled 0.445 -> 0.433, by turn six 0.285 -> 0.269, mean turn 5.04 -> 5.20. Small here precisely because the castable leg is thirteen cards deep; on ur-dragon the same defect was worth 5.8 points.",
-  "targets": [
+ "_note": "Re-derived 2026-08-24, twice in one day, and the second pass is the one that matters. FIRST: every checker-passed proof of THE GO-WIDE KILL opens by CASTING a two-mana Vampire to fire eminence and no group named that leg, so `validate-goldfish-targets` had been reporting Gifted Aetherborn in three passing stacks and no component. The leg is the thirteen Vampire creatures at mana value <=2 \u2014 the class castable alongside the rest of the plan rather than instead of it \u2014 added both as its own group and as a third `need` on the kill. It is not free: 13 of 99 is 84.8% by turn six.\n\nSECOND: the payoff leg was wrong in BOTH directions and three agents found it independently. It counted Blood Artist and Cruel Celebrant, which trigger on a creature DYING and cannot fire on the entry event stack 009 kills from; and it omitted MIRKWOOD BATS, which arrived with the v1.0.0 paper list and sits in no component at all. Bats keys on CREATION ('whenever you create or sacrifice a token') rather than on 'enters', which is why both the declaration and a first oracle sweep missed it. So the group is split by trigger EVENT rather than relabelled: six creation-keyed payoffs are the kill's leg, and the two death drains keep a component of their own \u2014 they are a REACHABLE line, not a dead one, because Skullclamp kills a 1/1 token for {1} and Indulgent Aristocrat's sac outlet carries no tap symbol. That correction came from `engine-critic`, against an earlier draft of this note that claimed the deck could not manufacture the death.\n\nStack 011 (checker-passed) prices Bats: it triggers ONCE PER TOKEN, not once per creation event, so the count tracks tokens in the final modified event and never the number of doublers. It also settles that Vampire Socialite's counter does NOT apply to the tokens whose creation caused the first life loss of the turn \u2014 the ability has only triggered when they enter \u2014 while the Vampire spell itself, resolving later, does get it.\n\nCathars' Crusade is still deliberately NOT a token multiplier: it puts counters on creatures, it does not create tokens. Forerunner of the Legion is still NOT in the infinite's group: it TUTORS to the top rather than drawing, and this file models no tutors anywhere. Stack 009 verified the payoff group composing \u2014 nine triggers, 12 damage per opponent off one two-mana Vampire through a single doubler.\n\nA CAVEAT ON THE CREATION LEG'S LABEL, raised by the tutor guide against this file and recorded here rather than only downstream. The label says 'fires when a token is CREATED', and five of its six members actually key on a CREATURE ENTERING (Purphoros, Impact Tremors, Warleader's Call, Corpse Knight, Witty Roastmaster); only Mirkwood Bats keys on creation. Inside this target's scope the two coincide \u2014 every checker-passed kill proof is about creature tokens from eminence, and a created creature token enters at the moment it is created \u2014 which is why the membership is right and the measured rate is right. It comes apart OUTSIDE that scope, in both directions: on a NONCREATURE token (Voldaren Epicure's Blood token) Bats fires and the other five do not; on a SACRIFICED token Bats fires alone; and on the non-token Vampire spell itself the five fire and Bats does not. Do not read the label as a claim about any of those cases. The label is kept as written because `closes` fields in diagnosis.json and engine.json resolve against it by string, and renaming it would mean hand-editing agent output to keep a reference alive \u2014 which this repo forbids for a better reason than this one is worth.\n\nSHARED-LEG CORRECTION, 2026-08-24, found by ur-dragon's deck-engineer on a fleet scan and confirmed on 2 of 9 decks. Charismatic Conqueror sat in BOTH the multiplier leg and the castable-Vampire leg of THE GO-WIDE KILL, and `_target_met` marks a need met if any named card is in hand \u2014 so one drawn card satisfied two of the kill's three needs and the target reported a rate it had not earned. It is removed from the CASTABLE leg and kept in the MULTIPLIER leg, because a card should be counted where its job is scarcer: seven multipliers against thirteen castable Vampires. Measured cost of the correction: assembled 0.445 -> 0.433, by turn six 0.285 -> 0.269, mean turn 5.04 -> 5.20. Small here precisely because the castable leg is thirteen cards deep; on ur-dragon the same defect was worth 5.8 points.",
+ "model_combat": true,
+ "model_draw": true,
+ "model_sacrifice": true,
+ "_model_sacrifice_note": "Turned on 2026-08-28. Twenty of this deck's ninety-nine cards touch the sacrifice/death axis - Blood Artist, Zulaport Cutthroat, Cruel Celebrant, Bastion of Remembrance, Viscera Seer, Ashnod's Altar, Woe Strider - and before this flag every one of them contributed exactly zero, because nothing died in the model. THE POLICY IS A CHOICE AND IT IS STATED: after combat has swung, creature TOKENS are converted to a free outlet while any death payoff is in play; nontoken creatures never are. A run without the flag is the floor and a run with it is the ceiling, and this deck's real value sits between them. It arrived alongside the fix for the commander's EMINENCE, which mints a 1/1 Vampire on every other Vampire cast and was not modelled at all - without those tokens the sacrifice engine had almost nothing to eat and read 0.26 conversions by turn ten.",
+ "_model_draw_note": "Turned on 2026-08-28 alongside model_combat. The deck's most-repeated table failure is 'vampires on board, nothing in hand, no way to rebuild', and the model was structurally incapable of seeing it: card_advantage reported {cards_that_draw: 12, modelled: 0}. Under the flag, exactly ONE of those twelve (Night's Whisper) is an unconditional modelled draw; the other eleven are activated, X-based or conditional and are named in meta.card_advantage.draw_not_modelled. That ratio is the finding, not a defect in the parser. Opt-in for the same reason the other two flags are: drawing cards moves land drops, bodies and every assembly rate, so a deck adopts it when it is re-baselined deliberately.",
+ "_model_combat_note": "Turned on 2026-08-28, deliberately, at the pilot's instruction and as the precondition for the `drain-engine` branch being falsifiable at all. Without it `diagnostic.output` reports `available: false` and the only objective axes this deck can be aimed at are `stall` and `land_drop` -- neither of which speaks to a token->damage->drain thesis. Six of the deck's ETB payoffs (Impact Tremors, Purphoros, Corpse Knight, Witty Roastmaster, Warleader's Call, Mirkwood Bats) are exactly the class `model_combat` reads, so the clock it unlocks is a reading of this deck's actual output rather than a proxy. This is a PER-DECK flag, not a change to goldfish.py: `meta.model_version` does not move and no other deck's figures change. It DOES restate this deck's own baseline -- `mean_bodies_by_turn` switches from `bodies` to `creature_bodies` -- so goldfish_metrics.json and mana_analysis.json are regenerated in the same commit, and any A/B measures both arms under it.",
+ "targets": [
+  {
+   "label": "A payoff that fires when a token is CREATED (the leg every kill proof uses)",
+   "need": [
     {
-      "label": "A payoff that fires when a token is CREATED (the leg every kill proof uses)",
-      "need": [
-        {
-          "any_of": [
-            "Purphoros, God of the Forge",
-            "Impact Tremors",
-            "Warleader's Call",
-            "Corpse Knight",
-            "Witty Roastmaster",
-            "Mirkwood Bats"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-      "need": [
-        {
-          "any_of": [
-            "Blood Artist",
-            "Cruel Celebrant"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A token multiplier or extra token-maker drawn",
-      "need": [
-        {
-          "any_of": [
-            "Anointed Procession",
-            "Mondrak, Glory Dominus",
-            "Elspeth, Storm Slayer",
-            "Mavren Fein, Dusk Apostle",
-            "Bloodline Keeper // Lord of Lineage",
-            "Charismatic Conqueror",
-            "Legion's Landing // Adanto, the First Fort"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-      "need": [
-        {
-          "any_of": [
-            "Purphoros, God of the Forge",
-            "Impact Tremors",
-            "Warleader's Call",
-            "Corpse Knight",
-            "Witty Roastmaster",
-            "Mirkwood Bats"
-          ]
-        },
-        {
-          "any_of": [
-            "Anointed Procession",
-            "Mondrak, Glory Dominus",
-            "Elspeth, Storm Slayer",
-            "Mavren Fein, Dusk Apostle",
-            "Bloodline Keeper // Lord of Lineage",
-            "Charismatic Conqueror",
-            "Legion's Landing // Adanto, the First Fort"
-          ]
-        },
-        {
-          "any_of": [
-            "Indulgent Aristocrat",
-            "Knight of the Ebon Legion",
-            "Master of Dark Rites",
-            "Vampire Cutthroat",
-            "Vampire of the Dire Moon",
-            "Voldaren Epicure",
-            "Blood Artist",
-            "Cordial Vampire",
-            "Cruel Celebrant",
-            "Gifted Aetherborn",
-            "Legion Lieutenant",
-            "Vampire Socialite"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A Vampire lord or anthem drawn (the combat plan)",
-      "need": [
-        {
-          "any_of": [
-            "Legion Lieutenant",
-            "Stromkirk Captain",
-            "Captivating Vampire",
-            "Sanctum Seeker",
-            "Shared Animosity",
-            "Vampire Socialite",
-            "Cordial Vampire",
-            "Drana, Liberator of Malakir"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
-      "need": [
-        {
-          "any_of": [
-            "Bloodthirsty Conqueror"
-          ]
-        },
-        {
-          "any_of": [
-            "Vito, Thorn of the Dusk Rose",
-            "Sanguine Bond"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Ramp or fixing drawn",
-      "need": [
-        {
-          "any_of": [
-            "Sol Ring",
-            "Arcane Signet",
-            "Talisman of Indulgence",
-            "Herald's Horn",
-            "Patchwork Banner"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A draw engine drawn",
-      "need": [
-        {
-          "any_of": [
-            "Caretaker's Talent",
-            "Welcoming Vampire",
-            "Preacher of the Schism",
-            "Night's Whisper",
-            "Champion of Dusk",
-            "Skullclamp",
-            "Pact of the Serpent"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Protection held for the swarm",
-      "need": [
-        {
-          "any_of": [
-            "Teferi's Protection",
-            "Flawless Maneuver",
-            "Boros Charm",
-            "Akroma's Will",
-            "Deflecting Swat"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "An answer to a noncreature permanent drawn \u2014 Despark, Anguished Unmaking, Stroke of Midnight",
-      "need": [
-        {
-          "any_of": [
-            "Despark",
-            "Anguished Unmaking",
-            "Stroke of Midnight"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-      "need": [
-        {
-          "any_of": [
-            "Bloodletter of Aclazotz"
-          ]
-        },
-        {
-          "any_of": [
-            "Sanctum Seeker",
-            "Throne of the God-Pharaoh"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A castable Vampire drawn \u2014 the eminence trigger every kill proof opens on",
-      "need": [
-        {
-          "any_of": [
-            "Indulgent Aristocrat",
-            "Knight of the Ebon Legion",
-            "Master of Dark Rites",
-            "Vampire Cutthroat",
-            "Vampire of the Dire Moon",
-            "Voldaren Epicure",
-            "Blood Artist",
-            "Charismatic Conqueror",
-            "Cordial Vampire",
-            "Cruel Celebrant",
-            "Gifted Aetherborn",
-            "Legion Lieutenant",
-            "Vampire Socialite"
-          ]
-        }
-      ]
+     "any_of": [
+      "Purphoros, God of the Forge",
+      "Impact Tremors",
+      "Warleader's Call",
+      "Corpse Knight",
+      "Witty Roastmaster",
+      "Mirkwood Bats"
+     ]
     }
-  ]
+   ]
+  },
+  {
+   "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+   "need": [
+    {
+     "any_of": [
+      "Blood Artist",
+      "Cruel Celebrant"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A token multiplier or extra token-maker drawn",
+   "need": [
+    {
+     "any_of": [
+      "Anointed Procession",
+      "Mondrak, Glory Dominus",
+      "Elspeth, Storm Slayer",
+      "Mavren Fein, Dusk Apostle",
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Legion's Landing // Adanto, the First Fort"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
+   "need": [
+    {
+     "any_of": [
+      "Purphoros, God of the Forge",
+      "Impact Tremors",
+      "Warleader's Call",
+      "Corpse Knight",
+      "Witty Roastmaster",
+      "Mirkwood Bats"
+     ]
+    },
+    {
+     "any_of": [
+      "Anointed Procession",
+      "Mondrak, Glory Dominus",
+      "Elspeth, Storm Slayer",
+      "Mavren Fein, Dusk Apostle",
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Legion's Landing // Adanto, the First Fort"
+     ]
+    },
+    {
+     "any_of": [
+      "Indulgent Aristocrat",
+      "Knight of the Ebon Legion",
+      "Master of Dark Rites",
+      "Vampire Cutthroat",
+      "Vampire of the Dire Moon",
+      "Voldaren Epicure",
+      "Blood Artist",
+      "Cordial Vampire",
+      "Cruel Celebrant",
+      "Gifted Aetherborn",
+      "Legion Lieutenant",
+      "Vampire Socialite"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A Vampire lord or anthem drawn (the combat plan)",
+   "need": [
+    {
+     "any_of": [
+      "Legion Lieutenant",
+      "Stromkirk Captain",
+      "Captivating Vampire",
+      "Sanctum Seeker",
+      "Shared Animosity",
+      "Vampire Socialite",
+      "Cordial Vampire",
+      "Drana, Liberator of Malakir"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+   "need": [
+    {
+     "any_of": [
+      "Bloodthirsty Conqueror"
+     ]
+    },
+    {
+     "any_of": [
+      "Vito, Thorn of the Dusk Rose",
+      "Sanguine Bond"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Ramp or fixing drawn",
+   "need": [
+    {
+     "any_of": [
+      "Sol Ring",
+      "Arcane Signet",
+      "Talisman of Indulgence",
+      "Herald's Horn",
+      "Patchwork Banner"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A draw engine drawn",
+   "need": [
+    {
+     "any_of": [
+      "Caretaker's Talent",
+      "Welcoming Vampire",
+      "Preacher of the Schism",
+      "Night's Whisper",
+      "Champion of Dusk",
+      "Skullclamp",
+      "Pact of the Serpent"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Protection held for the swarm",
+   "need": [
+    {
+     "any_of": [
+      "Teferi's Protection",
+      "Flawless Maneuver",
+      "Boros Charm",
+      "Akroma's Will",
+      "Deflecting Swat"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "An answer to a noncreature permanent drawn \u2014 Despark, Anguished Unmaking, Stroke of Midnight",
+   "need": [
+    {
+     "any_of": [
+      "Despark",
+      "Anguished Unmaking",
+      "Stroke of Midnight"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
+   "need": [
+    {
+     "any_of": [
+      "Bloodletter of Aclazotz"
+     ]
+    },
+    {
+     "any_of": [
+      "Sanctum Seeker",
+      "Throne of the God-Pharaoh"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A castable Vampire drawn \u2014 the eminence trigger every kill proof opens on",
+   "need": [
+    {
+     "any_of": [
+      "Indulgent Aristocrat",
+      "Knight of the Ebon Legion",
+      "Master of Dark Rites",
+      "Vampire Cutthroat",
+      "Vampire of the Dire Moon",
+      "Voldaren Epicure",
+      "Blood Artist",
+      "Charismatic Conqueror",
+      "Cordial Vampire",
+      "Cruel Celebrant",
+      "Gifted Aetherborn",
+      "Legion Lieutenant",
+      "Vampire Socialite"
+     ]
+    }
+   ]
+  }
+ ]
 }

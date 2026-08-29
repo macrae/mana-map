@@ -133,6 +133,96 @@ window.Shell = (function () {
    * `error` does not bubble, so the listener is registered in the CAPTURE phase
    * on the drawer — one listener for the whole grid rather than one per tile.
    */
+  /* ── a card name you can inspect ────────────────────────────────────────
+   *
+   * EVERY REPORT NAMES CARDS AND NONE OF THEM SHOWED ONE. The branch diff lists
+   * 39 cards, the bill lists 21, the pull list says what to buy — and a pilot
+   * reading "Scion of Opulence" against "Pitiless Plunderer" had to leave the
+   * page to find out what either one does. The magazine renderer solved this
+   * with `a.cardref` and a hover pop; the workbench pages never got it.
+   *
+   * BY NAME, WHICH IS THE ONLY KEY THESE PAGES HAVE. `net_change.json` carries
+   * names, not Scryfall ids or image URIs, and that is the same property that
+   * lets the library drawer draw art on a page that has never loaded the
+   * corpus: `cards/named?exact=` takes a name, so nothing has to be joined.
+   *
+   * THE IMAGE IS FETCHED ON HOVER AND NOT BEFORE. A branch page names ~60
+   * cards; eager art would be 60 requests against a public API for a page whose
+   * job is a table of numbers. One delegated listener, one reused <img>, and a
+   * request only for the card actually being inspected.
+   */
+  function cardHref(name) {
+    return 'https://scryfall.com/search?q=' +
+      encodeURIComponent('!"' + String(name) + '"');
+  }
+
+  /* Returns MARKUP, because every caller builds strings. `esc` covers the text
+   * and the data attribute; the href is URL-encoded. */
+  function cardLink(name, cls) {
+    var n = String(name == null ? '' : name);
+    if (!n) return '';
+    return '<a class="cardname' + (cls ? ' ' + cls : '') + '" target="_blank"' +
+      ' rel="noopener" href="' + esc(cardHref(n)) + '"' +
+      ' data-card="' + esc(n) + '">' + esc(n) + '</a>';
+  }
+
+  var popEl = null;
+
+  function cardPop() {
+    if (popEl) return popEl;
+    popEl = document.createElement('img');
+    popEl.className = 'cardpop';
+    popEl.alt = '';
+    popEl.hidden = true;
+    // A DFC 404s on its full `A // B` name and resolves on the front face —
+    // the same retry `onImageError` performs for the drawer tiles.
+    popEl.addEventListener('error', function () {
+      var n = popEl.dataset.card || '';
+      if (!popEl.dataset.retried && n.indexOf(' // ') > 0) {
+        popEl.dataset.retried = '1';
+        popEl.src = cardImageUrl(n.split(' // ')[0], 'normal');
+        return;
+      }
+      popEl.hidden = true;
+    });
+    document.body.appendChild(popEl);
+    return popEl;
+  }
+
+  var popAnchor = null;
+
+  /* Flip above when there is no room below, and clamp to the viewport so a card
+   * named at the right edge does not open off-screen. */
+  function placePop(a) {
+    var el = cardPop();
+    var r = a.getBoundingClientRect();
+    var top = r.bottom + 8;
+    if (top + 300 > window.innerHeight && r.top > 320) top = r.top - 308;
+    el.style.top = Math.max(4, top) + 'px';
+    el.style.left = Math.min(r.left, window.innerWidth - 230) + 'px';
+  }
+
+  function onCardOver(ev) {
+    var a = ev.target && ev.target.closest && ev.target.closest('a.cardname');
+    if (!a) return;
+    var name = a.getAttribute('data-card');
+    if (!name) return;
+    var el = cardPop();
+    if (el.dataset.card !== name) {
+      el.dataset.card = name;
+      delete el.dataset.retried;
+      el.src = cardImageUrl(name, 'normal');
+    }
+    popAnchor = a;
+    placePop(a);
+    el.hidden = false;
+  }
+
+  function onCardOut(ev) {
+    var a = ev.target && ev.target.closest && ev.target.closest('a.cardname');
+    if (a && popEl) { popEl.hidden = true; popAnchor = null; }
+  }
+
   function onImageError(ev) {
     var img = ev.target;
     if (!img || img.tagName !== 'IMG' || !img.closest('.lib-tile')) return;
@@ -635,8 +725,24 @@ window.Shell = (function () {
 
   // `refresh` is for the one page that can CHANGE the library while you are on
   // it. The other two only ever read it.
+  document.addEventListener('mouseover', onCardOver, { passive: true });
+  document.addEventListener('mouseout', onCardOut, { passive: true });
+  /* REPOSITION ON SCROLL, DO NOT HIDE. Hiding raced with the thing that opens
+   * it: a programmatic hover scrolls the link into view first, and that scroll
+   * event landed AFTER the mouseover, so the popup opened and was closed again
+   * in the same breath. Measured in the browser suite, where `hover()` left the
+   * element present and hidden every time while a hand-dispatched mouseover
+   * worked. Following the anchor is also what a reader expects. */
+  document.addEventListener('scroll', function () {
+    if (!popEl || popEl.hidden) return;
+    if (popAnchor && popAnchor.isConnected) placePop(popAnchor);
+    else { popEl.hidden = true; popAnchor = null; }
+  }, { capture: true, passive: true });
+
   return {
     refresh: render,
+    cardLink: cardLink,
+    cardHref: cardHref,
     libraryCount: libraryCount,
     libraryNames: libraryNames,
     cardImageUrl: cardImageUrl,

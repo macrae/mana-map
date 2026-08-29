@@ -335,6 +335,13 @@
     // Hover preview is CSS-only, the way the manual does it — no positioning
     // code, no tooltip layer. The image comes from `Shell.cardImageUrl`, which
     // already carries the double-faced-card front-face retry.
+    //
+    // THE HREF IS `Shell.cardHref`, NOT A SECOND OPINION ABOUT SCRYFALL'S URL
+    // FORMAT. This anchor had no `href` at all — it was a `tabindex` hook for
+    // the hover, so the roster showed you a card and could not take you to one.
+    // branch.html renders its names through `Shell.cardLink`, which builds the
+    // same URL; the two presentations differ (that page has no room for a
+    // 488px pop beside sixty diff rows) but the destination is defined once.
     var url = (window.Shell && Shell.cardImageUrl)
       ? Shell.cardImageUrl(name, 'normal') : null;
     var pop = url ? '<img class="card-pop" src="' + esc(url) + '" alt="" loading="lazy">' : '';
@@ -354,8 +361,12 @@
                esc(who) + '</span>';
       }
     }
+    var href = (window.Shell && Shell.cardHref)
+      ? ' href="' + esc(Shell.cardHref(name)) + '" target="_blank" rel="noopener"'
+      : '';
     return '<li class="rost-row">' + mark +
-      '<a class="cardref" tabindex="0">' + esc(name) + pop + '</a>' + tail + '</li>';
+      '<a class="cardref"' + href + ' tabindex="0">' + esc(name) + pop + '</a>' +
+      tail + '</li>';
   }
 
   function rosterPanel(d) {

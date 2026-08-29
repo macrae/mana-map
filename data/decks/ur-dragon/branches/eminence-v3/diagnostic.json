@@ -329,6 +329,265 @@
   "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
   "mana_stdev_turn_five": 2.1385
  },
+ "steam": {
+  "extra_cards_by_turn": null,
+  "extra_cards_unavailable": "this deck does not opt into `model_draw` in goldfish_targets.json, so every draw beyond the one-a-turn draw step is unmodelled. That is an absent measurement, not a zero.",
+  "interaction_in_hand_by_turn": {
+   "1": {
+    "rate": 0.7665,
+    "ci95": [
+     0.7581,
+     0.7747
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.7822,
+    "ci95": [
+     0.774,
+     0.7902
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.8079,
+    "ci95": [
+     0.8001,
+     0.8155
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.8133,
+    "ci95": [
+     0.8055,
+     0.8208
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.8121,
+    "ci95": [
+     0.8043,
+     0.8196
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.8107,
+    "ci95": [
+     0.8029,
+     0.8183
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.815,
+    "ci95": [
+     0.8073,
+     0.8225
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.8287,
+    "ci95": [
+     0.8212,
+     0.836
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.8453,
+    "ci95": [
+     0.8381,
+     0.8523
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.8631,
+    "ci95": [
+     0.8562,
+     0.8697
+    ],
+    "n": 10000
+   }
+  },
+  "interaction_castable_by_turn": {
+   "1": {
+    "rate": 0.0613,
+    "ci95": [
+     0.0568,
+     0.0662
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.1906,
+    "ci95": [
+     0.183,
+     0.1984
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.2319,
+    "ci95": [
+     0.2237,
+     0.2403
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.2881,
+    "ci95": [
+     0.2793,
+     0.2971
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.3819,
+    "ci95": [
+     0.3724,
+     0.3915
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.4565,
+    "ci95": [
+     0.4468,
+     0.4663
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.5433,
+    "ci95": [
+     0.5335,
+     0.553
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.6143,
+    "ci95": [
+     0.6047,
+     0.6238
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.6762,
+    "ci95": [
+     0.667,
+     0.6853
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.741,
+    "ci95": [
+     0.7323,
+     0.7495
+    ],
+    "n": 10000
+   }
+  },
+  "castable_given_in_hand_by_turn": {
+   "1": {
+    "rate": 0.08,
+    "ci95": [
+     0.0741,
+     0.0863
+    ],
+    "n": 7665
+   },
+   "2": {
+    "rate": 0.2437,
+    "ci95": [
+     0.2343,
+     0.2533
+    ],
+    "n": 7822
+   },
+   "3": {
+    "rate": 0.287,
+    "ci95": [
+     0.2773,
+     0.297
+    ],
+    "n": 8079
+   },
+   "4": {
+    "rate": 0.3542,
+    "ci95": [
+     0.3439,
+     0.3647
+    ],
+    "n": 8133
+   },
+   "5": {
+    "rate": 0.4703,
+    "ci95": [
+     0.4594,
+     0.4811
+    ],
+    "n": 8121
+   },
+   "6": {
+    "rate": 0.5631,
+    "ci95": [
+     0.5523,
+     0.5739
+    ],
+    "n": 8107
+   },
+   "7": {
+    "rate": 0.6666,
+    "ci95": [
+     0.6563,
+     0.6768
+    ],
+    "n": 8150
+   },
+   "8": {
+    "rate": 0.7413,
+    "ci95": [
+     0.7317,
+     0.7506
+    ],
+    "n": 8287
+   },
+   "9": {
+    "rate": 0.8,
+    "ci95": [
+     0.7913,
+     0.8083
+    ],
+    "n": 8453
+   },
+   "10": {
+    "rate": 0.8585,
+    "ci95": [
+     0.851,
+     0.8657
+    ],
+    "n": 8631
+   }
+  },
+  "keep_can_act_by_t3": {
+   "rate": 0.883,
+   "ci95": [
+    0.8766,
+    0.8892
+   ],
+   "n": 10000
+  },
+  "basis": "`castable` is the mana left at the END OF THE MAIN PHASE \u2014 the moment the decision is made, before combat. Extra combat phases are paid for after it and attack triggers add mana after it, so on a deck with Aggravated Assault this float is larger than what survives the turn. It is also a FLOOR against the spending policy: the model casts everything it can afford every turn, so a pilot choosing to hold up two mana would score higher. A low figure is a real finding; a high one is unambiguous good news."
+ },
  "output": {
   "hoard_by_turn": {
    "1": {

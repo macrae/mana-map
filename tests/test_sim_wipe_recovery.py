@@ -1,0 +1,194 @@
+"""Post-wipe value: what a deck does on the turn its board dies.
+
+THE METRIC THE GOLDFISH CANNOT HAVE. Nothing dies in `pilot/goldfish.py` — no
+blockers, no removal, no sacrifice — so Blood Artist, Zulaport Cutthroat and
+Bastion of Remembrance contribute exactly zero to every figure it publishes.
+edgar-vampires' captain's log 002 is about that gap: "both games were rebuild,
+wipe, rebuild, and neither of my decks generates value on the way down."
+
+Forge kills things, so this is where the question can be asked — but only in the
+shape the log supports. The obvious metric, board before against board two turns
+later, is NOT AVAILABLE and these tests pin that: Forge emits a `Zone Change`
+when a permanent leaves the battlefield and nothing when one arrives, measured
+at 0 `to Battlefield` lines across a 100-game run. A board series reconstructed
+from that would be zeros wearing the name of a measurement.
+"""
+
+import pytest
+
+from manamap.sim import parse
+
+from conftest import requires_deck
+
+
+def _fact(seats, lost, damage, global_turn=30):
+    """A minimal game_facts shape: per-turn losses and per-turn damage."""
+    return {
+        "seats": list(seats), "winner": None, "global_turn": global_turn,
+        "per_seat": {
+            s: {"permanents_lost_by_turn": dict(lost.get(s, {})),
+                "damage_to_players_by_turn": dict(damage.get(s, {}))}
+            for s in seats},
+    }
+
+
+ME, A, B = "me", "opp-a", "opp-b"
+
+
+def test_attrition_is_not_a_wipe():
+    """Creatures die in combat every turn of every game. The signature of mass
+    removal is BREADTH — one attack cannot hit two defenders' boards at once."""
+    f = _fact([ME, A, B], {ME: {5: 4}}, {})
+    assert parse.wipes(f, ME) == [], "four of one seat's permanents is a combat"
+
+
+def test_breadth_across_seats_is_the_signature():
+    f = _fact([ME, A, B], {ME: {5: 3}, A: {5: 2}, B: {5: 1}}, {})
+    got = parse.wipes(f, ME)
+    assert len(got) == 1
+    assert got[0]["turn"] == 5
+    assert got[0]["permanents_lost_table"] == 6
+    assert got[0]["seats_hit"] == 3
+    assert got[0]["permanents_lost_mine"] == 3
+
+
+def test_the_threshold_is_a_threshold_in_both_directions():
+    """RE-INTRODUCING THE CONDITION. One under on either axis and it is not a
+    wipe; one over on both and it is."""
+    n, k = parse.WIPE_MIN_PERMANENTS, parse.WIPE_MIN_SEATS
+    assert k == 2, "the fixtures below are written against two"
+    too_few = _fact([ME, A], {ME: {4: n - 2}, A: {4: 1}}, {})
+    assert parse.wipes(too_few, ME) == []
+    one_seat = _fact([ME, A], {ME: {4: n + 3}}, {})
+    assert parse.wipes(one_seat, ME) == []
+    both = _fact([ME, A], {ME: {4: n - 1}, A: {4: 1}}, {})
+    assert len(parse.wipes(both, ME)) == 1
+
+
+def test_value_on_the_way_down_is_separated_from_value_after():
+    """The captain's log describes the first one: "a board wipe going off with
+    the drain package online — eleven creatures died, every opponent lost 11".
+    A deck that only rebuilds scores on `damage_after` and zero on the turn."""
+    f = _fact([ME, A], {ME: {6: 4}, A: {6: 2}},
+              {ME: {5: 99, 6: 11, 7: 3, 8: 4, 9: 99}})
+    w = parse.wipes(f, ME)[0]
+    assert w["damage_on_wipe"] == 11, "the turn the board died"
+    assert w["damage_after"] == 7, "turns 7 and 8 only — not 5, not 9"
+    assert not w["truncated"]
+
+
+def test_a_wipe_the_game_did_not_outlive_is_flagged_not_averaged():
+    """A short window quietly averaged in beside full ones understates recovery
+    for exactly the games where the wipe ended it."""
+    f = _fact([ME, A], {ME: {9: 4}, A: {9: 2}}, {ME: {10: 5}}, global_turn=10)
+    assert parse.wipes(f, ME)[0]["truncated"] is True
+
+
+def test_no_wipe_is_ABSENT_and_says_why():
+    """Absent means ABSENT. `damage_on_wipe: 0.0` against no wipes at all is a
+    measurement nobody made wearing the shape of one that was."""
+    facts = [_fact([ME, A], {ME: {3: 1}}, {}) for _ in range(5)]
+    r = parse.wipe_recovery(facts, ME)
+    assert r["available"] is False
+    assert "absent measurement" in r["why"]
+    for k in ("damage_on_wipe", "damage_after", "wipes_seen"):
+        assert k not in r, f"{k} must not be reported when nothing was seen"
+
+
+def test_an_unknown_seat_is_not_a_deck_with_no_wipes():
+    assert parse.wipes(_fact([A, B], {A: {4: 9}, B: {4: 2}}, {}), ME) == []
+
+
+def test_the_aggregate_carries_medians_and_its_own_limits():
+    """A MEAN IS NOT A RESULT. One 15-damage game carried edgar-vampires' real
+    `damage_after` mean to 4.0 against a median of 0."""
+    facts = [_fact([ME, A], {ME: {5: 4}, A: {5: 2}}, {ME: {6: d}})
+             for d in (0, 0, 0, 0, 30)]
+    r = parse.wipe_recovery(facts, ME)
+    assert r["available"] is True
+    assert r["wipes_seen"] == 5
+    assert r["damage_after"]["mean"] == 6.0
+    assert r["damage_after"]["median"] == 0, "the mean is one game"
+    assert r["damage_after"]["max"] == 30
+    blob = " ".join(r["limits"])
+    assert "Board size before and after is NOT here" in blob, (
+        "the unmeasurable half must be named where the figures are printed")
+    assert "HEURISTIC" in blob
+    assert str(parse.WIPE_MIN_PERMANENTS) in r["definition"]
+
+
+@requires_deck
+def test_against_the_real_pod_run_the_instrument_is_shown_to_work():
+    """THE CONTROL THAT MAKES THE FINDING A FINDING. edgar-vampires scores 0
+    damage on all nine wipes in its 100-game pod run. That reads identically to
+    a broken instrument, so the same run must show the seat scoring damage on
+    OTHER turns — it deals 2,909 across 328 scoring turns."""
+    import pathlib
+    from manamap.config import DATA_DIR
+    root = (pathlib.Path(DATA_DIR) / "decks/edgar-vampires/sim/logs"
+            / "giada-angels-vs-vito-vs-baylen-tokens-n100-717196e1-s1903269601")
+    if not root.is_dir():
+        pytest.skip("the 100-game pod run is not present")
+    facts = [parse.game_facts(g) for f in sorted(root.glob("*.log"))
+             for g in parse.parse_games(f.read_text(errors="replace"))]
+    seat = next(s for s in facts[0]["seats"] if "edgar" in s)
+    scoring = sum(1 for f in facts
+                  for v in f["per_seat"][seat]["damage_to_players_by_turn"].values() if v)
+    assert scoring > 100, "the damage channel is dead — no finding can rest on it"
+    r = parse.wipe_recovery(facts, seat)
+    assert r["available"] and r["wipes_seen"] >= 5
+
+
+# ── The seven fields aggregate() computed and threw away ──────────────────
+
+def _agg(facts, seat):
+    return parse.aggregate(facts, seat, {s: s for s in facts[0]["seats"]})["seats"][seat]
+
+
+def test_the_record_publishes_the_DRAIN_half_of_a_drain_deck():
+    """THE MEASUREMENT DEFECT THAT COST FOUR BRANCHES.
+
+    `game_facts` has always accumulated `noncombat_damage_dealt_to_players` and
+    `aggregate` published only the COMBAT figure — so a record for a deck whose
+    stated engine is drain reported half of it. Audited card by card on
+    edgar-vampires: of seven output channels the 99 produces, exactly TWO
+    reached the page. Drain (9 cards), lifegain (17), +1/+1 counters (15), card
+    draw (11) and removal (7) were invisible, and four branches were designed
+    and killed against that view.
+    """
+    f = {"seats": ["me", "a"], "winner": "a", "global_turn": 10,
+         "round": 10, "ms": 100, "lost": {}, "mulligan": {}, "won_by": None,
+         "per_seat": {s: {"eliminated_turn": None, "eliminated_by": None,
+                          "eliminated_how": None, "lands": 6, "casts": 8,
+                          "combat_damage_dealt_to_players": 20,
+                          "noncombat_damage_dealt_to_players": 7,
+                          "combat_damage_taken": 5, "first_attack_turn": 4,
+                          "creatures_lost": 2, "activations": 3, "triggers": 11,
+                          "token_resolutions": 0, "tokens_observed": 0,
+                          "token_attackers": 0, "token_blockers": 0,
+                          "token_combat_damage_to_players": 0,
+                          "token_damage_share": None, "tokens_chumped": 0,
+                          "permanents_lost_by_turn": {},
+                          "life_by_turn": {"1": 40, "2": 45, "3": 38},
+                          "damage_to_players_by_turn": {}}
+                      for s in ("me", "a")}}
+    s = _agg([f], "me")
+    assert s["noncombat_damage_dealt_to_players"]["mean"] == 7
+    assert s["damage_dealt_total"]["mean"] == 27, "combat AND drain, together"
+    for k in ("creatures_lost", "activations", "triggers"):
+        assert k in s, f"{k} is computed and must be published"
+
+
+def test_life_gained_and_lost_are_SEPARATE_facts():
+    """A deck can gain forty and lose sixty and end where it started. Summing
+    the movement into one number hides which deck it is. Measured on
+    edgar-vampires: seventeen lifegain cards produce a MEDIAN of 2 life, which
+    is what makes Vito, Sanguine Bond and Bloodthirsty Conqueror blanks."""
+    per = {"life_by_turn": {"1": 40, "2": 45, "3": 30, "4": 33}}
+    assert parse._life_delta(per, +1) == 8, "5 up then 3 up"
+    assert parse._life_delta(per, -1) == 15, "15 down"
+
+
+def test_a_seat_whose_life_never_moved_reports_zero_not_absent():
+    assert parse._life_delta({"life_by_turn": {"1": 40, "2": 40}}, +1) == 0
+    assert parse._life_delta({}, +1) == 0

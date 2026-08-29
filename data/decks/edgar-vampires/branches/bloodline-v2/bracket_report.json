@@ -1,0 +1,69 @@
+{
+  "banned": [],
+  "combo_bracket_floor": 3,
+  "combo_count": 2,
+  "drivers": [
+    {
+      "detail": "4 Game Changer(s): Ancient Tomb, Necropotence, Teferi's Protection, Vampiric Tutor",
+      "forces": 4,
+      "signal": "game_changers"
+    },
+    {
+      "detail": "highest-bracket line present: Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
+      "forces": 3,
+      "signal": "combo_content"
+    },
+    {
+      "detail": "2 two-card infinite(s); 2 assemble at mana value <= 6. e.g. Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
+      "forces": 4,
+      "signal": "two_card_infinite"
+    }
+  ],
+  "excluded_commander_assumption": [],
+  "floor": 4,
+  "floor_name": "Optimized",
+  "game_changers": [
+    "Ancient Tomb",
+    "Necropotence",
+    "Teferi's Protection",
+    "Vampiric Tutor"
+  ],
+  "mass_land_denial": [],
+  "notes": [
+    "Brackets are a conversation, not a calculator — this is the lowest bracket the deck's contents are consistent with, not a verdict.",
+    "Tutor density (1) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
+    "Mass land denial is checked against a curated list and is incomplete by construction."
+  ],
+  "slug": "edgar-vampires",
+  "tutors": [
+    "Vampiric Tutor"
+  ],
+  "two_card_infinites": [
+    {
+      "bracket": 3,
+      "cards": [
+        "Bloodthirsty Conqueror",
+        "Vito, Thorn of the Dusk Rose"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite lifegain triggers",
+        "Infinite lifeloss",
+        "Infinite lifegain"
+      ]
+    },
+    {
+      "bracket": 3,
+      "cards": [
+        "Bloodthirsty Conqueror",
+        "Sanguine Bond"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite lifegain triggers",
+        "Infinite lifeloss",
+        "Infinite lifegain"
+      ]
+    }
+  ]
+}

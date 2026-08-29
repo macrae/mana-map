@@ -74,6 +74,23 @@ AXES = {
     # in `diagnostic.output` — they are free and a reader wants them — they are
     # simply not three things to rank on.
     "damage_8": ("output", "damage_by_turn", "8"),
+    # STEAM — added 2026-08-28 WITH the independence check this comment block
+    # demands, run across the eleven decks that carry a declaration:
+    #
+    #   interaction_6 vs mana@5   r = +0.68   (correlated, and not the same thing)
+    #   interaction_6 vs stall    r = -0.20
+    #   interaction_6 vs land_drop r = +0.17
+    #   keep_t3       vs everything |r| <= 0.41
+    #
+    # Both clear the 0.90 bar this file rejects three combat axes for missing.
+    # `interaction_6` is CONDITIONAL on holding an answer, which is what keeps it
+    # from collapsing into "how much interaction do you run".
+    #
+    # THE SAME SWEEP FOUND land_drop vs mulligan AT r = +0.982 — two axes already
+    # in `net_change.ROWS` that are one axis wearing two names. Recorded here
+    # rather than fixed silently; see docs/gotchas-bench.md.
+    "interaction_6": ("steam", "castable_given_in_hand_by_turn", "6"),
+    "keep_t3": ("steam", "keep_can_act_by_t3", None),
 }
 #: Which axes need a deck to have opted into a model, and the flag to name when
 #: it has not. A bare "no reading" would send the pilot looking for a bug.
@@ -94,7 +111,15 @@ MAGNITUDE_AXES = tuple(AXIS_NEEDS)
 #: Same one-concept-two-questions split as `cast_pips` vs `manabase.count_pips`
 #: and `bodies` vs `creature_bodies`. Forcing them into one vocabulary would make
 #: the honest goal unsayable to protect a ranking nobody is doing here.
+#: AIMABLE BUT NOT RANKABLE, and the split is the one this file already draws.
+#: `extra_cards_8` cannot have its independence checked: exactly ONE deck opts
+#: into `model_draw`, so there is no fleet to correlate it against, and an axis
+#: nobody can show to be independent must not be allowed to SORT a candidate
+#: list. Stating it as a goal is a different act — the pilot says "draw more
+#: cards" and means it — so it lives in OBJECTIVE_AXES alone until a second deck
+#: opts in and the check can actually be run.
 OBJECTIVE_AXES = dict(AXES, **{
+    "extra_cards_8": ("steam", "extra_cards_by_turn", "8"),
     "kill_by_6": ("output", "kill_by_turn", "6"),
     "kill_by_8": ("output", "kill_by_turn", "8"),
     "kill_by_10": ("output", "kill_by_turn", "10"),

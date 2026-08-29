@@ -91,7 +91,13 @@
     "target": 4,
     "within_target": true
   },
-  "paper": null,
+  "paper": {
+    "version": 5,
+    "sha": "a2a16459684b",
+    "decklist_sha256": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
+    "built_at": "2026-08-29",
+    "note": ""
+  },
   "record": {
     "games": 0,
     "win": 0,
@@ -285,7 +291,6 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (—) — `deck-status yawgmoth-swarm` names them; fix before anything else reads them",
-    "not marked as built in paper — if it is sleeved, `deck-version yawgmoth-swarm paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes yawgmoth-swarm add \"…\" --result win|loss --opponents N`",
     "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×5",
     "5 versions and no experiment — `experiment yawgmoth-swarm --a V<n> --b working --vs <pod> --games N` measures a swap"

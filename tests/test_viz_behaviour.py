@@ -20,6 +20,7 @@ Needs: `pip install playwright && playwright install chromium` (skips cleanly wi
 from __future__ import annotations
 
 import base64
+import re
 import json
 
 import pytest
@@ -7255,6 +7256,13 @@ def test_the_brief_is_readable_on_the_dossier(browser, viz_server):
     page.close()
 
 
+#: A valid 1x1 PNG, so a stubbed card image decodes rather than firing the
+#: error path the popup uses to hide itself.
+_ONE_PIXEL_PNG = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmM"
+    "IQAAAABJRU5ErkJggg==")
+
+
 def _branch_page(browser, viz_server, slug, branch):
     page = browser.new_page(viewport={"width": 1440, "height": 1200})
     errors: list[str] = []
@@ -7312,6 +7320,100 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         # And the figures are TEXT, not markup arriving as data — the `facts()`
         # escaping defect one page over.
         assert "<b>" not in body and "&amp;" not in body
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_the_branch_page_leads_with_the_diff_and_names_what_left(
+        browser, viz_server):
+    """THE DELETIONS WERE MISSING FROM THE PAGE ENTIRELY.
+
+    The panel this replaced read `branch.json`'s `staged` array, and a branch
+    opened with `deck-branch new --from <list>` stages nothing — it sets the
+    whole 99 at once. So a 17-for-17 refactor rendered as "The change (0)" while
+    the table beneath it measured all 34 cards. The incoming cards appeared on
+    the bill; the outgoing cards appeared NOWHERE. A diff that omits its
+    deletions is not a diff, and this is the panel a spending decision opens on.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
+    try:
+        assert not page.js_errors, page.js_errors
+        body = page.inner_text("body").lower()
+        if "has not been measured" in body:
+            pytest.skip("this branch has no report to diff against")
+        assert "net change" in body
+        assert page.locator("li.del").count() >= 1, "removals must be visible"
+        assert page.locator("li.add").count() >= 1
+
+        # THE TWO SIDES BALANCE, AND THAT IS THE ASSERTION — not the sentence
+        # that explains it. An earlier version of this test pinned the panel's
+        # prose, which is a test of my own string; the contract is that the
+        # headline counts COPIES, so a legal branch reads the same number twice.
+        head = page.inner_text(".panel.netchange .headline")
+        nums = [int(n) for n in re.findall(r"\d+", head)]
+        assert len(nums) >= 4, head
+        out_n, in_n, base_size, size = nums[0], nums[1], nums[2], nums[3]
+        assert base_size == size, "a legal branch is the same size as its deck"
+        assert out_n == in_n, (
+            "copies out must equal copies in on a same-size branch — this read "
+            "18 against 21 while counting NAMES, hiding three removals: a basic "
+            "cut from four copies to two leaves the name in the list")
+
+        # And those three are RENDERED, not merely counted, or the columns do
+        # not add up to the headline.
+        if page.locator("li.countrow").count():
+            row = page.inner_text("li.countrow")
+            assert "\u2192" in row and "cop" in row.lower(), row
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_a_card_named_in_a_report_can_be_inspected(browser, viz_server):
+    """EVERY REPORT NAMES CARDS AND NONE OF THEM SHOWED ONE.
+
+    A pilot reading "Scion of Opulence" against "Pitiless Plunderer" had to
+    leave the page to find out what either card does. The link is built from a
+    NAME — the only card identity these pages carry — which is the same property
+    that lets the library drawer draw art with no corpus loaded.
+    """
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
+    try:
+        assert not page.js_errors, page.js_errors
+        links = page.locator("a.cardname")
+        if not links.count():
+            pytest.skip("this branch names no cards")
+        assert links.count() >= 5
+        first = links.first
+        href = first.get_attribute("href")
+        assert href and href.startswith("https://scryfall.com/"), href
+        # THE EXACT-NAME SEARCH, so a card whose name is a substring of
+        # another does not open the wrong card. `encodeURIComponent` leaves `!`
+        # alone and escapes the quote, so the marker on the wire is `!%22`.
+        assert "!%22" in href, href
+        assert first.get_attribute("target") == "_blank"
+        assert "noopener" in (first.get_attribute("rel") or "")
+        # THE ART IS FETCHED ON HOVER AND NOT BEFORE. A branch page names ~60
+        # cards; eager art would be 60 requests against a public API for a page
+        # whose job is a table of numbers.
+        assert page.locator("img.cardpop").count() == 0, "nothing before hover"
+        # THE ART IS STUBBED, NOT FETCHED. This suite must not depend on a
+        # public API being reachable: without the route the image 404s, the
+        # error handler hides the popup exactly as it is supposed to, and the
+        # test fails for a reason that has nothing to do with the code. Routing
+        # it also proves the request is made to the endpoint we think it is.
+        seen = []
+        page.route(
+            "**/api.scryfall.com/**",
+            lambda route: (seen.append(route.request.url),
+                           route.fulfill(status=200, content_type="image/png",
+                                         body=_ONE_PIXEL_PNG)))
+        first.hover()
+        page.wait_for_selector("img.cardpop:not([hidden])", timeout=15000)
+        assert page.locator("img.cardpop").count() == 1, "one reused element"
+        assert seen and "format=image" in seen[0], seen
+        assert "exact=" in seen[0], "the image is looked up by NAME"
     finally:
         page.close()
 

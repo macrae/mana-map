@@ -894,6 +894,373 @@
  "branch": "eminence-v3",
  "changes": {
   "count": 21,
+  "diff": {
+   "base_names": 95,
+   "base_size": 100,
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 3,
+     "kind": "land",
+     "name": "Forest",
+     "to": 2
+    }
+   ],
+   "counts": {
+    "in": 18,
+    "in_copies": 18,
+    "lands_in": 6,
+    "lands_out": 5,
+    "out": 17,
+    "out_copies": 18,
+    "spells_in": 12,
+    "spells_out": 12
+   },
+   "in": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Birds of Paradise",
+     "pair": "Counterspell",
+     "state": "box",
+     "type_line": "Creature \u2014 Bird",
+     "why": "counterspell out; any-colour dork in"
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Delighted Halfling",
+     "pair": "Relic of Legends",
+     "state": "elsewhere",
+     "type_line": "Creature \u2014 Halfling Citizen",
+     "why": "do-nothing rock out; dork in"
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ignoble Hierarch",
+     "pair": "Dovin's Veto",
+     "state": "box",
+     "type_line": "Creature \u2014 Goblin Shaman",
+     "why": "counterspell out; B/R/G dork adds the short colour"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Bloom Tender",
+     "pair": "Mox Jasper",
+     "state": "elsewhere",
+     "type_line": "Creature \u2014 Elf Druid",
+     "why": "conditional rock out; five-colour dork in"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Lightning Greaves",
+     "pair": "Smothering Tithe",
+     "state": "box",
+     "type_line": "Artifact \u2014 Equipment",
+     "why": "treasure engine out; shroud+haste in"
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Faeburrow Elder",
+     "pair": "Swan Song",
+     "state": "elsewhere",
+     "type_line": "Creature \u2014 Treefolk Druid",
+     "why": "counterspell out; scales to five colours here"
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Firespitter Whelp",
+     "pair": "Moltensteel Dragon",
+     "state": "buy",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "6-mana 4/4 with a pump out; mv3 per-dragon burn in (win condition 1)"
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gadrak, the Crown-Scourge",
+     "pair": "Scourge of the Throne",
+     "state": "buy",
+     "type_line": "Legendary Creature \u2014 Dragon",
+     "why": "mv6 dethrone out; mv3->2 5/4 flier in (leg 2)"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Solphim, Mayhem Dominus",
+     "pair": "Korlessa, Scale Singer",
+     "state": "buy",
+     "type_line": "Legendary Creature \u2014 Phyrexian Horror",
+     "why": "doubles NONCOMBAT damage, which is exactly what Terror/Scourge/Tempest deal; stacks with Twinflame"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Thunderbreak Regent",
+     "pair": "Hellkite Tyrant",
+     "state": "buy",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "artifact-steal wincon is dead without treasure; 4/4 flier that taxes removal on dragons"
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ganax, Astral Hunter",
+     "pair": "Wrathful Red Dragon",
+     "state": "buy",
+     "type_line": "Legendary Creature \u2014 Dragon",
+     "why": "situational damage-reflect out; a genuine per-Dragon-entry payoff in (leg 1)"
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Twinflame Tyrant",
+     "pair": "Scaled Nurturer",
+     "state": "buy",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "a 0/2 dork out; a Dragon that doubles ALL damage in \u2014 measured +7.2 dmg@T10 and +1.6pt kill@T8"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Dragonskull Summit",
+     "pair": "Sheltered Thicket",
+     "state": "box",
+     "type_line": "Land",
+     "why": "always-tapped G/R out; B/R that enters untapped off 4 Mountains in. G is the only colour at target"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Forbidden Orchard",
+     "pair": "Ziatora's Proving Ground",
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": "always-tapped BGR -> untapped five-colour; neither triome is fetchable by this list's two fetches, so nothing is lost by cutting it"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Gemstone Mine",
+     "pair": "Savage Lands",
+     "state": "box",
+     "type_line": "Land",
+     "why": "always-tapped BGR -> untapped five-colour; three counters cover the deck's turn-5-to-9 kill window exactly, and it is in the boxes"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Smoldering Marsh",
+     "pair": "Forest",
+     "state": "box",
+     "type_line": "Land \u2014 Swamp Mountain",
+     "why": "basic G (surplus colour) out; B/R untapped off 8 remaining basics in"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Spire of Industry",
+     "pair": "Hallowed Fountain",
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": "the only land making neither R nor G, which are 80% of the pips; 8 artifacts incl. Sol Ring / Arcane Signet / Chromatic Lantern turn it on"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Tarnished Citadel",
+     "pair": "Jetmir's Garden",
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": "always-tapped GRW -> untapped five-colour; takes always-tapped from 4 to 1"
+    }
+   ],
+   "names": 96,
+   "out": [
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Mox Jasper",
+     "pair": "Bloom Tender",
+     "type_line": "Legendary Artifact",
+     "why": "conditional rock out; five-colour dork in"
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Swan Song",
+     "pair": "Faeburrow Elder",
+     "type_line": "Instant",
+     "why": "counterspell out; scales to five colours here"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Counterspell",
+     "pair": "Birds of Paradise",
+     "type_line": "Instant",
+     "why": "counterspell out; any-colour dork in"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Dovin's Veto",
+     "pair": "Ignoble Hierarch",
+     "type_line": "Instant",
+     "why": "counterspell out; B/R/G dork adds the short colour"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Korlessa, Scale Singer",
+     "pair": "Solphim, Mayhem Dominus",
+     "type_line": "Legendary Creature \u2014 Dragon Bard",
+     "why": "doubles NONCOMBAT damage, which is exactly what Terror/Scourge/Tempest deal; stacks with Twinflame"
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Relic of Legends",
+     "pair": "Delighted Halfling",
+     "type_line": "Artifact",
+     "why": "do-nothing rock out; dork in"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Encroaching Dragonstorm",
+     "pair": "Scaled Nurturer",
+     "type_line": "Enchantment",
+     "why": "slow tapped basic-fetch out; owned mv2 dragon that is also a dork"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Smothering Tithe",
+     "pair": "Lightning Greaves",
+     "type_line": "Enchantment",
+     "why": "treasure engine out; shroud+haste in"
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Rapacious Dragon",
+     "pair": "Swiftfoot Boots",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "treasure-only dragon out; hexproof+haste in"
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Wrathful Red Dragon",
+     "pair": "Ganax, Astral Hunter",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "situational damage-reflect out; a genuine per-Dragon-entry payoff in (leg 1)"
+    },
+    {
+     "cmc": 6,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Hellkite Tyrant",
+     "pair": "Thunderbreak Regent",
+     "type_line": "Creature \u2014 Dragon",
+     "why": "artifact-steal wincon is dead without treasure; 4/4 flier that taxes removal on dragons"
+    },
+    {
+     "cmc": 6,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Moltensteel Dragon",
+     "pair": "Firespitter Whelp",
+     "type_line": "Artifact Creature \u2014 Phyrexian Dragon",
+     "why": "6-mana 4/4 with a pump out; mv3 per-dragon burn in (win condition 1)"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Hallowed Fountain",
+     "pair": "Spire of Industry",
+     "type_line": "Land \u2014 Plains Island",
+     "why": "the only land making neither R nor G, which are 80% of the pips; 8 artifacts incl. Sol Ring / Arcane Signet / Chromatic Lantern turn it on"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Jetmir's Garden",
+     "pair": "Tarnished Citadel",
+     "type_line": "Land \u2014 Mountain Forest Plains",
+     "why": "always-tapped GRW -> untapped five-colour; takes always-tapped from 4 to 1"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Savage Lands",
+     "pair": "Gemstone Mine",
+     "type_line": "Land",
+     "why": "always-tapped BGR -> untapped five-colour; three counters cover the deck's turn-5-to-9 kill window exactly, and it is in the boxes"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Sheltered Thicket",
+     "pair": "Dragonskull Summit",
+     "type_line": "Land \u2014 Mountain Forest",
+     "why": "always-tapped G/R out; B/R that enters untapped off 4 Mountains in. G is the only colour at target"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Ziatora's Proving Ground",
+     "pair": "Forbidden Orchard",
+     "type_line": "Land \u2014 Swamp Mountain Forest",
+     "why": "always-tapped BGR -> untapped five-colour; neither triome is fetchable by this list's two fetches, so nothing is lost by cutting it"
+    }
+   ],
+   "size": 100,
+   "unexplained": {
+    "in": 0,
+    "out": 0
+   }
+  },
   "lands": [
    {
     "at": "2026-08-28",
@@ -1063,6 +1430,18 @@
     "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
     "why": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
+   "extra cards by T8": {
+    "scale": "against the 8 cards every deck draws for free by then",
+    "unit": "mean",
+    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+    "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   "hand can act by T3": {
+    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
+    "unit": "rate",
+    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
+    "why": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
+   },
    "hoard @T10": {
     "unit": "mean",
     "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
@@ -1072,6 +1451,12 @@
     "unit": "mean",
     "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
     "why": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
+   },
+   "interaction affordable @T6": {
+    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+    "unit": "rate",
+    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+    "why": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    "killed by T10": {
     "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1107,7 +1492,7 @@
  },
  "forge": {
   "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate` puts both at a table"
+  "why": "no Forge run on the branch \u2014 `manamap pilot simulate ur-dragon@eminence-v3 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
   "iterations": 10000,
@@ -1116,7 +1501,8 @@
  "limits": [
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
-  "Card advantage is measured nowhere in this suite."
+  "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
+  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,
@@ -1246,7 +1632,7 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy damage @T10, board power @T6, killed by T6 and killed by T10 and pay hoard @T6.",
+  "because": "You buy damage @T10, board power @T6, killed by T6, killed by T10 and hand can act by T3 and pay hoard @T6.",
   "bill": {
    "box": 6,
    "buy": 6,
@@ -1329,7 +1715,8 @@
    "hoard @T10",
    "stall, 2 in a row",
    "missed drop by T5",
-   "mulliganed"
+   "mulliganed",
+   "interaction affordable @T6"
   ],
   "notes": [],
   "reward": [
@@ -1352,6 +1739,11 @@
     "measure": "killed by T10",
     "reads_as": "88 games in 100 -> 94 in 100, a swing of 6 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "measure": "hand can act by T3",
+    "reads_as": "87 games in 100 -> 88 in 100, a swing of 2 games per 100",
+    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
@@ -1362,9 +1754,9 @@
     "why_it_matters": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
    },
    {
-    "detail": "the largest is hoard @T10 at +0.105 against an MDE of 0.138. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is interaction affordable @T6 at -0.019 against an MDE of 0.022. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1434,7 +1826,7 @@
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate` puts both at a table",
+    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate ur-dragon@eminence-v3 --vs <pod>` puts it at a table and writes where this reads",
     "kind": "structural",
     "what": "no game has been played at a real table",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
@@ -1444,7 +1836,8 @@
    "damage @T10",
    "board power @T6",
    "killed by T6",
-   "killed by T10"
+   "killed by T10",
+   "hand can act by T3"
   ],
   "state": "a trade"
  },
@@ -1576,6 +1969,34 @@
    "verdict": "noise",
    "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.5631,
+   "champion": 0.5819,
+   "delta": -0.0188,
+   "mde": 0.0218,
+   "measure": "interaction affordable @T6",
+   "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.022 this run can resolve",
+   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.883,
+   "champion": 0.8656,
+   "delta": 0.0174,
+   "mde": 0.0135,
+   "measure": "hand can act by T3",
+   "reads_as": "87 games in 100 -> 88 in 100, a swing of 2 games per 100",
+   "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
+   "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }
  ]
 }

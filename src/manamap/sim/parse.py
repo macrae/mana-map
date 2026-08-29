@@ -228,6 +228,18 @@ def game_facts(g, commanders=None):
                "life_by_turn": {}, "eliminated_turn": None, "eliminated_by": None,
                "eliminated_how": None,
                "first_attack_turn": None, "damage_to_players_by_turn": defaultdict(int),
+               # PER-TURN LOSSES — what a wipe is measured against.
+               # `creatures_lost` above is a whole-game total and cannot say
+               # whether eleven permanents left one at a time or all at once,
+               # which is the only thing that separates attrition from a wipe.
+               #
+               # THERE IS NO MATCHING BOARD SERIES AND THERE CANNOT BE. Forge
+               # logs a `Zone Change` when a permanent LEAVES the battlefield
+               # for a graveyard and emits nothing when one arrives — measured
+               # on a 100-game pod run: 0 `to Battlefield` lines in the entire
+               # log. A board count reconstructed from this would be a series of
+               # zeros wearing the name of a measurement, so it is ABSENT.
+               "permanents_lost_by_turn": defaultdict(int),
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
@@ -295,10 +307,11 @@ def game_facts(g, commanders=None):
                 if last_cause and last_cause[1] == ev["turn"] and last_cause[0] and last_cause[0] != ev["seat"]:
                     p["eliminated_by"] = last_cause[0]
                     p["eliminated_how"] = last_cause[2]
-        elif k == "zone" and ev["to"] == "Graveyard" and ev["from"] == "Battlefield":
+        elif k == "zone" and ev["from"] == "Battlefield":
             s = owner.get(ev["id"])
-            if s in per:
+            if ev["to"] == "Graveyard" and s in per:
                 per[s]["creatures_lost"] += 1      # anything the seat was seen acting with
+                per[s]["permanents_lost_by_turn"][ev["turn"]] += 1
                 if ev["id"] in blockers_this_turn and blockers_this_turn[ev["id"]][1] == ev["turn"]:
                     per[s]["tokens_chumped"] += 1
     # finalise
@@ -307,6 +320,7 @@ def game_facts(g, commanders=None):
         p["token_attackers"] = len(p["token_attackers"])
         p["token_blockers"] = len(p["token_blockers"])
         p["damage_to_players_by_turn"] = dict(sorted(p["damage_to_players_by_turn"].items()))
+        p["permanents_lost_by_turn"] = dict(sorted(p["permanents_lost_by_turn"].items()))
         if commanders.get(s):
             cd = dict(sorted(p["commander_damage_by_defender"].items()))
             p["commander_damage_by_defender"] = cd
@@ -321,6 +335,122 @@ def game_facts(g, commanders=None):
     return {"seats": seats, "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
             "global_turn": o["global_turn"], "ms": o["ms"], "lost": dict(o["lost"]),
             "mulligan": dict(g["mulligan"]), "per_seat": per}
+
+
+# ── Board wipes and what happens after one ──────────────────────────────────
+#
+# THE METRIC THE GOLDFISH CANNOT HAVE. Nothing dies in `pilot/goldfish.py` — no
+# blockers, no removal, no sacrifice — so every death-triggered card in a deck
+# contributes exactly zero there, and "neither of my decks generates value on the
+# way down" (edgar-vampires, captain's log 002) was unanswerable. Forge kills
+# things, so this is where the question lives.
+#
+# WHAT COUNTS AS A WIPE, and why it is not "a turn creatures died". Creatures die
+# in combat every turn of every game; that is attrition, not a wipe. The
+# signature of mass removal is BREADTH — several seats losing permanents on the
+# same turn, which a single attack cannot do because one attacker hits one
+# defender. So a wipe is a turn on which at least `WIPE_MIN_PERMANENTS` leave the
+# battlefield for a graveyard across at least `WIPE_MIN_SEATS` seats.
+#
+# IT IS A HEURISTIC OVER A LOG, NOT A READ OF THE CARD. A huge multi-block turn
+# can trip it and an Edict cannot. The rate it fires at is reported beside every
+# figure so a reader can see how often it thought it saw one, and the threshold
+# is stated rather than tuned to make a number look good.
+WIPE_MIN_PERMANENTS = 5
+WIPE_MIN_SEATS = 2
+#: How many turns after the wipe to watch. Two, because that is the window the
+#: log entry describes ("rebuild, wipe, rebuild") and because a longer one starts
+#: measuring the rest of the game instead of the recovery.
+WIPE_RECOVERY_TURNS = 2
+
+
+def wipes(fact, seat):
+    """Every wipe in one game, and what `seat` got paid on and after it.
+
+    VALUE ON THE WAY DOWN IS THE MEASURE, not board recovery. The obvious
+    version — board before, board two turns later — is not available: Forge
+    logs a permanent LEAVING the battlefield and never one arriving, so there
+    is no board series to difference. What the log does carry is damage and
+    life, and for a drain deck that is the better question anyway. The
+    captain's log describes exactly this play: "a board wipe going off with the
+    drain package online — eleven creatures died, every opponent lost 11".
+
+    `damage_on_wipe` is the payout as the board dies; `damage_after` is the two
+    turns of rebuilding behind it. A wipe the game did not outlive is marked
+    `truncated` rather than averaged in beside full windows.
+    """
+    per = fact["per_seat"]
+    if seat not in per:
+        return []
+    def _dmg(p, t):
+        d = p.get("damage_to_players_by_turn", {})
+        return d.get(t, d.get(str(t), 0))
+    turns = sorted({int(t) for p in per.values()
+                    for t in p.get("permanents_lost_by_turn", {})})
+    last = fact.get("global_turn") or (max(turns) if turns else 0)
+    mine = per[seat]
+    out = []
+    for t in turns:
+        lost = {s: p["permanents_lost_by_turn"].get(t, 0) for s, p in per.items()}
+        total = sum(lost.values())
+        hit = sum(1 for v in lost.values() if v)
+        if total < WIPE_MIN_PERMANENTS or hit < WIPE_MIN_SEATS:
+            continue
+        end = t + WIPE_RECOVERY_TURNS
+        out.append({
+            "turn": t, "permanents_lost_table": total, "seats_hit": hit,
+            "permanents_lost_mine": lost.get(seat, 0),
+            "damage_on_wipe": _dmg(mine, t),
+            "damage_after": sum(_dmg(mine, x) for x in range(t + 1, end + 1)),
+            "truncated": end > last,
+        })
+    return out
+
+
+def wipe_recovery(facts, seat):
+    """Aggregate `wipes` over a run. Absent, never zero, when none were seen."""
+    per_game = [wipes(f, seat) for f in facts]
+    seen = [w for g in per_game for w in g]
+    full = [w for w in seen if not w["truncated"]]
+    n = len(facts)
+    if not seen:
+        return {"available": False,
+                "why": (f"no turn in {n} game(s) lost {WIPE_MIN_PERMANENTS}+ "
+                        f"permanents across {WIPE_MIN_SEATS}+ seats. That is an "
+                        f"absent measurement, not a claim that the pod runs no "
+                        f"wipes.")}
+    return {
+        "available": True,
+        "definition": (f"a turn on which {WIPE_MIN_PERMANENTS}+ permanents left "
+                       f"the battlefield for a graveyard across {WIPE_MIN_SEATS}+ "
+                       f"seats; recovery is the next {WIPE_RECOVERY_TURNS} turns"),
+        "games": n,
+        # A LIST, NOT THE TUPLE `wilson` RETURNS. `validate_sim` re-derives a
+        # record and compares it to the stored JSON, where a tuple has become a
+        # list — so a tuple here can never match itself after a round trip. The
+        # validator caught it on the first run; the rest of this module already
+        # writes `[lo, hi]` for exactly this reason.
+        "games_with_a_wipe_rate": round(sum(1 for g in per_game if g) / n, 3) if n else None,
+        "games_with_a_wipe_ci95": list(wilson(sum(1 for g in per_game if g), n)),
+        "wipes_seen": len(seen),
+        "wipes_with_a_full_window": len(full),
+        "permanents_lost_mine": mean_ci([w["permanents_lost_mine"] for w in seen]),
+        # THE TWO FIGURES THE THESIS TURNS ON. A deck that "generates value on
+        # the way down" bills the table as its own board dies; one that does not
+        # is only rebuilding.
+        "damage_on_wipe": mean_ci([w["damage_on_wipe"] for w in seen]),
+        "damage_after": mean_ci([w["damage_after"] for w in full]) if full else None,
+        "limits": [
+            "A HEURISTIC OVER A LOG, not a read of the card that did it. A large "
+            "multi-block combat can trip the threshold and a one-sided Edict "
+            "cannot; the rate it fired at is reported above so the reader can "
+            "judge it.",
+            "Board size before and after is NOT here and cannot be: Forge logs "
+            "a permanent leaving the battlefield and never one arriving.",
+            "Turn numbers are Forge's, which advance once per PLAYER turn — "
+            "turn 24 of a four-handed game is round 6.",
+        ],
+    }
 
 
 # ── Aggregates over a run ───────────────────────────────────────────────────
@@ -369,6 +499,24 @@ def mean_ci(xs):
     return out
 
 
+def _life_delta(per_seat, sign):
+    """Total life GAINED (sign +1) or LOST (sign -1) across the game.
+
+    `life_by_turn` records the seat's total at each turn and nothing summed the
+    movement, so a deck with seventeen lifelink and lifegain cards published no
+    figure for any of it. Gains and losses are kept apart because they are
+    different facts: a deck can gain 40 and lose 60 and end where it started.
+    """
+    series = per_seat.get("life_by_turn") or {}
+    vals = [v for _, v in sorted(series.items(), key=lambda kv: int(kv[0]))]
+    total = 0
+    for a, b in zip(vals, vals[1:]):
+        d = b - a
+        if (d > 0) == (sign > 0) and d:
+            total += abs(d)
+    return total
+
+
 def aggregate(facts, slug_label, label, commanders=None):
     """`facts` is a list of game_facts; `slug_label` the Forge seat label of OUR deck;
     `label` maps Forge seat labels to slugs; `commanders` seat label -> commander name(s)."""
@@ -377,6 +525,11 @@ def aggregate(facts, slug_label, label, commanders=None):
     seats = sorted({s for f in facts for s in f["seats"]})
     wins = Counter(f["winner"] for f in facts if f["winner"])
     out = {"games": n, "seats": {label.get(s, s): {} for s in seats}}
+    # WHAT THIS DECK DID WHEN THE BOARD DIED. Attached for OUR seat only: it is
+    # a question about the pilot's deck, and computing it for three AI seats
+    # would put three numbers on the page that nobody asked and nobody reads.
+    if slug_label:
+        out["wipe_recovery"] = wipe_recovery(facts, slug_label)
     for s in seats:
         name = label.get(s, s)
         k = wins.get(s, 0)
@@ -392,6 +545,28 @@ def aggregate(facts, slug_label, label, commanders=None):
             "casts": mean_ci([p["casts"] for p in ps]),
             "combat_damage_dealt_to_players": mean_ci([p["combat_damage_dealt_to_players"] for p in ps]),
             "combat_damage_taken": mean_ci([p["combat_damage_taken"] for p in ps]),
+            # TOTAL IMPACT, AND THE SEVEN FIELDS THIS FUNCTION USED TO COMPUTE
+            # AND THROW AWAY.
+            #
+            # `game_facts` has always accumulated `noncombat_damage_dealt_to_players`,
+            # `life_by_turn`, `creatures_lost`, `activations`, `triggers` and the
+            # per-turn series — and `aggregate` published NONE of them. So a
+            # record for a deck whose stated engine is DRAIN reported only its
+            # combat half. Audited card by card on edgar-vampires: of seven
+            # output channels the 99 actually produces, exactly TWO reached the
+            # page — combat damage and tokens. Drain (9 cards), lifegain (17),
+            # +1/+1 counters (15), card draw (11) and removal (7) were invisible,
+            # and four branches were designed and killed against that view.
+            "noncombat_damage_dealt_to_players": mean_ci(
+                [p["noncombat_damage_dealt_to_players"] for p in ps]),
+            "damage_dealt_total": mean_ci(
+                [p["combat_damage_dealt_to_players"]
+                 + p["noncombat_damage_dealt_to_players"] for p in ps]),
+            "life_gained": mean_ci([_life_delta(p, +1) for p in ps]),
+            "life_lost": mean_ci([_life_delta(p, -1) for p in ps]),
+            "creatures_lost": mean_ci([p["creatures_lost"] for p in ps]),
+            "activations": mean_ci([p["activations"] for p in ps]),
+            "triggers": mean_ci([p["triggers"] for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),
             "tokens": {
                 "token_resolutions": mean_ci([p["token_resolutions"] for p in ps]),

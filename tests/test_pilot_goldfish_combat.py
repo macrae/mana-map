@@ -203,24 +203,40 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
 
     decks = [d for d in decks if not _retired(d)]
     assert decks, "every tracked deck is retired"
-    checked = 0
+    checked, opted = 0, []
     for slug in decks:
         targets = DATA_DIR / "decks" / slug / "goldfish_targets.json"
-        if targets.exists() and json.loads(targets.read_text()).get("model_combat"):
-            # ur-dragon opted in when its two-engine rebuild was applied, which is
-            # exactly the "re-baselined deliberately" condition the flag exists
-            # for. An opted-in deck is not evidence against the invariant — the
-            # invariant is about decks that did NOT ask.
+        # EVERY `model_*` FLAG, not just `model_combat`. The first version of
+        # this named one flag, and `model_draw` — which moves land drops, bodies
+        # and every assembly rate — would have tripped the byte-identical
+        # assertion with a message blaming the deck instead of the opt-in.
+        declared = json.loads(targets.read_text()) if targets.exists() else {}
+        if any(v for k, v in declared.items() if k.startswith("model_")):
+            # An opted-in deck is not evidence against the invariant — the
+            # invariant is about decks that did NOT ask. Its own figures are
+            # gated by test_pilot_artifact_freshness instead.
+            opted.append(slug)
             continue
         on_disk = json.loads((DATA_DIR / "decks" / slug / "goldfish_metrics.json").read_text())
         fresh = goldfish.run(slug)
         assert json.dumps(fresh, sort_keys=True) == json.dumps(on_disk, sort_keys=True), (
             f"{slug} moved without opting in")
         checked += 1
-    assert checked >= len(decks) - 1, (
-        f"only {checked} of {len(decks)} decks are un-opted — if the fleet is "
-        "being re-baselined, retire this invariant deliberately rather than "
-        "letting it quietly stop checking anything")
+
+    # NAMED, NOT COUNTED. The count this replaced (`checked >= len(decks) - 1`)
+    # allowed exactly one opt-in and said so as arithmetic, so the second deck
+    # to re-baseline read as a broken invariant rather than as a decision. A
+    # named set makes adding the third an edit somebody has to justify, which is
+    # the whole point of "retire this deliberately rather than letting it
+    # quietly stop checking anything".
+    assert sorted(opted) == ["edgar-vampires", "ur-dragon"], (
+        f"the opted-in set changed to {sorted(opted)}. Both of these were "
+        "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
+        "edgar-vampires with the drain refactor, which needed `model_combat` "
+        "for a clock and `model_draw` for the card advantage its log kept "
+        "running out of. Add a deck here only with its re-baseline.")
+    assert checked >= len(decks) - len(opted), "the loop stopped checking"
+    assert checked >= 5, "too few un-opted decks left to prove anything"
 
 
 def _profile(name, text, type_line="Creature"):
