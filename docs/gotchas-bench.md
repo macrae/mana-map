@@ -298,6 +298,41 @@ It also re-explains two earlier results that were read as deck failures:
    possible and would need its own harness change plus a fresh baseline on
    every deck, because it changes what "the pod" means.
 
+**AMENDED 2026-08-30, AND THE FIRST VERSION OF THIS RULE WAS WRONG.** Running
+the same list, pod and seed at `--profile Experimental` for 100 games against
+the 400-game Default baseline:
+
+| card | Experimental /cast | Default /cast |
+|---|---|---|
+| Indulgent Aristocrat | **0.41** | 0.07 |
+| Immersturm Predator | 0.22 | 0.07 |
+| Yahenni, Undying Partisan | 0.18 | 0.06 |
+| Skullclamp (equipment control) | 1.19 | 1.25 |
+| **Ashnod's Altar** | **0.00** | **0.00** |
+
+All three sacrifice CREATURES moved together, roughly three- to six-fold, while
+the equipment control stayed flat — a pattern that is hard to read as noise.
+So the profile IS a lever and "the AI will not press a sacrifice button" is not
+the rule. The rule is:
+
+> **THE AI WILL NOT SACRIFICE FOR A BENEFIT ITS EVALUATOR CANNOT PRICE.**
+
+`Indulgent Aristocrat` puts +1/+1 COUNTERS on the board — visible and scoreable,
+and it moves freely once the AI is willing. `Ashnod's Altar` produces COLOURLESS
+MANA with nothing queued to spend it on and is 0 for 59 castings across BOTH
+profiles; `Viscera Seer` offers SCRY and was cast 0 times in 500 games across
+both. Cost is not the discriminator — the Aristocrat costs {2} and the Altar is
+free.
+
+FOR DECKBUILDING: when a list will be judged in Forge, prefer an outlet whose
+payoff is a visible BOARD CHANGE over one that makes mana or filters cards, and
+prefer a TRIGGER to an ACTIVATION for the same effect.
+
+AND THE OUTCOME DID NOT FOLLOW THE MECHANISM. Win rate 0.142 -> 0.130 and total
+damage 38.37 -> 39.78, both inside noise at 100 games. The sacrifice engine
+firing six times as often did not produce a better result, which is worth
+holding onto before treating activation rate as a proxy for deck quality.
+
 **AND THE POD IS PART OF THE INSTRUMENT.** giada-angels, vito and baylen-tokens
 are three EDHREC average decks played by the same Default AI. A result is
 relative to that table and to that AI's competence, not to a metagame.
