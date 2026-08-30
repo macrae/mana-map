@@ -273,6 +273,25 @@ def default_seed(slug, opponents):
 #: silently produce a different pilot.
 DEFAULT_PROFILE = "Default"
 
+#: THE POD'S STANDARD PILOT, changed from Default on 2026-08-30 after measuring
+#: it. The Default AI misplays a token deck badly: over 100 games on one pod,
+#: switching the OPPONENTS to Experimental moved baylen-tokens from 0.130 to
+#: 0.190 and vito from 0.422 to 0.330 — so the table was never uniformly weak,
+#: it was weak UNEVENLY, which quietly flattered whichever seat the Default AI
+#: happened to pilot competently.
+#:
+#: Our own seat is unaffected: switching it changed the win rate by -0.0125
+#: with an interval spanning zero, so this is about the table being honest and
+#: not about the result moving.
+#:
+#: THE TAG RULE IS DELIBERATELY UNCHANGED. `profile_tag` still omits a suffix
+#: only for "Default", so every run made before this date keeps its id and
+#: still means what it said, and every run made after carries `-podExperimental`
+#: visibly. A standard that silently reinterpreted existing records would be
+#: worse than a longer id. EVERY FORGE RECORD PREDATING THIS LINE WAS MEASURED
+#: AGAINST THE DEFAULT POD and is not directly comparable to one made after it.
+STANDARD_POD_PROFILE = "Experimental"
+
 
 def profile_tag(profile=None, vs_profile=None):
     """The run-id suffix for a non-default pilot, or "" for the usual case.
@@ -288,11 +307,17 @@ def profile_tag(profile=None, vs_profile=None):
     Absent means the default, so every existing run id is unchanged and no
     record on disk has to be renamed.
     """
+    # `me` AND `pod`, NOT `ai` AND `vsai`. The first cut used those, and
+    # `-aiExperimental` is a SUBSTRING of `-vsaiExperimental` — so any glob or
+    # grep for the one matches the other, and the first comparison written
+    # against these ids read the same directory twice and reported two
+    # configurations as byte-identical. Neither of these is a substring of the
+    # other, in either order.
     bits = []
     if profile and profile != DEFAULT_PROFILE:
-        bits.append(f"ai{profile}")
+        bits.append(f"me{profile}")
     if vs_profile and vs_profile != DEFAULT_PROFILE:
-        bits.append(f"vsai{vs_profile}")
+        bits.append(f"pod{vs_profile}")
     return ("-" + "-".join(bits)) if bits else ""
 
 
@@ -392,7 +417,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     parts = split_games(games, jobs)
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
-    rid = run_id(slug, opponents, games, seed_base, profile, vs_profile)
+    pod = vs_profile or STANDARD_POD_PROFILE
+    rid = run_id(slug, opponents, games, seed_base, profile, pod)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
@@ -406,9 +432,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # differently — and a win rate is relative to the pod's competence as much
     # as to the deck. `--vs-profile` sets every opponent seat.
     profiles = None
-    if profile or vs_profile:
-        profiles = ([profile or DEFAULT_PROFILE]
-                    + [vs_profile or DEFAULT_PROFILE] * len(opponents))
+    if profile or pod != DEFAULT_PROFILE:
+        profiles = [profile or DEFAULT_PROFILE] + [pod] * len(opponents)
     cmds = [command(names, g, clock, jar, seed=seeds[i], profiles=profiles)
             for i, g in enumerate(parts)]
     if dry_run:

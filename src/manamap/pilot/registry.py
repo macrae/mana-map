@@ -335,7 +335,8 @@ def add_pilot_parser(subparsers):
                              help="RNG seed (default derives from the configuration, so the default REPLAYS; pass one for a new sample)")
             cmd.add_argument("--vs-profile", default=None, dest="vs_profile",
                              choices=["Default", "Cautious", "Reckless", "Experimental"],
-                             help="AI profile for every OPPONENT seat (default: Default). "
+                             help="AI profile for every OPPONENT seat (default: Experimental, "
+                                  "the standard pod since 2026-08-30). "
                                   "The pod is part of the instrument: a win rate is "
                                   "relative to how well the table plays.")
             cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],

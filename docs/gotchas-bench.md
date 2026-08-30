@@ -333,6 +333,34 @@ damage 38.37 -> 39.78, both inside noise at 100 games. The sacrifice engine
 firing six times as often did not produce a better result, which is worth
 holding onto before treating activation rate as a proxy for deck quality.
 
+**THE STANDARD POD IS NOW `Experimental`, CHANGED 2026-08-30 ON A MEASUREMENT.**
+Neither AI change moves our own result: me-Experimental reads -0.0125 and
+pod-Experimental +0.0275 against the 400-game baseline, both intervals spanning
+zero. So today's branch rankings are ROBUST TO AI COMPETENCE, which is the thing
+worth knowing. But the pod SHARES move a lot:
+
+| seat | Default pod | Experimental pod |
+|---|---|---|
+| vito | 0.422 | **0.330** |
+| baylen-tokens | 0.130 | **0.190** |
+
+The Default AI misplays a token deck badly — more decisions per turn, more it
+fumbles. So the table was never uniformly weak, it was weak UNEVENLY, and that
+quietly flattered whichever seat Default happened to pilot competently. The tag
+rule is deliberately unchanged, so a record made before this date keeps its
+untagged id and still means the Default pod: **every Forge record predating
+2026-08-30 was measured against the old table and is not directly comparable to
+one made after it.**
+
+**AND A NAMING COLLISION, INTRODUCED AND CAUGHT THE SAME DAY.** The first cut
+tagged these `-ai<P>` and `-vsai<P>` — and `-aiExperimental` is a SUBSTRING of
+`-vsaiExperimental`, so a glob for one matched both. The first comparison written
+against those ids read the same directory twice and reported two configurations
+as byte-identical, which is exactly how it was caught: identical numbers are not
+a coincidence. Now `-me<P>` and `-pod<P>`, neither a substring of the other, with
+a test asserting they cannot collide in either direction. This was a SECOND
+silent-overwrite defect created while fixing the first one.
+
 **AND THE POD IS PART OF THE INSTRUMENT.** giada-angels, vito and baylen-tokens
 are three EDHREC average decks played by the same Default AI. A result is
 relative to that table and to that AI's competence, not to a metagame.

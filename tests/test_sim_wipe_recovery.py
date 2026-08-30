@@ -316,8 +316,14 @@ def test_the_run_id_carries_a_non_default_pilot():
     both = forge.run_id(D, O, 10, seed=7, profile="Experimental",
                         vs_profile="Reckless")
     assert len({base, mine, pod, both}) == 4, "four configurations, four paths"
-    assert mine.endswith("-aiExperimental")
-    assert pod.endswith("-vsaiReckless")
+    assert mine.endswith("-meExperimental")
+    assert pod.endswith("-podReckless")
+    # NEITHER TAG MAY BE A SUBSTRING OF THE OTHER. The first cut used `-ai` and
+    # `-vsai`, so a glob for one matched both and a comparison read the same
+    # directory twice, reporting two configurations as byte-identical.
+    a = forge.profile_tag(profile="Experimental")
+    b = forge.profile_tag(vs_profile="Experimental")
+    assert a not in b and b not in a, f"{a!r} and {b!r} collide under matching"
 
 
 def test_the_pod_can_be_given_its_own_pilot():
@@ -353,3 +359,40 @@ def test_profiles_are_positional_and_match_the_deck_order():
     decks, profs = values_after("-d"), values_after("-a")
     assert len(decks) == len(profs) == 3, f"{decks} vs {profs}"
     assert profs[0] == "Cautious", "our seat is first in both lists"
+
+
+@requires_deck
+def test_the_standard_pod_is_experimental_and_old_records_still_mean_what_they_said():
+    """CHANGED 2026-08-30 after measuring it. The Default AI misplays a token
+    deck: switching the OPPONENTS to Experimental moved baylen-tokens from
+    0.130 to 0.190 and vito from 0.422 to 0.330 over 100 games, so the table was
+    never uniformly weak — it was weak UNEVENLY, which flattered whichever seat
+    Default happened to pilot well.
+
+    THE TAG RULE IS DELIBERATELY UNCHANGED so this is not a silent
+    reinterpretation: a run made before the change keeps its untagged id and
+    still means the Default pod, and a run made after carries `-podExperimental`
+    visibly. A standard that quietly relabelled existing records would be worse
+    than a longer id.
+    """
+    from manamap.sim import forge
+    assert forge.STANDARD_POD_PROFILE == "Experimental"
+    D, O = "edgar-vampires", ["vito"]
+    # An untagged id is still reachable, and still means the Default pod.
+    assert forge.run_id(D, O, 10, seed=7, vs_profile="Default") == \
+        forge.run_id(D, O, 10, seed=7)
+    # And the new standard is visible rather than assumed.
+    assert forge.run_id(D, O, 10, seed=7,
+                        vs_profile=forge.STANDARD_POD_PROFILE).endswith("-podExperimental")
+
+
+def test_the_pod_profile_reaches_every_opponent_seat_and_not_ours():
+    """Our seat stays Default unless asked. Switching it changed the win rate by
+    -0.0125 with an interval spanning zero, so the standard is about the TABLE
+    being honest, not about moving our own result."""
+    from manamap.sim import forge
+    argv = forge.command(["me", "a", "b"], 1, 300, jar="j",
+                         profiles=["Default", "Experimental", "Experimental"])
+    i = argv.index("-a")
+    assert argv[i + 1] == "Default", "our seat is first and stays Default"
+    assert argv[i + 2:i + 4] == ["Experimental", "Experimental"]
