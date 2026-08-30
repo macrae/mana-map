@@ -268,9 +268,38 @@ def default_seed(slug, opponents):
     return int(config_digest(slug, opponents), 16) % 2_000_000_000
 
 
-def run_id(slug, opponents, games, seed=None):
+#: The AI personality every seat gets unless something says otherwise. Named
+#: because "Default" appears in three places and a typo in any of them would
+#: silently produce a different pilot.
+DEFAULT_PROFILE = "Default"
+
+
+def profile_tag(profile=None, vs_profile=None):
+    """The run-id suffix for a non-default pilot, or "" for the usual case.
+
+    THE RUN ID DID NOT CARRY THE PROFILE AND THAT IS A SILENT OVERWRITE. The id
+    is built from the opponents, the game count, a digest over every seat's
+    DECKLIST and the seed — none of which move when the AI does. So
+    `simulate <deck> --profile Experimental` wrote to exactly the path the
+    Default run had already written, and the second result replaced the first
+    with no warning and no way to tell them apart afterwards. Same class as
+    `goldfish.main` filing a branch measurement under the champion's name.
+
+    Absent means the default, so every existing run id is unchanged and no
+    record on disk has to be renamed.
+    """
+    bits = []
+    if profile and profile != DEFAULT_PROFILE:
+        bits.append(f"ai{profile}")
+    if vs_profile and vs_profile != DEFAULT_PROFILE:
+        bits.append(f"vsai{vs_profile}")
+    return ("-" + "-".join(bits)) if bits else ""
+
+
+def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None):
     seed = default_seed(slug, opponents) if seed is None else int(seed)
-    return f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}-s{seed}"
+    return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
+            f"-s{seed}{profile_tag(profile, vs_profile)}")
 
 
 def split_games(games, jobs):
@@ -352,7 +381,8 @@ def _seat_label(seat_names):
 
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
-        seed=None, force=False, dry_run=False, home=None, decks_dir=None, profile=None):
+        seed=None, force=False, dry_run=False, home=None, decks_dir=None,
+        profile=None, vs_profile=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -362,7 +392,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     parts = split_games(games, jobs)
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
-    rid = run_id(slug, opponents, games, seed_base)
+    rid = run_id(slug, opponents, games, seed_base, profile, vs_profile)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
@@ -371,7 +401,14 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                          f"replays the same games. Pass --seed N for a new sample, or --force "
                          f"to replay it.")
     jar = forge_jar(home)
-    profiles = ([profile] + ["Default"] * len(opponents)) if profile else None
+    # THE POD IS PART OF THE INSTRUMENT. `--profile` set only OUR seat and left
+    # every opponent on Default, so the table could never be made to play
+    # differently — and a win rate is relative to the pod's competence as much
+    # as to the deck. `--vs-profile` sets every opponent seat.
+    profiles = None
+    if profile or vs_profile:
+        profiles = ([profile or DEFAULT_PROFILE]
+                    + [vs_profile or DEFAULT_PROFILE] * len(opponents))
     cmds = [command(names, g, clock, jar, seed=seeds[i], profiles=profiles)
             for i, g in enumerate(parts)]
     if dry_run:
@@ -532,7 +569,8 @@ def main(args):
     path, rec = run(slug, args.vs, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
-                    profile=getattr(args, "profile", None))
+                    profile=getattr(args, "profile", None),
+                    vs_profile=getattr(args, "vs_profile", None))
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "
               f"{rec['seeds']} → {path}")

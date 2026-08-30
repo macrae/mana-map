@@ -333,6 +333,11 @@ def add_pilot_parser(subparsers):
                              help="print the JVM commands and the run id; run nothing")
             cmd.add_argument("--seed", type=int, default=None,
                              help="RNG seed (default derives from the configuration, so the default REPLAYS; pass one for a new sample)")
+            cmd.add_argument("--vs-profile", default=None, dest="vs_profile",
+                             choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             help="AI profile for every OPPONENT seat (default: Default). "
+                                  "The pod is part of the instrument: a win rate is "
+                                  "relative to how well the table plays.")
             cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
                              help="AI profile for YOUR seat (opponents stay Default; measured: aggro profiles make a hold-up deck worse)")
             cmd.add_argument("--force", action="store_true",

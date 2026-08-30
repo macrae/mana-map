@@ -294,3 +294,62 @@ def test_against_the_real_run_the_pilot_out_counters_the_pod():
               for s in facts[0]["seats"] if s != seat]
     assert mine > 1.0, f"the deck's own mass counter engine reads {mine}"
     assert mine > max(others), f"{mine} must lead the pod {others}"
+
+
+# ── The AI is part of the instrument ──────────────────────────────────────
+
+@requires_deck
+def test_the_run_id_carries_a_non_default_pilot():
+    """A SILENT OVERWRITE, and the same class as filing a branch measurement
+    under the champion's name. The run id is built from the opponents, the game
+    count, a digest over every seat's DECKLIST and the seed — none of which move
+    when the AI does. So `--profile Experimental` wrote to exactly the path the
+    Default run had already written and replaced it with no warning."""
+    from manamap.sim import forge
+    D, O = "edgar-vampires", ["vito"]          # config_digest reads real lists
+    base = forge.run_id(D, O, 10, seed=7)
+    assert forge.run_id(D, O, 10, seed=7, profile="Default") == base, (
+        "the default pilot must leave every existing run id unchanged")
+    assert forge.run_id(D, O, 10, seed=7, vs_profile="Default") == base
+    mine = forge.run_id(D, O, 10, seed=7, profile="Experimental")
+    pod = forge.run_id(D, O, 10, seed=7, vs_profile="Reckless")
+    both = forge.run_id(D, O, 10, seed=7, profile="Experimental",
+                        vs_profile="Reckless")
+    assert len({base, mine, pod, both}) == 4, "four configurations, four paths"
+    assert mine.endswith("-aiExperimental")
+    assert pod.endswith("-vsaiReckless")
+
+
+def test_the_pod_can_be_given_its_own_pilot():
+    """THE POD IS PART OF THE INSTRUMENT. `--profile` set only our seat and left
+    every opponent on Default, so the table could never be made to play
+    differently — and a win rate is relative to the pod's competence as much as
+    to the deck."""
+    from manamap.sim import forge
+    argv = forge.command(["me", "a", "b"], 1, 300, jar="j",
+                         profiles=["Experimental", "Reckless", "Reckless"])
+    i = argv.index("-a")
+    assert argv[i + 1:i + 4] == ["Experimental", "Reckless", "Reckless"]
+    assert forge.command(["me", "a"], 1, 300, jar="j") .count("-a") == 0, (
+        "no profiles means no flag, so the default invocation is unchanged")
+
+
+def test_profiles_are_positional_and_match_the_deck_order():
+    """Forge reads `-a` positionally against `-d`. A profile list that is
+    shorter or reordered silently hands your pilot to an opponent."""
+    from manamap.sim import forge
+    argv = forge.command(["me", "a", "b"], 1, 300, jar="j",
+                         profiles=["Cautious", "Default", "Default"])
+    def values_after(flag):
+        """Everything after `flag` up to the next flag. `-d` and `-a` are not
+        adjacent — `-f`, `-n` and `-c` sit between them — so a plain slice from
+        one index to the other swallows those and reports nine decks."""
+        i = argv.index(flag) + 1
+        out = []
+        while i < len(argv) and not argv[i].startswith("-"):
+            out.append(argv[i]); i += 1
+        return out
+
+    decks, profs = values_after("-d"), values_after("-a")
+    assert len(decks) == len(profs) == 3, f"{decks} vs {profs}"
+    assert profs[0] == "Cautious", "our seat is first in both lists"
