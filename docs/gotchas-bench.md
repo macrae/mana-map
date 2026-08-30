@@ -247,3 +247,57 @@ and the last one invalidated the conclusions the first five had produced.
   over 37. MDE against an 0.18 baseline is 42 points at 20 games per arm, 17.5
   at 100, and 8.5 at 400. The deck's one historical experiment ran at 20 per arm
   and returned an interval spanning zero, which is the design and not the deck.
+
+## The Forge AI will not press a sacrifice button, 2026-08-30
+
+Measured across one 400-game pod run on `edgar-vampires@bloodline`, with a
+cast-count control so a zero cannot be mistaken for a card that never arrived:
+
+| card | cast | activated | per cast |
+|---|---|---|---|
+| Ashnod's Altar | 46 | **0** | 0.00 |
+| Indulgent Aristocrat | 76 | 5 | 0.07 |
+| Immersturm Predator | 72 | 5 | 0.07 |
+| Yahenni, Undying Partisan | 65 | 4 | 0.06 |
+| **Skullclamp** | 130 | **162** | **1.25** |
+
+**Forge casts Ashnod's Altar forty-six times and activates it zero.** Every
+sacrifice outlet sits between 0.00 and 0.07 activations per casting, free ones
+included — this is not about paying mana. `Skullclamp` at 1.25 is the control
+that makes it a finding rather than a parsing fault: the AI uses EQUIPMENT
+happily and simply will not press a sacrifice button.
+
+**THE CONSEQUENCE IS THAT EVERY FORGE RESULT ON A SACRIFICE DECK IS A FLOOR,
+AND NOT A SMALL ONE.** `bloodline` was built on Viscera Seer, Ashnod's Altar,
+Altar of Dementia, Woe Strider and Skullclamp; its measured 0.142 win rate came
+almost entirely from COMBAT, because the engine the branch exists for barely
+ran. A human pilot cracks Viscera Seer every turn. The simulation never does.
+
+It also re-explains two earlier results that were read as deck failures:
+
+- **`Culling the Weak` appeared 0 times in 208 games** (bloodline-v4). Read at
+  the time as "a ritual whose additional cost the AI will not pay". The wider
+  measurement says it is the same defect: a sacrifice, in any position, is a
+  button this AI does not press.
+- **The sacrifice model added to `pilot/goldfish.py` the same week** brackets
+  the truth from the other side — it converts tokens at a free outlet after
+  combat, which is closer to correct play than Forge manages.
+
+**WHAT TO DO ABOUT IT, in order of cost:**
+
+1. A card whose value is behind an ACTIVATED ability is under-measured by Forge.
+   Check `activated <card>` against `cast <card>` before reading any result that
+   rests on one. A trigger is safer than an activation for the same effect —
+   `Lightless Evangel` grows on any sacrifice with no button, where
+   `Bloodflow Connoisseur` needs the AI to choose.
+2. `simulate --profile` already exposes Forge's AI personalities (Default,
+   Cautious, Reckless, Experimental) and every run in this repo has used
+   Default for every seat. Whether another profile activates more is UNTESTED
+   and is the cheapest experiment available.
+3. Forge's AI profiles are property files in the engine install. Tuning them is
+   possible and would need its own harness change plus a fresh baseline on
+   every deck, because it changes what "the pod" means.
+
+**AND THE POD IS PART OF THE INSTRUMENT.** giada-angels, vito and baylen-tokens
+are three EDHREC average decks played by the same Default AI. A result is
+relative to that table and to that AI's competence, not to a metagame.
