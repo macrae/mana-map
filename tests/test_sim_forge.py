@@ -126,7 +126,11 @@ def test_a_dry_run_writes_nothing_and_the_same_seed_is_a_replay_not_a_sample(sea
     with pytest.raises(SystemExit):                       # same config + seed = the same bytes
         forge.run("mine", ["rival"], games=4, jobs=2, home=home, decks_dir=decks)
     path2, _ = forge.run("mine", ["rival"], games=4, jobs=2, seed=99, dry_run=True, home=home, decks_dir=decks)
-    assert path2.name.endswith("-s99.json") and path2 != path, "a new seed is a new sample"
+    # THE SEED IS IN THE ID BUT NO LONGER AT THE END OF IT. Since 2026-08-30 the
+    # id carries the pilots too — `-pod<Profile>` for a non-default pod, which is
+    # now the standard — so this asserts the seed is PRESENT and that a new seed
+    # is a new path, rather than pinning the id's tail.
+    assert "-s99" in path2.name and path2 != path, "a new seed is a new sample"
 
 
 @pytest.mark.forge
