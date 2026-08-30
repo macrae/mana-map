@@ -63,6 +63,19 @@ RX = {
 _TOKEN = re.compile(r"\bToken$")
 _CREATE = re.compile(r"\bcreates?\b.*\btokens?\b", re.I)
 _LOSES_LIFE = re.compile(r"\b(loses?|lose) (that much |\d+ |X )?life\b|\bdrain", re.I)
+#: COUNTERS ARE NOT AN EVENT IN THIS LOG. Forge emits no `Counter:` line; a
+#: +1/+1 counter only ever appears inside the ABILITY TEXT of a `Resolve Stack`
+#: line — 5,519 of them in one 400-game run, and the parser read none of them.
+#: So what is counted here is COUNTER-PLACING EVENTS, not counters: "put a
+#: +1/+1 counter on each Vampire you control" is ONE line whether it lands one
+#: counter or eight, and the log does not say which.
+#:
+#: The `on each` form is split out for exactly that reason — it is the one whose
+#: size scales with the board, and it is what makes proliferate worth playing.
+_COUNTER_PLACED_RE = re.compile(r"put (?:a|an|one|two|three|X|that many) "
+                                r"\+1/\+1 counters? on", re.IGNORECASE)
+_COUNTER_MASS_RE = re.compile(r"\+1/\+1 counters? on each", re.IGNORECASE)
+_PROLIFERATE_RE = re.compile(r"\bproliferate\b", re.IGNORECASE)
 _ACTIVATOR = re.compile(r"\[(?:Card: .*?, )?Activator: " + _SEAT)
 _PLAYER_TAG = re.compile(r"\[(?:Player|Phase): " + _SEAT + r"\]")
 
@@ -240,6 +253,13 @@ def game_facts(g, commanders=None):
                # log. A board count reconstructed from this would be a series of
                # zeros wearing the name of a measurement, so it is ABSENT.
                "permanents_lost_by_turn": defaultdict(int),
+               # See _COUNTER_PLACED_RE: EVENTS, not counters, and attributed
+               # to the tagged seat when the line carries one and to the ACTIVE
+               # seat otherwise, which is the same approximation the drain
+               # attribution already makes.
+               "counter_events": 0,
+               "mass_counter_events": 0,
+               "proliferate_events": 0,
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
@@ -265,6 +285,20 @@ def game_facts(g, commanders=None):
                 per[ev["seat"]]["token_resolutions"] += 1
             if _LOSES_LIFE.search(ev["text"]) and ev["seat"] in per:
                 last_cause = (ev["seat"], ev["turn"], "life loss")
+            # THE COUNTER CHANNEL LIVES HERE AND NOT IN A SECOND `resolve`
+            # BRANCH. The first cut added one lower down the chain, where it was
+            # unreachable — this `elif` had already claimed every resolve event
+            # — and it read a flat zero on 400 games while the regex matched
+            # seven times in the first log alone. A dead branch and a channel
+            # that does not fire look identical from the outside.
+            if ev["seat"] in per:
+                t = ev["text"] or ""
+                if _COUNTER_PLACED_RE.search(t):
+                    per[ev["seat"]]["counter_events"] += 1
+                    if _COUNTER_MASS_RE.search(t):
+                        per[ev["seat"]]["mass_counter_events"] += 1
+                if _PROLIFERATE_RE.search(t):
+                    per[ev["seat"]]["proliferate_events"] += 1
         elif k == "attack":
             p = per[ev["seat"]]
             if p["first_attack_turn"] is None:
@@ -565,6 +599,12 @@ def aggregate(facts, slug_label, label, commanders=None):
             "life_gained": mean_ci([_life_delta(p, +1) for p in ps]),
             "life_lost": mean_ci([_life_delta(p, -1) for p in ps]),
             "creatures_lost": mean_ci([p["creatures_lost"] for p in ps]),
+            # THE COUNTER CHANNEL. Fifteen cards in edgar-vampires put +1/+1
+            # counters and NONE of it reached a record until 2026-08-29, which
+            # made the whole counter-and-proliferate thesis unjudgeable.
+            "counter_events": mean_ci([p["counter_events"] for p in ps]),
+            "mass_counter_events": mean_ci([p["mass_counter_events"] for p in ps]),
+            "proliferate_events": mean_ci([p["proliferate_events"] for p in ps]),
             "activations": mean_ci([p["activations"] for p in ps]),
             "triggers": mean_ci([p["triggers"] for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),

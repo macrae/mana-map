@@ -169,6 +169,8 @@ def test_the_record_publishes_the_DRAIN_half_of_a_drain_deck():
                           "token_combat_damage_to_players": 0,
                           "token_damage_share": None, "tokens_chumped": 0,
                           "permanents_lost_by_turn": {},
+                          "counter_events": 0, "mass_counter_events": 0,
+                          "proliferate_events": 0,
                           "life_by_turn": {"1": 40, "2": 45, "3": 38},
                           "damage_to_players_by_turn": {}}
                       for s in ("me", "a")}}
@@ -192,3 +194,103 @@ def test_life_gained_and_lost_are_SEPARATE_facts():
 def test_a_seat_whose_life_never_moved_reports_zero_not_absent():
     assert parse._life_delta({"life_by_turn": {"1": 40, "2": 40}}, +1) == 0
     assert parse._life_delta({}, +1) == 0
+
+
+# ── The counter channel ───────────────────────────────────────────────────
+
+def _resolve_game(texts, seat="me"):
+    """A game whose only content is resolved abilities, attributed to `seat`."""
+    return {"seats": ["me", "a"], "turn": 5, "active": seat, "owner": {},
+            "mulligan": {},
+            "outcome": {"winner": "a", "won_by": None, "round": 5,
+                        "global_turn": 5, "draw": False, "lost": {}, "ms": 1},
+            "events": [
+                {"kind": "resolve", "seat": seat, "turn": 1, "active": seat,
+                 "text": t, "creates_token": False} for t in texts]}
+
+
+def test_counter_placing_abilities_are_counted_and_attributed():
+    """FIFTEEN CARDS IN edgar-vampires PUT +1/+1 COUNTERS AND NONE OF IT REACHED
+    A RECORD. Forge emits no `Counter:` line — a counter only ever appears
+    inside the ability text of a `Resolve Stack` line, 5,519 of them in one
+    400-game run, and the parser read none. That made the whole
+    counter-and-proliferate thesis unjudgeable."""
+    g = _resolve_game([
+        "Whenever Edgar Markov attacks, put a +1/+1 counter on each Vampire you control.",
+        "Whenever this creature attacks, you may sacrifice another creature. "
+        "If you do, put a +1/+1 counter on this creature.",
+        "Blood Artist - Creature 0 / 1",
+    ])
+    p = parse.game_facts(g)["per_seat"]["me"]
+    assert p["counter_events"] == 2, "two abilities placed counters, one did not"
+    assert p["mass_counter_events"] == 1, "only the `on each` one scales with the board"
+
+
+def test_proliferate_is_counted_separately_from_placing_a_counter():
+    g = _resolve_game([
+        "Whenever a commander you control enters or attacks, proliferate.",
+        "Whenever Edgar Markov attacks, put a +1/+1 counter on each Vampire you control.",
+    ])
+    p = parse.game_facts(g)["per_seat"]["me"]
+    assert p["proliferate_events"] == 1
+    assert p["counter_events"] == 1, "proliferate places no counter of its own"
+
+
+def test_an_opponents_counter_ability_is_not_credited_to_us():
+    g = _resolve_game(["Whenever Youthful Valkyrie enters, put a +1/+1 counter on it."],
+                      seat="a")
+    per = parse.game_facts(g)["per_seat"]
+    assert per["a"]["counter_events"] == 1
+    assert per["me"]["counter_events"] == 0
+
+
+def test_the_channel_lives_in_the_LIVE_resolve_branch():
+    """RE-INTRODUCING THE BUG. The first cut of this put the counter logic in a
+    SECOND `elif k == "resolve"` further down the dispatch chain, where the
+    drain branch had already claimed every resolve event. It read a flat zero
+    across 400 games while the regex matched seven times in the first log alone
+    — a dead branch and a channel that never fires are indistinguishable from
+    outside. This asserts there is exactly one such branch."""
+    import inspect
+    src = inspect.getsource(parse.game_facts)
+    assert src.count('elif k == "resolve":') == 1, (
+        "a second resolve branch is unreachable — merge it into the first")
+
+
+def test_the_aggregate_publishes_the_counter_channel():
+    g = _resolve_game([
+        "Whenever Edgar Markov attacks, put a +1/+1 counter on each Vampire you control.",
+        "Whenever a commander you control enters or attacks, proliferate.",
+    ])
+    f = parse.game_facts(g)
+    for k in ("counter_events", "mass_counter_events", "proliferate_events"):
+        assert k in f["per_seat"]["me"], k
+    s = parse.aggregate([f], "me", {"me": "me", "a": "a"})["seats"]["me"]
+    assert s["counter_events"]["mean"] == 1
+    assert s["mass_counter_events"]["mean"] == 1
+    assert s["proliferate_events"]["mean"] == 1
+
+
+@requires_deck
+def test_against_the_real_run_the_pilot_out_counters_the_pod():
+    """THE CONTROL. A channel that reports the same number for every seat is
+    measuring the log rather than the deck. bloodline is built on mass counter
+    effects — Edgar's attack trigger, Cordial Vampire on every death — so it
+    must lead its own pod on the `on each` figure."""
+    import pathlib, glob
+    from manamap.config import DATA_DIR
+    ds = glob.glob(str(pathlib.Path(DATA_DIR)
+                       / "decks/edgar-vampires/branches/bloodline/sim/logs/*/"))
+    if not ds:
+        pytest.skip("the bloodline pod run is not present")
+    games = []
+    for f in sorted(pathlib.Path(ds[0]).glob("*.log")):
+        games += parse.parse_games(f.read_text(errors="replace"))
+    facts = [parse.game_facts(g) for g in games if g.get("outcome", {}).get("winner")]
+    assert len(facts) > 50
+    seat = next(s for s in facts[0]["seats"] if "edgar" in s)
+    mine = sum(f["per_seat"][seat]["mass_counter_events"] for f in facts) / len(facts)
+    others = [sum(f["per_seat"][s]["mass_counter_events"] for f in facts) / len(facts)
+              for s in facts[0]["seats"] if s != seat]
+    assert mine > 1.0, f"the deck's own mass counter engine reads {mine}"
+    assert mine > max(others), f"{mine} must lead the pod {others}"
