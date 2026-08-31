@@ -448,6 +448,23 @@ def evaluate(embeddings, groups):
     }
 
 
+#: EVERY SCORABLE SPACE, including the shadow. The VAE artifact is added the
+#: moment it exists and skipped silently when it does not, so `eval-embeddings`
+#: is the same command before and after a training run — the comparison the
+#: whole staging plan rests on should not need a different invocation.
+def spaces_on_disk():
+    """`{label: path}` for every embedding artifact present."""
+    from manamap.training.train_vae import VAE_EMBEDDINGS_PATH
+
+    candidates = {
+        "function (ability)": ABILITY_EMBEDDINGS_PATH,
+        "layout (color+type)": EMBEDDINGS_PATH,
+        "text baseline (frozen MiniLM)": TEXT_EMBEDDINGS_PATH,
+        "vae (masked imputation)": VAE_EMBEDDINGS_PATH,
+    }
+    return {label: path for label, path in candidates.items() if path.exists()}
+
+
 def _normalized(path):
     """Load an embedding artifact, L2-normalizing defensively.
 
@@ -463,11 +480,7 @@ def _normalized(path):
 def collect(paths=None):
     """Evaluate every available embedding space. Returns {label: metrics}."""
     if paths is None:
-        paths = {
-            "function (ability)": ABILITY_EMBEDDINGS_PATH,
-            "layout (color+type)": EMBEDDINGS_PATH,
-            "text baseline (frozen MiniLM)": TEXT_EMBEDDINGS_PATH,
-        }
+        paths = spaces_on_disk()
 
     names = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)["name"].tolist()
     groups, missing = resolve_groups(load_golden(), names)
@@ -508,9 +521,7 @@ def pool_section(challenger="function (ability)",
     if not groups:
         return "", {}
     spaces = {}
-    for label, path in (("function (ability)", ABILITY_EMBEDDINGS_PATH),
-                        ("text baseline (frozen MiniLM)", TEXT_EMBEDDINGS_PATH),
-                        ("layout (color+type)", EMBEDDINGS_PATH)):
+    for label, path in spaces_on_disk().items():
         try:
             spaces[label] = _normalized(path)
         except FileNotFoundError:
@@ -574,9 +585,7 @@ def main():
           f"({', '.join(f'{n} {s}' for s, n in sorted(splits.items()))})")
     print(format_report(results))
     spaces = {}
-    for label, path in (("function (ability)", ABILITY_EMBEDDINGS_PATH),
-                        ("text baseline (frozen MiniLM)", TEXT_EMBEDDINGS_PATH),
-                        ("layout (color+type)", EMBEDDINGS_PATH)):
+    for label, path in spaces_on_disk().items():
         try:
             spaces[label] = _normalized(path)
         except FileNotFoundError:
@@ -592,6 +601,19 @@ def main():
     # [-0.088, +0.060] and spans zero: it was a TIE reported as a loss for
     # months, and the repo's own rule already said so —
     #   "a comparison carries the interval on the DIFFERENCE."
+    from manamap.training.train_vae import VAE_EMBEDDINGS_PATH
+
+    if VAE_EMBEDDINGS_PATH.exists():
+        for relation in ("function", "theme"):
+            vae_text, _c = pool_section(challenger="vae (masked imputation)",
+                                        baseline="function (ability)",
+                                        relation=relation)
+            if vae_text:
+                print(vae_text)
+        print("    The VAE is scored against the FUNCTION space, not the text")
+        print("    baseline: at corpus scale those two are a tie, and the bar a")
+        print("    replacement has to clear is the space it would replace.")
+
     text, curve = pool_section(relation="function")
     theme_text, _theme_curve = pool_section(relation="theme")
     if theme_text:

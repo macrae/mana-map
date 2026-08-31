@@ -125,6 +125,21 @@ def build_parser():
         "eval-obsolescence",
         help="Score the obsolescence index against its known failure classes")
 
+    # NOT a pipeline step either, and the reason is money rather than network:
+    # this trains a model for 18-40 minutes and writes a SHADOW artifact that
+    # nothing downstream reads yet. `manamap run` must not pay that on its way
+    # to a projection, and it must not silently replace the live space.
+    vae = subparsers.add_parser(
+        "train-vae",
+        help="Train the masked-imputation VAE (shadow artifact; not part of `run`)")
+    vae.add_argument("--unfreeze", type=int, default=0, metavar="N",
+                     help="thaw the top N encoder layers. DEFAULT 0: the corpus "
+                          "is 2.2M tokens against 0.94M trainable parameters "
+                          "frozen and 11.58M at N=6, with 2,705 duplicate "
+                          "oracle texts waiting to be memorised")
+    vae.add_argument("--epochs", type=int, default=None,
+                     help="override the epoch ceiling (default 20, early stop 4)")
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -154,6 +169,10 @@ def main():
     elif args.command == "eval-obsolescence":
         from manamap.analysis import eval_obsolescence
         eval_obsolescence.main(args)
+    elif args.command == "train-vae":
+        from manamap.training import train_vae
+
+        train_vae.main(args)
     elif args.command == "eval-commander-search":
         from manamap.analysis import eval_commander_search
         eval_commander_search.main(args)
