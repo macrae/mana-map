@@ -1596,9 +1596,31 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
     """
     if target.get("commander") and not commander_cast:
         return False
-    unmet = sum(1 for need in target["need"]
-                if not any(name in names_in_hand for name in need["any_of"]))
-    return unmet <= tutors
+    # THE HOTTEST LINE IN THE SIMULATION. Profiled on edgar at 2,000 games,
+    # this function and its two generator expressions were 0.797s of a 2.088s
+    # loop — 38% — over 290,127 calls, because the `any_of` scan is rebuilt in
+    # Python on every call for every unmet need on every turn of every game.
+    #
+    # The `any_of` list is CONSTANT for the whole run, so the set is built once
+    # per need and cached on it. `names_in_hand` is already a set (`seen`), so
+    # `isdisjoint` is a C-level intersection test. Same predicate, same result:
+    # a need is unmet exactly when none of its names has been seen.
+    #
+    # Cached on the need dict rather than threaded through the signature
+    # because the raw need dicts never reach the artifact — `target_stats`
+    # takes only `target["label"]` — so there is nothing for a private key to
+    # leak into.
+    unmet = 0
+    for need in target["need"]:
+        names = need.get("_any_of_set")
+        if names is None:
+            names = need["_any_of_set"] = frozenset(need["any_of"])
+        if names.isdisjoint(names_in_hand):
+            unmet += 1
+            # Counting past the tutor budget cannot change the answer.
+            if unmet > tutors:
+                return False
+    return True
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
