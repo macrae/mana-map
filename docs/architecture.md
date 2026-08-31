@@ -378,3 +378,57 @@ Naming — Color+Type map: dominant color (>= 40%) + type (>= 30%), guild names 
 **Membership is stored, and noise is a real answer.** `regions_*.json` carries `membership.l0` / `membership.l1`: positional arrays over `cards.csv` row order, `-1` for noise. 29% of cards on the default map are L0 noise and belong to no region at all — they stay `-1` rather than being snapped to a nearest centroid they were never clustered into. Regions also record `w`/`h` beside `span`, because `span = max(w, h)` alone cannot distinguish a filament from a blob.
 
 **Index-alignment invariant**: `projection[i]` corresponds exactly to `cards.csv[i]` (maintained through embed → reduce), and `membership.l0[i]` describes the same card. Tags are looked up by direct index, never by name (duplicate card names exist).
+
+
+## The masked-imputation VAE — first run, 2026-08-31
+
+A shadow experiment replacing a contrastive objective whose positives are mined
+from the repo's own regexes with **masked imputation**: hide a block of the card,
+reconstruct it. No labels — the label is the input.
+
+**Configuration**: frozen MiniLM (`unfreeze=0`, 0.94M trainable against 2.2M
+corpus tokens), 20 epochs, ~4.2 min/epoch on a quiet machine, split by TEXT HASH
+(1,031 duplicate-text families, 0 crossing). Val loss 0.0134 → 0.0121.
+
+### Scored against the space it would replace
+
+| target | function | VAE | |
+|---|---|---|---|
+| function @ pool 500 | 0.794 | 0.483 | **−0.311**, excludes 0 |
+| theme @ pool 500 | 0.152 | 0.326 | **+0.174**, excludes 0 |
+| hard negatives (mean 1−cos) | 0.0133 | **0.0064** | worse, halved |
+| centroid headroom | 0.019 | **0.092** | 4.8×, and beats text's 0.075 |
+| effective dimensionality | 27.31 | **5.71** | far worse |
+
+**Two of four, and the two it won are the two the contrastive objective fails by
+design.** The theme win is the hypothesis working exactly as argued: a model
+trained to impute the type line must carry tribe. Intervals exclude zero at every
+pool size.
+
+**The hard-negative loss is the design risk landing where it was flagged.** §6.3
+names "cards with similar phrasing that do meaningfully different things" as the
+failure mode, and the plan said a reconstruction objective was the version most
+likely to amplify it. It did: rewarding a model for predicting wording stacks
+`Seachrome Coast` and `Deserted Beach` — one word inverts the game stage —
+closer together.
+
+### Two instruments that misled, and are now fixed
+
+**`FREE_BITS = 0.5` disabled the regulariser.** The run settled at 0.19–0.31
+nats/dim, entirely under the floor, so `clamp(per_dim − 0.5, min=0)` was exactly
+zero for all 20 epochs. Beta annealed 0 → 0.25 against a structurally dead term.
+**What trained was a denoising autoencoder, not a VAE.** A floor above the KL a
+model reaches is not a floor, it is an off switch. Now 0.1.
+
+**`active_units` reported 128/128 "no collapse" on a space with a participation
+ratio of 5.71** — barely above the layout space's 3.89, which is deliberately
+trivial. It cannot catch that: with free bits disengaged nothing pressures the
+latent, so the alarm is guaranteed silent. `train_vae` now gates on
+**effective dimensionality** as well, floor 10.0.
+
+### What it says about the next run
+
+The objective moves what it was designed to move, and the two spaces now have
+**measurably complementary failures** — function/hard-negatives against
+theme/centroid-geometry. That argues for combining the objectives rather than
+substituting one for the other, with the KL actually engaged.

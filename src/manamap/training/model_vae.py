@@ -88,9 +88,18 @@ from torch import nn
 from manamap.config import FINAL_EMBEDDING_DIM, TEXT_MODEL_NAME
 from manamap.training.card_serialize import BLOCKS
 
-#: Nats per dimension the KL term is not charged for. Standard free-bits; the
-#: point is to remove the incentive to switch a dimension off entirely.
-FREE_BITS = 0.5
+#: Nats per dimension the KL term is not charged for.
+#:
+#: MEASURED AND CORRECTED. At 0.5 the term NEVER ENGAGED: the first full run
+#: settled at a KL of 0.19-0.31 nats/dim, entirely under the floor, so
+#: `clamp(per_dim - 0.5, min=0)` was exactly zero for all 20 epochs. Beta
+#: annealed from 0 to 0.25 against a term that was structurally 0. What trained
+#: was a denoising autoencoder with noise on the latent — not a VAE.
+#:
+#: The floor has to sit BELOW the KL the model naturally reaches or it is not a
+#: floor, it is an off switch. 0.1 leaves the regulariser live while still
+#: removing the incentive to zero a dimension outright.
+FREE_BITS = 0.1
 
 #: Weight on the KL after annealing. Below 1.0 because the latent's job here is
 #: to be a good METRIC SPACE, not to be a faithful generative prior.
@@ -101,6 +110,14 @@ ANNEAL_FRACTION = 0.3
 
 #: A run whose active units fall below this has collapsed and is reported failed.
 MIN_ACTIVE_UNITS = 32
+
+#: …and the measure that actually caught the degeneracy `active_units` missed.
+#: Participation ratio of the latent's PCA spectrum, the same statistic
+#: `eval_embeddings.effective_dimensionality` reports. Reference points on the
+#: shipped artifacts: function 27.31, text 51.39, layout 3.89 (deliberately
+#: trivial), and the first VAE run **5.71**. A floor of 10 is above the layout
+#: space and well below the space this is trying to replace.
+MIN_EFFECTIVE_DIM = 10.0
 
 #: Vocabulary for the bag-of-tokens decoder. MEASURED over the serialised corpus:
 #: 7,507 distinct wordpieces, 2,235,677 token occurrences, and the most frequent
@@ -198,7 +215,19 @@ def kl_with_free_bits(mu, logvar, free_bits=FREE_BITS):
 
 
 def active_units(per_dim_kl, threshold=0.01):
-    """Dimensions carrying more than `threshold` nats. The collapse alarm."""
+    """Dimensions carrying more than `threshold` nats.
+
+    A WEAK ALARM, and the first run proved it. It reported 128/128 "no collapse"
+    on a space whose PARTICIPATION RATIO was 5.71 of 128 — barely above the
+    layout space's 3.89, which this repo calls deliberately trivial. Every
+    dimension carried a trickle of KL while the data occupied about six of them.
+    It cannot be otherwise when free bits never engage: with no pressure toward
+    the prior there is nothing to collapse, so the alarm is guaranteed silent.
+
+    Keep it — a genuinely collapsed KL is worth catching — but `effective_dim`
+    is the honest measure of whether the space is USED, and `train_vae` gates on
+    both.
+    """
     return int((per_dim_kl > threshold).sum())
 
 

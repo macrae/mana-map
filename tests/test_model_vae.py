@@ -130,3 +130,45 @@ def test_written_embeddings_are_l2_normalised():
     out = MV.embeddings_from(model, loader, torch.device("cpu"))
     assert out.shape == (6, model.latent_dim) and out.dtype == np.float32
     assert np.allclose(np.linalg.norm(out, axis=1), 1.0, atol=1e-5)
+
+
+def test_free_bits_sits_below_the_kl_a_run_actually_reaches():
+    """RE-INTRODUCING THE BUG THAT WASTED A RUN. At FREE_BITS = 0.5 the first
+    full run settled at 0.19-0.31 nats/dim — entirely under the floor — so
+    `clamp(per_dim - free_bits, min=0)` was EXACTLY ZERO for all 20 epochs. Beta
+    annealed 0 -> 0.25 against a term that was structurally zero, and what
+    trained was a denoising autoencoder, not a VAE.
+
+    A floor above the KL the model reaches is not a floor. It is an off switch.
+    """
+    observed = torch.full((128,), 0.25)          # the first run's steady state
+    loss, _ = MV.kl_with_free_bits(torch.zeros(1, 128), torch.zeros(1, 128),
+                                   free_bits=MV.FREE_BITS)
+    assert MV.FREE_BITS < 0.19, (
+        f"FREE_BITS={MV.FREE_BITS} is at or above the 0.19-0.31 nats/dim a real "
+        f"run reached; the KL term would be dead again")
+    charged = torch.clamp(observed - MV.FREE_BITS, min=0.0).sum()
+    assert float(charged) > 0.0, "the regulariser must actually charge something"
+
+
+def test_a_degenerate_latent_is_caught_even_when_every_unit_is_active():
+    """THE INSTRUMENT THAT LIED. The first run reported active_units 128/128 —
+    "no collapse" — on a space whose participation ratio was 5.71 of 128, barely
+    above the layout space's 3.89. Every dimension carried a trickle of KL while
+    the data occupied about six of them.
+
+    `active_units` cannot catch that: with free bits disengaged there is no
+    pressure toward the prior, so the alarm is guaranteed silent. Effective
+    dimensionality is the honest measure.
+    """
+    from manamap.analysis.eval_embeddings import effective_dimensionality
+
+    rng = np.random.default_rng(5)
+    # a latent that is "fully active" by KL but lies in ~3 dimensions
+    core = rng.normal(size=(2000, 3))
+    degenerate = np.concatenate([core, rng.normal(size=(2000, 125)) * 0.001], axis=1)
+    degenerate /= np.maximum(np.linalg.norm(degenerate, axis=1, keepdims=True), 1e-8)
+    assert MV.active_units(torch.full((128,), 0.25)) == 128, "KL says fully active"
+    assert effective_dimensionality(degenerate) < MV.MIN_EFFECTIVE_DIM, \
+        "…and the participation ratio says it is not"
+    assert MV.MIN_EFFECTIVE_DIM > 3.89, "the floor must sit above the layout space"

@@ -44,6 +44,7 @@ from manamap.training.model_vae import (
     CardVAE,
     DECODER_VOCAB,
     MIN_ACTIVE_UNITS,
+    MIN_EFFECTIVE_DIM,
     active_units,
     beta_at,
     embeddings_from,
@@ -258,6 +259,22 @@ def main(args):
     # A COLLAPSED RUN IS A FAILED RUN AND MUST SAY SO. The loss curve looks fine
     # either way — the model reconstructs from the visible blocks — and every
     # downstream metric would then be measuring a constant.
+    # EFFECTIVE DIMENSIONALITY IS THE HONEST GATE, and the first run is why.
+    # `active_units` reported 128/128 while the participation ratio was 5.71 —
+    # the space was nearly as degenerate as the layout space and the alarm was
+    # silent, because free bits never engaged so nothing was pressuring it.
+    from manamap.analysis.eval_embeddings import effective_dimensionality
+
+    effdim = effective_dimensionality(matrix)
+    _say(f"  effective dimensionality {effdim:.2f}/{model.latent_dim} "
+         f"(function space 27.31, layout 3.89, floor {MIN_EFFECTIVE_DIM})")
+    if effdim < MIN_EFFECTIVE_DIM:
+        raise SystemExit(
+            f"DEGENERATE LATENT: participation ratio {effdim:.2f}, floor is "
+            f"{MIN_EFFECTIVE_DIM}. The space uses a fraction of its dimensions "
+            f"however many carry KL. Lower FREE_BITS so the regulariser engages, "
+            f"or the objective is not shaping the geometry at all.")
+
     if units < MIN_ACTIVE_UNITS:
         raise SystemExit(
             f"POSTERIOR COLLAPSE: {units} active units of {model.latent_dim}, "
