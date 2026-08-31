@@ -282,6 +282,12 @@ def mana(slug, branch):
         "lands": [a["lands"]["total"], b["lands"]["total"]],
         "enters_tapped_always": [a["lands"]["enters_tapped_always"],
                                  b["lands"]["enters_tapped_always"]],
+        # THE PRICE, read from mana_analysis rather than recomputed here — the
+        # rule the mana block already follows, and the one a test asserts.
+        # It is on the page because NOTHING ELSE ON IT CAN SEE THIS: the
+        # goldfish models no life, so a base that stops charging 3 a turn looks
+        # identical to one that does not.
+        "life": [a["lands"].get("life") or {}, b["lands"].get("life") or {}],
         "on_curve": {c: [a["on_curve_probability"]["with_rocks_and_dorks"].get(c),
                          b["on_curve_probability"]["with_rocks_and_dorks"].get(c)]
                      for c in "WUBRG"},
@@ -1039,6 +1045,23 @@ def _print(doc):
                     "The GAP is the figure, not the source count: a branch "
                     "that changes its spells moves the target underneath the "
                     "base.", indent="    "))
+        la, lb = (m.get("life") or [{}, {}])[0], (m.get("life") or [{}, {}])[1]
+        if la or lb:
+            def _life(key):
+                x, y = la.get(key), lb.get(key)
+                if x is None or y is None:
+                    return "     — not measured"
+                return f"{x:>6} -> {y:<5}{'' if y == x else f'  {y - x:+d}'}"
+            print("\n    WHAT THE BASE CHARGES IN LIFE")
+            print(f"      every tap-cycle   {_life('recurring_per_tap_cycle')}")
+            print(f"      once, on entry    {_life('one_time_on_entry')}")
+            print(_wrap("Two figures, never summed: a painland charges again "
+                        "on EVERY activation and a fetch or a shock charges "
+                        "ONCE, so a list that trades the first for the second "
+                        "pays less the longer the game runs. Nothing else on "
+                        "this page can see it — the goldfish models no life, "
+                        "so a base that stops charging 3 a turn reads "
+                        "identically to one that does not.", indent="      "))
 
     # ---------------------------------------------------------- real table
     f = doc["forge"]

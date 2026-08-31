@@ -145,3 +145,90 @@ def test_tracked_mana_analysis_artifacts_are_current():
             f"{path.parent.name}`")
         checked += 1
     assert checked >= 5, "no live deck was checked; the glob or the skip is wrong"
+
+
+# ── what the base charges in life ──
+
+
+def _l(name, text, type_line="Land"):
+    return {"name": name, "oracle_text": text, "type_line": type_line}
+
+
+def test_recurring_life_is_a_cost_paid_on_every_activation():
+    from manamap.pilot.mana_analysis import life_cost
+    assert life_cost(_l("Tarnished Citadel",
+                        "{T}: Add {C}. {T}: Add one mana of any color. "
+                        "This land deals 3 damage to you."))["recurring"] == 3
+    assert life_cost(_l("Mana Confluence",
+                        "{T}, Pay 1 life: Add one mana of any color."))["recurring"] == 1
+    assert life_cost(_l("City of Brass",
+                        "Whenever City of Brass becomes tapped, it deals 1 damage "
+                        "to you. {T}: Add one mana of any color."))["recurring"] == 1
+
+
+def test_a_life_cost_that_buys_no_mana_is_not_a_mana_cost():
+    """RE-INTRODUCING THE FIRST BUG. Sorrow's Path has NO mana ability — it just
+    hurts you when it taps — and without the `add` gate it read as a 2-life
+    source."""
+    from manamap.pilot.mana_analysis import life_cost
+    path = _l("Sorrow's Path",
+              "{T}: Choose two target blocking creatures. Whenever Sorrow's Path "
+              "becomes tapped, it deals 2 damage to you.")
+    assert life_cost(path)["recurring"] == 0
+
+
+def test_one_time_life_does_not_require_a_mana_ability():
+    """RE-INTRODUCING THE SECOND BUG, and it is the one that would have shipped.
+
+    A FETCHLAND MAKES NO MANA ITSELF. Applying the `add` gate to the one-time
+    figure as well zeroed all four of ur-dragon's fetches, and the shocklands
+    name THEMSELVES where the modern MDFCs say "this land". The ledger read zero
+    for a list holding six shocklands and four fetches, and looked plausible.
+    """
+    from manamap.pilot.mana_analysis import life_cost
+    fetch = _l("Wooded Foothills",
+               "{T}, Pay 1 life, Sacrifice this land: Search your library for a "
+               "Mountain or Forest card, put it onto the battlefield, then shuffle.")
+    shock = _l("Blood Crypt",
+               "As Blood Crypt enters, you may pay 2 life. If you don't, it "
+               "enters tapped. {T}: Add {B} or {R}.", "Land — Swamp Mountain")
+    mdfc = _l("Fell Mire",
+              "As this land enters, you may pay 3 life. If you don't, it enters "
+              "tapped. {T}: Add {B}.")
+    assert life_cost(fetch)["one_time"] == 1, "a fetch has no `add` clause"
+    assert life_cost(shock)["one_time"] == 2, "a shockland names itself"
+    assert life_cost(mdfc)["one_time"] == 3
+    # …and none of the three charges anything RECURRING.
+    for card in (fetch, shock, mdfc):
+        assert life_cost(card)["recurring"] == 0, card["name"]
+
+
+def test_the_two_life_figures_are_never_the_same_number():
+    """They are different KINDS of cost and summing them hides the distinction:
+    a painland charges every tap, a fetch charges once."""
+    from manamap.pilot.mana_analysis import life_cost
+    forge = _l("Battlefield Forge",
+               "{T}: Add {C}. {T}: Add {R} or {W}. This land deals 1 damage to you.")
+    assert life_cost(forge) == {"recurring": 1, "one_time": 0}
+
+
+def test_no_corpus_land_is_both_recurring_and_one_time():
+    """The sweep's structural claim, over the real corpus: 52 recurring, 38
+    one-time, zero overlap."""
+    import pytest
+    from manamap.pilot.mana_analysis import life_cost
+    try:
+        from manamap.pilot import card_pool
+        pool, oracle = card_pool.load_pool(), card_pool.corpus_oracle()
+    except Exception:  # pragma: no cover
+        pytest.skip("corpus not built")
+    rec = one = checked = 0
+    for name, info in pool.items():
+        if "Land" not in (info.get("type_line") or ""):
+            continue
+        checked += 1
+        cost = life_cost(dict(info, name=name, oracle_text=oracle.get(name, "")))
+        rec += bool(cost["recurring"]); one += bool(cost["one_time"])
+        assert not (cost["recurring"] and cost["one_time"]), name
+    assert checked >= 1000, f"only {checked} lands swept"
+    assert rec >= 40 and one >= 30, f"rec={rec} one={one}"

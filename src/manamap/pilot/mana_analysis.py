@@ -72,6 +72,62 @@ def land_classes(card):
     return classes
 
 
+#: WHAT THE BASE CHARGES IN LIFE, which no source count can see.
+#:
+#: A source count says a land makes the colour; it says nothing about the price.
+#: Measured on ur-dragon: `eminence-v3` and `landbase-v1` differ by 6 lands and
+#: sit within noise on every sampled axis, because the goldfish models no life at
+#: all. The whole case for the change is here — Tarnished Citadel charges 3 life
+#: EVERY TAP and a fetch charges 1 ONCE, so the two costs are different kinds of
+#: number and adding them together would hide exactly that.
+#:
+#: THE SWEEP, over 1266 corpus lands:
+#:
+#:   52  RECURRING   paid again on every activation, forever. The painland
+#:                   cycle, City of Brass, Mana Confluence, Ancient Tomb,
+#:                   Tarnished Citadel at 3.
+#:   38  ONE-TIME    paid once. Ten shocklands at 2, twelve fetches at 1, and
+#:                   sixteen modern spell//land MDFCs at 3.
+#:    0  BOTH        the classes do not overlap.
+#:
+#: TWO GATES, and each was wrong in the first pass:
+#:
+#:   * RECURRING requires an `add` clause. Without it `Sorrow's Path` — which
+#:     has NO mana ability and merely hurts you when it taps — reads as a
+#:     2-life mana source. A life cost that buys no mana is not a mana cost.
+#:   * ONE-TIME must NOT require one. A FETCHLAND MAKES NO MANA ITSELF, so the
+#:     same gate zeroed all four of ur-dragon's fetches. And shocklands name
+#:     themselves — "As Blood Crypt enters, you may pay 2 life" — where the
+#:     MDFCs say "this land", so the subject has to be read as either. With the
+#:     first pass's gate the ledger read ZERO for a list holding six shocklands
+#:     and four fetches, and looked entirely plausible doing it.
+_LIFE_RECURRING_RES = (
+    re.compile(r"\{t\}[^:.]{0,40}?,\s*pay (\d+) life\s*:\s*add", re.IGNORECASE),
+    re.compile(r"add[^.]{0,80}?\.\s*(?:this land|it|[A-Z][\w', ]{2,28}) "
+               r"deals (\d+) damage to you", re.IGNORECASE),
+    re.compile(r"becomes tapped, (?:it|this land|[A-Z][\w', ]{2,28}) "
+               r"deals (\d+) damage to you", re.IGNORECASE),
+)
+_LIFE_ONE_TIME_RES = (
+    re.compile(r"as [^,.]{0,40} enters, you may pay (\d+) life", re.IGNORECASE),
+    re.compile(r"pay (\d+) life,\s*sacrifice this land", re.IGNORECASE),
+)
+_REMINDER_RE = re.compile(r"\([^)]*\)")
+_ADD_RE = re.compile(r"\badd\b", re.IGNORECASE)
+
+
+def life_cost(card):
+    """`{recurring, one_time}` in life, for one land. Never summed together."""
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+
+    def most(patterns):
+        return max([int(m.group(1)) for p in patterns for m in p.finditer(text)]
+                   or [0])
+
+    return {"recurring": most(_LIFE_RECURRING_RES) if _ADD_RE.search(text) else 0,
+            "one_time": most(_LIFE_ONE_TIME_RES)}
+
+
 def nonland_producer_kind(card):
     """ramp:rock / ramp:dork / ramp:ritual for a nonland mana source, else None."""
     if is_land(card):
@@ -191,6 +247,16 @@ def analyze(slug, branch=None):
             # never be confused again.
             "total": len(lands),
             "entries": len(land_entries),
+            # THE PRICE OF THE MANA. Two figures because they are two kinds of
+            # number: a painland charges every tap, a fetch or a shock charges
+            # once. Summing them would hide the only thing that distinguishes
+            # them. See `life_cost`.
+            "life": {
+                "recurring_per_tap_cycle":
+                    sum(life_cost(c)["recurring"] for c in lands),
+                "one_time_on_entry":
+                    sum(life_cost(c)["one_time"] for c in lands),
+            },
             # Two numbers because they answer two questions, and reporting
             # only the first made a reader say "3 taplands" about a deck with
             # two. `enters_tapped` is a substring superset — it counts
