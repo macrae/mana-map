@@ -145,6 +145,11 @@ def build_parser():
         help="Cache the FROZEN encoder's output so a VAE sweep costs minutes")
     vc.add_argument("--force", action="store_true", help="rebuild an existing cache")
 
+    sc = subparsers.add_parser(
+        "span-cache",
+        help="Cache a frozen sentence vector per DISTINCT card text span")
+    sc.add_argument("--force", action="store_true", help="rebuild an existing cache")
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -178,6 +183,10 @@ def main():
         from manamap.training import vae_cache
 
         vae_cache.main(args)
+    elif args.command == "span-cache":
+        from manamap.training import span_encoder
+
+        span_encoder.main(args)
     elif args.command == "train-vae":
         from manamap.training import train_vae
 

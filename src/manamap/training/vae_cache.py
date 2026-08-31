@@ -41,7 +41,7 @@ import torch
 
 from manamap.config import DATA_DIR, OUTPUT_CSV_PATH, TEXT_MODEL_NAME
 from manamap.training.card_serialize import BLOCKS, serialize
-from manamap.training.common import get_device
+from manamap.training.common import get_device, say
 
 FEATURES_PATH = DATA_DIR / "vae_encoder_features.npy"
 FEATURES_META_PATH = DATA_DIR / "vae_encoder_features.json"
@@ -51,7 +51,7 @@ FEATURES_META_PATH = DATA_DIR / "vae_encoder_features.json"
 VIEWS = ("none",) + BLOCKS
 
 
-def build(batch_size=128, echo=print):
+def build(batch_size=128, echo=say):
     """Encode every (card, view) pair once. Returns the (N, V, 384) matrix."""
     import pandas as pd
     from transformers import AutoModel, AutoTokenizer
@@ -114,7 +114,7 @@ def view_index(view):
 
 
 def main(args):
-    echo = print
+    echo = say
     matrix, why = load_features()
     if matrix is not None and not getattr(args, "force", False):
         echo(f"  cache present: {matrix.shape} — pass --force to rebuild")

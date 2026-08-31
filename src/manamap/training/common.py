@@ -4,6 +4,21 @@ import numpy as np
 import torch
 
 
+def say(*parts, **kw):
+    """`print`, but FLUSHED — the default for anything that runs for minutes.
+
+    THE THIRD TIME THIS BUG WAS FIXED AS AN INSTANCE. `print` buffers when stdout
+    is not a tty, so a long job launched into a log or a pipe shows nothing at all
+    until it exits: a 36-minute training run printed its first line at the end,
+    and `vae_cache` reproduced it immediately afterwards because the fix had gone
+    into `train_vae` alone. The pilot works from the terminal and a long job must
+    show it is alive, so the flush belongs in one shared place rather than in
+    whichever call site last got caught.
+    """
+    kw.setdefault("flush", True)
+    print(*parts, **kw)
+
+
 def get_device():
     """Pick best available device: MPS → CUDA → CPU."""
     if torch.backends.mps.is_available():

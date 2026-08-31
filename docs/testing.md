@@ -28,6 +28,22 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
+### Measured 2026-08-31, idle 8-core machine
+
+| | |
+|---|---:|
+| `make test` — warm cache | **256 s** (2,777 collected; 2,628 passed, 140 skipped, 3 xfailed) |
+| `make test-browser` (`-n 4`) | **400 s** (223 passed) |
+
+Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
+audit figures moved — heliod's colour-sources axis reads −18 against the audit's
+−17) plus `test_a_real_deck_composes_every_panel`, which fails *because* heliod's
+diagnosis does. They want `/diagnose-deck`; hand-patching the prose to green the
+board is the thing not to do.
+
+The input layer for the tabular model added 43 tests on 2026-08-31 —
+`test_card_fields.py` and `test_span_encoder.py`, 13 probes between them.
+
 ### Measured 2026-08-28, idle 8-core machine
 
 | | |

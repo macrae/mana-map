@@ -72,7 +72,14 @@ def ability_lines(oracle_text):
     flattens them for `embedding_text`, which is right for a pooled vector and
     wrong here — the line boundary IS the ability boundary.
     """
-    return [line.strip() for line in str(oracle_text or "").split("\n") if line.strip()]
+    # `str(x or "")` does NOT handle a pandas NaN: a float nan is truthy, so it
+    # survives the `or` and stringifies to the literal `"nan"`. That produced 409
+    # cards whose sole ability line was the word "nan" — vanilla creatures and
+    # basics, handed to the encoder as if they read like a card. Third instance of
+    # this class in the repo, after the serialiser and `keywords_of`.
+    if oracle_text is None or oracle_text != oracle_text:      # NaN != NaN
+        return []
+    return [line.strip() for line in str(oracle_text).split("\n") if line.strip()]
 
 
 def classify_line(line, type_line=""):
