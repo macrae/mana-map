@@ -37,6 +37,9 @@ from manamap.config import (
     EVAL_GEOMETRY_SAMPLE,
     EVAL_POOL_SIZES,
     EVAL_SEED,
+    EVAL_THEME_GROUP_SIZE,
+    EVAL_THEME_MAX_MEMBERS,
+    EVAL_THEME_MIN_MEMBERS,
     EVAL_SPREAD_PROBES,
     OUTPUT_CSV_PATH,
     SIMILARITY_GOLDEN_PATH,
@@ -155,6 +158,110 @@ def neighbour_spread(embeddings, probes=EVAL_SPREAD_PROBES, seed=EVAL_SEED):
 
 
 
+# ── Theme: a second relation, measured objectively ──────────────────────────
+
+
+def edhrec_archetype_slugs(path=None):
+    """Tribes EDHREC's own `tag_counts` treat as something people build.
+
+    The gate that keeps this from being "shares a word in the type line".
+    Returns an empty set when the cache is absent, and `theme_groups` then
+    reports nothing rather than silently measuring a different relation.
+    """
+    from manamap.config import DATA_DIR
+
+    root = path or (DATA_DIR / "edhrec")
+    slugs = set()
+    if not root.is_dir():
+        return slugs
+    for file in sorted(root.glob("average-*.json")):
+        try:
+            doc = json.loads(file.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            continue
+        for tag in (doc.get("tag_counts") or []):
+            if isinstance(tag, dict) and tag.get("slug"):
+                slugs.add(tag["slug"])
+    return slugs
+
+
+def _is_archetype(subtype, slugs):
+    """EDHREC pluralises its slugs — `vampires`, `dragons`, `elves`."""
+    low = subtype.lower()
+    return (low in slugs or low + "s" in slugs or low + "es" in slugs
+            or (low.endswith("f") and low[:-1] + "ves" in slugs))
+
+
+def theme_groups(frame, slugs=None, seed=EVAL_SEED):
+    """`[{id, split, rows}]` — one group per buildable creature tribe.
+
+    OBJECTIVE, unlike the golden set: membership is the type line, and the only
+    judgement is the member-count band, which exists because `Human` (4,840) is a
+    body type and `Phoenix` (41) is a theme. Independent of ROLE_PATTERNS and
+    MECHANICAL_TAGS, which is what issue #12 requires of an eval — training mines
+    positives from those, so a groups file derived from them would measure only
+    whether training memorised its own supervision.
+
+    Split is by a stable hash of the tribe name, so it does not move when the
+    corpus does.
+    """
+    import hashlib
+
+    slugs = edhrec_archetype_slugs() if slugs is None else slugs
+    if not slugs:
+        return []
+    members = {}
+    for row, line in enumerate(frame["type_line"].fillna("")):
+        if "Creature" not in line or "—" not in line:
+            continue
+        for subtype in line.split("—")[1].split("//")[0].split():
+            members.setdefault(subtype, []).append(row)
+    rng = np.random.default_rng(seed)
+    out = []
+    for subtype, rows in sorted(members.items()):
+        if not (EVAL_THEME_MIN_MEMBERS <= len(rows) <= EVAL_THEME_MAX_MEMBERS):
+            continue
+        if not _is_archetype(subtype, slugs):
+            continue
+        take = rows if len(rows) <= EVAL_THEME_GROUP_SIZE else [
+            rows[i] for i in rng.choice(len(rows), EVAL_THEME_GROUP_SIZE, replace=False)]
+        digest = hashlib.sha256(subtype.encode()).hexdigest()
+        out.append({"id": f"tribe:{subtype}",
+                    "split": "test" if int(digest[:8], 16) % 10 >= 3 else "dev",
+                    "rows": sorted(int(r) for r in take)})
+    return out
+
+
+def centroid_collapse(embeddings, size=20, samples=600, seed=EVAL_SEED):
+    """How much averaging costs this space: mean pairwise cosine, cards vs centroids.
+
+    THE NUMBER THAT EXPLAINS COMMANDER SEARCH. `commander-search`, `build-deck`'s
+    commander scoring and any deck-gap query are CENTROID operations, and a narrow
+    cone cannot survive averaging. Measured 2026-08-31 at size 20:
+
+        space      card-card   centroid-centroid   headroom
+        function       0.721               0.981      0.019
+        text           0.379               0.925      0.075
+        layout         0.183               0.853      0.147
+
+    A centroid figure near 1.0 means every deck looks alike in that space, so a
+    centroid query has almost no signal left to rank on. Isolated on the golden
+    set, swapping a single-card query for a centroid cut the function space's
+    advantage from +0.191 (excluding zero) to +0.099 (spanning it).
+    """
+    rng = np.random.default_rng(seed)
+    n = len(embeddings)
+    a, b = rng.integers(0, n, samples * 5), rng.integers(0, n, samples * 5)
+    card = float(np.mean(np.sum(embeddings[a] * embeddings[b], axis=1)))
+    centroids = np.array([
+        embeddings[rng.integers(0, n, size)].mean(axis=0) for _ in range(samples)])
+    centroids /= np.maximum(np.linalg.norm(centroids, axis=1, keepdims=True), 1e-8)
+    ca, cb = rng.integers(0, samples, samples * 5), rng.integers(0, samples, samples * 5)
+    cent = float(np.mean(np.sum(centroids[ca] * centroids[cb], axis=1)))
+    return {"card": card, "centroid": cent, "headroom": 1.0 - cent}
+
+
+
 # ── The candidate pool, and the interval on the difference ──────────────────
 
 
@@ -236,15 +343,15 @@ def pool_curve(spaces, groups, order, split="test", k=10):
     }
 
 
-def format_pool_report(curve, challenger, baseline, split="test"):
+def format_pool_report(curve, challenger, baseline, split="test", relation="function"):
     """The table that decides the question, with an interval on every gap."""
     if challenger not in next(iter(curve.values())) or baseline not in next(iter(curve.values())):
         return ""
     n = len(next(iter(curve.values()))[challenger])
     lines = [
         "",
-        f"  CANDIDATE POOL — {challenger} vs {baseline}, {split} split, "
-        f"{n} groups at every size",
+        f"  CANDIDATE POOL — relation: {relation.upper()} — {challenger} vs "
+        f"{baseline}, {split} split, {n} groups at every size",
         f"    {'distractors':>12s} {'challenger':>11s} {'baseline':>9s} {'gap':>8s}   "
         f"95% CI on the difference",
     ]
@@ -315,14 +422,26 @@ def collect(paths=None):
 
 
 def pool_section(challenger="function (ability)",
-                 baseline="text baseline (frozen MiniLM)", split="test"):
-    """The pool table, loading what it needs. Returns (text, curve).
+                 baseline="text baseline (frozen MiniLM)", split="test",
+                 relation="function"):
+    """The pool table for one RELATION. Returns (text, curve).
+
+    `relation="function"` is the hand-authored golden set — "do these do the same
+    job". `relation="theme"` is the tribe groups — "are these the same deck
+    theme". They are different questions and the spaces answer them differently;
+    reporting only the first is how the function space's total failure on theme
+    (0.005 top-1 on tribal commanders) went unmeasured until 2026-08-31.
 
     Deliberately does its own loading rather than widening `collect`, whose
     two-tuple return is unpacked by `tests/test_embedding_quality.py:57`.
     """
     frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
-    groups, _missing = resolve_groups(load_golden(), frame["name"].tolist())
+    if relation == "theme":
+        groups = theme_groups(frame)
+    else:
+        groups, _missing = resolve_groups(load_golden(), frame["name"].tolist())
+    if not groups:
+        return "", {}
     spaces = {}
     for label, path in (("function (ability)", ABILITY_EMBEDDINGS_PATH),
                         ("text baseline (frozen MiniLM)", TEXT_EMBEDDINGS_PATH),
@@ -334,7 +453,7 @@ def pool_section(challenger="function (ability)",
     if challenger not in spaces or baseline not in spaces:
         return "", {}
     curve = pool_curve(spaces, groups, playability_order(frame), split=split)
-    return format_pool_report(curve, challenger, baseline, split), curve
+    return format_pool_report(curve, challenger, baseline, split, relation), curve
 
 
 def format_report(results):
@@ -362,6 +481,21 @@ def format_report(results):
     return "\n".join(lines)
 
 
+def format_collapse(spaces):
+    """What averaging costs each space — the number that explains commander search."""
+    lines = ["", "  CENTROID COLLAPSE — mean pairwise cosine, 20-card centroids",
+             f"    {'space':32s} {'card-card':>10s} {'centroid':>10s} {'headroom':>10s}"]
+    for label, emb in spaces.items():
+        c = centroid_collapse(emb)
+        lines.append(f"    {label:32s} {c['card']:>10.3f} {c['centroid']:>10.3f} "
+                     f"{c['headroom']:>10.3f}")
+    lines += ["",
+              "    Headroom near zero means every deck looks alike, so a CENTROID query",
+              "    has nothing to rank on. commander-search, build-deck's commander",
+              "    scoring and any deck-gap query are all centroid operations."]
+    return "\n".join(lines)
+
+
 def main():
     results, groups = collect()
     if not results:
@@ -374,6 +508,16 @@ def main():
     print(f"    Golden set: {len(groups)} groups "
           f"({', '.join(f'{n} {s}' for s, n in sorted(splits.items()))})")
     print(format_report(results))
+    spaces = {}
+    for label, path in (("function (ability)", ABILITY_EMBEDDINGS_PATH),
+                        ("text baseline (frozen MiniLM)", TEXT_EMBEDDINGS_PATH),
+                        ("layout (color+type)", EMBEDDINGS_PATH)):
+        try:
+            spaces[label] = _normalized(path)
+        except FileNotFoundError:
+            continue
+    if spaces:
+        print(format_collapse(spaces))
 
     # A BARE DIFFERENCE IS NOT A FINDING. This block used to print
     # "** Training is destroying information **" off `-0.012 recall@10`, with no
@@ -381,7 +525,13 @@ def main():
     # [-0.088, +0.060] and spans zero: it was a TIE reported as a loss for
     # months, and the repo's own rule already said so —
     #   "a comparison carries the interval on the DIFFERENCE."
-    text, curve = pool_section()
+    text, curve = pool_section(relation="function")
+    theme_text, _theme_curve = pool_section(relation="theme")
+    if theme_text:
+        print(theme_text)
+        print("    THEME groups are objective — a creature subtype EDHREC treats as an")
+        print("    archetype — so they are independent of the roles and tags training")
+        print("    mines its positives from. 87 tribes, against the golden set's 40.")
     if text:
         print(text)
         full = curve.get(None, {})

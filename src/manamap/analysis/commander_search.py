@@ -25,11 +25,40 @@ against 79 candidates:
     text baseline (frozen MiniLM)   top1 0.584 [0.52-0.67]   top5 0.962
     function (trained ability)      top1 0.410 [0.30-0.47]   top5 0.811
 
-The ranges do not overlap. The trained space loses to the frozen text it was
-built from — the same finding `eval-embeddings` reports at the card level, and
-seventeen points of top-1 is a much louder version of it. `--space function`
-exists so the choice can be re-measured rather than argued about, and the day
-Track A2 lands, the default flips and the eval says so first.
+The ranges do not overlap.
+
+**AND IT IS NOT THE SAME FINDING `eval-embeddings` REPORTS.** That reading stood
+here until 2026-08-31 and was wrong in a way that mattered: it implied the
+default would flip once the trained space improved. It will not, because this
+task asks a different question than the card-level eval does.
+
+Decomposed over the 73 pool commanders that resolve in the corpus, split by
+whether the commander shares a creature subtype with >=15% of its own deck
+(top-1 over all 73, no identity control, so these absolutes sit below the 0.584
+/ 0.410 above — the relative picture is the point):
+
+    subset            function    text   layout   text - function
+    tribal (20)          0.005   0.470    0.145            +0.465
+    non-tribal (53)      0.058   0.179    0.028            +0.121
+    all (73)             0.055   0.271    0.059            +0.216
+
+**Text's whole advantage is thematic.** On tribal commanders the function space
+is at FLOOR — 0.005 — and even the layout space, which knows only colour and
+type, beats it at 0.145. That is not a training defect: `train_ability` mines
+positives from ROLE_PATTERNS and MECHANICAL_TAGS, and "Vampire" is neither a role
+nor a tag. The space discards tribe by design; this task is mostly about tribe.
+
+A second mechanism compounds it. Commander search queries with a CENTROID of the
+seed cards, and the function space is a narrow cone that averaging destroys —
+mean pairwise cosine 0.721 between cards but **0.981 between 20-card centroids**,
+against text's 0.925. Isolated on the golden set with everything else held
+constant, swapping a single-card query for a centroid cut the function space's
+advantage from +0.191 (interval excluding zero) to +0.099 (spanning it).
+
+So `--space function` stays available for re-measurement, but **the default
+should flip only if a space carries THEME**, which is a different property from
+the one Track A2 is chasing. A function space that got better at function would
+still score 0.005 on tribal commanders.
 
 **Proximity is a discovery aid, not a verdict** (§6.3). The embedding is built
 on oracle text, and cards with similar phrasing can do meaningfully different

@@ -198,3 +198,96 @@ def test_the_verdict_never_calls_an_overlapping_interval_a_finding():
     if not stat["excludes_zero"]:
         assert "INDISTINGUISHABLE" in out
         assert "destroying information" not in out
+
+
+# ── theme: the second relation ──
+
+
+@requires_data
+def test_theme_groups_are_objective_and_independent_of_training_supervision():
+    """Issue #12's constraint: an eval mined from roles or tags measures only
+    whether training memorised its own supervision. Tribe comes from the TYPE
+    LINE, gated by whether EDHREC treats it as an archetype somebody builds —
+    neither of which `train_ability` mines positives from."""
+    import pandas as pd
+
+    from manamap.config import MECHANICAL_TAG_NAMES, OUTPUT_CSV_PATH, ROLE_NAMES
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    groups = E.theme_groups(frame)
+    if not groups:
+        pytest.skip("EDHREC cache absent")
+    assert len(groups) >= 40, f"only {len(groups)} tribes — the arm is underpowered"
+    forbidden = {n.lower() for n in ROLE_NAMES} | {n.lower() for n in MECHANICAL_TAG_NAMES}
+    for group in groups:
+        tribe = group["id"].split(":", 1)[1].lower()
+        assert tribe not in forbidden, f"{tribe} is training supervision, not a theme"
+
+
+@requires_data
+def test_a_tribe_nobody_builds_is_not_a_theme_group():
+    """The EDHREC gate is what stops this being 'shares a word in the type line'.
+    Removing it lets body types and one-off subtypes in."""
+    import pandas as pd
+
+    from manamap.config import OUTPUT_CSV_PATH
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    gated = {g["id"] for g in E.theme_groups(frame)}
+    if not gated:
+        pytest.skip("EDHREC cache absent")
+    ungated = {g["id"] for g in E.theme_groups(frame, slugs={"__match_everything__"}
+                                               | {t.lower() for t in ("dragon",)})}
+    assert gated != ungated, "the archetype gate changes nothing — it is not applied"
+    assert E.theme_groups(frame, slugs=set()) == [], \
+        "with no EDHREC cache it must report NOTHING, not a different relation"
+
+
+@requires_data
+def test_the_theme_split_does_not_move_when_the_corpus_does():
+    """Split is a hash of the tribe NAME, not of row indices, so a corpus refresh
+    that changes every row cannot silently reshuffle dev and test."""
+    import pandas as pd
+
+    from manamap.config import OUTPUT_CSV_PATH
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    a = {g["id"]: g["split"] for g in E.theme_groups(frame)}
+    shifted = frame.iloc[::-1].reset_index(drop=True)
+    b = {g["id"]: g["split"] for g in E.theme_groups(shifted)}
+    if not a:
+        pytest.skip("EDHREC cache absent")
+    shared = set(a) & set(b)
+    assert len(shared) >= 40
+    assert all(a[k] == b[k] for k in shared), "the split moved with the row order"
+
+
+def test_centroid_collapse_detects_a_narrow_cone():
+    """The number that explains commander search. A cone whose cards are already
+    alike has nothing left after averaging; a spread-out space keeps headroom."""
+    rng = np.random.default_rng(11)
+    wide = rng.normal(size=(2000, 32))
+    wide /= np.linalg.norm(wide, axis=1, keepdims=True)
+    axis = rng.normal(size=32)
+    cone = axis + rng.normal(size=(2000, 32)) * 0.05      # everything near one axis
+    cone /= np.linalg.norm(cone, axis=1, keepdims=True)
+    assert E.centroid_collapse(cone)["headroom"] < E.centroid_collapse(wide)["headroom"]
+    assert E.centroid_collapse(cone)["centroid"] > 0.9
+
+
+@requires_data
+def test_both_relations_are_reported_and_they_disagree():
+    """THE POINT OF THE SECOND ARM. The function space WINS on 'same job' and
+    LOSES on 'same theme' — measured -0.371 at pool 500, interval excluding zero
+    over 55 groups. Reporting only the first is how a total failure on theme
+    (0.005 top-1 on tribal commanders) stayed invisible."""
+    fn_text, fn_curve = E.pool_section(relation="function")
+    th_text, th_curve = E.pool_section(relation="theme")
+    if not (fn_text and th_text):
+        pytest.skip("artifacts or EDHREC cache absent")
+    assert "relation: FUNCTION" in fn_text and "relation: THEME" in th_text
+    at500 = lambda c: E.paired_bootstrap(c[500]["function (ability)"],
+                                         c[500]["text baseline (frozen MiniLM)"])
+    assert at500(th_curve)["n"] >= 40, "the theme arm should be the better-powered one"
+    assert at500(th_curve)["gap"] < at500(fn_curve)["gap"], \
+        "the two relations must be measured separately, not conflated"

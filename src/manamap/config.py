@@ -169,6 +169,35 @@ EVAL_GEOMETRY_SAMPLE = 4000
 #: sample to 5 test / 2 dev groups whose splits then disagreed in SIGN.
 EVAL_POOL_SIZES = (100, 500, 2000, 10000, None)   # None = the whole corpus
 
+#: THEME IS A SECOND RELATION, AND NO EVAL MEASURED IT UNTIL 2026-08-31.
+#:
+#: The golden set asks "do these cards do the same job". `commander-search` —
+#: the most-used similarity surface in the product — asks something else
+#: entirely, and the function space fails it catastrophically. Measured over the
+#: 73 frozen pool commanders that resolve, split by whether the commander shares
+#: a creature subtype with >=15% of its own deck:
+#:
+#:     subset            function    text   layout   text - function
+#:     tribal (20)          0.005   0.470    0.145            +0.465
+#:     non-tribal (53)      0.058   0.179    0.028            +0.121
+#:
+#: The function space is at FLOOR on tribal — 0.005 — and even the layout space,
+#: which knows only colour and type, beats it. That is not a training defect:
+#: `train_ability` mines positives from ROLE_PATTERNS and MECHANICAL_TAGS, and
+#: "Vampire" is neither. The space discards tribe BY DESIGN, and nothing measured
+#: it, so the cost only showed up as an unexplained loss on one product surface.
+#:
+#: GROUPS ARE OBJECTIVE, not authored. A creature subtype from the type line,
+#: kept only when EDHREC's own `tag_counts` treat that tribe as an archetype
+#: somebody builds — so the relation is "a deck theme", not "shares a word".
+#: 87 tribes qualify, against the golden set's 40 hand-authored groups.
+#:
+#: THE INFORMATION IS IN THE INPUT, deliberately. `embedding_text` carries the
+#: type line, so a space CAN retain tribe. This measures whether it DOES.
+EVAL_THEME_MIN_MEMBERS = 40
+EVAL_THEME_MAX_MEMBERS = 900      # above this a subtype is a body type, not a theme
+EVAL_THEME_GROUP_SIZE = 12        # sampled per tribe, seeded, to bound runtime
+
 #: Resamples for the paired bootstrap over groups. 4,000 is where the interval
 #: endpoints stop moving in the third decimal on this sample size.
 EVAL_BOOTSTRAP_RESAMPLES = 4000
