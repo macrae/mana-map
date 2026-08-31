@@ -1,0 +1,228 @@
+{
+ "_comment": "HAND-AUTHORED HARD NEGATIVES — §6.3's failure mode: 'cards with similar phrasing that do meaningfully different things'. MINED as candidates, but every pair is accepted or rejected by the pilot, because an eval mined from the same regexes training uses would measure only whether training memorised its own supervision. A pair is a FAILURE when a space calls the two cards near-identical. Report 1 - cosine: higher is better. Set `accepted` to true or false; null means unreviewed and the pair is NOT scored. Rejected pairs are KEPT, with their reason: the record of a judgement is worth more than a shorter file, and the next person will otherwise re-mine the same candidates.",
+ "pairs": [
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Seachrome Coast",
+    "Deserted Beach"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.998,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Blackcleave Cliffs",
+    "Haunted Ridge"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9981,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Blooming Marsh",
+    "Deathcap Glade"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9981,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Copperline Gorge",
+    "Rockfall Vale"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9978,
+    "function": 0.9997
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Razorverge Thicket",
+    "Overgrown Farmland"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9978,
+    "function": 0.9997
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Spirebluff Canal",
+    "Stormcarved Coast"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9979,
+    "function": 0.9997
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Concealed Courtyard",
+    "Shattered Sanctum"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.998,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Botanical Sanctum",
+    "Dreamroot Cascade"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9979,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Darkslick Shores",
+    "Shipwreck Marsh"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9982,
+    "function": 0.9998
+   }
+  },
+  {
+   "kind": "inversion",
+   "why": "game stage is inverted by one word: fastlands are early-game, slowlands late",
+   "cards": [
+    "Inspiring Vantage",
+    "Sundown Pass"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9978,
+    "function": 0.9997
+   }
+  },
+  {
+   "kind": "symmetry",
+   "why": "one is one-sided, the other hits every player including you",
+   "cards": [
+    "Sign in Blood",
+    "Risky Shortcut"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9444,
+    "function": 0.9492
+   }
+  },
+  {
+   "kind": "symmetry",
+   "why": "one is one-sided, the other hits every player including you",
+   "cards": [
+    "Night's Whisper",
+    "Risky Shortcut"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9417,
+    "function": 0.9648
+   }
+  },
+  {
+   "kind": "symmetry",
+   "why": "one is one-sided, the other hits every player including you",
+   "cards": [
+    "Underworld Dreams",
+    "Spiteful Visions"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9416,
+    "function": 0.9617
+   }
+  },
+  {
+   "kind": "scale",
+   "why": "the same shape at a magnitude that changes what the card is for",
+   "cards": [
+    "Contagion Clasp",
+    "Contagion Engine"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9727,
+    "function": 0.9917
+   }
+  },
+  {
+   "kind": "scale",
+   "why": "the same shape at a magnitude that changes what the card is for",
+   "cards": [
+    "Flashback",
+    "Past in Flames"
+   ],
+   "accepted": true,
+   "measured_2026_08_31": {
+    "text": 0.9244,
+    "function": 0.9362
+   }
+  },
+  {
+   "kind": "cost",
+   "why": "the same effect, one gated behind a cost you must be able to pay",
+   "cards": [
+    "Think Twice",
+    "Eviscerator's Insight"
+   ],
+   "accepted": false,
+   "measured_2026_08_31": {
+    "text": 0.9099,
+    "function": 0.9304
+   },
+   "rejected_because": "the distinction is real — an additional cost you cannot pay means you cannot cast at all — but it is not one players make when judging whether two cards do the same job. Rejected by the pilot 2026-08-31."
+  },
+  {
+   "kind": "cost",
+   "why": "the same effect, one gated behind a cost you must be able to pay",
+   "cards": [
+    "Tormenting Voice",
+    "Romantic Rendezvous"
+   ],
+   "accepted": false,
+   "measured_2026_08_31": {
+    "text": 0.9003,
+    "function": 0.9779
+   },
+   "rejected_because": "the distinction is real — an additional cost you cannot pay means you cannot cast at all — but it is not one players make when judging whether two cards do the same job. Rejected by the pilot 2026-08-31."
+  }
+ ]
+}

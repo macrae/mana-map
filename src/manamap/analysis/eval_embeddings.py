@@ -40,6 +40,7 @@ from manamap.config import (
     EVAL_THEME_GROUP_SIZE,
     EVAL_THEME_MAX_MEMBERS,
     EVAL_THEME_MIN_MEMBERS,
+    HARD_NEGATIVES_PATH,
     EVAL_SPREAD_PROBES,
     OUTPUT_CSV_PATH,
     SIMILARITY_GOLDEN_PATH,
@@ -155,6 +156,70 @@ def neighbour_spread(embeddings, probes=EVAL_SPREAD_PROBES, seed=EVAL_SEED):
         if len(top) >= 2:
             gaps.append(top[0][1] - top[-1][1])
     return float(np.mean(gaps)) if gaps else 0.0
+
+
+
+# ── Hard negatives: is the space keeping unlike things APART? ───────────────
+
+
+def load_hard_negatives(path=HARD_NEGATIVES_PATH):
+    """Accepted pairs only. A `null` verdict is unreviewed and is NOT scored."""
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return [p for p in doc.get("pairs", []) if p.get("accepted") is True]
+
+
+def hard_negative_separation(embeddings, names, pairs=None):
+    """`1 - cosine` per accepted pair, plus the mean. Higher is better.
+
+    THE ONLY ARM THAT ASKS THE OPPOSITE QUESTION. Recall measures whether like
+    things are near; this measures whether UNLIKE things are apart, which is the
+    failure §6.3 names and the one a reconstruction objective is most likely to
+    make worse — a model rewarded for predicting wording will happily place two
+    cards that differ by one inverting word on top of each other.
+
+    Deliberately has no threshold. A pair scoring 0.002 has failed and the
+    per-pair number says so; picking a line would only invite arguing about it.
+    """
+    pairs = load_hard_negatives() if pairs is None else pairs
+    row = {}
+    for i, name in enumerate(names):
+        row.setdefault(name, i)
+    scored = []
+    for pair in pairs:
+        a, b = pair["cards"]
+        if a not in row or b not in row:
+            continue
+        gap = 1.0 - float(embeddings[row[a]] @ embeddings[row[b]])
+        scored.append({"cards": [a, b], "kind": pair.get("kind"), "separation": gap})
+    scored.sort(key=lambda s: s["separation"])
+    mean = float(np.mean([s["separation"] for s in scored])) if scored else 0.0
+    return {"mean_separation": mean, "pairs": scored, "n": len(scored)}
+
+
+def format_hard_negatives(spaces, names, worst=3):
+    """Per-space mean, and the pairs each space fails hardest."""
+    pairs = load_hard_negatives()
+    if not pairs:
+        return ""
+    lines = ["", f"  HARD NEGATIVES — {len(pairs)} hand-authored pairs that should be APART",
+             f"    {'space':32s} {'mean 1-cos':>11s}   worst pair (separation)"]
+    for label, emb in spaces.items():
+        result = hard_negative_separation(emb, names, pairs)
+        if not result["n"]:
+            continue
+        first = result["pairs"][0]
+        lines.append(f"    {label:32s} {result['mean_separation']:>11.4f}   "
+                     f"{first['cards'][0]} / {first['cards'][1]} ({first['separation']:.4f})")
+    lines += ["",
+              "    Higher is better: these cards should NOT look alike. The anchor family",
+              "    is the fastland/slowland cycle — one word inverts the game stage — and",
+              "    every space scores those pairs near zero today. A reconstruction",
+              "    objective is the kind most likely to make this worse, so it is measured",
+              "    before the architecture changes rather than after."]
+    return "\n".join(lines)
 
 
 
@@ -518,6 +583,8 @@ def main():
             continue
     if spaces:
         print(format_collapse(spaces))
+        print(format_hard_negatives(
+            spaces, pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)["name"].tolist()))
 
     # A BARE DIFFERENCE IS NOT A FINDING. This block used to print
     # "** Training is destroying information **" off `-0.012 recall@10`, with no

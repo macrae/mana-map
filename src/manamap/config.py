@@ -194,6 +194,28 @@ EVAL_POOL_SIZES = (100, 500, 2000, 10000, None)   # None = the whole corpus
 #:
 #: THE INFORMATION IS IN THE INPUT, deliberately. `embedding_text` carries the
 #: type line, so a space CAN retain tribe. This measures whether it DOES.
+#: HAND-AUTHORED HARD NEGATIVES — the one arm a model cannot memorise its way to.
+#:
+#: §6.3's stated failure mode: "cards with similar phrasing that do meaningfully
+#: different things." The golden set and the theme groups both measure whether
+#: like things are NEAR; nothing measured whether unlike things are APART, and a
+#: reconstruction objective is exactly the kind that would make it worse.
+#:
+#: Candidates were mined (near-identical in BOTH spaces, then probed for a token
+#: that inverts the card) and every pair was accepted or rejected by hand. That
+#: split matters: an eval mined from the same regexes training uses would measure
+#: only whether training memorised its own supervision.
+#:
+#: 15 accepted, 2 rejected. The anchor family is the fastland/slowland cycle —
+#: "enters tapped unless you control two or FEWER other lands" against "two or
+#: MORE", same colours, same template, opposite game stage. Both spaces score
+#: every one of those ten pairs at 0.998.
+#:
+#: SCORED AS `1 - cosine`, per pair, higher is better. No group structure and no
+#: threshold: a space that calls an inverted pair identical has failed, visibly,
+#: and the per-pair figure says which one.
+HARD_NEGATIVES_PATH = DATA_DIR / "eval" / "hard_negatives.json"
+
 EVAL_THEME_MIN_MEMBERS = 40
 EVAL_THEME_MAX_MEMBERS = 900      # above this a subtype is a body type, not a theme
 EVAL_THEME_GROUP_SIZE = 12        # sampled per tribe, seeded, to bound runtime

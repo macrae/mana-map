@@ -291,3 +291,97 @@ def test_both_relations_are_reported_and_they_disagree():
     assert at500(th_curve)["n"] >= 40, "the theme arm should be the better-powered one"
     assert at500(th_curve)["gap"] < at500(fn_curve)["gap"], \
         "the two relations must be measured separately, not conflated"
+
+
+# ── hard negatives: unlike things must stay apart ──
+
+
+def test_only_accepted_pairs_are_scored():
+    """RE-INTRODUCING THE BUG THIS FILE EXISTS TO PREVENT. Candidates were MINED
+    and then judged by hand; scoring an unreviewed pair silently turns a
+    hand-authored eval back into a mined one, which measures whether training
+    memorised its own supervision."""
+    import json
+    import tempfile
+    from pathlib import Path
+
+    doc = {"pairs": [
+        {"cards": ["A", "B"], "accepted": True, "kind": "inversion"},
+        {"cards": ["C", "D"], "accepted": False, "kind": "cost"},
+        {"cards": ["E", "F"], "accepted": None, "kind": "inversion"},
+    ]}
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "hn.json"
+        path.write_text(json.dumps(doc))
+        got = E.load_hard_negatives(path)
+    assert [p["cards"] for p in got] == [["A", "B"]], "null or false must not score"
+
+
+def test_a_missing_file_reports_nothing_rather_than_crashing():
+    from pathlib import Path
+
+    assert E.load_hard_negatives(Path("/nonexistent/hard_negatives.json")) == []
+
+
+def test_separation_rewards_a_space_that_keeps_the_pair_apart():
+    names = ["A", "B"]
+    pairs = [{"cards": ["A", "B"], "kind": "inversion"}]
+    same = np.array([[1.0, 0.0], [1.0, 0.0]])                 # identical: FAILS
+    apart = np.array([[1.0, 0.0], [0.0, 1.0]])                # orthogonal: passes
+    assert E.hard_negative_separation(same, names, pairs)["mean_separation"] < 0.01
+    assert E.hard_negative_separation(apart, names, pairs)["mean_separation"] > 0.9
+
+
+def test_the_worst_pair_is_reported_first():
+    """Per-pair, not just a mean — the mean hides which distinction a space
+    cannot make, and that is the actionable half."""
+    names = ["A", "B", "C", "D"]
+    pairs = [{"cards": ["A", "B"], "kind": "x"}, {"cards": ["C", "D"], "kind": "y"}]
+    emb = np.array([[1.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 0.0]])
+    out = E.hard_negative_separation(emb, names, pairs)
+    assert out["pairs"][0]["cards"] == ["C", "D"], "worst first"
+
+
+@requires_data
+def test_every_accepted_pair_resolves_and_a_rejected_one_keeps_its_reason():
+    """The golden set's rule, applied here: a hand-edited file against a
+    regenerated corpus must surface a renamed card, not shrink silently."""
+    import json
+
+    import pandas as pd
+
+    from manamap.config import HARD_NEGATIVES_PATH, OUTPUT_CSV_PATH
+
+    if not HARD_NEGATIVES_PATH.exists():
+        pytest.skip("hard negatives not authored")
+    doc = json.loads(HARD_NEGATIVES_PATH.read_text())
+    names = set(pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)["name"])
+    accepted = [p for p in doc["pairs"] if p.get("accepted") is True]
+    assert len(accepted) >= 10
+    missing = [c for p in accepted for c in p["cards"] if c not in names]
+    assert not missing, f"accepted pairs name cards not in the corpus: {missing}"
+    for pair in doc["pairs"]:
+        if pair.get("accepted") is False:
+            assert pair.get("rejected_because"), \
+                f"{pair['cards']} was rejected with no reason recorded"
+
+
+@requires_data
+def test_the_arm_reports_and_no_space_currently_passes_it():
+    """The baseline the replacement architecture has to beat, recorded as a
+    measurement rather than a floor: mean 1-cos of 0.0133 (function), 0.0197
+    (text), 0.0891 (layout) on 2026-08-31. Every space fails — the fastland /
+    slowland pairs are separated by as little as 0.0000."""
+    import pandas as pd
+
+    from manamap.config import ABILITY_EMBEDDINGS_PATH, OUTPUT_CSV_PATH
+
+    if not ABILITY_EMBEDDINGS_PATH.exists():
+        pytest.skip("embeddings not built")
+    names = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)["name"].tolist()
+    out = E.hard_negative_separation(E._normalized(ABILITY_EMBEDDINGS_PATH), names)
+    assert out["n"] >= 10, "the arm scored almost nothing"
+    assert 0.0 <= out["mean_separation"] <= 1.0
+    assert out["pairs"][0]["separation"] < 0.05, (
+        "the anchor family no longer fails — if a retrain fixed it, update this "
+        "test and the finding it guards rather than deleting it")
