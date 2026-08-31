@@ -157,6 +157,32 @@ class Numeric(Field):
         return np.array([scaled, 0.0])
 
 
+class DerivedNumeric(Numeric):
+    """A number COMPUTED from the card rather than read from a column.
+
+    The mana fields are all of this kind, and the first cut got it wrong: they
+    were built as plain `Numeric`, which reads `card["pips_W"]` — a column that
+    does not exist — so every one of them read ABSENT on every card. Gishath's
+    `{5}{R}{G}{W}` produced six absent mana fields.
+
+    Caught by `test_every_field_is_populated_somewhere`, which exists precisely
+    because a field that is never present is a column of zeros wearing a name.
+    """
+
+    def __init__(self, name, clip, extract, applies=None):
+        super().__init__(name, clip)
+        self.extract = extract
+        self.applies = applies
+
+    def read(self, card):
+        if self.applies is not None and not self.applies(card):
+            return ABSENT, None
+        try:
+            return PRESENT, float(self.extract(card))
+        except Exception:                          # noqa: BLE001 - malformed card
+            return ABSENT, None
+
+
 class Categorical(Field):
     """One-of-N with an explicit OTHER column."""
 
@@ -213,8 +239,32 @@ class SetOf(Field):
 # ── the extractors, kept out of the classes so they are testable alone ──
 
 
+def _as_list(value):
+    """A cell that means "several things" -> a list, whatever shape it arrived in.
+
+    `cards.csv` comma-joins these columns (`"Vigilance, Haste, Trample"`) but
+    Scryfall's JSON — which this encoder should also accept, since it is the
+    upstream source — gives real lists. `keywords_of` handled only the first, so
+    a genuine `["Flying", "Trample"]` was stringified and comma-split into the
+    tokens `"['Flying'"` and `"'Trample']"`.
+
+    That is the `nan`-as-a-literal-token bug wearing a different hat, and it was
+    live in the TEST FIXTURE — `_card()` passes a real list, so every keyword
+    assertion in this suite was reading garbage that a set field accepted without
+    complaint. Nothing failed until a keyword became its own field with a value
+    to check.
+    """
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple, set)):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return [part.strip() for part in _clean(value).split(",") if part.strip()]
+
+
 def color_identity_of(card):
-    return [c for c in _clean(card.get("color_identity")) if c in "WUBRG"]
+    # Correct for both shapes ON PURPOSE. The character filter made the list case
+    # work by luck, which is not the same as working.
+    return [c for c in "".join(_as_list(card.get("color_identity"))) if c in "WUBRG"]
 
 
 def subtypes_of(card):
@@ -230,11 +280,118 @@ def card_types_of(card):
 
 
 def keywords_of(card):
-    return [k.strip() for k in _clean(card.get("keywords")).split(",") if k.strip()]
+    return _as_list(card.get("keywords"))
 
 
 def mana_symbols_of(card):
     return _PIP.findall(_clean(card.get("mana_cost")))
+
+
+class Binary(Field):
+    """One yes/no fact with its own mask.
+
+    THE GRANULARITY THAT MAKES MASKING USEFUL. `keywords` as a single 131-wide
+    set hides flying AND trample AND lifelink together, so the only question it
+    can ask is "what abilities does this card have" — never "does this card have
+    FLYING". The second is a far better imputation task and the one a player
+    would recognise, and it needs the keyword to be its own field.
+
+    `present` is always 1: a card definitively does or does not have flying, so
+    there is no ABSENT state here — unlike power, which a land genuinely lacks.
+    """
+
+    kind = "binary"
+    width = 1
+
+    def __init__(self, name, predicate, applies=None):
+        super().__init__(name)
+        self.predicate = predicate
+        self.applies = applies
+
+    def read(self, card):
+        # `applies` separates "no" from "the question does not apply". A card
+        # without a mana cost is not a non-X-spell; there is no cost to look at.
+        if self.applies is not None and not self.applies(card):
+            return ABSENT, None
+        try:
+            return PRESENT, bool(self.predicate(card))
+        except Exception:                          # noqa: BLE001 - malformed card
+            return PRESENT, False
+
+    def _encode_value(self, value):
+        return np.array([1.0 if value else 0.0])
+
+
+#: Keywords that get their OWN maskable field, by corpus frequency. The tail
+#: (879 distinct, this covers the head) stays in a `keywords_other` set — a
+#: keyword appearing on 40 cards does not earn a column of its own, and folding
+#: it into OTHER keeps "has a keyword I do not model" representable.
+EVERGREEN_KEYWORDS = (
+    "Flying", "Trample", "Vigilance", "Haste", "Flash", "Menace", "First strike",
+    "Double strike", "Lifelink", "Deathtouch", "Reach", "Defender", "Hexproof",
+    "Indestructible", "Ward", "Protection", "Equip", "Enchant", "Cycling",
+    "Kicker", "Flashback", "Scry", "Mill", "Surveil", "Crew", "Regenerate",
+)
+
+#: Mana symbols that are a QUESTION rather than a count.
+_X_RE = re.compile(r"\{X\}")
+_HYBRID_RE = re.compile(r"\{[^}]*/[^}]*\}")
+_PHYREXIAN_RE = re.compile(r"\{[^}]*/P\}", re.IGNORECASE)
+
+
+def _has_cost(card):
+    """Does this card have a mana cost AT ALL?
+
+    THE ABSENT-IS-NOT-ZERO LINE, and the first cut was on the wrong side of it.
+    Command Tower has no mana cost; Ornithopter costs `{0}`. Both read
+    `generic_pips = 0.0, PRESENT` until this guard existed, which tells the model
+    a land costs zero generic mana — a MEASUREMENT — when the truth is that the
+    question does not apply. 1,760 cards have no mana cost.
+
+    Caught by `test_every_field_is_populated_somewhere_and_absent_somewhere`,
+    which asserts every field is absent SOMEWHERE. `generic_pips` never was.
+    """
+    return bool(_clean(card.get("mana_cost")).strip())
+
+
+def _pip_count(card, colour):
+    """How many pips of one colour. Hybrid counts toward BOTH halves.
+
+    `manabase.count_pips` splits a hybrid half-and-half because it is sizing a
+    mana base and half a source is the honest answer there. Here the question is
+    "can this card want blue", and a hybrid card genuinely can — so it counts
+    whole, and the two functions answer two different questions on purpose.
+    """
+    total = 0
+    for symbol in _PIP.findall(_clean(card.get("mana_cost"))):
+        if colour in symbol.upper().split("/"):
+            total += 1
+    return total
+
+
+def _generic_count(card):
+    for symbol in _PIP.findall(_clean(card.get("mana_cost"))):
+        if symbol.isdigit():
+            return int(symbol)
+    return 0
+
+
+#: Fields that are never ABSENT anywhere in the corpus — a MEASUREMENT, checked
+#: in both directions by `test_every_field_is_populated_somewhere`. Two reasons a
+#: field lands here, and they are different:
+#:
+#:   * **By construction.** Every `kw_*` binary: a card definitively has flying or
+#:     does not, so there is no third state to represent. (The mana binaries are
+#:     NOT here — they carry `_has_cost`, because a land is not a non-X-spell.)
+#:   * **By corpus.** `cmc`, `supertype`, `rarity`, `layout`, `card_types` could
+#:     in principle be missing and simply never are across all 34,890 rows.
+#:
+#: Declaring it rather than exempting it is the point: a hand-kept exemption list
+#: only ever grows, and silently. This set is asserted in BOTH directions, so a
+#: field that starts or stops being always-present fails the suite either way.
+ALWAYS_PRESENT = frozenset({
+    "cmc", "supertype", "rarity", "layout", "card_types",
+} | {f"kw_{k.lower().replace(' ', '_')}" for k in EVERGREEN_KEYWORDS})
 
 
 def build_schema(vocabs):
@@ -251,8 +408,28 @@ def build_schema(vocabs):
         SetOf("color_identity", list("WUBRG"), color_identity_of),
         SetOf("card_types", vocabs["card_types"], card_types_of),
         SetOf("subtypes", vocabs["subtypes"], subtypes_of),
-        SetOf("keywords", vocabs["keywords"], keywords_of),
-        SetOf("mana_symbols", vocabs["mana_symbols"], mana_symbols_of),
+        # MANA, DECOMPOSED. One `mana_symbols` set could not be asked "how many
+        # blue pips" or "is this an X spell" — both of which are facts a player
+        # reads off a card at a glance and a model should be able to impute.
+        DerivedNumeric("generic_pips", (0.0, 12.0), _generic_count, _has_cost),
+        *[DerivedNumeric(f"pips_{c}", (0.0, 5.0),
+                         (lambda col: lambda card: _pip_count(card, col))(c),
+                         _has_cost)
+          for c in "WUBRG"],
+        Binary("is_x_spell",
+               lambda c: bool(_X_RE.search(_clean(c.get("mana_cost")))), _has_cost),
+        Binary("has_hybrid",
+               lambda c: bool(_HYBRID_RE.search(_clean(c.get("mana_cost")))), _has_cost),
+        Binary("has_phyrexian",
+               lambda c: bool(_PHYREXIAN_RE.search(_clean(c.get("mana_cost")))), _has_cost),
+        # KEYWORDS, ONE FIELD EACH, so "does this have flying" is a question the
+        # model can be asked. The tail stays in a set.
+        *[Binary(f"kw_{k.lower().replace(' ', '_')}",
+                 (lambda name: lambda c: name in keywords_of(c))(k))
+          for k in EVERGREEN_KEYWORDS],
+        SetOf("keywords_other",
+              [k for k in vocabs["keywords"] if k not in EVERGREEN_KEYWORDS],
+              lambda c: [k for k in keywords_of(c) if k not in EVERGREEN_KEYWORDS]),
     ]
 
 

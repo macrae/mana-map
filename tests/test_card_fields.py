@@ -124,7 +124,8 @@ def test_nan_is_absent_not_the_string_nan():
         state, value = field.read(_card(**{name: float("nan")}))
         assert state == CF.ABSENT, f"{name} read NaN as {state}/{value!r}"
         assert value != "nan"
-    for name, column in (("keywords", "keywords"), ("color_identity", "color_identity"),
+    for name, column in (("keywords_other", "keywords"),
+                         ("color_identity", "color_identity"),
                          ("subtypes", "type_line")):
         field = next(f for f in SCHEMA if f.name == name)
         state, value = field.read(_card(**{column: float("nan")}))
@@ -237,8 +238,21 @@ def test_the_name_is_not_a_field():
 
 
 def test_every_field_is_populated_somewhere_and_absent_somewhere():
-    """A field that is always present carries no `absent` signal to learn from;
-    one that is never present is a column of zeros wasting capacity."""
+    """Presence and absence, asserted against a DECLARED set, in both directions.
+
+    A field that is never present is a column of zeros wearing a name; a field
+    that is never absent carries no absence signal to learn from. Both are worth
+    knowing, but some fields are legitimately always present — every `kw_*`
+    binary, because a card definitively has flying or does not.
+
+    The first version carried a hand-written exemption list inside the test.
+    That list only ever grows, and it grows silently: when the mana fields landed
+    reading `generic_pips = 0.0` on a land, the honest fix was a guard, and an
+    exemption list makes "add the name to the list" the cheaper move. So the set
+    lives in `card_fields.ALWAYS_PRESENT` and is checked BOTH WAYS — a field that
+    starts being always-present fails, and one that stops being always-present
+    fails too.
+    """
     import pandas as pd
 
     from manamap.config import OUTPUT_CSV_PATH
@@ -248,14 +262,47 @@ def test_every_field_is_populated_somewhere_and_absent_somewhere():
     cards = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records")
     schema = CF.build_schema(CF.vocabularies(cards))
     seen = {f.name: {CF.PRESENT: 0, CF.ABSENT: 0} for f in schema}
-    for card in cards[:6000]:
+    for card in cards:
         for field in schema:
             seen[field.name][field.read(card)[0]] += 1
+
+    assert len(seen) > 40, "schema shrank unexpectedly"
     for name, counts in seen.items():
         assert counts[CF.PRESENT] > 0, f"{name} is never present"
-        if name not in ("cmc", "supertype", "rarity", "layout", "card_types"):
-            assert counts[CF.ABSENT] > 0, f"{name} is never absent — no signal in it"
+    measured = {n for n, c in seen.items() if c[CF.ABSENT] == 0}
+    assert measured == set(CF.ALWAYS_PRESENT), (
+        f"never absent but undeclared: {sorted(measured - set(CF.ALWAYS_PRESENT))}; "
+        f"declared but absent somewhere: {sorted(set(CF.ALWAYS_PRESENT) - measured)}")
 
+
+def test_a_card_with_no_mana_cost_is_absent_not_zero():
+    """Command Tower does not cost zero generic mana — it has no cost at all.
+
+    THE BUG THIS WAS WRITTEN FOR SHIPPED AND WAS CAUGHT BY THE TEST ABOVE. Every
+    mana field read `PRESENT, 0.0` on all 1,760 costless cards, which tells the
+    model a land's cost was MEASURED at zero. Ornithopter's `{0}` is a real
+    measurement of zero, and the two must not encode identically.
+    """
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    mana = [f for f in schema
+            if f.name.startswith(("pips_", "generic_", "is_x", "has_hy", "has_ph"))]
+    assert len(mana) == 9
+
+    costless = _card(mana_cost=float("nan"), type_line="Land")
+    for field in mana:
+        assert field.read(costless)[0] == CF.ABSENT, f"{field.name} on a costless card"
+
+    free = _card(mana_cost="{0}")
+    generic = next(f for f in mana if f.name == "generic_pips")
+    assert generic.read(free) == (CF.PRESENT, 0.0)
+
+    # And the two must not produce the same columns.
+    costless_row, offsets = CF.encode(costless, schema)
+    free_row, _ = CF.encode(free, schema)
+    lo, hi = offsets["generic_pips"]
+    assert not np.array_equal(costless_row[lo:hi], free_row[lo:hi])
+    assert list(costless_row[lo:hi]) == [0.0, 0.0, 0.0, 0.0]   # value, is_var, ABSENT, unmasked
+    assert list(free_row[lo:hi]) == [0.0, 0.0, 1.0, 0.0]       # a measured zero, PRESENT
 
 def test_the_real_corpus_encodes_without_a_single_non_finite_value():
     import pandas as pd
@@ -273,3 +320,98 @@ def test_the_real_corpus_encodes_without_a_single_non_finite_value():
         assert vector.min() >= -1e-6 and vector.max() <= 1.0 + 1e-6, card.get("name")
         checked += 1
     assert checked > 4000, f"only {checked} cards swept"
+
+
+def test_pips_are_counted_per_colour_including_hybrid():
+    """Each colour's pips are their own field, so each can be masked alone.
+
+    Hybrid counts toward BOTH halves here, which is deliberately NOT what
+    `manabase.count_pips` does — that one splits a hybrid half-and-half because
+    it is sizing a mana base, where half a source is the honest answer. The
+    question here is "can this card want blue", and a `{U/R}` card genuinely can.
+    """
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    pip = {c: next(f for f in schema if f.name == f"pips_{c}") for c in "WUBRG"}
+    generic = next(f for f in schema if f.name == "generic_pips")
+
+    cases = [
+        ("{5}{R}{G}{W}", {"W": 1, "R": 1, "G": 1}, 5),      # Gishath
+        ("{U}{U}{U}", {"U": 3}, 0),                          # triple pip
+        ("{2}{U/R}", {"U": 1, "R": 1}, 2),                   # hybrid: both halves
+        ("{U/P}", {"U": 1}, 0),                              # Phyrexian
+        ("{X}{R}", {"R": 1}, 0),                             # X is not generic
+        ("{0}", {}, 0),                                      # a real zero
+    ]
+    for cost, expected, want_generic in cases:
+        card = _card(mana_cost=cost)
+        for colour in "WUBRG":
+            state, value = pip[colour].read(card)
+            assert state == CF.PRESENT
+            assert value == expected.get(colour, 0), f"{cost} pips_{colour}={value}"
+        assert generic.read(card)[1] == want_generic, cost
+
+
+def test_x_hybrid_and_phyrexian_are_separate_questions():
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    flag = {n: next(f for f in schema if f.name == n)
+            for n in ("is_x_spell", "has_hybrid", "has_phyrexian")}
+    for cost, x, hybrid, phyrexian in [
+        ("{X}{R}", True, False, False),
+        ("{2}{U/R}", False, True, False),
+        ("{U/P}", False, True, True),        # Phyrexian is a slash, so also hybrid
+        ("{1}{G}", False, False, False),
+        ("{X}{X}{U/B}", True, True, False),
+    ]:
+        card = _card(mana_cost=cost)
+        assert flag["is_x_spell"].read(card)[1] is x, cost
+        assert flag["has_hybrid"].read(card)[1] is hybrid, cost
+        assert flag["has_phyrexian"].read(card)[1] is phyrexian, cost
+
+
+def test_each_keyword_is_its_own_maskable_field():
+    """THE POINT OF THE SPLIT: masking flying must not hide trample.
+
+    While keywords were one 131-wide set, the only question the model could be
+    asked was "what abilities does this card have". Masking hid flying AND
+    trample AND lifelink together, so "does this creature fly" — the question a
+    player actually asks — was not expressible.
+    """
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    card = _card(keywords=["Flying", "Trample", "Lifelink"], type_line="Creature")
+
+    flying = next(f for f in schema if f.name == "kw_flying")
+    trample = next(f for f in schema if f.name == "kw_trample")
+    deathtouch = next(f for f in schema if f.name == "kw_deathtouch")
+    assert flying.read(card)[1] is True
+    assert trample.read(card)[1] is True
+    assert deathtouch.read(card)[1] is False
+
+    plain, offsets = CF.encode(card, schema)
+    hidden, _ = CF.encode(card, schema, masked=("kw_flying",))
+
+    # Exactly one field's columns moved, and it is the one that was masked.
+    # Walk `offsets` rather than re-deriving the layout: a test that recomputes
+    # the thing it is checking is testing itself.
+    moved = [name for name, (lo, hi) in offsets.items()
+             if not np.array_equal(plain[lo:hi], hidden[lo:hi])]
+    assert moved == ["kw_flying"], moved
+
+    # And the mask actually HID it — the value slot is zero, the flag is set.
+    lo, hi = offsets["kw_flying"]
+    assert list(plain[lo:hi]) == [1.0, 1.0, 0.0]      # flying, present, unmasked
+    assert list(hidden[lo:hi]) == [0.0, 1.0, 1.0]     # zeroed, present, MASKED
+
+
+def test_masking_a_keyword_does_not_leak_through_another_field():
+    """Hiding `kw_flying` must not leave the answer sitting in `keywords_other`.
+
+    The tail set is a real leak risk: if the split were done by filtering the
+    vocabulary rather than the values, "Flying" would still be in the set field
+    and masking the flag would hide nothing at all.
+    """
+    schema = CF.build_schema(CF.vocabularies([
+        _card(keywords=["Flying", "Amplify"]), _card(keywords=["Trample"])]))
+    tail = next(f for f in schema if f.name == "keywords_other")
+    values = tail.read(_card(keywords=["Flying", "Amplify"]))[1]
+    assert "Flying" not in values
+    assert "Amplify" in values

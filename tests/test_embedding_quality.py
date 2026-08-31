@@ -111,8 +111,21 @@ def test_every_golden_card_still_exists():
 
 
 @requires_data
-def test_all_three_spaces_are_measured(metrics):
-    assert set(metrics) == set(MEASURED), "an embedding artifact went missing"
+def test_every_pinned_space_is_measured(metrics):
+    """Every space in `MEASURED` must still be measurable — extras are allowed.
+
+    This was `== set(MEASURED)`, which is the right assertion when the set of
+    artifacts is closed and the wrong one the moment a SHADOW artifact exists.
+    The plan builds each new space beside the old ones and cuts over only if the
+    eval says so, so `embeddings_function_vae.npy` appearing is the design
+    working, not an artifact going missing.
+
+    Containment keeps the guarantee that matters — a pinned space that vanishes
+    or gets renamed still fails — and drops only the ability to notice a new one,
+    which is now an expected event rather than a surprising one.
+    """
+    absent = set(MEASURED) - set(metrics)
+    assert not absent, f"an embedding artifact went missing: {sorted(absent)}"
     for name, m in metrics.items():
         assert m["recall"]["test"]["queries"] > 50, f"{name}: too few queries to trust"
 

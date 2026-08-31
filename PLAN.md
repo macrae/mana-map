@@ -25,7 +25,7 @@ compact deck page replaces it. The card atlas in `viz/` is unchanged and live; t
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
 Scale (derived; `tests/test_docs_counts.py` polices these): 85 pilot subcommands,
-22 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
+23 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 

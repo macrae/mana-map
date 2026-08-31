@@ -60,9 +60,17 @@ def test_the_decoder_never_sees_the_encoder():
     cannot go down — which is what makes collapse visible instead of survivable."""
     import inspect
 
-    source = inspect.getsource(MV.CardVAE.forward)
-    assert "self.decoder(z" in source
-    assert "last_hidden_state" not in source, "the decoder is reading the encoder"
+    # THE ARGUMENT, structurally: `decode` takes `z` and nothing else, so
+    # whatever it hands the decoder is a function of `z` alone. That holds under
+    # renaming; the string `self.decoder(z` did not, and this test failed the day
+    # `forward` started calling `self.decode(z)` through a helper — a rename that
+    # changed nothing about the property being guarded.
+    assert list(inspect.signature(MV.CardVAE.decode).parameters) == ["self", "z"]
+    for method in (MV.CardVAE.forward, MV.CardVAE.decode):
+        source = inspect.getsource(method)
+        assert "last_hidden_state" not in source, (
+            f"{method.__name__} is reading the encoder")
+    assert "self.decoder(" in inspect.getsource(MV.CardVAE.decode)
     model = MV.CardVAE(unfreeze=0)
     names = [n for n, _ in model.decoder.named_parameters()]
     assert names, "decoder has no parameters"
