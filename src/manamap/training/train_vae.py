@@ -118,6 +118,87 @@ class MaskedCards(torch.utils.data.Dataset):
         return (encoded["input_ids"][0], encoded["attention_mask"][0], targets, masked)
 
 
+# ── The fast path: a frozen encoder means the sweep never recomputes it ──
+
+
+def precompute_targets(cards, tok, vocab):
+    """`[[columns per block]]` — the multi-hot target for every (card, block).
+
+    Fixed for the whole sweep: a block's tokens do not depend on any
+    hyperparameter, so tokenising them per epoch was pure repetition.
+    """
+    per_card = []
+    for card in cards:
+        parts = blocks_for(card)
+        rows = []
+        for block in BLOCKS:
+            ids = tok(parts[block], add_special_tokens=False)["input_ids"]
+            rows.append(sorted({vocab[int(t)] for t in ids if int(t) in vocab}))
+        per_card.append(rows)
+    return per_card
+
+
+class CachedViews(torch.utils.data.Dataset):
+    """A masked view as a CACHED encoder vector, plus its precomputed target."""
+
+    def __init__(self, features, indices, targets, seed=EVAL_SEED):
+        from manamap.training.vae_cache import view_index
+
+        self.features = features
+        self.indices = list(indices)
+        self.targets = targets
+        self.view_of = {block: view_index(block) for block in BLOCKS}
+        self.rng = np.random.default_rng(seed)
+        self.n_vocab = max((c for row in targets for cols in row for c in cols),
+                           default=0) + 1
+
+    def __len__(self):
+        return len(self.indices)
+
+    def __getitem__(self, i):
+        row = self.indices[i]
+        # ONE block per example on the fast path. Two-block masks were 15% of
+        # draws and caching all ten combinations costs 2.5x the space for a case
+        # a hyperparameter sweep does not need to resolve.
+        block = BLOCKS[int(self.rng.integers(len(BLOCKS)))]
+        pooled = torch.from_numpy(np.asarray(self.features[row, self.view_of[block]]))
+        target = torch.zeros(len(BLOCKS), self.n_vocab)
+        masked = torch.zeros(len(BLOCKS), dtype=torch.bool)
+        b = BLOCKS.index(block)
+        masked[b] = True
+        cols = self.targets[row][b]
+        if cols:
+            target[b, torch.tensor(cols)] = 1.0
+        return pooled, target, masked
+
+
+def run_epoch_cached(model, loader, device, optimizer=None, step=0, total_steps=1,
+                     free_bits=None, beta=None):
+    train = optimizer is not None
+    model.train(train)
+    losses, kls, mus = [], [], []
+    for pooled, targets, masked in loader:
+        pooled, targets, masked = pooled.to(device), targets.to(device), masked.to(device)
+        with torch.set_grad_enabled(train):
+            mu, logvar = model.from_pooled(pooled)
+            z = model.reparameterize(mu, logvar)
+            per_block, per_mask = _split_targets(targets, masked)
+            recon = reconstruction_loss(model.decode(z), per_block, per_mask)
+            kl, per_dim = kl_with_free_bits(mu, logvar, free_bits)
+            loss = recon + beta_at(step, total_steps, beta) * kl
+        if train:
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            step += 1
+        losses.append(float(loss.detach()))
+        kls.append(per_dim.detach().cpu().numpy())
+        if not train:
+            mus.append(mu.detach().cpu().numpy())
+    latent = np.concatenate(mus, axis=0) if mus else None
+    return float(np.mean(losses)), np.mean(kls, axis=0), step, latent
+
+
 def _split_targets(targets, masked):
     """(B, len(BLOCKS), V) -> the per-block dicts the loss expects."""
     return ({block: targets[:, i] for i, block in enumerate(BLOCKS)},
@@ -223,6 +304,74 @@ def train(unfreeze=0, epochs=EPOCHS, batch_size=BATCH_SIZE, seed=EVAL_SEED, echo
     model.load_state_dict(torch.load(VAE_MODEL_PATH, weights_only=False)["state"])
     final_units = history[best_epoch]["active_units"] if history else 0
     return model, tok, vocab, history, final_units
+
+
+def sweep(configs, epochs=12, batch_size=512, seed=EVAL_SEED, echo=_say):
+    """Train one head per config over the CACHED encoder output.
+
+    Reports EFFECTIVE DIMENSIONALITY every epoch, not just at the end. The first
+    three runs each produced a single geometry number for 85 minutes of compute,
+    and effdim 5.71 arrived with no idea whether it had been falling, rising or
+    flat. A curve costs nothing here and answers a different question.
+    """
+    import pandas as pd
+    from transformers import AutoTokenizer
+
+    from manamap.analysis.eval_embeddings import effective_dimensionality
+    from manamap.config import TEXT_MODEL_NAME
+    from manamap.training import model_vae as MV
+    from manamap.training.vae_cache import load_features
+
+    features, meta = load_features()
+    if features is None:
+        raise SystemExit(f"no usable encoder cache ({meta}). Run `manamap vae-cache`.")
+
+    device = get_device()
+    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    cards = frame.to_dict("records")
+    tok = AutoTokenizer.from_pretrained(f"sentence-transformers/{TEXT_MODEL_NAME}")
+    vocab = build_vocab(tok([serialize(c) for c in cards],
+                            add_special_tokens=False)["input_ids"])
+    targets = precompute_targets(cards, tok, vocab)
+    is_train = text_hash_split(frame)
+    train_idx = np.flatnonzero(is_train)
+    val_idx = np.flatnonzero(~is_train)
+    echo(f"  cache {features.shape}, {len(train_idx):,} train / {len(val_idx):,} val")
+
+    results = []
+    for config in configs:
+        torch.manual_seed(seed)
+        free_bits = config.get("free_bits", MV.FREE_BITS)
+        beta = config.get("beta", MV.BETA)
+        label = config.get("label", f"fb{free_bits}_b{beta}")
+        if True:
+            model = CardVAE(unfreeze=0, vocab_size=len(vocab)).to(device)
+            loaders = [torch.utils.data.DataLoader(
+                CachedViews(features, idx, targets, seed + k), batch_size=batch_size,
+                shuffle=(k == 0)) for k, idx in enumerate((train_idx, val_idx))]
+            opt = torch.optim.AdamW(
+                [p for p in model.parameters() if p.requires_grad], lr=LEARNING_RATE)
+            total = epochs * max(1, len(loaders[0]))
+            step = 0
+            row = {"label": label, "free_bits": free_bits, "beta": beta, "epochs": []}
+            started = time.time()
+            for epoch in range(epochs):
+                _tr, _k, step, _ = run_epoch_cached(model, loaders[0], device, opt,
+                                                    step, total, free_bits, beta)
+                vl, vk, _s, latent = run_epoch_cached(model, loaders[1], device,
+                                                      free_bits=free_bits, beta=beta)
+                effdim = effective_dimensionality(
+                    latent / np.maximum(np.linalg.norm(latent, axis=1, keepdims=True), 1e-8))
+                row["epochs"].append({"val": vl, "kl": float(vk.mean()),
+                                      "active": active_units(torch.tensor(vk)),
+                                      "effdim": float(effdim)})
+            last = row["epochs"][-1]
+            row["seconds"] = round(time.time() - started, 1)
+            echo(f"    {label:24} val {last['val']:.4f}  KL/dim {last['kl']:.3f}  "
+                 f"active {last['active']:>3}  effdim {last['effdim']:5.2f}  "
+                 f"{row['seconds']:.0f}s")
+            results.append(row)
+    return results
 
 
 def write_embeddings(model, tok, cards, device, path=VAE_EMBEDDINGS_PATH):

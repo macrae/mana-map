@@ -432,3 +432,74 @@ The objective moves what it was designed to move, and the two spaces now have
 **measurably complementary failures** — function/hard-negatives against
 theme/centroid-geometry. That argues for combining the objectives rather than
 substituting one for the other, with the KL actually engaged.
+
+
+## The VAE sweep, 2026-08-31 — and why the objective, not the hyperparameters, is the problem
+
+Caching the frozen encoder's output turned an 85-minute run into **66 seconds**
+(`manamap vae-cache`, 268 MB, one 13-minute build). Seven configurations, twelve
+epochs each, in the time one epoch used to take.
+
+| config | val | KL/dim | active | effdim | effdim trajectory |
+|---|---|---|---|---|---|
+| no-KL (autoencoder) | 0.0131 | 0.230 | 128 | 2.63 | 21.9 → 6.3 → 3.6 → 2.9 |
+| fb0.5 β0.25 (run 1) | 0.0131 | 0.229 | 128 | 2.63 | identical to no-KL |
+| fb0.1 β0.25 (run 2) | 0.0131 | 0.049 | 128 | 8.37 | 22.8 → 15.7 → 11.8 → 10.0 |
+| fb0.1 β0.01 (run 3) | 0.0131 | 0.071 | 128 | 5.36 | 22.5 → 10.2 → 7.0 → 5.8 |
+| no floor, β0.001 | 0.0131 | 0.002 | 0 | 20.50 | 22.2 → 15.5 → 18.7 → 18.5 |
+| no floor, β0.01 | 0.0131 | 0.000 | 0 | 64.29 | 23.3 → 49.9 → 63.4 → 63.9 |
+| no floor, β0.05 | 0.0131 | 0.000 | 0 | **65.84** | 21.8 → 67.3 → 67.5 → 67.1 |
+
+### Every number in the `effdim` column is a trap except by accident
+
+`no floor, β0.05` has the best effective dimensionality in the table — better
+than the frozen text baseline's 51.39 — and the **worst** latent. Measured raw
+posterior-mean norms:
+
+    fb0.1 β0.01        ‖mu‖ = 4.01     real signal
+    no floor β0.05     ‖mu‖ = 0.129    ≈ zero
+
+μ→0 collapses the posterior onto the prior, and L2-normalising near-zero vectors
+amplifies floating-point noise into something isotropic. **A high participation
+ratio over noise is still noise.**
+
+### Three instruments, three different lies
+
+| instrument | how it failed |
+|---|---|
+| `active_units` | reported 128/128 on run 1's degenerate space — it cannot fire when free bits disengage |
+| `effective_dim` | **highest for the emptiest latent**, as above |
+| validation loss | **0.0131 for all seven configs**, to four decimals |
+
+### Which is the actual finding
+
+Validation loss is identical across configurations whose latents differ by a
+factor of **31 in norm**. The objective cannot distinguish them at all.
+
+The bag-of-tokens target is **9.5 positive columns out of 2,048 — a 0.47%
+positive rate** — so the BCE is dominated by easy negatives. Predicting the base
+rate everywhere scores 0.0296; every configuration reaches 0.0131 and stops. The
+objective *is* learning something (a 56% reduction), but it has no gradient left
+to say which latent is better.
+
+**So three runs and a sweep of hyperparameters were tuning a loss that does not
+rank them.** The next change is to the objective — weighted positives, a ranking
+loss over tokens, or a denser target — not to β.
+
+### And the geometry decays
+
+Every configuration starts near effdim 22 and falls. The `5.71` from the first
+run was not a property of the objective; it was where a monotonic decay had
+reached by epoch 20. Reconstruction quality and latent spread move in opposite
+directions here, which is the thing worth attacking.
+
+### A Python bug worth naming, caught by a control
+
+The first sweep produced **byte-identical results for all seven configs**.
+`kl_with_free_bits(mu, logvar, free_bits=FREE_BITS)` binds its default ONCE at
+definition time, so setting `model_vae.FREE_BITS` between configs changed the
+module attribute and nothing else. Both knobs now take `None` and resolve inside.
+
+It was caught only because the sweep re-ran the three slow configurations as
+controls. Without them the three novel configs would have read as "these knobs do
+not matter" — wrong, and entirely plausible.

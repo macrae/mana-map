@@ -140,6 +140,11 @@ def build_parser():
     vae.add_argument("--epochs", type=int, default=None,
                      help="override the epoch ceiling (default 20, early stop 4)")
 
+    vc = subparsers.add_parser(
+        "vae-cache",
+        help="Cache the FROZEN encoder's output so a VAE sweep costs minutes")
+    vc.add_argument("--force", action="store_true", help="rebuild an existing cache")
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -169,6 +174,10 @@ def main():
     elif args.command == "eval-obsolescence":
         from manamap.analysis import eval_obsolescence
         eval_obsolescence.main(args)
+    elif args.command == "vae-cache":
+        from manamap.training import vae_cache
+
+        vae_cache.main(args)
     elif args.command == "train-vae":
         from manamap.training import train_vae
 

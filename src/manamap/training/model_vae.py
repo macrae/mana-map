@@ -101,9 +101,27 @@ from manamap.training.card_serialize import BLOCKS
 #: removing the incentive to zero a dimension outright.
 FREE_BITS = 0.1
 
-#: Weight on the KL after annealing. Below 1.0 because the latent's job here is
-#: to be a good METRIC SPACE, not to be a faithful generative prior.
-BETA = 0.25
+#: Weight on the KL after annealing.
+#:
+#: BETA AND THE RECONSTRUCTION SCALE MUST MATCH, and two runs bracketed the
+#: window rather than hitting it. 0.25 was chosen while `FREE_BITS = 0.5` kept
+#: the KL term at exactly zero, so its size never mattered. With the term live
+#: at `FREE_BITS = 0.1` it charged ~19 nats against a reconstruction loss of
+#: **0.013** — three orders of magnitude apart — and the latent collapsed:
+#:
+#:     run 2, beta 0.25    epoch 0  KL/dim 0.048  ACTIVE 128/128
+#:                         epoch 1  KL/dim 0.033  ACTIVE  94/128
+#:                         epoch 2  KL/dim 0.025  ACTIVE  76/128
+#:
+#: Val loss was IDENTICAL to run 1 throughout (0.0131 vs 0.0130), which is what
+#: makes it collapse rather than compression: the model switched dimensions off
+#: and lost nothing, so the reconstruction never needed them.
+#:
+#: 0.01 makes the KL a nudge against a 0.013 reconstruction loss rather than a
+#: hammer. The lesson generalises past this constant: a regularisation weight is
+#: meaningless without the scale of the term it is traded against, and ours was
+#: never checked because the term it weighted was dead.
+BETA = 0.01
 
 #: Fraction of training spent ramping beta from 0. Reconstruction first.
 ANNEAL_FRACTION = 0.3
@@ -179,6 +197,18 @@ class CardVAE(nn.Module):
         pooled = (out * mask).sum(1) / mask.sum(1).clamp(min=1e-9)
         return self.to_mu(pooled), self.to_logvar(pooled)
 
+    def from_pooled(self, pooled):
+        """(mu, logvar) from a CACHED encoder output, skipping the encoder.
+
+        Valid only while the encoder is frozen — which is exactly when the cache
+        is valid, so `train_vae` gates both on the same `unfreeze == 0`.
+        """
+        return self.to_mu(pooled), self.to_logvar(pooled)
+
+    def decode(self, z):
+        return {block: self.decoder(z + self.block_embedding(
+            torch.tensor(i, device=z.device))) for i, block in enumerate(BLOCKS)}
+
     def reparameterize(self, mu, logvar):
         """Sample at train time; return the MEAN at eval.
 
@@ -194,13 +224,10 @@ class CardVAE(nn.Module):
     def forward(self, input_ids, attention_mask):
         mu, logvar = self.encode(input_ids, attention_mask)
         z = self.reparameterize(mu, logvar)
-        return {"mu": mu, "logvar": logvar, "z": z,
-                "logits": {block: self.decoder(z + self.block_embedding(
-                    torch.tensor(i, device=z.device)))
-                    for i, block in enumerate(BLOCKS)}}
+        return {"mu": mu, "logvar": logvar, "z": z, "logits": self.decode(z)}
 
 
-def kl_with_free_bits(mu, logvar, free_bits=FREE_BITS):
+def kl_with_free_bits(mu, logvar, free_bits=None):
     """Per-dimension KL, floored at `free_bits`. Returns (loss, per-dim KL).
 
     THE FLOOR IS APPLIED PER DIMENSION, NOT TO THE TOTAL, and that distinction is
@@ -208,6 +235,14 @@ def kl_with_free_bits(mu, logvar, free_bits=FREE_BITS):
     off and spend the whole allowance on a few; a per-dimension floor removes the
     reward for switching any of them off.
     """
+    # `None`, NOT `free_bits=FREE_BITS`. Python binds a default ONCE, at
+    # definition time, so a sweep that set `model_vae.FREE_BITS` between configs
+    # changed the module attribute and nothing else — SEVEN configurations
+    # produced byte-identical results, including two that had already been shown
+    # to behave differently on the slow path. The reproduction controls caught
+    # it; the three novel configs alone would have read as "these knobs do not
+    # matter", which is wrong and entirely plausible.
+    free_bits = FREE_BITS if free_bits is None else free_bits
     logvar = logvar.clamp(-10.0, 10.0)
     per_dim = 0.5 * (mu.pow(2) + logvar.exp() - 1.0 - logvar)   # (B, D)
     per_dim_mean = per_dim.mean(dim=0)                          # (D,)
@@ -231,8 +266,13 @@ def active_units(per_dim_kl, threshold=0.01):
     return int((per_dim_kl > threshold).sum())
 
 
-def beta_at(step, total_steps, beta=BETA, anneal=ANNEAL_FRACTION):
-    """Linear ramp from 0, so reconstruction establishes before the prior pulls."""
+def beta_at(step, total_steps, beta=None, anneal=None):
+    """Linear ramp from 0, so reconstruction establishes before the prior pulls.
+
+    `None` defaults for the same reason as `kl_with_free_bits` — see there.
+    """
+    beta = BETA if beta is None else beta
+    anneal = ANNEAL_FRACTION if anneal is None else anneal
     if total_steps <= 0 or anneal <= 0:
         return beta
     return float(beta * min(1.0, step / max(1.0, total_steps * anneal)))
