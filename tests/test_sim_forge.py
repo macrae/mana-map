@@ -155,3 +155,75 @@ def test_one_real_two_seat_game_records_a_run(tmp_path, monkeypatch):
     assert o["global_turn"] and o["round"] and o["global_turn"] >= o["round"]
     assert rec["engine"]["forge"]["version"] and any("SEEDED" in a for a in rec["assumptions"])
     assert rec["seeds"] == [rec["seed_base"]] and o["seed"] == rec["seed_base"] and o["game_in_job"] == 1
+
+
+# ── the runaway job, and the clock that does not end a game ──
+
+
+def test_the_job_cap_kills_the_pathological_runs_and_nothing_else():
+    """THE HOURS WERE HERE. Forge's `-c` is a FutureTask timeout: it ends the
+    game's ACCOUNTING and not its AI thread, so a job could run unbounded.
+    Measured across the eighteen tracked runs, wall time against the cap:
+
+        zur-enchantress  n=20   15220s   killed at 1470s   (4.2 HOURS)
+        yawgmoth-swarm   n=20   13372s   killed at 1470s   (3.7 HOURS)
+        edgar-vampires   n=400  11243s   survives (cap 26220s)
+        ur-dragon        n=100   3720s   survives (cap  6870s)
+        …sixteen others, all survive
+
+    7.1 hours across the tracked set, and the discrimination is what matters:
+    a cap that also killed the healthy 400-game run would be useless.
+    """
+    import glob
+    import os
+
+    from manamap.sim import forge
+
+    killed, survived = [], []
+    for path in sorted(glob.glob("data/decks/*/sim/*.json")):
+        try:
+            doc = json.loads(open(path).read())
+        except Exception:                          # noqa: BLE001 - defensive
+            continue
+        games, wall = doc.get("games_requested"), doc.get("wall_seconds")
+        if not (games and wall):
+            continue
+        cap = (int(doc.get("clock_seconds") or 300)
+               * max(forge.split_games(int(games), int(doc.get("jobs") or 7)))
+               * forge.TIMEOUT_SLACK)
+        cap = int(cap) + forge.TIMEOUT_FLOOR
+        name = f"{os.path.basename(os.path.dirname(os.path.dirname(path)))} n={games}"
+        (killed if wall > cap else survived).append(name)
+
+    if not (killed or survived):
+        pytest.skip("no tracked Forge runs")
+    assert len(survived) >= 10, f"the cap is too tight: only {len(survived)} survive"
+    # A run whose games genuinely take the clock must not be killed: the 400-game
+    # arm is the longest LEGITIMATE run on disk and is the real control here.
+    assert not any("n=400" in n for n in killed), f"killed a healthy long run: {killed}"
+
+
+def test_a_run_record_always_says_whether_a_job_was_truncated():
+    """ABSENT MEANS ABSENT. A missing key reads as "no truncation" and "nobody
+    looked" identically, so the list is always present and empty when clean."""
+    import inspect
+
+    from manamap.sim import forge
+
+    source = inspect.getsource(forge.run)
+    assert '"truncated_jobs": timed_out' in source
+
+
+def test_the_assumptions_no_longer_claim_a_clock_hit_game_is_a_draw():
+    """MEASURED AND WRONG for as long as it shipped: `summary.draws` is 0 on
+    every tracked run including the two with three clock-hit games each, and
+    edgar-vampires n=400 carries 75 clock-hit games (19%) all with winners. A
+    record that states its own assumption incorrectly is worse than one that
+    states nothing.
+    """
+    from manamap.sim import forge
+
+    text = " ".join(forge.ASSUMPTIONS)
+    assert "recorded as a draw, not dropped" not in text
+    assert "NOT recorded as a draw" in text
+    assert "75 clock-hit games" in text

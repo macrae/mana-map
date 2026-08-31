@@ -458,3 +458,60 @@ of them:
 
 The rule this pays for again: a test that re-derives the rule is testing itself.
 Drive the production function, then prove the test by putting the bug back.
+
+
+## Forge's `-c` clock ends a game's ACCOUNTING, not its AI thread
+
+**2026-08-31.** `SIM_GAME_CLOCK_SECONDS = 300` is passed to Forge as `-c`. It
+fires a `FutureTask` timeout, Forge writes `Game Result: Game 1 ended in 300122
+ms` and reports **a winner** — and the AI thread carries on running. Nothing
+bounded the subprocess, so a job could run until somebody noticed.
+
+Measured across the eighteen tracked runs, wall time against the per-game `ms`
+the run itself recorded:
+
+| deck | n | wall | accounted by its own games |
+|---|---|---|---|
+| edgar-vampires | 20 | 509s | 95% |
+| gishath | 20 | 564s | 94% |
+| edgar-vampires | 400 | 11243s | 90% |
+| ur-dragon | 100 | 3720s | 61% |
+| **yawgmoth-swarm** | **20** | **13372s** | **3%** |
+| **zur-enchantress** | **20** | **15220s** | **5%** |
+
+Eleven of thirteen are healthy. **Two burned nearly four hours each on twenty
+games, and 95% of that time is claimed by no game at all.** They were not run
+concurrently, so it is not heap contention between runs.
+
+A job is now capped at `clock x games_in_job x 1.5 + 120s`. Checked against
+every tracked run: the two pathological ones are killed, **all sixteen others
+survive** — including the 400-game arm, which is the real control, since a cap
+that also killed a legitimate long run would be useless. **7.1 hours** across
+the tracked set. A killed job's finished games are kept and parsed normally;
+`truncated_jobs` names the rest, and is an empty list rather than a missing key.
+
+### Two things the record was saying that were not true
+
+- **`ASSUMPTIONS` claimed "a game past the clock is recorded as a draw, not
+  dropped."** It is not. `summary.draws` is **0** on every tracked run,
+  *including* the two with three clock-hit games each, and `edgar-vampires`
+  n=400 carries **75 clock-hit games — 19% of the run — all with winners**. A
+  deck that trips the clock has its rate scored off truncated games with nothing
+  marking them.
+- **`SEEDED_NOTE` claims identical inputs reproduce the logs byte for byte.**
+  Tested on three tracked runs with identical seat shas, seed base, Forge build
+  and clock, differing only in `-n`: n20 and n100 agree on job 0 for all three
+  shared games and diverge at game 3 on jobs 1 and 2; n400 diverges from game 1.
+  The logs say why — 197 `TimeoutException` in one part file. **The AI is on a
+  wall clock, and wall clocks are not reproducible.** Seeded replay holds for a
+  game or two, which is exactly as far as the note's own evidence went.
+
+### Also measured, not yet changed
+
+`jobs` defaults to `os.cpu_count() - 1` = **7** on this machine, which has **4
+performance cores** and 4 efficiency cores; a job that lands on an E-core sets
+the wall for everyone. `split_games` is a static even split with no work
+stealing, and the straggler tail is **+4061s / +6734s / +1304s** on the three
+biggest runs — 12% to 50% of the wall spent with idle cores waiting on one job.
+Both are left alone deliberately: `run_id` does not encode `jobs`, so changing
+the default would change the SAMPLE a given run id produces.

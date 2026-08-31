@@ -63,7 +63,18 @@ ASSUMPTIONS = [
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: "
     "Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 "
     "is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
-    "A game past the clock is recorded as a draw, not dropped.",
+    # MEASURED AND WRONG, so it says what actually happens. `summary.draws` is 0
+    # on every tracked run INCLUDING the two with three clock-hit games each, and
+    # edgar-vampires n=400 carries 75 clock-hit games (19%) all with winners.
+    "A game past Forge's `-c` clock is NOT recorded as a draw: Forge reports a "
+    "WINNER for it and the parse takes that at face value, so a deck that trips "
+    "the clock has its rate scored off truncated games with nothing marking "
+    "them. Measured: edgar-vampires n=400 had 75 clock-hit games (19%) and zero "
+    "recorded draws.",
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` "
+    "only ends the game's accounting, not its AI thread — two tracked 20-game "
+    "runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A "
+    "killed job's finished games are kept; `truncated_jobs` names the rest.",
 ]
 
 _OPPONENT_ROOTS = ("opponents", "decks")     # data/opponents/<slug> first (S3), then a deck
@@ -271,6 +282,12 @@ def default_seed(slug, opponents):
 #: The AI personality every seat gets unless something says otherwise. Named
 #: because "Default" appears in three places and a typo in any of them would
 #: silently produce a different pilot.
+#: How much longer than its own clock a job may take before it is killed, and a
+#: floor for JVM start-up plus deck loading. Generous on purpose: the point is to
+#: bound a RUNAWAY, not to police a slow game.
+TIMEOUT_SLACK = 1.5
+TIMEOUT_FLOOR = 120
+
 DEFAULT_PROFILE = "Default"
 
 #: THE POD'S STANDARD PILOT, changed from Default on 2026-08-30 after measuring
@@ -443,17 +460,48 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     log_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
 
+    # A HUNG JVM HAD NO BOUND AT ALL, and that is where the hours went.
+    # Forge's `-c` is a FutureTask timeout: it REPORTS the game as ended and the
+    # AI thread carries on. Measured on the tracked runs, per-game `ms` against
+    # wall time:
+    #
+    #   edgar-vampires  n=20   509s wall,  95% accounted by its own games
+    #   edgar-vampires  n=400 11243s wall, 90% accounted
+    #   yawgmoth-swarm  n=20  13372s wall,  3% accounted   <- 3.7 HOURS
+    #   zur-enchantress n=20  15220s wall,  5% accounted   <- 4.2 HOURS
+    #
+    # Eleven of thirteen runs are healthy; two burned four hours on twenty games
+    # and 95% of that time is claimed by no game at all. This caps a job at what
+    # its own clock says it could possibly need, with generous headroom, and
+    # records the truncation rather than hiding it.
+    per_job_cap = int(clock * max(parts) * TIMEOUT_SLACK) + TIMEOUT_FLOOR
+
     def one(i_cmd):
         i, cmd = i_cmd
         log = log_dir / f"part-{i:02d}.log"
         with open(log, "w", encoding="utf-8") as f:
-            proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
-                                  cwd=str(jar.parent), text=True)
-        return log, proc.returncode
+            try:
+                proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
+                                      cwd=str(jar.parent), text=True,
+                                      timeout=per_job_cap)
+                return log, proc.returncode, False
+            except subprocess.TimeoutExpired:
+                # The games it DID finish are already in the log and are parsed
+                # normally; what is lost is the tail of this job.
+                f.write(f"\n[manamap] job killed after {per_job_cap}s "
+                        f"(clock {clock}s x {max(parts)} games x {TIMEOUT_SLACK} "
+                        f"+ {TIMEOUT_FLOOR}s)\n")
+                return log, None, True
 
     with ThreadPoolExecutor(max_workers=len(cmds)) as ex:
-        results = list(ex.map(one, enumerate(cmds)))
+        raw = list(ex.map(one, enumerate(cmds)))
+    timed_out = [i for i, (_log, _rc, killed) in enumerate(raw) if killed]
+    results = [(log, rc) for log, rc, _killed in raw]
     wall = round(time.time() - t0, 1)
+    if timed_out:
+        print(f"  WARNING {len(timed_out)} of {len(cmds)} job(s) hit the "
+              f"{per_job_cap}s cap and were killed; their unfinished games are "
+              f"absent from this run. `truncated_jobs` records which.")
 
     label = _seat_label(names)
     outcomes = []
@@ -482,6 +530,9 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
     frame = load_json(deck_dir(split_seat(slug)[0]) / "strategic_frame.json") or {}
     record = {
+        # ABSENT MEANS ABSENT: a run with no truncation carries an empty list,
+        # never a missing key, so a reader can tell "none" from "not checked".
+        "truncated_jobs": timed_out,
         "run_id": record_path.stem, "slug": slug, "at": date.today().isoformat(),
         "engine": {"forge": forge_version(home), "java": _java_version()},
         "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s),
