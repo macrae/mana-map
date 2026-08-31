@@ -25,7 +25,7 @@ import re
 
 from manamap.pilot import formats
 from manamap.analysis.common import WUBRG
-from manamap.pilot.common import front_field, is_land
+from manamap.pilot.common import front_face, front_field, is_land
 
 # Cards seen by turn T on the play: the opening seven plus one per turn after
 # the first. Commander is singleton and games are long, but the mana base has
@@ -203,7 +203,92 @@ RESTRICTED_MANA = "spend this mana only"
 _REMINDER_RE = re.compile(r"\([^)]*\)")
 
 
-def land_colors(card):
+#: A FETCHLAND'S COLOURS ARE A PROPERTY OF THE DECK, NOT OF THE CARD.
+#: Wooded Foothills is a five-colour untapped source in a deck holding eleven
+#: typed duals and a one-colour source in mono-red. `land_colors(card)` has no
+#: deck to consult, so it read every fetch as producing NOTHING — no basic type
+#: in the type line, no `add` clause — and `goldfish` builds each land's colours
+#: from the same function.
+#:
+#: MEASURED on ur-dragon/landbase-v1, which swapped two basic-only fetches and
+#: four coloured lands for four true fetches: `mana-fit` reported W-6 U-7 B-14
+#: R-10 G-3 against the parent's W-5 U-4 B-12 R-8 G-1 — every colour worse, on a
+#: change that left colour access flat and halved the recurring life. Four
+#: fetches modelled as four colourless lands.
+#:
+#: So `pool` is how the caller supplies the deck. Absent it, this function is
+#: byte-identical to what it was, which is what keeps `goldfish` reproducible
+#: for a caller that has no pool to give.
+#:
+#: THE SWEEP, 54 lands in the corpus matching `ROLE_LAND_PATTERNS["land:fetch"]`:
+#:
+#:   17  TRUE FETCH        `a Mountain or Forest card` — finds any land carrying
+#:                         the type, DUALS INCLUDED. This is the whole point:
+#:                         Wooded Foothills reaches all eleven of ur-dragon's
+#:                         typed duals; Fabled Passage reaches none of them.
+#:   20  BASIC-of-TYPE     `a basic Forest, Plains, or Island card` — the
+#:                         Panoramas and Landscapes. Reads almost identically
+#:                         and CANNOT find a dual. Resolving these like a true
+#:                         fetch is the error this taxonomy exists to prevent.
+#:   15  ANY BASIC         `a basic land card` — Evolving Wilds, Fabled Passage.
+#:    1  ANY LAND          Urza's Cave.
+#:    1  EXCLUDED          Ash Barrens: `Basic landcycling` is parenthesised
+#:                         REMINDER text, so `_REMINDER_RE` already drops it —
+#:                         and it is a cost paid from HAND, never a source.
+#:
+#: Three more are excluded by the gate rather than by the taxonomy, and each for
+#: a different reason. `Thaumatic Compass` and Ash Barrens put the land into
+#: your HAND, so the clause must reach "onto the battlefield". `Flagstones of
+#: Trokair` searches on a DEATH TRIGGER, so the clause must sit in an activated
+#: ability — the `:` is the gate. Both follow the rule this module already
+#: states: a conditional source is counted at its unconditional value, because
+#: understating is recoverable and overstating builds a deck that cannot cast
+#: its spells.
+_FETCH_RE = re.compile(
+    r":[^.]*?search your library for ([^.]*?)\bonto the battlefield", re.I)
+
+
+def fetch_profile(card):
+    """`{types, basic_only}` for a land that fetches, else None.
+
+    `basic_only` is the difference between Wooded Foothills and Bant Panorama,
+    and it is one word in the oracle text.
+    """
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    if "Land" not in str(card.get("type_line", "") or ""):
+        return None
+    m = _FETCH_RE.search(text)
+    if not m:
+        return None
+    frag = m.group(1)
+    types = {b for b in ("Plains", "Island", "Swamp", "Mountain", "Forest")
+             if re.search(r"\b" + b + r"\b", frag, re.I)}
+    if not types and not re.search(r"\bland card", frag, re.I):
+        return None
+    return {"types": types, "basic_only": bool(re.search(r"\bbasic\b", frag, re.I))}
+
+
+def fetch_targets(card, pool):
+    """Every land in `pool` this card can actually go and get."""
+    profile = fetch_profile(card)
+    if profile is None:
+        return []
+    out = []
+    for other in pool:
+        if other.get("name") == card.get("name"):
+            continue
+        type_line = str(other.get("type_line", "") or "")
+        if "Land" not in type_line:
+            continue
+        if profile["basic_only"] and "Basic" not in front_face(type_line):
+            continue
+        if profile["types"] and not any(t in type_line for t in profile["types"]):
+            continue
+        out.append(other)
+    return out
+
+
+def land_colors(card, pool=None):
     """Which colours a land can produce *for general purposes*.
 
     "Add one mana of any color" is only a five-colour source when the mana is
@@ -270,6 +355,16 @@ def land_colors(card):
     # source is recoverable, overstating produces a deck that cannot cast its
     # spells) and `goldfish`, which has a board, prices them from it through
     # `scales_with_colors`. Two questions, two answers.
+    #
+    # THE FETCH LAYER IS ADDITIVE AND ONE LEVEL DEEP. Krosan Verge and the
+    # Panoramas tap for {C} on top of fetching, so a fetch's colours union with
+    # whatever the card already made. Targets are priced with a bare
+    # `land_colors(t)` — no pool — which both terminates the recursion Urza's
+    # Cave would otherwise open (it fetches `a land card`, and that can be
+    # another fetch) and keeps a fetch from claiming a colour two hops away.
+    if pool is not None:
+        for target in fetch_targets(card, pool):
+            produced |= land_colors(target)
     return produced
 
 

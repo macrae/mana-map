@@ -22,7 +22,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Battlefield Forge",
@@ -54,7 +60,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Breeding Pool",
@@ -300,7 +312,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Smoldering Marsh",
@@ -378,17 +396,23 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 12,
-      "U": 11,
-      "B": 11,
-      "R": 21,
-      "G": 14
+      "W": 16,
+      "U": 15,
+      "B": 15,
+      "R": 25,
+      "G": 18
     },
     "nonland": {
       "W": 4,
@@ -398,11 +422,11 @@
       "G": 5
     },
     "total": {
-      "W": 16,
-      "U": 15,
-      "B": 16,
-      "R": 26,
-      "G": 19
+      "W": 20,
+      "U": 19,
+      "B": 20,
+      "R": 30,
+      "G": 23
     },
     "producers": [
       {
@@ -541,23 +565,23 @@
   "shares": {
     "B": {
       "pip_share": 0.033,
-      "source_share": 0.159
+      "source_share": 0.169
     },
     "G": {
       "pip_share": 0.231,
-      "source_share": 0.203
+      "source_share": 0.202
     },
     "R": {
       "pip_share": 0.571,
-      "source_share": 0.304
+      "source_share": 0.281
     },
     "U": {
       "pip_share": 0.044,
-      "source_share": 0.159
+      "source_share": 0.169
     },
     "W": {
       "pip_share": 0.121,
-      "source_share": 0.174
+      "source_share": 0.18
     }
   },
   "source_targets": {
@@ -569,18 +593,18 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.704,
-      "U": 0.67,
-      "B": 0.352,
-      "R": 0.61,
-      "G": 0.762
-    },
-    "with_rocks_and_dorks": {
       "W": 0.81,
       "U": 0.787,
-      "B": 0.563,
-      "R": 0.742,
-      "G": 0.866
+      "B": 0.524,
+      "R": 0.718,
+      "G": 0.849
+    },
+    "with_rocks_and_dorks": {
+      "W": 0.881,
+      "U": 0.866,
+      "B": 0.7,
+      "R": 0.822,
+      "G": 0.918
     }
   },
   "ramp": {
@@ -592,27 +616,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.368,
-      "2": 0.998,
-      "3": 0.903,
-      "4": 0.775,
-      "5": 0.649,
-      "6": 0.549,
-      "7": 0.469,
-      "8": 0.428,
-      "9": 0.391
+      "10": 0.369,
+      "2": 0.996,
+      "3": 0.902,
+      "4": 0.779,
+      "5": 0.651,
+      "6": 0.547,
+      "7": 0.476,
+      "8": 0.417,
+      "9": 0.384
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.597,
-      "2": 2.221,
-      "3": 3.258,
-      "4": 4.249,
-      "5": 5.025,
-      "6": 5.655,
-      "7": 6.195,
-      "8": 6.693,
-      "9": 7.154
+      "10": 9.215,
+      "2": 2.237,
+      "3": 3.599,
+      "4": 4.91,
+      "5": 5.958,
+      "6": 6.759,
+      "7": 7.452,
+      "8": 8.066,
+      "9": 8.651
     }
   },
   "assumptions": [
@@ -622,10 +646,10 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 11 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 16.",
-    "G: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 19.",
-    "R: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 26.",
-    "U: 11 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 15.",
-    "W: 12 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 16."
+    "B: 15 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
+    "G: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
+    "R: 25 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 30.",
+    "U: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 19.",
+    "W: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20."
   ]
 }

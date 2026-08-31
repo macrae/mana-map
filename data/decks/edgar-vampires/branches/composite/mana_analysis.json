@@ -76,7 +76,11 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
       },
       {
         "name": "Castle Locthwain",
@@ -217,7 +221,11 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
       },
       {
         "name": "Midgar, City of Mako // Reactor Raid",
@@ -413,10 +421,10 @@
   },
   "sources": {
     "lands": {
-      "W": 19,
+      "W": 21,
       "U": 0,
-      "B": 28,
-      "R": 18,
+      "B": 30,
+      "R": 20,
       "G": 0
     },
     "nonland": {
@@ -427,10 +435,10 @@
       "G": 0
     },
     "total": {
-      "W": 21,
+      "W": 23,
       "U": 0,
-      "B": 32,
-      "R": 21,
+      "B": 34,
+      "R": 23,
       "G": 0
     },
     "producers": [
@@ -536,15 +544,15 @@
   "shares": {
     "B": {
       "pip_share": 0.608,
-      "source_share": 0.431
+      "source_share": 0.423
     },
     "R": {
       "pip_share": 0.108,
-      "source_share": 0.277
+      "source_share": 0.282
     },
     "W": {
       "pip_share": 0.284,
-      "source_share": 0.292
+      "source_share": 0.296
     }
   },
   "source_targets": {
@@ -554,14 +562,14 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.866,
-      "B": 0.785,
-      "R": 0.849
+      "W": 0.895,
+      "B": 0.822,
+      "R": 0.881
     },
     "with_rocks_and_dorks": {
-      "W": 0.895,
-      "B": 0.855,
-      "R": 0.895
+      "W": 0.918,
+      "B": 0.882,
+      "R": 0.918
     }
   },
   "ramp": {
@@ -576,23 +584,23 @@
       "2": 0.997,
       "3": 0.919,
       "4": 0.814,
-      "5": 0.699,
-      "6": 0.611,
+      "5": 0.7,
+      "6": 0.612,
       "7": 0.546,
       "8": 0.521,
-      "9": 0.491
+      "9": 0.492
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.417,
+      "10": 8.42,
       "2": 2.145,
-      "3": 3.486,
-      "4": 4.465,
-      "5": 5.266,
-      "6": 5.969,
-      "7": 6.603,
-      "8": 7.235,
-      "9": 7.831
+      "3": 3.485,
+      "4": 4.464,
+      "5": 5.267,
+      "6": 5.97,
+      "7": 6.604,
+      "8": 7.238,
+      "9": 7.834
     }
   },
   "assumptions": [
@@ -602,9 +610,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 32.",
-    "R: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 21.",
-    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 21.",
+    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
+    "R: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
+    "W: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
     "16 of 36 lands enter tapped (44%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

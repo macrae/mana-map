@@ -102,6 +102,12 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
         if e.get("is_commander"):
             identity |= set((pool.get(e["name"]) or {}).get("color_identity") or set())
     owned = collection.owned_names()
+    # THE DECK'S OWN LANDS, so a CANDIDATE fetchland is scored on what it could
+    # actually go and get in this list. Without it every fetch covers nothing
+    # and is never offered — the one land class a five-colour deck most wants.
+    deck_lands = [dict(pool[n], name=n, oracle_text=oracle.get(n, ""))
+                  for n in held
+                  if n in pool and "Land" in ((pool[n] or {}).get("type_line") or "")]
 
     adds = {"land": [], "rock": [], "dork": []}
     for name, info in pool.items():
@@ -112,7 +118,7 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
         if owned_only and name not in owned:
             continue
         card = dict(info, name=name, oracle_text=oracle.get(name, ""))
-        colours = set(manabase.land_colors(card))
+        colours = set(manabase.land_colors(card, pool=deck_lands))
         covers = sorted(colours & set(short))
         if not covers:
             continue

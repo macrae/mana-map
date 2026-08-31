@@ -22,7 +22,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Bountiful Promenade",
@@ -99,7 +105,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Forbidden Orchard",
@@ -192,7 +204,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Misty Rainforest",
@@ -201,7 +219,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Mountain",
@@ -251,7 +275,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Rejuvenating Springs",
@@ -282,7 +312,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Sea of Clouds",
@@ -407,7 +443,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Watery Grave",
@@ -427,7 +469,13 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Wooded Foothills",
@@ -436,17 +484,23 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 15,
-      "U": 12,
-      "B": 12,
-      "R": 12,
-      "G": 14
+      "W": 24,
+      "U": 21,
+      "B": 21,
+      "R": 21,
+      "G": 23
     },
     "nonland": {
       "W": 7,
@@ -456,11 +510,11 @@
       "G": 7
     },
     "total": {
-      "W": 22,
-      "U": 19,
-      "B": 19,
-      "R": 19,
-      "G": 21
+      "W": 31,
+      "U": 28,
+      "B": 28,
+      "R": 28,
+      "G": 30
     },
     "producers": [
       {
@@ -625,23 +679,23 @@
   "shares": {
     "B": {
       "pip_share": 0.107,
-      "source_share": 0.185
+      "source_share": 0.191
     },
     "G": {
       "pip_share": 0.268,
-      "source_share": 0.215
+      "source_share": 0.209
     },
     "R": {
       "pip_share": 0.077,
-      "source_share": 0.185
+      "source_share": 0.191
     },
     "U": {
       "pip_share": 0.179,
-      "source_share": 0.185
+      "source_share": 0.191
     },
     "W": {
       "pip_share": 0.369,
-      "source_share": 0.231
+      "source_share": 0.218
     }
   },
   "source_targets": {
@@ -653,18 +707,18 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.787,
-      "U": 0.704,
-      "B": 0.299,
-      "R": 0.704,
-      "G": 0.762
+      "W": 0.927,
+      "U": 0.895,
+      "B": 0.61,
+      "R": 0.895,
+      "G": 0.918
     },
     "with_rocks_and_dorks": {
-      "W": 0.907,
-      "U": 0.866,
-      "B": 0.548,
-      "R": 0.866,
-      "G": 0.895
+      "W": 0.972,
+      "U": 0.957,
+      "B": 0.785,
+      "R": 0.957,
+      "G": 0.967
     }
   },
   "ramp": {
@@ -687,15 +741,15 @@
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 10.867,
-      "2": 2.277,
-      "3": 3.582,
-      "4": 4.712,
-      "5": 6.258,
-      "6": 7.592,
-      "7": 8.553,
-      "8": 9.377,
-      "9": 10.131
+      "10": 11.063,
+      "2": 2.306,
+      "3": 3.709,
+      "4": 4.897,
+      "5": 6.583,
+      "6": 7.896,
+      "7": 8.81,
+      "8": 9.613,
+      "9": 10.348
     }
   },
   "assumptions": [
@@ -705,11 +759,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 12 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 19.",
-    "G: 14 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 21.",
-    "R: 12 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 19.",
-    "U: 12 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 19.",
-    "W: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 22.",
+    "B: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 28.",
+    "R: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 28.",
+    "U: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 40-land deck; rocks and dorks lift the count to 28.",
     "17 of 40 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

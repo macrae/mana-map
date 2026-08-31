@@ -1495,8 +1495,13 @@ def chosen_type_for(cards):
     return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
 
 
-def classify(card):
-    """Return a compact sim-card dict for one physical copy."""
+def classify(card, pool=None):
+    """Return a compact sim-card dict for one physical copy.
+
+    `pool` is the deck's lands, and it exists for ONE card class: a fetchland's
+    colours are a property of the deck, not of the card (`manabase.land_colors`).
+    Without it every fetch is a colourless land that never produces anything.
+    """
     type_line = card.get("type_line", "")
     text = card.get("oracle_text") or ""
     is_land = "Land" in type_line and "Creature" not in type_line.split("//")[0]
@@ -1538,7 +1543,9 @@ def classify(card):
         # Spirit Dragon taps for {C} in a Vampire deck, and counting it as five
         # sources is how a mana base comes out looking fine and cannot cast its
         # spells.
-        "colors": frozenset(manabase.land_colors(card)),
+        # `pool` resolves a fetchland against what it can actually go and get.
+        # A non-land is unaffected: `fetch_profile` gates on the type line.
+        "colors": frozenset(manabase.land_colors(card, pool=pool)),
         "pips": cast_pips(front_field(card, "mana_cost") or ""),
         "treasure_bonus": bool(TREASURE_BONUS_RE.search(text)),
         # Anointed Procession et al. make none either, and DOUBLE every event.
@@ -1561,11 +1568,15 @@ def build_library(doc):
     """Expand the main deck (minus commanders) into per-copy sim cards."""
     library = []
     commanders = []
+    # The fetch pool is every land in the list, commander included — a fetch
+    # searches the LIBRARY, and what it may find does not depend on which zone
+    # the search was started from.
+    pool = [c for c in doc["cards"] if "Land" in str(c.get("type_line") or "")]
     for card in doc["cards"]:
         if card.get("is_commander"):
             commanders.append(card)
             continue
-        library.extend([classify(card)] * card.get("quantity", 1))
+        library.extend([classify(card, pool=pool)] * card.get("quantity", 1))
     return library, commanders
 
 

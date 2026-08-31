@@ -63,7 +63,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "8eefaae74829",
+    "model_version": "45b019a2e225",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -78,93 +78,93 @@
     "combat": {
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.949,
+        "10": 0.958,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.009,
-        "5": 0.09,
-        "6": 0.332,
-        "7": 0.627,
-        "8": 0.808,
-        "9": 0.902
+        "4": 0.01,
+        "5": 0.1,
+        "6": 0.357,
+        "7": 0.655,
+        "8": 0.83,
+        "9": 0.914
       },
       "kill_turn_histogram": {
-        "10": 473,
-        "3": 3,
-        "4": 89,
-        "5": 805,
-        "6": 2422,
-        "7": 2950,
-        "8": 1816,
-        "9": 931
+        "10": 432,
+        "3": 4,
+        "4": 96,
+        "5": 898,
+        "6": 2570,
+        "7": 2978,
+        "8": 1757,
+        "9": 842
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 37.252,
-        "2": 0.509,
-        "3": 2.21,
-        "4": 5.929,
-        "5": 11.143,
-        "6": 16.742,
-        "7": 22.352,
-        "8": 27.661,
-        "9": 32.639
+        "10": 37.894,
+        "2": 0.539,
+        "3": 2.386,
+        "4": 6.325,
+        "5": 11.698,
+        "6": 17.404,
+        "7": 23.064,
+        "8": 28.382,
+        "9": 33.337
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 78.255,
-        "2": 0.017,
-        "3": 0.878,
-        "4": 3.746,
-        "5": 10.355,
-        "6": 20.646,
-        "7": 33.208,
-        "8": 47.426,
-        "9": 62.529
+        "10": 79.922,
+        "2": 0.018,
+        "3": 0.955,
+        "4": 4.05,
+        "5": 11.037,
+        "6": 21.677,
+        "7": 34.59,
+        "8": 49.059,
+        "9": 64.295
       },
-      "mean_kill_turn": 7.083,
+      "mean_kill_turn": 7.007,
       "median_kill_turn": 7,
-      "no_kill_by_max_turn_rate": 0.051
+      "no_kill_by_max_turn_rate": 0.042
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.312,
+      "cast_by_turn_6_rate": 0.329,
       "cast_turn_histogram": {
-        "10": 776,
-        "3": 82,
-        "4": 765,
-        "5": 964,
-        "6": 1308,
-        "7": 1411,
-        "8": 1241,
+        "10": 768,
+        "3": 97,
+        "4": 829,
+        "5": 1021,
+        "6": 1346,
+        "7": 1437,
+        "8": 1251,
         "9": 1029,
-        "not_by_max_turn": 2424
+        "not_by_max_turn": 2222
       },
-      "mean_cast_turn": 6.969,
+      "mean_cast_turn": 6.916,
       "median_cast_turn": 7
     },
     "interaction_castable_by_turn": {
-      "1": 0.062,
-      "10": 0.735,
-      "2": 0.188,
-      "3": 0.235,
-      "4": 0.29,
-      "5": 0.379,
-      "6": 0.46,
-      "7": 0.532,
-      "8": 0.607,
+      "1": 0.061,
+      "10": 0.737,
+      "2": 0.18,
+      "3": 0.224,
+      "4": 0.279,
+      "5": 0.371,
+      "6": 0.455,
+      "7": 0.528,
+      "8": 0.608,
       "9": 0.678
     },
     "interaction_in_hand_by_turn": {
       "1": 0.764,
-      "10": 0.853,
-      "2": 0.773,
-      "3": 0.8,
-      "4": 0.804,
-      "5": 0.799,
-      "6": 0.798,
-      "7": 0.804,
-      "8": 0.819,
-      "9": 0.837
+      "10": 0.852,
+      "2": 0.772,
+      "3": 0.798,
+      "4": 0.801,
+      "5": 0.795,
+      "6": 0.794,
+      "7": 0.802,
+      "8": 0.817,
+      "9": 0.836
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -181,27 +181,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.176,
-      "2": 2.233,
-      "3": 3.55,
-      "4": 4.826,
-      "5": 5.875,
-      "6": 6.683,
-      "7": 7.376,
-      "8": 8.001,
-      "9": 8.592
+      "10": 9.209,
+      "2": 2.245,
+      "3": 3.595,
+      "4": 4.895,
+      "5": 5.934,
+      "6": 6.734,
+      "7": 7.423,
+      "8": 8.044,
+      "9": 8.63
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 6.246,
-      "2": 0.175,
-      "3": 0.59,
-      "4": 1.309,
-      "5": 2.257,
-      "6": 3.149,
-      "7": 3.97,
-      "8": 4.759,
-      "9": 5.515
+      "10": 6.328,
+      "2": 0.184,
+      "3": 0.63,
+      "4": 1.383,
+      "5": 2.35,
+      "6": 3.251,
+      "7": 4.072,
+      "8": 4.858,
+      "9": 5.607
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -230,128 +230,128 @@
     "targets": [
       {
         "assembled_rate": 0.521,
-        "assembled_rate_assisted": 0.713,
+        "assembled_rate_assisted": 0.714,
         "by_turn_6_rate": 0.422,
-        "by_turn_6_rate_assisted": 0.597,
+        "by_turn_6_rate_assisted": 0.599,
         "label": "STAGE 1 — THE DISCOUNT: eminence is already on from the command zone; a typed reducer stacks on top of it, and is NOT something this deck cannot function without",
         "mean_turn": 3.264,
-        "mean_turn_assisted": 3.43
+        "mean_turn_assisted": 3.4
       },
       {
         "assembled_rate": 0.904,
         "assembled_rate_assisted": 0.947,
         "by_turn_6_rate": 0.824,
-        "by_turn_6_rate_assisted": 0.882,
+        "by_turn_6_rate_assisted": 0.883,
         "label": "STAGE 2 — THE FLOOD: ramp that turns the discount into more than one Dragon a turn",
         "mean_turn": 2.213,
-        "mean_turn_assisted": 2.147
+        "mean_turn_assisted": 2.136
       },
       {
         "assembled_rate": 0.728,
         "assembled_rate_assisted": 0.844,
         "by_turn_6_rate": 0.619,
-        "by_turn_6_rate_assisted": 0.744,
+        "by_turn_6_rate_assisted": 0.745,
         "label": "STAGE 3 — THE BURN: a Dragon arriving or attacking becomes damage, or the damage it already deals is doubled",
         "mean_turn": 2.839,
-        "mean_turn_assisted": 2.867
+        "mean_turn_assisted": 2.849
       },
       {
         "assembled_rate": 0.463,
-        "assembled_rate_assisted": 0.666,
+        "assembled_rate_assisted": 0.667,
         "by_turn_6_rate": 0.336,
-        "by_turn_6_rate_assisted": 0.511,
+        "by_turn_6_rate_assisted": 0.514,
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
         "mean_turn": 4.195,
-        "mean_turn_assisted": 4.239
+        "mean_turn_assisted": 4.208
       },
       {
         "assembled_rate": 0.673,
-        "assembled_rate_assisted": 0.816,
+        "assembled_rate_assisted": 0.817,
         "by_turn_6_rate": 0.565,
-        "by_turn_6_rate_assisted": 0.705,
+        "by_turn_6_rate_assisted": 0.707,
         "label": "Protection held for the big turn",
         "mean_turn": 2.959,
-        "mean_turn_assisted": 3.059
+        "mean_turn_assisted": 3.037
       },
       {
         "assembled_rate": 0.302,
-        "assembled_rate_assisted": 0.586,
+        "assembled_rate_assisted": 0.587,
         "by_turn_6_rate": 0.234,
-        "by_turn_6_rate_assisted": 0.467,
+        "by_turn_6_rate_assisted": 0.469,
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
         "mean_turn": 3.607,
-        "mean_turn_assisted": 4.059
+        "mean_turn_assisted": 4.014
       },
       {
         "assembled_rate": 0.524,
-        "assembled_rate_assisted": 0.718,
+        "assembled_rate_assisted": 0.72,
         "by_turn_6_rate": 0.419,
-        "by_turn_6_rate_assisted": 0.599,
+        "by_turn_6_rate_assisted": 0.601,
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
         "mean_turn": 3.368,
-        "mean_turn_assisted": 3.501
+        "mean_turn_assisted": 3.47
       },
       {
         "assembled_rate": 0.235,
-        "assembled_rate_assisted": 0.47,
+        "assembled_rate_assisted": 0.472,
         "by_turn_6_rate": 0.15,
-        "by_turn_6_rate_assisted": 0.314,
+        "by_turn_6_rate_assisted": 0.316,
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
         "mean_turn": 4.977,
-        "mean_turn_assisted": 5.145
+        "mean_turn_assisted": 5.112
       },
       {
         "assembled_rate": 0.186,
-        "assembled_rate_assisted": 0.422,
+        "assembled_rate_assisted": 0.424,
         "by_turn_6_rate": 0.113,
-        "by_turn_6_rate_assisted": 0.274,
+        "by_turn_6_rate_assisted": 0.277,
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
         "mean_turn": 5.154,
-        "mean_turn_assisted": 5.282
+        "mean_turn_assisted": 5.248
       },
       {
         "assembled_rate": 0.681,
-        "assembled_rate_assisted": 0.819,
+        "assembled_rate_assisted": 0.82,
         "by_turn_6_rate": 0.573,
-        "by_turn_6_rate_assisted": 0.712,
+        "by_turn_6_rate_assisted": 0.714,
         "label": "The tempo layer: haste, an extra combat, or double strike on a Dragon that is already big",
         "mean_turn": 2.948,
-        "mean_turn_assisted": 3.016
+        "mean_turn_assisted": 2.995
       },
       {
         "assembled_rate": 0.181,
-        "assembled_rate_assisted": 0.378,
+        "assembled_rate_assisted": 0.38,
         "by_turn_6_rate": 0.081,
-        "by_turn_6_rate_assisted": 0.189,
+        "by_turn_6_rate_assisted": 0.19,
         "label": "THE WHOLE MACHINE: discount AND flood AND burn AND a way to put several Dragons down at once",
         "mean_turn": 6.537,
-        "mean_turn_assisted": 6.375
+        "mean_turn_assisted": 6.346
       }
     ],
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.153,
+        "10": 0.155,
         "2": 0.0,
-        "3": 0.002,
-        "4": 0.033,
-        "5": 0.073,
-        "6": 0.102,
-        "7": 0.116,
-        "8": 0.129,
-        "9": 0.141
+        "3": 0.003,
+        "4": 0.038,
+        "5": 0.078,
+        "6": 0.105,
+        "7": 0.118,
+        "8": 0.131,
+        "9": 0.143
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 2.02,
+        "10": 2.077,
         "2": 0.0,
-        "3": 0.005,
-        "4": 0.081,
-        "5": 0.253,
-        "6": 0.459,
-        "7": 0.694,
-        "8": 1.026,
-        "9": 1.471
+        "3": 0.006,
+        "4": 0.091,
+        "5": 0.272,
+        "6": 0.48,
+        "7": 0.723,
+        "8": 1.064,
+        "9": 1.518
       }
     }
   }

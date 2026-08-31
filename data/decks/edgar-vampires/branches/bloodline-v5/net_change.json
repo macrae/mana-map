@@ -1110,12 +1110,12 @@
     "colour": "W",
     "delta": 0,
     "gap": [
-     0,
-     0
+     2,
+     2
     ],
     "have": [
-     22,
-     22
+     24,
+     24
     ],
     "target": [
      22,
@@ -1142,12 +1142,12 @@
     "colour": "B",
     "delta": 0,
     "gap": [
-     -6,
-     -6
+     -4,
+     -4
     ],
     "have": [
-     30,
-     30
+     32,
+     32
     ],
     "target": [
      36,
@@ -1158,12 +1158,12 @@
     "colour": "R",
     "delta": 0,
     "gap": [
-     -4,
-     -4
+     -2,
+     -2
     ],
     "have": [
-     18,
-     18
+     20,
+     20
     ],
     "target": [
      22,
@@ -1198,24 +1198,24 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.822,
-    0.822
+    0.855,
+    0.855
    ],
    "G": [
     null,
     null
    ],
    "R": [
-    0.849,
-    0.849
+    0.881,
+    0.881
    ],
    "U": [
     null,
     null
    ],
    "W": [
-    0.907,
-    0.907
+    0.927,
+    0.927
    ]
   }
  },
@@ -1226,7 +1226,7 @@
   "why": "HELD, NOT MEASURED. Opened so the hypothesis survives the session; no Forge run has been made and no figure here is evidence. Found by walking the Atlas synergy graph out from this deck's engine cards, where the heaviest edges were Counters + Tokens and Sac + Death Trigger. THE THESIS: counters are the fastest route to a big vampire in these colours, because +1/+1 counter DOUBLERS do not exist in BRW -- Ozolith, the Shattered Spire is green -- and PROLIFERATE is the colour-shifted substitute. Blade of the Bloodchief is the find and the pilot already owns it: one mana, equip one, and every creature death puts TWO counters on an equipped Vampire, which in a deck built on eating its own tokens is the fastest accelerant available. Dusk Legion Duelist converts that engine into cards, drawing whenever counters land on it, once a turn. Metastatic Evangel proliferates on every nontoken creature entering, and this deck casts about nine spells a game. ALL THREE COST ONE OR TWO MANA, which is deliberate: bloodline's only measured cost is stall rising from 5 games in 100 to 8, diagnosed as a CURVE problem against flat mana, and v4 failed trying to fix it with acceleration Forge would not cast. Cutting Vish Kal at seven, Bloodtracker at four and Unbounded Potential at two takes eight mana out of the curve while adding the counter engine. MILL WAS CONSIDERED AND REJECTED: 89 BRW cards read an opponent's graveyard but this deck has only two payoffs and one enabler, self-mill buries the giants it is digging for, and going all-in on Altar of Dementia as a wincon is a different deck rather than an increment."
  },
  "objective_grade": {
-  "reading": 15.9709,
+  "reading": 16.154,
   "shortfall": null,
   "state": "met"
  },
@@ -1292,23 +1292,23 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "21.26 -> 21.73, a change of +0.46 (+2%)",
+    "reads_as": "21.43 -> 21.88, a change of +0.45 (+2%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "11.75 -> 12.27, a change of +0.51 (+4%)",
+    "reads_as": "11.94 -> 12.45, a change of +0.51 (+4%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "0.89 -> 1.09, a change of +0.20 (+22%)",
+    "reads_as": "0.90 -> 1.10, a change of +0.20 (+23%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "7 games in 100 -> 5 in 100, a swing of 2 games per 100",
+    "detail": "8 games in 100 -> 6 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
@@ -1344,12 +1344,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 21.7262,
-   "champion": 21.2619,
-   "delta": 0.4643,
-   "mde": 0.2961,
+   "branch": 21.8809,
+   "champion": 21.4321,
+   "delta": 0.4488,
+   "mde": 0.2954,
    "measure": "damage @T10",
-   "reads_as": "21.26 -> 21.73, a change of +0.46 (+2%)",
+   "reads_as": "21.43 -> 21.88, a change of +0.45 (+2%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1358,12 +1358,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 12.2661,
-   "champion": 11.7541,
-   "delta": 0.512,
-   "mde": 0.1689,
+   "branch": 12.4475,
+   "champion": 11.935,
+   "delta": 0.5125,
+   "mde": 0.1669,
    "measure": "board power @T6",
-   "reads_as": "11.75 -> 12.27, a change of +0.51 (+4%)",
+   "reads_as": "11.94 -> 12.45, a change of +0.51 (+4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1372,12 +1372,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0495,
-   "champion": 0.0682,
-   "delta": -0.0187,
-   "mde": 0.01,
+   "branch": 0.0551,
+   "champion": 0.0761,
+   "delta": -0.021,
+   "mde": 0.0105,
    "measure": "killed by T6",
-   "reads_as": "7 games in 100 -> 5 in 100, a swing of 2 games per 100",
+   "reads_as": "8 games in 100 -> 6 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1386,12 +1386,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9781,
-   "champion": 0.9743,
-   "delta": 0.0038,
-   "mde": 0.0063,
+   "branch": 0.9821,
+   "champion": 0.9792,
+   "delta": 0.0029,
+   "mde": 0.0057,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1400,10 +1400,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0694,
-   "champion": 0.0502,
-   "delta": 0.0192,
-   "mde": 0.0101,
+   "branch": 0.0717,
+   "champion": 0.0524,
+   "delta": 0.0193,
+   "mde": 0.0102,
    "measure": "stall, 2 in a row",
    "reads_as": "5 games in 100 -> 7 in 100, a swing of 2 games per 100",
    "scale": null,
@@ -1414,9 +1414,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4066,
-   "champion": 0.4035,
-   "delta": 0.0031,
+   "branch": 0.4064,
+   "champion": 0.4036,
+   "delta": 0.0028,
    "mde": 0.0195,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.019 this run can resolve",
@@ -1442,12 +1442,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.0899,
-   "champion": 0.8929,
-   "delta": 0.197,
-   "mde": 0.0736,
+   "branch": 1.1016,
+   "champion": 0.8985,
+   "delta": 0.2031,
+   "mde": 0.0741,
    "measure": "extra cards by T8",
-   "reads_as": "0.89 -> 1.09, a change of +0.20 (+22%)",
+   "reads_as": "0.90 -> 1.10, a change of +0.20 (+23%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1456,12 +1456,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3501,
-   "champion": 0.3487,
-   "delta": 0.0014,
-   "mde": 0.0203,
+   "branch": 0.3409,
+   "champion": 0.3409,
+   "delta": 0.0,
+   "mde": 0.0202,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

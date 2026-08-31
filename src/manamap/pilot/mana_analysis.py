@@ -116,14 +116,15 @@ def analyze(slug, branch=None):
             tapped += 1
         if enters_tapped_unconditionally(card):
             always_tapped += 1
-        for colour in land_colors(card) & (identity or set(WUBRG)):
+        for colour in land_colors(card, pool=lands) & (identity or set(WUBRG)):
             land_sources[colour] += 1
     # The table lists one row per distinct land, with its copy count — a reader
     # wants "Island x11", not eleven identical rows.
     land_rows = [{"name": card["name"],
                   "copies": int(card.get("quantity") or 1),
                   "classes": sorted(land_classes(card)),
-                  "produces": sorted(land_colors(card) & (identity or set(WUBRG)))}
+                  "produces": sorted(land_colors(card, pool=lands)
+                                     & (identity or set(WUBRG)))}
                  for card in land_entries]
 
     producers, ramp_counts, nonland_sources = [], {}, {c: 0 for c in WUBRG}

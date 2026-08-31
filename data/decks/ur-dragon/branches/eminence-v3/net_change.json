@@ -1511,12 +1511,12 @@
     "colour": "W",
     "delta": 1,
     "gap": [
-     -6,
-     -5
+     -4,
+     -3
     ],
     "have": [
-     16,
-     17
+     18,
+     19
     ],
     "target": [
      22,
@@ -1527,12 +1527,12 @@
     "colour": "U",
     "delta": 2,
     "gap": [
-     -6,
-     -4
+     -4,
+     -2
     ],
     "have": [
-     16,
-     18
+     18,
+     20
     ],
     "target": [
      22,
@@ -1559,12 +1559,12 @@
     "colour": "R",
     "delta": 2,
     "gap": [
-     -10,
-     -8
+     -8,
+     -6
     ],
     "have": [
-     26,
-     28
+     28,
+     30
     ],
     "target": [
      36,
@@ -1575,12 +1575,12 @@
     "colour": "G",
     "delta": -1,
     "gap": [
-     0,
-     -1
+     2,
+     1
     ],
     "have": [
-     22,
-     21
+     24,
+     23
     ],
     "target": [
      22,
@@ -1603,20 +1603,20 @@
     0.636
    ],
    "G": [
-    0.907,
-    0.895
+    0.927,
+    0.918
    ],
    "R": [
-    0.742,
-    0.785
+    0.785,
+    0.822
    ],
    "U": [
-    0.81,
-    0.849
+    0.849,
+    0.881
    ],
    "W": [
-    0.81,
-    0.831
+    0.849,
+    0.866
    ]
   }
  },
@@ -1627,7 +1627,7 @@
   "why": "THE ENGINE, AND THE THING IT EXISTS TO DO. Eminence shifts every Dragon left by one from the command zone, permanently, where nothing can remove it; ramp \u2014 dorks, rocks, lands \u2014 turns that discount into more than one Dragon a turn; and then the Dragons burn the table down, on entry (Terror of the Peaks, Scourge of Valkas, Dragon Tempest, Firespitter Whelp), in combat with haste and double strike (Temur Ascendancy, Scourge of the Throne, Atarka, Thrakkus), and doubled on the way out (Twinflame Tyrant, Solphim). We cometh to burn your fields down.\n\nMEASURED ON THE OUTPUT, NOT ON THE ASSEMBLY, and that is a correction. The old objective was `engine_online_5 >= 0.22` \u2014 a membership axis asking whether the parts were DRAWN. It was met 4.4x over while the engine lift spanned zero, because a declaration can always be made easy enough to hit. `damage_8` has no ceiling and cannot be gamed by rewording a target.\n\n40.0 IS THE OPPONENT'S STARTING LIFE, not a number read off this branch. The claim is: by the end of turn eight, the average game has burned one whole opponent down. v1.0.1 reads 30.81 and misses it."
  },
  "objective_grade": {
-  "reading": 46.4414,
+  "reading": 47.9592,
   "shortfall": null,
   "state": "met"
  },
@@ -1722,22 +1722,22 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "51.66 -> 77.31, a change of +25.66 (+50%)",
+    "reads_as": "52.91 -> 79.04, a change of +26.13 (+49%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "13.53 -> 16.49, a change of +2.97 (+22%)",
+    "reads_as": "14.08 -> 17.09, a change of +3.01 (+21%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T6",
-    "reads_as": "18 games in 100 -> 32 in 100, a swing of 14 games per 100",
+    "reads_as": "19 games in 100 -> 34 in 100, a swing of 14 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
     "measure": "killed by T10",
-    "reads_as": "88 games in 100 -> 94 in 100, a swing of 6 games per 100",
+    "reads_as": "90 games in 100 -> 95 in 100, a swing of 5 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
@@ -1748,13 +1748,13 @@
   ],
   "risk": [
    {
-    "detail": "0.54 -> 0.44, a change of -0.10 (-19%)",
+    "detail": "0.56 -> 0.46, a change of -0.10 (-19%)",
     "kind": "paid",
     "what": "hoard @T6",
     "why_it_matters": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
    },
    {
-    "detail": "the largest is interaction affordable @T6 at -0.019 against an MDE of 0.022. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hoard @T10 at +0.108 against an MDE of 0.141. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1820,7 +1820,7 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "G gap +0 -> -1",
+    "detail": "G gap +2 -> +1",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1846,12 +1846,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.9867,
-   "champion": 1.8813,
-   "delta": 0.1054,
-   "mde": 0.1384,
+   "branch": 2.04,
+   "champion": 1.932,
+   "delta": 0.108,
+   "mde": 0.141,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.105 is smaller than the 0.138 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.108 is smaller than the 0.141 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1860,12 +1860,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4386,
-   "champion": 0.5383,
-   "delta": -0.0997,
-   "mde": 0.0446,
+   "branch": 0.4565,
+   "champion": 0.5607,
+   "delta": -0.1042,
+   "mde": 0.0455,
    "measure": "hoard @T6",
-   "reads_as": "0.54 -> 0.44, a change of -0.10 (-19%)",
+   "reads_as": "0.56 -> 0.46, a change of -0.10 (-19%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1874,12 +1874,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 77.3144,
-   "champion": 51.6582,
-   "delta": 25.6562,
-   "mde": 3.0989,
+   "branch": 79.0384,
+   "champion": 52.9075,
+   "delta": 26.1309,
+   "mde": 3.1346,
    "measure": "damage @T10",
-   "reads_as": "51.66 -> 77.31, a change of +25.66 (+50%)",
+   "reads_as": "52.91 -> 79.04, a change of +26.13 (+49%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1888,12 +1888,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 16.4917,
-   "champion": 13.5257,
-   "delta": 2.966,
-   "mde": 0.4529,
+   "branch": 17.0935,
+   "champion": 14.0823,
+   "delta": 3.0112,
+   "mde": 0.4542,
    "measure": "board power @T6",
-   "reads_as": "13.53 -> 16.49, a change of +2.97 (+22%)",
+   "reads_as": "14.08 -> 17.09, a change of +3.01 (+21%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1902,12 +1902,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3181,
-   "champion": 0.1774,
-   "delta": 0.1407,
-   "mde": 0.0185,
+   "branch": 0.3366,
+   "champion": 0.192,
+   "delta": 0.1446,
+   "mde": 0.0187,
    "measure": "killed by T6",
-   "reads_as": "18 games in 100 -> 32 in 100, a swing of 14 games per 100",
+   "reads_as": "19 games in 100 -> 34 in 100, a swing of 14 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1916,12 +1916,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9432,
-   "champion": 0.8849,
-   "delta": 0.0583,
-   "mde": 0.0126,
+   "branch": 0.9528,
+   "champion": 0.8998,
+   "delta": 0.053,
+   "mde": 0.0119,
    "measure": "killed by T10",
-   "reads_as": "88 games in 100 -> 94 in 100, a swing of 6 games per 100",
+   "reads_as": "90 games in 100 -> 95 in 100, a swing of 5 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1930,10 +1930,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.077,
-   "champion": 0.0709,
-   "delta": 0.0061,
-   "mde": 0.0106,
+   "branch": 0.0801,
+   "champion": 0.0737,
+   "delta": 0.0064,
+   "mde": 0.0108,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.011 this run can resolve",
    "scale": null,
@@ -1972,12 +1972,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5631,
-   "champion": 0.5819,
-   "delta": -0.0188,
-   "mde": 0.0218,
+   "branch": 0.5589,
+   "champion": 0.57,
+   "delta": -0.0111,
+   "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

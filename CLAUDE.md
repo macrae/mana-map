@@ -251,6 +251,18 @@ wrong first attempt, the number — is in the page named beside it.
 **Changing a matcher or a model**
 - **Widening a pattern needs a CORPUS SWEEP in the same commit** — newly matched, newly dropped, and the extreme tail read card by card. Skipped once, it billed Jeweled Lotus three mana every turn forever and counted `Add {R}, {G}, or {W}` as three. → `docs/gotchas-bench.md`
 - **A CONDITION IS SCOPED TO THE CLAUSE IT ATTACHES TO.** `enters_tapped_unconditionally` searched the whole oracle text for "unless", so Archway Commons — *"This land enters tapped. When this land enters, sacrifice it unless you pay {1}"* — read as an UNTAPPED five-colour source and `mana-fit` offered it as one. Eleven lands share the wording. The obvious fix is worse and the sweep is what says so: scoping to the SENTENCE flags all ten shocklands, whose idiom spans two. → `docs/gotchas-bench.md`
+- **A FETCHLAND'S COLOURS ARE A PROPERTY OF THE DECK, NOT OF THE CARD**, so a function
+  that takes only a card cannot answer the question and must not pretend to. `land_colors`
+  credits basic types in the type line and symbols in an `add` clause; a fetch has neither,
+  so all sixteen true fetches in the corpus read as producing NOTHING — and `goldfish` built
+  every land's colours from the same call, modelling four fetches as four colourless lands.
+  Measured on ur-dragon/landbase-v1: `mana-fit` reported **every colour worse** on a change
+  that left colour access flat (W +1, U −1, B +2, R 0, G 0) and **halved the recurring life,
+  8 → 4 per tap-cycle**. `land_colors(card, pool=…)` takes the deck; without `pool` it is
+  byte-identical, which is what keeps a caller that has no deck reproducible. The sweep's
+  load-bearing split is one word: **`a Mountain card` finds a shockland, `a basic Mountain
+  card` cannot** — 16 true fetches against 20 Panorama-shaped ones that read almost
+  identically. → `docs/gotchas-bench.md`
 - **The goldfish CANNOT rank two lands that make the same colours.** It plays the first land in hand and credits its colours the same turn — there is no tapped state and no choice of which land to play. A twelve-land `candidates` sweep returned exactly two distinct readings, with always-tapped Grand Coliseum tying never-tapped Forbidden Orchard. `mana-analysis` and `mana-fit` are deterministic for exactly this reason and are the whole of the evidence for a land swap. → `docs/gotchas-bench.md`
 - **A flag the model sets is a claim the model must ACT ON.** `treasure_doubler` shipped set-and-unread; fifteen candidates returned byte-identical −0.026. `tests/test_metric_hygiene.py` checks this now.
 - **A model change makes every derived artifact stale.** `meta.model_version` (a sha over `goldfish.py`) makes that decidable; the three prose validators REPORT it and never fail on it. Regenerate the fleet after any model change. The 39 figures already stale predate stamping and report as unknown, not stale. → `docs/gotchas-bench.md`

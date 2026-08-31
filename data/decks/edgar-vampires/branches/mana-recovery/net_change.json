@@ -1334,12 +1334,12 @@
     "colour": "W",
     "delta": -1,
     "gap": [
-     0,
-     -1
+     2,
+     1
     ],
     "have": [
-     22,
-     21
+     24,
+     23
     ],
     "target": [
      22,
@@ -1366,12 +1366,12 @@
     "colour": "B",
     "delta": 2,
     "gap": [
-     -6,
-     -4
+     -4,
+     -2
     ],
     "have": [
-     30,
-     32
+     32,
+     34
     ],
     "target": [
      36,
@@ -1382,12 +1382,12 @@
     "colour": "R",
     "delta": 3,
     "gap": [
-     -4,
-     -1
+     -2,
+     1
     ],
     "have": [
-     18,
-     21
+     20,
+     23
     ],
     "target": [
      22,
@@ -1422,24 +1422,24 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.822,
-    0.855
+    0.855,
+    0.882
    ],
    "G": [
     null,
     null
    ],
    "R": [
-    0.849,
-    0.895
+    0.881,
+    0.918
    ],
    "U": [
     null,
     null
    ],
    "W": [
-    0.907,
-    0.895
+    0.927,
+    0.918
    ]
   }
  },
@@ -1450,7 +1450,7 @@
   "why": "HYPOTHESIS TEST off drain-engine, not a rival to it. Diagnosis: mana_short is 73% of the branch's stalls and mana at T5/T7 fell below v1.0.1 because the refactor cut Patchwork Banner, a rock, while deck-audit already had ramp UNDER target at 7 v 10-12. A one-for-one sweep moved stall by nothing on any of 11 candidates, because cheap cards cut mana_short and raise hand_empty and the two cancel. So the lever is compound: three mana sources for three off-axis spells. Deliberately does NOT cut Sanguine Bond (half a checker-verified infinite) or the X-based draw, which the model cannot price and would therefore recommend cutting for the wrong reason."
  },
  "objective_grade": {
-  "reading": 0.317,
+  "reading": 0.3109,
   "shortfall": null,
   "state": "met"
  },
@@ -1502,12 +1502,12 @@
   "reward": [
    {
     "measure": "killed by T10",
-    "reads_as": "97 games in 100 -> 99 in 100, a swing of 1 games per 100",
+    "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "0.89 -> 1.11, a change of +0.22 (+25%)",
+    "reads_as": "0.90 -> 1.12, a change of +0.22 (+25%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
@@ -1519,7 +1519,7 @@
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "35 games in 100 -> 32 in 100, a swing of 3 games per 100",
+    "detail": "34 games in 100 -> 31 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
@@ -1531,7 +1531,7 @@
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "W gap +0 -> -1",
+    "detail": "W gap +2 -> +1",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1554,12 +1554,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 21.1699,
-   "champion": 21.2619,
-   "delta": -0.092,
-   "mde": 0.2961,
+   "branch": 21.2761,
+   "champion": 21.4321,
+   "delta": -0.156,
+   "mde": 0.2954,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.092 is smaller than the 0.296 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.156 is smaller than the 0.295 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -1568,12 +1568,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.9046,
-   "champion": 11.7541,
-   "delta": 0.1505,
-   "mde": 0.1619,
+   "branch": 12.0059,
+   "champion": 11.935,
+   "delta": 0.0709,
+   "mde": 0.1595,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.150 is smaller than the 0.162 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.071 is smaller than the 0.160 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1582,12 +1582,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0685,
-   "champion": 0.0682,
-   "delta": 0.0003,
-   "mde": 0.01,
+   "branch": 0.0728,
+   "champion": 0.0761,
+   "delta": -0.0033,
+   "mde": 0.0105,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.010 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.011 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1596,12 +1596,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.988,
-   "champion": 0.9743,
-   "delta": 0.0137,
-   "mde": 0.0063,
+   "branch": 0.9899,
+   "champion": 0.9792,
+   "delta": 0.0107,
+   "mde": 0.0057,
    "measure": "killed by T10",
-   "reads_as": "97 games in 100 -> 99 in 100, a swing of 1 games per 100",
+   "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1610,10 +1610,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1115,
-   "champion": 0.0502,
+   "branch": 0.1137,
+   "champion": 0.0524,
    "delta": 0.0613,
-   "mde": 0.0125,
+   "mde": 0.0126,
    "measure": "stall, 2 in a row",
    "reads_as": "5 games in 100 -> 11 in 100, a swing of 6 games per 100",
    "scale": null,
@@ -1624,9 +1624,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.397,
-   "champion": 0.4035,
-   "delta": -0.0065,
+   "branch": 0.3972,
+   "champion": 0.4036,
+   "delta": -0.0064,
    "mde": 0.0194,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
@@ -1652,12 +1652,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1139,
-   "champion": 0.8929,
-   "delta": 0.221,
-   "mde": 0.0647,
+   "branch": 1.122,
+   "champion": 0.8985,
+   "delta": 0.2235,
+   "mde": 0.0651,
    "measure": "extra cards by T8",
-   "reads_as": "0.89 -> 1.11, a change of +0.22 (+25%)",
+   "reads_as": "0.90 -> 1.12, a change of +0.22 (+25%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1666,12 +1666,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.317,
-   "champion": 0.3487,
-   "delta": -0.0317,
-   "mde": 0.0219,
+   "branch": 0.3109,
+   "champion": 0.3409,
+   "delta": -0.03,
+   "mde": 0.0218,
    "measure": "interaction affordable @T6",
-   "reads_as": "35 games in 100 -> 32 in 100, a swing of 3 games per 100",
+   "reads_as": "34 games in 100 -> 31 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "worse",

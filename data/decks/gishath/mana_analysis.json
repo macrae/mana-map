@@ -176,7 +176,11 @@
           "tapped",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "G",
+          "R",
+          "W"
+        ]
       },
       {
         "name": "Mountain",
@@ -195,7 +199,11 @@
           "tapped",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "G",
+          "R",
+          "W"
+        ]
       },
       {
         "name": "Path of Ancestry",
@@ -275,17 +283,21 @@
           "fetch",
           "utility"
         ],
-        "produces": []
+        "produces": [
+          "G",
+          "R",
+          "W"
+        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 14,
+      "W": 17,
       "U": 0,
       "B": 0,
-      "R": 15,
-      "G": 19
+      "R": 18,
+      "G": 22
     },
     "nonland": {
       "W": 5,
@@ -295,11 +307,11 @@
       "G": 5
     },
     "total": {
-      "W": 19,
+      "W": 22,
       "U": 0,
       "B": 0,
-      "R": 19,
-      "G": 24
+      "R": 22,
+      "G": 27
     },
     "producers": [
       {
@@ -398,15 +410,15 @@
   "shares": {
     "G": {
       "pip_share": 0.562,
-      "source_share": 0.396
+      "source_share": 0.386
     },
     "R": {
       "pip_share": 0.198,
-      "source_share": 0.312
+      "source_share": 0.316
     },
     "W": {
       "pip_share": 0.24,
-      "source_share": 0.292
+      "source_share": 0.298
     }
   },
   "source_targets": {
@@ -416,14 +428,14 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.373,
-      "R": 0.41,
-      "G": 0.548
+      "W": 0.481,
+      "R": 0.515,
+      "G": 0.639
     },
     "with_rocks_and_dorks": {
-      "W": 0.548,
-      "R": 0.548,
-      "G": 0.694
+      "W": 0.639,
+      "R": 0.639,
+      "G": 0.764
     }
   },
   "ramp": {
@@ -447,15 +459,15 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.769,
+      "10": 7.774,
       "2": 2.138,
-      "3": 3.421,
-      "4": 4.407,
-      "5": 5.162,
-      "6": 5.793,
-      "7": 6.336,
-      "8": 6.84,
-      "9": 7.307
+      "3": 3.426,
+      "4": 4.419,
+      "5": 5.174,
+      "6": 5.804,
+      "7": 6.344,
+      "8": 6.847,
+      "9": 7.314
     }
   },
   "assumptions": [
@@ -465,9 +477,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "G: 19 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 24.",
-    "R: 15 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 19.",
-    "W: 14 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 19.",
+    "G: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 27.",
+    "R: 18 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 22.",
+    "W: 17 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 22.",
     "12 of 35 lands enter tapped (34%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

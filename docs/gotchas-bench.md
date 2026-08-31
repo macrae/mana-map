@@ -364,3 +364,97 @@ silent-overwrite defect created while fixing the first one.
 **AND THE POD IS PART OF THE INSTRUMENT.** giada-angels, vito and baylen-tokens
 are three EDHREC average decks played by the same Default AI. A result is
 relative to that table and to that AI's competence, not to a metagame.
+
+## A fetchland's colours are a property of the DECK, not of the card
+
+**2026-08-30.** `manabase.land_colors(card)` credits a land for the basic types in
+its type line and for the coloured symbols in an `add` clause. A fetchland has
+neither. Wooded Foothills reads:
+
+    {T}, Pay 1 life, Sacrifice this land: Search your library for a Mountain or
+    Forest card, put it onto the battlefield, then shuffle.
+
+No type, no `add`. It counted as **zero sources** — as did all sixteen true
+fetches in the corpus — and `goldfish.py` built every land's `colors` from the
+same call, so four fetches modelled as four lands that never produce anything.
+`model_colors` defaults to **True**, so this was on for every deck in the fleet.
+
+### What it cost
+
+`ur-dragon/landbase-v1` swapped two basic-only fetches and four coloured lands
+for four true fetches. `mana-fit` reported it as worse on **every colour**:
+
+| | W | U | B | R | G |
+|---|---|---|---|---|---|
+| eminence-v3, fetch-blind | −5 | −4 | −12 | −8 | −1 |
+| landbase-v1, fetch-blind | **−6** | **−7** | **−14** | **−10** | **−3** |
+| landbase-v1, fetch-aware | −2 | −3 | −10 | −6 | **+1** |
+
+The true delta is **W +1, U −1, B +2, R 0, G 0** — colour access flat — while the
+recurring life tax **halved, 8 → 4 per tap-cycle**, and the last always-tapped
+land left the deck. A tool that scores a strict improvement as a five-colour
+regression will talk a pilot out of it, and there is no figure on the page that
+looks wrong.
+
+### The sweep — 54 lands matching `ROLE_LAND_PATTERNS["land:fetch"]`
+
+The load-bearing split is **one word**:
+
+| | | finds a dual? |
+|---|---|---|
+| **16** | TRUE FETCH — `a Mountain or Forest card` | **yes** |
+| **20** | BASIC-of-TYPE — `a basic Forest, Plains, or Island card` | **no** |
+| 15 | ANY BASIC — `a basic land card` | no |
+| 1 | ANY LAND — Urza's Cave | yes |
+
+The Panoramas and Landscapes read almost identically to a real fetch and cannot
+touch a shockland. Resolving those two groups the same way is the error the
+taxonomy exists to prevent, and it is the bug the test suite catches first.
+
+Three more are excluded by the gate rather than the taxonomy, each for a
+different reason, and each was read card by card:
+
+- **`Ash Barrens`, `Thaumatic Compass`** — put the land into your **HAND**. The
+  clause must reach `onto the battlefield`. (Ash Barrens is also parenthesised
+  reminder text, so `_REMINDER_RE` already dropped it.)
+- **`Flagstones of Trokair`** — searches on a **death trigger**, not at will. The
+  `:` in the pattern is the gate.
+- **`Demolition Field`** — its search sits in a later sentence, behind
+  "destroy target nonbasic land an opponent controls". Excluded by the
+  sentence boundary, and correctly: a conditional source is counted at its
+  unconditional value, because understating is recoverable and overstating
+  builds a deck that cannot cast its spells.
+
+### The shape of the fix
+
+`land_colors(card, pool=None)`. **Without `pool` it is byte-identical** — proven
+over all 1266 corpus lands, zero divergences — which is what keeps a caller with
+no deck to offer reproducible. Callers that HAVE a deck pass one: `mana_analysis`,
+`mana_fit` (so a *candidate* fetch is scored on what this list could give it),
+`deck_facts`, and `goldfish.build_library`.
+
+Resolution is **one level deep**, and the reason is not colour. Union is
+idempotent, so one hop and two hops agree on every real board; the failure mode
+is no answer at all — two `a land card` fetches each find the other and recurse
+until the stack ends. Targets are priced with a bare `land_colors`.
+
+### Four of the first five tests were VACUOUS, and only re-introducing the bug said so
+
+All five passed. Removing the guard each was written for changed nothing in four
+of them:
+
+- *a fetch cannot fetch itself* — going through `land_colors` prices the self-target
+  with a bare `land_colors`, which for a fetch is the empty set. Union unchanged.
+  It has to drive `fetch_targets` directly.
+- *resolution is one level deep* — asserted on colours, which cannot show it.
+  Rewritten as **termination** on two mutually-fetching lands.
+- …and that one only closes the loop when **the card is in its own pool**, which is
+  how every caller passes it. Leave it out and cave finds twin, twin self-excludes,
+  done — no recursion, test green, guard untested.
+- *every corpus land is unchanged without a pool* — asserted
+  `land_colors(card) == land_colors(card, pool=None)`. Both arguments take the same
+  branch. It holds however the fetch layer is wired. Rewritten to assert the property
+  the branch protects: **a fetch handed no deck produces nothing.**
+
+The rule this pays for again: a test that re-derives the rule is testing itself.
+Drive the production function, then prove the test by putting the bug back.

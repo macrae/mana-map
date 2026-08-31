@@ -50,7 +50,7 @@
       "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "8eefaae74829",
+    "model_version": "45b019a2e225",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -58,41 +58,41 @@
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.89,
+      "cast_by_turn_6_rate": 0.917,
       "cast_turn_histogram": {
-        "10": 91,
-        "2": 340,
-        "3": 3074,
-        "4": 4339,
-        "5": 704,
-        "6": 440,
-        "7": 316,
-        "8": 244,
-        "9": 175,
-        "not_by_max_turn": 277
+        "10": 72,
+        "2": 443,
+        "3": 3357,
+        "4": 4412,
+        "5": 594,
+        "6": 366,
+        "7": 272,
+        "8": 197,
+        "9": 134,
+        "not_by_max_turn": 153
       },
-      "mean_cast_turn": 4.121,
+      "mean_cast_turn": 3.979,
       "median_cast_turn": 4
     },
     "interaction_castable_by_turn": {
-      "1": 0.211,
-      "10": 0.892,
-      "2": 0.423,
-      "3": 0.357,
-      "4": 0.37,
-      "5": 0.587,
-      "6": 0.695,
+      "1": 0.204,
+      "10": 0.891,
+      "2": 0.401,
+      "3": 0.33,
+      "4": 0.353,
+      "5": 0.576,
+      "6": 0.693,
       "7": 0.774,
-      "8": 0.822,
-      "9": 0.86
+      "8": 0.823,
+      "9": 0.861
     },
     "interaction_in_hand_by_turn": {
       "1": 0.745,
       "10": 0.939,
       "2": 0.788,
       "3": 0.819,
-      "4": 0.84,
-      "5": 0.856,
+      "4": 0.839,
+      "5": 0.855,
       "6": 0.876,
       "7": 0.894,
       "8": 0.911,
@@ -113,27 +113,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 7.866,
-      "2": 2.268,
-      "3": 3.506,
-      "4": 4.435,
-      "5": 5.21,
-      "6": 5.876,
-      "7": 6.41,
-      "8": 6.91,
-      "9": 7.393
+      "10": 7.882,
+      "2": 2.29,
+      "3": 3.543,
+      "4": 4.472,
+      "5": 5.25,
+      "6": 5.906,
+      "7": 6.436,
+      "8": 6.934,
+      "9": 7.413
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 2.413,
-      "2": 0.086,
-      "3": 0.28,
-      "4": 0.549,
-      "5": 1.041,
-      "6": 1.434,
-      "7": 1.725,
-      "8": 1.973,
-      "9": 2.195
+      "10": 2.483,
+      "2": 0.107,
+      "3": 0.313,
+      "4": 0.602,
+      "5": 1.119,
+      "6": 1.515,
+      "7": 1.805,
+      "8": 2.05,
+      "9": 2.27
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -167,7 +167,7 @@
         "by_turn_6_rate_assisted": 0.746,
         "label": "RAMP drawn (the brief's 9; claimed 73% by T6)",
         "mean_turn": 2.648,
-        "mean_turn_assisted": 2.629
+        "mean_turn_assisted": 2.619
       },
       {
         "assembled_rate": 0.901,
@@ -176,25 +176,25 @@
         "by_turn_6_rate_assisted": 0.84,
         "label": "DRAW -> KIANNE drawn (the brief's 12; claimed 83% by T6)",
         "mean_turn": 2.278,
-        "mean_turn_assisted": 2.256
+        "mean_turn_assisted": 2.251
       },
       {
         "assembled_rate": 0.78,
         "assembled_rate_assisted": 0.811,
         "by_turn_6_rate": 0.68,
-        "by_turn_6_rate_assisted": 0.715,
+        "by_turn_6_rate_assisted": 0.716,
         "label": "COUNTER MULTIPLIER drawn (the brief's 8; claimed 69% by T6)",
         "mean_turn": 2.677,
-        "mean_turn_assisted": 2.663
+        "mean_turn_assisted": 2.653
       },
       {
         "assembled_rate": 0.673,
-        "assembled_rate_assisted": 0.722,
+        "assembled_rate_assisted": 0.723,
         "by_turn_6_rate": 0.562,
-        "by_turn_6_rate_assisted": 0.609,
+        "by_turn_6_rate_assisted": 0.61,
         "label": "MANA ON THEIR TURNS drawn (the brief's 6; claimed 58% by T6)",
         "mean_turn": 2.99,
-        "mean_turn_assisted": 3.021
+        "mean_turn_assisted": 3.01
       },
       {
         "assembled_rate": 0.731,
@@ -203,43 +203,43 @@
         "by_turn_6_rate_assisted": 0.666,
         "label": "GET THROUGH drawn (the brief's 7; claimed 64% by T6)",
         "mean_turn": 2.887,
-        "mean_turn_assisted": 2.909
+        "mean_turn_assisted": 2.9
       },
       {
         "assembled_rate": 0.601,
         "assembled_rate_assisted": 0.662,
         "by_turn_6_rate": 0.492,
-        "by_turn_6_rate_assisted": 0.549,
+        "by_turn_6_rate_assisted": 0.55,
         "label": "KEYWORD GRANTER drawn (the brief's 5; claimed 51% by T6)",
         "mean_turn": 3.176,
-        "mean_turn_assisted": 3.215
+        "mean_turn_assisted": 3.198
       },
       {
         "assembled_rate": 0.734,
         "assembled_rate_assisted": 0.774,
         "by_turn_6_rate": 0.623,
-        "by_turn_6_rate_assisted": 0.665,
+        "by_turn_6_rate_assisted": 0.666,
         "label": "PROTECTION drawn (the brief's 7; claimed 64% by T6)",
         "mean_turn": 2.88,
-        "mean_turn_assisted": 2.875
+        "mean_turn_assisted": 2.863
       },
       {
         "assembled_rate": 0.601,
         "assembled_rate_assisted": 0.665,
         "by_turn_6_rate": 0.489,
-        "by_turn_6_rate_assisted": 0.547,
+        "by_turn_6_rate_assisted": 0.548,
         "label": "INTERACTION drawn (the brief's 5; claimed 51% by T6)",
         "mean_turn": 3.186,
-        "mean_turn_assisted": 3.244
+        "mean_turn_assisted": 3.227
       },
       {
         "assembled_rate": 0.416,
         "assembled_rate_assisted": 0.505,
         "by_turn_6_rate": 0.323,
-        "by_turn_6_rate_assisted": 0.397,
+        "by_turn_6_rate_assisted": 0.398,
         "label": "BLINK drawn (the brief's 3; claimed 35% by T6)",
         "mean_turn": 3.535,
-        "mean_turn_assisted": 3.653
+        "mean_turn_assisted": 3.629
       },
       {
         "assembled_rate": 0.305,
@@ -254,10 +254,10 @@
         "assembled_rate": 0.299,
         "assembled_rate_assisted": 0.407,
         "by_turn_6_rate": 0.232,
-        "by_turn_6_rate_assisted": 0.317,
+        "by_turn_6_rate_assisted": 0.318,
         "label": "FLASH REDUNDANCY drawn (the brief's 2; claimed 25% by T6)",
         "mean_turn": 3.573,
-        "mean_turn_assisted": 3.821
+        "mean_turn_assisted": 3.785
       },
       {
         "assembled_rate": 0.348,
@@ -266,7 +266,7 @@
         "by_turn_6_rate_assisted": 0.257,
         "label": "THE SWING ASSEMBLED — a counter multiplier AND a way through AND a keyword granter",
         "mean_turn": 5.403,
-        "mean_turn_assisted": 5.382
+        "mean_turn_assisted": 5.367
       }
     ]
   }

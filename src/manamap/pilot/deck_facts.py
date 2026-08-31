@@ -169,7 +169,8 @@ def mana_facts(cards):
     reqs = pip_requirements(spells)
     sources = {c: 0 for c in WUBRG}
     for land in lands:
-        for colour in land_colors(land):
+        # `pool=lands` so a fetchland counts the colours it can actually find.
+        for colour in land_colors(land, pool=lands):
             sources[colour] += 1
     # Any permanent can carry the trap, not just lands — Delighted Halfling is a dork.
     restricted = [r for r in (classify_mana_restriction(c) for c in cards) if r]

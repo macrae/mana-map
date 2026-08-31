@@ -1110,12 +1110,12 @@
     "colour": "W",
     "delta": -1,
     "gap": [
-     0,
-     -1
+     2,
+     1
     ],
     "have": [
-     22,
-     21
+     24,
+     23
     ],
     "target": [
      22,
@@ -1142,12 +1142,12 @@
     "colour": "B",
     "delta": 1,
     "gap": [
-     -6,
-     -5
+     -4,
+     -3
     ],
     "have": [
-     30,
-     31
+     32,
+     33
     ],
     "target": [
      36,
@@ -1158,12 +1158,12 @@
     "colour": "R",
     "delta": 0,
     "gap": [
-     -4,
-     -4
+     -2,
+     -2
     ],
     "have": [
-     18,
-     18
+     20,
+     20
     ],
     "target": [
      22,
@@ -1198,24 +1198,24 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.822,
-    0.839
+    0.855,
+    0.869
    ],
    "G": [
     null,
     null
    ],
    "R": [
-    0.849,
-    0.849
+    0.881,
+    0.881
    ],
    "U": [
     null,
     null
    ],
    "W": [
-    0.907,
-    0.895
+    0.927,
+    0.918
    ]
   }
  },
@@ -1226,7 +1226,7 @@
   "why": "A SEPARATE BRANCH, not a stage onto bloodline: bloodline is PROPOSED as v1.0.1 and staging would make that proposal stale and un-freeze a decision already accepted. Aimed at the one measured cost bloodline pays -- stall 5 games in 100 to 8 -- WITHOUT touching the gains it bought. The diagnosis says this is a curve problem and not a mana problem: supply is identical to v1.0.0 (mana at turn five 4.944 against 4.936, missed land drops 0.404 both), and mana_short rose 40% purely because bloodline swapped two- and three-drops for six-drops. So attack it from both ends. CURVE DOWN seven mana: Vish Kal at seven is the card the field ranks #15903 and that two earlier revisions both cut; Bloodtracker pays life for counters a sac deck gets free; Unbounded Potential is a pump spell. ACCELERATION IN: Culling the Weak sacrifices a token for BBBB, so it is ramp that eats fuel the deck already makes and turns turn three into a six-drop turn -- the pilot's stated T4/T5 pump. THE COUNTER ENGINE: The Ozolith banks counters off every creature that LEAVES the battlefield, which in a deck built on sacrifice means every eaten body reloads onto the next giant, for one mana. Aetherborn Marauder is the body that collects them, with flying and lifelink. Vault of the Archangel gives the whole team deathtouch and lifelink from a LAND slot rather than a spell slot, and it costs only a white source in a deck already at its white target while black and red are the short colours. NO COUNTER DOUBLER EXISTS IN THIS IDENTITY -- Ozolith, the Shattered Spire is green -- so that lever is unavailable and is not being chased."
  },
  "objective_grade": {
-  "reading": 15.4335,
+  "reading": 15.6102,
   "shortfall": null,
   "state": "met"
  },
@@ -1298,37 +1298,37 @@
   "reward": [
    {
     "measure": "extra cards by T8",
-    "reads_as": "0.89 -> 1.09, a change of +0.20 (+22%)",
+    "reads_as": "0.90 -> 1.10, a change of +0.20 (+23%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "21.26 -> 20.94, a change of -0.32 (-2%)",
+    "detail": "21.43 -> 21.10, a change of -0.33 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "7 games in 100 -> 4 in 100, a swing of 2 games per 100",
+    "detail": "8 games in 100 -> 5 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "5 games in 100 -> 6 in 100, a swing of 1 games per 100",
+    "detail": "5 games in 100 -> 7 in 100, a swing of 1 games per 100",
     "kind": "paid",
     "what": "stall, 2 in a row",
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "the largest is board power @T6 at +0.149 against an MDE of 0.168. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is board power @T6 at +0.138 against an MDE of 0.166. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "W gap +0 -> -1",
+    "detail": "W gap +2 -> +1",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1350,12 +1350,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 20.9394,
-   "champion": 21.2619,
-   "delta": -0.3225,
-   "mde": 0.2961,
+   "branch": 21.1035,
+   "champion": 21.4321,
+   "delta": -0.3286,
+   "mde": 0.2954,
    "measure": "damage @T10",
-   "reads_as": "21.26 -> 20.94, a change of -0.32 (-2%)",
+   "reads_as": "21.43 -> 21.10, a change of -0.33 (-2%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1364,12 +1364,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.903,
-   "champion": 11.7541,
-   "delta": 0.1489,
-   "mde": 0.1683,
+   "branch": 12.0731,
+   "champion": 11.935,
+   "delta": 0.1381,
+   "mde": 0.1658,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.149 is smaller than the 0.168 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.138 is smaller than the 0.166 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1378,12 +1378,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0446,
-   "champion": 0.0682,
-   "delta": -0.0236,
-   "mde": 0.01,
+   "branch": 0.0494,
+   "champion": 0.0761,
+   "delta": -0.0267,
+   "mde": 0.0105,
    "measure": "killed by T6",
-   "reads_as": "7 games in 100 -> 4 in 100, a swing of 2 games per 100",
+   "reads_as": "8 games in 100 -> 5 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1392,10 +1392,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9736,
-   "champion": 0.9743,
+   "branch": 0.9785,
+   "champion": 0.9792,
    "delta": -0.0007,
-   "mde": 0.0064,
+   "mde": 0.0057,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1406,12 +1406,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0638,
-   "champion": 0.0502,
-   "delta": 0.0136,
-   "mde": 0.0097,
+   "branch": 0.0665,
+   "champion": 0.0524,
+   "delta": 0.0141,
+   "mde": 0.0099,
    "measure": "stall, 2 in a row",
-   "reads_as": "5 games in 100 -> 6 in 100, a swing of 1 games per 100",
+   "reads_as": "5 games in 100 -> 7 in 100, a swing of 1 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -1420,12 +1420,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4063,
-   "champion": 0.4035,
-   "delta": 0.0028,
+   "branch": 0.406,
+   "champion": 0.4036,
+   "delta": 0.0024,
    "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1448,12 +1448,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.091,
-   "champion": 0.8929,
-   "delta": 0.1981,
+   "branch": 1.1025,
+   "champion": 0.8985,
+   "delta": 0.204,
    "mde": 0.0724,
    "measure": "extra cards by T8",
-   "reads_as": "0.89 -> 1.09, a change of +0.20 (+22%)",
+   "reads_as": "0.90 -> 1.10, a change of +0.20 (+23%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1462,12 +1462,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3501,
-   "champion": 0.3487,
-   "delta": 0.0014,
-   "mde": 0.0203,
+   "branch": 0.3425,
+   "champion": 0.3409,
+   "delta": 0.0016,
+   "mde": 0.0202,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

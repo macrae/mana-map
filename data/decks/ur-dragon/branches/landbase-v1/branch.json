@@ -5,10 +5,9 @@
  "opened": "2026-08-30",
  "why": "eminence-v3's landbase, refixed: type-restricted fetches that reach the nine typed duals, replacing basic-only fetches and the life-taxing 5c lands. Land-for-land, 36 unchanged, so the spell configuration eminence-v3 was measured on is untouched.",
  "objective": {
-  "axis": "land_drop",
+  "axis": "keep_t3",
   "op": ">=",
-  "value": 5.0,
-  "why": "eminence-v3's landbase, refixed: type-restricted fetches that reach the nine typed duals, replacing basic-only fetches and the life-taxing 5c lands. Land-for-land, 36 unchanged, so the spell configuration eminence-v3 was measured on is untouched."
+  "value": 0.87
  },
  "commits": [],
  "base_version": 2,
@@ -54,6 +53,17 @@
    "in": "Plateau",
    "strength": null,
    "why": "the Coast enters tapped early and serves a 4.4% blue splash. Plateau is untapped always, gives R (57.1% of pips) and W (short 5), and its Plains/Mountain types make it a target for Arid Mesa and Wooded Foothills \u2014 raising the typed-dual count from 9 to 11 and widening every fetch in the deck."
+  }
+ ],
+ "objective_history": [
+  {
+   "at": "2026-08-30",
+   "was": {
+    "axis": "land_drop",
+    "op": ">=",
+    "value": 5.0
+   },
+   "why_changed": "land_drop is `missed_land_drop_by_five`, a RATE where LOWER is better, so `>= 5.0` was wrong in both direction and scale and could never be met. keep_t3 is the castability measure a fixing change should move, and it must IMPROVE on v1.0.1's 0.866 rather than merely hold."
   }
  ]
 }

@@ -1077,12 +1077,12 @@
     "colour": "W",
     "delta": 0,
     "gap": [
-     0,
-     0
+     2,
+     2
     ],
     "have": [
-     22,
-     22
+     24,
+     24
     ],
     "target": [
      22,
@@ -1109,12 +1109,12 @@
     "colour": "B",
     "delta": 0,
     "gap": [
-     -6,
-     -6
+     -4,
+     -4
     ],
     "have": [
-     30,
-     30
+     32,
+     32
     ],
     "target": [
      36,
@@ -1125,12 +1125,12 @@
     "colour": "R",
     "delta": 0,
     "gap": [
-     -4,
-     -4
+     -2,
+     -2
     ],
     "have": [
-     18,
-     18
+     20,
+     20
     ],
     "target": [
      22,
@@ -1165,24 +1165,24 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.822,
-    0.822
+    0.855,
+    0.855
    ],
    "G": [
     null,
     null
    ],
    "R": [
-    0.849,
-    0.849
+    0.881,
+    0.881
    ],
    "U": [
     null,
     null
    ],
    "W": [
-    0.907,
-    0.907
+    0.927,
+    0.927
    ]
   }
  },
@@ -1193,7 +1193,7 @@
   "why": "NOT A SWARM DECK. The 400-game Forge run killed that thesis: composite won 31/400 against the champion's 50/400, interval on the difference excluding zero, and the mechanism was one number -- combat damage dealt to players fell 29.07 to 18.20 because 1/1 tokens do not connect against real blockers. So the tokens stop being the clock and become FUEL. OUT go the arrival-damage payoffs that pay 1-2 per 1/1 (Impact Tremors, Witty Roastmaster, Warleader's Call, Corpse Knight, Mirkwood Bats, Purphoros) and the go-wide combat payoffs. IN come free sacrifice outlets (Viscera Seer, Ashnod's Altar, Altar of Dementia), the dig they feed (Liliana Dreadhorde General draws on every creature death; Bloodtracker; High-Society Hunter), and the payoffs that eat tokens and get big: Yahenni and Immersturm Predator turn a token into INDESTRUCTIBLE, Vish Kal turns one into +X/+X and then into removal, Bloodflow Connoisseur is the cheap version. Crossway Troublemakers gives every attacking Vampire deathtouch AND lifelink, which is what makes a board of any size unprofitable to block. Altar of Dementia mills OPPONENTS, which grows The Haunt of Hightower and the Nighthawk Scavenger already in the 99 -- self-mill would bury the payoffs, opponent-mill feeds them. THE GOLDFISH IS NOT THE ARBITER HERE and is expected to under-rate this: it has no blockers, so it rewards exactly the wide board the real table just ate. Forge decides."
  },
  "objective_grade": {
-  "reading": 15.7681,
+  "reading": 15.9619,
   "shortfall": null,
   "state": "met"
  },
@@ -1260,18 +1260,18 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "11.75 -> 12.10, a change of +0.35 (+3%)",
+    "reads_as": "11.94 -> 12.29, a change of +0.35 (+3%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "0.89 -> 1.13, a change of +0.23 (+26%)",
+    "reads_as": "0.90 -> 1.14, a change of +0.24 (+27%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "7 games in 100 -> 5 in 100, a swing of 2 games per 100",
+    "detail": "8 games in 100 -> 5 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
@@ -1289,7 +1289,7 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is damage @T10 at +0.277 against an MDE of 0.296. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.287 against an MDE of 0.295. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1312,12 +1312,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 21.5392,
-   "champion": 21.2619,
-   "delta": 0.2773,
-   "mde": 0.2961,
+   "branch": 21.7191,
+   "champion": 21.4321,
+   "delta": 0.287,
+   "mde": 0.2954,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.277 is smaller than the 0.296 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.287 is smaller than the 0.295 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -1326,12 +1326,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 12.1043,
-   "champion": 11.7541,
-   "delta": 0.3502,
-   "mde": 0.1682,
+   "branch": 12.2871,
+   "champion": 11.935,
+   "delta": 0.3521,
+   "mde": 0.1662,
    "measure": "board power @T6",
-   "reads_as": "11.75 -> 12.10, a change of +0.35 (+3%)",
+   "reads_as": "11.94 -> 12.29, a change of +0.35 (+3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1340,12 +1340,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0471,
-   "champion": 0.0682,
-   "delta": -0.0211,
-   "mde": 0.01,
+   "branch": 0.0534,
+   "champion": 0.0761,
+   "delta": -0.0227,
+   "mde": 0.0105,
    "measure": "killed by T6",
-   "reads_as": "7 games in 100 -> 5 in 100, a swing of 2 games per 100",
+   "reads_as": "8 games in 100 -> 5 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1354,12 +1354,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9758,
-   "champion": 0.9743,
-   "delta": 0.0015,
-   "mde": 0.0063,
+   "branch": 0.9801,
+   "champion": 0.9792,
+   "delta": 0.0009,
+   "mde": 0.0057,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1368,10 +1368,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0793,
-   "champion": 0.0502,
-   "delta": 0.0291,
-   "mde": 0.0107,
+   "branch": 0.0838,
+   "champion": 0.0524,
+   "delta": 0.0314,
+   "mde": 0.011,
    "measure": "stall, 2 in a row",
    "reads_as": "5 games in 100 -> 8 in 100, a swing of 3 games per 100",
    "scale": null,
@@ -1382,9 +1382,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4036,
-   "champion": 0.4035,
-   "delta": 0.0001,
+   "branch": 0.4033,
+   "champion": 0.4036,
+   "delta": -0.0003,
    "mde": 0.0194,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
@@ -1410,12 +1410,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1276,
-   "champion": 0.8929,
-   "delta": 0.2347,
-   "mde": 0.074,
+   "branch": 1.1411,
+   "champion": 0.8985,
+   "delta": 0.2426,
+   "mde": 0.0746,
    "measure": "extra cards by T8",
-   "reads_as": "0.89 -> 1.13, a change of +0.23 (+26%)",
+   "reads_as": "0.90 -> 1.14, a change of +0.24 (+27%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1424,12 +1424,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.335,
-   "champion": 0.3487,
-   "delta": -0.0137,
-   "mde": 0.0203,
+   "branch": 0.3283,
+   "champion": 0.3409,
+   "delta": -0.0126,
+   "mde": 0.0202,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
