@@ -503,3 +503,56 @@ module attribute and nothing else. Both knobs now take `None` and resolve inside
 It was caught only because the sweep re-ran the three slow configurations as
 controls. Without them the three novel configs would have read as "these knobs do
 not matter" — wrong, and entirely plausible.
+
+
+## The finding: validation loss and space quality are ANTI-CORRELATED
+
+Scored on the real eval (pool 500, test split), everything else held fixed, with
+only the epoch count varying:
+
+| epochs | val loss | function | theme | hard_neg | effdim |
+|---|---|---|---|---|---|
+| **1** | 0.0215 | **0.618** | 0.387 | 0.0026 | **34.19** |
+| 2 | 0.0151 | 0.604 | 0.384 | 0.0024 | 32.97 |
+| 3 | 0.0142 | 0.599 | 0.382 | 0.0024 | 31.39 |
+| 5 | 0.0134 | 0.585 | 0.387 | 0.0024 | 28.31 |
+| 8 | 0.0130 | 0.588 | 0.387 | 0.0027 | 24.86 |
+| 12 | 0.0131 | 0.567 | 0.381 | 0.0031 | 20.64 |
+
+Validation loss falls monotonically (0.0215 → 0.0130) while function recall falls
+monotonically with it (0.618 → 0.567) and effective dimensionality collapses
+(34.19 → 20.64).
+
+**`train_vae` early-stops on validation loss, so it was selecting the worst space
+it produced.** One epoch — eight seconds — beats the 85-minute twenty-epoch run
+on every axis: function 0.618 against 0.483, theme 0.387 against 0.326, effdim
+34.19 against 5.71.
+
+That also explains the first run's poor showing. It was not a bad configuration;
+it was twenty epochs deep into a degradation that starts immediately.
+
+### What the best VAE configuration actually achieves
+
+| | function | theme | hard_neg | effdim |
+|---|---|---|---|---|
+| function space (incumbent) | **0.794** | 0.152 | **0.0133** | 27.31 |
+| text baseline | 0.629 | **0.523** | 0.0197 | **51.39** |
+| **VAE, 1 epoch** | 0.618 | 0.387 | 0.0026 | 34.19 |
+
+It **loses function** (0.618 vs 0.794) and **loses hard negatives** (0.0026 vs
+0.0133 — the reconstruction objective stacking similar phrasings, as predicted).
+It **beats the incumbent on theme** (0.387 vs 0.152) and on effective
+dimensionality (34.19 vs 27.31).
+
+So: not a replacement, and the trade is now measured at three points instead of
+argued about. `pos_weight` was tested and rejected — it buys hard-negative
+separation (0.0031 → 0.0110) and pays for it on both relations.
+
+### The methodological lesson
+
+Every training-time signal in this work has now been shown to mislead:
+`active_units` (silent when free bits disengage), `effective_dim` (highest for an
+empty latent), validation loss (identical across configs, and anti-correlated
+with quality once it does move). **A sweep must score the downstream task.** The
+cached encoder makes that affordable — 8 to 73 seconds per configuration, eval
+included — which is the only reason any of this was findable in an afternoon.

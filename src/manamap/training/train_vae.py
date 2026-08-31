@@ -173,7 +173,7 @@ class CachedViews(torch.utils.data.Dataset):
 
 
 def run_epoch_cached(model, loader, device, optimizer=None, step=0, total_steps=1,
-                     free_bits=None, beta=None):
+                     free_bits=None, beta=None, pos_weight=None):
     train = optimizer is not None
     model.train(train)
     losses, kls, mus = [], [], []
@@ -183,7 +183,7 @@ def run_epoch_cached(model, loader, device, optimizer=None, step=0, total_steps=
             mu, logvar = model.from_pooled(pooled)
             z = model.reparameterize(mu, logvar)
             per_block, per_mask = _split_targets(targets, masked)
-            recon = reconstruction_loss(model.decode(z), per_block, per_mask)
+            recon = reconstruction_loss(model.decode(z), per_block, per_mask, pos_weight)
             kl, per_dim = kl_with_free_bits(mu, logvar, free_bits)
             loss = recon + beta_at(step, total_steps, beta) * kl
         if train:
@@ -306,6 +306,50 @@ def train(unfreeze=0, epochs=EPOCHS, batch_size=BATCH_SIZE, seed=EVAL_SEED, echo
     return model, tok, vocab, history, final_units
 
 
+def score_space(matrix, frame):
+    """The DOWNSTREAM eval for a candidate latent — the only signal left standing.
+
+    Validation loss, `active_units` and `effective_dim` have each now failed to
+    rank configurations: identical to four decimals, silent when free bits
+    disengage, and highest for the emptiest latent respectively. What is left is
+    to ask the space the questions the product asks.
+
+    Returns recall on both relations at pool 500 (where the eval separates
+    spaces most sharply), hard-negative separation, and the raw posterior norm —
+    which is what exposes a latent that scores well on geometry by being empty.
+    """
+    import numpy as np
+
+    from manamap.analysis.eval_embeddings import (
+        effective_dimensionality, hard_negative_separation, load_golden,
+        playability_order, recall_by_group, resolve_groups, theme_groups)
+
+    raw_norm = float(np.linalg.norm(matrix, axis=1).mean())
+    unit = matrix / np.maximum(np.linalg.norm(matrix, axis=1, keepdims=True), 1e-8)
+    names = frame["name"].tolist()
+    order = playability_order(frame)
+    golden, _missing = resolve_groups(load_golden(), names)
+    out = {"raw_norm": raw_norm, "effdim": float(effective_dimensionality(unit))}
+    for label, groups in (("function", golden), ("theme", theme_groups(frame))):
+        scores = recall_by_group(unit, groups, order, pool=500, split="test")
+        out[label] = float(scores.mean()) if len(scores) else 0.0
+    out["hard_neg"] = hard_negative_separation(unit, names)["mean_separation"]
+    return out
+
+
+def latent_for_all(model, features, device, batch=1024):
+    """`mu` for every card from the UNMASKED cached view (index 0)."""
+    import numpy as np
+
+    model.eval()
+    out = []
+    with torch.no_grad():
+        for i in range(0, features.shape[0], batch):
+            pooled = torch.from_numpy(np.asarray(features[i:i + batch, 0])).to(device)
+            out.append(model.from_pooled(pooled)[0].cpu().numpy())
+    return np.concatenate(out, axis=0).astype(np.float32)
+
+
 def sweep(configs, epochs=12, batch_size=512, seed=EVAL_SEED, echo=_say):
     """Train one head per config over the CACHED encoder output.
 
@@ -355,21 +399,26 @@ def sweep(configs, epochs=12, batch_size=512, seed=EVAL_SEED, echo=_say):
             step = 0
             row = {"label": label, "free_bits": free_bits, "beta": beta, "epochs": []}
             started = time.time()
+            pos_weight = config.get("pos_weight")
             for epoch in range(epochs):
                 _tr, _k, step, _ = run_epoch_cached(model, loaders[0], device, opt,
-                                                    step, total, free_bits, beta)
+                                                    step, total, free_bits, beta,
+                                                    pos_weight)
                 vl, vk, _s, latent = run_epoch_cached(model, loaders[1], device,
-                                                      free_bits=free_bits, beta=beta)
+                                                      free_bits=free_bits, beta=beta,
+                                                      pos_weight=pos_weight)
                 effdim = effective_dimensionality(
                     latent / np.maximum(np.linalg.norm(latent, axis=1, keepdims=True), 1e-8))
                 row["epochs"].append({"val": vl, "kl": float(vk.mean()),
                                       "active": active_units(torch.tensor(vk)),
                                       "effdim": float(effdim)})
             last = row["epochs"][-1]
+            row["scored"] = score_space(latent_for_all(model, features, device), frame)
             row["seconds"] = round(time.time() - started, 1)
-            echo(f"    {label:24} val {last['val']:.4f}  KL/dim {last['kl']:.3f}  "
-                 f"active {last['active']:>3}  effdim {last['effdim']:5.2f}  "
-                 f"{row['seconds']:.0f}s")
+            sc = row["scored"]
+            echo(f"    {label:24} fn {sc['function']:.3f}  theme {sc['theme']:.3f}  "
+                 f"hneg {sc['hard_neg']:.4f}  effdim {sc['effdim']:5.2f}  "
+                 f"|mu| {sc['raw_norm']:6.2f}  {row['seconds']:.0f}s")
             results.append(row)
     return results
 

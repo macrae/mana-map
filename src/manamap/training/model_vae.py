@@ -278,13 +278,30 @@ def beta_at(step, total_steps, beta=None, anneal=None):
     return float(beta * min(1.0, step / max(1.0, total_steps * anneal)))
 
 
-def reconstruction_loss(logits, targets, masked):
-    """Multi-label BCE over the masked blocks ONLY.
+#: How much a positive column is worth against a negative one.
+#:
+#: MEASURED: the bag-of-tokens target carries **9.5 positive columns out of
+#: 2,048 — a 0.47% positive rate** — so an unweighted BCE is dominated by the
+#: easy negatives. Predicting the base rate everywhere scores 0.0296; every one
+#: of seven very different configurations reached 0.0131 and stopped, IDENTICAL
+#: to four decimals across latents differing 31x in norm.
+#:
+#: The objective was learning (a 56% reduction) and had no gradient left to rank
+#: anything, so three training runs and a hyperparameter sweep were tuning a
+#: loss that could not distinguish their results. `pos_weight` is the one-line
+#: version of the fix: at the measured rate, (1 - p) / p is about 210, so the
+#: positives carry comparable total mass to the negatives.
+POS_WEIGHT = 200.0
+
+
+def reconstruction_loss(logits, targets, masked, pos_weight=None):
+    """Multi-label BCE over the masked blocks ONLY, with positives weighted.
 
     Scoring an unmasked block would reward copying a value the model can already
     see, which is the failure the recoverability audit exists to prevent — the
     same shape as predicting `cmc` while `mana_cost` is visible.
     """
+    weight = POS_WEIGHT if pos_weight is None else pos_weight
     total = logits[BLOCKS[0]].new_zeros(())
     counted = 0
     for block in BLOCKS:
@@ -292,7 +309,8 @@ def reconstruction_loss(logits, targets, masked):
         if not len(rows):
             continue
         total = total + F.binary_cross_entropy_with_logits(
-            logits[block][rows], targets[block][rows])
+            logits[block][rows], targets[block][rows],
+            pos_weight=logits[block].new_tensor(weight))
         counted += 1
     return total / max(counted, 1)
 
