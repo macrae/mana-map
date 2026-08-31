@@ -204,6 +204,15 @@ make test-browser             # the playwright suite, ~4 min
 .venv/bin/pytest -m ""        # literally everything, ~10 min
 
 manamap serve                 # viz + a LOCAL /api the deployed site does not have
+                              # ALSO A WARM WORKER: with it running, every read-only
+                              # `manamap pilot <cmd>` routes through /api/cli and skips
+                              # the cold start. query-rules 6.93s -> 0.16s (43x),
+                              # deck-facts 1.44s -> 0.14s, deck-audit 2.26s -> 0.59s;
+                              # output byte-identical. Fails OPEN — no server, or any
+                              # error at all, and the command runs locally as before.
+                              # MANAMAP_NO_DAEMON=1 opts out; MANAMAP_DAEMON=host:port
+                              # points elsewhere. Restart the server after a code change:
+                              # it holds the old modules until you do.
 python -m http.server 8000    # or plain static, FROM REPO ROOT (no Build agents)
 # http://localhost:8000/viz/workbench.html          THE LANDING PAGE — start here
 # http://localhost:8000/viz/index.html              the card map (3 modes)

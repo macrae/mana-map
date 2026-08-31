@@ -885,8 +885,87 @@ def _measure(slug=None, stage=None):
     return {"slug": slug, "stage": stage, "wrote": artifact, "what": what,
             "info": json.loads((base / "info.json").read_text(encoding="utf-8"))}
 
+#: PILOT COMMANDS THE WARM PROCESS MAY ANSWER, and the list is an ALLOW-LIST for
+#: the same reason `ENDPOINTS` is: a server that can run any subcommand is a
+#: server that can be talked into writing something.
+#:
+#: WHY THIS EXISTS. A CLI invocation is a cold process, and the memos that make
+#: this repo fast — `_JSON_MEMO`, `_MTIME_MEMO`, `_RULES_DB_MEMO`,
+#: `preprocess._MODEL_CACHE` — are all module-level dicts. Measured cold:
+#: `query-rules` 12.1s, of which ~8s is importing sentence_transformers and
+#: constructing a frozen MiniLM that the previous invocation already built. The
+#: rules-lookup skill says "try several phrasings", so three phrasings cost ~36s
+#: of reloading the identical model. Warm, the second call is ~0.15s.
+#:
+#: EVERY ENTRY MUST BE READ-ONLY. Not "read-only if you pass the right flags" —
+#: read-only however it is invoked. `mana-analysis`, `goldfish` and `fetch-deck`
+#: are deliberately absent: they write tracked artifacts, and a background
+#: process that writes while the pilot is editing is the concurrent-overwrite
+#: class this repo has already paid for twice. The `_writes` check below is a
+#: second gate, not the first one.
+CLI_READONLY = frozenset({
+    # The RAG pair — the whole reason this endpoint exists.
+    "query-rules", "query-strategy", "lookup-rule", "lookup-strategy",
+    # Composition and lookup.
+    "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
+    "deck-status", "mana-fit", "card-search", "pool-facts", "deck-history",
+    "deck-version", "impact", "cache-status", "bracket-check",
+})
+
+#: Any of these on the parsed namespace means the command intends to WRITE.
+#: Belt and braces over `CLI_READONLY`, because a read-only command can grow a
+#: `--write` flag later and nobody will remember this file.
+_CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway")
+
+
+def _cli(argv=None):
+    """Run one read-only pilot command in this warm process; return its stdout.
+
+    The ARGV is re-parsed with the CLI's own parser rather than reconstructed
+    from a dict, so the semantics are identical to the terminal by construction
+    — there is no second place where a flag can mean something slightly else.
+    """
+    import argparse
+    import contextlib
+    import io as _io
+
+    from manamap.pilot.registry import add_pilot_parser, run_pilot_step
+
+    argv = [str(a) for a in (argv or [])]
+    if not argv:
+        raise ValueError("cli: no argv")
+    if argv[0] == "pilot":
+        argv = argv[1:]
+    if not argv or argv[0] not in CLI_READONLY:
+        raise ValueError(
+            f"cli: {(argv[0] if argv else '')!r} is not a read-only pilot "
+            f"command this server will run. Allowed: "
+            + ", ".join(sorted(CLI_READONLY)))
+
+    parser = argparse.ArgumentParser(prog="manamap")
+    add_pilot_parser(parser.add_subparsers(dest="command"))
+    try:
+        ns = parser.parse_args(["pilot", *argv])
+    except SystemExit as exit_:
+        raise ValueError(f"cli: could not parse arguments (exit {exit_.code})")
+    for attr in _CLI_WRITE_ATTRS:
+        if getattr(ns, attr, False):
+            raise ValueError(f"cli: --{attr} is not available over the API")
+
+    buf = _io.StringIO()
+    code = 0
+    try:
+        with contextlib.redirect_stdout(buf):
+            run_pilot_step(ns)
+    except SystemExit as exit_:
+        code = int(exit_.code or 0)
+    return {"stdout": buf.getvalue(), "exit": code}
+
+
 ENDPOINTS = {
     "health": (lambda: {"ok": True, "api": 1}, {}),
+    # The warm-process CLI. See `_cli`.
+    "cli": (_cli, {"argv": _strlist}),
     "formats": (_formats, {}),
     "decks": (_decks, {}),
     "commanders": (_commanders, {"q": _str, "limit": _int}),

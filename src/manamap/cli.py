@@ -12,6 +12,60 @@ from manamap.pilot.registry import add_pilot_parser, run_pilot_step
 from manamap.pipeline import STEP_NAMES, STEPS, run, run_step
 
 
+#: ROUTE A READ-ONLY QUESTION TO A WARM PROCESS IF ONE IS LISTENING.
+#:
+#: Every CLI invocation is a cold start, and the memos that make this repo quick
+#: are all per-process: the corpus parse, the 28MB synergy graph, the rules
+#: index, and — the expensive one — the frozen MiniLM behind `query-rules`,
+#: which costs ~8s to import and construct and is then thrown away. `manamap
+#: serve` already holds all of it warm; this points the terminal at it.
+#:
+#: FAILING OPEN IS THE WHOLE DESIGN. Any error — no server, wrong version, a
+#: command the server will not run — returns None and the command runs locally
+#: exactly as before. The probe is a TCP connect to loopback with a 150ms cap,
+#: which costs well under a millisecond when nothing is there. Set
+#: MANAMAP_NO_DAEMON=1 to skip it, MANAMAP_DAEMON=host:port to point elsewhere.
+def _daemon_run(argv):
+    """`exit code` if a warm server answered, else None. Never raises."""
+    import os
+
+    if os.environ.get("MANAMAP_NO_DAEMON"):
+        return None
+    target = os.environ.get("MANAMAP_DAEMON") or "127.0.0.1:8000"
+    try:
+        import http.client
+        import json as _json
+        import sys
+
+        host, _, port = target.partition(":")
+        conn = http.client.HTTPConnection(host or "127.0.0.1",
+                                          int(port or 8000), timeout=0.15)
+        body = _json.dumps({"argv": list(argv)})
+        conn.request("POST", "/api/cli", body,
+                     {"Content-Type": "application/json"})
+        # The command itself may legitimately take a while once the server has
+        # accepted it; only the CONNECT needs to be impatient.
+        conn.sock.settimeout(600)
+        response = conn.getresponse()
+        payload = _json.loads(response.read() or b"{}")
+        if response.status != 200 or not payload.get("ok"):
+            return None
+        # `_run` wraps every handler's return value: {ok, command, result}.
+        result = payload.get("result")
+        if not isinstance(result, dict) or "stdout" not in result:
+            return None
+        sys.stdout.write(result["stdout"])
+        sys.stdout.flush()
+        return int(result.get("exit") or 0)
+    except Exception:                                  # noqa: BLE001 - fail open
+        return None
+    finally:
+        try:
+            conn.close()
+        except Exception:                              # noqa: BLE001
+            pass
+
+
 def pipeline_step_count():
     """The highest step NUMBER the registry declares — not `len(STEPS)`.
 
@@ -104,6 +158,11 @@ def main():
         from manamap.analysis import eval_commander_search
         eval_commander_search.main(args)
     elif args.command == "pilot":
+        import sys
+
+        code = _daemon_run(sys.argv[2:])
+        if code is not None:
+            raise SystemExit(code)
         run_pilot_step(args)
     else:
         run_step(args.command)
