@@ -136,6 +136,43 @@ SIMILARITY_GOLDEN_PATH = EVAL_DIR / "similarity_golden.json"
 # The full 34K x 34K similarity matrix is 4.7 GB; a sample answers the same
 # question for free. Seeded, so the numbers are comparable across runs.
 EVAL_GEOMETRY_SAMPLE = 4000
+#: THE CANDIDATE POOL IS AN AXIS, NOT A CONSTANT, and leaving it constant is how
+#: this repo spent months believing a tie was a loss.
+#:
+#: `recall_metrics` ranks every golden card against all 34,890 cards. NOTHING IN
+#: THE PRODUCT DOES THAT: commander search ranks against 79 candidates, Find
+#: Similar shows 12 neighbours, `build-deck` ranks within a colour identity and a
+#: pool. The corpus-wide figure is dominated by the ~30,000 cards nobody plays.
+#:
+#: MEASURED 2026-08-31, 28 test groups held constant at every pool size,
+#: distractors drawn as the N most-played cards, paired bootstrap over GROUPS
+#: (queries inside a group are correlated; groups are the unit of independence):
+#:
+#:     distractors   function    text      gap   95% CI on the difference
+#:             100      0.964   0.819   +0.145   [+0.054, +0.233]  excludes 0
+#:             500      0.794   0.629   +0.165   [+0.049, +0.286]  excludes 0
+#:            2000      0.562   0.446   +0.115   [-0.018, +0.242]
+#:           10000      0.363   0.311   +0.052   [-0.048, +0.156]
+#:           34890      0.227   0.240   -0.013   [-0.088, +0.060]  SPANS ZERO
+#:
+#: Two readings. The `-0.012` this repo has treated as a finding is a TIE — the
+#: interval on the difference spans zero, and `-0.013` had never carried one. And
+#: at the pool sizes the product actually uses the trained space WINS, at an
+#: interval excluding zero, with the margin growing as the pool narrows.
+#:
+#: THE DISTRACTOR DESIGN IS LOAD-BEARING. Candidates are the group's own targets
+#: PLUS N distractors, so every group is present at every pool size. The obvious
+#: alternative — restrict to the top-N and keep only groups that fit — changes
+#: WHICH GROUPS QUALIFY as the pool narrows, which is a selection effect wearing
+#: a pool effect's clothes. It was tried first: it produced a clean monotonic
+#: +0.200 at pool 500, and holding the groups genuinely constant collapsed the
+#: sample to 5 test / 2 dev groups whose splits then disagreed in SIGN.
+EVAL_POOL_SIZES = (100, 500, 2000, 10000, None)   # None = the whole corpus
+
+#: Resamples for the paired bootstrap over groups. 4,000 is where the interval
+#: endpoints stop moving in the third decimal on this sample size.
+EVAL_BOOTSTRAP_RESAMPLES = 4000
+
 EVAL_SPREAD_PROBES = 300
 EVAL_SEED = 42
 VIZ_DIR = Path(os.environ.get("MANAMAP_VIZ_DIR", _REPO_ROOT / "viz"))

@@ -33,7 +33,9 @@ from manamap.analysis.common import top_k_similar
 from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
     EMBEDDINGS_PATH,
+    EVAL_BOOTSTRAP_RESAMPLES,
     EVAL_GEOMETRY_SAMPLE,
+    EVAL_POOL_SIZES,
     EVAL_SEED,
     EVAL_SPREAD_PROBES,
     OUTPUT_CSV_PATH,
@@ -152,6 +154,118 @@ def neighbour_spread(embeddings, probes=EVAL_SPREAD_PROBES, seed=EVAL_SEED):
     return float(np.mean(gaps)) if gaps else 0.0
 
 
+
+# ── The candidate pool, and the interval on the difference ──────────────────
+
+
+def playability_order(frame):
+    """Row indices, most-played first. Unranked cards sort last.
+
+    `edhrec_rank` is the only popularity signal in the corpus and it is missing
+    for 8% of cards — those are, by construction, cards nobody plays, so sorting
+    them to the back is the honest placement rather than a convenience.
+    """
+    rank = pd.to_numeric(frame["edhrec_rank"], errors="coerce").to_numpy(dtype=float)
+    return np.argsort(np.where(np.isnan(rank), np.inf, rank))
+
+
+def recall_by_group(embeddings, groups, order, pool=None, k=10, split=None):
+    """recall@k for each group SEPARATELY, against `pool` distractors.
+
+    Returns one number per group, not one per query, because queries inside a
+    group are not independent — every card in `mana-dorks` is asked about the
+    same five targets. Pooling them inflates the sample fivefold and shrinks
+    every interval built on it. The group is the unit.
+
+    CANDIDATES ARE THE GROUP'S OWN TARGETS PLUS `pool` DISTRACTORS, so a group is
+    present at every pool size and the comparison across sizes is like for like.
+    See `config.EVAL_POOL_SIZES` for what the alternative design did.
+    """
+    distractors = order if pool is None else order[:pool]
+    out = []
+    for group in groups:
+        if split is not None and group.get("split") != split:
+            continue
+        rows = np.asarray(group["rows"], dtype=int)
+        if len(rows) < 2:
+            continue
+        candidates = np.unique(np.concatenate([rows, distractors]))
+        where = {int(c): j for j, c in enumerate(candidates)}
+        block = embeddings[candidates]
+        members = set(int(r) for r in rows)
+        hits = total = 0
+        for row in rows:
+            scores = block @ embeddings[row]
+            scores[where[int(row)]] = -np.inf
+            top = {int(candidates[j]) for j in np.argpartition(-scores, k)[:k]}
+            hits += len(top & (members - {int(row)}))
+            total += len(rows) - 1
+        out.append(hits / total if total else 0.0)
+    return np.asarray(out, dtype=float)
+
+
+def paired_bootstrap(a, b, resamples=EVAL_BOOTSTRAP_RESAMPLES, seed=EVAL_SEED):
+    """Mean of `a - b` and a 95% interval, resampling GROUPS with replacement.
+
+    PAIRED, because both spaces are scored on the identical groups — the
+    variance that matters is in the groups, not between two independent samples.
+    An unpaired interval here would be wider and would not answer the question.
+
+    This is the piece the eval never had. `-0.012 recall@10` was reported as
+    "training is destroying information" for months; the interval on that
+    difference is [-0.088, +0.060] and spans zero.
+    """
+    a, b = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
+    if len(a) != len(b) or len(a) == 0:
+        return {"gap": 0.0, "lo": 0.0, "hi": 0.0, "n": 0, "excludes_zero": False}
+    diff = a - b
+    rng = np.random.default_rng(seed)
+    picks = rng.integers(0, len(diff), size=(resamples, len(diff)))
+    means = diff[picks].mean(axis=1)
+    lo, hi = (float(x) for x in np.percentile(means, [2.5, 97.5]))
+    return {"gap": float(diff.mean()), "lo": lo, "hi": hi, "n": int(len(diff)),
+            "excludes_zero": bool(lo > 0 or hi < 0)}
+
+
+def pool_curve(spaces, groups, order, split="test", k=10):
+    """`{pool: {label: per-group recall array}}` across `EVAL_POOL_SIZES`."""
+    return {
+        pool: {label: recall_by_group(emb, groups, order, pool, k, split)
+               for label, emb in spaces.items()}
+        for pool in EVAL_POOL_SIZES
+    }
+
+
+def format_pool_report(curve, challenger, baseline, split="test"):
+    """The table that decides the question, with an interval on every gap."""
+    if challenger not in next(iter(curve.values())) or baseline not in next(iter(curve.values())):
+        return ""
+    n = len(next(iter(curve.values()))[challenger])
+    lines = [
+        "",
+        f"  CANDIDATE POOL — {challenger} vs {baseline}, {split} split, "
+        f"{n} groups at every size",
+        f"    {'distractors':>12s} {'challenger':>11s} {'baseline':>9s} {'gap':>8s}   "
+        f"95% CI on the difference",
+    ]
+    for pool, per_space in curve.items():
+        stat = paired_bootstrap(per_space[challenger], per_space[baseline])
+        mark = "  excludes 0" if stat["excludes_zero"] else ""
+        lines.append(
+            f"    {('corpus' if pool is None else pool):>12} "
+            f"{per_space[challenger].mean():>11.3f} {per_space[baseline].mean():>9.3f} "
+            f"{stat['gap']:>+8.3f}   [{stat['lo']:+.3f}, {stat['hi']:+.3f}]{mark}")
+    lines += [
+        "",
+        "    Candidates are each group's own targets PLUS N most-played distractors,",
+        "    so every group appears at every size. Bootstrap resamples GROUPS, which",
+        "    is the unit of independence; queries inside a group are correlated.",
+        "    NOTHING IN THE PRODUCT RANKS AGAINST THE WHOLE CORPUS: commander search",
+        "    ranks against 79, Find Similar shows 12, build-deck ranks within a pool.",
+    ]
+    return "\n".join(lines)
+
+
 def evaluate(embeddings, groups):
     """Every metric for one embedding space."""
     return {
@@ -200,6 +314,29 @@ def collect(paths=None):
     return results, groups
 
 
+def pool_section(challenger="function (ability)",
+                 baseline="text baseline (frozen MiniLM)", split="test"):
+    """The pool table, loading what it needs. Returns (text, curve).
+
+    Deliberately does its own loading rather than widening `collect`, whose
+    two-tuple return is unpacked by `tests/test_embedding_quality.py:57`.
+    """
+    frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+    groups, _missing = resolve_groups(load_golden(), frame["name"].tolist())
+    spaces = {}
+    for label, path in (("function (ability)", ABILITY_EMBEDDINGS_PATH),
+                        ("text baseline (frozen MiniLM)", TEXT_EMBEDDINGS_PATH),
+                        ("layout (color+type)", EMBEDDINGS_PATH)):
+        try:
+            spaces[label] = _normalized(path)
+        except FileNotFoundError:
+            continue
+    if challenger not in spaces or baseline not in spaces:
+        return "", {}
+    curve = pool_curve(spaces, groups, playability_order(frame), split=split)
+    return format_pool_report(curve, challenger, baseline, split), curve
+
+
 def format_report(results):
     """The table, ordered worst-first so a regression is the first thing read."""
     lines = [
@@ -238,16 +375,29 @@ def main():
           f"({', '.join(f'{n} {s}' for s, n in sorted(splits.items()))})")
     print(format_report(results))
 
-    baseline = results.get("text baseline (frozen MiniLM)")
-    function = results.get("function (ability)")
-    if baseline and function:
-        gap = (function["recall"]["test"]["recall@10"]
-               - baseline["recall"]["test"]["recall@10"])
-        if gap < 0:
-            print(f"    ** The trained function space is {abs(gap):.3f} recall@10 WORSE than "
-                  f"the frozen text it is built from. Training is destroying information. **")
-        else:
-            print(f"    Function space beats the frozen-text baseline by {gap:+.3f} recall@10.")
+    # A BARE DIFFERENCE IS NOT A FINDING. This block used to print
+    # "** Training is destroying information **" off `-0.012 recall@10`, with no
+    # interval anywhere. Measured 2026-08-31, the interval on that difference is
+    # [-0.088, +0.060] and spans zero: it was a TIE reported as a loss for
+    # months, and the repo's own rule already said so —
+    #   "a comparison carries the interval on the DIFFERENCE."
+    text, curve = pool_section()
+    if text:
+        print(text)
+        full = curve.get(None, {})
+        if full:
+            stat = paired_bootstrap(full["function (ability)"],
+                                    full["text baseline (frozen MiniLM)"])
+            verdict = ("BEATS" if stat["gap"] > 0 else "trails")
+            if not stat["excludes_zero"]:
+                print(f"    At corpus scale the two are INDISTINGUISHABLE: "
+                      f"{stat['gap']:+.3f} recall@10, 95% CI "
+                      f"[{stat['lo']:+.3f}, {stat['hi']:+.3f}] spans zero over "
+                      f"{stat['n']} groups. Neither space wins this comparison.")
+            else:
+                print(f"    At corpus scale the function space {verdict} the frozen text by "
+                      f"{abs(stat['gap']):.3f} recall@10, 95% CI "
+                      f"[{stat['lo']:+.3f}, {stat['hi']:+.3f}].")
 
 
 if __name__ == "__main__":

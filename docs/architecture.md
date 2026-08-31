@@ -101,8 +101,9 @@ same job. Every "find similar" answer in the product comes from here, on either 
 
 Held-out `test` split of `data/eval/similarity_golden.json`:
 
-Held-out `test` split: 28 groups, 107 queries (`dev` is 12 groups / 56 queries and was
-consumed while diagnosing — always quote `test`).
+Held-out `test` split: 28 groups, **308 queries** (`dev` is 12 groups / 218 queries and
+was consumed while diagnosing — always quote `test`). The query counts were stated as
+107/56 until 2026-08-31; those predate the 2026-08-12 corpus refresh.
 
 | space | dim | effective dim | 1st→50th gap | r@10 | r@50 | median rank |
 |---|---|---|---|---|---|---|
@@ -110,15 +111,39 @@ consumed while diagnosing — always quote `test`).
 | frozen MiniLM text (the input) | 384 | 51.39 | 0.1341 | **0.244** | 0.414 | 126 |
 | **function** | 128 | **27.31** | 0.0323 | 0.232 | **0.464** | **76** |
 
-**Read this honestly, because the shipped artifact does not win outright.** Against the
-model it replaced — 5.97 effective dims, r@10 0.093, median rank 995 — the rebuild is a
-large win, and the function space is clearly better at depth than the frozen text it is
-built from: recall@50 +0.050 and median rank 126 → 76. But it is **0.012 behind at r@10**,
-and `eval-embeddings` prints a warning saying so on every run. It is not fixed.
+Against the model it replaced — 5.97 effective dims, r@10 0.093, median rank 995 — the
+rebuild is a large win, and the function space is clearly better at depth than the frozen
+text it is built from: recall@50 +0.050 and median rank 126 → 76.
 
-(An earlier artifact measured r@10 0.245 against the same baseline's 0.244 — a tie. The
-2026-08-12 corpus refresh re-trained on 34,890 cards and moved both the space and the
-golden set's resolved rows; these are the numbers the committed artifacts produce today.)
+**The `-0.012` at r@10 is NOT a loss. It is a tie, and the table above cannot show that**
+— a marginal number has no interval, and a comparison needs one on the DIFFERENCE.
+
+### The candidate pool decides the answer (2026-08-31)
+
+Every figure above ranks each golden card against all **34,890** cards. Nothing in the
+product does that: commander search ranks against **79**, Find Similar shows **12**
+neighbours, `build-deck` ranks within a colour identity and a pool. So the pool is an
+axis, and `eval-embeddings` now reports it — candidates are each group's own targets plus
+N most-played distractors, so all 28 groups appear at every size, with a paired bootstrap
+over **groups** (queries inside a group are correlated; the group is the unit).
+
+| distractors | function | text | gap | 95% CI on the difference |
+|---|---|---|---|---|
+| **100** | 0.964 | 0.819 | **+0.145** | **[+0.053, +0.235]** excludes 0 |
+| **500** | 0.794 | 0.629 | **+0.165** | **[+0.052, +0.289]** excludes 0 |
+| 2,000 | 0.562 | 0.446 | +0.115 | [−0.018, +0.255] |
+| 10,000 | 0.363 | 0.311 | +0.052 | [−0.045, +0.162] |
+| corpus | 0.227 | 0.240 | −0.013 | [−0.083, +0.058] **spans zero** |
+
+`dev` agrees in sign at every pool size and never reaches significance, which is what 12
+groups buys. So: **at corpus scale the two spaces are indistinguishable, and at the pool
+sizes the product actually uses the trained space wins** — the opposite of the conclusion
+the corpus-wide row supported on its own.
+
+**The design is load-bearing.** Restricting to the top-N and keeping only groups that fit
+inside it changes *which groups qualify* as the pool narrows — a selection effect wearing a
+pool effect's clothes. Tried first: a clean monotonic +0.200 at pool 500 that collapsed to
+5 test / 2 dev groups disagreeing in sign once the groups were genuinely held constant.
 
 **The two halves are complementary, and that is the load-bearing result:**
 
