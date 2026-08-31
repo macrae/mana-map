@@ -77,7 +77,11 @@ def test_a_real_deck_composes_every_panel():
     pilot's rule, 2026-08-27: a deprecated deck is excluded from downstream
     tasks. `test_a_broken_down_deck_is_not_told_to_go_and_play_it` below still
     covers the retired path, on a synthetic fixture."""
-    info = deck_info.compose("heliod")
+    # verify=True EXPLICITLY. `compose` now skips the gates by default, and
+    # this test asserts on `status.invalid` — which is None when they were not
+    # run, and `not None` is True. Without this the test would go green by not
+    # looking, which is the failure mode it exists to catch.
+    info = deck_info.compose("heliod", verify=True)
     if info.get("lifecycle"):
         pytest.skip("heliod has been retired; point this at a live deck")
     assert info["engine"]["critic"] == "pass" and info["engine"]["verified_lines"] >= 1

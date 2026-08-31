@@ -347,6 +347,14 @@ def add_pilot_parser(subparsers):
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
         if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+            # Running the fourteen gates costs ~2.3s of the ~5s this command
+            # used to take, and this is the command the pilot runs to REMEMBER
+            # WHERE A DECK STANDS. `--write` implies it: the committed
+            # info.json must carry real verdicts, never "not checked".
+            cmd.add_argument("--verify", action="store_true",
+                             help="run every artifact's validator (slower); "
+                                  "without it the gates are reported as not run, "
+                                  "never as clean. Implied by --write")
             cmd.add_argument("--write", action="store_true",
                              help="write data/decks/<slug>/info.json for the deck page "
                                   "(committed, staleness-gated, no version block)")

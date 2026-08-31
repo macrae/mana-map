@@ -286,11 +286,18 @@ def test_info_json_never_carries_a_version_block(target):
 
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("benchmark.json"), ids=_id)
-def test_benchmark_matches_a_fresh_run(target):
+def test_benchmark_matches_a_fresh_run(target, unchanged):
     """`benchmark.json` is tracked, so the workbench can read it on a static
     host — and it is deterministic (fixed seed, fixed iterations, uniform
     flags), so it must equal what a fresh run produces. A stale benchmark is a
     ranking computed against a deck that no longer exists.
+
+    THE `unchanged` GATE WAS MISSING, and it is the only freshness test in this
+    file that ever lacked it. `benchmark.measure` is a full 10,000-iteration
+    goldfish with treasures and combat forced on, so all ten targets ran on
+    EVERY `make test`, cache warm or cold: 40.6s of CPU that no edit had asked
+    for, and the floor under the whole suite. Its seven siblings all take the
+    fixture; this one takes it now.
     """
     # `benchmark` has no branch concept — it freezes ONE harness so decks are
     # comparable, and a branch is not a deck. `_slugs` still yields the tuple.
@@ -304,6 +311,7 @@ def test_benchmark_matches_a_fresh_run(target):
     path = DECKS_DIR / slug / "benchmark.json"
     if not path.exists():
         pytest.skip(f"{slug} has no benchmark record")
+    unchanged(*CODE, DECKS_DIR / slug)
     with contextlib.redirect_stdout(_io.StringIO()):
         fresh = benchmark.measure(slug)
     stored = json.loads(path.read_text())

@@ -51,6 +51,8 @@ def versions(slug):
     map to it (a comment-only edit adds a sha, not a version)."""
     path = f"data/decks/{slug}/decklist.txt"
     revs = dh.revisions(slug)
+    # One git process for every blob rather than one each — see `dh._blobs`.
+    blobs = dh._blobs(revs, path)
     b = baseline(slug)
     if b and b.get("decklist_sha256"):
         # Skip forward to the commit that first carries the baseline LIST. Matching
@@ -58,13 +60,13 @@ def versions(slug):
         # written before the commit that would name it exists.
         want = b["decklist_sha256"]
         for i, rev in enumerate(revs):
-            blob = dh._git("show", f"{rev['sha']}:{path}")
+            blob = blobs.get(rev["sha"])
             if blob is not None and _sha(blob) == want:
                 revs = revs[i:]
                 break
     out, previous = [], None
     for rev in revs:
-        blob = dh._git("show", f"{rev['sha']}:{path}")
+        blob = blobs.get(rev["sha"])
         if blob is None:
             continue
         entries = dh._entries(blob)

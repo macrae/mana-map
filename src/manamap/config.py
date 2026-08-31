@@ -1212,11 +1212,35 @@ DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 #   strategy:doc       strategy.md bytes via common.strategy_doc_sha256();
 #                      never the derived index, so build-strategy-db is free
 #   rules:version      effective_date from data/rules/.rules-meta.json
+#: THE PROVENANCE STAMP IS NOT AN INPUT TO WHETHER THE PROSE IS STILL TRUE, and
+#: this is the most expensive line in the file. `goldfish.model_version()` is a
+#: sha over the WHOLE of goldfish.py, so a comment edit there moves
+#: `meta.model_version` in every deck's goldfish_metrics.json, which moves the
+#: file's digest, which hard-MISSes every routine below that declares it:
+#: strategic-frame, pilot-notes, tutor-guide, deck-diagnosis, every decision and
+#: every prescription. At 200k-300k tokens for a diagnosis alone that is roughly
+#: 500k per deck, 6-9M across the fleet, FOR A COMMENT.
+#:
+#: MEASURED over four real goldfish commits: 45 deck-artifacts were stamped
+#: stale and only 31 had a `metrics` block that actually moved — 31% of the
+#: spend bought nothing. `deb711e` changed ONE docstring line and invalidated
+#: everybody. 25 commits touched goldfish.py in 60 days.
+#:
+#: Excluding the stamp is exactly safe, and the reason is arithmetic rather than
+#: judgement: if the model change moved a figure, the `metrics` block moved with
+#: it and the digest MISSes anyway. If it moved no figure, there is nothing for
+#: an agent to say differently. `meta.model_assumptions` goes with it for the
+#: same reason — it is prose describing the model, and it changes either when a
+#: flag changes (which moves metrics) or when somebody rewords it (which should
+#: not cost 6M tokens).
+#:
+#: The stamp STAYS IN THE ARTIFACT. `model_staleness.note` still reports it, and
+#: the three prose validators still print it. It just stops being a cache input.
 AGENT_ROUTINES = {
     "strategic-frame": {
         "agent": "strategy-researcher",
         "artifact": "strategic_frame.json",
-        "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
+        "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                    "stacks:passing", "strategy:doc"],
     },
     # One writer since 2026-08-19 (docs/agent-audit-2026-08-19.md): pilot-notes
@@ -1233,7 +1257,7 @@ AGENT_ROUTINES = {
                           "threat_assessment", "matchups"],
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
                    "deck:engine.json?",
-                   "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
+                   "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions", "strategy:doc"],
     },
     # (`the-ten`, the Short List's routine, was retired 2026-08-19 — its rule lives
     # in prescriptions. Its artifact, considering.json, is frozen on the published
@@ -1270,7 +1294,7 @@ AGENT_ROUTINES = {
         "agent": "pilot-notes",
         "artifact": "tutor_guide.json",
         "inputs": ["cards:semantic", "stacks:passing", "deck:strategic_frame.json?",
-                   "deck:goldfish_metrics.json!meta.decklist_sha256", "strategy:doc"],
+                   "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions", "strategy:doc"],
     },
     # The captain's log. `deck:log.jsonl` is the load-bearing input — a new game
     # logged MUST re-open the debrief, and a scoped spawn annotates only the new
@@ -1309,7 +1333,7 @@ AGENT_ROUTINES = {
         # routine rather than flip a recorded diagnosis from true to false in
         # silence. Same reasoning validate-build's bracket_report input carries.
         "inputs": ["cards:semantic", "stacks:passing",
-                   "deck:goldfish_metrics.json!meta.decklist_sha256",
+                   "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                    "deck:goldfish_targets.json?", "deck:bracket_report.json?",
                    "deck:mana_analysis.json?", "deck:strategic_frame.json?",
                    "deck:deck_recon.json?", "deck:pilot_feedback.md?",
@@ -1356,7 +1380,7 @@ AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
 AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version"]
 AGENT_ROUTINE_DECISION_AGENT = "pilot-notes"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
-                                 "deck:goldfish_metrics.json!meta.decklist_sha256",
+                                 "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                                  "deck:strategic_frame.json?", "strategy:doc"]
 # prescription:<id> — one question to the doctor, answered by the doctor ⇄ skeptic
 # loop (pilot/prescribe.py). `prompt:self` digests only the authored question, the
@@ -1366,7 +1390,7 @@ AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
 AGENT_ROUTINE_PRESCRIPTION_AGENT = "deck-doctor+deck-skeptic"
 AGENT_ROUTINE_PRESCRIPTION_INPUTS = [
     "prompt:self", "cards:semantic", "stacks:passing",
-    "deck:goldfish_metrics.json!meta.decklist_sha256",
+    "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
     "deck:goldfish_targets.json?", "deck:bracket_report.json?",
     "deck:mana_analysis.json?", "deck:strategic_frame.json?",
     "deck:deck_recon.json?", "deck:diagnosis.json?", "deck:log_annotations.json?",
@@ -1383,12 +1407,12 @@ PROSE_KEY_INPUTS = {
     # pilot-notes (the five it owns; the retired legacy keys are listed nowhere)
     "combo_lines": ["stacks:passing"],
     "how_it_wins": ["cards:semantic", "deck:strategic_frame.json?", "deck:engine.json?",
-                    "deck:goldfish_metrics.json!meta.decklist_sha256", "stacks:passing"],
-    "mulligan": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256"],
-    "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
+                    "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions", "stacks:passing"],
+    "mulligan": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions"],
+    "threat_assessment": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                           "stacks:passing", "deck:strategic_frame.json?", "deck:engine.json?",
                           "strategy:doc"],
-    "matchups": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256",
+    "matchups": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                  "stacks:passing", "deck:strategic_frame.json?", "deck:engine.json?",
                  "strategy:doc"],
 }

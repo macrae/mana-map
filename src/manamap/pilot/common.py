@@ -8,8 +8,12 @@ import pathlib
 import re
 import sys
 
-import numpy as np
-
+# NUMPY IS DEFERRED, and the two call sites that need it import it themselves.
+# At module scope it was the single largest fixed cost in the CLI: `registry`
+# reads `merge_prose.AGENT_FILE` while BUILDING THE PARSER, merge_prose imports
+# this module, and so every `manamap` invocation — `--help` included, every
+# pipeline step included — paid 0.116s of a 0.208s floor to import numpy for two
+# functions almost nothing calls (`load_rules_db`, `load_strategy_db`).
 from manamap.config import (
     CARD_ROLES_PATH,
     COMBO_DETAILS_PATH,
@@ -618,6 +622,7 @@ def load_rules_db():
         return hit[1]
     with open(RULES_INDEX_PATH) as f:
         index = json.load(f)
+    import numpy as np
     embeddings = np.load(RULES_EMBEDDINGS_PATH)
     order = index["order"]
     if len(order) != embeddings.shape[0]:
@@ -665,6 +670,7 @@ def load_strategy_db():
         )
     with open(STRATEGY_INDEX_PATH) as f:
         index = json.load(f)
+    import numpy as np
     embeddings = np.load(STRATEGY_EMBEDDINGS_PATH)
     order = index["order"]
     if len(order) != embeddings.shape[0]:

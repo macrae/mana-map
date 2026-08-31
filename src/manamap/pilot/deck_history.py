@@ -45,6 +45,44 @@ def _git(*args):
     return out.stdout
 
 
+#: ONE SUBPROCESS FOR EVERY BLOB, INSTEAD OF ONE EACH. `history` and
+#: `deck_versions.versions` both walk every revision of a decklist and ran
+#: `git show <sha>:<path>` per revision — an N+1 against a process boundary.
+#: Profiled on `deck-info ur-dragon`: 14 git invocations, 1.33s of a 3.9s
+#: command, and `deck_versions.report` is called twice per compose so the deck
+#: paid it twice. `git cat-file --batch` answers the whole list down one pipe.
+def _blobs(revs, path):
+    """`{sha: text}` for `<sha>:<path>` at every revision, in one git process.
+
+    A revision whose blob is missing is simply absent from the map — the same
+    contract the per-call `_git("show", …)` had when it returned None, so every
+    caller's `if blob is None: continue` still reads correctly.
+    """
+    if not revs:
+        return {}
+    spec = "".join(f"{rev['sha']}:{path}\n" for rev in revs)
+    try:
+        out = subprocess.run(["git", "-C", str(_REPO_ROOT), "cat-file", "--batch"],
+                             input=spec.encode(), capture_output=True, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return {}
+    blobs, buf, i = {}, out.stdout, 0
+    for rev in revs:
+        nl = buf.find(b"\n", i)
+        if nl < 0:
+            break
+        header = buf[i:nl].decode("utf-8", "replace").split()
+        # "<oid> missing" for anything git could not resolve.
+        if len(header) < 3:
+            i = nl + 1
+            continue
+        size = int(header[2])
+        body = buf[nl + 1:nl + 1 + size]
+        blobs[rev["sha"]] = body.decode("utf-8", "replace")
+        i = nl + 1 + size + 1          # +1 for the trailing newline git adds
+    return blobs
+
+
 def _entries(text):
     """Card names -> copies from a decklist blob, mainboard only.
 
@@ -76,9 +114,10 @@ def history(slug):
     """In/out per revision, derived by diffing the parsed decklist at each commit."""
     path = f"data/decks/{slug}/decklist.txt"
     revs = revisions(slug)
+    blobs = _blobs(revs, path)
     changes, previous = [], {}
     for rev in revs:
-        blob = _git("show", f"{rev['sha']}:{path}")
+        blob = blobs.get(rev["sha"])
         if blob is None:
             continue
         current = _entries(blob)

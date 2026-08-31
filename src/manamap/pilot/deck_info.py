@@ -149,13 +149,27 @@ def _branches(slug):
         return []
 
 
-def compose(slug):
+def compose(slug, verify=False):
+    """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
+
+    `deck_status.status(validate=True)` imports and executes all fourteen
+    validator modules in-process, and `validate_diagnosis` alone is ~1s because
+    it re-derives the audit. That is the right thing for `deck-status`, whose
+    JOB is to say whether the artifacts hold up, and the wrong thing for the
+    command the pilot runs to remember where a deck stands — measured at 7.8s
+    end to end, of which ~2.3s was gates nobody asked for.
+
+    OFF MEANS UNKNOWN, NEVER CLEAN. With `verify=False` the `invalid` key is
+    None rather than `[]`, because a reader cannot tell "nothing failed" from
+    "nothing was checked" and this repo has paid for that confusion elsewhere
+    (`absent means ABSENT, never zero`). Every consumer must handle None.
+    """
     base = deck_dir(slug)
     facts = facts_mod.analyze(slug)
     counts = facts.get("counts") or {}
     identity = sorted({c for v in (facts.get("colours") or {}).values()
                        for c in (v.get("card") or [])}, key="WUBRG".index)
-    rows = status_mod.status(slug, validate=True)
+    rows = status_mod.status(slug, validate=verify)
     vdoc = versions_mod.report(slug)
     log = read_log(slug)
     done = annotations(slug)
@@ -190,7 +204,10 @@ def compose(slug):
         "status": {"complete": sum(1 for r in rows if r["state"] == "present"),
                    "of": len(rows),
                    "stale": [r["stage"] for r in rows if r["state"] == "STALE"],
-                   "invalid": [r["stage"] for r in rows if r["state"] == "INVALID"],
+                   # None, not [] — see `compose`'s docstring.
+                   "invalid": ([r["stage"] for r in rows if r["state"] == "INVALID"]
+                               if verify else None),
+                   "verified": verify,
                    "missing": [r["stage"] for r in rows if r["state"] == "missing"],
                    # WHAT EACH ABSENT STAGE IS, AND HOW TO GET IT — carried from
                    # `deck_status.STAGES`, which is the one machine-readable
@@ -544,6 +561,10 @@ def _print(info):
         sline += f" · STALE: {', '.join(s['stale'])}"
     if s["invalid"]:
         sline += f" · INVALID: {', '.join(s['invalid'])}"
+    elif s["invalid"] is None:
+        # NOT CHECKED IS NOT CLEAN. Silence here would read as "every gate
+        # passed", which is the one thing this command must not imply.
+        sline += " · gates not run (--verify)"
     if info["bracket"]:
         b = info["bracket"]
         sline += (f" · bracket floor {b['floor']}" + (f" ({b['floor_name']})" if b.get("floor_name") else "")
@@ -624,7 +645,10 @@ def fetchable(info):
 
 
 def main(args):
-    info = compose(args.slug)
+    # --write implies --verify: the tracked info.json is read by the deck page
+    # and must carry real verdicts rather than "not checked".
+    info = compose(args.slug, verify=(getattr(args, "verify", False)
+                                      or getattr(args, "write", False)))
     if getattr(args, "write", False):
         path = deck_dir(args.slug) / "info.json"
         path.write_text(json.dumps(fetchable(info), indent=2, ensure_ascii=False) + "\n")

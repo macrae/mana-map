@@ -25,6 +25,7 @@ boundary — which is where the one real experiment on disk actually sits, arm A
 having won 0 of 12.
 """
 
+import functools
 import math
 import random
 
@@ -184,6 +185,13 @@ def diff_medians(xs, ys, seed=0, iterations=10000):
 
 # ── Power: what could this experiment have found? ───────────────────────────
 
+#: MEMOISED BECAUSE THE SWEEP ASKS FOR THE SAME VECTOR TWO HUNDRED TIMES.
+#: `mde_proportion` walks p_b from p_a to 1.0 in 0.005 steps, calling
+#: `power_for` at each step — and p_a and n_a never move, so the arm-A vector is
+#: recomputed identically every time. Profiled on the worst tracked case
+#: (edgar-vampires@bloodline `net-change`): 990,066 `math.comb` calls, 27.4s of
+#: a 54.2s build. Pure function, so the cache is exact rather than approximate.
+@functools.lru_cache(maxsize=200_000)
 def _binom_pmf(k, n, p):
     if p <= 0:
         return 1.0 if k == 0 else 0.0
@@ -221,6 +229,11 @@ def power_for(p_a, p_b, n_a, n_b, grid=None, z=Z975):
     not — and p_a = 0 is where the one real experiment on disk sits.
     """
     grid = grid if grid is not None else _significant_grid(n_a, n_b, z)
+    # HOIST THE ARM-B VECTOR. It does not depend on `ka`, and computing it in
+    # the inner loop evaluated the same n_b+1 terms once per surviving ka — the
+    # quadratic factor behind the profile above. The accumulation below is left
+    # in its original order, term for term, so the sum is bit-identical.
+    pb_vec = [_binom_pmf(kb, n_b, p_b) for kb in range(n_b + 1)]
     total = 0.0
     for ka in range(n_a + 1):
         pa = _binom_pmf(ka, n_a, p_a)
@@ -229,7 +242,7 @@ def power_for(p_a, p_b, n_a, n_b, grid=None, z=Z975):
         row = grid[ka]
         for kb in range(n_b + 1):
             if row[kb]:
-                total += pa * _binom_pmf(kb, n_b, p_b)
+                total += pa * pb_vec[kb]
     return total
 
 
