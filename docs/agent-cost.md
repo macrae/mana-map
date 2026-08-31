@@ -14,10 +14,18 @@ the cache stops us paying twice for identical work.
 
 ## The finding that shapes everything
 
-**No Python module in this repo calls an LLM.** There is no `anthropic`/`openai` SDK,
-nothing in `pyproject.toml`, and no subprocess spawning. The "agents" are Claude Code
+**No Python module in this repo calls an LLM directly.** There is no
+`anthropic`/`openai` SDK and nothing in `pyproject.toml`. The "agents" are Claude Code
 subagent *definitions* in `.claude/agents/*.md`, spawned by the orchestrating session
 when a skill says to. They call our CLI via Bash; the CLI never calls them back.
+
+**ONE EXCEPTION, added later and missed by this page until 2026-08-31.** `serve.py`'s
+`ask` endpoint (`_spawn`, ~`serve.py:495`) runs `subprocess.run(["claude", "-p", …])`
+with a 30-minute timeout, polled through the `job` verb. So the sentence that used to
+stand here — "and no subprocess spawning" — was false for as long as that endpoint has
+existed. It is still true that nothing in the *pipeline* or the *pilot* commands spawns
+a model; the local bridge does, deliberately, because letting the Build page ask for an
+agent is the point of the bridge.
 
 Two consequences:
 
@@ -235,9 +243,31 @@ record seeds refs.
   to key against. If consult volume ever matters, make consults write a keyed transcript
   rather than trying to cache them.
 
-## Deferred
+## Resolved 2026-08-31 — and the triage was wrong
 
-Memoizing the SentenceTransformer in `ingest/preprocess.py` (currently reconstructed on
-every call, ~2s per RAG query, with `show_progress_bar=True` hardcoded so single-text
-queries emit a one-item bar into the `--json` agent interface). Pure wall-clock and
-noise win, no LLM cost impact.
+This page filed the SentenceTransformer reconstruction under *Deferred*, priced at "~2s
+per RAG query" and dismissed as "pure wall-clock and noise win, no LLM cost impact".
+
+**Measured, the figure was ~8s, and wall-clock on the question path IS the cost.**
+`query-rules` ran **12.1s** end to end, of which ~5.5s is importing
+`sentence_transformers` and ~2.5s is constructing a frozen MiniLM the previous
+invocation had already built and thrown away. `_MODEL_CACHE` handles it *within* a
+process, and the CLI is one process per question — while `.claude/skills/rules-lookup`
+tells the agent to "try several phrasings", so three phrasings cost ~36 seconds of
+reloading an identical model.
+
+The fix was not memoization but a **warm worker**: `manamap serve` already held the
+model, the corpus and every JSON memo, and its allow-list simply did not expose the
+question commands. `/api/cli` runs read-only pilot commands in that process and the
+terminal routes to it when one is listening.
+
+    query-rules      6.93s -> 0.16s   43x, output byte-identical
+    query-strategy   6.87s -> 0.16s
+    deck-facts       1.44s -> 0.14s
+
+The lesson for this page's triage, not just for that item: **"no LLM cost impact" is
+not the same as "no cost".** An agent loop is 5-15 cold CLI calls per step before it
+spends a single token, and those seconds are what make the whole bench feel heavy.
+
+Still deferred: `preprocess.py:74` hardcodes `show_progress_bar=True`, so a single-text
+query emits a one-item bar into the `--json` interface.

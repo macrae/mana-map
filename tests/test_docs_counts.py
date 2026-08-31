@@ -59,7 +59,12 @@ _NUM = r"(?<![\d.,])([\d,]{1,6}|" + "|".join(_WORDS) + r")"
 # the guard fires on six correct charters and one correct gotcha — and a check
 # that fails on accurate text trains people to ignore it.
 _NOT_A_COUNT = r"(?!\s+(?:read|hit|share|shared|wrote|ran|work(?:ing|ed)?|"
-_NOT_A_COUNT += r"across|noticed|reported|failed|produced|spawned|returned))"
+_NOT_A_COUNT += r"across|noticed|reported|failed|produced|spawned|returned|"
+# `tokens` joined the list when the pattern started matching across a line
+# break: `docs/agent-cost.md` says an enrichment "cost **0 agent tokens**",
+# which is a count of TOKENS, not of agents. It was always a false positive —
+# the newline was the only thing hiding it.
+_NOT_A_COUNT += r"tokens?|spend|cost))"
 
 
 def _truths():
@@ -82,7 +87,10 @@ def _truths():
         # unqualified phrase is a documentation bug in its own right.
         "pilot-subcommands": (
             len(PILOT_STEPS),
-            r"(?:`manamap pilot`|pilot)[ ]+subcommands?\b"),
+            # `\s+`, NOT `[ ]+`: the wrap that hid a stale count for three days
+            # fell BETWEEN "`manamap pilot`" and "subcommands", inside this
+            # noun — not before the number.
+            r"(?:`manamap pilot`|pilot)\s+subcommands?\b"),
         # Read from the PARSER, not from `len(STEPS) + 2`. That expression was
         # correct while every top-level subcommand was either a pipeline step,
         # `run` or `pilot` — and it silently undercounted the moment
@@ -122,7 +130,14 @@ TRUTHS = _truths()
 @pytest.mark.parametrize("label", sorted(TRUTHS))
 def test_no_surface_states_a_wrong_count(label):
     truth, noun = TRUTHS[label]
-    pattern = re.compile(_NUM + r"[ -]" + noun + _NOT_A_COUNT, re.IGNORECASE)
+    # `\s` NOT `[ -]`: A COUNT THAT WRAPPED ACROSS A LINE WAS INVISIBLE TO THIS
+    # GATE. PLAN.md carried "83 `manamap pilot`\nsubcommands" for three days
+    # after the real figure became 85, while CLAUDE.md and README.md — which
+    # happen to keep the phrase on one line — were caught the same afternoon.
+    # Markdown reflows prose; a gate that only sees one line only sees the
+    # surfaces that happen not to have wrapped there.
+    pattern = re.compile(_NUM + r"[\s-]" + noun + _NOT_A_COUNT,
+                         re.IGNORECASE)
     wrong = []
     for path in SURFACES:
         if "history" in path.parts:

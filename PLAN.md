@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-08-28**. Everything below is committed and pushed to `main` except
+Last updated **2026-08-31**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -24,8 +24,8 @@ supported. The magazine that used to be the product is a frozen legacy renderer 
 compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 83 `manamap pilot`
-subcommands, 21 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
+Scale (derived; `tests/test_docs_counts.py` polices these): 85 pilot subcommands,
+21 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 
@@ -111,6 +111,105 @@ suggestions that would need a deck to shuffle.
 | **The paper lock's third state** | UNLOCKED is not dead. Four of eleven decks are unlocked and now say so; three rehearsal locks withdrawn | `docs/pilot.md` |
 
 ## Open work
+
+### DONE — the speed sprint (2026-08-30/31)
+
+**The complaint was that iteration had become heavy: questions slow, fleet
+regeneration manual, and fidelity surprises discovered after the run.** Three
+audits (tests, simulation, interactive path) said the Python simulation was
+never the bottleneck — the fan-out around it was. The whole fleet regenerates in
+**78 seconds of CPU**; the same regeneration used to cost **6-9 MILLION agent
+tokens**, and that ratio was the entire problem.
+
+**The single most expensive line in the repo was a provenance stamp.**
+`goldfish.model_version()` is a sha over the whole of `goldfish.py`, and ten
+`AGENT_ROUTINES` declarations hashed the file it is stamped into. A COMMENT edit
+moved the digest on every deck and hard-MISSed strategic-frame, pilot-notes,
+tutor-guide, deck-diagnosis, every decision and every prescription. Measured over
+four real goldfish commits: **45 artifacts stamped stale, 31 with figures that
+actually moved — 31% of the spend bought nothing**, and `deb711e` changed one
+docstring line and invalidated the fleet. Excluded from the fingerprint; the
+stamp stays in the artifact and `model_staleness` still reports it. The next
+commit proved the point — a 30% goldfish speedup that moved no figure at all and
+cost nothing.
+
+| | before | after |
+|---|---|---|
+| `query-rules` / `query-strategy` | 6.93s | **0.16s** (43x) |
+| `deck-facts` | 1.44s | **0.14s** |
+| `deck-audit` | 2.26s | **0.59s** |
+| `deck-info` | 7.8s | **1.25s** |
+| `mde_proportion(0.25, 200)` | 2.17s | **0.21s** |
+| goldfish (edgar) | 5.70s | **3.96s** |
+| whole-fleet regen | a hand-written shell loop | **78s** |
+| `make test` (warm) | ~101s | **~74s** |
+
+**`manamap serve` is a warm worker.** Every CLI invocation was a cold process and
+every memo is per-process — including the frozen MiniLM behind `query-rules`,
+~8s to build and thrown away each time, while `rules-lookup` tells the agent to
+"try several phrasings". `/api/cli` runs read-only pilot commands in the warm
+process behind an allow-list; the terminal routes to it when one is listening and
+**fails open** on any error. It holds the modules it started with, so restart it
+after a code change.
+
+**`manamap pilot regen`** rebuilds the fleet in dependency order, parallel across
+targets — 72 targets, 78s, **bit-identical** (`git status data/` empty after).
+Parallel across DECKS, never across games: one `random.Random(seed)` is threaded
+through all 10,000 games, so splitting them would re-base every figure.
+
+**`manamap pilot model-coverage`** answers the fidelity question in the other
+direction — not "what did the channel miss" but "what would this deck need, and
+is it switched on". **236 DARK cards across the fleet**; gishath is a Dinosaur
+deck with 33 cards whose combat the model was told not to look at. `goldfish` and
+`net-change` print it as a PREFLIGHT, so it arrives before the games.
+
+**Forge's `-c` clock ends a game's accounting, not its AI thread.** Two tracked
+20-game runs took **3.7 and 4.2 hours** with 95% of the wall claimed by no game.
+Jobs are capped now; checked against all 18 tracked runs, the two pathological
+ones die and **all sixteen others survive** — **7.1 hours** on that set.
+
+**Three statements that were false, now corrected in place:** `forge.ASSUMPTIONS`
+claimed a clock-hit game is recorded as a draw (it carries a winner — 75 of
+edgar's 400 games, 19%, with zero recorded draws); `SEEDED_NOTE` claims
+byte-for-byte replay (it diverges at game 1 on the 400-game run); and
+`docs/agent-cost.md` claimed no Python spawns a subprocess (`serve.py`'s `ask`
+shells out to `claude -p`).
+
+Full record: `docs/gotchas-bench.md`.
+
+### OPEN — what the speed sprint deliberately did not do
+
+- **The five stale `diagnosis.json` files** — edgar-vampires, gishath,
+  goblin-storm, heliod, yawgmoth-swarm. Their colour-source figure moved when
+  fetchlands started resolving; two were already stale before that. Each needs a
+  `/diagnose-deck` run, and prose is never hand-patched to green a gate. This is
+  the only thing failing `make test` (plus one `deck_info` test downstream of
+  heliod's).
+- **Forge job count and work stealing.** `jobs` defaults to `cpu_count - 1` = 7
+  on a machine with 4 performance cores, with a static split and no stealing —
+  straggler tails of +4061s / +6734s / +1304s on the three biggest runs. Left
+  alone because `run_id` does not encode `jobs`, so changing the default changes
+  the SAMPLE a given run id produces.
+- **`CODE = (SRC,)` over-invalidation.** An edit to any of ~130 files under
+  `src/manamap/` invalidates the regenerate-and-compare cache for **236
+  parametrized cases** across three files. The comment prices this at 20s; it is
+  now 5-8x that. A per-subpackage key would keep the conservative property.
+- **`card_value` and `candidates` sweeps are embarrassingly parallel** and still
+  serial — each `_measure` builds a fresh generator, so a pool would be
+  bit-identical. `candidates` runs one full 10k-game goldfish PER CANDIDATE.
+- **Digest-based staleness.** Freshness tests still re-run the real producer;
+  stamping an input digest would make them O(1) with one canary per artifact.
+- **Agent fan-out.** The `open_questions` work queue dispatches `/resolve-stack`
+  one at a time, `/write-manual` runs analyst then researcher serially, and
+  `/diagnose-deck` runs recon then diagnose serially — all independent work.
+  `resolve-stack/SKILL.md` already names this under "Scale-out note".
+- **A resolved-path memo survives `monkeypatch` teardown** in `test_serve.py`, so
+  a later test reading a real deck sees a tmp directory. Worked around by keeping
+  `test_serve_cli.py` separate; the memo is the actual defect.
+- **`stats.mde_proportion` overflows** above n ~ 1000 (exact binomial). A
+  multiplicative PMF recurrence would fix it and is not bit-identical, so it was
+  not done alongside the hoist.
+
 
 ### RULE — a branch is graded on what the deck PRODUCES, never on an authored file
 
