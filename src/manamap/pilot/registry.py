@@ -52,6 +52,8 @@ PILOT_STEPS = [
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
     ("validate-sim", "manamap.sim.validate_sim",
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
+    ("regen", "manamap.pilot.regen",
+     "Regenerate the fleet's derived artifacts in dependency order, in parallel"),
     ("deck-info", "manamap.pilot.deck_info",
      "The workbench view: one deck, one screen — version, record, status, figures, and what to do next"),
     ("diagnose", "manamap.pilot.diagnostic",
@@ -345,6 +347,23 @@ def add_pilot_parser(subparsers):
                              help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
+        if name == "regen":
+            # `--slug` is a FLAG, not a positional: regen's normal subject is the
+            # whole fleet, and a required slug would make the common case the
+            # awkward one.
+            cmd.add_argument("--slug", default=None,
+                             help="just this deck (and its branches)")
+            cmd.add_argument("--only", action="append", default=None,
+                             metavar="STAGE",
+                             help="just this stage (repeatable): goldfish, "
+                                  "mana-analysis, net-change, diagnose, "
+                                  "benchmark, deck-info")
+            cmd.add_argument("--jobs", type=int, default=None,
+                             help="parallel workers (default: one per core). "
+                                  "Targets run in parallel; the GAMES inside one "
+                                  "run never do, so the output is bit-identical")
+            cmd.add_argument("--dry-run", action="store_true",
+                             help="print what would be regenerated, write nothing")
         if name == "deck-info":
             cmd.add_argument("--json", action="store_true", dest="as_json")
             # Running the fourteen gates costs ~2.3s of the ~5s this command

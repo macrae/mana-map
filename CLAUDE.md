@@ -193,6 +193,13 @@ manamap pilot experiment <slug> --a V1 --b working --vs <pod> --games N   # THE 
 manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
+manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
+                              # REBUILD THE FLEET after a model change, in dependency
+                              # order (goldfish -> mana-analysis -> net-change ->
+                              # diagnose -> benchmark -> deck-info), parallel across
+                              # TARGETS. 72 targets in 109s at --jobs 8; the goldfish
+                              # stage alone 83.6s -> 23.7s. BIT-IDENTICAL: games inside
+                              # one run are never split, only decks are.
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
 manamap pilot build-page <slug> && manamap pilot build-index   # the Pilot's Manual + the manifest
 # agents (Claude Code skills): /publish-deck /debrief /prescribe /resolve-stack /analyze-engine /diagnose-deck
