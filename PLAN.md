@@ -25,7 +25,7 @@ compact deck page replaces it. The card atlas in `viz/` is unchanged and live; t
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
 Scale (derived; `tests/test_docs_counts.py` polices these): 85 pilot subcommands,
-21 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
+22 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 
@@ -176,6 +176,39 @@ byte-for-byte replay (it diverges at game 1 on the 400-game run); and
 shells out to `claude -p`).
 
 Full record: `docs/gotchas-bench.md`.
+
+### IN FLIGHT — the embedding architecture (2026-08-31)
+
+Replacing a contrastive objective whose positives are mined from the repo's own
+regexes with **masked imputation under a variational bottleneck**. The point is
+that imputation needs no labels at all: the label is the input.
+
+**Phase 1 (the eval) is done, and it moved the target.** The eval measured one
+relation against one candidate pool and reported bare differences. It now
+measures three relations, a geometry, and carries an interval on every gap:
+
+| | question | current function space |
+|---|---|---|
+| function | does it find like things? | **+0.165** at pool 500 |
+| theme | does it keep a tribe? | **−0.371** (55 groups) |
+| hard negatives | does it keep unlike things apart? | **0.0133** — all spaces fail |
+| centroid collapse | does it survive averaging? | **0.019** headroom |
+
+Two findings from building it. **The `-0.012` that named issue #12 is a TIE** —
+the interval on that difference is [−0.088, +0.060] and had never been computed.
+And **the commander-search contradiction is settled**: text's advantage there is
+entirely thematic (0.470 vs the function space's **0.005** on tribal
+commanders), because `train_ability` mines positives from roles and tags and
+"Vampire" is neither. The space discards tribe by design and nothing measured it.
+
+**Phase 2 is under way.** `card_serialize` (modality-level masking, driven by a
+recoverability audit — supertype is 0.993-predictable from the type line, so
+predicting one from the other is string parsing, not a task), `model_vae`
+(per-dimension free bits, z-only decoder, collapse instrumented), `train_vae`
+(text-hash split, shadow artifact, outside `STEPS`).
+
+Nothing is measured yet. The first real run is training. 12 bugs have been
+re-introduced and proven caught across the three modules.
 
 ### OPEN — what the speed sprint deliberately did not do
 
