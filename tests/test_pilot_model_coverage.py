@@ -124,3 +124,24 @@ def test_an_invisible_card_is_not_reported_as_dark():
     for row in report["cards"]:
         if row["state"] == "invisible":
             assert not row["possible"] and not row["dark_channels"], row["name"]
+
+
+def test_card_value_classifies_with_the_deck_pool_like_build_library_does():
+    """`classify`'s docstring says the pool exists for exactly one card class
+    and that "without it every fetch is a colourless land that never produces
+    anything". `goldfish.build_library` always passes it; `card_value` did not.
+
+    HONEST SCOPE: this changes nothing today. `card_value` reads only `is_land`
+    and the visibility predicate off the classified dict, and `_is_visible`
+    returns True for ANY land, so no fetch was ever dropped from a ranking. It
+    is fixed so the next field read off that dict is not silently wrong — the
+    same shape as the defect that made `mana-fit` score a strict improvement as
+    a five-colour regression.
+    """
+    import inspect
+
+    from manamap.pilot import card_value
+
+    source = inspect.getsource(card_value)
+    assert "goldfish.classify(c, pool=land_pool)" in source
+    assert "goldfish.classify(c)" not in source, "a pool-less call came back"

@@ -180,7 +180,15 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
                                     seed + 1, max_turn, model_treasures,
                                     model_combat))
 
-    classified = {c["name"]: goldfish.classify(c) for c in cards
+    # `pool=` OR EVERY FETCHLAND IS INVISIBLE. `classify`'s own docstring says
+    # the pool exists for exactly one card class and that "without it every
+    # fetch is a colourless land that never produces anything" — and
+    # `build_library` always passes it. Omitting it here made the VISIBILITY
+    # test, which decides whether a card is rankable at all, read Wooded
+    # Foothills as contributing nothing: a card silently dropped from the
+    # ranking rather than ranked low.
+    land_pool = [c for c in cards if "Land" in str(c.get("type_line") or "")]
+    classified = {c["name"]: goldfish.classify(c, pool=land_pool) for c in cards
                   if not c.get("is_commander")}
 
     ranked, invisible = [], []
