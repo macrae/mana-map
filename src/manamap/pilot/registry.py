@@ -52,6 +52,8 @@ PILOT_STEPS = [
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
     ("validate-sim", "manamap.sim.validate_sim",
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
+    ("model-coverage", "manamap.pilot.model_coverage",
+     "What the goldfish CANNOT see in this deck, before you run it"),
     ("regen", "manamap.pilot.regen",
      "Regenerate the fleet's derived artifacts in dependency order, in parallel"),
     ("deck-info", "manamap.pilot.deck_info",
@@ -146,6 +148,7 @@ _DECK_COMMANDS = {
     "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
+    "model-coverage",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame", "scaffold-targets",
     "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
@@ -347,6 +350,8 @@ def add_pilot_parser(subparsers):
                              help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
+        if name == "model-coverage":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "regen":
             # `--slug` is a FLAG, not a positional: regen's normal subject is the
             # whole fleet, and a required slug would make the common case the

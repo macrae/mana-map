@@ -178,7 +178,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 18 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (84 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (85 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
@@ -193,6 +193,10 @@ manamap pilot experiment <slug> --a V1 --b working --vs <pod> --games N   # THE 
 manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
+manamap pilot model-coverage <slug>                     # WHAT THE MODEL CANNOT SEE, before the games:
+                              # seen / DARK (feeds a channel that is OFF) / invisible.
+                              # 236 DARK cards across the fleet when it shipped; goldfish
+                              # and net-change now print the headline as a PREFLIGHT.
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
                               # REBUILD THE FLEET after a model change, in dependency
                               # order (goldfish -> mana-analysis -> net-change ->

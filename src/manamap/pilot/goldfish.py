@@ -2851,8 +2851,26 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     }
 
 
+def _coverage_preflight(slug, branch):
+    """Say what this model cannot see BEFORE it spends ten thousand games.
+
+    Every expensive fidelity surprise on this bench — eminence, the token
+    doublers, the fetchlands — was found after the run. Imported lazily because
+    `model_coverage` imports this module.
+    """
+    try:
+        from manamap.pilot import model_coverage
+
+        line = model_coverage.headline(model_coverage.analyze(slug, branch))
+    except Exception:                              # noqa: BLE001 - never block
+        return
+    if line:
+        print(f"  {line}")
+
+
 def main(args):
     branch = getattr(args, "branch", None)
+    _coverage_preflight(args.slug, branch)
     # BRANCHED WRITE, UN-BRANCHED READ — the mirror of the defect
     # `resolve_out_path` documents, and it silently filed the CHAMPION's
     # measurement under the branch's name for as long as branches have existed.

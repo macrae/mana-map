@@ -62,6 +62,7 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
+manamap pilot model-coverage <slug> [--branch B] [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record

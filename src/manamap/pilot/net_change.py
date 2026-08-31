@@ -671,6 +671,19 @@ def main(args):
             f"net-change compares a BRANCH against the deck. "
             f"`--branch <name>`; `manamap pilot deck-branch {args.slug} list` "
             f"shows what there is.")
+    # 20,000 simulated games are about to be spent comparing two lists. If the
+    # model cannot see a third of either one, say so first — every expensive
+    # fidelity surprise on this bench was found after the run, not before it.
+    try:
+        from manamap.pilot import model_coverage
+
+        for scope in (None, branch):
+            line = model_coverage.headline(
+                model_coverage.analyze(args.slug, scope))
+            if line:
+                print(f"  {'branch' if scope else 'deck  '}  {line}")
+    except Exception:                              # noqa: BLE001 - never block
+        pass
     doc = build(args.slug, branch,
                 iterations=getattr(args, "iterations", None),
                 seed=getattr(args, "seed", None))
