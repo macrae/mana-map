@@ -1760,6 +1760,9 @@
       const r = await fetch(config.projection);
       if (!r.ok) throw new Error('Projection file not found \u2014 run pipeline');
       const data = await r.json();
+      // Not copied, and that is not an oversight: this array is freshly parsed
+      // and never becomes `allData`, so nothing mutates it. The BOOT path is the
+      // one that aliased.
       projectionCache[mapName] = data;
       applyProjection(data);
     } catch (e) {
@@ -2129,7 +2132,18 @@
     .then(r => r.json())
     .then(data => {
       allData = data;
-      projectionCache[currentMap] = data;
+      // THE CACHE MUST NOT ALIAS `allData`. `applyProjection` writes
+      // `allData[i].x = data[i].x`, so caching the same objects meant switching
+      // away from the boot map OVERWROTE that map's own cached coordinates —
+      // and switching back re-applied them, leaving every card where the other
+      // map had put it. `currentMap` said "ability" while the points sat on the
+      // cardbert (or colour+type) layout, which is the exact class the comment
+      // above this fetch was written about.
+      //
+      // A COORDINATE-ONLY SNAPSHOT, not a deep clone: `applyProjection` reads
+      // nothing but x and y, and copying all 34,890 full records to guard two
+      // numbers each would cost megabytes for nothing.
+      projectionCache[currentMap] = data.map(d => ({ x: d.x, y: d.y }));
       const sel = document.getElementById('mapSelect');
       if (sel) sel.value = currentMap;
       // Same for the colour mode. Both selects are pinned from the JS defaults rather than

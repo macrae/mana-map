@@ -7701,3 +7701,49 @@ def test_changing_the_map_never_changes_the_space(page):
     page.wait_for_function("MM.currentMap === 'default'")   # the switch REALLY happened
     assert page.evaluate("MM.space") == "cardbert", (
         "switching the displayed map dragged the similarity space with it")
+
+
+def test_returning_to_the_boot_map_restores_its_coordinates(page):
+    """THE BOOT MAP'S CACHE ALIASED `allData`.
+
+    Boot did `allData = data; projectionCache[currentMap] = data` — the same
+    objects — and `applyProjection` writes `allData[i].x = data[i].x`. So
+    switching AWAY from the boot map overwrote that map's own cached coordinates,
+    and switching back re-applied them: `currentMap` said "ability" while every
+    point sat where the other map had put it.
+
+    Pre-existing, and invisible while the round trip was rarely made. Asserted as
+    a ROUND TRIP on real coordinates, because `currentMap` was already correct in
+    the broken case — the name was never the thing that was wrong.
+    """
+    page.evaluate("MM.setMode('explore')")
+    page.wait_for_function("MM.allData && MM.allData.length > 0")
+    boot = page.evaluate("MM.currentMap")
+    home = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
+
+    # WAIT ON THE CONDITION, NOT A CLOCK. A fixed `wait_for_timeout` passed
+    # alone and failed under `-n 4`, which is how every historical flake in this
+    # file was born: the projection fetch takes longer when four browsers
+    # compete, and the assertion fired before it landed.
+    # ONE ROUND TRIP, NOT TWO. Each switch fetches a ~13 MB projection and the
+    # bug is symmetric, so a second non-boot map buys nothing for the I/O.
+    #
+    # (I first blamed this for failing `test_canvas_render_beats_the_plotly_budget`
+    # under contention. That was wrong: the budget test is marked `serial_only`
+    # and `make test-browser` never runs it in parallel — I had invoked
+    # `-m browser -n 4` by hand and included a test that documents it cannot be
+    # asserted that way. Use the Makefile.)
+    first_x = home[0][0]
+    for other in ("cardbert",):
+        page.select_option("#mapSelect", other)
+        page.wait_for_function(
+            f"MM.currentMap === '{other}' && MM.allData[0].x !== {first_x!r}")
+        away = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
+        assert away != home, f"switching to {other} did not move the points"
+
+        page.select_option("#mapSelect", boot)
+        page.wait_for_function(
+            f"MM.currentMap === '{boot}' && MM.allData[0].x === {first_x!r}")
+        back = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
+        assert back == home, (
+            f"returning from {other} to {boot} left the points on {other}'s layout")
