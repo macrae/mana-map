@@ -616,6 +616,19 @@ def main():
         print("    baseline: at corpus scale those two are a tie, and the bar a")
         print("    replacement has to clear is the space it would replace.")
 
+    # CardBERT against the space it would replace, at the pool sizes the product
+    # actually ranks against. Corpus-scale r@10 is the number this file spends
+    # several paragraphs arguing is NOT the decision the product makes.
+    from manamap.training.train_cardbert import EMBEDDINGS_PATH as CARDBERT_PATH
+
+    if CARDBERT_PATH.exists():
+        for relation in ("function", "theme"):
+            cb_text, _c = pool_section(challenger="cardbert (masked fields)",
+                                       baseline="function (ability)",
+                                       relation=relation)
+            if cb_text:
+                print(cb_text)
+
     text, curve = pool_section(relation="function")
     theme_text, _theme_curve = pool_section(relation="theme")
     if theme_text:
