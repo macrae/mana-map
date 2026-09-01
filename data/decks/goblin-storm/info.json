@@ -10,7 +10,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 17,
     "stale": [],
     "invalid": [
@@ -18,19 +18,13 @@
     ],
     "verified": true,
     "missing": [
-      "brief",
-      "log"
+      "brief"
     ],
     "todo": [
       {
         "stage": "brief",
         "what": "the written intent a build starts from",
         "how": "manamap pilot brew goblin-storm --commander \"<name>\" --theme <style>"
-      },
-      {
-        "stage": "log",
-        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
-        "how": "manamap pilot deck-notes goblin-storm add \"<what happened>\" --result win|loss --opponents 3"
       }
     ]
   },
@@ -51,12 +45,14 @@
     "note": "confirmed against the sleeves 2026-08-25: the sleeved 99 is the repo's V1"
   },
   "record": {
-    "games": 0,
+    "games": 1,
     "win": 0,
-    "loss": 0,
+    "loss": 1,
     "draw": 0,
-    "last_played": null,
-    "undebriefed": []
+    "last_played": "2026-08-28",
+    "undebriefed": [
+      "001"
+    ]
   },
   "goldfish": {
     "seed": 42,
@@ -195,7 +191,7 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (—) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "nothing in the captain's log — play it, then `deck-notes goblin-storm add \"…\" --result win|loss --opponents N`",
+    "1 logged game(s) not yet debriefed (001) — `/debrief goblin-storm`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

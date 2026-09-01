@@ -44,6 +44,19 @@ window.Discovery = (function () {
 
   function configure(u) { urls = Object.assign({}, urls, u || {}); }
 
+  /* Drop the decoded neighbour table so the next read re-fetches.
+   *
+   * `configure` only swaps the URL — `table` and `tablePromise` still hold the
+   * PREVIOUS space's decoded arrays, and `loadNeighbours` returns the memoised
+   * promise without looking at the URL again. Without this, switching space
+   * changes which file would be fetched and nothing ever fetches it, so every
+   * "different" neighbour is the same neighbour and the toggle looks cosmetic.
+   *
+   * The card INDEX is deliberately kept: `viz_index.json` carries names, roles
+   * and colours, none of which come from an embedding, so it is one file across
+   * every space and re-fetching it would cost 1.4 MB to get the same bytes. */
+  function resetNeighbours() { table = null; tablePromise = null; }
+
   // Regions big enough to be a graph and small enough to stay under the node cap. Loaded
   // once, lazily, and only used to render the seed list — a failure here just means the
   // list is absent, never that discovery breaks.
@@ -1157,7 +1170,7 @@ window.Discovery = (function () {
   }
 
   return {
-    configure, ready, isReady, loadIndex, loadNeighbours, decode,
+    configure, resetNeighbours, ready, isReady, loadIndex, loadNeighbours, decode,
     enter, exit: exitMode, land, show, focus, setCurrent, reroll, onFilter, render, newGraph,
     loadManifest, loadDeck, onDeckPick,
     get decks() { return manifest || []; },

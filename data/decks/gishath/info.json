@@ -12,7 +12,7 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 17,
     "stale": [],
     "invalid": [
@@ -20,19 +20,13 @@
     ],
     "verified": true,
     "missing": [
-      "brief",
-      "log"
+      "brief"
     ],
     "todo": [
       {
         "stage": "brief",
         "what": "the written intent a build starts from",
         "how": "manamap pilot brew gishath --commander \"<name>\" --theme <style>"
-      },
-      {
-        "stage": "log",
-        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
-        "how": "manamap pilot deck-notes gishath add \"<what happened>\" --result win|loss --opponents 3"
       }
     ]
   },
@@ -47,12 +41,14 @@
   },
   "paper": null,
   "record": {
-    "games": 0,
-    "win": 0,
+    "games": 1,
+    "win": 1,
     "loss": 0,
     "draw": 0,
-    "last_played": null,
-    "undebriefed": []
+    "last_played": "2026-08-28",
+    "undebriefed": [
+      "001"
+    ]
   },
   "goldfish": {
     "seed": 42,
@@ -200,7 +196,7 @@
   "next": [
     "1 artifact(s) fail their own gate (—) — `deck-status gishath` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version gishath paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "nothing in the captain's log — play it, then `deck-notes gishath add \"…\" --result win|loss --opponents N`",
+    "1 logged game(s) not yet debriefed (001) — `/debrief gishath`",
     "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×3",
     "3 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

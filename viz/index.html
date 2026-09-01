@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=188">
+<link rel="stylesheet" href="css/mana-map.css?v=189">
 </head>
 <body>
 
@@ -46,7 +46,19 @@
     <label for="mapSelect">Map</label>
     <select id="mapSelect">
       <option value="ability">Abilities</option>
+      <option value="cardbert">CardBERT</option>
       <option value="default">Color + Type</option>
+    </select>
+  </div>
+  <!-- NO `data-modes`: the space drives SIMILARITY, and every mode asks a
+       similarity question. Discover walks neighbours, Explore runs Find Similar
+       and drill, Build ranks relations. Hiding this in one mode would make the
+       other two answer out of a space the user cannot see. -->
+  <div>
+    <label for="spaceSelect" title="Which embedding answers &quot;what is like this card&quot;">Similarity</label>
+    <select id="spaceSelect">
+      <option value="function">function</option>
+      <option value="cardbert">cardbert</option>
     </select>
   </div>
   <div data-modes="explore build">
@@ -94,16 +106,16 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=188"></script>
-<script src="js/shell.js?v=188"></script>
-<script src="js/stage.js?v=188"></script>
-<script src="js/session.js?v=188"></script>
-<script src="js/decklist.js?v=188"></script>
-<script src="js/discovery.js?v=188"></script>
-<script src="js/render/canvas.js?v=188"></script>
-<script src="js/mana-map.js?v=188"></script>
-<script src="js/drill.js?v=188"></script>
-<script src="js/force.js?v=188"></script>
-<script src="js/build.js?v=188"></script>
+<script src="js/api.js?v=189"></script>
+<script src="js/shell.js?v=189"></script>
+<script src="js/stage.js?v=189"></script>
+<script src="js/session.js?v=189"></script>
+<script src="js/decklist.js?v=189"></script>
+<script src="js/discovery.js?v=189"></script>
+<script src="js/render/canvas.js?v=189"></script>
+<script src="js/mana-map.js?v=189"></script>
+<script src="js/drill.js?v=189"></script>
+<script src="js/force.js?v=189"></script>
+<script src="js/build.js?v=189"></script>
 </body>
 </html>

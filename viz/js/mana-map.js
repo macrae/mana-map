@@ -91,7 +91,7 @@
   // deck artifacts are cache-busted through this constant, so a deck edit that does not
   // bump it serves the OLD 99 from cache — silently, and looking exactly like a render
   // bug: cut cards keep drawing and the panel counts a sideboard that no longer exists.
-  const DATA_VERSION = 8;   // 2026-08-12 corpus refresh: 34,890 cards (HOB), both models retrained — every embedding-derived value changed meaning
+  const DATA_VERSION = 9;   // 2026-09-01 a SECOND similarity space: the toggle changes which .bin answers 'what is like this card', and the incident above is exactly this case — same shape, different meaning
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
@@ -116,6 +116,14 @@
     // The discovery front door — small enough to land on before anything else arrives.
     vizIndex: v(DATA_BASE + 'viz_index.json'),
     neighbours: v(DATA_BASE + 'neighbours.bin'),
+    // The SECOND similarity space. Same four artifacts as the function space,
+    // built by `manamap <step> --space cardbert`. `viz_index.json` is NOT
+    // duplicated — it carries no embedding-derived field, so one copy serves
+    // every space and cannot disagree with itself.
+    projectionCardbert: v(DATA_BASE + 'projection_2d_cardbert.json'),
+    embeddingsCardbert: v(DATA_BASE + 'embeddings_cardbert.bin'),
+    regionsCardbert: v(DATA_BASE + 'regions_cardbert.json'),
+    neighboursCardbert: v(DATA_BASE + 'neighbours_cardbert.bin'),
     // Lazy: only fetched when the Role grouping is selected. 0.39 MB gzipped against a
     // 1.83 MB discovery boot is not something to spend before someone asks for it.
     cardRoles: v(DATA_BASE + 'card_roles.json'),
@@ -123,7 +131,38 @@
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
     ability: { projection: DATA.projectionAbility, embeddings: DATA.embeddingsAbility, regions: DATA.regionsAbility },
+    cardbert: { projection: DATA.projectionCardbert, embeddings: DATA.embeddingsCardbert, regions: DATA.regionsCardbert },
   };
+
+  // THE SIMILARITY SPACES, mirroring `src/manamap/spaces.py`. Only 128-d spaces
+  // appear here: `EMBED_DIM` below is a hardcoded 128 and the .bin is
+  // HEADERLESS, so a 384-d file would parse as plausible garbage rather than
+  // fail. The `map` field is which projection this space laid out, so switching
+  // space can move the picture with it.
+  //
+  // WHAT THE CHOICE COSTS, measured (`manamap eval-embeddings`, intervals on the
+  // difference, 95%): cardbert LOSES functional similarity at every candidate
+  // pool size — -0.205 at pool 100, which is the size Find Similar actually
+  // ranks against — and WINS theme/tribe at every size, +0.094 at pool 100. It
+  // also separates hard negatives 2.8x better (0.0377 against 0.0133). It is a
+  // trade, so it is offered rather than defaulted to.
+  const SPACES = {
+    function: {
+      label: 'function',
+      embeddings: DATA.embeddingsAbility,
+      neighbours: DATA.neighbours,
+      map: 'ability',
+      note: 'what a card DOES. Trained on role and tag positives.',
+    },
+    cardbert: {
+      label: 'cardbert',
+      embeddings: DATA.embeddingsCardbert,
+      neighbours: DATA.neighboursCardbert,
+      map: 'cardbert',
+      note: 'masked-field imputation. Better at tribe, worse at function.',
+    },
+  };
+  let currentSpace = 'function';
 
   // Similarity is NOT the displayed map. The default map is laid out by colour and type,
   // which is a good picture and a terrible answer to "what is like this card" — measured,
@@ -133,7 +172,11 @@
   // about function, so they all read the function space regardless of which projection is
   // on screen. `MAP_CONFIGS[*].embeddings` survives only because each projection is still
   // built from its own space.
-  const SIMILARITY_EMBEDDINGS = DATA.embeddingsAbility;
+  // Was a `const` pointing at one file. It is a LOOKUP now, because the space is
+  // selectable — but the rule above is unchanged: similarity never follows the
+  // displayed MAP, it follows the chosen SPACE. Switching to the colour+type map
+  // still asks the function space for neighbours.
+  const similarityEmbeddings = () => SPACES[currentSpace].embeddings;
 
   // ── Region/Topo state ──
   let regionDataCache = {};
@@ -1395,20 +1438,54 @@
   // toggle, so the same card had different "nearest" answers depending on which picture
   // you happened to be looking at.
   async function loadEmbeddings() {
+    // THE CACHE KEY IS THE SPACE. It was the literal string 'function' for one
+    // space; with two, a fixed key hands the toggle the previous space's matrix
+    // out of cache and every "different" neighbour is the same neighbour. The
+    // bare `embeddings` variable is the hot path, so it has to be invalidated on
+    // switch too — see `setSpace`.
     if (embeddings) return true;
-    if (embeddingsCache.function) {
-      embeddings = embeddingsCache.function;
+    const key = currentSpace;
+    if (embeddingsCache[key]) {
+      embeddings = embeddingsCache[key];
       return true;
     }
     try {
-      const r = await fetch(SIMILARITY_EMBEDDINGS);
+      const r = await fetch(similarityEmbeddings());
       if (!r.ok) return false;
-      embeddings = new Float32Array(await r.arrayBuffer());
-      embeddingsCache.function = embeddings;
+      const buf = await r.arrayBuffer();
+      // The .bin is headerless: nothing in it says how many rows or dims it
+      // holds, so a truncated or wrong-dimension file parses fine and every
+      // offset is silently wrong. This is the only place that can notice.
+      if (allData && allData.length && buf.byteLength !== allData.length * EMBED_DIM * 4) {
+        console.error('[MM] ' + key + ' embeddings are ' + buf.byteLength +
+          ' bytes, expected ' + (allData.length * EMBED_DIM * 4) +
+          ' (' + allData.length + ' cards x ' + EMBED_DIM + ' dims x 4). Refusing it.');
+        return false;
+      }
+      embeddings = new Float32Array(buf);
+      embeddingsCache[key] = embeddings;
       return true;
     } catch (e) {
       return false;
     }
+  }
+
+  // Switch similarity space. Everything downstream reads through
+  // `getEmbeddings()` / `nearestTo()` / `Discovery.neighbours()`, so this is the
+  // whole of it — plus the two caches that would otherwise answer out of the old
+  // space, which is the failure that makes a toggle look cosmetic.
+  async function setSpace(name) {
+    if (!SPACES[name] || name === currentSpace) return false;
+    currentSpace = name;
+    embeddings = null;                       // the hot path, not just the cache
+    Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: SPACES[name].neighbours });
+    Discovery.resetNeighbours();
+    // AND RE-FETCH. Clearing alone leaves `Discovery.isReady()` false forever —
+    // nothing re-requests on its own, so the panel goes permanently empty rather
+    // than answering out of the old space. Caught by
+    // `test_switching_space_changes_the_answer`, which waits for ready.
+    await Discovery.loadNeighbours();
+    return true;
   }
 
   // THE k-nearest primitive, and now genuinely the only one. The header used to claim
@@ -1977,7 +2054,7 @@
   const wantedMode = params.get('mode');
   if (wantedMode) currentMode = wantedMode;
 
-  Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: DATA.neighbours });
+  Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: SPACES[currentSpace].neighbours });
   // Apply the mode chrome BEFORE the data arrives. `currentMode` being 'discover' is not
   // enough on its own — setMode is what hides the Plotly surface and gives the force
   // canvas a size, and without it the canvas measured 0x0, so the landing card's
@@ -2175,6 +2252,21 @@
 
   document.getElementById('mapSelect').addEventListener('change', e => {
     switchMap(e.target.value);
+  });
+
+  document.getElementById('spaceSelect').addEventListener('change', async e => {
+    const name = e.target.value;
+    const info = SPACES[name];
+    if (!(await setSpace(name))) return;
+    setStatus('Similarity: ' + info.label + ' — ' + info.note);
+    // A GROWN GRAPH IS AN ANSWER FROM THE OLD SPACE. The nodes were chosen by
+    // neighbours that no longer apply, so the walk is left standing rather than
+    // silently re-rooted: the user asked to change the question, not to lose
+    // their work. What is dropped is the CACHED matrix, not the session.
+    if (currentMode === 'explore') {
+      await loadEmbeddings();
+      render();
+    }
   });
 
   // ── Topo toggle handlers ──
@@ -3162,6 +3254,9 @@
     setStatus,
     setMode,
     MAP_CONFIGS,
+    SPACES,
+    get space() { return currentSpace; },
+    setSpace,
     DATA,
     DATA_VERSION,
     EMBED_DIM,

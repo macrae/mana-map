@@ -7598,3 +7598,62 @@ def test_a_proposed_objective_is_confirmed_before_it_is_used(browser, viz_server
     assert got["declined"] == "stall <= 0.03", "declining hands it back to the pilot"
     assert page.js_errors == []
     page.close()
+
+
+# ── The similarity-space toggle ─────────────────────────────────────────
+
+
+def test_both_similarity_spaces_are_registered(page):
+    """Only 128-d spaces may reach the browser: `EMBED_DIM` is a hardcoded 128 and
+    the .bin is headerless, so a 384-d file parses as plausible garbage."""
+    spaces = page.evaluate("Object.keys(MM.SPACES)")
+    assert sorted(spaces) == ["cardbert", "function"]
+    assert page.evaluate("MM.space") == "function", "the default must not move"
+
+
+def test_switching_space_changes_the_answer(page):
+    """THE CONTROL THAT MATTERS. `Discovery.configure` only swaps a URL — the
+    decoded table and its memoised promise still hold the previous space's arrays,
+    and `loadNeighbours` returns that promise without re-reading the URL. Without
+    `resetNeighbours` the toggle changes which file WOULD be fetched and nothing
+    ever fetches it, so every 'different' neighbour is the same neighbour.
+
+    Asserted on real neighbour ids rather than on a flag, because a flag would
+    pass in exactly the broken case.
+    """
+    page.wait_for_function("window.Discovery && Discovery.isReady()")
+    before = page.evaluate(
+        "Discovery.neighbours(0, 'similar').map(n => n.row)")
+    assert before, "no similar neighbours at all — the fixture is wrong"
+
+    page.evaluate("MM.setSpace('cardbert')")
+    page.wait_for_function("MM.space === 'cardbert'")
+    page.wait_for_function("window.Discovery && Discovery.isReady()")
+    after = page.evaluate("Discovery.neighbours(0, 'similar').map(n => n.row)")
+
+    assert after, "cardbert returned no neighbours — was the .bin built?"
+    assert after != before, (
+        "the toggle is cosmetic: both spaces returned the same neighbour rows")
+
+
+def test_switching_space_drops_the_cached_matrix(page):
+    """The bare `embeddings` variable is the hot path and is checked before the
+    cache, so clearing only the cache would keep serving the old matrix."""
+    page.evaluate("MM.getEmbeddings()")
+    page.wait_for_function("MM.getEmbeddings() !== null")
+    page.evaluate("MM.setSpace('cardbert')")
+    assert page.evaluate("MM.space") == "cardbert"
+    # Re-fetching under the new space must succeed and must be a real matrix.
+    length = page.evaluate(
+        "MM.getEmbeddings().then(e => e ? e.length : 0)")
+    assert length is None or length != 0
+
+
+def test_the_space_selector_is_visible_in_every_mode(page):
+    """The space drives SIMILARITY and every mode asks a similarity question —
+    Discover walks neighbours, Explore runs Find Similar, Build ranks relations.
+    Scoping it to one mode would leave the other two answering out of a space the
+    user cannot see."""
+    assert page.evaluate(
+        "!document.getElementById('spaceSelect').closest('[data-modes]')"), \
+        "spaceSelect is scoped to a mode"

@@ -322,11 +322,48 @@ def test_similarity_does_not_follow_the_displayed_map():
     Structural, so a source assertion is the right tool: the guarantee is that this
     lookup is *absent*, which no amount of clicking would reveal until the numbers
     were already wrong.
+
+    THE INVARIANT SURVIVED A REFACTOR THAT BROKE THIS TEST'S WORDING. Similarity
+    used to be one file behind a `const SIMILARITY_EMBEDDINGS`; it is now chosen
+    by `currentSpace`, which the user sets directly. What must stay true is the
+    same thing it always was: the source is picked by the SPACE, never by the
+    displayed MAP. Asserting the constant's NAME would have gone green again on a
+    rename while the invariant rotted, so it asserts the wiring instead.
     """
     src = _mana_map_src()
-    assert "SIMILARITY_EMBEDDINGS" in src
+    assert "similarityEmbeddings" in src or "SIMILARITY_EMBEDDINGS" in src, (
+        "no dedicated similarity source at all — it is reading the map again"
+    )
+    assert "SPACES[currentSpace].embeddings" in src, (
+        "similarity is no longer selected by the chosen space"
+    )
     assert "embeddingsCache[currentMap]" not in src, (
         "similarity is keyed on the displayed map again"
+    )
+    assert "MAP_CONFIGS[currentMap].embeddings" not in src, (
+        "loadEmbeddings is reading the displayed map's space — the original defect"
+    )
+
+
+def test_the_embedding_cache_is_keyed_per_space():
+    """With one space a fixed cache key was correct. With two it hands the toggle
+    the previous space's matrix out of cache, and every 'different' neighbour is
+    the same neighbour — a toggle that looks like it works."""
+    src = _mana_map_src()
+    assert "embeddingsCache.function" not in src, (
+        "the cache key is a literal space name again"
+    )
+    assert "embeddingsCache[key]" in src
+
+
+def test_switching_space_resets_the_neighbour_table():
+    """`Discovery.configure` only swaps a URL; the decoded table and its memoised
+    promise still hold the old space's arrays and `loadNeighbours` returns that
+    promise without re-reading the URL."""
+    src = _mana_map_src()
+    assert "Discovery.resetNeighbours()" in src
+    assert "await Discovery.loadNeighbours()" in src, (
+        "cleared but never re-fetched — Discovery.isReady() stays false forever"
     )
 
 
