@@ -233,13 +233,30 @@ def embeddings_digest(path):
     return hashlib.sha256(path.read_bytes()).digest()
 
 
-def main():
+def main(space=None):
+    """Build `viz_index.json` and the neighbour tables.
+
+    WITH A `space`, ONLY THE NEIGHBOUR TABLE IS REBUILT. `viz_index.json` is the
+    card metadata the discovery panel renders — names, roles, colours — and none
+    of it comes from an embedding, so writing it once per space would produce N
+    byte-identical files and N chances for them to disagree.
+    """
+    from manamap import spaces as space_registry
+
+    target = space_registry.get(space)
+    if target.neighbours is None:
+        raise SystemExit(f"the {target.slug!r} space has no neighbour table")
+    if not target.exists():
+        raise SystemExit(f"{target.npy} not found — build it first")
+    only_neighbours = space is not None and target.slug != space_registry.DEFAULT
+
     print("Loading inputs...")
     df = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
-    embeddings = np.load(ABILITY_EMBEDDINGS_PATH)
+    embeddings = np.load(target.npy)
     if len(embeddings) != len(df):
         raise SystemExit(
-            f"index alignment broken: {len(embeddings):,} embeddings vs {len(df):,} cards. "
+            f"index alignment broken: {len(embeddings):,} embeddings in "
+            f"{target.npy.name} vs {len(df):,} cards. "
             f"Re-run the pipeline from the changed step onward."
         )
 
@@ -257,11 +274,15 @@ def main():
     print(f"  {len(df):,} cards · {len(synergy):,} synergy entries · "
           f"{len(obsolescence):,} obsolescence entries")
 
-    print("\nWriting viz_index.json...")
-    records = build_viz_index(df, roles_by_name)
-    with open(VIZ_INDEX_PATH, "w", encoding="utf-8") as fh:
-        json.dump(records, fh, separators=(",", ":"), ensure_ascii=False)
-    print(f"  {VIZ_INDEX_PATH} — {VIZ_INDEX_PATH.stat().st_size / 1048576:.2f} MB")
+    if only_neighbours:
+        print(f"\n  {target.label}: neighbours only "
+              f"(viz_index.json carries no embedding-derived field)")
+    else:
+        print("\nWriting viz_index.json...")
+        records = build_viz_index(df, roles_by_name)
+        with open(VIZ_INDEX_PATH, "w", encoding="utf-8") as fh:
+            json.dump(records, fh, separators=(",", ":"), ensure_ascii=False)
+        print(f"  {VIZ_INDEX_PATH} — {VIZ_INDEX_PATH.stat().st_size / 1048576:.2f} MB")
 
     print("\nBuilding neighbour tables...")
     # Unpacked by name, not by index. This was `counts = tables[4]` with a `*tables`
@@ -271,10 +292,12 @@ def main():
         df, embeddings, synergy, obsolescence, name_index
     )
 
-    blob = pack(len(df), embeddings_digest(ABILITY_EMBEDDINGS_PATH),
+    # The digest is of THIS space's matrix, so a neighbours file can always be
+    # traced back to the embedding it was built from.
+    blob = pack(len(df), embeddings_digest(target.npy),
                 sim_idx, sim_val, syn_idx, syn_reason, obs_idx, counts, sim_lo, sim_hi)
-    NEIGHBOURS_BIN_PATH.write_bytes(blob)
-    print(f"  {NEIGHBOURS_BIN_PATH} — {len(blob) / 1048576:.2f} MB")
+    target.neighbours.write_bytes(blob)
+    print(f"  {target.neighbours} — {len(blob) / 1048576:.2f} MB")
 
     have_syn = int((counts[:, 1] > 0).sum())
     have_obs = int((counts[:, 2] > 0).sum())

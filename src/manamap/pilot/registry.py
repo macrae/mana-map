@@ -177,6 +177,25 @@ def add_pilot_parser(subparsers):
             nargs = "?" if name == "deck-status" else None
             cmd.add_argument("slug", nargs=nargs,
                              help="Deck slug (kebab-case, e.g. goblin-storm)")
+        if name == "deck-map":
+            # `--out` EXISTS BECAUSE `--space` DOES. `deck_map.main` has always
+            # read `args.out`, but the parser never offered it, so the only way
+            # to run a non-default space would be to OVERWRITE the tracked
+            # `deck_map.json` — whose agent-authored city names were written
+            # against the function space's clusters and do not survive a
+            # re-clustering. `resolve_out_path` keeps it slug-scoped.
+            cmd.add_argument("--out", default=None,
+                             help="Also write JSON here (a view, never tracked). "
+                                  "Use this to try a non-default --space without "
+                                  "replacing the committed map")
+        if name in ("deck-map", "build-deck", "close"):
+            from manamap import spaces as _spaces
+            cmd.add_argument(
+                "--space", default=None, choices=_spaces.choices(),
+                help=f"which embedding to read (default {_spaces.DEFAULT}). "
+                     "cardbert clusters by TRIBE rather than by function — a "
+                     "different question, and it loses functional similarity at "
+                     "every pool size measured")
         if name == "merge-prose":
             # Choices come from `merge_prose.AGENT_FILE`, never a literal list.
             # A hardcoded pair here is the same mistake this repo bans in prompts —
@@ -639,8 +658,14 @@ def add_pilot_parser(subparsers):
                                   "('-' for stdin); a decklist works as-is")
             cmd.add_argument("--deck", default=None,
                              help="seed from a tracked deck's own 99")
+            # CHOICES ARE DERIVED, NOT DUPLICATED. This was a hand-copied literal
+            # of `commander_search.SPACES.keys()`, so adding or renaming a space
+            # left the flag accepting a slug nothing could resolve — or refusing
+            # one every other layer accepted. Same mistake `merge-prose` above
+            # already documents.
+            from manamap import spaces as _spaces
             cmd.add_argument("--space", default="text",
-                             choices=["text", "function", "layout"],
+                             choices=_spaces.choices(),
                              help="which embedding to rank in. Default TEXT, because it "
                                   "measures better than the trained space: top-1 0.584 "
                                   "vs 0.410 over 10 held-out draws "

@@ -36,7 +36,13 @@ STEPS = [
 STEP_NAMES = [name for name, _, _ in STEPS]
 
 
-def run_step(name, position=None):
+#: Steps whose `main` takes a `space=` keyword. Named explicitly rather than
+#: sniffed with `inspect`, so adding a space-aware step is a deliberate edit and
+#: a typo fails loudly instead of silently falling back to the default space.
+SPACE_AWARE = {"reduce", "export", "cluster-regions", "viz-index"}
+
+
+def run_step(name, position=None, space=None):
     """Run a single pipeline step by registry name.
 
     The step banner stays on STDOUT. It is not theatre — it is the pipeline's
@@ -53,7 +59,15 @@ def run_step(name, position=None):
             where = f" {position}" if position else ""
             print(f"\n[{head}{where}] {body}")
             started = time.monotonic()
-            importlib.import_module(module_path).main()
+            step_main = importlib.import_module(module_path).main
+            if step_name in SPACE_AWARE:
+                step_main(space=space)
+            elif space is not None:
+                raise SystemExit(
+                    f"step {step_name!r} is not space-aware "
+                    f"(space-aware: {', '.join(sorted(SPACE_AWARE))})")
+            else:
+                step_main()
             print(f"    ✓ {head.lower()} finished in {_duration(time.monotonic() - started)}")
             return
     raise ValueError(f"Unknown step: {name!r} (choose from {', '.join(STEP_NAMES)})")

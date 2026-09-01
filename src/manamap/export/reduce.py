@@ -115,7 +115,19 @@ def run_reduce(emb_path, output_path):
     return records
 
 
-def main():
+def main(space=None):
+    if space is not None:
+        from manamap import spaces as space_registry
+
+        target = space_registry.get(space)
+        if target.projection is None:
+            raise SystemExit(f"the {target.slug!r} space has no projection")
+        if not target.exists():
+            raise SystemExit(f"{target.npy} not found — build it first")
+        print(f"[{target.label}] projection")
+        run_reduce(target.npy, target.projection)
+        return
+
     print("Loading metadata...")
     metadata = pd.read_csv(CARD_METADATA_PATH)
     print(f"  {len(metadata):,} cards")

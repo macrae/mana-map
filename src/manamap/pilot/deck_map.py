@@ -11,11 +11,25 @@ clusters the result into cities and neighbourhoods. It is `viz/js/drill.js`'s
 argument applied to a decklist, and it produces the picture a deck page can open
 on: the engine, visible before a word of prose.
 
-WHICH EMBEDDING SPACE, AND WHY IT IS NOT A CHOICE. `embeddings_ability.npy` — the
-FUNCTION space. `embeddings.npy` is the layout space and knows only colour and
-type, so clustering a mono-green deck in it produces one green blob and a land
-pile, which is a true statement about nothing. Every similarity question in this
-repo reads the ability space; this is one more.
+WHICH EMBEDDING SPACE, AND WHY THE DEFAULT DOES NOT MOVE. `embeddings_ability
+.npy` — the FUNCTION space. `embeddings.npy` is the layout space and knows only
+colour and type, so clustering a mono-green deck in it produces one green blob
+and a land pile, which is a true statement about nothing.
+
+This used to say the space "is not a choice", and `--space` now makes it one —
+so what the default is protecting has to be stated rather than assumed. A deck
+map is a FUNCTIONAL reading of a 99: which cards do the same job. CardBERT loses
+functional similarity at every pool size measured (−0.275 at pool 500, interval
+excluding zero) while winning theme, so a cardbert deck map would cluster a deck
+by TRIBE — legitimate, and a different question from the one this artifact
+answers. Twelve tracked `deck_map.json` also carry agent-authored city names
+written against the function space's clusters, and those names do not survive a
+re-clustering.
+
+`meta.space` and `meta.space_digest` record which matrix produced a map, so a
+swap is DECIDABLE rather than silent. Before the digest existed, nothing at all
+detected that a committed map had been laid out in a space that no longer
+matched.
 
 DETERMINISM. The deck page rebuilds byte-identically, so the layout may not wobble
 between runs. Classical MDS gives a fixed starting configuration from the
@@ -332,7 +346,7 @@ def verified_cards(slug, deck_names, branch=None):
 # ── Build ───────────────────────────────────────────────────────────────
 
 
-def build(slug, branch=None):
+def build(slug, branch=None, space=None):
     deck = load_deck_cards(slug, branch)
     cards = deck["cards"]
     frame = load_frame()
@@ -343,7 +357,14 @@ def build(slug, branch=None):
             f"corpus — run `manamap extract` first, or check for renamed cards. "
             f"A map of four points is not a map.")
 
-    vectors = np.load(ABILITY_EMBEDDINGS_PATH)[rows]
+    from manamap import spaces as space_registry
+    from manamap.export.viz_index import embeddings_digest
+
+    target = space_registry.get(space)
+    if not target.exists():
+        raise SystemExit(
+            f"{target.npy} not found (it is gitignored) — run the pipeline")
+    vectors = np.load(target.npy)[rows]
     unit = vectors / np.clip(np.linalg.norm(vectors, axis=1, keepdims=True), 1e-9, None)
     distance = cosine_distances(vectors)
     points = layout(distance)
@@ -417,7 +438,11 @@ def build(slug, branch=None):
         "slug": slug,
         "decklist_sha256": deck.get("decklist_sha256"),
         "meta": {
-            "space": "embeddings_ability.npy",
+            "space": target.npy.name,
+            # THE DIGEST MAKES A SPACE SWAP DECIDABLE. `meta.space` names the
+            # file; only the sha says whether the matrix inside it is still the
+            # one this map was laid out from — a retrain keeps the filename.
+            "space_digest": embeddings_digest(target.npy).hex()[:16],
             "projection": "classical MDS + SMACOF, canonically oriented",
             "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
             "cards": len(entries),
@@ -433,7 +458,8 @@ def build(slug, branch=None):
 
 
 def main(args):
-    doc = build(args.slug, getattr(args, "branch", None))
+    doc = build(args.slug, getattr(args, "branch", None),
+                getattr(args, "space", None))
     errors = []
     if doc["meta"]["unresolved"]:
         errors.append(f"unresolved card names: {doc['meta']['unresolved']}")

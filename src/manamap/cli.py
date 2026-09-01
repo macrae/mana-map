@@ -107,8 +107,16 @@ def build_parser():
         help="Start from this step instead of the beginning",
     )
 
+    from manamap import spaces as _spaces
+    from manamap.pipeline import SPACE_AWARE
+
     for name, _, description in STEPS:
-        subparsers.add_parser(name, help=description)
+        step = subparsers.add_parser(name, help=description)
+        if name in SPACE_AWARE:
+            step.add_argument(
+                "--space", default=None, choices=_spaces.choices(),
+                help="build this embedding space's artifact instead of the "
+                     f"pipeline's usual set (default: {_spaces.DEFAULT})")
 
     # NOT a pipeline step, deliberately. `eval-embeddings` is step 15 because it
     # scores artifacts the pipeline just built; this one needs the network and a
@@ -239,7 +247,7 @@ def main():
             raise SystemExit(code)
         run_pilot_step(args)
     else:
-        run_step(args.command)
+        run_step(args.command, space=getattr(args, "space", None))
 
 
 if __name__ == "__main__":

@@ -593,7 +593,29 @@ def cluster_map(projection_data, cards_df, map_type, output_path):
           f"{n_l0} L0 + {n_l1} L1 + {n_l2} L2 regions)")
 
 
-def main():
+def main(space=None):
+    if space is not None:
+        from manamap import spaces as space_registry
+
+        target = space_registry.get(space)
+        if target.regions is None or target.projection is None:
+            raise SystemExit(f"the {target.slug!r} space has no regions")
+        if not target.projection.exists():
+            raise SystemExit(
+                f"{target.projection} not found — run `manamap reduce "
+                f"--space {target.slug}` first")
+        cards_df = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
+        print(f"\n  Processing {target.label} map...")
+        with open(target.projection, "r") as fh:
+            projection_data = json.load(fh)
+        # The map NAME is the space slug for a new space; `default` and `ability`
+        # are kept for the two that already have named regions on disk.
+        cluster_map(projection_data, cards_df, target.slug, target.regions)
+        return
+    return _main_all()
+
+
+def _main_all():
     cards_df = pd.read_csv(OUTPUT_CSV_PATH)
     print(f"  Loaded {len(cards_df)} cards from {OUTPUT_CSV_PATH}")
 
