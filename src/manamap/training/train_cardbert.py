@@ -55,8 +55,8 @@ from manamap.training import span_encoder as SE
 from manamap.training.common import get_device, say
 from manamap.training.loss_cardbert import (VIEW_WEIGHT, accuracy, field_present,
                                             field_targets, imputation_loss,
-                                            span_recall, view_agreement,
-                                            view_contrastive)
+                                            span_recall, vicreg, vicreg_parts,
+                                            view_agreement, view_contrastive)
 from manamap.training.model_cardbert import CardBERT
 
 EMBEDDINGS_PATH = DATA_DIR / "embeddings_cardbert.npy"
@@ -224,10 +224,11 @@ def load_weights(schema):
 
 def run_epoch(model, order, tabular, spans, tab_offsets, span_offsets,
               tab_cols, span_cols, weights, schema, slots, rng, device,
-              optimiser=None, indicator=None, view_weight=VIEW_WEIGHT):
+              optimiser=None, indicator=None, view_weight=VIEW_WEIGHT,
+              objective="infonce"):
     training = optimiser is not None
     model.train(training)
-    totals, seen, agree = 0.0, 0, []
+    totals, seen, agree, parts = 0.0, 0, [], []
     field_scores, span_scores = {}, {}
     for start in range(0, len(order), BATCH_SIZE):
         rows = order[start:start + BATCH_SIZE]
@@ -257,7 +258,15 @@ def run_epoch(model, order, tabular, spans, tab_offsets, span_offsets,
                                           by_field, weights, schema, span_targets,
                                           by_slot, slots)
                 loss = term if loss is None else loss + term
-            loss = 0.5 * loss + view_weight * view_contrastive(latents[0], latents[1])
+            # THE VIEW TERM, two ways. `infonce` uses every other card in the batch
+        # as a negative — which is the mechanism under suspicion, since two
+        # cards that ramp the same way are pushed apart. `vicreg` has no
+        # negatives at all: variance stops collapse, covariance decorrelates.
+        if objective == "vicreg":
+            view_term = vicreg(latents[0], latents[1])
+        else:
+            view_term = view_contrastive(latents[0], latents[1])
+        loss = 0.5 * loss + view_weight * view_term
         if training:
             optimiser.zero_grad()
             loss.backward()
@@ -273,12 +282,15 @@ def run_epoch(model, order, tabular, spans, tab_offsets, span_offsets,
                     span_scores.setdefault(slot, []).append(span_recall(
                         out["predictions"][f"span:{slot}"][sel], span_targets[slot][sel]))
             agree.append(view_agreement(latents[0], latents[1]))
+            if objective == "vicreg":
+                parts.append(vicreg_parts(latents[0], latents[1])["live_dims"])
         totals += float(loss.detach()) * len(rows)
         seen += len(rows)
     return (totals / max(1, seen),
             {k: float(np.mean(v)) for k, v in field_scores.items()},
             {k: float(np.mean(v)) for k, v in span_scores.items()},
-            float(np.mean(agree)) if agree else float("nan"))
+            float(np.mean(agree)) if agree else float("nan"),
+            float(np.mean(parts)) if parts else float("nan"))
 
 
 def embed_only(args=None):
@@ -326,9 +338,15 @@ def main(args=None):
     layers = getattr(args, "layers", None) or 3
     view_weight = getattr(args, "view_weight", None)
     view_weight = VIEW_WEIGHT if view_weight is None else float(view_weight)
+    objective = getattr(args, "objective", None) or "infonce"
+    if objective == "vicreg" and getattr(args, "view_weight", None) is None:
+        # VICReg's own coefficients (25/25/1) already set the scale, so the outer
+        # weight stays at 1.0 rather than multiplying them again.
+        view_weight = 1.0
     tag = getattr(args, "tag", None)
     emb_path, model_path, history_path, meta_path = paths_for(tag)
-    say(f"  view_weight={view_weight}  tag={tag or '(none)'}")
+    say(f"  objective={objective}  view_weight={view_weight}  "
+        f"tag={tag or '(none)'}")
 
     device = get_device()
     say(f"  device {device}")
@@ -368,26 +386,27 @@ def main(args=None):
     for epoch in range(1, epochs + 1):
         started = time.time()
         rng.shuffle(train_rows)
-        train_loss, _, _, _ = run_epoch(
+        train_loss, _, _, _, _ = run_epoch(
             model, train_rows, tabular, spans, tab_offsets, span_offsets,
             tab_cols, span_cols, weights, schema, SE.SPAN_SLOTS,
             np.random.default_rng(epoch), device, optimiser, indicator,
-            view_weight)
-        val_loss, field_scores, span_scores, agreement = run_epoch(
+            view_weight, objective)
+        val_loss, field_scores, span_scores, agreement, live = run_epoch(
             model, val_rows, tabular, spans, tab_offsets, span_offsets,
             tab_cols, span_cols, weights, schema, SE.SPAN_SLOTS,
             np.random.default_rng(10_000 + epoch), device, None, indicator,
-            view_weight)
+            view_weight, objective)
         history.append({"epoch": epoch, "train": train_loss, "val": val_loss,
                         "fields": field_scores, "spans": span_scores,
-                        "view_agreement": agreement})
+                        "view_agreement": agreement, "live_dims": live})
         flag = ""
         if val_loss < best - 1e-4:
             best, bad = val_loss, 0
             torch.save({"state": model.state_dict(), "d_model": d_model,
                         "layers": layers, "fields": [f.name for f in schema],
                         "epoch": epoch, "val_loss": val_loss,
-                        "view_weight": view_weight}, model_path)
+                        "view_weight": view_weight,
+                        "objective": objective}, model_path)
             # ALL THREE, TOGETHER. See the module docstring: writing embeddings
             # only after the loop meant a killed run left them describing a
             # different model than the checkpoint did.
@@ -399,10 +418,11 @@ def main(args=None):
             flag = "  *"
         else:
             bad += 1
+        extra = f"live {live:.0f}  " if objective == "vicreg" else ""
         say(f"  epoch {epoch:3}  train {train_loss:7.4f}  val {val_loss:7.4f}  "
             f"kw_flying {field_scores.get('kw_flying', float('nan')):.3f}  "
             f"span/trig {span_scores.get('triggered', float('nan')):.3f}  "
-            f"views {agreement:.3f}  "
+            f"views {agreement:.3f}  {extra}"
             f"{time.time()-started:5.1f}s{flag}")
         if bad >= PATIENCE:
             say(f"  early stop: {PATIENCE} epochs without improvement")

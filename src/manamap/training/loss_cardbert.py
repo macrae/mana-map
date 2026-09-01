@@ -203,6 +203,85 @@ def view_agreement(latent_a, latent_b):
                  .float().mean())
 
 
+#: VICReg coefficients, from the paper (Bardes, Ponce, LeCun 2022). Not tuned
+#: here; if they ever are, tune against the EVAL and not against the loss.
+VICREG_SIM, VICREG_STD, VICREG_COV = 25.0, 25.0, 1.0
+VICREG_GAMMA = 1.0
+
+
+def vicreg(latent_a, latent_b, sim=VICREG_SIM, std=VICREG_STD, cov=VICREG_COV,
+           gamma=VICREG_GAMMA, eps=1e-4):
+    """Two views agree, no dimension collapses, dimensions decorrelate.
+
+    ## WHY NO NEGATIVES AT ALL
+
+    The ablation said the contrastive weight was not the lever: a 4x change moved
+    view agreement 0.953 -> 0.922 and left imputation untouched. What is left as
+    the explanation for poor function retrieval is WHICH PAIRS ARE NEGATIVES —
+    InfoNCE treats every other card in the batch as one, so two cards that ramp
+    the same way are pushed apart no matter how the term is weighted.
+
+    The cleanest answer to "the negatives are wrong" is a method with none.
+    VICReg replaces them with three terms:
+
+        invariance   the two maskings of a card agree
+        variance     every dimension keeps std >= gamma across the batch, which
+                     is what stops collapse — the job the negatives were doing
+        covariance   off-diagonal covariance is driven to zero
+
+    ## APPLIED TO THE SHIPPED LATENT, WHICH IS NOT WHAT THE PAPER DOES
+
+    VICReg puts these terms on a high-dimensional *expander* and ships the
+    backbone representation, discarding the head. That is deliberately not done
+    here, and the reason is the covariance term: **decorrelating dimensions is
+    exactly the property the shipped space is worst at.** CardBERT uses 16.72 of
+    its 128 dimensions against frozen MiniLM's 51.39 of 384, and participation
+    ratio is what the covariance term raises. Putting that pressure on a
+    discarded head would be optimising the wrong space for this codebase's goal,
+    which is an atlas rather than a classifier backbone.
+
+    ## THE LATENT MUST NOT BE NORMALISED BEFORE THIS
+
+    L2 normalisation projects onto a sphere and directly fights a per-dimension
+    variance target. `forward` returns the raw latent and `embed` normalises only
+    at write time, which is the order this needs.
+    """
+    invariance = F.mse_loss(latent_a, latent_b)
+
+    a = latent_a - latent_a.mean(dim=0)
+    b = latent_b - latent_b.mean(dim=0)
+    std_a = torch.sqrt(a.var(dim=0) + eps)
+    std_b = torch.sqrt(b.var(dim=0) + eps)
+    variance = 0.5 * (F.relu(gamma - std_a).mean() + F.relu(gamma - std_b).mean())
+
+    n, d = a.shape
+    cov_a = (a.T @ a) / max(1, n - 1)
+    cov_b = (b.T @ b) / max(1, n - 1)
+    off_diagonal = lambda c: c.pow(2).sum() - c.pow(2).diagonal().sum()
+    covariance = (off_diagonal(cov_a) + off_diagonal(cov_b)) / d
+
+    return sim * invariance + std * variance + cov * covariance
+
+
+@torch.no_grad()
+def vicreg_parts(latent_a, latent_b, gamma=VICREG_GAMMA, eps=1e-4):
+    """The three terms separately, for reporting. A single VICReg number hides
+    which constraint is binding, and they fail in different ways."""
+    a = latent_a - latent_a.mean(dim=0)
+    b = latent_b - latent_b.mean(dim=0)
+    std_a = torch.sqrt(a.var(dim=0) + eps)
+    n, d = a.shape
+    cov_a = (a.T @ a) / max(1, n - 1)
+    return {
+        "invariance": float(F.mse_loss(latent_a, latent_b)),
+        "variance": float(F.relu(gamma - std_a).mean()),
+        "covariance": float((cov_a.pow(2).sum() - cov_a.pow(2).diagonal().sum()) / d),
+        # Dimensions actually carrying signal — the thing the covariance term is
+        # for, reported directly rather than inferred from the loss.
+        "live_dims": int((std_a > 0.1 * gamma).sum()),
+    }
+
+
 def info_nce(predicted, actual, temperature=TEMPERATURE):
     """Contrastive loss against every other span in the batch.
 

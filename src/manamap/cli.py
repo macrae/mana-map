@@ -168,6 +168,8 @@ def build_parser():
     cb.add_argument("--layers", type=int, default=None)
     cb.add_argument("--view-weight", dest="view_weight", type=float, default=None,
                     help="weight on the card-level contrastive term (default 1.0)")
+    cb.add_argument("--objective", choices=("infonce", "vicreg"), default=None,
+                    help="the card-level view term: contrastive, or VICReg (no negatives)")
     cb.add_argument("--tag", default=None,
                     help="suffix the artifacts, so a sweep keeps its runs apart")
     cb.add_argument("--embed-only", dest="embed_only", action="store_true",

@@ -303,3 +303,73 @@ def test_two_views_of_one_card_are_pulled_together():
     assert float(view_contrastive(identical, scrambled)) == pytest.approx(chance, abs=0.2)
     assert view_agreement(identical, identical) == 1.0
     assert view_agreement(identical, scrambled) < 0.2
+
+
+# ── VICReg: the objective with no negatives ────────────────────────────
+
+
+def test_vicreg_punishes_the_collapse_that_negatives_were_preventing():
+    """InfoNCE stops every card mapping to one vector by making other cards
+    negatives. VICReg has no negatives, so the VARIANCE term has to do that job —
+    and if it doesn't, the model has a trivial minimum."""
+    from manamap.training.loss_cardbert import vicreg, vicreg_parts
+
+    torch.manual_seed(0)
+    collapsed = torch.zeros(64, 128) + torch.randn(1, 128)   # every card identical
+    healthy = torch.randn(64, 128)
+
+    assert float(vicreg(collapsed, collapsed)) > 4 * float(vicreg(healthy, healthy))
+    assert vicreg_parts(collapsed, collapsed)["live_dims"] == 0
+    assert vicreg_parts(healthy, healthy)["live_dims"] == 128
+
+
+def test_vicreg_punishes_views_that_disagree():
+    """The invariance term. Two maskings of one card must still agree, or the
+    space is measuring noise."""
+    from manamap.training.loss_cardbert import vicreg
+
+    torch.manual_seed(0)
+    a = torch.randn(64, 128)
+    assert float(vicreg(a, torch.randn(64, 128))) > 5 * float(vicreg(a, a))
+
+
+def test_vicreg_rewards_decorrelated_dimensions():
+    """The covariance term, which is why VICReg is applied to the SHIPPED latent
+    rather than to a discarded expander: participation ratio is the property
+    this space is worst at (16.72 of 128, against frozen text's 51.39 of 384)."""
+    from manamap.training.loss_cardbert import vicreg_parts
+
+    torch.manual_seed(0)
+    independent = torch.randn(256, 32)
+    # Every dimension a copy of the first: maximal correlation, one real dim.
+    duplicated = independent[:, :1].repeat(1, 32)
+
+    assert (vicreg_parts(duplicated, duplicated)["covariance"]
+            > 10 * vicreg_parts(independent, independent)["covariance"])
+
+    # AND THE TOTAL LOSS MUST RESPOND. A bug probe found this missing: the
+    # assertion above reads `vicreg_parts`, so deleting the covariance term from
+    # `vicreg` itself broke nothing. Reporting a term is not the same as
+    # optimising it.
+    from manamap.training.loss_cardbert import vicreg
+
+    assert float(vicreg(duplicated, duplicated)) > 10 * float(vicreg(independent,
+                                                                    independent))
+
+
+def test_vicreg_trains_the_latent(schema):
+    """Same guarantee the view term had to provide: [CLS] must get a gradient."""
+    from manamap.training.loss_cardbert import vicreg
+    from manamap.training.model_cardbert import CardBERT
+
+    model = CardBERT(schema, SE.SPAN_SLOTS, span_dim=8, d_model=32, layers=1, heads=2)
+    tabular = torch.randn(8, sum(f.total_width for f in schema))
+    spans = torch.randn(8, (8 + 2) * len(SE.SPAN_SLOTS))
+    _, tab_offsets = CF.encode({"type_line": "Creature"}, schema)
+    span_offsets = {s: (i * 10, i * 10 + 10) for i, s in enumerate(SE.SPAN_SLOTS)}
+
+    a = model(tabular, spans, tab_offsets, span_offsets)["latent"]
+    b = model(tabular * 0.9, spans, tab_offsets, span_offsets)["latent"]
+    vicreg(a, b).backward()
+    assert model.to_latent.weight.grad is not None
+    assert float(model.to_latent.weight.grad.norm()) > 0
