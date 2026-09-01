@@ -57,13 +57,13 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 
 | deck | stacks ✓/total | bracket floor/target | engine | sim runs | logged | status |
 |---|---|---|---|---|---|---|
-| `goblin-storm` | 5/5 | 4/4 | pass | 0 | 0 | |
+| `goblin-storm` | 5/5 | 4/4 | pass | 0 | **1** | v1.0.0 ◆ SLEEVED; 0W 1L |
 | `hapatra` | 1/1 | 4/4 | pass | 0 | 0 | `broken-down` (cards live in yawgmoth) |
 | `sisay` | 1/3 | 4/4 | pass | 0 | 0 | `retired` — **not the pilot's deck** |
-| `heliod` | 6/6 | 4/4 | pass | 0 | 0 | white short by 16, not 5 — see the DFC fix |
-| `ur-dragon` | 6/6 | 4/4 | pass | 0 | 0 | two-engine rebuild proposed, not applied |
-| `edgar-vampires` | 11/11 (9 presentable) | 4/4 | pass | 1 | 1 | **v1.0.0 baselined, sleeved; both loops pass; 1 game logged** |
-| `gishath` | 5/5 | 4/4 | pass | 0 | 0 | |
+| `heliod` | 6/6 | 4/4 | pass | 0 | **1** | v1.0.0 PLACEHOLDER, not paper-locked; 0W 1L; needs PROTECTION |
+| `ur-dragon` | 6/6 | 4/4 | pass | 1 | **2** | **v1.0.1 ◆ SLEEVED** (what is being played); v1.0.2 paper on the way; 1W 1L |
+| `edgar-vampires` | 11/11 (9 presentable) | 4/4 | pass | 1 | **3** | v1.0.0 ◆ SLEEVED; 0W 3L; **direction changed 08-28** |
+| `gishath` | 5/5 | 4/4 | pass | 0 | **1** | v1.0.0 PLACEHOLDER, not paper-locked; **1W 0L** — the fleet's first win |
 | `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress |
 | `radagast` | 8/8 | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21) |
 | `kianne` | 0/0 | 4/4 | — | **2** | 0 | **concept abandoned** — voltron is 10 decks of 970; the shell is sound, the win condition is not |
@@ -73,14 +73,25 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 experiments), kianne (2, 2), radagast (2, 2), ur-dragon (1). The other seven have not been
 simulated at all.
 
-**Two decks have a real table logged**: edgar and ur-dragon, one game each, both losses,
-both debriefed, each feeding a prescription. That is enough to have proved the loop works
-end to end and nowhere near enough to conclude anything about either deck — and the other
-nine still have zero. The next entry is the pilot's to write.
+**Five decks now have a real table logged — eight games, 2W 6L.** edgar (3), ur-dragon
+(2), goblin-storm (1), heliod (1), gishath (1). **Six of the eight are NOT yet
+debriefed**, deliberately: the pilot's order is modelling first, `/debrief` after.
 
-**Five decks are not marked as built in paper** (heliod, yawgmoth-swarm, gishath, kianne,
-kinnan). That is a third state, distinct from the three that no longer exist as cardboard:
-nobody has said either way, and `deck-info` now says so instead of assuming.
+The night of **2026-08-28** at Alex's (Moraga Way, Orinda; three-player pod with Alex and
+Stuart) put four of those on the board in one sitting — goblin-storm, edgar, heliod and
+gishath, in that order, **1W 3L with the Dinosaurs taking it**. Three of those decks had
+never been logged at all.
+
+**Three decks are not marked as built in paper** (yawgmoth-swarm, kianne, kinnan). That is
+a third state, distinct from the three that no longer exist as cardboard: nobody has said
+either way, and `deck-info` now says so instead of assuming.
+
+**heliod and gishath came off that list by being PLAYED**, which is a stronger fact than
+the lock records. Both are tagged **v1.0.0 as a PLACEHOLDER** and deliberately NOT
+paper-locked: the lock asserts that the exact committed list is what is sleeved, and that
+is precisely what a check-in establishes. The pilot will supply both lists and will not
+change either deck before then, so the committed lists are stable in the meantime and the
+log entries' decklist stamps hold.
 
 Three decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`). Their
 artifacts stay exactly as published; `deck-info` states the status and withholds the
@@ -593,18 +604,39 @@ them will skip.
 commit. That is still true — but the gate belongs on the artifact's SHAPE and
 its producing function, never on one experimental deck's numbers.
 
-### Next, in order
+### THE ORDER OF TASKS — set by the pilot, 2026-09-01
 
-0. **The embedding thread, which is the live one.** In order: finish the
-   `VIEW_WEIGHT` ablation and report the three-way table; run
-   `project-spaces` on all five spaces and LOOK at them; run
-   `--objective vicreg`. Then decide what, if anything, cuts over — the honest
-   current answer is that CardBERT is a THEME-and-CENTROID space complementary to
-   the function space, not a replacement for it.
+**Modelling first, agents after.** Six logged games are un-debriefed and stay that
+way until the embedding work clears. This is a deliberate sequencing decision, not
+a backlog: `/debrief` is an agent spend against a model that is actively moving,
+and a debrief written now would be annotating figures that the next commit
+changes.
+
+1. **Finish the `VIEW_WEIGHT` ablation** — `vw025` done, `vw050` running, `vw100`
+   preserved. Report the three-way table.
+2. **`project-spaces` on all five spaces** and LOOK at them — visual inspection is
+   part of evaluation, and a space can win recall@10 by concentrating while losing
+   everything that makes an atlas navigable.
+3. **`train-cardbert --objective vicreg`** — built, tested, waiting on 1.
+4. **Then decide what, if anything, cuts over.** The honest current answer is that
+   CardBERT is a THEME-and-CENTROID space complementary to the function space, not
+   a replacement for it.
+5. **`/debrief` the six un-debriefed entries** — edgar 002/003, ur-dragon 002,
+   goblin-storm 001, heliod 001, gishath 001. One batch, five decks.
+6. **Edgar's direction change**, which the 08-28 log records and which supersedes
+   the token-conversion axis: swarm typal → LORDS AND PAYOFFS, tokens demoted from
+   win condition to dig engine, a mill package as a second route through the deck,
+   W/B lifegain into lifedrain. This is a branch, never a `decklist.txt` edit.
+7. **Heliod: protection first.** Losing the commander takes the engine with it and
+   there is no answer today to a counter war plus redirected removal.
+
+### Next, in order (the standing backlog)
+
 1. **Paper check-ins, one deck at a time** — **only the pilot can do this**, and it is
-   the highest-value thing available. Five decks (heliod, yawgmoth-swarm, gishath,
-   kianne, kinnan) are **not marked as built in paper**, so nothing knows whether they
-   exist as cardboard; Dinosaurs and Shrines were never checked in at all. `check-in`
+   the highest-value thing available. **heliod and gishath lists are promised** and hold
+   v1.0.0 placeholders until they land; three more (yawgmoth-swarm, kianne, kinnan) are
+   still **not marked as built in paper**, so nothing knows whether they exist as
+   cardboard. **ur-dragon v1.0.2 paper is on the way**; v1.0.1 is what is being played. `check-in`
    takes a typed list and refuses rather than guesses, then `deck-version paper` locks
    it and drift is computed on every swap from then on. Two decks (edgar, ur-dragon)
    have one logged game each — which is two, not a sample.
