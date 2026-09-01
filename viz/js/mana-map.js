@@ -1485,6 +1485,26 @@
     // than answering out of the old space. Caught by
     // `test_switching_space_changes_the_answer`, which waits for ready.
     await Discovery.loadNeighbours();
+
+    // AND MOVE THE PICTURE WITH IT.
+    //
+    // Each space carries the projection it laid out, and for one commit NOTHING
+    // READ THAT FIELD — the repo's own "a flag the model sets is a claim the
+    // model must ACT ON", in JavaScript. The toggle changed every answer and
+    // moved nothing on screen, so it read as broken: the atlas stayed on the
+    // `ability` projection while cardbert quietly supplied the neighbours.
+    //
+    // This does NOT reintroduce the defect the split exists to prevent. That one
+    // is the MAP driving SIMILARITY — pick the colour+type picture and get
+    // same-colour "neighbours". The dependency here runs the other way: the
+    // chosen space moves its own picture, and `switchMap` still never touches
+    // which space answers.
+    const wantedMap = SPACES[name].map;
+    if (wantedMap && MAP_CONFIGS[wantedMap] && wantedMap !== currentMap) {
+      const sel = document.getElementById('mapSelect');
+      if (sel) sel.value = wantedMap;
+      await switchMap(wantedMap);
+    }
     return true;
   }
 
@@ -1767,6 +1787,10 @@
     setMapStatus();
   }
 
+  // Changing the MAP never changes the SPACE. That asymmetry is the whole point
+  // of the split: the projection is a picture, similarity is a question, and
+  // reading neighbours out of the colour+type space returned arbitrary
+  // same-colour cards (3.05 of 128 effective dimensions, 0.044 recall@10).
   async function switchMap(mapName) {
     if (mapName === currentMap) return;
     currentMap = mapName;

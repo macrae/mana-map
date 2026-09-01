@@ -7657,3 +7657,47 @@ def test_the_space_selector_is_visible_in_every_mode(page):
     assert page.evaluate(
         "!document.getElementById('spaceSelect').closest('[data-modes]')"), \
         "spaceSelect is scoped to a mode"
+
+
+def test_switching_space_moves_the_picture(page):
+    """THE BUG THE PILOT HIT. Each space carries the projection it laid out, and
+    for one commit NOTHING READ THAT FIELD — the repo's own "a flag the model sets
+    is a claim the model must ACT ON", in JavaScript. Every answer changed and
+    nothing on screen did, so the toggle read as broken.
+
+    Asserted on real coordinates, because "the map name changed" would pass with
+    the projection never fetched.
+    """
+    page.evaluate("MM.setMode('explore')")
+    page.wait_for_function("MM.allData && MM.allData.length > 0")
+    before = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
+
+    page.evaluate("MM.setSpace('cardbert')")
+    page.wait_for_function("MM.space === 'cardbert' && MM.currentMap === 'cardbert'")
+    after = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
+
+    assert before != after, "the space changed and the coordinates did not"
+    assert page.eval_on_selector("#mapSelect", "el => el.value") == "cardbert", (
+        "the map selector still shows the old map")
+
+
+def test_changing_the_map_never_changes_the_space(page):
+    """The asymmetry is the whole point of the split. A space may move its own
+    picture; a picture may NOT choose which space answers — that is the original
+    defect, where the colour+type map returned arbitrary same-colour neighbours
+    (3.05 of 128 effective dimensions, 0.044 recall@10).
+
+    THE FIRST VERSION OF THIS TEST WAS VACUOUS. It called
+    `MM.switchMap ? MM.switchMap('default') : null`, and `switchMap` is NOT
+    exported on `MM` — so the guard evaluated to null, no map switch ever
+    happened, and the assertion passed without testing anything. It drives the
+    real `<select>` now, which is the user's path regardless.
+    """
+    page.evaluate("MM.setMode('explore')")
+    page.select_option("#spaceSelect", "cardbert")
+    page.wait_for_function("MM.space === 'cardbert' && MM.currentMap === 'cardbert'")
+
+    page.select_option("#mapSelect", "default")
+    page.wait_for_function("MM.currentMap === 'default'")   # the switch REALLY happened
+    assert page.evaluate("MM.space") == "cardbert", (
+        "switching the displayed map dragged the similarity space with it")
