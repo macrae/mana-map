@@ -18,6 +18,29 @@ stylesheet) plus Google Fonts, load no `mana-map.js`, and export no globals exce
 hooks. **They compute nothing**: every figure is composed by the Python and read out of a
 committed artifact, which is what lets them work on a static host.
 
+
+## `spaces.html` — the embedding-space reference
+
+The fifth page, and the only one that is a document rather than a tool. It
+answers three questions the atlas raises and never explains: **where each
+embedding space comes from**, **what its metrics mean**, and **which one to ask**.
+
+It renders `data/eval/space_projections.json` (`manamap project-spaces`) as five
+side-by-side scatters — identical PaCMAP settings, sample and seed, so any
+difference is the space rather than the projection — colourable by colour
+identity, card type or EDHREC tribe. Those three are deliberately facts **none of
+the spaces optimised directly**, which makes the question "did this structure
+emerge" rather than "was it supplied".
+
+**Its numbers are a SNAPSHOT and the page says so.** There is no metrics artifact
+to read — `eval-embeddings` prints a report and writes nothing — so the tables
+live in `spaces-view.js` beside the command that reproduces them and the date
+they were taken. When a metrics artifact exists, the page should read it instead;
+a test asserts the page names the command.
+
+No `window.MM`: no atlas, no card index, no deck file, the same way
+`workbench.js` and `deck-view.js` stand alone.
+
 ## Serving
 
 ```bash

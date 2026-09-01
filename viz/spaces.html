@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Always revalidate the HTML; its versioned assets may cache forever. Same note
+     as index.html and workbench.html — a cached page pins the script ?v=, which
+     pins every data fetch, and the page silently goes stale. -->
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>The Embedding Spaces — Mana Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css?v=191">
+<link rel="stylesheet" href="css/spaces.css?v=191">
+</head><body>
+<div class="trim">
+  <div class="dossier-head">
+    <div>
+      <div class="slug-line">Mana Map · reference</div>
+      <h1>The Embedding Spaces</h1>
+      <div class="slug-line">What the atlas is drawn from, how it is measured, and which one to ask</div>
+    </div>
+    <div class="head-links">
+      <a href="index.html">The Atlas →</a>
+      <a href="workbench.html">The Workbench →</a>
+    </div>
+  </div>
+
+  <section class="prose">
+    <p class="lede">Every card in the corpus is a point in a 128-dimensional space. Which
+    space you ask decides what “similar” means — and the five below disagree, on purpose.
+    None of them is the best one; each wins a different question, and the numbers on this
+    page say which.</p>
+  </section>
+
+  <!-- ── 1. Architecture ─────────────────────────────────────────────── -->
+  <section class="prose">
+    <h2>1 · Where each space comes from</h2>
+
+    <div class="space-card">
+      <h3>function (ability) <span class="tag tag-live">the default</span></h3>
+      <p>A small neural net trained with <b>in-batch InfoNCE</b>: show it a card, a card
+      that should be near it, and a batch of cards that should not. Its positives are
+      <b>mined from this repo's own regexes</b> — the rarest matching role from
+      <code>ROLE_PATTERNS</code> first, then any card sharing ≥2 <code>MECHANICAL_TAGS</code>.</p>
+      <p class="consequence">That is the whole story of its strengths and its blind spot.
+      It is excellent at <em>function</em> because function is literally what it was
+      trained on. It discards <em>tribe</em> because “Vampire” is neither a role nor a
+      mechanical tag, so nothing in training ever asked it to care.</p>
+    </div>
+
+    <div class="space-card">
+      <h3>cardbert (masked fields) <span class="tag tag-new">new</span></h3>
+      <p>BERT, where the tokens are <b>fields</b>. A card is 73 typed fields (cmc, each
+      colour's pip count, 26 keyword flags, what it taps for, power, toughness…) plus 6
+      text spans, and <code>[CLS]</code>. Masking hides <b>correlated groups</b> of fields
+      and bidirectional attention imputes them; <code>[CLS]</code> is the embedding.</p>
+      <p>Groups rather than single fields because a <a href="#recover">recoverability
+      audit</a> found <b>19 of 73 fields are solved by a linear probe</b> from the others —
+      <code>cmc</code> is the pips added up (R²&nbsp;0.96). Masking one is arithmetic, not
+      a task.</p>
+      <p class="consequence">It reads types, subtypes, keywords and ability spans, so
+      tribe is legible to it in a way it never was to a role regex — and it is weaker at
+      function, which the incumbent was built for.</p>
+    </div>
+
+    <div class="space-card">
+      <h3>text baseline (frozen MiniLM)</h3>
+      <p>Sentence vectors from an off-the-shelf model, <b>384-d and never trained here</b>.
+      It is the bar every trained space has to clear, and it is still the default for
+      commander search because it measures better there.</p>
+      <p class="consequence">Never offered in the atlas: the frontend hardcodes 128
+      dimensions against a <em>headerless</em> binary, so a 384-d file would parse as
+      plausible garbage rather than fail.</p>
+    </div>
+
+    <div class="space-card">
+      <h3>layout (color + type)</h3>
+      <p>Colour and type only. It draws the Color&nbsp;+&nbsp;Type map and is
+      <b>never</b> a similarity source — it uses 3.89 of its 128 dimensions, so asking it
+      for neighbours returns arbitrary same-colour cards. Included here as the floor: if
+      another space looks like this one, that is a finding about the other space.</p>
+    </div>
+
+    <div class="space-card">
+      <h3>vae (masked imputation) <span class="tag tag-dead">superseded</span></h3>
+      <p>An earlier attempt: serialise a card into one string, push it through a sentence
+      encoder, reconstruct it behind a variational bottleneck. <b>Abandoned by its own
+      control</b> — a <em>random</em> 128-d projection of frozen MiniLM beat it on theme,
+      and PCA beat it on everything. Kept only as a scored baseline.</p>
+      <p class="consequence">It is on this page because it is the clearest evidence for
+      the argument in §3: it <em>retrieves better than cardbert</em> and <em>maps far
+      worse</em>.</p>
+    </div>
+  </section>
+
+  <!-- ── 2. The pictures ─────────────────────────────────────────────── -->
+  <section class="prose">
+    <h2>2 · The same 12,000 cards, five ways</h2>
+    <p>Identical PaCMAP settings, identical sample, identical seed — so any difference is
+    the space, not the projection. Coloured by facts <b>none of them optimised
+    directly</b>, which makes the question “did this structure emerge?” rather than “was
+    it supplied?”</p>
+    <p class="hint"><b>Colour by tribe</b> and compare <em>function</em> against
+    <em>cardbert</em>. That is where the measured difference should be visible as separated
+    tribal islands rather than only as a number in §4.</p>
+  </section>
+
+  <div class="controls" id="controls">
+    <b>colour by</b>
+    <button data-k="identity" class="on">colour identity</button>
+    <button data-k="type">card type</button>
+    <button data-k="tribe">tribe</button>
+    <b class="sep">dots</b>
+    <button data-s="1">small</button>
+    <button data-s="2" class="on">medium</button>
+    <button data-s="3">large</button>
+  </div>
+  <div id="legend"></div>
+  <div class="grid" id="grid"></div>
+  <div id="status" class="status">Loading projections…</div>
+
+  <!-- ── 3. Reading the metrics ──────────────────────────────────────── -->
+  <section class="prose">
+    <h2>3 · How to read the numbers</h2>
+    <p>Every figure below carries its definition, because a number a reader has to look up
+    gets guessed at — and the guesses go one way.</p>
+
+    <dl class="metrics">
+      <dt>recall@10</dt>
+      <dd>Of a hand-authored set of cards that <em>should</em> be neighbours, how many turn
+      up in the nearest 10. <b>The retrieval question.</b> High means “ask it for similar
+      cards and you get them”.</dd>
+
+      <dt>effective dimensions <span class="of">(participation ratio)</span></dt>
+      <dd>How many of the 128 dimensions carry real variance. Low means the space has
+      <b>collapsed</b> — cards piled into a narrow cone, where ranking among them is float
+      noise. <b>Beware:</b> pure noise scores high, so this detects collapse and never
+      proves quality.</dd>
+
+      <dt>neighbour spread</dt>
+      <dd>How far apart the top-50 neighbours actually are. Near zero means the ordering is
+      arbitrary — the cards are all equidistant and the “ranking” is rounding error.</dd>
+
+      <dt>centroid headroom</dt>
+      <dd>Average a random 20 cards into one vector; how distinguishable are two such
+      averages? <b>This is the deck question.</b> Commander search, build-deck's commander
+      scoring and any deck-gap query are centroid operations, and a space where every deck
+      averages to nearly the same vector has nothing left to rank on.</dd>
+
+      <dt>hard-negative separation</dt>
+      <dd>Hand-picked pairs that <b>should not</b> look alike — the fastland/slowland
+      cycle, where one word inverts which stage of the game the card is good in. Higher is
+      better. This is the failure mode where “similar phrasing, different function” gets
+      scored as similar.</dd>
+
+      <dt>candidate pool <span class="of">(100 / 500 / 2000 / …)</span></dt>
+      <dd>Recall measured against a realistic number of competitors rather than all 34,890.
+      <b>Nothing in the product ranks against the whole corpus</b> — commander search ranks
+      79, Find Similar shows 12, build-deck ranks within a pool. A corpus-scale number is
+      not the decision the product makes.</dd>
+    </dl>
+
+    <p class="warn"><b>And every comparison carries the interval on the difference.</b> Two
+    overlapping error bars imply nothing at all; the interval that matters is the one on the
+    gap. Where a gap below is called real, its 95% interval excludes zero.</p>
+  </section>
+
+  <!-- ── 4. The measured comparison ──────────────────────────────────── -->
+  <section class="prose">
+    <h2>4 · What the measurements say</h2>
+    <div class="tablewrap"><table class="metrics-table" id="headline"></table></div>
+    <p class="src">Produced by <code>manamap eval-embeddings</code>, held-out test split.
+    A snapshot — re-run it rather than trusting these if the models have moved.</p>
+
+    <h3>cardbert against the space it would replace</h3>
+    <div class="tablewrap"><table class="metrics-table" id="pools"></table></div>
+    <p>It <b>loses function at every pool size</b> and <b>wins theme at every pool
+    size</b>, both excluding zero. That is not a contradiction — it is two different
+    questions, and the spaces were built to answer different ones.</p>
+  </section>
+
+  <!-- ── 5. Which to use ─────────────────────────────────────────────── -->
+  <section class="prose">
+    <h2>5 · Which space to ask</h2>
+    <div class="advice">
+      <div class="use">
+        <h4>Use <b>function</b> when</h4>
+        <ul>
+          <li>“What else does <em>this job</em>?” — another sweeper, another ramp piece,
+          another way to draw three cards.</li>
+          <li>You are filling a role slot in a 99 and want mechanical substitutes.</li>
+          <li>You are reading a deck's own constellation — <code>deck-map</code> clusters
+          by function, deliberately.</li>
+        </ul>
+      </div>
+      <div class="use">
+        <h4>Use <b>cardbert</b> when</h4>
+        <ul>
+          <li>“What else belongs to <em>this tribe / theme</em>?” — it doubles the
+          incumbent on tribe at pool 500.</li>
+          <li>You are exploring rather than substituting: it separates hard negatives
+          <b>2.8× better</b>, so things that merely <em>sound</em> alike stay apart.</li>
+          <li>You are doing anything with <b>deck averages</b> — 50× the centroid headroom
+          means decks stay distinguishable when averaged.</li>
+        </ul>
+      </div>
+      <div class="use">
+        <h4>Neither — use <b>text</b></h4>
+        <ul>
+          <li>Commander search, today. Frozen MiniLM still wins it outright (top-1 0.584
+          against cardbert's 0.458 and function's 0.410), which is why that is its default.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="warn" id="recover"><b>Nothing has been cut over.</b> <code>function</code>
+    remains the default everywhere. CardBERT is offered because it is better at things the
+    incumbent is worst at — not because it is better.</p>
+
+    <h3>The honest caveats</h3>
+    <ul class="caveats">
+      <li><b>Neighbours are precomputed.</b> Discover reads a prebuilt table, so retraining
+      a space leaves it answering from the old one until its artifacts are rebuilt.</li>
+      <li><b>Obsolescence is not selectable.</b> Its 0.75 similarity threshold sits barely
+      above the <em>mean</em> cosine in the function space (+0.719, 31.8% of random pairs)
+      and at the 99.6th percentile in cardbert (−0.002, 0.42%). The thresholds do not
+      transfer, so that feature stays pinned to one space.</li>
+      <li><b>The projection is itself a model.</b> A space that looks clumpier in 2D is not
+      necessarily clumpier in 128D. Identical settings make the comparison fair; they do
+      not make any single panel true.</li>
+      <li><b>12,000 of 34,890 cards</b> are plotted — enough to show structure, not enough
+      to see a small tribe.</li>
+    </ul>
+  </section>
+</div>
+
+<script src="js/api.js?v=191"></script>
+<script src="js/session.js?v=191"></script>
+<script src="js/shell.js?v=191"></script>
+<script src="js/spaces-view.js?v=191"></script>
+</body></html>

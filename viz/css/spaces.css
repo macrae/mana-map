@@ -1,0 +1,63 @@
+/* spaces.html — the embedding-space reference page.
+   Layers on tokens.css rather than restating it; only what this page adds. */
+
+.prose { max-width: 74ch; margin: 0 auto 30px; }
+.prose h2 { margin: 40px 0 10px; }
+.prose h3 { margin: 22px 0 6px; }
+.prose p { line-height: 1.6; margin: 0 0 12px; }
+.lede { font-size: 1.12em; }
+.hint, .warn, .src, .consequence { border-left: 3px solid var(--rule, #ccc); padding-left: 12px; }
+.consequence { font-style: italic; opacity: .9; }
+.warn { border-left-color: #8A5A00; }
+.src { font-size: .88em; opacity: .75; }
+
+.space-card { border: 1px solid var(--rule, #ddd); padding: 14px 16px; margin: 0 0 14px; }
+.space-card h3 { margin-top: 0; }
+.tag { font-size: .68em; text-transform: uppercase; letter-spacing: .09em;
+       padding: 2px 7px; border: 1px solid currentColor; border-radius: 2px;
+       vertical-align: middle; margin-left: 6px; }
+.tag-live { color: #2D6A4F; } .tag-new { color: #1B4B73; } .tag-dead { color: #8A928C; }
+
+.controls { display: flex; gap: 9px; flex-wrap: wrap; align-items: center;
+            max-width: 1180px; margin: 0 auto 12px; padding: 11px 13px;
+            border: 1px solid var(--rule, #ddd); }
+.controls b { font-size: .74em; text-transform: uppercase; letter-spacing: .1em; opacity: .7; }
+.controls b.sep { margin-left: 10px; }
+.controls button { font: inherit; font-size: .82em; padding: 4px 10px; cursor: pointer;
+                   background: transparent; color: inherit;
+                   border: 1px solid var(--rule, #ddd); border-radius: 2px; }
+.controls button.on { background: #1B4B73; color: #fff; border-color: #1B4B73; font-weight: 700; }
+.controls button:focus-visible { outline: 2px solid #1B4B73; outline-offset: 2px; }
+
+#legend { display: flex; gap: 9px; flex-wrap: wrap; max-width: 1180px;
+          margin: 0 auto 14px; font-size: .8em; opacity: .85; }
+#legend span { display: flex; align-items: center; gap: 4px; }
+#legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 14px; max-width: 1180px; margin: 0 auto 10px; }
+.sp { border: 1px solid var(--rule, #ddd); }
+.sp h3 { margin: 0; padding: 11px 14px 3px; font-size: 1.02em; }
+.sp .note { margin: 0; padding: 0 14px 10px; font-size: .84em; opacity: .8; line-height: 1.45; }
+.sp canvas { width: 100%; display: block; border-top: 1px solid var(--rule, #ddd); }
+
+/* Wide content scrolls in its OWN container; the page body never scrolls sideways. */
+.tablewrap { overflow-x: auto; max-width: 100%; }
+.metrics-table { border-collapse: collapse; width: 100%; font-size: .88em; }
+.metrics-table th { text-align: left; font-size: .78em; text-transform: uppercase;
+                    letter-spacing: .07em; opacity: .7; padding: 8px 10px;
+                    border-bottom: 1px solid var(--rule, #ddd); white-space: nowrap; }
+.metrics-table td { padding: 7px 10px; border-bottom: 1px solid var(--rule, #eee); white-space: nowrap; }
+.metrics-table td.num { font-variant-numeric: tabular-nums; }
+.metrics-table tr.hi td { font-weight: 700; }
+
+dl.metrics dt { font-weight: 700; margin-top: 14px; }
+dl.metrics dt .of { font-weight: 400; opacity: .65; font-size: .88em; }
+dl.metrics dd { margin: 4px 0 0; padding-left: 14px; border-left: 2px solid var(--rule, #eee);
+                line-height: 1.55; }
+
+.advice { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.advice .use { border: 1px solid var(--rule, #ddd); padding: 12px 14px; }
+.advice h4 { margin: 0 0 8px; }
+.advice ul, ul.caveats { margin: 0; padding-left: 18px; line-height: 1.55; }
+ul.caveats li { margin-bottom: 8px; }
