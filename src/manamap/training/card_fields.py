@@ -507,7 +507,10 @@ def mana_repeatable(card):
     """Mana a persistent producer yields per turn. Delegates — ONE PREDICATE, ONE HOME."""
     from manamap.pilot.goldfish import produced_mana
 
-    return produced_mana(_clean(card.get("oracle_text")))
+    # `type_line` decides whether a QUOTED ability is this card's own — without
+    # it every granted ability reads as foreign, which is the conservative
+    # direction but wrong for the 15 cards that grant to a class they belong to.
+    return produced_mana(_clean(card.get("oracle_text")), _clean(card.get("type_line")))
 
 
 def mana_one_shot(card):

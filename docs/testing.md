@@ -32,7 +32,7 @@ instead. To print the current numbers rather than trust a snapshot:
 
 | | |
 |---|---:|
-| `make test` — warm cache | **272 s** (2,797 collected; 2,645 passed, 143 skipped, 3 xfailed) |
+| `make test` — warm cache | **331 s** (2,816 collected; 2,663 passed, 144 skipped, 3 xfailed) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their

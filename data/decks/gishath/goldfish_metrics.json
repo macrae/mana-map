@@ -52,49 +52,49 @@
       "Rituals are not modeled (conservative).",
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
     ],
-    "model_version": "29e2acddcfa2",
+    "model_version": "7054a07d1a47",
     "seed": 42
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.189,
+      "cast_by_turn_6_rate": 0.17,
       "cast_turn_histogram": {
-        "10": 941,
+        "10": 926,
         "3": 8,
-        "4": 187,
-        "5": 622,
-        "6": 1070,
-        "7": 1233,
-        "8": 1331,
-        "9": 962,
-        "not_by_max_turn": 3646
+        "4": 170,
+        "5": 523,
+        "6": 1000,
+        "7": 1139,
+        "8": 1311,
+        "9": 960,
+        "not_by_max_turn": 3963
       },
-      "mean_cast_turn": 7.499,
+      "mean_cast_turn": 7.567,
       "median_cast_turn": 8
     },
     "interaction_castable_by_turn": {
       "1": 0.122,
-      "10": 0.568,
+      "10": 0.562,
       "2": 0.203,
-      "3": 0.245,
-      "4": 0.303,
-      "5": 0.339,
-      "6": 0.375,
-      "7": 0.407,
+      "3": 0.246,
+      "4": 0.305,
+      "5": 0.344,
+      "6": 0.377,
+      "7": 0.408,
       "8": 0.459,
-      "9": 0.522
+      "9": 0.52
     },
     "interaction_in_hand_by_turn": {
       "1": 0.788,
-      "10": 0.864,
+      "10": 0.867,
       "2": 0.812,
       "3": 0.835,
-      "4": 0.837,
-      "5": 0.842,
-      "6": 0.844,
-      "7": 0.846,
-      "8": 0.85,
-      "9": 0.856
+      "4": 0.838,
+      "5": 0.843,
+      "6": 0.845,
+      "7": 0.849,
+      "8": 0.854,
+      "9": 0.859
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -111,27 +111,27 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.774,
+      "10": 7.621,
       "2": 2.138,
-      "3": 3.426,
-      "4": 4.419,
-      "5": 5.174,
-      "6": 5.804,
-      "7": 6.344,
-      "8": 6.847,
-      "9": 7.314
+      "3": 3.422,
+      "4": 4.351,
+      "5": 5.08,
+      "6": 5.697,
+      "7": 6.225,
+      "8": 6.716,
+      "9": 7.171
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 4.91,
-      "2": 0.09,
-      "3": 0.466,
-      "4": 1.097,
-      "5": 1.787,
-      "6": 2.462,
-      "7": 3.116,
-      "8": 3.726,
-      "9": 4.332
+      "10": 5.335,
+      "2": 0.1,
+      "3": 0.625,
+      "4": 1.335,
+      "5": 2.072,
+      "6": 2.771,
+      "7": 3.459,
+      "8": 4.096,
+      "9": 4.728
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -162,10 +162,10 @@
         "assembled_rate": 0.939,
         "assembled_rate_assisted": 0.966,
         "by_turn_6_rate": 0.869,
-        "by_turn_6_rate_assisted": 0.91,
+        "by_turn_6_rate_assisted": 0.909,
         "label": "Ramp or fixing drawn",
         "mean_turn": 2.044,
-        "mean_turn_assisted": 1.983
+        "mean_turn_assisted": 1.981
       },
       {
         "assembled_rate": 0.673,
@@ -183,7 +183,7 @@
         "by_turn_6_rate_assisted": 0.735,
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
         "mean_turn": 2.883,
-        "mean_turn_assisted": 2.911
+        "mean_turn_assisted": 2.907
       },
       {
         "assembled_rate": 0.622,
@@ -192,7 +192,7 @@
         "by_turn_6_rate_assisted": 0.654,
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
         "mean_turn": 3.034,
-        "mean_turn_assisted": 3.188
+        "mean_turn_assisted": 3.185
       },
       {
         "assembled_rate": 0.608,
@@ -201,7 +201,7 @@
         "by_turn_6_rate_assisted": 0.65,
         "label": "Enrage engine drawn",
         "mean_turn": 3.053,
-        "mean_turn_assisted": 3.222
+        "mean_turn_assisted": 3.221
       },
       {
         "assembled_rate": 0.59,
@@ -210,7 +210,7 @@
         "by_turn_6_rate_assisted": 0.632,
         "label": "Protection held for the board",
         "mean_turn": 3.099,
-        "mean_turn_assisted": 3.299
+        "mean_turn_assisted": 3.298
       },
       {
         "assembled_rate": 0.025,
@@ -219,7 +219,7 @@
         "by_turn_6_rate_assisted": 0.095,
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
         "mean_turn": 5.462,
-        "mean_turn_assisted": 6.162
+        "mean_turn_assisted": 6.166
       }
     ]
   }

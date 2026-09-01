@@ -1114,7 +1114,7 @@ def combat_profile(card):
         # `_TAP_ADD_RE` now captures the whole clause rather than a symbol run,
         # so route it through the one parser instead of counting pips here —
         # two readers of one pattern is the divergence this file has paid for.
-        got = produced_mana(window)
+        got = produced_mana(window, card.get("type_line"))
         if not got:
             plain = re.search(r"add ((?:\{[WUBRGC0-9]\})+)", window, re.IGNORECASE)
             got = _mana_pips(plain.group(1)) if plain else 0
@@ -1274,8 +1274,129 @@ def can_pay(pips, sources, wildcards=0):
     return True
 
 
-def produced_mana(oracle_text):
-    """Mana a persistent '{T}: Add ...' producer yields per turn (0 if none)."""
+#: A GRANTED ABILITY BELONGS TO WHOEVER RECEIVED IT, and until 2026-08-31 this
+#: function counted every one of them as the card's own. 145 corpus cards, 8 of
+#: them sleeved across five decks and five of those in kinnan.
+#:
+#: THE OBVIOUS FIX IS WRONG AND THE SWEEP IS WHAT SAYS SO. Stripping quoted text
+#: zeroes five cards that are correct today: **Citanul Hierophants** grants
+#: `{T}: Add {G}` to "creatures you control" and IS a creature, so it does tap
+#: for green; likewise **Gemhide Sliver** ("All Slivers"), **Enduring Vitality**
+#: and **Inga and Esika**. **Dryad Arbor**'s ability sits in reminder text about
+#: itself — *"it's affected by summoning sickness, and it has "{T}: Add {G}.""*.
+#:
+#: So the question is not "is it quoted" but **is this card a member of the class
+#: it grants to**. Sorted by what introduces the grant, over all 34,890 cards:
+#:
+#:     23  "creates a Powerstone token. (It's an artifact with …)"  the TOKEN taps
+#:     13  "Enchanted land has …" / "Enchanted creature has …"      the HOST taps
+#:     21  "<Noun> you control have …"                             self IFF a <Noun>
+#:      4  "…and it has …"                                          the card itself
+#:      6  "Target land gains …" / "lands you control gain …"       temporary, elsewhere
+#:
+#: DEFAULT TO NOT-SELF when the phrasing is unrecognised. Overcounting mana tells
+#: the model it can cast things it cannot, which is the failure that produced
+#: this bug; undercounting only makes a deck look slower than it is.
+#: Checked against the NEAR window — the clause that introduces the grant. These
+#: must NOT be looked for further back: Sachi, Daughter of Seshiro opens with
+#: *"OTHER Snake creatures you control get +0/+1"* and then grants to "Shamans
+#: you control", which she is.
+_GRANTED_AWAY = re.compile(r"\bopponent|\bother\b|\btarget\b", re.IGNORECASE)
+#: `…, and it has "{T}: Add {G}."` — the card talking about ITSELF, which only
+#: Dryad Arbor and Jasconian Isle do, both in parenthetical reminder text.
+#:
+#: A bare `it has$` was too loose and four cards proved it. In **Jiang Yanggu**
+#: (*"Each creature you control with a +1/+1 counter ON IT HAS …"*) the "it" is
+#: the recipient; in **Llanowar Mentor** and **The Bus Runner** it is a TOKEN
+#: created one sentence earlier; in **Nature's Embrace** it is the enchanted
+#: permanent. Requiring `and` or the start of the clause rejects all four, and
+#: they then fall through to the class test, which cannot match a two-letter
+#: noun and so returns foreign.
+#:
+#: A SECOND, WIDER WINDOW LOOKING FOR `token|create|enchanted|equipped|emblem`
+#: WAS WRITTEN FOR THOSE FOUR CARDS AND THEN DELETED: swept across all 34,890
+#: cards it changed **zero** readings, because the fallthrough above already
+#: covers them. A guard that cannot fail is not a guard, it is a claim that
+#: something is being checked.
+_GRANT_TO_SELF = re.compile(r"(?:^|\band)\s+it has\s*$", re.IGNORECASE)
+#: `Creatures you control have "…"`, `All Slivers have "…"`, `Basic lands you
+#: control have "…"`. The noun phrase is the class the ability is granted to.
+#: `have vigilance and "…"` — Inga and Esika grants keywords ALONGSIDE the mana
+#: ability, so the verb is not the last thing before the quote. The optional tail
+#: absorbs those, and refuses to cross a sentence so it cannot reach back into an
+#: unrelated clause.
+_GRANT_CLASS = re.compile(
+    r"(?:^|[.;]\s*|\bAll\s+)(?P<noun>[A-Za-z][A-Za-z' ]{2,40}?)"
+    r"(?:\s+you control)?\s+(?:have|has|gain|gains)"
+    r"(?:\s+[A-Za-z,' ]{1,60}?\s+and)?\s*$", re.IGNORECASE)
+#: Plurals the naive rule gets wrong. `Elves` is the one that matters — Thranduil
+#: is an Elf Noble — though `Other` already excludes that card on its own.
+_IRREGULAR = {"elves": "elf", "dwarves": "dwarf", "thieves": "thief",
+              "wolves": "wolf", "leaves": "leaf"}
+
+
+def _singular(word):
+    low = word.lower()
+    if low in _IRREGULAR:
+        return _IRREGULAR[low]
+    for suffix, replacement in (("ies", "y"), ("es", ""), ("s", "")):
+        if low.endswith(suffix) and len(low) > len(suffix) + 1:
+            return low[: -len(suffix)] + replacement
+    return low
+
+
+def _grant_is_to_self(text, quote_start, type_line):
+    """Does a quoted ability starting at `quote_start` belong to THIS card?"""
+    # THE WINDOW STOPS AT THE CLAUSE THAT INTRODUCES THE GRANT. Reading a flat
+    # 90 characters crossed sentences, and Sachi, Daughter of Seshiro paid for
+    # it: her first line is *"OTHER Snake creatures you control get +0/+1"* and
+    # her second grants `{T}: Add {G}{G}` to "Shamans you control" — which she
+    # is. The stray "Other" from the line above marked her own ability foreign.
+    #
+    # NOT `.rstrip("and")` either — that strips any of those CHARACTERS, so a
+    # window ending in "command" becomes "comm". `_GRANT_CLASS` matches the
+    # trailing `and` as a word instead.
+    window = text[max(0, quote_start - 90):quote_start]
+    for boundary in ("\n", ". ", "; ", "• "):
+        if boundary in window:
+            window = window.rsplit(boundary, 1)[1]
+    window = window.replace("\n", " ").rstrip()
+    if _GRANT_TO_SELF.search(window):
+        return True
+    if _GRANTED_AWAY.search(window):
+        return False
+    match = _GRANT_CLASS.search(window)
+    if not match:
+        return False
+    line = (type_line or "").lower()
+    words = [w for w in match.group("noun").split() if w.lower() != "basic"]
+    # "Creature tokens you control" is caught by _GRANTED_AWAY above; what is
+    # left is a plain class name, and one word of it matching the type line is
+    # enough — `Basic lands` -> land, `All Slivers` -> sliver.
+    return any(_singular(w) in line for w in words)
+
+
+def _strip_foreign_grants(oracle_text, type_line):
+    """Remove quoted abilities this card granted to something else."""
+    text = oracle_text or ""
+    out, at = [], 0
+    for match in re.finditer(r'"[^"]*"', text):
+        if not _grant_is_to_self(text, match.start(), type_line):
+            out.append(text[at:match.start()])
+            at = match.end()
+    out.append(text[at:])
+    return "".join(out)
+
+
+def produced_mana(oracle_text, type_line=""):
+    """Mana a persistent '{T}: Add ...' producer yields per turn (0 if none).
+
+    `type_line` decides whether a QUOTED ability is this card's own. It defaults
+    to empty, which reads every granted ability as foreign — the conservative
+    direction, and byte-identical to the old behaviour for the 34,745 cards that
+    grant nothing.
+    """
+    oracle_text = _strip_foreign_grants(oracle_text, type_line)
     match = _TAP_ADD_RE.search(oracle_text or "")
     if not match:
         return 0
@@ -1517,7 +1638,7 @@ def classify(card, pool=None):
         # A SCALING DORK PRODUCES AT LEAST ONE. Without this it never reaches
         # the rock loop at all, which is how it came to read as zero.
         "produces": 0 if "Land" in type_line else (
-            produced_mana(card.get("oracle_text"))
+            produced_mana(card.get("oracle_text"), type_line)
             or (1 if _SCALING_COLOR_MANA_RE.search(text) else 0)),
         "bodies": 0 if "Land" in type_line else body_count(card),
         # Creature-only body count and the combat profile ride along always;
@@ -2738,10 +2859,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         if d["unmodelled"]:
             draw_unmodelled.append(d["unmodelled"])
     restricted = sorted({
-        f"{c['name']} ({produced_mana(c.get('oracle_text'))})"
+        f"{c['name']} ({produced_mana(c.get('oracle_text'), c.get('type_line'))})"
         for c in doc.get("cards", [])
         if "Land" not in (c.get("type_line") or "")
-        and produced_mana(c.get("oracle_text"))
+        and produced_mana(c.get("oracle_text"), c.get("type_line"))
         and _RESTRICTED_MANA_RE.search(c.get("oracle_text") or "")
     })
     if not model_treasures:
