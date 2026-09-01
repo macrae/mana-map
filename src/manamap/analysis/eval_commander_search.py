@@ -228,10 +228,17 @@ def main(args=None):
     pool = load_pool()
     names, corpus, types = load_corpus()
 
+    # CardBERT is here because this eval is a CENTROID operation and centroid
+    # headroom is where it differs most: 0.976 against the function space's
+    # 0.019. `eval-embeddings` measures single-card retrieval, which is a
+    # different question and one CardBERT loses.
+    from manamap.training.train_cardbert import EMBEDDINGS_PATH as CARDBERT_PATH
+
     spaces = {
         "function (ability)": ABILITY_EMBEDDINGS_PATH,
         "layout (color+type)": EMBEDDINGS_PATH,
         "text baseline (frozen MiniLM)": TEXT_EMBEDDINGS_PATH,
+        "cardbert (masked fields)": CARDBERT_PATH,
     }
 
     rows = []
