@@ -12,11 +12,13 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 11,
     "of": 18,
     "stale": [],
     "invalid": [
-      "—"
+      "targets",
+      "engine",
+      "tutors"
     ],
     "verified": true,
     "missing": [
@@ -36,8 +38,8 @@
       "name": "bloodline",
       "opened": "2026-08-29",
       "why": "NOT A SWARM DECK. The 400-game Forge run killed that thesis: composite won 31/400 against the champion's 50/400, interval on the difference excluding zero, and the mechanism was one number -- combat damage dealt to players fell 29.07 to 18.20 because 1/1 tokens do not connect against real blockers. So the tokens stop being the clock and become FUEL. OUT go the arrival-damage payoffs that pay 1-2 per 1/1 (Impact Tremors, Witty Roastmaster, Warleader's Call, Corpse Knight, Mirkwood Bats, Purphoros) and the go-wide combat payoffs. IN come free sacrifice outlets (Viscera Seer, Ashnod's Altar, Altar of Dementia), the dig they feed (Liliana Dreadhorde General draws on every creature death; Bloodtracker; High-Society Hunter), and the payoffs that eat tokens and get big: Yahenni and Immersturm Predator turn a token into INDESTRUCTIBLE, Vish Kal turns one into +X/+X and then into removal, Bloodflow Connoisseur is the cheap version. Crossway Troublemakers gives every attacking Vampire deathtouch AND lifelink, which is what makes a board of any size unprofitable to block. Altar of Dementia mills OPPONENTS, which grows The Haunt of Hightower and the Nighthawk Scavenger already in the 99 -- self-mill would bury the payoffs, opponent-mill feeds them. THE GOLDFISH IS NOT THE ARBITER HERE and is expected to under-rate this: it has no blockers, so it rewards exactly the wide board the real table just ate. Forge decides.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "9 card(s) still to find",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-01 into the list after VNone",
       "proposal": {
         "at": "2026-08-29",
         "as_version": "v1.0.1",
@@ -62,90 +64,26 @@
         }
       },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Bloodflow Connoisseur"
-          },
-          {
-            "name": "Bloodtracker"
-          },
-          {
-            "name": "Crossway Troublemakers"
-          },
-          {
-            "name": "High-Society Hunter"
-          },
-          {
-            "name": "Immersturm Predator"
-          },
-          {
-            "name": "Liliana, Dreadhorde General"
-          },
-          {
-            "name": "Vish Kal, Blood Arbiter"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Altar of Dementia",
-            "where": [
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Yahenni, Undying Partisan",
-            "where": [
-              "yawgmoth-swarm"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "The Haunt of Hightower",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
-            "where": [
-              "Hapatra"
-            ]
-          }
-        ],
-        "blocking": 9,
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 12,
-      "out": 12,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 84,
-        "box": 3,
-        "elsewhere": 2,
-        "buy": 7
+        "in_deck": 96,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0
       },
-      "unsourced": [
-        "Altar of Dementia",
-        "Bloodflow Connoisseur",
-        "Bloodtracker",
-        "Crossway Troublemakers",
-        "High-Society Hunter",
-        "Immersturm Predator",
-        "Liliana, Dreadhorde General",
-        "Vish Kal, Blood Arbiter",
-        "Yahenni, Undying Partisan"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "free": 0,
       "cards": [
         {
@@ -157,18 +95,10 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ancient Tomb",
@@ -200,15 +130,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Battlefield Forge",
@@ -247,10 +172,10 @@
         },
         {
           "name": "Bloodflow Connoisseur",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloodletter of Aclazotz",
@@ -282,10 +207,10 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
@@ -366,10 +291,10 @@
         },
         {
           "name": "Crossway Troublemakers",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cruel Celebrant",
@@ -450,17 +375,17 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Immersturm Predator",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Indulgent Aristocrat",
@@ -492,10 +417,10 @@
         },
         {
           "name": "Liliana, Dreadhorde General",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Luxury Suite",
@@ -737,15 +662,10 @@
         },
         {
           "name": "The Haunt of Hightower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Unbounded Potential",
@@ -791,22 +711,17 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vish Kal, Blood Arbiter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -838,25 +753,10 @@
         },
         {
           "name": "Yahenni, Undying Partisan",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -871,31 +771,10 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Bloodtracker"
-          },
-          {
-            "name": "Crossway Troublemakers"
-          },
-          {
-            "name": "High-Society Hunter"
-          },
-          {
-            "name": "Immersturm Predator"
-          },
-          {
-            "name": "Liliana, Dreadhorde General"
-          },
-          {
             "name": "Priest of Forgotten Gods"
           }
         ],
         "unsleeve": [
-          {
-            "name": "Altar of Dementia",
-            "where": [
-              "kinnan"
-            ]
-          },
           {
             "name": "Grave Pact",
             "where": [
@@ -915,37 +794,13 @@
               "heliod",
               "ur-dragon"
             ]
-          },
-          {
-            "name": "Yahenni, Undying Partisan",
-            "where": [
-              "yawgmoth-swarm"
-            ]
           }
         ],
         "proxy": [],
         "free": [],
         "box": [
           {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Necropotence",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "The Haunt of Hightower",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
             "where": [
               "Hapatra"
             ]
@@ -957,31 +812,24 @@
             ]
           }
         ],
-        "blocking": 11,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 16,
-      "out": 16,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 80,
-        "box": 5,
-        "elsewhere": 5,
-        "buy": 6
+        "in_deck": 90,
+        "box": 2,
+        "elsewhere": 3,
+        "buy": 1
       },
       "unsourced": [
-        "Altar of Dementia",
-        "Bloodtracker",
-        "Crossway Troublemakers",
         "Grave Pact",
-        "High-Society Hunter",
-        "Immersturm Predator",
-        "Liliana, Dreadhorde General",
         "Phyrexian Altar",
         "Priest of Forgotten Gods",
-        "Swords to Plowshares",
-        "Yahenni, Undying Partisan"
+        "Swords to Plowshares"
       ],
       "mergeable": false,
       "free": 0,
@@ -995,18 +843,10 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ancient Tomb",
@@ -1038,15 +878,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Battlefield Forge",
@@ -1113,10 +948,10 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
@@ -1197,10 +1032,10 @@
         },
         {
           "name": "Crossway Troublemakers",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cruel Celebrant",
@@ -1296,17 +1131,17 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Immersturm Predator",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Indulgent Aristocrat",
@@ -1338,10 +1173,10 @@
         },
         {
           "name": "Liliana, Dreadhorde General",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Luxury Suite",
@@ -1646,15 +1481,10 @@
         },
         {
           "name": "The Haunt of Hightower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampire Socialite",
@@ -1686,15 +1516,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -1719,25 +1544,10 @@
         },
         {
           "name": "Yahenni, Undying Partisan",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Yawgmoth, Thran Physician",
@@ -1762,27 +1572,8 @@
       "state_why": "no proposal — this is an experiment, not a decision",
       "proposal": null,
       "pull_list": {
-        "buy": [
-          {
-            "name": "Crossway Troublemakers"
-          },
-          {
-            "name": "High-Society Hunter"
-          },
-          {
-            "name": "Immersturm Predator"
-          },
-          {
-            "name": "Liliana, Dreadhorde General"
-          }
-        ],
+        "buy": [],
         "unsleeve": [
-          {
-            "name": "Altar of Dementia",
-            "where": [
-              "kinnan"
-            ]
-          },
           {
             "name": "Ayara, First of Locthwain",
             "where": [
@@ -1800,23 +1591,11 @@
             "where": [
               "yawgmoth-swarm"
             ]
-          },
-          {
-            "name": "Yahenni, Undying Partisan",
-            "where": [
-              "yawgmoth-swarm"
-            ]
           }
         ],
         "proxy": [],
         "free": [],
         "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
           {
             "name": "Carrion Feeder",
             "where": [
@@ -1834,43 +1613,25 @@
             "where": [
               "Golgari Parts"
             ]
-          },
-          {
-            "name": "The Haunt of Hightower",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
-            "where": [
-              "Hapatra"
-            ]
           }
         ],
-        "blocking": 9,
+        "blocking": 3,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 15,
-      "out": 15,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 81,
-        "box": 6,
-        "elsewhere": 5,
-        "buy": 4
+        "in_deck": 90,
+        "box": 3,
+        "elsewhere": 3,
+        "buy": 0
       },
       "unsourced": [
-        "Altar of Dementia",
         "Ayara, First of Locthwain",
-        "Crossway Troublemakers",
-        "High-Society Hunter",
-        "Immersturm Predator",
-        "Liliana, Dreadhorde General",
         "Marauding Blight-Priest",
-        "Mikaeus, the Unhallowed",
-        "Yahenni, Undying Partisan"
+        "Mikaeus, the Unhallowed"
       ],
       "mergeable": false,
       "free": 0,
@@ -1884,18 +1645,10 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ancient Tomb",
@@ -1927,15 +1680,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ayara, First of Locthwain",
@@ -2106,10 +1854,10 @@
         },
         {
           "name": "Crossway Troublemakers",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cruel Celebrant",
@@ -2202,17 +1950,17 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Immersturm Predator",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Indulgent Aristocrat",
@@ -2244,10 +1992,10 @@
         },
         {
           "name": "Liliana, Dreadhorde General",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Luxury Suite",
@@ -2538,15 +2286,10 @@
         },
         {
           "name": "The Haunt of Hightower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampire Socialite",
@@ -2578,15 +2321,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -2611,25 +2349,10 @@
         },
         {
           "name": "Yahenni, Undying Partisan",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -2647,41 +2370,14 @@
             "name": "Aetherborn Marauder"
           },
           {
-            "name": "Bloodflow Connoisseur"
-          },
-          {
-            "name": "Crossway Troublemakers"
-          },
-          {
-            "name": "High-Society Hunter"
-          },
-          {
-            "name": "Immersturm Predator"
-          },
-          {
-            "name": "Liliana, Dreadhorde General"
-          },
-          {
             "name": "Vault of the Archangel"
           }
         ],
         "unsleeve": [
           {
-            "name": "Altar of Dementia",
-            "where": [
-              "kinnan"
-            ]
-          },
-          {
             "name": "The Ozolith",
             "where": [
               "kianne"
-            ]
-          },
-          {
-            "name": "Yahenni, Undying Partisan",
-            "where": [
-              "yawgmoth-swarm"
             ]
           }
         ],
@@ -2689,54 +2385,29 @@
         "free": [],
         "box": [
           {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Culling the Weak",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "The Haunt of Hightower",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
             "where": [
               "Hapatra"
             ]
           }
         ],
-        "blocking": 10,
+        "blocking": 3,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 4,
+      "out": 4,
       "counts": {
-        "in_deck": 82,
-        "box": 4,
-        "elsewhere": 3,
-        "buy": 7
+        "in_deck": 92,
+        "box": 1,
+        "elsewhere": 1,
+        "buy": 2
       },
       "unsourced": [
         "Aetherborn Marauder",
-        "Altar of Dementia",
-        "Bloodflow Connoisseur",
-        "Crossway Troublemakers",
-        "High-Society Hunter",
-        "Immersturm Predator",
-        "Liliana, Dreadhorde General",
         "The Ozolith",
-        "Vault of the Archangel",
-        "Yahenni, Undying Partisan"
+        "Vault of the Archangel"
       ],
       "mergeable": false,
       "free": 0,
@@ -2757,18 +2428,10 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ancient Tomb",
@@ -2800,15 +2463,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Battlefield Forge",
@@ -2847,10 +2505,10 @@
         },
         {
           "name": "Bloodflow Connoisseur",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloodletter of Aclazotz",
@@ -2959,10 +2617,10 @@
         },
         {
           "name": "Crossway Troublemakers",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cruel Celebrant",
@@ -3055,17 +2713,17 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Immersturm Predator",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Indulgent Aristocrat",
@@ -3097,10 +2755,10 @@
         },
         {
           "name": "Liliana, Dreadhorde General",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Luxury Suite",
@@ -3335,15 +2993,10 @@
         },
         {
           "name": "The Haunt of Hightower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "The Ozolith",
@@ -3404,15 +3057,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -3444,25 +3092,10 @@
         },
         {
           "name": "Yahenni, Undying Partisan",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -3477,92 +3110,39 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Bloodflow Connoisseur"
-          },
-          {
-            "name": "Crossway Troublemakers"
-          },
-          {
             "name": "Dusk Legion Duelist"
-          },
-          {
-            "name": "High-Society Hunter"
-          },
-          {
-            "name": "Immersturm Predator"
-          },
-          {
-            "name": "Liliana, Dreadhorde General"
           },
           {
             "name": "Norn's Choirmaster"
           }
         ],
-        "unsleeve": [
-          {
-            "name": "Altar of Dementia",
-            "where": [
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Yahenni, Undying Partisan",
-            "where": [
-              "yawgmoth-swarm"
-            ]
-          }
-        ],
+        "unsleeve": [],
         "proxy": [],
         "free": [],
         "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
           {
             "name": "Blade of the Bloodchief",
             "where": [
               "Vampire Cards"
             ]
-          },
-          {
-            "name": "The Haunt of Hightower",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
-            "where": [
-              "Hapatra"
-            ]
           }
         ],
-        "blocking": 9,
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 13,
-      "out": 13,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 83,
-        "box": 4,
-        "elsewhere": 2,
-        "buy": 7
+        "in_deck": 93,
+        "box": 1,
+        "elsewhere": 0,
+        "buy": 2
       },
       "unsourced": [
-        "Altar of Dementia",
-        "Bloodflow Connoisseur",
-        "Crossway Troublemakers",
         "Dusk Legion Duelist",
-        "High-Society Hunter",
-        "Immersturm Predator",
-        "Liliana, Dreadhorde General",
-        "Norn's Choirmaster",
-        "Yahenni, Undying Partisan"
+        "Norn's Choirmaster"
       ],
       "mergeable": false,
       "free": 0,
@@ -3576,18 +3156,10 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ancient Tomb",
@@ -3619,15 +3191,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Battlefield Forge",
@@ -3678,10 +3245,10 @@
         },
         {
           "name": "Bloodflow Connoisseur",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloodletter of Aclazotz",
@@ -3790,10 +3357,10 @@
         },
         {
           "name": "Crossway Troublemakers",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cruel Celebrant",
@@ -3881,17 +3448,17 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Immersturm Predator",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Indulgent Aristocrat",
@@ -3923,10 +3490,10 @@
         },
         {
           "name": "Liliana, Dreadhorde General",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Luxury Suite",
@@ -4175,15 +3742,10 @@
         },
         {
           "name": "The Haunt of Hightower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampire Cutthroat",
@@ -4222,15 +3784,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -4262,25 +3819,10 @@
         },
         {
           "name": "Yahenni, Undying Partisan",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -4301,6 +3843,9 @@
             "name": "Baron Bertram Graywater"
           },
           {
+            "name": "Corpse Knight"
+          },
+          {
             "name": "Creeping Bloodsucker"
           },
           {
@@ -4310,22 +3855,35 @@
             "name": "Mind Stone"
           },
           {
+            "name": "Purphoros, God of the Forge"
+          },
+          {
             "name": "Queen's Commission"
           },
           {
             "name": "Scion of Opulence"
+          },
+          {
+            "name": "Throne of the God-Pharaoh"
+          },
+          {
+            "name": "Warleader's Call"
+          },
+          {
+            "name": "Witty Roastmaster"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Impact Tremors",
+            "where": [
+              "goblin-storm"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
           {
             "name": "Bastion of Remembrance",
             "where": [
@@ -4376,6 +3934,12 @@
             ]
           },
           {
+            "name": "Mirkwood Bats",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Path of Ancestry",
             "where": [
               "Auntie Ool"
@@ -4400,12 +3964,6 @@
             ]
           },
           {
-            "name": "Viscera Seer",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Woe Strider",
             "where": [
               "Hapatra"
@@ -4418,27 +3976,33 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 13,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 23,
-      "out": 20,
+      "add": 28,
+      "out": 25,
       "counts": {
-        "in_deck": 76,
-        "box": 16,
-        "elsewhere": 0,
-        "buy": 7
+        "in_deck": 71,
+        "box": 15,
+        "elsewhere": 1,
+        "buy": 12
       },
       "unsourced": [
         "Acolyte of Aclazotz",
         "Baron Bertram Graywater",
+        "Corpse Knight",
         "Creeping Bloodsucker",
         "Dusk Legion Zealot",
+        "Impact Tremors",
         "Mind Stone",
+        "Purphoros, God of the Forge",
         "Queen's Commission",
-        "Scion of Opulence"
+        "Scion of Opulence",
+        "Throne of the God-Pharaoh",
+        "Warleader's Call",
+        "Witty Roastmaster"
       ],
       "mergeable": false,
       "free": 0,
@@ -4480,15 +4044,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Baron Bertram Graywater",
@@ -4654,10 +4213,10 @@
         },
         {
           "name": "Corpse Knight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Creeping Bloodsucker",
@@ -4790,10 +4349,18 @@
         },
         {
           "name": "Impact Tremors",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -4865,10 +4432,15 @@
         },
         {
           "name": "Mirkwood Bats",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mondrak, Glory Dominus",
@@ -4945,10 +4517,10 @@
         },
         {
           "name": "Purphoros, God of the Forge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen's Commission",
@@ -5109,10 +4681,10 @@
         },
         {
           "name": "Throne of the God-Pharaoh",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Unbounded Potential",
@@ -5151,15 +4723,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -5177,10 +4744,10 @@
         },
         {
           "name": "Warleader's Call",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Welcoming Vampire",
@@ -5191,10 +4758,10 @@
         },
         {
           "name": "Witty Roastmaster",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Woe Strider",
@@ -5239,10 +4806,22 @@
             "name": "Baron Bertram Graywater"
           },
           {
+            "name": "Corpse Knight"
+          },
+          {
             "name": "Creeping Bloodsucker"
           },
           {
             "name": "Dusk Legion Zealot"
+          },
+          {
+            "name": "Olivia's Wrath"
+          },
+          {
+            "name": "Pact of the Serpent"
+          },
+          {
+            "name": "Purphoros, God of the Forge"
           },
           {
             "name": "Queen's Commission"
@@ -5251,19 +4830,29 @@
             "name": "Scion of Opulence"
           },
           {
+            "name": "Throne of the God-Pharaoh"
+          },
+          {
             "name": "Timothar, Baron of Bats"
+          },
+          {
+            "name": "Warleader's Call"
+          },
+          {
+            "name": "Witty Roastmaster"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Impact Tremors",
+            "where": [
+              "goblin-storm"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
           {
             "name": "Bastion of Remembrance",
             "where": [
@@ -5314,6 +4903,12 @@
             ]
           },
           {
+            "name": "Mirkwood Bats",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Path of Ancestry",
             "where": [
               "Auntie Ool"
@@ -5321,12 +4916,6 @@
           },
           {
             "name": "Phyrexian Tower",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "Viscera Seer",
             "where": [
               "Hapatra"
             ]
@@ -5344,27 +4933,35 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 15,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 21,
-      "out": 18,
+      "add": 28,
+      "out": 25,
       "counts": {
-        "in_deck": 78,
-        "box": 14,
-        "elsewhere": 0,
-        "buy": 7
+        "in_deck": 71,
+        "box": 13,
+        "elsewhere": 1,
+        "buy": 14
       },
       "unsourced": [
         "Acolyte of Aclazotz",
         "Baron Bertram Graywater",
+        "Corpse Knight",
         "Creeping Bloodsucker",
         "Dusk Legion Zealot",
+        "Impact Tremors",
+        "Olivia's Wrath",
+        "Pact of the Serpent",
+        "Purphoros, God of the Forge",
         "Queen's Commission",
         "Scion of Opulence",
-        "Timothar, Baron of Bats"
+        "Throne of the God-Pharaoh",
+        "Timothar, Baron of Bats",
+        "Warleader's Call",
+        "Witty Roastmaster"
       ],
       "mergeable": false,
       "free": 0,
@@ -5406,15 +5003,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Baron Bertram Graywater",
@@ -5580,10 +5172,10 @@
         },
         {
           "name": "Corpse Knight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Creeping Bloodsucker",
@@ -5716,10 +5308,18 @@
         },
         {
           "name": "Impact Tremors",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -5784,10 +5384,15 @@
         },
         {
           "name": "Mirkwood Bats",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mondrak, Glory Dominus",
@@ -5819,17 +5424,17 @@
         },
         {
           "name": "Olivia's Wrath",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Pact of the Serpent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Path of Ancestry",
@@ -5878,10 +5483,10 @@
         },
         {
           "name": "Purphoros, God of the Forge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen's Commission",
@@ -6018,10 +5623,10 @@
         },
         {
           "name": "Throne of the God-Pharaoh",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Timothar, Baron of Bats",
@@ -6067,15 +5672,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -6093,10 +5693,10 @@
         },
         {
           "name": "Warleader's Call",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Welcoming Vampire",
@@ -6107,10 +5707,10 @@
         },
         {
           "name": "Witty Roastmaster",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Woe Strider",
@@ -6155,6 +5755,9 @@
             "name": "Baron Bertram Graywater"
           },
           {
+            "name": "Corpse Knight"
+          },
+          {
             "name": "Creeping Bloodsucker"
           },
           {
@@ -6164,22 +5767,41 @@
             "name": "Mind Stone"
           },
           {
+            "name": "Olivia's Wrath"
+          },
+          {
+            "name": "Pact of the Serpent"
+          },
+          {
+            "name": "Purphoros, God of the Forge"
+          },
+          {
             "name": "Queen's Commission"
           },
           {
             "name": "Scion of Opulence"
+          },
+          {
+            "name": "Throne of the God-Pharaoh"
+          },
+          {
+            "name": "Warleader's Call"
+          },
+          {
+            "name": "Witty Roastmaster"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Impact Tremors",
+            "where": [
+              "goblin-storm"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
-          {
-            "name": "Ashnod's Altar",
-            "where": [
-              "Hapatra"
-            ]
-          },
           {
             "name": "Bastion of Remembrance",
             "where": [
@@ -6230,6 +5852,12 @@
             ]
           },
           {
+            "name": "Mirkwood Bats",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Path of Ancestry",
             "where": [
               "Auntie Ool"
@@ -6254,12 +5882,6 @@
             ]
           },
           {
-            "name": "Viscera Seer",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Woe Strider",
             "where": [
               "Hapatra"
@@ -6272,27 +5894,35 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 15,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 23,
-      "out": 20,
+      "add": 30,
+      "out": 27,
       "counts": {
-        "in_deck": 76,
-        "box": 16,
-        "elsewhere": 0,
-        "buy": 7
+        "in_deck": 69,
+        "box": 15,
+        "elsewhere": 1,
+        "buy": 14
       },
       "unsourced": [
         "Acolyte of Aclazotz",
         "Baron Bertram Graywater",
+        "Corpse Knight",
         "Creeping Bloodsucker",
         "Dusk Legion Zealot",
+        "Impact Tremors",
         "Mind Stone",
+        "Olivia's Wrath",
+        "Pact of the Serpent",
+        "Purphoros, God of the Forge",
         "Queen's Commission",
-        "Scion of Opulence"
+        "Scion of Opulence",
+        "Throne of the God-Pharaoh",
+        "Warleader's Call",
+        "Witty Roastmaster"
       ],
       "mergeable": false,
       "free": 0,
@@ -6334,15 +5964,10 @@
         },
         {
           "name": "Ashnod's Altar",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Baron Bertram Graywater",
@@ -6508,10 +6133,10 @@
         },
         {
           "name": "Corpse Knight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Creeping Bloodsucker",
@@ -6644,10 +6269,18 @@
         },
         {
           "name": "Impact Tremors",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -6719,10 +6352,15 @@
         },
         {
           "name": "Mirkwood Bats",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mondrak, Glory Dominus",
@@ -6747,17 +6385,17 @@
         },
         {
           "name": "Olivia's Wrath",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Pact of the Serpent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Path of Ancestry",
@@ -6799,10 +6437,10 @@
         },
         {
           "name": "Purphoros, God of the Forge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen's Commission",
@@ -6963,10 +6601,10 @@
         },
         {
           "name": "Throne of the God-Pharaoh",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Unbounded Potential",
@@ -7005,15 +6643,10 @@
         },
         {
           "name": "Viscera Seer",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vito, Thorn of the Dusk Rose",
@@ -7031,10 +6664,10 @@
         },
         {
           "name": "Warleader's Call",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Welcoming Vampire",
@@ -7045,10 +6678,10 @@
         },
         {
           "name": "Witty Roastmaster",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Woe Strider",
@@ -7106,12 +6739,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.357,
-    "commander_cast_by_turn_6_pct": 59,
+    "commander_mean_cast_turn": 6.322,
+    "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
         "label": "A payoff that fires when a token is CREATED (the leg every kill proof uses)",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 0
       },
       {
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
@@ -7123,11 +6756,11 @@
       },
       {
         "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-        "by_turn_6_pct": 29
+        "by_turn_6_pct": 0
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "by_turn_6_pct": 70
+        "by_turn_6_pct": 65
       },
       {
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
@@ -7135,43 +6768,42 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 50
-      },
-      {
-        "label": "A draw engine drawn",
-        "by_turn_6_pct": 62
-      },
-      {
-        "label": "Protection held for the swarm",
         "by_turn_6_pct": 51
       },
       {
+        "label": "A draw engine drawn",
+        "by_turn_6_pct": 57
+      },
+      {
+        "label": "Protection held for the swarm",
+        "by_turn_6_pct": 52
+      },
+      {
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-        "by_turn_6_pct": 3
+        "by_turn_6_pct": 2
       },
       {
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "by_turn_6_pct": 86
+        "by_turn_6_pct": 87
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.709,
+      "mean_kill_turn": 7.809,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 7,
-      "kill_by_turn_8_pct": 80,
+      "kill_by_turn_6_pct": 5,
+      "kill_by_turn_8_pct": 78,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 426,
-        "5": 12,
-        "6": 679,
-        "7": 3666,
-        "8": 3646,
-        "9": 1360
+        "10": 415,
+        "6": 496,
+        "7": 3268,
+        "8": 4078,
+        "9": 1558
       }
     }
   },
@@ -7184,7 +6816,7 @@
   "diagnosis": {
     "verdict": "It functions and every multi-card component turns over: 91.3% turn-3 land drop, a castable Vampire in 92.3% of games, lords 79.0%, a draw engine 73.3%. What I can measure end to end is conversion, and that is where it thins — THE GO-WIDE KILL assembles by turn six in 28.5% of games (mean turn 5.043), and its payoff leg is the thinnest of its three legs — six cards at 36.4% of openers against the multiplier's seven and the ignition leg's thirteen. That leg is now declared correctly: the group this document said was wrong in both directions has been split by trigger event, Mirkwood Bats is in it and the two death drains have a component of their own, and across 1,686 declare-attackers decisions in 180 games the pod attacks the biggest revealed damage dealer 69.5% of the time, ci95 [0.673, 0.717] against a uniform 50.6%, permutation p = 0.0001. Card draw is not what costs games: eleven real sources survive an oracle read against a floor of ten. Black may be — 30 sources of 36 and 82.2% on-curve with rocks against a cited 90% — and this document declines to rank it against conversion rather than pretending to, because the instrument that measures assembly cannot see colour at all; that ranking is routed, not decided here.",
     "skeptic": "pass",
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": "aggro",
@@ -7192,10 +6824,12 @@
       "colour-sources",
       "ramp",
       "card-advantage",
+      "sweepers",
       "interaction-breadth"
     ],
     "over": [
       "interaction",
+      "protection",
       "creatures"
     ],
     "stale": []
@@ -7271,7 +6905,7 @@
     "runs": 4,
     "latest": "giada-angels-vs-vito-vs-baylen-tokens-n400-717196e1-s1903269601",
     "at": "2026-08-28",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "88bffd9b93945a1d9af432b9b64694651b4f9f5f026128570d18d08045cc472f",
     "games": 400,
     "vs": [
@@ -7318,16 +6952,18 @@
     }
   },
   "next": [
-    "1 artifact(s) fail their own gate (—) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "3 artifact(s) fail their own gate (targets, engine, tutors) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "2 logged game(s) not yet debriefed (002, 003) — `/debrief edgar-vampires`",
-    "`bloodline` is PROPOSED as v1.0.1 and waiting on cardboard — 9 card(s) (7 to buy, 2 to unsleeve) — `manamap pilot deck-branch edgar-vampires show bloodline` has the pull list",
-    "branch `bloodline-v2` needs 11 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v2`",
-    "branch `bloodline-v3` needs 9 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v3`",
-    "branch `bloodline-v4` needs 10 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v4`",
-    "branch `bloodline-v5` needs 9 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v5`",
-    "branch `composite` needs 7 card(s) sourced — `manamap pilot deck-branch edgar-vampires source composite`",
-    "branch `drain-engine` needs 7 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-engine`",
-    "branch `mana-recovery` needs 7 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mana-recovery`",
+    "branch `bloodline` is fully sourced (+0 -0) — `manamap pilot deck-branch edgar-vampires merge bloodline --write`",
+    "branch `bloodline-v2` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v2`",
+    "branch `bloodline-v3` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v3`",
+    "branch `bloodline-v4` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v4`",
+    "branch `bloodline-v5` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v5`",
+    "branch `composite` needs 13 card(s) sourced — `manamap pilot deck-branch edgar-vampires source composite`",
+    "branch `drain-engine` needs 15 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-engine`",
+    "branch `mana-recovery` needs 15 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mana-recovery`",
+    "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×1, goldfish ×3, research-strategy ×2, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
