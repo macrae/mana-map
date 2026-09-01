@@ -20,6 +20,7 @@ and plausibly.
 
 import gzip
 import json
+import re
 
 from manamap.config import RAW_JSON_PATH
 
@@ -29,6 +30,54 @@ def _text(value):
     if value is None or value != value:                        # NaN != NaN
         return ""
     return str(value).strip()
+
+
+#: A name shorter than this is not redacted. Below four characters the odds of a
+#: name colliding with ordinary rules vocabulary outrun the benefit, and the
+#: cards affected are a handful of three-letter legends.
+MIN_REDACT = 4
+
+NAME_SENTINEL = "~"
+
+
+def redact_name(text, name):
+    """Replace a card's own name in its rules text with `~`.
+
+    OTHERWISE THE MODEL OVERFITS TO THE NAME. 4,401 cards — 12.6% — say their own
+    name in their own rules text, so a `name` slot and an ability slot share a
+    literal string and the model can learn the identity rather than the function.
+    Wizards templates newer printings as "this creature" for the same reason; `~`
+    is the Oracle convention for the older ones.
+
+    THE SWEEP IS WHY THE RULES ARE WHERE THEY ARE, over all 34,890 cards:
+
+    * **Split on commas and ` // `, never on spaces.** `Greta, Sweettooth Scourge`
+      is called `Greta`, so the comma part has to go too. Splitting on spaces
+      instead would make a card named `Food Fight` redact the word *Food* out of
+      "create a Food token", which is somebody else's game object.
+    * **Possessives keep their `'s`.** The first cut ended the match at a word
+      boundary, so `Eluge's power and toughness` kept the name in full — the very
+      leak this exists to close. It now reads `~'s power and toughness`, which is
+      exactly how Oracle writes it.
+    * **Only five cards have a name part that is also common rules vocabulary**
+      (`Shock`, `Storm`, `Fire`), and all five redactions are correct — they are
+      the card referring to itself. `Shock` becomes `~ deals 2 damage`.
+    """
+    text, name = _text(text), _text(name)
+    if not text or not name:
+        return text
+    parts = {name}
+    for separator in (",", " // "):
+        if separator in name:
+            parts |= {p.strip() for p in name.split(separator)}
+    # Longest first: `Greta, Sweettooth Scourge` before `Greta`, so the full name
+    # is never left as a half-redacted `~, Sweettooth Scourge`.
+    for part in sorted(parts, key=len, reverse=True):
+        if len(part) < MIN_REDACT:
+            continue
+        text = re.sub(rf"(?<!\w){re.escape(part)}(?P<poss>'s)?(?!\w)",
+                      lambda m: NAME_SENTINEL + (m.group("poss") or ""), text)
+    return text
 
 
 def load_dump(path=RAW_JSON_PATH):

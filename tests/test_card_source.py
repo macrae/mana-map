@@ -75,3 +75,45 @@ def test_every_corpus_card_is_covered(dump):
     frame = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False)
     missing = [o for o in frame["oracle_id"] if o not in dump]
     assert missing == [], f"{len(missing)} cards absent from the dump"
+
+
+def test_a_card_stops_saying_its_own_name():
+    """12.6% of cards say their own name in their own rules text, so the `name`
+    slot and an ability slot share a literal string and the model can learn the
+    identity instead of the function."""
+    assert CS.redact_name("Whenever Gishath deals combat damage", "Gishath, Sun's Avatar") \
+        == "Whenever ~ deals combat damage"
+    assert CS.redact_name("Shock deals 2 damage.", "Shock") == "~ deals 2 damage."
+
+
+def test_a_possessive_keeps_its_s():
+    """The first cut ended the match at a word boundary, so `Eluge's power` kept
+    the name in full — the very leak this exists to close."""
+    assert CS.redact_name("Eluge's power is 3.", "Eluge, the Shoreless Sea") \
+        == "~'s power is 3."
+
+
+def test_the_longest_name_part_goes_first():
+    """Otherwise the full name is left as a half-redacted `~, Sweettooth Scourge`."""
+    out = CS.redact_name("Greta, Sweettooth Scourge enters. Greta attacks.",
+                         "Greta, Sweettooth Scourge")
+    assert out == "~ enters. ~ attacks."
+
+
+def test_redaction_splits_on_commas_and_never_on_spaces():
+    """A card named `Food Fight` must not redact the word Food out of "create a
+    Food token" — that is somebody else's game object."""
+    assert CS.redact_name("Create a Food token.", "Food Fight") == "Create a Food token."
+    assert CS.redact_name("Food Fight deals damage.", "Food Fight") == "~ deals damage."
+
+
+def test_a_very_short_name_is_left_alone():
+    """Below four characters the odds of colliding with ordinary rules
+    vocabulary outrun the benefit."""
+    assert CS.redact_name("Add one mana of any color.", "Ith") \
+        == "Add one mana of any color."
+
+
+def test_redaction_does_not_touch_other_cards_names():
+    assert CS.redact_name("Whenever Sol Ring enters", "Arcane Signet") \
+        == "Whenever Sol Ring enters"

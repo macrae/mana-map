@@ -32,7 +32,7 @@ instead. To print the current numbers rather than trust a snapshot:
 
 | | |
 |---|---:|
-| `make test` — warm cache | **256 s** (2,777 collected; 2,628 passed, 140 skipped, 3 xfailed) |
+| `make test` — warm cache | **272 s** (2,797 collected; 2,645 passed, 143 skipped, 3 xfailed) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
@@ -41,8 +41,10 @@ audit figures moved — heliod's colour-sources axis reads −18 against the aud
 diagnosis does. They want `/diagnose-deck`; hand-patching the prose to green the
 board is the thing not to do.
 
-The input layer for the tabular model added 43 tests on 2026-08-31 —
-`test_card_fields.py` and `test_span_encoder.py`, 13 probes between them.
+The input layer for the tabular model added 60 tests on 2026-08-31 —
+`test_card_fields.py`, `test_span_encoder.py` and `test_card_source.py`, 25 probes
+between them. One probe found a test gap rather than a bug: the alternatives rule
+had two readers and only one was covered.
 
 ### Measured 2026-08-28, idle 8-core machine
 

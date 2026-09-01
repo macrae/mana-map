@@ -59,6 +59,7 @@ import numpy as np
 
 from manamap.config import DATA_DIR, OUTPUT_CSV_PATH, RAW_JSON_PATH, TEXT_MODEL_NAME
 from manamap.training.card_parse import ABILITY_KINDS, ability_lines, classify_line
+from manamap.training.card_source import redact_name
 from manamap.training.common import say
 
 VECTORS_PATH = DATA_DIR / "span_vectors.npy"
@@ -120,6 +121,12 @@ def card_spans(card, oracle_text=None):
     name = _text(card.get("name"))
     if name:
         spans["name"] = [name]
+    # THE NAME COMES OUT OF THE RULES TEXT. 12.6% of cards say their own name in
+    # their own abilities, so without this the `name` slot and the ability slots
+    # share a literal string and the model learns the identity instead of the
+    # function — and masking `name` hides nothing, since the answer is still
+    # sitting in the trigger.
+    text = redact_name(text, name)
     for line in ability_lines(text):
         spans.setdefault(classify_line(line, type_line), []).append(line)
     return spans

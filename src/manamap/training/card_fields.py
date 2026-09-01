@@ -404,6 +404,117 @@ def produces(card, symbol):
     return symbol in {str(s).upper() for s in (card.get("produced_mana") or [])}
 
 
+#: THE CARD TYPES, one flag each, replacing a 38-wide set.
+#:
+#: A set field could say "this card is an Artifact and a Creature" but could not
+#: be asked "is this a creature" on its own — masking hid every type at once.
+#: 38 distinct values is exactly the size that should have been flags from the
+#: start; `subtypes` stays a set because there are 539 of them.
+#:
+#: `Legendary` is here and matters more than its 4,686 suggests: in Commander it
+#: is the difference between a card that can lead a deck and one that cannot.
+TYPE_FLAGS = ("Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land",
+              "Planeswalker", "Battle", "Kindred", "Legendary", "Snow", "Basic")
+
+#: Subtypes that change HOW a card is played rather than what it is thematically.
+#: An Aura attaches and dies with its host; Equipment survives and re-attaches; a
+#: Vehicle needs crew; a Saga advances and sacrifices itself. Buried among 539
+#: creature types they were unmaskable and, for a model, nearly unfindable.
+#: These are REMOVED from the `subtypes` set — otherwise masking `is_aura` would
+#: leave the answer sitting in plain sight, which is the leak the keyword split
+#: already had to fix once.
+ROLE_SUBTYPES = ("Aura", "Equipment", "Vehicle", "Saga")
+
+#: Fields derived ENTIRELY from other visible fields. They are legitimate inputs —
+#: an explicit `is_artifact_creature` saves a linear probe from having to learn a
+#: conjunction — but they are NOT honest imputation targets: masking one while
+#: `is_artifact` and `is_creature` stay visible hides nothing at all. The masking
+#: harness excludes them, and a test asserts the exclusion.
+DERIVED_FIELDS = ("is_artifact_creature", "is_enchantment_creature", "is_artifact_land")
+
+
+#: HOW MUCH, not just which. `produces_C` fires for Sol Ring and for Lotus Petal
+#: alike; the quantity is the whole difference between them and it lived only in
+#: the ability text. Sol Ring and Arcane Signet were byte-identical on every mana
+#: field until these two.
+#:
+#: TWO NUMBERS, NOT ONE, and mixing them would be dishonest: Sol Ring's 2 arrives
+#: every turn forever, Dark Ritual's 3 arrives once. Same split, same reason, as
+#: `mana_analysis.life_cost`'s `{recurring, one_time}`.
+#:
+#: `mana_repeatable` REUSES `goldfish.produced_mana` rather than growing a fourth
+#: add-clause matcher. That function has already paid for three lessons this
+#: schema would otherwise re-learn: a consuming cost is not a rate (Jeweled Lotus
+#: read as three mana every turn forever), alternatives are a CHOICE so
+#: `Add {R}, {G}, or {W}` is one and not three, and the word forms count.
+#:
+#: WHAT THE SWEEP SAYS THEY GET WRONG, measured over all 34,890 cards:
+#:
+#:   repeatable  1,975 nonzero (max 5). **145 cards read a granted ability as
+#:               their own** — and the obvious fix is worse. Citanul Hierophants
+#:               grants `{T}: Add {G}` to "creatures you control" and IS a
+#:               creature, so its 1 is correct; Gemhide Sliver, Enduring Vitality
+#:               and Inga and Esika likewise, and Dryad Arbor's sits in reminder
+#:               text about itself. Stripping quoted text would break all five.
+#:               The genuinely wrong ones are the card that cannot be a member of
+#:               the class it grants to: **Cryptolith Rite** (an enchantment
+#:               granting to creatures), **Thranduil** ("OTHER Elves"),
+#:               **Leyline Immersion** (an Aura, reads 5) and **Liliana of the
+#:               Dark Realms** (an emblem, reads 4). 8 of the 145 are sleeved
+#:               across five decks, five of them in kinnan — so this is a live
+#:               overcount in the GOLDFISH, not only here.
+#:   one_shot    735 nonzero (max 10: Ramos and Meeting of the Five, both real).
+#:               Reads reminder text for a GRANTED keyword — Sozin's Comet's
+#:               firebending 5 — as the card's own burst.
+#:
+#: Both are GROSS: `{5}, {T}: Add {W}{U}{B}{R}{G}` counts 5, not net zero.
+MANA_CLIP = (0.0, 10.0)
+
+#: An `Add` clause anywhere, for mana the repeatable reading does not claim —
+#: rituals, sacrifice-for-mana, and one-shot triggers. Black Lotus, Dark Ritual
+#: and Jeweled Lotus all read 0 repeatable, and a similarity space in which Black
+#: Lotus makes no mana is not describing Magic.
+_ADD_CLAUSE = re.compile(r"\bAdd ([^.\n]+)", re.IGNORECASE)
+_MANA_RUN = re.compile(r"(?:\{[WUBRGC0-9]\})+")
+_MANA_SYMBOL = re.compile(r"\{[WUBRGC0-9]\}")
+_MANA_WORD = re.compile(r"\s*(one|two|three|four|five|six|seven|eight)\b", re.IGNORECASE)
+_MANA_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4,
+               "five": 5, "six": 6, "seven": 7, "eight": 8}
+
+
+def _largest_add(text):
+    """The most mana any single `Add` clause yields.
+
+    LARGEST RUN, never the sum — `Add {R}, {G}, or {W}` is a choice of one and
+    counting symbols gives three. This is the same rule `goldfish.produced_mana`
+    applies, for the same reason, and getting it wrong overcounts every
+    dual-choice rock in the corpus.
+    """
+    best = 0
+    for match in _ADD_CLAUSE.finditer(_clean(text)):
+        body = match.group(1)
+        runs = [len(_MANA_SYMBOL.findall(run)) for run in _MANA_RUN.findall(body)]
+        if runs:
+            best = max(best, max(runs))
+            continue
+        word = _MANA_WORD.match(body)
+        if word:
+            best = max(best, _MANA_WORDS[word.group(1).lower()])
+    return best
+
+
+def mana_repeatable(card):
+    """Mana a persistent producer yields per turn. Delegates — ONE PREDICATE, ONE HOME."""
+    from manamap.pilot.goldfish import produced_mana
+
+    return produced_mana(_clean(card.get("oracle_text")))
+
+
+def mana_one_shot(card):
+    """Mana from a clause the repeatable reading does not claim (0 if none)."""
+    return max(0, _largest_add(card.get("oracle_text")) - mana_repeatable(card))
+
+
 #: Fields that are never ABSENT anywhere in the corpus — a MEASUREMENT over
 #: ENRICHED records, checked in both directions by
 #: `test_every_field_is_populated_somewhere`. Three reasons a field lands here,
@@ -423,9 +534,12 @@ def produces(card, symbol):
 #: only ever grows, and silently. This set is asserted in BOTH directions, so a
 #: field that starts or stops being always-present fails the suite either way.
 ALWAYS_PRESENT = frozenset({
-    "cmc", "supertype", "rarity", "layout", "card_types",
+    "cmc", "supertype", "rarity", "layout",
 } | {f"kw_{k.lower().replace(' ', '_')}" for k in EVERGREEN_KEYWORDS}
-  | {f"produces_{s}" for s in PRODUCIBLE})
+  | {f"produces_{s}" for s in PRODUCIBLE}
+  | {"mana_repeatable", "mana_one_shot"}
+  | {f"is_{t.lower()}" for t in TYPE_FLAGS + ROLE_SUBTYPES}
+  | set(DERIVED_FIELDS))
 
 
 def build_schema(vocabs):
@@ -440,8 +554,24 @@ def build_schema(vocabs):
         Categorical("rarity", vocabs["rarity"]),
         Categorical("layout", vocabs["layout"]),
         SetOf("color_identity", list("WUBRG"), color_identity_of),
-        SetOf("card_types", vocabs["card_types"], card_types_of),
-        SetOf("subtypes", vocabs["subtypes"], subtypes_of),
+        *[Binary(f"is_{t.lower()}",
+                 (lambda name: lambda c: name in card_types_of(c))(t))
+          for t in TYPE_FLAGS],
+        *[Binary(f"is_{t.lower()}",
+                 (lambda name: lambda c: name in subtypes_of(c))(t))
+          for t in ROLE_SUBTYPES],
+        # DERIVED — see DERIVED_FIELDS. Explicit because the combination is a
+        # different object from either part: an artifact creature answers to both
+        # removal types, an artifact land is a land that Shatter kills.
+        Binary("is_artifact_creature",
+               lambda c: {"Artifact", "Creature"} <= set(card_types_of(c))),
+        Binary("is_enchantment_creature",
+               lambda c: {"Enchantment", "Creature"} <= set(card_types_of(c))),
+        Binary("is_artifact_land",
+               lambda c: {"Artifact", "Land"} <= set(card_types_of(c))),
+        SetOf("subtypes",
+              [t for t in vocabs["subtypes"] if t not in ROLE_SUBTYPES],
+              lambda c: [t for t in subtypes_of(c) if t not in ROLE_SUBTYPES]),
         # MANA, DECOMPOSED. One `mana_symbols` set could not be asked "how many
         # blue pips" or "is this an X spell" — both of which are facts a player
         # reads off a card at a glance and a model should be able to impute.
@@ -456,6 +586,12 @@ def build_schema(vocabs):
                lambda c: bool(_HYBRID_RE.search(_clean(c.get("mana_cost")))), _has_cost),
         Binary("has_phyrexian",
                lambda c: bool(_PHYREXIAN_RE.search(_clean(c.get("mana_cost")))), _has_cost),
+        # HOW MUCH IT MAKES. Gated on enrichment like `produces_*`, and for a
+        # second reason: `_TAP_ADD_RE` refuses to cross a newline so a `{T}` in
+        # one ability cannot bind to an `: Add` in another — a guarantee the
+        # FLATTENED CSV text destroys.
+        DerivedNumeric("mana_repeatable", MANA_CLIP, mana_repeatable, _enriched),
+        DerivedNumeric("mana_one_shot", MANA_CLIP, mana_one_shot, _enriched),
         # WHAT IT TAPS FOR. Each colour on its own, so "can this make blue" is
         # askable — and maskable — separately from "can this make green".
         *[Binary(f"produces_{sym}",

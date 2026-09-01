@@ -481,3 +481,104 @@ def test_each_produced_colour_masks_independently():
     moved = [n for n, (lo, hi) in offsets.items()
              if not np.array_equal(plain[lo:hi], hidden[lo:hi])]
     assert moved == ["produces_U"], moved
+
+
+def test_mana_quantity_is_split_into_repeatable_and_one_shot():
+    """Sol Ring's 2 arrives every turn forever; Dark Ritual's 3 arrives once.
+    Summing them would make those cards look alike, which they are not."""
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    rep = next(f for f in schema if f.name == "mana_repeatable")
+    one = next(f for f in schema if f.name == "mana_one_shot")
+
+    def card(text):
+        # The shape `card_source.enrich` produces: real oracle text plus the
+        # `produced_mana` key. Without that key the record is un-enriched and
+        # every mana field reads ABSENT — which is exactly what `_enriched` is
+        # for, and is asserted on its own below.
+        return _card(oracle_text=text, produced_mana=[])
+
+    sol = card("{T}: Add {C}{C}.")
+    assert (rep.read(sol)[1], one.read(sol)[1]) == (2.0, 0.0)
+
+    ritual = card("Add {B}{B}{B}.")
+    assert (rep.read(ritual)[1], one.read(ritual)[1]) == (0.0, 3.0)
+
+    # ALTERNATIVES ARE A CHOICE. Counting symbols here gives three.
+    choice = card("{T}: Add {R}, {G}, or {W}.")
+    assert rep.read(choice)[1] == 1.0
+
+    # A COST THAT CONSUMES THE PERMANENT IS NOT A RATE — Jeweled Lotus would
+    # otherwise pay three mana every turn, forever.
+    lotus = card("{T}, Sacrifice this artifact: Add three mana of any one color.")
+    assert rep.read(lotus)[1] == 0.0
+    assert one.read(lotus)[1] == 3.0
+
+    nothing = card("Draw a card.")
+    assert (rep.read(nothing)[1], one.read(nothing)[1]) == (0.0, 0.0)
+
+    # THE CHOICE RULE ON THE ONE-SHOT SIDE TOO. The assertion above exercises it
+    # through `goldfish.produced_mana`; `_largest_add` is a SECOND reader of the
+    # same rule and a bug probe found it untested — summing gave 3 here and
+    # nothing failed.
+    ritual_choice = card("Add {R}, {G}, or {W}.")
+    assert one.read(ritual_choice)[1] == 1.0
+    assert CF._largest_add("Add {U} or {C}{U}.") == 2       # not three
+    assert CF._largest_add("Add {W}{U}{B}{R}{G}.") == 5
+    assert CF._largest_add("Add three mana of any one color.") == 3
+    assert CF._largest_add("Draw a card.") == 0
+
+
+def test_card_types_are_individual_flags_not_one_set():
+    """A 38-wide set could not be asked "is this a creature" on its own."""
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    flags = {f.name: f for f in schema if f.name.startswith("is_")}
+    for t in CF.TYPE_FLAGS + CF.ROLE_SUBTYPES:
+        assert f"is_{t.lower()}" in flags, t
+    assert not any(f.name == "card_types" for f in schema), "the set should be gone"
+
+    arbor = _card(type_line="Land Creature — Forest Dryad")
+    assert flags["is_land"].read(arbor)[1] is True
+    assert flags["is_creature"].read(arbor)[1] is True
+    assert flags["is_artifact"].read(arbor)[1] is False
+
+    saga = _card(type_line="Enchantment Land — Urza's Saga")
+    assert flags["is_saga"].read(saga)[1] is True
+    assert flags["is_enchantment"].read(saga)[1] is True
+
+
+def test_a_role_subtype_is_removed_from_the_subtype_set():
+    """Otherwise masking `is_aura` leaves the answer sitting in `subtypes` —
+    the same leak the keyword split already had to fix once."""
+    cards = [_card(type_line="Enchantment — Aura"),
+             _card(type_line="Creature — Bird Soldier")]
+    schema = CF.build_schema(CF.vocabularies(cards))
+    subtypes = next(f for f in schema if f.name == "subtypes")
+    # Aura was this card's ONLY subtype, so with it pulled out the field is
+    # legitimately absent — there is nothing left to report.
+    state, values = subtypes.read(_card(type_line="Enchantment — Aura"))
+    assert state == CF.ABSENT and values is None
+    assert "Aura" not in subtypes.vocab
+    # A card with a role subtype AND a real one keeps only the real one.
+    both = subtypes.read(_card(type_line="Artifact — Equipment Vehicle"))[1]
+    assert both is None or ("Equipment" not in both and "Vehicle" not in both)
+
+    plain, offsets = CF.encode(cards[0], schema)
+    hidden, _ = CF.encode(cards[0], schema, masked=("is_aura",))
+    moved = [n for n, (lo, hi) in offsets.items()
+             if not np.array_equal(plain[lo:hi], hidden[lo:hi])]
+    assert moved == ["is_aura"], moved
+
+
+def test_derived_fields_are_declared_as_unfit_imputation_targets():
+    """`is_artifact_creature` is a legitimate INPUT and a dishonest TARGET:
+    masking it while `is_artifact` and `is_creature` stay visible hides nothing."""
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    names = {f.name for f in schema}
+    assert set(CF.DERIVED_FIELDS) <= names
+
+    golem = _card(type_line="Artifact Creature — Golem")
+    flags = {f.name: f for f in schema}
+    assert flags["is_artifact_creature"].read(golem)[1] is True
+    # and it really is derivable from two other visible fields
+    assert flags["is_artifact"].read(golem)[1] is True
+    assert flags["is_creature"].read(golem)[1] is True
