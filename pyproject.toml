@@ -75,7 +75,7 @@ markers = [
     # Chromiums: under `-n 4` the canvas render budget read 41 ms against a 30 ms limit
     # while the renderer was unchanged. Run these on their own with
     # `pytest -m "browser and serial_only"`.
-    "serial_only: asserts a wall-clock budget; meaningless under -n (run serially)",
+    "serial_only: asserts a wall-clock budget, or is heavy enough to break one (a map switch fetches ~13 MB); run serially",
     # A real Forge game: ~6 s for two seats, needs the engine installed outside the
     # repo (docs/simulation.md). Opt in with `pytest -m forge`; the harness's own
     # logic is tested without it.

@@ -7659,6 +7659,13 @@ def test_the_space_selector_is_visible_in_every_mode(page):
         "spaceSelect is scoped to a mode"
 
 
+# ── `serial_only`: these two switch MAPS, and a map switch fetches a ~13 MB
+# projection. Run in the `-n 4` pool they add enough network contention to time
+# out `test_canvas_redraws_when_the_filter_changes`, whose own comment records
+# that it already "timed out one run in two under -n 4" before its budget was
+# raised to 30 s. Neither of these asserts on timing, so serialising them costs a
+# little wall clock and stops them interfering with a test that does.
+@pytest.mark.serial_only
 def test_switching_space_moves_the_picture(page):
     """THE BUG THE PILOT HIT. Each space carries the projection it laid out, and
     for one commit NOTHING READ THAT FIELD — the repo's own "a flag the model sets
@@ -7703,6 +7710,7 @@ def test_changing_the_map_never_changes_the_space(page):
         "switching the displayed map dragged the similarity space with it")
 
 
+@pytest.mark.serial_only
 def test_returning_to_the_boot_map_restores_its_coordinates(page):
     """THE BOOT MAP'S CACHE ALIASED `allData`.
 

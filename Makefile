@@ -75,7 +75,12 @@ test-fresh:  ## Same, but nothing served from the cache — trust this one
 
 test-browser:  ## The playwright suite (~4 min; needs `make setup`)
 	$(PYTEST) -m "browser and not serial_only" -n 4
-	$(PYTEST) -m "browser and serial_only"
+	# `-n0` IS LOAD-BEARING. `addopts` carries `-n auto`, so this line was never
+	# actually serial — it only looked it, because `serial_only` held exactly ONE
+	# test and xdist ran the one alone. The moment a second joined, the phase
+	# named "serial" went parallel and the wall-clock budget it exists to protect
+	# read 35 ms against a 30 ms limit with the renderer untouched.
+	$(PYTEST) -m "browser and serial_only" -n0
 
 test-all: test-fresh test-browser  ## Everything, uncached. What CI would run if it ran it all.
 
