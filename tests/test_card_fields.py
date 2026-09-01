@@ -259,7 +259,10 @@ def test_every_field_is_populated_somewhere_and_absent_somewhere():
 
     if not OUTPUT_CSV_PATH.exists():
         pytest.skip("corpus not built")
-    cards = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records")
+    from manamap.training import card_source
+
+    cards = card_source.enriched(
+        pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records"))
     schema = CF.build_schema(CF.vocabularies(cards))
     seen = {f.name: {CF.PRESENT: 0, CF.ABSENT: 0} for f in schema}
     for card in cards:
@@ -311,7 +314,10 @@ def test_the_real_corpus_encodes_without_a_single_non_finite_value():
 
     if not OUTPUT_CSV_PATH.exists():
         pytest.skip("corpus not built")
-    cards = pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records")
+    from manamap.training import card_source
+
+    cards = card_source.enriched(
+        pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records"))
     schema = CF.build_schema(CF.vocabularies(cards))
     checked = 0
     for card in cards[::7]:
@@ -415,3 +421,63 @@ def test_masking_a_keyword_does_not_leak_through_another_field():
     values = tail.read(_card(keywords=["Flying", "Amplify"]))[1]
     assert "Flying" not in values
     assert "Amplify" in values
+
+
+def test_what_a_card_taps_for_is_its_own_set_of_fields():
+    """`cards.csv` cannot answer this at all, and it is the difference between
+    Command Tower encoding as a blank and encoding as a five-colour source.
+
+    Its row is `Land` with no mana cost, no power, no subtypes — before these
+    fields the second-most-played card in Commander carried almost nothing while
+    a vanilla French creature carried plenty.
+    """
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    fields = {f.name: f for f in schema if f.name.startswith("produces_")}
+    assert set(fields) == {f"produces_{s}" for s in "WUBRGC"}
+
+    tower = _card(produced_mana=["B", "G", "R", "U", "W"])
+    for sym in "WUBRG":
+        assert fields[f"produces_{sym}"].read(tower) == (CF.PRESENT, True), sym
+    assert fields["produces_C"].read(tower) == (CF.PRESENT, False)
+
+    bolt = _card(produced_mana=[])
+    assert all(f.read(bolt) == (CF.PRESENT, False) for f in fields.values())
+
+    ring = _card(produced_mana=["C"])
+    assert fields["produces_C"].read(ring)[1] is True
+    assert fields["produces_G"].read(ring)[1] is False
+
+
+def test_an_unenriched_record_reports_absent_not_false():
+    """The three-state contract doing real work.
+
+    A record that never saw `card_source.enrich` has no `produced_mana` key. If
+    that read as False, every card in the corpus would report making no mana —
+    silently, plausibly, and wrongly. It reads ABSENT instead: nobody measured it.
+    """
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    produces = [f for f in schema if f.name.startswith("produces_")]
+
+    bare = _card()
+    assert "produced_mana" not in bare
+    assert all(f.read(bare) == (CF.ABSENT, None) for f in produces)
+
+    # And the two encode differently — absent is not a quiet False.
+    from manamap.training import card_source
+    enriched = card_source.enrich(bare, {})
+    enriched["produced_mana"] = []
+    bare_row, offsets = CF.encode(bare, schema)
+    rich_row, _ = CF.encode(enriched, schema)
+    lo, hi = offsets["produces_G"]
+    assert list(bare_row[lo:hi]) == [0.0, 0.0, 0.0]     # value, ABSENT, unmasked
+    assert list(rich_row[lo:hi]) == [0.0, 1.0, 0.0]     # a measured False, PRESENT
+
+
+def test_each_produced_colour_masks_independently():
+    schema = CF.build_schema(CF.vocabularies([_card()]))
+    tower = _card(produced_mana=["B", "G", "R", "U", "W"])
+    plain, offsets = CF.encode(tower, schema)
+    hidden, _ = CF.encode(tower, schema, masked=("produces_U",))
+    moved = [n for n, (lo, hi) in offsets.items()
+             if not np.array_equal(plain[lo:hi], hidden[lo:hi])]
+    assert moved == ["produces_U"], moved

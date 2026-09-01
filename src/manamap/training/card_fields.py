@@ -376,22 +376,56 @@ def _generic_count(card):
     return 0
 
 
-#: Fields that are never ABSENT anywhere in the corpus — a MEASUREMENT, checked
-#: in both directions by `test_every_field_is_populated_somewhere`. Two reasons a
-#: field lands here, and they are different:
+#: The mana a card can MAKE, which is a different question from what it costs and
+#: is the one `cards.csv` cannot answer at all. Command Tower's row is `Land`, no
+#: mana cost, no power, no subtypes — before these fields the second-most-played
+#: card in Commander encoded as almost entirely ABSENT while a vanilla French
+#: creature encoded richly. Source is Scryfall's `produced_mana`, merged by
+#: `card_source.enrich`; deriving it from oracle text would mean re-deriving what
+#: an authoritative field already states.
+#:
+#: `C` is colourless, and it earns a flag: Sol Ring making {C}{C} is a fact about
+#: the card, not an absence of colour. (One card, Unfinity's `Sole Performer`,
+#: produces `{T}` tickets and correctly matches none of these.)
+PRODUCIBLE = ("W", "U", "B", "R", "G", "C")
+
+
+def _enriched(card):
+    """Was this record put through `card_source.enrich`?
+
+    The three-state contract doing real work: a record that never saw the dump
+    reports ABSENT — nobody measured this — rather than False, which would claim
+    every card in the corpus makes no mana and look entirely plausible doing it.
+    """
+    return "produced_mana" in card
+
+
+def produces(card, symbol):
+    return symbol in {str(s).upper() for s in (card.get("produced_mana") or [])}
+
+
+#: Fields that are never ABSENT anywhere in the corpus — a MEASUREMENT over
+#: ENRICHED records, checked in both directions by
+#: `test_every_field_is_populated_somewhere`. Three reasons a field lands here,
+#: and they are different:
 #:
 #:   * **By construction.** Every `kw_*` binary: a card definitively has flying or
 #:     does not, so there is no third state to represent. (The mana binaries are
 #:     NOT here — they carry `_has_cost`, because a land is not a non-X-spell.)
 #:   * **By corpus.** `cmc`, `supertype`, `rarity`, `layout`, `card_types` could
 #:     in principle be missing and simply never are across all 34,890 rows.
+#:   * **By enrichment.** Every `produces_*` is present precisely BECAUSE the
+#:     records went through `card_source.enrich`. Hand the schema a bare CSV row
+#:     and all six read ABSENT — which is the point of `_enriched`, and the
+#:     reason this set is a claim about enriched records rather than about cards.
 #:
 #: Declaring it rather than exempting it is the point: a hand-kept exemption list
 #: only ever grows, and silently. This set is asserted in BOTH directions, so a
 #: field that starts or stops being always-present fails the suite either way.
 ALWAYS_PRESENT = frozenset({
     "cmc", "supertype", "rarity", "layout", "card_types",
-} | {f"kw_{k.lower().replace(' ', '_')}" for k in EVERGREEN_KEYWORDS})
+} | {f"kw_{k.lower().replace(' ', '_')}" for k in EVERGREEN_KEYWORDS}
+  | {f"produces_{s}" for s in PRODUCIBLE})
 
 
 def build_schema(vocabs):
@@ -422,6 +456,11 @@ def build_schema(vocabs):
                lambda c: bool(_HYBRID_RE.search(_clean(c.get("mana_cost")))), _has_cost),
         Binary("has_phyrexian",
                lambda c: bool(_PHYREXIAN_RE.search(_clean(c.get("mana_cost")))), _has_cost),
+        # WHAT IT TAPS FOR. Each colour on its own, so "can this make blue" is
+        # askable — and maskable — separately from "can this make green".
+        *[Binary(f"produces_{sym}",
+                 (lambda s: lambda c: produces(c, s))(sym), _enriched)
+          for sym in PRODUCIBLE],
         # KEYWORDS, ONE FIELD EACH, so "does this have flying" is a question the
         # model can be asked. The tail stays in a set.
         *[Binary(f"kw_{k.lower().replace(' ', '_')}",

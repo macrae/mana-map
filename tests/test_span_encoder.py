@@ -19,7 +19,6 @@ def _card(**over):
     card = {
         "oracle_id": "abc", "name": "Test Card", "type_line": "Creature — Human",
         "oracle_text": "Flying\nWhen this creature enters, draw a card.",
-        "flavor_text": "A flavourful line.",
     }
     card.update(over)
     return card
@@ -40,7 +39,7 @@ def test_the_newline_is_the_ability_boundary():
     assert spans["triggered"] == ["When this creature enters, draw a card."]
 
     flattened = _card(oracle_text="Flying When this creature enters, draw a card.")
-    assert list(SE.card_spans(flattened)) == ["name", "flavor", "static"]
+    assert list(SE.card_spans(flattened)) == ["name", "static"]
 
 
 def test_a_card_with_no_text_has_no_ability_slots_and_no_nan():
@@ -52,16 +51,21 @@ def test_a_card_with_no_text_has_no_ability_slots_and_no_nan():
     the serialiser and `keywords_of`.
     """
     for empty in (float("nan"), None, "", "   "):
-        spans = SE.card_spans(_card(oracle_text=empty, flavor_text=empty))
+        spans = SE.card_spans(_card(oracle_text=empty))
         assert set(spans) == {"name"}, f"{empty!r} produced {spans}"
         assert "nan" not in json.dumps(spans)
 
 
-def test_name_and_flavor_are_their_own_slots():
-    spans = SE.card_spans(_card())
+def test_name_is_its_own_slot_and_flavor_is_not_a_slot_at_all():
+    """Flavor text was a slot and was CUT. It is a property of a printing, not of
+    a card — the same card carries different flavor across sets — so it moves
+    under the model without the card changing, on a task that is entirely about
+    what a card does."""
+    spans = SE.card_spans(_card(flavor_text="A flavourful line."))
     assert spans["name"] == ["Test Card"]
-    assert spans["flavor"] == ["A flavourful line."]
-    assert SE.card_spans(_card(flavor_text=float("nan"))).get("flavor") is None
+    assert "flavor" not in spans
+    assert "flavor" not in SE.SPAN_SLOTS
+    assert len(SE.SPAN_SLOTS) == 6
 
 
 def test_lines_of_one_kind_pool_into_one_slot():
@@ -86,7 +90,7 @@ ADVERSARIAL = [
 
 @pytest.mark.parametrize("value", ADVERSARIAL)
 def test_extraction_never_raises_and_never_emits_nan(value):
-    for field in ("oracle_text", "name", "flavor_text", "type_line"):
+    for field in ("oracle_text", "name", "type_line"):
         spans = SE.card_spans(_card(**{field: value}))
         assert isinstance(spans, dict)
         for slot, lines in spans.items():
@@ -164,11 +168,11 @@ def test_pooling_is_magnitude_independent(cache):
     spans = ["short", "a much longer line of rules text that goes on and on"]
     matrix = np.array([[3.0, 0.0], [0.0, 0.1]], dtype=np.float32)
     small = SE.SpanCache(matrix, spans)
-    # No name or flavor: this cache holds only the two static lines, and
+    # No name: this cache holds only the two static lines, and
     # `vector` raising on anything else is the behaviour we want — a span missing
     # from the cache means the cache is stale, not that the slot is empty.
     card = _card(oracle_text="short\na much longer line of rules text that goes on and on",
-                 type_line="Creature", name=float("nan"), flavor_text=float("nan"))
+                 type_line="Creature", name=float("nan"))
     pooled = small.slot_vectors(card)["static"][1]
     assert pooled == pytest.approx([0.5, 0.5], abs=1e-6)
 
@@ -202,9 +206,9 @@ def test_the_dump_restores_ability_structure_the_csv_lost():
 
     from_dump = sum(len(v) for c in cards
                     for k, v in SE.card_spans(c, texts[c["oracle_id"]]).items()
-                    if k not in ("name", "flavor"))
+                    if k != "name")
     from_csv = sum(len(v) for c in cards for k, v in SE.card_spans(c).items()
-                   if k not in ("name", "flavor"))
+                   if k != "name")
     assert from_dump > from_csv * 1.5, (
         f"the dump gave {from_dump} ability lines, the flattened CSV {from_csv} — "
         "the newline boundary is not being restored")

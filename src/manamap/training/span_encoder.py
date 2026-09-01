@@ -43,9 +43,9 @@ mix and will drift; re-measure rather than trusting this number after a refresh.
 
 **41,214 of the 66,431 ability lines are distinct (62%)** — `Flying` alone
 appears 2,619 times — so encoding unique text once and looking it up saves 38% of
-that work outright, on top of never re-encoding across runs. With names and
-flavor the cache holds **96,115 spans x 384, 148 MB, built in 247s**; resolving
-every slot for all 34,890 cards off it takes 2.6s and misses nothing. `vae_cache` established the
+that work outright, on top of never re-encoding across runs. With names the cache
+holds **76,023 spans x 384, 117 MB, built in 202s**; resolving every slot for all
+34,890 cards off it takes ~2.6s and misses nothing. `vae_cache` established the
 shape and the discipline: a cache is valid only for the encoder that built it,
 and `load` REFUSES a mismatch rather than warning. A head trained against vectors
 from a different encoder produces a plausible loss curve and a meaningless space.
@@ -64,11 +64,14 @@ from manamap.training.common import say
 VECTORS_PATH = DATA_DIR / "span_vectors.npy"
 INDEX_PATH = DATA_DIR / "span_vectors.index.json.gz"
 
-#: The maskable text inputs. `name` and `flavor` sit beside the five ability
-#: classes because they are spans a player can read, not because they are known
-#: to help — `recoverability` measures that, and a slot a lookup table solves
-#: does not belong in the objective.
-SPAN_SLOTS = ("name", "flavor") + ABILITY_KINDS
+#: The maskable text inputs: the five ability classes plus `name`.
+#:
+#: **Flavor text was here and was cut.** It is a property of a PRINTING, not of a
+#: card — the same card carries different flavor across sets, and some printings
+#: carry none — so it moves under the model without the card changing, which is
+#: noise on a task that is entirely about what a card DOES. Cutting it dropped the cache from
+#: 96,115 spans to 76,023 — 20,092 vectors that no rules question turns on.
+SPAN_SLOTS = ("name",) + ABILITY_KINDS
 
 PRESENT, ABSENT, MASKED = "present", "absent", "masked"
 
@@ -114,11 +117,9 @@ def card_spans(card, oracle_text=None):
     text = oracle_text if oracle_text is not None else card.get("oracle_text")
     type_line = _text(card.get("type_line"))
     spans = {}
-    name, flavor = _text(card.get("name")), _text(card.get("flavor_text"))
+    name = _text(card.get("name"))
     if name:
         spans["name"] = [name]
-    if flavor:
-        spans["flavor"] = [flavor]
     for line in ability_lines(text):
         spans.setdefault(classify_line(line, type_line), []).append(line)
     return spans
