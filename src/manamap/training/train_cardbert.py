@@ -63,6 +63,22 @@ EMBEDDINGS_PATH = DATA_DIR / "embeddings_cardbert.npy"
 MODEL_PATH = DATA_DIR / "model_cardbert.pt"
 HISTORY_PATH = DATA_DIR / "model_cardbert_history.json"
 EMBEDDINGS_META_PATH = DATA_DIR / "embeddings_cardbert.json"
+
+
+def paths_for(tag=None):
+    """Artifact paths for one run. A TAGGED run never touches the untagged ones.
+
+    Every path here is a fixed constant, so two configurations run back to back
+    would silently overwrite each other and the second would be read as the
+    first. That is the `--out is slug-scoped` lesson in a new place: a sweep that
+    cannot keep its runs apart produces one result wearing several names.
+    """
+    if not tag:
+        return EMBEDDINGS_PATH, MODEL_PATH, HISTORY_PATH, EMBEDDINGS_META_PATH
+    return (DATA_DIR / f"embeddings_cardbert_{tag}.npy",
+            DATA_DIR / f"model_cardbert_{tag}.pt",
+            DATA_DIR / f"model_cardbert_history_{tag}.json",
+            DATA_DIR / f"embeddings_cardbert_{tag}.json")
 RECOVERABILITY_PATH = DATA_DIR / "eval" / "recoverability.json"
 
 TEST_FRACTION = 0.15
@@ -208,7 +224,7 @@ def load_weights(schema):
 
 def run_epoch(model, order, tabular, spans, tab_offsets, span_offsets,
               tab_cols, span_cols, weights, schema, slots, rng, device,
-              optimiser=None, indicator=None):
+              optimiser=None, indicator=None, view_weight=VIEW_WEIGHT):
     training = optimiser is not None
     model.train(training)
     totals, seen, agree = 0.0, 0, []
@@ -241,7 +257,7 @@ def run_epoch(model, order, tabular, spans, tab_offsets, span_offsets,
                                           by_field, weights, schema, span_targets,
                                           by_slot, slots)
                 loss = term if loss is None else loss + term
-            loss = 0.5 * loss + VIEW_WEIGHT * view_contrastive(latents[0], latents[1])
+            loss = 0.5 * loss + view_weight * view_contrastive(latents[0], latents[1])
         if training:
             optimiser.zero_grad()
             loss.backward()
@@ -308,6 +324,11 @@ def main(args=None):
     epochs = getattr(args, "epochs", None) or EPOCHS
     d_model = getattr(args, "d_model", None) or 128
     layers = getattr(args, "layers", None) or 3
+    view_weight = getattr(args, "view_weight", None)
+    view_weight = VIEW_WEIGHT if view_weight is None else float(view_weight)
+    tag = getattr(args, "tag", None)
+    emb_path, model_path, history_path, meta_path = paths_for(tag)
+    say(f"  view_weight={view_weight}  tag={tag or '(none)'}")
 
     device = get_device()
     say(f"  device {device}")
@@ -350,11 +371,13 @@ def main(args=None):
         train_loss, _, _, _ = run_epoch(
             model, train_rows, tabular, spans, tab_offsets, span_offsets,
             tab_cols, span_cols, weights, schema, SE.SPAN_SLOTS,
-            np.random.default_rng(epoch), device, optimiser, indicator)
+            np.random.default_rng(epoch), device, optimiser, indicator,
+            view_weight)
         val_loss, field_scores, span_scores, agreement = run_epoch(
             model, val_rows, tabular, spans, tab_offsets, span_offsets,
             tab_cols, span_cols, weights, schema, SE.SPAN_SLOTS,
-            np.random.default_rng(10_000 + epoch), device, None, indicator)
+            np.random.default_rng(10_000 + epoch), device, None, indicator,
+            view_weight)
         history.append({"epoch": epoch, "train": train_loss, "val": val_loss,
                         "fields": field_scores, "spans": span_scores,
                         "view_agreement": agreement})
@@ -363,13 +386,16 @@ def main(args=None):
             best, bad = val_loss, 0
             torch.save({"state": model.state_dict(), "d_model": d_model,
                         "layers": layers, "fields": [f.name for f in schema],
-                        "epoch": epoch, "val_loss": val_loss}, MODEL_PATH)
+                        "epoch": epoch, "val_loss": val_loss,
+                        "view_weight": view_weight}, model_path)
             # ALL THREE, TOGETHER. See the module docstring: writing embeddings
             # only after the loop meant a killed run left them describing a
             # different model than the checkpoint did.
-            HISTORY_PATH.write_text(json.dumps(history, indent=1) + "\n")
+            history_path.write_text(json.dumps(history, indent=1) + "\n")
             write_embeddings(model, tabular, spans, tab_offsets, span_offsets,
-                             device, epoch=epoch, val_loss=val_loss, quiet=True)
+                             device, epoch=epoch, val_loss=val_loss, quiet=True,
+                             out_path=emb_path, meta_path=meta_path,
+                             view_weight=view_weight)
             flag = "  *"
         else:
             bad += 1
@@ -387,7 +413,8 @@ def main(args=None):
 
 @torch.no_grad()
 def write_embeddings(model, tabular, spans, tab_offsets, span_offsets, device,
-                     epoch=None, val_loss=None, quiet=False):
+                     epoch=None, val_loss=None, quiet=False, out_path=None,
+                     meta_path=None, view_weight=None):
     """Every card, UNMASKED and L2-normalised, in corpus order.
 
     The sidecar records WHICH model these came from. Without it the only way to
@@ -402,12 +429,15 @@ def write_embeddings(model, tabular, spans, tab_offsets, span_offsets, device,
         out[start:stop] = model.embed(
             tabular[start:stop].to(device), spans[start:stop].to(device),
             tab_offsets, span_offsets).cpu().numpy()
-    np.save(EMBEDDINGS_PATH, out)
-    EMBEDDINGS_META_PATH.write_text(json.dumps({
+    out_path = out_path or EMBEDDINGS_PATH
+    meta_path = meta_path or EMBEDDINGS_META_PATH
+    np.save(out_path, out)
+    meta_path.write_text(json.dumps({
         "epoch": epoch, "val_loss": val_loss, "cards": int(out.shape[0]),
         "dim": int(out.shape[1]), "latent_dim": model.latent_dim,
+        "view_weight": view_weight,
     }, indent=1) + "\n")
     model.train(was_training)
     if not quiet:
-        say(f"  Wrote {EMBEDDINGS_PATH}: {out.shape} (epoch {epoch})")
+        say(f"  Wrote {out_path}: {out.shape} (epoch {epoch})")
     return out

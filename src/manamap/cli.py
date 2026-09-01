@@ -150,6 +150,12 @@ def build_parser():
         help="Cache a frozen sentence vector per DISTINCT card text span")
     sc.add_argument("--force", action="store_true", help="rebuild an existing cache")
 
+    ps = subparsers.add_parser(
+        "project-spaces",
+        help="Project every embedding space to 2D/3D side by side, to LOOK at them")
+    ps.add_argument("--components", type=int, default=2, help="2 or 3")
+    ps.add_argument("--sample", type=int, default=None)
+
     rc = subparsers.add_parser(
         "recoverability",
         help="Which fields does a linear probe already solve? Gates the loss weights")
@@ -160,6 +166,10 @@ def build_parser():
     cb.add_argument("--epochs", type=int, default=None)
     cb.add_argument("--d-model", dest="d_model", type=int, default=None)
     cb.add_argument("--layers", type=int, default=None)
+    cb.add_argument("--view-weight", dest="view_weight", type=float, default=None,
+                    help="weight on the card-level contrastive term (default 1.0)")
+    cb.add_argument("--tag", default=None,
+                    help="suffix the artifacts, so a sweep keeps its runs apart")
     cb.add_argument("--embed-only", dest="embed_only", action="store_true",
                     help="regenerate embeddings from the saved checkpoint, no training")
 
@@ -196,6 +206,10 @@ def main():
         from manamap.training import vae_cache
 
         vae_cache.main(args)
+    elif args.command == "project-spaces":
+        from manamap.analysis import project_spaces
+
+        project_spaces.main(args)
     elif args.command == "recoverability":
         from manamap.training import recoverability
 
