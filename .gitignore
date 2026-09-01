@@ -17,6 +17,15 @@ data/*
 # pipeline, never on their own.
 !data/viz_index.json
 !data/neighbours.bin
+# CardBERT's viz artifacts. Tracked for the same reason the function space's are:
+# GitHub Pages serves this directory as static files, there is no LFS (Pages would
+# serve the pointer), and a browser cannot run the pipeline. Without these four the
+# similarity toggle 404s in production while working locally — the worst kind of
+# difference between the two. ~34.8 MB, doubling the tracked embedding set.
+!data/embeddings_cardbert.bin
+!data/neighbours_cardbert.bin
+!data/projection_2d_cardbert.json
+!data/regions_cardbert.json
 __pycache__/
 *.pyc
 *.egg-info/

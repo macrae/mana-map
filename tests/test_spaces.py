@@ -112,3 +112,62 @@ def test_browsable_spaces_agree_on_row_count():
     lengths = {slug: np.load(spaces.get(slug).npy, mmap_mode="r").shape[0]
                for slug in spaces.BROWSABLE if spaces.get(slug).exists()}
     assert len(set(lengths.values())) == 1, lengths
+
+
+# ── the tracked viz artifacts ───────────────────────────────────────────
+
+
+@pytest.mark.parametrize("slug", sorted(spaces.BROWSABLE))
+def test_a_browsable_space_ships_all_four_artifacts(slug):
+    """GitHub Pages serves `data/` as static files and a browser cannot run the
+    pipeline, so a browsable space that is missing one artifact works locally and
+    404s in production — the worst kind of difference between the two.
+
+    There is no LFS here on purpose: Pages would serve the pointer file.
+    """
+    space = spaces.get(slug)
+    for kind in ("bin", "projection", "regions", "neighbours"):
+        path = getattr(space, kind)
+        assert path.exists(), f"{slug} is missing {kind} ({path.name})"
+
+
+@pytest.mark.parametrize("slug", sorted(spaces.BROWSABLE))
+def test_the_shipped_binary_is_unit_norm_and_the_right_length(slug):
+    """The .bin is HEADERLESS — nothing in it records rows or dims, so a
+    truncated or wrong-dimension file parses fine and every offset is silently
+    wrong. And the JS treats a dot product AS a cosine
+    (`viz/js/mana-map.js:1417`), so non-unit rows make every similarity wrong
+    without erroring. This is the only place either can be caught.
+    """
+    import pandas as pd
+
+    from manamap.config import OUTPUT_CSV_PATH
+
+    if not OUTPUT_CSV_PATH.exists():
+        pytest.skip("corpus not built")
+    cards = len(pd.read_csv(OUTPUT_CSV_PATH, low_memory=False))
+    raw = spaces.get(slug).bin.read_bytes()
+    assert len(raw) == cards * 128 * 4, (
+        f"{slug}.bin is {len(raw)} bytes, expected {cards} x 128 x 4")
+    matrix = np.frombuffer(raw, "<f4").reshape(cards, 128)
+    assert np.allclose(np.linalg.norm(matrix, axis=1), 1.0, atol=1e-4)
+
+
+@pytest.mark.parametrize("slug", sorted(spaces.BROWSABLE))
+def test_neighbours_carry_the_digest_of_their_own_matrix(slug):
+    """A neighbours file built from a DIFFERENT matrix than the .bin beside it
+    answers "what is similar" out of one space while the coordinates come from
+    another, and nothing at runtime checks it — the header digest is the only
+    record of which matrix produced these tables."""
+    import struct
+
+    from manamap.export.viz_index import embeddings_digest
+
+    space = spaces.get(slug)
+    if not space.npy.exists():
+        pytest.skip(f"{slug} matrix is gitignored and not built here")
+    header = space.neighbours.read_bytes()[:52]
+    magic, _, _, _, _, _, _, digest = struct.unpack("<4sIIHHHH32s", header)
+    assert magic == b"MMNB"
+    assert digest == embeddings_digest(space.npy), (
+        f"{slug}/neighbours was built from a different matrix than {space.npy.name}")
