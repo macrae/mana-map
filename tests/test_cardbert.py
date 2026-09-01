@@ -234,3 +234,72 @@ def test_the_written_embedding_is_unit_norm(schema):
 
     norms = model.embed(tabular, spans, tab_offsets, span_offsets).norm(dim=-1)
     assert torch.allclose(norms, torch.ones(5), atol=1e-5)
+
+
+# ── the embedding must actually be trained ─────────────────────────────
+
+
+def test_the_latent_projection_receives_gradient(schema):
+    """THE BUG THIS TEST EXISTS FOR SHIPPED AND WAS CAUGHT BY THE EVAL.
+
+    Every imputation head reads its own field's position; nothing reads `[CLS]`.
+    So `to_latent.weight.grad` came back **None** after a full backward pass, and
+    the embedding written to disk was a random projection of an untrained state.
+    It scored like one: r@10 0.093 against the function space's 0.232, with 5.53
+    of 128 dimensions in use.
+
+    This is the textbook BERT result — a raw `[CLS]` is a poor sentence
+    embedding, which is why SBERT exists — reached from first principles. BERT
+    survives it because it is always fine-tuned downstream. Here the embedding IS
+    the product.
+    """
+    from manamap.training.loss_cardbert import (field_present, field_targets,
+                                                imputation_loss, view_contrastive)
+    from manamap.training.model_cardbert import CardBERT
+
+    model = CardBERT(schema, SE.SPAN_SLOTS, span_dim=8, d_model=32, layers=1, heads=2)
+    tabular = torch.randn(8, sum(f.total_width for f in schema))
+    spans = torch.randn(8, (8 + 2) * len(SE.SPAN_SLOTS))
+    _, tab_offsets = CF.encode({"type_line": "Creature"}, schema)
+    span_offsets = {s: (i * 10, i * 10 + 10) for i, s in enumerate(SE.SPAN_SLOTS)}
+
+    # IMPUTATION ALONE leaves it untrained — the failure, pinned.
+    out = model(tabular, spans, tab_offsets, span_offsets)
+    loss, _ = imputation_loss(
+        out["predictions"], field_targets(tabular, tab_offsets, schema),
+        field_present(tabular, tab_offsets, schema),
+        {f.name: torch.ones(8) for f in schema},
+        {f.name: 1.0 for f in schema}, schema)
+    loss.backward()
+    assert model.to_latent.weight.grad is None, (
+        "imputation now reaches [CLS] — if that is deliberate, this test should "
+        "say so instead of asserting the gap it was written for")
+
+    # THE VIEW TERM trains it.
+    model.zero_grad()
+    a = model(tabular, spans, tab_offsets, span_offsets)["latent"]
+    b = model(tabular * 0.9, spans, tab_offsets, span_offsets)["latent"]
+    view_contrastive(a, b).backward()
+    assert model.to_latent.weight.grad is not None
+    assert float(model.to_latent.weight.grad.norm()) > 0
+
+
+def test_two_views_of_one_card_are_pulled_together():
+    """Masking IS the augmentation: two draws hide different parts of the same
+    card, and agreeing across them is the invariance a similarity space wants."""
+    from manamap.training.loss_cardbert import view_agreement, view_contrastive
+
+    torch.manual_seed(0)
+    identical = torch.randn(32, 64)
+    scrambled = torch.randn(32, 64)
+
+    import math
+
+    # Thresholds MEASURED, not guessed: at temperature 0.2 a perfect pair scores
+    # 0.223 rather than ~0, because 31 negatives at cosine ~0 still carry weight
+    # in the softmax. The first version of this test asserted < 0.05 and failed.
+    chance = math.log(len(identical))                    # 3.466 for 32
+    assert float(view_contrastive(identical, identical)) < 0.3
+    assert float(view_contrastive(identical, scrambled)) == pytest.approx(chance, abs=0.2)
+    assert view_agreement(identical, identical) == 1.0
+    assert view_agreement(identical, scrambled) < 0.2

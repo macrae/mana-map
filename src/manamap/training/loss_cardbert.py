@@ -149,6 +149,60 @@ def imputation_loss(predictions, targets, present, mask, weights, schema,
     return total, {"parts": parts, "counts": counts}
 
 
+#: Weight on the card-level contrastive term. Large enough that `[CLS]` is
+#: genuinely shaped by it, small enough that imputation stays the main task.
+VIEW_WEIGHT = 1.0
+
+#: A card-level view pair is a WEAKER signal than a span pair — two maskings of
+#: one card are far more alike than two different spans — so it gets a warmer
+#: temperature, which is the standard SimCLR range rather than CLIP's 0.07.
+VIEW_TEMPERATURE = 0.2
+
+
+def view_contrastive(latent_a, latent_b, temperature=VIEW_TEMPERATURE):
+    """Two maskings of the SAME card should agree; different cards should not.
+
+    ## WHY THIS TERM EXISTS AT ALL
+
+    Without it `[CLS]` receives NO GRADIENT. Measured, not suspected:
+    `to_latent.weight.grad` came back **None** after a full backward pass,
+    because every imputation head reads its own field's position and nothing
+    reads `[CLS]`. The shipped embedding was therefore a random projection of an
+    untrained state, and it scored like one — r@10 0.093 against the function
+    space's 0.232, with a participation ratio of 5.53 of 128 dimensions.
+
+    This is the textbook BERT problem, arrived at from first principles: a raw
+    `[CLS]` is a poor sentence embedding, which is the entire reason SBERT
+    exists. BERT gets away with it because it is always fine-tuned downstream.
+    Here the embedding IS the product, so it has to be trained on purpose.
+
+    ## MASKING IS THE AUGMENTATION
+
+    SimCLR needs two views of one example and usually crops or colour-jitters an
+    image to get them. Here the augmentation is already the objective: draw two
+    independent maskings of one card and the model sees two genuinely different
+    subsets of the same object. Agreeing across them is exactly the invariance a
+    similarity space wants — a card is the same card whether or not you can see
+    its mana cost.
+    """
+    a = F.normalize(latent_a, dim=-1)
+    b = F.normalize(latent_b, dim=-1)
+    logits = a @ b.T / temperature
+    labels = torch.arange(logits.shape[0], device=logits.device)
+    return 0.5 * (F.cross_entropy(logits, labels)
+                  + F.cross_entropy(logits.T, labels))
+
+
+@torch.no_grad()
+def view_agreement(latent_a, latent_b):
+    """Fraction of cards whose nearest neighbour across views is themselves."""
+    a = F.normalize(latent_a, dim=-1)
+    b = F.normalize(latent_b, dim=-1)
+    nearest = (a @ b.T).argmax(dim=1)
+    return float((nearest == torch.arange(len(nearest), device=nearest.device))
+                 .float().mean())
+
+
 def info_nce(predicted, actual, temperature=TEMPERATURE):
     """Contrastive loss against every other span in the batch.
 

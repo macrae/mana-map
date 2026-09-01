@@ -160,6 +160,8 @@ def build_parser():
     cb.add_argument("--epochs", type=int, default=None)
     cb.add_argument("--d-model", dest="d_model", type=int, default=None)
     cb.add_argument("--layers", type=int, default=None)
+    cb.add_argument("--embed-only", dest="embed_only", action="store_true",
+                    help="regenerate embeddings from the saved checkpoint, no training")
 
     ecs = subparsers.add_parser(
         "eval-commander-search",

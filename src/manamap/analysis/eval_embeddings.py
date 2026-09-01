@@ -454,6 +454,7 @@ def evaluate(embeddings, groups):
 #: whole staging plan rests on should not need a different invocation.
 def spaces_on_disk():
     """`{label: path}` for every embedding artifact present."""
+    from manamap.training.train_cardbert import EMBEDDINGS_PATH as CARDBERT_PATH
     from manamap.training.train_vae import VAE_EMBEDDINGS_PATH
 
     candidates = {
@@ -461,6 +462,7 @@ def spaces_on_disk():
         "layout (color+type)": EMBEDDINGS_PATH,
         "text baseline (frozen MiniLM)": TEXT_EMBEDDINGS_PATH,
         "vae (masked imputation)": VAE_EMBEDDINGS_PATH,
+        "cardbert (masked fields)": CARDBERT_PATH,
     }
     return {label: path for label, path in candidates.items() if path.exists()}
 
