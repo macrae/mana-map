@@ -150,6 +150,17 @@ def build_parser():
         help="Cache a frozen sentence vector per DISTINCT card text span")
     sc.add_argument("--force", action="store_true", help="rebuild an existing cache")
 
+    rc = subparsers.add_parser(
+        "recoverability",
+        help="Which fields does a linear probe already solve? Gates the loss weights")
+
+    cb = subparsers.add_parser(
+        "train-cardbert",
+        help="Masked field imputation over the card schema (BERT over FIELDS)")
+    cb.add_argument("--epochs", type=int, default=None)
+    cb.add_argument("--d-model", dest="d_model", type=int, default=None)
+    cb.add_argument("--layers", type=int, default=None)
+
     ecs = subparsers.add_parser(
         "eval-commander-search",
         help="Spike S1: can the embedding rank commanders from a 20-card seed?")
@@ -183,6 +194,14 @@ def main():
         from manamap.training import vae_cache
 
         vae_cache.main(args)
+    elif args.command == "recoverability":
+        from manamap.training import recoverability
+
+        recoverability.main(args)
+    elif args.command == "train-cardbert":
+        from manamap.training import train_cardbert
+
+        train_cardbert.main(args)
     elif args.command == "span-cache":
         from manamap.training import span_encoder
 
