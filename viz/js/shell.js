@@ -59,6 +59,14 @@ window.Shell = (function () {
       hint: 'your decks, and everything the bench knows about them' },
     { id: 'atlas', href: 'index.html', label: 'Atlas',
       hint: 'a tool on the workbench: all 34,890 cards in space' },
+    // AN APPENDIX, NOT A THIRD PLACE TO WORK. The Atlas offers a similarity
+    // toggle and cannot explain what it is toggling; this is where that lives.
+    // Marked `appendix` so it renders after a divider and in a quieter weight —
+    // giving a reference page the same visual rank as the two surfaces you
+    // actually work on would misdescribe what the nav is for.
+    { id: 'spaces', href: 'spaces.html', label: 'Spaces', appendix: true,
+      hint: 'reference: where each embedding space comes from, what its metrics '
+          + 'mean, and which one to ask' },
   ];
 
   /* How many cards are in the library, without resolving any of them.
@@ -374,6 +382,7 @@ window.Shell = (function () {
     var file = (location.pathname.split('/').pop() || 'index.html');
     if (file === 'workbench.html') return 'bench';
     if (file === 'deck.html') return 'deck';
+    if (file === 'spaces.html') return 'spaces';
     return 'atlas';
   }
 
@@ -399,9 +408,23 @@ window.Shell = (function () {
       links.push('<span class="shell-here">' + esc(slug || 'deck') + '</span>');
     }
 
+    // The appendix hangs off the end behind its own divider rather than joining
+    // the run of surfaces, so the nav still reads as "two places, plus a
+    // reference" instead of three equal destinations.
+    var main = [], extra = [];
+    SURFACES.forEach(function (s, i) {
+      (s.appendix ? extra : main).push(links[i]);
+    });
+    if (here === 'deck') { main = links.slice(); extra = []; }
+
     strip.innerHTML =
       '<div class="shell-brand">Mana&nbsp;Map</div>' +
-      '<nav class="shell-nav">' + links.join('<span class="shell-sep">·</span>') + '</nav>' +
+      '<nav class="shell-nav">' + main.join('<span class="shell-sep">·</span>') +
+        (extra.length
+          ? '<span class="shell-sep shell-appendix-sep">|</span>' +
+            '<span class="shell-appendix">' + extra.join('') + '</span>'
+          : '') +
+      '</nav>' +
       '<div class="shell-library">' +
         '<button class="shell-lib-btn' + (open ? ' is-open' : '') + '"' +
           ' aria-expanded="' + (open ? 'true' : 'false') + '"' +
