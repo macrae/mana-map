@@ -14,13 +14,17 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 9,
     "of": 18,
     "stale": [
       "frame",
       "prose"
     ],
-    "invalid": [],
+    "invalid": [
+      "targets",
+      "tutors",
+      "—"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -39,8 +43,8 @@
       "name": "eminence-v3",
       "opened": "2026-08-27",
       "why": "Converge on eminence: every dragon shifts left by one from the command zone, permanently, where nothing can remove it. Two win conditions already in the deck — ETB/attack-trigger burn (Terror of the Peaks, Scourge of Valkas, Dragon Tempest) and Ur-Dragon commander damage. Stays big-dragon heavy; this is not a pivot to small dragons. Cut counterspells, stack interaction and non-flyer removal; add dorks, a protection package, flyer-only removal, and just enough low-end dragons to move the first-castable-dragon turn. Treasures stay as incidental ramp, never an engine.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "6 card(s) still to find",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-01 into the list after VNone",
       "proposal": {
         "at": "2026-08-28",
         "as_version": "v1.0.2",
@@ -76,116 +80,12 @@
         }
       },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Firespitter Whelp"
-          },
-          {
-            "name": "Gadrak, the Crown-Scourge"
-          },
-          {
-            "name": "Ganax, Astral Hunter"
-          },
-          {
-            "name": "Solphim, Mayhem Dominus"
-          },
-          {
-            "name": "Thunderbreak Regent"
-          },
-          {
-            "name": "Twinflame Tyrant"
-          }
-        ],
+        "buy": [],
         "unsleeve": [],
-        "proxy": [
-          {
-            "name": "Bloom Tender",
-            "where": [
-              "blar",
-              "kianne",
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Delighted Halfling",
-            "where": [
-              "kianne",
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Forbidden Orchard",
-            "where": [
-              "blar",
-              "gishath",
-              "kinnan",
-              "zur-enchantress"
-            ]
-          },
-          {
-            "name": "Spire of Industry",
-            "where": [
-              "blar",
-              "kinnan",
-              "zur-enchantress"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "zur-enchantress"
-            ]
-          }
-        ],
-        "free": [
-          {
-            "name": "Faeburrow Elder",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Birds of Paradise",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "Dragonskull Summit",
-            "where": [
-              "Auntie Ool"
-            ]
-          },
-          {
-            "name": "Gemstone Mine",
-            "where": [
-              "Green",
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Ignoble Hierarch",
-            "where": [
-              "Auntie Ool"
-            ]
-          },
-          {
-            "name": "Lightning Greaves",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Smoldering Marsh",
-            "where": [
-              "Auntie Ool"
-            ]
-          }
-        ],
-        "blocking": 6,
+        "proxy": [],
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": {
           "at": "2026-08-28",
           "note": "6 ordered 2026-08-28 via TCGplayer"
@@ -193,24 +93,17 @@
       },
       "base_version": 2,
       "size": 100,
-      "add": 18,
-      "out": 17,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 78,
-        "box": 6,
-        "elsewhere": 6,
-        "buy": 6
+        "in_deck": 96,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0
       },
-      "unsourced": [
-        "Firespitter Whelp",
-        "Gadrak, the Crown-Scourge",
-        "Ganax, Astral Hunter",
-        "Solphim, Mayhem Dominus",
-        "Thunderbreak Regent",
-        "Twinflame Tyrant"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -249,19 +142,10 @@
         },
         {
           "name": "Birds of Paradise",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blood Crypt",
@@ -272,39 +156,10 @@
         },
         {
           "name": "Bloom Tender",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "blar",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kianne",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
@@ -392,32 +247,10 @@
         },
         {
           "name": "Delighted Halfling",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kianne",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Desolation of Smaug",
@@ -449,15 +282,10 @@
         },
         {
           "name": "Dragonskull Summit",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Dragonspeaker Shaman",
@@ -496,18 +324,10 @@
         },
         {
           "name": "Faeburrow Elder",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Farseek",
@@ -518,10 +338,10 @@
         },
         {
           "name": "Firespitter Whelp",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Flawless Maneuver",
@@ -532,53 +352,10 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "blar",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "zur-enchantress",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Forest",
@@ -589,17 +366,17 @@
         },
         {
           "name": "Gadrak, the Crown-Scourge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ganax, Astral Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Garruk's Uprising",
@@ -610,19 +387,10 @@
         },
         {
           "name": "Gemstone Mine",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Generous Gift",
@@ -668,15 +436,10 @@
         },
         {
           "name": "Ignoble Hierarch",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Island",
@@ -694,15 +457,10 @@
         },
         {
           "name": "Lightning Greaves",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Maelstrom of the Spirit Dragon",
@@ -874,15 +632,10 @@
         },
         {
           "name": "Smoldering Marsh",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sneak Attack",
@@ -900,46 +653,17 @@
         },
         {
           "name": "Solphim, Mayhem Dominus",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Spire of Industry",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "blar",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "zur-enchantress",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Steam Vents",
@@ -971,25 +695,10 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "zur-enchantress",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Teferi's Protection",
@@ -1028,17 +737,17 @@
         },
         {
           "name": "Thunderbreak Regent",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Twinflame Tyrant",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Unclaimed Territory",
@@ -1081,25 +790,7 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Firespitter Whelp"
-          },
-          {
-            "name": "Gadrak, the Crown-Scourge"
-          },
-          {
-            "name": "Ganax, Astral Hunter"
-          },
-          {
             "name": "Plateau"
-          },
-          {
-            "name": "Solphim, Mayhem Dominus"
-          },
-          {
-            "name": "Thunderbreak Regent"
-          },
-          {
-            "name": "Twinflame Tyrant"
           },
           {
             "name": "Volcanic Island"
@@ -1111,41 +802,12 @@
             "where": [
               "edgar-vampires"
             ]
-          },
-          {
-            "name": "Bloom Tender",
-            "where": [
-              "blar",
-              "kianne",
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Delighted Halfling",
-            "where": [
-              "kianne",
-              "kinnan"
-            ]
-          },
-          {
-            "name": "Spire of Industry",
-            "where": [
-              "blar",
-              "kinnan",
-              "zur-enchantress"
-            ]
           }
         ],
         "proxy": [],
         "free": [
           {
             "name": "Arid Mesa",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Faeburrow Elder",
             "where": [
               "sisay"
             ]
@@ -1163,75 +825,27 @@
             ]
           }
         ],
-        "box": [
-          {
-            "name": "Birds of Paradise",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          },
-          {
-            "name": "Dragonskull Summit",
-            "where": [
-              "Auntie Ool"
-            ]
-          },
-          {
-            "name": "Gemstone Mine",
-            "where": [
-              "Green",
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Ignoble Hierarch",
-            "where": [
-              "Auntie Ool"
-            ]
-          },
-          {
-            "name": "Lightning Greaves",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Smoldering Marsh",
-            "where": [
-              "Auntie Ool"
-            ]
-          }
-        ],
-        "blocking": 12,
+        "box": [],
+        "blocking": 3,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 22,
-      "out": 21,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 74,
-        "box": 6,
-        "elsewhere": 8,
-        "buy": 8
+        "in_deck": 90,
+        "box": 0,
+        "elsewhere": 4,
+        "buy": 2
       },
       "unsourced": [
         "Bloodstained Mire",
-        "Bloom Tender",
-        "Delighted Halfling",
-        "Firespitter Whelp",
-        "Gadrak, the Crown-Scourge",
-        "Ganax, Astral Hunter",
         "Plateau",
-        "Solphim, Mayhem Dominus",
-        "Spire of Industry",
-        "Thunderbreak Regent",
-        "Twinflame Tyrant",
         "Volcanic Island"
       ],
       "mergeable": false,
-      "free": 4,
+      "free": 3,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -1285,19 +899,10 @@
         },
         {
           "name": "Birds of Paradise",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blood Crypt",
@@ -1323,39 +928,10 @@
         },
         {
           "name": "Bloom Tender",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "blar",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kianne",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
@@ -1443,32 +1019,10 @@
         },
         {
           "name": "Delighted Halfling",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "kianne",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Desolation of Smaug",
@@ -1500,15 +1054,10 @@
         },
         {
           "name": "Dragonskull Summit",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Dragonspeaker Shaman",
@@ -1540,18 +1089,10 @@
         },
         {
           "name": "Faeburrow Elder",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Farseek",
@@ -1562,10 +1103,10 @@
         },
         {
           "name": "Firespitter Whelp",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Flawless Maneuver",
@@ -1583,17 +1124,17 @@
         },
         {
           "name": "Gadrak, the Crown-Scourge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ganax, Astral Hunter",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Garruk's Uprising",
@@ -1604,19 +1145,10 @@
         },
         {
           "name": "Gemstone Mine",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Generous Gift",
@@ -1662,15 +1194,10 @@
         },
         {
           "name": "Ignoble Hierarch",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Island",
@@ -1688,15 +1215,10 @@
         },
         {
           "name": "Lightning Greaves",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Maelstrom of the Spirit Dragon",
@@ -1876,15 +1398,10 @@
         },
         {
           "name": "Smoldering Marsh",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sneak Attack",
@@ -1902,46 +1419,17 @@
         },
         {
           "name": "Solphim, Mayhem Dominus",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Spire of Industry",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "blar",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "kinnan",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "zur-enchantress",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Steam Vents",
@@ -2001,17 +1489,17 @@
         },
         {
           "name": "Thunderbreak Regent",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Twinflame Tyrant",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Unclaimed Territory",
@@ -2075,341 +1563,173 @@
       "max_turn": 10
     },
     "engine": {
-      "available": true,
-      "required": [
-        "Ramp or fixing drawn",
-        "Dragon payoff drawn (per-dragon trigger engine)",
-        "Payoff + a castable dragon by mid-game"
-      ],
-      "routes": [
-        "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with"
-      ],
-      "online_by_turn": {
-        "1": {
-          "rate": 0.0505,
-          "ci95": [
-            0.0464,
-            0.055
-          ],
-          "n": 10000
-        },
-        "2": {
-          "rate": 0.1134,
-          "ci95": [
-            0.1073,
-            0.1198
-          ],
-          "n": 10000
-        },
-        "3": {
-          "rate": 0.2009,
-          "ci95": [
-            0.1932,
-            0.2089
-          ],
-          "n": 10000
-        },
-        "4": {
-          "rate": 0.2708,
-          "ci95": [
-            0.2622,
-            0.2796
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.3425,
-          "ci95": [
-            0.3333,
-            0.3519
-          ],
-          "n": 10000
-        },
-        "6": {
-          "rate": 0.3929,
-          "ci95": [
-            0.3834,
-            0.4025
-          ],
-          "n": 10000
-        },
-        "7": {
-          "rate": 0.4431,
-          "ci95": [
-            0.4334,
-            0.4529
-          ],
-          "n": 10000
-        },
-        "8": {
-          "rate": 0.4896,
-          "ci95": [
-            0.4798,
-            0.4994
-          ],
-          "n": 10000
-        },
-        "9": {
-          "rate": 0.5394,
-          "ci95": [
-            0.5296,
-            0.5492
-          ],
-          "n": 10000
-        },
-        "10": {
-          "rate": 0.5858,
-          "ci95": [
-            0.5761,
-            0.5954
-          ],
-          "n": 10000
-        }
+      "available": false,
+      "why": "the declaration does not describe this list — 3 load-bearing target(s) name cards it does not run (e.g. 'Ramp or fixing drawn' wants Mox Jasper, Relic of Legends). A branch inherits the deck's declaration, which is right for a swap and wrong for a rebuild: write the branch its own `goldfish_targets.json`.",
+      "declaration_mismatch": {
+        "Ramp or fixing drawn": [
+          "Mox Jasper",
+          "Relic of Legends"
+        ],
+        "Payoff + a castable dragon by mid-game": [
+          "Moltensteel Dragon",
+          "Rapacious Dragon"
+        ],
+        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with": [
+          "Moltensteel Dragon",
+          "Rapacious Dragon"
+        ]
       },
-      "any_route_by_turn": {
-        "1": {
-          "rate": 0.1052,
-          "ci95": [
-            0.0993,
-            0.1114
-          ],
-          "n": 10000
-        },
-        "2": {
-          "rate": 0.1807,
-          "ci95": [
-            0.1733,
-            0.1884
-          ],
-          "n": 10000
-        },
-        "3": {
-          "rate": 0.2729,
-          "ci95": [
-            0.2643,
-            0.2817
-          ],
-          "n": 10000
-        },
-        "4": {
-          "rate": 0.3471,
-          "ci95": [
-            0.3378,
-            0.3565
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.4165,
-          "ci95": [
-            0.4069,
-            0.4262
-          ],
-          "n": 10000
-        },
-        "6": {
-          "rate": 0.464,
-          "ci95": [
-            0.4542,
-            0.4738
-          ],
-          "n": 10000
-        },
-        "7": {
-          "rate": 0.512,
-          "ci95": [
-            0.5022,
-            0.5218
-          ],
-          "n": 10000
-        },
-        "8": {
-          "rate": 0.5569,
-          "ci95": [
-            0.5471,
-            0.5666
-          ],
-          "n": 10000
-        },
-        "9": {
-          "rate": 0.6013,
-          "ci95": [
-            0.5917,
-            0.6109
-          ],
-          "n": 10000
-        },
-        "10": {
-          "rate": 0.6403,
-          "ci95": [
-            0.6308,
-            0.6497
-          ],
-          "n": 10000
-        }
-      },
-      "bottleneck": {
-        "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_three": {
-          "rate": 0.2818,
-          "ci95": [
-            0.2731,
-            0.2907
-          ],
-          "n": 10000
-        }
-      },
-      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
+      "declared_targets": 10
     },
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6998,
+          "rate": 0.6537,
           "ci95": [
-            0.6907,
-            0.7087
+            0.6443,
+            0.663
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2902,
+          "rate": 0.2897,
           "ci95": [
-            0.2814,
-            0.2992
+            0.2809,
+            0.2987
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0737,
+          "rate": 0.0725,
           "ci95": [
-            0.0687,
-            0.079
+            0.0676,
+            0.0777
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0266,
+          "rate": 0.035,
           "ci95": [
-            0.0236,
-            0.0299
+            0.0316,
+            0.0388
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0127,
+          "rate": 0.0211,
           "ci95": [
-            0.0107,
-            0.0151
+            0.0185,
+            0.0241
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0086,
+          "rate": 0.0155,
           "ci95": [
-            0.007,
-            0.0106
+            0.0133,
+            0.0181
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0073,
+          "rate": 0.0133,
           "ci95": [
-            0.0058,
-            0.0092
+            0.0112,
+            0.0157
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0065,
+          "rate": 0.0106,
           "ci95": [
-            0.0051,
-            0.0083
+            0.0088,
+            0.0128
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0054,
+          "rate": 0.0096,
           "ci95": [
-            0.0041,
-            0.007
+            0.0079,
+            0.0117
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0039,
+          "rate": 0.0067,
           "ci95": [
-            0.0029,
-            0.0053
+            0.0053,
+            0.0085
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0737,
+        "rate": 0.0801,
         "ci95": [
-          0.0687,
-          0.079
+          0.0749,
+          0.0856
         ],
         "n": 10000
       },
-      "fleet": "above the fleet median",
+      "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4349,
-        "hand_empty": 161,
-        "mana_short": 4188
+        "stall_turns": 4740,
+        "hand_empty": 362,
+        "mana_short": 4378
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4526,
+        "rate": 0.4617,
         "ci95": [
-          0.4429,
-          0.4624
+          0.4519,
+          0.4715
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3492,
+      "missed_land_drop_rate": 0.3521,
       "mulliganed": {
-        "rate": 0.2136,
+        "rate": 0.2133,
         "ci95": [
-          0.2057,
-          0.2217
+          0.2054,
+          0.2214
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.215,
-        "3": 3.243,
-        "4": 4.239,
-        "5": 5.008,
-        "6": 5.636,
-        "7": 6.175,
-        "8": 6.666,
-        "9": 7.126,
-        "10": 7.575
+        "2": 2.238,
+        "3": 3.567,
+        "4": 4.833,
+        "5": 5.876,
+        "6": 6.678,
+        "7": 7.35,
+        "8": 7.977,
+        "9": 8.564,
+        "10": 9.128
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.199
+      "mana_stdev_turn_five": 2.1734
     },
-    "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a"
+    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645"
   },
   "bracket": {
-    "floor": 4,
-    "floor_name": "Optimized",
+    "floor": 3,
+    "floor_name": "Upgraded",
     "target": 4,
     "within_target": true
   },
   "paper": {
-    "version": 2,
-    "sha": "77f69d54115a",
-    "decklist_sha256": "f77e320ebea09ff7ed48521b832b39e376fe61ae1906d60cb4b2ad1de357936a",
-    "built_at": "2026-08-25",
-    "note": "Pilot made the five swaps on the table 2026-08-25 and reported them the same day; checked in from that paper list. Sleeved at V2 / v1.0.1."
+    "version": 3,
+    "sha": "8c7a677d2b74",
+    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+    "built_at": "2026-09-01",
+    "note": "sleeved 2026-09-01",
+    "release": "v1.0.2"
   },
   "record": {
     "games": 2,
@@ -2424,8 +1744,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.603,
-    "commander_cast_by_turn_6_pct": 18,
+    "commander_mean_cast_turn": 6.916,
+    "commander_cast_by_turn_6_pct": 33,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -2433,23 +1753,23 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 62
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
-        "by_turn_6_pct": 63
+        "by_turn_6_pct": 62
       },
       {
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "by_turn_6_pct": 29
+        "by_turn_6_pct": 25
       },
       {
         "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_6_pct": 30
+        "by_turn_6_pct": 24
       },
       {
         "label": "Protection held for the big turn",
-        "by_turn_6_pct": 67
+        "by_turn_6_pct": 50
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
@@ -2457,33 +1777,33 @@
       },
       {
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
-        "by_turn_6_pct": 56
+        "by_turn_6_pct": 42
       },
       {
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "by_turn_6_pct": 16
+        "by_turn_6_pct": 15
       },
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 10
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.531,
+      "mean_kill_turn": 7.007,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 20,
-      "kill_by_turn_8_pct": 69,
+      "kill_by_turn_6_pct": 36,
+      "kill_by_turn_8_pct": 83,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 9,
+      "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 731,
-        "3": 1,
-        "4": 44,
-        "5": 467,
-        "6": 1473,
-        "7": 2626,
-        "8": 2288,
-        "9": 1437
+        "10": 432,
+        "3": 4,
+        "4": 96,
+        "5": 898,
+        "6": 2570,
+        "7": 2978,
+        "8": 1757,
+        "9": 842
       }
     }
   },
@@ -2506,7 +1826,8 @@
       "interaction-breadth"
     ],
     "over": [
-      "ramp"
+      "ramp",
+      "protection"
     ],
     "stale": []
   },
@@ -2656,14 +1977,15 @@
   },
   "experiments": null,
   "next": [
+    "3 artifact(s) fail their own gate (targets, tutors, —) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
-    "`eminence-v3` is PROPOSED as v1.0.2 and waiting on cardboard — 6 card(s) (6 to buy) — `manamap pilot deck-branch ur-dragon show eminence-v3` has the pull list",
-    "branch `landbase-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source landbase-v1`",
+    "branch `eminence-v3` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge eminence-v3 --write`",
+    "branch `landbase-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source landbase-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",
-    "2 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "3 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

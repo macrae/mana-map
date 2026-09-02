@@ -47,8 +47,12 @@
       .catch(function () { return null; });
   }
 
-  function chip(text, kind) {
-    return '<span class="wb-chip' + (kind ? ' wb-' + kind : '') + '">' + esc(text) + '</span>';
+  function chip(text, kind, html) {
+    // `html` is opt-in and used by ONE caller, for the pin glyph. Everything
+    // else still escapes, because a deck slug and a card name reach this from
+    // artifacts and a chip is not a place to start trusting input.
+    return '<span class="wb-chip' + (kind ? ' wb-' + kind : '') + '">'
+         + (html ? text : esc(text)) + '</span>';
   }
 
   /* The lock, said in one phrase. `in_sync` is tri-state — true, false, or null
@@ -56,11 +60,19 @@
    * as "fine". */
   function lockChips(paper) {
     if (!paper) return '';
-    if (paper.unresolved) return chip('SLEEVED V' + paper.version + ' · not in git', 'warn');
-    if (paper.in_sync) return chip('V' + paper.version + ' · in sync', 'ok');
+    // THE RELEASE TAG, NOT THE ORDINAL. "V3" is the number git can derive and
+    // means nothing to a reader; `v1.0.2` is what the pilot ships and asks for.
+    // Falls back to the ordinal when a sleeved list carries no release tag —
+    // which is a real state (a lock can be taken on an untagged list), not an
+    // error, so it degrades to the number rather than to nothing.
+    var name = paper.release ? paper.release : 'V' + paper.version;
+    var pin = '<span class="wb-pin" aria-hidden="true">\uD83D\uDCCC</span> ';
+    if (paper.unresolved) return chip('SLEEVED ' + name + ' · not in git', 'warn');
+    if (paper.in_sync) return chip(pin + name + ' · sleeved', 'ok', true);
     var d = paper.drift || { pull: [], add: [] };
     var behind = paper.versions_behind;
-    return chip('V' + paper.version + (behind ? ' · ' + behind + ' behind' : ' · drifted'), 'warn')
+    return chip(pin + name + (behind ? ' · ' + behind + ' behind' : ' · drifted'),
+                'warn', true)
          + chip('pull ' + d.pull.length + ' · add ' + d.add.length, 'warn');
   }
 
@@ -267,10 +279,16 @@
       : '<span class="t-none">none</span>';
     var when = ago(rec.last_played);
 
+    // Same name the card above shows. Two surfaces on one page calling the same
+    // list by two different names — "v1.0.2" on the card and "V3" in the table —
+    // reads as two different things.
+    var lockName = e.paper
+      ? (e.paper.release ? e.paper.release : 'V' + num(e.paper.version))
+      : '';
     var lock = e.paper
-      ? (e.paper.unresolved ? '<span class="t-warn">V' + num(e.paper.version) + ' · ?</span>'
-         : e.paper.in_sync ? '<span class="t-ok">V' + num(e.paper.version) + '</span>'
-         : '<span class="t-warn">V' + num(e.paper.version) + ' · ' + num(e.paper.versions_behind)
+      ? (e.paper.unresolved ? '<span class="t-warn">' + esc(lockName) + ' · ?</span>'
+         : e.paper.in_sync ? '<span class="t-ok">' + esc(lockName) + '</span>'
+         : '<span class="t-warn">' + esc(lockName) + ' · ' + num(e.paper.versions_behind)
            + ' behind</span>')
       : '<span class="t-none">—</span>';
 

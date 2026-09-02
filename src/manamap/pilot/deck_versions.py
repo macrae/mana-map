@@ -151,7 +151,23 @@ def paper(slug):
     swap and the cardboard does not.
     """
     doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
-    return doc.get(PAPER_KEY) or None
+    sleeved = doc.get(PAPER_KEY) or None
+    if not sleeved:
+        return None
+
+    # THE RELEASE TAG, RESOLVED. The paper lock stores an ORDINAL — "V3" — which
+    # is the number git can derive and means nothing to a reader. `v1.0.2` is
+    # what the pilot ships and asks for, and it lives one key over in `tags`.
+    # Matched on the decklist SHA rather than on the ordinal alone: a re-baseline
+    # renumbers the ordinals, and a tag pointing at a list that no longer has
+    # that number would otherwise be silently wrong rather than absent.
+    sleeved = dict(sleeved)
+    for name, tag in (doc.get("tags") or {}).items():
+        if (tag.get("decklist_sha256")
+                and tag.get("decklist_sha256") == sleeved.get("decklist_sha256")):
+            sleeved["release"] = name
+            break
+    return sleeved
 
 
 def paper_state(slug, vers=None, current_version=None):
@@ -169,7 +185,12 @@ def paper_state(slug, vers=None, current_version=None):
         by_sha = {s: v["version"] for v in vers for s in v["decklist_sha256s"]}
         current_version = by_sha.get(working_sha(slug))
     n = p.get("version")
-    out = {"version": n, "built_at": p.get("built_at"), "note": p.get("note") or "",
+    # `release` rides along so a surface can name what the pilot SHIPS rather
+    # than the ordinal git derives. It is the same resolution `paper()` does; not
+    # propagating it meant the workbench had the tag available nowhere and fell
+    # back to "V3", which is the number and not the name.
+    out = {"version": n, "release": p.get("release"),
+           "built_at": p.get("built_at"), "note": p.get("note") or "",
            "locked": True, "in_sync": None, "versions_behind": None, "drift": None}
     target = next((v for v in vers if v["version"] == n), None)
     if target is None:

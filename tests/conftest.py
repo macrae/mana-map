@@ -56,7 +56,27 @@ def _a_branch(slug):
         return None
     got = sorted(d.name for d in root.iterdir()
                  if (d / "decklist.txt").exists())
-    return got[0] if got else None
+    if not got:
+        return None
+
+    # A MERGED BRANCH IS NOT A BRANCH-SHAPED FIXTURE. Once merged, its list IS
+    # the deck's list, so its diff is +0 -0 by definition — and the tests that
+    # take "whichever branch exists" are all about the DIFF: that both sides
+    # balance in copies, that every row carries its count, that the bill and the
+    # diff cannot disagree. Handed a merged branch they assert those things
+    # about nothing and fail on an empty set.
+    #
+    # Found when `eminence-v3` merged as v1.0.2 and sorted first alphabetically.
+    def merged(name):
+        doc = config.DECKS_DIR / slug / "branches" / name / "branch.json"
+        try:
+            import json
+            return bool(json.loads(doc.read_text()).get("merged"))
+        except Exception:                       # noqa: BLE001 - absent or unreadable
+            return False
+
+    live = [name for name in got if not merged(name)]
+    return (live or got)[0]
 
 
 #: The deck the branch-shaped tests measure against, and any branch it has.

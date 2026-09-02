@@ -669,6 +669,43 @@ def log(slug, branch):
 #: Before this, a branch had exactly two observable conditions — the directory
 #: exists, or `merged` is present — and `delete` was the only code in the repo
 #: that read `merged`. A branch the pilot had DECIDED ON was byte-identical to a
+def _validate_after_merge(slug):
+    """`[(artifact, first error)]` for everything that no longer validates.
+
+    Deliberately reports rather than repairs. Every artifact here is either
+    AUTHORED (`goldfish_targets.json`) or agent-written (`engine.json`,
+    `tutor_guide.json`, `diagnosis.json`), and this repo's standing rule is that
+    prose is never hand-patched to green a gate — "a fresh claim under an old
+    byline".
+    """
+    import contextlib
+    import importlib
+    import io as _io
+
+    from manamap.pilot import deck_status
+
+    out = []
+    for artifact, dotted in sorted(getattr(deck_status, "VALIDATED", {}).items()):
+        if not (deck_dir(slug) / artifact).exists():
+            continue
+        # Every validator is a CLI: it prints its errors and exits non-zero.
+        # Captured rather than re-implemented — a second copy of "what counts as
+        # invalid" is the two-maps divergence `VALIDATED` was extracted to end.
+        buf = _io.StringIO()
+        try:
+            module = importlib.import_module(dotted)
+            with contextlib.redirect_stdout(buf):
+                module.main(type("Args", (), {"slug": slug, "branch": None})())
+        except SystemExit as exit_:
+            if exit_.code:
+                lines = [ln.strip() for ln in buf.getvalue().splitlines()
+                         if ln.strip().startswith("-")]
+                out.append((artifact, (lines[0] if lines else "fails its validator")[:130]))
+        except Exception as exc:                        # noqa: BLE001 - env
+            out.append((artifact, f"{type(exc).__name__}: {exc}"[:130]))
+    return out
+
+
 #: half-finished experiment nobody had looked at.
 #:
 #: Every one of these is DERIVED and none is stored. That is the rule
@@ -991,6 +1028,8 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
         from types import SimpleNamespace
         from manamap.pilot import fetch_deck, goldfish, mana_analysis
         ran = []
+        # `fetch-deck` first and on its own: everything downstream reads
+        # `cards.json`, and `regen`'s stages assume it is already current.
         for name, mod in (("fetch-deck", fetch_deck), ("goldfish", goldfish),
                           ("mana-analysis", mana_analysis)):
             try:
@@ -999,7 +1038,28 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
             except Exception as exc:                    # pragma: no cover - env
                 out.setdefault("chain_failed", []).append(f"{name}: {exc}")
                 break
+
+        # THE REST OF THE BUILD, in `regen`'s dependency order rather than a
+        # second hand-written list. The three above used to be the whole chain,
+        # so a merge left `diagnostic.json`, `benchmark.json` and `info.json`
+        # describing the PREVIOUS 99 — and the way anyone found out was a failing
+        # test hours later. Reusing `regen` means this order has one home.
+        if not out.get("chain_failed"):
+            try:
+                from manamap.pilot import regen
+                regen.run(slug=slug, jobs=1, echo=lambda *a, **k: None)
+                ran.extend(n for n in regen.STAGE_NAMES if n not in ran)
+            except Exception as exc:                    # pragma: no cover - env
+                out.setdefault("chain_failed", []).append(f"regen: {exc}")
         out["chain"] = ran
+
+        # AND THEN ASK WHETHER WHAT WE JUST BUILT IS VALID. A merge can leave an
+        # AUTHORED file naming cards the new list does not run — the declaration
+        # in `goldfish_targets.json` is the common one — and no amount of
+        # rebuilding fixes that, because nobody but the pilot can say which
+        # components the new deck has. Rebuilding is this command's job; saying
+        # what it could not fix is the other half.
+        out["invalid"] = _validate_after_merge(slug)
 
     # THE BRANCH RECORDS THAT IT LANDED. Without this the branch survives
     # untouched, `diff` reads +0 -0 forever, and nothing links the resulting
@@ -1310,6 +1370,18 @@ def main(args):
             print(f"\n  STALE — written against the previous list ({len(stale)}):")
             for row in stale:
                 print(f"    {row['stage']:10} {row['how']}")
+        invalid = got.get("invalid") or []
+        if invalid:
+            # THE HALF A REBUILD CANNOT FIX. These are AUTHORED or agent-written
+            # and name cards the new list no longer runs; regenerating them would
+            # mean inventing which components the new deck has, which is the
+            # pilot's call and an agent's work. Naming them here is the whole
+            # point of running the build at merge time instead of finding out
+            # from a failing test hours later.
+            print(f"\n  INVALID after the merge ({len(invalid)}) — "
+                  f"these need you or an agent, not a rebuild:")
+            for artifact, why in invalid:
+                print(f"    {artifact:24} {why}")
         print("\n  NOT COMMITTED — the commit is what `deck-version` numbers and what the")
         print("  captain's log stamps games against, so it stays yours:")
         print(f"      git add data/decks/{slug} && \\")

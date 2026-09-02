@@ -441,3 +441,46 @@ def test_every_where_row_is_one_shape():
                         assert "name" in w
                 checked += 1
     assert checked >= 20
+
+
+def test_merge_runs_the_whole_build_not_three_commands():
+    """A MERGE THAT LEAVES THE FIGURES BEHIND IS A MERGE THAT LIES.
+
+    The chain was `fetch-deck, goldfish, mana-analysis` and stopped there, so a
+    merge left `diagnostic.json`, `benchmark.json` and `info.json` describing the
+    PREVIOUS 99 — and the way anyone found out was a failing test hours later.
+    The rest now comes from `regen.STAGE_NAMES` rather than a second hand-written
+    order, so there is one home for what depends on what.
+    """
+    import inspect
+
+    from manamap.pilot import deck_branch, regen
+
+    src = inspect.getsource(deck_branch)
+    assert "regen.run(slug=slug" in src, "merge no longer runs the build"
+    assert "regen.STAGE_NAMES" in src, (
+        "the post-merge stage list is hand-written again — it will drift from "
+        "regen's, which is the order that is actually correct")
+    assert "diagnose" in regen.STAGE_NAMES and "benchmark" in regen.STAGE_NAMES
+
+
+def test_merge_reports_what_a_rebuild_cannot_fix():
+    """The other half of the build. An AUTHORED declaration naming cards the new
+    list does not run cannot be regenerated — nobody but the pilot can say which
+    components the new deck has — so the merge has to NAME it rather than leave
+    it for a validator to find later.
+
+    Asserted on the mechanism rather than on a deck's contents: which artifacts
+    are invalid depends on what was merged, and pinning that would be a test
+    about one experiment.
+    """
+    import inspect
+
+    from manamap.pilot import deck_branch
+
+    assert callable(getattr(deck_branch, "_validate_after_merge", None))
+    src = inspect.getsource(deck_branch._validate_after_merge)
+    assert "VALIDATED" in src, "it should ask deck_status which gates exist"
+    # It must REPORT, never repair — prose is not hand-patched to green a gate.
+    assert "write" not in src.lower().replace("written", ""), (
+        "the post-merge validator appears to write something")
