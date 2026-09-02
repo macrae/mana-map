@@ -503,6 +503,14 @@ _APPLICABILITY = {
         "nothing in the captain's log — `deck-notes <slug> add` a game first; "
         "nothing to spawn or cache",
     ),
+    # ONE PREDICATE, ONE HOME: a captain's log needs exactly what a debrief
+    # needs — a game in the log — so it reuses the predicate rather than growing
+    # a second answer to the same question.
+    "captains-log": (
+        _debrief_applicable,
+        "nothing in the captain's log — `deck-notes <slug> add` a game first; "
+        "nothing to spawn or cache",
+    ),
     "tutor-guide": (
         _tutor_guide_applicable,
         "deck runs zero library-search tutors — the tutor guide renders its "

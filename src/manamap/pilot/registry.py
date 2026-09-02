@@ -42,6 +42,12 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("captains-log", "manamap.pilot.captains_log",
+     "The captain's log: which nights this deck flew, and which are rendered"),
+    ("merge-captains-log", "manamap.pilot.merge_captains_log",
+     "Merge the captains-log agent's prose into captains_log.json"),
+    ("validate-captains-log", "manamap.pilot.validate_captains_log",
+     "Form-check captains_log.json against the log it renders"),
     ("simulate", "manamap.sim.forge",
      "Run N Commander games of this deck against opponents in Forge, headless; record the run (◆ sampled)"),
     ("experiment", "manamap.sim.experiment",
@@ -91,6 +97,14 @@ PILOT_STEPS = [
      "measure it, and merge it only when the cards exist"),
     ("deck-version", "manamap.pilot.deck_versions",
      "Every list this deck has been: numbered from git, tagged by you, joined to the games played on it"),
+    ("validate-log-causes", "manamap.pilot.validate_log_causes",
+     "Form-check log_causes.json: the vocabulary, the ids it names, and a cause that contradicts its result"),
+    ("validate-deck-versions", "manamap.pilot.validate_deck_versions",
+     "Form-check deck_versions.json: the lifecycle, the paper lock, and that they do not contradict"),
+    ("deck-state", "manamap.pilot.deck_state",
+     "Is this still a deck or a pile of cards: archive / supersede / retire / revive"),
+    ("deck-delete", "manamap.pilot.deck_delete",
+     "Remove a deck that was never sleeved, never played and never published"),
     ("prescribe", "manamap.pilot.prescribe",
      "Ask the deck doctor one question: open a prescription, list them, or merge the answer"),
     ("validate-prescription", "manamap.pilot.validate_prescription",
@@ -157,10 +171,20 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
-    "deck-version", "deck-branch", "diagnose", "assess", "candidates", "close",
+    "captains-log", "merge-captains-log", "validate-captains-log",
+    "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
+    "validate-log-causes",
+    "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
 }
+
+
+def _causes():
+    """`deck_notes.CAUSES` keys, imported lazily so `--help` stays fast."""
+    from manamap.pilot.deck_notes import CAUSES
+
+    return CAUSES
 
 
 def add_pilot_parser(subparsers):
@@ -226,6 +250,14 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "captains-log":
+            # The skeleton the agent quotes: every deterministic fact about the
+            # deck's nights and no prose. A VIEW, never tracked — same rule as
+            # `deck-facts`; the tracked artifact is written by the merge.
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "merge-captains-log":
+            cmd.add_argument("--kind", default="ship",
+                             help="which log to merge into (ship; personal is reserved)")
         if name == "validate-issue":
             cmd.add_argument("--strict", action="store_true",
                              help="Fail on the length budget, not just report it")
@@ -327,10 +359,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")
         if name == "deck-notes":
-            cmd.add_argument("action", choices=["add", "list", "show"],
-                             help="add a note / list the log / show one entry")
+            cmd.add_argument("action", choices=["add", "list", "show", "cause"],
+                             help="add a note / list the log / show one entry / "
+                                  "record how a game ended")
             cmd.add_argument("text", nargs="?", default=None,
-                             help="the note (add), or the entry id (show)")
+                             help="the note (add), or the entry id (show, cause)")
             cmd.add_argument("--file", default=None,
                              help="read the note from this file (`-` for stdin) instead")
             cmd.add_argument("--result", default=None, choices=["win", "loss", "draw"])
@@ -340,6 +373,17 @@ def add_pilot_parser(subparsers):
                              help="free tag, repeatable (e.g. --tag orinda --tag weekly)")
             cmd.add_argument("--at", default=None,
                              help="ISO timestamp override, for backfilling a game played earlier")
+            # HOW IT ENDED, from a closed vocabulary — `deck_notes.CAUSES`. The
+            # choices are derived, never re-typed here: a hand-copied literal is
+            # how `pilot/registry.py` came to accept an embedding-space slug the
+            # registry no longer knew.
+            cmd.add_argument("--cause", default=None,
+                             choices=sorted(_causes()),
+                             help="how the game ended (add, or cause) — "
+                                  "mana-drought | removal | wipe | combo | "
+                                  "politics | raced | stalled | won")
+            cmd.add_argument("--note", default=None,
+                             help="cause: one line on why you filed it that way")
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
             cmd.add_argument("--json", action="store_true", dest="as_json")
@@ -546,6 +590,21 @@ def add_pilot_parser(subparsers):
                                   "your own decks is logistics. Never applies to "
                                   "cards nobody owns")
             cmd.add_argument("--json", action="store_true")
+        if name == "deck-state":
+            # The pilot's word first, the vocabulary second. `archive` sets
+            # `broken-down`, which is what the rest of the repo reads — see
+            # `deck_state.ACTIONS`. No action at all means SHOW, so the safe
+            # invocation is the short one.
+            cmd.add_argument("action", nargs="?", default=None,
+                             choices=["archive", "supersede", "retire", "revive"],
+                             help="omit to show; archive = broken down for parts")
+            cmd.add_argument("--reason", default=None,
+                             help="why you did this — a note about a DECISION, "
+                                  "never a claim about cardboard")
+        if name == "deck-delete":
+            cmd.add_argument("--force", action="store_true",
+                             help="delete anyway. A deck that was sleeved, "
+                                  "played or published is a record — archive it")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "tag", "restore", "paper", "baseline"],

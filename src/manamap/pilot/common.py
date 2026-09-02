@@ -487,9 +487,37 @@ def deck_status_of(issue):
     return (key,) + DECK_STATUSES[key]
 
 
+#: WHERE THE STATUS LIVES, and it is not `issue.json` any more.
+#:
+#: It was a key on the deck's magazine identity file, which has two problems and
+#: the second is fatal. `issue.json` belongs to the FROZEN renderer, deleted in
+#: one commit when the compact page lands — a live predicate reading a file
+#: scheduled for deletion is a break with a date on it. And it REQUIRES a
+#: positive-integer `volume`, so four of thirteen decks never had one: marking
+#: `zur-enchantress` broken down meant inventing a volume number for a magazine
+#: that is dead.
+#:
+#: `deck_versions.json` is the authored, tracked, gated home for the OTHER fact
+#: about this deck's cardboard — `paper`, the assertion that one exact 99 is
+#: sleeved. "These cards are in a pile" and "this exact list is in sleeves" are
+#: the same question asked twice, and they contradict each other when they are
+#: both set, so they belong in one file where one writer can hold them
+#: consistent. `deck_versions.set_lifecycle` is that writer.
+LIFECYCLE_FILE = "deck_versions.json"
+LIFECYCLE_KEY = "lifecycle"
+
+
 def deck_lifecycle(slug):
-    """The lifecycle status of a deck by slug, read from its authored identity."""
-    return deck_status_of(load_json(DECKS_DIR / slug / "issue.json", {}))
+    """The lifecycle status of a deck by slug, read from its authored state.
+
+    ONE HOME, NO FALLBACK. Reading `deck_versions.json` and then falling back to
+    `issue.json` would be two homes for one fact, which is the divergence this
+    repo keeps paying for — so the migration moved the three decks that had a
+    status and `validate-issue` now REPORTS a leftover `issue.json` status
+    rather than honouring it. A stale hand edit is loud instead of obeyed.
+    """
+    doc = load_json(DECKS_DIR / slug / LIFECYCLE_FILE, {})
+    return deck_status_of(doc.get(LIFECYCLE_KEY) or {})
 
 
 def deck_is_apart(slug):

@@ -35,7 +35,31 @@ from manamap.pilot.common import deck_dir, load_json
 
 LOG_FILE = "log.jsonl"
 ANNOTATIONS_FILE = "log_annotations.json"
+CAUSES_FILE = "log_causes.json"
 RESULTS = ("win", "loss", "draw")
+
+#: HOW THE GAME ENDED, from a closed vocabulary.
+#:
+#: `--result` says whether you won. This says WHY, and the difference is the
+#: whole reason the dossier's game table can show counts instead of paragraphs:
+#: three losses to `removal` and three to `mana-drought` are two different decks
+#: with the same record, and prose cannot be counted.
+#:
+#: CLOSED, not free text, and not a `--tag`. A tag is a label the pilot invents
+#: per game; the moment "comboed" and "combo'd" both exist the count silently
+#: splits in two and the table understates by half while looking fine. The list
+#: is short on purpose — a vocabulary nobody can hold in their head gets used
+#: wrong, and a cause that fits three games is worth more than one that fits one.
+CAUSES = {
+    "mana-drought": "colour or land screw — the deck could not cast what it drew",
+    "removal": "the engine was picked apart one card at a time",
+    "wipe": "a board wipe, and no rebuild",
+    "combo": "an opponent assembled a combo and closed",
+    "politics": "the table converged, correctly or otherwise",
+    "raced": "someone was simply faster",
+    "stalled": "the engine never assembled — the pieces did not arrive",
+    "won": "the deck closed the game",
+}
 
 
 def log_path(slug):
@@ -110,6 +134,53 @@ def annotations(slug):
     return doc.get("entries") or {}
 
 
+# ── The cause, and why it is not on the entry ────────────────────────────
+#
+# `log.jsonl` is APPEND-ONLY and never rewritten. Nine games were logged before
+# this field existed, so putting the cause on the entry would mean either
+# rewriting those lines — breaking the one contract the log has — or leaving the
+# field permanently absent on the games that already happened, which is most of
+# the evidence there is.
+#
+# So it is a sidecar, keyed by entry id: the same join `log_annotations.json`
+# already uses, under the same rule. The difference from that file is WHO SPEAKS.
+# An annotation is the debrief agent's structured reading and can be regenerated;
+# a cause is the PILOT'S OWN CLAIM about their own game, authored and never
+# derived. No agent writes this file.
+
+
+def causes(slug):
+    """`{entry_id: {"cause": key, "note": str, "at": iso}}`. Authored."""
+    doc = load_json(deck_dir(slug) / CAUSES_FILE) or {}
+    return doc.get("entries") or {}
+
+
+def set_cause(slug, entry_id, cause, note=None):
+    """Record how one logged game ended. One writer, so `add --cause` and the
+    standalone verb cannot disagree about the shape."""
+    if cause not in CAUSES:
+        raise SystemExit(
+            f"{cause!r} is not a cause. One of:\n  "
+            + "\n  ".join(f"{k:14s} {v}" for k, v in CAUSES.items()))
+    ids = {e["id"] for e in read_log(slug)}
+    if entry_id not in ids:
+        raise SystemExit(
+            f"{slug}: no log entry {entry_id!r} — "
+            f"`manamap pilot deck-notes {slug} list` shows the ids")
+    path = deck_dir(slug) / CAUSES_FILE
+    doc = load_json(path) or {"slug": slug, "entries": {}}
+    doc.setdefault("slug", slug)
+    doc.setdefault("entries", {})
+    doc["entries"][entry_id] = {
+        "cause": cause,
+        "note": note or "",
+        "at": datetime.now().astimezone().isoformat(timespec="seconds"),
+    }
+    doc["entries"] = dict(sorted(doc["entries"].items()))
+    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+    return doc["entries"][entry_id]
+
+
 def _fmt(entry, annotated, width=72):
     head = (f"{entry['id']}  {entry['at'][:16]}  "
             f"{(entry.get('result') or '—'):<4}  "
@@ -134,8 +205,26 @@ def main(args):
                              tags=args.tag, at=args.at)
         print(f"{slug}: logged entry {entry['id']} at {entry['at']} "
               f"(deck {str(entry['decklist_sha256'])[:12]}…)")
+        # ONE WRITER. `--cause` goes through `set_cause`, exactly as the
+        # standalone verb does, so the two can never disagree about the shape of
+        # the sidecar or skip its vocabulary check.
+        if getattr(args, "cause", None):
+            row = set_cause(slug, entry["id"], args.cause)
+            print(f"  cause: {row['cause']} — {CAUSES[row['cause']]}")
         print("  next: `manamap pilot deck-notes "
               f"{slug} list`, or spawn `debrief` to annotate it")
+        return
+
+    if action == "cause":
+        # `deck-notes <slug> cause <id> <code>`. `text` is the id (the positional
+        # `show` already uses) and `--cause` carries the code, so the parser
+        # needs no third positional.
+        if not getattr(args, "cause", None):
+            print(f"How a game ended. `--cause <code>` with one of:\n  "
+                  + "\n  ".join(f"{k:14s} {v}" for k, v in CAUSES.items()))
+            raise SystemExit(2)
+        row = set_cause(slug, args.text, args.cause, note=getattr(args, "note", None))
+        print(f"{slug}: entry {args.text} — {row['cause']} ({CAUSES[row['cause']]})")
         return
 
     entries = read_log(slug)

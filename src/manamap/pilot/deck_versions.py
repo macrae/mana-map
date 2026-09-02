@@ -34,12 +34,17 @@ import re
 from datetime import date
 
 from manamap.pilot import deck_history as dh
+from manamap.pilot import common
 from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot.deck_notes import read_log
 
 TAGS_FILE = "deck_versions.json"
 PAPER_KEY = "paper"
 BASELINE_KEY = "baseline"
+#: The deck's LIFECYCLE — broken down, superseded, retired, or absent for a live
+#: deck. It moved here from `issue.json` (see `common.deck_lifecycle`); this
+#: module owns the write because `paper` is the fact it contradicts.
+LIFECYCLE_KEY = common.LIFECYCLE_KEY
 
 
 def _sha(blob):
@@ -218,6 +223,19 @@ def set_paper(slug, ref=None, built_at=None, note=None, clear=False):
         doc.pop(PAPER_KEY)
         _write_tags(path, doc)
         return None
+    # BOTH DIRECTIONS, OR THE INVARIANT IS HALF AN INVARIANT. `set_lifecycle`
+    # withdraws the lock when a deck is archived; without this, locking an
+    # archived deck rebuilt the same contradiction from the other side — and it
+    # is easy to do by accident, because `paper` with no ref is a WRITE that
+    # reads like a report. Caught in exactly that way, minutes after archiving
+    # yawgmoth-swarm: `deck-version yawgmoth-swarm paper`, meant as a check,
+    # silently re-locked a deck that is in a pile.
+    life = common.deck_lifecycle(slug)
+    if life and life[0] in common.UNPLAYABLE_STATUSES:
+        raise SystemExit(
+            f"{slug}: {life[1]} \u2014 its cards are in a pile, so no list of "
+            f"them is sleeved. `manamap pilot deck-state {slug} revive` first "
+            f"if you have rebuilt it.")
     vers = versions(slug)
     if not vers:
         raise SystemExit(f"{slug}: no committed versions to lock")
@@ -236,6 +254,56 @@ def set_paper(slug, ref=None, built_at=None, note=None, clear=False):
                       "note": note or ""}
     _write_tags(path, doc)
     return target
+
+
+def lifecycle(slug):
+    """The raw lifecycle block, or None. `common.deck_lifecycle` is the PREDICATE."""
+    doc = load_json(deck_dir(slug) / TAGS_FILE) or {}
+    return doc.get(LIFECYCLE_KEY) or None
+
+
+def set_lifecycle(slug, status=None, reason=None, clear=False):
+    """Mark a deck broken down / superseded / retired, or bring it back.
+
+    RETURNS `(block, withdrew)`, where `withdrew` is the paper lock this call
+    removed or None.
+
+    ARCHIVING WITHDRAWS THE SLEEVED LOCK, and that is the whole reason this
+    writer lives beside `set_paper` rather than in its own module. A deck whose
+    cards are in a pile cannot also have an exact 99 in sleeves; leaving both
+    set leaves every reader to guess which one is true, and the workbench guessed
+    WRONG — it filtered on `locked` before `status`, so a deck that had been
+    broken down for parts rendered under SLEEVED, on the one screen whose whole
+    job is answering what you can play tonight.
+
+    `superseded` is deliberately NOT unlocked: a superseded list can still be
+    sleeved and played, it is just no longer the best version of itself. That is
+    the same distinction `UNPLAYABLE_STATUSES` draws, so it is read from there
+    rather than re-listed here.
+
+    The reason is a note about a DECISION, never a claim about cardboard — it
+    records why the pilot did this, and nothing derives anything from it.
+    """
+    path = deck_dir(slug) / TAGS_FILE
+    doc = load_json(path) or {"slug": slug, "tags": {}}
+    doc.setdefault("slug", slug)
+    if clear:
+        if LIFECYCLE_KEY not in doc:
+            raise SystemExit(f"{slug}: already live \u2014 nothing to revive")
+        doc.pop(LIFECYCLE_KEY)
+        _write_tags(path, doc)
+        return None, None
+    if status not in common.DECK_STATUSES:
+        raise SystemExit(
+            f"{slug}: {status!r} is not a lifecycle status \u2014 "
+            f"one of {sorted(common.DECK_STATUSES)}")
+    withdrew = None
+    if status in common.UNPLAYABLE_STATUSES and doc.get(PAPER_KEY):
+        withdrew = doc.pop(PAPER_KEY)
+    doc[LIFECYCLE_KEY] = {"status": status, "at": date.today().isoformat(),
+                          "reason": reason or ""}
+    _write_tags(path, doc)
+    return doc[LIFECYCLE_KEY], withdrew
 
 
 # A RELEASE tag, in the pilot's semantics (docs/pilot.md "What a version bump
@@ -272,6 +340,11 @@ def _write_tags(path, doc):
     doc.setdefault("tags", {})
     doc["tags"] = dict(sorted(doc["tags"].items(), key=lambda kv: _tag_key(kv[0])))
     ordered = {"slug": doc.get("slug")}
+    # LIFECYCLE FIRST, because it is the fact that overrides the rest: a deck in
+    # a pile has no sleeved list and no working version, and a reader scanning
+    # this file should meet that before the numbers it invalidates.
+    if LIFECYCLE_KEY in doc:
+        ordered[LIFECYCLE_KEY] = doc[LIFECYCLE_KEY]
     if BASELINE_KEY in doc:
         ordered[BASELINE_KEY] = doc[BASELINE_KEY]
     if PAPER_KEY in doc:

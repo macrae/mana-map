@@ -66,7 +66,13 @@ STAGES = [
      "/analyze-engine {slug}"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier",
      "/resolve-stack — one board, one rules domain, cited"),
-    ("tutors",     "tutor_guide.json",       None,  False, "the tutor guide — `tutor-guide`",
+    # `decklist_sha256` and its two spellings, same as the frame: the guide is
+    # agent-written and the producers have not agreed on a key. `None` here
+    # meant no staleness check AT ALL on an artifact whose entire content is
+    # card names — the thing most certain to rot when a list moves.
+    ("tutors",     "tutor_guide.json",
+     "decklist_sha256|decklist_sha256_prefix|decklist_sha256_12",
+     False, "the tutor guide — `tutor-guide`",
      "/write-manual — the tutor guide is one of pilot-notes' artifacts"),
     ("prose",      "manual_prose.json",
      "decklist_sha256_prefix|decklist_sha256_12|as_of_decklist_sha256|decklist_sha256",
@@ -217,11 +223,6 @@ def status(slug, validate=True):
                 ok, why = _validity(slug, ANNOTATIONS_FILE)
                 if ok is False:
                     state, detail = "INVALID", why
-        elif key == "engine":
-            verdict = ((doc or {}).get("critic") or {}).get("verdict")
-            detail = f"critic: {verdict or 'not run'}"
-            if verdict == "fail":
-                state = "unverified"
         elif sha_path and truth:
             stamped = _dig(doc, sha_path)
             if stamped and _stamp_is_stale(stamped, truth):
@@ -235,6 +236,29 @@ def status(slug, validate=True):
                 # in this state, and one of the three that WAS stamped had
                 # gone stale under a re-baseline with the row reading OK.
                 detail = detail or "unstamped — staleness cannot be checked"
+
+        # THE ENGINE'S CRITIC VERDICT, ADDED TO the staleness read rather than
+        # replacing it.
+        #
+        # This used to be an `elif key == "engine"` branch ABOVE the staleness
+        # check, so it short-circuited the chain: `STAGES` declares the engine's
+        # stamp path as `decklist_sha256` and that check could never run, on any
+        # deck, ever. The wiring was there and the current flowed nowhere.
+        #
+        # What it cost: edgar-vampires' `engine.json` named twelve cards the
+        # deck stopped running the day the bloodline branch merged, and the row
+        # read `OK  engine  critic: pass` for a week. Only a hand audit found it.
+        # A model that describes a different list is stale whatever its critic
+        # thought of it — the critic signed off on the OLD deck.
+        if key == "engine":
+            verdict = ((doc or {}).get("critic") or {}).get("verdict")
+            critic = f"critic: {verdict or 'not run'}"
+            detail = f"{detail} · {critic}" if detail else critic
+            # STALE outranks it, same rule the validity check below follows: an
+            # engine built against another decklist is wrong for a reason the
+            # critic never looked at.
+            if verdict == "fail" and state == "present":
+                state = "unverified"
 
         # Validity LAST, and only for an artifact that is otherwise fine.
         # STALE already outranks it: an artifact built against another decklist
@@ -310,6 +334,12 @@ VALIDATED = {
     # branch is graded against and the pilot's acceptance of it, and nothing
     # checked either until `propose` shipped.
     "branch.json": "manamap.pilot.validate_branch",
+    # THE LAST TRACKED PILOT ARTIFACT THAT HAD NO GATE (#24) — and it held the
+    # most load-bearing authored claim in the repo the whole time: `paper`, the
+    # assertion that one exact 99 is sleeved, which is the predicate the front
+    # door filters on. It earned a gate when it grew `lifecycle`, whose new
+    # invariant is that the two cannot both be set.
+    "deck_versions.json": "manamap.pilot.validate_deck_versions",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
     # NOT a lifecycle stage, and that is exactly why it was missing: the test
@@ -320,6 +350,16 @@ VALIDATED = {
     # no stage as a GATE row, so it belongs here.
     "build_plan.json": "manamap.pilot.validate_build",
     "log_annotations.json": "manamap.pilot.validate_debrief",
+    # A GATE ROW, NOT A STAGE — deliberately. The stage list is the sequence a
+    # deck advances through, and a captain's log is not a step toward a finished
+    # deck: it is a record of a night, and it does not go stale when the deck
+    # changes. Putting it in STAGES would put "N/16" on every deck and mark it
+    # incomplete for nights that have not happened.
+    "captains_log.json": "manamap.pilot.validate_captains_log",
+    # The pilot's own claim about how each game ended, joined to the log by id.
+    # Authored, tracked, and joined to a file that only grows — the shape that
+    # goes quietly wrong, which is why it earned a gate on the day it shipped.
+    "log_causes.json": "manamap.pilot.validate_log_causes",
     "pending.json": "manamap.pilot.validate_pending",
     "strategic_frame.json": "manamap.pilot.validate_strategic_frame",
     "tutor_guide.json": "manamap.pilot.validate_tutor_guide",
