@@ -604,6 +604,24 @@ them will skip.
 commit. That is still true — but the gate belongs on the artifact's SHAPE and
 its producing function, never on one experimental deck's numbers.
 
+### THE THIRTEEN RED TESTS, and the issue each one lives in
+
+`make test` is 13 red and every one is tracked. None is a mystery and none is
+hand-patchable:
+
+| what | n | issue |
+|---|---|---|
+| agent artifacts naming cut cards (`engine`, `tutor_guide` x2 each) | 4 | #36, and #15 / #13 for the deck-specific halves |
+| stale `diagnosis.json` (gishath, goblin-storm, heliod, yawgmoth) | 4 | #20 |
+| `deck_info` panel, downstream of heliod's diagnosis | 1 | #20 |
+| a test naming one deck as an example of a property the merge changed | 3 | #35 |
+| Edgar's goldfish runaway guard — a REAL finding on a sleeved deck | 1 | #34 |
+
+Also filed from this session: #37 (a producer and its validator disagree about
+what an unavailable block may carry), #38 (CardBERT's regions are unnamed),
+#39 (six un-debriefed games and Edgar's recorded direction change), #40 (VICReg,
+built and unrun, with the ablation that justifies it).
+
 ### THE ORDER OF TASKS — set by the pilot, 2026-09-01
 
 **Modelling first, agents after.** Six logged games are un-debriefed and stay that
