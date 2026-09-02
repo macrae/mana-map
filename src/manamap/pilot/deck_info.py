@@ -32,10 +32,11 @@ only git while `deck_audit` needs the gitignored corpus.
 import json
 
 from manamap.pilot import deck_facts as facts_mod
+from manamap.pilot import deck_model as dm
 from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_json
-from manamap.pilot.deck_notes import annotations, read_log
+from manamap.pilot.deck_notes import annotations, causes, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
 from manamap.sim.experiment import list_all as experiments_of
 from manamap.sim.forge import list_runs as sim_runs
@@ -43,6 +44,112 @@ from manamap.sim.forge import list_runs as sim_runs
 
 def _pct(x):
     return None if x is None else round(100 * float(x))
+
+
+def _goldfish_block(base):
+    """The goldfish, as a MODEL BLOCK — weighted, defined, intervals attached.
+
+    THE PANEL THIS FEEDS WAS 3,833 PIXELS TALL AND CLAIMED NO HEADLINE. It
+    rendered every target, every turn and every assumption at full length,
+    because nothing upstream had an opinion about which two figures a pilot came
+    for. `deck_model.block` now refuses more than four headlines, and everything
+    else is `body` or `detail` — so the same data cannot render as a wall
+    whatever the renderer does.
+
+    Runs beside the legacy `_goldfish()` roll-up, which `info.json` keeps until
+    every panel reads the model.
+    """
+    doc = load_json(base / "goldfish_metrics.json")
+    if not doc:
+        return dm.block("Goldfish", {"run": dm.absent(
+            "no goldfish_metrics.json — run `manamap pilot goldfish <slug>`")},
+            tier="data", source="goldfish_metrics.json")
+    m = doc.get("metrics") or {}
+    meta = doc.get("meta") or {}
+    cmd = m.get("commander") or {}
+    combat = m.get("combat") or {}
+    facts = {}
+
+    if cmd.get("cast_by_turn_6_rate") is not None:
+        facts["commander_by_t6"] = dm.figure(
+            _pct(cmd["cast_by_turn_6_rate"]), tier="data", weight="headline",
+            unit="%", n=m.get("iterations"), source="goldfish_metrics.json",
+            definition="share of seeded games where the commander was CAST by "
+                       "turn six — cast, not drawn")
+    else:
+        facts["commander_by_t6"] = dm.absent("the model did not measure the commander")
+
+    if combat.get("median_kill_turn") is not None:
+        facts["kill_turn"] = dm.figure(
+            combat["median_kill_turn"], tier="data", weight="headline",
+            unit="turn", n=m.get("iterations"), source="goldfish_metrics.json",
+            definition="MEDIAN turn the goldfish kills on, not the mean — a mean "
+                       "over a skewed sample is a true number describing no game")
+    else:
+        facts["kill_turn"] = dm.absent(
+            "combat is opt-in and this deck has not been re-baselined for it "
+            "(`model_combat` in goldfish.py)")
+
+    if cmd.get("mean_cast_turn") is not None:
+        facts["commander_mean_turn"] = dm.figure(
+            cmd["mean_cast_turn"], tier="data", weight="body", unit="turn",
+            source="goldfish_metrics.json",
+            definition="mean turn the commander is first cast")
+    for t in (m.get("targets") or []):
+        if t.get("by_turn_6_rate") is None:
+            continue
+        facts["target:" + str(t.get("label"))] = dm.figure(
+            _pct(t["by_turn_6_rate"]), tier="data", weight="body", unit="%",
+            source="goldfish_metrics.json",
+            definition=f"share of games assembling {t.get('label')!r} by turn six")
+
+    # THE ASSUMPTIONS ARE DETAIL, NOT BODY — 28 strings on ur-dragon. They must
+    # travel with the figures (a model's stated assumptions are the model) and
+    # they must never be what a reader scrolls through to reach the numbers.
+    if meta.get("model_assumptions"):
+        facts["assumptions"] = dm.figure(
+            list(meta["model_assumptions"]), tier="data", weight="detail",
+            source="goldfish_metrics.json",
+            definition="what the seeded model does NOT do; an assumption stated "
+                       "is a model, one hidden is a guess")
+    # THE PER-TURN CURVES. `detail` on the dossier — a three-row, ten-column
+    # table is not what a pilot opens the page for — and the chart material for
+    # the handbook's Performance section, which is the whole reason one model
+    # feeds both.
+    oh = m.get("opening_hand") or {}
+    if oh.get("keep_first_seven_rate") is not None:
+        facts["keepable_sevens"] = dm.figure(
+            _pct(oh["keep_first_seven_rate"]), tier="data", weight="body",
+            unit="%", n=m.get("iterations"), source="goldfish_metrics.json",
+            definition="share of opening sevens the model would keep — two to "
+                       "five lands, up to two redraws")
+    for key, label, unit in (
+            ("mean_available_mana_by_turn", "mana_by_turn", "mana"),
+            ("land_drop_hit_rate_by_turn", "land_drops_by_turn", "rate"),
+            ("mean_bodies_by_turn", "bodies_by_turn", "creatures")):
+        if m.get(key):
+            facts[label] = dm.figure(
+                m[key], tier="data", weight="detail", unit=unit,
+                source="goldfish_metrics.json",
+                definition=f"{label.replace('_', ' ')}, turns one to ten")
+    if oh.get("first_seven_land_histogram"):
+        facts["opening_land_distribution"] = dm.figure(
+            oh["first_seven_land_histogram"], tier="data", weight="detail",
+            source="goldfish_metrics.json",
+            definition="lands in the opening seven, over every seeded hand")
+
+    if combat.get("kill_turn_histogram"):
+        facts["kill_distribution"] = dm.figure(
+            combat["kill_turn_histogram"], tier="data", weight="detail",
+            source="goldfish_metrics.json",
+            definition="how many of the seeded games killed on each turn")
+
+    return dm.block("Goldfish", facts, tier="data",
+                    source="goldfish_metrics.json",
+                    definition=f"{m.get('iterations') or '?'} seeded games, "
+                               f"seed {meta.get('seed')}; no blockers and no "
+                               f"opponent — a floor on speed, never a verdict "
+                               f"on board quality")
 
 
 def _goldfish(base):
@@ -149,6 +256,64 @@ def _branches(slug):
         return []
 
 
+# ── The engine, said in one word ─────────────────────────────────────────
+#
+# A VERDICT, WHICH THIS REPO NORMALLY REFUSES TO PUBLISH. The obsolescence index
+# is the standing lesson: it shipped a judgement ("Obsoleted By") over a measure
+# and **36.5% of 22,753 pairs failed a purely mechanical check** — the retrieval
+# half was fine, the judgement half was not. The rule that came out of it is that
+# a measure ships and THE PILOT SETS THE LINE.
+#
+# The cover sheet needs a word anyway: the whole point of a cover sheet is that
+# you absorb it in thirty seconds, and `0.4025 [0.3929, 0.4121]` is not a
+# thirty-second fact. So the word ships under three conditions, all of which the
+# obsolescence index lacked:
+#
+#   1. THE THRESHOLDS ARE A NAMED CONSTANT the pilot can move, right here.
+#   2. THE MEASURE TRAVELS WITH THE WORD — `rate`, `n` and `by_turn` are in the
+#      same block, so the reader never has to look it up and never has to guess
+#      what "HEALTHY" was computed from.
+#   3. ABSENT MEANS ABSENT. A deck with no diagnostic, or one whose engine block
+#      says `available: false`, gets NO WORD and a stated reason. It does not get
+#      WEAK — that would be a measurement of a deck nobody measured.
+#
+# The axis is "is the engine online by turn five", which is the one figure that
+# is about the machine rather than about any single card. Turn five because it is
+# where the diagnostic's own bottleneck analysis sits.
+ENGINE_HEALTH_TURN = "5"
+#: `(floor, word)` — highest floor that the rate clears wins. The pilot's line.
+ENGINE_HEALTH_BANDS = (
+    (0.60, "EXCEPTIONAL"),
+    (0.40, "HEALTHY"),
+    (0.20, "BRITTLE"),
+    (0.00, "WEAK"),
+)
+
+
+def engine_health(vitals):
+    """One word for the cover sheet, or None with a reason. Never a bare word."""
+    block = (vitals or {}).get("engine") or {}
+    if not vitals:
+        return None
+    if not block.get("available"):
+        return {"word": None, "why": block.get("why")
+                or "the engine was not modelled on this deck",
+                "basis": "diagnostic.json"}
+    row = (block.get("online_by_turn") or {}).get(ENGINE_HEALTH_TURN) or {}
+    rate = row.get("rate")
+    if rate is None:
+        return {"word": None,
+                "why": f"no engine-online rate at turn {ENGINE_HEALTH_TURN}",
+                "basis": "diagnostic.json"}
+    word = next(w for floor, w in ENGINE_HEALTH_BANDS if rate >= floor)
+    return {"word": word, "rate": rate, "ci95": row.get("ci95"), "n": row.get("n"),
+            "turn": int(ENGINE_HEALTH_TURN),
+            "bands": [[f, w] for f, w in ENGINE_HEALTH_BANDS],
+            "why": (f"the engine is online by turn {ENGINE_HEALTH_TURN} in "
+                    f"{rate:.0%} of {row.get('n', 0):,} seeded games"),
+            "basis": "diagnostic.json"}
+
+
 def compose(slug, verify=False):
     """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
 
@@ -181,14 +346,38 @@ def compose(slug, verify=False):
     engine = load_json(base / "engine.json") or {}
     diag = load_json(base / "diagnosis.json") or {}
 
+    # THE MODEL. One composed structure both surfaces read; no renderer touches a
+    # raw artifact. Built beside the legacy roll-ups until every panel is
+    # converted, so the page never renders half-shaped.
+    model = {"goldfish": _goldfish_block(base)}
+
     cur = next((v for v in vdoc["versions"] if v["version"] == vdoc["current_version"]), None)
     record = {"games": len(log),
               "win": sum(1 for e in log if e.get("result") == "win"),
               "loss": sum(1 for e in log if e.get("result") == "loss"),
               "draw": sum(1 for e in log if e.get("result") == "draw"),
               "last_played": max((e["at"][:10] for e in log), default=None),
+              # DATE FIRST BOOKED — the cover sheet's one biographical fact, and
+              # it is not derivable from anything else: a deck's directory is
+              # created when the BUILD starts, not when it first hit a table.
+              "first_played": min((e["at"][:10] for e in log), default=None),
               "undebriefed": [e["id"] for e in log if e["id"] not in done]}
+    # HOW EACH GAME ENDED, folded in by id — authored, see `deck_notes.CAUSES`.
+    # Counted HERE rather than in the browser so the per-game rows and the
+    # roll-up beneath them cannot disagree about the vocabulary they count.
+    _causes = causes(slug)
+    record["causes"] = {e["id"]: _causes[e["id"]]["cause"]
+                        for e in log if e["id"] in _causes}
+    record["cause_counts"] = {
+        c: sum(1 for v in record["causes"].values() if v == c)
+        for c in sorted(set(record["causes"].values()))}
     lines = engine.get("lines") or []
+    # A GATE ROW IS NOT A STAGE, and its `stage` is the literal "—".
+    stage_rows = [r for r in rows if r["stage"] != "—"]
+
+    def _name(r):
+        return r["stage"] if r["stage"] != "—" else r["artifact"]
+
     life = deck_lifecycle(slug)
     info = {
         "slug": slug,
@@ -201,14 +390,33 @@ def compose(slug, verify=False):
                     "date": cur["first_date"] if cur else None,
                     "tags": cur["tags"] if cur else [],
                     "uncommitted": vdoc["current_version"] is None and bool(vdoc["versions"])},
-        "status": {"complete": sum(1 for r in rows if r["state"] == "present"),
-                   "of": len(rows),
-                   "stale": [r["stage"] for r in rows if r["state"] == "STALE"],
+        # STAGES ONLY IN THE DENOMINATOR. `deck_status.status()` returns two
+        # kinds of row: the lifecycle STAGES, and GATE rows for artifacts that
+        # have a validator but no step in building a deck. `deck_status` itself
+        # excludes the gates from its count — "counting them would make 13/15
+        # become 13/17 and a deck look less finished for having MORE evidence,
+        # which is backwards" (deck_status.py:483-485) — and this counted all of
+        # them, so the two commands printed different fractions for one deck and
+        # decks were being compared against different totals (14/20, 14/19,
+        # 14/17, 8/16).
+        #
+        # It went unnoticed while the gate set was stable and bit the moment one
+        # was added: registering `deck_versions.json` in `VALIDATED` moved every
+        # deck's denominator by one with no new stage in sight.
+        #
+        # `_name(r)` for the same reason: a gate row's `stage` is the literal
+        # "—", so `invalid` read `["—"]` on seven decks and `next` printed
+        # "1 artifact(s) fail their own gate (—)", naming nothing. The fleet
+        # view already had this fix (deck_status.py:386) and this did not.
+        "status": {"complete": sum(1 for r in stage_rows if r["state"] == "present"),
+                   "of": len(stage_rows),
+                   "stale": [_name(r) for r in rows if r["state"] == "STALE"],
                    # None, not [] — see `compose`'s docstring.
-                   "invalid": ([r["stage"] for r in rows if r["state"] == "INVALID"]
+                   "invalid": ([_name(r) for r in rows if r["state"] == "INVALID"]
                                if verify else None),
                    "verified": verify,
-                   "missing": [r["stage"] for r in rows if r["state"] == "missing"],
+                   "missing": [r["stage"] for r in stage_rows
+                               if r["state"] == "missing"],
                    # WHAT EACH ABSENT STAGE IS, AND HOW TO GET IT — carried from
                    # `deck_status.STAGES`, which is the one machine-readable
                    # statement of the lifecycle. The dossier made an absent
@@ -217,7 +425,7 @@ def compose(slug, verify=False):
                    # lookup table in JavaScript, which would be this sequence
                    # written down twice.
                    "todo": [{"stage": r["stage"], "what": r["what"], "how": r["how"]}
-                            for r in rows if r["state"] == "missing"]},
+                            for r in stage_rows if r["state"] == "missing"]},
         # THE BRIEF IS WHAT THE DECK IS TRYING TO BE, and it was a staged,
         # tracked artifact with nowhere to read it: `deck_status` reports it,
         # `build_deck` consumes it, and neither `info.json` nor the dossier had
@@ -273,7 +481,14 @@ def compose(slug, verify=False):
         # deck's sleeves.
         "paper": versions_mod.paper(slug),
         "record": record,
+        # THE COMPOSED MODEL — see `deck_model`. Both the dossier and the
+        # handbook read this; neither reads a raw artifact. `goldfish` below is
+        # the legacy roll-up and is deleted when the last panel converts.
+        "model": model,
         "goldfish": _goldfish(base),
+        # A VERDICT, travelling with its measure and its bands — see
+        # `engine_health`. Absent, never WEAK, when nothing was measured.
+        "engine_health": engine_health(vitals),
         "engine": {"thesis": engine.get("thesis"),
                    "critic": (engine.get("critic") or {}).get("verdict"),
                    "lines": len(lines),

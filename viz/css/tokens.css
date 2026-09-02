@@ -221,8 +221,27 @@ details.case .body { padding: 0 14px 14px; }
 .wb-card:hover { border-color: var(--y2k-blue); transform: translateY(-2px); }
 .wb-card.is-dead { opacity: .58; }
 .wb-card.is-dead:hover { opacity: 1; }
-.wb-art { width: 100%; aspect-ratio: 626 / 262; object-fit: cover; }
+.wb-art { width: 100%; aspect-ratio: 626 / 262; object-fit: cover; display: block; }
 .wb-art-none { background: var(--panel-hi); }
+
+/* THE VERSION, STAMPED ON THE ART. It was a chip in the row below, competing
+   with the game record and the branch count for the eye — and it is the deck's
+   IDENTITY rather than one more measurement, so it belongs on the picture.
+   Bottom-right: the art crops are commander portraits and the face is
+   left-of-centre far more often than not. */
+.wb-artwrap { position: relative; }
+.wb-stamp {
+  position: absolute; right: 8px; bottom: 8px;
+  font-family: var(--condensed); font-size: 11px; letter-spacing: .04em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 3px;
+  /* Its own ground, not the panel's: it sits on a photograph, and a token
+     background would be legible over some art and invisible over the rest. */
+  background: rgba(11, 10, 20, .82); color: #E8E6EF;
+  border: 1px solid rgba(255, 255, 255, .18);
+  display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+}
+.wb-stamp.is-ok   { border-color: var(--tier-verified); color: var(--tier-verified); }
+.wb-stamp.is-warn { border-color: var(--tier-coach);    color: var(--tier-coach); }
 .wb-body { padding: 12px 14px 14px; }
 .wb-body h3 {
   font-family: var(--condensed); text-transform: uppercase; font-size: 16px;
@@ -249,6 +268,32 @@ details.case .body { padding: 0 14px 14px; }
 }
 .wb-empty code { color: var(--ink); font-family: var(--type); }
 
+/* THE ARCHIVE FOLDS. Every other rack is a queue — things to do — and this one
+   is the rack of things that are finished. Left open it was the largest block on
+   the page and the last thing under the eye, so the front door's closing note
+   was work the pilot had deliberately stopped doing.
+
+   The <summary> carries the heading, so the count is readable while it is shut
+   and the disclosure triangle is the only thing added. `list-style` is removed
+   on both engines and replaced with a rotating caret, because the native marker
+   sits on the first line of a two-line summary and reads as a bullet. */
+.wb-fold { margin: 0 0 40px; }
+.wb-fold > summary {
+  cursor: pointer; list-style: none; padding-left: 22px; position: relative;
+}
+.wb-fold > summary::-webkit-details-marker { display: none; }
+.wb-fold > summary::before {
+  content: '\25B8'; position: absolute; left: 2px; top: 1px;
+  color: var(--ink-soft); transition: transform .12s;
+}
+.wb-fold[open] > summary::before { transform: rotate(90deg); }
+.wb-fold > summary h2 { margin-bottom: 4px; }
+.wb-fold > summary:hover h2 { color: var(--y2k-blue); }
+/* The blurb is the fold's own explanation and is worth reading before opening
+   it, so it stays inside the summary rather than moving into the body. */
+.wb-fold > summary .wb-blurb { margin-bottom: 0; }
+.wb-fold[open] > summary .wb-blurb { margin-bottom: 16px; }
+
 /* NOTHING ON THIS CARD IS AN IMPLICIT TARGET. The card used to be one big link
    to the dossier, because "a card that opens two different things depending on
    where you click is the interaction bug the atlas already fixed once." That
@@ -265,6 +310,24 @@ details.case .body { padding: 0 14px 14px; }
 }
 .wb-links a { color: var(--y2k-blue); text-decoration: none; }
 .wb-links a:hover { text-decoration: underline; }
+
+/* THE FLEET VERBS, and they are ABSENT rather than disabled without a local
+   server — `manamap serve` has an /api the deployed page does not, and a
+   control that cannot work must not render. See `workbench.js:actions`.
+
+   They sit at the far right of the link row, pushed there rather than given
+   their own bar: they are rarer than the three destinations beside them and
+   should not read as a fourth place to go. Delete is offered or absent, never
+   greyed and never annotated — a first cut marked the refusal with a small
+   "kept" and it rendered on nine of ten cards, which is chrome. */
+.wb-acts { margin-left: auto; display: flex; gap: 2px 12px; flex-wrap: wrap; }
+.wb-act {
+  font: inherit; cursor: pointer; padding: 0; border: 0; background: none;
+  color: var(--ink-soft); letter-spacing: inherit; text-transform: inherit;
+}
+.wb-act:hover:not(:disabled) { color: var(--ink); text-decoration: underline; }
+.wb-act:disabled { opacity: .5; cursor: default; }
+.wb-act.is-danger:hover:not(:disabled) { color: var(--stamp-red); }
 
 /* A measurement made against a list the deck no longer holds. Amber, not red:
    the figure is true about the games that were played — it just does not
@@ -751,6 +814,141 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
 .swap-act button:disabled { opacity: .5; cursor: default; }
 .panel.staged ul.cardlist li { font-variant-numeric: tabular-nums; }
 
+/* ── The dossier (deck.html) ─────────────────────────────────────────────
+   A file kept ABOUT a deck, not a report on one. The grammar is the dark
+   palette's, with three additions the record sections earn:
+
+     the STAMP      one word for what state the file is in, `--stamp-red` when
+                    the deck no longer exists, `--tier-verified` when it is
+                    sleeved and level with the repo
+     the TYPEWRITER `--type` (Special Elite, already loaded) on the record
+                    tables only — the rap sheet and the priors. It marks what is
+                    transcribed rather than composed, and using it everywhere
+                    would make it mean nothing
+     the HIGHLIGHT  `--burst-yellow` on the ONE figure per section that matters
+*/
+
+/* The cover sheet. Mugshot left, everything else right, and nothing below the
+   three numbers — the whole job of this section is to be absorbable before you
+   have decided whether to keep reading. */
+.cov { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+.cov-shot {
+  width: 100%; aspect-ratio: 626 / 457; object-fit: cover;
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+.cov-shot-none { background: var(--panel-hi); }
+.cov-main { min-width: 0; }
+.cov-stamp {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--condensed); text-transform: uppercase; font-weight: 700;
+  letter-spacing: .12em; font-size: 12px; padding: 3px 10px; border: 2px solid;
+  /* Rotated, because it is a stamp. Small angle: a file stamp is applied by
+     hand and is never quite square, and more than a couple of degrees reads as
+     a mistake rather than as a stamp. */
+  transform: rotate(-1.5deg); margin-bottom: 12px;
+}
+.cov-stamp.is-ok   { color: var(--tier-verified); border-color: var(--tier-verified); }
+.cov-stamp.is-warn { color: var(--tier-coach);    border-color: var(--tier-coach); }
+.cov-stamp.is-dead { color: var(--stamp-red);     border-color: var(--stamp-red); }
+.cov-stamp.is-open { color: var(--ink-soft);      border-color: var(--rule); }
+.cov-alias {
+  font-family: var(--display); text-transform: uppercase; font-size: 28px;
+  line-height: 1.05; margin-bottom: 2px;
+}
+.cov-sub { color: var(--ink-soft); font-size: 14px; margin-bottom: 12px; }
+.cov-book { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px;
+  margin: 0 0 14px; font-size: 13px; }
+.cov-book dt { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .06em; font-size: 11px; color: var(--ink-soft); }
+.cov-book dd { margin: 0; font-variant-numeric: tabular-nums; }
+/* THE MO. One line, and it is the only prose on the cover sheet. */
+.cov-mo { margin: 0 0 12px; font-size: 15px; line-height: 1.5;
+  border-left: 3px solid var(--tier-data); padding-left: 12px; }
+.cov-mo-none { border-left-color: var(--rule); color: var(--ink-soft); }
+.cov-brief { margin: -6px 0 12px; }
+/* The word and its measure, in one box so they cannot be quoted apart. */
+.cov-health { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  border: 1px solid var(--rule); border-radius: 3px; padding: 8px 12px;
+  margin-bottom: 14px; cursor: help; }
+.cov-health-w { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 700; font-size: 15px; }
+.cov-health-y { color: var(--ink-soft); font-size: 12.5px; }
+.cov-health.is-exceptional .cov-health-w { color: var(--tier-verified); }
+.cov-health.is-healthy     .cov-health-w { color: var(--tier-verified); }
+.cov-health.is-brittle     .cov-health-w { color: var(--tier-coach); }
+.cov-health.is-weak        .cov-health-w { color: var(--stamp-red); }
+.cov-health.is-none        .cov-health-w { color: var(--ink-soft); }
+.cov-nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.cov-num { border-top: 2px solid var(--rule); padding-top: 8px; }
+.cov-k { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .06em; font-size: 10.5px; color: var(--ink-soft); }
+.cov-v { font-family: var(--display); font-size: 24px; line-height: 1.1;
+  color: var(--burst-yellow); font-variant-numeric: tabular-nums; }
+.cov-v .ev { font-family: var(--body); font-size: 13px; color: var(--ink-soft); }
+.cov-note { font-size: 11px; color: var(--ink-soft); }
+@media (max-width: 720px) {
+  .cov { grid-template-columns: 1fr; }
+  .cov-shot { max-width: 260px; }
+  .cov-nums { grid-template-columns: 1fr; }
+}
+
+/* The record tables — the rap sheet and the priors. TYPEWRITER, because these
+   are transcribed rather than composed, and that is the one distinction the
+   face is here to draw. */
+.rap-wrap { overflow-x: auto; }
+.rap { border-collapse: collapse; width: 100%; font-size: 13px;
+  font-family: var(--type); }
+.rap th, .rap td { text-align: left; vertical-align: top;
+  padding: 9px 14px 9px 0; border-bottom: 1px solid var(--rule); }
+.rap thead th { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .06em; font-size: 10.5px; color: var(--ink-soft);
+  border-bottom-color: var(--ink-soft); white-space: nowrap; }
+.rap tbody th { font-weight: 700; white-space: nowrap; }
+.rap tr.rap-now { background: rgba(255, 216, 0, .05); }
+.rap tr.rap-now > th { color: var(--burst-yellow); }
+.rap-when { white-space: nowrap; color: var(--ink-soft);
+  font-variant-numeric: tabular-nums; }
+.rap-diff { min-width: 320px; max-width: 40ch; }
+.rap-why { min-width: 260px; line-height: 1.5; }
+.rap-obs { white-space: nowrap; }
+.rap-side { margin-bottom: 6px; }
+.rap-side-k { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .06em; font-size: 10px; color: var(--ink-soft);
+  display: block; }
+/* INLINE AND WRAPPING. One name per line is right for a three-card patch and a
+   wall for a real one — v1.0.2 moved 18 in and 17 out, which is 35 lines in a
+   table cell. A cut card keeps its name struck through rather than vanishing:
+   what LEFT a deck is half of what a version is. */
+.rap-cards { list-style: none; margin: 0; padding: 0; font-size: 12px;
+  line-height: 1.6; }
+.rap-cards li { display: inline; }
+.rap-cards li:not(:last-child)::after { content: ', '; color: var(--ink-soft);
+  text-decoration: none; }
+.rap-more { color: var(--ink-soft); font-style: italic; }
+.rap-cards li.rap-in { color: var(--ink); }
+.rap-cards li.rap-out { color: var(--ink-soft); text-decoration: line-through;
+  text-decoration-color: var(--stamp-red); }
+
+.rap-foot { margin-top: 12px; }
+/* The date, pod, version and result are all short and fixed; "how it ended"
+   is the column with something to say, so it takes what is left rather than
+   the four of them sharing the measure equally. */
+.pri th, .pri td:nth-child(-n+4) { white-space: nowrap; width: 1%; }
+.pri td:last-child { width: auto; padding-left: 24px; }
+.pri-win  { color: var(--tier-verified); font-weight: 700; }
+.pri-loss { color: var(--stamp-red); font-weight: 700; }
+.pri-draw { color: var(--ink-soft); font-weight: 700; }
+.pri-cause { font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .05em; font-size: 11px; color: var(--ink); }
+.pri-roll { margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* The assessment. Last and separate — a file where the analyst's opinion sits
+   inside the record loses trust. */
+.as-head { border-left: 3px solid var(--tier-coach); padding-left: 14px;
+  margin-bottom: 14px; }
+.as-verdict { font-size: 16px; line-height: 1.5; }
+.as-stale { color: var(--ink-soft); font-size: 13px; }
+
 /* ── The case file (deck.html) ───────────────────────────────────────────
  *
  * The top of the dossier, and it describes the CHECKED-IN LIST ONLY. This page
@@ -777,6 +975,36 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
 .log-todo { color: var(--burst-yellow); }
 .log-last { margin: .3rem 0; line-height: 1.5; }
 details.log-all { margin-top: .7rem; }
+
+/* THE CAPTAIN'S LOG — the ship's log first, the pilot's own note behind it.
+ * `pre-wrap` is load-bearing on both: the raw notes are 5-8 paragraphs separated
+ * by `\n\n` and rendered as one unbroken block for as long as this section has
+ * existed, because nothing in this file ever preserved the newlines. */
+.pl { margin: 1.4rem 0 2rem; }
+.pl-head {
+  font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+}
+.pl-body p { white-space: pre-wrap; margin: 0 0 0.9rem; }
+.pl-body h4 {
+  font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--muted); margin: 1.1rem 0 0.35rem; font-weight: 600;
+}
+.pl-station {
+  font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin-right: 0.4rem;
+}
+.pl-coda { font-style: italic; }
+/* A supplemental is an entry appended to a night already logged, so it reads as
+ * subordinate to it rather than as a second log. */
+.pl-sup { margin-left: 1rem; padding-left: 1rem; border-left: 2px solid var(--rule); }
+.pl-todo { margin-top: 1.5rem; }
+details.log-raw { margin: 0.6rem 0; }
+details.log-raw > summary {
+  cursor: pointer; font-size: 0.78rem; color: var(--muted);
+}
+.log-raw-text { white-space: pre-wrap; }
+
 details.log-all > summary { cursor: pointer; font-size: .8rem;
                             letter-spacing: .06em; text-transform: uppercase;
                             color: var(--ink-soft); }
@@ -864,3 +1092,42 @@ ul.difflist .chip.count { color: var(--ink-soft); }
    glyph says so faster than the word does. Sized down because an emoji at full
    size outweighs the text it introduces. */
 .wb-pin { font-size: .85em; opacity: .8; margin-right: 1px; }
+
+/* ── THE MODEL RENDERER ──────────────────────────────────────────────────
+ * One weighting, two surfaces. `deck_model` marks every fact headline / body /
+ * detail; this is what that looks like on the dossier. The rule the styling has
+ * to carry is that a headline reads at a glance and a detail is never inline. */
+.m-head { margin: 0 0 1.1rem; }
+.m-head .m-v {
+  font-family: var(--techno); font-size: 2.1rem; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.m-head .m-ci, .m-head .m-n { font-size: .75rem; color: var(--ink-soft); margin-left: .4rem; }
+.m-head .m-k {
+  display: block; font-size: .72rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-soft); margin-top: .25rem;
+}
+/* THE DEFINITION TRAVELS WITH THE FIGURE. Not a tooltip on the headline — a
+ * number a reader has to hover to understand is a number they will guess at. */
+.m-head .m-def { display: block; font-size: .8rem; color: var(--ink-soft); margin-top: .3rem; }
+.m-body { margin: .8rem 0; }
+.m-row {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: .28rem 0; border-bottom: 1px solid var(--rule);
+}
+.m-row .m-rk { color: var(--ink-soft); }
+.m-row .m-rv { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.m-absent { font-size: .85rem; color: var(--ink-soft); font-style: italic; }
+details.m-detail > summary { cursor: pointer; font-size: .8rem; color: var(--ink-soft); }
+.m-detail .m-d { margin: .9rem 0; }
+.m-detail .m-list { margin: .3rem 0 0 1rem; font-size: .82rem; }
+.m-detail .data { overflow-x: auto; display: block; }
+.m-scope { margin-top: 1rem; font-style: italic; }
+details.pl-older > summary {
+  cursor: pointer; font-size: .8rem; color: var(--ink-soft);
+  margin: 1.4rem 0 .6rem; letter-spacing: .06em; text-transform: uppercase;
+}
+details.rost-fold > summary {
+  cursor: pointer; font-size: .78rem; color: var(--ink-soft);
+  margin: .1rem 0 .5rem;
+}

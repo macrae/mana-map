@@ -83,3 +83,65 @@ FROM_DEPARTMENT = {
     "the-numbers": ("by-the-numbers", "sources-say"),
     "the-record": ("judges-desk",),
 }
+
+
+# ── The dossier: nine sections of a file kept ABOUT a deck ───────────────
+#
+# `SECTIONS` above is the printable MANUAL — a document you read to learn how to
+# pilot a deck, written for a reader who has never seen it. This is the DOSSIER:
+# `viz/deck.html`, the file the custodian keeps. Different question, different
+# order, and the difference is worth stating because the two lists look alike.
+#
+# A dossier is not a report. A report has a conclusion; a dossier has a LATEST
+# ENTRY. Its properties, each of which one section below exists to hold:
+#
+#   accretive        rows are added, never rewritten — the rap sheet
+#   dated            every item says when, so you can ask what we knew then
+#   provenance       every figure names the artifact it came from
+#   facts apart      measurements are filed separately from the analyst's read
+#   a cover sheet    thirty seconds at the top, the depth behind it
+#   open leads       unresolved questions are IN the file, not a footnote
+#
+# The failure modes are the opposite of each property, and the sharpest is the
+# fourth: a dossier where the analyst's opinion is mixed into the record loses
+# trust. That is why `assessment` is last and separate rather than annotating the
+# vitals — and it is what the existing page got wrong, rendering the diagnosis
+# verdict as one inline sentence inside the audit panel.
+#
+# ORDER IS THE COVER SHEET FIRST AND THE ASSESSMENT LAST, deliberately. The
+# pilot's own test of whether this works: pull the file for a deck you have not
+# played in two months and, from the cover sheet and the rap sheet ALONE, say
+# what it does, whether it is healthy, and what you were about to try next.
+DOSSIER_SECTIONS = [
+    ("cover", "Cover sheet",
+     "Who, what state, and the three numbers. Thirty seconds.",
+     ("data",)),
+    ("rap-sheet", "Rap sheet",
+     "Every version this deck has been: what changed, why, and what happened.",
+     ("data", "coach")),
+    ("associates", "Known associates",
+     "The 99 by the job each card does, and the ones that decide games.",
+     ("data",)),
+    ("vitals", "Vitals",
+     "The seeded measurements, and what they do not model.",
+     ("data",)),
+    ("priors", "Priors",
+     "Every game played, one row, with how it ended.",
+     ("coach",)),
+    ("logs", "Captain's logs",
+     "The night as a ship's log; the pilot's own words underneath, unedited.",
+     ("coach",)),
+    ("exhibits", "Exhibits",
+     "The evidence, attached whole and stamped with the list it describes.",
+     ("verified", "data")),
+    ("leads", "Open leads",
+     "What is unresolved, and which loop would settle it.",
+     ("coach",)),
+    ("assessment", "Analyst's assessment",
+     "The custodian's current read, dated. Previous reads kept underneath.",
+     ("coach",)),
+]
+
+DOSSIER_IDS = [s[0] for s in DOSSIER_SECTIONS]
+DOSSIER_BY_ID = {s[0]: {"title": s[1], "promise": s[2], "tiers": s[3]}
+                 for s in DOSSIER_SECTIONS}

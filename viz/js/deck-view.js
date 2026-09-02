@@ -13,6 +13,59 @@
 
   var BASE = '../data/decks/';
 
+  /* THE NINE SECTIONS OF THE FILE, mirrored from `page_spec.DOSSIER_SECTIONS`.
+   *
+   * A dossier is not a report. A report has a conclusion; a dossier has a LATEST
+   * ENTRY, and its order encodes that: the cover sheet is thirty seconds at the
+   * top, the assessment is last and SEPARATE — because a file where the
+   * analyst's opinion is mixed into the record loses trust, which is exactly
+   * what the old page did by rendering the diagnosis verdict as one inline
+   * sentence inside the audit panel.
+   *
+   * PYTHON OWNS THE ORDER. This is a transcription and a test locks the two
+   * together, the same contract `decklist.js` lives under — because the order
+   * used to be an anonymous array literal down in `render()` with no statement
+   * of it anywhere. */
+  var DOSSIER = [
+    ['cover', 'Cover sheet',
+     'Who, what state, and the three numbers. Thirty seconds.', ['data']],
+    ['rap-sheet', 'Rap sheet',
+     'Every version this deck has been: what changed, why, and what happened.',
+     ['data', 'coach']],
+    ['associates', 'Known associates',
+     'The 99 by the job each card does, and the ones that decide games.', ['data']],
+    ['vitals', 'Vitals',
+     'The seeded measurements, and what they do not model.', ['data']],
+    ['priors', 'Priors',
+     'Every game played, one row, with how it ended.', ['coach']],
+    ['logs', "Captain's logs",
+     "The night as a ship's log; the pilot's own words underneath, unedited.", ['coach']],
+    ['exhibits', 'Exhibits',
+     'The evidence, attached whole and stamped with the list it describes.',
+     ['verified', 'data']],
+    ['leads', 'Open leads',
+     'What is unresolved, and which loop would settle it.', ['coach']],
+    ['assessment', "Analyst's assessment",
+     "The custodian's current read, dated. Previous reads kept underneath.",
+     ['coach']]
+  ];
+
+  function sect(id) {
+    for (var i = 0; i < DOSSIER.length; i++) {
+      if (DOSSIER[i][0] === id) return DOSSIER[i];
+    }
+    return [id, id, '', []];
+  }
+
+  /* A dossier section, as opposed to `panel()`'s reference panel. Same shell —
+   * so the tier badges, the `--accent` hook and every existing style keep
+   * working — with the title and promise coming from the registry rather than
+   * from the call site, which is what stops the two drifting. */
+  function section(id, accent, body) {
+    var sp = sect(id);
+    return panel(id, sp[1], sp[2], sp[3], accent, body);
+  }
+
   // Panels are optional by design: a deck without decisions or a build plan shows
   // fewer panels, never an error.
   var FILES = {
@@ -25,6 +78,10 @@
     // with the command that owns each figure. `cards.json` was fetched here for
     // years and read by nothing; it is gone.
     info: 'info.json', engine: 'engine.json', versions: 'versions.json',
+    // HOW EACH GAME ENDED — authored by the pilot, keyed by log entry id.
+    // Separate from `log.jsonl` because that file is append-only and eleven
+    // games were logged before the field existed.
+    causes: 'log_causes.json',
     // Fixed filename, so no manifest entry is needed — the browser cannot
     // list `threat/` but it does not have to.
     targeting: 'threat/targeting.json'
@@ -76,8 +133,15 @@
     return '<div class="facts"><dl>' + rows + '</dl></div>';
   }
 
+  /* SECTIONS THAT MUST NOT SHARE A COLUMN. `.panels` is a two-column grid, and
+   * a record TABLE in one column wraps every cell into a stack — the rap sheet
+   * rendered its card names one per line down a 250px column and read as a
+   * wall. Membership is a property of the content, not of the id, but the id is
+   * what the caller has. */
+  var WIDE = { kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1 };
+
   function panel(id, title, promise, tiers, accent, body) {
-    return '<section class="panel' + (id === 'kill' || id === 'ten' ? ' wide' : '') +
+    return '<section class="panel' + (WIDE[id] ? ' wide' : '') +
       '" id="panel-' + id + '" style="--accent:' + accent + '">' +
       '<h2>' + esc(title) + '</h2>' +
       '<div class="promise">' + esc(promise) + ' ' +
@@ -373,7 +437,7 @@
     var got = rosterFor(d);
     var map = got.map;
     if (!map || !map.cards || !map.regions)
-      return absent('roster', 'The roster', 'Every card, grouped by what it is like.',
+      return absent('associates', sect('associates')[1], sect('associates')[2],
                     '#8a7fd0', 'map', d);
     var prov = {};
     (got.branch ? got.branch.cards : []).forEach(function (r) { prov[r.name] = r; });
@@ -400,10 +464,15 @@
         '<span class="rost-chip"></span>' + esc(r.label || r.fallback || r.id) +
         '<span class="rost-count">' + members.length + '</span>' + seal + '</h3>';
       if (r.gloss) body += '<p class="rost-gloss">' + esc(r.gloss) + '</p>';
-      body += '<ul class="rost-list">' + members.map(function (c) {
+      /* THE MEMBERS FOLD, PER CITY. Ninety-nine cards inline is 3,111 pixels,
+       * and the roster's job is to show the deck's SHAPE — which cities exist,
+       * how big each is, what each is for. Folding per city rather than all at
+       * once keeps it scannable: you open the one you came for. */
+      body += '<details class="rost-fold"><summary>' + members.length
+        + ' card(s)</summary><ul class="rost-list">' + members.map(function (c) {
         seen[c.name] = 1;
         return cardRef(c.name, prov[c.name]);
-      }).join('') + '</ul>';
+      }).join('') + '</ul></details>';
     });
     // A CARD THE MAP COULD NOT PLACE STILL GETS A SEAT. `render_the_99` ends
     // with the same group, and a roster that silently drops a card is worse
@@ -414,9 +483,10 @@
     if (stray.length) {
       body += '<h3 class="rost-city rost-stray"><span class="rost-chip"></span>Unplaced' +
         '<span class="rost-count">' + stray.length + '</span></h3>' +
-        '<ul class="rost-list">' + stray.map(function (c) {
+        '<details class="rost-fold"><summary>' + stray.length
+        + ' card(s)</summary><ul class="rost-list">' + stray.map(function (c) {
           return cardRef(c.name, prov[c.name]);
-        }).join('') + '</ul>';
+        }).join('') + '</ul></details>';
     }
     var cmdr = map.cards.filter(function (c) { return c.commander; });
     if (cmdr.length)
@@ -427,7 +497,10 @@
     var promise = got.branch
       ? 'Every card in the candidate list, and where it comes from.'
       : 'Every card, grouped by what it is like.';
-    return panel('roster', title, promise, [], '#8a7fd0', body);
+    // Title still carries the branch name when one is being viewed; the
+    // registry supplies the promise and the tier.
+    return panel('associates', title, sect('associates')[2],
+                 sect('associates')[3], '#8a7fd0', body);
   }
 
   /* ── THE VITALS ────────────────────────────────────────────────────────
@@ -463,9 +536,19 @@
 
   function vitalsPanel(d) {
     var v = (d.info || {}).diagnostic;
-    if (!v) return absent('vitals', 'The vitals',
-                          'Engine online, stall risk and the mana under both.',
-                          '#4c8fbd', 'diagnostic', d);
+    /* `diagnostic.json` IS NOT A LIFECYCLE STAGE — it is a gated artifact with
+     * no `STAGES` row, so `absent()` finds no todo for it and returns ''. That
+     * made the vitals tab vanish on NINE OF TEN decks: only ur-dragon has been
+     * diagnosed, and the other nine said nothing about the difference between
+     * "healthy" and "never measured". Named here instead. */
+    if (!v) {
+      return section('vitals', '#4c8fbd',
+        '<p class="ev">Not measured. The vitals are the seeded diagnostic — ' +
+        'engine online by turn, stall risk, and the mana under both — and ' +
+        'nothing has run it against this list. ' +
+        '<code>manamap pilot diagnose ' + esc((d.info || {}).slug || '') +
+        ' --write</code></p>');
+    }
     var out = '';
     var e = v.engine || {};
     out += '<h3>Engine</h3>';
@@ -621,46 +704,105 @@
                  ['data'], 'var(--y2k-blue)', body);
   }
 
-  function goldfishPanel(d) {
-    var g = d.goldfish;
-    if (!g) return absent('goldfish', 'The goldfish', 'Seeded Monte Carlo over resource development.',
-      'var(--tier-data)', 'goldfish', d, 'how fast it develops, over 10,000 seeded games');
-    var m = g.metrics || {}, meta = g.meta || {};
-    var oh = m.opening_hand || {}, cmd = m.commander || {};
-    var targets = (m.targets || []).map(function (t) {
-      return meter(t.label, t.by_turn_6_rate, 'var(--tier-coach)');
-    }).join('');
-    var turns = Object.keys(m.land_drop_hit_rate_by_turn || {})
-      .sort(function (a, b) { return +a - +b; });
-    var row = function (label, fn) {
-      return '<tr><th>' + label + '</th>' + turns.map(function (t) {
-        return '<td>' + fn(t) + '</td>';
-      }).join('') + '</tr>';
+  /* THE MODEL RENDERER. One function for every converted panel.
+   *
+   * The dossier's four fattest panels were 3,000-4,000px because nothing
+   * upstream had an opinion about what mattered, so each rendered its artifact
+   * at whatever length it happened to be. `deck_model` now weights every fact
+   * headline / body / detail, and this is the only thing that reads that
+   * weighting: headline large and inline, body compact, detail behind a
+   * disclosure. A panel CANNOT dump its artifact any more, whatever it wants. */
+  function factValue(f) {
+    var v = f.value;
+    if (Array.isArray(v)) {
+      return '<ul class="m-list">' + v.map(function (x) {
+        return '<li>' + esc(x) + '</li>';
+      }).join('') + '</ul>';
+    }
+    if (v && typeof v === 'object') {
+      var ks = Object.keys(v).sort(function (a, b) { return (+a || 0) - (+b || 0); });
+      return '<table class="data"><tr>' + ks.map(function (k) {
+        return '<th>' + esc(k) + '</th>';
+      }).join('') + '</tr><tr>' + ks.map(function (k) {
+        return '<td>' + esc(typeof v[k] === 'number' ? num(v[k], 2) : v[k]) + '</td>';
+      }).join('') + '</tr></table>';
+    }
+    return esc(v) + (f.unit && f.unit !== '%' ? ' ' + esc(f.unit)
+                     : (f.unit === '%' ? '%' : ''));
+  }
+
+  function factLabel(k) {
+    return k.indexOf('target:') === 0 ? k.slice(7)
+      : k.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
+  }
+
+  /* A figure and its DEFINITION, together. "Every figure carries its
+   * definition, in the report that prints it" — a number a reader has to look
+   * up elsewhere gets guessed at, and a mean has been read as a rate here
+   * before. The definition is the `title` and the caption, not a footnote. */
+  function factRow(k, f, big) {
+    if (f.absent_because) {
+      return '<p class="m-absent"><b>' + esc(factLabel(k)) + '</b> — not measured: '
+        + esc(f.absent_because) + '</p>';
+    }
+    var ci = f.ci95 ? ' <span class="m-ci">[' + num(f.ci95[0], 3) + ', '
+                      + num(f.ci95[1], 3) + ']</span>' : '';
+    var n = f.n ? ' <span class="m-n">n=' + esc(f.n) + '</span>' : '';
+    if (big) {
+      return '<div class="m-head"><span class="m-v">' + factValue(f) + '</span>'
+        + ci + n + '<span class="m-k">' + esc(factLabel(k)) + '</span>'
+        + '<span class="m-def">' + esc(f.definition) + '</span></div>';
+    }
+    return '<div class="m-row" title="' + esc(f.definition) + '">'
+      + '<span class="m-rk">' + esc(factLabel(k)) + '</span>'
+      + '<span class="m-rv">' + factValue(f) + ci + '</span></div>';
+  }
+
+  function modelBlock(blk) {
+    if (!blk) { return ''; }
+    var facts = blk.facts || {};
+    var pick = function (w) {
+      return Object.keys(facts).filter(function (k) {
+        return (facts[k] || {}).weight === w;
+      });
     };
-    var body =
-      meter('Keepable first sevens', oh.keep_first_seven_rate) +
-      (cmd.cast_by_turn_6_rate !== undefined
-        ? meter('Commander cast by turn 6', cmd.cast_by_turn_6_rate) : '') +
-      targets +
-      '<table class="data"><tr><th>Turn</th>' +
-        turns.map(function (t) { return '<th>' + esc(t) + '</th>'; }).join('') + '</tr>' +
-        row('Land drop', function (t) { return pct(m.land_drop_hit_rate_by_turn[t], 0); }) +
-        row('Mean mana', function (t) { return num((m.mean_available_mana_by_turn || {})[t], 1); }) +
-        row('Mean bodies', function (t) { return num((m.mean_bodies_by_turn || {})[t], 1); }) +
-      '</table>' +
-      facts([
-        ['Iterations', (meta.iterations || 0).toLocaleString()],
-        ['Seed', meta.seed],
-        ['Commander mean cast', num(cmd.mean_cast_turn, 3)],
-        ['Mean mulligans', num(oh.mean_mulligans, 2)]
-      ]) +
-      '<div class="assumptions"><b>Resource development, not full games.</b><ul>' +
-        (meta.model_assumptions || []).map(function (a) {
-          return '<li>' + esc(a) + '</li>';
-        }).join('') +
-      '</ul></div>';
+    var out = '';
+    pick('headline').forEach(function (k) { out += factRow(k, facts[k], true); });
+    var body = pick('body');
+    if (body.length) {
+      out += '<div class="m-body">'
+        + body.map(function (k) { return factRow(k, facts[k], false); }).join('')
+        + '</div>';
+    }
+    /* DETAIL IS NEVER INLINE. That is the rule the weight vocabulary exists to
+     * enforce, and it is where the assumptions and the per-turn curves live. */
+    var detail = pick('detail');
+    if (detail.length) {
+      out += '<details class="m-detail"><summary>' + detail.length
+        + ' more — assumptions, distributions and curves</summary>'
+        + detail.map(function (k) {
+            return '<div class="m-d"><b>' + esc(factLabel(k)) + '</b>'
+              + '<p class="ev">' + esc(facts[k].definition) + '</p>'
+              + factValue(facts[k]) + '</div>';
+          }).join('')
+        + '</details>';
+    }
+    if (blk.definition) {
+      out += '<p class="ev m-scope">' + esc(blk.definition) + '</p>';
+    }
+    return out;
+  }
+
+  function goldfishPanel(d) {
+    /* READS THE MODEL, not the artifact. It used to render two meters, every
+     * target, a three-by-ten table, a facts list and all 28 model assumptions
+     * inline — 3,833 pixels, with nothing marked as mattering more than
+     * anything else. */
+    var blk = ((d.info || {}).model || {}).goldfish;
+    if (!blk) return absent('goldfish', 'The goldfish', 'Seeded Monte Carlo over resource development.',
+      'var(--tier-data)', 'goldfish', d, 'how fast it develops, over 10,000 seeded games');
     return panel('goldfish', 'By the Numbers', 'What can I expect, turn by turn?',
-                 ['data'], 'var(--tier-data)', body);
+                 ['data'], 'var(--tier-data)', modelBlock(blk));
   }
 
   function tenPanel(d) {
@@ -704,7 +846,27 @@
         '<div class="body">' + wishes +
         (e.notes ? '<p class="ev">' + esc(e.notes) + '</p>' : '') + '</div></details>';
     }).join('');
-    var body = '<p>' + esc(t.assessment) + '</p>' + items;
+    /* THE ASSESSMENT IS ONE UNBROKEN PARAGRAPH — around two thousand characters
+     * of coaching, rendered raw, and it was the whole visible bulk of this
+     * panel. It is worth reading and it is not what a pilot opens the page for,
+     * so the LEAD stays and the rest folds: the same headline/body/detail split
+     * `deck_model` makes structural, applied to prose that has no model yet. */
+    var lead = '', rest = '';
+    var text = String(t.assessment || '');
+    var cut = text.indexOf('. ');
+    if (cut > 0 && text.length > 260) {
+      lead = text.slice(0, cut + 1);
+      rest = text.slice(cut + 2);
+    } else {
+      lead = text;
+    }
+    var body = '<div class="m-head"><span class="m-v">' + (t.tutors || []).length
+      + '</span><span class="m-k">tutor(s)</span>'
+      + '<span class="m-def">what each one should go and get, by board state</span></div>'
+      + (lead ? '<p>' + esc(lead) + '</p>' : '')
+      + (rest ? '<details class="m-detail"><summary>the rest of the read</summary>'
+                + '<p>' + esc(rest) + '</p></details>' : '')
+      + items;
     return panel('tutors', 'Fetch Quests', 'One wish per tutor.',
                  ['coach'], 'var(--tier-coach)', body);
   }
@@ -909,38 +1071,6 @@
       'judgment about the deck — that is the doctor\'s, behind /prescribe.</p>');
   }
 
-  function recordPanel(d) {
-    // `versions.json` is built at DEPLOY time, not committed: versions are a git
-    // walk and the commit that changes decklist.txt gets its sha after anything
-    // written in the same commit, so a committed copy is one version behind
-    // forever. Absent locally is normal — the panel simply does not render, which
-    // is what every panel here does when its artifact is missing.
-    var v = d.versions;
-    if (!v || !v.versions || !v.versions.length) return '';
-    var rows = v.versions.map(function (ver) {
-      var cur = ver.version === v.current_version;
-      var rec = ver.record || {};
-      return (cur ? '<b>' : '') + 'V' + ver.version + (cur ? '</b>' : '') +
-        ' <span class="ev">' + esc(ver.first_date || '') + '</span> ' +
-        (ver.tags && ver.tags.length ? '<span class="chip">' + esc(ver.tags.join(', ')) + '</span> ' : '') +
-        // What MOVED is the whole point of a version list. `in`/`out` are card
-        // names; the counts are what fits on a row, and the subject says why.
-        ((ver['in'] || []).length || (ver.out || []).length
-          ? ' <span class="chip">+' + (ver['in'] || []).length +
-            ' \u2212' + (ver.out || []).length + '</span>' : '') +
-        (ver.games ? ' ' + ver.games + ' game(s) · ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
-                   : ' <span class="ev">no games</span>') +
-        (ver.subject ? '<span class="ev">' + esc(ver.subject) + '</span>' : '');
-    });
-    var body = list(rows);
-    if (v.unmatched_log_entries && v.unmatched_log_entries.length) {
-      body += '<p class="ev">' + v.unmatched_log_entries.length + ' logged game(s) played ' +
-        'on an uncommitted list — reported unmatched rather than guessed.</p>';
-    }
-    return panel('record', 'Every list this deck has been',
-      'Numbered from git, joined to the log by the decklist sha.', ['data'],
-      'var(--tier-data)', body);
-  }
 
   function statusPanel(d) {
     var info = d.info;
@@ -1146,90 +1276,14 @@
    * to render those sections with no mark at all, which is how prose about a
    * different deck reads as current.
    */
-  function caseFilePanel(d) {
-    var info = d.info || {};
-    if (!info.slug) return '';
-    var v = info.version || {};
-    var rec = info.record || {};
-    var paper = (d.entry || {}).paper;
-    var stale = (info.status || {}).stale || [];
-    var eng = info.engine || {};
-
-    var head = '<div class="case-grid">';
-    head += caseFact('Commander', (info.commander || []).join(' / ') || '\u2014');
-    head += caseFact('Colours', (info.colour_identity || []).join('') || 'C');
-    head += caseFact('The 99', info.size + ' cards \u00b7 ' + info.lands + ' lands');
-    head += caseFact('Sleeved',
-      paper ? 'V' + paper.version + (paper.built_at ? ' \u00b7 ' + paper.built_at : '')
-            : 'not marked as built in paper');
-    /* A PROPOSAL BELONGS IN THE CASE FILE, and the branch panel stays at the
-     * foot where it was deliberately put ("a branch is a deck that does not
-     * exist"). The difference is that a PROPOSED branch is not speculative —
-     * the pilot has accepted it and is waiting on cardboard — so the fact that
-     * this deck is about to become v1.0.2 is a fact about the deck. */
-    var proposed = ((info.branches || []).filter(function (b) {
-      return b.proposal && b.state !== 'MERGED';
-    }))[0];
-    if (proposed) {
-      var pl = proposed.pull_list || {};
-      head += caseFact('Proposed',
-        proposed.proposal.as_version + ' \u00b7 ' + esc(proposed.state) +
-        (pl.blocking ? ' \u00b7 ' + pl.blocking + ' card(s) still to find' : ''));
-    }
-    head += caseFact('Record', rec.games
-      ? rec.games + ' game(s) \u00b7 ' + (rec.win || 0) + 'W ' + (rec.loss || 0) + 'L'
-      : 'no games logged');
-    var br = info.bracket || {};
-    head += caseFact('Bracket', br.floor != null
-      ? 'floor ' + br.floor + (br.floor_name ? ' (' + br.floor_name + ')' : '') +
-        ' \u00b7 target ' + (br.target != null ? br.target : '\u2014')
-      : '\u2014');
-    head += '</div>';
-
-    var body = head;
-    // THE THESIS, and it must say whose it is. A one-line engine thesis is the
-    // fastest true sentence about a deck; an absent one says so rather than
-    // leaving the reader to assume the deck has no plan.
-    if (eng.thesis) {
-      body += '<p class="case-thesis">' + esc(eng.thesis) + '</p>';
-      body += '<p class="ev">\u2605 the engineer\u2019s reading of the machine' +
-              (eng.critic ? ' \u00b7 critic: ' + esc(eng.critic) : '') + '</p>';
-    } else {
-      body += '<p class="ev">No engine model yet \u2014 nothing here states what ' +
-              'this deck is trying to do. <code>/analyze-engine ' +
-              esc(info.slug) + '</code></p>';
-    }
-    if (!info.brief || !Object.keys(info.brief || {}).length) {
-      body += '<p class="ev">No brief authored for this list. A brief is the ' +
-              'written intent a build starts from; this deck has none, which is ' +
-              'absent rather than empty.</p>';
-    }
-    if (stale.length) {
-      body += '<p class="case-stale">\u26a0 ' + esc(stale.join(', ')) +
-        ' describe an older list. Those sections below are history, not the ' +
-        'deck as it stands.</p>';
-    }
-    return panel('casefile', 'Case file',
-      'The deck as checked in \u2014 explorations are at the foot of this page.',
-      ['data'], 'var(--tier-data)', body);
-  }
-
-  function caseFact(k, v) {
-    return '<div class="case-cell"><span class="case-k">' + esc(k) +
-           '</span><span class="case-v">' + esc(v) + '</span></div>';
-  }
 
   function logPanel(d) {
     var entries = d.log || [];
-    // A LOCKED deck with no games is not "nothing to show" — it is the most
-    // actionable state on the page, and a panel that simply vanishes says
-    // nothing at all. An unlocked deck genuinely has no table to log from, so
-    // that one still renders no panel.
+    /* THE SECTION IS A TAB IN A FILE, so it renders empty rather than vanishing.
+     * A file whose tabs disappear when a drawer is empty is the "cleaned up into
+     * a narrative" failure this page exists to avoid. */
     if (!entries.length) {
-      if (!(d.entry && d.entry.locked)) return '';
-      return panel('log', 'The captain\'s log',
-        'What happened at the table, in the pilot\'s words.', ['coach'],
-        'var(--tier-coach)',
+      return section('logs', 'var(--tier-coach)',
         '<p>No games logged on this deck yet. This deck is sleeved, so the next '
         + 'one you play lands here — stamped with the exact list you played it '
         + 'on, so its record attaches to that version and not to the deck in '
@@ -1240,12 +1294,9 @@
         + 'then reads it and routes what it raises to the loop that can settle '
         + 'it — a goldfish run, a rules resolution, a question to the doctor.</p>');
     }
-    // SUMMARY FIRST, THEN THE ENTRIES. The log is the only thing on this page
-    // written by a person who was actually at the table, and it was rendered as
-    // an undifferentiated list halfway down. What a reader wants first is the
-    // shape — how many games, how they went, how many still have nobody's
-    // reading on them — and the entries on demand.
+
     var notes = (d.debrief || {}).entries || {};
+    var nights = (d.captainsLog || {}).nights || {};
     var wins = 0, losses = 0, undebriefed = 0;
     entries.forEach(function (e) {
       if (e.result === 'win') wins++;
@@ -1253,56 +1304,569 @@
       if (!notes[e.id]) undebriefed++;
     });
     var last = entries[entries.length - 1] || {};
-    var summary = '<div class="log-sum">'
+    var body = '<div class="log-sum">'
       + '<span class="log-n">' + entries.length + '</span> game(s) logged'
-      + ' \u00b7 <b>' + wins + 'W ' + losses + 'L</b>'
-      + (last.at ? ' \u00b7 last ' + esc(last.at.slice(0, 10)) : '')
-      + (undebriefed ? ' \u00b7 <span class="log-todo">' + undebriefed
+      + ' · <b>' + wins + 'W ' + losses + 'L</b>'
+      + (last.at ? ' · last ' + esc(last.at.slice(0, 10)) : '')
+      + (undebriefed ? ' · <span class="log-todo">' + undebriefed
                        + ' not yet debriefed</span>' : '')
       + '</div>';
-    // The most recent entry rides ABOVE the fold, because "what happened last
-    // time" is the question that brought the pilot here.
-    if (last.text) {
-      summary += '<p class="log-last"><b>' + esc((last.at || '').slice(0, 10))
-        + '</b> ' + (last.result ? '<span class="chip">' + esc(last.result)
-                                   + '</span> ' : '')
-        + esc(last.text) + '</p>';
-      var ln = notes[last.id];
-      if (ln && ln.summary) {
-        summary += '<p class="ev">' + esc(ln.summary) + '</p>';
-      }
-    }
-    var items = entries.slice().reverse().map(function (e) {
+
+    /* THE RAW NOTE, ALWAYS REACHABLE. Every entry gets one of these whether or
+     * not it has been rendered as a log — a game that exists and is invisible is
+     * the one outcome this section forbids. */
+    function rawNote(e) {
+      var chips = [e.result, (d.causes || {}).entries
+                             && ((d.causes.entries[e.id] || {}).cause)]
+        .filter(Boolean).map(esc).join(' · ');
       var n = notes[e.id];
-      return '<b>' + esc(e.at ? e.at.slice(0, 10) : e.id) + '</b> ' +
-        (e.result ? '<span class="chip">' + esc(e.result) + '</span> ' : '') +
-        esc(e.text || '') +
-        (n ? '<span class="ev">' + esc(n.summary || '') + '</span>'
-           : '<span class="ev">not yet debriefed</span>');
-    });
-    var body = summary;
-    if (entries.length > 1) {
-      body += '<details class="log-all"><summary>All ' + entries.length
-        + ' entries</summary>' + list(items) + '</details>';
+      return '<details class="log-raw"><summary>the note as written — '
+        + esc((e.at || '').slice(0, 10))
+        + (e.opponents ? ', ' + esc(e.opponents) + ' opponents' : '')
+        + '</summary>'
+        + '<p class="log-raw-text">' + esc(e.text || '') + '</p>'
+        + (chips ? '<p class="ev">' + chips + '</p>' : '')
+        + (n && n.summary ? '<p class="ev">' + esc(n.summary) + '</p>'
+                          : '<p class="ev">not yet debriefed</p>')
+        + '</details>';
     }
-    return panel('log', 'The captain\'s log',
-      'What happened at the table, in the pilot\'s words.', ['coach'],
-      'var(--tier-coach)', body);
+
+    function block(b) {
+      if (!b) { return ''; }
+      var out = '<p class="pl-head">' + esc(b.header || '') + '</p>'
+        + '<div class="pl-body">';
+      [['Situation', b.situation], ['Narrative', b.narrative]]
+        .forEach(function (pair) {
+          if (pair[1]) {
+            out += '<h4>' + pair[0] + '</h4><p>' + esc(pair[1]) + '</p>';
+          }
+        });
+      if ((b.assessment || []).length) {
+        out += '<h4>Assessment</h4><p>'
+          + b.assessment.map(function (a) { return esc(a.text || ''); }).join(' ')
+          + '</p>';
+      }
+      if ((b.orders || []).length) {
+        out += '<h4>Orders</h4>' + list(b.orders.map(function (o) {
+          return '<span class="pl-station">' + esc(o.station || '') + '</span> '
+            + esc(o.text || '');
+        }));
+      }
+      if (b.coda) { out += '<h4>Coda</h4><p class="pl-coda">' + esc(b.coda) + '</p>'; }
+      return out + '</div>'
+        + (b.supplementals || []).map(function (sup) {
+            return '<div class="pl-sup">' + block(sup) + '</div>';
+          }).join('');
+    }
+
+    /* Newest night first — "what happened last time" is the question that
+     * brought the pilot here. */
+    var byId = {};
+    entries.forEach(function (e) { byId[e.id] = e; });
+    var keys = Object.keys(nights).sort().reverse();
+    var placed = {};
+    keys.forEach(function (k) {
+      (nights[k].source_ids || []).forEach(function (id) { placed[id] = true; });
+    });
+
+    /* NEWEST NIGHT OPEN, THE REST FOLDED. Three full logs inline is 4,143px,
+     * and "what happened last time" is the question that brought the pilot
+     * here — the earlier nights are history and history folds. */
+    var rendered = 0;
+    keys.forEach(function (k) {
+      var night = nights[k] || {};
+      var ship = (night.logs || {}).ship;
+      if (!ship) { return; }
+      rendered++;
+      var older = rendered > 1;
+      var pos = night.position_in_evening;
+      if (older && rendered === 2) { body += '<details class="pl-older"><summary>earlier nights</summary>'; }
+      body += '<article class="pl">' + block(ship)
+        + (pos && pos.of > 1
+            ? '<p class="ev">game ' + esc(pos.n) + ' of ' + esc(pos.of)
+              + ' that night' + (pos.after ? ', after ' + esc(pos.after) : '')
+              + '</p>'
+            : '')
+        + (night.source_ids || []).map(function (id) {
+            return byId[id] ? rawNote(byId[id]) : '';
+          }).join('')
+        + '</article>';
+    });
+    if (rendered > 1) { body += '</details>'; }
+
+    /* A GAME WITH NO RENDERED LOG STILL SHOWS. Mirrors "not yet debriefed":
+     * the absence is stated, the note is readable, and the command is named. */
+    var unrendered = entries.filter(function (e) {
+      return !placed[e.id] || !((nights[Object.keys(nights).filter(function (k) {
+        return (nights[k].source_ids || []).indexOf(e.id) >= 0;
+      })[0]] || {}).logs || {}).ship;
+    });
+    if (unrendered.length) {
+      body += '<div class="pl-todo"><p class="ev">'
+        + unrendered.length + ' night(s) not yet rendered as a log — '
+        + '<code>/captains-log ' + esc(d.slug || '') + '</code></p>'
+        + unrendered.slice().reverse().map(rawNote).join('') + '</div>';
+    }
+    return section('logs', 'var(--tier-coach)', body);
   }
 
   function questionsPanel(d) {
     var qs = (d.info || {}).open_questions || [];
-    if (!qs.length) return '';
+    /* UNRESOLVED LEADS ARE PART OF THE FILE, not a footnote — so "nothing
+     * open" is a statement worth making. It also distinguishes a deck nobody
+     * has questioned from one whose questions have all been settled, which a
+     * vanished section cannot. */
+    if (!qs.length) {
+      return section('leads', 'var(--tier-coach)',
+        '<p class="ev">Nothing open. Questions arrive from the engine model, ' +
+        'the diagnosis and the debrief — none of those has raised one against ' +
+        'this list.</p>');
+    }
+    /* TWENTY-ONE QUESTIONS AT FULL LENGTH IS 3,936 PIXELS and answers nothing a
+     * reader came for. What they came for is HOW MANY and WHICH LOOP SETTLES
+     * THEM — the routes are a closed set, so they count. The questions
+     * themselves are evidence and fold. */
+    var byRoute = {};
+    qs.forEach(function (q) {
+      var r = q.settled_by || 'unrouted';
+      (byRoute[r] = byRoute[r] || []).push(q);
+    });
+    var routes = Object.keys(byRoute).sort(function (a, b) {
+      return byRoute[b].length - byRoute[a].length;
+    });
+    var head = '<div class="m-head"><span class="m-v">' + qs.length + '</span>'
+      + '<span class="m-k">open lead(s)</span>'
+      + '<span class="m-def">every one names the loop that would settle it</span></div>'
+      + '<div class="m-body">' + routes.map(function (r) {
+          return '<div class="m-row"><span class="m-rk">' + esc(r)
+            + '</span><span class="m-rv">' + byRoute[r].length + '</span></div>';
+        }).join('') + '</div>';
     var items = qs.map(function (q) {
       return '<span class="chip">' + esc(q.settled_by || '?') + '</span> ' +
         esc(q.question) + '<span class="ev">from ' + esc(q.from) + '</span>';
     });
-    return panel('questions', 'Open questions',
-      'What nobody has settled yet, and which loop would settle it.', ['coach'],
-      'var(--tier-coach)', list(items));
+    return section('leads', 'var(--tier-coach)', head
+      + '<details class="m-detail"><summary>read all ' + qs.length
+      + '</summary>' + list(items) + '</details>');
   }
 
   // ── Assembly ─────────────────────────────────────────────────────────
+
+  // ══ THE COVER SHEET ═══════════════════════════════════════════════════
+  //
+  // The booking record: who, what state, three numbers, and nothing else. It
+  // replaces `caseFilePanel`, which had grown into eight facts, a thesis, a
+  // stale list and two absence notices — all useful, none of it something you
+  // absorb in thirty seconds, which is the one job a cover sheet has.
+
+  /* WHAT STATE THE FILE IS IN, in one stamped word.
+   *
+   * The lifecycle and the paper lock are the same question about cardboard
+   * asked twice, and `deck_versions.json` already reconciles them — so this
+   * reads the reconciled answer rather than re-deciding it. 📌 means SLEEVED
+   * and nothing else, the rule the workbench rack lives under. */
+  function stampOf(info, entry) {
+    var life = info && info.lifecycle;
+    if (life) {
+      return { word: life.status === 'broken-down' ? 'COLD CASE'
+                    : life.status === 'superseded' ? 'SUPERSEDED' : 'CLOSED',
+               kind: 'dead', why: life.headline };
+    }
+    if (entry && entry.paper) {
+      var v = entry.paper.release || ('V' + entry.paper.version);
+      if (entry.paper.in_sync) {
+        return { word: 'SLEEVED ' + v, kind: 'ok', pin: true,
+                 why: 'built in paper and level with the repo' };
+      }
+      return { word: 'SLEEVED ' + v, kind: 'warn', pin: true,
+               why: 'the cardboard has drifted from the list' };
+    }
+    return { word: 'UNDER INVESTIGATION', kind: 'open',
+             why: 'nobody has said whether this exists in paper' };
+  }
+
+  /* One headline figure. THE DEFINITION TRAVELS WITH IT — a number a reader has
+   * to look up elsewhere gets guessed at, and the guesses go one way. */
+  function head(label, value, note) {
+    return '<div class="cov-num"><div class="cov-k">' + esc(label) + '</div>' +
+      '<div class="cov-v">' + (value === null || value === undefined
+        ? '<span class="ev">not measured</span>' : esc(value)) + '</div>' +
+      (note ? '<div class="cov-note">' + esc(note) + '</div>' : '') + '</div>';
+  }
+
+  /* THE STRICTER KEEP RULE, and the label says which.
+   *
+   * `goldfish.py` reports two and warns about the loose one in its own comment:
+   * `keep_first_seven_rate` "sits near 100% inside the keep window for every
+   * deck — informative about the mulligan rule, useless as a fitness signal."
+   * A cover-sheet number that reads 98% on every deck in the fleet is not a
+   * number, so this uses `keep_can_act_by_t3_rate`. */
+  function keepRate(d) {
+    var oh = ((d.goldfish || {}).metrics || {}).opening_hand || {};
+    var r = oh.keep_can_act_by_t3_rate;
+    return (r === undefined || r === null) ? null : Math.round(r * 100) + '%';
+  }
+
+  function versionName(v) {
+    return (v && v.tags && v.tags.length) ? v.tags[0] : ('V' + (v || {}).version);
+  }
+
+  /* The version this deck IS right now.
+   *
+   * `current_version` is a TOP-LEVEL ordinal on the document, not a flag on the
+   * row — a first cut read `v.current`, which is undefined on every row, so
+   * every deck resolved to "no version" and the cover sheet reported its record
+   * as unmeasured on a deck with three logged games. The fallback is the last
+   * row rather than nothing, because a deck with an uncommitted list still has
+   * a newest version. */
+  function currentVersion(d) {
+    var doc = d.versions || {}, vs = doc.versions || [];
+    if (!vs.length) return null;
+    for (var i = vs.length - 1; i >= 0; i--) {
+      if (vs[i].version === doc.current_version) return vs[i];
+    }
+    return vs[vs.length - 1];
+  }
+
+  /* Games played ON one exact list. `versions.json` already carries `record`
+   * and `games` per row — `deck_versions.report()` does the join from `log_ids`
+   * — so this reads it rather than re-deriving it in the browser. */
+  function versionRecord(v) {
+    if (!v) return null;
+    var r = v.record;
+    if (!r) return null;
+    var games = v.games !== undefined ? v.games
+      : (r.win || 0) + (r.loss || 0) + (r.draw || 0);
+    if (!games) return null;
+    return { games: games, win: r.win || 0, loss: r.loss || 0 };
+  }
+
+  function coverPanel(d) {
+    var info = d.info || {}, entry = d.entry || {};
+    var g = info.goldfish || {}, rec = info.record || {};
+    var stamp = stampOf(info, entry);
+
+    var art = entry.image
+      ? '<img class="cov-shot" src="' + esc(entry.image) + '" alt="" loading="lazy">'
+      : '<div class="cov-shot cov-shot-none"></div>';
+
+    var marks = [(info.colour_identity || []).join(''),
+                 info.size ? info.size + ' cards' : null,
+                 info.lands ? info.lands + ' lands' : null]
+      .filter(Boolean).join(' · ');
+
+    var ident = '<div class="cov-id">' +
+      '<div class="cov-alias">' + esc(entry.deck_name || info.slug || '') + '</div>' +
+      '<div class="cov-sub">' + esc((info.commander || []).join(' // ')) + '</div>' +
+      '<dl class="cov-book">' +
+        '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
+        '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' +
+        '<dt>First booked</dt><dd>' + (rec.first_played
+          ? esc(rec.first_played)
+          : '<span class="ev">never played</span>') + '</dd>' +
+      '</dl></div>';
+
+    /* THE MO — what this deck is designed to do, in one line. `engine.thesis`
+     * is the only sentence in the file that answers it, and when there is none
+     * the absence is NAMED: a cover sheet with no MO is a file nobody has
+     * opened, which is worth saying out loud rather than leaving blank. */
+    var mo = info.engine && info.engine.thesis
+      ? '<p class="cov-mo">' + esc(info.engine.thesis) + '</p>'
+      : '<p class="cov-mo cov-mo-none">No engine model yet — nothing here ' +
+        'states what this deck is trying to do. <code>/analyze-engine ' +
+        esc(info.slug || '') + '</code></p>';
+    /* THE BRIEF'S ABSENCE, said here because it is a statement about what the
+     * deck is TRYING to be. A brief is the written intent a build starts from;
+     * a deck with none is absent rather than empty, and the difference matters
+     * during a refactor when the brief and the 99 legitimately disagree. */
+    var briefless = (!info.brief || !info.brief.playstyle)
+      ? '<p class="ev cov-brief">No brief authored for this list. A brief is ' +
+        'the written intent a build starts from; this deck has none, which is ' +
+        'absent rather than empty.</p>'
+      : '';
+
+    /* THE WORD AND ITS MEASURE, together and never apart. `engine_health` is a
+     * VERDICT, which this repo normally refuses to publish — the obsolescence
+     * index shipped one over a measure and 36.5% of 22,753 pairs failed a
+     * purely mechanical check. It ships here only because the bands are a named
+     * constant the pilot can move and the rate rides beside the word. */
+    var h = info.engine_health, health = '';
+    if (h && h.word) {
+      health = '<div class="cov-health is-' + esc(h.word.toLowerCase()) + '"' +
+        ' title="' + esc((h.bands || []).map(function (b) {
+          return b[1] + ' ≥ ' + Math.round(b[0] * 100) + '%';
+        }).join(' · ')) + '">' +
+        '<span class="cov-health-w">' + esc(h.word) + '</span>' +
+        '<span class="cov-health-y">' + esc(h.why || '') + '</span></div>';
+    } else if (h) {
+      health = '<div class="cov-health is-none"><span class="cov-health-w">' +
+        'ENGINE NOT RATED</span><span class="cov-health-y">' +
+        esc(h.why || '') + '</span></div>';
+    }
+
+    /* THREE NUMBERS, AND THE RECORD IS THIS VERSION'S — not the lifetime total.
+     * A deck that went 0–3 on a list you have since replaced is a fact about a
+     * deck that no longer exists, and filing it on the cover sheet under
+     * "record" is the most misleading thing this page could do. */
+    var cur = currentVersion(d);
+    var vrec = versionRecord(cur);
+    var nums = '<div class="cov-nums">' +
+      head('Commander by T6',
+           (g.commander_cast_by_turn_6_pct === undefined ||
+            g.commander_cast_by_turn_6_pct === null)
+             ? null : g.commander_cast_by_turn_6_pct + '%',
+           'seeded goldfish') +
+      head('Keepable sevens', keepRate(d), 'can act by turn three') +
+      head('Record, ' + (cur ? versionName(cur) : 'this version'),
+           vrec ? (vrec.games + ' · ' + vrec.win + '–' + vrec.loss) : null,
+           cur ? 'games on this exact list' : 'no version resolved') +
+      '</div>';
+
+    var body = '<div class="cov">' + art +
+      '<div class="cov-main">' +
+        '<div class="cov-stamp is-' + stamp.kind + '" title="' + esc(stamp.why || '') + '">' +
+          (stamp.pin ? '<span class="wb-pin" aria-hidden="true">📌</span>' : '') +
+          esc(stamp.word) + '</div>' +
+        ident + mo + briefless + health + nums +
+      '</div></div>';
+    return section('cover', 'var(--tier-data)', body);
+  }
+
+  // ══ THE RAP SHEET ═════════════════════════════════════════════════════
+  //
+  // One row per version: what changed, why, what was expected, what happened.
+  // ROWS ARE ADDED, NEVER EDITED — that is what makes the file a record rather
+  // than a summary, and it is why a row where `observed` contradicts `expected`
+  // is the most valuable thing on the page rather than an embarrassment.
+  //
+  // EVERY COLUMN WAS ALREADY ON THE WIRE. `versions.json` is fetched on every
+  // load and carries `in[]` and `out[]` as CARD NAMES, `notes`, `first_date`,
+  // `tags` and `log_ids`. The old `recordPanel` rendered `+7 −5` and threw the
+  // names away, with a comment admitting it: "the counts are what fits on a
+  // row." They fit in a table.
+
+  /* The pilot's own sentence about why a version happened. Authored, in
+   * `deck_versions.json`'s tag note — Ur-Dragon's v1.0.1 reads "PATCH: the mana
+   * base only… Priced on the goldfish before applying — turn-five land drop
+   * 52.5% to 65.1%", which is the WHY and the EXPECTED in one breath. */
+  function versionNote(d, v) {
+    /* THE NOTE IS ON THE TAG, not on the version row. `deck_versions` keeps
+     * versions DERIVED (a git walk) and tags AUTHORED, and the sentence the
+     * pilot wrote about why a version happened belongs to the name they gave
+     * it — so it is looked up through the tag rather than read off the row,
+     * whose own `notes` key is null on every deck in the fleet. */
+    var tags = (d.versions || {}).tags || {};
+    for (var i = 0; i < (v.tags || []).length; i++) {
+      var t = tags[v.tags[i]];
+      if (t && t.note) return t.note;
+    }
+    return '';
+  }
+
+  /* IN and OUT, inline and wrapping rather than one name per line.
+   *
+   * A vertical list looks right on a three-card patch and becomes a wall on a
+   * real one — Ur-Dragon's v1.0.2 moved 18 in and 17 out, which is 35 lines in
+   * a table cell. Inline, they wrap to the measure and the row stays a row.
+   * Cut cards keep their names struck through rather than vanishing: what LEFT
+   * is half of what a version IS. */
+  var SWATCH_MAX = 14;
+
+  function swatch(names, mark, label) {
+    if (!names || !names.length) return '';
+    var shown = names.slice(0, SWATCH_MAX);
+    var rest = names.length - shown.length;
+    return '<div class="rap-side"><span class="rap-side-k">' + esc(label) +
+      ' ' + names.length + '</span><ul class="rap-cards">' +
+      shown.map(function (c) {
+        return '<li class="' + mark + '">' + esc(c) + '</li>';
+      }).join('') +
+      (rest > 0 ? '<li class="rap-more">+' + rest + ' more</li>' : '') +
+      '</ul></div>';
+  }
+
+  function rapSheetPanel(d) {
+    var vs = ((d.versions || {}).versions) || [];
+    if (!vs.length) {
+      return section('rap-sheet', 'var(--tier-data)',
+        '<p class="ev">No committed versions yet. A version is a commit whose ' +
+        'parsed decklist differs from the one before it, so the first one ' +
+        'arrives when this list is committed.</p>');
+    }
+    var cur = currentVersion(d);
+    /* WHICH ROW IS SLEEVED. `paper` is a TOP-LEVEL block on the document naming
+     * one version, not a flag on the row — 📌 means cardboard and belongs on
+     * exactly one line of the rap sheet. */
+    var paperV = ((d.versions || {}).paper || {}).version;
+    var rows = vs.slice().reverse().map(function (v) {
+      var why = versionNote(d, v);
+      var rec = versionRecord(v);
+      var isNow = cur && v.version === cur.version;
+      /* THE HONEST COLUMN. Most versions have no games, and saying so is the
+       * point: an untested hypothesis is the normal state of a deck between
+       * pod nights, and a table that hid it would read as if every change had
+       * been validated. */
+      var observed = rec
+        ? '<b>' + rec.games + ' game' + (rec.games === 1 ? '' : 's') + '</b> · ' +
+          rec.win + '–' + rec.loss
+        : '<span class="ev">not played on this list</span>';
+      /* THE BASELINE ROW IS NOT A CHANGE. V1 is the first tracked list, so its
+       * `in` is the whole deck — 95 names for Ur-Dragon — and listing them
+       * reads as a 95-card swap. What the row means is "this is where the
+       * numbering starts", and the size says it in four words. */
+      var baseline = !(v.out || []).length && (v['in'] || []).length > 40;
+      return '<tr' + (isNow ? ' class="rap-now"' : '') + '>' +
+        '<th scope="row">' + esc(versionName(v)) +
+          (isNow ? ' <span class="chip">current</span>' : '') +
+          (paperV === v.version
+            ? ' <span class="wb-pin" aria-hidden="true">📌</span>' : '') +
+        '</th>' +
+        '<td class="rap-when">' + esc(v.first_date || '') + '</td>' +
+        '<td class="rap-diff">' +
+          (baseline
+            ? '<span class="ev">the first tracked list — ' +
+              (v.size || (v['in'] || []).length) + ' cards, where the ' +
+              'numbering starts</span>'
+            : swatch(v['in'], 'rap-in', 'in') + swatch(v.out, 'rap-out', 'out') ||
+              '<span class="ev">no card moved</span>') +
+        '</td>' +
+        '<td class="rap-why">' + (why ? esc(why)
+          : '<span class="ev">no note — <code>deck-version ' +
+            esc((d.info || {}).slug || '') + ' tag</code> records why</span>') +
+        '</td>' +
+        '<td class="rap-obs">' + observed + '</td></tr>';
+    }).join('');
+
+    return section('rap-sheet', 'var(--tier-data)',
+      '<div class="rap-wrap"><table class="rap">' +
+      '<thead><tr><th scope="col">Version</th><th scope="col">Date</th>' +
+      '<th scope="col">What changed</th><th scope="col">Why, and what was expected</th>' +
+      '<th scope="col">Observed</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="ev rap-foot">Rows are added, never edited. Where <b>observed</b> ' +
+      'contradicts what was expected, that disagreement is the record — it is ' +
+      'not corrected here.</p>');
+  }
+
+  // ══ PRIORS ════════════════════════════════════════════════════════════
+  //
+  // Every game, one row, with how it ended. The log has held `opponents` and
+  // `tags` since it shipped and the page rendered neither; `result` was only
+  // ever shown as a running total. A game is a record.
+
+  var CAUSE_GLOSS = {
+    'mana-drought': 'colour or land screw',
+    'removal': 'picked apart one card at a time',
+    'wipe': 'a board wipe, and no rebuild',
+    'combo': 'an opponent comboed off',
+    'politics': 'the table converged',
+    'raced': 'someone was simply faster',
+    'stalled': 'the engine never assembled',
+    'won': 'the deck closed the game'
+  };
+
+  /* Which version was on the table. The log stamps `decklist_sha256`; the
+   * version list carries every byte-sha that maps to each version. That join is
+   * the whole reason the log carries a sha at all. */
+  function versionOfSha(d, sha) {
+    var vs = ((d.versions || {}).versions) || [];
+    for (var i = 0; i < vs.length; i++) {
+      var m = vs[i].decklist_sha256s || [];
+      if (m.indexOf(sha) >= 0 || vs[i].decklist_sha256 === sha) return vs[i];
+    }
+    return null;
+  }
+
+  function priorsPanel(d) {
+    var log = d.log || [];
+    if (!log.length) {
+      return section('priors', 'var(--tier-coach)',
+        '<p class="ev">No games logged. <code>manamap pilot deck-notes ' +
+        esc((d.info || {}).slug || '') +
+        ' add "…" --result win|loss --opponents 3 --cause &lt;code&gt;</code></p>');
+    }
+    var causes = ((d.causes || {}).entries) || {};
+    var rows = log.slice().reverse().map(function (e) {
+      var v = versionOfSha(d, e.decklist_sha256);
+      var c = causes[e.id];
+      return '<tr>' +
+        '<th scope="row">' + esc(e.at ? e.at.slice(0, 10) : '') + '</th>' +
+        '<td>' + (e.opponents ? esc(e.opponents + 1) + '-player' :
+                  '<span class="ev">—</span>') + '</td>' +
+        '<td>' + (v ? esc(versionName(v)) :
+                  '<span class="ev">unmatched list</span>') + '</td>' +
+        '<td class="pri-' + esc(e.result || 'none') + '">' +
+          esc((e.result || '—').toUpperCase()) + '</td>' +
+        '<td>' + (c
+          ? '<span class="pri-cause" title="' + esc(c.note || '') + '">' +
+            esc(c.cause) + '</span> <span class="ev">' +
+            esc(CAUSE_GLOSS[c.cause] || '') + '</span>'
+          : '<span class="ev">no cause filed</span>') + '</td></tr>';
+    }).join('');
+
+    /* THE ROLL-UP IS THE POINT OF CODING THE CAUSE. Three losses to `removal`
+     * and three to `mana-drought` are two different decks with the same record,
+     * and prose cannot be counted. Composed by `deck-info`, not here, so the
+     * rows and the totals cannot disagree about the vocabulary. */
+    var counts = ((d.info || {}).record || {}).cause_counts || {};
+    var keys = Object.keys(counts);
+    var roll = keys.length
+      ? '<p class="pri-roll">' + keys.sort(function (a, b) {
+          return counts[b] - counts[a] || (a < b ? -1 : 1);
+        }).map(function (k) {
+          return '<span class="chip">' + esc(k) + ' ×' + counts[k] + '</span>';
+        }).join(' ') + '</p>'
+      : '';
+
+    return section('priors', 'var(--tier-coach)',
+      '<div class="rap-wrap"><table class="rap pri">' +
+      '<thead><tr><th scope="col">Date</th><th scope="col">Pod</th>' +
+      '<th scope="col">Version</th><th scope="col">Result</th>' +
+      '<th scope="col">How it ended</th></tr></thead><tbody>' + rows +
+      '</tbody></table></div>' + roll +
+      '<p class="ev">The cause is the pilot’s own claim about their own game, ' +
+      'from a closed vocabulary so the counts above mean something. Nothing ' +
+      'derives it.</p>');
+  }
+
+  // ══ THE ANALYST'S ASSESSMENT ══════════════════════════════════════════
+  //
+  // LAST, AND SEPARATE. A dossier where the analyst's opinion is mixed into the
+  // record loses trust — and that is exactly what the old page did, rendering
+  // the diagnosis verdict as one inline sentence inside the audit panel, three
+  // lines under a measured figure and in the same typeface.
+
+  function assessmentPanel(d) {
+    var dg = (d.info || {}).diagnosis;
+    if (!dg) {
+      /* NO READ IS ITSELF A FACT ABOUT THE FILE, and the last section is where
+       * a reader looks for one. `absent()` returns '' when the stage is not in
+       * the deck's todo list — right for a reference panel, wrong for a tab. */
+      return section('assessment', 'var(--tier-coach)',
+        '<p class="ev">Nobody has read this deck yet. The measurements above ' +
+        'are what it is; an assessment is what someone thinks of it, and there ' +
+        'is none on file. <code>/diagnose-deck ' +
+        esc((d.info || {}).slug || '') + '</code></p>');
+    }
+    var cur = currentVersion(d);
+    var head = '<div class="as-head">' +
+      '<span class="as-verdict">' + esc(dg.verdict || 'no verdict stated') + '</span>' +
+      '</div>';
+    var meta = '<dl class="facts">' +
+      '<dt>Read against</dt><dd>' + (dg.stale
+        ? '<span class="chip stale">a list this deck no longer runs</span>'
+        : esc(cur ? versionName(cur) : 'the current list')) + '</dd>' +
+      '<dt>Skeptic</dt><dd>' + esc(dg.skeptic || 'not run') + '</dd>' +
+      '</dl>';
+    /* STALE IS NOT WRONG. The read was true about the list it was made against;
+     * it just does not describe this one. Saying "superseded" rather than
+     * greying it out is the difference between a file and a dashboard. */
+    var note = dg.stale
+      ? '<p class="as-stale">Superseded by a later list. Kept as written — it ' +
+        'was true of the deck it was read against. <code>/diagnose-deck ' +
+        esc((d.info || {}).slug || '') + '</code> for a current read.</p>'
+      : '';
+    return section('assessment', 'var(--tier-coach)', head + meta + note);
+  }
 
   function render(slug, d) {
     var issue = d.issue || {};
@@ -1372,12 +1936,31 @@
     // `branchPanel` sat in the middle of the reference half, where a PROPOSAL
     // read as a property of the deck. A branch is a deck that does not exist;
     // it belongs at the foot, behind its own net-change report.
+    /* THE FILE, then everything else.
+     *
+     * The nine dossier sections come first, in `DOSSIER` order — cover sheet at
+     * the top because the whole point of one is that you absorb it in thirty
+     * seconds, and the assessment last because a file where the analyst's
+     * opinion sits inside the record loses trust.
+     *
+     * The remaining panels are APPENDED UNCHANGED beneath them. They are the
+     * evidence and they will become numbered exhibits; until then nothing is
+     * lost and nothing is half-converted, which is the only way to move a page
+     * this size without a window where it renders neither shape. */
     var html = [
-      caseFilePanel(d), logPanel(d), nextPanel(d),
-      statusPanel(d), recordPanel(d), auditPanel(d),
-      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
+      coverPanel(d),
+      rapSheetPanel(d),
+      rosterPanel(d),
+      vitalsPanel(d),
+      priorsPanel(d),
+      logPanel(d),
       questionsPanel(d),
-      briefPanel(d), vitalsPanel(d), constellationPanel(d), rosterPanel(d),
+      assessmentPanel(d),
+
+      // ── the exhibits, not yet numbered ──
+      nextPanel(d), statusPanel(d), auditPanel(d),
+      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
+      briefPanel(d), constellationPanel(d),
       bracketPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d),
       branchPanel(d)
@@ -1446,10 +2029,15 @@
         : Promise.resolve('');
       var debriefJob = (entry.has || {}).log_annotations
         ? getJSON(BASE + entry.slug + '/log_annotations.json') : Promise.resolve(null);
+      // GATED ON THE MANIFEST, not fetched unconditionally like FILES: a deck
+      // with no logged games has no artifact, and a 404 read as "absent" is the
+      // ambiguity the `has` map exists to resolve.
+      var picardJob = (entry.has || {}).captains_log
+        ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
 
       return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
                           Promise.all(simJobs), Promise.all(expJobs),
-                          Promise.all(rxJobs), logJob, debriefJob])
+                          Promise.all(rxJobs), logJob, debriefJob, picardJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
@@ -1461,6 +2049,7 @@
             try { return JSON.parse(ln); } catch (e) { return null; }
           }).filter(Boolean);
           d.debrief = both[6];
+          d.captainsLog = both[7];
           // From the MANIFEST, not from issue.json — an unpublished deck has no
           // issue.json at all, so reading the flag off `d.issue` would always be
           // undefined and the dead-link guard would never fire.

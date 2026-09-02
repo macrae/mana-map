@@ -16,12 +16,13 @@ A deck without an `issue.json` sorts last under a sentinel volume of 999.
 import json
 import re
 
-from manamap.pilot.common import load_json, presentable, withheld
+from manamap.pilot.common import (
+    deck_lifecycle, load_json, presentable, withheld)
 from manamap.config import DECKS_DIR, MANUALS_DIR
 from manamap.pilot.design import stylesheet_link, write_stylesheet
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
 from manamap.pilot.issue_spec import (
-    MASTHEAD, SERIES_SLUG, STANDING_TAGLINE, issue_status)
+    MASTHEAD, SERIES_SLUG, STANDING_TAGLINE)
 
 EXTRA_CSS = """
 .newsstand { padding:40px 34px 60px; }
@@ -319,7 +320,8 @@ def gather_entries():
         has = {name: (deck_path / f"{name}.json").exists()
                for name in ("engine", "diagnosis", "deck_recon", "deck_map",
                             "build_plan", "manual_prose", "pending",
-                            "log_annotations", "deck_versions")}
+                            "log_annotations", "deck_versions",
+                            "captains_log")}
         has["log"] = (deck_path / "log.jsonl").exists()
         # The compact Pilot's Manual. Under `manuals/p/` while it coexists with
         # the magazine; the browser cannot list a directory, so presence rides here.
@@ -334,10 +336,34 @@ def gather_entries():
         # which is far too expensive to pay eleven times over for a field that is
         # null on every unlocked deck. Unlocked costs one file read.
         paper = None
+        # THE LATEST RELEASE TAG, for a deck that is not sleeved.
+        #
+        # The workbench stamps a version over the commander art, and until now
+        # an unlocked deck had none to stamp: `paper` is null and `info.json`
+        # deliberately strips its `version` block (a git walk, one commit behind
+        # forever). The tags are neither — they are authored, they are in the
+        # file already, and a deck knows what it last called itself whether or
+        # not that list is in sleeves. Reads the same file `paper` does, so it
+        # costs nothing extra.
+        #
+        # The PIN is what says "sleeved"; this is only the name. See
+        # `workbench.js:versionStamp` — spending the pin on a version tag would
+        # make the one glyph that means cardboard mean nothing.
+        version = None
         if has["deck_versions"]:
             from manamap.pilot import deck_versions
             if deck_versions.paper(slug):
                 paper = deck_versions.paper_state(slug)
+            tags = deck_versions.tags(slug)
+            if tags:
+                last = max(tags.items(),
+                           key=lambda kv: (kv[1].get("version") or 0,
+                                           deck_versions._tag_key(kv[0])))
+                version = {"release": last[0], "version": last[1].get("version")}
+
+        from manamap.pilot import deck_delete
+        # The path we are already walking, not a lookup — see `blockers`.
+        blocked = deck_delete.blockers(slug, base=deck_path)
 
         entries.append({
             "slug": slug,
@@ -346,6 +372,16 @@ def gather_entries():
             "has": has,
             "paper": paper,                       # None = not built in paper
             "locked": bool(paper),                # the front door's predicate
+            "version": version,                   # latest release tag, sleeved or not
+            # WHETHER THIS DECK MAY BE DELETED, decided ONCE. If the workbench
+            # re-derived "never sleeved, never played, never published" from
+            # `locked` and `record.games` it would be a second implementation of
+            # `deck_delete.blockers`, free to disagree with the command's — and
+            # the disagreement would only ever be discovered by offering a
+            # control that then refuses. The page reads these rows and renders
+            # them; it does not compute them.
+            "deletable": not blocked,
+            "undeletable_because": blocked,
             "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
             "issue_date": issue.get("issue_date", ""),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
@@ -355,8 +391,18 @@ def gather_entries():
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
-            # None for a live issue, so every existing entry is unchanged.
-            "status": issue_status(issue),
+            # None for a live deck, so every live entry is unchanged.
+            #
+            # `deck_lifecycle(slug)`, NOT `issue_status(issue)`. This read the
+            # loaded `issue.json` dict directly — one of two places that went
+            # around the predicate — and the lifecycle has moved to
+            # `deck_versions.json`. Left as it was, an archived deck would have
+            # rendered `status: null` and the workbench would have filed a deck
+            # that is in a pile under SLEEVED, on the one screen whose job is
+            # answering what you can play tonight. That is the hapatra failure
+            # `common.DECK_STATUSES` was moved out of `issue_spec` to prevent,
+            # one surface later.
+            "status": deck_lifecycle(slug),
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
@@ -455,7 +501,8 @@ def write_manifest(entries):
                                "decision_files", "has",
                                # The workbench landing: art for the rack, and the
                                # one predicate it filters on.
-                               "image", "paper", "locked")}
+                               "image", "paper", "locked", "version",
+                               "deletable", "undeletable_because")}
             for e in entries if not e.get("draft")
         ]
     }
