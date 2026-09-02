@@ -75,6 +75,23 @@ def validate(doc):
 
     # ABSENT ⇒ ABSENT. Both blocks report `available` and owe a reason when it
     # is false; a zeroed figure standing in for a missing one is the failure.
+    #
+    # WHAT THE RULE IS ACTUALLY ABOUT, and what it banned by accident. This
+    # allowed only `available`/`why`/`basis` and rejected everything else — but
+    # the producer writes `declared_targets` and `declaration_mismatch` on an
+    # unavailable block, and those are not measurements. They are facts about
+    # the AUTHORED DECLARATION (`goldfish_targets.json`): how many targets it
+    # names, and which of them name cards this list does not run. They are the
+    # evidence FOR the unavailability, and the rule against zeroed figures was
+    # never meant to strip a reason of its detail.
+    #
+    # Found by creating the two `diagnostic.json` files the pinned decks were
+    # missing: both were rejected by the gate the instant they were written,
+    # which is a producer and its validator disagreeing about their own format
+    # (GitHub #37). Still a CLOSED set — a rate, a count of games, anything
+    # measured still fails here, which is the check that matters.
+    explanatory = {"available", "why", "basis",
+                   "declared_targets", "declaration_mismatch"}
     for block in ("engine", "output"):
         section = doc.get(block) or {}
         if "available" not in section:
@@ -82,7 +99,7 @@ def validate(doc):
         elif not section["available"]:
             if not section.get("why"):
                 errors.append(f"{block}: unavailable with no reason given")
-            for stray in set(section) - {"available", "why", "basis"}:
+            for stray in set(section) - explanatory:
                 errors.append(
                     f"{block}.{stray}: unavailable blocks must be ABSENT, not "
                     f"zeroed — a figure here is one nobody measured")

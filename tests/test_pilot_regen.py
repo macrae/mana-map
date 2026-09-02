@@ -112,3 +112,163 @@ def test_the_args_shim_reports_unset_flags_as_absent_not_as_an_error():
     args = regen._Args(slug="x", branch=None)
     assert args.slug == "x" and args.branch is None
     assert args.some_flag_nobody_set is None
+
+
+def test_regen_bootstraps_a_derived_artifact_it_is_missing():
+    """A REFRESHER THAT CANNOT CREATE HIDES ITS OWN GAPS.
+
+    `targets()` returned only places an artifact already existed, so a deck
+    missing `diagnostic.json` was skipped by the `diagnose` stage forever and in
+    silence — `deck-status` showed the file as a bare GATE with nothing saying
+    why it never arrived. Two of the three PINNED decks were in exactly that
+    state, so the dossier's vitals section and the cover sheet's engine-health
+    word were absent on decks that are sleeved and played.
+
+    Narrow on purpose: only artifacts derived purely from the deck's own
+    committed inputs may be bootstrapped. Creating an authored or agent-written
+    file would be the tool inventing a claim instead of recomputing one.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    assert regen.BOOTSTRAP, "nothing bootstraps — the mechanism is inert"
+    for artifact, needs in regen.BOOTSTRAP.items():
+        assert artifact.endswith(".json"), artifact
+        # The precondition must be a real, purely-derived input, so a deck that
+        # is not yet measurable is not dragged into the plan.
+        assert needs in ("goldfish_metrics.json", "cards.json"), needs
+
+    got = dict.fromkeys(s for s, b in regen.targets("diagnostic.json") if b is None)
+    checked = 0
+    for deck in sorted(DECKS_DIR.iterdir()):
+        if not deck.is_dir() or regen.is_retired(deck.name):
+            continue
+        if not (deck / "goldfish_metrics.json").exists():
+            continue
+        if not regen.is_pinned(deck.name):
+            continue
+        checked += 1
+        assert deck.name in got, (
+            f"{deck.name} is SLEEVED, can be diagnosed, and regen does not plan "
+            f"it — the stage would skip it forever without saying so")
+    assert checked >= 2
+
+
+def test_only_a_sleeved_deck_is_built_automatically():
+    """SLEEVED IS BUILT; ON THE BENCH IS TRIGGERED BY HAND.
+
+    A deck pinned in paper is one the pilot plays, so its measurements are kept
+    complete automatically — that is what pinning means. A bench deck is
+    malleable: it changes daily, nobody has claimed it exists in cardboard, and
+    its stages run when the pilot asks. Bootstrapping there manufactures
+    artifacts for a list that will be different tomorrow, and puts a freshness
+    gate on work in progress.
+
+    The first cut of `BOOTSTRAP` missed this and created `diagnostic.json` for
+    three bench decks on its first run.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    planned = {s for s, b in regen.targets("diagnostic.json") if b is None}
+    bench = 0
+    for deck in sorted(DECKS_DIR.iterdir()):
+        if not deck.is_dir() or regen.is_retired(deck.name):
+            continue
+        if regen.is_pinned(deck.name) or (deck / "diagnostic.json").exists():
+            continue
+        bench += 1
+        assert deck.name not in planned, (
+            f"{deck.name} is on the bench and regen would build it a "
+            f"diagnostic it never asked for")
+    assert bench >= 1, "no bench deck to prove the exclusion against"
+
+
+def test_a_branch_is_never_bootstrapped():
+    """A branch is a candidate list. Creating a measurement it never asked for
+    is work nobody ordered, and it would put a tracked artifact on a directory
+    the pilot may delete tomorrow."""
+    from manamap.pilot import regen
+
+    for slug, branch in regen.targets("diagnostic.json"):
+        if branch is None:
+            continue
+        from manamap.config import DECKS_DIR
+        assert (DECKS_DIR / slug / "branches" / branch / "diagnostic.json").exists(), (
+            f"{slug}@{branch} is planned for an artifact it does not have")
+
+
+def test_the_automatic_sweep_touches_sleeved_decks_only():
+    """THE BENCH'S RULE, made structural instead of remembered.
+
+    A SLEEVED deck is played, so its figures are kept current automatically —
+    that is what pinning means. A deck ON THE BENCH is malleable: it changes
+    daily, nobody has claimed it exists in cardboard, and rebuilding its numbers
+    on a sweep measures a list that will be different tomorrow. An ARCHIVED
+    deck's artifacts are frozen as published.
+
+    A bare `regen` swept every live deck, so three bench decks were being
+    rebuilt on every pass without anyone asking.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    swept = {s for s, _b in regen.targets("goldfish_metrics.json")}
+    assert swept, "the automatic sweep found nothing at all"
+    for slug in swept:
+        assert regen.is_pinned(slug), (
+            f"{slug} is not sleeved and the automatic sweep would rebuild it")
+
+    bench = 0
+    for deck in sorted(DECKS_DIR.iterdir()):
+        if not deck.is_dir() or regen.is_retired(deck.name):
+            continue
+        if regen.is_pinned(deck.name):
+            continue
+        if not (deck / "goldfish_metrics.json").exists():
+            continue
+        bench += 1
+        assert deck.name not in swept, f"{deck.name} is on the bench and was swept"
+    assert bench >= 1, "no bench deck on disk to prove the exclusion against"
+
+
+def test_naming_a_deck_is_the_manual_trigger_and_works_on_any_deck():
+    """`--slug` must reach a BENCH deck, or the rule above becomes "you may
+    never regenerate a deck you have not sleeved" — which is not the rule.
+
+    The slug is passed THROUGH to `targets`, not applied as a filter over its
+    result; filtering afterwards would make `regen --slug heliod` return nothing
+    at all, silently doing nothing on an explicit instruction.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    bench = [d.name for d in sorted(DECKS_DIR.iterdir())
+             if d.is_dir() and not regen.is_retired(d.name)
+             and not regen.is_pinned(d.name)
+             and (d / "goldfish_metrics.json").exists()]
+    if not bench:
+        pytest.skip("no bench deck with metrics to name")
+    slug = bench[0]
+    named = {s for s, _b in regen.targets("goldfish_metrics.json", slug=slug)}
+    assert slug in named, (
+        f"`regen --slug {slug}` reaches nothing — naming a deck must override "
+        f"the sleeved-only default, or the flag silently does nothing")
+    rows = regen.plan(only=["goldfish"], slug=slug)
+    assert rows and rows[0][3] == [(slug, None)], rows
+
+
+def test_an_archived_deck_is_never_swept_or_named_into_a_rebuild():
+    """History is frozen. `is_retired` already excluded these; this pins it so a
+    later change to the sleeved rule cannot quietly re-admit them."""
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    checked = 0
+    for deck in sorted(DECKS_DIR.iterdir()):
+        if not deck.is_dir() or not regen.is_retired(deck.name):
+            continue
+        checked += 1
+        assert not regen.targets("goldfish_metrics.json", slug=deck.name), (
+            f"{deck.name} is archived and regen would still rebuild it")
+    assert checked >= 2
