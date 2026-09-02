@@ -41,8 +41,24 @@ def validate(rec, slug, logs_text=None):
     if rec["analysis"].get("games") != n:
         errors.append(f"analysis.games {rec['analysis'].get('games')} != games_completed {n}")
     wins = rec["summary"].get("wins") or {}
-    if sum(wins.values()) + rec["summary"].get("draws", 0) != n:
-        errors.append(f"summary.wins {wins} + draws {rec['summary'].get('draws')} != {n}")
+    # EVERY GAME IS WON, DRAWN, OR UNFINISHED. The third term is new: a game the
+    # `-c` clock stopped has no winner, and is excluded from the win rate rather
+    # than awarded to a survivor.
+    #
+    # This invariant is why the truncation bug survived so long. It held
+    # perfectly while the parser handed every clock-out to the highest-numbered
+    # surviving seat — the books balanced because the wins were REASSIGNED, not
+    # lost. An accounting check cannot see a misattribution that conserves the
+    # total, which is worth remembering the next time one of these reads green.
+    trunc = rec["summary"].get("truncated", 0)
+    if sum(wins.values()) + rec["summary"].get("draws", 0) + trunc != n:
+        errors.append(
+            f"summary.wins {wins} + draws {rec['summary'].get('draws')} + "
+            f"truncated {trunc} != {n}")
+    decided = rec["summary"].get("decided")
+    if decided is not None and decided != n - trunc:
+        errors.append(f"summary.decided {decided} != games_completed {n} - "
+                      f"truncated {trunc}")
     a_wins = {k: v.get("wins") for k, v in (rec["analysis"].get("seats") or {}).items()}
     if any(a_wins.get(k) != v for k, v in wins.items()):
         errors.append(f"analysis per-seat wins {a_wins} disagree with summary.wins {wins}")

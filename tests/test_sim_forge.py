@@ -105,9 +105,30 @@ def test_an_alternate_win_condition_is_a_win_not_a_draw():
     assert g["lost"]["Ai(1)-mm-radagast"].startswith("an opponent has won by spell")
 
 
-def test_forge_seat_labels_map_back_to_slugs():
+def test_forge_seat_labels_map_back_to_slugs_FROM_ANY_SEAT():
+    """THE MAP IS A CROSS PRODUCT because the decks ROTATE through the seats.
+
+    It used to be 1:1 — deck i is `Ai(i+1)` — which was true only while every
+    deck sat in a fixed chair. Forge gives the first `-d` the first turn every
+    game, so a fixed order handed our deck a permanent positional advantage or
+    disadvantage; rotating the order fixes that and makes `Ai(k)` a property of
+    the GAME rather than of the deck.
+
+    A label carries the deck's own name, so position never had to be part of the
+    key. Every index maps for every deck, and a lookup is correct under any
+    rotation.
+    """
     label = forge._seat_label(["mm-radagast", "mm-edgar-vampires"])
-    assert label == {"Ai(1)-mm-radagast": "radagast", "Ai(2)-mm-edgar-vampires": "edgar-vampires"}
+    for k in (1, 2):
+        assert label[f"Ai({k})-mm-radagast"] == "radagast"
+        assert label[f"Ai({k})-mm-edgar-vampires"] == "edgar-vampires"
+    assert len(label) == 4, "every seat index for every deck, and nothing else"
+
+    # A CONSUMER MUST NOT TREAT THIS AS AN ENUMERATION OF SEATS. `bridge` did —
+    # it zipped these keys against the record's seat list and paired
+    # `Ai(2)-<deck 0>` with seat 1, giving every seat the wrong decklist and
+    # commander. There are N x N keys for N seats and that is the point.
+    assert len(label) == 2 * 2
 
 
 def test_a_dry_run_writes_nothing_and_the_same_seed_is_a_replay_not_a_sample(seats, tmp_path):
@@ -224,6 +245,13 @@ def test_the_assumptions_no_longer_claim_a_clock_hit_game_is_a_draw():
     from manamap.sim import forge
 
     text = " ".join(forge.ASSUMPTIONS)
+    # THE SUBSTANCE, not the sentence. The original wording ("NOT recorded as a
+    # draw") was itself a half-truth once the mechanism was decompiled: Forge
+    # really does call `setGameOver(Draw)`, and then prints a `has won` line for
+    # every surviving seat, which is why a naive parse credited one of them. The
+    # assumption now says both halves, so pinning the old phrasing would force
+    # the text back to the less accurate version.
     assert "recorded as a draw, not dropped" not in text
-    assert "NOT recorded as a draw" in text
-    assert "75 clock-hit games" in text
+    assert "truncated" in text, "the record's name for a clock-out must be stated"
+    assert "EXCLUDED from the win rate" in text
+    assert "no winner" in text or "with no winner" in text

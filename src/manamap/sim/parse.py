@@ -58,7 +58,10 @@ RX = {
     "outcome_t": re.compile(r"^Game Outcome: Turn (\d+)"),
     "won":       re.compile(r"^Game Outcome: " + _SEAT + r" has won (?:because|due to) (.*)$"),
     "lost":      re.compile(r"^Game Outcome: " + _SEAT + r" has lost because (.*)$"),
-    "result":    re.compile(r"^Game Result: Game (\d+) ended in (\d+) ms"),
+    # Two endings, two format strings — see `forge._RESULT`. A real draw reads
+    # "ended in a Draw! Took N ms." and was matched by neither pattern.
+    "result":    re.compile(
+        r"^Game Result: Game (\d+) ended in (?:a Draw! Took )?(\d+) ms"),
 }
 _TOKEN = re.compile(r"\bToken$")
 _CREATE = re.compile(r"\bcreates?\b.*\btokens?\b", re.I)
@@ -122,7 +125,12 @@ def _is_commander(source_name, names):
 def _new_game():
     return {"seats": [], "turn": 0, "active": None, "events": [], "owner": {},
             "mulligan": {}, "outcome": {"winner": None, "won_by": None, "round": None,
-                                        "global_turn": None, "draw": False, "lost": {}, "ms": None}}
+                                        "global_turn": None, "draw": False, "lost": {},
+                                        "ms": None,
+                                        # Every seat Forge declared a winner. One
+                                        # is a result; more than one means the
+                                        # clock stopped the game — see `_settle`.
+                                        "_won": [], "truncated": False}}
 
 
 def parse_games(text):
@@ -155,14 +163,42 @@ def parse_games(text):
             o["round"] = int(m.group(1)); o["global_turn"] = last_turn; continue
         m = RX["won"].match(line)
         if m:
-            o["winner"], o["won_by"] = m.group(1), m.group(2).rstrip("."); continue
+            o["_won"].append((m.group(1), m.group(2).rstrip("."))); continue
         m = RX["lost"].match(line)
         if m:
             o["lost"][m.group(1)] = m.group(2).rstrip("."); continue
         m = RX["result"].match(line)
         if m:
             o["ms"] = int(m.group(2)); continue
-    return [x for x in games if x["events"] or x["outcome"]["winner"]]
+    for g in games:
+        _settle_outcome(g["outcome"])
+    return [x for x in games
+            if x["events"] or x["outcome"]["winner"] or x["outcome"]["truncated"]]
+
+
+def _settle_outcome(o):
+    """One winner, or none at all — the same rule `forge.parse_outcomes` uses.
+
+    THIS FILE CARRIED ITS OWN COPY OF THE BUG, which is why nothing ever caught
+    it: `validate-sim` re-derives a tracked record through `analyze_logs`, so the
+    re-derivation contained the identical overwrite and agreed with the record
+    forever. Two implementations of one rule, wrong in the same direction.
+
+    When Forge's `-c` clock fires it calls `setGameOver(GameEndReason.Draw)` —
+    the game is a DRAW — and then prints `has won because all opponents have
+    lost` for every seat still alive. Taking the last such line credited the
+    highest-numbered survivor. Our deck is always `Ai(1)`, so across 121
+    truncated games it was credited with ZERO while surviving to the clock in 93
+    of them, and `baylen-tokens` (always last) took 73 of its 85 recorded wins
+    that way.
+    """
+    won = o.pop("_won", [])
+    if len({name for name, _why in won}) > 1:
+        o["truncated"] = True
+        o["draw"] = True          # Forge's own verdict: `GameEndReason.Draw`
+        o["winner"] = o["won_by"] = None
+    elif won:
+        o["winner"], o["won_by"] = won[0]
 
 
 def _event(line, g):
@@ -225,6 +261,41 @@ def _event(line, g):
 
 # ── Per-game facts ──────────────────────────────────────────────────────────
 
+def _aim(per, owner, ev, seats):
+    """Attribute one targeted stack object to the seats it was aimed AT.
+
+    A target group holds either seat labels (`targeting [Ai(3)-mm-baylen]`) or
+    permanents (`targeting [Demon's Horn (131)]`); a permanent resolves through
+    `owner`, which is learned from the `Land:` and `Add To Stack:` lines that
+    named it. A permanent nobody was ever seen playing is UNATTRIBUTED and
+    counted for neither side — the alternative is guessing, and guessing here
+    would systematically credit the active seat.
+
+    One stack object counts ONCE per opposing seat it touched, not once per
+    target: a wrath naming four of one player's creatures is one act of
+    interaction against that player, and counting four would make a
+    board-targeting deck look four times as interactive as a spot-removal one.
+    """
+    src = ev["seat"]
+    raw = ev.get("targets")
+    if not raw or src not in per:
+        return
+    hit = set()
+    for name in [t.strip() for t in raw.split(",")]:
+        if name in per:                       # a seat, targeted directly
+            hit.add(name)
+            continue
+        for _n, pid in _perms(name):          # a permanent, via the owner map
+            who = owner.get(pid)
+            if who in per:
+                hit.add(who)
+    hit.discard(src)                          # aiming at your own board is not interaction
+    if hit:
+        per[src]["interaction_cast"] += 1
+        for seat in hit:
+            per[seat]["interaction_received"] += 1
+
+
 def game_facts(g, commanders=None):
     """Per-game facts. `commanders` maps a Forge seat label to that seat's commander
     name(s); pass it and the seat gains a per-defender commander-damage tally, omit it
@@ -260,6 +331,27 @@ def game_facts(g, commanders=None):
                "counter_events": 0,
                "mass_counter_events": 0,
                "proliferate_events": 0,
+               # INTERACTION, and deliberately NOT called removal. The log gives
+               # `Add To Stack: SEAT cast X targeting [...]`, and the target
+               # group is resolved through the same `owner` map the elimination
+               # attribution uses. What that yields is "this seat aimed a spell
+               # or ability at something ANOTHER seat controlled" — which covers
+               # a Swords, an edict and a drain, and also covers a Giant Growth
+               # cast on an opponent's creature. The log does not say what the
+               # spell DID, so naming this `removal_cast` would be a claim the
+               # evidence cannot carry.
+               #
+               # It answers the question `creatures_lost` could not: that figure
+               # counts a creature leaving the battlefield and cannot separate a
+               # removal spell from a chump block from a sacrifice outlet — the
+               # distinction that decides whether an Edgar or Yawgmoth result
+               # means the deck was dismantled or was doing its job.
+               #
+               # SELF-TARGETING IS EXCLUDED, which is most of the traffic: the
+               # equip that prompted this check was Lightning Greaves on the
+               # caster's own commander.
+               "interaction_cast": 0,
+               "interaction_received": 0,
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
@@ -276,8 +368,10 @@ def game_facts(g, commanders=None):
             per[ev["seat"]]["lands"] += 1
         elif k == "cast":
             per[ev["seat"]]["casts"] += 1
+            _aim(per, owner, ev, seats)
         elif k == "activated":
             per[ev["seat"]]["activations"] += 1
+            _aim(per, owner, ev, seats)
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
         elif k == "resolve":
@@ -367,6 +461,7 @@ def game_facts(g, commanders=None):
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
     o = g["outcome"]
     return {"seats": seats, "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
+            "truncated": bool(o.get("truncated")),
             "global_turn": o["global_turn"], "ms": o["ms"], "lost": dict(o["lost"]),
             "mulligan": dict(g["mulligan"]), "per_seat": per}
 
@@ -558,19 +653,46 @@ def aggregate(facts, slug_label, label, commanders=None):
     n = len(facts)
     seats = sorted({s for f in facts for s in f["seats"]})
     wins = Counter(f["winner"] for f in facts if f["winner"])
-    out = {"games": n, "seats": {label.get(s, s): {} for s in seats}}
+
+    # THE DECKS ROTATE THROUGH THE SEATS, so one deck has SEVERAL Forge labels:
+    # `Ai(1)-mm-vito` through `Ai(4)-mm-vito` are all the same deck. Group by the
+    # slug and aggregate over every label it ever sat at.
+    #
+    # THIS BUG ARRIVED WITH THE ROTATION. Before it, each deck sat at one fixed
+    # index, `label` was 1:1, and `out["seats"][name] = ...` in a loop over raw
+    # seats was correct. The moment a deck could occupy four labels, that
+    # assignment started OVERWRITING: the last index processed won, and every
+    # figure for the deck was computed from only the games where it happened to
+    # sit there. Measured on the 100-game control: the analysis block reported
+    # vito with 6 wins and pod-control with 3, against the summary's tally of 47
+    # and 9 over the same games. Same class as the truncation bug — a per-seat
+    # figure quietly computed over a quarter of the sample — and it is worse
+    # than a wrong win count, because combat damage, interaction and elimination
+    # were all being averaged over that same quarter.
+    by_name = {}
+    for s in seats:
+        by_name.setdefault(label.get(s, s), []).append(s)
+
+    # A GAME NOBODY WON IS NOT A GAME SOMEBODY LOST. `win_rate` divides by the
+    # DECIDED games, matching `summary`; dividing by `n` counts every clock-out
+    # against every seat. The summary was fixed when truncation was; this second
+    # tally was not, so the two disagreed inside one record.
+    decided = sum(1 for f in facts if f["winner"])
+    out = {"games": n, "decided": decided, "seats": {name: {} for name in by_name}}
     # WHAT THIS DECK DID WHEN THE BOARD DIED. Attached for OUR seat only: it is
     # a question about the pilot's deck, and computing it for three AI seats
     # would put three numbers on the page that nobody asked and nobody reads.
     if slug_label:
         out["wipe_recovery"] = wipe_recovery(facts, slug_label)
-    for s in seats:
-        name = label.get(s, s)
-        k = wins.get(s, 0)
-        lo, hi = wilson(k, n)
-        ps = [f["per_seat"][s] for f in facts if s in f["per_seat"]]
+    for name, raw in by_name.items():
+        k = sum(wins.get(s, 0) for s in raw)
+        lo, hi = wilson(k, decided)
+        ps = [f["per_seat"][s] for f in facts for s in raw if s in f["per_seat"]]
         out["seats"][name] = {
-            "wins": k, "win_rate": round(k / n, 3) if n else None, "win_rate_ci95": [lo, hi],
+            "wins": k,
+            "win_rate": round(k / decided, 3) if decided else None,
+            "win_rate_ci95": [lo, hi],
+            "games_played": len(ps),
             "eliminated_turn": mean_ci([p["eliminated_turn"] for p in ps]),
             "eliminated_by": dict(Counter(label.get(p["eliminated_by"], p["eliminated_by"])
                                           for p in ps if p["eliminated_by"])),
@@ -605,6 +727,12 @@ def aggregate(facts, slug_label, label, commanders=None):
             "counter_events": mean_ci([p["counter_events"] for p in ps]),
             "mass_counter_events": mean_ci([p["mass_counter_events"] for p in ps]),
             "proliferate_events": mean_ci([p["proliferate_events"] for p in ps]),
+            # See `_aim`: acts of interaction AIMED AT another seat's board or
+            # face, and acts aimed at this one. `interaction_received` is the
+            # pod's answer to "does the table take this deck seriously",
+            # measured at the table rather than modelled by threat.py.
+            "interaction_cast": mean_ci([p["interaction_cast"] for p in ps]),
+            "interaction_received": mean_ci([p["interaction_received"] for p in ps]),
             "activations": mean_ci([p["activations"] for p in ps]),
             "triggers": mean_ci([p["triggers"] for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),
@@ -619,12 +747,21 @@ def aggregate(facts, slug_label, label, commanders=None):
             },
         }
         # Present only where the seat's commander is known — see game_facts.
-        if commanders.get(s) and any("commander_damage_max" in p for p in ps):
+        #
+        # UNION ACROSS THE DECK'S SEAT LABELS, not a lookup on one. `commanders`
+        # is keyed by Forge label and the deck rotates, so `Ai(1)-mm-x` and
+        # `Ai(3)-mm-x` are both this deck and both carry its commander. The first
+        # cut of the grouping read a bare `s` here, which Python resolved to the
+        # variable LEAKED from the loop that built `by_name` — so every seat was
+        # given the LAST seat's commander, and the fixture caught radagast's
+        # commander damage being published under Edgar Markov's name.
+        cmd = sorted({c for lbl in raw for c in commanders.get(lbl, ())})
+        if cmd and any("commander_damage_max" in p for p in ps):
             maxes = [p.get("commander_damage_max", 0) for p in ps]
             lethal = sum(1 for p in ps if p.get("commander_damage_lethal"))
             dealt = [sum((p.get("commander_damage_by_defender") or {}).values()) for p in ps]
             out["seats"][name]["commander_damage"] = {
-                "commander": sorted(commanders[s]),
+                "commander": cmd,
                 "dealt_total": mean_ci(dealt),
                 "max_on_one_defender": mean_ci(maxes),
                 "best_single_game_max": max(maxes, default=0),
@@ -664,8 +801,19 @@ def aggregate(facts, slug_label, label, commanders=None):
         "Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and "
         "eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on "
         "7.0 combat damage a game.",
+        "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent "
+        "or face, resolved through the learned owner map, once per opposing seat touched. "
+        "It is not a removal count: the log records that a spell targeted something, never "
+        "what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an "
+        "opponent's creature are one and the same to it. A permanent nobody was seen "
+        "playing is unattributed and counted for neither side.",
+        "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs "
+        "exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. "
+        "Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, "
+        "tutor and graveyard recursion are invisible to every record here, and no parser "
+        "change recovers them; the goldfish is the only place those are measured.",
         "ci95 is a Wilson interval for rates and a normal interval for means; both are "
-        "meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+        "meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
         "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander "
         "on one player), so max_on_one_defender is the number the win condition reads and "
         "dealt_total is not — a commander that hit three seats for 20 each dealt 60 and "
@@ -681,6 +829,10 @@ def compact(fact, label):
     """A per-game row small enough to track: outcome + per-seat scalars, no curves."""
     return {"winner": label.get(fact["winner"], fact["winner"]), "won_by": fact["won_by"],
             "round": fact["round"], "global_turn": fact["global_turn"], "ms": fact["ms"],
+            # CARRIED THROUGH, or `--analyze` cannot tell a game that finished
+            # from one the clock stopped, and re-deriving a record would quietly
+            # reintroduce the bug it exists to repair.
+            "truncated": bool(fact.get("truncated")),
             "per_seat": {label.get(s, s): {k: v for k, v in p.items()
                                            if k not in ("life_by_turn", "damage_to_players_by_turn")}
                          for s, p in fact["per_seat"].items()}}

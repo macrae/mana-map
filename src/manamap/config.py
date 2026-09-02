@@ -1273,7 +1273,26 @@ FORGE_JVM_ARGS = ["-Xmx4096m", "-Dio.netty.tryReflectionSetAccessible=true",
                   "-Dfile.encoding=UTF-8"]
 SIM_DIR = "sim"                       # data/decks/<slug>/sim/<run-id>.json (tracked) + logs/ (ignored)
 SIM_DEFAULT_GAMES = 20
-SIM_GAME_CLOCK_SECONDS = 300          # Forge's -c: a game past this is a draw; 4-seat games run ~30 s
+# Forge's `-c`: WALL-CLOCK SECONDS PER GAME, and a game past it is a draw with no
+# winner. Forge has no turn limit, so this is the only thing that ends a stalled
+# game — and because it is wall time rather than turns, how many games it
+# truncates depends on how loaded the machine is, not only on the decks.
+#
+# RAISED 300 -> 600 on 2026-09-02, on the distribution rather than a guess. Across
+# 1023 games: median 111 s, p75 173 s, p90 227 s, p95 257 s — and then 12.6% piled
+# up AT the 300 s wall, against 6.4% in the 60 s bucket before it. A wall that
+# truncates twice the mass of the bucket preceding it is cutting through a second
+# population, not the tail of the first, so 300 s was reporting some genuinely
+# long games as draws. 600 s clears the whole of the first population with room
+# over; what remains at the wall is the games that were never going to end.
+SIM_GAME_CLOCK_SECONDS = 600
+
+# The clock EVERY RECORD ON DISK BEFORE 2026-09-02 was run at. Frozen forever,
+# and it is not the default any more — it exists so `run_id` can tag a run whose
+# clock differs from the historical one. Without it, raising the default would
+# have made a 600 s run produce byte-identical ids to the 300 s records already
+# filed, which is the silent overwrite `profile_tag` was written to stop.
+SIM_CLOCK_ID_BASELINE = 300
 SIM_DECK_PREFIX = "mm-"               # our .dck files in Forge's folder carry this so they never
                                       # clobber a deck the pilot built in Forge itself
 # The audit's CODE, for the same reason deck-diagnosis declares bracket_report and
@@ -1283,6 +1302,10 @@ SIM_DECK_PREFIX = "mm-"               # our .dck files in Forge's folder carry t
 # cache still read HIT, which is the "green board over a stale document" this
 # registry exists to prevent — the data inputs were declared and the measurer was not.
 DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
+# The captain's-log vocabulary and the stardate function. Declared as a routine
+# input because editing `STATIONS` or `stardate()` changes what the agent may
+# write — and a green board over a stale vocabulary is what that mechanism is for.
+CAPTAINS_LOG_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "captains_log.py"
 
 # Input tokens resolved by agent_cache.resolve_inputs():
 #   deck:<name>[?]     file under data/decks/<slug>/ ('?' = optional; absence
@@ -1396,6 +1419,29 @@ AGENT_ROUTINES = {
         "artifact": "log_annotations.json",
         "inputs": ["deck:log.jsonl", "cards:semantic", "stacks:passing",
                    "deck:engine.json?"],
+    },
+    # THE CAPTAIN'S LOG — the language layer over the same notes the debrief
+    # reads. The two are not alternatives: the debrief is the machine-readable
+    # reading that `open_questions` routes from and the doctor consults; this is
+    # a RENDERING for a human to read.
+    #
+    # `cards:semantic` IS DELIBERATELY ABSENT, and this is the one routine in
+    # the registry where that is true for a reason about the WORLD rather than
+    # about cost. Every other artifact describes the deck as it stands and rots
+    # the moment a card is swapped. A log records a night that happened, and a
+    # swap on Tuesday does not make Saturday's log wrong. Declaring the corpus
+    # would MISS every deck's entire log history on every decklist edit, at
+    # agent cost, to rewrite prose that was already correct.
+    #
+    # Same reasoning gives it no `deck_status.STAGES` row and no freshness
+    # stamp. `repo:CAPTAINS_LOG_PATH` is declared for the OPPOSITE reason: a
+    # change to the station vocabulary or the stardate is a fleet-wide re-spawn,
+    # not a re-bless, because it changes what the agent is allowed to write.
+    "captains-log": {
+        "agent": "captains-log",
+        "artifact": "captains_log.json",
+        "inputs": ["deck:log.jsonl", "deck:log_causes.json?",
+                   "deck:log_annotations.json?", "repo:CAPTAINS_LOG_PATH"],
     },
     # The diagnosis loop. `deck-recon` is the one routine in this registry whose
     # staleness is TIME rather than inputs: a decklist edit does not change what

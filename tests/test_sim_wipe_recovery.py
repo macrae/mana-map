@@ -171,6 +171,15 @@ def test_the_record_publishes_the_DRAIN_half_of_a_drain_deck():
                           "permanents_lost_by_turn": {},
                           "counter_events": 0, "mass_counter_events": 0,
                           "proliferate_events": 0,
+                          # THIS FIXTURE HAND-BUILDS WHAT `game_facts` PRODUCES,
+                          # so every channel added to the parser must be added
+                          # here too or `aggregate` raises KeyError on a key it
+                          # is right to demand. Deliberately not softened to
+                          # `.get(..., 0)` in the production code: a channel that
+                          # silently reads zero when it was never measured is the
+                          # `treasure_doubler` failure, and absent must stay
+                          # absent rather than becoming a measurement of nothing.
+                          "interaction_cast": 0, "interaction_received": 0,
                           "life_by_turn": {"1": 40, "2": 45, "3": 38},
                           "damage_to_players_by_turn": {}}
                       for s in ("me", "a")}}

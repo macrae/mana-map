@@ -293,10 +293,24 @@ def seat_object(label, st, seat_id, deck_slug, commander, archetype):
 def build_scenario(slug, rec, game_index, turn, step_text, game, label):
     phase, step = resolve_cut(step_text)
     outcome = rec["outcomes"][game_index - 1]
-    seats_label = [s["forge_name"] for s in rec["seats"]]
-    forge_labels = list(_seat_label(seats_label).keys())
+    # THE DECKS ROTATE THROUGH THE SEATS, so WHICH `Ai(k)` a deck was is a
+    # property of THIS GAME, not of the record. `outcomes[i].seat_order` holds
+    # the rotation that game was played under; a record from before rotation has
+    # no such key and the record's own seat order is the answer.
+    #
+    # Two things broke without this. `_seat_label` is a CROSS PRODUCT — every
+    # index for every deck — so zipping its keys against `rec["seats"]` paired
+    # `Ai(2)-<deck 0>` with seat 1 and gave every seat the wrong decklist,
+    # commander and archetype. And `seat_ids` called index 0 "you", which under
+    # rotation is whichever deck happened to sit first — so a board lifted for
+    # `/resolve-stack` could be argued from an opponent's side of the table.
+    by_slug = {s["slug"]: s["forge_name"] for s in rec["seats"]}
+    order = outcome.get("seat_order") or [s["slug"] for s in rec["seats"]]
+    seat_slugs = [s for s in order if s in by_slug]
+    forge_labels = [f"Ai({i + 1})-{by_slug[sl]}" for i, sl in enumerate(seat_slugs)]
+    seats_in_order = [next(s for s in rec["seats"] if s["slug"] == sl) for sl in seat_slugs]
     commanders, archetypes = {}, {}
-    for fl, s in zip(forge_labels, rec["seats"]):
+    for fl, s in zip(forge_labels, seats_in_order):
         d = seat_dir(s["slug"])
         from manamap.pilot.fetch_deck import parse_decklist
         entries = parse_decklist((d / "decklist.txt").read_text(encoding="utf-8"))
@@ -304,7 +318,14 @@ def build_scenario(slug, rec, game_index, turn, step_text, game, label):
         frame = load_json(d / "strategic_frame.json") or {}
         archetypes[fl] = frame.get("archetype")
     states, notes, active, cur_phase, cur_step = reconstruct(game, turn, phase, step, commanders)
-    seat_ids = {fl: ("you" if i == 0 else f"seat-{i + 1}") for i, fl in enumerate(forge_labels)}
+    # "you" IS OUR DECK, wherever it sat this game — never seat index 0.
+    seat_ids, n_other = {}, 0
+    for i, (fl, sl) in enumerate(zip(forge_labels, seat_slugs)):
+        if sl == slug:
+            seat_ids[fl] = "you"
+        else:
+            n_other += 1
+            seat_ids[fl] = f"seat-{n_other + 1}"
     seats_out = []
     for fl in forge_labels:
         if fl not in states:

@@ -9,19 +9,33 @@ and writing ONE tracked run record beside them.
 
 WHAT A RUN RECORD IS. `data/decks/<slug>/sim/<run-id>.json` — tier ◆ **seeded**: Forge's
 sim mode takes `-s <seed>` (undocumented in its wiki, present in its source and in this
-release), and with it identical inputs reproduce the logs BYTE FOR BYTE — measured twice
-on this machine, including a two-game sequence under one seed. The first runs in this
-repo were made before that was known and are recorded as SAMPLED; they stay valid as
-history. A seeded run is replayable game by game (`-n g -s <seed+job>`), which is what
-the S4 bridge stands on. The record states N, the seeds, what it measured per game, and
-the assumptions that bound it — including Forge's own verdict on its AI, verbatim. The
-raw logs sit in `sim/logs/<run-id>/` and are gitignored: large and regenerable, now
-exactly.
+release), and it fixes the SHUFFLE.
 
-The run id is `<opponents>-n<N>-<sha8 over every seat's decklist>-s<seed>`. The default
-seed is derived from that digest, so the same configuration replays the same games; a
-NEW sample is a new `--seed`, and a swap is a new digest. Re-running an existing id is a
-replay and is refused without `--force` (it would write the same bytes).
+A SEED IS NOT A RECEIPT, AND THIS FILE CLAIMED OTHERWISE FOR MONTHS — "identical inputs
+reproduce the logs BYTE FOR BYTE, measured twice". Measured again properly on 2026-09-02:
+goblin-storm, same pod, same seed (424242), same clock, same job count, run twice. ALL
+FOUR GAMES DIFFERED — turns 33/41/32/33 against 31/43/42/41 — and game 3 had a DIFFERENT
+WINNER. One game took 23 s in one pass and 398 s in the other. The mechanism is in the
+logs: `AI eval thread at timeout` fired 12 times across those 4 games. Forge budgets its
+AI's evaluation in WALL TIME and dumps the thread when it overruns, after which the AI
+plays whatever it had — so how well a seat is piloted depends on machine load, and no seed
+controls that. The original "measured twice" was almost certainly two short games under
+light load, where the abort never fired.
+
+WHAT THAT COSTS. The game-by-game replay claim: `-n g -s <seed_j>` reproduces the deal,
+not the game, so the S4 bridge lifts a board FROM THE STORED LOG rather than by re-running
+it. The stored log is the receipt — which is why `validate-sim` re-derives every figure
+from the logs instead of trusting the record. It costs nothing at the level a run record is
+actually read: N games against a pod is a SAMPLE either way, and the interval was always
+the claim. The record states N, the seeds, what it measured per game, and the assumptions
+that bound it, including Forge's own verdict on its AI. The raw logs sit in
+`sim/logs/<run-id>/` and are gitignored: large, and regenerable only as a fresh sample.
+
+The run id is `<opponents>-n<N>-<sha8 over every seat's decklist>-s<seed>`, plus a tag for
+a non-default AI profile or clock. The default seed is derived from that digest; a NEW
+sample is a new `--seed`, and a swap is a new digest. Re-running an existing id is refused
+without `--force` — not because it would write the same bytes, which it would not, but
+because it would OVERWRITE one measurement with a different one under the same name.
 
 S1 records per-game OUTCOME only (winner, turn, wall ms, how each seat lost) — those lines
 are unambiguous in the log. The event parser that turns the rest of the log into damage,
@@ -39,7 +53,7 @@ from datetime import date
 
 from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_ARGS,
                             SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_DIR,
-                            SIM_GAME_CLOCK_SECONDS)
+                            SIM_GAME_CLOCK_SECONDS, SIM_CLOCK_ID_BASELINE)
 from manamap.pilot.common import deck_dir, load_json
 from manamap.sim import parse as sim_parse
 
@@ -49,10 +63,15 @@ FORGE_AI_CAVEAT = ('Forge\'s AI "is not trained"; it is "best with aggro and mid
                    'decks, poor to ok in control decks, pretty bad for most combo decks" '
                    '(Forge docs/AI.md). A control deck\'s win rate here is a lower bound '
                    'on a competent pilot\'s; a combo deck\'s is not a measurement.')
-SEEDED_NOTE = ("SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this "
-               "Forge build identical inputs reproduce the logs byte for byte — game g of job j "
-               "replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the "
-               "claim, the seed is the receipt.")
+SEEDED_NOTE = ("SEEDED FIXES THE SHUFFLE, NOT THE GAMES. Every JVM job ran `-s <seed>` "
+               "(seeds recorded per job) and the same seed deals the same cards — but one "
+               "configuration replayed twice on 2026-09-02 gave four different games and a "
+               "different winner in one of them. Forge budgets its AI's evaluation in WALL "
+               "TIME and abandons the search when it overruns (`AI eval thread at timeout`, "
+               "12 times in those 4 games), so how well a seat is piloted depends on machine "
+               "load. The STORED LOGS are the receipt, not the seed — `validate-sim` "
+               "re-derives every figure from them. N games against a pod is a sample either "
+               "way, and the interval is the claim.")
 SAMPLED_NOTE = ("SAMPLED, NOT SEEDED: this run was made before `-s` was known. Identical runs "
                 "diverge; every figure is a sample of N games and no single game is replayable.")
 ASSUMPTIONS = [
@@ -63,14 +82,26 @@ ASSUMPTIONS = [
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: "
     "Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 "
     "is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
-    # MEASURED AND WRONG, so it says what actually happens. `summary.draws` is 0
-    # on every tracked run INCLUDING the two with three clock-hit games each, and
-    # edgar-vampires n=400 carries 75 clock-hit games (19%) all with winners.
-    "A game past Forge's `-c` clock is NOT recorded as a draw: Forge reports a "
-    "WINNER for it and the parse takes that at face value, so a deck that trips "
-    "the clock has its rate scored off truncated games with nothing marking "
-    "them. Measured: edgar-vampires n=400 had 75 clock-hit games (19%) and zero "
-    "recorded draws.",
+    # CORRECTED 2026-09-02. The previous text observed the symptom — clock-hit
+    # games carrying winners and `summary.draws` reading 0 — and concluded that
+    # Forge reports a winner for them. It does not. Decompiled, Forge catches its
+    # own timeout, prints "Stopping slow match as draw" and calls
+    # `setGameOver(GameEndReason.Draw)`; it then prints `has won because all
+    # opponents have lost` for EVERY SEAT STILL ALIVE. Our parser assigned on
+    # each such line, so the LAST one won — the highest-numbered survivor.
+    #
+    # Our deck is always `Ai(1)`. Across 121 truncated games it was credited
+    # with ZERO while surviving to the clock in 93 of them, and `baylen-tokens`
+    # (always the last seat) took 73 of its 85 recorded wins that way. It is also
+    # the whole of the "win rate falls as N grows" signature: the clock-hit share
+    # runs 0% at n=20, 9% at n=100, 18% at n=400.
+    "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` "
+    "— but it prints a `has won` line for every surviving seat, so a naive parse "
+    "credits one of them. Such games are now recorded `truncated: true` with no "
+    "winner and are EXCLUDED from the win rate; `summary.truncated` and "
+    "`summary.decided` report how many. A truncated game is also not "
+    "byte-reproducible: Forge interrupts the accounting but not the AI thread, "
+    "so the outcome lines are a snapshot of a game still being mutated.",
     "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` "
     "only ends the game's accounting, not its AI thread — two tracked 20-game "
     "runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A "
@@ -171,13 +202,19 @@ def record_commanders(rec):
     reads the decklists once, writes the field, and rewrites the analysis with it.
     """
     out = {}
-    for i, seat in enumerate(rec.get("seats") or []):
+    seats = rec.get("seats") or []
+    for seat in seats:
         names = seat.get("commander")
         if not names:
             continue
         if isinstance(names, str):
             names = [names]
-        out[f"Ai({i + 1})-{seat['forge_name']}"] = set(names)
+        # EVERY SEAT INDEX, not just the one this deck was passed in as. Seats
+        # rotate per job, so a commander keyed to one position would credit
+        # commander damage to whichever deck later sat there. The label already
+        # carries the deck name; position was never needed. See `_seat_label`.
+        for k in range(1, len(seats) + 1):
+            out[f"Ai({k})-{seat['forge_name']}"] = set(names)
     return out
 
 
@@ -338,10 +375,59 @@ def profile_tag(profile=None, vs_profile=None):
     return ("-" + "-".join(bits)) if bits else ""
 
 
-def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None):
+def clock_tag(clock=None):
+    """The run-id suffix for a clock that is not the historical one, or "".
+
+    THE CLOCK IS PART OF THE CONFIGURATION AND THE ID DID NOT CARRY IT — the
+    same omission as the profile, one field over. A run's id is built from the
+    seats, the game count, a decklist digest and the seed, so
+    `simulate <deck> --clock 600` wrote to the exact path the 300 s run had
+    already written and replaced it with no warning.
+
+    It is not merely a filing problem: the clock decides which games are
+    TRUNCATED, and a truncated game has no winner. Two records at different
+    clocks are two different measurements of the deck, and pooling them under
+    one name would mix populations.
+
+    Compared against SIM_CLOCK_ID_BASELINE and never against the current
+    default, so raising the default does not rename a single record on disk.
+    """
+    return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
+
+
+def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clock=None):
     seed = default_seed(slug, opponents) if seed is None else int(seed)
     return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
-            f"-s{seed}{profile_tag(profile, vs_profile)}")
+            f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}")
+
+
+def default_jobs():
+    """How many JVMs to run at once — PERFORMANCE CORES, not logical CPUs.
+
+    Was `cpu_count() - 1`, which is 7 on this machine. It has 4 performance and
+    4 efficiency cores, and a JVM scheduled onto an E-core runs the same game at
+    roughly half the speed. Forge's `-c` is WALL time, so those slow seats hit
+    the clock and their games were recorded as truncated — a measurement
+    artifact of the scheduler, indistinguishable in the record from a genuinely
+    stalled game.
+
+    That is what the censoring numbers say. The 4-JVM runs truncated 0% of their
+    games; every 7-JVM run truncated between 5% and 18%. The decks did not
+    change between them.
+
+    Falls back to half the logical CPUs where the split is not reported, which
+    is the right shape on a homogeneous machine too: Forge is not the only thing
+    running, and an oversubscribed core costs wall time on every job at once.
+    """
+    try:
+        out = subprocess.run(["sysctl", "-n", "hw.perflevel0.logicalcpu"],
+                             capture_output=True, text=True, check=False)
+        perf = int(out.stdout.strip())
+        if perf >= 1:
+            return perf
+    except (OSError, ValueError):
+        pass
+    return max(1, (os.cpu_count() or 2) // 2)
 
 
 def split_games(games, jobs):
@@ -380,11 +466,46 @@ _TURN = re.compile(r"^Turn: Turn (\d+)")
 _OUTCOME_WON = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has won (?:because|due to) (.*)$")
 _OUTCOME_LOST = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has lost because (.*)$")
 _OUTCOME_DRAW = re.compile(r"^Game Outcome: .*draw", re.I)
-_RESULT = re.compile(r"^Game Result: Game (\d+) ended in (\d+) ms")
+# TWO ENDINGS, TWO FORMAT STRINGS. Forge prints
+#   "Game Result: Game %d ended in %d ms."          -- a decided game
+#   "Game Result: Game %d ended in a Draw! Took %d ms."  -- GameOutcome.isDraw()
+# and this pattern only matched the first. `parse_outcomes` closes a game
+# ONLY on this line, so a real draw left the record open, the next game's
+# `Game Outcome:` lines fell through the `cur is None` guard, and TWO GAMES
+# MERGED INTO ONE credited to the second one's winner — with
+# `games_completed` silently one short.
+# It has never fired because `isDraw()` has been false in all 901 games: the
+# clock-out games Forge calls draws were being handed to a survivor instead.
+# Fixing the truncation bug is exactly what would have armed this one.
+_RESULT = re.compile(
+    r"^Game Result: Game (\d+) ended in (?:a Draw! Took )?(\d+) ms")
 
 
 def parse_outcomes(text):
-    """Per-game outcomes from one JVM's log: winner, turn, ms, how each seat lost."""
+    """Per-game outcomes from one JVM's log: winner, turn, ms, how each seat lost.
+
+    A GAME THAT RAN OUT THE CLOCK HAS NO WINNER, and Forge says so in a way that
+    reads like the opposite. When `-c <clock>` fires, Forge stops the game where
+    it stands — mid-combat, on turn 25 — and prints a `has won because all
+    opponents have lost` line for EVERY SURVIVING SEAT:
+
+        Game Outcome: Ai(1)-mm-goblin-storm has won because all opponents have lost
+        Game Outcome: Ai(2)-mm-giada-angels has won because all opponents have lost
+        Game Outcome: Ai(3)-mm-vito has won because all opponents have lost
+        Game Outcome: Ai(4)-mm-baylen-tokens has won because all opponents have lost
+
+    This loop assigned `cur["winner"]` on each match, so the LAST line won —
+    always the highest-numbered surviving seat. Measured on the 100-game
+    goblin-storm run: 12 games hit the clock, all 12 declared more than one
+    winner, and **8 of 100 winners were recorded wrong**. `baylen-tokens` was
+    credited 11 wins where Forge's own `Game Result` line gives it 3; `vito`
+    lost 7 it had won; and one of OUR wins was reassigned away.
+
+    A truncated game is now `winner=None, truncated=True` and is excluded from
+    the win rate rather than awarded to whoever sat last. That is the
+    absent-means-absent rule: a game nobody won is not a game somebody won, and
+    inventing a winner from seat order is the most misleading option available.
+    """
     games, cur, last_turn = [], None, None
     for line in text.splitlines():
         m = _TURN.match(line)
@@ -392,7 +513,10 @@ def parse_outcomes(text):
             last_turn = int(m.group(1)); continue
         if cur is None and line.startswith("Game Outcome:"):
             cur = {"winner": None, "won_by": None, "round": None, "global_turn": last_turn,
-                   "draw": False, "lost": {}, "ms": None}
+                   "draw": False, "lost": {}, "ms": None,
+                   # Every seat Forge declared a winner. One is a result; more
+                   # than one means the clock stopped the game.
+                   "_won": [], "truncated": False}
             last_turn = None
         if cur is None:
             continue
@@ -401,7 +525,8 @@ def parse_outcomes(text):
             cur["round"] = int(m.group(1)); continue
         m = _OUTCOME_WON.match(line)
         if m:
-            cur["winner"] = m.group(1); cur["won_by"] = m.group(2).rstrip("."); continue
+            cur["_won"].append((m.group(1), m.group(2).rstrip(".")))
+            continue
         m = _OUTCOME_LOST.match(line)
         if m:
             cur["lost"][m.group(1)] = m.group(2).rstrip("."); continue
@@ -410,16 +535,57 @@ def parse_outcomes(text):
         m = _RESULT.match(line)
         if m:
             cur["ms"] = int(m.group(2))
-            games.append(cur); cur = None
-    if cur is not None and (cur["winner"] or cur["draw"]):   # a final game with no Result line
-        games.append(cur)
+            games.append(_settle(cur)); cur = None
+    if cur is not None and (cur["_won"] or cur["draw"]):   # a final game with no Result line
+        games.append(_settle(cur))
     return games
 
 
+def _settle(game):
+    """Turn the collected win lines into one winner, or into no winner at all."""
+    won = game.pop("_won", [])
+    seats = {name for name, _why in won}
+    if len(seats) > 1:
+        # THE CLOCK STOPPED IT. Not a draw — a draw is a result both players
+        # reached — and not a win for anyone. It is a game that did not finish,
+        # and the record says so rather than picking a survivor.
+        game["truncated"] = True
+        game["winner"] = None
+        game["won_by"] = None
+    elif won:
+        game["winner"], game["won_by"] = won[0]
+    return game
+
+
 def _seat_label(seat_names):
-    """Forge labels seats `Ai(k)-<meta name>` in -d order; map back to slugs."""
-    return {f"Ai({i + 1})-{name}": name[len(SIM_DECK_PREFIX):] if name.startswith(SIM_DECK_PREFIX) else name
-            for i, name in enumerate(seat_names)}
+    """Forge labels seats `Ai(k)-<meta name>`; map every label back to its slug.
+
+    POSITION-INDEPENDENT ON PURPOSE. This used to key on `Ai({i+1})-{name}` for
+    the one order the decks were passed in, which was fine while the `-d` order
+    never changed. Seats now ROTATE per job — so `Ai(2)` is a different deck in
+    job 1 than in job 0, and a map built from one order would attribute wins to
+    whichever deck happened to sit there first. That is a far worse error than
+    the seat bias the rotation exists to remove.
+
+    The label already carries the deck name, so position never had to be part of
+    the key. Every seat index is mapped for every name, and the result is correct
+    under any ordering.
+    """
+    strip = lambda n: n[len(SIM_DECK_PREFIX):] if n.startswith(SIM_DECK_PREFIX) else n
+    return {f"Ai({k})-{name}": strip(name)
+            for name in seat_names
+            for k in range(1, len(seat_names) + 1)}
+
+
+def _profiles_for(rotation, subject, profile, pod):
+    """AI profiles in the ROTATED seat order.
+
+    `profiles` is index-aligned with `-d`, so rotating the decks without
+    rotating the profiles would hand our seat's pilot to whichever deck landed
+    in slot 0 — silently swapping which deck is played by which AI, which is a
+    worse bug than the one the rotation fixes.
+    """
+    return [(profile or DEFAULT_PROFILE) if s == subject else pod for s in rotation]
 
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
@@ -430,19 +596,21 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
     seats = [slug, *opponents]
     names = [install_deck(s, decks_dir) for s in seats]
-    jobs = jobs or max(1, (os.cpu_count() or 2) - 1)
+    jobs = jobs or default_jobs()
     parts = split_games(games, jobs)
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
     pod = vs_profile or STANDARD_POD_PROFILE
-    rid = run_id(slug, opponents, games, seed_base, profile, pod)
+    rid = run_id(slug, opponents, games, seed_base, profile, pod, clock)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
     if record_path.exists() and not force and not dry_run:
-        raise SystemExit(f"{slug}: {record_path.name} exists — the same configuration and seed "
-                         f"replays the same games. Pass --seed N for a new sample, or --force "
-                         f"to replay it.")
+        raise SystemExit(f"{slug}: {record_path.name} exists — re-running it would "
+                         f"OVERWRITE that measurement with a different one under the "
+                         f"same name (the seed fixes the shuffle, not the games; see "
+                         f"SEEDED_NOTE). Pass --seed N for a separate sample, or "
+                         f"--force to replace it.")
     jar = forge_jar(home)
     # THE POD IS PART OF THE INSTRUMENT. `--profile` set only OUR seat and left
     # every opponent on Default, so the table could never be made to play
@@ -451,7 +619,28 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     profiles = None
     if profile or pod != DEFAULT_PROFILE:
         profiles = [profile or DEFAULT_PROFILE] + [pod] * len(opponents)
-    cmds = [command(names, g, clock, jar, seed=seeds[i], profiles=profiles)
+    # SEATS ROTATE PER JOB, and the reason is that Forge's turn order is not a
+    # coin flip. `GameAction.determineFirstTurnPlayer` picks, from game 2 on, the
+    # LOWEST-INDEXED SEAT THAT DID NOT WIN THE PREVIOUS GAME — and all N games of
+    # a job run inside one `Match` object that carries `lastOutcome` forward.
+    #
+    # Two consequences, both bad. Our deck is always index 0, so it started
+    # 323 of 400 games in one tracked run; and the games are a MARKOV CHAIN
+    # rather than independent draws, which is what a Wilson interval assumes.
+    # Every `win_rate_ci95` written before this line was not the interval it
+    # claimed to be.
+    #
+    # Rotating the `-d` order per job spreads each deck across seat positions,
+    # so position is averaged out instead of confounded with the deck. Games
+    # within one job are still dependent; across jobs they are not, and with
+    # seven jobs no seat is pinned. `tally_wins` already matches on the Forge
+    # meta name rather than on position, so nothing downstream needs to know.
+    rotations = [seats[i % len(seats):] + seats[:i % len(seats)]
+                 for i in range(len(parts))]
+    job_names = [[install_deck(s, decks_dir) for s in rot] for rot in rotations]
+    cmds = [command(job_names[i], g, clock, jar, seed=seeds[i],
+                    profiles=_profiles_for(rotations[i], slug, profile, pod)
+                    if profiles else None)
             for i, g in enumerate(parts)]
     if dry_run:
         return record_path, {"run_id": rid, "seats": seats, "jobs": len(parts),
@@ -503,21 +692,31 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
               f"{per_job_cap}s cap and were killed; their unfinished games are "
               f"absent from this run. `truncated_jobs` records which.")
 
-    label = _seat_label(names)
+    # ONE LABEL MAP PER JOB, because the seats rotate. `Ai(2)` is a different
+    # deck in job 1 than in job 0, and a single map built from the unrotated
+    # order would attribute every win to whoever happened to sit there first —
+    # a far worse error than the seat bias the rotation fixes.
+    label = _seat_label(names)      # position-independent; safe under rotation
     outcomes = []
     for log, rc in results:
+        j = int(log.stem.split("-")[1])
         for gi, g in enumerate(parse_outcomes(log.read_text(encoding="utf-8", errors="replace"))):
             outcomes.append({
                 "winner": label.get(g["winner"], g["winner"]) if g["winner"] else None,
                 "won_by": g["won_by"], "draw": g["draw"], "round": g["round"],
+                "truncated": g.get("truncated", False),
                 "global_turn": g["global_turn"], "ms": g["ms"],
                 "lost": {label.get(k, k): v for k, v in g["lost"].items()},
-                "log": log.name, "seed": seeds[int(log.stem.split("-")[1])],
+                "log": log.name, "seed": seeds[j], "seat_order": rotations[j],
                 "game_in_job": gi + 1})
     texts = [log.read_text(encoding="utf-8", errors="replace") for log, _ in results]
     cmd_by_slug = {s: sorted(c) for s, c in _commanders_by_slug(seats).items()}
-    commanders = {f"Ai({i + 1})-{names[i]}": set(cmd_by_slug[s])
-                  for i, s in enumerate(seats) if cmd_by_slug.get(s)}
+    # Every seat index for every deck, same reason as `_seat_label`: the decks
+    # rotate, so a commander keyed to one position would credit commander damage
+    # to whichever deck later sat there.
+    commanders = {f"Ai({k})-{names[i]}": set(cmd_by_slug[s])
+                  for i, s in enumerate(seats) if cmd_by_slug.get(s)
+                  for k in range(1, len(seats) + 1)}
     facts, analysis = sim_parse.analyze_logs(texts, label, commanders)
     # MATCH ON THE FORGE NAME, NOT THE SEAT SLUG. A branch seat is written to
     # Forge as `ur-dragon-treasure-v2` because `@` has no business in a deck
@@ -526,8 +725,17 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # zero. The run reported "wins 0" for a list that had won ELEVEN of a
     # hundred, with the other three seats' counts all correct beside it, which is
     # exactly the shape that gets believed.
-    wins = tally_wins(outcomes, seats)
-    draws = sum(1 for o in outcomes if o["draw"] or not o["winner"])
+    # TALLIED OVER DECIDED GAMES ONLY. `outcomes` still carries every game,
+    # truncated ones included, so nothing is hidden from the record.
+    # A TRUNCATED GAME IS NOT A DRAW AND NOT A WIN — it is a game that did not
+    # finish, and it is counted separately so the win rate has an honest
+    # denominator. Forge calls it a draw internally; from the bench's side the
+    # useful fact is "the clock stopped it", because that is a property of the
+    # HARNESS (the `-c` setting) rather than of the game.
+    truncated = sum(1 for o in outcomes if o.get("truncated"))
+    decided = [o for o in outcomes if not o.get("truncated")]
+    draws = sum(1 for o in outcomes if o["draw"] and not o.get("truncated"))
+    wins = tally_wins(decided, seats)
     frame = load_json(deck_dir(split_seat(slug)[0]) / "strategic_frame.json") or {}
     record = {
         # ABSENT MEANS ABSENT: a run with no truncation carries an empty list,
@@ -543,8 +751,13 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "profiles": profiles,
         "clock_seconds": clock,
         "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
-        "summary": {"wins": wins, "draws": draws,
-                    "win_rate": (round(wins[slug] / len(outcomes), 3) if outcomes else None),
+        # THE DENOMINATOR IS DECIDED GAMES, and `truncated` is beside it so the
+        # reader can see how many were thrown out. Dividing by every game played
+        # counts an unfinished one as a loss for whoever was still alive in it —
+        # which for our seat, always `Ai(1)`, was all 93 of them.
+        "summary": {"wins": wins, "draws": draws, "truncated": truncated,
+                    "decided": len(decided),
+                    "win_rate": (round(wins[slug] / len(decided), 3) if decided else None),
                     "mean_round": (round(sum(o["round"] or 0 for o in outcomes) / len(outcomes), 1)
                                    if outcomes else None),
                     "mean_global_turn": (round(sum(o["global_turn"] or 0 for o in outcomes) / len(outcomes), 1)
@@ -589,15 +802,37 @@ def analyze(slug, run_id_or_path):
         record_commanders(rec))
     rec["analysis"] = analysis
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
+    # THE ASSUMPTIONS ARE A PROPERTY OF THE HARNESS, NOT OF THE RUN, so a
+    # re-derive refreshes them. They were not, and that left a claim the harness
+    # had been PROVEN NOT TO MEET sitting in a freshly written record: every run
+    # made before 2026-09-02 stored "identical inputs reproduce the logs byte
+    # for byte", which a same-seed double run falsified. `--analyze` updated
+    # `analysis.limits` beside it and the two then disagreed inside one file.
+    #
+    # SEEDED vs SAMPLED is preserved, because THAT is a property of the run:
+    # a record made before `-s` existed is not seeded and never becomes so.
+    was_sampled = any(a.startswith("SAMPLED") for a in (rec.get("assumptions") or []))
+    rec["assumptions"] = [SAMPLED_NOTE if (was_sampled and a is SEEDED_NOTE) else a
+                          for a in ASSUMPTIONS]
     # SUMMARY IS RE-DERIVED TOO, or `--analyze` cannot repair a wrong headline.
     # It did not, and the run that scored a branch seat zero kept saying zero
     # through a re-derivation that had the right numbers in `analysis` all along.
     seats = [x["slug"] for x in rec["seats"]]
-    outcomes = [g for g in rec["games"] if g.get("winner") or g.get("draw")]
-    wins = {x: sum(1 for g in outcomes if g.get("winner") == deck_meta_name(x))
-            for x in seats}
-    n = len(outcomes) or None
+    # `tally_wins`, NOT A THIRD INLINE COPY. Its own docstring records that this
+    # expression "lived inline, and the test guarding it built its own correct
+    # copy — so a regression left the test green while the bug reappeared". It
+    # had grown back here, and that is exactly why `--analyze` could not repair
+    # the truncation bug: `run()` and `analyze()` tallied by different code.
+    outcomes = [g for g in rec["games"] if g.get("winner") or g.get("draw")
+                or g.get("truncated")]
+    truncated = sum(1 for g in outcomes if g.get("truncated"))
+    decided = [g for g in outcomes if not g.get("truncated")]
+    wins = tally_wins(decided, seats)
+    n = len(decided) or None
     rec["summary"] = dict(rec.get("summary") or {}, wins=wins,
+                          truncated=truncated, decided=len(decided),
+                          draws=sum(1 for g in outcomes
+                                    if g.get("draw") and not g.get("truncated")),
                           win_rate=(round(wins[slug] / n, 3) if n else None))
     path.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
     return path, rec
