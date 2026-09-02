@@ -64,6 +64,8 @@ merge that silently claimed cardboard would be that mistake with a command
 attached.
 """
 
+import contextlib
+import io
 import datetime
 import json
 import hashlib
@@ -1047,10 +1049,41 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
         if not out.get("chain_failed"):
             try:
                 from manamap.pilot import regen
-                regen.run(slug=slug, jobs=1, echo=lambda *a, **k: None)
+                # `slug=` scopes it to this deck, and `regen` fans out across the
+                # deck's BRANCHES too — which is required, not incidental: main
+                # just moved underneath every open branch, so each one's diff and
+                # net_change describe a base that no longer exists. Doing this by
+                # hand after the last two merges is what this line replaces.
+                regen.run(slug=slug, jobs=None, echo=lambda *a, **k: None)
                 ran.extend(n for n in regen.STAGE_NAMES if n not in ran)
             except Exception as exc:                    # pragma: no cover - env
                 out.setdefault("chain_failed", []).append(f"regen: {exc}")
+
+        # THE PAGE AND THE MANIFEST. `build-page` embeds the goldfish figures and
+        # `build-index` carries the paper lock and the passing-stack list, so both
+        # describe the previous 99 until they are re-rendered. Both went stale on
+        # the last two merges and were caught by a freshness test rather than by
+        # the command that made them stale.
+        if not out.get("chain_failed"):
+            from types import SimpleNamespace as _NS
+            for name, dotted, kwargs in (
+                    # `deck-map` is DETERMINISTIC and was being reported as stale
+                    # rather than rebuilt — it re-lays the deck's own
+                    # constellation from the new 99. Its city NAMES are
+                    # agent-authored and are merged separately by
+                    # `merge-deck-map`, so rebuilding here recomputes membership
+                    # and leaves the naming pass to be reported below, which is
+                    # the right split: measure automatically, name deliberately.
+                    ("deck-map", "manamap.pilot.deck_map", {"slug": slug}),
+                    ("build-page", "manamap.pilot.build_page", {"slug": slug}),
+                    ("build-index", "manamap.pilot.build_index", {})):
+                try:
+                    import importlib
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        importlib.import_module(dotted).main(_NS(**kwargs))
+                    ran.append(name)
+                except Exception as exc:                # pragma: no cover - env
+                    out.setdefault("chain_failed", []).append(f"{name}: {exc}")
         out["chain"] = ran
 
         # AND THEN ASK WHETHER WHAT WE JUST BUILT IS VALID. A merge can leave an
