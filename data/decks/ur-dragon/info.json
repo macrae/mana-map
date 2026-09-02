@@ -14,16 +14,14 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 9,
+    "complete": 10,
     "of": 18,
     "stale": [
       "frame",
       "prose"
     ],
     "invalid": [
-      "targets",
-      "tutors",
-      "—"
+      "tutors"
     ],
     "verified": true,
     "missing": [
@@ -1563,23 +1561,192 @@
       "max_turn": 10
     },
     "engine": {
-      "available": false,
-      "why": "the declaration does not describe this list — 3 load-bearing target(s) name cards it does not run (e.g. 'Ramp or fixing drawn' wants Mox Jasper, Relic of Legends). A branch inherits the deck's declaration, which is right for a swap and wrong for a rebuild: write the branch its own `goldfish_targets.json`.",
-      "declaration_mismatch": {
-        "Ramp or fixing drawn": [
-          "Mox Jasper",
-          "Relic of Legends"
-        ],
-        "Payoff + a castable dragon by mid-game": [
-          "Moltensteel Dragon",
-          "Rapacious Dragon"
-        ],
-        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with": [
-          "Moltensteel Dragon",
-          "Rapacious Dragon"
-        ]
+      "available": true,
+      "required": [
+        "Ramp or fixing drawn",
+        "Dragon payoff drawn (per-dragon trigger engine)",
+        "Payoff + a castable dragon by mid-game"
+      ],
+      "routes": [
+        "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
+        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with"
+      ],
+      "online_by_turn": {
+        "1": {
+          "rate": 0.0775,
+          "ci95": [
+            0.0724,
+            0.0829
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.1489,
+          "ci95": [
+            0.1421,
+            0.156
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.2472,
+          "ci95": [
+            0.2388,
+            0.2558
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.3321,
+          "ci95": [
+            0.3229,
+            0.3414
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.4025,
+          "ci95": [
+            0.3929,
+            0.4121
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.4626,
+          "ci95": [
+            0.4528,
+            0.4724
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.5154,
+          "ci95": [
+            0.5056,
+            0.5252
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.5656,
+          "ci95": [
+            0.5559,
+            0.5753
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.6142,
+          "ci95": [
+            0.6046,
+            0.6237
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.6576,
+          "ci95": [
+            0.6482,
+            0.6668
+          ],
+          "n": 10000
+        }
       },
-      "declared_targets": 10
+      "any_route_by_turn": {
+        "1": {
+          "rate": 0.115,
+          "ci95": [
+            0.1089,
+            0.1214
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.1838,
+          "ci95": [
+            0.1763,
+            0.1915
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.2803,
+          "ci95": [
+            0.2716,
+            0.2892
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.3606,
+          "ci95": [
+            0.3512,
+            0.3701
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.4269,
+          "ci95": [
+            0.4172,
+            0.4366
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.4833,
+          "ci95": [
+            0.4735,
+            0.4931
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.5298,
+          "ci95": [
+            0.52,
+            0.5396
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.5741,
+          "ci95": [
+            0.5644,
+            0.5838
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.6143,
+          "ci95": [
+            0.6047,
+            0.6238
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.6497,
+          "ci95": [
+            0.6403,
+            0.659
+          ],
+          "n": 10000
+        }
+      },
+      "bottleneck": {
+        "label": "Payoff + a castable dragon by mid-game",
+        "by_turn_three": {
+          "rate": 0.3529,
+          "ci95": [
+            0.3436,
+            0.3623
+          ],
+          "n": 10000
+        }
+      },
+      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
     },
     "stall": {
       "by_turn": {
@@ -1753,7 +1920,7 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 82
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
@@ -1761,15 +1928,15 @@
       },
       {
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 34
       },
       {
         "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 41
       },
       {
         "label": "Protection held for the big turn",
-        "by_turn_6_pct": 50
+        "by_turn_6_pct": 56
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
@@ -1777,7 +1944,7 @@
       },
       {
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
-        "by_turn_6_pct": 42
+        "by_turn_6_pct": 56
       },
       {
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
@@ -1785,7 +1952,7 @@
       },
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-        "by_turn_6_pct": 10
+        "by_turn_6_pct": 16
       }
     ],
     "combat": {
@@ -1977,7 +2144,7 @@
   },
   "experiments": null,
   "next": [
-    "3 artifact(s) fail their own gate (targets, tutors, —) — `deck-status ur-dragon` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (tutors) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
     "branch `eminence-v3` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge eminence-v3 --write`",

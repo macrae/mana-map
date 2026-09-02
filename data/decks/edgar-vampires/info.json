@@ -12,11 +12,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [],
     "invalid": [
-      "targets",
       "engine",
       "tutors"
     ],
@@ -6744,20 +6743,12 @@
     "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
-        "label": "A payoff that fires when a token is CREATED (the leg every kill proof uses)",
-        "by_turn_6_pct": 0
-      },
-      {
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
         "by_turn_6_pct": 25
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
-        "by_turn_6_pct": 64
-      },
-      {
-        "label": "THE GO-WIDE KILL: a token->damage payoff AND a multiplier",
-        "by_turn_6_pct": 0
+        "by_turn_6_pct": 51
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
@@ -6773,7 +6764,7 @@
       },
       {
         "label": "A draw engine drawn",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 73
       },
       {
         "label": "Protection held for the swarm",
@@ -6790,6 +6781,10 @@
       {
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
         "by_turn_6_pct": 87
+      },
+      {
+        "label": "A free sacrifice outlet drawn (bloodline's new engine)",
+        "by_turn_6_pct": 65
       }
     ],
     "combat": {
@@ -6953,7 +6948,7 @@
     }
   },
   "next": [
-    "3 artifact(s) fail their own gate (targets, engine, tutors) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (engine, tutors) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "2 logged game(s) not yet debriefed (002, 003) — `/debrief edgar-vampires`",
     "branch `bloodline` is fully sourced (+0 -0) — `manamap pilot deck-branch edgar-vampires merge bloodline --write`",
     "branch `bloodline-v2` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bloodline-v2`",
