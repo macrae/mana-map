@@ -350,8 +350,17 @@ def test_every_membership_axis_is_a_real_axis():
         assert axis in candidates.OBJECTIVE_AXES, axis
 
 
+@requires_branch
 def test_no_tracked_branch_is_still_graded_on_an_authored_axis():
-    """The guard stops a NEW one; this catches an old one that predates it."""
+    """The guard stops a NEW one; this catches an old one that predates it.
+
+    `@requires_branch` because `assert checked >= 1` is a floor under the LOOP,
+    not a claim that the bench has branches on it. Without the marker this test
+    turned "the pilot cleared their branches" into a red board — which is the
+    exact failure `conftest._a_branch` was written for, after sixteen tests died
+    the day a measured-and-abandoned branch was correctly deleted. Three tests
+    escaped that marker; this was one.
+    """
     import glob
     import json
     checked = 0
@@ -422,10 +431,18 @@ def test_the_cost_block_reads_the_branch_answer_rather_than_deriving_a_second():
 
 
 @requires_deck
+@requires_branch
 def test_every_where_row_is_one_shape():
     """`where` was a STRING for a box row and a LIST OF DICTS for an elsewhere
     row, so every consumer had to know which state it was in before it could
-    read the field. Five of them did."""
+    read the field. Five of them did.
+
+    `@requires_branch` for the same reason as
+    `test_no_tracked_branch_is_still_graded_on_an_authored_axis`: it walks a
+    branch's source rows and ends `assert checked >= 20`, which is a floor under
+    the LOOP and not a claim that the bench has branches. The fourth test to
+    escape the marker `conftest._a_branch` exists to supply.
+    """
     from manamap.pilot import deck_branch
     checked = 0
     for slug in ("ur-dragon",):

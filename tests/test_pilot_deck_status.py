@@ -11,6 +11,8 @@ heliod` failed. That is the precise divergence the `VALIDATED` map was extracted
 from the test suite to end, reappearing through the other door.
 """
 
+import json
+
 import pytest
 
 from manamap.config import DECKS_DIR
@@ -86,3 +88,56 @@ def test_a_failing_gate_names_the_artifact_not_a_dash():
     out = buf.getvalue()
     assert "FAILS ITS GATE: engine.json" in out, out
     assert "FAILS ITS GATE: —" not in out
+
+
+def test_the_engines_staleness_check_can_actually_fire(tmp_path, monkeypatch):
+    """THE WIRING WAS THERE AND THE CURRENT FLOWED NOWHERE.
+
+    `STAGES` declares `engine.json`'s stamp path as `decklist_sha256`, but the
+    row was computed by an `elif key == "engine"` branch sitting ABOVE the
+    staleness check in the same chain — so it short-circuited, and the check
+    could never run on any deck, ever.
+
+    What it cost: edgar-vampires' engine model named twelve cards the deck
+    stopped running the day the bloodline branch merged, and `deck-status` read
+    `OK  engine  critic: pass` for a week. A model that describes a different
+    list is stale whatever its critic thought of it — the critic signed off on
+    the OLD deck.
+
+    Prove it by reverting the fix: move the critic branch back above the sha
+    check and this test goes red while everything else stays green.
+    """
+    from manamap.pilot import deck_status
+
+    base = tmp_path / "decks" / "scratch"
+    base.mkdir(parents=True)
+    (base / "decklist.txt").write_text("1 Sol Ring\n")
+    (base / "cards.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "cards": [{"name": "Sol Ring"}]}))
+    (base / "engine.json").write_text(json.dumps(
+        {"decklist_sha256": "a" * 64,          # a DIFFERENT list
+         "thesis": "x", "stages": [], "lines": [],
+         "critic": {"verdict": "pass"}}))
+    monkeypatch.setattr(deck_status, "deck_dir", lambda slug, branch=None: base)
+
+    rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
+    engine = rows.get("engine")
+    assert engine, rows
+    assert engine["state"] == "STALE", (
+        f"engine row is {engine['state']} with a stamp naming another list — "
+        f"the critic branch is short-circuiting the staleness check again")
+    assert "critic: pass" in engine["detail"], (
+        "the critic verdict must be ADDED to the staleness read, not replaced "
+        "by it — both facts matter and they answer different questions")
+
+
+def test_the_tutor_guide_has_a_staleness_path_at_all():
+    """Its stamp path was `None`, so there was no check — on the one artifact
+    whose entire content is card names, which is what rots first when a list
+    moves. Both of the fleet's tutor guides currently fail their validator for
+    exactly that reason."""
+    from manamap.pilot.deck_status import STAGES
+
+    paths = {row[0]: row[2] for row in STAGES}
+    assert paths["tutors"], "tutor_guide.json has no staleness path"
+    assert "decklist_sha256" in paths["tutors"]

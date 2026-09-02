@@ -236,7 +236,18 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
         "for a clock and `model_draw` for the card advantage its log kept "
         "running out of. Add a deck here only with its re-baseline.")
     assert checked >= len(decks) - len(opted), "the loop stopped checking"
-    assert checked >= 5, "too few un-opted decks left to prove anything"
+    # THREE, NOT FIVE. The floor exists so an empty or near-empty loop cannot
+    # pass by iterating nothing — the guard this repo added after fourteen tests
+    # were found doing exactly that. It is NOT a claim about how big the fleet
+    # is, and it was written as one: `>= 5` failed the day the fleet went from
+    # thirteen decks to ten (three never-built baselines deleted, yawgmoth-swarm
+    # archived), reporting a shrunken bench as a broken model invariant.
+    #
+    # The real coverage assertion is the line above — every un-opted deck is
+    # checked, whatever the count. This is only the floor under it.
+    assert checked >= 3, (
+        f"only {checked} un-opted deck(s) left with goldfish metrics — too few "
+        f"to prove the invariant across decks")
 
 
 def _profile(name, text, type_line="Creature"):

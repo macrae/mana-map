@@ -31,7 +31,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      # FETCH THE WHOLE HISTORY. `actions/checkout` defaults to a DEPTH-1
+      # shallow clone, and half this repo's artifacts are derived from a git
+      # walk: `deck_versions.versions()` runs `git log --follow --
+      # decklist.txt`, which in a shallow clone returns NOTHING. Every version
+      # list comes back empty, `paper_state` falls to its `unresolved` branch,
+      # and `build-index` writes a manifest saying three sleeved decks cannot
+      # be resolved — so `data/decks/index.json` can never rebuild identically
+      # and the byte-diff gate below cannot pass.
+      #
+      # It went unseen because the `Test` step fails first and short-circuits
+      # the gate, so the one check that would have caught it never ran.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -81,12 +94,19 @@ jobs:
         # cannot check, it must at least NAME — see the scheduled job below.
         run: make test PYTEST_ARGS=-rs
 
-      - name: The manuals must still rebuild byte-identically
+      - name: The manuals and version lists must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it
         # is worth asserting outside the suite that also asserts it.
+        #
+        # `data/decks/` IN FULL, not just `index.json`. `make manuals` now also
+        # regenerates every `versions.json` — a git walk, tracked since
+        # 2026-09-02 — and a gate that rebuilds a file without comparing it is a
+        # gate that cannot fail. Satisfiable only because a commit never carries
+        # both a decklist and its version list, which
+        # `tests/test_pilot_commit_protocol.py` enforces directly.
         run: |
           make manuals
-          git diff --exit-code -- manuals/ data/decks/index.json
+          git diff --exit-code -- manuals/ data/decks/
 
   # ── THE GATES A PER-PUSH RUN CANNOT REACH ────────────────────────────────
   #
@@ -103,7 +123,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      # Full history, same reason as the `test` job above.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"

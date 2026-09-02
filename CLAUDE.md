@@ -106,6 +106,14 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   deck_branch.py   a candidate 99 you cannot yet sleeve: stage,
                       #                    commit, measure, PROPOSE (the merge request —
                       #                    decision frozen, blocker live), merge
+                      #   deck_state.py    archive / retire / supersede / revive;
+                      #                    THE ONE WRITER of the lifecycle, which
+                      #                    lives in deck_versions.json beside `paper`
+                      #                    because a deck in a pile is not sleeved
+                      #   deck_delete.py   the only destructive fleet verb; refuses a
+                      #                    deck that was sleeved, played or published
+                      #   validate_deck_versions.py  the lifecycle, the lock, and the
+                      #                    invariant that they cannot both be set
                       #   deck_versions.py every list the deck has been, numbered from
                       #                    git (reuses deck_history), TAGGED in an authored
                       #                    file, JOINED to the log by decklist sha
@@ -178,14 +186,34 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; see `manamap --help` for all 18 subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (85 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (89 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
 manamap pilot deck-version <slug> [list|show|tag|restore|paper]  # every list from git, joined to the log;
                                                         #   `paper` marks the version you have SLEEVED
-manamap pilot deck-notes <slug> add "…" --result win|loss   # the captain's log (authored)
-manamap pilot simulate <slug> --vs <pod>… --games N     # Forge, seeded, against your table
+manamap pilot deck-state <slug> [archive|retire|supersede|revive] --reason "…"
+                              # IS THIS STILL A DECK OR A PILE OF CARDS. Writes
+                              # deck_versions.json's `lifecycle`, WITHDRAWS the paper
+                              # lock (the two contradict), and rewrites info.json —
+                              # which it must, since `regen` skips archived decks
+manamap pilot deck-delete <slug>                        # only a deck that was never sleeved,
+                              # never played and never published; git rm, staged not committed
+manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code>
+                              # the captain's log (authored). `--cause` is a CLOSED
+                              # vocabulary (deck_notes.CAUSES) so the dossier's priors
+                              # table can COUNT how games end; it lands in the sidecar
+                              # log_causes.json because log.jsonl is append-only
+manamap pilot deck-notes <slug> cause <id> --cause <code>   # file one after the fact
+manamap pilot simulate <slug> --vs giada-angels --vs baylen-tokens --vs abaddon --games N
+                              # Forge, seeded, against THE STANDARD POD — three
+                              # bracket-3 decks with ZERO combos between them.
+                              # `vito` was the default until 2026-09-02 and is a
+                              # bracket-4 pile of 13 two-card infinites that won
+                              # 0.447; naming it is now a deliberate act.
+                              # A clock-out is `truncated`, has NO winner, and is
+                              # excluded from the rate — it used to be awarded to
+                              # the last seat, which our deck can never be.
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)
@@ -204,6 +232,8 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
                               # TARGETS. 72 targets in 109s at --jobs 8; the goldfish
                               # stage alone 83.6s -> 23.7s. BIT-IDENTICAL: games inside
                               # one run are never split, only decks are.
+                              # A MISSING artifact is CREATED, not skipped -- but only
+                              # on a SLEEVED deck (`regen.BOOTSTRAP` + `is_pinned`).
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
 manamap pilot build-page <slug> && manamap pilot build-index   # the Pilot's Manual + the manifest
 # agents (Claude Code skills): /publish-deck /debrief /prescribe /resolve-stack /analyze-engine /diagnose-deck
@@ -320,6 +350,27 @@ about to touch.
 | `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 50 KB |
 | `docs/gotchas-magazine-legacy.md` | the frozen renderer (it is not extended) | 17 KB |
 
+
+### SLEEVED IS BUILT AUTOMATICALLY; ON THE BENCH IS TRIGGERED BY HAND
+
+A deck with a **paper lock** is one the pilot plays, so the whole chain is kept
+complete for it without being asked — measurements, then simulation, then the
+agent artifacts, then the Pilot's Manual, then the dossier, **in that order**,
+because each stage's output is the next one's input. That is what pinning MEANS.
+
+A deck **on the bench** is malleable: it changes daily, nobody has claimed it
+exists in cardboard, and its stages run when the pilot asks for them. It is
+allowed to be incomplete, and the dossier says so per section rather than
+pretending otherwise. Building it automatically would manufacture artifacts for
+a list that will be different tomorrow, and put a freshness gate on work in
+progress.
+
+`regen.is_pinned()` is the predicate, reading `deck_versions.paper` — the one
+authored claim about cardboard. It gates `regen.BOOTSTRAP`, which exists because
+`targets()` used to return only places an artifact ALREADY was: a deck missing
+`diagnostic.json` was skipped forever in silence, and two of the three SLEEVED
+decks were in that state, so the dossier's vitals and the cover sheet's
+engine-health word were absent on decks that are played.
 
 ### Data artifacts
 

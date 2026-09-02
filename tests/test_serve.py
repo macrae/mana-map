@@ -617,3 +617,57 @@ def test_an_objective_needs_a_sentence_to_translate(decks):
         with pytest.raises(ValueError) as e:
             serve.call("branch/objective", payload)
         assert "what is this treatment FOR" in str(e.value)
+
+
+# ── The GET gate ─────────────────────────────────────────────────────────
+
+
+def test_every_endpoint_is_either_gettable_or_refused_on_get():
+    """THE HOLE THIS WAS WRITTEN FOR WAS OPEN THE WHOLE TIME.
+
+    `do_GET` ran ANY endpoint with an empty payload. Nine of the first
+    twenty-four mutated the repo and `build/finish` runs `git add` + `git
+    commit`; every one was reachable by typing a URL, and they survived only
+    because each happened to raise on a missing argument. That is an accident,
+    not a gate — and it had to close BEFORE a delete endpoint existed.
+    """
+    from manamap import serve
+
+    assert serve.GETTABLE <= set(serve.ENDPOINTS), (
+        "GETTABLE names an endpoint that does not exist — a typo here fails "
+        "OPEN, since an unlisted name is simply POST-only")
+    assert len(serve.ENDPOINTS) - len(serve.GETTABLE) >= 8, (
+        "most endpoints mutate; if almost everything is gettable the list has "
+        "stopped being a decision")
+
+
+def test_the_destructive_endpoints_cannot_be_reached_by_get():
+    from manamap import serve
+
+    for name in ("build/finish", "deck/delete", "branch/stage", "pool/save",
+                 "deck/measure", "deck/scaffold", "deck/state"):
+        assert name in serve.ENDPOINTS, name
+        assert name not in serve.GETTABLE, f"{name} is reachable by GET"
+
+
+def test_delete_refuses_without_the_slug_typed_back():
+    """A destructive verb on an unauthenticated local socket makes the caller
+    name its target twice, so a stray fetch cannot delete anything even if the
+    method gate above were bypassed."""
+    import pytest
+
+    from manamap import serve
+
+    with pytest.raises(ValueError, match="confirm must be"):
+        serve.call("deck/delete", {"slug": "goblin-storm"})
+    with pytest.raises(ValueError, match="confirm must be"):
+        serve.call("deck/delete", {"slug": "goblin-storm", "confirm": "goblin"})
+
+
+def test_state_refuses_an_action_it_does_not_know():
+    import pytest
+
+    from manamap import serve
+
+    with pytest.raises(ValueError, match="is not one of"):
+        serve.call("deck/state", {"slug": "radagast", "action": "mothball"})

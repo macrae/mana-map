@@ -189,6 +189,26 @@ def test_mana_analysis_matches_a_fresh_run(target, tmp_path, unchanged):
         f"`manamap pilot mana-analysis {slug}` and commit it.")
 
 
+def test_the_net_change_gate_says_so_when_it_has_nothing_to_gate():
+    """AN EMPTY PARAMETRIZE IS A GATE THAT EVAPORATED, and pytest reports it as
+    one grey "got empty parameter set" line nobody reads.
+
+    `net_change.json` exists ONLY on branches, so a bench with no open branches
+    takes `test_net_change_matches_a_fresh_run` from ten cases to zero — which
+    is correct, and is exactly the state after the pinned decks were cleared.
+    The gate going quiet is fine; going quiet *silently* is not. This says it
+    out loud so "no coverage" and "coverage passing" cannot look alike.
+    """
+    targets = _slugs("net_change.json")
+    if not targets:
+        pytest.skip("no branches on this bench — net-change has nothing to "
+                    "compare, which is the state of a fleet with no open "
+                    "candidate lists, not a broken gate")
+    assert all(b for _s, b in targets), (
+        "net-change is branch-only by definition; a deck-level target means "
+        "something wrote one where it does not belong")
+
+
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("net_change.json"), ids=_id)
 def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
@@ -317,3 +337,89 @@ def test_benchmark_matches_a_fresh_run(target, unchanged):
     stored = json.loads(path.read_text())
     assert stored == fresh, (
         f"{_id(target)}/benchmark.json is stale — `manamap pilot benchmark {slug}`")
+
+
+# ── versions.json — the rap sheet, and the one artifact that reads git ───
+
+
+def _head():
+    """HEAD's sha, as a cache key. `unchanged` digests FILE BYTES and cannot see
+    git, so without this the cache serves a stale pass the moment a decklist is
+    committed — the artifact would move underneath a test that never re-ran."""
+    import subprocess
+
+    try:
+        return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
+                              text=True, cwd=DECKS_DIR.parent.parent,
+                              check=False).stdout.strip() or "no-git"
+    except OSError:
+        return "no-git"
+
+
+@requires_deck
+@pytest.mark.parametrize("target", _slugs("versions.json"), ids=_id)
+def test_versions_json_matches_a_fresh_run(target, tmp_path, unchanged, monkeypatch):
+    """`versions.json` IS THE RAP SHEET, and it was gitignored until 2026-09-02.
+
+    The old argument: a version row carries the sha and date of the commit that
+    created it, which are unknowable inside that commit — so a copy written in
+    the SAME commit as a decklist change is one version behind. True, and it
+    misses two things. Nothing reads `sha`, `first_sha` or `subject` (the rap
+    sheet reads version, date, in[], out[], record, tags), and the tracked
+    `deck_versions.json` already stores commit shas written in a LATER commit
+    than the one they name.
+
+    WHY THIS GATE IS STABLE. `deck_history.revisions()` runs `git log --follow --
+    decklist.txt`, so commits that do not touch a decklist are INVISIBLE to it.
+    A `versions.json` written in such a commit is therefore a FIXED POINT —
+    regenerating it at any later HEAD is byte-identical until the next decklist
+    change. That is what makes a byte-comparison gate satisfiable here at all,
+    and it is why the two-commit rule in `test_pilot_commit_protocol.py` is the
+    other half of this.
+    """
+    from manamap.pilot import deck_versions
+
+    slug, _branch = target
+    unchanged(*CODE, DECKS_DIR / slug, _head())
+
+    def rerun():
+        deck_versions.main(type("Args", (), {
+            "slug": slug, "action": "list", "ref": None, "write": True,
+            "as_json": False, "full": False, "at": None, "note": None,
+            "clear": False, "force": False})())
+
+    fresh, old = _roundtrip(target, "versions.json", rerun, tmp_path)
+    assert fresh == old, (
+        f"{slug}/versions.json is stale — run `make manuals` and commit it. "
+        f"If you just changed {slug}'s decklist, that is a SEPARATE commit: a "
+        f"version's sha is not knowable inside the commit that creates it.")
+
+
+@requires_deck
+def test_every_deck_with_a_decklist_has_a_tracked_version_list():
+    """THE RAP SHEET RENDERED ITS EMPTY STATE IN PRODUCTION.
+
+    `versions.json` was gitignored and deferred to a "deploy-time step with git
+    available" that was never built — so the deployed site fetched a 404, the
+    dossier's rap sheet showed "No committed versions yet", and it said that
+    about a deck with three versions and a v1.0.2 release. Five of ten decks did
+    not even have one locally.
+
+    This is the check that the artifact exists everywhere it should, which is a
+    different question from whether it is fresh.
+    """
+    import subprocess
+
+    root = DECKS_DIR.parent.parent
+    tracked = subprocess.run(
+        ["git", "ls-files", "data/decks/*/versions.json"],
+        capture_output=True, text=True, cwd=root, check=False).stdout.split()
+    have = {p.split("/")[2] for p in tracked}
+    want = {d.name for d in DECKS_DIR.iterdir()
+            if d.is_dir() and (d / "decklist.txt").exists()}
+    missing = sorted(want - have)
+    assert not missing, (
+        f"no tracked versions.json for {missing} — run `make manuals` and "
+        f"commit. The deck page fetches this file and renders an empty rap "
+        f"sheet without it.")
+    assert len(want) >= 5

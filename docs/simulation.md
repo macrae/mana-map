@@ -11,6 +11,207 @@ seeded goldfish for the questions that are about a curve rather than a table. Ev
 downstream — the audit's targets, the doctor's prescriptions, the deck page's figures —
 either feeds an experiment or reads one.
 
+
+## THE 2026-09-02 AUDIT: one real bug, and a table that was never fair
+
+The pilot said the simulations looked broken. They were, in one specific way,
+and three others turned out to be method rather than code.
+
+### The bug: a clock-out was awarded to the last seat
+
+Forge's `-c` clock does not end a game, it **abandons** one. Decompiled: Forge
+catches its own timeout, prints `"Stopping slow match as draw"`, calls
+`setGameOver(GameEndReason.Draw)` — and then prints `has won because all
+opponents have lost` for **every seat still alive**. Both parsers (`forge.py`
+and `parse.py` carried separate copies) assigned `winner` on each such line, so
+the **last** one won: the highest-numbered survivor.
+
+**Our deck is always `Ai(1)`.** Across 121 truncated games it was credited with
+**zero**, while surviving to the clock in 93 of them. `baylen-tokens`, always
+the final seat, took **73 of its 85 recorded wins** that way.
+
+It is also the entire "win rate falls as N grows" signature — the clock-hit
+share runs 0% at n=20, 9% at n=100, **18% at n=400**.
+
+Fixed: a truncated game is `truncated: true` with **no winner**, excluded from
+the win rate. `summary.truncated` and `summary.decided` state the denominator.
+All 16 tracked records were re-derived and re-proven from their own logs.
+
+| seat | before | after |
+|---|---|---|
+| vito | 0.433 | 0.447 |
+| giada-angels | 0.358 | 0.405 |
+| our seat (pooled) | 0.114 | **0.132** |
+| baylen-tokens | 0.094 | **0.015** |
+
+**Why nothing caught it.** `validate-sim`'s invariant was `wins + draws == n`,
+and it held *through* the bug — the parser REASSIGNED wins rather than losing
+them, so the books balanced while the attribution was wrong. An accounting check
+cannot see a misattribution that conserves the total. It is now
+`wins + draws + truncated == n`.
+
+### The table was never fair: vito is the only combo deck in it
+
+| pod deck | bracket | contained combos | two-card infinites |
+|---|---|---|---|
+| **vito** | **4** | **13** | **13** |
+| giada-angels | 3 | 0 | 0 |
+| baylen-tokens | 3 | 0 | 0 |
+| abaddon | 3 | 0 | 0 |
+
+Vito's thirteen lines come from about seven interchangeable pieces — `Exquisite
+Blood` or `Bloodthirsty Conqueror`, plus any of `Sanguine Bond` / `Enduring
+Tenacity` / `Marauding Blight-Priest` / `Aetherflux Reservoir` — so it assembles
+nearly every game, and it wins by LIFE LOSS, which the AI does not block and the
+damage parser cannot see.
+
+**The standard pod is now `giada-angels`, `baylen-tokens`, `abaddon`** — three
+bracket-3 decks with zero combos between them, within one bracket of each other
+and of the fleet. Vito remains fetched and is a legitimate opponent to name
+deliberately; it is no longer the default table.
+
+**0.25 was never the null.** Two seats took 85% of decided games. Every run
+before this date was measured against a table where a perfectly average deck in
+the subject seat could not have scored 0.25.
+
+### Seats now rotate, and the old intervals were not intervals
+
+`GameAction.determineFirstTurnPlayer` picks, from game 2 onward, the
+**lowest-indexed seat that did not win the previous game** — and all N games of
+a job run inside one `Match` carrying `lastOutcome` forward. Our deck started
+**323 of 400** games in one tracked run, and the games are a Markov chain rather
+than independent draws.
+
+Every `win_rate_ci95` written before 2026-09-02 therefore assumes an
+independence the data does not have. The `-d` order now rotates per job;
+`_seat_label` and `record_commanders` were made position-independent so
+attribution follows the deck rather than the chair.
+
+### The control: the subject seat is not handicapped
+
+The obvious suspicion, once the pod turned out to be lopsided, is that the fault
+is the seat rather than the decks — that whatever sits in the `-d` first position
+loses. It does not, and the way to know is a control rather than an argument.
+
+`pod-control` is **abaddon's own EDHREC average deck** run in the subject seat
+against giada / vito / baylen — a deck with no relationship to the fleet, so any
+handicap in the seat shows up as a handicap on it. 100 games, seeds rotated,
+600 s clock:
+
+| seat | wins | rate | 95% CI |
+|---|---:|---:|---|
+| **vito** | 47 | **0.516** | [0.415, 0.616] |
+| giada-angels | 34 | 0.374 | [0.281, 0.476] |
+| **pod-control** (subject seat) | 9 | **0.099** | [0.053, 0.177] |
+| baylen-tokens | 1 | 0.011 | [0.002, 0.060] |
+
+To reproduce it — the control is a FIXTURE, not one of the pilot's decks, so it
+does not live in `data/decks/` and its record is not tracked:
+
+```bash
+mkdir -p data/decks/pod-control
+cp data/opponents/abaddon/decklist.txt data/decks/pod-control/decklist.txt
+manamap pilot simulate pod-control --vs giada-angels --vs vito --vs baylen-tokens --games 100
+manamap pilot validate-sim pod-control      # re-proves it from the logs
+rm -rf data/decks/pod-control               # a fixture deck on the bench is a lie
+```
+
+100 games, 91 decided, 9 truncated. **The neutral deck reads 0.099 in the subject
+seat and the fleet pools at 0.132 above it** — so the seat is not the problem and
+never was. What the control does show is the other half: vito alone takes more
+than half of all decided games and vito + giada take **89%** between them. The
+pod was doing the deciding.
+
+### The rotation broke the per-seat analysis block, and the validator caught it
+
+Rotating the `-d` order gave every deck FOUR Forge labels — `Ai(1)-mm-vito`
+through `Ai(4)-mm-vito`. `forge.tally_wins` was made position-independent for
+exactly this; `parse.aggregate` was not, and it assigned into a dict keyed by
+deck name inside a loop over raw seat labels. **Each rotation overwrote the
+last.** Every per-seat figure in `analysis` — wins, combat damage, eliminations,
+interaction — was computed from only the games where that deck happened to sit at
+whichever index was processed last. On the control run the analysis block
+reported vito with **6** wins against the summary's **47**.
+
+Two smaller faults travelled with it, both found by tests rather than by reading:
+
+- `win_rate` in `analysis` still divided by ALL games. The truncation fix reached
+  `summary` and never reached here, so one record disagreed with itself.
+- `commanders.get(s)` read a variable LEAKED from the grouping loop, so every
+  seat was published under the LAST seat's commander.
+
+`validate-sim` flagged the disagreement before anyone read the record, which is
+the whole reason it re-derives from logs instead of trusting the file. All 18
+tracked records were re-derived.
+
+`bridge.build_scenario` had the same shape of bug one layer up: it zipped
+`_seat_label`'s keys — a CROSS PRODUCT, N x N — against the record's seat list by
+position, giving each seat the wrong decklist and commander, and it called seat
+index 0 `"you"`, which under rotation is whichever deck sat first. A board lifted
+for `/resolve-stack` could therefore be argued from an opponent's side of the
+table. It now reads the game's own `seat_order`.
+
+### The clock is 600 s, and the run id carries it
+
+The distribution, over 1023 games: median 111 s, p75 173 s, p90 227 s, p95 257 s
+— and then **12.6% piled up AT the 300 s wall against 6.4% in the 60 s bucket
+before it**. A wall truncating twice the mass of the bucket preceding it is
+cutting through a second population, not the tail of the first.
+
+Two things followed. `run_id` now carries a non-baseline clock (`-c600`), because
+without it a 600 s run writes to the exact path a 300 s run already occupies —
+the same silent overwrite `profile_tag` exists to stop, and worse here, since the
+clock decides which games are truncated and pooling two clocks mixes populations.
+`SIM_CLOCK_ID_BASELINE = 300` is frozen so no record on disk is renamed.
+
+And **the default JVM count is 4, not `cpu_count() - 1` = 7**. This machine has 4
+performance and 4 efficiency cores; a JVM on an E-core runs the same game at
+roughly half speed, and `-c` is WALL time, so those seats hit the clock and were
+recorded as truncated. That is a property of the scheduler wearing the name of a
+property of the decks. It matches the censoring exactly: **every 4-JVM run
+truncated 0%, every 7-JVM run truncated 5-18%**.
+
+### What the record measures, and the two things it cannot
+
+An audit of the telemetry, against the question "are these games diagnosable".
+26 per-seat measures per game, including tokens (six), counters and proliferate,
+commander damage per defender, elimination cause, and combat / non-combat damage
+split.
+
+**Added 2026-09-02: `interaction_cast` / `interaction_received`.** The targets
+were in the log the whole time — `Add To Stack: SEAT cast X targeting [...]`,
+captured by the regex and then discarded before reaching a fact. Resolved through
+the same learned `owner` map the elimination attribution uses. It answers what
+`creatures_lost` could not: that figure counts a creature leaving the
+battlefield and cannot separate a removal spell from a chump block from a
+sacrifice outlet, which is the entire distinction on Edgar and Yawgmoth.
+
+It is deliberately **not** called removal. The log records that a spell targeted
+something and never what the spell did, so a Swords, an edict, a drain and a pump
+spell aimed at an opponent's creature are identical to it. Coverage is **59%**: a
+cast line carries no permanent id, so ownership comes only from lands, attacks
+and blocks, and 43 of 105 targets in one 15-game log were unattributable. It is a
+FLOOR on interaction, and `limits` says so.
+
+**Card advantage, tutoring and recursion are ABSENT and cannot be added.** Forge
+logs exactly two zone transitions, `Battlefield -> Graveyard` and
+`Battlefield -> Exile`. Measured on a 100-game pod run: **zero `from Library`
+lines of any kind**. No parser change recovers them. The goldfish is the only
+place card advantage is measured — and the goldfish has no blockers, so a Forge
+result must never be read as a verdict on a draw engine.
+
+### Still open
+
+- **Our seat's AI profile rests on six games.** `mde_proportion(0.5, 6, 6)`
+  returns `None` — the repo's own power function says no difference is
+  detectable at that N. The pod's profile was chosen on 100 games.
+- **A real draw was a latent landmine.** Forge prints `ended in a Draw! Took N
+  ms.` and the pattern matched only `ended in N ms.`; since a game closes only
+  on that line, a genuine draw would have merged two games into one. It had
+  never fired *because* the clock-outs were being handed to a survivor. Fixed
+  with the truncation work, which is what would otherwise have armed it.
+
+
 ## What it is for
 
 The goldfish measures resource development against nobody. The workbench needs what

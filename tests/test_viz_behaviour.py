@@ -4761,6 +4761,196 @@ def _deck(slug, **kw):
     return base
 
 
+def test_a_dead_deck_is_archived_even_when_it_still_holds_a_paper_lock(
+        browser, viz_server):
+    """THE BUG THIS WAS WRITTEN FOR, and it was live on the pilot's own bench.
+
+    `locked` was filtered over the WHOLE deck list before `status` was consulted,
+    so a deck carrying both landed in "Sleeved — you can play these tonight" and
+    could never reach the archive. yawgmoth-swarm sat there for weeks after it
+    was broken down for parts: the one screen whose entire job is answering what
+    can I play tonight, naming a box of nothing. That is `deck-info` telling the
+    pilot to go and play hapatra (common.py:452-462), one surface later.
+
+    `set_lifecycle` now withdraws the lock when a deck is archived, so this state
+    should not reach the wire — but `deck_versions.json` is AUTHORED, a hand edit
+    can still create it, and a page must not need a command to have been run
+    correctly in order to be right about cardboard.
+
+    Prove it by reverting `render`'s filter order: this fails, the rest pass.
+    """
+    page = _workbench(browser, viz_server, [
+        _deck("zombie", locked=True,
+              paper={"version": 5, "release": "v2.0.0", "in_sync": True,
+                     "versions_behind": 0, "drift": None},
+              status=["broken-down", "BROKEN DOWN FOR PARTS", "..."]),
+    ])
+    try:
+        heads = page.eval_on_selector_all(
+            ".wb-rack h2", "els => els.map(e => e.textContent.trim().split(' ')[0])")
+        assert heads == ["Archive"], heads
+        assert page.text_content(".wb-dead").strip() == "BROKEN DOWN FOR PARTS"
+        # The contradiction is SHOWN, not dropped. Somebody has to resolve it,
+        # and they cannot resolve what the page hid.
+        assert "v2.0.0" in page.text_content(".wb-stamp")
+    finally:
+        page.close()
+
+
+def test_the_archive_is_folded_shut_and_opens(browser, viz_server):
+    """Every other rack is a queue of things to do; this one is the rack of
+    things that are finished, and open it was the largest block on the page."""
+    page = _workbench(browser, viz_server, [
+        _deck("live"),
+        _deck("gone", status=["retired", "RETIRED", "..."]),
+    ])
+    try:
+        fold = page.query_selector("details.wb-fold")
+        assert fold is not None, "the archive did not render as a fold"
+        assert page.eval_on_selector("details.wb-fold", "d => d.open") is False
+        # Shut, the count is still readable — how much history there is, without
+        # spending the screen on it.
+        assert "1" in page.text_content("details.wb-fold summary .wb-count")
+        # And the cards are reachable, which "collapsed" must never trade away.
+        page.eval_on_selector("details.wb-fold", "d => { d.open = true; }")
+        page.wait_for_timeout(120)
+        assert page.is_visible("details.wb-fold .wb-card")
+    finally:
+        page.close()
+
+
+def test_the_pin_means_sleeved_and_is_not_spent_on_a_version_tag(
+        browser, viz_server):
+    """The stamp carries the release for every deck; the PIN carries cardboard.
+
+    An unsleeved deck knows what it last called itself and should say so — but
+    if the pin rode along with the name it would stop meaning "this exact 99 is
+    in sleeves", which is the one question this page exists to answer.
+    """
+    page = _workbench(browser, viz_server, [
+        _deck("sleeved", locked=True,
+              paper={"version": 3, "release": "v1.0.2", "in_sync": True,
+                     "versions_behind": 0, "drift": None}),
+        _deck("bench", version={"release": "v1.0.0", "version": 5}),
+    ])
+    try:
+        stamps = page.eval_on_selector_all(
+            ".wb-card", "els => els.map(e => ({"
+            "  name: e.querySelector('h3').textContent.trim(),"
+            "  text: (e.querySelector('.wb-stamp') || {}).textContent || '',"
+            "  pin: !!e.querySelector('.wb-pin')}))")
+        by = {s["name"]: s for s in stamps}
+        assert "v1.0.2" in by["SLEEVED"]["text"] and by["SLEEVED"]["pin"]
+        assert "v1.0.0" in by["BENCH"]["text"], by["BENCH"]
+        assert not by["BENCH"]["pin"], "the pin must mean cardboard, not a tag"
+    finally:
+        page.close()
+
+
+def test_no_card_counts_verified_lines(browser, viz_server):
+    """It counted passing stack scenarios — how many rules questions this deck
+    happens to have written up — which measures which evenings the pilot spent
+    on citations, not anything about the deck."""
+    page = _workbench(browser, viz_server, [_deck("alpha", verified=9)])
+    try:
+        assert "verified line" not in page.text_content("#racks")
+    finally:
+        page.close()
+
+
+def test_the_card_says_how_long_ago_the_deck_was_played(browser, viz_server):
+    """`ago()` existed for the fleet table and the card threw it away, so a deck
+    played last night and one played in July read identically."""
+    page = _workbench(browser, viz_server, [_deck("alpha")], infos={
+        "alpha": {"record": {"games": 3, "win": 2, "loss": 1,
+                             "last_played": "2020-01-01"}}})
+    try:
+        text = page.text_content(".wb-chips")
+        assert "3 games" in text and "2\u20131" in text
+        assert "ago" in text, text
+    finally:
+        page.close()
+
+
+def test_open_branches_are_visible_on_the_card(browser, viz_server):
+    """Edgar carries six and the front door showed none of them, so the deck
+    with the most work under way looked exactly like one with none."""
+    page = _workbench(browser, viz_server, [_deck("alpha")], infos={
+        "alpha": {"branches": [{"name": "a", "state": "OPEN"},
+                               {"name": "b", "state": "OPEN"},
+                               {"name": "c", "state": "MERGED"}]}})
+    try:
+        assert "2 branches" in page.text_content(".wb-chips")
+    finally:
+        page.close()
+
+
+def test_a_deck_with_no_authored_name_does_not_print_its_commander_twice(
+        browser, viz_server):
+    """`build_index` falls back to the commander for `deck_name`, so four decks
+    rendered the same string as the title and the line under it."""
+    page = _workbench(browser, viz_server,
+                      [_deck("zur", deck_name="Zur the Enchanter",
+                             commander="Zur the Enchanter")],
+                      infos={"zur": {"colour_identity": ["W", "U", "B"], "size": 100}})
+    try:
+        assert page.text_content(".wb-sub").strip() != "Zur the Enchanter"
+        assert "WUB" in page.text_content(".wb-sub")
+    finally:
+        page.close()
+
+
+
+def test_the_fleet_total_carries_both_halves_of_the_ratio(browser, viz_server):
+    """A TOTAL WITH ITS DENOMINATOR THROWN AWAY IS A NUMBER A READER RECONSTRUCTS.
+
+    The evidence column carries `verified/total` engine lines per deck. The
+    totals row summed the NUMERATORS and printed "23 ✓", which reads as a count
+    of something rather than as a share of something — and this repo's rule is
+    that every figure carries its definition in the report that prints it,
+    because a figure a reader has to reconstruct gets guessed at and the guesses
+    go one way (a mean read as a rate, a clock read as a win rate; both have
+    happened here).
+    """
+    page = _workbench(browser, viz_server, [_deck("a"), _deck("b")], infos={
+        "a": {"engine": {"lines": 13, "verified_lines": 4}},
+        "b": {"engine": {"lines": 9, "verified_lines": 2}}})
+    try:
+        page.click('[data-view="table"]')
+        page.wait_for_timeout(400)
+        total = page.text_content("tr.t-total")
+        assert "6/22" in total, total
+    finally:
+        page.close()
+
+
+def test_the_fleet_controls_are_absent_without_a_local_server(browser, viz_server):
+    """THE PROPERTY THAT MAKES A WRITE LAYER SAFE TO PUT ON A PUBLIC PAGE.
+
+    `manamap serve` has an `/api` the deployed GitHub Pages site does not, so
+    Archive and Delete cannot work there. The repo's standing rule for that gap
+    (`shell.js:consider`, `deck-view.js:130`) is ABSENT, never
+    present-and-broken: a disabled Delete button on a page with no server is a
+    promise the page cannot keep, and a live-looking one is worse.
+
+    `viz_server` is a plain static server with no `/api`, which is exactly the
+    deployed shape — so this asserts the real condition rather than a stub of it.
+    """
+    page = _workbench(browser, viz_server, [
+        _deck("alpha", deletable=True, undeletable_because=[]),
+        _deck("beta", status=["retired", "RETIRED", "..."]),
+    ])
+    try:
+        assert page.eval_on_selector_all("[data-act]", "els => els.length") == 0
+        text = page.text_content("#racks")
+        for word in ("Archive</button>", "Delete", "Restore"):
+            assert word not in page.inner_html("#racks"), word
+        # ...and the page is otherwise entirely itself.
+        assert "ALPHA" in text and "BETA" in text
+    finally:
+        page.close()
+
+
 def test_the_workbench_splits_locked_from_the_bench(browser, viz_server):
     """The split IS the page. A deck that exists only as JSON and a deck you can
     put on a table are different objects, and the old picker — one line of text
@@ -4774,13 +4964,16 @@ def test_the_workbench_splits_locked_from_the_bench(browser, viz_server):
     try:
         heads = page.eval_on_selector_all(
             ".wb-rack h2", "els => els.map(e => e.textContent.trim().split(' ')[0])")
-        assert heads == ["Sleeved", "On", "History"], heads
+        assert heads == ["Sleeved", "On", "Archive"], heads
         racks = page.eval_on_selector_all(
             ".wb-rack", "els => els.map(e => e.querySelectorAll('.wb-card').length)")
         assert racks == [1, 1, 1], racks
+        # INDEXED, not `:first-of-type` — that pseudo-class is per ELEMENT TYPE,
+        # and the archive is a <details> while the others are <section>, so it
+        # matched the first of each and quietly returned two racks' cards.
         assert page.eval_on_selector_all(
-            ".wb-rack:first-of-type .wb-card h3", "els => els.map(e => e.textContent)") \
-            == ["SLEEVED"]
+            ".wb-rack", "els => [...els[0].querySelectorAll('.wb-card h3')]"
+                        ".map(e => e.textContent)") == ["SLEEVED"]
     finally:
         page.close()
 
@@ -4796,10 +4989,15 @@ def test_a_drifted_lock_says_what_to_pull_and_add(browser, viz_server):
     try:
         chips = page.eval_on_selector_all(
             ".wb-chip", "els => els.map(e => e.textContent.trim())")
-        assert any("V5" in c and "1 behind" in c.lower() for c in chips), chips
+        # THE TWO HALVES LIVE IN TWO PLACES NOW, on purpose. Which list is
+        # sleeved and how far it has drifted is the deck's IDENTITY and rides on
+        # the art; the pull/add pair is an ERRAND and stays in the chip row.
+        stamp = page.text_content(".wb-stamp")
+        assert "V5" in stamp and "1 behind" in stamp.lower(), stamp
         assert any("pull 3" in c.lower() and "add 1" in c.lower() for c in chips), chips
-        warn = page.eval_on_selector_all(".wb-chip.wb-warn", "els => els.length")
-        assert warn == 2, "drift must be coloured as a warning, not as neutral chrome"
+        assert page.eval_on_selector_all(".wb-stamp.is-warn", "els => els.length") == 1
+        assert page.eval_on_selector_all(".wb-chip.wb-warn", "els => els.length") == 1, \
+            "drift must be coloured as a warning, not as neutral chrome"
     finally:
         page.close()
 
@@ -4810,7 +5008,12 @@ def test_an_in_sync_lock_reads_as_ok_not_as_a_warning(browser, viz_server):
               paper={"version": 6, "in_sync": True, "versions_behind": 0, "drift": None}),
     ])
     try:
-        assert page.eval_on_selector_all(".wb-chip.wb-ok", "els => els.length") == 1
+        # The lock now speaks through the STAMP on the art. Its chip row is empty
+        # by design: a level deck has no errand, and "V6 · sleeved" repeated as a
+        # chip beside the stamp saying V6 was the same fact twice.
+        assert page.eval_on_selector_all(".wb-stamp.is-ok", "els => els.length") == 1
+        assert page.eval_on_selector_all(".wb-pin", "els => els.length") == 1
+        assert page.eval_on_selector_all(".wb-stamp.is-warn", "els => els.length") == 0
         assert page.eval_on_selector_all(".wb-chip.wb-warn", "els => els.length") == 0
     finally:
         page.close()
@@ -4824,10 +5027,13 @@ def test_an_unresolvable_lock_is_not_reported_as_in_sync(browser, viz_server):
               paper={"version": 9, "in_sync": None, "unresolved": True, "drift": None}),
     ])
     try:
-        chips = page.eval_on_selector_all(
-            ".wb-chip", "els => els.map(e => e.textContent.trim())")
-        assert any("not in git" in c for c in chips), chips
-        assert page.eval_on_selector_all(".wb-chip.wb-ok", "els => els.length") == 0
+        stamp = page.text_content(".wb-stamp")
+        assert "not in git" in stamp, stamp
+        # AND NO PIN. The pin asserts this exact 99 is in sleeves and level with
+        # the repo; a lock naming a version git cannot find has not established
+        # the second half, so it must not wear the glyph that claims both.
+        assert page.eval_on_selector_all(".wb-stamp.is-ok", "els => els.length") == 0
+        assert page.eval_on_selector_all(".wb-pin", "els => els.length") == 0
     finally:
         page.close()
 
@@ -6452,7 +6658,13 @@ def test_a_new_deck_says_it_is_new_rather_than_showing_nothing(browser, viz_serv
         assert len(measured) == 1, got
         assert "nothing measured yet" not in measured[0], (
             "the new chip crowded out a deck's real evidence")
-        assert "verified line" in measured[0]
+        # THE GAMES CHIP, not "verified line". This asserted on the count of
+        # passing stack scenarios, which was deleted from the card: it measured
+        # which evenings the pilot spent writing citations rather than anything
+        # about the deck. The property under test is unchanged — a deck with
+        # evidence must show it instead of the new-deck chip — so it now names
+        # a chip that is actually evidence about the deck.
+        assert "2 games" in measured[0] and "1\u20131" in measured[0], measured[0]
     finally:
         page.close()
 
@@ -7237,8 +7449,13 @@ def test_the_brief_is_readable_on_the_dossier(browser, viz_server):
 
     # The absent case, on a deck whose brief was archived for describing a
     # different list. "No brief authored" is the honest render.
+    # `#panel-cover`, not `#panel-casefile`. The case file became the DOSSIER's
+    # cover sheet — the brief's absence is a statement about what the deck is
+    # trying to BE, so it moved onto the booking record with the MO. This is the
+    # one assertion in the deck-page set that named a layout id rather than a
+    # contract, and it is updated rather than worked around.
     page = _dossier(browser, viz_server, "ur-dragon")
-    page.wait_for_selector("#panel-casefile", timeout=25000)
+    page.wait_for_selector("#panel-cover", timeout=25000)
     body = page.inner_text("body").lower()
     assert "no brief authored" in body
     assert "treasure is the engine" not in body, (
@@ -7280,6 +7497,7 @@ def _branch_page(browser, viz_server, slug, branch):
     return page
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_the_branch_page_renders_the_decision(browser, viz_server):
     """A REAL RENDER, not a source assertion.
@@ -7324,6 +7542,7 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_the_branch_page_leads_with_the_diff_and_names_what_left(
         browser, viz_server):
@@ -7369,6 +7588,7 @@ def test_the_branch_page_leads_with_the_diff_and_names_what_left(
         page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_a_card_named_in_a_report_can_be_inspected(browser, viz_server):
     """EVERY REPORT NAMES CARDS AND NONE OF THEM SHOWED ONE.
@@ -7418,6 +7638,7 @@ def test_a_card_named_in_a_report_can_be_inspected(browser, viz_server):
         page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_a_branch_with_no_objective_says_so_rather_than_hiding_the_panel(
         browser, viz_server):
@@ -7461,6 +7682,7 @@ def test_an_unknown_branch_names_the_command_instead_of_breaking(browser, viz_se
         page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_the_verdict_leads_the_branch_page(browser, viz_server):
     """THE QUESTION THE PAGE EXISTS TO ANSWER, and it is the acceptance case.
@@ -7485,6 +7707,7 @@ def test_the_verdict_leads_the_branch_page(browser, viz_server):
     page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_the_swaps_panel_names_the_command_when_there_is_no_server(browser,
                                                                    viz_server):
@@ -7501,6 +7724,7 @@ def test_the_swaps_panel_names_the_command_when_there_is_no_server(browser,
     page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_a_pile_can_be_handed_over_without_throwing(browser, viz_server):
     """THE DEFECT THIS EXISTS AGAINST, and it shipped for months.
@@ -7529,6 +7753,7 @@ def test_a_pile_can_be_handed_over_without_throwing(browser, viz_server):
     page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_a_direction_that_does_not_resolve_falls_through_to_the_pilot(browser,
                                                                      viz_server):
@@ -7569,6 +7794,7 @@ def test_a_direction_that_does_not_resolve_falls_through_to_the_pilot(browser,
     page.close()
 
 
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
 def test_a_proposed_objective_is_confirmed_before_it_is_used(browser, viz_server):
     """The doctor proposes; the pilot confirms. Declining must not silently

@@ -24,7 +24,13 @@
   // "no drafts" versus "one draft" is exactly that — a browser holding the old
   // shape would show an empty bench and be quietly wrong about your work.
   // Bump this when the manifest's shape changes again.
-  var MANIFEST_VERSION = 2;
+  //
+  // 2 -> 3: the manifest grew `version`, the latest release tag, carried for
+  // EVERY deck rather than only the sleeved ones. A browser holding the old
+  // shape stamps no version on any unsleeved deck's art — and the stamp is how
+  // this page now says which list a deck is, so the old bytes are quietly wrong
+  // about the thing the page exists to tell you.
+  var MANIFEST_VERSION = 3;
   var MANIFEST = '../data/decks/index.json?v=' + MANIFEST_VERSION;
   var BASE = '../data/decks/';
 
@@ -55,25 +61,50 @@
          + (html ? text : esc(text)) + '</span>';
   }
 
-  /* The lock, said in one phrase. `in_sync` is tri-state — true, false, or null
-   * when the lock names a version git no longer carries — and null must not read
-   * as "fine". */
+  /* THE RELEASE TAG, NOT THE ORDINAL. "V3" is the number git can derive and
+   * means nothing to a reader; `v1.0.2` is what the pilot ships and asks for.
+   * Falls back to the ordinal when a list carries no release tag — a real state,
+   * not an error, so it degrades to the number rather than to nothing. */
+  function versionName(v) {
+    if (!v) return '';
+    return v.release ? v.release : (v.version ? 'V' + v.version : '');
+  }
+
+  /* THE STAMP OVER THE ART, and the pin is the load-bearing half of it.
+   *
+   * 📌 MEANS CARDBOARD AND NOTHING ELSE — this exact 99 is in sleeves and level
+   * with the repo. Every other state gets the tag WITHOUT the pin, because the
+   * pin is the answer to the one question this page exists to ask and spending
+   * it on "there is a version tag" would make it decorative. A drifted lock is
+   * amber and says how far; an unsleeved deck shows its latest release plainly.
+   *
+   * `in_sync` is tri-state — true, false, or null when the lock names a version
+   * git no longer carries — and null must not read as "fine". */
+  function versionStamp(e) {
+    var paper = e.paper;
+    if (paper) {
+      var name = versionName(paper);
+      if (paper.unresolved) {
+        return '<span class="wb-stamp is-warn">' + esc(name) + ' · not in git</span>';
+      }
+      if (paper.in_sync) {
+        return '<span class="wb-stamp is-ok"><span class="wb-pin" '
+             + 'aria-hidden="true">\uD83D\uDCCC</span>' + esc(name) + '</span>';
+      }
+      return '<span class="wb-stamp is-warn">' + esc(name)
+           + (paper.versions_behind ? ' · ' + paper.versions_behind + ' behind'
+                                    : ' · drifted') + '</span>';
+    }
+    var tag = versionName(e.version);
+    return tag ? '<span class="wb-stamp">' + esc(tag) + '</span>' : '';
+  }
+
+  /* What is left for the chip row once the version has moved onto the art: the
+   * pull list, which is an ERRAND rather than an identity. */
   function lockChips(paper) {
-    if (!paper) return '';
-    // THE RELEASE TAG, NOT THE ORDINAL. "V3" is the number git can derive and
-    // means nothing to a reader; `v1.0.2` is what the pilot ships and asks for.
-    // Falls back to the ordinal when a sleeved list carries no release tag —
-    // which is a real state (a lock can be taken on an untagged list), not an
-    // error, so it degrades to the number rather than to nothing.
-    var name = paper.release ? paper.release : 'V' + paper.version;
-    var pin = '<span class="wb-pin" aria-hidden="true">\uD83D\uDCCC</span> ';
-    if (paper.unresolved) return chip('SLEEVED ' + name + ' · not in git', 'warn');
-    if (paper.in_sync) return chip(pin + name + ' · sleeved', 'ok', true);
+    if (!paper || paper.unresolved || paper.in_sync) return '';
     var d = paper.drift || { pull: [], add: [] };
-    var behind = paper.versions_behind;
-    return chip(pin + name + (behind ? ' · ' + behind + ' behind' : ' · drifted'),
-                'warn', true)
-         + chip('pull ' + d.pull.length + ' · add ' + d.add.length, 'warn');
+    return chip('pull ' + d.pull.length + ' · add ' + d.add.length, 'warn');
   }
 
   /* AN OPEN PROPOSAL, which the landing page could not see at all. A branch
@@ -94,6 +125,21 @@
                 left ? 'warn' : 'ok');
   }
 
+  /* The fallback subtitle: what the title has not already said.
+   *
+   * `colour_identity` and `size` are on every `info.json` without exception —
+   * `deck-info` derives both from `cards.json` — so this cannot be the empty
+   * string on a deck that has a list. On a deck that has none it is, and an
+   * empty subtitle is the correct answer to "what else is there to say". */
+  function identityLine(info) {
+    var id = (info && info.colour_identity) || [];
+    var size = info && info.size;
+    var bits = [];
+    if (id.length) bits.push(id.join(''));
+    if (size) bits.push(size + ' cards');
+    return esc(bits.join(' \u00b7 '));
+  }
+
   /* What the bench knows about this deck. Counts only — a number here is an
    * invitation to open the deck, never a claim about it. */
   function evidenceChips(e, info) {
@@ -107,9 +153,32 @@
     var r = (info && info.record) || {};
     if (r.games) {
       var rec = [r.win || 0, r.loss || 0].join('–');
-      out += chip(r.games + ' game' + (r.games === 1 ? '' : 's') + ' · ' + rec, 'ok');
+      // RECENCY RIDES WITH THE RECORD. `ago()` was written for the fleet table
+      // and the card threw it away, so a deck played last night and a deck
+      // played in July read identically — on the page whose only question is
+      // which deck to spend tonight on. A record with no date is a fact about
+      // the past presented as a fact about now.
+      var when = ago(r.last_played);
+      out += chip(r.games + ' game' + (r.games === 1 ? '' : 's') + ' · ' + rec
+                  + (when ? ' · ' + when : ''), 'ok');
     }
-    if (e.verified) out += chip(e.verified + ' verified line' + (e.verified === 1 ? '' : 's'));
+    /* `N verified lines` IS GONE, from here and from the fleet table's evidence
+     * column. It counted passing stack scenarios — how many rules questions
+     * this deck happens to have written up — which says nothing about the deck
+     * and everything about which evenings the pilot spent on citations. The
+     * ENGINE ratio (`verified_lines/lines`) stays in the table: that one answers
+     * how much of the model is proved, which is a different question and has a
+     * denominator. */
+    /* A BRANCH IS WORK IN FLIGHT, and the front door could only see the subset
+     * that had reached a proposal. Edgar carries six open branches and the card
+     * showed none of them, so the deck with the most work under way looked
+     * exactly like one with none. Neutral, deliberately: `proposalChip` is amber
+     * or green because it is BLOCKED ON CARDBOARD, and having work open is not
+     * being blocked. */
+    var open = ((info && info.branches) || []).filter(function (b) {
+      return b.state !== 'MERGED' && !b.proposal;
+    }).length;
+    if (open) out += chip('⑂ ' + open + ' branch' + (open === 1 ? '' : 'es'));
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
     if ((e.experiments || []).length) out += chip((e.experiments || []).length + ' experiment');
     if ((e.prescriptions || []).length) out += chip((e.prescriptions || []).length + ' question');
@@ -132,6 +201,53 @@
                             + ', nothing measured yet');
     }
     return out;
+  }
+
+  /* MOVING AND REMOVING A DECK, from the page that shows the racks.
+   *
+   * ABSENT WITHOUT A LOCAL SERVER, never present-and-broken. `manamap serve`
+   * has an `/api` the deployed GitHub Pages site does not, and the repo's
+   * standing rule for that gap is `shell.js:consider` and `deck-view.js:130`:
+   * a control that cannot work does not render. A disabled button on the
+   * deployed page would be a promise the page cannot keep.
+   *
+   * THE DELETE VERDICT IS NOT COMPUTED HERE. `entry.deletable` and
+   * `undeletable_because` come from `deck_delete.blockers` by way of the
+   * manifest. Re-deriving "never sleeved, never played, never published" from
+   * `locked` and `record.games` would be a second implementation of the
+   * refusal, free to disagree with the command's — and the only way anyone
+   * would find out is by pressing a button that then refuses.
+   */
+  function actions(e) {
+    if (!window.Api || !Api.ready) return '';
+    var slug = esc(e.slug);
+    var out = '';
+    if (e.status) {
+      out += '<button class="wb-act" data-act="revive" data-slug="' + slug
+           + '">Restore</button>';
+    } else {
+      out += '<button class="wb-act" data-act="archive" data-slug="' + slug
+           + '">Archive</button>';
+    }
+    /* DELETE IS OFFERED OR IT IS NOT — no greyed button, and no marker either.
+     *
+     * A first cut printed a small "kept" beside the reasons, and it rendered on
+     * NINE OF TEN CARDS: almost every deck was sleeved, played or published, so
+     * the word said nothing about any particular deck and cost a line on all of
+     * them. A label that is always there is chrome. The absence is the answer,
+     * and `deck-delete <slug>` prints the reasons in full for anyone who wants
+     * them named. */
+    if (e.deletable) {
+      out += '<button class="wb-act is-danger" data-act="delete" data-slug="'
+           + slug + '">Delete</button>';
+    }
+    /* ONE GROUP, pushed right with `margin-left: auto` — NOT a flex spacer
+     * between the links and the buttons. `.wb-links` wraps, and a `flex: 1 1
+     * auto` spacer inside a wrapping row eats the remaining width and shoves
+     * whatever follows onto its own line, so "kept" rendered as a stray word
+     * under the destinations. `margin-left: auto` pushes right when there is
+     * room and wraps the whole group cleanly when there is not. */
+    return '<span class="wb-acts">' + out + '</span>';
   }
 
   function card(e, info) {
@@ -168,12 +284,22 @@
       + (hasPage ? '<a href="../manuals/p/' + slug + '.html">Manual</a>' : '')
       + '<a href="deck.html?deck=' + slug + '">Dossier</a>'
       + '<a href="index.html?deck=' + slug + '">On the map</a>'
+      + actions(e)
       + '</nav>';
+    /* A DECK WITH NO AUTHORED NAME PRINTS ITS COMMANDER TWICE.
+     * `build_index` falls back to the commander for `deck_name`, so four decks
+     * rendered "Zur the Enchanter" as both the title and the line under it — a
+     * subtitle carrying no information at all. Where they differ the commander
+     * is the right subtitle; where they are the same, the colour identity and
+     * the size are facts the title does not already state. */
+    var sub = (e.commander && e.commander !== (e.deck_name || ''))
+      ? esc(e.commander)
+      : identityLine(info);
     return '<div class="wb-card' + (dead ? ' is-dead' : '') + '">'
-      + art
+      + '<div class="wb-artwrap">' + art + versionStamp(e) + '</div>'
       + '<div class="wb-body">'
       +   heading
-      +   '<div class="wb-sub">' + esc(e.commander || '') + '</div>'
+      +   '<div class="wb-sub">' + sub + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
       +   '<div class="wb-chips">' + lockChips(e.paper) + proposalChip(info)
       +     evidenceChips(e, info) + '</div>'
@@ -292,11 +418,15 @@
            + ' behind</span>')
       : '<span class="t-none">—</span>';
 
-    // Verified lines come from the MANIFEST (a count of passing stacks); the
-    // engine ratio comes from info.json and answers a different question —
-    // how much of the model is proved. Both, because they disagree usefully.
-    var evidence = num(e.verified, '0') + ' ✓';
-    if (eng.lines) evidence += ' · ' + num(eng.verified_lines, '0') + '/' + num(eng.lines);
+    // THE ENGINE RATIO ONLY. This used to lead with the MANIFEST's raw count of
+    // passing stack scenarios and the comment said the two "disagree usefully".
+    // They do not: a bare count of write-ups has no denominator, so it measures
+    // how many evenings went into citations rather than anything about the deck.
+    // The ratio answers how much of the engine model is PROVED, which is the
+    // question that count was standing in for.
+    var evidence = eng.lines
+      ? num(eng.verified_lines, '0') + '/' + num(eng.lines) + ' ✓'
+      : '<span class="t-none">—</span>';
     if (eng.critic === 'fail') evidence += ' <span class="t-warn">critic</span>';
     if (dg.skeptic === 'fail') evidence += ' <span class="t-warn">skeptic</span>';
 
@@ -340,22 +470,33 @@
               : '');
   }
 
-  /* One aggregate row. Sums only what SUMS — games, wins, losses, verified
-   * lines, open questions. Deliberately no averaged win rate: the runs have
-   * different Ns against different pods, and a mean of rates would be a number
-   * no simulation ever measured. */
+  /* One aggregate row. Sums only what SUMS — games, wins, losses, engine lines,
+   * open questions. Deliberately no averaged win rate: the runs have different
+   * Ns against different pods, and a mean of rates would be a number no
+   * simulation ever measured.
+   *
+   * BOTH HALVES OF THE RATIO, and that is the point. The evidence column now
+   * carries `verified/total` per deck, and this row summed the NUMERATORS and
+   * printed "23 ✓" — a total with its denominator thrown away, which is the
+   * failure `net_change.METRICS` exists to prevent: a figure a reader has to
+   * reconstruct gets guessed at, and the guesses go one way. `23/61` says how
+   * much of the fleet's engine model is proved; `23` says nothing. */
   function totals(decks, infos) {
-    var g = 0, w = 0, l = 0, v = 0, q = 0, sims = 0;
+    var g = 0, w = 0, l = 0, v = 0, lines = 0, q = 0, sims = 0;
     decks.forEach(function (e) {
-      var i = infos[e.slug] || {}, r = i.record || {};
+      var i = infos[e.slug] || {}, r = i.record || {}, eng = i.engine || {};
       g += r.games || 0; w += r.win || 0; l += r.loss || 0;
-      v += e.verified || 0; q += (i.open_questions || []).length;
+      v += eng.verified_lines || 0;
+      lines += eng.lines || 0;
+      q += (i.open_questions || []).length;
       sims += (e.sim_runs || []).length;
     });
     return '<tr class="t-total"><th scope="row">' + decks.length + ' decks</th>'
       + '<td></td>'
       + '<td>' + (g ? g + ' · ' + w + '–' + l : '<span class="t-none">none</span>') + '</td>'
-      + '<td></td><td>' + v + ' ✓</td><td>' + sims + ' runs</td>'
+      + '<td></td>'
+      + '<td>' + (lines ? v + '/' + lines + ' ✓' : '<span class="t-none">—</span>')
+      + '</td><td>' + sims + ' runs</td>'
       + '<td>' + q + 'q</td></tr>';
   }
 
@@ -415,14 +556,30 @@
       + '<div class="wb-grid">' + tiles + '</div></section>';
   }
 
-  function rack(title, blurb, entries, infos) {
+  /* `collapsed` renders the rack as a <details>, shut. Only the archive uses it.
+   *
+   * A rack is a QUEUE — the racks above it are things to do, and the archive is
+   * the one that is finished. Left open it was the largest block on the page and
+   * the last thing under the eye, so the front door's final impression was of
+   * work the pilot had deliberately stopped. Shut, with its count on the summary,
+   * it says how much history there is without spending the screen on it.
+   *
+   * <details> rather than a JS toggle: it is keyboard-reachable, it survives the
+   * `innerHTML` replacement `render` does on every repaint with no state to
+   * thread, and Cmd-F finds text inside a closed one in every current browser. */
+  function rack(title, blurb, entries, infos, collapsed) {
     if (!entries.length) return '';
-    return '<section class="wb-rack">'
-      + '<h2>' + esc(title) + ' <span class="wb-count">' + entries.length + '</span></h2>'
-      + '<p class="wb-blurb">' + esc(blurb) + '</p>'
-      + '<div class="wb-grid">'
+    var head = '<h2>' + esc(title)
+      + ' <span class="wb-count">' + entries.length + '</span></h2>'
+      + '<p class="wb-blurb">' + esc(blurb) + '</p>';
+    var body = '<div class="wb-grid">'
       + entries.map(function (e) { return card(e, infos[e.slug]); }).join('')
-      + '</div></section>';
+      + '</div>';
+    if (!collapsed) {
+      return '<section class="wb-rack">' + head + body + '</section>';
+    }
+    return '<details class="wb-rack wb-fold"><summary>' + head + '</summary>'
+      + body + '</details>';
   }
 
   /* View and sort live in the URL, not in a closure, so a fleet sorted by
@@ -446,12 +603,22 @@
   }
 
   function render(decks, infos, state, drafts) {
-    var locked = decks.filter(function (e) { return e.locked; });
-    // A deck that has been broken down or retired is not "on the bench" waiting
-    // for work — it is history, and it sorts last so the rack reads as a queue.
-    var rest = decks.filter(function (e) { return !e.locked; });
-    var live = rest.filter(function (e) { return !e.status; });
-    var dead = rest.filter(function (e) { return e.status; });
+    /* DEATH FIRST, THEN THE LOCK — and the order is the whole correctness of
+     * this page. `locked` used to be filtered over the WHOLE list, so a deck
+     * carrying both a lifecycle status and a paper lock landed in SLEEVED and
+     * could never reach the archive. That is not hypothetical: yawgmoth-swarm
+     * was broken down for parts while still locked at V5, and the one screen
+     * whose job is answering WHAT CAN I PLAY TONIGHT said "you can play these
+     * tonight" over a box of nothing. It is the hapatra failure
+     * (`common.DECK_STATUSES`) one surface later.
+     *
+     * `set_lifecycle` now withdraws the lock when a deck is archived, so the
+     * contradiction should not reach the wire — but the page must not depend on
+     * a command having been run correctly to be right about cardboard. */
+    var dead = decks.filter(function (e) { return e.status; });
+    var living = decks.filter(function (e) { return !e.status; });
+    var locked = living.filter(function (e) { return e.locked; });
+    var live = living.filter(function (e) { return !e.locked; });
 
     var toggle = '<div class="wb-views">'
       + '<button class="wb-view' + (state.view === 'racks' ? ' is-on' : '')
@@ -467,7 +634,7 @@
       // that names something the pilot is blocked on rather than something they
       // could do. A deck appears here AND in its own rack — the chip marks it
       // wherever it is, the rack collects everything you are waiting for.
-      var waiting = decks.filter(function (e) {
+      var waiting = living.filter(function (e) {
         return proposalOf(infos[e.slug]);
       });
       html = toggle
@@ -480,8 +647,10 @@
                locked, infos)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
                + 'sleeved yet.', live, infos)
-        + rack('History', 'Broken down for parts, superseded, or retired. Kept as published.',
-               dead, infos);
+        + rack('Archive',
+               'Broken down for parts, superseded, or retired \u2014 and builds you '
+               + 'put down. Kept as published, so you can come back and read them.',
+               dead, infos, true);
       if (!locked.length) {
         html = toggle + '<p class="wb-empty">No deck is marked as built in paper yet. '
              + '<code>manamap pilot deck-version &lt;slug&gt; paper</code> marks the version '
@@ -494,7 +663,22 @@
       decks.length + ' deck(s) · ' + locked.length + ' locked';
   }
 
-  getJSON(MANIFEST).then(function (m) {
+  /* THE PROBE IS AWAITED, not fired and forgotten.
+   *
+   * It used to run at the bottom of this file with no one waiting on it, while
+   * `render` ran the moment the manifest arrived — so whether the Archive and
+   * Delete controls appeared depended on WHICH FETCH FINISHED FIRST. Caught in
+   * a real browser: the buttons rendered on one load and were absent on the
+   * next, same page, same server. A control that is sometimes there is worse
+   * than one that is never there, because the absence stops being information.
+   *
+   * `Api.probe()` resolves to a boolean and NEVER rejects — "no server" is an
+   * answer, not an error (`api.js:37`) — so waiting on it costs a deployed page
+   * one 404 round-trip and cannot hang the render. */
+  var ready = (window.Api && Api.probe) ? Api.probe() : Promise.resolve(false);
+
+  Promise.all([getJSON(MANIFEST), ready]).then(function (both) {
+    var m = both[0];
     if (!m || !m.decks) {
       document.getElementById('status').textContent =
         'No deck manifest — run `manamap pilot build-index`.';
@@ -519,6 +703,8 @@
       document.getElementById('racks').addEventListener('click', function (ev) {
         var v = ev.target.closest && ev.target.closest('[data-view]');
         var s = ev.target.closest && ev.target.closest('[data-sort]');
+        var a = ev.target.closest && ev.target.closest('[data-act]');
+        if (a) return fleetAction(a);
         if (!v && !s) return;
         if (v) state.view = v.getAttribute('data-view');
         if (s) { state.view = 'table'; state.sort = s.getAttribute('data-sort'); }
@@ -528,9 +714,60 @@
     });
   });
 
-  // The library drawer (shell.js) mounts itself on every surface, and its
-  // buttons reach the local server. Nothing probed here, so `Api.ready` was
-  // permanently false and the drawer reported "needs a local server" while one
-  // was running. Fire-and-forget — no paint waits on it.
-  if (window.Api && Api.probe) { Api.probe(); }
+  /* One verb, then a full reload.
+   *
+   * RELOAD RATHER THAN PATCHING THE PAGE'S OWN STATE. Archiving a deck rewrites
+   * `info.json` AND the manifest AND — through `deck_is_apart` — what every
+   * other deck's branch pull list says about whose cards are free. A page that
+   * moved one card between two racks in memory would be showing a fleet that
+   * no longer matches the artifacts it claims to render, which is the whole
+   * failure this surface exists to end.
+   */
+  function fleetAction(btn) {
+    var act = btn.getAttribute('data-act');
+    var slug = btn.getAttribute('data-slug');
+    if (!window.Api || !Api.ready) {
+      alert('This needs a local server — run `manamap serve`.');
+      return;
+    }
+    var call;
+    if (act === 'delete') {
+      // NAMED, AND TYPED BACK. The server requires `confirm` to equal the slug
+      // for its own reasons; asking for it here means the pilot reads the name
+      // of the thing they are removing rather than clicking past a yes/no.
+      var typed = prompt('Delete ' + slug + ' permanently?\n\n'
+        + 'Its directory and its Pilot\u2019s Manual page are removed and staged '
+        + 'in git \u2014 not committed, so you can still review or undo it.\n\n'
+        + 'Type the deck slug to confirm:');
+      if (typed !== slug) return;
+      call = Api.call('deck/delete', { slug: slug, confirm: slug });
+    } else {
+      var reason = act === 'revive' ? null
+        : prompt('Archive ' + slug + '. Why? (optional \u2014 a note about the '
+                 + 'decision, not a claim about the cards)') || '';
+      if (reason === null && act !== 'revive') return;
+      call = Api.call('deck/state',
+                      { slug: slug, action: act, reason: reason || '' });
+    }
+    var label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '\u2026';
+    call.then(function () { location.reload(); })
+        .catch(function (err) {
+          btn.disabled = false;
+          btn.textContent = label;
+          // The server's sentence, VERBATIM. `deck_delete.blockers` and
+          // `set_lifecycle` both refuse with a paragraph naming what to do
+          // instead — "archive it", "withdraw the lock first" — and
+          // paraphrasing it here would throw away the instruction and leave
+          // only the rejection.
+          alert(slug + ': ' + (err && err.message ? err.message : err));
+        });
+  }
+
+  // The library drawer (shell.js) mounts itself on every surface and its buttons
+  // reach the local server; without a probe here `Api.ready` was permanently
+  // false and the drawer reported "needs a local server" while one was running.
+  // The probe now happens above and the first render WAITS on it, which serves
+  // the drawer as well — `probe()` memoises, so there is only ever one request.
 })();

@@ -106,13 +106,14 @@ def test_unranked_cards_sort_last_but_are_not_dropped():
 @requires_data
 @requires_deck
 def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
-    doc = card_search.analyze(Args(deck="kianne", oracle=[r"\bcounters?\b"], limit=200))
-    assert doc["identity"] == ["G", "U"], "derived from the commander, not authored"
-    assert doc["identity_derived_from"] == "kianne"
-    assert doc["excluded_deck_cards"] == 90, "88 entries; two DFC lands contribute both faces"
+    doc = card_search.analyze(Args(deck="zur-enchantress", oracle=[r"\benchantment\b"],
+                                   limit=200))
+    assert doc["identity"] == ["B", "U", "W"], "derived from the commander, not authored"
+    assert doc["identity_derived_from"] == "zur-enchantress"
+    assert doc["excluded_deck_cards"] == 93, "89 entries; two DFCs contribute both faces"
     names = {r["name"] for r in doc["results"]}
-    assert "Hardened Scales" not in names, "the deck already runs it — not a candidate"
-    assert "Branching Evolution" not in names
+    assert "All That Glitters" not in names, "the deck already runs it — not a candidate"
+    assert "Ethereal Armor" not in names
 
 
 @requires_data
@@ -120,10 +121,11 @@ def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
 def test_include_owned_turns_the_exclusion_off():
     """Searched by NAME, not oracle: `--oracle "Hardened Scales"` matches cards whose
     RULES TEXT says that, which is nothing — the trap `--name` exists to avoid."""
-    q = dict(deck="kianne", name=[r"^(Hardened Scales|Branching Evolution)$"], limit=50)
+    q = dict(deck="zur-enchantress", name=[r"^(All That Glitters|Ethereal Armor)$"],
+             limit=50)
     assert card_search.analyze(Args(**q))["results"] == [], "both are in the deck"
     owned = card_search.analyze(Args(include_owned=True, **q))
-    assert {r["name"] for r in owned["results"]} == {"Hardened Scales", "Branching Evolution"}
+    assert {r["name"] for r in owned["results"]} == {"All That Glitters", "Ethereal Armor"}
 
 
 @requires_data
@@ -132,7 +134,7 @@ def test_identity_may_not_override_a_deck_because_it_is_derived():
     """`build_deck.load_brief` derives identity from the commander and refuses an
     authored one; two derivations of one fact are two chances to disagree."""
     with pytest.raises(SystemExit, match="DERIVED"):
-        card_search.analyze(Args(deck="kianne", identity="WUBRG"))
+        card_search.analyze(Args(deck="zur-enchantress", identity="WUBRG"))
 
 
 @requires_data

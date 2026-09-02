@@ -36,6 +36,19 @@ MANIFEST_KEYS = {
     # rather than absent, so the browser never has to distinguish "no lock" from
     # "field not in this manifest".
     "image", "paper", "locked",
+    # `version` is the latest RELEASE TAG, carried for every deck rather than
+    # only the sleeved ones, because the card stamps it over the commander art.
+    # `paper` cannot serve that: it is null on an unlocked deck, and `info.json`
+    # deliberately strips its own `version` block (a git walk, one commit behind
+    # forever). The PIN on the stamp still means sleeved and nothing else.
+    "version",
+    # WHETHER THIS DECK MAY BE DELETED, decided once by
+    # `deck_delete.blockers`. If the page re-derived "never sleeved, never
+    # played, never published" from `locked` and `record.games` it would be a
+    # second implementation of the refusal, free to disagree with the command's
+    # — and the disagreement would only ever surface as a button that offers to
+    # delete something and is then refused.
+    "deletable", "undeletable_because",
 }
 
 

@@ -31,6 +31,7 @@ import re
 from manamap.config import MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot.common import (
     checker_passed,
+    deck_lifecycle,
     presentable,
     withheld,
     deck_dir,
@@ -70,7 +71,6 @@ from manamap.pilot.scenario_facts import board_bodies, opponents_of
 from manamap.pilot.short_list_art import ARTIFACT as SHORT_LIST_ART
 from manamap.pilot.issue_spec import (
     ACTS,
-    issue_status,
     OPTIONAL_DEPARTMENTS,
     BREATHER_AFTER,
     DEPARTMENT_BY_ID,
@@ -1843,7 +1843,7 @@ def render_back_page(issue, plan, deck_doc, stacks, cards_by_name):
 def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                  goldfish=None, decisions=None,
                  considering=None, tutor_guide=None, mana=None,
-                 short_list_art=None, withheld_stacks=()):
+                 short_list_art=None, withheld_stacks=(), lifecycle=None):
     """Assemble a complete issue. Deterministic for fixed inputs."""
     cards = deck_doc["cards"]
     cards_by_name = {c["name"]: c for c in cards}
@@ -1926,7 +1926,12 @@ def render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
         # Before the cover, deliberately: a reader must learn the deck no longer
         # exists BEFORE they start reading its figures as current. Empty string
         # for a live issue, so nothing byte-shifts on the other eight.
-        body = issue_status_banner(issue_status(issue)) + "".join(sections) + (
+        # PASSED IN, not read from `issue`. This called `issue_status(issue)` on
+        # the loaded dict — one of two places that went around the predicate —
+        # and the lifecycle has since moved to `deck_versions.json`. The caller
+        # resolves it through `common.deck_lifecycle`, which keeps this frozen
+        # renderer free of any opinion about where the fact lives.
+        body = issue_status_banner(lifecycle) + "".join(sections) + (
             '<a class="toc-float" href="#contents" '
             'title="Back to The Flight Plan">☰</a>')
     finally:
@@ -1982,7 +1987,8 @@ def main(args):
     try:
         html_out = render_issue(issue, plan, deck_doc, stacks, prose_doc, synergy,
                                 goldfish, decisions, considering, tutor_guide,
-                                mana, short_list_art, withheld_stacks)
+                                mana, short_list_art, withheld_stacks,
+                                lifecycle=deck_lifecycle(slug))
     finally:
         _DECK_MAP["doc"] = _DECK_MAP["engine"] = None   # cleared like the card links
     MANUALS_DIR.mkdir(parents=True, exist_ok=True)

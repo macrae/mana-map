@@ -2,6 +2,7 @@
 
 
 import collections
+import pathlib
 import json
 
 import pandas as pd
@@ -625,6 +626,20 @@ def test_curve_bucket_folds_the_tail_at_eight():
     assert build_deck.curve_bucket(None) == 0
 
 
+#: kinnan's build plan, as it stood when the two tests below were written.
+#:
+#: A FIXTURE RATHER THAN A LIVE DECK, because these two assert a HISTORICAL
+#: measurement — the curve and the combo completions the builder produced for one
+#: specific baseline — and they borrowed a deck directory to carry it. That deck
+#: was a deterministic whole-format baseline that was never sleeved, never played
+#: and never published, and it was deleted (it was also being counted as a HOLDER
+#: of cards it never physically had, which blocked another deck's merge). The
+#: measurement it anchors is still true and still worth guarding; a test that
+#: asserts a past measurement should own its evidence rather than borrow a deck
+#: that can be broken down.
+KINNAN_PLAN = pathlib.Path(__file__).parent / "fixtures" / "kinnan_build_plan.json"
+
+
 @requires_data
 @requires_deck
 def test_a_built_deck_has_a_TOP_END(tmp_path):
@@ -638,7 +653,7 @@ def test_a_built_deck_has_a_TOP_END(tmp_path):
     flat plateau to 3 then a monotone decline — so the top N are always cheap. N
     independent maxima are not a distribution.
     """
-    plan = json.loads((DECKS_DIR / "kinnan" / "build_plan.json").read_text())
+    plan = json.loads(KINNAN_PLAN.read_text())
     pool = load_pool()
     curve = collections.Counter()
     for slot in plan["slots"]:
@@ -664,7 +679,7 @@ def test_a_built_deck_completes_a_combo_line_it_half_holds():
     """kinnan's defining line is a two-card infinite and the baseline contained
     **23 Kinnan combo partners and not one completion** — the scorer sees cards, not
     pairs, so a card that FINISHES a line earns nothing for finishing it."""
-    plan = json.loads((DECKS_DIR / "kinnan" / "build_plan.json").read_text())
+    plan = json.loads(KINNAN_PLAN.read_text())
     completions = plan.get("combo_completions") or []
     assert completions, "the builder must assemble at least one line it half-held"
     for c in completions:

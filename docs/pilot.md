@@ -74,6 +74,12 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare block
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
+manamap pilot deck-state <slug>                     # is this still a deck, or a pile of cards
+manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
+manamap pilot deck-delete <slug>                    # never sleeved, never played, never published
+manamap pilot validate-deck-versions <slug>         # the lifecycle, the lock, and the contradiction
+manamap pilot deck-notes <slug> cause <id> --cause <code>   # how one logged game ended
+manamap pilot validate-log-causes <slug>            # the cause vocabulary, its ids, and result clashes
 manamap pilot deck-branch <slug> [list] | new <name> --from <file> [--why …]
 manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>
 manamap pilot deck-branch <slug> merge <name> [--write] [--proxy] [--force --reason …]
@@ -429,7 +435,7 @@ agent asked to think of candidates invents them; this hands it a list it did not
 and a validator can then check membership.
 
 ```bash
-manamap pilot card-search --deck kianne --oracle "additional combat phase"
+manamap pilot card-search --deck zur-enchantress --oracle "additional combat phase"
 manamap pilot card-search --identity GU --role ramp:rock --cmc-max 2 --no-game-changers
 manamap pilot card-search --deck heliod --name "^Sword of " --include-owned
 ```
@@ -491,6 +497,35 @@ the one **sleeved**. It is authored and it is the only claim in the repo about c
 nothing derives it, because nothing can. Locking a version is also what makes **drift** free
 — `report()` already knows the current version, so locked / in_sync / versions_behind falls
 out, and the two sides are named `pull` and `add` because that is the physical instruction.
+
+**The lifecycle sits in the same file, and that is the point.** `deck-state <slug>
+archive` writes `deck_versions.json`'s `lifecycle` block — the deck is in a pile —
+and it lived on `issue.json` until 2026-09-01, where two things were wrong with it.
+`issue.json` belongs to the frozen magazine renderer and requires a positive-integer
+`volume`, so archiving one of the four decks that never went to press meant inventing
+a publication record for a magazine that is dead. And it put the two facts about one
+piece of cardboard in two files, where they could contradict each other — which they
+did: **yawgmoth-swarm was broken down for parts and rendered under SLEEVED for weeks**,
+because the workbench filtered the lock before the status.
+
+They cannot contradict each other now, in either direction and at three levels:
+archiving WITHDRAWS the lock and prints the version it withdrew; `set_paper` REFUSES a
+deck that is in a pile (found by tripping it — `deck-version <slug> paper` with no ref
+is a write that reads like a report, and running it to *check* the lock had gone
+silently re-locked an archived deck); and `validate-deck-versions` fails the file if
+both are ever set by hand. `superseded` is deliberately exempt from all three — a
+superseded list is still sleeved and still playable, it is just no longer the best
+version of itself, which is the same distinction `UNPLAYABLE_STATUSES` draws.
+
+**`deck-delete` is the only destructive fleet verb**, and it refuses a deck that was
+**ever sleeved, ever played or ever published** — those are records, and the honest
+move on a record is to archive it. The rule is deliberately not keyed on `published`
+alone: that means *the frozen renderer ran*, and `docs/manual-v5-spec.md` retires the
+renderer, so a gate keyed only on it would silently invert. What it is for is the
+never-built baseline: `kianne`, `kinnan` and `blar` were deterministic whole-format
+builds that were counted as HOLDERS of cards they never physically had, so Edgar's
+`bloodline-v4` was blocked on *"unsleeve The Ozolith from kianne"* — a deck that has
+never existed in paper. It stages with `git rm` and does not commit.
 
 The state that had to be added is the third one:
 
@@ -680,10 +715,29 @@ talk, no player who remembers last turn. The artifact key is `forge_ai_targeting
 rather than anything shorter precisely so the caveat cannot be trimmed off, and
 `limits[]` carries `FORGE_AI_CAVEAT` as the imported constant.
 
-**Why the version list is not a tracked file:** the commit that changes `decklist.txt`
-gets its sha AFTER anything written in the same commit, so a generated `versions.json`
-would be one behind forever. Computed on demand; the viz history viewer gets its copy
-from a deploy-time step with git available.
+**The version list IS a tracked file (since 2026-09-02), and the argument against it
+was half right.** A version row carries the sha and date of the commit that created it,
+and those are unknowable inside that commit — so a `versions.json` written in the SAME
+commit as a decklist change is one version behind. True, and it missed two things.
+
+*Nothing reads `sha`, `first_sha` or `subject`.* Not the rap sheet, not Python, not a
+test. The dossier reads `version`, `first_date`, `in[]`, `out[]`, `record` and `tags` —
+all derivable from content or from PAST commits. And `deck_versions.json`, tracked since
+it shipped, already stores `paper.sha` and `tags[…].sha`: commit shas written in a LATER
+commit than the one they name. The constraint is a workflow rule the repo already
+follows, not a physical one.
+
+*The deploy-time step it deferred to was never built.* So the file 404'd in production
+and the deck page's rap sheet — the spine of the dossier — rendered "No committed
+versions yet" to every reader, about a deck with three versions and a v1.0.2 release.
+
+**The rule, and it is enforced:** a commit may not contain both a decklist and its own
+`versions.json`. Change the list in one commit; run `make manuals` and commit the derived
+artifacts in the next. This works because `deck_history.revisions()` only sees commits
+that touch `decklist.txt` — so a version list written in any other commit is a FIXED
+POINT, byte-identical on every later regeneration. `tests/test_pilot_commit_protocol.py`
+checks the staged changeset and names the two-commit dance; `make manuals` regenerates
+it and CI compares the bytes.
 
 ## The captain's log (`log.jsonl`, authored) and the debrief (`log_annotations.json`, ★)
 

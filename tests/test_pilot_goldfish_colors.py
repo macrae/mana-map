@@ -119,8 +119,14 @@ def test_the_simulation_agrees_with_the_closed_form_about_which_decks_are_screwe
 def test_colour_never_makes_a_deck_faster():
     """A one-directional check: refusing casts can only slow a deck down. If any
     figure improves, the colour path is letting something through it should not."""
-    for slug in ("heliod", "sisay", "kianne"):
+    # Three decks of DIFFERENT colour counts, which is the whole point of the
+    # check: `zur-enchantress` (WUB) replaces `kianne` (GU), which was a
+    # never-sleeved whole-format baseline and has been deleted.
+    checked = 0
+    for slug in ("heliod", "sisay", "zur-enchantress"):
+        checked += 1
         a = goldfish.run(slug, iterations=600, quiet=True, model_colors=False)
         b = goldfish.run(slug, iterations=600, quiet=True, model_colors=True)
         assert (b["metrics"]["commander"]["cast_by_turn_6_rate"]
                 <= a["metrics"]["commander"]["cast_by_turn_6_rate"] + 0.01), slug
+    assert checked == 3

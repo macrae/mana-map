@@ -189,7 +189,14 @@ def test_every_branch_artifact_a_validator_can_reach_is_gated():
     this repo has already been bitten by, and a parametrize that silently yields
     zero of them would pass forever while gating nothing."""
     branch_cases = [c for c in _cases() if c[1]]
-    if not any((DECKS_DIR / d.name / "branches").is_dir()
+    # COUNT BRANCHES, NOT DIRECTORIES. This asked whether a `branches/`
+    # directory exists — and `deck_branch.delete` removes a branch without
+    # pruning its parent, so a deck whose branches have all been deleted keeps
+    # an empty one. `goblin-storm` has had one for weeks. The skip then never
+    # fired and the assertion below ran against zero cases; it survived only
+    # because `@requires_branch` happened to skip first, which is a different
+    # deck's state deciding this test's fate.
+    if not any((DECKS_DIR / d.name / "branches").glob("*/branch.json")
                for d in DECKS_DIR.iterdir() if d.is_dir()):
         pytest.skip("no branches on this checkout")
     assert branch_cases, (

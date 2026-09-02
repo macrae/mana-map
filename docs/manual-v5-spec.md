@@ -82,7 +82,19 @@ went stale. Two changes made against this draft, both recorded there:
 | `validate_issue`: L10 lint, voice lint, dek-question lint, byline checks, plan validation | magazine-only; what stays is **budgets** (`PROSE_BUDGET`), **taxonomy-id leak**, card-name resolution |
 | `issue_spec.DEPARTMENTS` (17) → `SECTIONS` (8) | the single source of truth shrinks; tests that count it follow |
 | STYLEv3 | archived to `docs/history/`; a 1-page `docs/manual-v5-spec.md` (this file, finalised) replaces it |
-| `issue.json` fields `volume`, `cover_price`, `cover_tagline`, `next_issue` | ignored, not deleted — `deck_name`, `commander`, `status` stay; **the file stays authored** |
+| `issue.json` fields `volume`, `cover_price`, `cover_tagline`, `next_issue` | ignored, not deleted — `deck_name` and `commander` stay; **the file stays authored** |
+
+**Amended 2026-09-01: `status` left `issue.json` ahead of this spec.** The line
+above used to say `status` stays here too. It could not: `issue.json` requires a
+positive-integer `volume`, so archiving `zur-enchantress` — one of **four decks
+that have no `issue.json` at all** — meant inventing a publication record for a
+magazine that is dead, in the one file whose doctrine is that it is a published
+record and must not be edited. The lifecycle now lives in `deck_versions.json`
+under `lifecycle`, beside `paper`, because "these cards are in a pile" and "this
+exact 99 is in sleeves" are the same question asked twice and contradict each
+other when both are set. `common.deck_lifecycle` is still the one predicate;
+`validate-issue` now reports a leftover `status` key here rather than honouring
+it.
 
 ## What gets unfrozen (one commit, after the renderer lands)
 

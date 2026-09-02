@@ -67,15 +67,21 @@ def validate_identity(issue, deck_sha256=None):
     volume = issue.get("volume")
     if not isinstance(volume, int) or volume < 1:
         errors.append(f"issue.json volume must be a positive integer, got {volume!r}")
-    # `status` is optional, but a value the renderer does not know silently
-    # renders NOTHING — the deck reads as live when someone meant to retire it.
-    # The renderer tolerates it (a typo must not take a magazine offline); this
-    # is where it gets reported.
-    status = issue.get("status")
-    if status is not None and status not in ISSUE_STATUSES:
+    # `status` MOVED, and a leftover here is now worse than a wrong one.
+    #
+    # It used to live on this file and this check policed its vocabulary. The
+    # lifecycle now lives in `deck_versions.json` under `lifecycle`, because
+    # `issue.json` belongs to the frozen renderer and four decks never had one.
+    # Nothing reads a `status` key here any more — so a hand edit that sets it
+    # would be OBEYED BY NOBODY while looking exactly like it worked, which is a
+    # quieter failure than the typo this check was written for. Reported whatever
+    # its value, and the message names where it goes.
+    if "status" in issue:
         errors.append(
-            f"issue.json status {status!r} is not one of "
-            f"{sorted(ISSUE_STATUSES)} — the banner will not render"
+            f"issue.json carries status {issue['status']!r}, which nothing reads "
+            f"any more — the lifecycle moved to deck_versions.json. Set it with "
+            f"`manamap pilot deck-state <slug> archive|retire|supersede` and "
+            f"delete this key."
         )
     stamped = issue.get("decklist_sha256")
     if deck_sha256 and stamped and stamped != deck_sha256:

@@ -203,3 +203,81 @@ def test_deck_html_loads_the_dossier_script():
     html = (Path(__file__).resolve().parents[1] / "viz" / "deck.html").read_text()
     assert 'src="js/deck-view.js?v=' in html
     assert 'href="css/tokens.css?v=' in html
+
+
+# ── The dossier's nine sections ──────────────────────────────────────────
+
+
+def _dossier_array():
+    """The `DOSSIER` literal out of `deck-view.js`, parsed as data."""
+    import ast
+    import re
+    from pathlib import Path
+
+    js = (Path(__file__).parent.parent / "viz/js/deck-view.js").read_text()
+    m = re.search(r"var DOSSIER = (\[.*?\n  \]);", js, re.S)
+    assert m, "the DOSSIER literal moved or changed shape"
+    # The literal is deliberately plain data — arrays of strings, no
+    # expressions, no concatenation — which is what makes it parseable at all.
+    # `ast.literal_eval` reads JS single-quoted strings as Python ones.
+    raw = re.sub(r"//[^\n]*", "", m.group(1))
+    return [list(row) for row in ast.literal_eval(raw)]
+
+
+def test_the_dossier_sections_match_the_python_registry():
+    """PYTHON OWNS THE ORDER, and the browser transcribes it.
+
+    The section order used to be an anonymous array literal inside `render()`
+    with no statement of it anywhere — so "what sections does the deck page
+    have, and why that order" was answerable only by reading the assembly line.
+    It now lives in `page_spec.DOSSIER_SECTIONS` beside the manual's own
+    registry, and this is what stops the transcription drifting: the same
+    contract `decklist.js` lives under against the Python parser.
+    """
+    from manamap.pilot.page_spec import DOSSIER_SECTIONS
+
+    js = _dossier_array()
+    assert len(js) == len(DOSSIER_SECTIONS), (
+        f"the browser has {len(js)} sections, Python has "
+        f"{len(DOSSIER_SECTIONS)}")
+    for got, want in zip(js, DOSSIER_SECTIONS):
+        assert got[0] == want[0], f"order differs: {got[0]} vs {want[0]}"
+        assert got[1] == want[1], f"{got[0]}: title differs"
+        assert got[2] == want[2], f"{got[0]}: promise differs"
+        assert list(got[3]) == list(want[3]), f"{got[0]}: tiers differ"
+
+
+def test_the_cover_sheet_is_first_and_the_assessment_is_last():
+    """The order is the argument, so it is asserted rather than assumed.
+
+    A cover sheet you absorb in thirty seconds is the only thing that makes the
+    depth behind it usable, and the assessment is last BECAUSE it is the
+    analyst's opinion — a file where that sits inside the record loses trust,
+    which is what the old page did by rendering the diagnosis verdict as one
+    inline sentence in the middle of the audit panel.
+    """
+    from manamap.pilot.page_spec import DOSSIER_IDS
+
+    assert DOSSIER_IDS[0] == "cover"
+    assert DOSSIER_IDS[-1] == "assessment"
+    assert DOSSIER_IDS.index("priors") < DOSSIER_IDS.index("logs"), (
+        "the coded table reads before the prose it summarises")
+
+
+def test_every_dossier_section_grants_a_tier_it_can_actually_mint():
+    """`tiers` is what a section GRANTS, not what it mentions — `page_spec`'s
+    own rule. A section that grants `verified` may mint a check-mark claim; one
+    that does not may still discuss a verified line."""
+    from manamap.pilot.page_spec import DOSSIER_SECTIONS
+
+    known = {"verified", "data", "coach"}
+    for sid, _title, promise, tiers in DOSSIER_SECTIONS:
+        assert tiers, f"{sid} grants nothing — every section declares a tier"
+        assert set(tiers) <= known, f"{sid}: {tiers}"
+        assert len(promise) > 25, f"{sid} has no usable promise"
+    grants = {s[0]: set(s[3]) for s in DOSSIER_SECTIONS}
+    # The captain's log is the pilot speaking. It cannot mint a measurement.
+    assert grants["logs"] == {"coach"}
+    assert grants["assessment"] == {"coach"}
+    # The cover sheet's three numbers are all seeded measurements.
+    assert grants["cover"] == {"data"}

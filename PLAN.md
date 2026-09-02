@@ -24,7 +24,7 @@ supported. The magazine that used to be the product is a frozen legacy renderer 
 compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 85 pilot subcommands,
+Scale (derived; `tests/test_docs_counts.py` polices these): 89 pilot subcommands,
 27 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
@@ -64,10 +64,23 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 | `ur-dragon` | 6/6 | 4/4 | pass | 1 | **2** | **v1.0.1 ◆ SLEEVED** (what is being played); v1.0.2 paper on the way; 1W 1L |
 | `edgar-vampires` | 11/11 (9 presentable) | 4/4 | pass | 1 | **3** | v1.0.0 ◆ SLEEVED; 0W 3L; **direction changed 08-28** |
 | `gishath` | 5/5 | 4/4 | pass | 0 | **1** | v1.0.0 PLACEHOLDER, not paper-locked; **1W 0L** — the fleet's first win |
-| `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | paper rebuild in progress |
+| `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | **`broken-down` (2026-09-01)** — parts to fund `zur-enchantress`; the V5 lock was withdrawn with it |
 | `radagast` | 8/8 | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21) |
-| `kianne` | 0/0 | 4/4 | — | **2** | 0 | **concept abandoned** — voltron is 10 decks of 970; the shell is sound, the win condition is not |
-| `kinnan` | 0/0 | 4/4 | — | 0 | 0 | deterministic baseline built; recon done; commander not owned |
+| `zur-enchantress` | 0/0 | 3/— | — | 0 | 0 | on the bench; funded by the yawgmoth breakdown |
+
+**Deleted 2026-09-01 — `kianne`, `kinnan`, `blar`.** All three were deterministic
+whole-format baselines: never sleeved, never played, never published, and
+`deck-delete` refuses any deck that was any of the three. They were not inert.
+`deck_branch._deck_holders` walks every `cards.json` on disk and treats a build plan
+as a HOLDER of the cards it names, so Edgar's `bloodline-v4` was `mergeable: false`
+on *"unsleeve The Ozolith from kianne"* — a deck that has never existed in paper.
+After the deletion and a `regen --only net-change`, that branch reads **"3 to buy;
+93 of 96 already owned"**, which is the truth. The measurements taken on them stand
+where they are cited (`docs/gotchas-bench.md`'s mean-vs-median lesson, the builder's
+curve and combo-completion findings) — the measurement happened, and removing the
+deck does not unmake it. `kinnan`'s build plan is now `tests/fixtures/`, owned by the
+two regression tests that assert it rather than borrowed from a live deck.
+Recoverable: `git show <the deletion commit>~1:data/decks/kianne/decklist.txt`.
 
 **Eight Forge runs and six experiments exist**, across four decks — edgar (3 runs, 2
 experiments), kianne (2, 2), radagast (2, 2), ur-dragon (1). The other seven have not been
@@ -82,9 +95,9 @@ Stuart) put four of those on the board in one sitting — goblin-storm, edgar, h
 gishath, in that order, **1W 3L with the Dinosaurs taking it**. Three of those decks had
 never been logged at all.
 
-**Three decks are not marked as built in paper** (yawgmoth-swarm, kianne, kinnan). That is
-a third state, distinct from the three that no longer exist as cardboard: nobody has said
-either way, and `deck-info` now says so instead of assuming.
+**One deck is not marked as built in paper** (zur-enchantress). That is a third state,
+distinct from the four that no longer exist as cardboard: nobody has said either way, and
+`deck-info` says so instead of assuming.
 
 **heliod and gishath came off that list by being PLAYED**, which is a stronger fact than
 the lock records. Both are tagged **v1.0.0 as a PLACEHOLDER** and deliberately NOT
@@ -93,14 +106,15 @@ is precisely what a check-in establishes. The pilot will supply both lists and w
 change either deck before then, so the committed lists are stable in the meantime and the
 log entries' decklist stamps hold.
 
-Three decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`). Their
-artifacts stay exactly as published; `deck-info` states the status and withholds the
-suggestions that would need a deck to shuffle.
+Four decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`,
+`yawgmoth-swarm`). Their artifacts stay exactly as published; `deck-info` states the
+status and withholds the suggestions that would need a deck to shuffle.
 
 ## Where it stands (2026-08-25)
 
 | | | where |
 |---|---|---|
+| **The workbench gets verbs** | the lifecycle leaves `issue.json` for `deck_versions.json`; `deck-state` and `deck-delete`; `validate-deck-versions` (closes #24); the archive rack folds; the version stamps on the art; the fleet controls, absent without a local server | `docs/pilot.md` |
 | Agent audit + Sprint 0 | 18 → 15 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/agent-audit-2026-08-19.md` |
 | MVP Sprints 1–3 | `deck-version`, `deck-notes` + `/debrief`, `prescribe`, `deck-info` | `docs/pilot.md` |
 | Simulation S0–S5 | Forge spike + verdict; seeded harness; parser with CIs; `validate-sim`; the pod; the bridge `sim-scenario` → `game_state` v2; the doctor reads the table | `docs/simulation.md` |
@@ -617,10 +631,22 @@ hand-patchable:
 | a test naming one deck as an example of a property the merge changed | 3 | #35 |
 | Edgar's goldfish runaway guard — a REAL finding on a sleeved deck | 1 | #34 |
 
-Also filed from this session: #37 (a producer and its validator disagree about
-what an unavailable block may carry), #38 (CardBERT's regions are unnamed),
-#39 (six un-debriefed games and Edgar's recorded direction change), #40 (VICReg,
-built and unrun, with the ablation that justifies it).
+Also filed: #37 (a producer and its validator disagree about what an unavailable
+block may carry), #38 (CardBERT's regions are unnamed), #39 (six un-debriefed
+games and Edgar's recorded direction change), #40 (VICReg, built and unrun, with
+the ablation that justifies it), #41 (the copy-editor blurb, designed and
+deferred), #42 (`deck_info` counted gate rows in its stage denominator — FIXED
+2026-09-01, filed for the record).
+
+**#24 is closed**: `deck_versions.json` — the last tracked pilot artifact with no
+gate, and the one holding the most load-bearing authored claim in the repo — has
+`validate-deck-versions`, registered in `deck_status.VALIDATED`.
+
+**Two counts moved with the workbench pass and are not regressions**: the row
+naming one deck as an example of a property now includes `net-change`'s
+`assert checked >= 10` against a branch that adds six cards, and the stale
+`diagnosis.json` row lost yawgmoth-swarm's (it is archived, so `regen` no longer
+refreshes it). Re-derive this table from a real run rather than quoting it.
 
 ### THE ORDER OF TASKS — set by the pilot, 2026-09-01
 
@@ -658,11 +684,15 @@ changes.
    takes a typed list and refuses rather than guesses, then `deck-version paper` locks
    it and drift is computed on every swap from then on. Two decks (edgar, ur-dragon)
    have one logged game each — which is two, not a sample.
-2. **The versions deploy-time step** — a Pages workflow checking out with
-   `fetch-depth: 0` and running `deck-version list --json` per deck into `versions.json`.
-   The producer already exists and the deck page's panel is already written; it renders
-   nothing until the artifact does. Needs the Pages source flipped from "branch" to
-   "GitHub Actions" in repo settings, which only the maintainer can do.
+2. ~~**The versions deploy-time step**~~ — **DONE 2026-09-02, differently.** The step
+   was never built and the panel rendered nothing in production for months, so
+   `versions.json` is simply TRACKED now: regenerated by `make manuals`, gated by
+   `test_versions_json_matches_a_fresh_run`, and byte-compared by CI. No Pages workflow
+   and no repo-settings change needed. The one rule is that a commit never carries both
+   a decklist and its version list — enforced by `tests/test_pilot_commit_protocol.py`.
+   Also fixed in the same pass: **CI checked out at depth 1**, so every `git log --follow`
+   returned nothing and `build-index` wrote `unresolved` for all three sleeved decks —
+   the byte-diff gate could never have passed. `fetch-depth: 0` on both jobs.
 3. **An agent in the pilot's seat** for a handful of seeded games on one question — the
    evidence for it is in: no Forge AI profile flies a hold-up deck better than Default,
    so the AI is the thing limiting the measurement rather than the configuration.

@@ -1120,6 +1120,56 @@ depends on no `MM`, and reads only committed artifacts. Neither page loads the m
 
 ## The deck dossier (`deck.html`)
 
+### It is a DOSSIER, not a report — nine sections with a spine
+
+A report has a conclusion; a dossier has a **latest entry**. The page renders
+nine sections whose order is owned by **`pilot/page_spec.DOSSIER_SECTIONS`**
+and transcribed into `deck-view.js`'s `DOSSIER` literal, with
+`tests/test_viz_deck_lens.py` locking the two together — the same contract
+`decklist.js` lives under. Before that the order was an anonymous array inside
+`render()`, so "what sections does this page have, and why that order" was
+answerable only by reading the assembly line.
+
+| # | section | what it holds | from |
+|---|---|---|---|
+| 1 | **Cover sheet** | mugshot, stamp, MO, engine health, three numbers | `info.json`, the manifest |
+| 2 | **Rap sheet** | one row per version: what changed, why, expected, observed | `versions.json` |
+| 3 | **Known associates** | the 99 by the job each card does | `deck_map.json` |
+| 4 | **Vitals** | the seeded diagnostic | `info.diagnostic` |
+| 5 | **Priors** | every game, one row, with a coded cause | `log.jsonl`, `log_causes.json` |
+| 6 | **Captain's logs** | the pilot's words, unedited | `log.jsonl` |
+| 7 | **Exhibits** | the evidence, stamped with the list it describes | *(pending)* |
+| 8 | **Open leads** | what is unresolved and which loop settles it | `info.open_questions` |
+| 9 | **Analyst's assessment** | the current read, dated, filed apart | `info.diagnosis` |
+
+Four rules the sections are built to:
+
+- **ALL NINE ALWAYS RENDER.** A tab that vanishes when its drawer is empty is
+  the "cleaned up into a narrative" failure — you can no longer tell an
+  un-played deck from one whose log you have not opened. Three sections used to
+  vanish and one (`vitals`) vanished on **nine of ten decks**, because
+  `diagnostic.json` is a gated artifact with no `STAGES` row so `absent()` never
+  found a todo for it.
+- **THE ASSESSMENT IS LAST AND SEPARATE.** A file where the analyst's opinion
+  sits inside the record loses trust, and the old page rendered the diagnosis
+  verdict as one inline sentence in the middle of the audit panel.
+- **THE COVER SHEET'S RECORD IS THIS VERSION'S**, never the lifetime total. A
+  deck that went 0–3 on a list you have replaced is a fact about a deck that no
+  longer exists.
+- **THE ENGINE-HEALTH WORD TRAVELS WITH ITS MEASURE.** It is a verdict, which
+  this repo normally refuses to publish; it ships only because
+  `deck_info.ENGINE_HEALTH_BANDS` is a named constant the pilot can move and
+  the rate and interval sit beside the word. Absent — never `WEAK` — when
+  nothing was measured.
+
+**Two numbers with a definition attached.** "Keepable sevens" is
+`keep_can_act_by_t3_rate`, the STRICT rule, labelled *"can act by turn three"*.
+`goldfish.py` reports a loose one too and warns in its own comment that it
+"sits near 100% inside the keep window for every deck — informative about the
+mulligan rule, useless as a fitness signal."
+
+### The rest of the page
+
 Renders a deck's **committed pilot artifacts** and nothing else. Slug comes from
 `?deck=<slug>`, the frontend's only URL state — now honoured by **both** pages:
 `index.html?deck=<slug>` enters **Build** with that deck loaded rather than dropping
@@ -1134,7 +1184,7 @@ re-deriving anything, so it cannot disagree with the command that owns each figu
 |---|---|---|
 | **What to do next** (the derived `next`) | `info.json` | ◆ |
 | Where it stands (stages, gates, bracket, record) | `info.json` | ◆ |
-| Every list this deck has been | `versions.json` (deploy-time) | ◆ |
+| Every list this deck has been | `versions.json` (TRACKED; `make manuals`) | ◆ |
 | What limits it (audit axes + diagnosis) | `info.json` | ◆★ |
 | The engine (stages, lines solid where a stack proves them) | `engine.json` | ✓◆★ |
 | At a table (sim runs + experiments) | `sim/*.json`, `experiments/*.json` | ◆ |

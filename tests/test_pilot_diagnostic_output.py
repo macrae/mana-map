@@ -212,3 +212,33 @@ def test_an_ablation_says_so_when_no_placebo_was_possible():
                             iterations=200, targets=TARGETS)
     assert got["placebo"] is None
     assert "cannot be separated" in got["verdict"]
+
+
+def test_an_unavailable_block_may_carry_the_evidence_for_its_own_absence():
+    """THE PRODUCER AND ITS VALIDATOR DISAGREED ABOUT THEIR OWN FORMAT (#37).
+
+    "Absent means absent" bans a ZEROED MEASUREMENT standing in for one nobody
+    made. The check implemented something broader — only `available`, `why` and
+    `basis` were allowed — so it rejected `declared_targets` and
+    `declaration_mismatch`, which the producer writes and which are not
+    measurements at all: they are facts about the AUTHORED declaration
+    (`goldfish_targets.json`), and they are the evidence FOR the unavailability.
+
+    Found by creating the two `diagnostic.json` files the pinned decks were
+    missing. Both were rejected by the gate the moment they were written.
+    """
+    from manamap.pilot.validate_diagnostic import validate
+
+    base = {"harness": {"version": 1, "iterations": 10, "seed": 42, "max_turn": 10},
+            "output": {"available": False, "why": "not modelled"}}
+
+    ok = dict(base, engine={"available": False, "why": "nothing is required",
+                            "declared_targets": 3,
+                            "declaration_mismatch": {"a target": ["a card"]}})
+    assert [e for e in validate(ok) if "must be ABSENT" in e] == []
+
+    # And the rule it actually exists for still fires: a MEASUREMENT on a block
+    # nobody measured.
+    bad = dict(base, engine={"available": False, "why": "nothing is required",
+                             "online_by_turn": {"5": {"rate": 0.0}}})
+    assert any("must be ABSENT" in e for e in validate(bad)), validate(bad)

@@ -31,6 +31,7 @@ import json
 import pytest
 
 from manamap.config import DECKS_DIR
+from manamap.pilot.common import deck_lifecycle
 from manamap.pilot import validate_issue
 from manamap.pilot.design import issue_status_banner
 from manamap.pilot.issue_spec import ISSUE_STATUSES, issue_status
@@ -99,8 +100,13 @@ def test_validate_issue_accepts_a_known_status_and_absence():
             "commander": "X", "cover_tagline": "x", "next_issue": "X",
             "decklist_sha256": "abc"}
     assert not validate_issue.validate_identity(base, deck_sha256=None)
-    assert not validate_issue.validate_identity(
+    # A `status` key here is now an ERROR whatever its value. The lifecycle moved
+    # to `deck_versions.json` and NOTHING reads this one any more, so a hand edit
+    # setting it would be obeyed by nobody while looking exactly like it worked —
+    # quieter than the typo the old vocabulary check was written for.
+    errs = validate_issue.validate_identity(
         dict(base, status="broken-down"), deck_sha256=None)
+    assert any("deck_versions.json" in e for e in errs), errs
 
 
 # ── the tracked artifacts ─────────────────────────────────────────────────
@@ -113,9 +119,12 @@ def test_hapatra_is_marked_broken_down_and_still_published():
     Deleting it would leave Vol. 002 as a hole in a run that goes 001-009, and
     would destroy a record that was accurate when it shipped.
     """
+    # The STATUS moved to `deck_versions.json`; the VOLUME did not — the issue
+    # is still a published record on the rack, which is the point of this test.
+    assert deck_lifecycle("hapatra")[0] == "broken-down"
     issue = json.loads((DECKS_DIR / "hapatra" / "issue.json").read_text())
-    assert issue["status"] == "broken-down"
     assert issue["volume"] == 2
+    assert "status" not in issue, "the lifecycle lives in deck_versions.json now"
 
     manual = MANUALS / "hapatra.html"
     if not manual.exists():
@@ -137,13 +146,16 @@ def test_hapatra_is_marked_broken_down_and_still_published():
 def test_only_the_decks_that_opted_in_carry_a_status_banner():
     """The mechanism is opt-in per issue; nothing may be swept up by accident.
 
-    The list is derived from the tracked `issue.json` files rather than
-    hardcoded, so retiring a deck updates this test's premise with it — a
-    literal would fail on the next retirement and teach nothing.
+    The list is derived from the LIFECYCLE PREDICATE rather than hardcoded, so
+    retiring a deck updates this test's premise with it — a literal would fail
+    on the next retirement and teach nothing. It used to derive from
+    `issue.json`'s own `status` key, which stopped being the home of that fact
+    on 2026-09-01; reading the predicate is what makes it survive the next move
+    as well.
     """
     expected = sorted(
         f"{p.parent.name}.html" for p in DECKS_DIR.glob("*/issue.json")
-        if json.loads(p.read_text()).get("status"))
+        if deck_lifecycle(p.parent.name))
     marked = sorted(p.name for p in MANUALS.glob("*.html")
                     if p.name != "index.html" and "issue-status" in p.read_text())
     assert marked == expected, f"marked {marked}, issue.json says {expected}"

@@ -1,0 +1,1858 @@
+{
+  "bracket": {
+    "computed_floor": 4,
+    "drivers": [
+      {
+        "detail": "4 Game Changer(s): Fierce Guardianship, Mystical Tutor, Rhystic Study, Worldly Tutor",
+        "forces": 4,
+        "signal": "game_changers"
+      },
+      {
+        "detail": "2 two-card infinite(s); 2 assemble at mana value <= 6. e.g. Spawnsire of Ulamog + Training Grounds",
+        "forces": 4,
+        "signal": "two_card_infinite"
+      }
+    ],
+    "target": 4,
+    "target_name": "Optimized",
+    "within_target": true
+  },
+  "color_identity": [
+    "G",
+    "U"
+  ],
+  "combo_completions": [
+    {
+      "added": "Pili-Pala",
+      "line": [
+        "Kinnan, Bonder Prodigy",
+        "Pili-Pala",
+        "Citanul Hierophants"
+      ],
+      "produces": [
+        "Infinite colored mana"
+      ],
+      "replaced": "Gemhide Sliver"
+    },
+    {
+      "added": "Enduring Vitality",
+      "line": [
+        "Kinnan, Bonder Prodigy",
+        "Pili-Pala",
+        "Enduring Vitality"
+      ],
+      "produces": [
+        "Infinite colored mana"
+      ],
+      "replaced": "Manaweft Sliver"
+    },
+    {
+      "added": "Training Grounds",
+      "line": [
+        "Spawnsire of Ulamog",
+        "Training Grounds"
+      ],
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB",
+        "Infinite sacrifice triggers"
+      ],
+      "replaced": "Sylvan Caryatid"
+    },
+    {
+      "added": "Biomancer's Familiar",
+      "line": [
+        "Spawnsire of Ulamog",
+        "Biomancer's Familiar"
+      ],
+      "produces": [
+        "Infinite death triggers",
+        "Infinite ETB",
+        "Infinite LTB",
+        "Infinite sacrifice triggers"
+      ],
+      "replaced": "Llanowar Elves"
+    }
+  ],
+  "commander": "Kinnan, Bonder Prodigy",
+  "cut_for_bracket": [],
+  "generated_by": "manamap pilot build-deck (deterministic; no agent involvement)",
+  "land_counts": {
+    "Alchemist's Refuge": 1,
+    "Barkchannel Pathway // Tidechannel Pathway": 1,
+    "City of Brass": 1,
+    "Command Tower": 1,
+    "Conduit Pylons": 1,
+    "Exotic Orchard": 1,
+    "Flooded Grove": 1,
+    "Forbidden Orchard": 1,
+    "Forest": 7,
+    "Gemstone Caverns": 1,
+    "Island": 7,
+    "Lazotep Quarry": 1,
+    "Mana Confluence": 1,
+    "Novijen, Heart of Progress": 1,
+    "Opal Palace": 1,
+    "Overflowing Basin": 1,
+    "Spire of Industry": 1,
+    "Talon Gates of Madara": 1,
+    "The Grey Havens": 1,
+    "The Mycosynth Gardens": 1,
+    "Tropical Island": 1,
+    "Waterlogged Grove": 1,
+    "Willowrush Verge": 1,
+    "Yavimaya Coast": 1
+  },
+  "lands": [
+    "Alchemist's Refuge",
+    "Barkchannel Pathway // Tidechannel Pathway",
+    "City of Brass",
+    "Command Tower",
+    "Conduit Pylons",
+    "Exotic Orchard",
+    "Flooded Grove",
+    "Forbidden Orchard",
+    "Forest",
+    "Gemstone Caverns",
+    "Island",
+    "Lazotep Quarry",
+    "Mana Confluence",
+    "Novijen, Heart of Progress",
+    "Opal Palace",
+    "Overflowing Basin",
+    "Spire of Industry",
+    "Talon Gates of Madara",
+    "The Grey Havens",
+    "The Mycosynth Gardens",
+    "Tropical Island",
+    "Waterlogged Grove",
+    "Willowrush Verge",
+    "Yavimaya Coast"
+  ],
+  "manabase": {
+    "enters_tapped": 0,
+    "lands_selected": 36,
+    "method": "hypergeometric, P(pips by earliest castable turn) >= 90% over 99 cards",
+    "on_curve_probability": {
+      "G": 0.962,
+      "U": 0.962
+    },
+    "requirements": {
+      "G": {
+        "cards": 27,
+        "earliest_turn": 1,
+        "effective_pips": 1,
+        "max_pips": 3,
+        "total_pips": 32.0
+      },
+      "U": {
+        "cards": 19,
+        "earliest_turn": 1,
+        "effective_pips": 1,
+        "max_pips": 1,
+        "total_pips": 19.0
+      }
+    },
+    "shortfalls": {},
+    "slots": 36,
+    "source_targets": {
+      "G": 22,
+      "U": 22
+    },
+    "sources": {
+      "G": 29,
+      "U": 29
+    },
+    "spell_slots": 63
+  },
+  "notes": [
+    "Brackets are a conversation, not a calculator — this is the lowest bracket the deck's contents are consistent with, not a verdict.",
+    "Tutor density (0) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
+    "Mass land denial is checked against a curated list and is incomplete by construction."
+  ],
+  "pool": null,
+  "printings": {},
+  "role_budget": {
+    "draw": 10,
+    "flex": 22,
+    "lands": 36,
+    "protection": 3,
+    "ramp": 10,
+    "recursion": 2,
+    "removal": 8,
+    "sweeper": 3,
+    "tutor": 2,
+    "wincon": 3
+  },
+  "role_budget_deviation": {},
+  "role_budget_grounding": "provisional — pending strategy:deckbuilding.ratios",
+  "role_budget_target": {
+    "draw": 10,
+    "flex": 22,
+    "lands": 36,
+    "protection": 3,
+    "ramp": 10,
+    "recursion": 2,
+    "removal": 8,
+    "sweeper": 3,
+    "tutor": 2,
+    "wincon": 3
+  },
+  "slots": [
+    {
+      "alternates": [
+        {
+          "delta": 0.0026,
+          "name": "Up the Beanstalk"
+        },
+        {
+          "delta": 0.0054,
+          "name": "Lore Broker"
+        },
+        {
+          "delta": 0.0055,
+          "name": "Horn of Greed"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1015,
+        "similarity": 0.7895,
+        "synergy": 0.0
+      },
+      "name": "Dakra Mystic",
+      "role": "draw",
+      "score": 0.507
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0008,
+          "name": "Ponder"
+        },
+        {
+          "delta": 0.0039,
+          "name": "Viv Vision, Teen Synthezoid"
+        },
+        {
+          "delta": 0.004,
+          "name": "Dakra Mystic"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.5652,
+        "similarity": 0.6484,
+        "synergy": 0.0
+      },
+      "name": "Garruk's Uprising",
+      "role": "draw",
+      "score": 0.511
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Storm Fleet Negotiator"
+        },
+        {
+          "delta": 0.0004,
+          "name": "Elemental Bond"
+        },
+        {
+          "delta": 0.0007,
+          "name": "Dour Port-Mage"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.2598,
+        "similarity": 0.7185,
+        "synergy": 0.0
+      },
+      "name": "Horn of Greed",
+      "role": "draw",
+      "score": 0.5015
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Horn of Greed"
+        },
+        {
+          "delta": 0.0002,
+          "name": "Storm Fleet Negotiator"
+        },
+        {
+          "delta": 0.0005,
+          "name": "Elemental Bond"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1064,
+        "similarity": 0.77,
+        "synergy": 0.0
+      },
+      "name": "Lore Broker",
+      "role": "draw",
+      "score": 0.5016
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0031,
+          "name": "Viv Vision, Teen Synthezoid"
+        },
+        {
+          "delta": 0.0032,
+          "name": "Dakra Mystic"
+        },
+        {
+          "delta": 0.0058,
+          "name": "Up the Beanstalk"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.521,
+        "similarity": 0.6604,
+        "synergy": 0.0
+      },
+      "name": "Ponder",
+      "role": "draw",
+      "score": 0.5102
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0082,
+          "name": "Garruk's Uprising"
+        },
+        {
+          "delta": 0.009,
+          "name": "Ponder"
+        },
+        {
+          "delta": 0.0121,
+          "name": "Viv Vision, Teen Synthezoid"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.6331,
+        "similarity": 0.6531,
+        "synergy": 0.0
+      },
+      "name": "Rhystic Study",
+      "role": "draw",
+      "score": 0.5193
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.042,
+          "name": "Rhystic Study"
+        },
+        {
+          "delta": 0.0502,
+          "name": "Garruk's Uprising"
+        },
+        {
+          "delta": 0.0511,
+          "name": "Ponder"
+        }
+      ],
+      "components": {
+        "castability": 0.75,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.4153,
+        "similarity": 0.9492,
+        "synergy": 0.0
+      },
+      "name": "Selvala, Heart of the Wilds",
+      "role": "draw",
+      "score": 0.5613
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0003,
+          "name": "Elemental Bond"
+        },
+        {
+          "delta": 0.0006,
+          "name": "Dour Port-Mage"
+        },
+        {
+          "delta": 0.0014,
+          "name": "Windfall"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1221,
+        "similarity": 0.764,
+        "synergy": 0.0
+      },
+      "name": "Storm Fleet Negotiator",
+      "role": "draw",
+      "score": 0.5014
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0028,
+          "name": "Lore Broker"
+        },
+        {
+          "delta": 0.0029,
+          "name": "Horn of Greed"
+        },
+        {
+          "delta": 0.003,
+          "name": "Storm Fleet Negotiator"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3253,
+        "similarity": 0.7062,
+        "synergy": 0.0
+      },
+      "name": "Up the Beanstalk",
+      "role": "draw",
+      "score": 0.5044
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Dakra Mystic"
+        },
+        {
+          "delta": 0.0027,
+          "name": "Up the Beanstalk"
+        },
+        {
+          "delta": 0.0055,
+          "name": "Lore Broker"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.057,
+        "similarity": 0.6826,
+        "synergy": 0.1667
+      },
+      "name": "Viv Vision, Teen Synthezoid",
+      "role": "draw",
+      "score": 0.5071
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0005,
+          "name": "Arbor Elf"
+        },
+        {
+          "delta": 0.0009,
+          "name": "Cryptolith Rite"
+        },
+        {
+          "delta": 0.0016,
+          "name": "Isochron Scepter"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.2277,
+        "similarity": 0.9498,
+        "synergy": 0.0
+      },
+      "name": "Arbor Adherent",
+      "role": "flex",
+      "score": 0.5357
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0006,
+          "name": "Biomancer's Familiar"
+        },
+        {
+          "delta": 0.0009,
+          "name": "Thornvault Forager"
+        },
+        {
+          "delta": 0.0009,
+          "name": "Concordant Crossroads"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.268,
+        "similarity": 0.9402,
+        "synergy": 0.0
+      },
+      "name": "Arixmethes, Slumbering Isle",
+      "role": "flex",
+      "score": 0.5369
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0004,
+          "name": "Strionic Resonator"
+        },
+        {
+          "delta": 0.0008,
+          "name": "Idol of Oblivion"
+        },
+        {
+          "delta": 0.001,
+          "name": "Hermit Druid"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.2221,
+        "similarity": 0.9228,
+        "synergy": 0.0
+      },
+      "name": "Canopy Tactician",
+      "role": "flex",
+      "score": 0.527
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "The Cabbage Merchant"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Transdimensional Bovine"
+        },
+        {
+          "delta": 0.0005,
+          "name": "Sol Ring"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 0.8,
+        "edhrec": 0.0361,
+        "similarity": 0.9307,
+        "synergy": 0.0
+      },
+      "name": "Centaur Nurturer",
+      "role": "flex",
+      "score": 0.5508
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Kami of the Tended Garden"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Relentless Advance"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Rush of Knowledge"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.4,
+        "edhrec": 0.3599,
+        "similarity": 0.747,
+        "synergy": 0.0
+      },
+      "name": "Chimil, the Inner Sun",
+      "role": "flex",
+      "score": 0.4241
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0007,
+          "name": "Nightshade Dryad"
+        },
+        {
+          "delta": 0.0007,
+          "name": "Biophagus"
+        },
+        {
+          "delta": 0.0009,
+          "name": "Raucous Audience"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 0.8,
+        "edhrec": 0.1411,
+        "similarity": 0.9504,
+        "synergy": 0.0
+      },
+      "name": "Citanul Hierophants",
+      "role": "flex",
+      "score": 0.5672
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Accomplished Alchemist"
+        },
+        {
+          "delta": 0.0003,
+          "name": "Thought Vessel"
+        },
+        {
+          "delta": 0.0003,
+          "name": "Sakashima of a Thousand Faces"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.2293,
+        "similarity": 0.9143,
+        "synergy": 0.0
+      },
+      "name": "Crystalline Crawler",
+      "role": "flex",
+      "score": 0.5252
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Shanodin Dryads"
+        },
+        {
+          "delta": 0.0,
+          "name": "Thopter Spy Network"
+        },
+        {
+          "delta": 0.0,
+          "name": "Skybox Ferry"
+        }
+      ],
+      "components": {
+        "castability": 0.5,
+        "combo": 0.0,
+        "curve": 0.4,
+        "edhrec": 0.405,
+        "similarity": 0.925,
+        "synergy": 0.0
+      },
+      "name": "Disciple of Freyalise // Garden of Freyalise",
+      "role": "flex",
+      "score": 0.432
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Benefactor's Draught"
+        },
+        {
+          "delta": 0.0,
+          "name": "Dermoplasm"
+        },
+        {
+          "delta": 0.0,
+          "name": "Scale the Heights"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.0923,
+        "similarity": 0.9273,
+        "synergy": 0.0
+      },
+      "name": "Doc Samson, Super Psychiatrist",
+      "role": "flex",
+      "score": 0.4834
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Identity Thief"
+        },
+        {
+          "delta": 0.0,
+          "name": "Reef Worm"
+        },
+        {
+          "delta": 0.0,
+          "name": "Wear Away"
+        }
+      ],
+      "components": {
+        "castability": 0.75,
+        "combo": 0.0,
+        "curve": 0.4,
+        "edhrec": 0.1153,
+        "similarity": 0.938,
+        "synergy": 0.0
+      },
+      "name": "Groundchuck & Dirtbag",
+      "role": "flex",
+      "score": 0.4319
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Leech Bonder"
+        },
+        {
+          "delta": 0.0005,
+          "name": "Rampant Growth"
+        },
+        {
+          "delta": 0.0006,
+          "name": "Vigean Graftmage"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.2491,
+        "similarity": 0.9227,
+        "synergy": 0.0
+      },
+      "name": "Inga and Esika",
+      "role": "flex",
+      "score": 0.5297
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Glasses of Urza"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Blinding Drone"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Flow State"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.2454,
+        "similarity": 0.9485,
+        "synergy": 0.0
+      },
+      "name": "Karn, Legacy Reforged",
+      "role": "flex",
+      "score": 0.5051
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0005,
+          "name": "Crashing Drawbridge"
+        },
+        {
+          "delta": 0.0006,
+          "name": "Explore"
+        },
+        {
+          "delta": 0.0008,
+          "name": "Canopy Tactician"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.8,
+        "edhrec": 0.0804,
+        "similarity": 0.9727,
+        "synergy": 0.0
+      },
+      "name": "Keeper of Progenitus",
+      "role": "flex",
+      "score": 0.5279
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Combine Guildmage"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Rotating Fireplace"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Dreamtide Whale"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.1456,
+        "similarity": 0.9601,
+        "synergy": 0.0
+      },
+      "name": "Kozilek's Channeler",
+      "role": "flex",
+      "score": 0.4986
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Consign to Memory"
+        },
+        {
+          "delta": 0.0,
+          "name": "Bilbo's Ring"
+        },
+        {
+          "delta": 0.0,
+          "name": "Engineered Explosives"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 0.2,
+        "edhrec": 0.0227,
+        "similarity": 0.9502,
+        "synergy": 0.0
+      },
+      "name": "Lotus Guardian",
+      "role": "flex",
+      "score": 0.4593
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0004,
+          "name": "Scroll Rack"
+        },
+        {
+          "delta": 0.0006,
+          "name": "Azusa, Lost but Seeking"
+        },
+        {
+          "delta": 0.0006,
+          "name": "Prosperous Thief"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 0.8,
+        "edhrec": 0.4228,
+        "similarity": 0.728,
+        "synergy": 0.0
+      },
+      "name": "Spark Double",
+      "role": "flex",
+      "score": 0.5287
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0001,
+          "name": "Silverback Shaman"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Kavu Climber"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Oxidda Golem"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.0,
+        "edhrec": 0.0988,
+        "similarity": 0.8978,
+        "synergy": 0.0
+      },
+      "name": "Spawnsire of Ulamog",
+      "role": "flex",
+      "score": 0.3792
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Midnight Tilling"
+        },
+        {
+          "delta": 0.0,
+          "name": "Jungle Lion"
+        },
+        {
+          "delta": 0.0,
+          "name": "Grow from the Ashes"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.0366,
+        "similarity": 0.9422,
+        "synergy": 0.0
+      },
+      "name": "Thranduil the Strategist",
+      "role": "flex",
+      "score": 0.4823
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Excavated Wall"
+        },
+        {
+          "delta": 0.0,
+          "name": "Mox Opal"
+        },
+        {
+          "delta": 0.0001,
+          "name": "Bilbo, Fellow Conspirator"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.221,
+        "similarity": 0.95,
+        "synergy": 0.0
+      },
+      "name": "Ultima, Origin of Oblivion",
+      "role": "flex",
+      "score": 0.5031
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Jhessian Lookout"
+        },
+        {
+          "delta": 0.0,
+          "name": "Ugin's Conjurant"
+        },
+        {
+          "delta": 0.0,
+          "name": "Patchwork Gnomes"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.6,
+        "edhrec": 0.0774,
+        "similarity": 0.9274,
+        "synergy": 0.0
+      },
+      "name": "Umara Wizard // Umara Skyfalls",
+      "role": "flex",
+      "score": 0.482
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0018,
+          "name": "Jaheira, Friend of the Forest"
+        },
+        {
+          "delta": 0.0024,
+          "name": "Palladium Myr"
+        },
+        {
+          "delta": 0.0043,
+          "name": "Nissa, Resurgent Animist"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 0.8,
+        "edhrec": 0.2118,
+        "similarity": 0.9714,
+        "synergy": 0.0
+      },
+      "name": "Wirewood Channeler",
+      "role": "flex",
+      "score": 0.5806
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "Sahagin"
+        },
+        {
+          "delta": 0.0,
+          "name": "Icewrought Sentry"
+        },
+        {
+          "delta": 0.0,
+          "name": "Towashi Guide-Bot"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 0.4,
+        "edhrec": 0.0862,
+        "similarity": 0.9599,
+        "synergy": 0.0
+      },
+      "name": "Workhorse",
+      "role": "flex",
+      "score": 0.4606
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0034,
+          "name": "Swiftfoot Boots"
+        },
+        {
+          "delta": 0.0074,
+          "name": "Ripples of Potential"
+        },
+        {
+          "delta": 0.0084,
+          "name": "Lightning Greaves"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.666,
+        "similarity": 0.6338,
+        "synergy": 0.0
+      },
+      "name": "Heroic Intervention",
+      "role": "protection",
+      "score": 0.5167
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.001,
+          "name": "Lightning Greaves"
+        },
+        {
+          "delta": 0.0047,
+          "name": "Hercules, Prince of Power"
+        },
+        {
+          "delta": 0.0084,
+          "name": "Innkeeper's Talent"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3384,
+        "similarity": 0.7185,
+        "synergy": 0.0
+      },
+      "name": "Ripples of Potential",
+      "role": "protection",
+      "score": 0.5094
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.004,
+          "name": "Ripples of Potential"
+        },
+        {
+          "delta": 0.005,
+          "name": "Lightning Greaves"
+        },
+        {
+          "delta": 0.0086,
+          "name": "Hercules, Prince of Power"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.7528,
+        "similarity": 0.5936,
+        "synergy": 0.0
+      },
+      "name": "Swiftfoot Boots",
+      "role": "protection",
+      "score": 0.5133
+    },
+    {
+      "alternates": [],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.2236,
+        "similarity": 0.5906,
+        "synergy": 0.1667
+      },
+      "name": "Biomancer's Familiar",
+      "reason": "combo_completion",
+      "role": "ramp",
+      "score": 0.5362
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.015,
+          "name": "Bloom Tender"
+        },
+        {
+          "delta": 0.0167,
+          "name": "Delighted Halfling"
+        },
+        {
+          "delta": 0.0343,
+          "name": "Incubation Druid"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.6573,
+        "similarity": 0.9504,
+        "synergy": 0.0
+      },
+      "name": "Birds of Paradise",
+      "role": "ramp",
+      "score": 0.6509
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0017,
+          "name": "Delighted Halfling"
+        },
+        {
+          "delta": 0.0193,
+          "name": "Incubation Druid"
+        },
+        {
+          "delta": 0.0198,
+          "name": "Ilysian Caryatid"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.4637,
+        "similarity": 0.965,
+        "synergy": 0.0
+      },
+      "name": "Bloom Tender",
+      "role": "ramp",
+      "score": 0.6359
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0176,
+          "name": "Incubation Druid"
+        },
+        {
+          "delta": 0.0181,
+          "name": "Ilysian Caryatid"
+        },
+        {
+          "delta": 0.0237,
+          "name": "Gwenna, Eyes of Gaea"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.5127,
+        "similarity": 0.9431,
+        "synergy": 0.0
+      },
+      "name": "Delighted Halfling",
+      "role": "ramp",
+      "score": 0.6342
+    },
+    {
+      "alternates": [],
+      "components": {
+        "castability": 0.75,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.4114,
+        "similarity": 0.9279,
+        "synergy": 0.0
+      },
+      "name": "Enduring Vitality",
+      "reason": "combo_completion",
+      "role": "ramp",
+      "score": 0.5945
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0012,
+          "name": "Llanowar Elves"
+        },
+        {
+          "delta": 0.004,
+          "name": "Sylvan Caryatid"
+        },
+        {
+          "delta": 0.0043,
+          "name": "Manaweft Sliver"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.2835,
+        "similarity": 0.9403,
+        "synergy": 0.0
+      },
+      "name": "Gwenna, Eyes of Gaea",
+      "role": "ramp",
+      "score": 0.6105
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0056,
+          "name": "Gwenna, Eyes of Gaea"
+        },
+        {
+          "delta": 0.0068,
+          "name": "Llanowar Elves"
+        },
+        {
+          "delta": 0.0097,
+          "name": "Sylvan Caryatid"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.2789,
+        "similarity": 0.9606,
+        "synergy": 0.0
+      },
+      "name": "Ilysian Caryatid",
+      "role": "ramp",
+      "score": 0.6161
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0005,
+          "name": "Ilysian Caryatid"
+        },
+        {
+          "delta": 0.0061,
+          "name": "Gwenna, Eyes of Gaea"
+        },
+        {
+          "delta": 0.0073,
+          "name": "Llanowar Elves"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.3759,
+        "similarity": 0.93,
+        "synergy": 0.0
+      },
+      "name": "Incubation Druid",
+      "role": "ramp",
+      "score": 0.6166
+    },
+    {
+      "alternates": [],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.169,
+        "similarity": 0.9253,
+        "synergy": 0.0
+      },
+      "name": "Pili-Pala",
+      "reason": "combo_completion",
+      "role": "ramp",
+      "score": 0.5945
+    },
+    {
+      "alternates": [],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.3333,
+        "curve": 1.0,
+        "edhrec": 0.3293,
+        "similarity": 0.5756,
+        "synergy": 0.1667
+      },
+      "name": "Training Grounds",
+      "reason": "combo_completion",
+      "role": "ramp",
+      "score": 0.5423
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0023,
+          "name": "Codex Shredder"
+        },
+        {
+          "delta": 0.0036,
+          "name": "Evolution Witness"
+        },
+        {
+          "delta": 0.0072,
+          "name": "The Underworld Cookbook"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1462,
+        "similarity": 0.7493,
+        "synergy": 0.0
+      },
+      "name": "Colfenor's Urn",
+      "role": "recursion",
+      "score": 0.4994
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0029,
+          "name": "Colfenor's Urn"
+        },
+        {
+          "delta": 0.0051,
+          "name": "Codex Shredder"
+        },
+        {
+          "delta": 0.0065,
+          "name": "Evolution Witness"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3861,
+        "similarity": 0.679,
+        "synergy": 0.0
+      },
+      "name": "Ghostly Flicker",
+      "role": "recursion",
+      "score": 0.5023
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0002,
+          "name": "Swan Song"
+        },
+        {
+          "delta": 0.0029,
+          "name": "Masked Vandal"
+        },
+        {
+          "delta": 0.0035,
+          "name": "Insidious Fungus"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3785,
+        "similarity": 0.6535,
+        "synergy": 0.0
+      },
+      "name": "Altar of Dementia",
+      "role": "removal",
+      "score": 0.4939
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0002,
+          "name": "Fierce Guardianship"
+        },
+        {
+          "delta": 0.0015,
+          "name": "Reality Shift"
+        },
+        {
+          "delta": 0.0028,
+          "name": "Lesser Masticore"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.686,
+        "similarity": 0.5788,
+        "synergy": 0.0
+      },
+      "name": "Beast Within",
+      "role": "removal",
+      "score": 0.5022
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0013,
+          "name": "Reality Shift"
+        },
+        {
+          "delta": 0.0026,
+          "name": "Lesser Masticore"
+        },
+        {
+          "delta": 0.0029,
+          "name": "Negate"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.5753,
+        "similarity": 0.6151,
+        "synergy": 0.0
+      },
+      "name": "Fierce Guardianship",
+      "role": "removal",
+      "score": 0.5021
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0003,
+          "name": "Negate"
+        },
+        {
+          "delta": 0.0054,
+          "name": "Reclamation Sage"
+        },
+        {
+          "delta": 0.0056,
+          "name": "Altar of Dementia"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1392,
+        "similarity": 0.7519,
+        "synergy": 0.0
+      },
+      "name": "Lesser Masticore",
+      "role": "removal",
+      "score": 0.4995
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0051,
+          "name": "Reclamation Sage"
+        },
+        {
+          "delta": 0.0053,
+          "name": "Altar of Dementia"
+        },
+        {
+          "delta": 0.0055,
+          "name": "Swan Song"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.612,
+        "similarity": 0.5933,
+        "synergy": 0.0
+      },
+      "name": "Negate",
+      "role": "removal",
+      "score": 0.4992
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0013,
+          "name": "Lesser Masticore"
+        },
+        {
+          "delta": 0.0016,
+          "name": "Negate"
+        },
+        {
+          "delta": 0.0067,
+          "name": "Reclamation Sage"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.4569,
+        "similarity": 0.6503,
+        "synergy": 0.0
+      },
+      "name": "Reality Shift",
+      "role": "removal",
+      "score": 0.5008
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0002,
+          "name": "Altar of Dementia"
+        },
+        {
+          "delta": 0.0004,
+          "name": "Swan Song"
+        },
+        {
+          "delta": 0.0031,
+          "name": "Masked Vandal"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.4423,
+        "similarity": 0.6329,
+        "synergy": 0.0
+      },
+      "name": "Reclamation Sage",
+      "role": "removal",
+      "score": 0.4941
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.002,
+          "name": "Beast Within"
+        },
+        {
+          "delta": 0.0022,
+          "name": "Fierce Guardianship"
+        },
+        {
+          "delta": 0.0035,
+          "name": "Reality Shift"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.4134,
+        "similarity": 0.6765,
+        "synergy": 0.0
+      },
+      "name": "Walking Ballista",
+      "role": "removal",
+      "score": 0.5043
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0038,
+          "name": "Ratchet Bomb"
+        },
+        {
+          "delta": 0.0081,
+          "name": "Wirefly Hive"
+        },
+        {
+          "delta": 0.0091,
+          "name": "Engineered Explosives"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.168,
+        "similarity": 0.6388,
+        "synergy": 0.0
+      },
+      "name": "Oblivion Stone",
+      "role": "sweeper",
+      "score": 0.4684
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0007,
+          "name": "Oblivion Stone"
+        },
+        {
+          "delta": 0.0045,
+          "name": "Ratchet Bomb"
+        },
+        {
+          "delta": 0.0088,
+          "name": "Wirefly Hive"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.0817,
+        "similarity": 0.67,
+        "synergy": 0.0
+      },
+      "name": "The Moment",
+      "role": "sweeper",
+      "score": 0.4692
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0055,
+          "name": "The Moment"
+        },
+        {
+          "delta": 0.0062,
+          "name": "Oblivion Stone"
+        },
+        {
+          "delta": 0.01,
+          "name": "Ratchet Bomb"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.0742,
+        "similarity": 0.6906,
+        "synergy": 0.0
+      },
+      "name": "Yggdrasil, Rebirth Engine",
+      "role": "sweeper",
+      "score": 0.4746
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0006,
+          "name": "Worldly Tutor"
+        },
+        {
+          "delta": 0.0035,
+          "name": "Moonsilver Key"
+        },
+        {
+          "delta": 0.0099,
+          "name": "Tezzeret, Cruel Captain"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.5121,
+        "similarity": 0.6346,
+        "synergy": 0.0
+      },
+      "name": "Mystical Tutor",
+      "role": "tutor",
+      "score": 0.5016
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0029,
+          "name": "Moonsilver Key"
+        },
+        {
+          "delta": 0.0093,
+          "name": "Tezzeret, Cruel Captain"
+        },
+        {
+          "delta": 0.0109,
+          "name": "Formidable Speaker"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.5067,
+        "similarity": 0.6346,
+        "synergy": 0.0
+      },
+      "name": "Worldly Tutor",
+      "role": "tutor",
+      "score": 0.501
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0,
+          "name": "The Millennium Calendar"
+        },
+        {
+          "delta": 0.0005,
+          "name": "Stature, Size Shifter"
+        },
+        {
+          "delta": 0.0014,
+          "name": "Fynn, the Fangbearer"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3898,
+        "similarity": 0.646,
+        "synergy": 0.0
+      },
+      "name": "Laboratory Maniac",
+      "role": "wincon",
+      "score": 0.4928
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.003,
+          "name": "White Tiger, Ava Ayala"
+        },
+        {
+          "delta": 0.0042,
+          "name": "Laboratory Maniac"
+        },
+        {
+          "delta": 0.0042,
+          "name": "The Millennium Calendar"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3315,
+        "similarity": 0.6793,
+        "synergy": 0.0
+      },
+      "name": "Manifold Key",
+      "role": "wincon",
+      "score": 0.4969
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0004,
+          "name": "Stature, Size Shifter"
+        },
+        {
+          "delta": 0.0014,
+          "name": "Fynn, the Fangbearer"
+        },
+        {
+          "delta": 0.0062,
+          "name": "Thassa's Oracle"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.198,
+        "similarity": 0.7098,
+        "synergy": 0.0
+      },
+      "name": "The Millennium Calendar",
+      "role": "wincon",
+      "score": 0.4928
+    }
+  ],
+  "slug": "kinnan"
+}

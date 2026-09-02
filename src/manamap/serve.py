@@ -55,6 +55,8 @@ tool with no auth, and the one-line change that would expose it to a network is
 a line somebody should have to write themselves, knowing why.
 """
 
+import contextlib
+import io
 import json
 import threading
 
@@ -962,6 +964,83 @@ def _cli(argv=None):
     return {"stdout": buf.getvalue(), "exit": code}
 
 
+# ── The fleet: move a deck between racks, or remove one ───────────────────
+#
+# ARCHIVING PASSES THE TEST THAT MERGE FAILS, and the distinction is worth
+# writing down beside the note above about why `branch/merge` is absent: a merge
+# TELLS YOU TO GO AND UNSLEEVE THINGS, which is the button that spends cardboard.
+# `deck/state` TRANSCRIBES a physical act the pilot has already performed — the
+# deck is already in a pile; this is where they say so.
+#
+# Both call the pilot functions directly. There is no second implementation of a
+# refusal here: `deck_delete.blockers` decides, in one place, and the browser
+# reads its rows rather than re-deriving them.
+
+
+def _deck_state(slug=None, action=None, reason=None):
+    import argparse
+
+    from manamap.pilot import deck_state
+
+    if not slug:
+        raise ValueError("deck/state: no slug")
+    if action is not None and action not in deck_state.ACTIONS and action != "revive":
+        raise ValueError(f"deck/state: {action!r} is not one of "
+                         f"{sorted(deck_state.ACTIONS) + ['revive']}")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        deck_state.main(argparse.Namespace(slug=slug, action=action, reason=reason))
+    from manamap.pilot.common import deck_lifecycle
+    life = deck_lifecycle(slug)
+    return {"slug": slug, "status": life[0] if life else None,
+            "headline": life[1] if life else None, "stdout": buf.getvalue()}
+
+
+def _deck_delete(slug=None, confirm=None, force=False):
+    from manamap.pilot import build_index, deck_delete
+
+    if not slug:
+        raise ValueError("deck/delete: no slug")
+    # THE SLUG, TYPED BACK. A destructive verb on an unauthenticated local socket
+    # should make the caller name its target twice — so a stray fetch, or a
+    # mis-wired handler, structurally cannot delete anything even if the method
+    # gate above were somehow bypassed.
+    if confirm != slug:
+        raise ValueError(f"deck/delete: confirm must be {slug!r}, got {confirm!r}")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        claims = deck_delete.delete(slug, force=bool(force))
+        build_index.main()
+    return {"slug": slug, "deleted": True, "stdout": buf.getvalue(),
+            "holders": [{"deck": d, "branch": b, "cards": c} for d, b, c in claims]}
+
+
+#: Endpoints a GET may run. Everything else is POST-only.
+#:
+#: AN ALLOW-LIST, NOT A DENY-LIST, for the same reason `ENDPOINTS` and
+#: `CLI_READONLY` are: a deny-list FAILS OPEN. The next endpoint anyone adds is
+#: reachable by GET until somebody remembers this constant — the exact trap
+#: `_CLI_WRITE_ATTRS` exists to cover on the other path.
+#:
+#: WHAT IT WAS BEFORE. `do_GET` ran ANY endpoint with an empty payload. Nine of
+#: the first twenty-four mutated the repo and `build/finish` runs `git add` and
+#: `git commit`; they were reachable by typing a URL, and survived only because
+#: each happened to raise on a missing argument. That is not a gate, it is an
+#: accident, and it had to be closed BEFORE a delete endpoint existed rather
+#: than after.
+#:
+#: `cli` is here because `_cli` carries its own two gates — `CLI_READONLY`, then
+#: `_CLI_WRITE_ATTRS` on the parsed namespace. Nothing else is trusted twice.
+GETTABLE = frozenset({
+    "health", "cli", "formats", "decks", "commanders", "archetypes",
+    "commander-search", "card-search", "branch/upgrades", "agents", "job",
+    "deck/measures",
+})
+# `deck/state` is deliberately NOT here even though its read form mutates
+# nothing: `do_GET` always dispatches with an EMPTY payload, so a GET could
+# never carry the slug it needs. Listing it would put a name in the allow-list
+# that the allow-list cannot serve, which makes the list mean less than it says.
+
 ENDPOINTS = {
     "health": (lambda: {"ok": True, "api": 1}, {}),
     # The warm-process CLI. See `_cli`.
@@ -1005,6 +1084,11 @@ ENDPOINTS = {
                                          for k, v in MEASURES.items()},
                                "drafts": sorted(SCAFFOLDS)}, {}),
     "deck/scaffold": (_scaffold, {"slug": _str, "stage": _str}),
+    # The fleet verbs, both POST-only. `deck/state` with no `action` reports and
+    # writes nothing; with one it moves the deck between racks. `deck/delete`
+    # additionally requires the slug typed back as `confirm`.
+    "deck/state": (_deck_state, {"slug": _str, "action": _str, "reason": _str}),
+    "deck/delete": (_deck_delete, {"slug": _str, "confirm": _str, "force": _bool}),
 }
 
 
@@ -1042,6 +1126,13 @@ class Handler(SimpleHTTPRequestHandler):
             return self._json(200, {"commands": sorted(ENDPOINTS)})
         if self.path.startswith("/api/"):
             name = self.path[len("/api/"):].split("?")[0].rstrip("/")
+            if name in ENDPOINTS and name not in GETTABLE:
+                # 405, not 400: the METHOD is wrong, and a caller reading it with
+                # `Allow: POST` learns the right thing. An unknown name still
+                # falls through to `_run`'s 404, so the typo message is unchanged.
+                return self._json(405, {
+                    "error": f"{name} changes something on disk — POST it",
+                    "command": name})
             return self._run(name, {})
         return super().do_GET()
 
