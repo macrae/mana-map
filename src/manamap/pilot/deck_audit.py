@@ -298,6 +298,70 @@ def archetype_overrides(archetype):
 
 # ── Axes ─────────────────────────────────────────────────────────────────
 
+# ── A SEARCH EFFECT WITH NOTHING TO FIND ─────────────────────────────────
+#
+# `Scour for Scrap` sat in zur-enchantress searching for an artifact card in a
+# deck holding ZERO artifacts — a four-mana instant that could not do anything,
+# and which the goldfish declaration was counting as a tutor. It arrived from the
+# deterministic builder, which scores on similarity, EDHREC rank, curve and
+# synergy and has no notion of "can this card's text resolve in THIS list".
+#
+# MEASURED AGAINST THE WHOLE FLEET BEFORE BEING WRITTEN, and rejected twice first:
+#   v1 keyed on the last word of the phrase, so "Goblin permanent card" keyed on
+#      `permanent` and flagged Moggcatcher in a Goblin deck — 2 of 3 hits wrong.
+#   v2 required every word to match one card, so every fetchland ("swamp or
+#      mountain") and every Enlightened Tutor ("artifact or enchantment") fired —
+#      23 of 47 hits, nearly all wrong.
+#   v3, below, splits disjunctions and declines what it cannot judge. Across all
+#      ten decks it examines 40 search effects, skips 30 as unrestricted / land /
+#      colour-only, and fires ONCE — on the genuine dead card. No false positives.
+#
+# A NOTE, NOT AN AXIS: a dead card is a design defect rather than a ratio, and a
+# check that fires on correct data is worse than no check.
+_SEARCH_RE = re.compile(
+    r"search(?:es)? (?:your|their) library for (?:a|an|up to \w+) "
+    r"([A-Za-z' -]+?) cards?", re.I)
+#: Words carrying no type information on their own — the qualifier before them does.
+_SEARCH_FILLER = {"permanent", "card", "cards", "basic"}
+#: Phrases this declines to judge: a land fetch is the mana base's business,
+#: `same mana value` is transmute (legal targets by construction), and a colour
+#: is not in the type line at all.
+_SEARCH_GENERIC = {"card", "permanent", "other"}
+_SEARCH_COLOURS = {"white", "blue", "black", "red", "green",
+                   "colorless", "multicolored"}
+
+
+def _dead_searches(cards):
+    """Cards whose `search your library for a <type> card` has no legal target.
+
+    Returns [(name, phrase)] and deliberately returns nothing it cannot judge.
+    """
+    names = [c["name"] for c in cards]
+    words = {c["name"]: set(re.findall(r"[A-Za-z'-]+",
+                                       str(c.get("type_line") or "").lower()))
+             for c in cards}
+    out = []
+    for c in cards:
+        for m in _SEARCH_RE.finditer(str(c.get("oracle_text") or "")):
+            phrase = m.group(1).strip().lower()
+            if phrase in _SEARCH_GENERIC or "same mana value" in phrase:
+                continue
+            if "land" in phrase:
+                continue
+            branches = []
+            for part in re.split(r"\s+or\s+", phrase):
+                w = {x for x in part.split()
+                     if x not in _SEARCH_FILLER} - _SEARCH_COLOURS
+                if w:
+                    branches.append(w)
+            if not branches:
+                continue
+            if not any(any(b <= words.get(o, set()) for b in branches)
+                       for o in names if o != c["name"]):
+                out.append((c["name"], phrase))
+    return out
+
+
 def _interaction_breadth(cards, roles):
     """Which of the five permanent classes this deck can answer at all."""
     interactive = set(SUITE_ROLES)
@@ -784,6 +848,14 @@ def build_notes(audit):
               "excluded from it, so this is a floor on breadth — read the cards "
               "before calling a class uncovered."
         )
+    dead = audit.get("dead_searches") or []
+    if dead:
+        notes.append(
+            "SEARCHES FOR SOMETHING THIS DECK DOES NOT RUN: "
+            + "; ".join("%s (looks for a %s card)" % (n, p) for n, p in dead)
+            + ". The effect cannot resolve into anything — check it before "
+              "trusting any target group that counts it."
+        )
     engine = audit["engine"]
     if engine.get("available"):
         spf = engine["single_points_of_failure"]
@@ -861,6 +933,9 @@ def analyze(slug, archetype=None, load_pool_fn=None, branch=None):
                   "no_role": facts["roles"].get("no_role", [])},
         "axes": build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides),
         "engine": engine_activation(slug, cards, roles, identity, load_pool_fn, branch),
+        # Computed here rather than inside an axis: it answers "does this card do
+        # anything at all in this list", which is not a ratio and has no target.
+        "dead_searches": _dead_searches(cards),
     }
     audit["notes"] = build_notes(audit)
     return audit

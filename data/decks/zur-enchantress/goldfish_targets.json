@@ -1,5 +1,5 @@
 {
-  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.\n\nUPDATED 2026-09-03 after the artifacts came out. The deck now runs ZERO artifacts: they are invisible to Zur, whose trigger reads enchantments only, and the equipment that remained was MV2 — outside even Urza's Saga's {0}-or-{1} fetch, so nothing could tutor them and the only way to see one was to draw it. Their jobs moved onto auras Zur CAN fetch.",
+  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.\n\nUPDATED 2026-09-03 after the artifacts came out. The deck now runs ZERO artifacts: they are invisible to Zur, whose trigger reads enchantments only, and the equipment that remained was MV2 — outside even Urza's Saga's {0}-or-{1} fetch, so nothing could tutor them and the only way to see one was to draw it. Their jobs moved onto auras Zur CAN fetch.\n\nUPDATED 2026-09-03 after a card-by-card slot audit. `Scour for Scrap` was counted here as a TUTOR while searching for an artifact card in a deck holding zero artifacts — a declared component that could not resolve. `deck-audit` now reports that class of card as a note (`_dead_searches`), measured against the whole fleet first: two earlier versions fired on 2-of-3 and 23-of-47 correct cards and were thrown away. Sorin of House Markov left with it — extort competes with holding up interaction, and its flip wants 3 life in a turn from a deck whose lifegain is incidental.",
   "targets": [
     {
       "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
@@ -8,19 +8,24 @@
       "need": [
         {
           "any_of": [
-            "Rhystic Study",
-            "Mystic Remora",
-            "Phyrexian Arena",
-            "Mesa Enchantress",
-            "Enduring Innocence",
-            "Wavebreak Hippocamp",
-            "Caretaker's Talent",
-            "Tocasia's Welcome",
-            "Wizard Class",
             "Call of the Ring",
+            "Caretaker's Talent",
+            "Curiosity",
+            "Enduring Innocence",
+            "Kaito Shizuki",
+            "Mesa Enchantress",
+            "Mystic Remora",
+            "Ominous Seas",
+            "Ophidian Eye",
+            "Phyrexian Arena",
+            "Rhystic Study",
             "Smuggler's Share",
+            "Tocasia's Welcome",
             "Tribute to Horobi // Echo of Death's Wail",
-            "Kaito Shizuki"
+            "Underworld Dreams",
+            "Waste Not",
+            "Wavebreak Hippocamp",
+            "Wizard Class"
           ]
         }
       ]
@@ -37,6 +42,7 @@
             "Counterspell",
             "Darksteel Mutation",
             "Dizzy Spell",
+            "Elspeth's Nightmare",
             "Imprisoned in the Moon",
             "Muddle the Mixture",
             "Negate",
@@ -81,7 +87,6 @@
           "any_of": [
             "Bastion of Remembrance",
             "The Meathook Massacre",
-            "Sorin of House Markov // Sorin, Ravenous Neonate",
             "Not Dead After All"
           ]
         },
@@ -92,9 +97,7 @@
             "Tribute to Horobi // Echo of Death's Wail",
             "Kaito Shizuki",
             "The Girl in the Fireplace",
-            "Ratonhnhaké꞉ton",
-            "Keeper of the Accord",
-            "Misfortune Teller"
+            "Keeper of the Accord"
           ]
         }
       ]
@@ -109,7 +112,6 @@
             "Inquisitive Glimmer",
             "Keeper of the Accord",
             "Land Tax",
-            "Misfortune Teller",
             "Monologue Tax",
             "Naiad of Hidden Coves",
             "Smuggler's Share",
@@ -127,11 +129,8 @@
             "Demonic Tutor",
             "Diabolic Tutor",
             "Enlightened Tutor",
-            "Splinter's Technique",
             "Muddle the Mixture",
             "Dizzy Spell",
-            "Faerie Harbinger",
-            "Scour for Scrap",
             "Keeper of the Accord",
             "Kaito Shizuki"
           ]

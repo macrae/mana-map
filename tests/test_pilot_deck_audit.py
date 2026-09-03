@@ -440,3 +440,76 @@ def test_an_untapped_land_counts_as_neither():
     plain = {"oracle_text": "{T}: Add {B}."}
     assert not enters_tapped(plain)
     assert not enters_tapped_unconditionally(plain)
+
+
+def test_a_search_effect_with_no_target_in_its_own_deck_is_reported():
+    """`Scour for Scrap` searched for an artifact card in a deck holding zero
+    artifacts — a four-mana instant that could not resolve into anything, and
+    which the goldfish declaration was counting as a tutor.
+
+    Driven through `_dead_searches` with the real oracle wording rather than a
+    re-derivation of the rule. The two negative cases are the ones that killed
+    the first two versions of this check against the fleet: a disjunction where
+    only ONE branch is present (every fetchland, every Enlightened Tutor), and a
+    qualifier-plus-filler phrase where the filler carries no type (Moggcatcher's
+    "Goblin permanent card" in a Goblin deck).
+    """
+    from manamap.pilot.deck_audit import _dead_searches
+
+    def card(name, type_line, text=""):
+        return {"name": name, "type_line": type_line, "oracle_text": text}
+
+    dead = card("Scour for Scrap", "Instant",
+                "Search your library for an artifact card, reveal it, put it into "
+                "your hand, then shuffle.")
+    assert _dead_searches([dead, card("Plains", "Basic Land — Plains")]) == \
+        [("Scour for Scrap", "artifact")], "no artifact in the deck — it is a blank"
+
+    # ONE branch of a disjunction is enough.
+    tutor = card("Enlightened Tutor", "Instant",
+                 "Search your library for an artifact or enchantment card, reveal "
+                 "it, then shuffle and put that card on top.")
+    assert _dead_searches([tutor, card("Rhystic Study", "Enchantment")]) == [], \
+        "an enchantment satisfies 'artifact or enchantment'"
+
+    # The qualifier carries the type; 'permanent' is filler.
+    mogg = card("Moggcatcher", "Creature — Kithkin",
+                "{2}, {T}: Search your library for a Goblin permanent card, put it "
+                "onto the battlefield, then shuffle.")
+    assert _dead_searches([mogg, card("Krenko, Mob Boss", "Legendary Creature — Goblin Warrior")]) == [], \
+        "a Goblin is present — 'Goblin permanent' must not key on 'permanent'"
+
+    # A fetchland is satisfied by ONE of its basics — and would genuinely be dead
+    # without either, which is why this is asserted with the basic present rather
+    # than skipped. (The `land` bail-out above covers "search for a basic land".)
+    land = card("Wooded Foothills", "Land",
+                "{T}, Pay 1 life, Sacrifice this land: Search your library for a "
+                "Mountain or Forest card, put it onto the battlefield, then shuffle.")
+    assert _dead_searches([land, card("Forest", "Basic Land — Forest")]) == [], \
+        "a Forest satisfies 'Mountain or Forest'"
+
+
+@requires_deck
+def test_the_dead_search_check_stays_quiet_across_the_fleet():
+    """A check that fires on correct data is worse than no check, and two earlier
+    versions of this one did: v1 flagged 2 of 3, v2 flagged 23 of 47. This asserts
+    the third stays silent everywhere except where a real dead card lives, so a
+    future widening cannot quietly reintroduce the false positives.
+    """
+    import json
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.deck_audit import _dead_searches
+
+    fired, checked = {}, 0
+    for path in sorted(DECKS_DIR.glob("*/cards.json")):
+        cards = json.loads(path.read_text())["cards"]
+        checked += 1
+        hits = _dead_searches(cards)
+        if hits:
+            fired[path.parent.name] = [n for n, _ in hits]
+    assert checked >= 8, f"only {checked} deck(s) swept — the sweep is the point"
+    allowed = {"zur-enchantress"}
+    assert set(fired) <= allowed, (
+        f"the check fired on {sorted(set(fired) - allowed)}; read those cards "
+        f"before widening it — {fired}")
