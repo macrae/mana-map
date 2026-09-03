@@ -444,6 +444,36 @@ def main(args):
         else:
             verdict = (doc.get("checker") or {}).get("verdict", "unchecked")
             print(f"OK   {path.name} (contract holds; checker: {verdict})")
+            # THE BOARD ROTS EVEN THOUGH THE CITATIONS DO NOT.
+            #
+            # `unknown_cards` was reachable ONLY through `--scenario-only`, the
+            # preflight that runs BEFORE a resolver is spawned. So it checked
+            # every scenario on the way in and no scenario ever again — and a
+            # deck's list moves underneath its stacks constantly.
+            #
+            # Measured the day this was wired: 6 of edgar-vampires' 11
+            # checker-passed stacks name a card the deck no longer runs
+            # (Exquisite Blood, Purphoros, Warleader's Call…), and 3 of
+            # ur-dragon's. Every one printed OK, because the CITATIONS are still
+            # correct — what rotted is the board they are cited against, and
+            # nothing looked at that.
+            #
+            # A WARNING, never an error, for the reason the preflight path
+            # already gives: a finished artifact is finished work and failing it
+            # costs a respawn to fix something nobody misread. What it must not
+            # do is stay silent, because these render as ✓ — the only fact tier
+            # — under a heading that says this is how the deck wins.
+            # ONLY A PRESENTABLE STACK WARNS. `presentable: false` IS the
+            # answer to this warning — the pilot has already read it, decided
+            # the line describes a board the deck can no longer make, and
+            # withheld it with a note saying which card. Warning again on a
+            # decision already taken is how a reader learns the mark means
+            # nothing, which is the failure this repo names about validators
+            # that fire on correct data.
+            if doc.get("presentable") is not False:
+                _, stale = unknown_cards(doc, args.slug)
+                for w in stale:
+                    print(f"  ! {w}")
             for w in scope_warnings(doc):
                 print(f"  ! over scope budget: {w}")
     # Deliberately NOT `common.report_errors`, though every other validator uses

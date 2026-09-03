@@ -14,7 +14,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 12,
+    "complete": 13,
     "of": 15,
     "stale": [
       "prose"
@@ -748,9 +748,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "A five-colour Dragon deck that buys its own curve down and then taxes every Dragon that enters — one arrival multiplies into several, each arrival is priced in damage and cards — whose kill is PROVEN on a board and unproven as a board you can reach.",
-    "critic": "fail",
-    "lines": 13,
+    "thesis": "A five-colour Dragon deck that buys its own curve down with five cost reducers, then multiplies each arrival twice over — once into more bodies and triggers, once into doubled damage — and whose kill is proven on a board and still unproven as a board it can reach.",
+    "critic": null,
+    "lines": 15,
     "verified_lines": 4
   },
   "diagnosis": {
@@ -779,7 +779,17 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Stack 001 kills every opponent on its board, but its board assumes Ancient Gold Dragon has already connected in combat, and its d20 needs 12 or better rather than the 15 the scenario fixes (derived: three seats at 40 needs 3 x ceil(40/(N+2)) <= N, so N=12; nine faces of twenty). Build the reachable version of THE ENTRY KILL instead — Dragon Tempest or Terror of the Peaks or Scourge of Valkas, with a widener, and one nontoken Dragon cast — and resolve whether the cascade reaches three opponents at 40 or state the exact shortfall, as stack 002 does at 64 against 72. Do not let it assume Panharmonicon: stack 007 measured 002's own board without that card at 20 damage, which kills nobody. NARROWED by 007's other half: a single fresh seat at 40 is no longer open — 002's board reaches 42 on one seat by its eighth instance — so what is asked here is THREE seats at 40.",
+      "question": "Do Twinflame Tyrant and Solphim, Mayhem Dominus both apply to the same damage event — a Dragon Tempest or Terror of the Peaks trigger aimed at an opponent — for four times the printed damage, and if so, who chooses the order the two replacement effects apply in (CR 616.1)? Resolve on a board with one doubler, then both, and state the multiplier exactly.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Ganax, Astral Hunter under Miirym and Panharmonicon: does a TOKEN Dragon copy entering trigger Ganax's 'Whenever Ganax or another Dragon you control enters, create a Treasure token', and does Panharmonicon double that trigger? Resolve on stack 002's own board with Ganax added and state the Treasure count.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Stack 001 kills every opponent on its board, but that board assumes Ancient Gold Dragon has already connected in combat, and its d20 needs 12 or better rather than the 15 the scenario fixes. Build the REACHABLE version of THE ENTRY KILL — one of Dragon Tempest / Terror of the Peaks / Scourge of Valkas, one widener, one nontoken Dragon cast — and resolve whether the cascade reaches three opponents at 40 or state the exact shortfall, as 002 does at 64 against 72. Do not let it assume Panharmonicon: 007 measured that board without it at 20 damage, which kills nobody.",
       "settled_by": "resolve-stack"
     },
     {
@@ -789,43 +799,18 @@
     },
     {
       "from": "engine",
-      "question": "The Ur-Dragon's attack trigger with the commander on the battlefield: does 'whenever one or more Dragons you control attack' draw exactly one card per attacking Dragon, and may the permanent it then puts onto the battlefield from hand be any permanent card rather than a Dragon?",
+      "question": "Scourge of the Throne, alone: does its 'attacks for the first time each turn' dethrone-conditioned trigger untap all attacking creatures and grant an additional combat phase, and is 'the player with the most life' re-evaluated in that second combat against life totals the first combat has already changed? Then, given a second combat, do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus's power doubling and Atarka's double strike each fire again on the re-declared attackers?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Scourge of the Throne, alone: does its 'attacks for the first time each turn' dethrone-conditioned trigger untap all attacking creatures and grant an additional combat phase, and is 'the player with the most life' re-evaluated in that second combat against life totals the first combat has already changed?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "Given a second combat phase, do Utvara Hellkite's per-attacking-Dragon token trigger, Thrakkus the Butcher's power doubling and Atarka, World Render's double strike each fire again on the re-declared attackers?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "What does a goldfish target measuring the commander's ARRIVAL report — Hellkite Courser drawn, and Courser drawn with six mana available — separately from the nine-mana cast already reported at mean turn 8.138 and 5.8% by turn six?",
+      "question": "Re-run the goldfish with THE COMBAT KILL's multiplier leg widened from two cards to three (adding Twinflame Tyrant, whose doubling covers combat damage to an opponent) and report the assembled / by-turn-six / mean-turn deltas against the tracked 0.243 / 0.157 / 4.866. Report the counterfactual as a counterfactual; do not overwrite the tracked figures.",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Price the mana audit the pilot asked for after logged game 001, in the terms the goldfish can answer: with 9 basics against three basic/Forest-fetching sorceries and 15 of 36 lands still entering tapped after V2, what do mean available mana at turn five (4.534), the reducer-plus-ramp component (0.424 assembled / 0.292 by turn six) and commander-by-turn-six (5.8%) become if tapped lands are traded for untapped sources AT CONSTANT LAND COUNT? V2 answered a different question — it traded five spells for five lands — and left the tapped share at 42%. Scope caveat to state in the answer: the model reads land and ramp COUNTS, not enters-tapped status and not colour, so it can price one third of the pilot's question and must say so.",
+      "question": "Does anything in the current 99 make its own creatures die on purpose, and if not, what are Atsushi's death trigger and Gadrak's end-step Treasure trigger actually worth? Measure how often each fires in a seeded run rather than assuming they are dead text.",
       "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "For strong Ur-Dragon lists, which is treated as the primary kill — the per-entry damage cascade (Dragon Tempest and Terror of the Peaks under Miirym and Panharmonicon) or a combat multiplier turn (Atarka, Thrakkus, an extra combat)? And where do those lists put their redundancy: more entry payoffs, or more combat effects and more ways to repeat a combat?",
-      "settled_by": "research-strategy"
-    },
-    {
-      "from": "engine",
-      "question": "With model_combat already on, what is the mean number of DRAGONS on the battlefield by turn on the V2 list, against the same figure on V1's 25-Dragon list — and does the five-land add cover the three-Dragon cut? Report it beside mean_bodies_by_turn, which is untyped and therefore a ceiling rather than the answer.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Farseek says 'put it onto the battlefield tapped'. Seven of the twelve nonbasics it can find in this 99 are shocklands reading 'As this land enters, you may pay 2 life. If you don't, it enters tapped'. On a board where Farseek resolves and the chosen land is a shockland, may the controller pay 2 life to have it enter untapped, or does the spell's instruction apply regardless — and does the answer differ for Canopy Vista and Cinder Glade, whose own clause turns on controlling two or more basic lands?",
-      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -920,8 +905,8 @@
     "stale: prose — regenerate against the current list (`/publish-deck` sequences it)",
     "2 logged game(s) not yet debriefed (002, 003) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
-    "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
-    "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",
+    "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
+    "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×2, resolve-stack ×8",
     "3 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

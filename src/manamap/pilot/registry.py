@@ -42,6 +42,8 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("install-agent", "manamap.pilot.install_agent",
+     "An agent's whole-file handoff becomes the tracked artifact, STAMPED"),
     ("captains-log", "manamap.pilot.captains_log",
      "The captain's log: which nights this deck flew, and which are rendered"),
     ("merge-captains-log", "manamap.pilot.merge_captains_log",
@@ -172,6 +174,7 @@ _DECK_COMMANDS = {
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "captains-log", "merge-captains-log", "validate-captains-log",
+    "install-agent",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
     "deck-branch", "diagnose", "assess", "candidates", "close",
@@ -250,6 +253,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "install-agent":
+            cmd.add_argument("--routine", required=True,
+                             help="which routine's handoff to install (deck-engine, "
+                                  "tutor-guide, strategic-frame, deck-map-names, …)")
+            cmd.add_argument("--force", action="store_true",
+                             help="install without a stamp when the deck has no "
+                                  "cards.json sha (reads as staleness-unknown)")
         if name == "captains-log":
             # The skeleton the agent quotes: every deterministic fact about the
             # deck's nights and no prose. A VIEW, never tracked — same rule as

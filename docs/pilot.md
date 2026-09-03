@@ -213,6 +213,12 @@ manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] 
                                         #   the Atlas's "consider these" on a pile
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
+manamap pilot install-agent <slug> --routine R   # an agent's whole-file handoff becomes
+                                        #   the tracked artifact, STAMPED with the decklist
+                                        #   sha. THE ONE PLACE that happens: a `cp` cannot
+                                        #   stamp, and for months nothing stamped engine.json
+                                        #   or tutor_guide.json at all, so `deck-status`'s
+                                        #   staleness check could never fire
 manamap pilot captains-log <slug>       # which nights this deck flew, and which are rendered
 manamap pilot merge-captains-log <slug> # the captains-log agent's prose in, by night
 manamap pilot validate-captains-log <slug>  # the log held to the nights it renders
