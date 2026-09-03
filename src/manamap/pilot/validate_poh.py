@@ -55,13 +55,25 @@ def validate(html, slug):
             "the page carries a <script> tag — a handbook is a standalone file "
             "that prints; everything that folds is <details>")
 
-    # A BUILD DATE IS A DIFF ON EVERY REBUILD.
+    # A BUILD DATE IS A DIFF ON EVERY REBUILD — but only in the FURNITURE.
+    #
+    # The first cut looked for today's date anywhere on the page and fired on
+    # correct data the first time real content arrived: an emergency page cited
+    # "the 2026-09-02 Forge run" as its grounding, which is exactly the sort of
+    # dated evidence the handbook SHOULD carry. A validator that fires on
+    # correct data is worse than none.
+    #
+    # A build date lands in the title block, because that is where a renderer
+    # stamps one. Authored prose citing a date is content. So the check is
+    # scoped to the furniture, and the byte-identical rebuild test is what
+    # actually proves the whole page is a pure function of its inputs.
     today = datetime.date.today().isoformat()
-    if today in html:
+    title = re.search(r'<div class="poh-title">.*?</div>', html, re.S)
+    if title and today in title.group(0):
         errors.append(
-            f"the page contains today's date ({today}) — a build date breaks the "
-            f"byte-identical rebuild the CI gate depends on. Dates come from "
-            f"versions.json, never from render time")
+            f"the title block contains today's date ({today}) — a build date "
+            f"breaks the byte-identical rebuild the CI gate depends on. Dates "
+            f"come from versions.json, never from render time")
 
     ids = set(_ID_RE.findall(html))
     dangling = sorted({x for x in _XREF_RE.findall(html) if x not in ids})
@@ -102,6 +114,39 @@ def validate(html, slug):
             if level not in spec.CALLOUTS:
                 errors.append(f"{level!r} is not a callout level — "
                               f"one of {sorted(spec.CALLOUTS)}")
+
+    # ── the authored half ───────────────────────────────────────────────
+    #
+    # Only what is decidable ABOUT A CHECKLIST, which is not much: whether the
+    # conditions are in the closed set, whether the steps are numbered where
+    # order matters, and whether a page is so long nobody finishes it. Whether a
+    # step is FOLLOWABLE is the whole content of the section and no regex knows.
+    # SPLIT ON THE MARKER, do not try to match a balanced <div>. The first cut
+    # used a lookahead for "another procedure or end of string" and matched
+    # nothing at all, because in real markup a procedure is followed by
+    # `</section>` — a regex that silently matches zero blocks is a check that
+    # silently does not run, which is the failure this whole file is about.
+    # AND EACH CHUNK IS BOUNDED. Splitting alone leaves the LAST procedure
+    # running to the end of the document, so it absorbs every list item in every
+    # later section — it reported "53 steps" for a five-step page. Second time
+    # this shape of mistake landed in this file: a split or a lookahead that
+    # looks right and silently measures the wrong span.
+    for raw in re.split(r'<div class="poh-procedure">', html)[1:]:
+        page = re.split(r'</section>|<div class="poh-procedure">', raw)[0]
+        head = re.search(r'<h3>.*?</h3>', page)
+        where = re.sub("<[^>]+>", " ", head.group(0)).strip() if head else "?"
+        # IMMEDIATE ACTION IS ORDERED. Step three before step one loses the game,
+        # so the page must render <ol> and not <ul> for it.
+        if "Immediate action" in page:
+            after = page.split("Immediate action", 1)[1][:400]
+            if "<ol>" not in after:
+                errors.append(
+                    f"{where}: immediate action is not a numbered list — order is "
+                    f"the whole content of an emergency checklist")
+        steps = re.findall(r"<li>", page)
+        if len(steps) > 20:
+            notes.append(f"{where}: {len(steps)} steps on one page — a checklist "
+                         f"nobody finishes under pressure")
 
     # REPORTED, NEVER FAILED. A handbook missing its authored half is a normal
     # intermediate state; incompleteness belongs to whoever writes section 3,

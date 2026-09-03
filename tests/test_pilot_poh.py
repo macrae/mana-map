@@ -89,7 +89,13 @@ def test_the_handbook_carries_no_script_and_no_build_date():
 
     html = _rendered()
     assert "<script" not in html.lower()
-    assert datetime.date.today().isoformat() not in html
+    # SCOPED TO THE FURNITURE, for the reason `validate_poh` records: an
+    # emergency page legitimately cites "the 2026-09-02 Forge run" as its
+    # grounding, and dated evidence is exactly what the handbook should carry.
+    # A build date lands in the title block; content does not.
+    title = re.search(r'<div class="poh-title">.*?</div>', html, re.S)
+    assert title, "no title block"
+    assert datetime.date.today().isoformat() not in title.group(0)
     # Nothing keyed by a log entry id or a timestamp, either — the v5 rule that
     # three surfaces claimed was tested.
     assert not re.search(r'\b20\d\d-\d\d-\d\dT\d\d:', html), (
@@ -239,3 +245,122 @@ def test_make_manuals_renders_the_handbook():
     assert "build-poh" in target, (
         "`make manuals` does not render the handbook — the CI byte-diff gate "
         "covers manuals/ but nothing regenerates manuals/p/")
+
+
+# ── the authored half ────────────────────────────────────────────────────
+
+def test_the_emergency_conditions_mirror_the_causes_the_pilot_files_games_under():
+    """THE JOIN IS THE POINT.
+
+    `deck_notes.CAUSES` is the closed vocabulary the pilot files a finished game
+    under; `poh_spec.EMERGENCY_CONDITIONS` is what the handbook writes a page
+    for. Keyed the same, a procedure for a wipe can be read against the games
+    that ended in one — nine losses across seven causes exist on the fleet.
+
+    Let them drift and the pages stop joining to the evidence that grounds them,
+    silently, because both files still look sensible on their own.
+    """
+    from manamap.pilot.deck_notes import CAUSES
+
+    unknown = sorted(set(spec.EMERGENCY_CONDITIONS) - set(CAUSES))
+    assert not unknown, (
+        f"{unknown} are handbook conditions with no matching cause — a page "
+        f"nobody can file a game under")
+    # `won` is the one cause with no page, and that asymmetry is correct: a
+    # handbook has no emergency procedure for winning.
+    missing = sorted(set(CAUSES) - set(spec.EMERGENCY_CONDITIONS) - {"won"})
+    assert not missing, (
+        f"{missing} are causes games are filed under with no procedure page")
+
+
+def test_immediate_action_must_be_ordered():
+    """Step three before step one is how a game is lost politely."""
+    unordered = ('<section class="poh-sec" id="s3"><h2>3 Emergency</h2>'
+                 '<div class="poh-procedure"><h3>3.1 WIPE</h3>'
+                 '<p><b>Immediate action.</b></p><ul><li>a</li><li>b</li></ul>'
+                 "</div></section>")
+    errors, _ = validate_poh.validate(unordered, "x")
+    assert any("not a numbered list" in e for e in errors), errors
+
+    ordered = unordered.replace("<ul>", "<ol>").replace("</ul>", "</ol>")
+    errors, _ = validate_poh.validate(ordered, "x")
+    assert not [e for e in errors if "numbered" in e], errors
+
+
+@requires_deck
+def test_a_procedure_page_names_only_cards_the_deck_runs():
+    """A PROCEDURE THAT NAMES A CUT CARD FAILS AT THE TABLE.
+
+    This is the handbook's whole claim — that it describes the deck in the
+    pilot's hands. The engine model named 17 phantom cards until it was rebuilt,
+    so the risk is demonstrated rather than hypothetical.
+    """
+    import json as _json
+
+    from manamap.pilot.common import expand_copies, load_json
+    from manamap.pilot.card_pool import corpus_names
+
+    corpus = {n.lower(): n for n in (corpus_names() or set())}
+    if not corpus:
+        pytest.skip("no corpus")
+    checked = 0
+    for base in sorted(DECKS_DIR.iterdir()):
+        doc = load_json(base / spec.PROCEDURES_ARTIFACT)
+        cards = load_json(base / "cards.json")
+        if not doc or not cards:
+            continue
+        checked += 1
+        have = {c["name"].lower() for c in expand_copies(cards.get("cards") or [])}
+        text = _json.dumps(doc)
+        # LONGEST MATCH WINS, and only on a word boundary.
+        #
+        # A bare substring scan flagged "Intervention" — a real card in the
+        # corpus — inside "Heroic Intervention", which this deck runs. The naive
+        # check called a correct reference an invented card, which is the
+        # failure mode that trains a reader to ignore the test.
+        named = set()
+        for k, v in corpus.items():
+            if len(k) <= 10 or k in have:
+                continue
+            if not re.search(r"\b" + re.escape(v) + r"\b", text):
+                continue
+            # Is it only there as part of a longer card name the deck DOES run?
+            if any(v in real and v != real
+                   for real in (corpus[h] for h in have if v.lower() in h)):
+                continue
+            named.add(v)
+        assert not named, (
+            f"{base.name}'s procedures name card(s) not in the 99: "
+            f"{sorted(named)}")
+    if not checked:
+        pytest.skip("no deck has procedures yet")
+
+
+def test_a_procedure_page_is_measured_to_its_own_end():
+    """TWICE NOW, IN THIS FILE, A SPLIT MEASURED THE WRONG SPAN.
+
+    First a lookahead matched zero procedure blocks, so the check silently did
+    not run. Then the split left the LAST block running to the end of the
+    document, absorbing every list item in every later section — it reported 53
+    steps for a five-step page and would have taught its reader that the step
+    count means nothing.
+
+    A rendered handbook is one long line, so neither mistake is visible by
+    eye. Two procedures with five steps each must read as five and five.
+    """
+    page = ('<div class="poh-procedure"><h3>3.1 A</h3>'
+            "<ol>" + "<li>x</li>" * 5 + "</ol></div>")
+    html = (f'<section class="poh-sec" id="s3"><h2>3 E</h2>{page}{page}</section>'
+            + '<section class="poh-sec" id="s5"><h2>5 P</h2><ul>'
+            + "<li>y</li>" * 40 + "</ul></section>")
+    _errors, notes = validate_poh.validate(html, "x")
+    assert not [n for n in notes if "steps on one page" in n], (
+        "a later section's list items were counted against a procedure page: "
+        + "; ".join(notes))
+
+    # And a page that IS too long still says so.
+    long_page = ('<div class="poh-procedure"><h3>3.1 A</h3><ol>'
+                 + "<li>x</li>" * 25 + "</ol></div>")
+    _errors, notes = validate_poh.validate(
+        f'<section class="poh-sec" id="s3"><h2>3 E</h2>{long_page}</section>', "x")
+    assert any("steps on one page" in n for n in notes), notes

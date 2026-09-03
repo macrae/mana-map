@@ -138,6 +138,21 @@ EMERGENCY_CONDITIONS = {
 }
 
 
+#: The authored artifact. One file, three sections, because they are written in
+#: one pass by one hand and a version bump revises them together.
+PROCEDURES_ARTIFACT = "poh_procedures.json"
+
+#: `normal` is a fixed sequence and the order is the procedure. A checklist whose
+#: steps can be reordered is a list.
+NORMAL_PHASES = (
+    ("preflight", "Pre-flight", "the mulligan: what a keepable hand looks like"),
+    ("startup", "Startup", "turns one to three, as a decision"),
+    ("assembly", "Engine assembly", "the order components come online, and why the order"),
+    ("cruise", "Cruise", "the per-turn cycle"),
+    ("closing", "Closing", "recognising lethal, and when to wait a turn"),
+)
+
+
 def number_of(sid):
     """The section number, from the registry. Never typed by hand."""
     return SECTION_BY_ID[sid]["number"]

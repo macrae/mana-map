@@ -1306,6 +1306,10 @@ DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
 # input because editing `STATIONS` or `stardate()` changes what the agent may
 # write — and a green board over a stale vocabulary is what that mechanism is for.
 CAPTAINS_LOG_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "captains_log.py"
+# The handbook's section registry and closed vocabularies. Declared for the same
+# reason: editing EMERGENCY_CONDITIONS or NORMAL_PHASES changes what the
+# procedures agent may write.
+POH_SPEC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "poh_spec.py"
 
 # Input tokens resolved by agent_cache.resolve_inputs():
 #   deck:<name>[?]     file under data/decks/<slug>/ ('?' = optional; absence
@@ -1437,6 +1441,17 @@ AGENT_ROUTINES = {
     # stamp. `repo:CAPTAINS_LOG_PATH` is declared for the OPPOSITE reason: a
     # change to the station vocabulary or the stardate is a fleet-wide re-spawn,
     # not a re-bless, because it changes what the agent is allowed to write.
+    # THE AUTHORED HALF OF THE HANDBOOK. Unlike the captain's log, this one DOES
+    # go stale on a decklist edit — a procedure naming a card the deck no longer
+    # runs is a procedure that fails at the table — so `cards:semantic` is
+    # declared and a swap MISSes it.
+    "poh-procedures": {
+        "agent": "poh-procedures",
+        "artifact": "poh_procedures.json",
+        "inputs": ["cards:semantic", "deck:engine.json?", "deck:audit.json?",
+                   "deck:diagnosis.json?", "deck:log.jsonl?",
+                   "deck:log_causes.json?", "repo:POH_SPEC_PATH"],
+    },
     "captains-log": {
         "agent": "captains-log",
         "artifact": "captains_log.json",

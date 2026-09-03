@@ -475,11 +475,152 @@ def render_systems(d):
     return out
 
 
+# ── 3. emergency procedures ──────────────────────────────────────────────
+
+def _steps(items, ordered=True):
+    """A checklist. NUMBERED where order matters, because in an emergency it
+    always does — step three before step one is how a game is lost politely."""
+    if not items:
+        return ""
+    tag = "ol" if ordered else "ul"
+    return (f"<{tag}>" + "".join(f"<li>{esc(x)}</li>" for x in items)
+            + f"</{tag}>")
+
+
+def render_emergency(d):
+    """One condition per page, one fixed template, tabbed in red.
+
+    THE CONDITIONS ARE `deck_notes.CAUSES`, which is not decoration: a game
+    logged `--cause wipe` and the page for a wipe are keyed the same, so a
+    procedure can be read against the games that actually ended that way. Nine
+    losses across seven causes exist on the fleet today.
+    """
+    proc = load_json(d["base"] / spec.PROCEDURES_ARTIFACT) or {}
+    pages = proc.get("emergency") or []
+    if not pages:
+        return absent(
+            "Emergency procedures",
+            "not written yet. Drafted by an agent from the engine model, the "
+            "diagnosis and the games that ended each way, then edited.",
+            f"/poh-procedures {d['slug']}")
+    out = ""
+    for i, page in enumerate(pages, start=1):
+        cond = page.get("condition")
+        gloss = spec.EMERGENCY_CONDITIONS.get(cond, "")
+        body = (f'<p class="ev">{esc(gloss)}</p>'
+                f'<p><b>Condition.</b> {esc(page.get("condition_text") or gloss)}</p>')
+        if page.get("indications"):
+            body += ("<p><b>Indications.</b></p>"
+                     + _steps(page["indications"], ordered=False))
+        if page.get("immediate"):
+            body += "<p><b>Immediate action.</b></p>" + _steps(page["immediate"])
+        if page.get("subsequent"):
+            body += "<p><b>Subsequent.</b></p>" + _steps(page["subsequent"])
+        if page.get("notes"):
+            body += callout("note", page["notes"])
+        # WHICH GAMES THIS IS DRAWN FROM. A procedure grounded in a game the
+        # pilot actually lost is worth more than one reasoned from the list, and
+        # the reader should be able to tell which they are reading.
+        seen = page.get("grounded_in") or []
+        if seen:
+            body += (f'<p class="ev">Drawn from {len(seen)} logged game(s): '
+                     f'{esc(", ".join(seen))}.</p>')
+        out += (f'<div class="poh-procedure">'
+                + sub(f"3.{i}", (cond or "?").replace("-", " ").upper(), body)
+                + "</div>")
+    return out
+
+
+# ── 4. normal procedures ─────────────────────────────────────────────────
+
+def render_normal(d):
+    proc = load_json(d["base"] / spec.PROCEDURES_ARTIFACT) or {}
+    normal = proc.get("normal") or {}
+    gf = ((d["goldfish"] or {}).get("metrics") or {}).get("opening_hand") or {}
+    if not normal:
+        return absent(
+            "Normal procedures", "not written yet.", f"/poh-procedures {d['slug']}")
+    out = ""
+    for i, (key, title, gloss) in enumerate(spec.NORMAL_PHASES, start=1):
+        block = normal.get(key)
+        if not block:
+            continue
+        body = f'<p class="ev">{esc(gloss)}</p>'
+        if isinstance(block, dict):
+            if block.get("keep"):
+                body += "<p><b>Keep if all of.</b></p>" + _steps(block["keep"], False)
+            if block.get("ship"):
+                body += "<p><b>Ship on sight.</b></p>" + _steps(block["ship"], False)
+            if block.get("steps"):
+                body += _steps(block["steps"])
+            if block.get("note"):
+                body += callout("note", block["note"])
+        else:
+            body += _steps(block)
+        # THE MEASURED RATE BESIDE THE RULE, on the one phase that has one.
+        if key == "preflight" and gf.get("keep_first_seven_rate") is not None:
+            body += (f'<p class="ev">The model\'s own keep rule — two to five '
+                     f'lands, up to two redraws — keeps '
+                     f'{gf["keep_first_seven_rate"] * 100:.0f}% of first sevens. '
+                     f'That is a floor: it does not read the cards.</p>')
+        out += (f'<div class="poh-procedure">'
+                + sub(f"4.{i}", title, body) + "</div>")
+    return out
+
+
+# ── 7. handling and rules of engagement ──────────────────────────────────
+
+def render_handling(d):
+    proc = load_json(d["base"] / spec.PROCEDURES_ARTIFACT) or {}
+    h = proc.get("handling") or {}
+    if not h:
+        return absent("Handling", "not written yet.", f"/poh-procedures {d['slug']}")
+    out = ""
+    for i, (key, title) in enumerate((
+            ("optics", "Threat optics — what the table sees"),
+            ("reveal", "When to reveal"),
+            ("alliances", "Alliances"),
+            ("targets", "Who to hit first")), start=1):
+        block = h.get(key)
+        if not block:
+            continue
+        body = (_steps(block, ordered=False) if isinstance(block, list)
+                else f"<p>{esc(block)}</p>")
+        out += sub(f"7.{i}", title, body)
+
+    # MEASURED, NOT ASSERTED. `interaction_received` is how much the pod aimed
+    # at this seat per game — the sim's answer to "does the table take this deck
+    # seriously", beside the pilot's reading of the same question.
+    sim = _latest_sim(d)
+    if sim:
+        seat = (sim.get("analysis") or {}).get("seats", {}).get(d["slug"]) or {}
+        recv = (seat.get("interaction_received") or {}).get("mean")
+        elim = seat.get("eliminated_by") or {}
+        if recv is not None:
+            top = ", ".join(f"{k} {v}" for k, v in
+                            sorted(elim.items(), key=lambda kv: -kv[1])[:3])
+            out += sub("7.5", "What the pod actually did", (
+                f'<p>Across {sim.get("games_completed", "?")} simulated games this '
+                f'seat was aimed at {recv:.2f} times a game.'
+                + (f' Eliminated by: {esc(top)}.' if top else "") + "</p>"
+                f'<p class="ev">Forge\'s AI, not your table — opponent modelling, '
+                f'never an equilibrium.</p>"'))
+    return out
+
+
+def _latest_sim(d):
+    runs = sorted((d["base"] / "sim").glob("*.json")) if (d["base"] / "sim").is_dir() else []
+    return load_json(runs[-1]) if runs else None
+
+
 # ── assembly ─────────────────────────────────────────────────────────────
 
 RENDERERS = {
     "general": render_general,
     "limitations": render_limitations,
+    "emergency": render_emergency,
+    "normal": render_normal,
+    "handling": render_handling,
     "performance": render_performance,
     "systems": render_systems,
 }

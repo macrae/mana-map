@@ -53,6 +53,7 @@ AGENT_FILE = {
     "deck-diagnosis": "deck-doctor.json",
     "deck-recon": "deck-doctor-recon.json",
     "candidate-pool": "deck-analyst.json",
+    "poh-procedures": "poh-procedures.json",
 }
 
 #: Routines with their own merge module, because their artifact is merged rather
