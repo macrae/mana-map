@@ -1,131 +1,138 @@
 {
- "_note": "SCAFFOLD — not a declaration. `manamap pilot scaffold-targets` derived these groups from contained combo lines and role axes; every label is a PLACEHOLDER and every group is a starting point to edit, not a finding. A goldfish group is a deck-specific functional set (\"the metronome bodies\", \"the flash traps\"), which is a different thing from a role: `ROLE_PATTERNS` answers what job a card does in any 99. Nothing here names a WIN LINE, because a machine guessing at one manufactures the exact claim `validate-goldfish-targets` exists to demand. Rewrite the labels, regroup the members, add the line this deck actually wins with, then run `manamap pilot validate-goldfish-targets <slug>` and delete \"scaffolded\".",
- "scaffolded": true,
- "targets": [
-  {
-   "label": "COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac",
-   "_from": "combo_details",
-   "need": [
+  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.",
+  "targets": [
     {
-     "any_of": [
-      "Demonic Consultation"
-     ]
+      "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
+      "required": true,
+      "_why": "The deck out-resources the table and then converts; without a repeating engine it is a pile of answers with nothing to answer toward. One-shot selection (Brainstorm, Preordain) is deliberately EXCLUDED — it smooths a hand, it does not refill one.",
+      "need": [
+        {
+          "any_of": [
+            "Rhystic Study",
+            "Mystic Remora",
+            "Phyrexian Arena",
+            "Mesa Enchantress",
+            "Enduring Innocence",
+            "Wavebreak Hippocamp",
+            "Caretaker's Talent",
+            "Tocasia's Welcome",
+            "Wizard Class",
+            "Call of the Ring",
+            "Smuggler's Share",
+            "Tribute to Horobi // Echo of Death's Wail",
+            "Kaito Shizuki",
+            "Mask of Memory"
+          ]
+        }
+      ]
     },
     {
-     "any_of": [
-      "Laboratory Maniac"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "RAMP drawn — an accelerant of any kind",
-   "_from": "role:ramp",
-   "need": [
+      "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
+      "required": true,
+      "_why": "The table plays at a turn-four clock and some seats hold hard lockout effects. A Zur deck that draws no interaction loses before its commander has attacked twice.",
+      "need": [
+        {
+          "any_of": [
+            "Path to Exile",
+            "Pongify",
+            "Seal of Cleansing",
+            "Toxic Deluge",
+            "The Meathook Massacre",
+            "Urza's Sylex",
+            "Negate",
+            "No More Lies",
+            "Muddle the Mixture",
+            "Dizzy Spell"
+          ]
+        }
+      ]
+    },
     {
-     "any_of": [
-      "Black Market Connections",
-      "Inquisitive Glimmer",
-      "Keeper of the Accord",
-      "Misfortune Teller",
-      "Monologue Tax",
-      "Naiad of Hidden Coves",
-      "Profane Procession // Tomb of the Dusk Rose",
-      "Smuggler's Share",
-      "Solemn Simulacrum",
-      "Transcendent Envoy",
-      "Wayfarer's Bauble"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
-   "_from": "role:draw",
-   "need": [
+      "label": "KILL — Demonic Consultation + Laboratory Maniac",
+      "route": "consultation",
+      "_why": "The deck's one deterministic kill, and the line the bracket engine already prices. Two named cards, no alternates: the tutors that could find either would have to sit in BOTH legs, and one draw satisfying an AND of ORs twice is the defect `_validate_shared_leg` exists to catch.",
+      "need": [
+        {
+          "any_of": [
+            "Demonic Consultation"
+          ]
+        },
+        {
+          "any_of": [
+            "Laboratory Maniac"
+          ]
+        }
+      ]
+    },
     {
-     "any_of": [
-      "Brainstorm",
-      "Call of the Ring",
-      "Caretaker's Talent",
-      "Enduring Innocence",
-      "Kaito Shizuki",
-      "Mask of Memory",
-      "Mesa Enchantress",
-      "Mystic Remora",
-      "Phyrexian Arena",
-      "Preordain",
-      "Rhystic Study",
-      "Smuggler's Share",
-      "Tocasia's Welcome",
-      "Tribute to Horobi // Echo of Death's Wail",
-      "Wavebreak Hippocamp",
-      "Wizard Class"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "AN ANSWER drawn — interaction of any kind",
-   "_from": "role:removal",
-   "need": [
+      "label": "KILL — drain: a payoff plus bodies to feed it",
+      "route": "drain",
+      "_why": "The second real kill. Bastion of Remembrance and The Meathook Massacre turn a board of expendable bodies into life loss across the pod, which is how this deck closes when combat is not available. NOTE the simulation cannot see it: death-triggered drain is unmodelled, so this measures whether the PIECES were drawn, never whether the drain happened.",
+      "need": [
+        {
+          "any_of": [
+            "Bastion of Remembrance",
+            "The Meathook Massacre",
+            "Sorin of House Markov // Sorin, Ravenous Neonate",
+            "Not Dead After All"
+          ]
+        },
+        {
+          "any_of": [
+            "Bitterblossom",
+            "Black Market Connections",
+            "Tribute to Horobi // Echo of Death's Wail",
+            "Kaito Shizuki",
+            "The Girl in the Fireplace",
+            "Ratonhnhaké꞉ton",
+            "Keeper of the Accord",
+            "Misfortune Teller"
+          ]
+        }
+      ]
+    },
     {
-     "any_of": [
-      "Dizzy Spell",
-      "Path to Exile",
-      "Pongify",
-      "Profane Procession // Tomb of the Dusk Rose",
-      "Seal of Cleansing",
-      "The Meathook Massacre",
-      "Toxic Deluge",
-      "Umezawa's Jitte",
-      "Urza's Sylex"
-     ]
-    }
-   ]
-  },
-  {
-   "label": "A TUTOR drawn",
-   "_from": "role:tutor",
-   "need": [
+      "label": "RAMP drawn — an accelerant of any kind",
+      "_why": "Context, not a component: the mana block already reports land drops directly.",
+      "need": [
+        {
+          "any_of": [
+            "Wayfarer's Bauble",
+            "Solemn Simulacrum",
+            "Keeper of the Accord",
+            "Monologue Tax",
+            "Black Market Connections",
+            "Smuggler's Share",
+            "Misfortune Teller",
+            "Inquisitive Glimmer",
+            "Transcendent Envoy",
+            "Naiad of Hidden Coves"
+          ]
+        }
+      ]
+    },
     {
-     "any_of": [
-      "Demonic Tutor",
-      "Diabolic Tutor",
-      "Dizzy Spell",
-      "Enlightened Tutor",
-      "Faerie Harbinger",
-      "Kaito Shizuki",
-      "Keeper of the Accord",
-      "Muddle the Mixture",
-      "Scour for Scrap",
-      "Solemn Simulacrum",
-      "Splinter's Technique",
-      "Tamiyo's Journal",
-      "Urza's Sylex",
-      "Wayfarer's Bauble"
-     ]
+      "label": "A TUTOR drawn",
+      "_why": "Context. Tutor density is reported and never scored, and a tutor is only as good as the target it fetches — which is what the routes above are for.",
+      "need": [
+        {
+          "any_of": [
+            "Demonic Tutor",
+            "Diabolic Tutor",
+            "Enlightened Tutor",
+            "Splinter's Technique",
+            "Tamiyo's Journal",
+            "Muddle the Mixture",
+            "Dizzy Spell",
+            "Faerie Harbinger",
+            "Scour for Scrap",
+            "Solemn Simulacrum",
+            "Keeper of the Accord",
+            "Wayfarer's Bauble",
+            "Kaito Shizuki"
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "label": "A FINISHER drawn — the cards that end games",
-   "_from": "role:wincon",
-   "need": [
-    {
-     "any_of": [
-      "Bastion of Remembrance",
-      "Kaito Shizuki",
-      "Laboratory Maniac",
-      "Not Dead After All",
-      "Ratonhnhaké꞉ton",
-      "Sorin of House Markov // Sorin, Ravenous Neonate",
-      "Thassa, God of the Sea",
-      "The Girl in the Fireplace",
-      "The Meathook Massacre"
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }

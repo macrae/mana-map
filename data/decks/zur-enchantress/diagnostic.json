@@ -109,9 +109,191 @@
   "basis": "a turn on which no card in hand was castable with the mana that turn produced \u2014 not a turn on which nothing was cast"
  },
  "engine": {
-  "available": false,
-  "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without \u2014 the alternatives get `route`.",
-  "declared_targets": 6
+  "available": true,
+  "required": [
+   "RESOURCE ENGINE drawn \u2014 a draw engine that keeps drawing",
+   "AN ANSWER drawn \u2014 spot removal, a sweeper or a counterspell"
+  ],
+  "routes": [
+   "KILL \u2014 Demonic Consultation + Laboratory Maniac",
+   "KILL \u2014 drain: a payoff plus bodies to feed it"
+  ],
+  "online_by_turn": {
+   "1": {
+    "rate": 0.3776,
+    "ci95": [
+     0.3681,
+     0.3871
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.5249,
+    "ci95": [
+     0.5151,
+     0.5347
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.6104,
+    "ci95": [
+     0.6008,
+     0.6199
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.6645,
+    "ci95": [
+     0.6552,
+     0.6737
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.79,
+    "ci95": [
+     0.7819,
+     0.7979
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.8416,
+    "ci95": [
+     0.8343,
+     0.8486
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.8754,
+    "ci95": [
+     0.8688,
+     0.8817
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.901,
+    "ci95": [
+     0.895,
+     0.9067
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.9223,
+    "ci95": [
+     0.9169,
+     0.9274
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.9379,
+    "ci95": [
+     0.933,
+     0.9425
+    ],
+    "n": 10000
+   }
+  },
+  "any_route_by_turn": {
+   "1": {
+    "rate": 0.1465,
+    "ci95": [
+     0.1397,
+     0.1536
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.2741,
+    "ci95": [
+     0.2654,
+     0.2829
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.3578,
+    "ci95": [
+     0.3485,
+     0.3672
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.4102,
+    "ci95": [
+     0.4006,
+     0.4199
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.5688,
+    "ci95": [
+     0.5591,
+     0.5785
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.6499,
+    "ci95": [
+     0.6405,
+     0.6592
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.7032,
+    "ci95": [
+     0.6942,
+     0.7121
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.7497,
+    "ci95": [
+     0.7411,
+     0.7581
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.7867,
+    "ci95": [
+     0.7786,
+     0.7946
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.8194,
+    "ci95": [
+     0.8117,
+     0.8268
+    ],
+    "n": 10000
+   }
+  },
+  "bottleneck": {
+   "label": "AN ANSWER drawn \u2014 spot removal, a sweeper or a counterspell",
+   "by_turn_three": {
+    "rate": 0.7086,
+    "ci95": [
+     0.6996,
+     0.7174
+    ],
+    "n": 10000
+   }
+  },
+  "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
  },
  "mana": {
   "missed_land_drop_by_five": {

@@ -102,9 +102,191 @@
       "max_turn": 10
     },
     "engine": {
-      "available": false,
-      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
-      "declared_targets": 6
+      "available": true,
+      "required": [
+        "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
+        "AN ANSWER drawn — spot removal, a sweeper or a counterspell"
+      ],
+      "routes": [
+        "KILL — Demonic Consultation + Laboratory Maniac",
+        "KILL — drain: a payoff plus bodies to feed it"
+      ],
+      "online_by_turn": {
+        "1": {
+          "rate": 0.3776,
+          "ci95": [
+            0.3681,
+            0.3871
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.5249,
+          "ci95": [
+            0.5151,
+            0.5347
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.6104,
+          "ci95": [
+            0.6008,
+            0.6199
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.6645,
+          "ci95": [
+            0.6552,
+            0.6737
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.79,
+          "ci95": [
+            0.7819,
+            0.7979
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.8416,
+          "ci95": [
+            0.8343,
+            0.8486
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.8754,
+          "ci95": [
+            0.8688,
+            0.8817
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.901,
+          "ci95": [
+            0.895,
+            0.9067
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.9223,
+          "ci95": [
+            0.9169,
+            0.9274
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.9379,
+          "ci95": [
+            0.933,
+            0.9425
+          ],
+          "n": 10000
+        }
+      },
+      "any_route_by_turn": {
+        "1": {
+          "rate": 0.1465,
+          "ci95": [
+            0.1397,
+            0.1536
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.2741,
+          "ci95": [
+            0.2654,
+            0.2829
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.3578,
+          "ci95": [
+            0.3485,
+            0.3672
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.4102,
+          "ci95": [
+            0.4006,
+            0.4199
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.5688,
+          "ci95": [
+            0.5591,
+            0.5785
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.6499,
+          "ci95": [
+            0.6405,
+            0.6592
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.7032,
+          "ci95": [
+            0.6942,
+            0.7121
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.7497,
+          "ci95": [
+            0.7411,
+            0.7581
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.7867,
+          "ci95": [
+            0.7786,
+            0.7946
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.8194,
+          "ci95": [
+            0.8117,
+            0.8268
+          ],
+          "n": 10000
+        }
+      },
+      "bottleneck": {
+        "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
+        "by_turn_three": {
+          "rate": 0.7086,
+          "ci95": [
+            0.6996,
+            0.7174
+          ],
+          "n": 10000
+        }
+      },
+      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
     },
     "stall": {
       "by_turn": {
@@ -285,51 +467,51 @@
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac": {
+        "target:RESOURCE ENGINE drawn — a draw engine that keeps drawing": {
+          "value": 87,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'RESOURCE ENGINE drawn — a draw engine that keeps drawing' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:AN ANSWER drawn — spot removal, a sweeper or a counterspell": {
+          "value": 76,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'AN ANSWER drawn — spot removal, a sweeper or a counterspell' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:KILL — Demonic Consultation + Laboratory Maniac": {
           "value": 1,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac' by turn six",
+          "definition": "share of games assembling 'KILL — Demonic Consultation + Laboratory Maniac' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:KILL — drain: a payoff plus bodies to feed it": {
+          "value": 28,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'KILL — drain: a payoff plus bodies to feed it' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 79,
+          "value": 75,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:CARD ADVANTAGE drawn — a draw engine or a refill": {
-          "value": 90,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'CARD ADVANTAGE drawn — a draw engine or a refill' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:AN ANSWER drawn — interaction of any kind": {
-          "value": 72,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'AN ANSWER drawn — interaction of any kind' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
         "target:A TUTOR drawn": {
-          "value": 88,
+          "value": 86,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A FINISHER drawn — the cards that end games": {
-          "value": 72,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'A FINISHER drawn — the cards that end games' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -455,34 +637,59 @@
     "commander_cast_by_turn_6_pct": 88,
     "targets": [
       {
-        "label": "COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac",
+        "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
+        "by_turn_6_pct": 87
+      },
+      {
+        "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
+        "by_turn_6_pct": 76
+      },
+      {
+        "label": "KILL — Demonic Consultation + Laboratory Maniac",
         "by_turn_6_pct": 1
       },
       {
+        "label": "KILL — drain: a payoff plus bodies to feed it",
+        "by_turn_6_pct": 28
+      },
+      {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 79
-      },
-      {
-        "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
-        "by_turn_6_pct": 90
-      },
-      {
-        "label": "AN ANSWER drawn — interaction of any kind",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 75
       },
       {
         "label": "A TUTOR drawn",
-        "by_turn_6_pct": 88
-      },
-      {
-        "label": "A FINISHER drawn — the cards that end games",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 86
       }
     ]
   },
   "engine_health": {
-    "word": null,
-    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "word": "EXCEPTIONAL",
+    "rate": 0.79,
+    "ci95": [
+      0.7819,
+      0.7979
+    ],
+    "n": 10000,
+    "turn": 5,
+    "bands": [
+      [
+        0.6,
+        "EXCEPTIONAL"
+      ],
+      [
+        0.4,
+        "HEALTHY"
+      ],
+      [
+        0.2,
+        "BRITTLE"
+      ],
+      [
+        0.0,
+        "WEAK"
+      ]
+    ],
+    "why": "the engine is online by turn 5 in 79% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": null,
