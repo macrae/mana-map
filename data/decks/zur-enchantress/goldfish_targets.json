@@ -1,5 +1,5 @@
 {
-  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.",
+  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.\n\nUPDATED 2026-09-03 after the artifacts came out. The deck now runs ZERO artifacts: they are invisible to Zur, whose trigger reads enchantments only, and the equipment that remained was MV2 — outside even Urza's Saga's {0}-or-{1} fetch, so nothing could tutor them and the only way to see one was to draw it. Their jobs moved onto auras Zur CAN fetch.",
   "targets": [
     {
       "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
@@ -20,8 +20,7 @@
             "Call of the Ring",
             "Smuggler's Share",
             "Tribute to Horobi // Echo of Death's Wail",
-            "Kaito Shizuki",
-            "Mask of Memory"
+            "Kaito Shizuki"
           ]
         }
       ]
@@ -29,20 +28,29 @@
     {
       "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
       "required": true,
-      "_why": "The table plays at a turn-four clock and some seats hold hard lockout effects. A Zur deck that draws no interaction loses before its commander has attacked twice.",
+      "_why": "The table plays at a turn-four clock and some seats hold hard lockout effects. A Zur deck that draws no interaction loses before its commander has attacked twice. Widened 2026-09-03: the engine block named this the bottleneck at 0.709 by turn three, and the fix is COUNT, not cost — eight of the original ten were already MV<=2.",
       "need": [
         {
           "any_of": [
+            "Aura of Silence",
+            "Banishing Light",
+            "Counterspell",
+            "Darksteel Mutation",
+            "Dizzy Spell",
+            "Imprisoned in the Moon",
+            "Muddle the Mixture",
+            "Negate",
+            "No More Lies",
+            "Ossification",
             "Path to Exile",
             "Pongify",
             "Seal of Cleansing",
-            "Toxic Deluge",
+            "Sheltered by Ghosts",
+            "Swords to Plowshares",
             "The Meathook Massacre",
-            "Urza's Sylex",
-            "Negate",
-            "No More Lies",
-            "Muddle the Mixture",
-            "Dizzy Spell"
+            "Touch the Spirit Realm",
+            "Toxic Deluge",
+            "Witness Protection"
           ]
         }
       ]
@@ -97,16 +105,15 @@
       "need": [
         {
           "any_of": [
-            "Wayfarer's Bauble",
-            "Solemn Simulacrum",
-            "Keeper of the Accord",
-            "Monologue Tax",
             "Black Market Connections",
-            "Smuggler's Share",
-            "Misfortune Teller",
             "Inquisitive Glimmer",
-            "Transcendent Envoy",
-            "Naiad of Hidden Coves"
+            "Keeper of the Accord",
+            "Land Tax",
+            "Misfortune Teller",
+            "Monologue Tax",
+            "Naiad of Hidden Coves",
+            "Smuggler's Share",
+            "Transcendent Envoy"
           ]
         }
       ]
@@ -121,14 +128,11 @@
             "Diabolic Tutor",
             "Enlightened Tutor",
             "Splinter's Technique",
-            "Tamiyo's Journal",
             "Muddle the Mixture",
             "Dizzy Spell",
             "Faerie Harbinger",
             "Scour for Scrap",
-            "Solemn Simulacrum",
             "Keeper of the Accord",
-            "Wayfarer's Bauble",
             "Kaito Shizuki"
           ]
         }

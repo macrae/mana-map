@@ -110,12 +110,25 @@ def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
                                    limit=200))
     assert doc["identity"] == ["B", "U", "W"], "derived from the commander, not authored"
     assert doc["identity_derived_from"] == "zur-enchantress"
-    # 89 entries; each of the three DFCs contributes its joined form AND both
-    # faces, so the exclusion set is larger than the decklist. The number moves
-    # when the deck does — it last moved when the Esper enchantment rebuild took
-    # the list from two DFCs to three.
-    assert doc["excluded_deck_cards"] == 95, "89 entries; three DFCs contribute three names each"
-    assert doc["excluded_deck_cards"] > 89, "a DFC is excluded by every name it has"
+    # TIED TO THE DECK, NOT TO A NUMBER. This asserted `== 93` and then `== 95`,
+    # and broke on both of the swaps that moved zur-enchantress — a hard-coded
+    # count turns a test of "deck scoping excludes what you hold" into a change
+    # detector for one deck's list. What is actually being claimed is that
+    # `card_search` and the shared face helper agree, and that a DFC is excluded
+    # under EVERY name it has, so the exclusion set is strictly larger than the
+    # decklist. Both survive a swap; neither survives the exclusion breaking.
+    from manamap.pilot.common import expand_faces, load_deck_cards
+
+    entries = [c["name"] for c in load_deck_cards("zur-enchantress")["cards"]]
+    faces = set()
+    for name in entries:
+        faces |= expand_faces(name)
+    assert doc["excluded_deck_cards"] == len(faces), (
+        "card_search and expand_faces disagree about what the deck holds")
+    dfcs = [n for n in entries if " // " in n]
+    assert dfcs, "the fixture deck must hold at least one DFC for the next claim to bite"
+    assert doc["excluded_deck_cards"] > len(entries), (
+        "a DFC is excluded under every name it has, so faces outnumber entries")
     names = {r["name"] for r in doc["results"]}
     assert "Rhystic Study" not in names, "the deck already runs it — not a candidate"
     assert "Mystic Remora" not in names

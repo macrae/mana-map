@@ -1,9 +1,9 @@
 {
   "slug": "zur-enchantress",
-  "decklist_sha256": "f0281aef3eb369cfeede72ca0ffa334e1ff85cb2080822cd439bc2ef6f31335f",
+  "decklist_sha256": "8aeb2913bb23a5b045ec3625e8d8c8caa1abfd4b898c817586158a5b5d0634f4",
   "lands": {
     "total": 36,
-    "entries": 25,
+    "entries": 26,
     "life": {
       "recurring_per_tap_cycle": 6,
       "one_time_on_entry": 0
@@ -11,11 +11,11 @@
     "enters_tapped": 1,
     "enters_tapped_always": 1,
     "classes": {
-      "basic": 14,
+      "basic": 13,
       "fixing": 14,
       "tapped": 1,
       "untapped-dual": 21,
-      "utility": 9
+      "utility": 10
     },
     "list": [
       {
@@ -132,6 +132,14 @@
         ]
       },
       {
+        "name": "Field of Ruin",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
         "name": "Forbidden Orchard",
         "copies": 1,
         "classes": [
@@ -210,7 +218,7 @@
       },
       {
         "name": "Plains",
-        "copies": 5,
+        "copies": 4,
         "classes": [
           "basic"
         ],
@@ -328,7 +336,7 @@
   },
   "sources": {
     "lands": {
-      "W": 24,
+      "W": 23,
       "U": 23,
       "B": 23,
       "R": 0,
@@ -342,13 +350,19 @@
       "G": 0
     },
     "total": {
-      "W": 25,
+      "W": 24,
       "U": 24,
       "B": 24,
       "R": 0,
       "G": 0
     },
     "producers": [
+      {
+        "name": "Imprisoned in the Moon",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": []
+      },
       {
         "name": "Profane Procession // Tomb of the Dusk Rose",
         "kind": "ramp:rock",
@@ -363,39 +377,39 @@
   },
   "pips": {
     "B": {
-      "total_pips": 23.0,
+      "total_pips": 24.0,
       "max_pips": 2,
-      "cards": 20,
+      "cards": 21,
       "earliest_turn": 1,
       "effective_pips": 1
     },
     "U": {
-      "total_pips": 25.0,
+      "total_pips": 27.0,
       "max_pips": 2,
-      "cards": 23,
+      "cards": 24,
       "earliest_turn": 1,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 23.0,
+      "total_pips": 31.0,
       "max_pips": 2,
-      "cards": 20,
+      "cards": 27,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.324,
-      "source_share": 0.329
+      "pip_share": 0.293,
+      "source_share": 0.333
     },
     "U": {
-      "pip_share": 0.352,
-      "source_share": 0.329
+      "pip_share": 0.329,
+      "source_share": 0.333
     },
     "W": {
-      "pip_share": 0.324,
-      "source_share": 0.343
+      "pip_share": 0.378,
+      "source_share": 0.333
     }
   },
   "source_targets": {
@@ -405,45 +419,45 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.927,
+      "W": 0.918,
       "U": 0.918,
       "B": 0.918
     },
     "with_rocks_and_dorks": {
-      "W": 0.936,
+      "W": 0.927,
       "U": 0.927,
       "B": 0.927
     }
   },
   "ramp": {
     "ramp:cost-reduction": 3,
-    "ramp:land": 3,
-    "ramp:rock": 1
+    "ramp:land": 2,
+    "ramp:rock": 2
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.388,
-      "2": 0.996,
-      "3": 0.911,
-      "4": 0.794,
-      "5": 0.677,
-      "6": 0.568,
-      "7": 0.488,
-      "8": 0.44,
+      "10": 0.391,
+      "2": 0.998,
+      "3": 0.909,
+      "4": 0.788,
+      "5": 0.664,
+      "6": 0.569,
+      "7": 0.487,
+      "8": 0.439,
       "9": 0.401
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 6.663,
-      "2": 1.995,
+      "10": 6.645,
+      "2": 1.997,
       "3": 2.906,
-      "4": 3.7,
-      "5": 4.377,
-      "6": 4.946,
-      "7": 5.434,
-      "8": 5.874,
-      "9": 6.275
+      "4": 3.695,
+      "5": 4.359,
+      "6": 4.927,
+      "7": 5.414,
+      "8": 5.853,
+      "9": 6.254
     }
   },
   "assumptions": [

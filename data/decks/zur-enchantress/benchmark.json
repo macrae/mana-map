@@ -8,36 +8,36 @@
   "model_treasures": true,
   "model_combat": true
  },
- "decklist_sha256": "f0281aef3eb369cfeede72ca0ffa334e1ff85cb2080822cd439bc2ef6f31335f",
+ "decklist_sha256": "8aeb2913bb23a5b045ec3625e8d8c8caa1abfd4b898c817586158a5b5d0634f4",
  "metrics": {
   "mana_screw": {
-   "missed_land_drop_rate": 0.1988,
+   "missed_land_drop_rate": 0.2022,
    "worst_turn": "6",
-   "mulligan_rate": 0.197,
-   "mean_mulligans": 0.236,
-   "mana_at_turn_five": 4.406
+   "mulligan_rate": 0.2,
+   "mean_mulligans": 0.242,
+   "mana_at_turn_five": 4.391
   },
   "speed": {
    "kill_by_turn_6": 0.0,
-   "kill_by_turn_8": 0.041,
-   "kill_by_turn_10": 0.397,
-   "never_kills_rate": 0.603,
+   "kill_by_turn_8": 0.038,
+   "kill_by_turn_10": 0.344,
+   "never_kills_rate": 0.656,
    "median_kill_turn": 10
   },
   "consistency": {
    "mana_stdev_by_turn": {
-    "4": 0.5645,
-    "5": 0.8291,
-    "6": 1.0755
+    "4": 0.5663,
+    "5": 0.8328,
+    "6": 1.076
    },
-   "mana_stdev_turn_five": 0.8291,
-   "land_drops_by_six_stdev": 1.0755,
+   "mana_stdev_turn_five": 0.8328,
+   "land_drops_by_six_stdev": 1.076,
    "basis": "spread across all games of a quantity every deck has — not of kill turn, which is censored by how often a deck kills at all"
   },
   "response": {
-   "answer_cards": 20,
-   "answer_share": 0.2273,
-   "classes_covered": 7,
+   "answer_cards": 25,
+   "answer_share": 0.2809,
+   "classes_covered": 8,
    "classes_possible": 15,
    "classes": [
     "counterspell",
@@ -46,7 +46,8 @@
     "protection:self",
     "removal:debuff",
     "removal:spot",
-    "removal:sweeper"
+    "removal:sweeper",
+    "removal:tax"
    ],
    "basis": "card_roles.json over the 99 — CAPACITY, not performance"
   }
