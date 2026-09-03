@@ -93,6 +93,17 @@
   // Set by any real pan/zoom/drag. While false the graph may frame itself; once true it
   // never moves the camera again without being asked.
   let userAdjusted = false;
+  /* Set while THIS file is driving the camera through the zoom behaviour, so a
+   * transform of our own cannot be mistaken for a gesture. See the note in the
+   * zoom handler for what d3 does that makes the flag necessary. */
+  let selfMoving = 0;
+  /* Has this graph ever been grown? One landing card framed at the fit ceiling
+   * is a graph whose first six neighbours are born outside the viewport, and the
+   * ordinary way in — zoom the card, or drag it — takes the camera, after which
+   * `followGraph` and the settle-end fit both correctly stand down. So the FIRST
+   * expansion of a graph is allowed to frame itself once. Reset per graph, never
+   * on re-entry: picking up where you left off is not a first expansion. */
+  let expanded = false;
   let canvas = null, ctx = null;
   let surface = null, cam = null;
   let sim = null, nodes = [], links = [], byIdx = new Map();
@@ -228,6 +239,18 @@
       onZoom: function (t, byUser) {
         const prev = transform;
         transform = t;
+        // OUR OWN CAMERA MOVES ARE NEVER A CLAIM, and `sourceEvent` alone does
+        // not say so. d3-zoom keeps a wheel gesture alive on the node for 150 ms
+        // after the last wheel event (`wheelidled`), and `zoomBehaviour.transform`
+        // REUSES a live gesture rather than making a new one — so a programmatic
+        // transform issued inside that window is emitted carrying the wheel's
+        // `sourceEvent` and reads as the user's. The follow camera moves on a
+        // simulation tick, which is exactly the thing that can land 40 ms after a
+        // scroll, so it was handing the camera to the user on its own behalf and
+        // then standing down from it. Measured: follow ran once and stopped, and
+        // the expansion stayed off screen. `selfMoving` is the fact d3 cannot be
+        // asked for.
+        //
         // Once you have MOVED the camera it is yours: auto-fit stops competing with you.
         //
         // "Moved" is load-bearing, and it was missing. d3-zoom treats a bare mousedown as
@@ -238,7 +261,7 @@
         // past a k=12 single-card fit, and nothing was allowed to reframe it.
         //
         // A gesture that does not change the transform is not an adjustment.
-        if (byUser && prev &&
+        if (byUser && !selfMoving && prev &&
             (Math.abs(t.k - prev.k) > 1e-6 ||
              Math.abs(t.x - prev.x) > 0.5 || Math.abs(t.y - prev.y) > 0.5)) {
           userAdjusted = true;
@@ -427,7 +450,10 @@
       .scale(transform.k + (k - transform.k) * e);
     // Through the behaviour, never by assignment — d3 keeps its own copy on the node.
     followRuns++;
+    // Synchronous, so the zoom event this emits lands inside the flag.
+    selfMoving++;
     d3.select(canvas).call(zoomBehaviour.transform, next);
+    selfMoving--;
   }
 
   function fitToGraph(animate, auto) {
@@ -818,6 +844,7 @@
     if (canvas) canvas.style.display = '';
     resize();
     userAdjusted = false;      // a brand-new graph is allowed to frame itself, once
+    expanded = false;          // and to frame itself once more, when it first grows
 
     // Pre-settle the layout BEFORE the first paint.
     //
@@ -931,7 +958,18 @@
       grown++;
     }
 
-    restart(0.6);
+    /* THE FIRST EXPANSION FRAMES ITSELF.
+     *
+     * `restart` alone is a reheat; the fit comes from the settle-end handler and
+     * from `followGraph` easing after the extent, and BOTH decline once the
+     * camera is user-owned — which is right for every later branch and wrong for
+     * the first one, because the graph you were framing was one card and the
+     * cards you just asked for are off screen. Handing the camera back for
+     * exactly one settle is the narrowest fix: the next real pan, zoom or drag
+     * claims it again, so this cannot become a camera that keeps being taken. */
+    const firstGrowth = !expanded && (grown || added);
+    if (firstGrowth) { expanded = true; userAdjusted = false; }
+    restart(firstGrowth ? 0.9 : 0.6);
     renderPanel();
     const bits = [];
     if (grown) bits.push(grown + ' new');
@@ -1135,6 +1173,7 @@
     lineRows = null; lineId = null;
     groupRows = null; groupLabel = null;
     userAdjusted = false;
+    expanded = false;
     if (canvas) { transform = d3.zoomIdentity; draw(); }
     if (quiet) return;
     renderPanel();
@@ -1151,6 +1190,11 @@
     active = false;
     MM.hideCardPopup();
     if (sim) sim.stop();
+    // `renderPanel` returns early when inactive, so the bar is emptied here by
+    // name. The CSS already hides it with the canvas; this keeps the two dead
+    // buttons out of the DOM as well, which is what a stale `Force.fit()` handler
+    // over somebody else's mode would otherwise be.
+    renderGraphBar();
   }
 
   function focusCard(row) {
@@ -1283,6 +1327,31 @@
     enter(rows, region ? region.label : regionId);
   }
 
+  /* The two controls that act on the CANVAS, drawn ON the canvas.
+   *
+   * They used to be the last two buttons of Discovery's side panel, below the
+   * scoreboard, the truncation notice and two disclosure blocks. The panel is
+   * re-rendered wholesale on every state change, so this rides along with it
+   * rather than keeping its own listeners — same discipline, one less place for
+   * the bar and the graph to disagree about what is on screen.
+   *
+   * WHEN IT IS HIDDEN is the mode's business, not this function's:
+   * `#plot:not(.force-mode) .graph-bar` is the same rule that hides the canvas.
+   * What is decided here is only whether there is anything to act on — a lone
+   * landing card has no layout to fit and no layout to stir, and two live-looking
+   * buttons over one dot read as broken rather than as unavailable. */
+  function renderGraphBar() {
+    const el = document.getElementById('graphBar');
+    if (!el) return;
+    if (!active || nodes.length < 2) { el.innerHTML = ''; el.hidden = true; return; }
+    el.hidden = false;
+    el.innerHTML =
+      '<button class="graph-btn" onclick="Force.fit()" ' +
+        'title="Frame the whole graph">Fit</button>' +
+      '<button class="graph-btn" onclick="Force.reheat()" ' +
+        'title="Stir the layout and let it settle again">Reheat</button>';
+  }
+
   // ONE PANEL. This used to branch: Discovery owned the side panel in discovery chrome,
   // and in walk chrome this function rendered a second panel of its own — the scoreboard,
   // Fit/Reheat/New walk, the physics sliders and the trail. The Walk was Discover with
@@ -1290,6 +1359,8 @@
   // so it was deleted and its panel's keepers moved into `Discovery.render`: the
   // scoreboard, Fit, Reheat, Start over, the trail, and the truncation notice — which had
   // never been shown in discovery chrome at all, so a >500-card import was silently cut.
+  // Fit and Reheat have since moved on again, to `renderGraphBar` above: they act on the
+  // canvas, and the panel is not where you are looking when you want them.
   //
   // The physics sliders were NOT ported. They were a debugging surface and nothing else in
   // the product exposes tuning; `Force.tune` remains for the console.
@@ -1299,6 +1370,7 @@
   // roles, curve and verified lines with Discover's landing controls. One engine, two
   // owners, and the engine has to ask which.
   function renderPanel() {
+    renderGraphBar();
     if (!active) return;
     if (window.MM && MM.mode === 'build') {
       if (window.Build && window.Build.renderPanel) window.Build.renderPanel();
@@ -1337,7 +1409,7 @@
 
   window.Force = {
     enter, exit, isActive, seedFrom, focusCard, pinCard,
-    reheat, freeze, clearTrail, newWalk, tune, renderPanel, bbox,
+    reheat, freeze, clearTrail, newWalk, tune, renderPanel, renderGraphBar, bbox,
     setLine, clearLine, setGroup, clearGroup, selectCard,
     walkRegion, branchByRow, hasRow, setCommander,
     /* Adopt WITHOUT branching. `branchByRow` was the only way in, and it also

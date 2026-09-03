@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=196">
+<link rel="stylesheet" href="css/mana-map.css?v=197">
 </head>
 <body>
 
@@ -91,6 +91,15 @@
 <div class="main-area">
   <div id="plot">
     <div id="drillBar" class="drill-bar" style="display:none"></div>
+    <!-- Fit and Reheat act on the CANVAS, so they live on the canvas. They spent
+         their life at the foot of the right-hand panel, below the scoreboard, the
+         truncation notice and two disclosure blocks — controls for the thing you
+         are looking at, placed where you have to scroll away from it to reach
+         them. Top-RIGHT because `.drill-bar` owns the top-left and both can be on
+         screen at once. `force.js` fills it; `#plot:not(.force-mode)` hides it,
+         exactly as it hides `.force-canvas`, so leaving the mode takes the bar
+         with the graph and nothing has to remember to. -->
+    <div id="graphBar" class="graph-bar" hidden></div>
   </div>
   <div class="detail-panel" id="detailPanel">
     <div class="detail-inner" id="detailInner"></div>
@@ -106,16 +115,16 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=196"></script>
-<script src="js/shell.js?v=196"></script>
-<script src="js/stage.js?v=196"></script>
-<script src="js/session.js?v=196"></script>
-<script src="js/decklist.js?v=196"></script>
-<script src="js/discovery.js?v=196"></script>
-<script src="js/render/canvas.js?v=196"></script>
-<script src="js/mana-map.js?v=196"></script>
-<script src="js/drill.js?v=196"></script>
-<script src="js/force.js?v=196"></script>
-<script src="js/build.js?v=196"></script>
+<script src="js/api.js?v=197"></script>
+<script src="js/shell.js?v=197"></script>
+<script src="js/stage.js?v=197"></script>
+<script src="js/session.js?v=197"></script>
+<script src="js/decklist.js?v=197"></script>
+<script src="js/discovery.js?v=197"></script>
+<script src="js/render/canvas.js?v=197"></script>
+<script src="js/mana-map.js?v=197"></script>
+<script src="js/drill.js?v=197"></script>
+<script src="js/force.js?v=197"></script>
+<script src="js/build.js?v=197"></script>
 </body>
 </html>

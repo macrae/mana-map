@@ -7981,3 +7981,176 @@ def test_returning_to_the_boot_map_restores_its_coordinates(page):
         back = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
         assert back == home, (
             f"returning from {other} to {boot} left the points on {other}'s layout")
+
+
+# ---------------------------------------------------------------------------
+# The graph's controls, and the first expansion
+#
+# Fit and Reheat act on the canvas. They spent their life as the last two
+# buttons of the right-hand panel — under the scoreboard, the truncation notice
+# and two collapsed disclosures — so reaching the control for the thing on
+# screen meant scrolling away from the thing on screen. They now sit on the
+# canvas itself, top right, opposite `.drill-bar`.
+#
+# And the first expansion of a graph frames itself. A landing card is one node
+# fitted at the zoom ceiling, so its first six neighbours are born outside the
+# viewport; the ordinary way in — wheel over the card, or drag it — marks the
+# camera user-owned, after which the settle-end fit and the follow camera both
+# correctly stand down. Exactly one hand-back, on the first growth of a graph.
+# ---------------------------------------------------------------------------
+
+
+def test_fit_and_reheat_sit_over_the_canvas_not_in_the_panel(discover_page):
+    """The controls that act on the graph are ON the graph."""
+    r = discover_page.evaluate("""async () => {
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        const bar = document.getElementById('graphBar');
+        const plot = document.getElementById('plot');
+        const b = bar.getBoundingClientRect(), p = plot.getBoundingClientRect();
+        const labels = [...bar.querySelectorAll('button')].map(x => x.textContent.trim());
+        // What the PANEL still offers, so "moved" is asserted as gone-from-there
+        // as well as arrived-here. A control that got copied rather than moved is
+        // two controls, and this repo has paid for one of those before.
+        const panel = [...document.querySelectorAll('#deckInner button, #detailInner button')]
+            .map(x => x.textContent.trim());
+        return {
+            labels: labels,
+            visible: bar.offsetParent !== null && b.width > 0,
+            insidePlot: b.top >= p.top && b.bottom <= p.bottom &&
+                        b.left >= p.left && b.right <= p.right,
+            // Top right, where the drill bar is not.
+            nearTop: b.top - p.top < 40,
+            nearRight: p.right - b.right < 40,
+            panelHasFit: panel.some(t => t === 'Fit' || t === 'Reheat'),
+            nodes: Force.nodeCount,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["nodes"] > 1, "nothing was expanded, so the bar was never asked for"
+    assert r["labels"] == ["Fit", "Reheat"], f"the bar reads {r['labels']}"
+    assert r["visible"], "the graph bar rendered but is not on screen"
+    assert r["insidePlot"], "the graph bar is not over the plot"
+    assert r["nearTop"] and r["nearRight"], "the bar is not in the top-right corner"
+    assert not r["panelHasFit"], "Fit/Reheat were copied into the canvas, not moved"
+
+
+def test_the_bar_is_absent_until_there_is_a_layout(discover_page):
+    """One landing card has no layout to fit and none to stir.
+
+    Two live-looking buttons over a single dot read as broken rather than as
+    unavailable, which is the same failure as a callout level that fires on
+    everything.
+    """
+    r = discover_page.evaluate("""async () => {
+        const bar = document.getElementById('graphBar');
+        const alone = {n: Force.nodeCount, hidden: bar.hidden, html: bar.innerHTML};
+        Force.branchByRow(Discovery.current, 'similar');
+        await new Promise(r => setTimeout(r, 1500));
+        return {alone: alone, after: {n: Force.nodeCount, hidden: bar.hidden}};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["alone"]["n"] == 1, "the landing was not a single card"
+    assert r["alone"]["hidden"] and r["alone"]["html"] == "", (
+        "the bar was offered over a graph of one card")
+    assert r["after"]["n"] > 1 and not r["after"]["hidden"], (
+        "the bar never appeared once there was a layout")
+
+
+def test_the_first_expansion_frames_itself_exactly_once(discover_page):
+    """Take the camera, then expand: the neighbours must arrive on screen.
+
+    The wheel gesture claims the camera — deliberately, because that is the
+    reported sequence — so `fitToGraph(auto)` and `followGraph` both correctly
+    decline, and a landing card framed at the zoom ceiling has its first six
+    neighbours born outside the viewport. The first growth of a graph hands the
+    camera back for one settle.
+
+    THE CONTROL IS THE SECOND EXPANSION. Re-claiming the camera and branching
+    again must NOT reframe, or "once" is not what was built: it would be a camera
+    that keeps being taken, which is the whole reason `userAdjusted` exists.
+
+    The wheel zooms OUT. A single landing card is fitted at MAX_FIT_SCALE, which
+    is also d3-zoom's ceiling here, so a zoom-IN wheel is clamped to no change —
+    and a gesture that does not move the transform is deliberately not an
+    adjustment. The first draft of this test scrolled in and asserted on a camera
+    nobody had claimed.
+    """
+    r = discover_page.evaluate("""async () => {
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        const wheel = () => c.dispatchEvent(new WheelEvent('wheel', {bubbles: true,
+            cancelable: true, clientX: rect.left + 400, clientY: rect.top + 300,
+            deltaY: 300}));
+        const onScreen = () => Force.screenNodes().every(
+            n => n.x > 0 && n.x < rect.width && n.y > 0 && n.y < rect.height);
+
+        const k0 = d3.zoomTransform(c).k;
+        wheel();
+        const claimed = Force.cameraOwnedByUser, k1 = d3.zoomTransform(c).k;
+
+        Force.branchByRow(Discovery.current, 'similar');
+        const handedBack = !Force.cameraOwnedByUser;
+        await new Promise(r => setTimeout(r, 3500));   // through the settle and the fit
+        const first = {onScreen: onScreen(), n: Force.nodeCount};
+
+        // ── the control: a second expansion, camera re-claimed by hand ──
+        wheel();
+        const owned2 = Force.cameraOwnedByUser;
+        const k2 = d3.zoomTransform(c).k, follow2 = Force.followCount;
+        const grew = Force.nodeCount;
+        const next = Force.screenNodes().find(n => n.row !== Force.pinnedRow());
+        Force.branchByRow(next.row, 'similar');
+        await new Promise(r => setTimeout(r, 3500));
+        return {k0: k0, k1: k1, claimed: claimed, handedBack: handedBack,
+                first: first, owned2: owned2, k2: k2, k3: d3.zoomTransform(c).k,
+                follow2: follow2, follow3: Force.followCount,
+                grew: grew, nAfter: Force.nodeCount};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["k1"] != r["k0"] and r["claimed"], (
+        "the wheel gesture did not claim the camera — the test is not testing "
+        "the reported case")
+    assert r["handedBack"], "the first expansion did not take the camera back"
+    assert r["first"]["n"] > 1, "the first branch grew nothing"
+    assert r["first"]["onScreen"], (
+        "after the first expansion some cards are still outside the viewport")
+
+    assert r["owned2"], "the second wheel did not re-claim the camera"
+    assert r["nAfter"] > r["grew"], "the second branch grew nothing, so it proves nothing"
+    assert abs(r["k3"] - r["k2"]) < 1e-6, (
+        f"the camera was taken a second time: {r['k2']:.4f} -> {r['k3']:.4f}")
+    assert r["follow3"] == r["follow2"], (
+        f"the follow camera ran {r['follow3'] - r['follow2']} times on a graph the "
+        f"user had taken")
+
+
+def test_the_follow_camera_does_not_claim_the_camera_for_the_user(discover_page):
+    """A programmatic transform inside d3-zoom's wheel window read as a gesture.
+
+    `zoomBehaviour.transform` REUSES a live gesture rather than creating one, and
+    d3-zoom keeps a wheel gesture on the node for 150 ms after the last wheel
+    event. So `followGraph`'s own camera move — which runs on a simulation tick,
+    the one thing that reliably lands tens of milliseconds after a scroll — was
+    emitted carrying the wheel's `sourceEvent` and marked the camera user-owned.
+    Follow then stood down from a claim it had made itself: measured at ONE run
+    before the fix and twenty after, with the expansion left off screen.
+
+    Asserted with no pause between the wheel and the branch, because the pause is
+    exactly what hid it.
+    """
+    r = discover_page.evaluate("""async () => {
+        const c = document.getElementById('forceCanvas');
+        const rect = c.getBoundingClientRect();
+        c.dispatchEvent(new WheelEvent('wheel', {bubbles: true, cancelable: true,
+            clientX: rect.left + 400, clientY: rect.top + 300, deltaY: 300}));
+        Force.branchByRow(Discovery.current, 'similar');   // inside the 150 ms window
+        await new Promise(r => setTimeout(r, 3500));
+        return {follow: Force.followCount, owned: Force.cameraOwnedByUser};
+    }""")
+    assert discover_page.js_errors == []
+    assert not r["owned"], (
+        "the camera reads as user-owned, but the only thing that moved it after "
+        "the wheel was the follow camera itself")
+    assert r["follow"] > 5, (
+        f"the follow camera ran {r['follow']} times — it stood down from its own claim")

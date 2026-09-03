@@ -508,9 +508,13 @@ window.Discovery = (function () {
         '</div>' +
         (cut ? '<div class="lens-note">seeded with ' + Force.MAX_NODES + ' of ' + cut +
                ' — the rest were dropped to keep the graph readable</div>' : '') +
+        // FIT AND REHEAT ARE NOT HERE ANY MORE. They act on the canvas and now
+        // live on it (`#graphBar`, filled by `Force.renderGraphBar`), because a
+        // control for the thing you are looking at should not be four blocks
+        // below the thing you are looking at. Start over stays: it discards the
+        // graph rather than adjusting it, and a destructive control belongs
+        // beside the count of what it would discard.
         '<div class="discover-graphctl">' +
-          '<button class="lens-btn" onclick="Force.fit()">Fit</button>' +
-          '<button class="lens-btn" onclick="Force.reheat()">Reheat</button>' +
           '<button class="lens-btn" onclick="Discovery.newGraph()">Start over ↺</button>' +
         '</div>' +
         '<div class="lens-note">Drag a card to fling it · click to branch · scroll to zoom</div>' +
