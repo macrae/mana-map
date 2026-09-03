@@ -22,6 +22,7 @@ import pytest
 
 from manamap.config import DECKS_DIR, MANUALS_DIR
 from manamap.pilot import poh, poh_spec as spec, validate_poh
+from manamap.pilot.deck_notes import read_log
 from conftest import requires_deck
 
 SLUG = "ur-dragon"
@@ -294,6 +295,14 @@ def test_a_procedure_page_names_only_cards_the_deck_runs():
     This is the handbook's whole claim — that it describes the deck in the
     pilot's hands. The engine model named 17 phantom cards until it was rebuilt,
     so the risk is demonstrated rather than hypothetical.
+
+    IN THE 99 *OR* IN THE PILOT'S OWN LOG, which is the rule `validate_debrief`
+    already uses for the same reason. A procedure legitimately names an
+    OPPONENT'S card when describing what the table did: edgar's removal page
+    lists "an opponent is pinging your 1/1 tokens instead of attacking your
+    large bodies — log 004: Tom's Goblin Sharpshooter did this all game", and
+    that indication is worth more than a generic one precisely because it
+    happened. The first cut of this test called it an invented card.
     """
     import json as _json
 
@@ -311,6 +320,23 @@ def test_a_procedure_page_names_only_cards_the_deck_runs():
             continue
         checked += 1
         have = {c["name"].lower() for c in expand_copies(cards.get("cards") or [])}
+        # Cards the pilot met and wrote down are cards the handbook may name.
+        # PARSED WITH THE PRODUCTION READER, then whitespace-normalised — the
+        # same `_norm` `validate_debrief` uses, for the same reason.
+        #
+        # Reading log.jsonl as text does not work: the notes are hard-wrapped, so
+        # log 004 stores "Tom had Goblin\\nSharpshooter pinging my tokens" with a
+        # LITERAL backslash-n. A raw substring test called that correctly-grounded
+        # reference an invented card, and normalising whitespace did not help
+        # because there was no whitespace there to normalise.
+        try:
+            entries = read_log(base.name)
+        except Exception:
+            entries = []
+        if entries:
+            notes = re.sub(r"\s+", " ", " ".join(
+                str(e.get("text") or "") for e in entries)).lower()
+            have |= {k for k in corpus if len(k) > 10 and k in notes}
         text = _json.dumps(doc)
         # LONGEST MATCH WINS, and only on a word boundary.
         #

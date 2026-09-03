@@ -158,6 +158,40 @@ _CATCHALL_ANY = re.compile(
     re.I | re.S)
 _NONLAND_CLASSES = ("creature", "artifact", "enchantment")
 
+# ── A GAP FOUND 2026-09-02, MEASURED, AND DELIBERATELY NOT PATCHED ───────
+#
+# `_interaction_breadth` skips any card whose roles do not intersect
+# `SUITE_ROLES`, so the axis is ROLE-GATED BEFORE it is an oracle-text
+# heuristic — and its own `how` string says only the latter. A card the role
+# taxonomy misses is invisible to it however plainly its text answers.
+#
+# CHAOS WARP HAS NO ROLES AT ALL. So goblin-storm reads "no answer to
+# enchantments, graveyards or lands" while holding the one card in its 79 that
+# answers any permanent, and ur-dragon reads the same about graveyards. Found by
+# a procedures agent reading the decklist rather than trusting the axis.
+#
+# TWO WIDENINGS WERE MEASURED AND BOTH FAILED THEIR SWEEP:
+#
+#   Adding `shuffle` to `_CATCHALL_VERB` matches 7 corpus cards and FIVE are
+#   wrong — Glimpse of Tomorrow, Lich's Mirror, Sway of the Stars, The Great
+#   Aurora and Warp World all shuffle YOUR OWN or every player's permanents.
+#   Symmetric resets, not answers. The narrow form
+#   `owner of target permanent[^.]{0,40}shuffle` matches exactly Chaos Warp and
+#   Chaos Wrap, both real — but it cannot fire, because the role gate rejects
+#   the card before any pattern runs.
+#
+#   Opening the gate to roleless cards that match a catch-all admits four across
+#   the fleet and TWO are wrong: Displacer Kitten exiles "target nonland
+#   permanent YOU CONTROL" and returns it — a blink, not an answer — and The
+#   Restoration of Eiganjo matches on a clause about searching for a Plains. The
+#   obvious discriminator does not work either: "you control" falls OUTSIDE the
+#   matched span, so excluding it on the match text changes nothing.
+#
+# So the fix is a change to `ROLE_PATTERNS`, which is a corpus-wide retag with
+# its own sweep, not a patch here. Recorded rather than half-done: a pattern
+# that cannot fire is the exact failure this file's neighbours spent 2026-09-02
+# removing, and shipping another knowingly would be worse than the gap.
+
 # A catch-all gated on a mana-value FLOOR cannot reach a land, because a land has no
 # mana cost and so is always mana value 0. Despark ("exile target permanent with mana
 # value 4 or greater") reads as answering every class including land, and it answers

@@ -1,0 +1,269 @@
+{
+  "emergency": [
+    {
+      "condition": "stalled",
+      "condition_text": "turn six or later, fewer than three creatures on the battlefield, and the cheap spells in hand have nothing to copy through.",
+      "indications": [
+        "Fewer than three creatures on the battlefield after turn five.",
+        "Crimson Wisps, Expedite or Renegade Tactics in hand with one creature to copy to.",
+        "Zada or Storm-Kiln Artist on the battlefield under an otherwise empty board.",
+        "Dragon Fodder, Krenko's Command, Mogg War Marshal and Searslicer Goblin all still unseen.",
+        "Land drops landing on time and the hand the same size it was three turns ago."
+      ],
+      "immediate": [
+        "Cast the cheapest body in hand before any cantrip: Dragon Fodder, Krenko's Command, Mogg War Marshal or Searslicer Goblin.",
+        "Cast Goblin Matron and fetch Mogg War Marshal or Skirk Prospector.",
+        "Cast Faithless Looting and discard the rituals — Seething Song, Battle Hymn, Brightstone Ritual — keeping every creature.",
+        "Hold Crimson Wisps, Expedite and Renegade Tactics until three creatures are on the battlefield.",
+        "Attack with one creature so Searslicer Goblin makes a Goblin at your end step."
+      ],
+      "subsequent": [
+        "Rebuild to three bodies before you spend a cantrip on Zada.",
+        "Cast Empty the Warrens off Brightstone Ritual or Seething Song and skip the Zada turn: stacks 002 and 005 are checker-passed and name no commander.",
+        "Play Idol of Oblivion once a token maker has resolved, and take the draw on every turn a token entered.",
+        "Recast Zada once, at {5}{R}. After that, spend the mana on bodies."
+      ],
+      "notes": "Goblin Matron finds any Goblin card, Krenko, Mob Boss included. On a stalled board Krenko taps for one token, and only if something already gave him haste; Mogg War Marshal is two bodies for {1}{R}. Fetch the Marshal.",
+      "grounded_in": [
+        "log:001"
+      ]
+    },
+    {
+      "condition": "raced",
+      "condition_text": "an opponent kills the table before you have a board, and you cannot answer it on board.",
+      "indications": [
+        "An opponent with a token maker and a damage payoff both on the battlefield by turn three.",
+        "Two or more mono-red decks at the table.",
+        "Your life below 30 before your fourth land drop.",
+        "Every creature in your hand costing four or more.",
+        "No seat has cast a removal spell yet."
+      ],
+      "immediate": [
+        "Cast every creature you can afford each turn and keep them home as blockers.",
+        "Cycle Gempalm Incinerator for {1}{R} at the racer's largest creature; X is every Goblin on the battlefield, theirs counted.",
+        "Cast Chaos Warp on the racer's engine permanent, not on their largest body.",
+        "Cast Blasphemous Act once six or more creatures are on the battlefield; it costs {1} less for each of them.",
+        "Cast Empty the Warrens at whatever storm count you have — two tokens per copy is blockers."
+      ],
+      "subsequent": [
+        "Attack the racer and only the racer until they are dead.",
+        "Spend Grapeshot and Siege-Gang Commander's activation on their creatures rather than on their life total.",
+        "Cast Goblin Negotiation for X at their largest creature; the excess damage comes back as your own Goblins.",
+        "Cast Past in Flames once the graveyard holds two rituals and a payoff."
+      ],
+      "notes": "Blasphemous Act deals 13 to each creature and kills your board with theirs. With Boggart Shenanigans or Pashalik Mons on the battlefield first, every one of your own Goblin deaths is a point aimed at a player, and the card stops being a reset.",
+      "grounded_in": [
+        "log:002"
+      ]
+    },
+    {
+      "condition": "wipe",
+      "condition_text": "a sweeper is coming and the board is the whole plan.",
+      "indications": [
+        "An opponent in white or black holding four or more mana open through your turn.",
+        "A seat that has cast nothing for two turns with cards in hand.",
+        "Your board at six or more creatures with neither Boggart Shenanigans nor Pashalik Mons on the battlefield.",
+        "Blasphemous Act in your own hand costing four or less — the board that cheapens it for you cheapens theirs."
+      ],
+      "immediate": [
+        "Cast Battle Hymn or Brightstone Ritual in response; both are instants and both read the board that is about to die.",
+        "Spend that mana on Crimson Wisps or Expedite targeting only Zada — every copy draws a card before the sweeper resolves.",
+        "Sacrifice the remaining Goblins to Goblin Bombardment, one damage each at the opponent closest to dead.",
+        "Return Zada to the command zone rather than the graveyard."
+      ],
+      "subsequent": [
+        "Rebuild to three bodies, not eight. A second sweeper answers eight as easily as three.",
+        "Play Boggart Shenanigans or Pashalik Mons before the next token maker, so the following sweeper pays you a point per Goblin.",
+        "Cast Empty the Warrens off Brightstone Ritual and Seething Song instead of recasting Zada at {5}{R}.",
+        "Cast Past in Flames to flash back the cantrips and rituals the last turn put in the graveyard."
+      ],
+      "notes": "Skullclamp equips only as a sorcery. Attach it in your main phase on a turn you expect the sweeper; with the sweeper on the stack the Equip ability is not available and the two cards do not arrive.",
+      "grounded_in": []
+    },
+    {
+      "condition": "removal",
+      "condition_text": "Zada, or the one permanent this turn is built on, is targeted.",
+      "indications": [
+        "An opponent with two mana open in a colour that answers a creature, during your turn.",
+        "Zada on the battlefield with three or more other creatures and a cantrip in your hand.",
+        "Storm-Kiln Artist on the battlefield with Haze of Rage in hand.",
+        "Swiftfoot Boots on the battlefield attached to nothing."
+      ],
+      "immediate": [
+        "With the removal spell on the stack, cast Crimson Wisps or Expedite targeting only Zada — your spell resolves first and every copy draws.",
+        "Spend the rest of the turn's mana on a second instant aimed at Zada before the removal resolves.",
+        "Return Zada to the command zone rather than the graveyard.",
+        "Spend the cards you just drew on bodies, not on the payoff."
+      ],
+      "subsequent": [
+        "Recast Zada at {5}{R} only with three or more creatures already on the battlefield.",
+        "Equip Swiftfoot Boots to Zada in your main phase, before the next cantrip rather than after it.",
+        "Run the storm half without her: two rituals into Empty the Warrens with Impact Tremors on the battlefield is checker-passed and names no commander (stack 002).",
+        "Cast Frontline Heroism to copy a single-target spell once, at a Soldier it makes, on the turns Zada is in the command zone."
+      ],
+      "notes": "Renegade Tactics and Wild Ride are sorceries and cannot be cast with removal on the stack. Crimson Wisps, Expedite, Fists of Flame and Ancestors' Aid are the instants that target one creature, and Fists of Flame draws before it pumps.",
+      "grounded_in": []
+    },
+    {
+      "condition": "combo",
+      "condition_text": "an opponent is assembling a loop, and one card in the 99 answers a noncreature permanent at instant speed.",
+      "indications": [
+        "An opponent searching their library twice in one turn.",
+        "An opponent untapping with six or more mana and cards in hand.",
+        "A permanent entering that has ended a game at this table before.",
+        "An opponent holding priority after their own spell resolves."
+      ],
+      "immediate": [
+        "Cast Chaos Warp on the piece already on the battlefield. Grepping all 79 entries, it is the one card that answers an enchantment or a land.",
+        "Sacrifice a Goblin to Goblin Trashmaster to destroy an artifact piece; the ability costs no mana and works while you are tapped out.",
+        "Cycle Gempalm Incinerator for {1}{R} at a creature piece; X is every Goblin on the battlefield.",
+        "Attack the combo seat with the whole board and keep nothing back for a second turn."
+      ],
+      "subsequent": [
+        "Cast Vandalblast on your next turn for {R} at their artifact, or overloaded for {4}{R} at every artifact you do not control.",
+        "Point Goblin Bombardment, Pashalik Mons and Siege-Gang Commander at the combo seat until it is dead.",
+        "Cast Empty the Warrens and Grapeshot on the turn you hold them rather than waiting for a larger storm count.",
+        "Tell the seat holding counterspells which permanent you cannot answer, and ask them to hold up mana for it."
+      ],
+      "notes": "Nothing in the 99 touches a graveyard. A loop that rebuilds out of a graveyard is answered by killing the player, and the clock for that is the board you already have.",
+      "grounded_in": []
+    },
+    {
+      "condition": "mana-drought",
+      "condition_text": "the land drops have stopped, or the lands in play make no red.",
+      "indications": [
+        "Three lands on turn five.",
+        "Two or more of Forgotten Cave, Smoldering Crater, Hidden Volcano and Spinerock Knoll in hand; all four enter tapped.",
+        "Fountainport, Goblin Burrows, Kher Keep, Reliquary Tower or War Room as your only untapped land.",
+        "A hand of four- and five-drops with Sol Ring undrawn."
+      ],
+      "immediate": [
+        "Cycle Forgotten Cave for {R} or Smoldering Crater for {2} to dig for a land.",
+        "Cast Sol Ring or Ruby Medallion ahead of any body.",
+        "Cast Skirk Prospector and Impulsive Pilferer: one turns a Goblin into {R}, the other becomes a Treasure when it dies.",
+        "Cast Faithless Looting and discard the five-drops.",
+        "Activate War Room for {3}, a tap and one life at the end of a turn you cast nothing."
+      ],
+      "subsequent": [
+        "Play the tapped lands on turns you cast nothing and the untapped ones on turns you cast something.",
+        "Cast Brightstone Ritual with two or more Goblins on the battlefield and Battle Hymn with three or more creatures; below that they cost more than they add.",
+        "Cast Glimpse the Impossible only with four mana left afterwards — the three exiled cards are playable this turn only.",
+        "Activate Fountainport for {2} and a spare token to draw a card once the board is wide enough to lose one."
+      ],
+      "notes": "Five of the fifteen land entries — Fountainport, Goblin Burrows, Kher Keep, Reliquary Tower and War Room — tap for {C} and no red. Count red sources rather than lands when you decide whether a hand casts {R}{R} on turn two.",
+      "grounded_in": []
+    },
+    {
+      "condition": "politics",
+      "condition_text": "the table has decided you are the deck to kill, and the board is 1/1s.",
+      "indications": [
+        "Two seats attacking you while a third builds.",
+        "An opponent naming Zada before you have cast her.",
+        "Removal aimed at Impact Tremors or Goblin Bombardment rather than at a creature.",
+        "The table stops trading with each other the turn after you cast Empty the Warrens."
+      ],
+      "immediate": [
+        "Cast the payoff this turn rather than the turn after: Empty the Warrens, Grapeshot or Fists of Flame, at whatever count you have.",
+        "Sacrifice Goblins to Goblin Bombardment and Siege-Gang Commander at the seat with the lowest life, before the board is answered.",
+        "Leave Zada in the command zone and run the lines that name no commander (stacks 002 and 005).",
+        "Block with the 1/1s. A body absorbing an attack is worth more than a copy count you never spend."
+      ],
+      "subsequent": [
+        "Attack the seat that attacked you, not the seat that is winning, until they stop.",
+        "Rebuild only to the number of bodies you will spend next turn.",
+        "Offer Goblin Bombardment and Gempalm Incinerator as the table's answer to the board that is winning, and use them there.",
+        "Cast Chaos Warp on a threat aimed at another seat once, out loud."
+      ],
+      "notes": "In the 2026-09-02 Forge run against giada-angels, baylen-tokens and abaddon the pod aimed a mean 0.31 interaction spells per game at this seat, against 1.21 received by giada-angels, and this seat was still eliminated in 90 of 100 games. Forge's AI does not read a Goblin board; a table does.",
+      "grounded_in": []
+    }
+  ],
+  "normal": {
+    "preflight": {
+      "keep": [
+        "Two to five lands, at least two of them adding red.",
+        "A creature costing two or less, or a token maker: Skirk Prospector, Goblin Lackey, Goblin Bushwhacker, Impulsive Pilferer, Mogg War Marshal, Searslicer Goblin, Rundvelt Hordemaster, Grenzo, Havoc Raiser, Conspicuous Snoop, Dragon Fodder, Krenko's Command.",
+        "A second body reachable by turn three from the cards in hand.",
+        "A red source you can tap on turn one.",
+        "Kher Keep counts as a body source: {1}{R} and a tap makes a 0/1 Kobold, every turn."
+      ],
+      "ship": [
+        "Cantrips and a copy engine with no creature under three mana. That is the hand that lost game 001: clean lands, one-mana instants and sorceries, Storm-Kiln Artist, zero Goblins.",
+        "A hand whose cheapest creature costs four or more. Three basics, Dwarven Mine and Krenko, Mob Boss is the hand that lost game 002.",
+        "Rituals with no board: Battle Hymn adds {R} for each creature you control, Brightstone Ritual for each Goblin on the battlefield.",
+        "Six or seven lands.",
+        "One land with no Sol Ring."
+      ],
+      "note": "Dwarven Mine is a body as well as a land, and it arrives late: it enters tapped unless you already control three other Mountains, and only an untapped Dwarven Mine makes the 1/1 Dwarf. That Dwarf counts for Zada's copy count and for Battle Hymn, and it is not a Goblin, so Brightstone Ritual does not count it. Game 002's opener was three basics, Dwarven Mine and Krenko, Mob Boss — the Dwarf was a turn-four body at the earliest, and the hand was shipped too late."
+    },
+    "startup": {
+      "steps": [
+        "Play an untapped red source on turn one. Hold Forgotten Cave, Smoldering Crater, Hidden Volcano and Spinerock Knoll for a turn you cast nothing.",
+        "Cast a one-mana Goblin on turn one: Skirk Prospector, Goblin Lackey, Impulsive Pilferer, or Goblin Bushwhacker unkicked.",
+        "Cast Dragon Fodder or Krenko's Command on turn two, ahead of Sol Ring and ahead of any cantrip.",
+        "Cast a third body on turn three: Mogg War Marshal, Searslicer Goblin, Rundvelt Hordemaster, or Goblin Matron fetching one of them.",
+        "Count the creatures at the end of turn three. Cast Zada on turn four only if that count is three or more."
+      ],
+      "note": "Mogg War Marshal's echo is {1}{R} at your next upkeep. Declining it sacrifices the Marshal and makes another Goblin, so the body count is two either way — pay the echo only on a turn a third body changes a copy count."
+    },
+    "assembly": {
+      "steps": [
+        "Play Impact Tremors or General Kreat, the Boltbringer before the next token maker resolves; each creature entering afterwards is a damage trigger at every opponent.",
+        "Play Goblin Warchief or Goblin Chieftain before Krenko, Mob Boss. The Warchief locks Krenko at {1}{R}{R} and the haste is what lets him tap the turn he lands (stack 004).",
+        "Cast Zada with three or more other creatures already on the battlefield.",
+        "Equip Swiftfoot Boots to Zada in your main phase, before the first cantrip.",
+        "Cast Crimson Wisps, Expedite or Renegade Tactics targeting only Zada. Four other creatures is four copies plus the original, five cards (stack 001)."
+      ],
+      "note": "Frontline Heroism makes one 1/1 Soldier and copies the spell once, at that Soldier, however wide you are. It is redundancy for the effect and not for the multiplier."
+    },
+    "cruise": {
+      "steps": [
+        "Play the land. Play the untapped one and hold the cycling lands.",
+        "Cast a body before you cast a spell.",
+        "Count the creatures on the battlefield. That number is Zada's copy count, Battle Hymn's mana and Impact Tremors' damage per creature entering.",
+        "Attack with at least one creature so Searslicer Goblin makes a Goblin at your end step, and so Grenzo, Havoc Raiser turns combat damage into a card off that player's library.",
+        "Activate Idol of Oblivion at your end step on any turn a token entered.",
+        "Spend leftover mana on War Room: {3}, a tap and one life for a card."
+      ],
+      "note": "Storm counts spells CAST. Copies are put on the stack without being cast, so Empty the Warrens at storm count 3 makes eight tokens and a Grapeshot after it still sees a count of 4 (stack 002)."
+    },
+    "closing": {
+      "steps": [
+        "Count the creatures on the battlefield and add Zada. That number is the copy count.",
+        "Total the damage before you cast anything: Impact Tremors and General Kreat pay one per creature entering, Goblin Bombardment one per body, Boggart Shenanigans and Pashalik Mons one per Goblin death, Siege-Gang Commander two per Goblin eaten.",
+        "If the total is short of a seat's life, pass the turn with the payoff in hand and add a body.",
+        "If it is lethal, grant haste — Goblin Bushwhacker kicked, Goblin Chieftain, Howlsquad Heavy or Goblin Warchief — then declare the attack.",
+        "After blockers are declared, cast Fists of Flame targeting only Zada, then sacrifice the blocked Goblins to Goblin Bombardment at the player you are killing."
+      ],
+      "note": "Fists of Flame's copies do not grow retroactively. Each copy draws before it pumps, so the order they resolve in sets the size: stack 003 locks the tokens at +3/+0, +4/+0, +5/+0, +6/+0 and Zada at +7/+0 with trample, 32 power in total."
+    }
+  },
+  "handling": {
+    "optics": [
+      "Deploy bodies first and the damage payoff last. Four 1/1s draw no removal; four 1/1s beside Impact Tremors draw all of it.",
+      "Keep Krenko, Mob Boss in hand until the turn you can tap him — a Krenko that survives to untap is the table's first target.",
+      "Say what the board does when asked. A count of 1/1s is public information and the number the table is bad at is the copy count, not the board.",
+      "Cast the rituals in the same turn as the payoff. A Seething Song on an empty turn tells the table there is a storm turn coming."
+    ],
+    "reveal": [
+      "Hold Empty the Warrens, Haze of Rage and Fists of Flame until the turn they kill a seat.",
+      "Cast Grapeshot early only to kill a creature that is racing you; otherwise it is the last five points.",
+      "Play Impact Tremors on the turn the token maker follows it, not two turns before.",
+      "Cast Zada on a board of three or more. She reads as a 3/3 to a table that has not seen the cantrips."
+    ],
+    "alliances": [
+      "Offer Goblin Bombardment and Gempalm Incinerator as the table's removal and spend them on the seat that is winning.",
+      "Say plainly that Chaos Warp is the only answer to an enchantment or a land in the deck and nothing here touches a graveyard, and ask the seat that carries those to spend theirs.",
+      "Trade a turn of not attacking a seat for a turn of them not attacking you, and take the deal that buys two turns rather than one.",
+      "Break the deal on the turn the board is lethal, and say so before you declare attackers."
+    ],
+    "targets": [
+      "Point every optional damage — Goblin Bombardment, Pashalik Mons, Boggart Shenanigans, Siege-Gang Commander, Siege-Gang Lieutenant, Broadside Bombardiers — at one seat until it is dead. Spread across three seats it kills nobody.",
+      "Attack the seat with the fewest untapped blockers; 1/1s connect where nothing blocks and nowhere else.",
+      "Cast Chaos Warp on the permanent that beats you, not the permanent that is biggest.",
+      "Cycle Gempalm Incinerator at the creature attacking you; X counts every Goblin on the battlefield, your opponents' included.",
+      "Kill the seat holding a sweeper before the seat holding a bigger board."
+    ]
+  },
+  "decklist_sha256_prefix": "c8651652722c"
+}
