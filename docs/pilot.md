@@ -57,6 +57,12 @@ manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  #
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
 manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
+manamap pilot build <slug> [--brief "…"] [--commander "<name>"] [--theme SLUG] [--from FILE] [--bracket N]
+                                        #   THE ONE COMMAND: brief -> a legal, measured 99 on the bench.
+                                        #   Six stages — intent, anchor, build, resolve, measure, land —
+                                        #   in ~10s. Omit --commander and it proposes three and halts.
+                                        #   MEASURED BY THE GOLDFISH, not Forge: a dev-budget Forge batch
+                                        #   is ~20 games, whose MDE is 42 points. `simulate` is the pod.
 manamap pilot validate-recon <slug>                 # form-check deck_recon.json: cards real, legal, in identity
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]

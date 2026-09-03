@@ -31,6 +31,9 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("build", "manamap.pilot.autobuild",
+     "A brief -> a legal, measured 99 on the bench: intent, anchor, build, "
+     "resolve, measure, land"),
     ("brew", "manamap.pilot.brew",
      "Start a deck: a commander, the cards you kept, and a style -> brief.json"),
     ("archetypes", "manamap.pilot.archetypes",
@@ -181,6 +184,7 @@ _DECK_COMMANDS = {
     "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
+    "build",
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
@@ -714,6 +718,36 @@ def add_pilot_parser(subparsers):
                              help="power bracket target (default: the repo default)")
             cmd.add_argument("--build", action="store_true",
                              help="run the builder immediately and write decklist.txt")
+        if name == "build":
+            # The same inputs as `brew`, deliberately: `build` is `brew --build`
+            # plus the four stages that come after it, and two commands that
+            # take a library must not disagree about how a library is spelled.
+            cmd.add_argument("--brief", default=None, metavar="TEXT",
+                             help="what the deck should do, in a sentence. TWO "
+                                  "things are read out of it — a `bracket N`, "
+                                  "and a style, but only by matching against "
+                                  "the commander's REAL EDHREC archetypes. The "
+                                  "rest is stored and consumed by nothing, and "
+                                  "the report says so")
+            cmd.add_argument("--commander", default=None,
+                             help="the commander's name. Omit it and three are "
+                                  "proposed from --library/--from, then the "
+                                  "build halts for you to pick one")
+            cmd.add_argument("--theme", default=None,
+                             help="an EDHREC archetype slug, overriding whatever "
+                                  "--brief would have matched "
+                                  "(`manamap pilot archetypes \"<commander>\"`)")
+            cmd.add_argument("--library", nargs="*", default=[],
+                             help="cards you are keeping — they become must_include")
+            cmd.add_argument("--from", dest="from_file", default=None, metavar="FILE",
+                             help="read the library from a file, or a brief.json "
+                                  "exported from the Atlas ('-' for stdin)")
+            cmd.add_argument("--bracket", type=int, default=None,
+                             help="power bracket target. A HARD CONSTRAINT: the "
+                                  "builder cuts and replaces to reach it and "
+                                  "refuses if it cannot, rather than shipping a "
+                                  "flagged overage")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "archetypes":
             cmd.add_argument("commander", help="commander name, e.g. \"Zur the Enchanter\"")
             cmd.add_argument("--theme", default=None,
