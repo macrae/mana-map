@@ -1,0 +1,775 @@
+{
+ "slug": "edgar-vampires",
+ "branch": null,
+ "harness": {
+  "version": 1,
+  "iterations": 10000,
+  "seed": 20260826,
+  "max_turn": 10
+ },
+ "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
+ "stall": {
+  "by_turn": {
+   "1": {
+    "rate": 0.6089,
+    "ci95": [
+     0.5993,
+     0.6184
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.2312,
+    "ci95": [
+     0.223,
+     0.2396
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0627,
+    "ci95": [
+     0.0581,
+     0.0676
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0393,
+    "ci95": [
+     0.0357,
+     0.0433
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0249,
+    "ci95": [
+     0.022,
+     0.0281
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0209,
+    "ci95": [
+     0.0183,
+     0.0239
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0246,
+    "ci95": [
+     0.0217,
+     0.0278
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0286,
+    "ci95": [
+     0.0255,
+     0.0321
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0261,
+    "ci95": [
+     0.0232,
+     0.0294
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0216,
+    "ci95": [
+     0.0189,
+     0.0246
+    ],
+    "n": 10000
+   }
+  },
+  "two_in_a_row": {
+   "rate": 0.0838,
+   "ci95": [
+    0.0785,
+    0.0894
+   ],
+   "n": 10000
+  },
+  "fleet": "worse than any tracked deck",
+  "from_turn": 2,
+  "cause": {
+   "stall_turns": 4799,
+   "hand_empty": 722,
+   "mana_short": 4077
+  },
+  "basis": "a turn on which no card in hand was castable with the mana that turn produced \u2014 not a turn on which nothing was cast"
+ },
+ "engine": {
+  "available": false,
+  "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without \u2014 the alternatives get `route`.",
+  "declared_targets": 11
+ },
+ "mana": {
+  "missed_land_drop_by_five": {
+   "rate": 0.4033,
+   "ci95": [
+    0.3937,
+    0.413
+   ],
+   "n": 10000
+  },
+  "missed_land_drop_rate": 0.2836,
+  "mulliganed": {
+   "rate": 0.1954,
+   "ci95": [
+    0.1877,
+    0.2033
+   ],
+   "n": 10000
+  },
+  "mean_mana_by_turn": {
+   "1": 1.0,
+   "2": 2.156,
+   "3": 3.265,
+   "4": 4.19,
+   "5": 4.944,
+   "6": 5.605,
+   "7": 6.199,
+   "8": 6.811,
+   "9": 7.414,
+   "10": 8.033
+  },
+  "fleet": "below the fleet median",
+  "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+  "mana_stdev_turn_five": 1.1094
+ },
+ "steam": {
+  "extra_cards_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.137,
+    "ci95": [
+     0.1271,
+     0.1469
+    ],
+    "sd": 0.5052,
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.1854,
+    "ci95": [
+     0.1741,
+     0.1967
+    ],
+    "sd": 0.5782,
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.2501,
+    "ci95": [
+     0.2376,
+     0.2626
+    ],
+    "sd": 0.6362,
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.3696,
+    "ci95": [
+     0.3546,
+     0.3846
+    ],
+    "sd": 0.7659,
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.5446,
+    "ci95": [
+     0.525,
+     0.5642
+    ],
+    "sd": 0.9996,
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.8001,
+    "ci95": [
+     0.7735,
+     0.8267
+    ],
+    "sd": 1.359,
+    "n": 10000
+   },
+   "8": {
+    "rate": 1.1411,
+    "ci95": [
+     1.1042,
+     1.178
+    ],
+    "sd": 1.8827,
+    "n": 10000
+   },
+   "9": {
+    "rate": 1.6175,
+    "ci95": [
+     1.5651,
+     1.6699
+    ],
+    "sd": 2.6714,
+    "n": 10000
+   },
+   "10": {
+    "rate": 2.305,
+    "ci95": [
+     2.2278,
+     2.3822
+    ],
+    "sd": 3.9396,
+    "n": 10000
+   }
+  },
+  "extra_cards_unavailable": null,
+  "interaction_in_hand_by_turn": {
+   "1": {
+    "rate": 0.7832,
+    "ci95": [
+     0.775,
+     0.7912
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.8255,
+    "ci95": [
+     0.8179,
+     0.8328
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.8499,
+    "ci95": [
+     0.8428,
+     0.8568
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.8676,
+    "ci95": [
+     0.8608,
+     0.8741
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.8821,
+    "ci95": [
+     0.8756,
+     0.8883
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.8956,
+    "ci95": [
+     0.8895,
+     0.9014
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.9045,
+    "ci95": [
+     0.8986,
+     0.9101
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.9079,
+    "ci95": [
+     0.9021,
+     0.9134
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.9177,
+    "ci95": [
+     0.9122,
+     0.9229
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.9307,
+    "ci95": [
+     0.9256,
+     0.9355
+    ],
+    "n": 10000
+   }
+  },
+  "interaction_castable_by_turn": {
+   "1": {
+    "rate": 0.0759,
+    "ci95": [
+     0.0709,
+     0.0813
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.1764,
+    "ci95": [
+     0.1691,
+     0.184
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.1745,
+    "ci95": [
+     0.1672,
+     0.1821
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.2426,
+    "ci95": [
+     0.2343,
+     0.2511
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.2778,
+    "ci95": [
+     0.2691,
+     0.2867
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.294,
+    "ci95": [
+     0.2852,
+     0.303
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.4667,
+    "ci95": [
+     0.4569,
+     0.4765
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.5619,
+    "ci95": [
+     0.5522,
+     0.5716
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.6354,
+    "ci95": [
+     0.6259,
+     0.6448
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.7092,
+    "ci95": [
+     0.7002,
+     0.718
+    ],
+    "n": 10000
+   }
+  },
+  "castable_given_in_hand_by_turn": {
+   "1": {
+    "rate": 0.0969,
+    "ci95": [
+     0.0906,
+     0.1037
+    ],
+    "n": 7832
+   },
+   "2": {
+    "rate": 0.2137,
+    "ci95": [
+     0.205,
+     0.2227
+    ],
+    "n": 8255
+   },
+   "3": {
+    "rate": 0.2053,
+    "ci95": [
+     0.1969,
+     0.214
+    ],
+    "n": 8499
+   },
+   "4": {
+    "rate": 0.2796,
+    "ci95": [
+     0.2703,
+     0.2892
+    ],
+    "n": 8676
+   },
+   "5": {
+    "rate": 0.3149,
+    "ci95": [
+     0.3053,
+     0.3247
+    ],
+    "n": 8821
+   },
+   "6": {
+    "rate": 0.3283,
+    "ci95": [
+     0.3186,
+     0.3381
+    ],
+    "n": 8956
+   },
+   "7": {
+    "rate": 0.516,
+    "ci95": [
+     0.5057,
+     0.5263
+    ],
+    "n": 9045
+   },
+   "8": {
+    "rate": 0.6189,
+    "ci95": [
+     0.6089,
+     0.6288
+    ],
+    "n": 9079
+   },
+   "9": {
+    "rate": 0.6924,
+    "ci95": [
+     0.6829,
+     0.7017
+    ],
+    "n": 9177
+   },
+   "10": {
+    "rate": 0.762,
+    "ci95": [
+     0.7532,
+     0.7705
+    ],
+    "n": 9307
+   }
+  },
+  "keep_can_act_by_t3": {
+   "rate": 0.9649,
+   "ci95": [
+    0.9611,
+    0.9683
+   ],
+   "n": 10000
+  },
+  "basis": "`castable` is the mana left at the END OF THE MAIN PHASE \u2014 the moment the decision is made, before combat. Extra combat phases are paid for after it and attack triggers add mana after it, so on a deck with Aggravated Assault this float is larger than what survives the turn. It is also a FLOOR against the spending policy: the model casts everything it can afford every turn, so a pilot choosing to hold up two mana would score higher. A low figure is a real finding; a high one is unambiguous good news."
+ },
+ "output": {
+  "damage_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.5533,
+    "ci95": [
+     0.5356,
+     0.571
+    ],
+    "sd": 0.9047,
+    "n": 10000
+   },
+   "3": {
+    "rate": 1.7336,
+    "ci95": [
+     1.6991,
+     1.7681
+    ],
+    "sd": 1.759,
+    "n": 10000
+   },
+   "4": {
+    "rate": 3.8986,
+    "ci95": [
+     3.8478,
+     3.9494
+    ],
+    "sd": 2.5938,
+    "n": 10000
+   },
+   "5": {
+    "rate": 6.9657,
+    "ci95": [
+     6.904,
+     7.0274
+    ],
+    "sd": 3.1456,
+    "n": 10000
+   },
+   "6": {
+    "rate": 10.3968,
+    "ci95": [
+     10.321,
+     10.4726
+    ],
+    "sd": 3.8685,
+    "n": 10000
+   },
+   "7": {
+    "rate": 12.9038,
+    "ci95": [
+     12.819,
+     12.9886
+    ],
+    "sd": 4.3242,
+    "n": 10000
+   },
+   "8": {
+    "rate": 15.9619,
+    "ci95": [
+     15.862,
+     16.0618
+    ],
+    "sd": 5.0947,
+    "n": 10000
+   },
+   "9": {
+    "rate": 18.9038,
+    "ci95": [
+     18.7861,
+     19.0215
+    ],
+    "sd": 6.0055,
+    "n": 10000
+   },
+   "10": {
+    "rate": 21.7191,
+    "ci95": [
+     21.5799,
+     21.8583
+    ],
+    "sd": 7.0996,
+    "n": 10000
+   }
+  },
+  "board_power_by_turn": {
+   "1": {
+    "rate": 0.5442,
+    "ci95": [
+     0.5268,
+     0.5616
+    ],
+    "sd": 0.8901,
+    "n": 10000
+   },
+   "2": {
+    "rate": 1.5837,
+    "ci95": [
+     1.5518,
+     1.6156
+    ],
+    "sd": 1.6274,
+    "n": 10000
+   },
+   "3": {
+    "rate": 3.4534,
+    "ci95": [
+     3.4085,
+     3.4983
+    ],
+    "sd": 2.2915,
+    "n": 10000
+   },
+   "4": {
+    "rate": 6.0508,
+    "ci95": [
+     5.9939,
+     6.1077
+    ],
+    "sd": 2.9018,
+    "n": 10000
+   },
+   "5": {
+    "rate": 8.9917,
+    "ci95": [
+     8.922,
+     9.0614
+    ],
+    "sd": 3.5553,
+    "n": 10000
+   },
+   "6": {
+    "rate": 12.2871,
+    "ci95": [
+     12.2049,
+     12.3693
+    ],
+    "sd": 4.1959,
+    "n": 10000
+   },
+   "7": {
+    "rate": 15.4132,
+    "ci95": [
+     15.3143,
+     15.5121
+    ],
+    "sd": 5.0448,
+    "n": 10000
+   },
+   "8": {
+    "rate": 18.3417,
+    "ci95": [
+     18.2252,
+     18.4582
+    ],
+    "sd": 5.9459,
+    "n": 10000
+   },
+   "9": {
+    "rate": 21.1144,
+    "ci95": [
+     20.9791,
+     21.2497
+    ],
+    "sd": 6.9054,
+    "n": 10000
+   },
+   "10": {
+    "rate": 23.8234,
+    "ci95": [
+     23.6676,
+     23.9792
+    ],
+    "sd": 7.9467,
+    "n": 10000
+   }
+  },
+  "kill_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0003,
+    "ci95": [
+     0.0001,
+     0.0009
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0534,
+    "ci95": [
+     0.0492,
+     0.058
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.39,
+    "ci95": [
+     0.3805,
+     0.3996
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.7869,
+    "ci95": [
+     0.7788,
+     0.7948
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.9435,
+    "ci95": [
+     0.9388,
+     0.9479
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.9801,
+    "ci95": [
+     0.9772,
+     0.9827
+    ],
+    "n": 10000
+   }
+  },
+  "available": true,
+  "basis": "means over the same iterations as every other figure here; a mean over a skewed sample describes no single game, so read a difference rather than a level"
+ },
+ "limits": [
+  "No pod, no opponent and no interaction: this measures a DECK, not a table. It is not a win rate.",
+  "Strategy-relative by construction \u2014 every figure is read against this deck's own declaration and never ranked against another deck.",
+  "A stall is a turn with nothing CASTABLE. The model does not cast wipes, counterspells or targeted removal, so 'nothing was cast' would measure the model rather than the deck."
+ ]
+}

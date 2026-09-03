@@ -65,7 +65,9 @@
     "draws": 0,
     "win_rate": 0.0,
     "mean_round": 21.8,
-    "mean_global_turn": 43.1
+    "mean_global_turn": 43.1,
+    "truncated": 0,
+    "decided": 8
   },
   "outcomes": [
     {
@@ -182,16 +184,17 @@
     }
   ],
   "assumptions": [
-    "SAMPLED, NOT SEEDED: Forge exposes no seed, and identical runs diverge. Every figure is a sample of N games with the stated N; no single game is replayable.",
+    "SAMPLED, NOT SEEDED: this run was made before `-s` was known. Identical runs diverge; every figure is a sample of N games and no single game is replayable.",
     "Forge's AI \"is not trained\"; it is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" (Forge docs/AI.md). A control deck's win rate here is a lower bound on a competent pilot's; a combo deck's is not a measurement.",
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
-    "A game past the clock is recorded as a draw, not dropped.",
-    "radagast's strategic frame calls it 'Mono-green Draw-Go Stompy: a creature-dense midrange deck whose commander turns every creature into a potential instant, playing ambush-control until the overrun window opens.' — read the AI caveat against that."
+    "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
   "logs": "sim/logs/edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54/ (gitignored; regenerate by re-running)",
   "analysis": {
     "games": 8,
+    "decided": 8,
     "seats": {
       "radagast": {
         "wins": 0,
@@ -200,6 +203,7 @@
           0.0,
           0.324
         ],
+        "games_played": 8,
         "eliminated_turn": {
           "mean": 43.5,
           "median": 44.0,
@@ -350,6 +354,28 @@
           "ci95": [
             0.0,
             0.0
+          ]
+        },
+        "interaction_cast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 8,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "interaction_received": {
+          "mean": 1.75,
+          "median": 2.0,
+          "min": 0,
+          "max": 3,
+          "n": 8,
+          "ci95": [
+            0.86,
+            2.64
           ]
         },
         "activations": {
@@ -503,6 +529,7 @@
           0.215,
           0.785
         ],
+        "games_played": 8,
         "eliminated_turn": {
           "mean": 31.5,
           "median": 34.0,
@@ -651,6 +678,28 @@
           "ci95": [
             -0.6,
             1.85
+          ]
+        },
+        "interaction_cast": {
+          "mean": 1.5,
+          "median": 1.0,
+          "min": 0,
+          "max": 3,
+          "n": 8,
+          "ci95": [
+            0.59,
+            2.41
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.5,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            -0.02,
+            1.02
           ]
         },
         "activations": {
@@ -804,6 +853,7 @@
           0.071,
           0.591
         ],
+        "games_played": 8,
         "eliminated_turn": {
           "mean": 40.0,
           "median": 40,
@@ -951,6 +1001,28 @@
           "ci95": [
             -0.13,
             2.38
+          ]
+        },
+        "interaction_cast": {
+          "mean": 0.75,
+          "median": 1.0,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            0.26,
+            1.24
+          ]
+        },
+        "interaction_received": {
+          "mean": 1.0,
+          "median": 1.0,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            0.36,
+            1.64
           ]
         },
         "activations": {
@@ -1104,6 +1176,7 @@
           0.071,
           0.591
         ],
+        "games_played": 8,
         "eliminated_turn": {
           "mean": 41.33,
           "median": 40.5,
@@ -1253,6 +1326,28 @@
           "ci95": [
             0.0,
             0.0
+          ]
+        },
+        "interaction_cast": {
+          "mean": 1.25,
+          "median": 1.0,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            0.76,
+            1.74
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.25,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 8,
+          "ci95": [
+            -0.07,
+            0.57
           ]
         },
         "activations": {
@@ -1675,7 +1770,9 @@
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+      "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+      "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -1686,6 +1783,7 @@
       "round": 19,
       "global_turn": 38,
       "ms": 123927,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 9,
@@ -1713,6 +1811,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(3)-mm-yawgmoth-swarm": 12
           },
@@ -1748,6 +1848,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 3,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 6
           },
@@ -1780,6 +1882,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1808,6 +1912,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1821,6 +1927,7 @@
       "round": 22,
       "global_turn": 43,
       "ms": 75020,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 9,
@@ -1849,6 +1956,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1881,6 +1990,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1914,6 +2025,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1942,6 +2055,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1955,6 +2070,7 @@
       "round": 21,
       "global_turn": 42,
       "ms": 69335,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 8,
@@ -1981,6 +2097,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 6
           },
@@ -2014,6 +2132,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2045,6 +2165,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2076,6 +2198,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2089,6 +2213,7 @@
       "round": 19,
       "global_turn": 38,
       "ms": 168430,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 11,
@@ -2118,6 +2243,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 8
           },
@@ -2148,6 +2275,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2178,6 +2307,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 2,
+          "interaction_cast": 1,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 2
           },
@@ -2208,6 +2339,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2221,6 +2354,7 @@
       "round": 21,
       "global_turn": 42,
       "ms": 232458,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -2249,6 +2383,8 @@
           "counter_events": 3,
           "mass_counter_events": 3,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 5
           },
@@ -2282,6 +2418,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2314,6 +2452,8 @@
           "counter_events": 7,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2345,6 +2485,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 2
           },
@@ -2360,6 +2502,7 @@
       "round": 25,
       "global_turn": 50,
       "ms": 157946,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 12,
@@ -2386,6 +2529,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2419,6 +2564,8 @@
           "counter_events": 6,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "interaction_cast": 3,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5,
             "Ai(3)-mm-yawgmoth-swarm": 5,
@@ -2458,6 +2605,8 @@
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 2,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 2
           },
@@ -2490,6 +2639,8 @@
           "counter_events": 9,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2503,6 +2654,7 @@
       "round": 24,
       "global_turn": 47,
       "ms": 209002,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -2529,6 +2681,8 @@
           "counter_events": 4,
           "mass_counter_events": 2,
           "proliferate_events": 5,
+          "interaction_cast": 3,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 6
           },
@@ -2565,6 +2719,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 5,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(4)-mm-heliod": 2
@@ -2598,6 +2754,8 @@
           "counter_events": 6,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2630,6 +2788,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 8
           },
@@ -2645,6 +2805,7 @@
       "round": 23,
       "global_turn": 45,
       "ms": 53931,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 9,
@@ -2672,6 +2833,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 5
           },
@@ -2705,6 +2868,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5
           },
@@ -2737,6 +2902,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 2
           },
@@ -2769,6 +2936,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,

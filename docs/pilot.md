@@ -213,6 +213,9 @@ manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] 
                                         #   the Atlas's "consider these" on a pile
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
+manamap pilot captains-log <slug>       # which nights this deck flew, and which are rendered
+manamap pilot merge-captains-log <slug> # the captains-log agent's prose in, by night
+manamap pilot validate-captains-log <slug>  # the log held to the nights it renders
 manamap pilot prescribe <slug> "<question>"   # open ONE question to the doctor (accumulates under prescriptions/)
 manamap pilot prescribe <slug> --list | --merge <id>
 manamap pilot validate-prescription <slug> [--id ID]  # the diagnosis contract, scoped; stale = form only
@@ -302,6 +305,14 @@ data/decks/<slug>/             all tracked:
                                pilot_feedback.md     authored, OPTIONAL (free-text pilot notes; the log supersedes it)
                                log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
+                               log_causes.json       AUTHORED — how each game ended, closed vocabulary, by entry id
+                               captains_log.json     the LANGUAGE LAYER over the log: each night as a ship's log
+                                                     (Situation / Narrative / Assessment / Orders / Coda), the
+                                                     pilot's own note preserved verbatim behind every entry.
+                                                     A RENDERING, never a replacement — the doctor reads the
+                                                     debrief. The one artifact that does NOT go stale when the
+                                                     deck changes: a log records a night that happened, so a
+                                                     swap on Tuesday does not make Saturday's log wrong
                                deck_versions.json    AUTHORED tags on git-derived versions — `deck-version tag`
                                diagnostic.json       the VITALS — engine online against what the
                                                      deck declares, stall, mana. `diagnose --write`

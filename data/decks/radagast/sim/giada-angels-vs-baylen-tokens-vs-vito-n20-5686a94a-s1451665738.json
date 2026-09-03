@@ -67,12 +67,14 @@
       "radagast": 0,
       "giada-angels": 11,
       "baylen-tokens": 0,
-      "vito": 9
+      "vito": 8
     },
     "draws": 0,
     "win_rate": 0.0,
     "mean_round": 17.6,
-    "mean_global_turn": 34.9
+    "mean_global_turn": 34.9,
+    "truncated": 1,
+    "decided": 19
   },
   "outcomes": [
     {
@@ -392,14 +394,16 @@
   ],
   "analysis": {
     "games": 20,
+    "decided": 19,
     "seats": {
       "radagast": {
         "wins": 0,
         "win_rate": 0.0,
         "win_rate_ci95": [
           0.0,
-          0.161
+          0.168
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 30.28,
           "median": 28.0,
@@ -552,6 +556,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.35,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.02,
+            0.68
+          ]
+        },
         "activations": {
           "mean": 0.8,
           "median": 0.0,
@@ -698,11 +724,12 @@
       },
       "giada-angels": {
         "wins": 11,
-        "win_rate": 0.55,
+        "win_rate": 0.579,
         "win_rate_ci95": [
-          0.342,
-          0.742
+          0.363,
+          0.769
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 34.0,
           "median": 30.0,
@@ -855,6 +882,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 0.15,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.01,
+            0.31
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.55,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.16,
+            0.94
+          ]
+        },
         "activations": {
           "mean": 1.55,
           "median": 1.0,
@@ -1004,8 +1053,9 @@
         "win_rate": 0.0,
         "win_rate_ci95": [
           0.0,
-          0.161
+          0.168
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 30.44,
           "median": 30.5,
@@ -1158,6 +1208,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 0.25,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            -0.06,
+            0.56
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.15,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.01,
+            0.31
+          ]
+        },
         "activations": {
           "mean": 3.65,
           "median": 2.0,
@@ -1303,12 +1375,13 @@
         }
       },
       "vito": {
-        "wins": 9,
-        "win_rate": 0.45,
+        "wins": 8,
+        "win_rate": 0.421,
         "win_rate_ci95": [
-          0.258,
-          0.658
+          0.231,
+          0.637
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 32.4,
           "median": 32.5,
@@ -1458,6 +1531,28 @@
           "ci95": [
             0.0,
             0.0
+          ]
+        },
+        "interaction_cast": {
+          "mean": 0.75,
+          "median": 0.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.28,
+            1.22
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.1,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.03,
+            0.23
           ]
         },
         "activations": {
@@ -1826,14 +1921,16 @@
       ]
     },
     "won_by": {
-      "all opponents have lost": 20
+      "all opponents have lost": 19
     },
     "limits": [
       "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+      "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+      "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -1844,6 +1941,7 @@
       "round": 12,
       "global_turn": 24,
       "ms": 27568,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 4,
@@ -1868,6 +1966,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1896,6 +1996,8 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(4)-mm-vito": 7
@@ -1927,6 +2029,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1957,6 +2061,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -1970,6 +2076,7 @@
       "round": 18,
       "global_turn": 36,
       "ms": 143087,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 6,
@@ -1996,6 +2103,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-vito": 4
           },
@@ -2028,6 +2137,8 @@
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 3,
             "Ai(4)-mm-vito": 3
@@ -2059,6 +2170,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2089,6 +2202,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2102,6 +2217,7 @@
       "round": 18,
       "global_turn": 35,
       "ms": 65316,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 8,
@@ -2128,6 +2244,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2,
             "Ai(4)-mm-vito": 6
@@ -2161,6 +2279,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 8,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -2195,6 +2315,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-vito": 4
           },
@@ -2225,6 +2347,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 4
           },
@@ -2240,6 +2364,7 @@
       "round": 15,
       "global_turn": 29,
       "ms": 34368,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 7,
@@ -2266,6 +2391,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 5
           },
@@ -2296,6 +2423,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2326,6 +2455,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2354,6 +2485,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2367,6 +2500,7 @@
       "round": 11,
       "global_turn": 21,
       "ms": 10584,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 4,
@@ -2391,6 +2525,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2419,6 +2555,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2450,6 +2588,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -2480,6 +2620,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1
           },
@@ -2495,6 +2637,7 @@
       "round": 17,
       "global_turn": 34,
       "ms": 58812,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -2521,6 +2664,8 @@
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 6,
             "Ai(4)-mm-vito": 6
@@ -2554,6 +2699,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2582,6 +2729,8 @@
           "counter_events": 5,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2612,6 +2761,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 3
           },
@@ -2627,6 +2778,7 @@
       "round": 14,
       "global_turn": 27,
       "ms": 18404,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 5,
@@ -2656,6 +2808,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2686,6 +2840,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 8,
             "Ai(3)-mm-baylen-tokens": 6,
@@ -2718,6 +2874,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2746,6 +2904,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2759,6 +2919,7 @@
       "round": 25,
       "global_turn": 49,
       "ms": 64474,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 13,
@@ -2785,6 +2946,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -2818,6 +2981,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -2850,6 +3015,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2880,6 +3047,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2893,6 +3062,7 @@
       "round": 18,
       "global_turn": 36,
       "ms": 42963,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 5,
@@ -2917,6 +3087,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2949,6 +3121,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 12,
             "Ai(3)-mm-baylen-tokens": 6,
@@ -2984,6 +3158,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -3017,6 +3193,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 2
           },
@@ -3032,6 +3210,7 @@
       "round": 24,
       "global_turn": 48,
       "ms": 167713,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 13,
@@ -3060,6 +3239,8 @@
           "counter_events": 6,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(4)-mm-vito": 8
           },
@@ -3093,6 +3274,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 2,
             "Ai(3)-mm-baylen-tokens": 8
@@ -3127,6 +3310,8 @@
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 3,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -3157,6 +3342,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3165,11 +3352,12 @@
       }
     },
     {
-      "winner": "vito",
-      "won_by": "all opponents have lost",
+      "winner": null,
+      "won_by": null,
       "round": 18,
       "global_turn": 36,
       "ms": 147413,
+      "truncated": true,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -3194,6 +3382,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 6,
             "Ai(3)-mm-baylen-tokens": 11
@@ -3229,6 +3419,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 21
           },
@@ -3259,6 +3451,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3287,6 +3481,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 4
           },
@@ -3302,6 +3498,7 @@
       "round": 15,
       "global_turn": 30,
       "ms": 24528,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -3328,6 +3525,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5,
             "Ai(4)-mm-vito": 5
@@ -3361,6 +3560,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3389,6 +3590,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3419,6 +3622,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3432,6 +3637,7 @@
       "round": 16,
       "global_turn": 32,
       "ms": 35870,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 5,
@@ -3460,6 +3666,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3488,6 +3696,8 @@
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(4)-mm-vito": 4
@@ -3521,6 +3731,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4
           },
@@ -3551,6 +3763,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3564,6 +3778,7 @@
       "round": 14,
       "global_turn": 28,
       "ms": 24902,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 4,
@@ -3588,6 +3803,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3616,6 +3833,8 @@
           "counter_events": 115,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 6,
             "Ai(4)-mm-vito": 4
@@ -3647,6 +3866,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3675,6 +3896,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3688,6 +3911,7 @@
       "round": 20,
       "global_turn": 40,
       "ms": 73070,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 7,
@@ -3712,6 +3936,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3743,6 +3969,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5,
             "Ai(3)-mm-baylen-tokens": 12
@@ -3774,6 +4002,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -3804,6 +4034,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 4,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3817,6 +4049,7 @@
       "round": 18,
       "global_turn": 35,
       "ms": 83166,
+      "truncated": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 4,
@@ -3841,6 +4074,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3873,6 +4108,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3901,6 +4138,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2,
             "Ai(4)-mm-vito": 5
@@ -3932,6 +4171,8 @@
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 11,
             "Ai(3)-mm-baylen-tokens": 3,
@@ -3949,6 +4190,7 @@
       "round": 15,
       "global_turn": 30,
       "ms": 42712,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 8,
@@ -3975,6 +4217,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4005,6 +4249,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4036,6 +4282,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 7
           },
@@ -4069,6 +4317,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4082,6 +4332,7 @@
       "round": 22,
       "global_turn": 43,
       "ms": 59809,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 10,
@@ -4108,6 +4359,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -4138,6 +4391,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -4170,6 +4425,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4200,6 +4457,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4213,6 +4472,7 @@
       "round": 27,
       "global_turn": 54,
       "ms": 62916,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 8,
@@ -4239,6 +4499,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4267,6 +4529,8 @@
           "counter_events": 5,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 2,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -4303,6 +4567,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4333,6 +4599,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4346,6 +4614,7 @@
       "round": 16,
       "global_turn": 31,
       "ms": 38762,
+      "truncated": false,
       "per_seat": {
         "radagast": {
           "lands": 7,
@@ -4372,6 +4641,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 2
           },
@@ -4404,6 +4675,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -4438,6 +4711,8 @@
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4466,6 +4741,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4475,12 +4752,12 @@
     }
   ],
   "assumptions": [
-    "SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this Forge build identical inputs reproduce the logs byte for byte — game g of job j replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the claim, the seed is the receipt.",
+    "SEEDED FIXES THE SHUFFLE, NOT THE GAMES. Every JVM job ran `-s <seed>` (seeds recorded per job) and the same seed deals the same cards — but one configuration replayed twice on 2026-09-02 gave four different games and a different winner in one of them. Forge budgets its AI's evaluation in WALL TIME and abandons the search when it overruns (`AI eval thread at timeout`, 12 times in those 4 games), so how well a seat is piloted depends on machine load. The STORED LOGS are the receipt, not the seed — `validate-sim` re-derives every figure from them. N games against a pod is a sample either way, and the interval is the claim.",
     "Forge's AI \"is not trained\"; it is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" (Forge docs/AI.md). A control deck's win rate here is a lower bound on a competent pilot's; a combo deck's is not a measurement.",
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
-    "A game past the clock is recorded as a draw, not dropped.",
-    "radagast's strategic frame calls it 'Mono-green Draw-Go Stompy: a creature-dense midrange deck whose commander turns every creature into a potential instant, playing ambush-control until the overrun window opens.' — read the AI caveat against that."
+    "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
   "logs": "sim/logs/giada-angels-vs-baylen-tokens-vs-vito-n20-5686a94a-s1451665738/ (gitignored; regenerate by re-running)"
 }

@@ -74,12 +74,14 @@
       "edgar-vampires": 4,
       "giada-angels": 11,
       "vito": 4,
-      "baylen-tokens": 1
+      "baylen-tokens": 0
     },
     "draws": 0,
-    "win_rate": 0.2,
+    "win_rate": 0.211,
     "mean_round": 16.4,
-    "mean_global_turn": 32.1
+    "mean_global_turn": 32.1,
+    "truncated": 1,
+    "decided": 19
   },
   "outcomes": [
     {
@@ -402,14 +404,16 @@
   ],
   "analysis": {
     "games": 20,
+    "decided": 19,
     "seats": {
       "edgar-vampires": {
         "wins": 4,
-        "win_rate": 0.2,
+        "win_rate": 0.211,
         "win_rate_ci95": [
-          0.081,
-          0.416
+          0.085,
+          0.433
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 30.67,
           "median": 32,
@@ -562,6 +566,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 0.4,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.14,
+            0.66
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.45,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.18,
+            0.72
+          ]
+        },
         "activations": {
           "mean": 2.0,
           "median": 2.0,
@@ -708,11 +734,12 @@
       },
       "giada-angels": {
         "wins": 11,
-        "win_rate": 0.55,
+        "win_rate": 0.579,
         "win_rate_ci95": [
-          0.342,
-          0.742
+          0.363,
+          0.769
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 25.88,
           "median": 24.0,
@@ -864,6 +891,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 0.25,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            0.06,
+            0.44
+          ]
+        },
+        "interaction_received": {
+          "mean": 1.1,
+          "median": 1.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.59,
+            1.61
+          ]
+        },
         "activations": {
           "mean": 1.7,
           "median": 1.0,
@@ -1010,11 +1059,12 @@
       },
       "vito": {
         "wins": 4,
-        "win_rate": 0.2,
+        "win_rate": 0.211,
         "win_rate_ci95": [
-          0.081,
-          0.416
+          0.085,
+          0.433
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 33.12,
           "median": 34.5,
@@ -1167,6 +1217,28 @@
             0.0
           ]
         },
+        "interaction_cast": {
+          "mean": 1.25,
+          "median": 1.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.78,
+            1.72
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.1,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.03,
+            0.23
+          ]
+        },
         "activations": {
           "mean": 0.65,
           "median": 0.0,
@@ -1312,12 +1384,13 @@
         }
       },
       "baylen-tokens": {
-        "wins": 1,
-        "win_rate": 0.05,
+        "wins": 0,
+        "win_rate": 0.0,
         "win_rate_ci95": [
-          0.009,
-          0.236
+          0.0,
+          0.168
         ],
+        "games_played": 20,
         "eliminated_turn": {
           "mean": 25.89,
           "median": 27.5,
@@ -1468,6 +1541,28 @@
           "ci95": [
             0.0,
             0.0
+          ]
+        },
+        "interaction_cast": {
+          "mean": 0.05,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.05,
+            0.15
+          ]
+        },
+        "interaction_received": {
+          "mean": 0.3,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.05,
+            0.55
           ]
         },
         "activations": {
@@ -1882,14 +1977,16 @@
       ]
     },
     "won_by": {
-      "all opponents have lost": 20
+      "all opponents have lost": 19
     },
     "limits": [
       "tokens_observed counts distinct token ids that attacked or blocked (or dealt combat damage) for the seat; a token that only sat on the board is invisible to the log.",
       "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+      "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+      "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
+      "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -1900,6 +1997,7 @@
       "round": 15,
       "global_turn": 30,
       "ms": 98733,
+      "truncated": false,
       "per_seat": {
         "vito": {
           "lands": 6,
@@ -1926,6 +2024,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 3,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -1959,6 +2059,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -1989,6 +2091,8 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8,
             "Ai(4)-mm-baylen-tokens": 17
@@ -2023,6 +2127,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 6
@@ -2039,6 +2145,7 @@
       "round": 19,
       "global_turn": 38,
       "ms": 120904,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -2063,6 +2170,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2093,6 +2202,8 @@
           "counter_events": 8,
           "mass_counter_events": 7,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 10,
@@ -2127,6 +2238,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2155,6 +2268,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -2170,6 +2285,7 @@
       "round": 15,
       "global_turn": 29,
       "ms": 117501,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -2198,6 +2314,8 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 7,
@@ -2233,6 +2351,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(4)-mm-baylen-tokens": 2
@@ -2264,6 +2384,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -2297,6 +2419,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2310,6 +2434,7 @@
       "round": 18,
       "global_turn": 35,
       "ms": 149312,
+      "truncated": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 4,
@@ -2336,6 +2461,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -2368,6 +2495,8 @@
           "counter_events": 30,
           "mass_counter_events": 16,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2396,6 +2525,8 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 24,
@@ -2428,6 +2559,8 @@
           "counter_events": 3,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -2443,6 +2576,7 @@
       "round": 18,
       "global_turn": 35,
       "ms": 236589,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -2467,6 +2601,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2497,6 +2633,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 7,
             "Ai(3)-mm-vito": 2,
@@ -2529,6 +2667,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2557,6 +2697,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -2572,6 +2714,7 @@
       "round": 13,
       "global_turn": 25,
       "ms": 10607,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -2596,6 +2739,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2627,6 +2772,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 4,
@@ -2659,6 +2806,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 2
           },
@@ -2692,6 +2841,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2700,11 +2851,12 @@
       }
     },
     {
-      "winner": "baylen-tokens",
-      "won_by": "all opponents have lost",
+      "winner": null,
+      "won_by": null,
       "round": 19,
       "global_turn": 37,
       "ms": 300312,
+      "truncated": true,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -2733,6 +2885,8 @@
           "counter_events": 6,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 14,
             "Ai(3)-mm-vito": 5,
@@ -2765,6 +2919,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2795,6 +2951,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2825,6 +2983,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 10,
             "Ai(3)-mm-vito": 13
@@ -2841,6 +3001,7 @@
       "round": 10,
       "global_turn": 19,
       "ms": 56352,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -2867,6 +3028,8 @@
           "counter_events": 4,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 11
           },
@@ -2899,6 +3062,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -2929,6 +3094,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2959,6 +3126,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2972,6 +3141,7 @@
       "round": 18,
       "global_turn": 35,
       "ms": 173534,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 2,
@@ -2999,6 +3169,8 @@
           "counter_events": 2,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3027,6 +3199,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 11,
             "Ai(3)-mm-vito": 3,
@@ -3059,6 +3233,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3087,6 +3263,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3100,6 +3278,7 @@
       "round": 19,
       "global_turn": 38,
       "ms": 214570,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -3127,6 +3306,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3157,6 +3338,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 5,
             "Ai(3)-mm-vito": 2,
@@ -3189,6 +3372,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3219,6 +3404,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3232,6 +3419,7 @@
       "round": 18,
       "global_turn": 36,
       "ms": 155992,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -3260,6 +3448,8 @@
           "counter_events": 6,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3290,6 +3480,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3320,6 +3512,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3351,6 +3545,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3364,6 +3560,7 @@
       "round": 11,
       "global_turn": 21,
       "ms": 10421,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -3388,6 +3585,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3416,6 +3615,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -3446,6 +3647,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3474,6 +3677,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3487,6 +3692,7 @@
       "round": 17,
       "global_turn": 33,
       "ms": 182002,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 3,
@@ -3513,6 +3719,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4,
             "Ai(4)-mm-baylen-tokens": 2
@@ -3544,6 +3752,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3575,6 +3785,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -3605,6 +3817,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3618,6 +3832,7 @@
       "round": 10,
       "global_turn": 20,
       "ms": 81693,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -3642,6 +3857,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(4)-mm-baylen-tokens": 6
@@ -3673,6 +3890,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3701,6 +3920,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3731,6 +3952,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3744,6 +3967,7 @@
       "round": 23,
       "global_turn": 45,
       "ms": 226225,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 10,
@@ -3771,6 +3995,8 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 18
           },
@@ -3803,6 +4029,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -3833,6 +4061,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3865,6 +4095,8 @@
           "counter_events": 12,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 9,
             "Ai(4)-mm-baylen-tokens": 12
@@ -3881,6 +4113,7 @@
       "round": 15,
       "global_turn": 29,
       "ms": 70276,
+      "truncated": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -3907,6 +4140,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -3940,6 +4175,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4,
             "Ai(3)-mm-vito": 5
@@ -3974,6 +4211,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4004,6 +4243,8 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 9
           },
@@ -4019,6 +4260,7 @@
       "round": 17,
       "global_turn": 34,
       "ms": 128622,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -4047,6 +4289,8 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8,
             "Ai(4)-mm-baylen-tokens": 5
@@ -4080,6 +4324,8 @@
           "counter_events": 6,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 4,
@@ -4115,6 +4361,8 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4145,6 +4393,8 @@
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -4160,6 +4410,7 @@
       "round": 11,
       "global_turn": 22,
       "ms": 141288,
+      "truncated": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -4184,6 +4435,8 @@
           "counter_events": 7,
           "mass_counter_events": 3,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 11,
             "Ai(4)-mm-baylen-tokens": 14
@@ -4215,6 +4468,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3
           },
@@ -4245,6 +4500,8 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4273,6 +4530,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4286,6 +4545,7 @@
       "round": 21,
       "global_turn": 41,
       "ms": 129171,
+      "truncated": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -4314,6 +4574,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 2,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4
           },
@@ -4348,6 +4610,8 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 7
           },
@@ -4380,6 +4644,8 @@
           "counter_events": 2,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -4414,6 +4680,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4427,6 +4695,7 @@
       "round": 21,
       "global_turn": 41,
       "ms": 226184,
+      "truncated": false,
       "per_seat": {
         "giada-angels": {
           "lands": 9,
@@ -4457,6 +4726,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 4,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 2,
@@ -4491,6 +4762,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 4,
+          "interaction_received": 0,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4522,6 +4795,8 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4
           },
@@ -4554,6 +4829,8 @@
           "counter_events": 3,
           "mass_counter_events": 3,
           "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(4)-mm-baylen-tokens": 5
@@ -4566,12 +4843,12 @@
     }
   ],
   "assumptions": [
-    "SEEDED: every JVM job ran `-s <seed>` (seeds recorded per job), and with this Forge build identical inputs reproduce the logs byte for byte — game g of job j replays as `-n g -s <seed_j>`. Still a sample of N games: the interval is the claim, the seed is the receipt.",
+    "SEEDED FIXES THE SHUFFLE, NOT THE GAMES. Every JVM job ran `-s <seed>` (seeds recorded per job) and the same seed deals the same cards — but one configuration replayed twice on 2026-09-02 gave four different games and a different winner in one of them. Forge budgets its AI's evaluation in WALL TIME and abandons the search when it overruns (`AI eval thread at timeout`, 12 times in those 4 games), so how well a seat is piloted depends on machine load. The STORED LOGS are the receipt, not the seed — `validate-sim` re-derives every figure from them. N games against a pod is a sample either way, and the interval is the claim.",
     "Forge's AI \"is not trained\"; it is \"best with aggro and midrange decks, poor to ok in control decks, pretty bad for most combo decks\" (Forge docs/AI.md). A control deck's win rate here is a lower bound on a competent pilot's; a combo deck's is not a measurement.",
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
-    "A game past the clock is recorded as a draw, not dropped.",
-    "edgar-vampires's strategic frame calls it \"Mardu Vampire typal go-wide linear aggro that kills by trigger rather than by combat: Edgar's eminence mints a body for every Vampire spell cast from the command zone, token multipliers stack on every mint, and SEVEN converters turn creature traffic into life loss from two directions at once — five entry payoffs (Purphoros, God of the Forge, Impact Tremors, Warleader's Call, Corpse Knight, Witty Roastmaster) that fire when a body arrives, and two death drains (Blood Artist, Cruel Celebrant) that fire when a body leaves, so a resolved board wipe pays the pilot instead of ending the game. Combat is the second kill through the lord-and-anthem layer; two checker-passed lifegain/lifeloss infinites (Bloodthirsty Conqueror with Vito, Thorn of the Dusk Rose or with Sanguine Bond; stacks 004 and 006) are a bonus route that assembles unassisted in 4.8% of games and is priced accordingly. The deck runs zero graveyard content by design, and the 99 is held fixed for a piloting-practice period, so this frame is a playing guide, not a shopping list.\" — read the AI caveat against that."
+    "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
   "logs": "sim/logs/giada-angels-vs-vito-vs-baylen-tokens-n20-717196e1-s1903269601/ (gitignored; regenerate by re-running)"
 }

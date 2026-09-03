@@ -14,15 +14,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 10,
-    "of": 18,
+    "complete": 12,
+    "of": 15,
     "stale": [
-      "frame",
       "prose"
     ],
-    "invalid": [
-      "tutors"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -36,1523 +33,7 @@
     ]
   },
   "brief": null,
-  "branches": [
-    {
-      "name": "eminence-v3",
-      "opened": "2026-08-27",
-      "why": "Converge on eminence: every dragon shifts left by one from the command zone, permanently, where nothing can remove it. Two win conditions already in the deck — ETB/attack-trigger burn (Terror of the Peaks, Scourge of Valkas, Dragon Tempest) and Ur-Dragon commander damage. Stays big-dragon heavy; this is not a pivot to small dragons. Cut counterspells, stack interaction and non-flyer removal; add dorks, a protection package, flyer-only removal, and just enough low-end dragons to move the first-castable-dragon turn. Treasures stay as incidental ramp, never an engine.",
-      "state": "MERGED",
-      "state_why": "merged 2026-09-01 into the list after VNone",
-      "proposal": {
-        "at": "2026-08-28",
-        "as_version": "v1.0.2",
-        "why": "measured, accepted, waiting on cardboard",
-        "base_version": 2,
-        "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
-        "accepted_on": {
-          "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
-          "state": "a trade",
-          "objective": {
-            "axis": "damage_8",
-            "op": ">=",
-            "value": 40.0,
-            "why": "THE ENGINE, AND THE THING IT EXISTS TO DO. Eminence shifts every Dragon left by one from the command zone, permanently, where nothing can remove it; ramp — dorks, rocks, lands — turns that discount into more than one Dragon a turn; and then the Dragons burn the table down, on entry (Terror of the Peaks, Scourge of Valkas, Dragon Tempest, Firespitter Whelp), in combat with haste and double strike (Temur Ascendancy, Scourge of the Throne, Atarka, Thrakkus), and doubled on the way out (Twinflame Tyrant, Solphim). We cometh to burn your fields down.\n\nMEASURED ON THE OUTPUT, NOT ON THE ASSEMBLY, and that is a correction. The old objective was `engine_online_5 >= 0.22` — a membership axis asking whether the parts were DRAWN. It was met 4.4x over while the engine lift spanned zero, because a declaration can always be made easy enough to hit. `damage_8` has no ceiling and cannot be gamed by rewording a target.\n\n40.0 IS THE OPPONENT'S STARTING LIFE, not a number read off this branch. The claim is: by the end of turn eight, the average game has burned one whole opponent down. v1.0.1 reads 30.81 and misses it."
-          },
-          "grade": "met",
-          "reading": 46.4414,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        },
-        "proxy": [
-          "Bloom Tender",
-          "Delighted Halfling",
-          "Forbidden Orchard",
-          "Spire of Industry",
-          "Tarnished Citadel"
-        ],
-        "procurement": {
-          "at": "2026-08-28",
-          "note": "6 ordered 2026-08-28 via TCGplayer"
-        }
-      },
-      "pull_list": {
-        "buy": [],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [],
-        "blocking": 0,
-        "procurement": {
-          "at": "2026-08-28",
-          "note": "6 ordered 2026-08-28 via TCGplayer"
-        }
-      },
-      "base_version": 2,
-      "size": 100,
-      "add": 0,
-      "out": 0,
-      "counts": {
-        "in_deck": 96,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0
-      },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Ancient Gold Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Atarka, World Render",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Atsushi, the Blazing Sky",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Battlefield Forge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Birds of Paradise",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Blood Crypt",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Bloom Tender",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Breaching Dragonstorm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Breeding Pool",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Canopy Vista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cavern of Souls",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Chaos Warp",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Chromatic Lantern",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cinder Glade",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "City of Brass",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Crux of Fate",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deflecting Swat",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Delighted Halfling",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Desolation of Smaug",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragon Tempest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragon's Hoard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonlord's Servant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonskull Summit",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonspeaker Shaman",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Drakuseth, Maw of Flames",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fabled Passage",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Faeburrow Elder",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Farseek",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Firespitter Whelp",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flawless Maneuver",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Gadrak, the Crown-Scourge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ganax, Astral Hunter",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Garruk's Uprising",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Gemstone Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Generous Gift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glorybringer",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Goldspan Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hellkite Courser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heroic Intervention",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ignoble Hierarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Lathliss, Dragon Queen",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Lightning Greaves",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Maelstrom of the Spirit Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Miirym, Sentinel Wyrm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Nature's Lore",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Old Gnawbone",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Overgrown Tomb",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Panharmonicon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path of Ancestry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prismatic Vista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Radiant Destiny",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reflecting Pool",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Return of the Wildspeaker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rishkar's Expertise",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Roiling Dragonstorm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sacred Foundry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sarkhan's Triumph",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sarkhan, Fireblood",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scourge of Valkas",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scourge of the Throne",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Shivan Reef",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyshroud Claim",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smaug the Magnificent",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smoldering Marsh",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sneak Attack",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Solphim, Mayhem Dominus",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Spire of Industry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Steam Vents",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stomping Ground",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stormcarved Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temur Ascendancy",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Terror of the Peaks",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ur-Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thrakkus the Butcher",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thunderbreak Regent",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Twinflame Tyrant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Unclaimed Territory",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Urza's Incubator",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Utvara Hellkite",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Worldly Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "landbase-v1",
-      "opened": "2026-08-30",
-      "why": "eminence-v3's landbase, refixed: type-restricted fetches that reach the nine typed duals, replacing basic-only fetches and the life-taxing 5c lands. Land-for-land, 36 unchanged, so the spell configuration eminence-v3 was measured on is untouched.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Plateau"
-          },
-          {
-            "name": "Volcanic Island"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Bloodstained Mire",
-            "where": [
-              "edgar-vampires"
-            ]
-          }
-        ],
-        "proxy": [],
-        "free": [
-          {
-            "name": "Arid Mesa",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Scalding Tarn",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Wooded Foothills",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [],
-        "blocking": 3,
-        "procurement": null
-      },
-      "base_version": 2,
-      "size": 100,
-      "add": 6,
-      "out": 6,
-      "counts": {
-        "in_deck": 90,
-        "box": 0,
-        "elsewhere": 4,
-        "buy": 2
-      },
-      "unsourced": [
-        "Bloodstained Mire",
-        "Plateau",
-        "Volcanic Island"
-      ],
-      "mergeable": false,
-      "free": 3,
-      "cards": [
-        {
-          "name": "Ancient Gold Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arid Mesa",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
-        },
-        {
-          "name": "Atarka, World Render",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Atsushi, the Blazing Sky",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Battlefield Forge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Birds of Paradise",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Blood Crypt",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Bloodstained Mire",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Bloom Tender",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Breaching Dragonstorm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Breeding Pool",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Canopy Vista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cavern of Souls",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Chaos Warp",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Chromatic Lantern",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cinder Glade",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "City of Brass",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Crux of Fate",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deflecting Swat",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Delighted Halfling",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Desolation of Smaug",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragon Tempest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragon's Hoard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonlord's Servant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonskull Summit",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dragonspeaker Shaman",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Drakuseth, Maw of Flames",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Faeburrow Elder",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Farseek",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Firespitter Whelp",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flawless Maneuver",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Gadrak, the Crown-Scourge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ganax, Astral Hunter",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Garruk's Uprising",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Gemstone Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Generous Gift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glorybringer",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Goldspan Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hellkite Courser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heroic Intervention",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ignoble Hierarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Lathliss, Dragon Queen",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Lightning Greaves",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Maelstrom of the Spirit Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Miirym, Sentinel Wyrm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Nature's Lore",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Old Gnawbone",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Overgrown Tomb",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Panharmonicon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path of Ancestry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plateau",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Radiant Destiny",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reflecting Pool",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Return of the Wildspeaker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rishkar's Expertise",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Roiling Dragonstorm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sacred Foundry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sarkhan's Triumph",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sarkhan, Fireblood",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scalding Tarn",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
-        },
-        {
-          "name": "Scourge of Valkas",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scourge of the Throne",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyshroud Claim",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smaug the Magnificent",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smoldering Marsh",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sneak Attack",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Solphim, Mayhem Dominus",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Spire of Industry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Steam Vents",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stomping Ground",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temur Ascendancy",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Terror of the Peaks",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ur-Dragon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thrakkus the Butcher",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thunderbreak Regent",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Twinflame Tyrant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Unclaimed Territory",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Urza's Incubator",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Utvara Hellkite",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Volcanic Island",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Wooded Foothills",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
-        },
-        {
-          "name": "Worldly Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        }
-      ],
-      "has_cards": true
-    }
-  ],
+  "branches": [],
   "diagnostic": {
     "harness": {
       "version": 1,
@@ -1899,14 +380,276 @@
     "release": "v1.0.2"
   },
   "record": {
-    "games": 2,
+    "games": 3,
     "win": 1,
-    "loss": 1,
+    "loss": 2,
     "draw": 0,
-    "last_played": "2026-08-25",
+    "last_played": "2026-09-01",
+    "first_played": "2026-08-22",
     "undebriefed": [
-      "002"
-    ]
+      "002",
+      "003"
+    ],
+    "causes": {
+      "001": "mana-drought",
+      "002": "won",
+      "003": "politics"
+    },
+    "cause_counts": {
+      "mana-drought": 1,
+      "politics": 1,
+      "won": 1
+    }
+  },
+  "model": {
+    "goldfish": {
+      "title": "Goldfish",
+      "facts": {
+        "commander_by_t6": {
+          "value": 33,
+          "tier": "data",
+          "weight": "headline",
+          "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
+          "unit": "%",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
+        },
+        "kill_turn": {
+          "value": 7,
+          "tier": "data",
+          "weight": "headline",
+          "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
+          "unit": "turn",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
+        },
+        "commander_mean_turn": {
+          "value": 6.916,
+          "tier": "data",
+          "weight": "body",
+          "definition": "mean turn the commander is first cast",
+          "unit": "turn",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Cost reducer drawn (the deck's real curve fixer)": {
+          "value": 42,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling \"Cost reducer drawn (the deck's real curve fixer)\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Ramp or fixing drawn": {
+          "value": 82,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Dragon payoff drawn (per-dragon trigger engine)": {
+          "value": 62,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Dragon payoff drawn (per-dragon trigger engine)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Reducer + ramp assembled (the turn-5-Ur-Dragon hand)": {
+          "value": 34,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Reducer + ramp assembled (the turn-5-Ur-Dragon hand)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Payoff + a castable dragon by mid-game": {
+          "value": 41,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Payoff + a castable dragon by mid-game' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Protection held for the big turn": {
+          "value": 56,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Protection held for the big turn' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)": {
+          "value": 23,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A Treasure source drawn — six in the 99, of which the model can SPEND only two": {
+          "value": 56,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A Treasure source drawn — six in the 99, of which the model can SPEND only two' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once": {
+          "value": 15,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with": {
+          "value": 16,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "assumptions": {
+          "value": [
+            "Simulates resource development, not full games (no interaction, no removal).",
+            "Draw every turn including turn 1 (multiplayer Commander).",
+            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+            "One land drop per turn when available.",
+            "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
+            "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+            "Commander cast on first affordable turn (highest spending priority).",
+            "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+            "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+            "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which rides the same single door the ETB damage payoffs use. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent), and death- or attack-triggered draw (no deaths, and attacks only under `model_combat`) are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one.",
+            "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
+            "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
+            "HELD-UP INTERACTION is reported as two series and both are FLOORS. This model casts everything it can afford every turn, so `interaction_castable` is what a pilot developing at full speed has left over, not what a pilot choosing to hold up two mana would have. A low figure is therefore a real finding and a high one is unambiguous good news.",
+            "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the old literal 'a card' match missed entirely — fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does not count, because this model only knows 'drawn and affordable'; nor does a land fetch, which is ramp and has no channel here yet. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+            "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering creature's power (Terror of the Peaks), X damage where X counts your board (Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY of what entered (Miirym). Every arrival fires them — cast, token or copy — and a copy is itself an arrival, so they compound, which is the deck working rather than a bug. A payoff worded 'another NONTOKEN' does not re-trigger on its own tokens, which is the brake the rules already had. A chain is capped at 12 deep. X counts the whole board rather than one subtype: exact where the creatures are Dragons, generous otherwise.",
+            "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
+            "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+            "Rituals are not modeled (conservative).",
+            "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
+            "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+            "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+            "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+            "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+            "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+            "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
+            "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
+            "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
+            "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
+          ],
+          "tier": "data",
+          "weight": "detail",
+          "definition": "what the seeded model does NOT do; an assumption stated is a model, one hidden is a guess",
+          "source": "goldfish_metrics.json"
+        },
+        "keepable_sevens": {
+          "value": 79,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
+          "unit": "%",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
+        },
+        "mana_by_turn": {
+          "value": {
+            "1": 0.999,
+            "10": 9.209,
+            "2": 2.245,
+            "3": 3.595,
+            "4": 4.895,
+            "5": 5.934,
+            "6": 6.734,
+            "7": 7.423,
+            "8": 8.044,
+            "9": 8.63
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "mana by turn, turns one to ten",
+          "unit": "mana",
+          "source": "goldfish_metrics.json"
+        },
+        "land_drops_by_turn": {
+          "value": {
+            "1": 0.999,
+            "10": 0.372,
+            "2": 0.996,
+            "3": 0.906,
+            "4": 0.775,
+            "5": 0.65,
+            "6": 0.544,
+            "7": 0.47,
+            "8": 0.414,
+            "9": 0.383
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "land drops by turn, turns one to ten",
+          "unit": "rate",
+          "source": "goldfish_metrics.json"
+        },
+        "bodies_by_turn": {
+          "value": {
+            "1": 0.0,
+            "10": 6.328,
+            "2": 0.184,
+            "3": 0.63,
+            "4": 1.383,
+            "5": 2.35,
+            "6": 3.251,
+            "7": 4.072,
+            "8": 4.858,
+            "9": 5.607
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "bodies by turn, turns one to ten",
+          "unit": "creatures",
+          "source": "goldfish_metrics.json"
+        },
+        "opening_land_distribution": {
+          "value": {
+            "0": 359,
+            "1": 1611,
+            "2": 2965,
+            "3": 2919,
+            "4": 1589,
+            "5": 470,
+            "6": 86,
+            "7": 1
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "lands in the opening seven, over every seeded hand",
+          "source": "goldfish_metrics.json"
+        },
+        "kill_distribution": {
+          "value": {
+            "10": 432,
+            "3": 4,
+            "4": 96,
+            "5": 898,
+            "6": 2570,
+            "7": 2978,
+            "8": 1757,
+            "9": 842
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "how many of the seeded games killed on each turn",
+          "source": "goldfish_metrics.json"
+        }
+      },
+      "tier": "data",
+      "source": "goldfish_metrics.json",
+      "definition": "10000 seeded games, seed 42; no blockers and no opponent — a floor on speed, never a verdict on board quality"
+    }
   },
   "goldfish": {
     "seed": 42,
@@ -1973,6 +716,36 @@
         "9": 842
       }
     }
+  },
+  "engine_health": {
+    "word": "HEALTHY",
+    "rate": 0.4025,
+    "ci95": [
+      0.3929,
+      0.4121
+    ],
+    "n": 10000,
+    "turn": 5,
+    "bands": [
+      [
+        0.6,
+        "EXCEPTIONAL"
+      ],
+      [
+        0.4,
+        "HEALTHY"
+      ],
+      [
+        0.2,
+        "BRITTLE"
+      ],
+      [
+        0.0,
+        "WEAK"
+      ]
+    ],
+    "why": "the engine is online by turn 5 in 40% of 10,000 seeded games",
+    "basis": "diagnostic.json"
   },
   "engine": {
     "thesis": "A five-colour Dragon deck that buys its own curve down and then taxes every Dragon that enters — one arrival multiplies into several, each arrival is priced in damage and cards — whose kill is PROVEN on a board and unproven as a board you can reach.",
@@ -2111,7 +884,7 @@
     }
   ],
   "simulation": {
-    "runs": 1,
+    "runs": 2,
     "latest": "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892",
     "at": "2026-08-24",
     "stale": true,
@@ -2122,10 +895,10 @@
       "vito",
       "baylen-tokens"
     ],
-    "win_rate": 0.12,
+    "win_rate": 0.14,
     "win_rate_ci95": [
-      0.07,
-      0.198
+      0.082,
+      0.228
     ],
     "piloting": {
       "comparable": true,
@@ -2144,11 +917,8 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (tutors) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "1 logged game(s) not yet debriefed (002) — `/debrief ur-dragon`",
-    "branch `eminence-v3` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge eminence-v3 --write`",
-    "branch `landbase-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source landbase-v1`",
+    "stale: prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "2 logged game(s) not yet debriefed (002, 003) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×8, research-strategy ×3, resolve-stack ×9",
