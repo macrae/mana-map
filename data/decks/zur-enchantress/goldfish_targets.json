@@ -1,5 +1,5 @@
 {
-  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.\n\nUPDATED 2026-09-03 after the artifacts came out. The deck now runs ZERO artifacts: they are invisible to Zur, whose trigger reads enchantments only, and the equipment that remained was MV2 — outside even Urza's Saga's {0}-or-{1} fetch, so nothing could tutor them and the only way to see one was to draw it. Their jobs moved onto auras Zur CAN fetch.\n\nUPDATED 2026-09-03 after a card-by-card slot audit. `Scour for Scrap` was counted here as a TUTOR while searching for an artifact card in a deck holding zero artifacts — a declared component that could not resolve. `deck-audit` now reports that class of card as a note (`_dead_searches`), measured against the whole fleet first: two earlier versions fired on 2-of-3 and 23-of-47 correct cards and were thrown away. Sorin of House Markov left with it — extort competes with holding up interaction, and its flip wants 3 life in a turn from a deck whose lifegain is incidental.",
+  "_note": "AUTHORED 2026-09-03 against V2, the Esper enchantment list. Zur is a TOOLBOX: the commander is free from the command zone and its attack trigger fetches an enchantment at MV<=3 straight onto the battlefield. NOTHING HERE DECLARES THAT TRIGGER, because the goldfish does not model it — `command_zone_reduction` reads a commander for cost reduction only. So every component below is a card the deck must DRAW, which is the only thing this simulation measures.\n\nThe two REQUIRED components are what the deck cannot function without: a repeating draw engine (this is a resource deck before it is anything else) and an answer (a bracket-3 pod on a turn-four clock kills it otherwise). `engine_online` is therefore P(both drawn by turn N).\n\nThe two ROUTES are the kills the deck can actually assemble from cards in hand. Commander damage is deliberately NOT a route: Zur never needs drawing, so a drawn-cards simulation cannot say anything about it.\n\nREAD THE ENGINE FIGURE AS A DESCRIPTION, NOT AS EVIDENCE OF A LIFT. The same hand writes this file and reads the number. Three defensible declarations of one ur-dragon list gave engine lifts of +0.007, -0.036 and +0.014 over the same 10,000 games, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives. This declares what the deck is made of; it does not prove the parts help.\n\nUPDATED 2026-09-03 after the artifacts came out. The deck now runs ZERO artifacts: they are invisible to Zur, whose trigger reads enchantments only, and the equipment that remained was MV2 — outside even Urza's Saga's {0}-or-{1} fetch, so nothing could tutor them and the only way to see one was to draw it. Their jobs moved onto auras Zur CAN fetch.\n\nUPDATED 2026-09-03 after a card-by-card slot audit. `Scour for Scrap` was counted here as a TUTOR while searching for an artifact card in a deck holding zero artifacts — a declared component that could not resolve. `deck-audit` now reports that class of card as a note (`_dead_searches`), measured against the whole fleet first: two earlier versions fired on 2-of-3 and 23-of-47 correct cards and were thrown away. Sorin of House Markov left with it — extort competes with holding up interaction, and its flip wants 3 life in a turn from a deck whose lifegain is incidental.\n\nREWRITTEN 2026-09-03. The Demonic Consultation + Laboratory Maniac line is GONE from the deck and from here: it was the deck's only real kill and it was a two-card tutor-for-the-win, which the pilot rejected outright. In its place the two lines the deck is actually built to run — a commander-damage clock the commander fetches for itself, and a drain that Vito finally makes lethal rather than incremental.",
   "targets": [
     {
       "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
@@ -61,33 +61,31 @@
       ]
     },
     {
-      "label": "KILL — Demonic Consultation + Laboratory Maniac",
-      "route": "consultation",
-      "_why": "The deck's one deterministic kill, and the line the bracket engine already prices. Two named cards, no alternates: the tutors that could find either would have to sit in BOTH legs, and one draw satisfying an AND of ORs twice is the defect `_validate_shared_leg` exists to catch.",
+      "label": "KILL — commander damage: a buff aura on Zur",
+      "route": "commander",
+      "_why": "Zur is FREE from the command zone, so the only part of this line that has to be DRAWN is the aura — which is why commander damage was undeclarable until the clock existed. Ethereal Armor is +1/+1 per enchantment in a 44-enchantment deck; Daybreak Coronet adds +3/+3 and LIFELINK, which is what feeds the drain route below. Zur also fetches both himself, so this rate is a FLOOR: the commander assembles its own clock and the simulation cannot see that trigger at all.",
       "need": [
         {
           "any_of": [
-            "Demonic Consultation"
-          ]
-        },
-        {
-          "any_of": [
-            "Laboratory Maniac"
+            "Daybreak Coronet",
+            "Ethereal Armor"
           ]
         }
       ]
     },
     {
-      "label": "KILL — drain: a payoff plus bodies to feed it",
+      "label": "KILL — drain: a payoff plus something to feed it",
       "route": "drain",
-      "_why": "REBUILT 2026-09-03 around ENCHANTMENT CREATURES, which is what makes this route Zur-assemblable at all. Grim Guardian and Underworld Coinsmith are constellation bodies: each is a creature the commander can put straight onto the battlefield AND a payoff that drains every time another enchantment lands, so the deck's 40-odd enchantments are the fuel. The bodies leg is now recurring token engines rather than one-shot creatures. NOTE the simulation still cannot see the drain itself — death triggers and life loss are unmodelled — so this measures whether the PIECES were drawn, never whether the table died.",
+      "_why": "Rebuilt around Vito, which is the CONVERTER the deck was missing: lifegain becomes life loss at full value, so Daybreak Coronet's lifelink turns a connection into twice its damage. Marauding Blight-Priest hits every opponent for 1 on the same trigger, and the constellation pair turn each enchantment that lands into both. NOTE Exquisite Blood and Sanguine Bond are DELIBERATELY ABSENT — either would make this a two-card infinite, which is the thing the pilot rejected. Vito alone is a payoff, not a loop. NOTE ALSO the simulation still cannot see any of it: life loss and death triggers are unmodelled, so this measures the PIECES, never the kill. Underworld Coinsmith sits in the PAYOFF leg only: it is both a payoff and fuel, and leaving it in both let one draw satisfy an AND of ORs twice — the defect `_validate_shared_leg` exists to catch, and it caught it here.",
       "need": [
         {
           "any_of": [
             "Bastion of Remembrance",
             "Grim Guardian",
+            "Marauding Blight-Priest",
             "The Meathook Massacre",
-            "Underworld Coinsmith"
+            "Underworld Coinsmith",
+            "Vito, Thorn of the Dusk Rose"
           ]
         },
         {
@@ -95,9 +93,9 @@
             "Bitterblossom",
             "Black Market Connections",
             "Dawn of Hope",
+            "Daybreak Coronet",
             "Dreadhorde Invasion",
             "Kaito Shizuki",
-            "The Girl in the Fireplace",
             "Tribute to Horobi // Echo of Death's Wail"
           ]
         }
