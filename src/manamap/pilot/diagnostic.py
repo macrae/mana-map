@@ -70,7 +70,7 @@ FLEET = {
     "mulliganed": {"min": 0.163, "median": 0.213, "max": 0.261},
 }
 
-#: THE PRD'S THRESHOLD IS INERT AND THAT IS WHY IT IS NOT HERE. It asks for
+#: PRD-v1'S THRESHOLD IS INERT AND THAT IS WHY IT IS NOT HERE. It asks for
 #: `P(stall by turn 4) > 0.15 -> red`. Across the whole fleet the highest reading
 #: is **0.079**, so it fires on ZERO of 13 decks — a red line that can never go
 #: red, which is as useless as one that always does and would have shipped

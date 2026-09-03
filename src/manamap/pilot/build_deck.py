@@ -69,7 +69,7 @@ class BriefError(ValueError):
 
 def scaffold_brief(slug, commander, library=(), theme=None, bracket=None,
                    pool_files=()):
-    """Write `brief.json` for a new deck. PRD §7.4 — the start of a build-out.
+    """Write `brief.json` for a new deck. PRD-v1 §7.4 — the start of a build-out.
 
     The library goes in as `must_include`: those are the cards the pilot
     deliberately kept, and `must_include` is exactly the promise that they are in

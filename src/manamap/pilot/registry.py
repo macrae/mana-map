@@ -693,7 +693,7 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--out", default=None,
                              help="Write JSON here instead of stdout (a view, never tracked)")
         if name == "validate-deck":
-            # One format ships, and the flag exists anyway: it is the seam PRD
+            # One format ships, and the flag exists anyway: it is the seam PRD-v1
             # §13 asks for, and a seam nobody can reach is a seam nobody tests.
             from manamap.pilot.formats import FORMATS
             cmd.add_argument("--format", default=None, choices=sorted(FORMATS),
@@ -755,7 +755,7 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--open", type=int, default=None, dest="open_rank",
                              metavar="N",
                              help="write result N's reference deck under data/reference/ "
-                                  "and print the Atlas URL that opens it (PRD 6.1 step 9)")
+                                  "and print the Atlas URL that opens it (PRD-v1 §6.1 step 9)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "card-search":
             # NO slug positional: a search is not per-deck. `--deck` scopes it

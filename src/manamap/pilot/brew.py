@@ -1,11 +1,11 @@
-"""`manamap pilot brew` — the cards you kept become a deck. PRD §7.4.
+"""`manamap pilot brew` — the cards you kept become a deck. PRD-v1 §7.4.
 
 The last step of the brew flow:
 
     library -> archetype -> role template -> candidates -> BUILD-OUT -> the bench
 
 Everything upstream already existed by the time this was written, which is what
-the PRD means about the program being mostly glue. What this adds is the
+the PRD-v1 means about the program being mostly glue. What this adds is the
 scaffold: a `brief.json` naming the commander, the cards the pilot kept, and —
 new — the STYLE, which is what makes the role budget the archetype's rather than
 the one flat provisional set every deck used to get.

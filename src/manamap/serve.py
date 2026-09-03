@@ -9,7 +9,7 @@ on 2026-08-01: *"The frontend never calls an LLM, and deployed == local … ther
 is no local-only bridge — because a local bridge means the deployed site and
 your machine run different code, and only one of them is the one you test."*
 
-The PRD overrules it (§5.2), and says why: *"when running locally, the agent is
+PRD-v1 overrules it (§5.2), and says why: *"when running locally, the agent is
 embedded in the UI — not a separate terminal the user context-switches to.
 Closing the gap between the front end and the agent back end is the single
 largest UX requirement in this document."*

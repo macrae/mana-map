@@ -3,7 +3,7 @@
     manamap pilot benchmark <slug>
     manamap pilot benchmark --all
 
-PRD §9. Four per-deck measures — mana screw, speed, consistency, response —
+PRD-v1 §9. Four per-deck measures — mana screw, speed, consistency, response —
 computed under conditions that are IDENTICAL for every deck, because §9.2 is the
 whole of the requirement: "the aggregate is only meaningful if the simulations
 are controlled … uncontrolled sim output cannot be aggregated into a ranking."
@@ -294,4 +294,4 @@ def main(args):
               f"{c['mana_stdev_turn_five']:>7.2f} "
               f"{a['answer_cards']:>8} {a['classes_covered']:>6}")
     print("\n  No aggregate score: the formula is chosen against this spread "
-          "(PRD §14.1), not before it.")
+          "(PRD-v1 §14.1), not before it.")

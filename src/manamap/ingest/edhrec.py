@@ -4,7 +4,7 @@ Two endpoints, both public JSON, and between them they answer the two questions
 the bench cannot answer from its own corpus:
 
 - **`/pages/commanders/<identity>.json`** — the top ~100 commanders for a colour
-  identity, in EDHREC's popularity order. This is PRD §6.1 step 4.
+  identity, in EDHREC's popularity order. This is PRD-v1 §6.1 step 4.
 - **`/pages/average-decks/<slug>.json`** — a representative decklist for one
   commander. `sim/opponents.py` has used this since S3 to build pod seats; this
   module is that fetcher generalised, and `opponents` should be moved onto it
@@ -126,9 +126,9 @@ def top_commanders(identity, limit=100):
 
 
 def themes(commander):
-    """How this commander is ACTUALLY built, with a deck count each. PRD §7.2.
+    """How this commander is ACTUALLY built, with a deck count each. PRD-v1 §7.2.
 
-    EDHREC's `taglinks` panel, which is the archetype list the PRD asks an agent
+    EDHREC's `taglinks` panel, which is the archetype list PRD-v1 asks an agent
     to research — except it is already data. Zur comes back Enchantress 1201,
     Auras 736, Stax 542, Control 529, Combo 380, Voltron 361, which is precisely
     the split §7.2 names as its worked example.

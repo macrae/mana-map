@@ -10,6 +10,8 @@ written against it.**
 
 | | | |
 |---|---:|---|
+| **[prd.md](prd.md)** | 635 | **The product requirements (Sept 2026)** — the three environments, the five epics, the metrics catalog, and the four blocking decisions resolved in its **Intake notes**. Says what is being BUILT; `vision.md` says what the bench IS. Where they disagree on the present tense, `vision.md` wins; on the future tense, this does. |
+| [prd-2026-08.md](prd-2026-08.md) | 404 | The superseded PRD, kept verbatim: ~27 citations across 15 source files read `PRD-v1 §N` and resolve here. |
 | **[vision.md](vision.md)** | 154 | Who this is for (a deck scientist and pilot), what the bench does end to end, the evidence contract, what is live / legacy / next, and the vocabulary. If a doc disagrees with this page, this page wins. |
 | **[pilot.md](pilot.md)** | 1,431 | The bench reference: the evidence and citation contracts, every `manamap pilot` command, the per-deck artifacts, then each piece — status, `deck-info`, versions (incl. **the paper lock's three states and what a version bump means**), the captain's log and debrief, prescriptions, simulation, goldfish, scenarios and game state v2, the resolve loop, the rules and strategy DBs, facts, audit, diagnosis, engine, constellation — and a LEGACY block on the magazine renderer last. |
 | **[simulation.md](simulation.md)** | 254 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |

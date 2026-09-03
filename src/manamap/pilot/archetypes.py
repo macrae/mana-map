@@ -1,4 +1,4 @@
-"""How a commander is actually built, and what each style needs. PRD §7.2-7.3.
+"""How a commander is actually built, and what each style needs. PRD-v1 §7.2-7.3.
 
     manamap pilot archetypes "Zur the Enchanter"
     manamap pilot archetypes "Zur the Enchanter" --theme voltron
@@ -6,7 +6,7 @@
 **THE ARCHETYPES ARE DATA, NOT RESEARCH.** §7.2 describes an agent that goes and
 reads about a commander and reports the distinct styles. EDHREC's `taglinks`
 panel already is that list, with a deck count on each, and it answers Zur with
-exactly the split the PRD names as its worked example — Enchantress 1201, Auras
+exactly the split PRD-v1 names as its worked example — Enchantress 1201, Auras
 736, Stax 542, Control 529, Combo 380, Voltron 361. An agent would have
 paraphrased this, more expensively and less precisely.
 

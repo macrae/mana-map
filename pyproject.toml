@@ -47,6 +47,10 @@ dev = ["pytest", "pytest-xdist", "playwright"]
 
 [project.scripts]
 manamap = "manamap.cli:main"
+# `mm` is the same entry point under the name the PRD's CLI mocks use
+# (`mm build`, `mm promote`, `mm compare`). An alias, not a second CLI:
+# one parser, one set of subcommands, so the two can never disagree.
+mm = "manamap.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

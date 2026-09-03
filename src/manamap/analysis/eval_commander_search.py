@@ -1,6 +1,6 @@
 """Spike S1, made answerable: can the embedding rank commanders?
 
-The PRD gates commander search (§6) on one question — *does embedding proximity
+PRD-v1 gates commander search (§6) on one question — *does embedding proximity
 track functional similarity well enough to rank commanders?* — and the existing
 `eval-embeddings` cannot answer it. That eval asks whether functionally
 interchangeable CARDS are neighbours, over 40 hand-authored groups. It is the
@@ -121,9 +121,9 @@ def refresh_pool(identities, per_identity, limit_decks=None):
     POOL_PATH.parent.mkdir(parents=True, exist_ok=True)
     POOL_PATH.write_text(json.dumps({
         "_comment": [
-            "Frozen candidate pool for `manamap eval-commander-search` (PRD spike S1).",
+            "Frozen candidate pool for `manamap eval-commander-search` (PRD-v1 spike S1).",
             "FETCHED ONCE AND COMMITTED. EDHREC's rankings move, which is right for the",
-            "product (PRD 6.1 step 4 says do not freeze them) and wrong for a benchmark:",
+            "product (PRD-v1 §6.1 step 4 says do not freeze them) and wrong for a benchmark:",
             "ground truth that shifts underneath cannot tell a model change from a",
             "metagame change. Refresh with --refresh, deliberately, in its own commit.",
         ],

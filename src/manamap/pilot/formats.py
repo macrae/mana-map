@@ -1,6 +1,6 @@
 """What a legal deck IS, as a parameter rather than an assumption.
 
-PRD §13: the constraints should be **parameters, not assumptions**, because
+PRD-v1 §13: the constraints should be **parameters, not assumptions**, because
 retrofitting format-awareness after the fact is expensive. This module is that
 parameter — Commander plus the four 60-card constructed formats.
 
@@ -28,7 +28,7 @@ to remember to change both. `FormatSpec.library_size` is a property.
 
 WHAT IS DELIBERATELY NOT HERE:
 
-- **Pendragon.** The PRD lists it and flags its own description as unverified
+- **Pendragon.** PRD-v1 lists it and flags its own description as unverified
   ("name and rules unverified, confirm before scoping"). A format spec that
   encodes a guess is worse than one that omits it, because the guess is
   invisible once it is in a table.
@@ -135,7 +135,7 @@ def _constructed(name, key):
     identity: a constructed deck may play any colours it can cast.
 
     PAUPER IS NOT FILTERED BY RARITY, and that is measured rather than assumed.
-    The PRD describes it as "commons only" (§13) and Scryfall's own
+    PRD-v1 describes it as "commons only" (§13) and Scryfall's own
     `legal_pauper` disagrees with that reading for **373 cards** — a card
     printed at common ANYWHERE is pauper-legal even where this printing is not.
     Consulting the legality column is both simpler and correct; a rarity filter

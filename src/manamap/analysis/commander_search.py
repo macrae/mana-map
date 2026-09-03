@@ -1,6 +1,6 @@
 """Commander search: a handful of cards in, the commanders worth building toward.
 
-PRD §6. Give it ~20 cards — from a collection, from your library, hand-picked —
+PRD-v1 §6. Give it ~20 cards — from a collection, from your library, hand-picked —
 and it ranks real commanders by how close their decks sit to yours in embedding
 space. Archetypes are not labelled anywhere; they emerge from what people
 actually build.
@@ -295,7 +295,7 @@ def write_reference(commander, corpus=None):
     """Write one commander's reference deck where the Atlas can open it. §6.1 §9.
 
     THE BROWSER CANNOT DO THIS ITSELF. The deployed site is static and makes no
-    service calls (PRD §5.2), so EDHREC is unreachable from the page — the CLI
+    service calls (PRD-v1 §5.2), so EDHREC is unreachable from the page — the CLI
     fetches, the page reads. That is the same local-vs-deployed split the agent
     layer lives under, and it is why harvesting is a LOCAL flow.
 
@@ -307,7 +307,7 @@ def write_reference(commander, corpus=None):
     The page opens it with `?ref=<slug>`, which reuses the seeding path
     `?cards=` already established — so step 9 is a URL and step 10 is the Keep
     button that has been on every card panel since the library shipped. Almost
-    no new machinery, which is what the PRD means by the program being mostly
+    no new machinery, which is what the PRD-v1 means by the program being mostly
     glue.
     """
     import json

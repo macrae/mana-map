@@ -36,7 +36,11 @@ import pytest
 from repo_tree import exists_anywhere
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
+# `prd-2026-08.md` is here for the same reason as the design records: it is a
+# SUPERSEDED document kept verbatim so that ~27 `PRD-v1 §N` citations resolve.
+# Its counts are the counts of August, on purpose. `prd.md` is deliberately NOT
+# excluded — it is live, and its intake notes are ours to keep accurate.
+DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md", "prd-2026-08.md"}
 
 SURFACES = [
     ROOT / "CLAUDE.md",

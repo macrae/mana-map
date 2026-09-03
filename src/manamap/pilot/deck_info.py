@@ -732,7 +732,7 @@ def _next(info):
 #: artifacts to change nothing a reader sees. Only the human-facing words are
 #: settled here, in one place, so three surfaces cannot each invent their own.
 #:
-#: "Pinned" is the PRD's word for the first of these (§3.1) and is NOT used,
+#: "Pinned" is PRD-v1's word for the first of these (§3.1) and is NOT used,
 #: because the same document uses "pin" for the immutable decklist hash (§3.2) —
 #: one word for a deck's physical existence and for a content sha is the
 #: collision the ManaMap/Atlas rename was made to avoid. SLEEVED says the

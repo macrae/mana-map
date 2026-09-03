@@ -258,7 +258,7 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
-manamap pilot benchmark [<slug>|--all]  # THE STANDARD BENCHMARK (PRD §9): four measures
+manamap pilot benchmark [<slug>|--all]  # THE STANDARD BENCHMARK (PRD-v1 §9): four measures
                                         #   under ONE frozen configuration — fixed seed,
                                         #   fixed iterations, UNIFORM model flags that
                                         #   override each deck's own opt-in, because
