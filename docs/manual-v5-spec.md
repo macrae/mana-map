@@ -1,4 +1,16 @@
-# Manual v5 — the compact deck page (DRAFT for Sean to strike lines from)
+# Manual v5 — the compact deck page (SUPERSEDED 2026-09-02)
+
+> **SUPERSEDED by the Pilot's Operating Handbook** (`src/manamap/pilot/poh.py`),
+> which renders to the same `manuals/p/<slug>.html`. Kept because its
+> PROHIBITIONS survive and are still enforced: no `<script>`, byte-identical
+> rebuild, no LLM at render time, and no feed — the manual may print nothing
+> keyed by a log entry id or a timestamp. A record of revisions keyed by
+> *version* is not a feed and is permitted.
+>
+> `build_page.py` and `page_design.py` are frozen legacy alongside the magazine.
+> Note `design.py` is still load-bearing for both, so neither can be deleted.
+
+## The original draft
 
 *Branch `manual-v5`, 2026-08-19. The magazine (STYLEv3, 17 departments, ~70 screens) becomes
 a **technical page per deck**: the evidence and the notes a pilot reads before game one and

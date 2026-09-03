@@ -1,0 +1,610 @@
+{
+  "archetype": {
+    "archetype": null,
+    "overrides": {},
+    "source": "none — base targets apply"
+  },
+  "axes": [
+    {
+      "axis": "mana-base",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "land copies from deck-facts (copies, not entries)",
+        "land_entries": 15,
+        "unit": "copies",
+        "value": 36
+      },
+      "target": {
+        "high": 38,
+        "low": 36,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "mana-sources",
+      "gap": 0,
+      "measured": {
+        "burgess_target": 36,
+        "cards": [
+          "Howlsquad Heavy",
+          "Impulsive Pilferer",
+          "Skirk Prospector",
+          "Sol Ring",
+          "Storm-Kiln Artist"
+        ],
+        "colour_identity": [
+          "R"
+        ],
+        "commander_mana_value": 4,
+        "how": "land copies plus persistent producers (ramp:rock, ramp:dork, ramp:land); target 31 + 1 colour(s) + commander mana value 4 = 36",
+        "note": "rituals and Treasure makers are one-shot and are not counted as sources",
+        "persistent_producers": 5,
+        "unit": "copies",
+        "value": 41
+      },
+      "target": {
+        "formula": "burgess",
+        "high": null,
+        "low": 36,
+        "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "taplands",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Den of the Bugbear",
+          "Forgotten Cave",
+          "Hidden Volcano",
+          "Smoldering Crater",
+          "Spinerock Knoll"
+        ],
+        "conditional_cards": [
+          "Arena of Glory",
+          "Castle Embereth",
+          "Dwarven Mine"
+        ],
+        "conditional_or_shock": 3,
+        "how": "land copies that enter tapped with no condition and no pay-life escape",
+        "note": "mana_analysis.lands.enters_tapped is a substring superset and counts both groups together",
+        "unit": "copies",
+        "value": 5
+      },
+      "target": {
+        "high": 8,
+        "low": null,
+        "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "colour-sources",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
+        "per_colour": {
+          "R": {
+            "have": 37,
+            "target": 36
+          }
+        },
+        "short": {},
+        "unit": "sources above target (worst colour)",
+        "value": 1
+      },
+      "target": {
+        "formula": "karsten",
+        "high": null,
+        "low": 0,
+        "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%",
+        "source": "strategy:deckbuilding.mana-base.color-sources"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "ramp",
+      "gap": -3,
+      "measured": {
+        "cards": [
+          "Ancestors' Aid",
+          "Battle Hymn",
+          "Blasphemous Act",
+          "Brightstone Ritual",
+          "Glimpse the Impossible",
+          "Goblin Warchief",
+          "Great Train Heist",
+          "Howlsquad Heavy",
+          "Impulsive Pilferer",
+          "Mana Geyser",
+          "Ruby Medallion",
+          "Seething Song",
+          "Skirk Prospector",
+          "Sol Ring",
+          "Storm-Kiln Artist"
+        ],
+        "how": "copies carrying any of ramp:rock, ramp:dork, ramp:ritual, ramp:land, ramp:cost-reduction, ramp:treasure",
+        "possible_uncounted": [
+          "Throne of Eldraine"
+        ],
+        "unit": "copies",
+        "value": 15
+      },
+      "target": {
+        "high": 12,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "over"
+    },
+    {
+      "axis": "card-advantage",
+      "gap": 2,
+      "measured": {
+        "cards": [
+          "Faithless Looting",
+          "Glimpse the Impossible",
+          "Grenzo, Havoc Raiser",
+          "Redcap Gutter-Dweller",
+          "Rundvelt Hordemaster",
+          "Skullclamp",
+          "Throne of Eldraine",
+          "Witch's Mark"
+        ],
+        "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
+        "possible_uncounted": [
+          "Crimson Wisps",
+          "Expedite",
+          "Fists of Flame",
+          "Forgotten Cave",
+          "Fountainport",
+          "Gempalm Incinerator",
+          "Idol of Oblivion",
+          "Renegade Tactics",
+          "Smoldering Crater",
+          "War Room"
+        ],
+        "unit": "copies",
+        "value": 8
+      },
+      "target": {
+        "high": null,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "interaction",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Blasphemous Act",
+          "Boggart Shenanigans",
+          "Gempalm Incinerator",
+          "General Kreat, the Boltbringer",
+          "Goblin Bombardment",
+          "Goblin Negotiation",
+          "Goblin Trashmaster",
+          "Grapeshot",
+          "Impact Tremors",
+          "Pashalik Mons",
+          "Siege-Gang Commander",
+          "Siege-Gang Lieutenant",
+          "Vandalblast"
+        ],
+        "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
+        "interactive_suite_copies": 15,
+        "unit": "copies",
+        "value": 13
+      },
+      "target": {
+        "high": null,
+        "low": 8,
+        "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\"",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "sweepers",
+      "gap": 1,
+      "measured": {
+        "cards": [],
+        "how": "copies carrying any of removal:sweeper",
+        "unit": "copies",
+        "value": 0
+      },
+      "target": {
+        "high": 3,
+        "low": 1,
+        "quote": "wipes \"one or two max\" (Zupke caps at 3)",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "protection",
+      "gap": 3,
+      "measured": {
+        "cards": [
+          "Roaming Throne",
+          "Swiftfoot Boots"
+        ],
+        "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
+        "unit": "copies",
+        "value": 2
+      },
+      "target": {
+        "high": 7,
+        "low": 5,
+        "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "threat-density",
+      "gap": 1,
+      "measured": {
+        "cards": [
+          "Goblin Dark-Dwellers",
+          "Witch's Mark"
+        ],
+        "how": "copies carrying any of wincon:alt, wincon:drain, wincon:combat",
+        "unit": "copies",
+        "value": 2
+      },
+      "target": {
+        "high": null,
+        "low": 3,
+        "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\"",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "creatures",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "front-face creature copies",
+        "unit": "copies",
+        "value": 27
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "interaction-breadth",
+      "gap": 3,
+      "measured": {
+        "by_class": {
+          "artifact": 2,
+          "creature": 5,
+          "enchantment": 0,
+          "graveyard": 0,
+          "land": 0
+        },
+        "cards": [
+          "artifact",
+          "creature"
+        ],
+        "how": "oracle-text heuristic over interactive cards; counterspells deliberately excluded — a counter answers a permanent only on the way in",
+        "uncovered": [
+          "enchantment",
+          "graveyard",
+          "land"
+        ],
+        "unit": "classes answered",
+        "value": 2
+      },
+      "target": {
+        "high": null,
+        "low": 5,
+        "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "consistency",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "goldfish land_drop_hit_rate_by_turn['3']",
+        "keep_first_seven_rate": 0.791,
+        "unit": "rate",
+        "value": 0.9
+      },
+      "target": {
+        "high": null,
+        "low": 0.74,
+        "quote": "had 26% miss the turn-3 land drop with no mana source at all",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "curve",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "deck-facts curve (nonland entries)",
+        "mana_value_8_plus": 1,
+        "nonland_entries": 64,
+        "three_drops": 13,
+        "two_drops": 19,
+        "unit": "modal mana value",
+        "value": 2
+      },
+      "target": {
+        "formula": "modal-two",
+        "high": null,
+        "low": null,
+        "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+",
+        "source": "strategy:deckbuilding.curve"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "power",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "drivers": [
+          "combo_content",
+          "two_card_infinite"
+        ],
+        "floor_name": "Optimized",
+        "game_changers": [],
+        "how": "bracket_report.json",
+        "unit": "bracket floor",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "Contents give a floor, never a verdict.",
+        "source": "strategy:deckbuilding.power-level"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "tutors",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Goblin Matron",
+          "Moggcatcher"
+        ],
+        "how": "copies carrying tutor:unrestricted or tutor:narrow",
+        "unit": "copies",
+        "value": 2
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    }
+  ],
+  "commander": [
+    "Zada, Hedron Grinder"
+  ],
+  "counts": {
+    "copies": 100,
+    "entries": 79,
+    "land_copies": 36,
+    "lands": 15,
+    "legendary": 8,
+    "legendary_lands": 2,
+    "legendary_permanents": 8,
+    "nonland": 64,
+    "nonlegendary": 71
+  },
+  "decklist_sha256_prefix": "c8651652722c",
+  "engine": {
+    "available": true,
+    "redundancy_citation": {
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    "single_points_of_failure": [],
+    "targets": [
+      {
+        "commander_gated": true,
+        "components": [
+          {
+            "cards": [
+              "Crimson Wisps",
+              "Expedite",
+              "Renegade Tactics",
+              "Ancestors' Aid",
+              "Fists of Flame",
+              "Wild Ride"
+            ],
+            "modal_role": "ramp:ritual",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.444,
+              "opening_seven": 0.364
+            },
+            "shared_axes": [],
+            "shared_roles": [],
+            "size": 6,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Zada online with a cantrip drawn",
+        "measured": {
+          "assembled_rate": 0.663,
+          "assembled_rate_assisted": 0.663,
+          "by_turn_6_rate": 0.501,
+          "by_turn_6_rate_assisted": 0.501,
+          "mean_turn": 5.245
+        },
+        "thinnest_size": 6
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragon Fodder",
+              "Krenko's Command",
+              "Mogg War Marshal",
+              "Skirk Prospector",
+              "Searslicer Goblin"
+            ],
+            "modal_role": "threat:tokens",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.386,
+              "opening_seven": 0.312
+            },
+            "shared_axes": [],
+            "shared_roles": [
+              "threat:tokens",
+              "threat:body"
+            ],
+            "size": 5,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Early token maker drawn",
+        "measured": {
+          "assembled_rate": 0.6,
+          "assembled_rate_assisted": 0.6,
+          "by_turn_6_rate": 0.487,
+          "by_turn_6_rate_assisted": 0.487,
+          "mean_turn": 3.184
+        },
+        "thinnest_size": 5
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Grapeshot",
+              "Empty the Warrens",
+              "Haze of Rage",
+              "Spreading Insurrection"
+            ],
+            "modal_role": "removal:damage",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
+            },
+            "shared_axes": [],
+            "shared_roles": [],
+            "size": 4,
+            "thin": false,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Battle Hymn",
+              "Brightstone Ritual",
+              "Mana Geyser",
+              "Seething Song"
+            ],
+            "modal_role": "ramp:ritual",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
+            },
+            "shared_axes": [
+              "ramp"
+            ],
+            "shared_roles": [
+              "ramp:ritual"
+            ],
+            "size": 4,
+            "thin": false,
+            "thinnest": false
+          }
+        ],
+        "label": "Storm payoff plus ritual drawn",
+        "measured": {
+          "assembled_rate": 0.265,
+          "assembled_rate_assisted": 0.265,
+          "by_turn_6_rate": 0.169,
+          "by_turn_6_rate_assisted": 0.169,
+          "mean_turn": 4.914
+        },
+        "thinnest_size": 4
+      }
+    ]
+  },
+  "freshness": {
+    "artifacts": {
+      "bracket_report.json": {
+        "current": null,
+        "decklist_sha256": null,
+        "present": true
+      },
+      "goldfish_metrics.json": {
+        "current": true,
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "present": true
+      },
+      "mana_analysis.json": {
+        "current": true,
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "present": true
+      }
+    },
+    "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+    "recon": {
+      "as_of": null,
+      "present": false
+    }
+  },
+  "notes": [
+    "No archetype was established, so the BASE targets apply and no archetype override was used. strategy:deckbuilding.ratios is explicit that templates are counts of functions rather than cards and that the counts should come from the deck's actual failure modes — read every target below as a starting point, not a verdict.",
+    "Under target: card-advantage, sweepers, protection, threat-density, interaction-breadth.",
+    "Over target: ramp.",
+    "Permanent class(es) with no answer detected: enchantment, graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
+    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Crimson Wisps, Expedite, Fists of Flame, Forgotten Cave, Fountainport, Gempalm Incinerator …. They are NOT included in the count.",
+    "Roles come from card_roles.json, which classifies 87.3% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+  ],
+  "roles": {
+    "coverage": 0.8734,
+    "no_role": [
+      "Chaos Warp",
+      "Crimson Wisps",
+      "Daring Discovery",
+      "Expedite",
+      "Fists of Flame",
+      "Past in Flames",
+      "Reliquary Tower",
+      "Renegade Tactics",
+      "Spreading Insurrection",
+      "Wild Ride"
+    ]
+  },
+  "slug": "goblin-storm"
+}

@@ -213,6 +213,12 @@ manamap pilot candidates <slug> --pool <file|library|-> [--axis A] [--cut CARD] 
                                         #   the Atlas's "consider these" on a pile
 manamap pilot merge-debrief <slug>      # the debrief agent's annotations in, by entry id
 manamap pilot validate-debrief <slug>   # the annotation held to the log and the 99
+manamap pilot build-poh <slug>          # THE PILOT'S OPERATING HANDBOOK — numbered
+                                        #   sections, emergencies before normal operation,
+                                        #   one procedure per printed sheet. Replaces the
+                                        #   manual-v5 page at manuals/p/<slug>.html
+manamap pilot validate-poh <slug>       # dangling xrefs, the callout cap, no script,
+                                        #   no build date
 manamap pilot install-agent <slug> --routine R   # an agent's whole-file handoff becomes
                                         #   the tracked artifact, STAMPED with the decklist
                                         #   sha. THE ONE PLACE that happens: a `cp` cannot

@@ -24,8 +24,8 @@ supported. The magazine that used to be the product is a frozen legacy renderer 
 compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 89 pilot subcommands,
-27 top-level subcommands, 15 agents, 19 skills, 10 static cache routines
+Scale (derived; `tests/test_docs_counts.py` polices these): 95 pilot subcommands,
+27 top-level subcommands, 16 agents, 20 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 
@@ -115,7 +115,7 @@ status and withholds the suggestions that would need a deck to shuffle.
 | | | where |
 |---|---|---|
 | **The workbench gets verbs** | the lifecycle leaves `issue.json` for `deck_versions.json`; `deck-state` and `deck-delete`; `validate-deck-versions` (closes #24); the archive rack folds; the version stamps on the art; the fleet controls, absent without a local server | `docs/pilot.md` |
-| Agent audit + Sprint 0 | 18 → 15 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/agent-audit-2026-08-19.md` |
+| Agent audit + Sprint 0 | 18 → 16 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/agent-audit-2026-08-19.md` |
 | MVP Sprints 1–3 | `deck-version`, `deck-notes` + `/debrief`, `prescribe`, `deck-info` | `docs/pilot.md` |
 | Simulation S0–S5 | Forge spike + verdict; seeded harness; parser with CIs; `validate-sim`; the pod; the bridge `sim-scenario` → `game_state` v2; the doctor reads the table | `docs/simulation.md` |
 | The chain, once for real | stack 008 — a board lifted from a simulated game, resolved + checker-passed in 3 iterations; matched Forge's log line for line | `docs/simulation.md` |

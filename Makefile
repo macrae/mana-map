@@ -105,6 +105,17 @@ manuals:  ## Re-render every published issue + the version lists (deterministic;
 	    && $(MANAMAP) pilot deck-version $$slug list --write >/dev/null \
 	    && echo "    versions.json  $$slug"; \
 	done
+# THE HANDBOOK, and the reason it is HERE rather than in `demo`. `manuals/p/`
+# has never had a determinism gate: `make manuals` rendered only the magazine,
+# so CI's `git diff --exit-code -- manuals/` could not fail on a compact page
+# because nothing in the gate ever rewrote one. A gate that rebuilds a file
+# without comparing it is a gate that cannot fail; one that compares a file
+# without rebuilding it is the same thing wearing a different hat.
+	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
+	  test -f data/decks/$$slug/cards.json \
+	    && $(MANAMAP) pilot build-poh $$slug >/dev/null \
+	    && echo "    manuals/p/$$slug.html"; \
+	done
 	$(MANAMAP) pilot build-index
 
 demo:  ## Rebuild everything the demo shows, then serve it. Run before presenting.

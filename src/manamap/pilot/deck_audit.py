@@ -873,12 +873,35 @@ def format_report(audit):
     return "\n".join(lines)
 
 
+AUDIT_ARTIFACT = "audit.json"
+
+
 def main(args):
     audit = analyze(args.slug, branch=getattr(args, "branch", None), archetype=getattr(args, "archetype", None))
     if getattr(args, "as_json", False):
         print(json.dumps(audit, indent=2, sort_keys=True, ensure_ascii=False))
     else:
         print(format_report(audit))
+    # THE TRACKED ARTIFACT. `--out` writes a VIEW anywhere; `--write` writes THE
+    # audit to its one home. The two are different acts and were not
+    # distinguishable before, because there was no home: the sixteen axes were
+    # printed or `--out`-ed and never persisted, so anything that needed them
+    # had to recompute — and the Pilot's Operating Handbook may not compute at
+    # render time. `info.json` keeps only {archetype, under[], over[], stale[]},
+    # which is the roll-up, not the measurement.
+    if getattr(args, "write", False):
+        path = deck_dir(args.slug) / AUDIT_ARTIFACT
+        # STAMPED, like every other derived artifact. The audit is a pure
+        # function of the 99, so a stamp is honest here in a way it is not for
+        # an agent's prose: this file IS current as of that sha by construction.
+        audit["decklist_sha256_prefix"] = (
+            (load_json(deck_dir(args.slug) / "cards.json") or {})
+            .get("decklist_sha256") or "")[:12] or None
+        with open(path, "w") as f:
+            json.dump(audit, f, indent=2, sort_keys=True, ensure_ascii=False)
+            f.write("\n")
+        print(f"Wrote {path}")
+
     out = getattr(args, "out", None)
     if out:
         path = resolve_out_path(out, args.slug, "deck-audit")

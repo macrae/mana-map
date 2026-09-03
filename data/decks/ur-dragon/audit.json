@@ -1,0 +1,1403 @@
+{
+  "archetype": {
+    "archetype": null,
+    "overrides": {},
+    "source": "none — base targets apply"
+  },
+  "axes": [
+    {
+      "axis": "mana-base",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "land copies from deck-facts (copies, not entries)",
+        "land_entries": 32,
+        "unit": "copies",
+        "value": 36
+      },
+      "target": {
+        "high": 38,
+        "low": 36,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "mana-sources",
+      "gap": 0,
+      "measured": {
+        "burgess_target": 45,
+        "cards": [
+          "Arcane Signet",
+          "Birds of Paradise",
+          "Bloom Tender",
+          "Chromatic Lantern",
+          "Delighted Halfling",
+          "Dragon's Hoard",
+          "Faeburrow Elder",
+          "Farseek",
+          "Gadrak, the Crown-Scourge",
+          "Ganax, Astral Hunter",
+          "Goldspan Dragon",
+          "Ignoble Hierarch",
+          "Nature's Lore",
+          "Sol Ring"
+        ],
+        "colour_identity": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ],
+        "commander_mana_value": 9,
+        "how": "land copies plus persistent producers (ramp:rock, ramp:dork, ramp:land); target 31 + 5 colour(s) + commander mana value 9 = 45",
+        "note": "rituals and Treasure makers are one-shot and are not counted as sources",
+        "persistent_producers": 14,
+        "unit": "copies",
+        "value": 50
+      },
+      "target": {
+        "formula": "burgess",
+        "high": null,
+        "low": 45,
+        "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "taplands",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Path of Ancestry"
+        ],
+        "conditional_cards": [
+          "Blood Crypt",
+          "Breeding Pool",
+          "Canopy Vista",
+          "Cinder Glade",
+          "Dragonskull Summit",
+          "Overgrown Tomb",
+          "Sacred Foundry",
+          "Smoldering Marsh",
+          "Steam Vents",
+          "Stomping Ground",
+          "Stormcarved Coast"
+        ],
+        "conditional_or_shock": 11,
+        "how": "land copies that enter tapped with no condition and no pay-life escape",
+        "note": "mana_analysis.lands.enters_tapped is a substring superset and counts both groups together",
+        "unit": "copies",
+        "value": 1
+      },
+      "target": {
+        "high": 8,
+        "low": null,
+        "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "colour-sources",
+      "gap": 12,
+      "measured": {
+        "cards": [],
+        "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
+        "per_colour": {
+          "B": {
+            "have": 18,
+            "target": 30
+          },
+          "G": {
+            "have": 23,
+            "target": 22
+          },
+          "R": {
+            "have": 30,
+            "target": 36
+          },
+          "U": {
+            "have": 20,
+            "target": 22
+          },
+          "W": {
+            "have": 19,
+            "target": 22
+          }
+        },
+        "short": {
+          "B": 12,
+          "R": 6,
+          "U": 2,
+          "W": 3
+        },
+        "unit": "sources above target (worst colour)",
+        "value": -12
+      },
+      "target": {
+        "formula": "karsten",
+        "high": null,
+        "low": 0,
+        "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%",
+        "source": "strategy:deckbuilding.mana-base.color-sources"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "ramp",
+      "gap": -10,
+      "measured": {
+        "cards": [
+          "Arcane Signet",
+          "Atsushi, the Blazing Sky",
+          "Birds of Paradise",
+          "Bloom Tender",
+          "Chromatic Lantern",
+          "Delighted Halfling",
+          "Dragon's Hoard",
+          "Dragonlord's Servant",
+          "Dragonspeaker Shaman",
+          "Faeburrow Elder",
+          "Farseek",
+          "Gadrak, the Crown-Scourge",
+          "Ganax, Astral Hunter",
+          "Goldspan Dragon",
+          "Herald's Horn",
+          "Ignoble Hierarch",
+          "Nature's Lore",
+          "Old Gnawbone",
+          "Smaug the Magnificent",
+          "Sol Ring",
+          "The Ur-Dragon",
+          "Urza's Incubator"
+        ],
+        "how": "copies carrying any of ramp:rock, ramp:dork, ramp:ritual, ramp:land, ramp:cost-reduction, ramp:treasure",
+        "possible_uncounted": [
+          "Desolation of Smaug",
+          "Sarkhan, Fireblood"
+        ],
+        "unit": "copies",
+        "value": 22
+      },
+      "target": {
+        "high": 12,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "over"
+    },
+    {
+      "axis": "card-advantage",
+      "gap": 6,
+      "measured": {
+        "cards": [
+          "Atsushi, the Blazing Sky",
+          "Garruk's Uprising",
+          "Roiling Dragonstorm",
+          "Temur Ascendancy"
+        ],
+        "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
+        "possible_uncounted": [
+          "Dragon's Hoard",
+          "Return of the Wildspeaker",
+          "Rishkar's Expertise",
+          "Sarkhan, Fireblood"
+        ],
+        "unit": "copies",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "interaction",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Boros Charm",
+          "Desolation of Smaug",
+          "Dragon Tempest",
+          "Drakuseth, Maw of Flames",
+          "Firespitter Whelp",
+          "Generous Gift",
+          "Glorybringer",
+          "Scourge of Valkas",
+          "Swords to Plowshares"
+        ],
+        "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
+        "interactive_suite_copies": 17,
+        "unit": "copies",
+        "value": 9
+      },
+      "target": {
+        "high": null,
+        "low": 8,
+        "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\"",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "sweepers",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Crux of Fate"
+        ],
+        "how": "copies carrying any of removal:sweeper",
+        "unit": "copies",
+        "value": 1
+      },
+      "target": {
+        "high": 3,
+        "low": 1,
+        "quote": "wipes \"one or two max\" (Zupke caps at 3)",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "protection",
+      "gap": -1,
+      "measured": {
+        "cards": [
+          "Boros Charm",
+          "Deflecting Swat",
+          "Flawless Maneuver",
+          "Heroic Intervention",
+          "Lightning Greaves",
+          "Miirym, Sentinel Wyrm",
+          "Solphim, Mayhem Dominus",
+          "Teferi's Protection"
+        ],
+        "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
+        "unit": "copies",
+        "value": 8
+      },
+      "target": {
+        "high": 7,
+        "low": 5,
+        "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "over"
+    },
+    {
+      "axis": "threat-density",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Atarka, World Render",
+          "Boros Charm",
+          "Solphim, Mayhem Dominus",
+          "Twinflame Tyrant"
+        ],
+        "how": "copies carrying any of wincon:alt, wincon:drain, wincon:combat",
+        "unit": "copies",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": 3,
+        "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\"",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "creatures",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "front-face creature copies",
+        "unit": "copies",
+        "value": 30
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "interaction-breadth",
+      "gap": 1,
+      "measured": {
+        "by_class": {
+          "artifact": 1,
+          "creature": 5,
+          "enchantment": 1,
+          "graveyard": 0,
+          "land": 1
+        },
+        "cards": [
+          "artifact",
+          "creature",
+          "enchantment",
+          "land"
+        ],
+        "how": "oracle-text heuristic over interactive cards; counterspells deliberately excluded — a counter answers a permanent only on the way in",
+        "uncovered": [
+          "graveyard"
+        ],
+        "unit": "classes answered",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": 5,
+        "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "consistency",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "goldfish land_drop_hit_rate_by_turn['3']",
+        "keep_first_seven_rate": 0.794,
+        "unit": "rate",
+        "value": 0.906
+      },
+      "target": {
+        "high": null,
+        "low": 0.74,
+        "quote": "had 26% miss the turn-3 land drop with no mana source at all",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "curve",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "deck-facts curve (nonland entries)",
+        "mana_value_8_plus": 2,
+        "nonland_entries": 64,
+        "three_drops": 18,
+        "two_drops": 10,
+        "unit": "modal mana value",
+        "value": 3
+      },
+      "target": {
+        "formula": "modal-two",
+        "high": null,
+        "low": null,
+        "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+",
+        "source": "strategy:deckbuilding.curve"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "power",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "drivers": [
+          "game_changers",
+          "combo_content"
+        ],
+        "floor_name": "Upgraded",
+        "game_changers": [
+          "Enlightened Tutor",
+          "Teferi's Protection",
+          "Worldly Tutor"
+        ],
+        "how": "bracket_report.json",
+        "unit": "bracket floor",
+        "value": 3
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "Contents give a floor, never a verdict.",
+        "source": "strategy:deckbuilding.power-level"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "tutors",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Enlightened Tutor",
+          "Nature's Lore",
+          "Sarkhan's Triumph",
+          "Skyshroud Claim",
+          "Worldly Tutor"
+        ],
+        "how": "copies carrying tutor:unrestricted or tutor:narrow",
+        "unit": "copies",
+        "value": 5
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    }
+  ],
+  "commander": [
+    "The Ur-Dragon"
+  ],
+  "counts": {
+    "copies": 100,
+    "entries": 96,
+    "land_copies": 36,
+    "lands": 32,
+    "legendary": 13,
+    "legendary_lands": 0,
+    "legendary_permanents": 13,
+    "nonland": 64,
+    "nonlegendary": 83
+  },
+  "decklist_sha256_prefix": "5611a822851c",
+  "engine": {
+    "available": true,
+    "redundancy_citation": {
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    "single_points_of_failure": [],
+    "targets": [
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragonlord's Servant",
+              "Dragonspeaker Shaman",
+              "Herald's Horn",
+              "Urza's Incubator"
+            ],
+            "modal_role": "ramp:cost-reduction",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
+            },
+            "shared_axes": [
+              "ramp"
+            ],
+            "shared_roles": [
+              "ramp:cost-reduction",
+              "threat:body",
+              "payoff:typal"
+            ],
+            "size": 4,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Cost reducer drawn (the deck's real curve fixer)",
+        "measured": {
+          "assembled_rate": 0.521,
+          "assembled_rate_assisted": 0.714,
+          "by_turn_6_rate": 0.422,
+          "by_turn_6_rate_assisted": 0.599,
+          "mean_turn": 3.264
+        },
+        "thinnest_size": 4
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Arcane Signet",
+              "Birds of Paradise",
+              "Bloom Tender",
+              "Chromatic Lantern",
+              "Delighted Halfling",
+              "Dragon's Hoard",
+              "Faeburrow Elder",
+              "Farseek",
+              "Ignoble Hierarch",
+              "Nature's Lore",
+              "Skyshroud Claim",
+              "Sol Ring"
+            ],
+            "modal_role": "utility:activated",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.704,
+              "opening_seven": 0.607
+            },
+            "shared_axes": [
+              "ramp",
+              "tutors"
+            ],
+            "shared_roles": [
+              "utility:activated",
+              "ramp:dork",
+              "threat:body"
+            ],
+            "size": 12,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Ramp or fixing drawn",
+        "measured": {
+          "assembled_rate": 0.904,
+          "assembled_rate_assisted": 0.947,
+          "by_turn_6_rate": 0.824,
+          "by_turn_6_rate_assisted": 0.883,
+          "mean_turn": 2.213
+        },
+        "thinnest_size": 12
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragon Tempest",
+              "Garruk's Uprising",
+              "Lathliss, Dragon Queen",
+              "Miirym, Sentinel Wyrm",
+              "Scourge of Valkas",
+              "Temur Ascendancy",
+              "Terror of the Peaks"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.498,
+              "opening_seven": 0.412
+            },
+            "shared_axes": [
+              "interaction",
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "value:etb",
+              "removal:damage"
+            ],
+            "size": 7,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Dragon payoff drawn (per-dragon trigger engine)",
+        "measured": {
+          "assembled_rate": 0.733,
+          "assembled_rate_assisted": 0.851,
+          "by_turn_6_rate": 0.621,
+          "by_turn_6_rate_assisted": 0.747,
+          "mean_turn": 2.846
+        },
+        "thinnest_size": 7
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragonlord's Servant",
+              "Dragonspeaker Shaman",
+              "Herald's Horn",
+              "Urza's Incubator"
+            ],
+            "modal_role": "ramp:cost-reduction",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
+            },
+            "shared_axes": [
+              "ramp"
+            ],
+            "shared_roles": [
+              "ramp:cost-reduction",
+              "threat:body",
+              "payoff:typal"
+            ],
+            "size": 4,
+            "thin": false,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Arcane Signet",
+              "Birds of Paradise",
+              "Bloom Tender",
+              "Chromatic Lantern",
+              "Delighted Halfling",
+              "Dragon's Hoard",
+              "Faeburrow Elder",
+              "Farseek",
+              "Ignoble Hierarch",
+              "Nature's Lore",
+              "Skyshroud Claim",
+              "Sol Ring"
+            ],
+            "modal_role": "utility:activated",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.704,
+              "opening_seven": 0.607
+            },
+            "shared_axes": [
+              "ramp",
+              "tutors"
+            ],
+            "shared_roles": [
+              "utility:activated",
+              "ramp:dork",
+              "threat:body"
+            ],
+            "size": 12,
+            "thin": false,
+            "thinnest": false
+          }
+        ],
+        "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
+        "measured": {
+          "assembled_rate": 0.463,
+          "assembled_rate_assisted": 0.667,
+          "by_turn_6_rate": 0.336,
+          "by_turn_6_rate_assisted": 0.514,
+          "mean_turn": 4.195
+        },
+        "thinnest_size": 4
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragon Tempest",
+              "Firespitter Whelp",
+              "Ganax, Astral Hunter",
+              "Miirym, Sentinel Wyrm",
+              "Scourge of Valkas",
+              "Temur Ascendancy",
+              "Terror of the Peaks"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.498,
+              "opening_seven": 0.412
+            },
+            "shared_axes": [
+              "interaction"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "removal:damage",
+              "value:etb"
+            ],
+            "size": 7,
+            "thin": false,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Glorybringer",
+              "Goldspan Dragon",
+              "Lathliss, Dragon Queen",
+              "Smaug the Magnificent",
+              "Solphim, Mayhem Dominus",
+              "Thrakkus the Butcher",
+              "Thunderbreak Regent",
+              "Twinflame Tyrant"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.547,
+              "opening_seven": 0.456
+            },
+            "shared_axes": [
+              "ramp",
+              "threat-density"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "ramp:treasure",
+              "wincon:combat"
+            ],
+            "size": 8,
+            "thin": false,
+            "thinnest": false
+          }
+        ],
+        "label": "Payoff + a castable dragon by mid-game",
+        "measured": {
+          "assembled_rate": 0.571,
+          "assembled_rate_assisted": 0.738,
+          "by_turn_6_rate": 0.413,
+          "by_turn_6_rate_assisted": 0.567,
+          "mean_turn": 4.216
+        },
+        "thinnest_size": 7
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Boros Charm",
+              "Deflecting Swat",
+              "Flawless Maneuver",
+              "Heroic Intervention",
+              "Lightning Greaves",
+              "Teferi's Protection"
+            ],
+            "modal_role": "protection:self",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.444,
+              "opening_seven": 0.364
+            },
+            "shared_axes": [
+              "protection"
+            ],
+            "shared_roles": [
+              "protection:self"
+            ],
+            "size": 6,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Protection held for the big turn",
+        "measured": {
+          "assembled_rate": 0.673,
+          "assembled_rate_assisted": 0.817,
+          "by_turn_6_rate": 0.565,
+          "by_turn_6_rate_assisted": 0.707,
+          "mean_turn": 2.959
+        },
+        "thinnest_size": 6
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Desolation of Smaug",
+              "Sarkhan, Fireblood"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
+              "by_role": [],
+              "by_role_total": 0,
+              "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
+              "role_signature": null,
+              "role_signature_kind": null
+            },
+            "modal_role": "removal:damage",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
+            },
+            "shared_axes": [],
+            "shared_roles": [],
+            "size": 2,
+            "thin": true,
+            "thinnest": true
+          }
+        ],
+        "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
+        "measured": {
+          "assembled_rate": 0.302,
+          "assembled_rate_assisted": 0.587,
+          "by_turn_6_rate": 0.234,
+          "by_turn_6_rate_assisted": 0.469,
+          "mean_turn": 3.607
+        },
+        "thinnest_size": 2
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Atsushi, the Blazing Sky",
+              "Gadrak, the Crown-Scourge",
+              "Ganax, Astral Hunter",
+              "Goldspan Dragon",
+              "Old Gnawbone",
+              "Smaug the Magnificent"
+            ],
+            "modal_role": "ramp:treasure",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.444,
+              "opening_seven": 0.364
+            },
+            "shared_axes": [
+              "ramp"
+            ],
+            "shared_roles": [
+              "ramp:treasure",
+              "threat:body",
+              "ramp:dork"
+            ],
+            "size": 6,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
+        "measured": {
+          "assembled_rate": 0.676,
+          "assembled_rate_assisted": 0.811,
+          "by_turn_6_rate": 0.56,
+          "by_turn_6_rate_assisted": 0.7,
+          "mean_turn": 3.068
+        },
+        "thinnest_size": 6
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Dragon Tempest",
+              "Scourge of Valkas",
+              "Terror of the Peaks"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [
+                {
+                  "cards": [
+                    "Miirym, Sentinel Wyrm",
+                    "Bladewing the Risen",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Bladewing the Risen",
+                  "popularity": 13026,
+                  "produces": [
+                    "Infinite LTB",
+                    "Infinite ETB",
+                    "Infinite death triggers",
+                    "Infinite damage",
+                    "Infinite creature tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Ganax, Astral Hunter",
+                    "Aggravated Assault",
+                    "Utvara Hellkite"
+                  ],
+                  "name": "Aggravated Assault",
+                  "popularity": 4405,
+                  "produces": [
+                    "Infinite colored mana",
+                    "Infinite combat phases",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite mana creatures you control can produce",
+                    "Infinite Treasure tokens",
+                    "Infinite untap of creatures you control"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Miirym, Sentinel Wyrm",
+                    "Worldgorger Dragon"
+                  ],
+                  "name": "Worldgorger Dragon",
+                  "popularity": 1884,
+                  "produces": [
+                    "Infinite blinking",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite mana permanents you control can produce"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Miirym, Sentinel Wyrm",
+                    "Ganax, Astral Hunter",
+                    "Deadeye Navigator"
+                  ],
+                  "name": "Deadeye Navigator",
+                  "popularity": 1065,
+                  "produces": [
+                    "Infinite blinking",
+                    "Infinite colored mana",
+                    "Infinite copies of most nontoken Dragons you control",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite Treasure tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Ganax, Astral Hunter",
+                    "Lathliss, Dragon Queen",
+                    "Cloudstone Curio",
+                    "Sneak Attack"
+                  ],
+                  "name": "Cloudstone Curio",
+                  "popularity": 152,
+                  "produces": [
+                    "Infinite colored mana",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite Treasure tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                }
+              ],
+              "by_combo_line_total": 5,
+              "by_role": [
+                {
+                  "cmc": 9.0,
+                  "edhrec_rank": 22,
+                  "game_changer": false,
+                  "name": "Blasphemous Act",
+                  "signature": "removal:damage",
+                  "type_line": "Sorcery"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 145,
+                  "game_changer": false,
+                  "name": "Abrade",
+                  "signature": "removal:damage",
+                  "type_line": "Instant"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 160,
+                  "game_changer": false,
+                  "name": "Lightning Bolt",
+                  "signature": "removal:damage",
+                  "type_line": "Instant"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 191,
+                  "game_changer": false,
+                  "name": "Impact Tremors",
+                  "signature": "removal:damage",
+                  "type_line": "Enchantment"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 256,
+                  "game_changer": false,
+                  "name": "Syr Konrad, the Grim",
+                  "signature": "removal:damage",
+                  "type_line": "Legendary Creature — Human Knight"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 258,
+                  "game_changer": true,
+                  "name": "Orcish Bowmasters",
+                  "signature": "removal:damage",
+                  "type_line": "Creature — Orc Archer"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 379,
+                  "game_changer": false,
+                  "name": "Aetherflux Reservoir",
+                  "signature": "removal:damage",
+                  "type_line": "Artifact"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 403,
+                  "game_changer": false,
+                  "name": "Guttersnipe",
+                  "signature": "removal:damage",
+                  "type_line": "Creature — Goblin Shaman"
+                }
+              ],
+              "by_role_total": 1779,
+              "note": null,
+              "role_signature": "removal:damage",
+              "role_signature_kind": "role"
+            },
+            "modal_role": "removal:damage",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.251,
+              "opening_seven": 0.199
+            },
+            "shared_axes": [
+              "interaction"
+            ],
+            "shared_roles": [
+              "removal:damage",
+              "value:etb",
+              "threat:body"
+            ],
+            "size": 3,
+            "thin": true,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Ancient Gold Dragon",
+              "Lathliss, Dragon Queen",
+              "Miirym, Sentinel Wyrm",
+              "Sarkhan, Fireblood",
+              "Utvara Hellkite"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.386,
+              "opening_seven": 0.312
+            },
+            "shared_axes": [],
+            "shared_roles": [
+              "threat:body",
+              "threat:tokens"
+            ],
+            "size": 5,
+            "thin": false,
+            "thinnest": false
+          }
+        ],
+        "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
+        "measured": {
+          "assembled_rate": 0.235,
+          "assembled_rate_assisted": 0.472,
+          "by_turn_6_rate": 0.15,
+          "by_turn_6_rate_assisted": 0.316,
+          "mean_turn": 4.977
+        },
+        "thinnest_size": 3
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Atarka, World Render",
+              "Thrakkus the Butcher"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [
+                {
+                  "cards": [
+                    "Solphim, Mayhem Dominus",
+                    "Heartless Hidetsugu"
+                  ],
+                  "name": "Heartless Hidetsugu",
+                  "popularity": 18485,
+                  "produces": [
+                    "Each opponent loses the game",
+                    "Near-infinite damage to all players"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Ganax, Astral Hunter",
+                    "Aggravated Assault",
+                    "Utvara Hellkite"
+                  ],
+                  "name": "Aggravated Assault",
+                  "popularity": 4405,
+                  "produces": [
+                    "Infinite colored mana",
+                    "Infinite combat phases",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite mana creatures you control can produce",
+                    "Infinite Treasure tokens",
+                    "Infinite untap of creatures you control"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Miirym, Sentinel Wyrm",
+                    "Ganax, Astral Hunter",
+                    "Deadeye Navigator"
+                  ],
+                  "name": "Deadeye Navigator",
+                  "popularity": 1065,
+                  "produces": [
+                    "Infinite blinking",
+                    "Infinite colored mana",
+                    "Infinite copies of most nontoken Dragons you control",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite Treasure tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Solphim, Mayhem Dominus",
+                    "Malignus",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Malignus",
+                  "popularity": 797,
+                  "produces": [
+                    "Near-infinite damage",
+                    "Target opponent loses the game"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Goldspan Dragon",
+                    "Crown of Flames"
+                  ],
+                  "name": "Crown of Flames",
+                  "popularity": 596,
+                  "produces": [
+                    "Infinite storm count"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Goldspan Dragon",
+                    "Whip Silk"
+                  ],
+                  "name": "Whip Silk",
+                  "popularity": 203,
+                  "produces": [
+                    "Infinite storm count"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Ganax, Astral Hunter",
+                    "Lathliss, Dragon Queen",
+                    "Cloudstone Curio",
+                    "Sneak Attack"
+                  ],
+                  "name": "Cloudstone Curio",
+                  "popularity": 152,
+                  "produces": [
+                    "Infinite colored mana",
+                    "Infinite creature tokens",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite Treasure tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Goldspan Dragon",
+                    "Flickering Ward"
+                  ],
+                  "name": "Flickering Ward",
+                  "popularity": 144,
+                  "produces": [
+                    "Infinite storm count"
+                  ],
+                  "status": "needs a stack scenario"
+                }
+              ],
+              "by_combo_line_total": 10,
+              "by_role": [
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 38,
+                  "game_changer": false,
+                  "name": "Solemn Simulacrum",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Golem"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 58,
+                  "game_changer": false,
+                  "name": "Llanowar Elves",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Elf Druid"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 76,
+                  "game_changer": false,
+                  "name": "Esper Sentinel",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Human Soldier"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 106,
+                  "game_changer": false,
+                  "name": "Elvish Mystic",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Elf Druid"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 110,
+                  "game_changer": false,
+                  "name": "Sakura-Tribe Elder",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Snake Shaman"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 113,
+                  "game_changer": false,
+                  "name": "Eternal Witness",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Human Shaman"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 132,
+                  "game_changer": false,
+                  "name": "Roaming Throne",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Golem"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 138,
+                  "game_changer": false,
+                  "name": "Blood Artist",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Vampire"
+                }
+              ],
+              "by_role_total": 17570,
+              "note": null,
+              "role_signature": "threat:body",
+              "role_signature_kind": "role"
+            },
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
+            },
+            "shared_axes": [],
+            "shared_roles": [
+              "threat:body"
+            ],
+            "size": 2,
+            "thin": true,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Ganax, Astral Hunter",
+              "Glorybringer",
+              "Goldspan Dragon",
+              "Lathliss, Dragon Queen",
+              "Smaug the Magnificent",
+              "Solphim, Mayhem Dominus",
+              "Thunderbreak Regent",
+              "Twinflame Tyrant"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.547,
+              "opening_seven": 0.456
+            },
+            "shared_axes": [
+              "ramp",
+              "threat-density"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "ramp:treasure",
+              "ramp:dork"
+            ],
+            "size": 8,
+            "thin": false,
+            "thinnest": false
+          }
+        ],
+        "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
+        "measured": {
+          "assembled_rate": 0.243,
+          "assembled_rate_assisted": 0.501,
+          "by_turn_6_rate": 0.157,
+          "by_turn_6_rate_assisted": 0.345,
+          "mean_turn": 4.866
+        },
+        "thinnest_size": 2
+      }
+    ]
+  },
+  "freshness": {
+    "artifacts": {
+      "bracket_report.json": {
+        "current": null,
+        "decklist_sha256": null,
+        "present": true
+      },
+      "goldfish_metrics.json": {
+        "current": true,
+        "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+        "present": true
+      },
+      "mana_analysis.json": {
+        "current": true,
+        "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+        "present": true
+      }
+    },
+    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+    "recon": {
+      "as_of": null,
+      "present": false
+    }
+  },
+  "notes": [
+    "No archetype was established, so the BASE targets apply and no archetype override was used. strategy:deckbuilding.ratios is explicit that templates are counts of functions rather than cards and that the counts should come from the deck's actual failure modes — read every target below as a starting point, not a verdict.",
+    "Under target: colour-sources, card-advantage, interaction-breadth.",
+    "Over target: ramp, protection.",
+    "Permanent class(es) with no answer detected: graveyard. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
+    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Dragon's Hoard, Return of the Wildspeaker, Rishkar's Expertise, Sarkhan, Fireblood. They are NOT included in the count.",
+    "Roles come from card_roles.json, which classifies 96.9% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+  ],
+  "roles": {
+    "coverage": 0.9688,
+    "no_role": [
+      "Chaos Warp",
+      "Rishkar's Expertise",
+      "Sneak Attack"
+    ]
+  },
+  "slug": "ur-dragon"
+}

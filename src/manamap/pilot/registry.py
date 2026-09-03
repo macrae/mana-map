@@ -42,6 +42,10 @@ PILOT_STEPS = [
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
      "Merge the debrief agent's annotations into log_annotations.json, by entry id"),
+    ("validate-poh", "manamap.pilot.validate_poh",
+     "Form-check a rendered handbook: dangling xrefs, callout cap, no script, no build date"),
+    ("build-poh", "manamap.pilot.poh",
+     "the Pilot's Operating Handbook — numbered, printable, emergencies first"),
     ("install-agent", "manamap.pilot.install_agent",
      "An agent's whole-file handoff becomes the tracked artifact, STAMPED"),
     ("captains-log", "manamap.pilot.captains_log",
@@ -174,7 +178,7 @@ _DECK_COMMANDS = {
     "short-list-art", "issue-length", "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "captains-log", "merge-captains-log", "validate-captains-log",
-    "install-agent",
+    "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
     "deck-branch", "diagnose", "assess", "candidates", "close",
@@ -813,6 +817,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--out", default=None,
                              help="Write markdown here instead of stdout (a view, never tracked)")
         if name == "deck-audit":
+            cmd.add_argument("--write", action="store_true",
+                             help="write the tracked audit.json (the handbook's "
+                                  "Limitations section reads it; the manual may "
+                                  "not compute at render time)")
             cmd.add_argument("--archetype", default=None,
                              help="aggro|control|combo|voltron — overrides what "
                                   "strategic_frame.json says; omit for the base targets")
