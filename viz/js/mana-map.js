@@ -1844,6 +1844,14 @@
   function regroup() {
     render();
     if (window.Build && typeof Build.renderPanel === 'function') Build.renderPanel();
+    /* AND THE GRAPH, which is a third surface this function did not know about.
+     * `render()` draws the world map and is inert while the force canvas is up,
+     * so in Build's graph view — and in Discover, which is always a graph — the
+     * colour control changed the legend and nothing else. The node colour is
+     * baked at construction, so the canvas has to be told. */
+    if (window.Force && Force.isActive && Force.isActive() && Force.recolour) {
+      Force.recolour();
+    }
   }
 
   function setMapStatus() {
@@ -2304,6 +2312,21 @@
     if (currentMode === 'explore') {
       await loadEmbeddings();
       render();
+      return;
+    }
+    /* BUILD IS THE CASE THE GUARD ABOVE FORGOT. The reasoning behind leaving a
+     * grown graph standing is that its NODES were chosen by the old space, and
+     * re-rooting would throw away a walk the user built. Build's node set is not
+     * grown — it IS the deck, fixed by the decklist — and only the EDGES come
+     * from the space. So there is nothing to protect and everything to redraw,
+     * and the control did nothing at all here: same dots, same lines, new label.
+     * `Build.reseedGraph` carries the explored cards across, so the walk-shaped
+     * half of the worry does not apply either. */
+    if (currentMode === 'build' && window.Build && Build.reseedGraph) {
+      await loadEmbeddings();
+      if (Build.reseedGraph()) {
+        setStatus('Similarity: ' + info.label + ' — graph re-linked in the new space');
+      }
     }
   });
 

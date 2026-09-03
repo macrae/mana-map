@@ -112,6 +112,18 @@
                                  // go through it or its internal state desyncs and
                                  // the next wheel event snaps the view back
   let emb = null, dim = 0;
+  /* WHICH SPACE `emb` CAME FROM. The cache above is keyed on nothing, and the
+   * guard below is `!emb` — so once the ability vectors were loaded, switching
+   * Similarity to cardbert reused them forever and `linkWithin` rebuilt the
+   * IDENTICAL graph from stale floats. Measured on zur-enchantress: 188 links,
+   * min 0.0727 / mean 0.3675 / max 0.6522 before and after the switch, to the
+   * last digit, while the status line claimed a new space.
+   *
+   * Stamped rather than cleared by the caller: `setSpace` lives in mana-map.js
+   * and had no idea this cache existed, and a second module that must remember
+   * to invalidate someone else's cache is the same bug waiting for its next
+   * caller. This one notices on its own. */
+  let embSpace = null;
   let active = false;
   let hovered = null, pinned = null;
   // The verified line under the spotlight: a Set of rows and the line's id, or null.
@@ -813,10 +825,12 @@
     // walk is different: `linkWithinFromTable` only links cards whose precomputed top-12
     // happen to also be in the set, which for a 97-card deck is 38 links instead of ~290
     // — a visibly sparser, worse graph. The browser suite caught exactly that.
+    const wantSpace = (window.MM && MM.space) || null;
+    if (emb && embSpace !== wantSpace) { emb = null; dim = 0; }   // the space moved
     if (unique.length > 1 && !emb) {
       MM.setStatus('Loading embeddings…');
       emb = await MM.getEmbeddings();
-      if (emb) dim = MM.EMBED_DIM;
+      if (emb) { dim = MM.EMBED_DIM; embSpace = wantSpace; }
     }
     // No background prefetch on the landing path, deliberately. Nothing in discovery
     // reads `emb` — branching comes from the table and a single seed has no intra-graph
@@ -1418,6 +1432,21 @@
      * asked for. Exported so "add this card where it belongs" is sayable on its
      * own, since that is the only shape of growth that cannot delete anything. */
     adopt(row) { const n = adoptRow(row); restart(0.3); draw(); return !!n; },
+    /* RECOLOUR IN PLACE. `makeNode` bakes `MM.categoryColor(d)` into the node at
+     * construction, which is right — it is read once per frame per node and the
+     * grouping rarely changes — but it meant the "Color by" control could not
+     * reach a graph that already existed. `regroup()` repainted the MAP and
+     * Build's PANEL and nothing told the canvas, so switching Supertype to Role
+     * in Build's graph view changed a legend and left every dot its old colour.
+     *
+     * No relayout: the grouping is a question about ink, not about position, so
+     * the simulation is not disturbed and the camera does not move. */
+    recolour() {
+      if (!nodes.length) return 0;
+      for (const n of nodes) n.color = MM.categoryColor(MM.cardRecord(n.row));
+      draw();
+      return nodes.length;
+    },
     // The rows currently on the graph, for Explore's orientation lens: the graph encodes
     // adjacency and has no absolute position, so "where does this sit in card space" is a
     // question only the world map can answer.

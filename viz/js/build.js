@@ -1596,7 +1596,7 @@
    * a larger radius with a white rim, the commander double-ringed in gold, warm heavy
    * deck edges, commander-first labels. Cards you branch to are washed out, so what you
    * brought stays legible against what you found. */
-  function seedGraph() {
+  function seedGraph(force) {
     if (!active || !window.Force) return;
     const rows = active.main.map(function (x) { return x.idx; })
                             .filter(function (i) { return i !== null; });
@@ -1605,7 +1605,12 @@
     // the rebuild path, so calling it unconditionally threw away everything you had
     // branched to — flipping to the map and back cost six explored cards, measured. Same
     // hazard the relation buttons had. If the graph already holds this deck, leave it.
-    if (Force.nodeCount && rows.every(function (r) { return Force.hasRow(r); })) {
+    //
+    // `force` is the one case where the restore is WRONG rather than kind: the
+    // similarity space changed, so every LINK on the canvas answers a question
+    // nobody is asking any more. `reseedGraph` below keeps the explored cards
+    // across that rebuild, so the guard's actual subject — your work — survives.
+    if (!force && Force.nodeCount && rows.every(function (r) { return Force.hasRow(r); })) {
       Force.enter(null, null, { chrome: 'discovery' });   // restore, do not rebuild
       return;
     }
@@ -1621,11 +1626,39 @@
      * with Discover's landing controls — the exact defect `Force.renderPanel`
      * was taught to avoid by asking `MM.mode`. The panel belongs to the mode;
      * the seed helper belongs to the mode that owns the panel it draws. */
-    Promise.resolve(Force.enter(seeds, active.entry.deck_name,
+    const carried = keepRows.filter(function (r) { return seeds.indexOf(r) < 0; });
+    keepRows = [];
+    Promise.resolve(Force.enter(seeds.concat(carried), active.entry.deck_name,
       { chrome: 'discovery',
         deck: { rows: new Set(rows), commander: cmdIdx, lines: graphLines() } }))
       .then(function () { if (cmdIdx >= 0) Force.pinCard(cmdIdx); });
   }
+
+  /* THE SIMILARITY SPACE CHANGED, SO THE EDGES ARE STALE.
+   *
+   * A graph's NODES are the deck and its EDGES are neighbours in whichever space
+   * `spaceSelect` names — so switching function <-> cardbert changes every line
+   * on the canvas and none of the dots. `mana-map.js` re-rendered on that change
+   * only `if (currentMode === 'explore')`, which is why Build's graph sat there
+   * looking identical while the control claimed to have asked a new question.
+   *
+   * The explored cards are carried across deliberately. The comment on the
+   * restore guard is about not destroying work, and a rebuild that dropped the
+   * six cards you had branched to would be the very defect it was written for —
+   * so they are re-seeded alongside the deck and get their new-space links too. */
+  function reseedGraph() {
+    if (!active || !window.Force || view !== 'graph') return false;
+    const explored = Force.rows ? Force.rows() : [];
+    const deckRows = new Set(active.main.map(function (x) { return x.idx; })
+                                        .filter(function (i) { return i !== null; }));
+    keepRows = explored.filter(function (r) { return !deckRows.has(r); });
+    seedGraph(true);
+    return true;
+  }
+
+  // Rows that were on the canvas before a forced rebuild and are not part of the
+  // deck — carried into the next `Force.enter` so a space change costs nothing.
+  let keepRows = [];
 
   function applyView() {
     const plot = document.getElementById('plot');
@@ -1747,6 +1780,7 @@
     addCard,
     isInDeck,
     setView,
+    reseedGraph,
     get view() { return view; },
     enter,
     exit,
