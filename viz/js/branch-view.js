@@ -490,6 +490,65 @@
     }).join('') + '</ul>';
   }
 
+  /* THE SAME ROWS AS PICTURES, because a name is not a card you can judge.
+   *
+   * `diffRows` answers "what moved and why" and answers it well; it cannot
+   * answer "is this card any good", which is the question in front of a
+   * thirty-five card change. The hover pop exists on every name here, but it
+   * shows ONE card at 244px and costs a deliberate hover each — thirty-five
+   * hovers to review a branch is not a review, it is a chore, and the fallback
+   * was a link OUT of the workbench to Scryfall.
+   *
+   * Reuses `.lib-grid` / `.lib-open` / `.lib-name` from the library drawer
+   * rather than inventing a second card tile: the box is already reserved at
+   * 488/680 there (without it every tile measures ~0 and the grid reflows as
+   * each image lands), the art already comes from `Shell.cardImageUrl` by NAME,
+   * and `Shell.wireCardArt` already carries the DFC front-face retry.
+   *
+   * `loading="lazy"` and the hidden-by-default view together are what keep this
+   * honest: the gallery costs nothing until it is opened, so a page whose job
+   * is a table of numbers does not fetch seventy images to show none of them. */
+  function galleryRows(rows, sign) {
+    if (!rows.length) return '';
+    var adding = sign === '+';
+    var art = window.Shell && Shell.cardImageUrl;
+    return '<div class="lib-grid diffgrid">' + rows.map(function (r) {
+      var href = (window.Shell && Shell.cardHref)
+        ? ' href="' + esc(Shell.cardHref(r.name)) + '" target="_blank" rel="noopener"'
+        : '';
+      /* `data-src`, AND NO `loading="lazy"`. Both halves of that are measured.
+       *
+       * The drawer's tiles use `loading="lazy"` and it works there because they
+       * are parsed into a container that is about to be shown. These are parsed
+       * into one that is `display:none` — the list view is the default — and an
+       * image that is never laid out never intersects anything, so Chrome marks
+       * it "not needed" and REVEALING THE CONTAINER DOES NOT RE-ARM IT. Measured
+       * on this page: 36 tiles in the viewport with `src` set, 0 requested, held
+       * for 4s; removing the `loading` attribute and re-assigning the identical
+       * URL loaded it at 146x204 immediately.
+       *
+       * So the deferral is explicit instead. `hydrate()` promotes `data-src` the
+       * first time the gallery is opened, which is the property that actually
+       * mattered — a page whose job is a table of numbers fetches no card art
+       * until someone asks to see cards. What is lost is progressive loading
+       * WITHIN an open gallery, which is a real cost and a smaller one than a
+       * grid of empty boxes. */
+      var img = art
+        ? '<img data-src="' + esc(Shell.cardImageUrl(r.name)) + '" alt="' +
+          esc(r.name) + '">'
+        : '';
+      var tag = r.state
+        ? '<span class="chip ' + esc(r.state) + '">' +
+          esc(STATE_WORD[r.state] || r.state) + '</span>' : '';
+      return '<div class="lib-tile difftile ' + (adding ? 'add' : 'del') + '">' +
+             '<a class="lib-open"' + href + ' title="' + esc(r.name) + '">' + img +
+             '<span class="lib-name">' + esc(r.name) + '</span></a>' +
+             '<span class="difftile-sign">' + sign + '</span>' + tag +
+             (adding && r.why ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
+             '</div>';
+    }).join('') + '</div>';
+  }
+
   /* "Swamp 4 -> 2", in the removals column. The card is still in the list, so
    * it gets no +/- sign of its own — what changed is how many. */
   function countRows(rows) {
@@ -517,7 +576,16 @@
      * where the gap between the two is an explanation rather than a puzzle. */
     var co = c.out_copies == null ? c.out : c.out_copies;
     var ci = c.in_copies == null ? c['in'] : c.in_copies;
-    var out = '<section class="panel netchange"><h2>Net change</h2>' +
+    /* LIST OR GALLERY, and the list stays the default. The numbers are what
+     * this page is for; the pictures are what a card decision is made on. Both
+     * are rendered and CSS picks — the gallery's images are `loading="lazy"`,
+     * so the one you are not looking at costs nothing. */
+    var out = '<section class="panel netchange" data-view="list">' +
+      '<h2>Net change' +
+      '<span class="viewtoggle">' +
+      '<button type="button" class="vt is-on" data-view="list">list</button>' +
+      '<button type="button" class="vt" data-view="gallery">gallery</button>' +
+      '</span></h2>' +
       '<p class="headline"><span class="del">\u2212 ' + co + ' out</span>' +
       '<span class="add">+ ' + ci + ' in</span>' +
       '<span class="ev">' + d.base_size + ' \u2192 ' + d.size + ' cards' +
@@ -551,10 +619,11 @@
       out += '<h3>' + esc(g[0]) + ' <span class="ev">(\u2212' + copiesOut +
              ' / +' + copiesIn + ')</span></h3><div class="diffcols">' +
              '<div>' + (outs.length || lost.length
-                        ? diffRows(outs, '\u2212') + countRows(lost)
+                        ? diffRows(outs, '\u2212') + galleryRows(outs, '\u2212') +
+                          countRows(lost)
                         : '<p class="ev">nothing removed</p>') + '</div>' +
              '<div>' + (ins.length || gained.length
-                        ? diffRows(ins, '+') + countRows(gained)
+                        ? diffRows(ins, '+') + galleryRows(ins, '+') + countRows(gained)
                         : '<p class="ev">nothing added</p>') + '</div>' +
              '</div>';
     });
@@ -645,8 +714,83 @@
               'This branch has not been measured against the deck yet. Until it ' +
               'is, there is nothing here to decide on.',
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
+        wireViewToggle();
         loadSwaps(slug, name);
       });
+  }
+
+  /* ONE DELEGATED LISTENER, on the container that survives every re-render.
+   * The toggle flips `data-view` on the section and CSS does the rest, so
+   * switching costs no re-render and loses no scroll position.
+   *
+   * `Shell.wireCardArt` is what gives these tiles the DFC front-face retry —
+   * without it a double-faced card shows a permanently empty box, because the
+   * corpus keys "A // B" and Scryfall 404s on that form. */
+  /* WHAT `loading="lazy"` WAS SUPPOSED TO DO, done by hand — and PACED, because
+   * the first version that worked got throttled.
+   *
+   * Two measured failures are behind this shape. `loading="lazy"` never fires at
+   * all: these tiles are parsed into a `display:none` container (the list view is
+   * the default), an image that is never laid out never intersects anything, and
+   * revealing the container does not re-arm it — 36 tiles in the viewport with
+   * `src` set, 0 requested, held for 4s. Then promoting all seventy at once DID
+   * load them and Scryfall answered thirty-five: the rest errored and
+   * `onImageError` stripped them to empty boxes. Seventy parallel requests at a
+   * public API is exactly what the drawer's `lazy` was quietly preventing.
+   *
+   * An IntersectionObserver is the textbook answer and is deliberately NOT used:
+   * its callback never fired in the harness this was verified in — not even a
+   * freshly constructed one on a laid-out, visible element — because IO rides
+   * the rendering lifecycle. A mechanism that cannot be tested here is one
+   * nobody is testing, which this repo has paid for before.
+   *
+   * So the queue is the whole of it: promote in document order, one every
+   * `ART_GAP` ms. Deferred until the gallery is opened (the property that
+   * mattered — a page of numbers fetches no art until asked), never bursty, and
+   * observable from a test. Seventy cards land in about five seconds. */
+  var ART_GAP = 70;
+  var artQueue = [], artRunning = false;
+
+  function pump() {
+    if (artRunning) return;
+    artRunning = true;
+    (function next() {
+      var im = artQueue.shift();
+      if (!im) { artRunning = false; return; }
+      var src = im.getAttribute('data-src');
+      if (!src) { next(); return; }
+      im.removeAttribute('data-src');
+      im.src = src;
+      setTimeout(next, ART_GAP);
+    })();
+  }
+
+  /* Idempotent: the attribute is consumed as it is queued, so re-opening the
+   * gallery adds nothing and a part-loaded grid is never restarted. */
+  function hydrate(sec) {
+    Array.prototype.push.apply(
+      artQueue, Array.prototype.slice.call(sec.querySelectorAll('img[data-src]')));
+    pump();
+  }
+
+  function wireViewToggle() {
+    var panels = document.getElementById('panels');
+    if (!panels) return;
+    if (window.Shell && Shell.wireCardArt) Shell.wireCardArt(panels);
+    if (panels.dataset.viewWired) return;
+    panels.dataset.viewWired = '1';
+    panels.addEventListener('click', function (ev) {
+      var b = ev.target && ev.target.closest && ev.target.closest('button.vt');
+      if (!b) return;
+      var sec = b.closest('section.netchange');
+      if (!sec) return;
+      var view = b.getAttribute('data-view');
+      sec.setAttribute('data-view', view);
+      if (view === 'gallery') hydrate(sec);
+      Array.prototype.forEach.call(sec.querySelectorAll('button.vt'), function (o) {
+        o.classList.toggle('is-on', o === b);
+      });
+    });
   }
 
   /* THE SERVER HALF, and it is strictly additive. Everything above renders from

@@ -231,9 +231,16 @@ window.Shell = (function () {
     if (a && popEl) { popEl.hidden = true; popAnchor = null; }
   }
 
+  /* `.card-art` is the contract: any container that draws a card by NAME and
+   * wants the front-face retry carries it. The drawer's `.lib-tile` and the
+   * dossier's `.rost-row` both do — the roster's previews were added to this
+   * path rather than growing a second copy of the fallback, because two
+   * implementations is how one stops matching the corpus. */
+  var ART_HOST = '.lib-tile, .rost-row';
+
   function onImageError(ev) {
     var img = ev.target;
-    if (!img || img.tagName !== 'IMG' || !img.closest('.lib-tile')) return;
+    if (!img || img.tagName !== 'IMG' || !img.closest(ART_HOST)) return;
     var name = img.getAttribute('alt') || '';
     // A double-faced card 404s on its own full `A // B` name — the corpus keys
     // that form because it is the graph key — while resolving on the front face
@@ -245,7 +252,7 @@ window.Shell = (function () {
     }
     // Out of retries: leave the reserved box and the name, which is the whole
     // of what the tile has to say.
-    var tile = img.closest('.lib-tile');
+    var tile = img.closest(ART_HOST);
     if (tile) tile.classList.add('lib-tile-noart');
     img.remove();
   }
@@ -374,6 +381,23 @@ window.Shell = (function () {
   // One delegated listener for the whole grid; `error` does not bubble, so it
   // is registered in the capture phase. Wired once, on first render.
   var errorsWired = false;
+
+  /* THE SAME ART FALLBACK, FOR A CONTAINER THAT IS NOT THE DRAWER.
+   *
+   * `onImageError` is what makes a DFC draw at all — the corpus keys "A // B"
+   * because that is the graph key, and Scryfall 404s on it — and it was reachable
+   * only from `#shell-drawer`. The branch page draws the same tiles for the same
+   * reason (a diff you cannot SEE is a list of names), so the retry is exposed
+   * rather than copied: two implementations of the front-face fallback is how
+   * one of them silently stops matching the corpus.
+   *
+   * `error` does not bubble, hence capture. Marked on the element so a re-render
+   * cannot stack listeners. */
+  function wireCardArt(el) {
+    if (!el || el.dataset.cardArtWired) return;
+    el.dataset.cardArtWired = '1';
+    el.addEventListener('error', onImageError, true);
+  }
 
   function renderDrawer() {
     var el = document.getElementById('shell-drawer');
@@ -774,6 +798,7 @@ window.Shell = (function () {
     libraryCount: libraryCount,
     libraryNames: libraryNames,
     cardImageUrl: cardImageUrl,
+    wireCardArt: wireCardArt,
     mount: mount,
     toggle: toggleDrawer,
     drop: drop,

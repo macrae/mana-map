@@ -736,6 +736,52 @@ def test_a_colourless_must_include_is_always_legal():
     assert keep == ["Sol Ring"] and illegal == []
 
 
+def test_a_colourless_must_include_is_legal_WITH_THE_CORPUS_CELL_SHAPE():
+    """The test above uses `""` and passed while the bug shipped, which is the
+    control being blind to the class it exists for: `load_frame` reads cards.csv
+    with pandas, so a colourless cell arrives as **NaN**, not as an empty string.
+    `str(nan)` is the string 'nan' — truthy, and outside every identity — so the
+    ad-hoc split reported EVERY colourless card illegal.
+
+    Measured when it bit: a Zur (WUB) brief pinning the spec's artifact-land
+    package had `Darksteel Citadel` and `Valgavoth's Lair` dropped as "outside
+    your colours", with `identity: ['nan']` in the report. Sol Ring was equally
+    unpinnable.
+
+    The real frame is asserted alongside the synthetic one so this cannot drift
+    away from what cards.csv actually holds.
+    """
+    import numpy as np
+    import pandas as pd
+
+    from manamap.pilot.build_deck import legal_must_includes
+
+    frame = pd.DataFrame({"name": ["Darksteel Citadel"], "color_identity": [np.nan]})
+    keep, illegal = legal_must_includes(["Darksteel Citadel"], ["W", "U", "B"], frame)
+    assert illegal == [], f"a colourless card is in every identity, got {illegal}"
+    assert keep == ["Darksteel Citadel"]
+
+
+@requires_data
+def test_the_real_corpus_really_does_store_colourless_identity_as_nan():
+    """The premise of the test above, proved against cards.csv rather than assumed.
+
+    If the corpus ever starts writing "" instead, this fails and that test's
+    synthetic NaN stops standing for anything real.
+    """
+    from manamap.pilot.build_deck import legal_must_includes
+    from manamap.pilot.card_pool import load_frame
+
+    frame = load_frame()
+    row = frame[frame["name"] == "Sol Ring"]["color_identity"]
+    assert len(row) == 1, "Sol Ring must be in the corpus exactly once"
+    raw = row.iloc[0]
+    assert raw != raw, f"expected a NaN colourless cell, got {raw!r}"
+
+    keep, illegal = legal_must_includes(["Sol Ring"], ["W", "U", "B"], frame)
+    assert illegal == [] and keep == ["Sol Ring"]
+
+
 def test_a_card_the_corpus_does_not_know_is_left_for_another_check():
     """An unknown name is a different error with a different fix, and swallowing
     it here would report "outside your colours" for a typo."""

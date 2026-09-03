@@ -469,7 +469,11 @@ def legal_must_includes(names, identity, frame):
         if raw is None:                       # not in the corpus; another check owns that
             keep.append(name)
             continue
-        card = {c.strip() for c in str(raw).split(",") if c.strip()}
+        # `parse_color_identity`, not an ad-hoc split: a colourless card's cell is
+        # pandas NaN, and `str(nan)` is the string 'nan' — truthy, and outside every
+        # identity, so EVERY colourless card was reported illegal. Sol Ring, the
+        # artifact lands and Darksteel Citadel could not be pinned at all.
+        card = parse_color_identity(raw)
         outside = card - ident
         if outside:
             illegal.append({"name": name, "identity": sorted(card),

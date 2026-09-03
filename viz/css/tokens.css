@@ -614,12 +614,12 @@ details.case .body { padding: 0 14px 14px; }
 /* ── THE ROSTER ────────────────────────────────────────────────────────
    The hover preview is CSS-only, ported from `pilot/design.py`'s card links:
    no positioning code, no tooltip layer, and it works with JS disabled. */
-#panel-roster .rost-city {
+#panel-associates .rost-city {
   display: flex; align-items: baseline; gap: 9px; margin: 22px 0 8px;
   font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
   font-weight: 700; color: var(--city-lt, #cfd6e2);
 }
-#panel-roster .rost-city:first-child { margin-top: 0; }
+#panel-associates .rost-city:first-child { margin-top: 0; }
 .rost-chip { width: 10px; height: 10px; border-radius: 2px;
   background: var(--city, #6b727e); flex-shrink: 0; }
 .rost-count { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
@@ -627,9 +627,35 @@ details.case .body { padding: 0 14px 14px; }
 .rost-seal { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
   color: #4a8b5c; letter-spacing: 0; }
 .rost-gloss { font-size: 0.88rem; color: #a8b0bc; margin: 0 0 8px; }
-#panel-roster .rost-list { list-style: none; margin: 0 0 4px; padding: 0;
-  columns: 2; column-gap: 26px; }
-@media (max-width: 620px) { #panel-roster .rost-list { columns: 1; } }
+/* `#panel-associates`, NOT `#panel-roster`. The panel's id comes from the `id`
+ * passed to the panel builder and the roster's is `associates` — so every rule
+ * here was DEAD, and had been: the list never got its columns and `a.cardref`
+ * never got the styling this file wrote for it. Only the `.rost-cmdr` half of
+ * the comma-separated link rules ever applied, which is why the commander line
+ * looked right and the ninety-nine below it did not.
+ *
+ * GRID, NOT `columns`, now that the rule reaches: a CSS multi-column box
+ * FRAGMENTS its contents, and the preview is an absolutely-positioned child of
+ * the link, so a pop taller than the space left in its column would be clipped
+ * at the column edge or split across the gap. Grid lays out two columns and
+ * fragments nothing. */
+#panel-associates .rost-list { list-style: none; margin: 0 0 4px; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 26px; }
+@media (max-width: 620px) {
+  #panel-associates .rost-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* The flat roster: the city travels as a tag on the row instead of a header
+ * with the cards folded inside it. */
+.rost-flat .rost-row { padding: 1px 0; }
+.rost-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+  color: var(--city, #8a93a3); opacity: 0.85; }
+.rost-tag-none { color: #6b7280; font-style: italic; }
+/* The row is `display:flex`; the ownership chip already claims `margin-left:auto`,
+ * so the tag sits with the name and the chip stays hard right. */
+.rost-flat .rost-row > .rost-tag { flex: 0 1 auto; overflow: hidden;
+  text-overflow: ellipsis; }
 .rost-row { line-height: 1.75; break-inside: avoid; display: flex;
   align-items: baseline; gap: 6px; }
 .rost-new { color: #4a8b5c; font-weight: 700; }
@@ -644,13 +670,13 @@ details.case .body { padding: 0 14px 14px; }
 .rost-cmdr { margin: 0 0 18px; padding-bottom: 14px;
   border-bottom: 1px solid rgba(255,255,255,0.09); font-size: 1.02rem; }
 /* The link, and its preview. */
-#panel-roster a.cardref, .rost-cmdr a.cardref {
+#panel-associates a.cardref, .rost-cmdr a.cardref {
   position: relative; color: inherit; cursor: help;
   text-decoration: underline dotted rgba(255,255,255,0.28);
   text-underline-offset: 3px; outline: none;
 }
-#panel-roster a.cardref:hover, .rost-cmdr a.cardref:hover,
-#panel-roster a.cardref:focus, .rost-cmdr a.cardref:focus {
+#panel-associates a.cardref:hover, .rost-cmdr a.cardref:hover,
+#panel-associates a.cardref:focus, .rost-cmdr a.cardref:focus {
   text-decoration-color: #c4a747;
 }
 .card-pop {
@@ -1155,3 +1181,37 @@ details.rost-fold > summary {
   cursor: pointer; font-size: .78rem; color: var(--ink-soft);
   margin: .1rem 0 .5rem;
 }
+
+/* ── the branch diff, as pictures ────────────────────────────────────────────
+ * A thirty-five card change reviewed by hovering thirty-five names is not a
+ * review. Both views are in the DOM and this picks; the gallery's images are
+ * `loading="lazy"`, so the view you are not looking at fetches nothing. */
+.netchange h2 { display: flex; align-items: center; gap: 12px; }
+.viewtoggle { display: inline-flex; gap: 0; margin-left: auto;
+  border: 1px solid var(--rule, #33334d); border-radius: 6px; overflow: hidden; }
+.viewtoggle .vt { font: inherit; font-size: 0.72rem; letter-spacing: 0.04em;
+  text-transform: uppercase; padding: 4px 12px; border: 0; cursor: pointer;
+  background: none; color: var(--ink-soft, #8a8aa0); }
+.viewtoggle .vt:hover { color: var(--ink, #e8e8f0); }
+.viewtoggle .vt.is-on { background: var(--panel-hi, #2a2a4a);
+  color: var(--ink, #e8e8f0); }
+
+.netchange[data-view="list"] .diffgrid { display: none; }
+.netchange[data-view="gallery"] .difflist { display: none; }
+
+/* Denser than the library drawer: this is a comparison, so more cards on screen
+ * at once is the point, and the name under each is a label rather than the
+ * primary read. */
+.diffgrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px; margin: 8px 0 4px; }
+.difftile { position: relative; }
+.difftile-sign { position: absolute; top: 4px; left: 4px; width: 17px; height: 17px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.74rem; font-weight: 800; line-height: 1; pointer-events: none; }
+.difftile.add .difftile-sign { background: var(--good, #4caf82); color: #08130e; }
+.difftile.del .difftile-sign { background: var(--bad, #d4574e); color: #170808; }
+.difftile .chip { display: inline-block; margin-top: 4px; font-size: 0.62rem; }
+/* The argument for a card belongs with the card, but it must not push the grid
+ * into ragged rows — the tiles stay aligned and a long why is clamped. */
+.difftile .why { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden; font-size: 0.64rem; line-height: 1.3; margin-top: 4px; }

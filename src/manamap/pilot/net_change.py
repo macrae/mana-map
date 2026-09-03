@@ -338,8 +338,17 @@ def card_diff(slug, branch, bill=None):
     state = {r["name"]: r.get("state")
              for r in ((bill or {}).get("cards") or [])}
 
-    base = deck_branch._entries(deck_branch._list_text(slug))
-    cand = deck_branch._entries(deck_branch._list_text(slug, branch))
+    # THROUGH `_named`, NOT RAW `_entries`. `d` above comes from `deck_branch.diff`,
+    # which canonicalises both lists through the resolver's vocabulary; `_entries`
+    # returns the literal decklist text. Those agree on 99 cards in 100 and disagree
+    # on a DFC: decklist.txt carries "The Restoration of Eiganjo" (Scryfall rejects
+    # the joined form on fetch) while cards.json — and therefore `d["out"]` — carries
+    # "The Restoration of Eiganjo // Architect of Restoration". Cutting any DFC then
+    # raised KeyError here and took the whole net-change down.
+    base, cand = deck_branch._named(
+        slug, branch,
+        deck_branch._entries(deck_branch._list_text(slug)),
+        deck_branch._entries(deck_branch._list_text(slug, branch)))
 
     def row(name, why_map, with_state):
         info = pool.get(name) or {}

@@ -395,7 +395,7 @@
     return { map: d.deckMap, branch: null };
   }
 
-  function cardRef(name, prov) {
+  function cardRef(name, prov, tag) {
     // Hover preview is CSS-only, the way the manual does it — no positioning
     // code, no tooltip layer. The image comes from `Shell.cardImageUrl`, which
     // already carries the double-faced-card front-face retry.
@@ -406,9 +406,23 @@
     // branch.html renders its names through `Shell.cardLink`, which builds the
     // same URL; the two presentations differ (that page has no room for a
     // 488px pop beside sixty diff rows) but the destination is defined once.
+    /* `data-src`, NOT `src`+`loading="lazy"`. THE PREVIEW NEVER LOADED.
+     *
+     * `.card-pop` is `display:none` until its link is hovered, and a lazy image
+     * inside a `display:none` box is never laid out, so it never intersects
+     * anything and the browser never fetches it — revealing it on hover does not
+     * re-arm it either. Measured on this panel: 89 pops, **0 loaded**, while the
+     * identical URL through `new Image()` returned 488x680 immediately. Every
+     * card preview on the dossier was an empty 244px-wide box.
+     *
+     * So the fetch is tied to the gesture that reveals it: `hoverArt` below
+     * promotes `data-src` on the first mouseover or focus. That is also strictly
+     * better than the eager version it replaces — 89 card images were being
+     * declared on every dossier load to show at most one. */
     var url = (window.Shell && Shell.cardImageUrl)
       ? Shell.cardImageUrl(name, 'normal') : null;
-    var pop = url ? '<img class="card-pop" src="' + esc(url) + '" alt="" loading="lazy">' : '';
+    var pop = url ? '<img class="card-pop" data-src="' + esc(url) + '" alt="' +
+      esc(name) + '">' : '';
     var mark = '', tail = '';
     if (prov) {
       if (prov.is_new) mark = '<span class="rost-new" title="new in this branch">+</span>';
@@ -430,8 +444,33 @@
       : '';
     return '<li class="rost-row">' + mark +
       '<a class="cardref"' + href + ' tabindex="0">' + esc(name) + pop + '</a>' +
-      tail + '</li>';
+      (tag || '') + tail + '</li>';
   }
+
+  /* ONE DELEGATED PAIR FOR THE WHOLE PAGE, wired once at module load: the
+   * roster is re-rendered on every deck switch, so anything bound to its
+   * elements would have to be re-bound and one path would eventually forget.
+   *
+   * `mouseover` and `focusin` both bubble (unlike `mouseenter`/`focus`), which
+   * is what makes delegation possible, and covers the keyboard: `a.cardref`
+   * carries `tabindex`, and `:focus` shows the pop, so a focused card that
+   * never fetched its art would have the identical empty box.
+   *
+   * The DFC front-face retry rides along through `Shell.wireCardArt` — the
+   * corpus keys "A // B" and Scryfall 404s on it, and `onImageError` needs the
+   * `alt` to hold the name, which is why `cardRef` now sets one. */
+  function hoverArt(ev) {
+    var a = ev.target && ev.target.closest && ev.target.closest('a.cardref');
+    if (!a) return;
+    var im = a.querySelector('img.card-pop[data-src]');
+    if (!im) return;
+    im.src = im.getAttribute('data-src');
+    im.removeAttribute('data-src');
+  }
+  document.addEventListener('mouseover', hoverArt, { passive: true });
+  document.addEventListener('focusin', hoverArt, { passive: true });
+  // `error` does not bubble, so the retry listens in the capture phase.
+  if (window.Shell && Shell.wireCardArt) Shell.wireCardArt(document.body);
 
   function rosterPanel(d) {
     var got = rosterFor(d);
@@ -441,53 +480,44 @@
                     '#8a7fd0', 'map', d);
     var prov = {};
     (got.branch ? got.branch.cards : []).forEach(function (r) { prov[r.name] = r; });
-    var cityOf = {};
-    map.cards.forEach(function (c) { cityOf[c.name] = c.city; });
-    // Ordered by size, exactly as `render_the_99` does: the deck's centre of
-    // mass leads.
-    var cities = map.regions.filter(function (r) { return r.level === 0; })
-      .slice().sort(function (a, b) {
-        return (b.count - a.count) || (a.id < b.id ? -1 : 1);
-      });
-    var seen = {}, body = '';
-    cities.forEach(function (r) {
-      var index = parseInt(String(r.id).split('-').pop(), 10);
-      var members = map.cards.filter(function (c) {
-        return c.city === index && !c.commander;
-      });
-      if (!members.length) return;
-      var pair = CITY_INK[index % CITY_INK.length];
-      var seal = r.verified_count
-        ? '<span class="rost-seal" title="named in a verified line">✓' +
-          r.verified_count + '</span>' : '';
-      body += '<h3 class="rost-city" style="--city:' + pair[0] + ';--city-lt:' + pair[1] + '">' +
-        '<span class="rost-chip"></span>' + esc(r.label || r.fallback || r.id) +
-        '<span class="rost-count">' + members.length + '</span>' + seal + '</h3>';
-      if (r.gloss) body += '<p class="rost-gloss">' + esc(r.gloss) + '</p>';
-      /* THE MEMBERS FOLD, PER CITY. Ninety-nine cards inline is 3,111 pixels,
-       * and the roster's job is to show the deck's SHAPE — which cities exist,
-       * how big each is, what each is for. Folding per city rather than all at
-       * once keeps it scannable: you open the one you came for. */
-      body += '<details class="rost-fold"><summary>' + members.length
-        + ' card(s)</summary><ul class="rost-list">' + members.map(function (c) {
-        seen[c.name] = 1;
-        return cardRef(c.name, prov[c.name]);
-      }).join('') + '</ul></details>';
+    // The cities, by their trailing index — `map.cards[].city` is that index,
+    // not the region id. Looked up per row rather than iterated, now that the
+    // list is flat.
+    var cityById = {};
+    map.regions.filter(function (r) { return r.level === 0; }).forEach(function (r) {
+      cityById[parseInt(String(r.id).split('-').pop(), 10)] = r;
     });
-    // A CARD THE MAP COULD NOT PLACE STILL GETS A SEAT. `render_the_99` ends
-    // with the same group, and a roster that silently drops a card is worse
-    // than no roster.
-    var stray = map.cards.filter(function (c) {
-      return !c.commander && !seen[c.name];
-    });
-    if (stray.length) {
-      body += '<h3 class="rost-city rost-stray"><span class="rost-chip"></span>Unplaced' +
-        '<span class="rost-count">' + stray.length + '</span></h3>' +
-        '<details class="rost-fold"><summary>' + stray.length
-        + ' card(s)</summary><ul class="rost-list">' + stray.map(function (c) {
-          return cardRef(c.name, prov[c.name]);
-        }).join('') + '</ul></details>';
-    }
+    /* ONE FLAT LIST, AND THE CITY IS A LABEL RATHER THAN A CONTAINER.
+     *
+     * This panel used to render a `<h3>` per city with the members inside a
+     * `<details>` fold, to show the deck's SHAPE without spending 3,111 pixels
+     * on ninety-nine names. It cost more than it bought. Two things were wrong:
+     *
+     *  - The preview is an absolutely-positioned `.card-pop` inside the link,
+     *    and the list was `columns: 2` — a CSS multi-column box FRAGMENTS its
+     *    contents, so a pop that overflowed its column was clipped or split
+     *    across the gap. The grid below lays the same two columns out without
+     *    fragmenting, which is the actual fix; flattening alone would not have
+     *    been one.
+     *  - Every card was behind a click. A roster you have to open eight times
+     *    to read is a table of contents, not a roster.
+     *
+     * The city still travels, as a tag on the row: the information the headers
+     * carried is kept and the nesting that broke the previews is not. Sorted by
+     * name because a flat list is something you look a card UP in.
+     */
+    var rows = map.cards.filter(function (c) { return !c.commander; })
+      .slice().sort(function (a, b) { return a.name < b.name ? -1 : 1; });
+    var body = '<ul class="rost-list rost-flat">' + rows.map(function (c) {
+      var r = cityById[c.city];
+      var pair = CITY_INK[(c.city == null ? 0 : c.city) % CITY_INK.length];
+      var tag = r
+        ? '<span class="rost-tag" style="--city:' + pair[0] + '">' +
+          esc(r.label || r.fallback || r.id) + '</span>'
+        : '<span class="rost-tag rost-tag-none">unplaced</span>';
+      return cardRef(c.name, prov[c.name], tag);
+    }).join('') + '</ul>';
+
     var cmdr = map.cards.filter(function (c) { return c.commander; });
     if (cmdr.length)
       body = '<p class="rost-cmdr">' + cmdr.map(function (c) {
@@ -496,7 +526,7 @@
     var title = got.branch ? 'The roster — branch ' + esc(got.branch.name) : 'The roster';
     var promise = got.branch
       ? 'Every card in the candidate list, and where it comes from.'
-      : 'Every card, grouped by what it is like.';
+      : 'Every card, with the part of the deck it belongs to. Hover a name for the card.';
     // Title still carries the branch name when one is being viewed; the
     // registry supplies the promise and the tier.
     return panel('associates', title, sect('associates')[2],

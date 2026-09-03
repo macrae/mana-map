@@ -776,3 +776,37 @@ def test_every_row_carries_its_own_copy_count():
         assert isinstance(r["copies"], int) and r["copies"] >= 1, r["name"]
         checked += 1
     assert checked >= 10
+
+
+def test_card_diff_survives_a_cut_DFC(monkeypatch):
+    """`card_diff` reads `deck_branch.diff` for WHICH cards moved and its own
+    tables for HOW MANY copies. Those two must speak one vocabulary.
+
+    They did not. `diff` canonicalises both lists through `_named` — the
+    resolver's names, so a DFC is "A // B" — while `card_diff` used raw
+    `_entries`, which is the literal decklist text. decklist.txt has to carry the
+    FRONT face because Scryfall rejects the joined form on `fetch-deck`, so the
+    two disagree on exactly one class of card, and cutting any DFC raised
+    KeyError and took the whole net-change down.
+
+    Driven through the production function with the real name forms rather than
+    re-deriving the rule; re-introducing the raw `_entries` read fails this.
+    """
+    JOINED = "Sagas of the Fallen // Ruin of the Fallen"
+    FRONT = "Sagas of the Fallen"
+
+    monkeypatch.setattr(net_change.deck_branch, "diff",
+                        lambda s, b: {"add": ["Swamp"], "out": [JOINED],
+                                      "size": 100, "base_size": 100,
+                                      "names": 2, "base_names": 2})
+    monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {})
+    monkeypatch.setattr(net_change.deck_branch, "_list_text",
+                        lambda s, b=None: f"1 {FRONT}\n" if b is None else "1 Swamp\n")
+    # what `_named` does for real: decklist text -> the resolver's vocabulary.
+    monkeypatch.setattr(net_change.deck_branch, "_named",
+                        lambda s, b, now, cand: ({JOINED: 1}, {"Swamp": 1}))
+
+    d = net_change.card_diff("any-slug", "any-branch", {"cards": []})
+
+    assert [r["name"] for r in d["out"]] == [JOINED], "the cut DFC must survive the diff"
+    assert d["counts"]["out_copies"] == 1, "and it must be counted as a real copy"

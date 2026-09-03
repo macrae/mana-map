@@ -110,10 +110,15 @@ def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
                                    limit=200))
     assert doc["identity"] == ["B", "U", "W"], "derived from the commander, not authored"
     assert doc["identity_derived_from"] == "zur-enchantress"
-    assert doc["excluded_deck_cards"] == 93, "89 entries; two DFCs contribute both faces"
+    # 89 entries; each of the three DFCs contributes its joined form AND both
+    # faces, so the exclusion set is larger than the decklist. The number moves
+    # when the deck does — it last moved when the Esper enchantment rebuild took
+    # the list from two DFCs to three.
+    assert doc["excluded_deck_cards"] == 95, "89 entries; three DFCs contribute three names each"
+    assert doc["excluded_deck_cards"] > 89, "a DFC is excluded by every name it has"
     names = {r["name"] for r in doc["results"]}
-    assert "All That Glitters" not in names, "the deck already runs it — not a candidate"
-    assert "Ethereal Armor" not in names
+    assert "Rhystic Study" not in names, "the deck already runs it — not a candidate"
+    assert "Mystic Remora" not in names
 
 
 @requires_data
@@ -121,11 +126,11 @@ def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
 def test_include_owned_turns_the_exclusion_off():
     """Searched by NAME, not oracle: `--oracle "Hardened Scales"` matches cards whose
     RULES TEXT says that, which is nothing — the trap `--name` exists to avoid."""
-    q = dict(deck="zur-enchantress", name=[r"^(All That Glitters|Ethereal Armor)$"],
+    q = dict(deck="zur-enchantress", name=[r"^(Rhystic Study|Mystic Remora)$"],
              limit=50)
     assert card_search.analyze(Args(**q))["results"] == [], "both are in the deck"
     owned = card_search.analyze(Args(include_owned=True, **q))
-    assert {r["name"] for r in owned["results"]} == {"All That Glitters", "Ethereal Armor"}
+    assert {r["name"] for r in owned["results"]} == {"Rhystic Study", "Mystic Remora"}
 
 
 @requires_data
