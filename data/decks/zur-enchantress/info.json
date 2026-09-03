@@ -73,13 +73,175 @@
     "targets": {},
     "notes": null,
     "must_include": [
-      "Ethereal Armor",
-      "All That Glitters"
+      "Valgavoth's Lair",
+      "Mystic Remora",
+      "Rhystic Study",
+      "Callaphe, Beloved of the Sea",
+      "Golden-Tail Disciple",
+      "Aegis of the Gods",
+      "Thassa, God of the Sea",
+      "Naiad of Hidden Coves",
+      "Inquisitive Glimmer",
+      "Transcendent Envoy",
+      "Daxos, Blessed by the Sun",
+      "Tribute to Horobi // Echo of Death's Wail",
+      "Stinging Lionfish",
+      "Profane Procession // Tomb of the Dusk Rose",
+      "Enduring Innocence"
     ],
-    "must_exclude": []
+    "must_exclude": [
+      "The Master of Keys"
+    ]
   },
   "branches": [],
-  "diagnostic": null,
+  "diagnostic": {
+    "harness": {
+      "version": 1,
+      "iterations": 10000,
+      "seed": 20260826,
+      "max_turn": 10
+    },
+    "engine": {
+      "available": false,
+      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+      "declared_targets": 6
+    },
+    "stall": {
+      "by_turn": {
+        "1": {
+          "rate": 0.428,
+          "ci95": [
+            0.4183,
+            0.4377
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.0949,
+          "ci95": [
+            0.0893,
+            0.1008
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.0089,
+          "ci95": [
+            0.0072,
+            0.0109
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.0016,
+          "ci95": [
+            0.001,
+            0.0026
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.002,
+          "ci95": [
+            0.0013,
+            0.0031
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0076,
+          "ci95": [
+            0.0061,
+            0.0095
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0111,
+          "ci95": [
+            0.0092,
+            0.0133
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.0097,
+          "ci95": [
+            0.008,
+            0.0118
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.0073,
+          "ci95": [
+            0.0058,
+            0.0092
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.0059,
+          "ci95": [
+            0.0046,
+            0.0076
+          ],
+          "n": 10000
+        }
+      },
+      "two_in_a_row": {
+        "rate": 0.018,
+        "ci95": [
+          0.0156,
+          0.0208
+        ],
+        "n": 10000
+      },
+      "fleet": "below the fleet median",
+      "from_turn": 2,
+      "cause": {
+        "stall_turns": 1490,
+        "hand_empty": 219,
+        "mana_short": 1271
+      },
+      "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
+    },
+    "mana": {
+      "missed_land_drop_by_five": {
+        "rate": 0.4151,
+        "ci95": [
+          0.4055,
+          0.4248
+        ],
+        "n": 10000
+      },
+      "missed_land_drop_rate": 0.3325,
+      "mulliganed": {
+        "rate": 0.2035,
+        "ci95": [
+          0.1957,
+          0.2115
+        ],
+        "n": 10000
+      },
+      "mean_mana_by_turn": {
+        "1": 1.0,
+        "2": 1.997,
+        "3": 2.908,
+        "4": 3.71,
+        "5": 4.383,
+        "6": 4.945,
+        "7": 5.435,
+        "8": 5.877,
+        "9": 6.284,
+        "10": 6.675
+      },
+      "fleet": "below the fleet median",
+      "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+      "mana_stdev_turn_five": 0.8431
+    },
+    "decklist_sha256": "f0281aef3eb369cfeede72ca0ffa334e1ff85cb2080822cd439bc2ef6f31335f"
+  },
   "bracket": {
     "floor": 3,
     "floor_name": "Upgraded",
@@ -103,7 +265,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 86,
+          "value": 88,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -116,7 +278,7 @@
           "weight": "body"
         },
         "commander_mean_turn": {
-          "value": 4.65,
+          "value": 4.613,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -124,7 +286,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac": {
-          "value": 2,
+          "value": 1,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac' by turn six",
@@ -132,7 +294,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 92,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -140,7 +302,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:CARD ADVANTAGE drawn — a draw engine or a refill": {
-          "value": 50,
+          "value": 90,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'CARD ADVANTAGE drawn — a draw engine or a refill' by turn six",
@@ -148,7 +310,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:AN ANSWER drawn — interaction of any kind": {
-          "value": 66,
+          "value": 72,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'AN ANSWER drawn — interaction of any kind' by turn six",
@@ -156,7 +318,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn": {
-          "value": 99,
+          "value": 88,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn' by turn six",
@@ -164,7 +326,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FINISHER drawn — the cards that end games": {
-          "value": 62,
+          "value": 72,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FINISHER drawn — the cards that end games' by turn six",
@@ -210,15 +372,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 6.505,
-            "2": 1.996,
-            "3": 2.898,
-            "4": 3.67,
-            "5": 4.319,
-            "6": 4.859,
-            "7": 5.324,
-            "8": 5.738,
-            "9": 6.133
+            "10": 6.663,
+            "2": 1.995,
+            "3": 2.906,
+            "4": 3.7,
+            "5": 4.377,
+            "6": 4.946,
+            "7": 5.434,
+            "8": 5.874,
+            "9": 6.275
           },
           "tier": "data",
           "weight": "detail",
@@ -229,15 +391,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.372,
-            "2": 0.997,
-            "3": 0.902,
-            "4": 0.772,
-            "5": 0.649,
-            "6": 0.54,
-            "7": 0.465,
-            "8": 0.414,
-            "9": 0.396
+            "10": 0.388,
+            "2": 0.996,
+            "3": 0.911,
+            "4": 0.794,
+            "5": 0.677,
+            "6": 0.568,
+            "7": 0.488,
+            "8": 0.44,
+            "9": 0.401
           },
           "tier": "data",
           "weight": "detail",
@@ -247,16 +409,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.234,
-            "10": 6.872,
-            "2": 0.665,
-            "3": 1.374,
-            "4": 1.555,
-            "5": 2.353,
-            "6": 3.359,
-            "7": 4.376,
-            "8": 5.302,
-            "9": 6.125
+            "1": 0.109,
+            "10": 5.997,
+            "2": 0.555,
+            "3": 1.449,
+            "4": 1.665,
+            "5": 2.49,
+            "6": 3.443,
+            "7": 4.253,
+            "8": 4.906,
+            "9": 5.488
           },
           "tier": "data",
           "weight": "detail",
@@ -266,14 +428,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 352,
-            "1": 1569,
-            "2": 2994,
-            "3": 2897,
-            "4": 1629,
-            "5": 471,
-            "6": 84,
-            "7": 4
+            "0": 309,
+            "1": 1557,
+            "2": 2856,
+            "3": 2926,
+            "4": 1708,
+            "5": 543,
+            "6": 96,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -289,47 +451,46 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.65,
-    "commander_cast_by_turn_6_pct": 86,
+    "commander_mean_cast_turn": 4.613,
+    "commander_cast_by_turn_6_pct": 88,
     "targets": [
       {
         "label": "COMBO LINE ASSEMBLED: Demonic Consultation + Laboratory Maniac",
-        "by_turn_6_pct": 2
+        "by_turn_6_pct": 1
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 92
+        "by_turn_6_pct": 79
       },
       {
         "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
-        "by_turn_6_pct": 50
+        "by_turn_6_pct": 90
       },
       {
         "label": "AN ANSWER drawn — interaction of any kind",
-        "by_turn_6_pct": 66
+        "by_turn_6_pct": 72
       },
       {
         "label": "A TUTOR drawn",
-        "by_turn_6_pct": 99
+        "by_turn_6_pct": 88
       },
       {
         "label": "A FINISHER drawn — the cards that end games",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 72
       }
     ]
   },
-  "engine_health": null,
+  "engine_health": {
+    "word": null,
+    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "basis": "diagnostic.json"
+  },
   "engine": null,
   "diagnosis": null,
   "audit": {
     "archetype": null,
-    "under": [
-      "card-advantage",
-      "interaction-breadth"
-    ],
-    "over": [
-      "ramp"
-    ],
+    "under": [],
+    "over": [],
     "stale": []
   },
   "prescriptions": {
@@ -342,7 +503,7 @@
     "runs": 1,
     "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-fa9e5d82-s204682626",
     "at": "2026-08-27",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "e71580a78c721fcba28496b0bf11ebfa223d93c7a304b6305d353e0e761f2111",
     "games": 20,
     "vs": [
@@ -372,6 +533,7 @@
   },
   "experiments": null,
   "next": [
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`"
   ],

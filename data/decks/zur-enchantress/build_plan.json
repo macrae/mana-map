@@ -3,7 +3,7 @@
     "computed_floor": 3,
     "drivers": [
       {
-        "detail": "1 Game Changer(s): Demonic Tutor",
+        "detail": "3 Game Changer(s): Demonic Tutor, Enlightened Tutor, Rhystic Study",
         "forces": 3,
         "signal": "game_changers"
       },
@@ -33,7 +33,7 @@
         "Infinite turns",
         "Lock"
       ],
-      "replaced": "Excalibur, Sword of Eden"
+      "replaced": "Jennika, Bad Apple Big Sister"
     },
     {
       "added": "Demonic Consultation",
@@ -47,7 +47,7 @@
         "Skip your draw steps",
         "Lock"
       ],
-      "replaced": "Rune-Scarred Demon"
+      "replaced": "Kuldotha Forgemaster"
     },
     {
       "added": "Endless Evil",
@@ -60,7 +60,7 @@
         "Infinite turns",
         "Lock"
       ],
-      "replaced": "Sovereigns of Lost Alara"
+      "replaced": "Migratory Route"
     },
     {
       "added": "Laboratory Maniac",
@@ -72,18 +72,11 @@
         "Exile your library",
         "Win the game"
       ],
-      "replaced": "June, Bounty Hunter"
+      "replaced": "Frodo, Sauron's Bane"
     }
   ],
   "commander": "Zur the Enchanter",
   "cut_for_bracket": [
-    {
-      "name": "Planar Bridge",
-      "reasons": [
-        "two-card infinite with Timestream Navigator + Planar Bridge"
-      ],
-      "replaced_by": "Bloodforged Battle-Axe"
-    },
     {
       "name": "Timestream Navigator",
       "reasons": [
@@ -91,7 +84,7 @@
         "two-card infinite with Timestream Navigator + Endless Evil",
         "two-card infinite with Timestream Navigator + Helm of the Host"
       ],
-      "replaced_by": "Foot Chopper"
+      "replaced_by": "Bloodforged Battle-Axe"
     }
   ],
   "generated_by": "manamap pilot build-deck (deterministic; no agent involvement)",
@@ -100,7 +93,6 @@
     "City of Brass": 1,
     "Command Tower": 1,
     "Conduit Pylons": 1,
-    "Contaminated Landscape": 1,
     "Crystal Grotto": 1,
     "Dromar's Cavern": 1,
     "Exotic Orchard": 1,
@@ -113,6 +105,7 @@
     "Mana Confluence": 1,
     "Opal Palace": 1,
     "Plains": 5,
+    "Planar Nexus": 1,
     "Spire of Industry": 1,
     "Survivors' Encampment": 1,
     "Swamp": 4,
@@ -127,7 +120,6 @@
     "City of Brass",
     "Command Tower",
     "Conduit Pylons",
-    "Contaminated Landscape",
     "Crystal Grotto",
     "Dromar's Cavern",
     "Exotic Orchard",
@@ -140,6 +132,7 @@
     "Mana Confluence",
     "Opal Palace",
     "Plains",
+    "Planar Nexus",
     "Spire of Industry",
     "Survivors' Encampment",
     "Swamp",
@@ -160,25 +153,25 @@
     },
     "requirements": {
       "B": {
+        "cards": 13,
+        "earliest_turn": 1,
+        "effective_pips": 1,
+        "max_pips": 2,
+        "total_pips": 14.0
+      },
+      "U": {
         "cards": 16,
         "earliest_turn": 1,
         "effective_pips": 1,
         "max_pips": 2,
-        "total_pips": 17.0
+        "total_pips": 18.0
       },
-      "U": {
-        "cards": 14,
+      "W": {
+        "cards": 13,
         "earliest_turn": 1,
         "effective_pips": 1,
         "max_pips": 2,
         "total_pips": 15.0
-      },
-      "W": {
-        "cards": 11,
-        "earliest_turn": 1,
-        "effective_pips": 1,
-        "max_pips": 1,
-        "total_pips": 11.0
       }
     },
     "shortfalls": {},
@@ -198,32 +191,32 @@
   "must_include_illegal": [],
   "notes": [
     "Brackets are a conversation, not a calculator — this is the lowest bracket the deck's contents are consistent with, not a verdict.",
-    "Tutor density (11) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
+    "Tutor density (7) is reported, never scored: WotC removed the tutor restriction on 2025-10-21 and now relies on Game Changers membership, which is already counted above.",
     "Mass land denial is checked against a curated list and is incomplete by construction."
   ],
   "pool": null,
   "printings": {},
   "role_budget": {
-    "draw": 5,
-    "flex": 26,
+    "draw": 4,
+    "flex": 28,
     "lands": 36,
-    "protection": 5,
-    "ramp": 11,
-    "recursion": 2,
+    "protection": 7,
+    "ramp": 9,
+    "recursion": 1,
     "removal": 7,
     "sweeper": 2,
     "tutor": 1,
     "wincon": 4
   },
   "role_budget_deviation": {},
-  "role_budget_grounding": "measured — enchantress role histogram over 99 cards (EDHREC), shaped to the provisional budget's total",
+  "role_budget_grounding": "measured — toolbox role histogram over 99 cards (EDHREC), shaped to the provisional budget's total",
   "role_budget_target": {
-    "draw": 5,
-    "flex": 26,
+    "draw": 4,
+    "flex": 28,
     "lands": 36,
-    "protection": 5,
-    "ramp": 11,
-    "recursion": 2,
+    "protection": 7,
+    "ramp": 9,
+    "recursion": 1,
     "removal": 7,
     "sweeper": 2,
     "tutor": 1,
@@ -231,143 +224,32 @@
   },
   "slots": [
     {
-      "alternates": [
-        {
-          "delta": 0.0034,
-          "name": "Mask of Memory"
-        },
-        {
-          "delta": 0.0086,
-          "name": "Sword of Forge and Frontier"
-        },
-        {
-          "delta": 0.0094,
-          "name": "Zephyr Boots"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.3382,
-        "similarity": 0.629,
-        "synergy": 0.3333
-      },
-      "name": "Buster Sword",
-      "role": "draw",
-      "score": 0.5559
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0022,
-          "name": "Treasure Chest"
-        },
-        {
-          "delta": 0.0047,
-          "name": "Buster Sword"
-        },
-        {
-          "delta": 0.0081,
-          "name": "Mask of Memory"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.3197,
-        "similarity": 0.8953,
-        "synergy": 0.0
-      },
-      "name": "Insatiable Avarice",
-      "role": "draw",
-      "score": 0.5606
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0221,
-          "name": "Thief's Knife"
-        },
-        {
-          "delta": 0.0436,
-          "name": "Insatiable Avarice"
-        },
-        {
-          "delta": 0.0457,
-          "name": "Treasure Chest"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1603,
-        "similarity": 0.8492,
-        "synergy": 0.3333
-      },
-      "name": "Kaito Shizuki",
-      "role": "draw",
-      "score": 0.6041
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0214,
-          "name": "Insatiable Avarice"
-        },
-        {
-          "delta": 0.0236,
-          "name": "Treasure Chest"
-        },
-        {
-          "delta": 0.0262,
-          "name": "Buster Sword"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1051,
-        "similarity": 0.6717,
-        "synergy": 0.5
-      },
-      "name": "Thief's Knife",
-      "role": "draw",
-      "score": 0.582
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0025,
-          "name": "Buster Sword"
-        },
-        {
-          "delta": 0.0059,
-          "name": "Mask of Memory"
-        },
-        {
-          "delta": 0.0111,
-          "name": "Sword of Forge and Frontier"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1823,
-        "similarity": 0.8117,
-        "synergy": 0.1667
-      },
-      "name": "Treasure Chest",
-      "role": "draw",
-      "score": 0.5584
+      "alternates": [],
+      "name": "Enduring Innocence",
+      "reason": "must_include",
+      "role": "draw"
     },
     {
       "alternates": [],
-      "name": "All That Glitters",
+      "name": "Mystic Remora",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
+      "alternates": [],
+      "name": "Rhystic Study",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
+      "alternates": [],
+      "name": "Tribute to Horobi // Echo of Death's Wail",
+      "reason": "must_include",
+      "role": "draw"
+    },
+    {
+      "alternates": [],
+      "name": "Ancient Den",
       "reason": "must_include",
       "role": "flex"
     },
@@ -386,31 +268,22 @@
       "score": 0.5977
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0013,
-          "name": "Vampiric Tutor"
-        },
-        {
-          "delta": 0.0015,
-          "name": "Diabolic Intent"
-        },
-        {
-          "delta": 0.0019,
-          "name": "Tempest Hawk"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1517,
-        "similarity": 0.9412,
-        "synergy": 0.1667
-      },
-      "name": "Case of the Stashed Skeleton",
-      "role": "flex",
-      "score": 0.5942
+      "alternates": [],
+      "name": "Callaphe, Beloved of the Sea",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
+      "alternates": [],
+      "name": "Darksteel Citadel",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
+      "alternates": [],
+      "name": "Daxos, Blessed by the Sun",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [],
@@ -438,8 +311,8 @@
           "name": "Repurposing Bay"
         },
         {
-          "delta": 0.0002,
-          "name": "Not Dead After All"
+          "delta": 0.0003,
+          "name": "Conqueror's Flail"
         }
       ],
       "components": {
@@ -470,10 +343,31 @@
       "score": 0.5028
     },
     {
-      "alternates": [],
-      "name": "Ethereal Armor",
-      "reason": "must_include",
-      "role": "flex"
+      "alternates": [
+        {
+          "delta": 0.0034,
+          "name": "Bloodforged Battle-Axe"
+        },
+        {
+          "delta": 0.0051,
+          "name": "Mystical Tutor"
+        },
+        {
+          "delta": 0.0069,
+          "name": "Case of the Stashed Skeleton"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.5346,
+        "similarity": 0.9587,
+        "synergy": 0.0
+      },
+      "name": "Enlightened Tutor",
+      "role": "flex",
+      "score": 0.6011
     },
     {
       "alternates": [
@@ -504,17 +398,15 @@
     },
     {
       "alternates": [],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.0882,
-        "similarity": 0.6737,
-        "synergy": 0.5
-      },
-      "name": "Foot Chopper",
-      "role": "flex",
-      "score": 0.5809
+      "name": "Golden-Tail Disciple",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
+      "alternates": [],
+      "name": "Goldmire Bridge",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [
@@ -547,33 +439,6 @@
       "alternates": [
         {
           "delta": 0.0,
-          "name": "Keen Duelist"
-        },
-        {
-          "delta": 0.0,
-          "name": "Rapid Hybridization"
-        },
-        {
-          "delta": 0.0001,
-          "name": "Hero's Heirloom"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.6,
-        "edhrec": 0.0443,
-        "similarity": 0.887,
-        "synergy": 0.1667
-      },
-      "name": "Jennika, Bad Apple Big Sister",
-      "role": "flex",
-      "score": 0.5032
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0,
           "name": "Heliod's Pilgrim"
         },
         {
@@ -596,60 +461,6 @@
       "name": "Keeper of the Accord",
       "role": "flex",
       "score": 0.5647
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Rune of Flight"
-        },
-        {
-          "delta": 0.0,
-          "name": "Candlestick"
-        },
-        {
-          "delta": 0.0001,
-          "name": "Sygg's Command"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.6,
-        "edhrec": 0.2393,
-        "similarity": 0.9507,
-        "synergy": 0.0
-      },
-      "name": "Kuldotha Forgemaster",
-      "role": "flex",
-      "score": 0.5051
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Ironwill Forger"
-        },
-        {
-          "delta": 0.0002,
-          "name": "Perplex"
-        },
-        {
-          "delta": 0.0002,
-          "name": "Haunted Cloak"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.6,
-        "edhrec": 0.1466,
-        "similarity": 0.8866,
-        "synergy": 0.1667
-      },
-      "name": "Migratory Route",
-      "role": "flex",
-      "score": 0.5133
     },
     {
       "alternates": [
@@ -679,6 +490,12 @@
       "score": 0.5299
     },
     {
+      "alternates": [],
+      "name": "Mistvault Bridge",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
       "alternates": [
         {
           "delta": 0.0,
@@ -706,58 +523,10 @@
       "score": 0.5256
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Serra the Benevolent"
-        },
-        {
-          "delta": 0.0,
-          "name": "Lake-town Lookout"
-        },
-        {
-          "delta": 0.0,
-          "name": "Rust Elemental"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.4,
-        "edhrec": 0.1168,
-        "similarity": 0.9432,
-        "synergy": 0.0
-      },
-      "name": "Plea for Guidance",
-      "role": "flex",
-      "score": 0.4586
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Moonsilver Key"
-        },
-        {
-          "delta": 0.0012,
-          "name": "Weathered Wayfarer"
-        },
-        {
-          "delta": 0.0017,
-          "name": "Piper Wright, Publick Reporter"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2839,
-        "similarity": 0.9209,
-        "synergy": 0.0
-      },
-      "name": "Profane Tutor",
-      "role": "flex",
-      "score": 0.5647
+      "alternates": [],
+      "name": "Razortide Bridge",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [
@@ -812,6 +581,12 @@
       "name": "Scour for Scrap",
       "role": "flex",
       "score": 0.5259
+    },
+    {
+      "alternates": [],
+      "name": "Seat of the Synod",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [
@@ -895,31 +670,10 @@
       "score": 0.5269
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Shortcut Seeker"
-        },
-        {
-          "delta": 0.0,
-          "name": "Etherium Pteramander"
-        },
-        {
-          "delta": 0.0001,
-          "name": "Burglar Rat"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.6,
-        "edhrec": 0.1573,
-        "similarity": 0.7071,
-        "synergy": 0.3333
-      },
-      "name": "Subterfuge",
-      "role": "flex",
-      "score": 0.4972
+      "alternates": [],
+      "name": "Stinging Lionfish",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
       "alternates": [
@@ -949,58 +703,22 @@
       "score": 0.5318
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0,
-          "name": "Patchwork Automaton"
-        },
-        {
-          "delta": 0.0,
-          "name": "Oketra's Last Mercy"
-        },
-        {
-          "delta": 0.0,
-          "name": "Compelling Deterrence"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 0.4,
-        "edhrec": 0.1876,
-        "similarity": 0.6744,
-        "synergy": 0.3333
-      },
-      "name": "Tivit, Seller of Secrets",
-      "role": "flex",
-      "score": 0.4584
+      "alternates": [],
+      "name": "Valgavoth's Lair",
+      "reason": "must_include",
+      "role": "flex"
     },
     {
-      "alternates": [
-        {
-          "delta": 0.001,
-          "name": "Winged Boots"
-        },
-        {
-          "delta": 0.0015,
-          "name": "Caduceus, Staff of Hermes"
-        },
-        {
-          "delta": 0.0025,
-          "name": "Thran Power Suit"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.3915,
-        "similarity": 0.6117,
-        "synergy": 0.1667
-      },
-      "name": "Brotherhood Regalia",
-      "role": "protection",
-      "score": 0.5193
+      "alternates": [],
+      "name": "Vault of Whispers",
+      "reason": "must_include",
+      "role": "flex"
+    },
+    {
+      "alternates": [],
+      "name": "Aegis of the Gods",
+      "reason": "must_include",
+      "role": "protection"
     },
     {
       "alternates": [
@@ -1032,6 +750,33 @@
     {
       "alternates": [
         {
+          "delta": 0.0027,
+          "name": "Shadowspear"
+        },
+        {
+          "delta": 0.0089,
+          "name": "Champion's Helm"
+        },
+        {
+          "delta": 0.0103,
+          "name": "Whispersilk Cloak"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.1239,
+        "similarity": 0.632,
+        "synergy": 0.3333
+      },
+      "name": "Paladin's Arms",
+      "role": "protection",
+      "score": 0.5353
+    },
+    {
+      "alternates": [
+        {
           "delta": 0.0005,
           "name": "The Girl in the Fireplace"
         },
@@ -1055,33 +800,6 @@
       "name": "Ratonhnhaké꞉ton",
       "role": "protection",
       "score": 0.5422
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.0062,
-          "name": "Champion's Helm"
-        },
-        {
-          "delta": 0.0076,
-          "name": "Whispersilk Cloak"
-        },
-        {
-          "delta": 0.0112,
-          "name": "Rootborn Defenses"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.4447,
-        "similarity": 0.6382,
-        "synergy": 0.1667
-      },
-      "name": "Shadowspear",
-      "role": "protection",
-      "score": 0.5326
     },
     {
       "alternates": [
@@ -1111,58 +829,37 @@
       "score": 0.5632
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0034,
-          "name": "The Restoration of Eiganjo // Architect of Restoration"
-        },
-        {
-          "delta": 0.0064,
-          "name": "Prying Blade"
-        },
-        {
-          "delta": 0.0102,
-          "name": "Strata Scythe"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2659,
-        "similarity": 0.8796,
-        "synergy": 0.1667
-      },
-      "name": "Bitterthorn, Nissa's Animus",
-      "role": "ramp",
-      "score": 0.5871
+      "alternates": [],
+      "name": "Thassa, God of the Sea",
+      "reason": "must_include",
+      "role": "protection"
     },
     {
       "alternates": [
         {
-          "delta": 0.0008,
-          "name": "Bitterthorn, Nissa's Animus"
+          "delta": 0.0064,
+          "name": "Paladin's Arms"
         },
         {
-          "delta": 0.0042,
-          "name": "The Restoration of Eiganjo // Architect of Restoration"
+          "delta": 0.0091,
+          "name": "Shadowspear"
         },
         {
-          "delta": 0.0072,
-          "name": "Prying Blade"
+          "delta": 0.0153,
+          "name": "Champion's Helm"
         }
       ],
       "components": {
         "castability": 1.0,
         "combo": 0.0,
         "curve": 1.0,
-        "edhrec": 0.1675,
-        "similarity": 0.915,
-        "synergy": 0.1667
+        "edhrec": 0.0833,
+        "similarity": 0.6668,
+        "synergy": 0.3333
       },
-      "name": "Dauntless Scrapbot",
-      "role": "ramp",
-      "score": 0.5879
+      "name": "The Girl in the Fireplace",
+      "role": "protection",
+      "score": 0.5417
     },
     {
       "alternates": [
@@ -1192,85 +889,22 @@
       "score": 0.5928
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0038,
-          "name": "Strata Scythe"
-        },
-        {
-          "delta": 0.0039,
-          "name": "Expedition Map"
-        },
-        {
-          "delta": 0.0041,
-          "name": "Burnished Hart"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1524,
-        "similarity": 0.6516,
-        "synergy": 0.5
-      },
-      "name": "Prying Blade",
-      "role": "ramp",
-      "score": 0.5807
+      "alternates": [],
+      "name": "Inquisitive Glimmer",
+      "reason": "must_include",
+      "role": "ramp"
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0003,
-          "name": "Dauntless Scrapbot"
-        },
-        {
-          "delta": 0.0011,
-          "name": "Bitterthorn, Nissa's Animus"
-        },
-        {
-          "delta": 0.0045,
-          "name": "The Restoration of Eiganjo // Architect of Restoration"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.093,
-        "similarity": 0.9409,
-        "synergy": 0.1667
-      },
-      "name": "Scrounge for Eternity",
-      "role": "ramp",
-      "score": 0.5882
+      "alternates": [],
+      "name": "Naiad of Hidden Coves",
+      "reason": "must_include",
+      "role": "ramp"
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0001,
-          "name": "Expedition Map"
-        },
-        {
-          "delta": 0.0003,
-          "name": "Burnished Hart"
-        },
-        {
-          "delta": 0.0007,
-          "name": "Beamsaw Prospector"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1296,
-        "similarity": 0.891,
-        "synergy": 0.1667
-      },
-      "name": "Strata Scythe",
-      "role": "ramp",
-      "score": 0.5769
+      "alternates": [],
+      "name": "Profane Procession // Tomb of the Dusk Rose",
+      "reason": "must_include",
+      "role": "ramp"
     },
     {
       "alternates": [
@@ -1354,31 +988,10 @@
       "score": 0.6128
     },
     {
-      "alternates": [
-        {
-          "delta": 0.003,
-          "name": "Prying Blade"
-        },
-        {
-          "delta": 0.0068,
-          "name": "Strata Scythe"
-        },
-        {
-          "delta": 0.0069,
-          "name": "Expedition Map"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.1939,
-        "similarity": 0.8922,
-        "synergy": 0.1667
-      },
-      "name": "The Restoration of Eiganjo // Architect of Restoration",
-      "role": "ramp",
-      "score": 0.5837
+      "alternates": [],
+      "name": "Transcendent Envoy",
+      "reason": "must_include",
+      "role": "ramp"
     },
     {
       "alternates": [
@@ -1406,33 +1019,6 @@
       "name": "Wayfarer's Bauble",
       "role": "ramp",
       "score": 0.5889
-    },
-    {
-      "alternates": [
-        {
-          "delta": 0.002,
-          "name": "Unshakable Tail"
-        },
-        {
-          "delta": 0.0041,
-          "name": "Reanimate"
-        },
-        {
-          "delta": 0.0063,
-          "name": "Victimize"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.2052,
-        "similarity": 0.7199,
-        "synergy": 0.1667
-      },
-      "name": "Scavenger's Talent",
-      "role": "recursion",
-      "score": 0.5331
     },
     {
       "alternates": [
@@ -1732,33 +1318,6 @@
       "score": 0.6029
     },
     {
-      "alternates": [
-        {
-          "delta": 0.0001,
-          "name": "Kaito, Cunning Infiltrator"
-        },
-        {
-          "delta": 0.0018,
-          "name": "Martha Jones"
-        },
-        {
-          "delta": 0.0021,
-          "name": "Kambal, Profiteering Mayor"
-        }
-      ],
-      "components": {
-        "castability": 1.0,
-        "combo": 0.0,
-        "curve": 1.0,
-        "edhrec": 0.0386,
-        "similarity": 0.6349,
-        "synergy": 0.3333
-      },
-      "name": "Iron Hills Blacksmith",
-      "role": "wincon",
-      "score": 0.5277
-    },
-    {
       "alternates": [],
       "components": {
         "castability": 1.0,
@@ -1772,6 +1331,33 @@
       "reason": "combo_completion",
       "role": "wincon",
       "score": 0.4975
+    },
+    {
+      "alternates": [
+        {
+          "delta": 0.0002,
+          "name": "Iron Hills Blacksmith"
+        },
+        {
+          "delta": 0.0003,
+          "name": "Kaito, Cunning Infiltrator"
+        },
+        {
+          "delta": 0.002,
+          "name": "Martha Jones"
+        }
+      ],
+      "components": {
+        "castability": 1.0,
+        "combo": 0.0,
+        "curve": 1.0,
+        "edhrec": 0.3251,
+        "similarity": 0.6622,
+        "synergy": 0.1667
+      },
+      "name": "Not Dead After All",
+      "role": "wincon",
+      "score": 0.5278
     },
     {
       "alternates": [
@@ -1803,29 +1389,29 @@
     {
       "alternates": [
         {
-          "delta": 0.0,
-          "name": "Fireshrieker"
+          "delta": 0.0031,
+          "name": "Holy Avenger"
         },
         {
-          "delta": 0.0003,
-          "name": "June, Bounty Hunter"
+          "delta": 0.0144,
+          "name": "Neko-Te"
         },
         {
-          "delta": 0.0004,
-          "name": "Silent Hallcreeper"
+          "delta": 0.0148,
+          "name": "Not Dead After All"
         }
       ],
       "components": {
         "castability": 1.0,
         "combo": 0.0,
         "curve": 1.0,
-        "edhrec": 0.3734,
-        "similarity": 0.6172,
-        "synergy": 0.1667
+        "edhrec": 0.235,
+        "similarity": 0.6194,
+        "synergy": 0.3333
       },
-      "name": "Trailblazer's Boots",
+      "name": "Vorpal Sword",
       "role": "wincon",
-      "score": 0.5192
+      "score": 0.5426
     }
   ],
   "slug": "zur-enchantress"

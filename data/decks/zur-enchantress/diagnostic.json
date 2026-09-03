@@ -1,0 +1,418 @@
+{
+ "slug": "zur-enchantress",
+ "branch": null,
+ "harness": {
+  "version": 1,
+  "iterations": 10000,
+  "seed": 20260826,
+  "max_turn": 10
+ },
+ "decklist_sha256": "f0281aef3eb369cfeede72ca0ffa334e1ff85cb2080822cd439bc2ef6f31335f",
+ "stall": {
+  "by_turn": {
+   "1": {
+    "rate": 0.428,
+    "ci95": [
+     0.4183,
+     0.4377
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0949,
+    "ci95": [
+     0.0893,
+     0.1008
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0089,
+    "ci95": [
+     0.0072,
+     0.0109
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0016,
+    "ci95": [
+     0.001,
+     0.0026
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.002,
+    "ci95": [
+     0.0013,
+     0.0031
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0076,
+    "ci95": [
+     0.0061,
+     0.0095
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0111,
+    "ci95": [
+     0.0092,
+     0.0133
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0097,
+    "ci95": [
+     0.008,
+     0.0118
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0073,
+    "ci95": [
+     0.0058,
+     0.0092
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0059,
+    "ci95": [
+     0.0046,
+     0.0076
+    ],
+    "n": 10000
+   }
+  },
+  "two_in_a_row": {
+   "rate": 0.018,
+   "ci95": [
+    0.0156,
+    0.0208
+   ],
+   "n": 10000
+  },
+  "fleet": "below the fleet median",
+  "from_turn": 2,
+  "cause": {
+   "stall_turns": 1490,
+   "hand_empty": 219,
+   "mana_short": 1271
+  },
+  "basis": "a turn on which no card in hand was castable with the mana that turn produced \u2014 not a turn on which nothing was cast"
+ },
+ "engine": {
+  "available": false,
+  "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without \u2014 the alternatives get `route`.",
+  "declared_targets": 6
+ },
+ "mana": {
+  "missed_land_drop_by_five": {
+   "rate": 0.4151,
+   "ci95": [
+    0.4055,
+    0.4248
+   ],
+   "n": 10000
+  },
+  "missed_land_drop_rate": 0.3325,
+  "mulliganed": {
+   "rate": 0.2035,
+   "ci95": [
+    0.1957,
+    0.2115
+   ],
+   "n": 10000
+  },
+  "mean_mana_by_turn": {
+   "1": 1.0,
+   "2": 1.997,
+   "3": 2.908,
+   "4": 3.71,
+   "5": 4.383,
+   "6": 4.945,
+   "7": 5.435,
+   "8": 5.877,
+   "9": 6.284,
+   "10": 6.675
+  },
+  "fleet": "below the fleet median",
+  "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+  "mana_stdev_turn_five": 0.8431
+ },
+ "steam": {
+  "extra_cards_by_turn": null,
+  "extra_cards_unavailable": "this deck does not opt into `model_draw` in goldfish_targets.json, so every draw beyond the one-a-turn draw step is unmodelled. That is an absent measurement, not a zero.",
+  "interaction_in_hand_by_turn": {
+   "1": {
+    "rate": 0.8172,
+    "ci95": [
+     0.8095,
+     0.8247
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.8338,
+    "ci95": [
+     0.8264,
+     0.841
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.8312,
+    "ci95": [
+     0.8237,
+     0.8384
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.8606,
+    "ci95": [
+     0.8537,
+     0.8673
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.8546,
+    "ci95": [
+     0.8476,
+     0.8614
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.849,
+    "ci95": [
+     0.8418,
+     0.8559
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.8507,
+    "ci95": [
+     0.8436,
+     0.8576
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.8616,
+    "ci95": [
+     0.8547,
+     0.8682
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.8754,
+    "ci95": [
+     0.8688,
+     0.8817
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.8883,
+    "ci95": [
+     0.882,
+     0.8943
+    ],
+    "n": 10000
+   }
+  },
+  "interaction_castable_by_turn": {
+   "1": {
+    "rate": 0.1383,
+    "ci95": [
+     0.1317,
+     0.1452
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.3152,
+    "ci95": [
+     0.3062,
+     0.3244
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.1933,
+    "ci95": [
+     0.1857,
+     0.2012
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0856,
+    "ci95": [
+     0.0803,
+     0.0912
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.3498,
+    "ci95": [
+     0.3405,
+     0.3592
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.4809,
+    "ci95": [
+     0.4711,
+     0.4907
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.5998,
+    "ci95": [
+     0.5902,
+     0.6094
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.6838,
+    "ci95": [
+     0.6746,
+     0.6928
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.7441,
+    "ci95": [
+     0.7355,
+     0.7526
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.7943,
+    "ci95": [
+     0.7863,
+     0.8021
+    ],
+    "n": 10000
+   }
+  },
+  "castable_given_in_hand_by_turn": {
+   "1": {
+    "rate": 0.1692,
+    "ci95": [
+     0.1613,
+     0.1775
+    ],
+    "n": 8172
+   },
+   "2": {
+    "rate": 0.378,
+    "ci95": [
+     0.3677,
+     0.3885
+    ],
+    "n": 8338
+   },
+   "3": {
+    "rate": 0.2326,
+    "ci95": [
+     0.2236,
+     0.2418
+    ],
+    "n": 8312
+   },
+   "4": {
+    "rate": 0.0995,
+    "ci95": [
+     0.0933,
+     0.106
+    ],
+    "n": 8606
+   },
+   "5": {
+    "rate": 0.4093,
+    "ci95": [
+     0.3989,
+     0.4198
+    ],
+    "n": 8546
+   },
+   "6": {
+    "rate": 0.5664,
+    "ci95": [
+     0.5559,
+     0.5769
+    ],
+    "n": 8490
+   },
+   "7": {
+    "rate": 0.7051,
+    "ci95": [
+     0.6953,
+     0.7147
+    ],
+    "n": 8507
+   },
+   "8": {
+    "rate": 0.7936,
+    "ci95": [
+     0.785,
+     0.8021
+    ],
+    "n": 8616
+   },
+   "9": {
+    "rate": 0.85,
+    "ci95": [
+     0.8424,
+     0.8573
+    ],
+    "n": 8754
+   },
+   "10": {
+    "rate": 0.8942,
+    "ci95": [
+     0.8876,
+     0.9004
+    ],
+    "n": 8883
+   }
+  },
+  "keep_can_act_by_t3": {
+   "rate": 0.9874,
+   "ci95": [
+    0.985,
+    0.9894
+   ],
+   "n": 10000
+  },
+  "basis": "`castable` is the mana left at the END OF THE MAIN PHASE \u2014 the moment the decision is made, before combat. Extra combat phases are paid for after it and attack triggers add mana after it, so on a deck with Aggravated Assault this float is larger than what survives the turn. It is also a FLOOR against the spending policy: the model casts everything it can afford every turn, so a pilot choosing to hold up two mana would score higher. A low figure is a real finding; a high one is unambiguous good news."
+ },
+ "output": {
+  "available": false,
+  "why": "no magnitude series \u2014 this deck opts into neither `model_treasures` nor `model_combat` in goldfish_targets.json, so there is no hoard and no clock to read. That is an absent measurement, not a zero."
+ },
+ "limits": [
+  "No pod, no opponent and no interaction: this measures a DECK, not a table. It is not a win rate.",
+  "Strategy-relative by construction \u2014 every figure is read against this deck's own declaration and never ranked against another deck.",
+  "A stall is a turn with nothing CASTABLE. The model does not cast wipes, counterspells or targeted removal, so 'nothing was cast' would measure the model rather than the deck."
+ ]
+}
