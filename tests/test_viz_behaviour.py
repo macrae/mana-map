@@ -8154,3 +8154,118 @@ def test_the_follow_camera_does_not_claim_the_camera_for_the_user(discover_page)
         "the wheel was the follow camera itself")
     assert r["follow"] > 5, (
         f"the follow camera ran {r['follow']} times — it stood down from its own claim")
+
+
+# ---------------------------------------------------------------------------
+# The library drawer scrolls
+#
+# It had no height cap and no overflow, and on `index.html` the body is a 100vh
+# flex column with `overflow: hidden` — so a library of any size ran off the
+# bottom of the window with nothing able to scroll it. Measured at 60 cards in a
+# 900px window: the drawer was 1683px tall, 783px of it below the fold,
+# `scrollTop` pinned at 0, and `.main-area` and `.status` pushed entirely off
+# screen. The map was gone too, not just the cards.
+# ---------------------------------------------------------------------------
+
+
+def _fill_library(page, n):
+    """n placeholder names. They need not resolve — an unresolvable name still
+    gets a tile, deliberately, and the tile is the thing being measured."""
+    return page.evaluate("""async (n) => {
+        Session.library.clear();
+        for (let i = 0; i < n; i++) Session.library.add('Filler Card ' + i);
+        if (!Shell.isOpen) Shell.toggle();   // a getter, not a function
+        await new Promise(r => setTimeout(r, 400));
+        return Session.library.size;
+    }""", n)
+
+
+def test_the_library_drawer_scrolls_instead_of_running_off_the_page(discover_page):
+    """Every card must be reachable, and the page under the drawer must survive."""
+    assert _fill_library(discover_page, 60) == 60
+    r = discover_page.evaluate("""async () => {
+        const d = document.getElementById('shell-drawer');
+        const tiles = [...d.querySelectorAll('.lib-tile')];
+        const last = tiles[tiles.length - 1];
+        const before = last.getBoundingClientRect().bottom;
+        d.scrollTop = d.scrollHeight;
+        await new Promise(r => setTimeout(r, 150));
+        const st = document.querySelector('.status').getBoundingClientRect();
+        return {
+            tiles: tiles.length,
+            scrollH: d.scrollHeight, clientH: d.clientHeight,
+            scrolled: d.scrollTop,
+            drawerBottom: d.getBoundingClientRect().bottom,
+            lastBefore: before,
+            lastAfter: last.getBoundingClientRect().bottom,
+            statusBottom: st.bottom, statusTop: st.top,
+            innerH: window.innerHeight,
+        };
+    }""")
+    assert discover_page.js_errors == []
+    assert r["tiles"] == 60, f"the drawer drew {r['tiles']} tiles, not 60"
+
+    # ORDER MATTERS HERE. The defect is that the DRAWER leaves the window, so
+    # that is asserted first: put the "did it overflow its own box" guard ahead
+    # of it and a broken drawer fails saying "60 cards did not overflow", which
+    # is true of the box and false of the page, and reads as a bad test rather
+    # than a bad drawer.
+    assert r["lastBefore"] > r["innerH"], (
+        "the last card was already visible before scrolling, so the test is not "
+        "testing the reported case")
+    assert r["drawerBottom"] <= r["innerH"], (
+        f"the drawer ends {r['drawerBottom'] - r['innerH']:.0f}px past the bottom "
+        f"of a {r['innerH']}px window, and the body clips it")
+
+    # It is taller than it is allowed to be, which is what makes it a scroller
+    # rather than a list that happens to fit.
+    assert r["scrollH"] > r["clientH"], (
+        "the drawer is not overflowing its own box, so nothing here is scrolled")
+    assert r["scrolled"] > 0, "the drawer did not scroll"
+
+    # THE CARD THAT WAS OFF SCREEN IS NOW ON IT. Before the fix this bottom was
+    # 1706 in a 900px window and no scroll could move it.
+    assert r["lastAfter"] < r["innerH"], (
+        f"after scrolling to the end the last card still sits at "
+        f"{r['lastAfter']:.0f}px in a {r['innerH']}px window")
+
+    # AND THE PAGE UNDER IT SURVIVED. The drawer is a sibling of the map, not a
+    # layer over it, so an uncapped drawer pushes the whole page out of the
+    # window — the reported symptom included losing the map.
+    assert r["statusBottom"] <= r["innerH"] + 1 and r["statusTop"] < r["innerH"], (
+        "the status line was pushed off screen by the drawer")
+
+
+def test_the_drawers_navigation_stays_put_while_it_scrolls(discover_page):
+    """Pile tabs and Close are the drawer's own navigation.
+
+    A scroller that carries its navigation off the top with the third row of
+    cards is a scroller you have to scroll back up to use — and Close going with
+    it means the only way to shut a full drawer is the strip above it.
+    """
+    assert _fill_library(discover_page, 60) == 60
+    r = discover_page.evaluate("""async () => {
+        const d = document.getElementById('shell-drawer');
+        const top = () => d.querySelector('.lib-top').getBoundingClientRect();
+        const before = top().top;
+        d.scrollTop = d.scrollHeight;
+        await new Promise(r => setTimeout(r, 150));
+        const after = top();
+        const close = [...d.querySelectorAll('.lib-btn')]
+            .find(b => b.textContent.trim() === 'Close').getBoundingClientRect();
+        return {before: before, after: after.top, bottom: after.bottom,
+                closeTop: close.top, closeBottom: close.bottom,
+                drawerTop: d.getBoundingClientRect().top,
+                drawerBottom: d.getBoundingClientRect().bottom,
+                innerH: window.innerHeight, scrolled: d.scrollTop};
+    }""")
+    assert discover_page.js_errors == []
+    assert r["drawerBottom"] <= r["innerH"], (
+        f"the drawer ends {r['drawerBottom'] - r['innerH']:.0f}px past the bottom "
+        f"of the window — there is no scrollport for anything to be pinned in")
+    assert r["scrolled"] > 0, "the drawer did not scroll, so nothing was pinned"
+    assert abs(r["after"] - r["before"]) < 1.5, (
+        f"the drawer's head scrolled away: {r['before']:.0f} -> {r['after']:.0f}")
+    assert r["drawerTop"] <= r["closeTop"] and r["closeBottom"] <= r["drawerBottom"], (
+        "Close is outside the drawer's own box after scrolling — a full drawer "
+        "cannot be shut from inside itself")

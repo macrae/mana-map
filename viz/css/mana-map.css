@@ -698,8 +698,32 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   border-color: var(--gold, #c4a747); }
 .shell-lib-mark { opacity: 0.75; }
 
+/* THE DRAWER IS ITS OWN SCROLLER, and it has to be.
+ *
+ * It had no height cap and no overflow, and on `index.html` the body is a
+ * 100vh flex column with `overflow: hidden` — so a library of any size simply
+ * ran off the bottom of the window with nothing able to scroll it. Measured at
+ * 60 cards in a 900px window: the drawer was **1683px tall, 783px of it below
+ * the fold**, `scrollTop` pinned at 0, and `.main-area` and `.status` pushed
+ * entirely off screen — the map was gone too, not just the cards.
+ *
+ * `min-height: 0` is load-bearing and is why shrinking alone was never going to
+ * save it: a flex item's automatic minimum size is its content's, so the drawer
+ * could not be compressed and the overflow went to the body, which clips.
+ *
+ * The cap is `vh` rather than a share of the remaining space because the drawer
+ * is a SIBLING of the map, not a layer over it — 60vh leaves the toolbar, the
+ * map and the status line on screen at every window height this runs at.
+ */
 .lib-drawer { background: var(--panel, #16213e);
-  border-bottom: 1px solid var(--rule, #2a2a3e); padding: 14px 20px 18px; }
+  border-bottom: 1px solid var(--rule, #2a2a3e); padding: 0 20px 18px;
+  max-height: 60vh; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* The head and the pile tabs ride along, so the drawer's navigation is not the
+ * first thing that scrolls away from it. It carries the drawer's top padding
+ * and its background: the cards have to pass UNDER it, and a sticky block with
+ * a transparent 14px gap above it is a sticky block you can read through. */
+.lib-top { position: sticky; top: 0; z-index: 2; padding-top: 14px;
+  background: var(--panel, #16213e); }
 .lib-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   margin-bottom: 12px; }
 .lib-title { font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;

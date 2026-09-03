@@ -341,7 +341,12 @@ window.Shell = (function () {
     var all = entryList();
     var active = L ? L.active : null;
     var shown = active ? all.filter(function (e) { return e.zone === active; }) : all;
-    var head = '<div class="lib-head">'
+    /* HEAD AND PILES IN ONE STICKY BLOCK. The drawer scrolls (see `.lib-drawer`
+     * in the stylesheet), and the pile tabs are the drawer's navigation — a
+     * scroller that carries its own navigation off the top with the third row of
+     * cards is a scroller you have to scroll back up to use. Close goes with
+     * them, which also means the drawer can always be shut from inside it. */
+    var head = '<div class="lib-top"><div class="lib-head">'
       + '<span class="lib-title">Your library</span>'
       + '<span class="lib-n">' + all.length + ' card' + (all.length === 1 ? '' : 's')
       +   (L && L.zones.length > 1 ? ' in ' + L.zones.length + ' piles' : '') + '</span>'
@@ -352,7 +357,7 @@ window.Shell = (function () {
       +   (shown.length ? '<button class="lib-btn" onclick="Shell.treat()">Treat a deck…</button>' : '')
       +   (shown.length ? '<button class="lib-btn" onclick="Shell.clear()">Empty pile</button>' : '')
       +   '<button class="lib-btn" onclick="Shell.toggle()">Close</button>'
-      + '</span></div>' + zoneBar();
+      + '</span></div>' + zoneBar() + '</div>';
     if (!shown.length) {
       return head + '<p class="lib-empty">'
         + (all.length
