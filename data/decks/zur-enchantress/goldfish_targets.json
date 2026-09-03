@@ -11,18 +11,17 @@
             "Call of the Ring",
             "Caretaker's Talent",
             "Curiosity",
+            "Dawn of Hope",
             "Enduring Innocence",
             "Kaito Shizuki",
             "Mesa Enchantress",
             "Mystic Remora",
             "Ominous Seas",
-            "Ophidian Eye",
             "Phyrexian Arena",
             "Rhystic Study",
             "Smuggler's Share",
             "Tocasia's Welcome",
             "Tribute to Horobi // Echo of Death's Wail",
-            "Underworld Dreams",
             "Waste Not",
             "Wavebreak Hippocamp",
             "Wizard Class"
@@ -81,23 +80,25 @@
     {
       "label": "KILL — drain: a payoff plus bodies to feed it",
       "route": "drain",
-      "_why": "The second real kill. Bastion of Remembrance and The Meathook Massacre turn a board of expendable bodies into life loss across the pod, which is how this deck closes when combat is not available. NOTE the simulation cannot see it: death-triggered drain is unmodelled, so this measures whether the PIECES were drawn, never whether the drain happened.",
+      "_why": "REBUILT 2026-09-03 around ENCHANTMENT CREATURES, which is what makes this route Zur-assemblable at all. Grim Guardian and Underworld Coinsmith are constellation bodies: each is a creature the commander can put straight onto the battlefield AND a payoff that drains every time another enchantment lands, so the deck's 40-odd enchantments are the fuel. The bodies leg is now recurring token engines rather than one-shot creatures. NOTE the simulation still cannot see the drain itself — death triggers and life loss are unmodelled — so this measures whether the PIECES were drawn, never whether the table died.",
       "need": [
         {
           "any_of": [
             "Bastion of Remembrance",
+            "Grim Guardian",
             "The Meathook Massacre",
-            "Not Dead After All"
+            "Underworld Coinsmith"
           ]
         },
         {
           "any_of": [
             "Bitterblossom",
             "Black Market Connections",
-            "Tribute to Horobi // Echo of Death's Wail",
+            "Dawn of Hope",
+            "Dreadhorde Invasion",
             "Kaito Shizuki",
             "The Girl in the Fireplace",
-            "Keeper of the Accord"
+            "Tribute to Horobi // Echo of Death's Wail"
           ]
         }
       ]
@@ -110,7 +111,6 @@
           "any_of": [
             "Black Market Connections",
             "Inquisitive Glimmer",
-            "Keeper of the Accord",
             "Land Tax",
             "Monologue Tax",
             "Naiad of Hidden Coves",
@@ -131,7 +131,6 @@
             "Enlightened Tutor",
             "Muddle the Mixture",
             "Dizzy Spell",
-            "Keeper of the Accord",
             "Kaito Shizuki"
           ]
         }
