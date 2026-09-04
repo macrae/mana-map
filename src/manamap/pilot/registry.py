@@ -136,6 +136,8 @@ PILOT_STEPS = [
     ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis: pips vs sources, castability, tapped lands"),
     ("pool-facts", "manamap.pilot.pool_facts", "What deck can I build from a box of cards?"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
+    ("validate-brief", "manamap.pilot.validate_brief",
+     "Form-check brief.json: the commander real and legal, every named card in the corpus and in identity, the pools on disk"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
     ("validate-considering", "manamap.pilot.validate_considering", "Form-check a legacy considering.json (the retired Short List; frozen on published decks)"),
     ("validate-pending", "manamap.pilot.validate_pending",
@@ -184,7 +186,7 @@ _DECK_COMMANDS = {
     "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
-    "build",
+    "build", "validate-brief",
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
@@ -718,6 +720,12 @@ def add_pilot_parser(subparsers):
                              help="power bracket target (default: the repo default)")
             cmd.add_argument("--build", action="store_true",
                              help="run the builder immediately and write decklist.txt")
+        if name == "validate-brief":
+            cmd.add_argument("--themes", action="store_true",
+                             help="also resolve `theme` against the commander's "
+                                  "real EDHREC archetypes. Off by default: a "
+                                  "gate that fails when the network is down is "
+                                  "a gate that gets switched off")
         if name == "build":
             # The same inputs as `brew`, deliberately: `build` is `brew --build`
             # plus the four stages that come after it, and two commands that

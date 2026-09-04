@@ -51,6 +51,9 @@ manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
 manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
 manamap pilot validate-build <slug>     # form gate over a build plan
+manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had: commander real and
+                                        #   legal, every named card in the corpus and in identity,
+                                        #   pools on disk. Inert keys REPORTED, never failed
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates

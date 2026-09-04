@@ -316,6 +316,12 @@ def status(slug, validate=True):
 # same second. A dashboard that is green while the gate is red is worse than no
 # dashboard, because people stop checking the gate.
 VALIDATED = {
+    # THE FIRST STAGE, AND THE LAST ONE TO GET A GATE. `STAGES[0]` has listed
+    # `brief.json` since the status command existed, with `sha=None` and no
+    # validator — so the input to every build was the one tracked pilot artifact
+    # nothing checked. A typo'd `theme` still produces a legal 99; it is just
+    # built to the wrong shape, and says so only in `role_budget_grounding`.
+    "brief.json": "manamap.pilot.validate_brief",
     "cards.json": "manamap.pilot.validate_deck",
     "considering.json": "manamap.pilot.validate_considering",
     "deck_map.json": "manamap.pilot.validate_deck_map",
