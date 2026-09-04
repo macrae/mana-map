@@ -1616,6 +1616,52 @@ def chosen_type_for(cards):
     return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
 
 
+#: "As long as your devotion to white is less than five, Heliod isn't a creature."
+#: The Theros gods, and the reason a board-power figure can be confidently wrong:
+#: a God on the battlefield below its threshold is an ENCHANTMENT and nothing
+#: else — it cannot attack, cannot block and has no power. Counting it as a body
+#: on arrival overstates the board by its printed power for as long as the
+#: threshold is unmet, which on Thassa in this list is essentially the whole game.
+#:
+#: Only 3 of the 23 enchantment creatures in bodies-v3 carry this clause; the
+#: other 20 are creatures the moment they land. It is a narrow gate and a
+#: load-bearing one.
+_DEVOTION_GATE_RE = re.compile(
+    r"as long as your devotion to ([\w\s]+?) is less than (\w+)", re.I)
+
+_DEVOTION_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+                   "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+_DEVOTION_COLOURS = {"white": "W", "blue": "U", "black": "B",
+                     "red": "R", "green": "G"}
+
+
+def devotion_gate(card):
+    """`{"colors": frozenset, "threshold": int}` for a God, else None.
+
+    DEVOTION COUNTS MANA SYMBOLS, not permanents: each `{W}` in the mana cost of
+    a permanent you control is one devotion to white, and a hybrid `{W/U}` counts
+    for BOTH. `classify` already stores `pips` as one frozenset per coloured
+    symbol, which is exactly that — so nothing new has to be parsed.
+    """
+    m = _DEVOTION_GATE_RE.search(card.get("oracle_text") or "")
+    if not m:
+        return None
+    words = m.group(1).lower().replace(" and ", " ").split()
+    colours = frozenset(_DEVOTION_COLOURS[w] for w in words
+                        if w in _DEVOTION_COLOURS)
+    raw = m.group(2).lower()
+    threshold = _DEVOTION_WORDS.get(raw, int(raw) if raw.isdigit() else 0)
+    if not colours or not threshold:
+        return None
+    return {"colors": colours, "threshold": threshold}
+
+
+def devotion_of(pips_lists, colours):
+    """Devotion to `colours` from every permanent's pip list on the battlefield."""
+    return sum(1 for pips in pips_lists for pip in pips if pip & colours)
+
+
 def classify(card, pool=None):
     """Return a compact sim-card dict for one physical copy.
 
@@ -1632,6 +1678,16 @@ def classify(card, pool=None):
         "name": card["name"],
         "is_land": is_land,
         "cmc": int(card.get("cmc") or 0),
+        # A GOD IS NOT A CREATURE BELOW ITS DEVOTION THRESHOLD. None when the
+        # card carries no such clause, which is 20 of the 23 enchantment
+        # creatures in the list this was written for.
+        "devotion_gate": devotion_gate(card),
+        # CARRIED FOR THE COMMANDER'S ATTACK TUTOR, which filters on the printed
+        # type. Nothing else in this model reads a type line at simulation time —
+        # every other question is answered here, at classify time — so this key
+        # exists for one caller and says so. Without it the filter matched the
+        # empty string and the tutor silently never fired.
+        "type_line": type_line,
         # What it actually costs to USE the tutor mode, which is what decides
         # when the wildcard comes online.
         "tutor_cmc": int(card.get("cmc") or 0) + (int(mode_cost.group(1)) if mode_cost else 0),
@@ -1750,7 +1806,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
                   commander_subtypes=frozenset(), commander_combat=None,
-                  commander_cast_token=None, interaction_names=frozenset()):
+                  commander_cast_token=None, interaction_names=frozenset(),
+                  attack_tutor=None):
     """One goldfish iteration. Returns a per-iteration result dict."""
     deck = library[:]
     rng.shuffle(deck)
@@ -1765,6 +1822,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # lands, because that is the keep rule restating itself.
     first_seven_lands = sum(1 for c in hand if c["is_land"])
 
+    attack_tutor_fired = 0
+    # DEVOTION, and the gods waiting on it. `battlefield_pips` is one pip list
+    # per nonland permanent in play; `pending_gods` holds the gods that have
+    # RESOLVED but are not creatures yet. A god below its threshold is an
+    # enchantment: no power, no attack, no block. It still contributes its own
+    # pips to devotion, which is what lets a second god switch a first one on.
+    battlefield_pips = []
+    pending_gods = []
     mulligans = 0
     while not keepable(hand) and mulligans < GOLDFISH_MAX_MULLIGANS:
         mulligans += 1
@@ -2087,6 +2152,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 reduced_cost(commander_card, reductions, chosen_type),
                 commander_pips):
             commander_turn = turn
+            # The commander is a nonland permanent and its own pips count
+            # toward devotion — Zur is {1}{W}{U}{B}, one each of three colours.
+            battlefield_pips.append(commander_pips or [])
             # THE COMMANDER USED TO BE CAST AND THEN DROPPED. It set this flag,
             # spent the mana, and never joined the battlefield — so a 10/10
             # flier contributed no power, never attacked, and fired none of its
@@ -2115,6 +2183,50 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     extra_combat_free += 1
                 if commander_combat["extra_combat_cost"] is not None:
                     extra_combat_costs.append(commander_combat["extra_combat_cost"])
+
+        # THE COMMANDER'S OWN ATTACK TUTOR — an APPROXIMATION, declared per deck.
+        #
+        # Zur reads "whenever Zur attacks, search your library for an enchantment
+        # card with mana value 3 or less, put it ONTO THE BATTLEFIELD". That is
+        # the deck's entire engine and this model could not see it: every figure
+        # for that deck counted only cards it DREW, so the axis the win condition
+        # rides was measured as nothing. Leaving it unmodelled is not neutral —
+        # it is a systematic understatement of exactly one deck's plan.
+        #
+        # WHAT IS MODELLED, AND HOW GENEROUSLY. From the turn AFTER the commander
+        # lands (it must survive to attack), the best matching card is pulled
+        # from the library and enough mana is added to the pool to pay for it, so
+        # the normal casting loop resolves it through the ordinary path and every
+        # arrival, ETB and body channel fires exactly as it would for a cast card.
+        #
+        # THIS IS OPTIMISTIC AND THE DIRECTION IS KNOWN. A goldfish has no
+        # blockers, so the commander always attacks; at a real table it attacks
+        # when the pilot judges it safe, and Forge's AI would not attack at all
+        # (measured: Zur attacked in 17-47% of games where a human attacks every
+        # turn, because the trigger fires on ATTACK and not on connect). So this
+        # is a CEILING on the engine, not an estimate of it — and the ceiling is
+        # the useful bound, because before this the floor was zero and nothing
+        # else was available.
+        #
+        # "Best" is the highest mana value that fits the filter, which is the
+        # crude part: a real pilot fetches for the board, not for the curve. It
+        # is stated rather than hidden, and it is the same rule for every list
+        # being compared.
+        if attack_tutor and commander_turn is not None and turn > commander_turn:
+            match = None
+            for i, cand in enumerate(deck):
+                if cand["cmc"] > attack_tutor["max_mv"]:
+                    continue
+                tl = cand["type_line"] or ""
+                if attack_tutor["type"] not in tl:
+                    continue
+                if match is None or cand["cmc"] > deck[match]["cmc"]:
+                    match = i
+            if match is not None:
+                fetched = deck.pop(match)
+                hand.append(fetched)
+                pool += reduced_cost(fetched, reductions, chosen_type)
+                attack_tutor_fired += 1
 
         # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
         # to fall through this hole, after Aggravated Assault and Primal Vigor.
@@ -2301,6 +2413,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # the disjunction is already true — and a deck with neither flag
                 # never reaches here at all.
                 arrivals_matter = model_combat or model_draw
+                if not card["is_land"]:
+                    battlefield_pips.append(card["pips"])
                 if model_combat:
                     # REGISTERED BEFORE IT ENTERS, and that is correct for the
                     # printed wording: Scourge of Valkas says "whenever THIS
@@ -2311,10 +2425,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if is_etb_engine(combat):
                         etb_engines.append(combat)
                 if arrivals_matter and combat["is_creature"]:
-                    creature_entered(
-                        combat["power"], turn, combat["haste"],
-                        2 if combat["double_strike"] else 1,
-                        is_legendary="Legendary" in (card.get("type_line") or ""))
+                    # A GOD RESOLVES AS AN ENCHANTMENT. It is held here and
+                    # joins the battlefield on the turn its devotion is met,
+                    # which may be this turn (its own pips count) or never.
+                    if card["devotion_gate"]:
+                        pending_gods.append((card, combat))
+                    else:
+                        creature_entered(
+                            combat["power"], turn, combat["haste"],
+                            2 if combat["double_strike"] else 1,
+                            is_legendary="Legendary" in (card.get("type_line") or ""))
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
                 # is why the commander's own arrival does not trigger it — it
@@ -2464,6 +2584,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
             # creature, so the multiplier belongs to the damage series and
             # never to this one.
+            # A GOD SWITCHES ON when devotion reaches its threshold, and it is
+            # checked AFTER the turn's permanents have resolved because they are
+            # what moves devotion. It arrives with summoning sickness like any
+            # other creature: `creature_entered` stamps this turn.
+            if pending_gods:
+                still = []
+                for card, combat in pending_gods:
+                    gate = card["devotion_gate"]
+                    if devotion_of(battlefield_pips, gate["colors"]) >= gate["threshold"]:
+                        creature_entered(
+                            combat["power"], turn, combat["haste"],
+                            2 if combat["double_strike"] else 1, is_legendary=True)
+                    else:
+                        still.append((card, combat))
+                pending_gods[:] = still
+
             board_power_by_turn.append(sum(p for p, _, _, _, _ in battlefield))
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
@@ -2490,6 +2626,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "kept_hand_lands": kept_hand_lands,
         "keep_can_act_by_t3": keep_can_act_by_t3,
         "mulligans": mulligans,
+        "attack_tutor_fired": attack_tutor_fired,
         "land_hits": land_hits,
         "stall_by_turn": stall_by_turn,
         "hand_size_by_turn": hand_size_by_turn,
@@ -2573,6 +2710,28 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                 sum(1 for r in results if r["keep_can_act_by_t3"]) / n),
             "mean_mulligans": _round(sum(r["mulligans"] for r in results) / n),
         },
+        # THE COMMANDER'S ATTACK TUTOR. It is a CEILING (see the model note
+        # where it fires): a goldfish commander always attacks, a real one
+        # attacks when it is safe to.
+        #
+        # ABSENT MEANS ABSENT. A deck that declares no tutor gets no block at
+        # all rather than one reading `declared: false` — the same rule the
+        # commander-damage block keeps, and it also keeps every other deck's
+        # artifact free of a key about a thing it does not have.
+        **({"attack_tutor": {
+            # DERIVED from the rows rather than passed in: a result carries
+            # `attack_tutor_fired`, and a deck that never declared one has the
+            # key at 0 in every game. `declared` is therefore "it fired at least
+            # once somewhere", which is the honest thing this function can see.
+            "declared": any(r["attack_tutor_fired"] for r in results),
+            "mean_fired": _round(sum(r["attack_tutor_fired"] for r in results) / n),
+            "games_it_fired": sum(1 for r in results if r["attack_tutor_fired"]),
+            "basis": ("fires once a turn from the turn after the commander lands, "
+                      "pulling the highest-mana-value match from the library onto "
+                      "the battlefield. A goldfish has no blockers so the "
+                      "commander always attacks — this is the engine's CEILING, "
+                      "not an estimate of it."),
+        }} if any(r["attack_tutor_fired"] for r in results) else {}),
         "land_drop_hit_rate_by_turn": {
             str(t): _round(sum(1 for r in results if r["land_hits"][t - 1]) / n) for t in turns
         },
@@ -2757,6 +2916,16 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # benchmark is the one caller that overrides, because uniform conditions are
     # what makes decks comparable at all.
     model_treasures = declared_treasures if model_treasures is None else bool(model_treasures)
+    # THE COMMANDER'S ATTACK TUTOR, declared per deck because it is one
+    # commander's text rather than a rule of the format. Shape:
+    #     "model_commander_attack_tutor": {"type": "Enchantment", "max_mv": 3}
+    # `type` is matched as a SUBSTRING of the type line, so "Enchantment" also
+    # matches an enchantment CREATURE — which is the point for Zur, whose whole
+    # plan is fetching bodies. Absent means absent: no other deck's figures move.
+    attack_tutor = targets_doc.get("model_commander_attack_tutor") or None
+    if attack_tutor:
+        attack_tutor = {"type": str(attack_tutor.get("type") or "Enchantment"),
+                        "max_mv": int(attack_tutor.get("max_mv", 3))}
     model_combat = declared_combat if model_combat is None else bool(model_combat)
     model_draw = declared_draw if model_draw is None else bool(model_draw)
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
@@ -2903,6 +3072,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               chosen_type=chosen_type,
                               commander_subtypes=commander_subtypes,
                               commander_cast_token=commander_cast_token,
+                              attack_tutor=attack_tutor,
                               model_treasures=model_treasures,
                               model_combat=model_combat,
                               model_draw=model_draw,

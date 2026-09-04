@@ -96,6 +96,797 @@
   },
   "branches": [
     {
+      "name": "bodies-v3",
+      "opened": "2026-09-04",
+      "why": "ZUR FETCHES BODIES, NOT EFFECTS. The pilot's read, and it is the first plan that answers the arithmetic: the deck removes 4.15 life a game and needs 160, while surviving to turn 32 — the defence works and there is no offence. Zur's trigger puts the card ONTO THE BATTLEFIELD, so fetching an enchantment CREATURE is a free body every attack; fetching a Propaganda is not. Eleven of the twelve adds are Zur-fetchable enchantment creatures, including a 5/5 flier (Master of the Feast) and two indestructible Gods whose devotion this deck can actually reach — measured: Heliod needs ~8 nonland permanents on board and Athreos ~7, against 55 in the list. Thassa needs ~17 and stays a utility enchantment rather than a body. Enduring Tenacity is the pilot's own find: Vito on a body that returns as an enchantment when it dies, which is redundancy for the payoff that already resolves most often. NO one-card win conditions and no two-card infinites — the kill is a board. MODEL NOTE: this is the first Zur list to declare `model_combat`, because until now the goldfish reported `output.available: false` — \"no magnitude series ... that is an absent measurement, not a zero\" — and could not see a clock at all. THE GOLDFISH HAS NO BLOCKERS, so its kill turn is a CLOCK against one 40-life opponent who never blocks and it OVERSTATES a creature plan by construction. It is used here because Forge's AI cannot pilot the attack-to-tutor line at all, and because the error is in a known direction and is the same for every list it compares.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Aether Tunnel"
+          },
+          {
+            "name": "Aqueous Form"
+          },
+          {
+            "name": "Athreos, God of Passage"
+          },
+          {
+            "name": "Blind Obedience"
+          },
+          {
+            "name": "Eidolon of Astral Winds"
+          },
+          {
+            "name": "Eidolon of Countless Battles"
+          },
+          {
+            "name": "Fear of Impostors"
+          },
+          {
+            "name": "Glyph Elemental"
+          },
+          {
+            "name": "Heliod's Pilgrim"
+          },
+          {
+            "name": "Hypnotic Siren"
+          },
+          {
+            "name": "Idyllic Tutor"
+          },
+          {
+            "name": "Light-Paws, Emperor's Voice"
+          },
+          {
+            "name": "Master of the Feast"
+          },
+          {
+            "name": "Nighthowler"
+          },
+          {
+            "name": "Nyx-Fleece Ram"
+          },
+          {
+            "name": "Open the Armory"
+          },
+          {
+            "name": "Reconnaissance"
+          },
+          {
+            "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Spirit Mantle"
+          },
+          {
+            "name": "Steel of the Godhead"
+          },
+          {
+            "name": "Tymaret, Chosen from Death"
+          },
+          {
+            "name": "Unquestioned Authority"
+          }
+        ],
+        "unsleeve": [],
+        "proxy": [],
+        "free": [
+          {
+            "name": "Heliod, Sun-Crowned",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
+        "box": [
+          {
+            "name": "Enduring Tenacity",
+            "where": [
+              "Golgari Parts"
+            ]
+          },
+          {
+            "name": "The Master of Keys",
+            "where": [
+              "Zur Parts"
+            ]
+          }
+        ],
+        "blocking": 22,
+        "procurement": null
+      },
+      "base_version": 6,
+      "size": 100,
+      "add": 25,
+      "out": 25,
+      "counts": {
+        "in_deck": 65,
+        "box": 2,
+        "elsewhere": 1,
+        "buy": 22
+      },
+      "unsourced": [
+        "Aether Tunnel",
+        "Aqueous Form",
+        "Athreos, God of Passage",
+        "Blind Obedience",
+        "Eidolon of Astral Winds",
+        "Eidolon of Countless Battles",
+        "Fear of Impostors",
+        "Glyph Elemental",
+        "Heliod's Pilgrim",
+        "Hypnotic Siren",
+        "Idyllic Tutor",
+        "Light-Paws, Emperor's Voice",
+        "Master of the Feast",
+        "Nighthowler",
+        "Nyx-Fleece Ram",
+        "Open the Armory",
+        "Reconnaissance",
+        "Silent Hallcreeper",
+        "Spirit Mantle",
+        "Steel of the Godhead",
+        "Tymaret, Chosen from Death",
+        "Unquestioned Authority"
+      ],
+      "mergeable": false,
+      "free": 1,
+      "cards": [
+        {
+          "name": "Abstergo Entertainment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Adarkar Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Aegis of the Gods",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Aether Tunnel",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Aqueous Form",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Athreos, God of Passage",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Banishing Light",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bastion of Remembrance",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bitterblossom",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Black Market Connections",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blind Obedience",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Caretaker's Talent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Caves of Koilos",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "City of Brass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Conduit Pylons",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Counterspell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Darkwater Catacombs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dawn of Hope",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Daxos, Blessed by the Sun",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Demonic Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dreadhorde Invasion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Eidolon of Astral Winds",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Eidolon of Countless Battles",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Enduring Innocence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enduring Tenacity",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Enlightened Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fear of Impostors",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Fetid Heath",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Field of Ruin",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Forbidden Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gemstone Caverns",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glyph Elemental",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Grim Guardian",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heliod's Pilgrim",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Heliod, Sun-Crowned",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
+        },
+        {
+          "name": "Hypnotic Siren",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Idyllic Tutor",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Imprisoned in the Moon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Inquisitive Glimmer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Land Tax",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Lazotep Quarry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Light-Paws, Emperor's Voice",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Marauding Blight-Priest",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Master of the Feast",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mesa Enchantress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Muddle the Mixture",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystic Remora",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nighthowler",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "No More Lies",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nyx-Fleece Ram",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Opal Palace",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Open the Armory",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Ossification",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Path to Exile",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Phyrexian Arena",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Profane Procession // Tomb of the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reconnaissance",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Rhystic Study",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sheltered by Ghosts",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Silent Hallcreeper",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Skycloud Expanse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smuggler's Share",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spire of Industry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spirit Mantle",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Steel of the Godhead",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Swamp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tainted Field",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talon Gates of Madara",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thassa, God of the Sea",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Grey Havens",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Master of Keys",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "The Meathook Massacre",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Mycosynth Gardens",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tocasia's Welcome",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Touch the Spirit Realm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Transcendent Envoy",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tribute to Horobi // Echo of Death's Wail",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tymaret, Chosen from Death",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Underground River",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Underworld Coinsmith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Unquestioned Authority",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Valgavoth's Lair",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vito, Thorn of the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Zur the Enchanter",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true
+    },
+    {
       "name": "pillars-v1",
       "opened": "2026-09-04",
       "why": "ABANDON commander damage as the win condition. Measured over 40 Forge games on the pilot's own table: 0 of 39 games reached 21 commander damage, 0.35 commander damage a game, 2.33 total combat damage against edgar's 32.3 — and Zur itself attacked 0.33 times a game, so the engine barely fired and the kill never did. Rebuilt on the three pillars the pilot named: (1) counter target spell, (2) stax, (3) enchantment-creature trickery for ASYMMETRIC table damage. The four swing-enablers stay but now serve the ENGINE rather than the kill — Zur attacking is what fetches an enchantment, and the trigger is on ATTACK, not on connect. OBJECTIVE CAVEAT: the goldfish cannot grade this deck's output at all ('no magnitude series ... that is an absent measurement, not a zero'), so the objective is the CONTROL half — of the games where an answer is in hand on turn six, the share where the turn also ends with the mana to cast it, currently 0.728. The kill itself is settleable only by simulate, which is also where the recon's contested finding about voltron at a five-player table belongs.",
@@ -827,6 +1618,755 @@
         }
       ],
       "has_cards": true
+    },
+    {
+      "name": "pillars-v2",
+      "opened": "2026-09-04",
+      "why": "pillars-v1 PROVED THE ENGINE FIX AND EXPOSED THE NEXT CONSTRAINT. Measured over 40 games a side against the playgroup table: Zur attacked 0.20 -> 0.60 a game and the tutor fired 0.28 -> 1.00 a game, a 3x and 3.6x improvement from the evasion package alone. The win rate did not move (0/40 both arms) because the engine now runs and finds a deck it cannot convert: every pillar piece resolves in roughly one game in four or five (Propaganda 0.20, Ghostly Prison 0.23, Doomwake Giant 0.25, Vito 0.47, Counterspell 0.07), which is what a singleton with no tutoring does. v2 attacks CONSISTENCY rather than adding win conditions: three more Zur-fetchable enablers, and four ways to FIND one (Idyllic Tutor finds any enchantment; Open the Armory, Light-Paws and Heliod's Pilgrim find an Aura, which is what every enabler is). The cuts are the expensive non-fetchable one-ofs the measurement showed resolving least.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Aether Tunnel"
+          },
+          {
+            "name": "Aqueous Form"
+          },
+          {
+            "name": "Blind Obedience"
+          },
+          {
+            "name": "Brave the Sands"
+          },
+          {
+            "name": "Cover of Darkness"
+          },
+          {
+            "name": "Declaration of Naught"
+          },
+          {
+            "name": "Eidolon of Countless Battles"
+          },
+          {
+            "name": "Fear of Impostors"
+          },
+          {
+            "name": "Ghostly Prison"
+          },
+          {
+            "name": "Heliod's Pilgrim"
+          },
+          {
+            "name": "Idyllic Tutor"
+          },
+          {
+            "name": "Light-Paws, Emperor's Voice"
+          },
+          {
+            "name": "Open the Armory"
+          },
+          {
+            "name": "Reconnaissance"
+          },
+          {
+            "name": "Spirit Mantle"
+          },
+          {
+            "name": "Steel of the Godhead"
+          },
+          {
+            "name": "Unquestioned Authority"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Propaganda",
+            "where": [
+              "heliod"
+            ]
+          }
+        ],
+        "proxy": [],
+        "free": [],
+        "box": [],
+        "blocking": 18,
+        "procurement": null
+      },
+      "base_version": 6,
+      "size": 100,
+      "add": 18,
+      "out": 18,
+      "counts": {
+        "in_deck": 72,
+        "box": 0,
+        "elsewhere": 1,
+        "buy": 17
+      },
+      "unsourced": [
+        "Aether Tunnel",
+        "Aqueous Form",
+        "Blind Obedience",
+        "Brave the Sands",
+        "Cover of Darkness",
+        "Declaration of Naught",
+        "Eidolon of Countless Battles",
+        "Fear of Impostors",
+        "Ghostly Prison",
+        "Heliod's Pilgrim",
+        "Idyllic Tutor",
+        "Light-Paws, Emperor's Voice",
+        "Open the Armory",
+        "Propaganda",
+        "Reconnaissance",
+        "Spirit Mantle",
+        "Steel of the Godhead",
+        "Unquestioned Authority"
+      ],
+      "mergeable": false,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Abstergo Entertainment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Adarkar Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Aegis of the Gods",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Aether Tunnel",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Animate Dead",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Aqueous Form",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Aura of Silence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Banishing Light",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bastion of Remembrance",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bitterblossom",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Black Market Connections",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blind Obedience",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Brave the Sands",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Caretaker's Talent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Caves of Koilos",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "City of Brass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Conduit Pylons",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Counterspell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cover of Darkness",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Darksteel Mutation",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Darkwater Catacombs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dawn of Hope",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Daxos, Blessed by the Sun",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Declaration of Naught",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Demonic Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dreadhorde Invasion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Eidolon of Countless Battles",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Enduring Innocence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enlightened Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fear of Impostors",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Fetid Heath",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Field of Ruin",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Forbidden Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gemstone Caverns",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ghostly Prison",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Grim Guardian",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heliod's Pilgrim",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Idyllic Tutor",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Imprisoned in the Moon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Inquisitive Glimmer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Land Tax",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Lazotep Quarry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Light-Paws, Emperor's Voice",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Marauding Blight-Priest",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mesa Enchantress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Muddle the Mixture",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystic Remora",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "No More Lies",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Opal Palace",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Open the Armory",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Ossification",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Path to Exile",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Phyrexian Arena",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Phyrexian Reclamation",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Profane Procession // Tomb of the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Propaganda",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Reconnaissance",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Rhystic Study",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Seal of Cleansing",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sheltered by Ghosts",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skycloud Expanse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smuggler's Share",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spire of Industry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spirit Mantle",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Steel of the Godhead",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Swamp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tainted Field",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talon Gates of Madara",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thassa, God of the Sea",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Grey Havens",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Meathook Massacre",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Mycosynth Gardens",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tocasia's Welcome",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Touch the Spirit Realm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Transcendent Envoy",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tribute to Horobi // Echo of Death's Wail",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Underground River",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Underworld Coinsmith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Unquestioned Authority",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Valgavoth's Lair",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vito, Thorn of the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Witness Protection",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Wizard Class",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Zur the Enchanter",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true
     }
   ],
   "diagnostic": {
@@ -1477,12 +3017,30 @@
     "token_damage_share": 0.17,
     "tokens_observed": 0.15
   },
-  "experiments": null,
+  "experiments": {
+    "count": 2,
+    "latest": {
+      "question": "working copy  vs  branch pillars-v2, same table",
+      "at": "2026-09-04",
+      "stale": false,
+      "games_per_arm": 40,
+      "win_a": 0.025,
+      "win_b": 0.0,
+      "win_diff_ci95": [
+        -0.1288,
+        0.065
+      ],
+      "differs": false,
+      "minimum_detectable_difference": 0.195,
+      "reading": "the 95% interval on the win-rate difference is [-0.129, +0.065] and CONTAINS zero. At 40 games per arm this experiment could only have detected a difference of +0.195 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
+    }
+  },
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`",
+    "branch `bodies-v3` needs 22 card(s) sourced — `manamap pilot deck-branch zur-enchantress source bodies-v3`",
     "branch `pillars-v1` needs 14 card(s) sourced — `manamap pilot deck-branch zur-enchantress source pillars-v1`",
-    "6 versions and no experiment — `experiment zur-enchantress --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "branch `pillars-v2` needs 18 card(s) sourced — `manamap pilot deck-branch zur-enchantress source pillars-v2`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

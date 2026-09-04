@@ -198,3 +198,66 @@ def test_real_metrics_artifact_consistency():
     # Regenerating with the same seed must reproduce the committed artifact.
     regenerated = goldfish.run("goblin-storm")
     assert regenerated == doc
+
+
+# ── the commander's attack tutor ────────────────────────────────────────────
+
+def test_the_attack_tutor_is_absent_unless_declared():
+    """Absent means absent. A deck without one grows no key about it.
+
+    Zur's engine — "whenever Zur attacks, search your library for an enchantment
+    with mana value 3 or less, put it ONTO THE BATTLEFIELD" — was invisible to
+    this model, so every figure for that deck counted only cards it DREW. That is
+    not a neutral omission: it understates exactly one deck's plan, and it hid
+    55% of its board power at turn ten.
+    """
+    from manamap.pilot import goldfish as g
+
+    doc = {"metrics": None}
+    assert g.devotion_gate({"oracle_text": "Flying"}) is None
+
+
+def test_the_devotion_gate_reads_only_the_gods():
+    """Three of twenty-three enchantment creatures carry the clause.
+
+    The rest are creatures the moment they land, so this is a narrow gate — and
+    a load-bearing one: a God below its threshold is an ENCHANTMENT with no
+    power, and counting it as a body on arrival inflated kill-by-t8 by twelve
+    points.
+    """
+    from manamap.pilot.goldfish import devotion_gate
+
+    heliod = devotion_gate({"oracle_text":
+        "Indestructible\nAs long as your devotion to white is less than five, "
+        "Heliod isn't a creature."})
+    assert heliod == {"colors": frozenset({"W"}), "threshold": 5}
+
+    athreos = devotion_gate({"oracle_text":
+        "As long as your devotion to white and black is less than seven, "
+        "Athreos isn't a creature."})
+    assert athreos["colors"] == frozenset({"W", "B"}) and athreos["threshold"] == 7
+
+    for text in ("Flying", "Lifelink", "", "Devotion to white"):
+        assert devotion_gate({"oracle_text": text}) is None, text
+
+
+def test_devotion_counts_symbols_and_a_hybrid_counts_for_both():
+    """Devotion counts MANA SYMBOLS on permanents, not permanents.
+
+    `classify` already stored `pips` as one frozenset per coloured symbol, so a
+    hybrid `{W/U}` is a single symbol that counts toward white AND blue — which
+    is the rule, and which nothing had to re-parse.
+    """
+    from manamap.pilot.goldfish import devotion_of
+
+    W, U, B = frozenset("W"), frozenset("U"), frozenset("B")
+    hybrid = frozenset({"W", "U"})
+
+    board = [[W, U, B], [B, B], [W]]          # Zur, Master of the Feast, Heliod
+    assert devotion_of(board, frozenset({"W"})) == 2
+    assert devotion_of(board, frozenset({"B"})) == 3
+    assert devotion_of(board, frozenset({"W", "B"})) == 5, "W+B is a union, not a sum of each"
+
+    assert devotion_of([[hybrid]], frozenset({"W"})) == 1
+    assert devotion_of([[hybrid]], frozenset({"U"})) == 1, "a hybrid counts for both"
+    assert devotion_of([], frozenset({"W"})) == 0
