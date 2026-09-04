@@ -1,6 +1,6 @@
 {
  "bill": {
-  "branch": "constellation-v1",
+  "branch": "constellation-v2",
   "cards": [
    {
     "free": false,
@@ -12,6 +12,12 @@
     "free": false,
     "name": "Aether Tunnel",
     "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Ajani's Chosen",
+    "state": "buy",
     "where": []
    },
    {
@@ -188,12 +194,6 @@
    },
    {
     "free": false,
-    "name": "Fear of Impostors",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Fetid Heath",
     "state": "in_deck",
     "where": []
@@ -220,6 +220,12 @@
     "free": false,
     "name": "Godless Shrine",
     "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Gremlin Tamer",
+    "state": "buy",
     "where": []
    },
    {
@@ -518,12 +524,6 @@
    },
    {
     "free": false,
-    "name": "Tymaret, Chosen from Death",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Underground River",
     "state": "in_deck",
     "where": []
@@ -567,24 +567,28 @@
   ],
   "counts": {
    "box": 2,
-   "buy": 1,
+   "buy": 3,
    "elsewhere": 0,
-   "in_deck": 89
+   "in_deck": 87
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Ajani's Chosen",
     "Archon of Sun's Grace",
     "Balemurk Leech",
-    "Entity Tracker"
+    "Entity Tracker",
+    "Gremlin Tamer"
    ],
    "base_names": 92,
    "base_size": 100,
    "names": 92,
    "out": [
+    "Fear of Impostors",
     "Heliod's Pilgrim",
     "Lotus Petal",
-    "Mesa Enchantress"
+    "Mesa Enchantress",
+    "Tymaret, Chosen from Death"
    ],
    "size": 100
   },
@@ -594,11 +598,13 @@
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": [
-   "Entity Tracker"
+   "Ajani's Chosen",
+   "Entity Tracker",
+   "Gremlin Tamer"
   ]
  },
  "blind_spots": [],
- "branch": "constellation-v1",
+ "branch": "constellation-v2",
  "changes": {
   "count": 0,
   "diff": {
@@ -606,14 +612,14 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 3,
-    "in_copies": 3,
+    "in": 5,
+    "in_copies": 5,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 3,
-    "out_copies": 3,
-    "spells_in": 3,
-    "spells_out": 3
+    "out": 5,
+    "out_copies": 5,
+    "spells_in": 5,
+    "spells_out": 5
    },
    "in": [
     {
@@ -627,6 +633,16 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gremlin Tamer",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Human Scout",
+     "why": null
+    },
+    {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
@@ -634,6 +650,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Creature \u2014 Human Scout",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ajani's Chosen",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Cat Soldier",
      "why": null
     },
     {
@@ -659,6 +685,24 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Tymaret, Chosen from Death",
+     "pair": null,
+     "type_line": "Legendary Enchantment Creature \u2014 Demigod",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Fear of Impostors",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Nightmare",
+     "why": null
+    },
+    {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
@@ -679,16 +723,16 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 3,
-    "out": 3
+    "in": 5,
+    "out": 5
    }
   },
   "lands": [],
   "opened": "2026-09-04",
   "spells": [],
-  "why": "ZUR PUTS AN ENCHANTMENT ONTO THE BATTLEFIELD EVERY TIME HE ATTACKS, and that is a constellation trigger the deck was barely collecting. Only three cards in the 100 read it. The multiplier is free and recurring, so every constellation payoff added is another effect per attack. Mesa Enchantress -> Entity Tracker is the sharpest swap in the deck and is a like-for-like on the draw group: Mesa says 'whenever you CAST an enchantment spell', and Zur's fetch puts them onto the battlefield WITHOUT casting -- the deck's own engine never turned it on. Entity Tracker draws on ENTER, so it draws off every attack. Balemurk Leech is a second Grim Guardian at mana value 2: each opponent loses 1 life per enchantment entering. Archon of Sun's Grace makes a 2/2 FLYING LIFELINK Pegasus per enchantment -- bodies, evasion, and life gained, which this list converts to damage three ways. The cuts are the cast-trigger that never fired, an aura-tutor body the commander outclasses, and a one-shot ritual."
+  "why": "Two more payoffs on the axis that multiplies, and both cuts pay a second time in the mana. Gremlin Tamer mints a 1/1 per enchantment at mana value 2; Ajani's Chosen mints a 2/2. Zur makes an enchantment enter on every attack, so each of these is another body per turn on top of Archon's Pegasus. THE CUTS LOWER TWO COLOUR REQUIREMENTS: Fear of Impostors is the deck's remaining {U}{U} card and Tymaret its cheapest {B}{B} one, and a source target is driven by the earliest double pip -- black has been 7 sources short since manabase-v1 precisely because Tymaret wants {B}{B} on turn two. Cutting them should move the targets down as well as the payoffs up. Cost stated: a counterspell and a body leave, and Tymaret was also a graveyard answer."
  },
- "decklist_sha256": "d19885a0026477222cdbc525fabaa5b6a038e4c340eb5a37ca165f925a4b6b05",
+ "decklist_sha256": "7cdbafc92e887bde71c2deccd26c40a8404cc3b5ab77ed7b4e2e928c0b6f6bf9",
  "definitions": {
   "derived": [
    {
@@ -786,7 +830,7 @@
  },
  "forge": {
   "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@constellation-v1 --vs <pod>` puts it at a table and writes where this reads"
+  "why": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@constellation-v2 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
   "iterations": 10000,
@@ -927,38 +971,41 @@
  "objective": {
   "axis": "kill_by_8",
   "op": ">=",
-  "value": 0.4,
-  "why": "ZUR PUTS AN ENCHANTMENT ONTO THE BATTLEFIELD EVERY TIME HE ATTACKS, and that is a constellation trigger the deck was barely collecting. Only three cards in the 100 read it. The multiplier is free and recurring, so every constellation payoff added is another effect per attack. Mesa Enchantress -> Entity Tracker is the sharpest swap in the deck and is a like-for-like on the draw group: Mesa says 'whenever you CAST an enchantment spell', and Zur's fetch puts them onto the battlefield WITHOUT casting -- the deck's own engine never turned it on. Entity Tracker draws on ENTER, so it draws off every attack. Balemurk Leech is a second Grim Guardian at mana value 2: each opponent loses 1 life per enchantment entering. Archon of Sun's Grace makes a 2/2 FLYING LIFELINK Pegasus per enchantment -- bodies, evasion, and life gained, which this list converts to damage three ways. The cuts are the cast-trigger that never fired, an aura-tutor body the commander outclasses, and a one-shot ritual."
+  "value": 0.5,
+  "why": "Two more payoffs on the axis that multiplies, and both cuts pay a second time in the mana. Gremlin Tamer mints a 1/1 per enchantment at mana value 2; Ajani's Chosen mints a 2/2. Zur makes an enchantment enter on every attack, so each of these is another body per turn on top of Archon's Pegasus. THE CUTS LOWER TWO COLOUR REQUIREMENTS: Fear of Impostors is the deck's remaining {U}{U} card and Tymaret its cheapest {B}{B} one, and a source target is driven by the earliest double pip -- black has been 7 sources short since manabase-v1 precisely because Tymaret wants {B}{B} on turn two. Cutting them should move the targets down as well as the payoffs up. Cost stated: a counterspell and a body leave, and Tymaret was also a graveyard answer."
  },
  "objective_grade": {
-  "reading": 0.4605,
-  "shortfall": null,
-  "state": "met"
+  "reading": 0.4968,
+  "shortfall": 0.0032,
+  "state": "not resolvable",
+  "why": "missed by 0.0032, which is under the 0.0198 this run could detect \u2014 evidence of nothing, not evidence of failure"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; damage @T10, board power @T6, killed by T6, killed by T10 and extra cards by T8 improved.",
+  "because": "The miss is smaller than this run can see. missed by 0.0032, which is under the 0.0198 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 2,
-   "buy": 1,
+   "buy": 3,
    "elsewhere": 0,
-   "in_deck": 89
+   "in_deck": 87
   },
   "cost": {
-   "buy": 1,
+   "buy": 3,
    "buy_cards": [
-    "Entity Tracker"
+    "Ajani's Chosen",
+    "Entity Tracker",
+    "Gremlin Tamer"
    ],
    "counts": {
     "box": 2,
-    "buy": 1,
+    "buy": 3,
     "elsewhere": 0,
-    "in_deck": 89
+    "in_deck": 87
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 91,
-   "reads_as": "1 to buy; 91 of 92 already owned",
+   "owned": 89,
+   "reads_as": "3 to buy; 89 of 92 already owned",
    "total": 92
   },
   "fell": [],
@@ -973,17 +1020,17 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "16.66 -> 20.30, a change of +3.64 (+22%)",
+    "reads_as": "16.66 -> 23.05, a change of +6.39 (+38%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "8.26 -> 9.04, a change of +0.79 (+10%)",
+    "reads_as": "8.26 -> 9.62, a change of +1.36 (+16%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T6",
-    "reads_as": "0 games in 100 -> 0 in 100, a swing of 0 games per 100",
+    "reads_as": "0 games in 100 -> 1 in 100, a swing of 0 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
@@ -993,13 +1040,13 @@
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "1.89 -> 2.91, a change of +1.02 (+54%)",
+    "reads_as": "1.89 -> 3.16, a change of +1.27 (+67%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is hand can act by T3 at -0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is mulliganed at +0.005 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1011,7 +1058,7 @@
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@constellation-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@constellation-v2 --vs <pod>` puts it at a table and writes where this reads",
     "kind": "structural",
     "what": "no game has been played at a real table",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
@@ -1024,19 +1071,19 @@
    "killed by T10",
    "extra cards by T8"
   ],
-  "state": "merge"
+  "state": "inconclusive"
  },
  "slug": "zur-enchantress",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 20.302,
+   "branch": 23.0518,
    "champion": 16.6577,
-   "delta": 3.6443,
-   "mde": 0.3408,
+   "delta": 6.3941,
+   "mde": 0.4388,
    "measure": "damage @T10",
-   "reads_as": "16.66 -> 20.30, a change of +3.64 (+22%)",
+   "reads_as": "16.66 -> 23.05, a change of +6.39 (+38%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1045,12 +1092,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 9.0434,
+   "branch": 9.6155,
    "champion": 8.2558,
-   "delta": 0.7876,
-   "mde": 0.1832,
+   "delta": 1.3597,
+   "mde": 0.2099,
    "measure": "board power @T6",
-   "reads_as": "8.26 -> 9.04, a change of +0.79 (+10%)",
+   "reads_as": "8.26 -> 9.62, a change of +1.36 (+16%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1059,12 +1106,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.004,
+   "branch": 0.0056,
    "champion": 0.001,
-   "delta": 0.003,
-   "mde": 0.0025,
+   "delta": 0.0046,
+   "mde": 0.003,
    "measure": "killed by T6",
-   "reads_as": "0 games in 100 -> 0 in 100, a swing of 0 games per 100",
+   "reads_as": "0 games in 100 -> 1 in 100, a swing of 0 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1073,9 +1120,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9292,
+   "branch": 0.9276,
    "champion": 0.8863,
-   "delta": 0.0429,
+   "delta": 0.0413,
    "mde": 0.0126,
    "measure": "killed by T10",
    "reads_as": "89 games in 100 -> 93 in 100, a swing of 4 games per 100",
@@ -1087,10 +1134,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0124,
+   "branch": 0.0104,
    "champion": 0.0116,
-   "delta": 0.0008,
-   "mde": 0.0044,
+   "delta": -0.0012,
+   "mde": 0.0042,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
    "scale": null,
@@ -1101,12 +1148,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3779,
+   "branch": 0.3809,
    "champion": 0.3873,
-   "delta": -0.0094,
+   "delta": -0.0064,
    "mde": 0.0193,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1115,12 +1162,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2034,
+   "branch": 0.1993,
    "champion": 0.1938,
-   "delta": 0.0096,
-   "mde": 0.0159,
+   "delta": 0.0055,
+   "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1129,12 +1176,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.9056,
+   "branch": 3.1554,
    "champion": 1.8877,
-   "delta": 1.0179,
-   "mde": 0.1317,
+   "delta": 1.2677,
+   "mde": 0.151,
    "measure": "extra cards by T8",
-   "reads_as": "1.89 -> 2.91, a change of +1.02 (+54%)",
+   "reads_as": "1.89 -> 3.16, a change of +1.27 (+67%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1143,12 +1190,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6257,
+   "branch": 0.6371,
    "champion": 0.6372,
-   "delta": -0.0115,
+   "delta": -0.0001,
    "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1157,12 +1204,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9915,
+   "branch": 0.9927,
    "champion": 0.9937,
-   "delta": -0.0022,
-   "mde": 0.0036,
+   "delta": -0.001,
+   "mde": 0.0034,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.003 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

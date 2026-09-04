@@ -488,3 +488,36 @@ def test_both_idioms_for_an_enchantment_entering_are_read():
     assert prof("Whenever an enchantment you control enters, draw a card. "
                 "Each opponent loses 1 life at end of turn."
                 )["drain_per_enchantment"] == 0
+
+
+def test_a_token_per_enchantment_is_not_a_token_once():
+    """ARCHON OF SUN'S GRACE MAKES A PEGASUS EVERY TIME, NOT ONCE.
+
+    `token_power`/`token_bodies` are a one-off ETB, and the constellation token
+    makers were being read through them — so the best card on the constellation
+    branch was priced at a single 2/2 forever, in a deck whose commander puts an
+    enchantment onto the battlefield on every attack.
+
+    Corpus sweep 2026-09-04: four cards in the whole corpus mint a creature
+    token on an enchantment entering — Archon of Sun's Grace, Ajani's Chosen,
+    Gremlin Tamer, Ghostly Dancers.
+    """
+    from manamap.pilot.goldfish import combat_profile
+
+    def prof(text):
+        return combat_profile({"oracle_text": text, "type_line": "Creature",
+                               "power": "3", "toughness": "3"})
+
+    archon = prof("Flying Lifelink Pegasus creatures you control have lifelink. "
+                  "Constellation — Whenever an enchantment you control enters, "
+                  "create a 2/2 white Pegasus creature token with flying.")
+    assert archon["enchantment_token_bodies"] == 1
+    assert archon["enchantment_token_power"] == 2
+
+    tamer = prof("Eerie — Whenever an enchantment you control enters and whenever "
+                 "you fully unlock a Room, create a 1/1 red Gremlin creature token.")
+    assert tamer["enchantment_token_power"] == 1
+
+    # A plain ETB token maker must NOT be read as recurring.
+    plain = prof("When this creature enters, create a 2/2 white Cat creature token.")
+    assert plain["enchantment_token_bodies"] == 0

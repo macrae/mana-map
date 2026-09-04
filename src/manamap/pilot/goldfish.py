@@ -1059,6 +1059,8 @@ _CONSTELLATION_DRAIN_RE = re.compile(
     _ENCHANTMENT_ENTERS + r"each opponent loses (\w+) life", re.I)
 _CONSTELLATION_GAIN_RE = re.compile(
     _ENCHANTMENT_ENTERS + r"you gain (\w+) life", re.I)
+_CONSTELLATION_TOKEN_RE = re.compile(
+    _ENCHANTMENT_ENTERS + r"create a (\d+)/(\d+)[^.]*?creature token", re.I)
 
 #: Recurring, on a phase this model has a turn for.
 _RECURRING_GAIN_RE = re.compile(
@@ -1205,6 +1207,12 @@ def combat_profile(card):
         "haste": bool(_HASTE_RE.search(text)),
         "token_power": 0,
         "token_bodies": 0,
+        # A TOKEN PER ENCHANTMENT ENTERING, which in a Zur deck is a token per
+        # attack. Read as a ONE-OFF before this, so Archon of Sun's Grace — the
+        # best card on the constellation branch — was priced at a single 2/2
+        # forever. Corpus sweep 2026-09-04: four cards in the whole corpus.
+        "enchantment_token_power": 0,
+        "enchantment_token_bodies": 0,
         "attack_mana": 0,
         "attack_treasure": 0,
         "attack_draw": 0,
@@ -1372,6 +1380,13 @@ def combat_profile(card):
             # kill figure legible, the same contract
             # `treasure_sources_not_modelled` keeps.
             profile["unreadable"] = card.get("name")
+
+    # ONE TOKEN PER ENCHANTMENT, not one ever. Bounded to the sentence so a
+    # later unrelated "create a token" clause cannot be captured.
+    m = _CONSTELLATION_TOKEN_RE.search(text)
+    if m:
+        profile["enchantment_token_power"] = int(m.group(1))
+        profile["enchantment_token_bodies"] = 1
 
     return profile
 
@@ -2159,6 +2174,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # power of lifelink CREATURES, accumulated and never removed because nothing
     # dies here. Arrival counters are reset each turn.
     drain_permanents = []
+    # Cards that mint a creature token every time an enchantment enters.
+    enchantment_token_engines = []
     lifelink_power = 0
     drain_by_turn = []
     # Type lines of nonland permanents on the battlefield, so a card whose X is
@@ -2697,6 +2714,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         drain_permanents.append(card["drain"])
                     if card["drain"]["lifelink"] and combat["is_creature"]:
                         lifelink_power += combat["power"]
+                if model_combat and combat["enchantment_token_bodies"]:
+                    enchantment_token_engines.append(combat)
                 if model_combat:
                     # REGISTERED BEFORE IT ENTERS, and that is correct for the
                     # printed wording: Scourge of Valkas says "whenever THIS
@@ -2867,6 +2886,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
             # creature, so the multiplier belongs to the damage series and
             # never to this one.
+            # A TOKEN PER ENCHANTMENT THAT LANDED THIS TURN. Summoning-sick
+            # like any other arrival, so it swells NEXT turn's swing — the same
+            # call the attack-trigger tokens above already make.
+            for eng in enchantment_token_engines:
+                for _ in range(eng["enchantment_token_bodies"] * enchantments_entered):
+                    creature_entered(eng["enchantment_token_power"], turn,
+                                     False, 1, is_token=True)
+                    bodies_cum += 1
+
             # A GOD SWITCHES ON when devotion reaches its threshold, and it is
             # checked AFTER the turn's permanents have resolved because they are
             # what moves devotion. It arrives with summoning sickness like any
