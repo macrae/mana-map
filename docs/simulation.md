@@ -13,6 +13,23 @@ either feeds an experiment or reads one.
 
 
 
+> **2026-09-03 — THE NULL IS NOT 0.25, AND THE POD THAT REPLACED THE UNFAIR ONE
+> IS ALSO UNEVEN.** `pods <name> --calibration` pools every tracked run that
+> faced a table and reports how it actually divides its wins. `vito-era` was
+> dropped on 2026-09-02 for being unfair — vito and giada took 85% between them.
+> Measured the same way, **`standard` gives giada-angels 0.572 (2.3x its fair
+> share) and baylen-tokens 0.052 (a fifth of one)**, and the subject chair
+> **0.159**. The dominant seat moved; the table did not level out. `baylen-tokens`
+> is the floor in BOTH pods, which is a fact about that deck under Forge's AI
+> rather than about either table.
+>
+> So a deck scoring 0.16 on `standard` is AT the typical subject rate, not two
+> thirds below a quarter — and `simulate --list` now prints the null beside the
+> rate. Two nulls exist and they are not the same: this one pools OUR decks and
+> describes the fleet as much as the table, while `pod-control` (an opponent's
+> own average deck in the subject chair, 0.099) is the neutral one and has been
+> run once. Neither is 1/n.
+
 > **2026-09-03 — WHO WENT FIRST IS NOT THE `-d` ORDER, and the difference
 > reports backwards.** PRD §14 asks for win rate by turn order position, and the
 > obvious source is `outcomes[].seat_order` — which is the order the decks were

@@ -218,28 +218,30 @@ def test_the_pods_on_disk_cover_three_four_and_five_players():
     pods existed was four, because four was the only thing anyone typed.
     """
     sizes = {name: pods.compose(name)["players"] for name in pods.available()}
-    assert 5 in sizes.values(), "no five-player table, and Oliver's is five"
-    assert 4 in sizes.values()
-    assert sizes["five-player"] == 5
+    assert set(sizes.values()) >= {3, 4, 5}, sizes
+    assert sizes["playgroup"] == 5, "Oliver's table is five"
+    assert sizes["playgroup-small"] == 3, "Alex's is three"
 
 
-def test_the_playgroup_pod_names_only_seats_the_log_names():
-    """Every commander here is written down in a real game entry.
+def test_the_playgroup_seats_each_say_where_they_came_from():
+    """Two archetypes are the log's words and two are the pilot's.
 
-    Three of the playgroup's decks are deliberately ABSENT — Tom's blue-black,
-    Tom's enchantment deck, Alex's fight-based green — because the log never
-    names their commanders. An invented seat in a file called `playgroup` is an
-    invention that goes invisible.
+    The commanders for those two were chosen for the ARCHETYPE and not to
+    identify anyone's list, which is the trade the pilot asked for — "the exact
+    pod players is less important than just having calibrated teams playing
+    against each other". Every seat says which it is, so the approximation
+    cannot quietly harden into a claim.
     """
     doc = pods.load("playgroup")
-    assert [s["slug"] for s in doc["seats"]] == \
-        ["krenko-tokens", "purphoros-pingers", "tannuk-warp"]
     for seat in doc["seats"]:
-        assert seat.get("note"), f"{seat['slug']} must say who plays it"
-    assert "does not name" in doc["note"] or "never names" in doc["note"]
+        assert seat.get("note"), f"{seat['slug']} must say where it came from"
+    assert "approximate" in doc["note"]
+    assert "calibrated teams" in doc["note"], \
+        "the reason the mapping is loose belongs in the file"
 
-    # And it is red-dense, which is an observation and not a choice this made.
-    assert all("mono-red" in s["archetype"] for s in doc["seats"])
+    # The table the log records is red-dense, and three of the four seats are.
+    reds = [s for s in doc["seats"] if "red" in s["archetype"]]
+    assert len(reds) >= 3, "goblin-storm 002: 'the red density took the game over'"
 
 
 def test_a_coverage_seat_never_claims_to_be_someones_deck():
@@ -332,3 +334,73 @@ def test_a_stamped_pod_is_not_overwritten_by_a_reading():
     assert stamped["named"] is True
     reading = pods.record_for(None, ["giada-angels", "baylen-tokens", "abaddon"])
     assert reading["named"] is False and reading["name"] == "standard"
+
+
+# ── calibration: what the null actually is ──────────────────────────────────
+
+def test_a_measured_pod_reports_a_null_that_is_not_one_over_n():
+    """The reason this exists. A four-player win rate reads against 0.25 unless
+    something says otherwise, and until now nothing did.
+
+    Measured over the tracked records, `standard` gives its top seat more than
+    twice its fair share and its bottom seat a fifth of one, and the subject
+    chair lands well under a quarter. A deck scoring 0.16 there is AT the
+    table's typical subject rate, not two thirds below a quarter — and that is
+    the whole difference between a bad deck and an uneven table.
+    """
+    cal = pods.calibration("standard")
+    assert cal["measured"] and cal["runs"] >= 3
+    assert cal["fair_share"] == 0.25
+
+    null = cal["subject_null"]
+    assert null["rate"] < cal["fair_share"], \
+        "if the subject seat reaches its fair share the caveat is stale"
+    assert null["games"] == cal["games"]
+
+    rates = [r["rate"] for r in cal["seats"]]
+    assert rates == sorted(rates, reverse=True), "seats sort by rate"
+    assert sum(r["wins"] for r in cal["seats"]) <= cal["games"] * len(cal["seats"])
+
+
+def test_the_table_that_replaced_the_unfair_one_is_also_uneven():
+    """`vito-era` was dropped for being unfair. `standard` is uneven too.
+
+    Not the same unfairness — the dominant seat moved from vito to giada-angels
+    — but a seat taking more than twice its share and another taking a fifth is
+    not a level table, and every win rate measured on it is relative to that.
+    `baylen-tokens` is the floor in BOTH pods, which is a fact about that deck
+    and Forge's AI rather than about either table.
+    """
+    for name in ("standard", "vito-era"):
+        cal = pods.calibration(name)
+        assert cal["measured"], name
+        assert cal["balance"]["dominant"] or cal["balance"]["floor"], \
+            f"{name} reads as level — re-check, this was not true when written"
+        assert "baylen-tokens" in cal["balance"]["floor"], name
+
+
+def test_an_unplayed_table_says_it_has_no_null_rather_than_assuming_one():
+    """Absent means absent. A pod nobody has run has no baseline at all."""
+    cal = pods.calibration("playgroup")
+    assert cal["measured"] is False
+    assert cal["seats"] == []
+    assert "no null" in cal["note"]
+    assert "subject_null" not in cal, "an unmeasured null must not be a number"
+
+
+def test_the_calibration_carries_the_limits_of_its_own_pooling():
+    """It pools runs that differ in N, clock, profile and subject deck."""
+    cal = pods.calibration("vito-era")
+    text = " ".join(cal["limits"])
+    assert "exchangeability" in text and "Markov chain" in text
+    assert "SUBJECT pools OUR decks" in text, \
+        "the subject null describes the fleet as much as the table"
+    assert "Truncated" in text
+
+
+def test_calibration_is_derived_and_stores_nothing():
+    """It moves as runs accumulate, so storing it would date immediately."""
+    doc = pods.load("standard")
+    assert "calibration" not in doc and "baseline" not in doc
+    for seat in doc["seats"]:
+        assert "rate" not in seat and "win_rate" not in seat

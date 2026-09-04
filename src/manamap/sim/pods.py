@@ -36,6 +36,7 @@ silent-overwrite `profile_tag` was written for.
 
 import hashlib
 import json
+import pathlib
 
 from manamap.config import DATA_DIR
 
@@ -182,6 +183,133 @@ def record_for(name, opponents):
             "composition": info["composition"], "brackets": info["brackets"]}
 
 
+#: A seat taking more than this multiple of its fair share is DOMINATING the
+#: table, and a seat under the reciprocal is a FLOOR. Not thresholds for a
+#: verdict — a pod is allowed to be uneven — but for saying so out loud, because
+#: a win rate read against 1/n when one seat takes half the games is a win rate
+#: read against a null that does not exist.
+DOMINANT = 2.0
+FLOOR = 0.5
+
+
+def calibration(name, records=None):
+    """How this table actually divides its wins, from every run that faced it.
+
+    THE POINT IS THE NULL. A four-player win rate reads against 0.25 unless
+    somebody says otherwise, and nobody has: measured across the tracked
+    records, `standard` gives giada-angels **0.572** and baylen-tokens
+    **0.052**, and the subject seat **0.159**. So a deck scoring 0.16 there is
+    at the table's typical subject rate, not two thirds of the way below a
+    quarter — and the difference is the whole reading.
+
+    TWO NULLS, AND THEY ARE NOT THE SAME. `subject` is what the decks WE have
+    tried score in seat 0, pooled — it moves as the fleet's decks change, and it
+    is a description of our own decks as much as of the table. A neutral control
+    (`pod-control`: an opponent's own average deck in the subject chair) is the
+    other one and is not computed here, because only one has ever been run.
+
+    Pooling assumes runs are exchangeable, which they are not exactly: they
+    differ in N, in clock, in AI profile and in which deck sat in seat 0, and
+    games inside a JVM job are a Markov chain rather than independent draws.
+    The interval is therefore optimistic and `limits` says so.
+    """
+    import collections
+
+    from manamap.config import DECKS_DIR
+    from manamap.sim import stats
+
+    seats = collections.defaultdict(lambda: [0, 0])
+    runs, decks, games = 0, set(), 0
+    paths = records if records is not None else sorted(
+        DECKS_DIR.glob("*/sim/*.json"))
+    for path in paths:
+        doc = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        if (doc.get("pod") or {}).get("name") != name:
+            continue
+        runs += 1
+        subject = doc["seats"][0]["slug"]
+        decks.add(subject)
+        decided = doc["summary"]["decided"]
+        games += decided
+        for slug, seat in doc["analysis"]["seats"].items():
+            key = "SUBJECT" if slug == subject else slug
+            seats[key][0] += seat.get("wins") or 0
+            seats[key][1] += decided
+
+    if not runs:
+        return {"pod": name, "runs": 0, "seats": [], "measured": False,
+                "note": "no tracked run has faced this table, so it has no null "
+                        "and a win rate against it reads against 1/n by default"}
+
+    fair = 1 / len(seats) if seats else None
+    rows = []
+    for key, (w, n) in seats.items():
+        lo, hi = stats.wilson_bounds(w, n)
+        rate = round(w / n, 3) if n else None
+        rows.append({"seat": key, "wins": w, "games": n, "rate": rate,
+                     "ci95": [round(lo, 3), round(hi, 3)] if lo is not None else None,
+                     "share_of_fair": round(rate / fair, 2) if rate and fair else None})
+    rows.sort(key=lambda r: -(r["rate"] or 0))
+
+    opponents = [r for r in rows if r["seat"] != "SUBJECT"]
+    top = opponents[0] if opponents else None
+    bottom = opponents[-1] if opponents else None
+    subject_row = next((r for r in rows if r["seat"] == "SUBJECT"), None)
+    return {
+        "pod": name, "measured": True, "runs": runs, "games": games,
+        "decks": sorted(decks), "fair_share": round(fair, 3) if fair else None,
+        "seats": rows,
+        "balance": {
+            "dominant": [r["seat"] for r in opponents
+                         if (r["share_of_fair"] or 0) >= DOMINANT],
+            "floor": [r["seat"] for r in opponents
+                      if (r["share_of_fair"] or 0) <= FLOOR],
+            "spread": (round(top["rate"] - bottom["rate"], 3)
+                       if top and bottom else None),
+        },
+        "subject_null": subject_row,
+        "limits": [
+            "Pooled across runs that differ in N, clock, AI profile and which "
+            "deck sat in seat 0, so the interval assumes an exchangeability the "
+            "runs do not have and is optimistic.",
+            "Games inside one JVM job share a Match and are a Markov chain, not "
+            "independent draws — the same caveat every win_rate_ci95 carries.",
+            "SUBJECT pools OUR decks, so it describes the fleet as much as the "
+            "table. A neutral control is `pod-control` and is not this figure.",
+            "Truncated games have no winner and are excluded; the denominator "
+            "is decided games.",
+        ],
+    }
+
+
+def format_calibration(doc):
+    if not doc.get("measured"):
+        return f"\n{doc['pod']}: {doc['note']}"
+    lines = [f"\n{doc['pod']} — CALIBRATION over {doc['runs']} run(s), "
+             f"{doc['games']} decided games",
+             f"  decks in seat 0: {', '.join(doc['decks'])}",
+             f"  fair share {doc['fair_share']}\n"]
+    for row in doc["seats"]:
+        ci = f"[{row['ci95'][0]:.3f}, {row['ci95'][1]:.3f}]" if row["ci95"] else ""
+        tag = ""
+        if row["seat"] != "SUBJECT":
+            if row["seat"] in doc["balance"]["dominant"]:
+                tag = "  DOMINATES"
+            elif row["seat"] in doc["balance"]["floor"]:
+                tag = "  floor"
+        lines.append(f"  {row['seat']:<18} {row['rate']:.3f} {ci:<18} "
+                     f"{row['share_of_fair']}x fair{tag}")
+    null = doc["subject_null"]
+    if null:
+        lines.append(f"\n  THE NULL IS {null['rate']:.3f}, NOT "
+                     f"{doc['fair_share']:.3f} — that is what our decks have "
+                     f"actually scored in seat 0 here.")
+    if doc["balance"]["dominant"] or doc["balance"]["floor"]:
+        lines.append("  This table is not even. A win rate against it is "
+                     "relative to that unevenness, not to 1/n.")
+    return "\n".join(lines)
+
+
 def format_list():
     """Every pod, as the pilot reads it."""
     names = available()
@@ -213,6 +341,15 @@ def format_list():
 
 def main(args):
     name = getattr(args, "name", None)
+    if getattr(args, "calibration", False):
+        names = [name] if name else available()
+        if getattr(args, "as_json", False):
+            print(json.dumps([calibration(n) for n in names], indent=2,
+                             ensure_ascii=False))
+            return
+        for n in names:
+            print(format_calibration(calibration(n)))
+        return
     if not name:
         print(format_list())
         return

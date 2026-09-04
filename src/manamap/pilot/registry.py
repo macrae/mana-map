@@ -773,6 +773,13 @@ def add_pilot_parser(subparsers):
         if name == "pods":
             cmd.add_argument("name", nargs="?", default=None,
                              help="one pod; omit to list them all")
+            cmd.add_argument("--calibration", action="store_true",
+                             help="how this table actually divides its wins, "
+                                  "from every tracked run that faced it — and "
+                                  "therefore what the NULL is. A four-player "
+                                  "win rate reads against 0.25 unless something "
+                                  "says otherwise, and `standard` gives one seat "
+                                  "0.572 and another 0.052")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "metrics":
             from manamap.metrics import GROUPS, STATUSES

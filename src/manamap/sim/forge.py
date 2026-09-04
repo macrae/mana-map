@@ -972,6 +972,18 @@ def main(args):
             pod = r.get("pod")
             table = ", ".join(x["slug"] for x in r["seats"][1:])
             if pod:
+                # THE NULL, BESIDE THE RATE. A four-player win rate reads
+                # against 0.25 unless something says otherwise, and nothing did:
+                # measured over the tracked runs, `standard` gives one seat 0.572
+                # and another 0.052, and the subject chair 0.159. A deck scoring
+                # 0.16 there is AT the table's typical subject rate, not two
+                # thirds below a quarter.
+                cal = _pods.calibration(pod["name"])
+                null = (cal.get("subject_null") or {}).get("rate")
+                if null is not None:
+                    print(f"      null {null} — what our decks score in seat 0 "
+                          f"on this table ({cal['runs']} runs, {cal['games']} "
+                          f"games); `pods {pod['name']} --calibration`")
                 # `~` for an inferred pod: the record predates pods and this is
                 # today's files read against it, not what was configured.
                 mark = "" if pod.get("named") else "~"
