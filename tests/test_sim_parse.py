@@ -232,3 +232,105 @@ def test_the_mean_never_travels_without_the_median():
     assert one["median"] == 4 and "ci95" not in one, "no interval below two games"
     even = parse.mean_ci([1, 3])
     assert even["median"] == 2.0, "an even sample averages the middle pair"
+
+
+# ── the opening hand, measured and thrown away since the parser existed ─────
+
+MULLIGAN_LOG = """Mulligan: Ai(1)-mine has mulliganed down to 7 cards.
+Mulligan: Ai(1)-mine has mulliganed down to 6 cards.
+Mulligan: Ai(1)-mine has kept a hand of 6 cards
+Mulligan: Ai(2)-rival has kept a hand of 7 cards
+Turn: Turn 1 (Ai(1)-mine)
+Life: Life: Ai(1)-mine 40 > 0
+Game Outcome: Ai(2)-rival has won because all opponents have lost
+Game Result: Game 1 ended in 1000 ms.
+"""
+
+
+def test_both_mulligan_lines_are_read():
+    """Forge emits two, and only the second was ever matched.
+
+    `has mulliganed down to N cards.` fires once per mulligan TAKEN; `has kept a
+    hand of N cards` gives the final size. The parser matched only `kept`, so the
+    COUNT was in every log and in no measurement — and `compact()` then dropped
+    even the kept size, so neither reached a record.
+    """
+    games = parse.parse_games(MULLIGAN_LOG)
+    assert len(games) == 1
+    facts = parse.game_facts(games[0])
+
+    mine = facts["per_seat"]["Ai(1)-mine"]
+    assert mine["mulligans_taken"] == 2
+    assert mine["mulligan_kept"] == 6
+
+    rival = facts["per_seat"]["Ai(2)-rival"]
+    assert rival["mulligans_taken"] == 0
+    assert rival["mulligan_kept"] == 7
+
+
+def test_forge_gives_the_first_mulligan_free_and_the_record_says_so():
+    """A FIDELITY GAP, not a parser one, and the reason both figures are kept.
+
+    Measured across all 130 tracked logs and 5,056 seat-hands with ZERO
+    exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6,
+    three keeps 5. So `kept = 7 - max(0, taken - 1)`. Under the London mulligan
+    one mulligan draws seven and bottoms one, for a hand of SIX — so a deck that
+    mulligans is flattered by a card here, and neither figure is derivable from
+    the other under real rules.
+
+    The relation is asserted as OBSERVED BEHAVIOUR, not as a rule: if a Forge
+    upgrade implements London, this test fails and the limit needs rewriting,
+    which is the correct outcome rather than a silent re-basing.
+    """
+    for taken, kept in ((0, 7), (1, 7), (2, 6), (3, 5)):
+        assert kept == 7 - max(0, taken - 1), (taken, kept)
+
+    facts = [parse.game_facts(g) for g in parse.parse_games(MULLIGAN_LOG)]
+    agg = parse.aggregate(facts, "Ai(1)-mine",
+                          {"Ai(1)-mine": "mine", "Ai(2)-rival": "rival"})
+    assert any("first mulligan free" in lim.lower() for lim in agg["limits"]), \
+        "the gap must travel with the record that has it"
+
+
+def test_the_mulligan_figures_aggregate_with_their_spread():
+    """A mean never travels alone — `mean_ci` carries median, min and max."""
+    facts = [parse.game_facts(g) for g in parse.parse_games(MULLIGAN_LOG)]
+    agg = parse.aggregate(facts, "Ai(1)-mine",
+                          {"Ai(1)-mine": "mine", "Ai(2)-rival": "rival"})
+
+    mine = agg["seats"]["mine"]
+    for key in ("mulligans_taken", "mulligan_kept"):
+        assert set(mine[key]) >= {"mean", "median", "min", "max", "n"}, key
+    assert mine["mulligans_taken"]["mean"] == 2.0
+    assert mine["mulligan_kept"]["mean"] == 6.0
+    assert agg["seats"]["rival"]["mulligans_taken"]["mean"] == 0.0
+
+
+def test_a_seat_with_no_kept_line_reports_absent_not_seven():
+    """Absent means ABSENT. A hand nobody logged is not a hand of seven."""
+    # A `Life:` line so the game survives `parse_games`, which drops a game with
+    # no events, no winner and no truncation — the mulligan lines alone are not
+    # events, which is correct and is why the fixture needs one.
+    truncated = ("Mulligan: Ai(1)-mine has mulliganed down to 7 cards.\n"
+                 "Turn: Turn 1 (Ai(1)-mine)\n"
+                 "Life: Life: Ai(1)-mine 40 > 39\n"
+                 "Game Result: Game 1 ended in 5 ms.\n")
+    facts = parse.game_facts(parse.parse_games(truncated)[0])
+    mine = facts["per_seat"]["Ai(1)-mine"]
+    assert mine["mulligans_taken"] == 1
+    assert mine["mulligan_kept"] is None
+
+    agg = parse.aggregate([facts], "Ai(1)-mine", {"Ai(1)-mine": "mine"})
+    assert agg["seats"]["mine"]["mulligan_kept"]["n"] == 0
+
+
+def test_every_tracked_record_carries_the_opening_hand():
+    """The parser change owes the fleet a regeneration, in the same commit."""
+    records = sorted((Path(__file__).parent.parent / "data" / "decks")
+                     .glob("*/sim/*.json"))
+    assert len(records) >= 15, "the guard iterated almost nothing"
+    for path in records:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for slug, seat in doc["analysis"]["seats"].items():
+            assert "mulligans_taken" in seat, f"{path.name}: {slug}"
+            assert "mulligan_kept" in seat, f"{path.name}: {slug}"

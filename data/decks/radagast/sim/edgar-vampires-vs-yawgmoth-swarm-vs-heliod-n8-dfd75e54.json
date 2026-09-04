@@ -246,6 +246,28 @@
             17.7
           ]
         },
+        "mulligans_taken": {
+          "mean": 0.75,
+          "median": 0.5,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            0.14,
+            1.36
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.75,
+          "median": 7.0,
+          "min": 6,
+          "max": 7,
+          "n": 8,
+          "ci95": [
+            6.43,
+            7.07
+          ]
+        },
         "combat_damage_dealt_to_players": {
           "mean": 45.62,
           "median": 26.5,
@@ -568,6 +590,28 @@
           "ci95": [
             8.28,
             14.47
+          ]
+        },
+        "mulligans_taken": {
+          "mean": 0.38,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 8,
+          "ci95": [
+            -0.14,
+            0.89
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.88,
+          "median": 7.0,
+          "min": 6,
+          "max": 7,
+          "n": 8,
+          "ci95": [
+            6.63,
+            7.12
           ]
         },
         "combat_damage_dealt_to_players": {
@@ -893,6 +937,28 @@
             17.58
           ]
         },
+        "mulligans_taken": {
+          "mean": 0.12,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 8,
+          "ci95": [
+            -0.12,
+            0.37
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 7.0,
+          "median": 7.0,
+          "min": 7,
+          "max": 7,
+          "n": 8,
+          "ci95": [
+            7.0,
+            7.0
+          ]
+        },
         "combat_damage_dealt_to_players": {
           "mean": 19.12,
           "median": 9.5,
@@ -1216,6 +1282,28 @@
           "ci95": [
             13.78,
             22.47
+          ]
+        },
+        "mulligans_taken": {
+          "mean": 0.5,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 8,
+          "ci95": [
+            -0.24,
+            1.24
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.75,
+          "median": 7.0,
+          "min": 5,
+          "max": 7,
+          "n": 8,
+          "ci95": [
+            6.26,
+            7.24
           ]
         },
         "combat_damage_dealt_to_players": {
@@ -1771,6 +1859,7 @@
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+      "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
@@ -1785,41 +1874,6 @@
       "ms": 123927,
       "truncated": false,
       "per_seat": {
-        "radagast": {
-          "lands": 9,
-          "casts": 10,
-          "activations": 3,
-          "triggers": 35,
-          "combat_damage_dealt_to_players": 150,
-          "combat_damage_taken": 29,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 2,
-          "tokens_observed": 4,
-          "token_attackers": 4,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 52,
-          "tokens_chumped": 0,
-          "creatures_lost": 2,
-          "eliminated_turn": 34,
-          "eliminated_by": "Ai(2)-mm-edgar-vampires",
-          "eliminated_how": "damage",
-          "first_attack_turn": 9,
-          "permanents_lost_by_turn": {
-            "33": 1,
-            "34": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 3,
-          "commander_damage_by_defender": {
-            "Ai(3)-mm-yawgmoth-swarm": 12
-          },
-          "commander_damage_max": 12,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.347
-        },
         "edgar-vampires": {
           "lands": 8,
           "casts": 14,
@@ -1855,7 +1909,46 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.469
+          "token_damage_share": 0.469,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
+        "radagast": {
+          "lands": 9,
+          "casts": 10,
+          "activations": 3,
+          "triggers": 35,
+          "combat_damage_dealt_to_players": 150,
+          "combat_damage_taken": 29,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 2,
+          "tokens_observed": 4,
+          "token_attackers": 4,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 52,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 34,
+          "eliminated_by": "Ai(2)-mm-edgar-vampires",
+          "eliminated_how": "damage",
+          "first_attack_turn": 9,
+          "permanents_lost_by_turn": {
+            "33": 1,
+            "34": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 3,
+          "commander_damage_by_defender": {
+            "Ai(3)-mm-yawgmoth-swarm": 12
+          },
+          "commander_damage_max": 12,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.347,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "yawgmoth-swarm": {
           "lands": 7,
@@ -1887,7 +1980,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 10,
@@ -1917,7 +2012,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -1961,7 +2058,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "edgar-vampires": {
           "lands": 6,
@@ -1995,7 +2094,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.5
+          "token_damage_share": 0.5,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
         },
         "yawgmoth-swarm": {
           "lands": 10,
@@ -2030,7 +2131,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.439
+          "token_damage_share": 0.439,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 8,
@@ -2060,7 +2163,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2104,73 +2209,9 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "edgar-vampires": {
-          "lands": 5,
-          "casts": 10,
-          "activations": 0,
-          "triggers": 4,
-          "combat_damage_dealt_to_players": 9,
-          "combat_damage_taken": 69,
-          "noncombat_damage_dealt_to_players": 8,
-          "token_resolutions": 3,
-          "tokens_observed": 2,
-          "token_attackers": 1,
-          "token_blockers": 1,
-          "token_combat_damage_to_players": 3,
-          "tokens_chumped": 1,
-          "creatures_lost": 2,
-          "eliminated_turn": 37,
-          "eliminated_by": "Ai(1)-mm-radagast",
-          "eliminated_how": "damage",
-          "first_attack_turn": 6,
-          "permanents_lost_by_turn": {
-            "29": 1,
-            "32": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.333
-        },
-        "yawgmoth-swarm": {
-          "lands": 7,
-          "casts": 14,
-          "activations": 6,
-          "triggers": 14,
-          "combat_damage_dealt_to_players": 10,
-          "combat_damage_taken": 4,
-          "noncombat_damage_dealt_to_players": 8,
-          "token_resolutions": 1,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 2,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 23,
-          "permanents_lost_by_turn": {
-            "27": 1,
-            "41": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
         },
         "heliod": {
           "lands": 10,
@@ -2203,7 +2244,79 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
+        "edgar-vampires": {
+          "lands": 5,
+          "casts": 10,
+          "activations": 0,
+          "triggers": 4,
+          "combat_damage_dealt_to_players": 9,
+          "combat_damage_taken": 69,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 3,
+          "tokens_observed": 2,
+          "token_attackers": 1,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 3,
+          "tokens_chumped": 1,
+          "creatures_lost": 2,
+          "eliminated_turn": 37,
+          "eliminated_by": "Ai(1)-mm-radagast",
+          "eliminated_how": "damage",
+          "first_attack_turn": 6,
+          "permanents_lost_by_turn": {
+            "29": 1,
+            "32": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.333,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
+        },
+        "yawgmoth-swarm": {
+          "lands": 7,
+          "casts": 14,
+          "activations": 6,
+          "triggers": 14,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 4,
+          "noncombat_damage_dealt_to_players": 8,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 23,
+          "permanents_lost_by_turn": {
+            "27": 1,
+            "41": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2250,7 +2363,9 @@
           },
           "commander_damage_max": 8,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.078
+          "token_damage_share": 0.078,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
         },
         "edgar-vampires": {
           "lands": 5,
@@ -2280,7 +2395,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.4
+          "token_damage_share": 0.4,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "yawgmoth-swarm": {
           "lands": 10,
@@ -2314,7 +2431,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 11,
@@ -2344,7 +2463,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2390,7 +2511,9 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.476
+          "token_damage_share": 0.476,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "yawgmoth-swarm": {
           "lands": 8,
@@ -2423,7 +2546,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 8,
@@ -2457,7 +2582,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "radagast": {
           "lands": 11,
@@ -2492,7 +2619,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2534,7 +2663,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.222
+          "token_damage_share": 0.222,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "edgar-vampires": {
           "lands": 11,
@@ -2573,7 +2704,9 @@
           },
           "commander_damage_max": 11,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.029
+          "token_damage_share": 0.029,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "yawgmoth-swarm": {
           "lands": 9,
@@ -2612,7 +2745,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 10,
@@ -2644,7 +2779,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.333
+          "token_damage_share": 0.333,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2688,7 +2825,9 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.2
+          "token_damage_share": 0.2,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "yawgmoth-swarm": {
           "lands": 10,
@@ -2727,7 +2866,9 @@
           },
           "commander_damage_max": 4,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "heliod": {
           "lands": 10,
@@ -2759,7 +2900,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "radagast": {
           "lands": 13,
@@ -2795,7 +2938,9 @@
           },
           "commander_damage_max": 8,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2840,7 +2985,79 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.343
+          "token_damage_share": 0.343,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
+        "yawgmoth-swarm": {
+          "lands": 8,
+          "casts": 15,
+          "activations": 12,
+          "triggers": 125,
+          "combat_damage_dealt_to_players": 2,
+          "combat_damage_taken": 2,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 38,
+          "permanents_lost_by_turn": {
+            "32": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-heliod": 2
+          },
+          "commander_damage_max": 2,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
+        "heliod": {
+          "lands": 9,
+          "casts": 16,
+          "activations": 3,
+          "triggers": 37,
+          "combat_damage_dealt_to_players": 2,
+          "combat_damage_taken": 2,
+          "noncombat_damage_dealt_to_players": 6,
+          "token_resolutions": 9,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 45,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 39,
+          "permanents_lost_by_turn": {
+            "41": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 1,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 3,
+          "mulligan_kept": 5
         },
         "edgar-vampires": {
           "lands": 8,
@@ -2875,73 +3092,9 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "yawgmoth-swarm": {
-          "lands": 8,
-          "casts": 15,
-          "activations": 12,
-          "triggers": 125,
-          "combat_damage_dealt_to_players": 2,
-          "combat_damage_taken": 2,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 1,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 38,
-          "permanents_lost_by_turn": {
-            "32": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 2,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {
-            "Ai(4)-mm-heliod": 2
-          },
-          "commander_damage_max": 2,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "heliod": {
-          "lands": 9,
-          "casts": 16,
-          "activations": 3,
-          "triggers": 37,
-          "combat_damage_dealt_to_players": 2,
-          "combat_damage_taken": 2,
-          "noncombat_damage_dealt_to_players": 6,
-          "token_resolutions": 9,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": 45,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 39,
-          "permanents_lost_by_turn": {
-            "41": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 1,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     }

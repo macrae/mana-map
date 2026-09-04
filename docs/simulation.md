@@ -13,6 +13,19 @@ either feeds an experiment or reads one.
 
 
 
+> **2026-09-03 — FORGE GIVES THE FIRST MULLIGAN FREE.** A rules-coverage gap,
+> found by wiring up a measurement that had been taken and thrown away: Forge
+> emits `has mulliganed down to N cards.` once per mulligan and `has kept a hand
+> of N cards` for the final size, and the parser matched only the second while
+> `compact()` dropped even that. Measured across all 130 tracked logs and
+> **5,056 seat-hands with zero exceptions**: 0 mulligans keeps 7, **one mulligan
+> also keeps 7**, two keeps 6, three keeps 5 — so `kept = 7 - max(0, taken - 1)`.
+> Under the London mulligan a single mulligan draws seven and bottoms one, for a
+> hand of SIX. **A deck that mulligans is flattered by one card here.** Both
+> figures are now reported per seat because neither is derivable from the other
+> under real rules, `analysis.limits` carries the gap, and all 19 tracked records
+> were re-derived from their logs in the same commit — **no other figure moved.**
+
 > **2026-09-03 — four defects fixed in `experiment`, and one of them re-bases the
 > table.** Its final print read `ci95_a`/`ci95_b`, keys `delta()` has never
 > emitted, so **every real run raised `KeyError` after writing its artifact** and

@@ -46,6 +46,11 @@ RX = {
     "phase":     re.compile(r"^Phase: " + _SEAT + r"'s? (.*)$"),
     "mana":      re.compile(r"^Mana: " + _PERM + r" - (.*)$"),
     "mulligan":  re.compile(r"^Mulligan: " + _SEAT + r" has kept a hand of (\d+) cards"),
+    # THE SECOND MULLIGAN LINE, which was never matched. Forge emits one of
+    # these per mulligan TAKEN and then one `kept` line with the final hand
+    # size, and only the second was read — so the count of mulligans was in
+    # every log and in no measurement.
+    "mulligan_down": re.compile(r"^Mulligan: " + _SEAT + r" has mulliganed down to (\d+) cards\."),
     "land":      re.compile(r"^Land: " + _SEAT + r" played " + _PERM),
     "stack":     re.compile(r"^Add To Stack: " + _SEAT + r" (cast|triggered|activated) (.+?)(?: targeting \[(.*)\])?$"),
     "resolve":   re.compile(r"^Resolve Stack: (.*)$"),
@@ -124,7 +129,7 @@ def _is_commander(source_name, names):
 
 def _new_game():
     return {"seats": [], "turn": 0, "active": None, "events": [], "owner": {},
-            "mulligan": {}, "outcome": {"winner": None, "won_by": None, "round": None,
+            "mulligan": {}, "mulligans_taken": defaultdict(int), "outcome": {"winner": None, "won_by": None, "round": None,
                                         "global_turn": None, "draw": False, "lost": {},
                                         "ms": None,
                                         # Every seat Forge declared a winner. One
@@ -138,6 +143,14 @@ def parse_games(text):
     games, g, last_turn = [], None, None
     for raw in text.splitlines():
         line = raw.rstrip()
+        m = RX["mulligan_down"].match(line)
+        if m:
+            if g is None or g["outcome"]["ms"] is not None or g["outcome"]["winner"]:
+                g = _new_game(); games.append(g)
+            g["mulligans_taken"][m.group(1)] += 1
+            if m.group(1) not in g["seats"]:
+                g["seats"].append(m.group(1))
+            continue
         m = RX["mulligan"].match(line)
         if m:
             if g is None or g["outcome"]["ms"] is not None or g["outcome"]["winner"]:
@@ -459,6 +472,23 @@ def game_facts(g, commanders=None):
         p["life_by_turn"] = dict(sorted(p["life_by_turn"].items()))
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
+    # THE OPENING HAND, WHICH WAS MEASURED AND THROWN AWAY. `g["mulligan"]` has
+    # been parsed since the parser existed and `compact()` drops it, so the
+    # figure reached the game dict and no further. Both halves ride in `per_seat`
+    # now, where the aggregate and the compact rows already look.
+    #
+    # TWO FIGURES, NOT ONE, AND FORGE'S OWN RELATION BETWEEN THEM IS A RULES
+    # GAP. Measured across all 130 tracked logs and 5,056 seat-hands, with ZERO
+    # exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6,
+    # three keeps 5 — so `kept = 7 - max(0, taken - 1)` and **Forge gives the
+    # first mulligan free**. That is not the London rule, under which one
+    # mulligan keeps 7 and bottoms 1 for a hand of six. Reporting only "mean
+    # mulligans" would hide it; reporting both makes it visible, and
+    # `analysis.limits` names it.
+    for seat in seats:
+        per[seat]["mulligans_taken"] = int(g["mulligans_taken"].get(seat, 0))
+        per[seat]["mulligan_kept"] = g["mulligan"].get(seat)
+
     o = g["outcome"]
     return {"seats": seats, "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
             "truncated": bool(o.get("truncated")),
@@ -699,6 +729,20 @@ def aggregate(facts, slug_label, label, commanders=None):
             "eliminated_how": dict(Counter(p["eliminated_how"] for p in ps if p["eliminated_how"])),
             "lands": mean_ci([p["lands"] for p in ps]),
             "casts": mean_ci([p["casts"] for p in ps]),
+            # THE OPENING HAND. Parsed since the parser existed, dropped by
+            # `compact()` and never read by this function — a live measurement
+            # thrown away, and one of the metrics the PRD's catalog asks for.
+            #
+            # BOTH FIGURES, because Forge's relation between them is a rules
+            # gap rather than arithmetic: across all 130 tracked logs and 5,056
+            # seat-hands with zero exceptions, one mulligan still keeps SEVEN
+            # (`kept = 7 - max(0, taken - 1)`), so Forge gives the first
+            # mulligan free. Under the London rule one mulligan keeps 7 and
+            # bottoms 1 for a hand of six. A single "mean mulligans" would hide
+            # that; `limits` names it.
+            "mulligans_taken": mean_ci([p["mulligans_taken"] for p in ps]),
+            "mulligan_kept": mean_ci([p["mulligan_kept"] for p in ps
+                                      if p.get("mulligan_kept") is not None]),
             "combat_damage_dealt_to_players": mean_ci([p["combat_damage_dealt_to_players"] for p in ps]),
             "combat_damage_taken": mean_ci([p["combat_damage_taken"] for p in ps]),
             # TOTAL IMPACT, AND THE SEVEN FIELDS THIS FUNCTION USED TO COMPUTE
@@ -807,6 +851,15 @@ def aggregate(facts, slug_label, label, commanders=None):
         "what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an "
         "opponent's creature are one and the same to it. A permanent nobody was seen "
         "playing is unattributed and counted for neither side.",
+        "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is "
+        "a fidelity gap rather than a parser one. Measured across all 130 tracked "
+        "logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE "
+        "mulligan also keeps 7, two keeps 6, three keeps 5 -- so "
+        "kept = 7 - max(0, taken - 1). Under the London mulligan a single "
+        "mulligan draws seven and bottoms one, for a hand of SIX. So "
+        "mulligans_taken and mulligan_kept are both reported and neither is "
+        "derivable from the other under real rules; a deck that mulligans is "
+        "being flattered by one card here.",
         "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs "
         "exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. "
         "Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, "

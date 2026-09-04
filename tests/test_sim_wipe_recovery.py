@@ -157,9 +157,10 @@ def test_the_record_publishes_the_DRAIN_half_of_a_drain_deck():
     and killed against that view.
     """
     f = {"seats": ["me", "a"], "winner": "a", "global_turn": 10,
-         "round": 10, "ms": 100, "lost": {}, "mulligan": {}, "won_by": None,
+         "round": 10, "ms": 100, "lost": {}, "mulligan": {}, "mulligans_taken": {}, "won_by": None,
          "per_seat": {s: {"eliminated_turn": None, "eliminated_by": None,
                           "eliminated_how": None, "lands": 6, "casts": 8,
+                          "mulligans_taken": 0, "mulligan_kept": 7,
                           "combat_damage_dealt_to_players": 20,
                           "noncombat_damage_dealt_to_players": 7,
                           "combat_damage_taken": 5, "first_attack_turn": 4,
@@ -210,7 +211,7 @@ def test_a_seat_whose_life_never_moved_reports_zero_not_absent():
 def _resolve_game(texts, seat="me"):
     """A game whose only content is resolved abilities, attributed to `seat`."""
     return {"seats": ["me", "a"], "turn": 5, "active": seat, "owner": {},
-            "mulligan": {},
+            "mulligan": {}, "mulligans_taken": {},
             "outcome": {"winner": "a", "won_by": None, "round": 5,
                         "global_turn": 5, "draw": False, "lost": {}, "ms": 1},
             "events": [

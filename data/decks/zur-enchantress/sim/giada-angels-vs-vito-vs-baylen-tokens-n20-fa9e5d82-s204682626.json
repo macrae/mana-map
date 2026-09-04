@@ -449,6 +449,28 @@
             8.53
           ]
         },
+        "mulligans_taken": {
+          "mean": 0.15,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            -0.06,
+            0.36
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.95,
+          "median": 7.0,
+          "min": 6,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            6.85,
+            7.05
+          ]
+        },
         "combat_damage_dealt_to_players": {
           "mean": 12.7,
           "median": 6.0,
@@ -773,6 +795,28 @@
             12.57
           ]
         },
+        "mulligans_taken": {
+          "mean": 0.65,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.19,
+            1.11
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.7,
+          "median": 7.0,
+          "min": 5,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            6.41,
+            6.99
+          ]
+        },
         "combat_damage_dealt_to_players": {
           "mean": 92.6,
           "median": 93.0,
@@ -1094,6 +1138,28 @@
           "ci95": [
             7.53,
             11.37
+          ]
+        },
+        "mulligans_taken": {
+          "mean": 0.55,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.25,
+            0.85
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 6.9,
+          "median": 7.0,
+          "min": 6,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            6.77,
+            7.03
           ]
         },
         "combat_damage_dealt_to_players": {
@@ -1420,6 +1486,28 @@
           "ci95": [
             7.07,
             10.73
+          ]
+        },
+        "mulligans_taken": {
+          "mean": 0.15,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.01,
+            0.31
+          ]
+        },
+        "mulligan_kept": {
+          "mean": 7.0,
+          "median": 7.0,
+          "min": 7,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            7.0,
+            7.0
           ]
         },
         "combat_damage_dealt_to_players": {
@@ -1928,6 +2016,7 @@
       "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+      "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
@@ -1942,6 +2031,40 @@
       "ms": 300122,
       "truncated": true,
       "per_seat": {
+        "vito": {
+          "lands": 6,
+          "casts": 7,
+          "activations": 1,
+          "triggers": 2,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 1,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {
+            "23": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
+        },
         "giada-angels": {
           "lands": 6,
           "casts": 8,
@@ -1973,39 +2096,9 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "vito": {
-          "lands": 6,
-          "casts": 7,
-          "activations": 1,
-          "triggers": 2,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 0,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 1,
-          "tokens_observed": 1,
-          "token_attackers": 0,
-          "token_blockers": 1,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
-          "creatures_lost": 1,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {
-            "23": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 2,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 6,
@@ -2035,7 +2128,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 6,
@@ -2065,7 +2160,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2077,6 +2174,38 @@
       "ms": 300011,
       "truncated": true,
       "per_seat": {
+        "vito": {
+          "lands": 3,
+          "casts": 9,
+          "activations": 0,
+          "triggers": 7,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 6,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 9,
           "casts": 11,
@@ -2111,7 +2240,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.571
+          "token_damage_share": 0.571,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 7,
@@ -2147,37 +2278,9 @@
           },
           "commander_damage_max": 14,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "vito": {
-          "lands": 3,
-          "casts": 9,
-          "activations": 0,
-          "triggers": 7,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 0,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 6,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 0,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {},
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 7,
@@ -2213,7 +2316,9 @@
           },
           "commander_damage_max": 4,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.636
+          "token_damage_share": 0.636,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2255,7 +2360,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 7,
@@ -2291,7 +2398,9 @@
           },
           "commander_damage_max": 15,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 7,
@@ -2324,7 +2433,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 7,
@@ -2358,7 +2469,9 @@
           },
           "commander_damage_max": 7,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2402,7 +2515,9 @@
           },
           "commander_damage_max": 12,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.156
+          "token_damage_share": 0.156,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 5,
@@ -2434,7 +2549,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 4,
@@ -2464,7 +2581,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 7,
@@ -2494,7 +2613,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2536,7 +2657,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 8,
@@ -2569,7 +2692,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 6,
@@ -2599,7 +2724,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 7,
@@ -2629,7 +2756,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2641,6 +2770,40 @@
       "ms": 58294,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 6,
+          "casts": 8,
+          "activations": 0,
+          "triggers": 9,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 51,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 33,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {
+            "33": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 6,
           "casts": 5,
@@ -2669,7 +2832,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 1.0
+          "token_damage_share": 1.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 6,
@@ -2704,39 +2869,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.131
-        },
-        "vito": {
-          "lands": 6,
-          "casts": 8,
-          "activations": 0,
-          "triggers": 9,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 51,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 0,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": 33,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {
-            "33": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 2,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": 0.131,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 3,
@@ -2770,7 +2905,9 @@
           },
           "commander_damage_max": 4,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.4
+          "token_damage_share": 0.4,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2810,7 +2947,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 6,
@@ -2840,7 +2979,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 1.0
+          "token_damage_share": 1.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 5,
@@ -2872,7 +3013,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 5,
@@ -2902,7 +3045,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -2914,6 +3059,41 @@
       "ms": 82441,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 4,
+          "casts": 9,
+          "activations": 1,
+          "triggers": 24,
+          "combat_damage_dealt_to_players": 3,
+          "combat_damage_taken": 80,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 33,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": 19,
+          "permanents_lost_by_turn": {
+            "26": 1,
+            "29": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 7,
           "casts": 5,
@@ -2942,7 +3122,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 10,
@@ -2977,40 +3159,9 @@
           },
           "commander_damage_max": 4,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "vito": {
-          "lands": 4,
-          "casts": 9,
-          "activations": 1,
-          "triggers": 24,
-          "combat_damage_dealt_to_players": 3,
-          "combat_damage_taken": 80,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 1,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 2,
-          "eliminated_turn": 33,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": 19,
-          "permanents_lost_by_turn": {
-            "26": 1,
-            "29": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 4,
@@ -3040,7 +3191,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3052,38 +3205,6 @@
       "ms": 94626,
       "truncated": false,
       "per_seat": {
-        "zur-enchantress": {
-          "lands": 7,
-          "casts": 5,
-          "activations": 5,
-          "triggers": 17,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 56,
-          "noncombat_damage_dealt_to_players": 5,
-          "token_resolutions": 1,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": 28,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {
-            "25": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
-        },
         "giada-angels": {
           "lands": 6,
           "casts": 15,
@@ -3118,7 +3239,43 @@
           },
           "commander_damage_max": 7,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
+        },
+        "zur-enchantress": {
+          "lands": 7,
+          "casts": 5,
+          "activations": 5,
+          "triggers": 17,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 56,
+          "noncombat_damage_dealt_to_players": 5,
+          "token_resolutions": 1,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 28,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {
+            "25": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 3,
@@ -3148,7 +3305,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 4,
@@ -3178,7 +3337,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3218,7 +3379,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
         },
         "giada-angels": {
           "lands": 9,
@@ -3257,7 +3420,9 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.074
+          "token_damage_share": 0.074,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 7,
@@ -3291,7 +3456,9 @@
           },
           "commander_damage_max": 1,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 3,
@@ -3323,7 +3490,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3335,6 +3504,41 @@
       "ms": 300016,
       "truncated": true,
       "per_seat": {
+        "baylen-tokens": {
+          "lands": 11,
+          "casts": 18,
+          "activations": 18,
+          "triggers": 8,
+          "combat_damage_dealt_to_players": 10,
+          "combat_damage_taken": 21,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 9,
+          "tokens_observed": 3,
+          "token_attackers": 3,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 4,
+          "tokens_chumped": 0,
+          "creatures_lost": 3,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 12,
+          "permanents_lost_by_turn": {
+            "32": 1,
+            "41": 2
+          },
+          "counter_events": 2,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.4,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 8,
           "casts": 11,
@@ -3365,7 +3569,9 @@
           },
           "commander_damage_max": 12,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 6,
@@ -3399,7 +3605,9 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 5,
@@ -3429,40 +3637,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "baylen-tokens": {
-          "lands": 11,
-          "casts": 18,
-          "activations": 18,
-          "triggers": 8,
-          "combat_damage_dealt_to_players": 10,
-          "combat_damage_taken": 21,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 9,
-          "tokens_observed": 3,
-          "token_attackers": 3,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 4,
-          "tokens_chumped": 0,
-          "creatures_lost": 3,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 12,
-          "permanents_lost_by_turn": {
-            "32": 1,
-            "41": 2
-          },
-          "counter_events": 2,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.4
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3474,38 +3651,6 @@
       "ms": 84751,
       "truncated": false,
       "per_seat": {
-        "zur-enchantress": {
-          "lands": 10,
-          "casts": 8,
-          "activations": 14,
-          "triggers": 10,
-          "combat_damage_dealt_to_players": 8,
-          "combat_damage_taken": 34,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 3,
-          "tokens_observed": 1,
-          "token_attackers": 1,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": 39,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 17,
-          "permanents_lost_by_turn": {
-            "22": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 1,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
         "giada-angels": {
           "lands": 5,
           "casts": 13,
@@ -3542,41 +3687,9 @@
           },
           "commander_damage_max": 8,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.587
-        },
-        "vito": {
-          "lands": 4,
-          "casts": 10,
-          "activations": 0,
-          "triggers": 17,
-          "combat_damage_dealt_to_players": 5,
-          "combat_damage_taken": 90,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 2,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 1,
-          "eliminated_turn": 42,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": 19,
-          "permanents_lost_by_turn": {
-            "40": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 2,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {
-            "Ai(1)-mm-zur-enchantress": 1
-          },
-          "commander_damage_max": 1,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.587,
+          "mulligans_taken": 3,
+          "mulligan_kept": 5
         },
         "baylen-tokens": {
           "lands": 2,
@@ -3611,7 +3724,79 @@
           },
           "commander_damage_max": 8,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
+        "zur-enchantress": {
+          "lands": 10,
+          "casts": 8,
+          "activations": 14,
+          "triggers": 10,
+          "combat_damage_dealt_to_players": 8,
+          "combat_damage_taken": 34,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 3,
+          "tokens_observed": 1,
+          "token_attackers": 1,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 39,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 17,
+          "permanents_lost_by_turn": {
+            "22": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 1,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
+        },
+        "vito": {
+          "lands": 4,
+          "casts": 10,
+          "activations": 0,
+          "triggers": 17,
+          "combat_damage_dealt_to_players": 5,
+          "combat_damage_taken": 90,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 2,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 1,
+          "eliminated_turn": 42,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": 19,
+          "permanents_lost_by_turn": {
+            "40": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-zur-enchantress": 1
+          },
+          "commander_damage_max": 1,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3623,6 +3808,40 @@
       "ms": 217934,
       "truncated": false,
       "per_seat": {
+        "giada-angels": {
+          "lands": 5,
+          "casts": 12,
+          "activations": 1,
+          "triggers": 14,
+          "combat_damage_dealt_to_players": 26,
+          "combat_damage_taken": 16,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 4,
+          "tokens_observed": 1,
+          "token_attackers": 0,
+          "token_blockers": 1,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 1,
+          "creatures_lost": 1,
+          "eliminated_turn": 43,
+          "eliminated_by": "Ai(3)-mm-vito",
+          "eliminated_how": "life loss",
+          "first_attack_turn": 20,
+          "permanents_lost_by_turn": {
+            "43": 1
+          },
+          "counter_events": 2,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 2,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 3,
+          "mulligan_kept": 5
+        },
         "vito": {
           "lands": 7,
           "casts": 12,
@@ -3654,7 +3873,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 2,
@@ -3686,7 +3907,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 7,
@@ -3718,39 +3941,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.065
-        },
-        "giada-angels": {
-          "lands": 5,
-          "casts": 12,
-          "activations": 1,
-          "triggers": 14,
-          "combat_damage_dealt_to_players": 26,
-          "combat_damage_taken": 16,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 4,
-          "tokens_observed": 1,
-          "token_attackers": 0,
-          "token_blockers": 1,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
-          "creatures_lost": 1,
-          "eliminated_turn": 43,
-          "eliminated_by": "Ai(3)-mm-vito",
-          "eliminated_how": "life loss",
-          "first_attack_turn": 20,
-          "permanents_lost_by_turn": {
-            "43": 1
-          },
-          "counter_events": 2,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 2,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.065,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3762,6 +3955,40 @@
       "ms": 102683,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 6,
+          "casts": 7,
+          "activations": 0,
+          "triggers": 17,
+          "combat_damage_dealt_to_players": 4,
+          "combat_damage_taken": 5,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 3,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": 7,
+          "permanents_lost_by_turn": {},
+          "counter_events": 1,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {
+            "Ai(2)-mm-giada-angels": 1
+          },
+          "commander_damage_max": 1,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 4,
           "casts": 6,
@@ -3790,7 +4017,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 1.0
+          "token_damage_share": 1.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 6,
@@ -3822,39 +4051,9 @@
           },
           "commander_damage_max": 2,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.769
-        },
-        "vito": {
-          "lands": 6,
-          "casts": 7,
-          "activations": 0,
-          "triggers": 17,
-          "combat_damage_dealt_to_players": 4,
-          "combat_damage_taken": 5,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 3,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 0,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": 7,
-          "permanents_lost_by_turn": {},
-          "counter_events": 1,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {
-            "Ai(2)-mm-giada-angels": 1
-          },
-          "commander_damage_max": 1,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.769,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 6,
@@ -3886,7 +4085,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -3898,6 +4099,38 @@
       "ms": 30942,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 5,
+          "casts": 5,
+          "activations": 0,
+          "triggers": 213,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": null,
+          "eliminated_by": null,
+          "eliminated_how": null,
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 1,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 5,
           "casts": 6,
@@ -3928,7 +4161,9 @@
           },
           "commander_damage_max": 1,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 4,
@@ -3958,37 +4193,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
-        },
-        "vito": {
-          "lands": 5,
-          "casts": 5,
-          "activations": 0,
-          "triggers": 213,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 0,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 0,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 0,
-          "eliminated_turn": null,
-          "eliminated_by": null,
-          "eliminated_how": null,
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {},
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 1,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 5,
@@ -4020,7 +4227,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.2
+          "token_damage_share": 0.2,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -4032,6 +4241,38 @@
       "ms": 57540,
       "truncated": false,
       "per_seat": {
+        "giada-angels": {
+          "lands": 3,
+          "casts": 5,
+          "activations": 0,
+          "triggers": 8,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 0,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": 22,
+          "eliminated_by": "Ai(1)-mm-zur-enchantress",
+          "eliminated_how": "life loss",
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "baylen-tokens": {
           "lands": 4,
           "casts": 4,
@@ -4063,7 +4304,9 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 6,
@@ -4093,37 +4336,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.545
-        },
-        "giada-angels": {
-          "lands": 3,
-          "casts": 5,
-          "activations": 0,
-          "triggers": 8,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 0,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 0,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 0,
-          "eliminated_turn": 22,
-          "eliminated_by": "Ai(1)-mm-zur-enchantress",
-          "eliminated_how": "life loss",
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {},
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": 0.545,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 5,
@@ -4153,7 +4368,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -4165,39 +4382,6 @@
       "ms": 230853,
       "truncated": false,
       "per_seat": {
-        "zur-enchantress": {
-          "lands": 4,
-          "casts": 5,
-          "activations": 5,
-          "triggers": 2,
-          "combat_damage_dealt_to_players": 16,
-          "combat_damage_taken": 86,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 7,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 2,
-          "eliminated_turn": 29,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": 9,
-          "permanents_lost_by_turn": {
-            "9": 1,
-            "29": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
         "giada-angels": {
           "lands": 7,
           "casts": 15,
@@ -4233,7 +4417,44 @@
           },
           "commander_damage_max": 5,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.484
+          "token_damage_share": 0.484,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
+        },
+        "zur-enchantress": {
+          "lands": 4,
+          "casts": 5,
+          "activations": 5,
+          "triggers": 2,
+          "combat_damage_dealt_to_players": 16,
+          "combat_damage_taken": 86,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 7,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 29,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": 9,
+          "permanents_lost_by_turn": {
+            "9": 1,
+            "29": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 6,
@@ -4267,7 +4488,9 @@
           },
           "commander_damage_max": 1,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 3,
@@ -4297,7 +4520,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -4309,6 +4534,38 @@
       "ms": 60458,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 4,
+          "casts": 7,
+          "activations": 0,
+          "triggers": 8,
+          "combat_damage_dealt_to_players": 0,
+          "combat_damage_taken": 90,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 2,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 0,
+          "eliminated_turn": 27,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": null,
+          "permanents_lost_by_turn": {},
+          "counter_events": 1,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 0,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": null,
+          "mulligans_taken": 1,
+          "mulligan_kept": 7
+        },
         "zur-enchantress": {
           "lands": 4,
           "casts": 5,
@@ -4337,7 +4594,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 6,
@@ -4371,37 +4630,9 @@
           },
           "commander_damage_max": 8,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "vito": {
-          "lands": 4,
-          "casts": 7,
-          "activations": 0,
-          "triggers": 8,
-          "combat_damage_dealt_to_players": 0,
-          "combat_damage_taken": 90,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 2,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 0,
-          "eliminated_turn": 27,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": null,
-          "permanents_lost_by_turn": {},
-          "counter_events": 1,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 0,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 5,
@@ -4431,7 +4662,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -4478,7 +4711,9 @@
           },
           "commander_damage_max": 6,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.789
+          "token_damage_share": 0.789,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "vito": {
           "lands": 6,
@@ -4508,7 +4743,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 6,
@@ -4538,7 +4775,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "zur-enchantress": {
           "lands": 7,
@@ -4568,7 +4807,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": null
+          "token_damage_share": null,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     },
@@ -4580,6 +4821,41 @@
       "ms": 131135,
       "truncated": false,
       "per_seat": {
+        "vito": {
+          "lands": 6,
+          "casts": 18,
+          "activations": 1,
+          "triggers": 34,
+          "combat_damage_dealt_to_players": 15,
+          "combat_damage_taken": 89,
+          "noncombat_damage_dealt_to_players": 0,
+          "token_resolutions": 0,
+          "tokens_observed": 0,
+          "token_attackers": 0,
+          "token_blockers": 0,
+          "token_combat_damage_to_players": 0,
+          "tokens_chumped": 0,
+          "creatures_lost": 2,
+          "eliminated_turn": 49,
+          "eliminated_by": "Ai(2)-mm-giada-angels",
+          "eliminated_how": "damage",
+          "first_attack_turn": 27,
+          "permanents_lost_by_turn": {
+            "43": 1,
+            "45": 1
+          },
+          "counter_events": 0,
+          "mass_counter_events": 0,
+          "proliferate_events": 0,
+          "interaction_cast": 2,
+          "interaction_received": 0,
+          "commander_damage_by_defender": {},
+          "commander_damage_max": 0,
+          "commander_damage_lethal": false,
+          "token_damage_share": 0.0,
+          "mulligans_taken": 2,
+          "mulligan_kept": 6
+        },
         "zur-enchantress": {
           "lands": 5,
           "casts": 11,
@@ -4612,7 +4888,9 @@
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "giada-angels": {
           "lands": 3,
@@ -4650,40 +4928,9 @@
           },
           "commander_damage_max": 10,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.0
-        },
-        "vito": {
-          "lands": 6,
-          "casts": 18,
-          "activations": 1,
-          "triggers": 34,
-          "combat_damage_dealt_to_players": 15,
-          "combat_damage_taken": 89,
-          "noncombat_damage_dealt_to_players": 0,
-          "token_resolutions": 0,
-          "tokens_observed": 0,
-          "token_attackers": 0,
-          "token_blockers": 0,
-          "token_combat_damage_to_players": 0,
-          "tokens_chumped": 0,
-          "creatures_lost": 2,
-          "eliminated_turn": 49,
-          "eliminated_by": "Ai(2)-mm-giada-angels",
-          "eliminated_how": "damage",
-          "first_attack_turn": 27,
-          "permanents_lost_by_turn": {
-            "43": 1,
-            "45": 1
-          },
-          "counter_events": 0,
-          "mass_counter_events": 0,
-          "proliferate_events": 0,
-          "interaction_cast": 2,
-          "interaction_received": 0,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
-          "commander_damage_lethal": false,
-          "token_damage_share": 0.0
+          "token_damage_share": 0.0,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         },
         "baylen-tokens": {
           "lands": 9,
@@ -4719,7 +4966,9 @@
           },
           "commander_damage_max": 4,
           "commander_damage_lethal": false,
-          "token_damage_share": 0.263
+          "token_damage_share": 0.263,
+          "mulligans_taken": 0,
+          "mulligan_kept": 7
         }
       }
     }
