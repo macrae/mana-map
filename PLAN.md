@@ -257,6 +257,46 @@ Two nulls, and they differ: this one pools OUR decks and describes the fleet as
 much as the table; `pod-control` (an opponent's own average deck in the subject
 chair, **0.099**) is the neutral one and has been run once.
 
+#### ZUR CHANGES DIRECTION — commander damage is abandoned (2026-09-04)
+
+**Set by the pilot, on a measurement.** Forty seeded Forge games against the
+five-player playgroup table:
+
+    win rate            0.000 (0 of 39)     ci95 [0.000, 0.090]
+    commander damage    0.35 a game · best single game 2 · 0 of 39 reached 21
+    combat damage       2.33 a game  (edgar on the SAME table: 32.30)
+    Zur ITSELF attacked 13 times in 40 games — 0.33 a game
+    fetch trigger fired 15 times in 40 games — 0.38 a game
+
+So the deck did not lose because its kill was slow. **It never ran its engine.**
+Zur's trigger is on ATTACK rather than on connect, so a human pilot fetches every
+turn regardless of blockers — Forge's AI will not send a 1/4 into an open board,
+which is a real understatement of THIS deck and the mirror of the goldfish's own
+blind spot. The truth is between the two and neither number is the ceiling.
+
+`deck-doctor` MODE recon reached the same mechanism independently and added the
+structural objection: Voltron is Zur's SMALLEST theme (369 decks against
+Enchantress's 1,207), and *"if you're taking out one opponent per turn, but there
+are three others, you will lose"*. It flagged the Draftsim disagreement as
+`contested` and settleable by `simulate` rather than by more recon, which is
+exactly right.
+
+**The new plan, in the pilot's words: (1) counter target spell, (2) stax, (3)
+enchantment-creature trickery for asymmetric table damage.** The four
+swing-enablers stay but now serve the ENGINE rather than the kill.
+`branches/pillars-v1` is the recut — 14 out, 14 in, bracket 3 held at exactly 3
+Game Changers and zero two-card infinites.
+
+**THE GOLDFISH CANNOT GRADE IT, AND SAYS SO.** `output.available: false` — *"no
+magnitude series … that is an absent measurement, not a zero"* — plus
+*"death-triggered DRAIN is not modelled at all"* and *"it cannot see interaction,
+removal or any alternate win"*. Stax needs opponents, counterspells need
+opponents, drain needs things to die. The branch missed its objective
+(`interaction_6` 0.7393 against 0.80) and every other row came back noise; the
+objective was NOT moved afterwards, because the same hand writing the declaration
+and reading the verdict is what the engine lift was deleted for. `experiment`
+against the pod is the instrument that can see all three pillars.
+
 ### OPEN — what the build-out still needs
 
 1. **THE PILOT'S CALL: name three playgroup commanders.** The log names these
