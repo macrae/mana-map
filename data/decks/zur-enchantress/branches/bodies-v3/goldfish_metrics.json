@@ -2,8 +2,19 @@
   "meta": {
     "card_advantage": {
       "cards_that_draw": 13,
-      "modelled": 0,
-      "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
+      "draw_not_modelled": [
+        "Black Market Connections",
+        "Dawn of Hope",
+        "Mesa Enchantress",
+        "Mystic Remora",
+        "Rhystic Study",
+        "Silent Hallcreeper",
+        "Smuggler's Share",
+        "Tocasia's Welcome",
+        "Tribute to Horobi // Echo of Death's Wail"
+      ],
+      "modelled": 4,
+      "why": "ETB, spell, upkeep and arrival draw are modelled; activated, X-based, death- and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
     },
     "combat_effects_not_modelled": [
       "Aqueous Form"
@@ -67,131 +78,143 @@
     "attack_tutor": {
       "basis": "fires once a turn from the turn after the commander lands, pulling the highest-mana-value match from the library onto the battlefield. A goldfish has no blockers so the commander always attacks — this is the engine's CEILING, not an estimate of it.",
       "declared": true,
-      "games_it_fired": 9668,
-      "mean_fired": 5.293
+      "games_it_fired": 9723,
+      "mean_fired": 5.33
     },
     "combat": {
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.808,
+        "10": 0.822,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.0,
-        "7": 0.014,
-        "8": 0.234,
-        "9": 0.585
+        "7": 0.012,
+        "8": 0.217,
+        "9": 0.587
       },
       "kill_turn_histogram": {
-        "10": 2234,
-        "7": 142,
-        "8": 2200,
-        "9": 3506
+        "10": 2348,
+        "7": 117,
+        "8": 2049,
+        "9": 3707
       },
       "mean_board_power_by_turn": {
         "1": 0.049,
-        "10": 17.275,
+        "10": 18.603,
         "2": 0.653,
-        "3": 1.642,
-        "4": 2.625,
-        "5": 5.326,
-        "6": 8.282,
-        "7": 10.781,
-        "8": 13.059,
-        "9": 15.188
+        "3": 1.489,
+        "4": 2.454,
+        "5": 5.022,
+        "6": 8.131,
+        "7": 10.96,
+        "8": 13.586,
+        "9": 16.086
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 15.481,
+        "10": 16.472,
         "2": 0.049,
-        "3": 0.669,
-        "4": 1.661,
-        "5": 2.727,
-        "6": 5.512,
-        "7": 8.495,
-        "8": 11.016,
-        "9": 13.318
+        "3": 0.667,
+        "4": 1.506,
+        "5": 2.543,
+        "6": 5.207,
+        "7": 8.371,
+        "8": 11.238,
+        "9": 13.908
       },
-      "mean_kill_turn": 8.969,
+      "mean_kill_turn": 9.008,
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.192
+      "no_kill_by_max_turn_rate": 0.178
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.885,
+      "cast_by_turn_6_rate": 0.892,
       "cast_turn_histogram": {
-        "10": 118,
-        "4": 7354,
-        "5": 976,
-        "6": 516,
-        "7": 390,
-        "8": 260,
-        "9": 172,
-        "not_by_max_turn": 214
+        "10": 104,
+        "4": 7397,
+        "5": 1000,
+        "6": 523,
+        "7": 382,
+        "8": 256,
+        "9": 165,
+        "not_by_max_turn": 173
       },
-      "mean_cast_turn": 4.591,
+      "mean_cast_turn": 4.576,
       "median_cast_turn": 4
     },
     "interaction_castable_by_turn": {
       "1": 0.137,
-      "10": 0.89,
+      "10": 0.9,
       "2": 0.173,
-      "3": 0.151,
-      "4": 0.071,
-      "5": 0.358,
-      "6": 0.541,
-      "7": 0.687,
-      "8": 0.777,
-      "9": 0.845
+      "3": 0.136,
+      "4": 0.068,
+      "5": 0.334,
+      "6": 0.502,
+      "7": 0.658,
+      "8": 0.771,
+      "9": 0.851
     },
     "interaction_in_hand_by_turn": {
       "1": 0.742,
-      "10": 0.934,
+      "10": 0.958,
       "2": 0.765,
-      "3": 0.774,
-      "4": 0.81,
-      "5": 0.821,
-      "6": 0.83,
-      "7": 0.856,
-      "8": 0.884,
-      "9": 0.911
+      "3": 0.78,
+      "4": 0.819,
+      "5": 0.842,
+      "6": 0.851,
+      "7": 0.881,
+      "8": 0.911,
+      "9": 0.939
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.639,
+      "10": 0.793,
       "2": 0.997,
       "3": 0.919,
-      "4": 0.815,
-      "5": 0.702,
-      "6": 0.663,
-      "7": 0.646,
-      "8": 0.638,
-      "9": 0.628
+      "4": 0.82,
+      "5": 0.716,
+      "6": 0.691,
+      "7": 0.712,
+      "8": 0.728,
+      "9": 0.756
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.646,
+      "10": 8.131,
       "2": 1.996,
       "3": 2.914,
-      "4": 3.73,
-      "5": 4.432,
-      "6": 5.095,
-      "7": 5.741,
-      "8": 6.379,
-      "9": 7.008
+      "4": 3.734,
+      "5": 4.451,
+      "6": 5.142,
+      "7": 5.853,
+      "8": 6.582,
+      "9": 7.338
     },
     "mean_bodies_by_turn": {
       "1": 0.049,
-      "10": 8.811,
+      "10": 9.63,
       "2": 0.561,
-      "3": 1.304,
-      "4": 1.492,
-      "5": 3.108,
-      "6": 4.546,
-      "7": 5.728,
-      "8": 6.806,
-      "9": 7.816
+      "3": 1.194,
+      "4": 1.364,
+      "5": 2.941,
+      "6": 4.5,
+      "7": 5.864,
+      "8": 7.138,
+      "9": 8.37
+    },
+    "mean_extra_cards_drawn_by_turn": {
+      "1": 0.0,
+      "10": 3.184,
+      "2": 0.0,
+      "3": 0.072,
+      "4": 0.154,
+      "5": 0.319,
+      "6": 0.634,
+      "7": 1.097,
+      "8": 1.677,
+      "9": 2.372
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -220,58 +243,58 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.825,
-        "assembled_rate_assisted": 0.945,
-        "by_turn_6_rate": 0.755,
-        "by_turn_6_rate_assisted": 0.887,
+        "assembled_rate": 0.846,
+        "assembled_rate_assisted": 0.957,
+        "by_turn_6_rate": 0.761,
+        "by_turn_6_rate_assisted": 0.893,
         "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
-        "mean_turn": 2.276,
-        "mean_turn_assisted": 2.199
+        "mean_turn": 2.401,
+        "mean_turn_assisted": 2.256
       },
       {
-        "assembled_rate": 0.903,
-        "assembled_rate_assisted": 0.959,
-        "by_turn_6_rate": 0.811,
-        "by_turn_6_rate_assisted": 0.899,
+        "assembled_rate": 0.939,
+        "assembled_rate_assisted": 0.978,
+        "by_turn_6_rate": 0.828,
+        "by_turn_6_rate_assisted": 0.909,
         "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
-        "mean_turn": 2.389,
-        "mean_turn_assisted": 2.152
+        "mean_turn": 2.551,
+        "mean_turn_assisted": 2.223
       },
       {
-        "assembled_rate": 0.649,
-        "assembled_rate_assisted": 0.881,
-        "by_turn_6_rate": 0.521,
-        "by_turn_6_rate_assisted": 0.751,
+        "assembled_rate": 0.717,
+        "assembled_rate_assisted": 0.922,
+        "by_turn_6_rate": 0.54,
+        "by_turn_6_rate_assisted": 0.77,
         "label": "KILL — a BOARD: a real body plus a way through",
-        "mean_turn": 3.673,
-        "mean_turn_assisted": 3.436
+        "mean_turn": 4.029,
+        "mean_turn_assisted": 3.575
       },
       {
-        "assembled_rate": 0.45,
-        "assembled_rate_assisted": 0.769,
-        "by_turn_6_rate": 0.298,
-        "by_turn_6_rate_assisted": 0.573,
+        "assembled_rate": 0.544,
+        "assembled_rate_assisted": 0.845,
+        "by_turn_6_rate": 0.32,
+        "by_turn_6_rate_assisted": 0.602,
         "label": "KILL — drain: a payoff plus something to feed it",
-        "mean_turn": 4.794,
-        "mean_turn_assisted": 4.435
+        "mean_turn": 5.327,
+        "mean_turn_assisted": 4.677
       },
       {
-        "assembled_rate": 0.628,
-        "assembled_rate_assisted": 0.882,
-        "by_turn_6_rate": 0.516,
-        "by_turn_6_rate_assisted": 0.767,
+        "assembled_rate": 0.691,
+        "assembled_rate_assisted": 0.918,
+        "by_turn_6_rate": 0.533,
+        "by_turn_6_rate_assisted": 0.784,
         "label": "RAMP drawn — an accelerant of any kind",
-        "mean_turn": 3.185,
-        "mean_turn_assisted": 3.059
+        "mean_turn": 3.582,
+        "mean_turn_assisted": 3.197
       },
       {
-        "assembled_rate": 0.497,
-        "assembled_rate_assisted": 0.68,
-        "by_turn_6_rate": 0.356,
-        "by_turn_6_rate_assisted": 0.516,
+        "assembled_rate": 0.571,
+        "assembled_rate_assisted": 0.748,
+        "by_turn_6_rate": 0.372,
+        "by_turn_6_rate_assisted": 0.534,
         "label": "A TUTOR drawn",
-        "mean_turn": 4.048,
-        "mean_turn_assisted": 3.974
+        "mean_turn": 4.523,
+        "mean_turn_assisted": 4.292
       }
     ]
   }

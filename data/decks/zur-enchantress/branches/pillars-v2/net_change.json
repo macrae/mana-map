@@ -1221,12 +1221,12 @@
   "why": "pillars-v1 PROVED THE ENGINE FIX AND EXPOSED THE NEXT CONSTRAINT. Measured over 40 games a side against the playgroup table: Zur attacked 0.20 -> 0.60 a game and the tutor fired 0.28 -> 1.00 a game, a 3x and 3.6x improvement from the evasion package alone. The win rate did not move (0/40 both arms) because the engine now runs and finds a deck it cannot convert: every pillar piece resolves in roughly one game in four or five (Propaganda 0.20, Ghostly Prison 0.23, Doomwake Giant 0.25, Vito 0.47, Counterspell 0.07), which is what a singleton with no tutoring does. v2 attacks CONSISTENCY rather than adding win conditions: three more Zur-fetchable enablers, and four ways to FIND one (Idyllic Tutor finds any enchantment; Open the Armory, Light-Paws and Heliod's Pilgrim find an Aura, which is what every enabler is). The cuts are the expensive non-fetchable one-ofs the measurement showed resolving least."
  },
  "objective_grade": {
-  "reading": 0.8173,
-  "shortfall": null,
-  "state": "met"
+  "reading": 0.7768,
+  "shortfall": 0.0232,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "You buy stall, 2 in a row and interaction affordable @T6 and pay damage @T10, board power @T6 and killed by T10.",
+  "because": "The objective is not met. Stall, 2 in a row and interaction affordable @t6 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 3,
    "buy": 12,
@@ -1272,7 +1272,8 @@
   "fell": [
    "damage @T10",
    "board power @T6",
-   "killed by T10"
+   "killed by T10",
+   "extra cards by T8"
   ],
   "no_call": [
    "killed by T6",
@@ -1289,31 +1290,37 @@
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "71 games in 100 -> 82 in 100, a swing of 11 games per 100",
+    "reads_as": "65 games in 100 -> 78 in 100, a swing of 13 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "15.92 -> 7.56, a change of -8.35 (-52%)",
+    "detail": "16.91 -> 8.14, a change of -8.78 (-52%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "8.44 -> 4.85, a change of -3.59 (-43%)",
+    "detail": "8.30 -> 4.90, a change of -3.40 (-41%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "83 games in 100 -> 33 in 100, a swing of 50 games per 100",
+    "detail": "84 games in 100 -> 35 in 100, a swing of 49 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "the largest is missed drop by T5 at +0.013 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "1.71 -> 1.60, a change of -0.12 (-7%)",
+    "kind": "paid",
+    "what": "extra cards by T8",
+    "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "the largest is missed drop by T5 at +0.012 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1335,19 +1342,19 @@
    "stall, 2 in a row",
    "interaction affordable @T6"
   ],
-  "state": "a trade"
+  "state": "do not merge"
  },
  "slug": "zur-enchantress",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 7.5643,
-   "champion": 15.9173,
-   "delta": -8.353,
-   "mde": 0.2332,
+   "branch": 8.1381,
+   "champion": 16.9143,
+   "delta": -8.7762,
+   "mde": 0.2439,
    "measure": "damage @T10",
-   "reads_as": "15.92 -> 7.56, a change of -8.35 (-52%)",
+   "reads_as": "16.91 -> 8.14, a change of -8.78 (-52%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1356,12 +1363,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 4.8484,
-   "champion": 8.4432,
-   "delta": -3.5948,
-   "mde": 0.1646,
+   "branch": 4.9024,
+   "champion": 8.298,
+   "delta": -3.3956,
+   "mde": 0.1622,
    "measure": "board power @T6",
-   "reads_as": "8.44 -> 4.85, a change of -3.59 (-43%)",
+   "reads_as": "8.30 -> 4.90, a change of -3.40 (-41%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1384,12 +1391,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3295,
-   "champion": 0.8259,
-   "delta": -0.4964,
-   "mde": 0.0186,
+   "branch": 0.3526,
+   "champion": 0.8394,
+   "delta": -0.4868,
+   "mde": 0.0189,
    "measure": "killed by T10",
-   "reads_as": "83 games in 100 -> 33 in 100, a swing of 50 games per 100",
+   "reads_as": "84 games in 100 -> 35 in 100, a swing of 49 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1398,10 +1405,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0016,
-   "champion": 0.0053,
-   "delta": -0.0037,
-   "mde": 0.0029,
+   "branch": 0.0017,
+   "champion": 0.0052,
+   "delta": -0.0035,
+   "mde": 0.0028,
    "measure": "stall, 2 in a row",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
    "scale": null,
@@ -1412,12 +1419,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.418,
-   "champion": 0.4045,
-   "delta": 0.0135,
+   "branch": 0.4054,
+   "champion": 0.3937,
+   "delta": 0.0117,
    "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1440,12 +1447,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8173,
-   "champion": 0.7059,
-   "delta": 0.1114,
-   "mde": 0.0197,
+   "branch": 1.5992,
+   "champion": 1.7143,
+   "delta": -0.1151,
+   "mde": 0.0783,
+   "measure": "extra cards by T8",
+   "reads_as": "1.71 -> 1.60, a change of -0.12 (-7%)",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.7768,
+   "champion": 0.6468,
+   "delta": 0.13,
+   "mde": 0.0204,
    "measure": "interaction affordable @T6",
-   "reads_as": "71 games in 100 -> 82 in 100, a swing of 11 games per 100",
+   "reads_as": "65 games in 100 -> 78 in 100, a swing of 13 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",

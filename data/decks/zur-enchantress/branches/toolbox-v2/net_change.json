@@ -840,7 +840,7 @@
   "why": "toolbox-v1 bought four answers and paid seven points of kill-by-t10 for them. This branch goes after that price directly. The four adds are MV1-2 rather than MV3, and TWO OF THEM REPLACE ANSWERS ALREADY IN THE LIST, so the ANSWER redundancy group stays at eleven members rather than shrinking. Nothing is cut from the way-through group, which toolbox-v1 took from seven members to five. No creature is cut, so bodies are flat. The pip count is again held constant at four white pips out, four white pips in, so devotion does not move. Net curve: eleven mana out, six mana in -- five cheaper. Same caveat as toolbox-v1 and it is the whole point: the goldfish has no opponents and CANNOT price a hate card. This measures the COST only."
  },
  "objective_grade": {
-  "reading": 0.8259,
+  "reading": 0.8394,
   "shortfall": null,
   "state": "met"
  },
@@ -877,18 +877,19 @@
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
+   "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [
-   "Nothing moved: all 9 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
   ],
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.233. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.244. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "9 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -906,12 +907,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 15.9173,
-   "champion": 15.9173,
+   "branch": 16.9143,
+   "champion": 16.9143,
    "delta": 0.0,
-   "mde": 0.2332,
+   "mde": 0.2439,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.233 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.244 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -920,12 +921,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.4432,
-   "champion": 8.4432,
+   "branch": 8.298,
+   "champion": 8.298,
    "delta": 0.0,
-   "mde": 0.1646,
+   "mde": 0.1622,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.165 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.162 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -948,10 +949,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8259,
-   "champion": 0.8259,
+   "branch": 0.8394,
+   "champion": 0.8394,
    "delta": 0.0,
-   "mde": 0.015,
+   "mde": 0.0145,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.015 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -962,10 +963,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0053,
-   "champion": 0.0053,
+   "branch": 0.0052,
+   "champion": 0.0052,
    "delta": 0.0,
-   "mde": 0.0029,
+   "mde": 0.0028,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
    "scale": null,
@@ -976,8 +977,8 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4045,
-   "champion": 0.4045,
+   "branch": 0.3937,
+   "champion": 0.3937,
    "delta": 0.0,
    "mde": 0.0194,
    "measure": "missed drop by T5",
@@ -1004,10 +1005,24 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.7059,
-   "champion": 0.7059,
+   "branch": 1.7143,
+   "champion": 1.7143,
    "delta": 0.0,
-   "mde": 0.0197,
+   "mde": 0.0783,
+   "measure": "extra cards by T8",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.078 this run can resolve",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.6468,
+   "champion": 0.6468,
+   "delta": 0.0,
+   "mde": 0.0204,
    "measure": "interaction affordable @T6",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
