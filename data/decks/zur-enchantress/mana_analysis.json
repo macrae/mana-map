@@ -1,20 +1,20 @@
 {
   "slug": "zur-enchantress",
-  "decklist_sha256": "3ac35d74effec140f84e66202e1a7a8ee1f9a0d9977da5e955c792fa405f28fe",
+  "decklist_sha256": "a813ee93fcc7ff9abea663177eeea81dd7ed7c5d0c93489df1ec1a7aa4126edc",
   "lands": {
     "total": 36,
-    "entries": 26,
+    "entries": 28,
     "life": {
-      "recurring_per_tap_cycle": 6,
-      "one_time_on_entry": 0
+      "recurring_per_tap_cycle": 5,
+      "one_time_on_entry": 4
     },
-    "enters_tapped": 1,
+    "enters_tapped": 4,
     "enters_tapped_always": 1,
     "classes": {
-      "basic": 13,
+      "basic": 11,
       "fixing": 14,
-      "tapped": 1,
-      "untapped-dual": 21,
+      "tapped": 4,
+      "untapped-dual": 19,
       "utility": 10
     },
     "list": [
@@ -33,18 +33,6 @@
         ]
       },
       {
-        "name": "Adarkar Wastes",
-        "copies": 1,
-        "classes": [
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Caves of Koilos",
         "copies": 1,
         "classes": [
@@ -54,6 +42,17 @@
         "produces": [
           "B",
           "W"
+        ]
+      },
+      {
+        "name": "Choked Estuary",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "U"
         ]
       },
       {
@@ -166,13 +165,35 @@
         ]
       },
       {
+        "name": "Godless Shrine",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "W"
+        ]
+      },
+      {
         "name": "Island",
-        "copies": 5,
+        "copies": 3,
         "classes": [
           "basic"
         ],
         "produces": [
           "U"
+        ]
+      },
+      {
+        "name": "Isolated Chapel",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "W"
         ]
       },
       {
@@ -218,22 +239,11 @@
       },
       {
         "name": "Plains",
-        "copies": 4,
+        "copies": 3,
         "classes": [
           "basic"
         ],
         "produces": [
-          "W"
-        ]
-      },
-      {
-        "name": "Skycloud Expanse",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "U",
           "W"
         ]
       },
@@ -253,7 +263,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 4,
+        "copies": 5,
         "classes": [
           "basic"
         ],
@@ -325,43 +335,74 @@
         ]
       },
       {
-        "name": "Valgavoth's Lair",
+        "name": "Urza's Saga",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
+        "name": "Watery Grave",
         "copies": 1,
         "classes": [
           "tapped"
         ],
-        "produces": []
+        "produces": [
+          "B",
+          "U"
+        ]
       }
     ]
   },
   "sources": {
     "lands": {
-      "W": 23,
-      "U": 23,
-      "B": 23,
+      "W": 22,
+      "U": 21,
+      "B": 28,
       "R": 0,
       "G": 0
     },
     "nonland": {
-      "W": 1,
-      "U": 1,
-      "B": 1,
+      "W": 3,
+      "U": 4,
+      "B": 4,
       "R": 0,
       "G": 0
     },
     "total": {
-      "W": 24,
-      "U": 24,
-      "B": 24,
+      "W": 25,
+      "U": 25,
+      "B": 32,
       "R": 0,
       "G": 0
     },
     "producers": [
       {
+        "name": "Arcane Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Imprisoned in the Moon",
         "kind": "ramp:rock",
         "cmc": 3.0,
         "produces": []
+      },
+      {
+        "name": "Lotus Petal",
+        "kind": "ramp:rock",
+        "cmc": 0.0,
+        "produces": [
+          "B",
+          "U",
+          "W"
+        ]
       },
       {
         "name": "Profane Procession // Tomb of the Dusk Rose",
@@ -372,15 +413,30 @@
           "U",
           "W"
         ]
+      },
+      {
+        "name": "Sol Ring",
+        "kind": "ramp:rock",
+        "cmc": 1.0,
+        "produces": []
+      },
+      {
+        "name": "Talisman of Dominance",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "U"
+        ]
       }
     ]
   },
   "pips": {
     "B": {
-      "total_pips": 26.0,
+      "total_pips": 28.0,
       "max_pips": 2,
-      "cards": 20,
-      "earliest_turn": 2,
+      "cards": 22,
+      "earliest_turn": 1,
       "effective_pips": 2
     },
     "U": {
@@ -391,25 +447,25 @@
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 41.5,
+      "total_pips": 35.5,
       "max_pips": 2,
-      "cards": 38,
+      "cards": 32,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.302,
-      "source_share": 0.333
+      "pip_share": 0.341,
+      "source_share": 0.394
     },
     "U": {
-      "pip_share": 0.215,
-      "source_share": 0.333
+      "pip_share": 0.226,
+      "source_share": 0.296
     },
     "W": {
-      "pip_share": 0.483,
-      "source_share": 0.333
+      "pip_share": 0.433,
+      "source_share": 0.31
     }
   },
   "source_targets": {
@@ -419,45 +475,45 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.918,
-      "U": 0.918,
-      "B": 0.667
+      "W": 0.907,
+      "U": 0.895,
+      "B": 0.785
     },
     "with_rocks_and_dorks": {
-      "W": 0.927,
-      "U": 0.927,
-      "B": 0.694
+      "W": 0.936,
+      "U": 0.936,
+      "B": 0.855
     }
   },
   "ramp": {
     "ramp:cost-reduction": 2,
     "ramp:land": 1,
-    "ramp:rock": 2
+    "ramp:rock": 6
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.788,
+      "10": 0.803,
       "2": 0.997,
-      "3": 0.914,
-      "4": 0.814,
-      "5": 0.711,
-      "6": 0.697,
-      "7": 0.703,
-      "8": 0.731,
-      "9": 0.765
+      "3": 0.919,
+      "4": 0.805,
+      "5": 0.732,
+      "6": 0.71,
+      "7": 0.726,
+      "8": 0.743,
+      "9": 0.771
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.118,
-      "2": 1.996,
-      "3": 2.91,
-      "4": 3.724,
-      "5": 4.435,
-      "6": 5.131,
-      "7": 5.834,
-      "8": 6.565,
-      "9": 7.33
+      "10": 9.046,
+      "2": 2.148,
+      "3": 3.244,
+      "4": 4.087,
+      "5": 4.848,
+      "6": 5.638,
+      "7": 6.436,
+      "8": 7.262,
+      "9": 8.126
     }
   },
   "assumptions": [
@@ -467,6 +523,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 23 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 24."
+    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 32.",
+    "U: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 25."
   ]
 }

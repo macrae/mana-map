@@ -11,13 +11,21 @@
    {
     "free": false,
     "name": "Adarkar Wastes",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "heliod",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
     "name": "Aegis of the Gods",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -191,7 +199,7 @@
    {
     "free": false,
     "name": "Glyph Elemental",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -257,7 +265,7 @@
    {
     "free": false,
     "name": "Light-Paws, Emperor's Voice",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -311,7 +319,7 @@
    {
     "free": false,
     "name": "Nyx-Fleece Ram",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -323,13 +331,13 @@
    {
     "free": false,
     "name": "Open the Armory",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Oppressive Rays",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -395,8 +403,16 @@
    {
     "free": false,
     "name": "Skycloud Expanse",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "heliod",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -407,7 +423,7 @@
    {
     "free": false,
     "name": "Soul Snare",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -527,7 +543,7 @@
    {
     "free": false,
     "name": "Valgavoth's Lair",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -545,51 +561,321 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 0,
-   "elsewhere": 0,
-   "in_deck": 90
+   "buy": 8,
+   "elsewhere": 2,
+   "in_deck": 80
   },
   "counts_are": "distinct names",
   "diff": {
-   "add": [],
-   "base_names": 90,
+   "add": [
+    "Adarkar Wastes",
+    "Aegis of the Gods",
+    "Glyph Elemental",
+    "Light-Paws, Emperor's Voice",
+    "Nyx-Fleece Ram",
+    "Open the Armory",
+    "Oppressive Rays",
+    "Skycloud Expanse",
+    "Soul Snare",
+    "Valgavoth's Lair"
+   ],
+   "base_names": 92,
    "base_size": 100,
    "names": 90,
-   "out": [],
+   "out": [
+    "Arcane Signet",
+    "Choked Estuary",
+    "Godless Shrine",
+    "Isolated Chapel",
+    "Lotus Petal",
+    "Northern Air Temple",
+    "Sanctum of Stone Fangs",
+    "Sol Ring",
+    "Summoner's Sending",
+    "Talisman of Dominance",
+    "Urza's Saga",
+    "Watery Grave"
+   ],
    "size": 100
   },
   "free": 0,
-  "mergeable": true,
-  "owned_but_elsewhere": 0,
+  "mergeable": false,
+  "owned_but_elsewhere": 2,
   "proxy": false,
   "slug": "zur-enchantress",
-  "unsourced": []
+  "unsourced": [
+   "Adarkar Wastes",
+   "Aegis of the Gods",
+   "Glyph Elemental",
+   "Light-Paws, Emperor's Voice",
+   "Nyx-Fleece Ram",
+   "Open the Armory",
+   "Oppressive Rays",
+   "Skycloud Expanse",
+   "Soul Snare",
+   "Valgavoth's Lair"
+  ]
  },
  "blind_spots": [],
  "branch": "toolbox-v2",
  "changes": {
   "count": 0,
   "diff": {
-   "base_names": 90,
+   "base_names": 92,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": 2,
+     "from": 3,
+     "kind": "land",
+     "name": "Island",
+     "to": 5
+    },
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 3,
+     "kind": "land",
+     "name": "Plains",
+     "to": 4
+    },
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 5,
+     "kind": "land",
+     "name": "Swamp",
+     "to": 4
+    }
+   ],
    "counts": {
-    "in": 0,
-    "in_copies": 0,
-    "lands_in": 0,
-    "lands_out": 0,
-    "out": 0,
-    "out_copies": 0,
-    "spells_in": 0,
-    "spells_out": 0
+    "in": 10,
+    "in_copies": 13,
+    "lands_in": 3,
+    "lands_out": 5,
+    "out": 12,
+    "out_copies": 13,
+    "spells_in": 7,
+    "spells_out": 7
    },
-   "in": [],
+   "in": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Oppressive Rays",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Soul Snare",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Aegis of the Gods",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Creature \u2014 Human Soldier",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Glyph Elemental",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Creature \u2014 Elemental",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Light-Paws, Emperor's Voice",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Creature \u2014 Fox Advisor",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Nyx-Fleece Ram",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Creature \u2014 Sheep",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Open the Armory",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Adarkar Wastes",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Skycloud Expanse",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Valgavoth's Lair",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Land",
+     "why": null
+    }
+   ],
    "names": 90,
-   "out": [],
+   "out": [
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Lotus Petal",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Northern Air Temple",
+     "pair": null,
+     "type_line": "Legendary Enchantment \u2014 Shrine",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Sol Ring",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Arcane Signet",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Sanctum of Stone Fangs",
+     "pair": null,
+     "type_line": "Legendary Enchantment \u2014 Shrine",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Summoner's Sending",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Talisman of Dominance",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Choked Estuary",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Godless Shrine",
+     "pair": null,
+     "type_line": "Land \u2014 Plains Swamp",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Isolated Chapel",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Urza's Saga",
+     "pair": null,
+     "type_line": "Enchantment Land \u2014 Urza's Saga",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Watery Grave",
+     "pair": null,
+     "type_line": "Land \u2014 Island Swamp",
+     "why": null
+    }
+   ],
    "size": 100,
    "unexplained": {
-    "in": 0,
-    "out": 0
+    "in": 10,
+    "out": 12
    }
   },
   "lands": [],
@@ -712,13 +998,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 0,
+    "delta": -1,
     "gap": [
-     2,
+     3,
      2
     ],
     "have": [
-     24,
+     25,
      24
     ],
     "target": [
@@ -728,13 +1014,13 @@
    },
    {
     "colour": "U",
-    "delta": 0,
+    "delta": -1,
     "gap": [
-     2,
+     3,
      2
     ],
     "have": [
-     24,
+     25,
      24
     ],
     "target": [
@@ -744,13 +1030,13 @@
    },
    {
     "colour": "B",
-    "delta": 0,
+    "delta": -8,
     "gap": [
-     -12,
+     -4,
      -12
     ],
     "have": [
-     24,
+     32,
      24
     ],
     "target": [
@@ -801,8 +1087,8 @@
   ],
   "life": [
    {
-    "one_time_on_entry": 0,
-    "recurring_per_tap_cycle": 6
+    "one_time_on_entry": 4,
+    "recurring_per_tap_cycle": 5
    },
    {
     "one_time_on_entry": 0,
@@ -812,7 +1098,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.694,
+    0.855,
     0.694
    ],
    "G": [
@@ -824,11 +1110,11 @@
     null
    ],
    "U": [
-    0.927,
+    0.936,
     0.927
    ],
    "W": [
-    0.927,
+    0.936,
     0.927
    ]
   }
@@ -845,52 +1131,102 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse.",
+  "because": "You buy damage @T10 and pay killed by T10, extra cards by T8 and interaction affordable @T6.",
   "bill": {
    "box": 0,
-   "buy": 0,
-   "elsewhere": 0,
-   "in_deck": 90
+   "buy": 8,
+   "elsewhere": 2,
+   "in_deck": 80
   },
   "cost": {
-   "buy": 0,
-   "buy_cards": [],
+   "buy": 8,
+   "buy_cards": [
+    "Aegis of the Gods",
+    "Glyph Elemental",
+    "Light-Paws, Emperor's Voice",
+    "Nyx-Fleece Ram",
+    "Open the Armory",
+    "Oppressive Rays",
+    "Soul Snare",
+    "Valgavoth's Lair"
+   ],
    "counts": {
     "box": 0,
-    "buy": 0,
-    "elsewhere": 0,
-    "in_deck": 90
+    "buy": 8,
+    "elsewhere": 2,
+    "in_deck": 80
    },
    "free_to_raid": [],
-   "mergeable": true,
-   "must_unsleeve": [],
-   "owned": 90,
-   "reads_as": "0 to buy; 90 of 90 already owned",
+   "mergeable": false,
+   "must_unsleeve": [
+    {
+     "decks": [
+      "heliod"
+     ],
+     "name": "Adarkar Wastes"
+    },
+    {
+     "decks": [
+      "heliod"
+     ],
+     "name": "Skycloud Expanse"
+    }
+   ],
+   "owned": 82,
+   "reads_as": "8 to buy; 2 to pull out of a deck that is still together; 82 of 90 already owned",
    "total": 90
   },
-  "fell": [],
+  "fell": [
+   "killed by T10",
+   "extra cards by T8",
+   "interaction affordable @T6"
+  ],
   "no_call": [
-   "damage @T10",
    "board power @T6",
    "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
-   "extra cards by T8",
-   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [
-   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+  "notes": [],
+  "reward": [
+   {
+    "measure": "damage @T10",
+    "reads_as": "16.66 -> 16.97, a change of +0.31 (+2%)",
+    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   }
   ],
-  "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.244. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "89 games in 100 -> 86 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "1.89 -> 1.68, a change of -0.21 (-11%)",
+    "kind": "paid",
+    "what": "extra cards by T8",
+    "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "64 games in 100 -> 62 in 100, a swing of 2 games per 100",
+    "kind": "paid",
+    "what": "interaction affordable @T6",
+    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   {
+    "detail": "the largest is board power @T6 at -0.133 against an MDE of 0.165. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "detail": "W gap +3 -> +2, U gap +3 -> +2, B gap -4 -> -12",
+    "kind": "paid",
+    "what": "colour sources went backwards",
+    "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@toolbox-v2 --vs <pod>` puts it at a table and writes where this reads",
@@ -899,8 +1235,10 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
-  "state": "merge"
+  "rose": [
+   "damage @T10"
+  ],
+  "state": "a trade"
  },
  "slug": "zur-enchantress",
  "staged": 0,
@@ -908,25 +1246,25 @@
   {
    "better_is": "higher",
    "branch": 16.9705,
-   "champion": 16.9705,
-   "delta": 0.0,
+   "champion": 16.6577,
+   "delta": 0.3128,
    "mde": 0.2439,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.244 this run can resolve",
+   "reads_as": "16.66 -> 16.97, a change of +0.31 (+2%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {
    "better_is": "higher",
    "branch": 8.123,
-   "champion": 8.123,
-   "delta": 0.0,
-   "mde": 0.1614,
+   "champion": 8.2558,
+   "delta": -0.1328,
+   "mde": 0.1648,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.161 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.133 is smaller than the 0.165 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -936,11 +1274,11 @@
   {
    "better_is": "higher",
    "branch": 0.0001,
-   "champion": 0.0001,
-   "delta": 0.0,
-   "mde": 0.0004,
+   "champion": 0.001,
+   "delta": -0.0009,
+   "mde": 0.0013,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -950,25 +1288,25 @@
   {
    "better_is": "higher",
    "branch": 0.8588,
-   "champion": 0.8588,
-   "delta": 0.0,
+   "champion": 0.8863,
+   "delta": -0.0275,
    "mde": 0.0138,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.014 this run can resolve",
+   "reads_as": "89 games in 100 -> 86 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0085,
-   "champion": 0.0085,
-   "delta": 0.0,
-   "mde": 0.0036,
+   "champion": 0.0116,
+   "delta": -0.0031,
+   "mde": 0.0042,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -978,11 +1316,11 @@
   {
    "better_is": "lower",
    "branch": 0.3964,
-   "champion": 0.3964,
-   "delta": 0.0,
+   "champion": 0.3873,
+   "delta": 0.0091,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -992,11 +1330,11 @@
   {
    "better_is": "lower",
    "branch": 0.196,
-   "champion": 0.196,
-   "delta": 0.0,
+   "champion": 0.1938,
+   "delta": 0.0022,
    "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1006,37 +1344,37 @@
   {
    "better_is": "higher",
    "branch": 1.6822,
-   "champion": 1.6822,
-   "delta": 0.0,
-   "mde": 0.0771,
+   "champion": 1.8877,
+   "delta": -0.2055,
+   "mde": 0.0833,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.077 this run can resolve",
+   "reads_as": "1.89 -> 1.68, a change of -0.21 (-11%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
   },
   {
    "better_is": "higher",
    "branch": 0.6152,
-   "champion": 0.6152,
-   "delta": 0.0,
-   "mde": 0.021,
+   "champion": 0.6372,
+   "delta": -0.022,
+   "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.021 this run can resolve",
+   "reads_as": "64 games in 100 -> 62 in 100, a swing of 2 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
    "branch": 0.9941,
-   "champion": 0.9941,
-   "delta": 0.0,
-   "mde": 0.003,
+   "champion": 0.9937,
+   "delta": 0.0004,
+   "mde": 0.0031,
    "measure": "hand can act by T3",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
