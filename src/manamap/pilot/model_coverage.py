@@ -58,6 +58,13 @@ CHANNELS = {
 DEFAULT_ON = ("model_colors",)
 
 
+#: The trigger values `goldfish`'s turn loop actually branches on. Anything
+#: else — the "unmodelled" sentinel above all — produces no Treasure whatever
+#: the flag says, so it cannot be DARK on this channel. Kept beside CHANNELS
+#: rather than imported from goldfish so that adding a trigger there without
+#: teaching this module about it fails a test instead of going quiet.
+_MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast"})
+
 def _nonzero(profile, keys):
     return any((profile or {}).get(k) for k in keys)
 
@@ -72,7 +79,22 @@ def channels_for(profile):
         found.add("bodies")
     if profile["tutor"]:
         found.add("tutor")
-    if profile["treasure_n"] or profile["treasure_trigger"] \
+    # ONLY A TRIGGER THE TURN LOOP ACTS ON. `treasure_trigger` is a string, and
+    # one of its values is the sentinel "unmodelled" — which is TRUTHY, so a
+    # card the parser explicitly gave up on was counted as feeding this channel.
+    # The consequence is the opposite of the one this module exists to prevent:
+    # it told the pilot to set `model_treasures` on cards that produce nothing
+    # either way, and inflated the DARK count — the figure this file calls "the
+    # thing that invalidates a run".
+    #
+    # Measured across the fleet on 2026-09-04: 21 cards in 7 decks, including
+    # BOTH of zur-enchantress's, where flipping the flag returned byte-identical
+    # figures and a hoard of 0.0 at every turn. Goldspan Dragon and Old Gnawbone
+    # are in the same state on ur-dragon, whose nonzero hoard comes from its
+    # OTHER treasure sources entirely.
+    #
+    # Such a card is INVISIBLE — no channel reads it — not DARK.
+    if profile["treasure_trigger"] in _MODELLED_TREASURE_TRIGGERS \
             or profile["treasure_bonus"] or profile["treasure_doubler"] \
             or profile["token_doubler"]:
         found.add("treasure")

@@ -145,3 +145,83 @@ def test_card_value_classifies_with_the_deck_pool_like_build_library_does():
     source = inspect.getsource(card_value)
     assert "goldfish.classify(c, pool=land_pool)" in source
     assert "goldfish.classify(c)" not in source, "a pool-less call came back"
+
+
+# ── the sentinel that read as a capability ──────────────────────────────────
+
+def test_an_unmodelled_treasure_trigger_is_not_a_dark_channel():
+    """A SENTINEL MEANING "I CANNOT MODEL THIS" IS NOT EVIDENCE THAT A FLAG
+    WOULD HELP.
+
+    `treasure_trigger` is a string and one of its values is "unmodelled". The
+    channel test read it for truthiness, so a card the parser had explicitly
+    given up on counted as feeding the treasure channel — and the report then
+    told the pilot to set `model_treasures` to light it up.
+
+    Setting it does nothing. Measured on zur-enchantress 2026-09-04: both its
+    treasure cards are in this state, the flag returned BYTE-IDENTICAL figures,
+    and the hoard was 0.0 at every one of the ten turns. Across the fleet, 21
+    cards in 7 decks — including Goldspan Dragon and Old Gnawbone on ur-dragon,
+    whose genuinely nonzero hoard comes from its other sources entirely.
+
+    That inflates DARK, which this module's own docstring calls "the thing that
+    invalidates a run". Overstating it makes an honest run look untrustworthy
+    and sends the reader to a switch that is not connected to anything.
+
+    The draw channel never had this bug because it tests NAMED KEYS rather than
+    the truthiness of a free-form field — `draw` carries the same "unmodelled"
+    sentinel and correctly ignores it. This aligns treasure with draw.
+    """
+    from manamap.pilot.model_coverage import channels_for
+
+    def profile(**over):
+        base = {"is_land": False, "produces": 0, "reduces": None,
+                "scales_with_colors": False, "creature_bodies": 0, "bodies": 0,
+                "tutor": None, "treasure_n": 0, "treasure_trigger": None,
+                "treasure_bonus": False, "treasure_doubler": False,
+                "token_doubler": False, "sac_outlet": False,
+                "combat": {}, "draw": {}, "death": {}}
+        base.update(over)
+        return base
+
+    # The exact shape of Black Market Connections and Goldspan Dragon.
+    unmodelled = profile(treasure_trigger="unmodelled", treasure_n=1)
+    assert "treasure" not in channels_for(unmodelled), (
+        "a trigger the turn loop never branches on was reported as a channel "
+        "a flag would switch on")
+
+    # THE CONTROL. Without it this change would have silently switched the
+    # channel off for every deck that legitimately uses it.
+    for trigger in ("upkeep", "landfall", "etb", "cast"):
+        assert "treasure" in channels_for(
+            profile(treasure_trigger=trigger, treasure_n=1)), trigger
+
+    # And the paths that do not depend on a trigger at all still count.
+    assert "treasure" in channels_for(profile(treasure_doubler=True))
+    assert "treasure" in channels_for(profile(token_doubler=True))
+    assert "treasure" in channels_for(profile(treasure_bonus=True))
+
+
+def test_the_modelled_trigger_set_matches_what_goldfish_branches_on():
+    """A COPY OF A VOCABULARY ROTS UNLESS SOMETHING COMPARES IT.
+
+    `_MODELLED_TREASURE_TRIGGERS` restates the values `goldfish`'s turn loop
+    branches on. Adding a trigger there and not here would put the card back in
+    the invisible bucket — the same silence, one door over — so the two are
+    compared against the source rather than trusted to stay in step.
+    """
+    import re
+    from pathlib import Path
+
+    from manamap.pilot.model_coverage import _MODELLED_TREASURE_TRIGGERS
+
+    src = (Path(__file__).resolve().parent.parent
+           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    branched = set()
+    for m in re.finditer(r'card\["treasure_trigger"\]\s+in\s+\(([^)]*)\)', src):
+        branched |= set(re.findall(r'"([a-z_]+)"', m.group(1)))
+    assert branched, "the sweep found no treasure_trigger branch to compare against"
+    assert branched == set(_MODELLED_TREASURE_TRIGGERS), (
+        f"goldfish branches on {sorted(branched)} but model_coverage believes "
+        f"{sorted(_MODELLED_TREASURE_TRIGGERS)} — a card whose trigger is in "
+        f"one set and not the other is misfiled in the coverage report")
