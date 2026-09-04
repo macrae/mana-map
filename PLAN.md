@@ -233,6 +233,30 @@ pre-2026-09-02 record stays reproducible).
    `bench`/`sleeved` ladder where two rungs are DERIVED, a per-requirement gate,
    and C-3's three ownership buckets with the holding deck named.
 
+#### THE TABLE WAS NEVER LEVEL, AND THE ONE THAT REPLACED IT IS NOT EITHER
+
+`pods <name> --calibration` pools every tracked run that faced a table. Set by
+the pilot, 2026-09-03: *"the exact pod players is less important than just
+having calibrated teams playing against each other."*
+
+    standard   giada-angels 0.572 (2.29x fair)   baylen-tokens 0.052 (0.21x)
+               SUBJECT 0.159        3 runs, 290 decided games
+    vito-era   vito 0.448   giada-angels 0.401   baylen-tokens 0.016 (0.06x)
+               SUBJECT 0.135       14 runs, 761 decided games
+
+`vito-era` was dropped on 2026-09-02 for being unfair. **The dominant seat moved
+and the table did not level out**, and `baylen-tokens` is the floor in BOTH —
+which is a fact about that deck under Forge's AI rather than about either table.
+
+**So the null for `standard` is 0.159, not 0.25**, and `simulate --list` prints
+it beside the rate. goblin-storm's 0.031 there is genuinely bad; edgar's 0.144 is
+at the typical subject rate. Every win rate this bench has published was read
+against a quarter that never existed.
+
+Two nulls, and they differ: this one pools OUR decks and describes the fleet as
+much as the table; `pod-control` (an opponent's own average deck in the subject
+chair, **0.099**) is the neutral one and has been run once.
+
 ### OPEN — what the build-out still needs
 
 1. **THE PILOT'S CALL: name three playgroup commanders.** The log names these
@@ -244,9 +268,7 @@ pre-2026-09-02 record stays reproducible).
 2. **One pipeline definition.** The rebuild chain is written out three times —
    `deck_branch.py` twice and `regen.STAGES` once — with `goldfish` and
    `mana-analysis` duplicated between two of them.
-3. **The workbench reads the stage.** `workbench.js` still computes
-   `living.filter(e => !e.locked)`; `info.json` should carry `stage` and the
-   racks should read it, so DEV brews are a lane rather than bench clutter.
+3. ~~**The workbench reads the stage.**~~ **DONE.**
 4. **Epic D**: the agent inventory is produced and belongs checked in as
    `docs/agent-inventory.md`; two orphan charters (`pipeline-runner`, `viz-dev`)
    are deletable today.
