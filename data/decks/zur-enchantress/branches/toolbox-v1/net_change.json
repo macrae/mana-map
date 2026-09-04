@@ -490,8 +490,13 @@
    {
     "free": false,
     "name": "The Master of Keys",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -573,10 +578,10 @@
    }
   ],
   "counts": {
-   "box": 1,
+   "box": 2,
    "buy": 14,
    "elsewhere": 3,
-   "in_deck": 72
+   "in_deck": 71
   },
   "counts_are": "distinct names",
   "diff": {
@@ -596,6 +601,7 @@
     "Skycloud Expanse",
     "Solitary Confinement",
     "Tainted Remedy",
+    "The Master of Keys",
     "Touch the Spirit Realm",
     "Tymaret, Chosen from Death",
     "Valgavoth's Lair"
@@ -611,6 +617,7 @@
     "Balemurk Leech",
     "Choked Estuary",
     "Entity Tracker",
+    "Fear of Infinity",
     "Godless Shrine",
     "Gremlin Tamer",
     "Isolated Chapel",
@@ -686,14 +693,14 @@
     }
    ],
    "counts": {
-    "in": 18,
-    "in_copies": 21,
+    "in": 19,
+    "in_copies": 22,
     "lands_in": 3,
     "lands_out": 5,
-    "out": 20,
-    "out_copies": 21,
-    "spells_in": 15,
-    "spells_out": 15
+    "out": 21,
+    "out_copies": 22,
+    "spells_in": 16,
+    "spells_out": 16
    },
    "in": [
     {
@@ -834,6 +841,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "The Master of Keys",
+     "pair": null,
+     "state": "box",
+     "type_line": "Legendary Enchantment Creature \u2014 Horror",
      "why": null
     },
     {
@@ -997,6 +1014,15 @@
      "why": null
     },
     {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Fear of Infinity",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Nightmare",
+     "why": null
+    },
+    {
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
@@ -1062,8 +1088,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 18,
-    "out": 20
+    "in": 19,
+    "out": 21
    }
   },
   "lands": [],
@@ -1321,10 +1347,10 @@
  "recommendation": {
   "because": "You buy nothing and pay damage @T10, board power @T6, killed by T6, killed by T10, extra cards by T8, interaction affordable @T6 and hand can act by T3.",
   "bill": {
-   "box": 1,
+   "box": 2,
    "buy": 14,
    "elsewhere": 3,
-   "in_deck": 72
+   "in_deck": 71
   },
   "cost": {
    "buy": 14,
@@ -1345,10 +1371,10 @@
     "Valgavoth's Lair"
    ],
    "counts": {
-    "box": 1,
+    "box": 2,
     "buy": 14,
     "elsewhere": 3,
-    "in_deck": 72
+    "in_deck": 71
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1394,13 +1420,13 @@
   "reward": [],
   "risk": [
    {
-    "detail": "23.05 -> 14.80, a change of -8.25 (-36%)",
+    "detail": "22.72 -> 14.80, a change of -7.92 (-35%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.62 -> 7.24, a change of -2.37 (-25%)",
+    "detail": "9.33 -> 7.24, a change of -2.09 (-22%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
@@ -1412,19 +1438,19 @@
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "93 games in 100 -> 78 in 100, a swing of 15 games per 100",
+    "detail": "92 games in 100 -> 78 in 100, a swing of 14 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "3.16 -> 1.56, a change of -1.59 (-51%)",
+    "detail": "3.18 -> 1.56, a change of -1.62 (-51%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "64 games in 100 -> 58 in 100, a swing of 6 games per 100",
+    "detail": "65 games in 100 -> 58 in 100, a swing of 7 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
@@ -1436,7 +1462,7 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is missed drop by T5 at +0.018 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.014 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1463,11 +1489,11 @@
   {
    "better_is": "higher",
    "branch": 14.8021,
-   "champion": 23.0518,
-   "delta": -8.2497,
-   "mde": 0.4388,
+   "champion": 22.7228,
+   "delta": -7.9207,
+   "mde": 0.4392,
    "measure": "damage @T10",
-   "reads_as": "23.05 -> 14.80, a change of -8.25 (-36%)",
+   "reads_as": "22.72 -> 14.80, a change of -7.92 (-35%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1477,11 +1503,11 @@
   {
    "better_is": "higher",
    "branch": 7.2412,
-   "champion": 9.6155,
-   "delta": -2.3743,
-   "mde": 0.2099,
+   "champion": 9.3344,
+   "delta": -2.0932,
+   "mde": 0.2062,
    "measure": "board power @T6",
-   "reads_as": "9.62 -> 7.24, a change of -2.37 (-25%)",
+   "reads_as": "9.33 -> 7.24, a change of -2.09 (-22%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1491,9 +1517,9 @@
   {
    "better_is": "higher",
    "branch": 0.0,
-   "champion": 0.0056,
-   "delta": -0.0056,
-   "mde": 0.003,
+   "champion": 0.0053,
+   "delta": -0.0053,
+   "mde": 0.0029,
    "measure": "killed by T6",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1505,11 +1531,11 @@
   {
    "better_is": "higher",
    "branch": 0.7801,
-   "champion": 0.9276,
-   "delta": -0.1475,
+   "champion": 0.9233,
+   "delta": -0.1432,
    "mde": 0.0164,
    "measure": "killed by T10",
-   "reads_as": "93 games in 100 -> 78 in 100, a swing of 15 games per 100",
+   "reads_as": "92 games in 100 -> 78 in 100, a swing of 14 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1519,11 +1545,11 @@
   {
    "better_is": "lower",
    "branch": 0.0096,
-   "champion": 0.0104,
-   "delta": -0.0008,
-   "mde": 0.004,
+   "champion": 0.0096,
+   "delta": 0.0,
+   "mde": 0.0039,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1533,11 +1559,11 @@
   {
    "better_is": "lower",
    "branch": 0.3989,
-   "champion": 0.3809,
-   "delta": 0.018,
+   "champion": 0.3845,
+   "delta": 0.0144,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1547,11 +1573,11 @@
   {
    "better_is": "lower",
    "branch": 0.1985,
-   "champion": 0.1993,
-   "delta": -0.0008,
+   "champion": 0.1957,
+   "delta": 0.0028,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1561,11 +1587,11 @@
   {
    "better_is": "higher",
    "branch": 1.5614,
-   "champion": 3.1554,
-   "delta": -1.594,
-   "mde": 0.151,
+   "champion": 3.1831,
+   "delta": -1.6217,
+   "mde": 0.1509,
    "measure": "extra cards by T8",
-   "reads_as": "3.16 -> 1.56, a change of -1.59 (-51%)",
+   "reads_as": "3.18 -> 1.56, a change of -1.62 (-51%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1575,11 +1601,11 @@
   {
    "better_is": "higher",
    "branch": 0.5784,
-   "champion": 0.6371,
-   "delta": -0.0587,
-   "mde": 0.0219,
+   "champion": 0.6479,
+   "delta": -0.0695,
+   "mde": 0.0216,
    "measure": "interaction affordable @T6",
-   "reads_as": "64 games in 100 -> 58 in 100, a swing of 6 games per 100",
+   "reads_as": "65 games in 100 -> 58 in 100, a swing of 7 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "worse",
@@ -1589,8 +1615,8 @@
   {
    "better_is": "higher",
    "branch": 0.9822,
-   "champion": 0.9927,
-   "delta": -0.0105,
+   "champion": 0.9917,
+   "delta": -0.0095,
    "mde": 0.0052,
    "measure": "hand can act by T3",
    "reads_as": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",

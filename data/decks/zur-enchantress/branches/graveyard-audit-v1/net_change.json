@@ -185,7 +185,7 @@
    {
     "free": false,
     "name": "Fear of Infinity",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -557,31 +557,25 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 1,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 91
+   "in_deck": 92
   },
   "counts_are": "distinct names",
   "diff": {
-   "add": [
-    "Fear of Infinity"
-   ],
+   "add": [],
    "base_names": 92,
    "base_size": 100,
    "names": 92,
-   "out": [
-    "The Master of Keys"
-   ],
+   "out": [],
    "size": 100
   },
   "free": 0,
-  "mergeable": false,
+  "mergeable": true,
   "owned_but_elsewhere": 0,
   "proxy": false,
   "slug": "zur-enchantress",
-  "unsourced": [
-   "Fear of Infinity"
-  ]
+  "unsourced": []
  },
  "blind_spots": [],
  "branch": "graveyard-audit-v1",
@@ -592,43 +586,22 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 1,
-    "in_copies": 1,
+    "in": 0,
+    "in_copies": 0,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 1,
-    "out_copies": 1,
-    "spells_in": 1,
-    "spells_out": 1
+    "out": 0,
+    "out_copies": 0,
+    "spells_in": 0,
+    "spells_out": 0
    },
-   "in": [
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Fear of Infinity",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Enchantment Creature \u2014 Nightmare",
-     "why": null
-    }
-   ],
+   "in": [],
    "names": 92,
-   "out": [
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "The Master of Keys",
-     "pair": null,
-     "type_line": "Legendary Enchantment Creature \u2014 Horror",
-     "why": null
-    }
-   ],
+   "out": [],
    "size": 100,
    "unexplained": {
-    "in": 1,
-    "out": 1
+    "in": 0,
+    "out": 0
    }
   },
   "lands": [],
@@ -887,33 +860,30 @@
   "because": "The objective is not met.",
   "bill": {
    "box": 0,
-   "buy": 1,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 91
+   "in_deck": 92
   },
   "cost": {
-   "buy": 1,
-   "buy_cards": [
-    "Fear of Infinity"
-   ],
+   "buy": 0,
+   "buy_cards": [],
    "counts": {
     "box": 0,
-    "buy": 1,
+    "buy": 0,
     "elsewhere": 0,
-    "in_deck": 91
+    "in_deck": 92
    },
    "free_to_raid": [],
-   "mergeable": false,
+   "mergeable": true,
    "must_unsleeve": [],
-   "owned": 91,
-   "reads_as": "1 to buy; 91 of 92 already owned",
+   "owned": 92,
+   "reads_as": "0 to buy; 92 of 92 already owned",
    "total": 92
   },
-  "fell": [
-   "board power @T6"
-  ],
+  "fell": [],
   "no_call": [
    "damage @T10",
+   "board power @T6",
    "killed by T6",
    "killed by T10",
    "stall, 2 in a row",
@@ -923,19 +893,15 @@
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
+  "notes": [
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+  ],
   "reward": [],
   "risk": [
    {
-    "detail": "9.62 -> 9.33, a change of -0.28 (-3%)",
-    "kind": "paid",
-    "what": "board power @T6",
-    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "detail": "the largest is damage @T10 at -0.329 against an MDE of 0.439. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.439. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "9 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -954,11 +920,11 @@
   {
    "better_is": "higher",
    "branch": 22.7228,
-   "champion": 23.0518,
-   "delta": -0.329,
+   "champion": 22.7228,
+   "delta": 0.0,
    "mde": 0.4392,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.329 is smaller than the 0.439 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.439 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -968,23 +934,23 @@
   {
    "better_is": "higher",
    "branch": 9.3344,
-   "champion": 9.6155,
-   "delta": -0.2811,
-   "mde": 0.2099,
+   "champion": 9.3344,
+   "delta": 0.0,
+   "mde": 0.2062,
    "measure": "board power @T6",
-   "reads_as": "9.62 -> 9.33, a change of -0.28 (-3%)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.206 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
    "branch": 0.0053,
-   "champion": 0.0056,
-   "delta": -0.0003,
-   "mde": 0.003,
+   "champion": 0.0053,
+   "delta": 0.0,
+   "mde": 0.0029,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -996,11 +962,11 @@
   {
    "better_is": "higher",
    "branch": 0.9233,
-   "champion": 0.9276,
-   "delta": -0.0043,
+   "champion": 0.9233,
+   "delta": 0.0,
    "mde": 0.0105,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.011 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1010,11 +976,11 @@
   {
    "better_is": "lower",
    "branch": 0.0096,
-   "champion": 0.0104,
-   "delta": -0.0008,
-   "mde": 0.004,
+   "champion": 0.0096,
+   "delta": 0.0,
+   "mde": 0.0039,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1024,11 +990,11 @@
   {
    "better_is": "lower",
    "branch": 0.3845,
-   "champion": 0.3809,
-   "delta": 0.0036,
+   "champion": 0.3845,
+   "delta": 0.0,
    "mde": 0.0193,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1038,11 +1004,11 @@
   {
    "better_is": "lower",
    "branch": 0.1957,
-   "champion": 0.1993,
-   "delta": -0.0036,
-   "mde": 0.0158,
+   "champion": 0.1957,
+   "delta": 0.0,
+   "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1052,11 +1018,11 @@
   {
    "better_is": "higher",
    "branch": 3.1831,
-   "champion": 3.1554,
-   "delta": 0.0277,
-   "mde": 0.151,
+   "champion": 3.1831,
+   "delta": 0.0,
+   "mde": 0.1509,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.028 is smaller than the 0.151 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.151 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1066,11 +1032,11 @@
   {
    "better_is": "higher",
    "branch": 0.6479,
-   "champion": 0.6371,
-   "delta": 0.0108,
-   "mde": 0.0219,
+   "champion": 0.6479,
+   "delta": 0.0,
+   "mde": 0.0216,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1080,11 +1046,11 @@
   {
    "better_is": "higher",
    "branch": 0.9917,
-   "champion": 0.9927,
-   "delta": -0.001,
+   "champion": 0.9917,
+   "delta": 0.0,
    "mde": 0.0036,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

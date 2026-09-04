@@ -486,8 +486,13 @@
    {
     "free": false,
     "name": "The Master of Keys",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -569,10 +574,10 @@
    }
   ],
   "counts": {
-   "box": 1,
+   "box": 2,
    "buy": 5,
    "elsewhere": 1,
-   "in_deck": 85
+   "in_deck": 84
   },
   "counts_are": "distinct names",
   "diff": {
@@ -583,6 +588,7 @@
     "Mesa Enchantress",
     "Oppressive Rays",
     "Soul Snare",
+    "The Master of Keys",
     "Tymaret, Chosen from Death"
    ],
    "base_names": 92,
@@ -593,6 +599,7 @@
     "Archon of Sun's Grace",
     "Balemurk Leech",
     "Entity Tracker",
+    "Fear of Infinity",
     "Gremlin Tamer",
     "Northern Air Temple",
     "Sanctum of Stone Fangs"
@@ -621,14 +628,14 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 7,
-    "in_copies": 7,
+    "in": 8,
+    "in_copies": 8,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 7,
-    "out_copies": 7,
-    "spells_in": 7,
-    "spells_out": 7
+    "out": 8,
+    "out_copies": 8,
+    "spells_in": 8,
+    "spells_out": 8
    },
    "in": [
     {
@@ -700,6 +707,16 @@
      "state": "box",
      "type_line": "Creature \u2014 Human Druid",
      "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "The Master of Keys",
+     "pair": null,
+     "state": "box",
+     "type_line": "Legendary Enchantment Creature \u2014 Horror",
+     "why": null
     }
    ],
    "names": 92,
@@ -750,6 +767,15 @@
      "why": null
     },
     {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Fear of Infinity",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Nightmare",
+     "why": null
+    },
+    {
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
@@ -770,8 +796,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 7,
-    "out": 7
+    "in": 8,
+    "out": 8
    }
   },
   "lands": [],
@@ -1029,10 +1055,10 @@
  "recommendation": {
   "because": "You buy interaction affordable @T6 and pay damage @T10, board power @T6, killed by T6, killed by T10 and extra cards by T8.",
   "bill": {
-   "box": 1,
+   "box": 2,
    "buy": 5,
    "elsewhere": 1,
-   "in_deck": 85
+   "in_deck": 84
   },
   "cost": {
    "buy": 5,
@@ -1044,10 +1070,10 @@
     "Tymaret, Chosen from Death"
    ],
    "counts": {
-    "box": 1,
+    "box": 2,
     "buy": 5,
     "elsewhere": 1,
-    "in_deck": 85
+    "in_deck": 84
    },
    "free_to_raid": [
     {
@@ -1080,19 +1106,19 @@
   "reward": [
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "64 games in 100 -> 70 in 100, a swing of 6 games per 100",
+    "reads_as": "65 games in 100 -> 70 in 100, a swing of 5 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "23.05 -> 16.73, a change of -6.32 (-27%)",
+    "detail": "22.72 -> 16.73, a change of -5.99 (-26%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.62 -> 8.36, a change of -1.25 (-13%)",
+    "detail": "9.33 -> 8.36, a change of -0.97 (-10%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
@@ -1104,19 +1130,19 @@
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "93 games in 100 -> 86 in 100, a swing of 6 games per 100",
+    "detail": "92 games in 100 -> 86 in 100, a swing of 6 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "3.16 -> 1.90, a change of -1.25 (-40%)",
+    "detail": "3.18 -> 1.90, a change of -1.28 (-40%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is hand can act by T3 at +0.001 against an MDE of 0.003. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hand can act by T3 at +0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1139,11 +1165,11 @@
   {
    "better_is": "higher",
    "branch": 16.7319,
-   "champion": 23.0518,
-   "delta": -6.3199,
-   "mde": 0.4388,
+   "champion": 22.7228,
+   "delta": -5.9909,
+   "mde": 0.4392,
    "measure": "damage @T10",
-   "reads_as": "23.05 -> 16.73, a change of -6.32 (-27%)",
+   "reads_as": "22.72 -> 16.73, a change of -5.99 (-26%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1153,11 +1179,11 @@
   {
    "better_is": "higher",
    "branch": 8.3625,
-   "champion": 9.6155,
-   "delta": -1.253,
-   "mde": 0.2099,
+   "champion": 9.3344,
+   "delta": -0.9719,
+   "mde": 0.2062,
    "measure": "board power @T6",
-   "reads_as": "9.62 -> 8.36, a change of -1.25 (-13%)",
+   "reads_as": "9.33 -> 8.36, a change of -0.97 (-10%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1167,9 +1193,9 @@
   {
    "better_is": "higher",
    "branch": 0.0009,
-   "champion": 0.0056,
-   "delta": -0.0047,
-   "mde": 0.003,
+   "champion": 0.0053,
+   "delta": -0.0044,
+   "mde": 0.0029,
    "measure": "killed by T6",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1181,11 +1207,11 @@
   {
    "better_is": "higher",
    "branch": 0.8649,
-   "champion": 0.9276,
-   "delta": -0.0627,
+   "champion": 0.9233,
+   "delta": -0.0584,
    "mde": 0.0135,
    "measure": "killed by T10",
-   "reads_as": "93 games in 100 -> 86 in 100, a swing of 6 games per 100",
+   "reads_as": "92 games in 100 -> 86 in 100, a swing of 6 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1195,9 +1221,9 @@
   {
    "better_is": "lower",
    "branch": 0.01,
-   "champion": 0.0104,
-   "delta": -0.0004,
-   "mde": 0.004,
+   "champion": 0.0096,
+   "delta": 0.0004,
+   "mde": 0.0039,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": null,
@@ -1209,11 +1235,11 @@
   {
    "better_is": "lower",
    "branch": 0.3861,
-   "champion": 0.3809,
-   "delta": 0.0052,
+   "champion": 0.3845,
+   "delta": 0.0016,
    "mde": 0.0193,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1223,11 +1249,11 @@
   {
    "better_is": "lower",
    "branch": 0.198,
-   "champion": 0.1993,
-   "delta": -0.0013,
+   "champion": 0.1957,
+   "delta": 0.0023,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1237,11 +1263,11 @@
   {
    "better_is": "higher",
    "branch": 1.9035,
-   "champion": 3.1554,
-   "delta": -1.2519,
-   "mde": 0.151,
+   "champion": 3.1831,
+   "delta": -1.2796,
+   "mde": 0.1509,
    "measure": "extra cards by T8",
-   "reads_as": "3.16 -> 1.90, a change of -1.25 (-40%)",
+   "reads_as": "3.18 -> 1.90, a change of -1.28 (-40%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1251,11 +1277,11 @@
   {
    "better_is": "higher",
    "branch": 0.6968,
-   "champion": 0.6371,
-   "delta": 0.0597,
-   "mde": 0.0219,
+   "champion": 0.6479,
+   "delta": 0.0489,
+   "mde": 0.0216,
    "measure": "interaction affordable @T6",
-   "reads_as": "64 games in 100 -> 70 in 100, a swing of 6 games per 100",
+   "reads_as": "65 games in 100 -> 70 in 100, a swing of 5 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
@@ -1265,11 +1291,11 @@
   {
    "better_is": "higher",
    "branch": 0.9941,
-   "champion": 0.9927,
-   "delta": 0.0014,
-   "mde": 0.0034,
+   "champion": 0.9917,
+   "delta": 0.0024,
+   "mde": 0.0036,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
