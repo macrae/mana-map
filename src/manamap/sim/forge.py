@@ -375,6 +375,22 @@ def profile_tag(profile=None, vs_profile=None):
     return ("-" + "-".join(bits)) if bits else ""
 
 
+def pod_tag_name(pod, opponents):
+    """What `profile_tag` should call this table's pilot.
+
+    A scalar passes straight through, so nothing that ran before pods existed
+    changes name. A MAP collapses to the shared profile when every seat agrees —
+    so a pod file setting one profile is byte-identical to `--vs-profile <that>`
+    — and to `Mixed<8hex>` when they do not, because two tables that play
+    differently must not write the same path.
+    """
+    if not isinstance(pod, dict):
+        return pod
+    from manamap.sim import pods as _pods
+
+    return _pods.mixed_tag(pod, list(opponents), STANDARD_POD_PROFILE)
+
+
 def clock_tag(clock=None):
     """The run-id suffix for a clock that is not the historical one, or "".
 
@@ -399,6 +415,20 @@ def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clo
     seed = default_seed(slug, opponents) if seed is None else int(seed)
     return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
             f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}")
+
+
+def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock):
+    """The run id a given configuration WILL write, before anything runs.
+
+    A function because two callers need the answer and neither should re-derive
+    it: `run` names the record, and the pod tests assert that `--pod standard`
+    and the three `--vs` flags it replaces produce the SAME id. A test that
+    recomputed the rule would be testing itself, and this rule is the entire
+    safety argument for pod files.
+    """
+    pod = vs_profile or STANDARD_POD_PROFILE
+    return run_id(slug, opponents, games, seed, profile,
+                  pod_tag_name(pod, opponents), clock)
 
 
 def default_jobs():
@@ -577,6 +607,19 @@ def _seat_label(seat_names):
             for k in range(1, len(seat_names) + 1)}
 
 
+def pod_profile(pod, slug):
+    """One opponent seat's pilot. `pod` is a name for all of them, or a map.
+
+    A pod file may give a seat its own profile — B-2's "each opponent deck
+    carries an AI strategy profile" — and the map form is how that reaches here.
+    A seat the map does not mention falls back to the standard, so a pod that
+    sets one seat does not silently re-pilot the rest.
+    """
+    if isinstance(pod, dict):
+        return pod.get(slug) or STANDARD_POD_PROFILE
+    return pod
+
+
 def _profiles_for(rotation, subject, profile, pod):
     """AI profiles in the ROTATED seat order.
 
@@ -585,7 +628,8 @@ def _profiles_for(rotation, subject, profile, pod):
     in slot 0 — silently swapping which deck is played by which AI, which is a
     worse bug than the one the rotation fixes.
     """
-    return [(profile or DEFAULT_PROFILE) if s == subject else pod for s in rotation]
+    return [(profile or DEFAULT_PROFILE) if s == subject else pod_profile(pod, s)
+            for s in rotation]
 
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
@@ -601,7 +645,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
     pod = vs_profile or STANDARD_POD_PROFILE
-    rid = run_id(slug, opponents, games, seed_base, profile, pod, clock)
+    rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
@@ -617,7 +661,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # differently — and a win rate is relative to the pod's competence as much
     # as to the deck. `--vs-profile` sets every opponent seat.
     profiles = None
-    if profile or pod != DEFAULT_PROFILE:
+    if profile or pod_tag_name(pod, opponents) != DEFAULT_PROFILE:
         profiles = [profile or DEFAULT_PROFILE] + [pod] * len(opponents)
     # SEATS ROTATE PER JOB, and the reason is that Forge's turn order is not a
     # coin flip. `GameAction.determineFirstTurnPlayer` picks, from game 2 on, the
@@ -851,6 +895,36 @@ def list_runs(slug):
     return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
 
 
+def resolve_table(args):
+    """The opponents and their pilots, from `--vs` flags or a named `--pod`.
+
+    ONE PLACE, because `simulate` and `experiment` must not disagree about what
+    a table is — they already disagreed about the pod's AI profile, and that made
+    a controlled A/B controlled against the wrong thing for as long as both
+    commands existed.
+
+    A pod expands to the SAME ordered slugs the flags would have given, so the
+    run id is unchanged and `--pod standard` is a spelling rather than a new
+    measurement. Mixing the two is refused: two sources for one list is how a
+    seat goes missing silently.
+    """
+    from manamap.sim import pods
+
+    vs = list(getattr(args, "vs", None) or [])
+    name = getattr(args, "pod", None)
+    if vs and name:
+        raise SystemExit(
+            f"--pod {name} and --vs together — pick one. A pod IS the list of "
+            f"--vs flags; `manamap pilot pods {name}` prints the ones it expands "
+            f"to if you want to start from them.")
+    if not name:
+        return vs, None
+    try:
+        return pods.seats(name), pods.profiles(name)
+    except pods.PodError as exc:
+        raise SystemExit(str(exc))
+
+
 def main(args):
     slug = args.slug
     if getattr(args, "analyze", None):
@@ -861,11 +935,16 @@ def main(args):
         print(f"  win rate {me.get('win_rate')} ci95 {me.get('win_rate_ci95')} · "
               f"token damage share {me.get('tokens', {}).get('token_damage_share')}")
         return
-    if getattr(args, "list", False) or not getattr(args, "vs", None):
+    # THE TABLE IS RESOLVED BEFORE THE LIST BRANCH, not after. This read
+    # `args.vs` directly, so `--pod standard` looked like "no opponents given"
+    # and silently printed the run list instead of running anything — a flag
+    # that appears to do nothing is worse than one that errors.
+    opponents, seat_profiles = resolve_table(args)
+    if getattr(args, "list", False) or not opponents:
         runs = list_runs(slug)
         if not runs:
-            print(f"{slug}: no simulation runs — "
-                  f"`manamap pilot simulate {slug} --vs <opponent> [--vs …] --games N`")
+            print(f"{slug}: no simulation runs — `manamap pilot simulate {slug} "
+                  f"--pod standard --games N` (or --vs <opponent>, repeatable)")
             return
         print(f"SIMULATION RUNS — {slug} ({len(runs)})\n")
         for r in runs:
@@ -877,11 +956,11 @@ def main(args):
                   f"{r['wall_seconds']}s on {r['jobs']} JVM(s)")
             print(f"      vs {', '.join(x['slug'] for x in r['seats'][1:])}  ·  wins {s['wins']}")
         return
-    path, rec = run(slug, args.vs, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
+    path, rec = run(slug, opponents, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
                     profile=getattr(args, "profile", None),
-                    vs_profile=getattr(args, "vs_profile", None))
+                    vs_profile=getattr(args, "vs_profile", None) or seat_profiles)
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "
               f"{rec['seeds']} → {path}")
@@ -890,7 +969,7 @@ def main(args):
         return
     s = rec["summary"]
     print(f"{slug}: {rec['games_completed']}/{rec['games_requested']} games vs "
-          f"{', '.join(args.vs)} in {rec['wall_seconds']}s on {rec['jobs']} JVM(s)")
+          f"{', '.join(opponents)} in {rec['wall_seconds']}s on {rec['jobs']} JVM(s)")
     print(f"  wins {s['wins']}  draws {s['draws']}  win rate {s['win_rate']}  "
           f"mean round {s['mean_round']} (global turn {s['mean_global_turn']})")
     # COMPUTED AT PRINT TIME, NEVER WRITTEN INTO THE RECORD — the same rule

@@ -267,6 +267,11 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
+manamap pilot pods [<name>] [--json]    # THE NAMED TABLES. `simulate <slug> --pod standard`
+                                        #   expands to the same --vs flags and the SAME RUN ID,
+                                        #   and carries each seat's archetype, bracket and AI
+                                        #   profile. `vito-era` is kept so a pre-2026-09-02
+                                        #   record stays reproducible rather than only readable
 manamap pilot metrics [--group G] [--status S] [--verbose] [--problems]
                                         #   THE CATALOG (PRD §14): one definition per figure,
                                         #   which ENGINE answers it, and what is UNAVAILABLE

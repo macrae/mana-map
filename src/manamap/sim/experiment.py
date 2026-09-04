@@ -41,7 +41,8 @@ from manamap.sim.forge import (ASSUMPTIONS, DEFAULT_PROFILE, FORGE_AI_CAVEAT,
                                _commanders_by_slug, _java_version, _seat_label,
                                command, commanders_from_text, forge_jar,
                                forge_version, install_deck, install_named,
-                               profile_tag, seat_sha, split_games)
+                               profile_tag, seat_sha, split_games,
+                               resolve_table as forge_resolve_table)
 
 EXP_DIR = "experiments"
 # The aggregate keys the delta reports, and where they live in a seat's analysis.
@@ -555,10 +556,14 @@ def main(args):
             print(f"      win {w['a']} → {w['b']}   Δ95% "
                   f"{('[%+.3f, %+.3f]' % (ci[0], ci[1])) if ci else '—'}  ({verdict})")
         return
-    path, doc = run(slug, args.a, args.b, args.vs, games=args.games or SIM_DEFAULT_GAMES,
+    # THE SAME RESOLVER `simulate` USES. These two commands must not disagree
+    # about what a table is; they already disagreed about its AI profile, and
+    # that made every controlled A/B controlled against the wrong pod.
+    opponents, seat_profiles = forge_resolve_table(args)
+    path, doc = run(slug, args.a, args.b, opponents, games=args.games or SIM_DEFAULT_GAMES,
                     jobs=args.jobs, clock=args.clock or SIM_GAME_CLOCK_SECONDS,
                     seed=getattr(args, "seed", None), profile=getattr(args, "profile", None),
-                    vs_profile=getattr(args, "vs_profile", None),
+                    vs_profile=getattr(args, "vs_profile", None) or seat_profiles,
                     dry_run=getattr(args, "dry_run", False))
     if getattr(args, "dry_run", False):
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")

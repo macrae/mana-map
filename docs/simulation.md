@@ -13,6 +13,19 @@ either feeds an experiment or reads one.
 
 
 
+> **2026-09-03 — the standard pod is an artifact, not a sentence.** It was
+> described here and nowhere in the code — `grep STANDARD_POD` found an AI
+> profile and no roster — so the most load-bearing configuration in this layer
+> lived in shell history. `data/pods/*.json` is tracked and carries each seat's
+> archetype and bracket, which is what lets B-2's "report by pod composition" be
+> more than a slug list. `--pod standard` expands to the same ordered slugs and
+> therefore **the same run id**, asserted through `run_id_for`, the function
+> `run` itself calls. `vito-era` is kept so every pre-2026-09-02 record stays
+> reproducible. A seat may carry its own AI profile — the Forge seam always
+> existed (`-a` is index-aligned, `command()` took a list) and nothing could
+> reach it; a table whose seats disagree gets `-podMixed<8hex>` so two pods that
+> play differently cannot share a path.
+
 > **2026-09-03 — FORGE GIVES THE FIRST MULLIGAN FREE.** A rules-coverage gap,
 > found by wiring up a measurement that had been taken and thrown away: Forge
 > emits `has mulliganed down to N cards.` once per mulligan and `has kept a hand

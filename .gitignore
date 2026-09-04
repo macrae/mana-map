@@ -36,6 +36,12 @@ __pycache__/
 !data/decks/
 # The pod: opponent seats for `simulate --vs` (docs/simulation.md S3) — tracked, like decks.
 !data/opponents/
+# THE NAMED TABLES. Tracked for the same reason `data/opponents/` is: a
+# pod is a claim about which table a result was measured against, so a
+# fresh clone that cannot resolve `--pod standard` cannot reproduce a
+# single record. `data/*` catches it otherwise, which is how the first
+# cut of this would have passed locally and failed on CI.
+!data/pods/
 !data/strategy/
 # A physical card collection (`COLLECTION_DIR`), read by `deck-history` to tell a
 # proposed swap you already own from one you would have to buy. Tracked so a

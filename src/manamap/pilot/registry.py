@@ -31,6 +31,8 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("pods", "manamap.sim.pods",
+     "The named tables: which decks, which archetypes, which brackets — and the --vs flags each expands to"),
     ("metrics", "manamap.metrics",
      "The metrics catalog: one definition per figure, which engine answers it, and what is unavailable and why"),
     ("build", "manamap.pilot.autobuild",
@@ -418,6 +420,12 @@ def add_pilot_parser(subparsers):
                              help="JVMs to run in parallel (default: CPUs - 1)")
             cmd.add_argument("--clock", type=int, default=None,
                              help="seconds before Forge calls a game a draw (default SIM_GAME_CLOCK_SECONDS)")
+            cmd.add_argument("--pod", default=None, metavar="NAME",
+                             help="a named table from data/pods/ instead of "
+                                  "repeating --vs. It expands to the SAME "
+                                  "ordered slugs and therefore the same run id, "
+                                  "and it carries each seat's archetype, bracket "
+                                  "and AI profile (`manamap pilot pods`)")
             cmd.add_argument("--list", action="store_true", help="list this deck's runs")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
                              help="print the JVM commands and the run id; run nothing")
@@ -672,6 +680,12 @@ def add_pilot_parser(subparsers):
                              help="arm B: a version ref or `working`")
             cmd.add_argument("--vs", action="append", default=[], metavar="SLUG",
                              help="an opponent seat; repeatable — the same table for both arms")
+            cmd.add_argument("--pod", default=None, metavar="NAME",
+                             help="a named table from data/pods/ instead of "
+                                  "repeating --vs. It expands to the SAME "
+                                  "ordered slugs and therefore the same run id, "
+                                  "and it carries each seat's archetype, bracket "
+                                  "and AI profile (`manamap pilot pods`)")
             cmd.add_argument("--games", type=int, default=None, help="games PER ARM (default SIM_DEFAULT_GAMES)")
             cmd.add_argument("--jobs", type=int, default=None)
             cmd.add_argument("--clock", type=int, default=None)
@@ -740,6 +754,10 @@ def add_pilot_parser(subparsers):
                                   "real EDHREC archetypes. Off by default: a "
                                   "gate that fails when the network is down is "
                                   "a gate that gets switched off")
+        if name == "pods":
+            cmd.add_argument("name", nargs="?", default=None,
+                             help="one pod; omit to list them all")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "metrics":
             from manamap.metrics import GROUPS, STATUSES
             cmd.add_argument("--group", default=None, choices=sorted(GROUPS))
