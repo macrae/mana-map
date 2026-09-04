@@ -248,7 +248,14 @@ def calibration(name, records=None):
         rate = round(w / n, 3) if n else None
         rows.append({"seat": key, "wins": w, "games": n, "rate": rate,
                      "ci95": [round(lo, 3), round(hi, 3)] if lo is not None else None,
-                     "share_of_fair": round(rate / fair, 2) if rate and fair else None})
+                     # `rate is not None`, NOT `rate`. A rate of 0.0 is FALSY
+                     # and is also a measurement — the seat won nothing, which
+                     # is the most informative reading a calibration produces.
+                     # The first cut printed "Nonex fair" for a deck that went
+                     # 0 for 39, which is the same absent-versus-zero confusion
+                     # this repo keeps paying for, pointing the other way.
+                     "share_of_fair": (round(rate / fair, 2)
+                                       if rate is not None and fair else None)})
     rows.sort(key=lambda r: -(r["rate"] or 0))
 
     opponents = [r for r in rows if r["seat"] != "SUBJECT"]
@@ -304,6 +311,14 @@ def format_calibration(doc):
         lines.append(f"\n  THE NULL IS {null['rate']:.3f}, NOT "
                      f"{doc['fair_share']:.3f} — that is what our decks have "
                      f"actually scored in seat 0 here.")
+        # HOW MANY OF OUR DECKS, not how many games. A null pooled from ONE deck
+        # is that deck's record wearing the table's name: it cannot separate an
+        # uneven table from a bad deck, and 0.000 over 39 games is exactly the
+        # reading a reader would take the wrong way.
+        if len(doc["decks"]) < 2:
+            lines.append(f"  ONE DECK ONLY ({doc['decks'][0]}), so this null is "
+                         f"that deck's record as much as the table's. Run "
+                         f"another deck here before reading it as a baseline.")
     if doc["balance"]["dominant"] or doc["balance"]["floor"]:
         lines.append("  This table is not even. A win rate against it is "
                      "relative to that unevenness, not to 1/n.")

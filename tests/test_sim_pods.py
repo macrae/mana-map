@@ -296,9 +296,10 @@ def test_a_record_says_which_table_it_faced():
         named += bool(pod["named"])
         inferred += not pod["named"]
 
-    # Every record on disk predates `--pod`, so all of them are readings.
-    assert named == 0, "a stamped record appeared without --pod being run"
+    # Most records predate `--pod` and are readings; the playgroup calibration
+    # was the first run made THROUGH a pod and is a stamp.
     assert inferred >= 15, "the backfill reached almost nothing"
+    assert named >= 1, "the calibration run stamped its pod and should say so"
 
 
 def test_most_of_the_record_faced_the_table_the_docs_call_unfair():
@@ -380,8 +381,16 @@ def test_the_table_that_replaced_the_unfair_one_is_also_uneven():
 
 
 def test_an_unplayed_table_says_it_has_no_null_rather_than_assuming_one():
-    """Absent means absent. A pod nobody has run has no baseline at all."""
-    cal = pods.calibration("playgroup")
+    """Absent means absent. A pod nobody has run has no baseline at all.
+
+    `playgroup` was the subject here until it was actually calibrated, which is
+    the right way for this assertion to move: a table gains a null by being
+    played, and the test follows the tables that have not been.
+    """
+    unplayed = [n for n in pods.available()
+                if not pods.calibration(n)["measured"]]
+    assert unplayed, "every table has a null now — pick a fresh one or drop this"
+    cal = pods.calibration(unplayed[0])
     assert cal["measured"] is False
     assert cal["seats"] == []
     assert "no null" in cal["note"]
@@ -404,3 +413,34 @@ def test_calibration_is_derived_and_stores_nothing():
     assert "calibration" not in doc and "baseline" not in doc
     for seat in doc["seats"]:
         assert "rate" not in seat and "win_rate" not in seat
+
+
+def test_a_seat_that_won_nothing_reports_a_share_of_zero_not_none():
+    """`0.0` is falsy AND a measurement.
+
+    The first cut wrote `if rate and fair`, so a deck that went 0 for 39 printed
+    "Nonex fair" — the absent-versus-zero confusion this repo keeps paying for,
+    pointing the other way. A seat winning nothing is the most informative
+    reading a calibration produces and must not render as unknown.
+    """
+    cal = pods.calibration("playgroup")
+    if not cal["measured"]:
+        pytest.skip("nothing has faced playgroup yet")
+    for row in cal["seats"]:
+        if row["rate"] == 0:
+            assert row["share_of_fair"] == 0.0, row
+    assert all(r["share_of_fair"] is not None for r in cal["seats"])
+
+
+def test_a_null_pooled_from_one_deck_says_so():
+    """A baseline from a single deck is that deck's record wearing the table's name.
+
+    It cannot separate an uneven table from a bad deck, which is exactly the
+    reading 0.000 over 39 games invites.
+    """
+    cal = pods.calibration("playgroup")
+    if not cal["measured"]:
+        pytest.skip("nothing has faced playgroup yet")
+    text = pods.format_calibration(cal)
+    if len(cal["decks"]) < 2:
+        assert "ONE DECK ONLY" in text
