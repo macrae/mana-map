@@ -223,14 +223,35 @@ pre-2026-09-02 record stays reproducible).
 2. ~~**`mulligan` parsed and thrown away.**~~ **DONE**, and it found a rules gap:
    Forge gives the first mulligan free.
 3. ~~**The pod object.**~~ **DONE** — `data/pods/`, `--pod`, per-seat AI profiles.
-4. **Name the three missing playgroup commanders** (above) and fetch them.
-5. **Report a batch by pod composition and seat**, which is what `pods.compose`
-   and `outcomes[].seat_order` were put in place for and nothing consumes yet.
-6. **One pipeline definition.** The rebuild chain is written out three times —
+4. ~~**Report a batch by pod composition and seat.**~~ **DONE.** `seat effect`
+   and `placement` are published — and the seat figure had to be rebuilt from
+   `Turn: Turn 1 (seat)`, because `-d` position reports BACKWARDS: Forge gives
+   the first turn to the previous game's loser, so edgar started **81%** of a
+   400-game run. Records carry a `pod` block, which is how we now know **14 of
+   19 tracked runs faced `vito-era`**.
+5. ~~**Environments** (Epic C).~~ **DONE** — `promote` / `demote`, a `dev`/
+   `bench`/`sleeved` ladder where two rungs are DERIVED, a per-requirement gate,
+   and C-3's three ownership buckets with the holding deck named.
+
+### OPEN — what the build-out still needs
+
+1. **THE PILOT'S CALL: name three playgroup commanders.** The log names these
+   decks only as archetypes, and a guess in a file called `playgroup` is an
+   invention that stops looking like one immediately:
+   Tom's *"one of his blue-black decks"*, Tom's *"enchantment deck"*, Alex's
+   *"fight deck"* — and Alex's *"Lord of the Rings Sauron deck"*, which names a
+   character with several legal commanders.
+2. **One pipeline definition.** The rebuild chain is written out three times —
    `deck_branch.py` twice and `regen.STAGES` once — with `goldfish` and
    `mana-analysis` duplicated between two of them.
-7. **Environments** (Epic C): a `stage` token beside `lifecycle`/`baseline`/
-   `paper`, `promote`/`demote` verbs, and the gates read off `deck_status`.
+3. **The workbench reads the stage.** `workbench.js` still computes
+   `living.filter(e => !e.locked)`; `info.json` should carry `stage` and the
+   racks should read it, so DEV brews are a lane rather than bench clutter.
+4. **Epic D**: the agent inventory is produced and belongs checked in as
+   `docs/agent-inventory.md`; two orphan charters (`pipeline-runner`, `viz-dev`)
+   are deletable today.
+5. **Epic E**: mostly link wiring — `?cards=`, `?deck=` and `?ref=` already open
+   the Atlas seeded, and the library is persisted and cross-surface.
 
 
 ### DONE — the speed sprint (2026-08-30/31)
