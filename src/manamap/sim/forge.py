@@ -442,9 +442,19 @@ def default_jobs():
     artifact of the scheduler, indistinguishable in the record from a genuinely
     stalled game.
 
-    That is what the censoring numbers say. The 4-JVM runs truncated 0% of their
-    games; every 7-JVM run truncated between 5% and 18%. The decks did not
-    change between them.
+    That is what the censoring numbers say, re-derived across every tracked run
+    on 2026-09-04 rather than quoted from the two that existed when this was
+    written:
+
+        4 jobs    7 runs    408 games     14 truncated    3.4%
+        7 jobs   13 runs    880 games    120 truncated   13.6%
+
+    A FOUR-FOLD DIFFERENCE, and the decks did not change between them. The
+    original wording here said the 4-JVM runs truncated 0%, which was true of
+    the two runs available at the time and is no longer true — five more 4-job
+    runs since have truncated between 0% and 5%. Four jobs is much better, not
+    perfect, and the difference between those two claims is exactly the kind
+    that goes stale silently.
 
     Falls back to half the logical CPUs where the split is not reported, which
     is the right shape on a homogeneous machine too: Forge is not the only thing

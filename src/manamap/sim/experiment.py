@@ -338,8 +338,9 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
                          f"an A/A tells you the noise floor, which is legitimate, but "
                          f"say so by passing different refs to different lists")
     # `forge.default_jobs()`, NOT `cpu_count - 1`. `simulate` was moved to
-    # PERFORMANCE CORES on measurement and this was left behind: 4-JVM runs
-    # truncated 0% of their games, and every 7-JVM run truncated 5-18%. A
+    # PERFORMANCE CORES on measurement and this was left behind. Re-derived
+    # across every tracked run on 2026-09-04: 4 jobs truncate 3.4% of games
+    # (14 of 408) and 7 jobs truncate 13.6% (120 of 880) — four-fold. A
     # truncated game has no winner and is EXCLUDED from the rate, so
     # oversubscribing does not merely run slower — it throws games away, and
     # an experiment throws them away from both arms.
