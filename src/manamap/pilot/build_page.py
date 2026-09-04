@@ -532,15 +532,29 @@ def main(args):
     d = load(slug)
     html = render_page(d)
     out = getattr(args, "out", None)
-    # `manuals/p/<slug>.html`, NOT `manuals/<slug>.html`. The compact page is
-    # meant to replace the magazine and eventually will, but until the phase that
-    # deletes `build_manual.py` they coexist — and writing to the magazine's path
-    # would silently overwrite nine tracked, byte-compared files the moment
-    # anyone ran this.
-    path = (MANUALS_DIR_PATH / "p" / f"{slug}.html") if not out else None
-    if out:
-        from manamap.pilot.common import resolve_out_path
-        path = resolve_out_path(out, slug, "build-page", ext=".html")
+    # THE GUARD WAS POINTED AT THE WRONG PATH. It read: writing to
+    # `manuals/<slug>.html` would overwrite nine tracked, byte-compared magazine
+    # files — true, and it never noticed that `manuals/p/` had meanwhile been
+    # taken by the Pilot's Operating Handbook, which SUPERSEDES this renderer
+    # (`docs/manual-v5-spec.md`, 2026-09-02). So the module guarded the path it
+    # does not write and clobbered the one it does. `deck-branch merge` and
+    # `make demo` both called it; all ten handbooks on disk had been overwritten
+    # at least once, and `validate_poh` validated whichever renderer had won.
+    #
+    # SO IT HAS NO DEFAULT OUTPUT ANY MORE. Not a string match on the file
+    # already there — that is papering a gate that cannot see who wrote it — but
+    # the simpler fact that a superseded renderer does not own a live path. It is
+    # kept so the record renders; `--out` is how you look at what it produces,
+    # and `resolve_out_path` keeps that slug-scoped.
+    if not out:
+        raise SystemExit(
+            f"build-page has no default output any more. `manuals/p/{slug}.html` "
+            f"belongs to the Pilot's Operating Handbook, which SUPERSEDES this "
+            f"renderer (docs/manual-v5-spec.md, 2026-09-02) — rebuild it with "
+            f"`manamap pilot build-poh {slug}`. To render THIS page, pass "
+            f"`--out <file>`; it is slug-scoped and never tracked.")
+    from manamap.pilot.common import resolve_out_path
+    path = resolve_out_path(out, slug, "build-page", ext=".html")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(html, encoding="utf-8")
     # The sheet is content-addressed, so writing it every time is a no-op unless

@@ -128,11 +128,12 @@ demo:  ## Rebuild everything the demo shows, then serve it. Run before presentin
 	done
 	@echo '==> manuals + the version lists (a git walk; tracked, not deploy-time)'
 	@$(MAKE) --no-print-directory manuals
-	@echo "==> the compact Pilot's Manual for every deck that can render one"
-	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
-	  test -f data/decks/$$slug/cards.json && $(MANAMAP) pilot build-page $$slug >/dev/null \
-	    && echo "    manuals/p/$$slug.html"; \
-	done
+# `make manuals` above already rendered the handbook for every deck. This used to
+# follow it with a `build-page` loop over the same slugs — and both renderers
+# write `manuals/p/<slug>.html`, so `make demo` rendered ten handbooks and then
+# overwrote all ten with pages from the renderer `manual-v5-spec.md` declared
+# superseded on 2026-09-02. Removed rather than reordered: there is no order in
+# which two writers of one path are both right.
 	@$(MANAMAP) pilot build-index
 	@echo ""
 	@echo "  Workbench   http://localhost:$(PORT)/viz/workbench.html   <- START HERE"

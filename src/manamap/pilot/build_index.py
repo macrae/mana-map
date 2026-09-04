@@ -323,8 +323,12 @@ def gather_entries():
                             "log_annotations", "deck_versions",
                             "captains_log")}
         has["log"] = (deck_path / "log.jsonl").exists()
-        # The compact Pilot's Manual. Under `manuals/p/` while it coexists with
-        # the magazine; the browser cannot list a directory, so presence rides here.
+        # The rendered page under `manuals/p/` — since 2026-09-02 the Pilot's
+        # OPERATING HANDBOOK, which superseded the compact page and took its
+        # path. The key keeps its name because it is a wire format the four viz
+        # call sites read; what it means is "a page is rendered for this deck",
+        # which is all any of them do with it. The browser cannot list a
+        # directory, so presence rides here.
         has["page"] = (MANUALS_DIR / "p" / f"{slug}.html").exists()
 
         # IS THIS DECK BUILT IN PAPER? The workbench's front door filters on it,

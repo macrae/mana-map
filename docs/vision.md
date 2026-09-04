@@ -64,7 +64,7 @@ replayability and the control is N. An A/A is refused with the reason.
 | remember what happened at the table | `deck-notes add` → `/debrief` → `/prescribe` | authored → ★ → ◆★ |
 | know whether a deck EXISTS as cardboard | `deck-version <slug> paper` — the one claim nothing can derive | authored |
 | decide which deck to spend tonight on | the **workbench** — `viz/workbench.html`, every deck and its derived next | ◆ |
-| read any of it in a browser | the **deck page** — `viz/deck.html?deck=<slug>` — and the **Pilot's Manual**, `manuals/p/<slug>.html` | all |
+| read any of it in a browser | the **deck page** — `viz/deck.html?deck=<slug>` — and the **Pilot's Operating Handbook**, `manuals/p/<slug>.html` | all |
 
 ## The evidence contract — the part that never moves
 
@@ -112,10 +112,14 @@ owns each figure.
 `sim-scenario`, `fetch-opponent`), the goldfish, the deterministic builder, `card-search`,
 `deck-audit`, `deck-info`, `deck-version`, `deck-notes`/`/debrief`/`/prescribe`,
 `/resolve-stack`, `analyze-engine`, `deck-recon`, the card atlas, the deck page, the
-**workbench landing page** and the **Pilot's Manual** (`build-page` → `manuals/p/`).
+**workbench landing page** and the **Pilot's Operating Handbook**
+(`build-poh` → `manuals/p/`).
 
 **Legacy, frozen** — the magazine renderer (`build_manual`, `issue_spec`, `design`,
-`validate_issue`, STYLEv3) and the artifacts only it reads. It still renders nine pages;
+`validate_issue`, STYLEv3) and the artifacts only it reads, plus `build_page` —
+the compact page the handbook superseded on 2026-09-02. It shared the handbook's
+path and clobbered it from two callers, so it has no default output any more:
+`--out` or nothing. It still renders nine pages;
 nothing regenerates its inputs; it has been **replaced** by the compact Pilot's Manual
 (`build-page`, `docs/manual-v5-spec.md`) and is no longer linked from any live surface.
 Marked LEGACY and left accurate rather than rewritten.

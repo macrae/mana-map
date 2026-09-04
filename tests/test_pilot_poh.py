@@ -14,6 +14,7 @@ in the gate rewrote one. A gate that compares a file it did not rebuild is not
 a gate.
 """
 
+import pathlib
 import re
 import subprocess
 import sys
@@ -390,3 +391,61 @@ def test_a_procedure_page_is_measured_to_its_own_end():
     _errors, notes = validate_poh.validate(
         f'<section class="poh-sec" id="s3"><h2>3 E</h2>{long_page}</section>', "x")
     assert any("steps on one page" in n for n in notes), notes
+
+
+# ── one path, one writer ────────────────────────────────────────────────────
+
+def test_only_the_handbook_writes_manuals_p(tmp_path, monkeypatch):
+    """`build-page` and `build-poh` both rendered `manuals/p/<slug>.html`.
+
+    `docs/manual-v5-spec.md` declared the compact page SUPERSEDED by the
+    handbook on 2026-09-02 and both kept writing the same file, so:
+
+      * `deck-branch merge` called `build-page` in its rebuild chain and
+        replaced the merged deck's handbook with a page from a frozen renderer;
+      * `make demo` rendered every handbook via `make manuals` and then
+        overwrote all ten in the next loop;
+      * `validate_poh` reads that path and validated whichever had won;
+      * `build_index`'s `has["page"]` reported a handbook as a page.
+
+    The renderer's own guard was pointed at `manuals/<slug>.html` — the
+    magazine's path, which it does not write — so it protected the wrong file
+    the whole time. It has no default output now.
+    """
+    from types import SimpleNamespace
+
+    from manamap.pilot import build_page
+
+    with pytest.raises(SystemExit) as exc:
+        build_page.main(SimpleNamespace(slug="zur-enchantress", out=None))
+    assert "build-poh" in str(exc.value)
+    assert "manuals/p/" in str(exc.value)
+
+
+def test_no_live_caller_renders_the_compact_page_over_the_handbook():
+    """The two callers that clobbered it, asserted gone from their own sources.
+
+    A comment saying "do not call this" is a claim; reading the callers is a
+    guard. `--out` remains legitimate everywhere, so the assertion is about the
+    DEFAULT-path invocation only.
+    """
+    root = pathlib.Path(__file__).resolve().parent.parent
+
+    branch = (root / "src/manamap/pilot/deck_branch.py").read_text(encoding="utf-8")
+    assert '"manamap.pilot.build_page"' not in branch
+    assert '"manamap.pilot.poh"' in branch, "the merge chain must rebuild the handbook"
+
+    makefile = (root / "Makefile").read_text(encoding="utf-8")
+    calls = re.findall(r"pilot build-page (\S+)", makefile)
+    assert calls == [], f"the Makefile still renders the compact page: {calls}"
+    assert "pilot build-poh" in makefile, "make manuals must still render handbooks"
+
+
+def test_every_rendered_page_on_disk_is_a_handbook():
+    """The state the collision left behind, asserted so a regression is visible."""
+    root = pathlib.Path(__file__).resolve().parent.parent
+    pages = sorted((root / "manuals" / "p").glob("*.html"))
+    assert len(pages) >= 5, "the guard iterated almost nothing"
+    for page in pages:
+        head = page.read_text(encoding="utf-8", errors="replace")[:4096]
+        assert "Pilot&#x27;s Operating Handbook" in head, page.name

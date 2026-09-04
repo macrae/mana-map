@@ -1059,11 +1059,11 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
             except Exception as exc:                    # pragma: no cover - env
                 out.setdefault("chain_failed", []).append(f"regen: {exc}")
 
-        # THE PAGE AND THE MANIFEST. `build-page` embeds the goldfish figures and
-        # `build-index` carries the paper lock and the passing-stack list, so both
-        # describe the previous 99 until they are re-rendered. Both went stale on
-        # the last two merges and were caught by a freshness test rather than by
-        # the command that made them stale.
+        # THE HANDBOOK AND THE MANIFEST. The handbook embeds the goldfish figures
+        # and `build-index` carries the paper lock and the passing-stack list, so
+        # both describe the previous 99 until they are re-rendered. Both went
+        # stale on the last two merges and were caught by a freshness test rather
+        # than by the command that made them stale.
         if not out.get("chain_failed"):
             from types import SimpleNamespace as _NS
             for name, dotted, kwargs in (
@@ -1075,7 +1075,13 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
                     # and leaves the naming pass to be reported below, which is
                     # the right split: measure automatically, name deliberately.
                     ("deck-map", "manamap.pilot.deck_map", {"slug": slug}),
-                    ("build-page", "manamap.pilot.build_page", {"slug": slug}),
+                    # `build-poh`, NOT `build-page`. `docs/manual-v5-spec.md`
+                    # declared the compact page SUPERSEDED by the Pilot's
+                    # Operating Handbook on 2026-09-02, and both write
+                    # `manuals/p/<slug>.html` — so every merge silently replaced
+                    # the deck's handbook with a page from a frozen renderer, and
+                    # `validate_poh` then validated whichever had won the race.
+                    ("build-poh", "manamap.pilot.poh", {"slug": slug}),
                     ("build-index", "manamap.pilot.build_index", {})):
                 try:
                     import importlib
