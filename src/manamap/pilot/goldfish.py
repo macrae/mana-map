@@ -1002,6 +1002,150 @@ def is_etb_engine(combat):
     return any(combat[f] for f in _ETB_ENGINE_FIELDS)
 
 
+# ── drain: the pillar the model could not see ───────────────────────────────
+#
+# THREE CARDS IN zur-enchantress CONVERT LIFE GAINED INTO DAMAGE DEALT, and
+# until 2026-09-04 this model scored every one of them as its body and nothing
+# else. Vito, Thorn of the Dusk Rose read as `power 1`. Sanctum of Stone Fangs
+# fed NO channel at all. There was no drain metric anywhere in a metrics
+# document — the only occurrence of the word was the LABEL of an assembly
+# target, which measures whether the cards were DRAWN.
+#
+# The consequence was worse than a missing figure. `kill_by_turn_rate` was
+# combat-only, so any change trading a body for a drain effect could ONLY ever
+# measure as a loss, and the model kept reporting that the deck's declared third
+# pillar was worthless.
+#
+# ONE TRACKED OPPONENT. `opponent_life` is a single pool, so "target opponent
+# loses that much" credits the full amount and "each opponent loses N" credits N
+# — the other seats' losses are real but do not help kill the one being tracked.
+# That is a single-opponent clock, deliberately, and it is the same convention
+# the combat half already uses.
+
+#: Written-out quantities, as elsewhere in this module.
+_LIFE_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+               "1": 1, "2": 2, "3": 3, "4": 4, "5": 5}
+
+#: "whenever you gain life, ..." — the payoff half. The corpus sweep on
+#: 2026-09-04 found exactly THREE distinct clause shapes across 12 cards, which
+#: is why this is a narrow pattern rather than a general one:
+#:     6 cards  whenever you gain life, each opponent loses 1 life.
+#:     5 cards  whenever you gain life, target opponent loses that much life.
+#:     1 card   whenever you gain life this turn, each opponent loses that much life.
+_DRAIN_EQUAL_RE = re.compile(
+    r"whenever you gain life[^.]*?, (?:target|each) opponent loses that much life", re.I)
+_DRAIN_FIXED_RE = re.compile(
+    r"whenever you gain life[^.]*?, each opponent loses (\w+) life", re.I)
+
+#: Constellation and its plain-language twin. In a deck of forty enchantments
+#: with a commander that puts one onto the battlefield on every attack, this is
+#: the largest single drain source in the list and it was entirely unread.
+_CONSTELLATION_DRAIN_RE = re.compile(
+    r"whenever this (?:creature|enchantment) or another enchantment you control enters,"
+    r" each opponent loses (\w+) life", re.I)
+_CONSTELLATION_GAIN_RE = re.compile(
+    r"whenever this (?:creature|enchantment) or another enchantment you control enters,"
+    r" you gain (\w+) life", re.I)
+
+#: Recurring, on a phase this model has a turn for.
+_RECURRING_GAIN_RE = re.compile(
+    r"at the beginning of your (?:upkeep|first main phase|end step)[^.]*?,"
+    r" you gain (\w+) life", re.I)
+_RECURRING_DRAIN_RE = re.compile(
+    r"at the beginning of your (?:upkeep|first main phase|end step)[^.]*?,"
+    r" each opponent loses (\w+) life", re.I)
+
+#: "each opponent loses X life and you gain X life" — the Shrine shape, which is
+#: a drain AND a lifegain, so with a payoff on the battlefield it fires twice.
+#: Matched on the SENTENCE, because Bastion of Remembrance uses the identical
+#: wording on a DEATH trigger and nothing dies in this simulation — scoring it
+#: as recurring would have invented a drain engine out of a card that cannot
+#: fire here at all.
+_SYMMETRIC_DRAIN_GAIN_RE = re.compile(
+    r"([^.]*?each opponent loses (\w+) life and you gain (?:\w+) life[^.]*)\.", re.I)
+
+#: Lifelink the card HAS, or grants to a creature it will keep — not a pump that
+#: expires and not a token it makes. Corpus sweep 2026-09-04: a naive
+#: `\blifelink\b` matches 737 cards; stripping these two forms and re-testing
+#: keeps 607 and drops 130, every one of them a temporary grant ("gains lifelink
+#: until end of turn") or a token-maker. The strip-then-test shape matters: a
+#: scoped positive pattern dropped Behemoth Sledge ("has trample AND lifelink")
+#: and Fear of Infinity ("Flying, lifelink"), both of which do have it.
+_LIFELINK_NOT_SELF_RE = re.compile(r"gains? lifelink|token[^.]*?with lifelink", re.I)
+_LIFELINK_RE = re.compile(r"\blifelink\b", re.I)
+
+#: Per-creature-arrival gain (Daxos).
+_ARRIVAL_GAIN_RE = re.compile(
+    r"whenever another creature you control enters[^.]*?, you gain (\w+) life", re.I)
+
+
+def _life_amount(word):
+    """`X` and `that many` are board-dependent, so they take the conservative 1
+    — the same call `treasure_profile` makes for "for each" and "equal to". It
+    UNDERSTATES a Shrine whose X is the Shrine count, and that is the direction
+    to be wrong in."""
+    if word is None:
+        return 0
+    return _LIFE_WORDS.get(word.strip().lower(), 1)
+
+
+def drain_profile(card):
+    """How this card turns life into damage, and how it gains life to do it.
+
+    `unmodelled` is set when a card clearly drains through a channel with no
+    event here — death triggers above all, since nothing dies in this
+    simulation — so the gap is surfaced rather than silently scoring zero.
+    """
+    text = card.get("oracle_text", "") or ""
+    out = {"payoff_equal": False, "payoff_fixed": 0,
+           "gain_recurring": 0, "gain_per_enchantment": 0, "gain_per_creature": 0,
+           "drain_recurring": 0, "drain_per_enchantment": 0,
+           "lifelink": False, "unmodelled": None}
+    if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
+        return out
+
+    if _DRAIN_EQUAL_RE.search(text):
+        out["payoff_equal"] = True
+    m = _DRAIN_FIXED_RE.search(text)
+    if m:
+        out["payoff_fixed"] = _life_amount(m.group(1))
+
+    # THE SHRINE SHAPE FIRST, because it sets BOTH halves off one trigger and
+    # the individual patterns below would otherwise claim the drain and leave
+    # the gain at zero — which is exactly what Sanctum of Stone Fangs did on the
+    # first pass, scoring a drain-and-gain card as a drain only.
+    m = _SYMMETRIC_DRAIN_GAIN_RE.search(text)
+    if m and "dies" not in m.group(1).lower():
+        n = _life_amount(m.group(2))
+        out["drain_recurring"] = out["gain_recurring"] = n
+
+    for rx, key in ((_CONSTELLATION_GAIN_RE, "gain_per_enchantment"),
+                    (_ARRIVAL_GAIN_RE, "gain_per_creature"),
+                    (_RECURRING_GAIN_RE, "gain_recurring")):
+        m = rx.search(text)
+        if m and not out[key]:
+            out[key] = _life_amount(m.group(1))
+
+    for rx, key in ((_CONSTELLATION_DRAIN_RE, "drain_per_enchantment"),
+                    (_RECURRING_DRAIN_RE, "drain_recurring")):
+        m = rx.search(text)
+        if m and not out[key]:
+            out[key] = _life_amount(m.group(1))
+
+    out["lifelink"] = bool(_LIFELINK_RE.search(text)) and bool(
+        _LIFELINK_RE.search(_LIFELINK_NOT_SELF_RE.sub("", text)))
+
+    if not any((out["payoff_equal"], out["payoff_fixed"], out["gain_recurring"],
+                out["gain_per_enchantment"], out["gain_per_creature"],
+                out["drain_recurring"], out["drain_per_enchantment"],
+                out["lifelink"])):
+        # A card that plainly drains but through an event this model has none
+        # of. Death triggers are the big class: nothing dies here.
+        if re.search(r"each opponent loses|target opponent loses", text, re.I):
+            out["unmodelled"] = card.get("name")
+    return out
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -1702,6 +1846,7 @@ def classify(card, pool=None):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
+        "drain": drain_profile(card),
         "draw": draw_profile(card),
         "death": death_profile(card),
         "token_doubler": token_doubler(card),
@@ -1802,7 +1947,7 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_treasures=False, model_combat=False, model_draw=False,
-                  model_sacrifice=False,
+                  model_sacrifice=False, model_drain=False,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
                   commander_subtypes=frozenset(), commander_combat=None,
@@ -1967,6 +2112,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     extra_combat_costs = []       # Aggravated Assault-style, buy each time
     opponent_life = GOLDFISH_OPPONENT_LIFE
     kill_turn = None
+    # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
+    # that gains life, drains, or pays off on gaining; `lifelink_power` is the
+    # power of lifelink CREATURES, accumulated and never removed because nothing
+    # dies here. Arrival counters are reset each turn.
+    drain_permanents = []
+    lifelink_power = 0
+    drain_by_turn = []
     damage_by_turn = []
     board_power_by_turn = []
     target_turns = [None] * len(targets)
@@ -1974,6 +2126,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     tutor_ready_turns = []
 
     for turn in range(1, max_turn + 1):
+        enchantments_entered = 0
+        creatures_entered_this_turn = 0
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -2415,6 +2569,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 arrivals_matter = model_combat or model_draw
                 if not card["is_land"]:
                     battlefield_pips.append(card["pips"])
+                    if "Enchantment" in (card.get("type_line") or ""):
+                        enchantments_entered += 1
+                    if any(card["drain"][k] for k in
+                           ("payoff_equal", "payoff_fixed", "gain_recurring",
+                            "gain_per_enchantment", "gain_per_creature",
+                            "drain_recurring", "drain_per_enchantment")):
+                        drain_permanents.append(card["drain"])
+                    if card["drain"]["lifelink"] and combat["is_creature"]:
+                        lifelink_power += combat["power"]
                 if model_combat:
                     # REGISTERED BEFORE IT ENTERS, and that is correct for the
                     # printed wording: Scourge of Valkas says "whenever THIS
@@ -2435,6 +2598,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             combat["power"], turn, combat["haste"],
                             2 if combat["double_strike"] else 1,
                             is_legendary="Legendary" in (card.get("type_line") or ""))
+                        creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
                 # is why the commander's own arrival does not trigger it — it
@@ -2604,6 +2768,49 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 
+        # ── the drain pillar ────────────────────────────────────────────────
+        #
+        # Runs OUTSIDE the combat block, because a drain deck kills without ever
+        # attacking and gating this on `model_combat` would reproduce the bug it
+        # exists to fix.
+        #
+        # EVENTS AND TOTAL ARE TRACKED SEPARATELY, and they have to be: "target
+        # opponent loses that much life" (Vito) scales with the AMOUNT gained,
+        # while "each opponent loses 1 life" (Marauding Blight-Priest) fires once
+        # per GAIN EVENT whatever the amount. Aggregating a turn into one event
+        # would understate the second by however many times you gained.
+        if model_drain:
+            gain_total = gain_events = 0
+            for d in drain_permanents:
+                if d["gain_recurring"]:
+                    gain_total += d["gain_recurring"]; gain_events += 1
+                if d["gain_per_enchantment"] and enchantments_entered:
+                    gain_total += d["gain_per_enchantment"] * enchantments_entered
+                    gain_events += enchantments_entered
+                if d["gain_per_creature"] and creatures_entered_this_turn:
+                    gain_total += d["gain_per_creature"] * creatures_entered_this_turn
+                    gain_events += creatures_entered_this_turn
+            # Lifelink gains what those creatures DEALT, so it is capped by the
+            # damage actually dealt this turn — one event, because the combat
+            # model resolves a swing as a single number.
+            if lifelink_power and damage_by_turn:
+                linked = min(lifelink_power, damage_by_turn[-1])
+                if linked > 0:
+                    gain_total += linked; gain_events += 1
+
+            drained = 0
+            for d in drain_permanents:
+                drained += d["drain_recurring"]
+                drained += d["drain_per_enchantment"] * enchantments_entered
+                if d["payoff_equal"]:
+                    drained += gain_total
+                drained += d["payoff_fixed"] * gain_events
+            drain_by_turn.append(drained)
+            if drained:
+                opponent_life -= drained
+                if kill_turn is None and opponent_life <= 0:
+                    kill_turn = turn
+
         # Measured against the turn's FULL mana — lands, rocks and the
         # Treasure stockpile — because a Treasure you are holding is mana you
         # could have spent. `pool` has already been drawn down by the main
@@ -2645,6 +2852,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "damage_by_turn": damage_by_turn,
         "board_power_by_turn": board_power_by_turn,
         "kill_turn": kill_turn,
+        "drain_by_turn": drain_by_turn,
     }
 
 
@@ -2653,7 +2861,8 @@ def _round(x):
 
 
 def aggregate(results, targets, max_turn, model_treasures=False,
-              model_combat=False, model_draw=False, model_sacrifice=False):
+              model_combat=False, model_draw=False, model_sacrifice=False,
+              model_drain=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -2757,6 +2966,16 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "sac_cap_hit_rate": _round(
                 sum(1 for r in results if r.get("sac_cap_hits")) / n)}
            if model_sacrifice else {}),
+        **({"drain": {
+            "mean_drain_by_turn": {
+                str(i): _round(sum(r["drain_by_turn"][i - 1] for r in results) / n)
+                for i in turns if all(len(r["drain_by_turn"]) >= i for r in results)},
+            "mean_cumulative_drain_by_turn": {
+                str(i): _round(sum(sum(r["drain_by_turn"][:i]) for r in results) / n)
+                for i in turns if all(len(r["drain_by_turn"]) >= i for r in results)},
+            "share_of_games_draining_by_turn_10": _round(
+                sum(1 for r in results if sum(r["drain_by_turn"])) / n),
+           }} if model_drain else {}),
         **({"mean_extra_cards_drawn_by_turn": {
             str(t): _round(sum(r["drawn_extra_by_turn"][t - 1] for r in results) / n)
             for t in turns}} if model_draw else {}),
@@ -2893,6 +3112,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         declared_combat = bool(targets_doc.get("model_combat"))
         declared_draw = bool(targets_doc.get("model_draw"))
         declared_sacrifice = bool(targets_doc.get("model_sacrifice"))
+        declared_drain = bool(targets_doc.get("model_drain"))
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -2930,6 +3150,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     model_draw = declared_draw if model_draw is None else bool(model_draw)
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
                        else bool(model_sacrifice))
+    model_drain = declared_drain
     # LOUD, NOT SILENT. The drain half of this model is DAMAGE, and damage only
     # exists under `model_combat`. A deck that sets one flag and not the other
     # would otherwise get the draw and the Treasures and silently lose the
@@ -3077,6 +3298,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_combat=model_combat,
                               model_draw=model_draw,
                               model_sacrifice=model_sacrifice,
+                              model_drain=model_drain,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips))
@@ -3129,7 +3351,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                if model_combat and combat_unreadable else {}),
         },
         "metrics": aggregate(results, targets, max_turn, model_treasures,
-                             model_combat, model_draw, model_sacrifice),
+                             model_combat, model_draw, model_sacrifice,
+                             model_drain),
         # OPT-IN, and default off so the returned document is byte-identical
         # to every tracked `goldfish_metrics.json`. Two tests compare `run`'s
         # output against the artifact directly, and they caught this the first

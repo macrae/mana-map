@@ -261,3 +261,114 @@ def test_devotion_counts_symbols_and_a_hybrid_counts_for_both():
     assert devotion_of([[hybrid]], frozenset({"W"})) == 1
     assert devotion_of([[hybrid]], frozenset({"U"})) == 1, "a hybrid counts for both"
     assert devotion_of([], frozenset({"W"})) == 0
+
+
+# ── drain: the pillar the model could not see ───────────────────────────────
+
+def _drain(text, name="X"):
+    from manamap.pilot.goldfish import drain_profile
+    return drain_profile({"name": name, "oracle_text": text, "type_line": ""})
+
+
+def test_the_two_payoff_shapes_are_told_apart():
+    """"THAT MUCH LIFE" AND "1 LIFE" ARE DIFFERENT FUNCTIONS OF THE SAME EVENT.
+
+    Vito scales with the AMOUNT gained; Marauding Blight-Priest fires once per
+    GAIN EVENT whatever the amount. A model that collapses a turn into one
+    event with one total understates the second by however many times you
+    gained — which in this deck is once per enchantment that lands.
+
+    Corpus sweep 2026-09-04: exactly three clause shapes across 12 cards.
+    """
+    vito = _drain("Whenever you gain life, target opponent loses that much life.")
+    assert vito["payoff_equal"] is True and vito["payoff_fixed"] == 0
+
+    priest = _drain("Whenever you gain life, each opponent loses 1 life.")
+    assert priest["payoff_fixed"] == 1 and priest["payoff_equal"] is False
+
+    each_equal = _drain(
+        "Whenever you gain life this turn, each opponent loses that much life.")
+    assert each_equal["payoff_equal"] is True
+
+
+def test_a_death_trigger_is_unmodelled_and_not_a_recurring_engine():
+    """NOTHING DIES IN THIS SIMULATION.
+
+    Bastion of Remembrance uses the IDENTICAL wording to a Shrine — "each
+    opponent loses 1 life and you gain 1 life" — on a death trigger. The first
+    cut of the sentence pattern matched it and scored it as a per-turn
+    drain-and-gain engine, inventing a clock out of a card that cannot fire here
+    at all. Scoped to the sentence, and the sentence has to be checked.
+    """
+    bastion = _drain(
+        "When this enchantment enters, create a 1/1 white Human Soldier creature "
+        "token. Whenever a creature you control dies, each opponent loses 1 life "
+        "and you gain 1 life.", "Bastion of Remembrance")
+    assert bastion["drain_recurring"] == 0 and bastion["gain_recurring"] == 0
+    assert bastion["unmodelled"] == "Bastion of Remembrance"
+
+    shrine = _drain(
+        "At the beginning of your first main phase, each opponent loses X life "
+        "and you gain X life, where X is the number of Shrines you control.")
+    assert shrine["drain_recurring"] == 1 and shrine["gain_recurring"] == 1, (
+        "the Shrine shape drains AND gains off one trigger — scoring only the "
+        "drain leaves the payoffs with nothing to fire on")
+
+
+def test_lifelink_means_the_card_has_it_not_that_it_says_the_word():
+    """A NAIVE `\\blifelink\\b` MATCHES 737 CARDS AND IS WRONG ON 130.
+
+    Dawn of Hope makes a token WITH lifelink. Heliod GRANTS it until end of
+    turn. Vito grants it for {3}{B}{B}. None of the three has it. Stripping the
+    two non-self forms and re-testing keeps 607 and drops 130, every one a
+    temporary grant or a token-maker.
+
+    The strip-then-test shape is load-bearing: a scoped positive pattern dropped
+    Behemoth Sledge ("has trample AND lifelink") and Fear of Infinity ("Flying,
+    lifelink"), both of which do have it.
+    """
+    assert _drain("Lifelink\nWhenever one or more other creatures enter, draw a card."
+                  )["lifelink"] is True
+    assert _drain("Enchanted creature gets +1/+1 and has lifelink.")["lifelink"] is True
+    assert _drain("Flying, lifelink\nThis creature can't block.")["lifelink"] is True
+    assert _drain("Equipped creature gets +2/+2 and has trample and lifelink."
+                  )["lifelink"] is True
+
+    for text in ("{3}{W}: Create a 1/1 white Soldier creature token with lifelink.",
+                 "{1}{W}: Another target creature gains lifelink until end of turn.",
+                 "{3}{B}{B}: Creatures you control gain lifelink until end of turn."):
+        assert _drain(text)["lifelink"] is False, text
+
+
+def test_constellation_is_read_on_both_sides():
+    """The largest drain source in a forty-enchantment deck, and it was unread.
+
+    Grim Guardian drains 1 per enchantment landing; Underworld Coinsmith gains 1
+    on the same event, which then feeds every payoff. With a commander that puts
+    an enchantment onto the battlefield on every attack, this is the engine.
+    """
+    guardian = _drain(
+        "Constellation — Whenever this creature or another enchantment you "
+        "control enters, each opponent loses 1 life.")
+    assert guardian["drain_per_enchantment"] == 1
+
+    coinsmith = _drain(
+        "Constellation — Whenever this creature or another enchantment you "
+        "control enters, you gain 1 life.")
+    assert coinsmith["gain_per_enchantment"] == 1
+
+
+def test_a_deck_that_has_not_opted_in_is_byte_identical():
+    """THE CONTROL, and the only reason this change was safe to land.
+
+    `model_drain` is opt-in like `model_combat` and `model_draw`. Re-running
+    every tracked deck after this shipped moved exactly one line in each —
+    `meta.model_version` — and no figure at all.
+    """
+    from manamap.pilot import goldfish
+
+    import inspect
+    src = inspect.getsource(goldfish.simulate_once)
+    assert "model_drain=False" in src, "the flag must default OFF"
+    body = src[src.index("if model_drain:"):]
+    assert body, "the drain step must be guarded by the flag"

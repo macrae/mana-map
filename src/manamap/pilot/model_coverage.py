@@ -51,6 +51,7 @@ CHANNELS = {
     "combat": "model_combat",
     "draw": "model_draw",
     "sacrifice": "model_sacrifice",
+    "drain": "model_drain",
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -109,6 +110,14 @@ def channels_for(profile):
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
             "death_drain", "death_draw", "death_treasure")):
         found.add("sacrifice")
+    # Named keys, not the truthiness of the dict — `drain` carries an
+    # "unmodelled" sentinel like `draw` does, and reading the dict as a whole
+    # would repeat the treasure bug fixed in dfe72f9 one channel over.
+    if _nonzero(profile.get("drain"), (
+            "payoff_equal", "payoff_fixed", "gain_recurring",
+            "gain_per_enchantment", "gain_per_creature",
+            "drain_recurring", "drain_per_enchantment", "lifelink")):
+        found.add("drain")
     return found
 
 
