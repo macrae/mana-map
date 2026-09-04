@@ -1079,6 +1079,27 @@ _ARRIVAL_GAIN_RE = re.compile(
     r"whenever another creature you control enters[^.]*?, you gain (\w+) life", re.I)
 
 
+#: "where X is the number of <SUBJECT> you control" — the subjects this model
+#: can actually COUNT on its battlefield, mapped to the word that identifies one
+#: in a type line. A CLOSED SET on purpose.
+#:
+#: Corpus sweep 2026-09-04: 250 cards use the phrasing at all, but only 24 use
+#: it to scale a drain or a gain, and their subjects split cleanly. These seven
+#: are plain type or subtype counts. The rest — "colors among permanents",
+#: "basic land types among lands", "different color pairs among permanents",
+#: "creatures with defender", "artifact tokens" — are not counts of a type and
+#: keep the conservative 1 rather than getting a wrong number. Land-based
+#: subjects ("swamps", "nonbasic lands") are absent because this model tracks
+#: lands as a COUNT and not as permanents with type lines.
+_X_SUBJECTS = {
+    "creatures": "Creature", "artifacts": "Artifact", "zombies": "Zombie",
+    "shrines": "Shrine", "knights": "Knight", "auras": "Aura",
+    "enchantments": "Enchantment",
+}
+_X_SCALES_RE = re.compile(
+    r"where X is the number of ([A-Za-z' ]+?) you control", re.I)
+
+
 def _life_amount(word):
     """`X` and `that many` are board-dependent, so they take the conservative 1
     — the same call `treasure_profile` makes for "for each" and "equal to". It
@@ -1100,7 +1121,7 @@ def drain_profile(card):
     out = {"payoff_equal": False, "payoff_fixed": 0,
            "gain_recurring": 0, "gain_per_enchantment": 0, "gain_per_creature": 0,
            "drain_recurring": 0, "drain_per_enchantment": 0,
-           "lifelink": False, "unmodelled": None}
+           "lifelink": False, "scales_with": None, "unmodelled": None}
     if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
         return out
 
@@ -1134,6 +1155,14 @@ def drain_profile(card):
 
     out["lifelink"] = bool(_LIFELINK_RE.search(text)) and bool(
         _LIFELINK_RE.search(_LIFELINK_NOT_SELF_RE.sub("", text)))
+
+    # X IS A COUNT, AND SCORING IT AS 1 MAKES A SCALING CARD UNABLE TO SCALE.
+    # Sanctum of Stone Fangs drains "X, where X is the number of Shrines you
+    # control" — with the flat 1 the model could never show a second Shrine
+    # doing anything, which is precisely the question the pilot asked of them.
+    m = _X_SCALES_RE.search(text)
+    if m:
+        out["scales_with"] = _X_SUBJECTS.get(m.group(1).strip().lower())
 
     if not any((out["payoff_equal"], out["payoff_fixed"], out["gain_recurring"],
                 out["gain_per_enchantment"], out["gain_per_creature"],
@@ -2119,6 +2148,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     drain_permanents = []
     lifelink_power = 0
     drain_by_turn = []
+    # Type lines of nonland permanents on the battlefield, so a card whose X is
+    # "the number of Shrines you control" can be given the real count.
+    battlefield_types = []
     damage_by_turn = []
     board_power_by_turn = []
     target_turns = [None] * len(targets)
@@ -2309,6 +2341,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # The commander is a nonland permanent and its own pips count
             # toward devotion — Zur is {1}{W}{U}{B}, one each of three colours.
             battlefield_pips.append(commander_pips or [])
+            battlefield_types.append(commander_card.get("type_line") or "")
             # THE COMMANDER USED TO BE CAST AND THEN DROPPED. It set this flag,
             # spent the mana, and never joined the battlefield — so a 10/10
             # flier contributed no power, never attacked, and fired none of its
@@ -2521,6 +2554,40 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]:
                     draw_engines.append(card["draw"])
 
+        # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
+        #
+        # Every casting loop above this one selects on a channel: cards that
+        # draw, cards that ramp, cards that make Treasure, and below, cards with
+        # bodies. A card with none of those — Sanctum of Stone Fangs, Northern
+        # Air Temple: not creatures, no draw, no mana — matched no loop and sat
+        # in hand for ten turns.
+        #
+        # That is why zur-enchantress's two Shrines measured as EXACTLY nothing
+        # when they were added: not because two Shrines are weak, but because
+        # the model never put them on the battlefield. A synthetic library of
+        # twenty of them drained 0.
+        #
+        # Cheapest-first, like every other loop here, and guarded by the flag so
+        # a deck that has not opted in is byte-identical.
+        if model_drain:
+            for card in sorted(
+                    (c for c in hand
+                     if c["bodies"] <= 0 and not c["is_land"]
+                     and any(c["drain"][k] for k in (
+                         "payoff_equal", "payoff_fixed", "gain_recurring",
+                         "gain_per_enchantment", "gain_per_creature",
+                         "drain_recurring", "drain_per_enchantment"))),
+                    key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if not spend(reduced_cost(card, reductions, chosen_type),
+                             card["pips"]):
+                    continue
+                hand.remove(card)
+                battlefield_pips.append(card["pips"])
+                battlefield_types.append(card.get("type_line") or "")
+                if "Enchantment" in (card.get("type_line") or ""):
+                    enchantments_entered += 1
+                drain_permanents.append(card["drain"])
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
                            key=lambda c: reduced_cost(c, reductions, chosen_type)):
@@ -2569,6 +2636,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 arrivals_matter = model_combat or model_draw
                 if not card["is_land"]:
                     battlefield_pips.append(card["pips"])
+                    battlefield_types.append(card.get("type_line") or "")
                     if "Enchantment" in (card.get("type_line") or ""):
                         enchantments_entered += 1
                     if any(card["drain"][k] for k in
@@ -2780,10 +2848,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # per GAIN EVENT whatever the amount. Aggregating a turn into one event
         # would understate the second by however many times you gained.
         if model_drain:
+            def _x_for(d):
+                """X, as a real count of what the card names. 1 when the subject
+                is one this model cannot count — never 0, because the card does
+                do something."""
+                if not d["scales_with"]:
+                    return 1
+                return max(1, sum(1 for tl in battlefield_types
+                                  if d["scales_with"] in tl))
+
             gain_total = gain_events = 0
             for d in drain_permanents:
                 if d["gain_recurring"]:
-                    gain_total += d["gain_recurring"]; gain_events += 1
+                    gain_total += d["gain_recurring"] * _x_for(d); gain_events += 1
                 if d["gain_per_enchantment"] and enchantments_entered:
                     gain_total += d["gain_per_enchantment"] * enchantments_entered
                     gain_events += enchantments_entered
@@ -2800,7 +2877,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             drained = 0
             for d in drain_permanents:
-                drained += d["drain_recurring"]
+                drained += d["drain_recurring"] * _x_for(d)
                 drained += d["drain_per_enchantment"] * enchantments_entered
                 if d["payoff_equal"]:
                     drained += gain_total
@@ -3273,6 +3350,15 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         c["combat"]["unreadable"] for c in library if c["combat"]["unreadable"]
     }) if model_combat else []
 
+    # THE DRAIN FIGURE IS A FLOOR AND HAS TO SAY SO. A death drain has no event
+    # here (nothing dies), so Bastion of Remembrance and The Meathook Massacre
+    # contribute zero — and a reader with no list of names cannot tell a deck
+    # whose drain is small from one whose drain is unread. Same contract as
+    # `draw_not_modelled` and `combat_effects_not_modelled`.
+    drain_unmodelled = sorted({
+        c["drain"]["unmodelled"] for c in library if c["drain"]["unmodelled"]
+    }) if model_drain else []
+
     rng = random.Random(seed)
     # The loop is a list comprehension no longer, because 10,000 silent
     # simulations look identical to a hang. The comprehension is otherwise
@@ -3349,6 +3435,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             **({"treasure_sources_not_modelled": unmodelled} if model_treasures else {}),
             **({"combat_effects_not_modelled": combat_unreadable}
                if model_combat and combat_unreadable else {}),
+            **({"drain_not_modelled": drain_unmodelled}
+               if model_drain and drain_unmodelled else {}),
         },
         "metrics": aggregate(results, targets, max_turn, model_treasures,
                              model_combat, model_draw, model_sacrifice,

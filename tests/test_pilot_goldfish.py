@@ -372,3 +372,81 @@ def test_a_deck_that_has_not_opted_in_is_byte_identical():
     assert "model_drain=False" in src, "the flag must default OFF"
     body = src[src.index("if model_drain:"):]
     assert body, "the drain step must be guarded by the flag"
+
+
+def test_X_is_a_real_count_and_the_subject_set_is_closed():
+    """SCORING X AS 1 MAKES A SCALING CARD UNABLE TO SCALE.
+
+    Sanctum of Stone Fangs drains "X, where X is the number of Shrines you
+    control". With a flat 1 the model could never show a second Shrine doing
+    anything — which is exactly the question the pilot asked of them, so the
+    answer would have been rigged before the run started.
+
+    Corpus sweep 2026-09-04: 250 cards use the phrasing, 24 use it to scale a
+    drain or gain. The subject set is CLOSED to the seven that are plain type
+    counts; "colors among permanents", "basic land types among lands" and
+    "creatures with defender" are not counts of a type and keep the conservative
+    1 rather than getting a confident wrong number.
+    """
+    from manamap.pilot.goldfish import drain_profile, _X_SUBJECTS
+
+    def prof(text):
+        return drain_profile({"name": "X", "oracle_text": text, "type_line": ""})
+
+    shrine = prof("At the beginning of your first main phase, each opponent "
+                  "loses X life and you gain X life, where X is the number of "
+                  "Shrines you control.")
+    assert shrine["scales_with"] == "Shrine"
+
+    # Not countable on this battlefield -> None -> the conservative 1 stands.
+    for subject in ("colors among permanents", "basic land types among lands",
+                    "creatures with defender", "artifact tokens"):
+        p = prof(f"Each opponent loses X life, where X is the number of "
+                 f"{subject} you control.")
+        assert p["scales_with"] is None, subject
+
+    assert set(_X_SUBJECTS) == {"creatures", "artifacts", "zombies", "shrines",
+                                "knights", "auras", "enchantments"}, (
+        "the subject set is closed and measured; widening it needs a fresh sweep")
+
+
+def test_more_shrines_drain_more():
+    """THE CONTROL FOR THE COUNT, and the reason a null result was not trusted.
+
+    zur-enchantress runs two Shrines, and adding the real count changed its
+    drain figure by 0.00 — because two Shrines are rarely both on the
+    battlefield, so X is almost always 1 anyway. A null there says nothing about
+    whether the code works, and concluding from it would be exactly the mistake
+    this repo keeps paying for.
+
+    Driven through `simulate_once` on a synthetic library where the count CAN
+    move.
+    """
+    import random
+
+    from manamap.pilot.goldfish import classify, simulate_once
+
+    def shrine(n):
+        return {"name": f"Shrine {n}", "type_line": "Enchantment — Shrine",
+                "mana_cost": "{B}", "cmc": 1.0,
+                "oracle_text": ("At the beginning of your first main phase, each "
+                                "opponent loses X life and you gain X life, where "
+                                "X is the number of Shrines you control.")}
+
+    swamp = {"name": "Swamp", "type_line": "Basic Land — Swamp",
+             "mana_cost": "", "cmc": 0.0, "oracle_text": "({T}: Add {B}.)"}
+    cmdr = {"name": "C", "type_line": "Legendary Creature — Human",
+            "mana_cost": "{B}", "cmc": 1.0, "oracle_text": ""}
+
+    def run(n_shrines):
+        lib = ([classify(shrine(i)) for i in range(n_shrines)]
+               + [classify(swamp) for _ in range(60 - n_shrines)])
+        r = simulate_once(random.Random(7), lib, 1.0, [], 10,
+                          model_drain=True, model_colors=False,
+                          commander_pips=[frozenset("B")])
+        return sum(r["drain_by_turn"])
+
+    few, many = run(2), run(20)
+    assert many > few, (
+        f"twenty Shrines drained {many} against two Shrines' {few} — X is not "
+        f"being counted")

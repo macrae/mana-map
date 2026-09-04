@@ -1179,12 +1179,12 @@
   "why": "The pilot's shrine idea, taken at its two strongest cards and NOT as a subtheme. The tension is real: a Shrine scales with the number of Shrines, so one Shrine is normally close to blank, and building the count needs six or eight of them -- most of which are mana value 4 and therefore OUTSIDE Zur's fetch. But two of them resolve that tension in THIS deck specifically. Sanctum of Stone Fangs and Northern Air Temple both read 'each opponent loses X life AND YOU GAIN X', and this list already turns life gain into damage three separate ways -- Vito, Marauding Blight-Priest and Enduring Tenacity. So a lone Shrine here is not a blank: gaining one life is a drain trigger, and the Shrine count is a multiplier on top of a floor that already pays. Both are single black pips at mana value 1 and 2, so Zur fetches them, they raise no new double-black requirement, and they add black devotion for Athreos. The cuts are the two narrowest toolbox answers, keeping Journey to Nowhere and Reprobation, which are the real removal. NOT A SHRINE DECK -- two cards that happen to be Shrines and would be good here if the word never appeared on them."
  },
  "objective_grade": {
-  "reading": 0.8586,
+  "reading": 0.8855,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy extra cards by T8 and interaction affordable @T6 and pay damage @T10.",
+  "because": "You buy killed by T10, extra cards by T8 and interaction affordable @T6 and pay damage @T10.",
   "bill": {
    "box": 2,
    "buy": 7,
@@ -1241,7 +1241,6 @@
   "no_call": [
    "board power @T6",
    "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -1250,27 +1249,32 @@
   "notes": [],
   "reward": [
    {
+    "measure": "killed by T10",
+    "reads_as": "86 games in 100 -> 89 in 100, a swing of 2 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
     "measure": "extra cards by T8",
-    "reads_as": "1.71 -> 1.93, a change of +0.22 (+13%)",
+    "reads_as": "1.71 -> 1.92, a change of +0.20 (+12%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "65 games in 100 -> 68 in 100, a swing of 4 games per 100",
+    "reads_as": "65 games in 100 -> 67 in 100, a swing of 3 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "16.91 -> 16.58, a change of -0.33 (-2%)",
+    "detail": "16.91 -> 16.54, a change of -0.38 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "the largest is board power @T6 at +0.153 against an MDE of 0.165. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at +0.001 against an MDE of 0.001. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1281,6 +1285,7 @@
    }
   ],
   "rose": [
+   "killed by T10",
    "extra cards by T8",
    "interaction affordable @T6"
   ],
@@ -1291,12 +1296,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 16.5804,
+   "branch": 16.5382,
    "champion": 16.9143,
-   "delta": -0.3339,
+   "delta": -0.3761,
    "mde": 0.2439,
    "measure": "damage @T10",
-   "reads_as": "16.91 -> 16.58, a change of -0.33 (-2%)",
+   "reads_as": "16.91 -> 16.54, a change of -0.38 (-2%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1305,12 +1310,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.4506,
+   "branch": 8.3731,
    "champion": 8.298,
-   "delta": 0.1526,
-   "mde": 0.1649,
+   "delta": 0.0751,
+   "mde": 0.164,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.153 is smaller than the 0.165 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.075 is smaller than the 0.164 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1319,12 +1324,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0003,
+   "branch": 0.0008,
    "champion": 0.0,
-   "delta": 0.0003,
-   "mde": 0.0007,
+   "delta": 0.0008,
+   "mde": 0.0011,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.001 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1333,26 +1338,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8586,
+   "branch": 0.8855,
    "champion": 0.8628,
-   "delta": -0.0042,
-   "mde": 0.0138,
+   "delta": 0.0227,
+   "mde": 0.0136,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.014 this run can resolve",
+   "reads_as": "86 games in 100 -> 89 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
-   "branch": 0.0053,
+   "branch": 0.0076,
    "champion": 0.0052,
-   "delta": 0.0001,
-   "mde": 0.0029,
+   "delta": 0.0024,
+   "mde": 0.0034,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.003 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1361,12 +1366,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3835,
+   "branch": 0.3853,
    "champion": 0.3937,
-   "delta": -0.0102,
+   "delta": -0.0084,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1389,12 +1394,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.9304,
+   "branch": 1.9171,
    "champion": 1.7143,
-   "delta": 0.2161,
-   "mde": 0.0846,
+   "delta": 0.2028,
+   "mde": 0.0843,
    "measure": "extra cards by T8",
-   "reads_as": "1.71 -> 1.93, a change of +0.22 (+13%)",
+   "reads_as": "1.71 -> 1.92, a change of +0.20 (+12%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1403,12 +1408,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6831,
+   "branch": 0.6728,
    "champion": 0.6468,
-   "delta": 0.0363,
-   "mde": 0.0207,
+   "delta": 0.026,
+   "mde": 0.0209,
    "measure": "interaction affordable @T6",
-   "reads_as": "65 games in 100 -> 68 in 100, a swing of 4 games per 100",
+   "reads_as": "65 games in 100 -> 67 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
