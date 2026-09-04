@@ -181,24 +181,51 @@ different winner. No test can assert what the engine does not do.
 | `experiment`, four defects | it raised `KeyError` on `ci95_a` on **every real run**, after writing its artifact; `_run_arm` had no timeout; and the pod ran on Default while `simulate` has run it on Experimental since 2026-08-30, so the two measured different populations. `experiment_id` carries `profile_tag` now, so no record on disk is renamed or reinterpreted |
 | `manuals/p/` has one writer | `build_page` and `poh` both wrote it, and `deck-branch merge` plus `make demo` both called the superseded one over the live one. `build-page` has no default output any more |
 
+#### The opponent library — and the three seats that stay OPEN
+
+Eleven opponent seats now, from four. Three are the playgroup as the captain's
+log actually names it — **Oliver on Krenko** (goblin-storm 002), **Tom on
+Purphoros** (same entry, and edgar-vampires 004), **Alex on Tannuk, Steadfast
+Second** (ur-dragon 001, named exactly) — and all three are mono-red, which is
+an observation rather than a choice: *"the red density took the game over."*
+
+**Three of the playgroup's decks are deliberately NOT built**, because the log
+never names their commanders and a guess in a file called `playgroup` is an
+invention that goes invisible:
+
+| whose | what the log says | what is missing |
+|---|---|---|
+| Tom | "one of his blue-black decks" (edgar 001) | the commander |
+| Tom | "Tom had no creatures (enchantment deck)" (edgar 004) | the commander |
+| Alex | "Alex came in with his fight deck" (edgar 004), "his fight deck" (ur-dragon 003) | the commander |
+
+Alex's Sauron deck (edgar 001) is a fourth: "his Lord of the Rings Sauron deck"
+names a character with several legal commanders and no way to choose between
+them. **Ask the pilot; do not infer.**
+
+Four EDHREC seats cover archetypes the playgroup does not run —
+`jarad-graveyard` (which PRD §6 B-2 names by commander), `muldrotha-value`,
+`sythis-enchantress`, `talrand-spells`. They are labelled COVERAGE in their own
+notes and claim no bracket, because none was verified.
+
+Five pods ship: `standard` (the benchmark table), `playgroup` (observed seats
+only), `value-chains` (the axis the pod nights were lost on), `five-player`
+(Oliver's table size, which nothing has ever measured) and `vito-era` (kept so a
+pre-2026-09-02 record stays reproducible).
+
 #### NEXT, in order
 
-1. **The metrics registry.** Promote `net_change.METRICS` to a shared
-   `metrics.py` with a `from` key naming the log events or goldfish field a
-   figure derives from — B-3's explicit ask, and the idiom already exists with a
-   both-ways test. Tag each catalog entry with the engine that can answer it, and
-   mark the Forge-unreachable ones ABSENT WITH A REASON.
-2. **`mulligan` is parsed per game and thrown away** — `parse.compact()` drops it
-   and `aggregate()` never reads it. A catalog metric already being measured.
-   Adding it moves every tracked record's `analysis`, so it needs the 19 records
-   re-derived in the same commit (130 logs are on disk; `simulate --analyze`).
-3. **The pod object.** There is no `STANDARD_POD` constant — the standard pod is
-   a sentence in `docs/simulation.md` and three `--vs` flags typed by hand.
-4. **Twelve opponents**, six of them from the captain's log: Oliver on Krenko
-   token-and-ping, Tom on Purphoros / blue-black / enchantment, Alex on
-   fight-based green / Sauron / mono-red Tannuk warp.
-5. **Per-opponent AI profiles** — the seam exists (`forge.command()` takes a
-   profiles list, Forge's `-a` is index-aligned); only the data path is missing.
+1. ~~**The metrics registry.**~~ **DONE** — `manamap pilot metrics`. 27 figures,
+   13 published, 2 opt-in, 2 derivable, **10 unavailable with a measured reason**.
+   `--problems` answers PRD §2 directly: **2 of 6 pod-night problems are fully
+   answerable, 2 partly, 2 not at all**, and all three RESILIENCE metrics are
+   unavailable.
+2. ~~**`mulligan` parsed and thrown away.**~~ **DONE**, and it found a rules gap:
+   Forge gives the first mulligan free.
+3. ~~**The pod object.**~~ **DONE** — `data/pods/`, `--pod`, per-seat AI profiles.
+4. **Name the three missing playgroup commanders** (above) and fetch them.
+5. **Report a batch by pod composition and seat**, which is what `pods.compose`
+   and `outcomes[].seat_order` were put in place for and nothing consumes yet.
 6. **One pipeline definition.** The rebuild chain is written out three times —
    `deck_branch.py` twice and `regen.STAGES` once — with `goldfish` and
    `mana-analysis` duplicated between two of them.

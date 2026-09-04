@@ -207,3 +207,62 @@ def test_every_pod_on_disk_loads():
         assert doc["seats"] and doc.get("note"), f"{name} has no note"
         for seat in doc["seats"]:
             assert seat.get("archetype"), f"{name}/{seat['slug']} has no archetype"
+
+
+# ── the tables that ship ────────────────────────────────────────────────────
+
+def test_the_pods_on_disk_cover_three_four_and_five_players():
+    """Pod SIZE is a variable now, and the sizes are the ones actually played.
+
+    Alex's house is three-player and Oliver's is five; every Forge record before
+    pods existed was four, because four was the only thing anyone typed.
+    """
+    sizes = {name: pods.compose(name)["players"] for name in pods.available()}
+    assert 5 in sizes.values(), "no five-player table, and Oliver's is five"
+    assert 4 in sizes.values()
+    assert sizes["five-player"] == 5
+
+
+def test_the_playgroup_pod_names_only_seats_the_log_names():
+    """Every commander here is written down in a real game entry.
+
+    Three of the playgroup's decks are deliberately ABSENT — Tom's blue-black,
+    Tom's enchantment deck, Alex's fight-based green — because the log never
+    names their commanders. An invented seat in a file called `playgroup` is an
+    invention that goes invisible.
+    """
+    doc = pods.load("playgroup")
+    assert [s["slug"] for s in doc["seats"]] == \
+        ["krenko-tokens", "purphoros-pingers", "tannuk-warp"]
+    for seat in doc["seats"]:
+        assert seat.get("note"), f"{seat['slug']} must say who plays it"
+    assert "does not name" in doc["note"] or "never names" in doc["note"]
+
+    # And it is red-dense, which is an observation and not a choice this made.
+    assert all("mono-red" in s["archetype"] for s in doc["seats"])
+
+
+def test_a_coverage_seat_never_claims_to_be_someones_deck():
+    """`value-chains` is archetypes, and says so rather than implying a table."""
+    doc = pods.load("value-chains")
+    assert "deck anyone at the table plays" in doc["note"]
+    # No bracket is claimed, because none was verified.
+    assert not any(s.get("bracket") for s in doc["seats"])
+
+
+def test_every_seat_a_pod_names_exists_on_disk():
+    """A pod naming a seat that is not fetched fails at the JVM, late and loudly.
+
+    `forge.seat_dir` resolves it, so this is the cheap version of that check —
+    and the one that fails on a fresh clone rather than after a pod is installed.
+    """
+    from manamap.config import DATA_DIR
+
+    checked = 0
+    for name in pods.available():
+        for slug in pods.seats(name):
+            seat = DATA_DIR / "opponents" / slug
+            deck = DATA_DIR / "decks" / slug
+            assert seat.exists() or deck.exists(), f"{name}: no seat for {slug!r}"
+            checked += 1
+    assert checked >= 10, "the guard iterated almost nothing"
