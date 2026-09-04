@@ -226,6 +226,53 @@ def test_post_wipe_recovery_is_unavailable_even_though_wipe_recovery_exists():
 
 # ── the derivable ones are honestly labelled ────────────────────────────────
 
+def test_turn_order_is_measured_from_who_went_first_not_from_the_d_order():
+    """The correction that moved this from DERIVABLE to PUBLISHED.
+
+    PRD §14 says "win rate by turn order position" and the obvious source —
+    `outcomes[].seat_order` — is the `-d` order, which Forge overrides from game
+    2 of a job onward by giving the first turn to the previous game's loser. A
+    figure built from it reports backwards. `Turn: Turn 1 (seat)` names who
+    actually started, and the confound travels with the figure as
+    `started_rate`.
+    """
+    runs = _runs()
+    assert CATALOG["seat effect"]["status"] == PUBLISHED
+    assert "started_rate" in CATALOG["seat effect"]["caveat"]
+
+    checked = 0
+    for path in runs:
+        doc = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        for slug, seat in doc["analysis"]["seats"].items():
+            block = seat.get("turn_order")
+            if block is None:          # absent, not zero, on a log-less record
+                continue
+            checked += 1
+            assert 0.0 <= block["started_rate"] <= 1.0
+            assert "NOT the `-d` seat order" in block["basis"]
+            for key in ("win_rate_when_starting", "win_rate_when_not"):
+                rate = block[key]
+                if rate is not None:
+                    assert set(rate) == {"rate", "wins", "games", "ci95"}, key
+    assert checked >= 20, "the guard iterated almost nothing"
+
+
+def test_the_starting_bias_is_visible_rather_than_averaged_away():
+    """The finding this metric exists to surface, pinned on the biggest run.
+
+    Over 400 games edgar-vampires started far more than its fair share, because
+    it loses and Forge hands the first turn to the loser. If this ever reads
+    near 1/n the bias is gone — good, and the caveat needs rewriting rather than
+    quietly remaining true-sounding.
+    """
+    path = (ROOT / "data" / "decks" / "edgar-vampires" / "sim" /
+            "giada-angels-vs-vito-vs-baylen-tokens-n400-717196e1-s1903269601.json")
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    seats = doc["analysis"]["seats"]
+    fair = 1 / len(seats)
+    assert seats["edgar-vampires"]["turn_order"]["started_rate"] > 3 * fair
+
+
 def test_a_derivable_figure_names_data_that_is_actually_in_the_record():
     """DERIVABLE is a promise that the raw data is there. Checked."""
     runs = _runs()
@@ -248,10 +295,12 @@ def test_a_derivable_figure_names_data_that_is_actually_in_the_record():
     newest = json.loads(pathlib.Path(with_order[-1]).read_text(encoding="utf-8"))
     assert all("seat_order" in o and "winner" in o for o in newest["outcomes"])
 
-    for name in ("placement", "seat effect"):
-        assert CATALOG[name]["status"] == DERIVABLE, name
-        assert "nothing" in CATALOG[name]["source"], \
-            f"{name} must say what is missing, not just where the data is"
+    # Both former DERIVABLE entries were implemented; the state must stay
+    # reachable, so this asserts the rule rather than a specific member.
+    for name, row in CATALOG.items():
+        if row["status"] == DERIVABLE:
+            assert "nothing" in row["source"], \
+                f"{name} must say what is MISSING, not just where the data is"
 
 
 # ── the split between the engines is the measured one ───────────────────────

@@ -374,12 +374,13 @@ CATALOG = {
     "placement": _m(
         "outcome",
         "Finishing position distribution.",
-        DERIVABLE, "forge",
-        "sim/<run>.json → analysis.seats[].eliminated_turn (per game, in "
-        "games[].per_seat) — nothing aggregates it into a position distribution",
-        caveat="Ordering seats by elimination turn within a game gives the "
-               "placement; the surviving seat is first. Not published, and the "
-               "truncated games have no ordering at all."),
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].placement.by_position / "
+        "mean_position, from each game's per-seat eliminated_turn",
+        caveat="1 is the seat still standing; the rest are ordered by how late "
+               "they were eliminated. A clock-out has no ordering at all and is "
+               "EXCLUDED rather than filed as a draw at position 1, so "
+               "`games_ranked` is below the game count."),
 
     "damage by source": _m(
         "outcome",
@@ -397,14 +398,19 @@ CATALOG = {
     "seat effect": _m(
         "outcome",
         "Win rate by turn order position.",
-        DERIVABLE, "forge",
-        "sim/<run>.json → outcomes[].seat_order and outcomes[].winner — nothing "
-        "crosses them into a rate per position",
-        caveat="AND `seat_order` IS IN THREE OF THE NINETEEN TRACKED RECORDS. It "
-               "was added with seat rotation; the sixteen older records cannot "
-               "answer this at all, and re-deriving them does not recover it "
-               "because the rotation itself is what the field records. Seat order "
-               "ROTATES PER JVM JOB, not per game, because Forge's "
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].turn_order, from the `Turn: Turn 1 "
+        "(seat)` line that names who actually went first",
+        caveat="NOT `outcomes[].seat_order`, which is the `-d` order and is the "
+               "wrong answer. Forge's `determineFirstTurnPlayer` gives the first "
+               "turn, from game 2 of a job onward, to the lowest-indexed seat "
+               "that DID NOT WIN the previous game — so the deck that loses most "
+               "starts most, and a figure built from `-d` position reports "
+               "backwards. Measured on the 400-game run: edgar-vampires started "
+               "**81%** of games. `started_rate` therefore travels beside the "
+               "split, because a seat starting far more than its share is being "
+               "measured on its own losing streak rather than on turn order. "
+               "Seat order ROTATES PER JVM JOB, not per game, because Forge's "
                "`Match` carries `lastOutcome` and picks the next first player "
                "from the previous game's loser. With four jobs and four seats "
                "every position is covered once; with fewer jobs than seats they "

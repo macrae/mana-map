@@ -1711,6 +1711,41 @@
             0.47
           ]
         },
+        "turn_order": {
+          "games_with_a_starter": 100,
+          "games_started": 77,
+          "started_rate": 0.77,
+          "win_rate_when_starting": {
+            "rate": 0.13,
+            "wins": 10,
+            "games": 77,
+            "ci95": [
+              0.072,
+              0.223
+            ]
+          },
+          "win_rate_when_not": {
+            "rate": 0.087,
+            "wins": 2,
+            "games": 23,
+            "ci95": [
+              0.024,
+              0.268
+            ]
+          },
+          "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+        },
+        "placement": {
+          "games_ranked": 86,
+          "by_position": {
+            "1": 12,
+            "2": 21,
+            "3": 42,
+            "4": 11
+          },
+          "mean_position": 2.605,
+          "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+        },
         "mulligan_kept": {
           "mean": 6.96,
           "median": 7.0,
@@ -2059,6 +2094,41 @@
             0.44
           ]
         },
+        "turn_order": {
+          "games_with_a_starter": 100,
+          "games_started": 13,
+          "started_rate": 0.13,
+          "win_rate_when_starting": {
+            "rate": 0.231,
+            "wins": 3,
+            "games": 13,
+            "ci95": [
+              0.082,
+              0.503
+            ]
+          },
+          "win_rate_when_not": {
+            "rate": 0.402,
+            "wins": 35,
+            "games": 87,
+            "ci95": [
+              0.306,
+              0.507
+            ]
+          },
+          "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+        },
+        "placement": {
+          "games_ranked": 86,
+          "by_position": {
+            "1": 38,
+            "2": 21,
+            "3": 18,
+            "4": 9
+          },
+          "mean_position": 1.977,
+          "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+        },
         "mulligan_kept": {
           "mean": 6.93,
           "median": 7.0,
@@ -2404,6 +2474,41 @@
             0.26,
             0.52
           ]
+        },
+        "turn_order": {
+          "games_with_a_starter": 100,
+          "games_started": 3,
+          "started_rate": 0.03,
+          "win_rate_when_starting": {
+            "rate": 0.0,
+            "wins": 0,
+            "games": 3,
+            "ci95": [
+              0.0,
+              0.562
+            ]
+          },
+          "win_rate_when_not": {
+            "rate": 0.371,
+            "wins": 36,
+            "games": 97,
+            "ci95": [
+              0.282,
+              0.47
+            ]
+          },
+          "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+        },
+        "placement": {
+          "games_ranked": 86,
+          "by_position": {
+            "1": 36,
+            "2": 37,
+            "3": 11,
+            "4": 2
+          },
+          "mean_position": 1.756,
+          "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
         },
         "mulligan_kept": {
           "mean": 6.92,
@@ -2752,6 +2857,40 @@
             0.26,
             0.52
           ]
+        },
+        "turn_order": {
+          "games_with_a_starter": 100,
+          "games_started": 7,
+          "started_rate": 0.07,
+          "win_rate_when_starting": {
+            "rate": 0.0,
+            "wins": 0,
+            "games": 7,
+            "ci95": [
+              0.0,
+              0.354
+            ]
+          },
+          "win_rate_when_not": {
+            "rate": 0.0,
+            "wins": 0,
+            "games": 93,
+            "ci95": [
+              0.0,
+              0.04
+            ]
+          },
+          "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+        },
+        "placement": {
+          "games_ranked": 86,
+          "by_position": {
+            "2": 7,
+            "3": 15,
+            "4": 64
+          },
+          "mean_position": 3.663,
+          "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
         },
         "mulligan_kept": {
           "mean": 6.91,

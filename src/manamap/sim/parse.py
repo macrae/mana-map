@@ -129,7 +129,7 @@ def _is_commander(source_name, names):
 
 def _new_game():
     return {"seats": [], "turn": 0, "active": None, "events": [], "owner": {},
-            "mulligan": {}, "mulligans_taken": defaultdict(int), "outcome": {"winner": None, "won_by": None, "round": None,
+            "mulligan": {}, "mulligans_taken": defaultdict(int), "started": None, "outcome": {"winner": None, "won_by": None, "round": None,
                                         "global_turn": None, "draw": False, "lost": {},
                                         "ms": None,
                                         # Every seat Forge declared a winner. One
@@ -164,6 +164,15 @@ def parse_games(text):
         m = RX["turn"].match(line)
         if m:
             g["turn"] = int(m.group(1)); g["active"] = m.group(2); last_turn = g["turn"]
+            # WHO ACTUALLY WENT FIRST, which is a different fact from the `-d`
+            # order the run record calls `seat_order`. Forge's
+            # `determineFirstTurnPlayer` picks, from game 2 of a job onward, the
+            # lowest-indexed seat that did not win the previous game — so the
+            # deck that loses most starts most. Measured on one 25-game job:
+            # edgar started 21 of 25. A seat-effect figure computed from `-d`
+            # position would have reported the opposite of the truth.
+            if g["turn"] == 1 and g.get("started") is None:
+                g["started"] = m.group(2)
             continue
         ev = _event(line, g)
         if ev:
@@ -490,7 +499,8 @@ def game_facts(g, commanders=None):
         per[seat]["mulligan_kept"] = g["mulligan"].get(seat)
 
     o = g["outcome"]
-    return {"seats": seats, "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
+    return {"seats": seats, "started": g.get("started"),
+            "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
             "truncated": bool(o.get("truncated")),
             "global_turn": o["global_turn"], "ms": o["ms"], "lost": dict(o["lost"]),
             "mulligan": dict(g["mulligan"]), "per_seat": per}
@@ -628,6 +638,89 @@ def wilson(k, n, z=1.96):
     return round(lo, 3), round(hi, 3)
 
 
+def _turn_order(facts, labels, decided):
+    """Did going first help this seat — and how often did it go first at all?
+
+    PRD §14 calls this "win rate by turn order position" and the obvious
+    implementation reads `-d` position, which is WRONG HERE and would report
+    backwards. Forge's `determineFirstTurnPlayer` picks, from game 2 of a job
+    onward, the lowest-indexed seat that DID NOT WIN the previous game — so the
+    deck that loses most starts most. Measured on one 25-game job:
+    edgar-vampires started 21 of 25 while winning almost none of them.
+
+    So the figure is built from `Turn: Turn 1 (seat)`, which names who actually
+    went first, and it reports `started_rate` beside the split — because a seat
+    that starts 84% of the time is not being measured on turn order at all, it
+    is being measured on its own losing streak. THE CONFOUND TRAVELS WITH THE
+    FIGURE; it is not a caveat someone has to look up.
+    """
+    mine = [f for f in facts if f.get("started") in labels]
+    seen = [f for f in facts if f.get("started")]
+    if not seen:
+        # Absent, not zero. An older log the parser never read a turn line from
+        # cannot report this, and 0.0 would be a measurement.
+        return {"turn_order": None}
+
+    first_w = sum(1 for f in mine if f["winner"] in labels)
+    rest = [f for f in seen if f.get("started") not in labels]
+    rest_w = sum(1 for f in rest if f["winner"] in labels)
+
+    def _rate(k, n):
+        """A rate never travels without its N and its interval."""
+        if not n:
+            return None
+        lo, hi = wilson(k, n)
+        return {"rate": round(k / n, 3), "wins": k, "games": n, "ci95": [lo, hi]}
+
+    return {"turn_order": {
+        "games_with_a_starter": len(seen),
+        "games_started": len(mine),
+        "started_rate": round(len(mine) / len(seen), 3),
+        "win_rate_when_starting": _rate(first_w, len(mine)),
+        "win_rate_when_not": _rate(rest_w, len(rest)),
+        "basis": "who is active on turn 1, from the log — NOT the `-d` seat "
+                 "order, which Forge overrides from game 2 of a job onward by "
+                 "giving the first turn to the lowest-indexed seat that did not "
+                 "win the previous game. Read `started_rate` first: a seat that "
+                 "starts far more than its share is being measured on its own "
+                 "losing streak, not on turn order.",
+    }}
+
+
+def _placement(facts, labels):
+    """Finishing position: 1 is the survivor, then latest elimination first.
+
+    A game where nobody was eliminated (a clock-out) has no ordering and is
+    excluded rather than filed as a draw at position 1.
+    """
+    counts = Counter()
+    ranked = 0
+    for f in facts:
+        if f.get("truncated"):
+            continue
+        turns = {s: p.get("eliminated_turn") for s, p in f["per_seat"].items()}
+        if all(v is None for v in turns.values()):
+            continue
+        # Survivors first (None sorts last by turn), then latest death upward.
+        order = sorted(turns, key=lambda s: (turns[s] is not None,
+                                             -(turns[s] or 0)))
+        mine = next((i for i, s in enumerate(order, 1) if s in labels), None)
+        if mine:
+            counts[mine] += 1
+            ranked += 1
+    if not ranked:
+        return {"placement": None}
+    return {"placement": {
+        "games_ranked": ranked,
+        "by_position": {str(k): v for k, v in sorted(counts.items())},
+        "mean_position": round(
+            sum(k * v for k, v in counts.items()) / ranked, 3),
+        "basis": "1 is the seat still standing; the rest are ordered by how "
+                 "late they were eliminated. Clock-outs have no ordering and "
+                 "are excluded, so `games_ranked` is below the game count.",
+    }}
+
+
 def mean_ci(xs):
     """`{mean, median, min, max, ci95, n}` — the mean never travels alone.
 
@@ -741,6 +834,8 @@ def aggregate(facts, slug_label, label, commanders=None):
             # bottoms 1 for a hand of six. A single "mean mulligans" would hide
             # that; `limits` names it.
             "mulligans_taken": mean_ci([p["mulligans_taken"] for p in ps]),
+            **_turn_order(facts, raw, decided),
+            **_placement(facts, raw),
             "mulligan_kept": mean_ci([p["mulligan_kept"] for p in ps
                                       if p.get("mulligan_kept") is not None]),
             "combat_damage_dealt_to_players": mean_ci([p["combat_damage_dealt_to_players"] for p in ps]),

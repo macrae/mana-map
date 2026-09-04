@@ -13,6 +13,20 @@ either feeds an experiment or reads one.
 
 
 
+> **2026-09-03 — WHO WENT FIRST IS NOT THE `-d` ORDER, and the difference
+> reports backwards.** PRD §14 asks for win rate by turn order position, and the
+> obvious source is `outcomes[].seat_order` — which is the order the decks were
+> passed to Forge, not the order they play. `determineFirstTurnPlayer` gives the
+> first turn, from game 2 of a job onward, to the lowest-indexed seat that DID
+> NOT WIN the previous game, so the deck that loses most starts most: over the
+> 400-game run **edgar-vampires started 81% of games**. A figure built from `-d`
+> position would have credited the losing seat with a turn-order advantage.
+> `Turn: Turn 1 (seat)` names who actually started, and `started_rate` travels
+> beside the split so the confound cannot be read past. `placement` lands in the
+> same pass — 1 is the survivor, the rest ordered by how late they died, and a
+> clock-out is excluded rather than filed as a first place. All 19 records
+> re-derived; no other figure moved.
+
 > **2026-09-03 — the standard pod is an artifact, not a sentence.** It was
 > described here and nowhere in the code — `grep STANDARD_POD` found an AI
 > profile and no roster — so the most load-bearing configuration in this layer
