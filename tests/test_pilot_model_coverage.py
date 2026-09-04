@@ -225,3 +225,61 @@ def test_the_modelled_trigger_set_matches_what_goldfish_branches_on():
         f"goldfish branches on {sorted(branched)} but model_coverage believes "
         f"{sorted(_MODELLED_TREASURE_TRIGGERS)} — a card whose trigger is in "
         f"one set and not the other is misfiled in the coverage report")
+
+
+# ── read correctly, never played ────────────────────────────────────────────
+
+def test_no_deck_computes_an_effect_it_never_gets_to_apply():
+    """A CARD CAN BE READ CORRECTLY AND NEVER CAST.
+
+    Every casting loop in `simulate_once`'s main phase selects on a channel:
+    draws, ramps, makes Treasure, has a body. A card matching none of them sits
+    in hand for ten turns while its profile says exactly what it would have
+    done — and the figure that results is not low, it is a different number
+    about a different deck.
+
+    `goldfish.py` already carried a comment about patching this once, for damage
+    doublers: "Gratuitous Violence and Dictate of the Twin Gods are
+    enchantments, read correctly and never cast." It was patched case by case,
+    and nothing looked for the next one.
+
+    The fleet sweep on 2026-09-04 found 228 never-cast cards across ten decks
+    (26%), of which four were live losses:
+
+        zur-enchantress  Sanctum of Stone Fangs, Northern Air Temple — found
+            first, and they were the reason two Shrines measured as EXACTLY
+            nothing. Casting them nearly doubled the deck's drain.
+        zur-enchantress  Steel of the Godhead, Sheltered by Ghosts — Auras that
+            grant lifelink.
+        edgar-vampires   Ashnod's Altar, Altar of Dementia — free sacrifice
+            outlets with no body. `free_sac_outlet` was set inside the BODIES
+            loop, so a SLEEVED deck ran its engine on 2 of its 4 outlets.
+
+    The other 224 are correct: a counterspell should never be cast in a
+    goldfish, and this module's docstring says so. The defect is only ever a
+    card that is never cast AND feeds a channel that is switched ON.
+    """
+    import glob
+    import pathlib as _pl
+
+    from manamap.pilot.model_coverage import silent_losses
+
+    root = _pl.Path(__file__).resolve().parent.parent
+    decks = sorted(_pl.Path(f).parent.name
+                   for f in glob.glob(str(root / "data/decks/*/cards.json")))
+    if len(decks) < 5:
+        pytest.skip("deck data not present")
+
+    checked, offenders = 0, {}
+    for slug in decks:
+        losses = silent_losses(slug)
+        checked += 1
+        if losses:
+            offenders[slug] = losses
+    assert checked >= 5, "the loop stopped checking"
+    assert not offenders, (
+        "these cards feed a channel the deck switched ON and no casting loop "
+        "will ever select them, so the model computes an effect it never "
+        "applies:\n" + "\n".join(
+            f"  {s}: " + ", ".join(f"{n} ({'/'.join(ch)})" for n, ch in v)
+            for s, v in offenders.items()))

@@ -54,105 +54,105 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.2312,
+          "rate": 0.2448,
           "ci95": [
-            0.223,
-            0.2396
+            0.2365,
+            0.2533
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0627,
+          "rate": 0.0705,
           "ci95": [
-            0.0581,
-            0.0676
+            0.0656,
+            0.0757
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0393,
+          "rate": 0.0468,
           "ci95": [
-            0.0357,
-            0.0433
+            0.0428,
+            0.0511
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0249,
+          "rate": 0.0325,
           "ci95": [
-            0.022,
-            0.0281
+            0.0292,
+            0.0362
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0209,
+          "rate": 0.0277,
           "ci95": [
-            0.0183,
-            0.0239
+            0.0247,
+            0.0311
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0246,
+          "rate": 0.0345,
           "ci95": [
-            0.0217,
-            0.0278
+            0.0311,
+            0.0383
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0286,
+          "rate": 0.0388,
           "ci95": [
-            0.0255,
-            0.0321
+            0.0352,
+            0.0428
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0261,
+          "rate": 0.0362,
           "ci95": [
-            0.0232,
-            0.0294
+            0.0327,
+            0.04
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0216,
+          "rate": 0.0297,
           "ci95": [
-            0.0189,
-            0.0246
+            0.0265,
+            0.0332
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0838,
+        "rate": 0.1027,
         "ci95": [
-          0.0785,
-          0.0894
+          0.0969,
+          0.1088
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4799,
-        "hand_empty": 722,
-        "mana_short": 4077
+        "stall_turns": 5615,
+        "hand_empty": 990,
+        "mana_short": 4625
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4033,
+        "rate": 0.4041,
         "ci95": [
-          0.3937,
-          0.413
+          0.3945,
+          0.4138
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2836,
+      "missed_land_drop_rate": 0.2817,
       "mulliganed": {
         "rate": 0.1954,
         "ci95": [
@@ -166,16 +166,16 @@
         "2": 2.156,
         "3": 3.265,
         "4": 4.19,
-        "5": 4.944,
-        "6": 5.605,
-        "7": 6.199,
-        "8": 6.811,
-        "9": 7.414,
-        "10": 8.033
+        "5": 4.943,
+        "6": 5.601,
+        "7": 6.192,
+        "8": 6.808,
+        "9": 7.42,
+        "10": 8.06
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1094
+      "mana_stdev_turn_five": 1.1093
     },
     "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b"
   },
@@ -240,7 +240,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.322,
+          "value": 6.327,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -381,15 +381,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.021,
+            "10": 8.045,
             "2": 2.137,
             "3": 3.245,
             "4": 4.181,
-            "5": 4.941,
-            "6": 5.593,
-            "7": 6.196,
-            "8": 6.8,
-            "9": 7.396
+            "5": 4.94,
+            "6": 5.591,
+            "7": 6.191,
+            "8": 6.796,
+            "9": 7.401
           },
           "tier": "data",
           "weight": "detail",
@@ -400,15 +400,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.545,
+            "10": 0.56,
             "2": 0.997,
             "3": 0.917,
             "4": 0.81,
             "5": 0.698,
-            "6": 0.599,
-            "7": 0.551,
-            "8": 0.523,
-            "9": 0.527
+            "6": 0.598,
+            "7": 0.549,
+            "8": 0.524,
+            "9": 0.533
           },
           "tier": "data",
           "weight": "detail",
@@ -419,15 +419,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.55,
-            "10": 15.813,
-            "2": 1.524,
-            "3": 3.046,
-            "4": 4.816,
-            "5": 6.373,
-            "6": 7.861,
-            "7": 9.73,
-            "8": 11.643,
-            "9": 13.652
+            "10": 15.888,
+            "2": 1.443,
+            "3": 2.853,
+            "4": 4.622,
+            "5": 6.181,
+            "6": 7.683,
+            "7": 9.562,
+            "8": 11.503,
+            "9": 13.588
           },
           "tier": "data",
           "weight": "detail",
@@ -453,11 +453,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 415,
-            "6": 496,
-            "7": 3268,
-            "8": 4078,
-            "9": 1558
+            "10": 577,
+            "6": 444,
+            "7": 2973,
+            "8": 3972,
+            "9": 1774
           },
           "tier": "data",
           "weight": "detail",
@@ -473,7 +473,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.322,
+    "commander_mean_cast_turn": 6.327,
     "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
@@ -522,18 +522,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.809,
+      "mean_kill_turn": 7.904,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 5,
-      "kill_by_turn_8_pct": 78,
+      "kill_by_turn_6_pct": 4,
+      "kill_by_turn_8_pct": 74,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 2,
+      "no_kill_by_max_turn_pct": 3,
       "kill_turn_histogram": {
-        "10": 415,
-        "6": 496,
-        "7": 3268,
-        "8": 4078,
-        "9": 1558
+        "10": 577,
+        "6": 444,
+        "7": 2973,
+        "8": 3972,
+        "9": 1774
       }
     }
   },

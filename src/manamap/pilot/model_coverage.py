@@ -121,6 +121,78 @@ def channels_for(profile):
     return found
 
 
+#: What each casting loop in `goldfish.simulate_once`'s main phase selects on.
+#: MIRRORS the loops; it does not replace them, and the fleet assertion in
+#: `tests/test_pilot_model_coverage.py` is what keeps the mirror honest.
+#:
+#: This exists because a card can be READ correctly and never PLAYED. Every
+#: loop selects on a channel — draws, ramps, makes Treasure, has a body — and a
+#: card matching none of them sits in hand for ten turns while its profile says
+#: exactly what it would have done. `goldfish.py` already carries a comment
+#: about patching that once for damage doublers ("read correctly and never
+#: cast"); the fleet sweep on 2026-09-04 found two more classes.
+def never_cast(profile, flags):
+    """True when no casting loop would ever select this card.
+
+    NOT a defect on its own: a counterspell should never be cast in a goldfish,
+    and most of the 26% of the fleet this matches is exactly that. The defect is
+    a card that is never cast AND feeds a channel that is switched ON — the
+    model understands it, was told to look, and never puts it on the table.
+    """
+    if profile["is_land"] or profile["bodies"] > 0 or profile["produces"] > 0 \
+            or profile["tutor"] or profile["reduces"]:
+        return False
+    cb = profile.get("combat") or {}
+    if flags.get("model_combat"):
+        if any((cb.get("etb_damage_self_power"), cb.get("etb_damage_count"),
+                cb.get("etb_damage_fixed"), cb.get("etb_token_bodies"),
+                cb.get("etb_copy"), (cb.get("team_damage_multiplier") or 0) > 1)):
+            return False
+        if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
+            return False
+    if flags.get("model_treasures") and (profile["treasure_doubler"]
+                                         or profile["treasure_bonus"]):
+        return False
+    if flags.get("model_draw") and _nonzero(profile.get("draw"), (
+            "spell_draw", "etb_draw", "recurring_draw", "arrival_draw")):
+        return False
+    if flags.get("model_drain") and (_nonzero(profile.get("drain"), (
+            "payoff_equal", "payoff_fixed", "gain_recurring",
+            "gain_per_enchantment", "gain_per_creature",
+            "drain_recurring", "drain_per_enchantment"))
+            or (profile.get("drain") or {}).get("lifelink")):
+        return False
+    if flags.get("model_sacrifice") and profile.get("sac_outlet"):
+        return False
+    return True
+
+
+def silent_losses(slug, branch=None):
+    """`[(name, [channels])]` — cards that feed an ACTIVE channel and are never
+    cast. This list must be EMPTY; anything in it is a measured effect the model
+    computes and then never gets the chance to apply."""
+    import json as _json
+
+    from manamap.pilot import goldfish
+    from manamap.pilot.common import deck_dir
+
+    path = deck_dir(slug, branch) / "goldfish_targets.json"
+    if not path.exists():
+        return []
+    flags = _json.loads(path.read_text(encoding="utf-8"))
+    active = {ch for ch, flag in CHANNELS.items()
+              if flag is None or flags.get(flag)}
+    out = []
+    for card in load_deck_cards(slug, branch).get("cards", []):
+        p = goldfish.classify(card)
+        if not never_cast(p, flags):
+            continue
+        feeds = channels_for(p) & active
+        if feeds:
+            out.append((card["name"], sorted(feeds)))
+    return out
+
+
 def analyze(slug, branch=None):
     """`{flags, cards, counts}` — what this deck needs and what is switched on."""
     from manamap.pilot import goldfish

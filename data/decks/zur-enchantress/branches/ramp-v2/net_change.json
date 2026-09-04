@@ -1058,12 +1058,12 @@
   "why": "ramp-v1 with Hypnotic Siren kept. v1 cut it as a weak {U} body and that ONE card was holding blue`s requirement down: with it gone the {U}{U} spells (Counterspell, Muddle the Mixture, Fear of Impostors) defined the blue pip profile, blue`s source target jumped 22 -> 36 and blue on-curve COLLAPSED 89.5% -> 61% -- worse than the black problem this whole line of work started from. A cheap single-pip card is load-bearing for a colour requirement in a way nothing about the card itself suggests. Three white cuts for three rocks; blue is untouched."
  },
  "objective_grade": {
-  "reading": 0.874,
+  "reading": 0.8763,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; board power @T6, extra cards by T8 and interaction affordable @T6 improved.",
+  "because": "The objective is met and nothing measured here got worse; board power @T6, killed by T10, extra cards by T8 and interaction affordable @T6 improved.",
   "bill": {
    "box": 2,
    "buy": 3,
@@ -1108,7 +1108,6 @@
   "no_call": [
    "damage @T10",
    "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -1118,17 +1117,22 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "8.30 -> 8.59, a change of +0.29 (+4%)",
+    "reads_as": "8.12 -> 8.47, a change of +0.35 (+4%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
+    "measure": "killed by T10",
+    "reads_as": "86 games in 100 -> 88 in 100, a swing of 2 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
     "measure": "extra cards by T8",
-    "reads_as": "1.71 -> 1.97, a change of +0.25 (+15%)",
+    "reads_as": "1.68 -> 1.94, a change of +0.26 (+15%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "65 games in 100 -> 72 in 100, a swing of 7 games per 100",
+    "reads_as": "62 games in 100 -> 68 in 100, a swing of 7 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
@@ -1136,7 +1140,7 @@
    {
     "detail": "the largest is missed drop by T5 at -0.018 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1148,6 +1152,7 @@
   ],
   "rose": [
    "board power @T6",
+   "killed by T10",
    "extra cards by T8",
    "interaction affordable @T6"
   ],
@@ -1158,12 +1163,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 16.9715,
-   "champion": 16.9143,
-   "delta": 0.0572,
+   "branch": 17.0893,
+   "champion": 16.9705,
+   "delta": 0.1188,
    "mde": 0.2439,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.057 is smaller than the 0.244 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.119 is smaller than the 0.244 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -1172,12 +1177,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.5888,
-   "champion": 8.298,
-   "delta": 0.2908,
-   "mde": 0.1648,
+   "branch": 8.4737,
+   "champion": 8.123,
+   "delta": 0.3507,
+   "mde": 0.1649,
    "measure": "board power @T6",
-   "reads_as": "8.30 -> 8.59, a change of +0.29 (+4%)",
+   "reads_as": "8.12 -> 8.47, a change of +0.35 (+4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1187,8 +1192,8 @@
   {
    "better_is": "higher",
    "branch": 0.0007,
-   "champion": 0.0,
-   "delta": 0.0007,
+   "champion": 0.0001,
+   "delta": 0.0006,
    "mde": 0.001,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
@@ -1200,26 +1205,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.874,
-   "champion": 0.8628,
-   "delta": 0.0112,
-   "mde": 0.0136,
+   "branch": 0.8763,
+   "champion": 0.8588,
+   "delta": 0.0175,
+   "mde": 0.0138,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.014 this run can resolve",
+   "reads_as": "86 games in 100 -> 88 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
-   "branch": 0.0056,
-   "champion": 0.0052,
-   "delta": 0.0004,
-   "mde": 0.003,
+   "branch": 0.01,
+   "champion": 0.0085,
+   "delta": 0.0015,
+   "mde": 0.0039,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1228,9 +1233,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3758,
-   "champion": 0.3937,
-   "delta": -0.0179,
+   "branch": 0.3784,
+   "champion": 0.3964,
+   "delta": -0.018,
    "mde": 0.0194,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.019 this run can resolve",
@@ -1256,12 +1261,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.9686,
-   "champion": 1.7143,
-   "delta": 0.2543,
-   "mde": 0.0855,
+   "branch": 1.938,
+   "champion": 1.6822,
+   "delta": 0.2558,
+   "mde": 0.0845,
    "measure": "extra cards by T8",
-   "reads_as": "1.71 -> 1.97, a change of +0.25 (+15%)",
+   "reads_as": "1.68 -> 1.94, a change of +0.26 (+15%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1270,12 +1275,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.7153,
-   "champion": 0.6468,
-   "delta": 0.0685,
-   "mde": 0.0204,
+   "branch": 0.6824,
+   "champion": 0.6152,
+   "delta": 0.0672,
+   "mde": 0.021,
    "measure": "interaction affordable @T6",
-   "reads_as": "65 games in 100 -> 72 in 100, a swing of 7 games per 100",
+   "reads_as": "62 games in 100 -> 68 in 100, a swing of 7 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",

@@ -2567,17 +2567,36 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # the model never put them on the battlefield. A synthetic library of
         # twenty of them drained 0.
         #
-        # Cheapest-first, like every other loop here, and guarded by the flag so
-        # a deck that has not opted in is byte-identical.
-        if model_drain:
-            for card in sorted(
-                    (c for c in hand
-                     if c["bodies"] <= 0 and not c["is_land"]
-                     and any(c["drain"][k] for k in (
-                         "payoff_equal", "payoff_fixed", "gain_recurring",
-                         "gain_per_enchantment", "gain_per_creature",
-                         "drain_recurring", "drain_per_enchantment"))),
-                    key=lambda c: reduced_cost(c, reductions, chosen_type)):
+        # Cheapest-first, like every other loop here, and each arm guarded by
+        # its own flag so a deck that has not opted in is byte-identical.
+        #
+        # THE FLEET AUDIT THAT FOUND THE REST. Sweeping every deck for cards
+        # that feed an ACTIVE channel and match no casting predicate returned
+        # four, on two decks, and both classes are here:
+        #
+        #   edgar-vampires  Ashnod's Altar, Altar of Dementia — free sacrifice
+        #       outlets with no body. `free_sac_outlet` is set inside the BODIES
+        #       loop, so an outlet that is not a creature could never register:
+        #       the deck's engine ran on 2 of its 4 outlets and its redundancy
+        #       read as half what it is.
+        #
+        #   zur-enchantress  Steel of the Godhead, Sheltered by Ghosts — Auras
+        #       that GRANT lifelink. They feed the drain channel and matched
+        #       nothing.
+        def _engine_permanent(c):
+            if c["is_land"] or c["bodies"] > 0:
+                return False
+            if model_drain and (any(c["drain"][k] for k in (
+                    "payoff_equal", "payoff_fixed", "gain_recurring",
+                    "gain_per_enchantment", "gain_per_creature",
+                    "drain_recurring", "drain_per_enchantment"))
+                    or c["drain"]["lifelink"]):
+                return True
+            return bool(model_sacrifice and c["sac_outlet"])
+
+        if model_drain or model_sacrifice:
+            for card in sorted((c for c in hand if _engine_permanent(c)),
+                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if not spend(reduced_cost(card, reductions, chosen_type),
                              card["pips"]):
                     continue
@@ -2586,7 +2605,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 battlefield_types.append(card.get("type_line") or "")
                 if "Enchantment" in (card.get("type_line") or ""):
                     enchantments_entered += 1
-                drain_permanents.append(card["drain"])
+                if model_drain:
+                    if any(card["drain"][k] for k in (
+                            "payoff_equal", "payoff_fixed", "gain_recurring",
+                            "gain_per_enchantment", "gain_per_creature",
+                            "drain_recurring", "drain_per_enchantment")):
+                        drain_permanents.append(card["drain"])
+                    # AN AURA GRANTS LIFELINK TO ONE CREATURE, so it is worth
+                    # the power of the body you would put it on — the biggest
+                    # one — and nothing at all with an empty board. Capped by
+                    # total board power so two Auras cannot credit more life
+                    # than the whole team can deal.
+                    if card["drain"]["lifelink"] and battlefield:
+                        best = max(p for p, _, _, _, _ in battlefield)
+                        total = sum(p for p, _, _, _, _ in battlefield)
+                        lifelink_power = min(lifelink_power + best, total)
+                if model_sacrifice:
+                    if is_death_engine(card["death"]):
+                        death_engines.append(card["death"])
+                    if card["sac_outlet"] == "free":
+                        free_sac_outlet = True
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
