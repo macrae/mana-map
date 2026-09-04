@@ -214,7 +214,7 @@
    {
     "free": false,
     "name": "Fear of Impostors",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -298,8 +298,13 @@
    {
     "free": false,
     "name": "Mesa Enchantress",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -602,10 +607,10 @@
    }
   ],
   "counts": {
-   "box": 6,
-   "buy": 16,
+   "box": 7,
+   "buy": 17,
    "elsewhere": 3,
-   "in_deck": 65
+   "in_deck": 63
   },
   "counts_are": "distinct names",
   "diff": {
@@ -622,7 +627,9 @@
     "Declaration of Naught",
     "Doomwake Giant",
     "Elspeth's Nightmare",
+    "Fear of Impostors",
     "Ghostly Prison",
+    "Mesa Enchantress",
     "Monologue Tax",
     "Negate",
     "Phyrexian Reclamation",
@@ -641,18 +648,21 @@
    "names": 90,
    "out": [
     "Aether Tunnel",
+    "Ajani's Chosen",
     "Arcane Signet",
+    "Archon of Sun's Grace",
     "Athreos, God of Passage",
+    "Balemurk Leech",
     "Choked Estuary",
     "Eidolon of Astral Winds",
     "Enduring Tenacity",
+    "Entity Tracker",
     "Godless Shrine",
-    "Heliod's Pilgrim",
+    "Gremlin Tamer",
     "Heliod, Sun-Crowned",
     "Hypnotic Siren",
     "Isolated Chapel",
     "Journey to Nowhere",
-    "Lotus Petal",
     "Master of the Feast",
     "Nighthowler",
     "Northern Air Temple",
@@ -663,7 +673,6 @@
     "Summoner's Sending",
     "Talisman of Dominance",
     "The Master of Keys",
-    "Tymaret, Chosen from Death",
     "Unquestioned Authority",
     "Urza's Saga",
     "Watery Grave"
@@ -687,6 +696,7 @@
    "Declaration of Naught",
    "Doomwake Giant",
    "Elspeth's Nightmare",
+   "Fear of Impostors",
    "Ghostly Prison",
    "Propaganda",
    "Skycloud Expanse",
@@ -731,14 +741,14 @@
     }
    ],
    "counts": {
-    "in": 25,
-    "in_copies": 28,
+    "in": 27,
+    "in_copies": 30,
     "lands_in": 3,
     "lands_out": 5,
-    "out": 27,
-    "out_copies": 28,
-    "spells_in": 22,
-    "spells_out": 22
+    "out": 29,
+    "out_copies": 30,
+    "spells_in": 24,
+    "spells_out": 24
    },
    "in": [
     {
@@ -885,10 +895,30 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
+     "name": "Fear of Impostors",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Creature \u2014 Nightmare",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
      "name": "Ghostly Prison",
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Mesa Enchantress",
+     "pair": null,
+     "state": "box",
+     "type_line": "Creature \u2014 Human Druid",
      "why": null
     },
     {
@@ -995,15 +1025,6 @@
    "names": 90,
    "out": [
     {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Lotus Petal",
-     "pair": null,
-     "type_line": "Artifact",
-     "why": null
-    },
-    {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
@@ -1046,6 +1067,24 @@
      "name": "Arcane Signet",
      "pair": null,
      "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Balemurk Leech",
+     "pair": null,
+     "type_line": "Creature \u2014 Leech",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gremlin Tamer",
+     "pair": null,
+     "type_line": "Creature \u2014 Human Scout",
      "why": null
     },
     {
@@ -1103,15 +1142,6 @@
      "why": null
     },
     {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Tymaret, Chosen from Death",
-     "pair": null,
-     "type_line": "Legendary Enchantment Creature \u2014 Demigod",
-     "why": null
-    },
-    {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
@@ -1133,9 +1163,9 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Heliod's Pilgrim",
+     "name": "Entity Tracker",
      "pair": null,
-     "type_line": "Creature \u2014 Human Cleric",
+     "type_line": "Creature \u2014 Human Scout",
      "why": null
     },
     {
@@ -1181,6 +1211,24 @@
      "name": "Unquestioned Authority",
      "pair": null,
      "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ajani's Chosen",
+     "pair": null,
+     "type_line": "Creature \u2014 Cat Soldier",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Archon of Sun's Grace",
+     "pair": null,
+     "type_line": "Creature \u2014 Archon",
      "why": null
     },
     {
@@ -1240,8 +1288,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 25,
-    "out": 27
+    "in": 27,
+    "out": 29
    }
   },
   "lands": [],
@@ -1364,13 +1412,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": -1,
+    "delta": 0,
     "gap": [
-     3,
+     2,
      2
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
@@ -1380,13 +1428,13 @@
    },
    {
     "colour": "U",
-    "delta": -15,
+    "delta": -14,
     "gap": [
-     3,
+     2,
      -12
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
@@ -1396,13 +1444,13 @@
    },
    {
     "colour": "B",
-    "delta": 6,
+    "delta": 7,
     "gap": [
-     -4,
+     -5,
      2
     ],
     "have": [
-     32,
+     31,
      24
     ],
     "target": [
@@ -1464,7 +1512,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.855,
+    0.839,
     0.927
    ],
    "G": [
@@ -1476,11 +1524,11 @@
     null
    ],
    "U": [
-    0.936,
+    0.927,
     0.694
    ],
    "W": [
-    0.936,
+    0.927,
     0.927
    ]
   }
@@ -1499,13 +1547,13 @@
  "recommendation": {
   "because": "The objective is not met. Stall, 2 in a row and interaction affordable @t6 improved anyway, which is a different branch's case.",
   "bill": {
-   "box": 6,
-   "buy": 16,
+   "box": 7,
+   "buy": 17,
    "elsewhere": 3,
-   "in_deck": 65
+   "in_deck": 63
   },
   "cost": {
-   "buy": 16,
+   "buy": 17,
    "buy_cards": [
     "Aegis of the Gods",
     "Aura of Silence",
@@ -1517,6 +1565,7 @@
     "Declaration of Naught",
     "Doomwake Giant",
     "Elspeth's Nightmare",
+    "Fear of Impostors",
     "Ghostly Prison",
     "Sphere of Safety",
     "Touch the Spirit Realm",
@@ -1525,10 +1574,10 @@
     "Wizard Class"
    ],
    "counts": {
-    "box": 6,
-    "buy": 16,
+    "box": 7,
+    "buy": 17,
     "elsewhere": 3,
-    "in_deck": 65
+    "in_deck": 63
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1552,19 +1601,19 @@
      "name": "Skycloud Expanse"
     }
    ],
-   "owned": 74,
-   "reads_as": "16 to buy; 3 to pull out of a deck that is still together; 74 of 90 already owned",
+   "owned": 73,
+   "reads_as": "17 to buy; 3 to pull out of a deck that is still together; 73 of 90 already owned",
    "total": 90
   },
   "fell": [
    "damage @T10",
    "board power @T6",
+   "killed by T6",
    "killed by T10",
    "missed drop by T5",
    "extra cards by T8"
   ],
   "no_call": [
-   "killed by T6",
    "mulliganed",
    "hand can act by T3"
   ],
@@ -1583,43 +1632,49 @@
   ],
   "risk": [
    {
-    "detail": "16.66 -> 8.18, a change of -8.47 (-51%)",
+    "detail": "23.05 -> 8.18, a change of -14.87 (-64%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "8.26 -> 4.78, a change of -3.47 (-42%)",
+    "detail": "9.62 -> 4.78, a change of -4.83 (-50%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "89 games in 100 -> 48 in 100, a swing of 41 games per 100",
+    "detail": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "killed by T6",
+    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "detail": "93 games in 100 -> 48 in 100, a swing of 45 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "39 games in 100 -> 41 in 100, a swing of 2 games per 100",
+    "detail": "38 games in 100 -> 41 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "missed drop by T5",
     "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
    },
    {
-    "detail": "1.89 -> 1.25, a change of -0.64 (-34%)",
+    "detail": "3.16 -> 1.25, a change of -1.91 (-60%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is hand can act by T3 at -0.004 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hand can act by T3 at -0.003 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "3 row(s) returned no call",
+    "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "W gap +3 -> +2, U gap +3 -> -12",
+    "detail": "U gap +2 -> -12",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1643,11 +1698,11 @@
   {
    "better_is": "higher",
    "branch": 8.1836,
-   "champion": 16.6577,
-   "delta": -8.4741,
-   "mde": 0.2351,
+   "champion": 23.0518,
+   "delta": -14.8682,
+   "mde": 0.4388,
    "measure": "damage @T10",
-   "reads_as": "16.66 -> 8.18, a change of -8.47 (-51%)",
+   "reads_as": "23.05 -> 8.18, a change of -14.87 (-64%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1657,11 +1712,11 @@
   {
    "better_is": "higher",
    "branch": 4.7833,
-   "champion": 8.2558,
-   "delta": -3.4725,
-   "mde": 0.1648,
+   "champion": 9.6155,
+   "delta": -4.8322,
+   "mde": 0.2099,
    "measure": "board power @T6",
-   "reads_as": "8.26 -> 4.78, a change of -3.47 (-42%)",
+   "reads_as": "9.62 -> 4.78, a change of -4.83 (-50%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1671,25 +1726,25 @@
   {
    "better_is": "higher",
    "branch": 0.0,
-   "champion": 0.001,
-   "delta": -0.001,
-   "mde": 0.0013,
+   "champion": 0.0056,
+   "delta": -0.0056,
+   "mde": 0.003,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
+   "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.4787,
-   "champion": 0.8863,
-   "delta": -0.4076,
+   "champion": 0.9276,
+   "delta": -0.4489,
    "mde": 0.0198,
    "measure": "killed by T10",
-   "reads_as": "89 games in 100 -> 48 in 100, a swing of 41 games per 100",
+   "reads_as": "93 games in 100 -> 48 in 100, a swing of 45 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1699,9 +1754,9 @@
   {
    "better_is": "lower",
    "branch": 0.0029,
-   "champion": 0.0116,
-   "delta": -0.0087,
-   "mde": 0.0042,
+   "champion": 0.0104,
+   "delta": -0.0075,
+   "mde": 0.004,
    "measure": "stall, 2 in a row",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": null,
@@ -1713,11 +1768,11 @@
   {
    "better_is": "lower",
    "branch": 0.412,
-   "champion": 0.3873,
-   "delta": 0.0247,
+   "champion": 0.3809,
+   "delta": 0.0311,
    "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "39 games in 100 -> 41 in 100, a swing of 2 games per 100",
+   "reads_as": "38 games in 100 -> 41 in 100, a swing of 3 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -1727,11 +1782,11 @@
   {
    "better_is": "lower",
    "branch": 0.1999,
-   "champion": 0.1938,
-   "delta": 0.0061,
+   "champion": 0.1993,
+   "delta": 0.0006,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1741,11 +1796,11 @@
   {
    "better_is": "higher",
    "branch": 1.2481,
-   "champion": 1.8877,
-   "delta": -0.6396,
-   "mde": 0.0833,
+   "champion": 3.1554,
+   "delta": -1.9073,
+   "mde": 0.151,
    "measure": "extra cards by T8",
-   "reads_as": "1.89 -> 1.25, a change of -0.64 (-34%)",
+   "reads_as": "3.16 -> 1.25, a change of -1.91 (-60%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1755,8 +1810,8 @@
   {
    "better_is": "higher",
    "branch": 0.7474,
-   "champion": 0.6372,
-   "delta": 0.1102,
+   "champion": 0.6371,
+   "delta": 0.1103,
    "mde": 0.0219,
    "measure": "interaction affordable @T6",
    "reads_as": "64 games in 100 -> 75 in 100, a swing of 11 games per 100",
@@ -1769,11 +1824,11 @@
   {
    "better_is": "higher",
    "branch": 0.9901,
-   "champion": 0.9937,
-   "delta": -0.0036,
+   "champion": 0.9927,
+   "delta": -0.0026,
    "mde": 0.0039,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

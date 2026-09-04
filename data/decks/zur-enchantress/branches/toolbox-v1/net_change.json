@@ -169,7 +169,7 @@
    {
     "free": false,
     "name": "Fear of Impostors",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -211,7 +211,7 @@
    {
     "free": false,
     "name": "Heliod's Pilgrim",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -289,8 +289,13 @@
    {
     "free": false,
     "name": "Mesa Enchantress",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -527,7 +532,7 @@
    {
     "free": false,
     "name": "Tymaret, Chosen from Death",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -568,10 +573,10 @@
    }
   ],
   "counts": {
-   "box": 0,
-   "buy": 11,
+   "box": 1,
+   "buy": 14,
    "elsewhere": 3,
-   "in_deck": 76
+   "in_deck": 72
   },
   "counts_are": "distinct names",
   "diff": {
@@ -579,9 +584,12 @@
     "Adarkar Wastes",
     "Banishing Light",
     "Blind Obedience",
+    "Fear of Impostors",
     "Ghostly Prison",
+    "Heliod's Pilgrim",
     "Idyllic Tutor",
     "Light-Paws, Emperor's Voice",
+    "Mesa Enchantress",
     "Nyx-Fleece Ram",
     "Open the Armory",
     "Propaganda",
@@ -589,6 +597,7 @@
     "Solitary Confinement",
     "Tainted Remedy",
     "Touch the Spirit Realm",
+    "Tymaret, Chosen from Death",
     "Valgavoth's Lair"
    ],
    "base_names": 92,
@@ -596,12 +605,16 @@
    "names": 90,
    "out": [
     "Aether Tunnel",
+    "Ajani's Chosen",
     "Arcane Signet",
+    "Archon of Sun's Grace",
+    "Balemurk Leech",
     "Choked Estuary",
+    "Entity Tracker",
     "Godless Shrine",
+    "Gremlin Tamer",
     "Isolated Chapel",
     "Journey to Nowhere",
-    "Lotus Petal",
     "Northern Air Temple",
     "Reprobation",
     "Sanctum of Stone Fangs",
@@ -623,7 +636,9 @@
    "Adarkar Wastes",
    "Banishing Light",
    "Blind Obedience",
+   "Fear of Impostors",
    "Ghostly Prison",
+   "Heliod's Pilgrim",
    "Idyllic Tutor",
    "Light-Paws, Emperor's Voice",
    "Nyx-Fleece Ram",
@@ -633,6 +648,7 @@
    "Solitary Confinement",
    "Tainted Remedy",
    "Touch the Spirit Realm",
+   "Tymaret, Chosen from Death",
    "Valgavoth's Lair"
   ]
  },
@@ -670,14 +686,14 @@
     }
    ],
    "counts": {
-    "in": 14,
-    "in_copies": 17,
+    "in": 18,
+    "in_copies": 21,
     "lands_in": 3,
     "lands_out": 5,
-    "out": 16,
-    "out_copies": 17,
-    "spells_in": 11,
-    "spells_out": 11
+    "out": 20,
+    "out_copies": 21,
+    "spells_in": 15,
+    "spells_out": 15
    },
    "in": [
     {
@@ -721,6 +737,16 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Tymaret, Chosen from Death",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Enchantment Creature \u2014 Demigod",
+     "why": null
+    },
+    {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
@@ -728,6 +754,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Fear of Impostors",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment Creature \u2014 Nightmare",
      "why": null
     },
     {
@@ -744,10 +780,30 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
+     "name": "Heliod's Pilgrim",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Human Cleric",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
      "name": "Idyllic Tutor",
      "pair": null,
      "state": "buy",
      "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Mesa Enchantress",
+     "pair": null,
+     "state": "box",
+     "type_line": "Creature \u2014 Human Druid",
      "why": null
     },
     {
@@ -824,15 +880,6 @@
    "names": 90,
    "out": [
     {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Lotus Petal",
-     "pair": null,
-     "type_line": "Artifact",
-     "why": null
-    },
-    {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
@@ -866,6 +913,24 @@
      "name": "Arcane Signet",
      "pair": null,
      "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Balemurk Leech",
+     "pair": null,
+     "type_line": "Creature \u2014 Leech",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gremlin Tamer",
+     "pair": null,
+     "type_line": "Creature \u2014 Human Scout",
      "why": null
     },
     {
@@ -923,6 +988,33 @@
      "why": null
     },
     {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Entity Tracker",
+     "pair": null,
+     "type_line": "Creature \u2014 Human Scout",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ajani's Chosen",
+     "pair": null,
+     "type_line": "Creature \u2014 Cat Soldier",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Archon of Sun's Grace",
+     "pair": null,
+     "type_line": "Creature \u2014 Archon",
+     "why": null
+    },
+    {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
@@ -970,8 +1062,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 14,
-    "out": 16
+    "in": 18,
+    "out": 20
    }
   },
   "lands": [],
@@ -1094,13 +1186,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": -1,
+    "delta": 0,
     "gap": [
-     3,
+     2,
      2
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
@@ -1110,13 +1202,13 @@
    },
    {
     "colour": "U",
-    "delta": -1,
+    "delta": 0,
     "gap": [
-     3,
+     2,
      2
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
@@ -1126,13 +1218,13 @@
    },
    {
     "colour": "B",
-    "delta": -8,
+    "delta": -7,
     "gap": [
-     -4,
+     -5,
      -12
     ],
     "have": [
-     32,
+     31,
      24
     ],
     "target": [
@@ -1194,7 +1286,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.855,
+    0.839,
     0.694
    ],
    "G": [
@@ -1206,11 +1298,11 @@
     null
    ],
    "U": [
-    0.936,
+    0.927,
     0.927
    ],
    "W": [
-    0.936,
+    0.927,
     0.927
    ]
   }
@@ -1227,19 +1319,21 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy nothing and pay damage @T10, board power @T6, killed by T10, extra cards by T8, interaction affordable @T6 and hand can act by T3.",
+  "because": "You buy nothing and pay damage @T10, board power @T6, killed by T6, killed by T10, extra cards by T8, interaction affordable @T6 and hand can act by T3.",
   "bill": {
-   "box": 0,
-   "buy": 11,
+   "box": 1,
+   "buy": 14,
    "elsewhere": 3,
-   "in_deck": 76
+   "in_deck": 72
   },
   "cost": {
-   "buy": 11,
+   "buy": 14,
    "buy_cards": [
     "Banishing Light",
     "Blind Obedience",
+    "Fear of Impostors",
     "Ghostly Prison",
+    "Heliod's Pilgrim",
     "Idyllic Tutor",
     "Light-Paws, Emperor's Voice",
     "Nyx-Fleece Ram",
@@ -1247,13 +1341,14 @@
     "Solitary Confinement",
     "Tainted Remedy",
     "Touch the Spirit Realm",
+    "Tymaret, Chosen from Death",
     "Valgavoth's Lair"
    ],
    "counts": {
-    "box": 0,
-    "buy": 11,
+    "box": 1,
+    "buy": 14,
     "elsewhere": 3,
-    "in_deck": 76
+    "in_deck": 72
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1277,20 +1372,20 @@
      "name": "Skycloud Expanse"
     }
    ],
-   "owned": 79,
-   "reads_as": "11 to buy; 3 to pull out of a deck that is still together; 79 of 90 already owned",
+   "owned": 76,
+   "reads_as": "14 to buy; 3 to pull out of a deck that is still together; 76 of 90 already owned",
    "total": 90
   },
   "fell": [
    "damage @T10",
    "board power @T6",
+   "killed by T6",
    "killed by T10",
    "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "no_call": [
-   "killed by T6",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed"
@@ -1299,25 +1394,31 @@
   "reward": [],
   "risk": [
    {
-    "detail": "16.66 -> 14.80, a change of -1.86 (-11%)",
+    "detail": "23.05 -> 14.80, a change of -8.25 (-36%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "8.26 -> 7.24, a change of -1.01 (-12%)",
+    "detail": "9.62 -> 7.24, a change of -2.37 (-25%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "89 games in 100 -> 78 in 100, a swing of 11 games per 100",
+    "detail": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "killed by T6",
+    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "detail": "93 games in 100 -> 78 in 100, a swing of 15 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "1.89 -> 1.56, a change of -0.33 (-17%)",
+    "detail": "3.16 -> 1.56, a change of -1.59 (-51%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -1335,13 +1436,13 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.001. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.018 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "W gap +3 -> +2, U gap +3 -> +2, B gap -4 -> -12",
+    "detail": "B gap -5 -> -12",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1362,11 +1463,11 @@
   {
    "better_is": "higher",
    "branch": 14.8021,
-   "champion": 16.6577,
-   "delta": -1.8556,
-   "mde": 0.2351,
+   "champion": 23.0518,
+   "delta": -8.2497,
+   "mde": 0.4388,
    "measure": "damage @T10",
-   "reads_as": "16.66 -> 14.80, a change of -1.86 (-11%)",
+   "reads_as": "23.05 -> 14.80, a change of -8.25 (-36%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1376,11 +1477,11 @@
   {
    "better_is": "higher",
    "branch": 7.2412,
-   "champion": 8.2558,
-   "delta": -1.0146,
-   "mde": 0.1648,
+   "champion": 9.6155,
+   "delta": -2.3743,
+   "mde": 0.2099,
    "measure": "board power @T6",
-   "reads_as": "8.26 -> 7.24, a change of -1.01 (-12%)",
+   "reads_as": "9.62 -> 7.24, a change of -2.37 (-25%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1390,25 +1491,25 @@
   {
    "better_is": "higher",
    "branch": 0.0,
-   "champion": 0.001,
-   "delta": -0.001,
-   "mde": 0.0013,
+   "champion": 0.0056,
+   "delta": -0.0056,
+   "mde": 0.003,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
+   "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.7801,
-   "champion": 0.8863,
-   "delta": -0.1062,
+   "champion": 0.9276,
+   "delta": -0.1475,
    "mde": 0.0164,
    "measure": "killed by T10",
-   "reads_as": "89 games in 100 -> 78 in 100, a swing of 11 games per 100",
+   "reads_as": "93 games in 100 -> 78 in 100, a swing of 15 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1418,11 +1519,11 @@
   {
    "better_is": "lower",
    "branch": 0.0096,
-   "champion": 0.0116,
-   "delta": -0.002,
-   "mde": 0.0042,
+   "champion": 0.0104,
+   "delta": -0.0008,
+   "mde": 0.004,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1432,11 +1533,11 @@
   {
    "better_is": "lower",
    "branch": 0.3989,
-   "champion": 0.3873,
-   "delta": 0.0116,
+   "champion": 0.3809,
+   "delta": 0.018,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1446,11 +1547,11 @@
   {
    "better_is": "lower",
    "branch": 0.1985,
-   "champion": 0.1938,
-   "delta": 0.0047,
+   "champion": 0.1993,
+   "delta": -0.0008,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1460,11 +1561,11 @@
   {
    "better_is": "higher",
    "branch": 1.5614,
-   "champion": 1.8877,
-   "delta": -0.3263,
-   "mde": 0.0833,
+   "champion": 3.1554,
+   "delta": -1.594,
+   "mde": 0.151,
    "measure": "extra cards by T8",
-   "reads_as": "1.89 -> 1.56, a change of -0.33 (-17%)",
+   "reads_as": "3.16 -> 1.56, a change of -1.59 (-51%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1474,8 +1575,8 @@
   {
    "better_is": "higher",
    "branch": 0.5784,
-   "champion": 0.6372,
-   "delta": -0.0588,
+   "champion": 0.6371,
+   "delta": -0.0587,
    "mde": 0.0219,
    "measure": "interaction affordable @T6",
    "reads_as": "64 games in 100 -> 58 in 100, a swing of 6 games per 100",
@@ -1488,8 +1589,8 @@
   {
    "better_is": "higher",
    "branch": 0.9822,
-   "champion": 0.9937,
-   "delta": -0.0115,
+   "champion": 0.9927,
+   "delta": -0.0105,
    "mde": 0.0052,
    "measure": "hand can act by T3",
    "reads_as": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",
