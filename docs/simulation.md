@@ -13,6 +13,23 @@ either feeds an experiment or reads one.
 
 
 
+> **2026-09-03 — A COMMANDER-DAMAGE KILL IS A GO-WIDE KILL WEARING A CROWN, and
+> the goldfish cannot judge either.** Zur's V6 engine is *"Zur attacks, fetches
+> an aura, connects with lifelink, Vito drains"* — every step gated on a 1/4
+> commander connecting. The goldfish reported that route assembled by turn six
+> in **23.6%** of games. Forty Forge games against the pilot's own table:
+> **0.35 commander damage a game, best single game 2, and 0 of 39 reaching 21.**
+> Total combat damage 2.33 a game against edgar's 32.3 on the same table; first
+> attack on turn 21.05 against edgar's 16.69. The route was never wrong about
+> the DRAW and was never evidence about the KILL.
+>
+> Same class as the Edgar go-wide refactor the model preferred and Forge scored
+> 31/400 against 50/400, one turn further along: there it was 1/1 tokens that do
+> not connect, here it is one creature that has to connect twenty-one times.
+> `validate-goldfish-targets` notes a combat-dependent route now — measured
+> across the fleet first, it fires on 2 of 10 decks and both are genuine — and
+> says sharply more when `model_combat` is off, which is what Zur had.
+
 > **2026-09-03 — THE NULL IS NOT 0.25, AND THE POD THAT REPLACED THE UNFAIR ONE
 > IS ALSO UNEVEN.** `pods <name> --calibration` pools every tracked run that
 > faced a table and reports how it actually divides its wins. `vito-era` was

@@ -201,3 +201,78 @@ def test_a_declaration_with_no_required_marking_says_so(capsys, monkeypatch, tmp
     out = run(marked)
     assert "NO `required` MARKING" not in out
     assert out.startswith("OK"), out
+
+
+# ── a kill that has to connect ──────────────────────────────────────────────
+
+def _route_doc(label, route="commander", **flags):
+    """A one-route declaration. NOT `_doc` — that name is taken at the top of
+    this file, and appending a second definition silently overrode it and broke
+    four passing tests that were nothing to do with this change."""
+    return {"targets": [{"label": label, "route": route,
+                         "any_of": [["Sol Ring"]]}], **flags}
+
+
+def test_a_combat_kill_route_is_noted_because_the_goldfish_has_no_blockers():
+    """The check that would have saved 39 games.
+
+    Zur's V6 engine is "Zur attacks, fetches an aura, connects with lifelink,
+    Vito drains" — every step gated on a 1/4 commander connecting. The goldfish
+    reported the route assembled by turn six in 23.6% of games, and Forge on the
+    pilot's own table returned **0.35 commander damage a game, best single game
+    2, and 0 of 39 games reaching 21**. The route was never wrong about the
+    draw and was never evidence about the kill.
+    """
+    from manamap.pilot.validate_goldfish_targets import _combat_route_notes
+
+    off = _combat_route_notes(_route_doc("KILL — commander damage: a buff aura on Zur"))
+    assert len(off) == 1
+    assert "model_combat` is OFF" in off[0]
+    assert "0 of 39" in off[0], "the note carries the measurement that earned it"
+
+    on = _combat_route_notes(
+        _route_doc("THE COMBAT KILL: a Dragon-damage MULTIPLIER", model_combat=True))
+    assert len(on) == 1
+    assert "NO BLOCKERS" in on[0]
+    assert "simulate" in on[0], "the note must name the engine that CAN judge it"
+
+
+def test_a_non_combat_route_is_not_noted():
+    """The entry criterion. A drain or storm route is graded fine by the model."""
+    from manamap.pilot.validate_goldfish_targets import _combat_route_notes
+
+    for label in ("KILL — drain: a payoff plus something to feed it",
+                  "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
+                  "A TUTOR drawn", "RAMP drawn — an accelerant of any kind"):
+        assert _combat_route_notes(_route_doc(label)) == [], label
+
+
+def test_a_component_is_not_a_route_and_is_not_noted():
+    """`required` components are not kills, so they are not judged as one."""
+    from manamap.pilot.validate_goldfish_targets import _combat_route_notes
+
+    doc = {"targets": [{"label": "A Vampire lord or anthem drawn (the combat plan)",
+                        "required": True, "any_of": [["Sol Ring"]]}]}
+    assert _combat_route_notes(doc) == []
+
+
+def test_it_fires_on_exactly_the_fleet_it_was_measured_against():
+    """Two of ten decks, and both are genuine combat routes.
+
+    A check that fires on correct data is worse than no check, and six proposals
+    have been rejected in this repo on that ground. If this count moves, either
+    a deck declared a new combat route — fine, and the note is right — or the
+    pattern widened past what it was measured on.
+    """
+    import glob
+    import json
+    import pathlib as _pl
+
+    from manamap.pilot.validate_goldfish_targets import _combat_route_notes
+
+    root = _pl.Path(__file__).resolve().parent.parent
+    files = sorted(glob.glob(str(root / "data/decks/*/goldfish_targets.json")))
+    assert len(files) >= 8, "the guard iterated almost nothing"
+    fired = {_pl.Path(f).parent.name for f in files
+             if _combat_route_notes(json.loads(_pl.Path(f).read_text(encoding="utf-8")))}
+    assert fired == {"ur-dragon", "zur-enchantress"}, fired

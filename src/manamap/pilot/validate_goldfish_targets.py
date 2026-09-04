@@ -38,6 +38,7 @@ correct data trains its reader to ignore it, which is worse than not having it.
 """
 
 import json
+import re
 
 from manamap.pilot.agent_cache import passing_stacks
 from manamap.pilot.common import (
@@ -52,6 +53,64 @@ from manamap.pilot.common import (
 # absence from every component is worth reporting. One passing stack is a line;
 # two is a pattern, and both real omissions the fleet survey found clear it.
 WIN_LINE_QUORUM = 2
+
+
+#: A route whose LABEL says the kill lands in combat. Matched on the label
+#: because that is where the pilot writes what the route IS; a route's members
+#: are cards, and a card cannot say whether the plan needs to connect.
+#:
+#: Measured across the fleet before it was written: it fires on 2 of 10 decks
+#: (ur-dragon and zur-enchantress) and both are genuine combat routes. That is
+#: the entry criterion here — a check that fires on correct data is worse than
+#: no check — and this one is a NOTE rather than a failure, because a combat
+#: route is a legitimate thing to declare. What is not legitimate is reading the
+#: goldfish's number for it as evidence that the kill lands.
+_COMBAT_ROUTE = re.compile(
+    r"commander damage|combat|attack|swing|voltron|lord or anthem", re.I)
+
+
+def _combat_route_notes(doc):
+    """Routes the goldfish structurally cannot grade, and why.
+
+    THE GOLDFISH HAS NO BLOCKERS. It reports whether the PIECES WERE DRAWN, and
+    for a kill that has to connect against three or four opponents that is a
+    different question from whether the kill happens — the distinction the
+    Edgar go-wide refactor already paid for, where the model preferred a list
+    Forge then scored 31/400 against the champion's 50/400 because 1/1 tokens
+    do not connect.
+
+    Zur is the same class one turn further along and cost 39 games to find. Its
+    V6 engine is *"Zur attacks, fetches an aura, connects with lifelink, Vito
+    drains"* — every step gated on a 1/4 commander connecting. The goldfish
+    reported the route assembled by turn six in 23.6% of games. Forge, on the
+    pilot's own table: **0.35 commander damage a game, best single game 2, and
+    0 of 39 games reaching 21.** The route was never wrong about the draw and
+    was never evidence about the kill.
+
+    Sharper when the combat model is OFF, because then the figure is purely
+    "the cards arrived" — there is not even a modelled swing behind it.
+    """
+    notes = []
+    combat_on = doc.get("model_combat") is True
+    for target in doc.get("targets", []):
+        label = target.get("label") or ""
+        if not target.get("route") or not _COMBAT_ROUTE.search(label):
+            continue
+        head = f"\n     COMBAT ROUTE — \"{label[:56]}\"."
+        if combat_on:
+            notes.append(
+                head + " The goldfish models a swing but has NO BLOCKERS, so "
+                "its rate for this route says the pieces were drawn and not "
+                "that the kill lands. Judge it in `simulate` against a pod.")
+        else:
+            notes.append(
+                head + " `model_combat` is OFF, so this route's rate is purely "
+                "\"the cards arrived\" — there is not even a modelled swing "
+                "behind it, and the goldfish has no blockers either way. "
+                "Zur declared exactly this and read 23.6% by t6; Forge returned "
+                "0 of 39 games reaching 21 commander damage. Judge it in "
+                "`simulate`.")
+    return notes
 
 
 def _declared_names(doc):
@@ -285,7 +344,7 @@ def main(args):
         path.name, errors,
         f"OK   {path.name} — {len(doc.get('targets', []))} target(s), "
         f"{groups} component group(s); sizes are redundancy claims ◆"
-        + required_note + scaffold_note)
+        + required_note + scaffold_note + "".join(_combat_route_notes(doc)))
 
 
 if __name__ == "__main__":
