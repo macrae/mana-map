@@ -12,6 +12,22 @@ downstream — the audit's targets, the doctor's prescriptions, the deck page's 
 either feeds an experiment or reads one.
 
 
+
+> **2026-09-03 — four defects fixed in `experiment`, and one of them re-bases the
+> table.** Its final print read `ci95_a`/`ci95_b`, keys `delta()` has never
+> emitted, so **every real run raised `KeyError` after writing its artifact** and
+> exited 1; the measurement survived and only the exit code said anything. It
+> lived because the tests exercised `--dry-run` and `--analyze` and the branch
+> that runs had no seam — it is `_print_result` now. Alongside it: `_run_arm` had
+> **no `timeout=`**, so the 3.7-/4.2-hour runaway class was unguarded on the
+> flagship while being capped on `simulate`; and the pod ran on **Default** while
+> `simulate` has run it on `STANDARD_POD_PROFILE = "Experimental"` since
+> 2026-08-30, so the two commands measured different populations. The pod default
+> now matches, `--vs-profile Default` reproduces the old one, and
+> `experiment_id` carries `profile_tag` so the two cannot share a path. **Both
+> tracked experiments predate this and were measured against the Default pod**;
+> their ids are unchanged and still mean what they said.
+
 ## THE 2026-09-02 AUDIT: one real bug, and a table that was never fair
 
 The pilot said the simulations looked broken. They were, in one specific way,

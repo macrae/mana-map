@@ -7,6 +7,7 @@ same-seeds-are-not-paired-games honesty line rides in the assumptions."""
 
 import hashlib
 import json
+import pathlib
 import subprocess
 
 import pytest
@@ -198,3 +199,108 @@ def test_an_arm_with_no_commander_damage_block_reports_none_not_zero():
     d = ex.delta(_analysis(0.1, 12, 10.0, 0.0), _analysis(0.2, 12, 30.0, 0.1), SLUG)
     cd = d["commander_damage_max_on_one_defender"]
     assert cd["a"] is None and cd["b"] is None and cd["diff"] is None
+
+
+# ── the flagship's own success path, which had no test ──────────────────────
+
+def test_the_final_print_reads_keys_the_delta_actually_emits(repo, capsys):
+    """`main` raised KeyError on `ci95_a` on EVERY real run.
+
+    `delta()` emits `a`, `b`, `n_a`, `n_b`, `diff` and `ci95_diff` — never a
+    marginal interval per arm, and it must not: two marginal intervals
+    overlapping implies nothing, which is why `intervals_overlap` was deleted
+    rather than deprecated. The printer asked for the keys the artifact exists to
+    make impossible, and it raised AFTER writing the artifact, so the measurement
+    survived and the command exited 1.
+
+    It lived because only `--dry-run` and `--analyze` were exercised. This drives
+    the branch that actually runs, so it cannot come back.
+    """
+    d = ex.delta(_analysis(0.1, 20, 10.0, 0.0), _analysis(0.2, 20, 30.0, 0.19), SLUG)
+    doc = {"experiment_id": "x-vs-y-n20", "arms": {"a": {"label": "V1"}, "b": {"label": "V2"}},
+           "games_per_arm": 20, "opponents": [{"slug": "rival"}],
+           "wall_seconds": 12.3, "delta": d}
+
+    ex._print_result(SLUG, doc, repo / "experiments" / "x.json")
+
+    out = capsys.readouterr().out
+    # The primary endpoint prints under its label; every other key by name.
+    assert "win rate" in out and ex.PRIMARY_ENDPOINT == "win_rate"
+    assert "95%" in out and "[" in out, "every figure travels with its interval"
+    # A figure absent from both arms is correctly skipped — this fixture has no
+    # commander-damage block, and "absent" must not render as a row of zeroes.
+    shown = 0
+    for name, _ in ex.DELTA_KEYS[1:]:
+        if d[name]["a"] is None and d[name]["b"] is None:
+            assert name not in out, f"{name} is absent and must not print"
+        else:
+            assert name in out, f"{name} never reached the report"
+            shown += 1
+    assert shown >= 6, "the report iterated almost nothing"
+    assert "-0.134, +0.328" in out, "the interval is on the DIFFERENCE"
+    assert "ci95_a" not in out and "ci95_b" not in out
+
+
+def test_an_absent_interval_prints_a_dash_and_never_a_zero_band():
+    """An unbounded difference must not render as a narrow one.
+
+    `delta()` writes "no per-game values available; difference is unbounded" for
+    a figure it could not bound. A printer that turned that into `[0.000, 0.000]`
+    would undo the sentence.
+    """
+    assert ex._band({"ci95_diff": None}) == "—"
+    assert ex._band({}) == "—"
+    assert ex._band({"ci95_diff": [-0.36, 0.038]}) == "[-0.360, +0.038]"
+    # `0` is a measurement and prints as one; `None` is not.
+    assert ex._num(0) == 0 and ex._num(0.0) == 0.0
+    assert ex._num(None) == "—"
+
+
+# ── the pod is part of the instrument ───────────────────────────────────────
+
+def test_the_pod_runs_the_same_pilot_simulate_gives_it(repo, monkeypatch):
+    """`simulate` has run the pod on Experimental since 2026-08-30; this ran it
+    on Default and never read the standard, so a controlled A/B was controlled
+    against a table the deck is never measured against."""
+    from manamap.sim import forge
+
+    seen = {}
+    monkeypatch.setattr(ex, "forge_jar", lambda: pathlib.Path("/nope/forge.jar"))
+
+    _, doc = ex.run(SLUG, "V1", "working", ["rival"], games=2, dry_run=True)
+    assert doc["profiles"] == [forge.DEFAULT_PROFILE, forge.STANDARD_POD_PROFILE]
+
+    _, old = ex.run(SLUG, "V1", "working", ["rival"], games=2, dry_run=True,
+                    vs_profile="Default")
+    assert old["profiles"] == [forge.DEFAULT_PROFILE, "Default"]
+
+
+def test_the_experiment_id_carries_the_profiles(repo):
+    """The digest is over decklists, opponents, games and seed — none of which
+    move when the AI does. Without the tag, two configurations write one path and
+    the second silently replaces the first, which is the defect `profile_tag`
+    was written for on the `simulate` side.
+
+    `profile_tag` omits a suffix for Default, so every experiment already on disk
+    keeps its id and still means what it said.
+    """
+    _, new = ex.run(SLUG, "V1", "working", ["rival"], games=2, dry_run=True)
+    _, old = ex.run(SLUG, "V1", "working", ["rival"], games=2, dry_run=True,
+                    vs_profile="Default")
+
+    assert new["experiment_id"].endswith("-podExperimental")
+    assert not old["experiment_id"].endswith("-podExperimental")
+    assert new["experiment_id"] != old["experiment_id"]
+    # Same seed, same arms, same table: only the pilot differs.
+    assert new["seed"] == old["seed"]
+
+
+def test_every_tracked_experiment_id_still_resolves():
+    """No record on disk may be renamed or reinterpreted by the tag rule."""
+    tracked = sorted((ROOT / "data" / "decks").glob("*/experiments/*.json"))
+    assert len(tracked) >= 2, "the guard iterated zero files"
+    for path in tracked:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        assert doc["experiment_id"] == path.stem
+        # Written before the fix, so they carry no pod tag and are Default runs.
+        assert not path.stem.endswith("-podExperimental")

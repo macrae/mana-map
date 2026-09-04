@@ -36,10 +36,12 @@ from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot import deck_versions as dv
 from manamap.sim import parse as sim_parse
 from manamap.sim import stats
-from manamap.sim.forge import (ASSUMPTIONS, FORGE_AI_CAVEAT, _commanders_by_slug,
-                               _java_version, _seat_label, command, commanders_from_text,
-                               forge_jar, forge_version, install_deck, install_named,
-                               seat_sha, split_games)
+from manamap.sim.forge import (ASSUMPTIONS, DEFAULT_PROFILE, FORGE_AI_CAVEAT,
+                               STANDARD_POD_PROFILE, TIMEOUT_FLOOR, TIMEOUT_SLACK,
+                               _commanders_by_slug, _java_version, _seat_label,
+                               command, commanders_from_text, forge_jar,
+                               forge_version, install_deck, install_named,
+                               profile_tag, seat_sha, split_games)
 
 EXP_DIR = "experiments"
 # The aggregate keys the delta reports, and where they live in a seat's analysis.
@@ -98,11 +100,22 @@ def resolve_arm(slug, ref):
             "decklist_text": text, "decklist_sha256": v["decklist_sha256"]}
 
 
-def experiment_id(slug, a, b, opponents, games, seed):
+def experiment_id(slug, a, b, opponents, games, seed,
+                  profile=None, vs_profile=None):
+    """The artifact's name, and — since it is also its identity — its receipt.
+
+    THE PROFILES ARE IN IT FOR THE REASON `forge.profile_tag` GIVES: the digest
+    is over decklists, opponents, games and seed, none of which move when the AI
+    does, so two configurations would write the same path and the second would
+    silently replace the first. `profile_tag` omits a suffix for Default, so
+    every experiment already on disk keeps its id and still means what it said.
+    """
     digest = hashlib.sha256("\n".join([
         a["decklist_sha256"], b["decklist_sha256"],
         *(f"{o}:{seat_sha(o)}" for o in opponents)]).encode()).hexdigest()[:8]
-    return f"{_safe(a['ref'])}-vs-{_safe(b['ref'])}-x-{'-'.join(opponents)}-n{games}-{digest}-s{seed}"
+    return (f"{_safe(a['ref'])}-vs-{_safe(b['ref'])}-x-{'-'.join(opponents)}"
+            f"-n{games}-{digest}-s{seed}"
+            + profile_tag(profile, vs_profile))
 
 
 def _safe(ref):
@@ -283,14 +296,28 @@ def _run_arm(arm_letter, meta_name, opp_names, games, jobs, clock, seed, profile
     cmds = [command([meta_name, *opp_names], g, clock, jar, seed=seeds[i], profiles=profiles)
             for i, g in enumerate(parts)]
     log_dir.mkdir(parents=True, exist_ok=True)
+    per_job_cap = int(clock * max(parts) * TIMEOUT_SLACK) + TIMEOUT_FLOOR
 
     def one(i_cmd):
         i, cmd = i_cmd
         log = log_dir / f"{arm_letter}-part-{i:02d}.log"
         with open(log, "w", encoding="utf-8") as f:
-            proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
-                                  cwd=str(jar.parent), text=True)
-        return log, proc.returncode
+            # THE SAME CAP `forge.run` OBEYS, and for the same measured reason:
+            # Forge's `-c` clock ends a game's accounting, not its AI thread, and
+            # two tracked 20-game runs took 3.7 and 4.2 hours with 95% of the
+            # wall claimed by no game at all. `_run_arm` had no timeout, so the
+            # whole runaway class was unguarded on the flagship while being
+            # fixed on `simulate`. The formula is imported, not retyped.
+            try:
+                proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
+                                      cwd=str(jar.parent), text=True,
+                                      timeout=per_job_cap)
+                return log, proc.returncode
+            except subprocess.TimeoutExpired:
+                f.write(f"\n[manamap] job killed after {per_job_cap}s "
+                        f"(clock {clock}s x {max(parts)} games x {TIMEOUT_SLACK} "
+                        f"+ {TIMEOUT_FLOOR}s)\n")
+                return log, 0
 
     with ThreadPoolExecutor(max_workers=len(cmds)) as ex:
         results = list(ex.map(one, enumerate(cmds)))
@@ -299,7 +326,8 @@ def _run_arm(arm_letter, meta_name, opp_names, games, jobs, clock, seed, profile
 
 
 def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
-        clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False):
+        clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False,
+        vs_profile=None):
     if not opponents:
         raise SystemExit("experiment needs at least one opponent: --vs <slug> (repeatable)")
     import os
@@ -311,13 +339,27 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
     jobs = jobs or max(1, (os.cpu_count() or 2) - 1)
     seed = seed if seed is not None else int(hashlib.sha256(
         (a["decklist_sha256"] + b["decklist_sha256"]).encode()).hexdigest()[:8], 16) % 2_000_000_000
-    eid = experiment_id(slug, a, b, opponents, games, seed)
+
+    # THE POD RUNS THE SAME PILOT `simulate` GIVES IT. This built
+    # `[profile] + ["Default"] * len(opponents)` and never read
+    # `STANDARD_POD_PROFILE`, so the two commands measured DIFFERENT
+    # POPULATIONS: `simulate` has run the pod on Experimental since 2026-08-30,
+    # where it moved baylen-tokens 0.130 -> 0.190, and every experiment kept
+    # running it on Default. A controlled A/B whose table is not the table the
+    # deck is measured against is controlled against the wrong thing.
+    #
+    # The two arms still share one pod, which is what makes the delta a delta;
+    # this only fixes WHICH pod. `--vs-profile Default` reproduces the old
+    # population deliberately, and the id says which was used either way.
+    profile = profile or DEFAULT_PROFILE
+    vs_profile = vs_profile or STANDARD_POD_PROFILE
+    profiles = [profile] + [vs_profile] * len(opponents)
+    eid = experiment_id(slug, a, b, opponents, games, seed, profile, vs_profile)
     out_dir = deck_dir(slug) / EXP_DIR
     path = out_dir / f"{eid}.json"
     if path.exists() and not dry_run:
         raise SystemExit(f"{slug}: {path.name} exists — the same arms, table and seed replay "
                          f"the same games. A new sample is a new --seed.")
-    profiles = ([profile] + ["Default"] * len(opponents)) if profile else None
     if dry_run:
         return path, {"experiment_id": eid, "arms": {"a": a["label"], "b": b["label"]},
                       "seed": seed, "games_per_arm": games, "profiles": profiles}
@@ -437,6 +479,53 @@ def list_all(slug):
     return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
 
 
+def _print_result(slug, doc, path):
+    """The finished experiment, as the pilot reads it.
+
+    A FUNCTION BECAUSE IT HAD TO BECOME TESTABLE. This was inline in `main` and
+    raised `KeyError: 'ci95_a'` on every real run — after the artifact was
+    written, so the measurement survived and only the exit code said anything.
+    It lived because the tests exercised `--dry-run` and `--analyze` and the
+    branch that actually runs had no seam at all.
+
+    `ci95_diff`, NOT a marginal interval per arm. `delta()` has never emitted one
+    and must not: two marginal intervals overlapping implies nothing, which is
+    why `intervals_overlap` was DELETED rather than deprecated. The printer was
+    asking for the keys the artifact exists to make impossible.
+    """
+    d = doc["delta"]
+    print(f"{slug}: experiment {doc['experiment_id'][:64]}")
+    print(f"  A {doc['arms']['a']['label']}")
+    print(f"  B {doc['arms']['b']['label']}")
+    print(f"  {doc['games_per_arm']} games/arm vs "
+          f"{', '.join(o['slug'] for o in doc['opponents'])} "
+          f"in {doc['wall_seconds']}s")
+    for k, _ in DELTA_KEYS:
+        r = d[k]
+        if k == PRIMARY_ENDPOINT or r["a"] is not None or r["b"] is not None:
+            label = "win rate" if k == PRIMARY_ENDPOINT else k
+            print(f"  {label:<40} A {_num(r['a'])}   B {_num(r['b'])}   "
+                  f"Δ {_num(r['diff'])}   95% {_band(r)}")
+    print(f"  → {d['reading']}")
+    print(f"  → {path.relative_to(deck_dir(slug))}")
+
+
+def _band(row):
+    """A figure's 95% interval ON THE DIFFERENCE, or an em dash.
+
+    An absent interval must never read as a narrow one — `delta()` says so where
+    it writes `"no per-game values available; difference is unbounded"`, and a
+    printer that rendered `[0.000, 0.000]` there would undo it.
+    """
+    ci = row.get("ci95_diff")
+    return ("[%+.3f, %+.3f]" % (ci[0], ci[1])) if ci else "—"
+
+
+def _num(value):
+    """A figure, or an em dash. `0` is a measurement and prints as one."""
+    return "—" if value is None else value
+
+
 def main(args):
     slug = args.slug
     if getattr(args, "analyze", None):
@@ -445,9 +534,8 @@ def main(args):
         print(f"{slug}: re-derived both arms from logs → {path.name}")
         for k, _ in DELTA_KEYS:
             v = d[k]
-            ci = v.get("ci95_diff")
-            band = ("[%+.3f, %+.3f]" % (ci[0], ci[1])) if ci else "—"
-            print(f"  {k:<40} A {v['a']}   B {v['b']}   Δ {v['diff']}   95% {band}")
+            print(f"  {k:<40} A {_num(v['a'])}   B {_num(v['b'])}   "
+                  f"Δ {_num(v['diff'])}   95% {_band(v)}")
         print(f"\n  {d.get('reading', '')}")
         return
     if getattr(args, "list", False) or not (getattr(args, "a", None) and getattr(args, "b", None)):
@@ -470,24 +558,12 @@ def main(args):
     path, doc = run(slug, args.a, args.b, args.vs, games=args.games or SIM_DEFAULT_GAMES,
                     jobs=args.jobs, clock=args.clock or SIM_GAME_CLOCK_SECONDS,
                     seed=getattr(args, "seed", None), profile=getattr(args, "profile", None),
+                    vs_profile=getattr(args, "vs_profile", None),
                     dry_run=getattr(args, "dry_run", False))
     if getattr(args, "dry_run", False):
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")
         return
-    d = doc["delta"]
-    print(f"{slug}: experiment {doc['experiment_id'][:64]}")
-    print(f"  A {doc['arms']['a']['label']}")
-    print(f"  B {doc['arms']['b']['label']}")
-    print(f"  {doc['games_per_arm']} games/arm vs {', '.join(o['slug'] for o in doc['opponents'])} "
-          f"in {doc['wall_seconds']}s")
-    w = d["win_rate"]
-    print(f"  win rate   A {w['a']} {w['ci95_a']}   B {w['b']} {w['ci95_b']}   Δ {w['diff']}")
-    for k, _ in DELTA_KEYS[1:]:
-        r = d[k]
-        if r["a"] is not None or r["b"] is not None:
-            print(f"  {k:<34} A {r['a']}   B {r['b']}   Δ {r['diff']}")
-    print(f"  → {d['reading']}")
-    print(f"  → {path.relative_to(deck_dir(slug))}")
+    _print_result(slug, doc, path)
 
 
 if __name__ == "__main__":

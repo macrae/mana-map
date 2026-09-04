@@ -428,7 +428,10 @@ def add_pilot_parser(subparsers):
                                   "The pod is part of the instrument: a win rate is "
                                   "relative to how well the table plays.")
             cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
-                             help="AI profile for YOUR seat (opponents stay Default; measured: aggro profiles make a hold-up deck worse)")
+                             help="AI profile for YOUR seat — the opponents' is "
+                                  "--vs-profile (measured: aggro profiles make a "
+                                  "hold-up deck worse, on six games, which this "
+                                  "repo's own power function calls undetectable)")
             cmd.add_argument("--force", action="store_true",
                              help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
@@ -673,7 +676,16 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--seed", type=int, default=None,
                              help="seed base (default derives from both arms' lists; same seed replays)")
             cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
-                             help="AI profile for YOUR seat in both arms (opponents stay Default)")
+                             help="AI profile for YOUR seat in BOTH arms")
+            cmd.add_argument("--vs-profile", default=None, dest="vs_profile",
+                             choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             help="AI profile for every OPPONENT seat in both "
+                                  "arms (default: Experimental, the same pod "
+                                  "`simulate` has used since 2026-08-30). This "
+                                  "built the pod on Default and never read the "
+                                  "standard, so the two commands measured "
+                                  "different populations; pass Default to "
+                                  "reproduce an experiment made before that fix")
             cmd.add_argument("--list", action="store_true")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run")
             cmd.add_argument("--analyze", default=None, metavar="EXPERIMENT_ID",
