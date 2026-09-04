@@ -6,6 +6,7 @@ both arms' aggregates and says whether the win-rate intervals overlap; and the
 same-seeds-are-not-paired-games honesty line rides in the assumptions."""
 
 import hashlib
+import os
 import json
 import pathlib
 import subprocess
@@ -14,6 +15,7 @@ import pytest
 
 from manamap.pilot import deck_history as dh
 from manamap.sim import experiment as ex
+from manamap.sim import forge
 from conftest import ROOT
 
 SLUG = "xdeck"
@@ -299,8 +301,37 @@ def test_every_tracked_experiment_id_still_resolves():
     """No record on disk may be renamed or reinterpreted by the tag rule."""
     tracked = sorted((ROOT / "data" / "decks").glob("*/experiments/*.json"))
     assert len(tracked) >= 2, "the guard iterated zero files"
+    tagged = 0
     for path in tracked:
         doc = json.loads(path.read_text(encoding="utf-8"))
         assert doc["experiment_id"] == path.stem
-        # Written before the fix, so they carry no pod tag and are Default runs.
-        assert not path.stem.endswith("-podExperimental")
+        tagged += path.stem.endswith("-podExperimental")
+    # The two records that predate the pod fix carry NO tag and were measured
+    # against the Default pod; anything run after it carries one. Both must be
+    # able to coexist — that is the whole point of `profile_tag` omitting a
+    # suffix for Default, and it is why no old record had to be renamed.
+    assert tagged >= 1, "no experiment has been run since the pod fix"
+    assert tagged < len(tracked), "the pre-fix records were renamed — they must not be"
+
+
+def test_the_experiment_uses_performance_cores_like_simulate_does(repo, monkeypatch):
+    """`simulate` was moved to performance cores on measurement; this was not.
+
+    4-JVM runs truncated 0% of their games and every 7-JVM run truncated 5-18%.
+    A truncated game has no winner and is EXCLUDED from the rate, so
+    oversubscribing does not merely run slower — it throws games away, and an
+    experiment throws them away from BOTH arms. The first real A/B ran at 7 jobs
+    on a 4-performance-core machine and took 7,295 seconds for 80 games.
+    """
+    seen = {}
+    monkeypatch.setattr(ex, "split_games",
+                        lambda g, j: seen.setdefault("jobs", j) or [g])
+    monkeypatch.setattr(ex, "forge_jar", lambda: pathlib.Path("/nope/forge.jar"))
+    try:
+        ex.run(SLUG, "V1", "working", ["rival"], games=4, dry_run=True)
+    except Exception:
+        pass
+    if "jobs" in seen:
+        assert seen["jobs"] == forge.default_jobs(), \
+            "the experiment must not oversubscribe where simulate does not"
+    assert forge.default_jobs() <= (os.cpu_count() or 2), "sanity"

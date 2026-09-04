@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "card_advantage": {
+      "cards_that_draw": 13,
+      "modelled": 0,
+      "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
+    },
+    "commander": "Zur the Enchanter",
+    "commander_cmc": 4,
+    "deck": "zur-enchantress",
+    "decklist_sha256": "165957f8e7e6f1d8668c5326b26b08de52ab30d0e20b7e8ffcda826363cc55bb",
+    "interaction_suite_counted": [
+      "Aegis of the Gods",
+      "Animate Dead",
+      "Aura of Silence",
+      "Banishing Light",
+      "Counterspell",
+      "Darksteel Mutation",
+      "Declaration of Naught",
+      "Fear of Impostors",
+      "Muddle the Mixture",
+      "No More Lies",
+      "Ossification",
+      "Path to Exile",
+      "Profane Procession // Tomb of the Dusk Rose",
+      "Seal of Cleansing",
+      "Sheltered by Ghosts",
+      "Swords to Plowshares",
+      "Thassa, God of the Sea",
+      "The Meathook Massacre",
+      "Touch the Spirit Realm"
+    ],
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which rides the same single door the ETB damage payoffs use. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent), and death- or attack-triggered draw (no deaths, and attacks only under `model_combat`) are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one.",
+      "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
+      "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
+      "HELD-UP INTERACTION is reported as two series and both are FLOORS. This model casts everything it can afford every turn, so `interaction_castable` is what a pilot developing at full speed has left over, not what a pilot choosing to hold up two mana would have. A low figure is therefore a real finding and a high one is unambiguous good news.",
+      "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the old literal 'a card' match missed entirely — fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does not count, because this model only knows 'drawn and affordable'; nor does a land fetch, which is ramp and has no channel here yet. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering creature's power (Terror of the Peaks), X damage where X counts your board (Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY of what entered (Miirym). Every arrival fires them — cast, token or copy — and a copy is itself an arrival, so they compound, which is the deck working rather than a bug. A payoff worded 'another NONTOKEN' does not re-trigger on its own tokens, which is the brake the rules already had. A chain is capped at 12 deep. X counts the whole board rather than one subtype: exact where the creatures are Dragons, generous otherwise.",
+      "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
+      "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+      "Rituals are not modeled (conservative).",
+      "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
+    ],
+    "model_version": "7054a07d1a47",
+    "seed": 42
+  },
+  "metrics": {
+    "commander": {
+      "cast_by_turn_6_rate": 0.867,
+      "cast_turn_histogram": {
+        "10": 130,
+        "4": 7163,
+        "5": 950,
+        "6": 560,
+        "7": 415,
+        "8": 278,
+        "9": 203,
+        "not_by_max_turn": 301
+      },
+      "mean_cast_turn": 4.642,
+      "median_cast_turn": 4
+    },
+    "interaction_castable_by_turn": {
+      "1": 0.136,
+      "10": 0.896,
+      "2": 0.285,
+      "3": 0.215,
+      "4": 0.105,
+      "5": 0.501,
+      "6": 0.658,
+      "7": 0.754,
+      "8": 0.818,
+      "9": 0.866
+    },
+    "interaction_in_hand_by_turn": {
+      "1": 0.808,
+      "10": 0.938,
+      "2": 0.829,
+      "3": 0.836,
+      "4": 0.864,
+      "5": 0.868,
+      "6": 0.88,
+      "7": 0.896,
+      "8": 0.912,
+      "9": 0.926
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.999,
+      "10": 0.391,
+      "2": 0.997,
+      "3": 0.91,
+      "4": 0.795,
+      "5": 0.661,
+      "6": 0.571,
+      "7": 0.478,
+      "8": 0.435,
+      "9": 0.406
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.999,
+      "10": 6.644,
+      "2": 1.996,
+      "3": 2.906,
+      "4": 3.702,
+      "5": 4.362,
+      "6": 4.934,
+      "7": 5.412,
+      "8": 5.848,
+      "9": 6.253
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.0,
+      "10": 3.917,
+      "2": 0.411,
+      "3": 1.1,
+      "4": 1.276,
+      "5": 2.046,
+      "6": 2.617,
+      "7": 3.018,
+      "8": 3.35,
+      "9": 3.64
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 357,
+        "1": 1535,
+        "2": 2910,
+        "3": 2892,
+        "4": 1660,
+        "5": 537,
+        "6": 104,
+        "7": 5
+      },
+      "keep_can_act_by_t3_rate": 0.993,
+      "keep_first_seven_rate": 0.8,
+      "kept_hand_land_histogram": {
+        "0": 13,
+        "1": 62,
+        "2": 3635,
+        "3": 3562,
+        "4": 2057,
+        "5": 666,
+        "6": 5
+      },
+      "mean_mulligans": 0.241
+    },
+    "targets": [
+      {
+        "assembled_rate": 0.878,
+        "assembled_rate_assisted": 0.958,
+        "by_turn_6_rate": 0.786,
+        "by_turn_6_rate_assisted": 0.898,
+        "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
+        "mean_turn": 2.405,
+        "mean_turn_assisted": 2.15
+      },
+      {
+        "assembled_rate": 0.946,
+        "assembled_rate_assisted": 0.979,
+        "by_turn_6_rate": 0.888,
+        "by_turn_6_rate_assisted": 0.944,
+        "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
+        "mean_turn": 1.914,
+        "mean_turn_assisted": 1.74
+      },
+      {
+        "assembled_rate": 0.0,
+        "assembled_rate_assisted": 0.596,
+        "by_turn_6_rate": 0.0,
+        "by_turn_6_rate_assisted": 0.477,
+        "label": "KILL — commander damage: a buff aura on Zur",
+        "mean_turn": null,
+        "mean_turn_assisted": 4.183
+      },
+      {
+        "assembled_rate": 0.399,
+        "assembled_rate_assisted": 0.719,
+        "by_turn_6_rate": 0.271,
+        "by_turn_6_rate_assisted": 0.552,
+        "label": "KILL — drain: a payoff plus something to feed it",
+        "mean_turn": 4.574,
+        "mean_turn_assisted": 4.235
+      },
+      {
+        "assembled_rate": 0.607,
+        "assembled_rate_assisted": 0.851,
+        "by_turn_6_rate": 0.501,
+        "by_turn_6_rate_assisted": 0.752,
+        "label": "RAMP drawn — an accelerant of any kind",
+        "mean_turn": 3.112,
+        "mean_turn_assisted": 2.937
+      },
+      {
+        "assembled_rate": 0.428,
+        "assembled_rate_assisted": 0.604,
+        "by_turn_6_rate": 0.34,
+        "by_turn_6_rate_assisted": 0.493,
+        "label": "A TUTOR drawn",
+        "mean_turn": 3.385,
+        "mean_turn_assisted": 3.494
+      }
+    ]
+  }
+}

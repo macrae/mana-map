@@ -41,7 +41,7 @@ from manamap.sim.forge import (ASSUMPTIONS, DEFAULT_PROFILE, FORGE_AI_CAVEAT,
                                _commanders_by_slug, _java_version, _seat_label,
                                command, commanders_from_text, forge_jar,
                                forge_version, install_deck, install_named,
-                               profile_tag, seat_sha, split_games,
+                               default_jobs, profile_tag, seat_sha, split_games,
                                resolve_table as forge_resolve_table)
 
 EXP_DIR = "experiments"
@@ -337,7 +337,16 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         raise SystemExit(f"both arms are the same list ({a['decklist_sha256'][:12]}…) — "
                          f"an A/A tells you the noise floor, which is legitimate, but "
                          f"say so by passing different refs to different lists")
-    jobs = jobs or max(1, (os.cpu_count() or 2) - 1)
+    # `forge.default_jobs()`, NOT `cpu_count - 1`. `simulate` was moved to
+    # PERFORMANCE CORES on measurement and this was left behind: 4-JVM runs
+    # truncated 0% of their games, and every 7-JVM run truncated 5-18%. A
+    # truncated game has no winner and is EXCLUDED from the rate, so
+    # oversubscribing does not merely run slower — it throws games away, and
+    # an experiment throws them away from both arms.
+    #
+    # Measured here: the first real A/B ran at 7 jobs on a 4-performance-core
+    # machine and took 7,295 seconds for 80 games.
+    jobs = jobs or default_jobs()
     seed = seed if seed is not None else int(hashlib.sha256(
         (a["decklist_sha256"] + b["decklist_sha256"]).encode()).hexdigest()[:8], 16) % 2_000_000_000
 
