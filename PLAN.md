@@ -269,9 +269,15 @@ chair, **0.099**) is the neutral one and has been run once.
    `deck_branch.py` twice and `regen.STAGES` once — with `goldfish` and
    `mana-analysis` duplicated between two of them.
 3. ~~**The workbench reads the stage.**~~ **DONE.**
-4. **Epic D**: the agent inventory is produced and belongs checked in as
-   `docs/agent-inventory.md`; two orphan charters (`pipeline-runner`, `viz-dev`)
-   are deletable today.
+4. **Epic D**: the inventory is CHECKED IN (`docs/agent-inventory.md`) and it
+   makes the epic smaller than the PRD assumes — the editorial layer was retired
+   on 2026-08-19, so this is a re-grouping of 17 charters rather than an
+   excavation. Two charters are never spawned by a skill (`pipeline-runner`,
+   `viz-dev`) and are NOT therefore deletable: both are invocable by name, and
+   D-2 forbids deleting a capability before it has a new home. **Two magazine
+   couplings block a clean retirement**, both in skills — `write-manual`'s build
+   half and `author-decision`'s step 5 each call `build-manual` — and
+   `validate_issue.py` is the only validator touching `manual_prose.json`.
 5. **Epic E**: mostly link wiring — `?cards=`, `?deck=` and `?ref=` already open
    the Atlas seeded, and the library is persisted and cross-surface.
 
