@@ -23,31 +23,40 @@
    {
     "free": false,
     "name": "Aether Tunnel",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Animate Dead",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Golgari Parts"
+     },
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
     "name": "Aqueous Form",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Aura of Silence",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Banishing Light",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -125,7 +134,7 @@
    {
     "free": false,
     "name": "Darksteel Mutation",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -167,7 +176,7 @@
    {
     "free": false,
     "name": "Eidolon of Countless Battles",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -191,7 +200,7 @@
    {
     "free": false,
     "name": "Fear of Impostors",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -233,7 +242,7 @@
    {
     "free": false,
     "name": "Heliod's Pilgrim",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -275,7 +284,7 @@
    {
     "free": false,
     "name": "Light-Paws, Emperor's Voice",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -323,7 +332,7 @@
    {
     "free": false,
     "name": "Open the Armory",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -347,8 +356,13 @@
    {
     "free": false,
     "name": "Phyrexian Reclamation",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Golgari Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -379,7 +393,7 @@
    {
     "free": false,
     "name": "Reconnaissance",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -391,8 +405,13 @@
    {
     "free": false,
     "name": "Seal of Cleansing",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -421,13 +440,13 @@
    {
     "free": false,
     "name": "Spirit Mantle",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Steel of the Godhead",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -487,7 +506,7 @@
    {
     "free": false,
     "name": "Touch the Spirit Realm",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -517,7 +536,7 @@
    {
     "free": false,
     "name": "Unquestioned Authority",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -535,13 +554,13 @@
    {
     "free": false,
     "name": "Witness Protection",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Wizard Class",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -552,55 +571,51 @@
    }
   ],
   "counts": {
-   "box": 0,
-   "buy": 17,
+   "box": 3,
+   "buy": 12,
    "elsewhere": 1,
-   "in_deck": 72
+   "in_deck": 74
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
-    "Aether Tunnel",
-    "Aqueous Form",
+    "Animate Dead",
+    "Aura of Silence",
+    "Banishing Light",
     "Blind Obedience",
     "Brave the Sands",
     "Cover of Darkness",
+    "Darksteel Mutation",
     "Declaration of Naught",
-    "Eidolon of Countless Battles",
-    "Fear of Impostors",
     "Ghostly Prison",
-    "Heliod's Pilgrim",
     "Idyllic Tutor",
-    "Light-Paws, Emperor's Voice",
-    "Open the Armory",
+    "Phyrexian Reclamation",
     "Propaganda",
-    "Reconnaissance",
-    "Spirit Mantle",
-    "Steel of the Godhead",
-    "Unquestioned Authority"
+    "Seal of Cleansing",
+    "Touch the Spirit Realm",
+    "Witness Protection",
+    "Wizard Class"
    ],
    "base_names": 90,
    "base_size": 100,
    "names": 90,
    "out": [
-    "Brainstorm",
-    "Call of the Ring",
-    "Curiosity",
-    "Daybreak Coronet",
-    "Diabolic Tutor",
-    "Dizzy Spell",
-    "Elspeth's Nightmare",
-    "Ethereal Armor",
-    "Kaito Shizuki",
-    "Monologue Tax",
-    "Naiad of Hidden Coves",
-    "Negate",
-    "Ominous Seas",
-    "Pongify",
-    "Preordain",
-    "Toxic Deluge",
-    "Waste Not",
-    "Wavebreak Hippocamp"
+    "Athreos, God of Passage",
+    "Eidolon of Astral Winds",
+    "Enduring Tenacity",
+    "Glyph Elemental",
+    "Heliod, Sun-Crowned",
+    "Hypnotic Siren",
+    "Journey to Nowhere",
+    "Master of the Feast",
+    "Nighthowler",
+    "Nyx-Fleece Ram",
+    "Oppressive Rays",
+    "Reprobation",
+    "Silent Hallcreeper",
+    "Soul Snare",
+    "The Master of Keys",
+    "Tymaret, Chosen from Death"
    ],
    "size": 100
   },
@@ -610,24 +625,19 @@
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": [
-   "Aether Tunnel",
-   "Aqueous Form",
+   "Aura of Silence",
+   "Banishing Light",
    "Blind Obedience",
    "Brave the Sands",
    "Cover of Darkness",
+   "Darksteel Mutation",
    "Declaration of Naught",
-   "Eidolon of Countless Battles",
-   "Fear of Impostors",
    "Ghostly Prison",
-   "Heliod's Pilgrim",
    "Idyllic Tutor",
-   "Light-Paws, Emperor's Voice",
-   "Open the Armory",
    "Propaganda",
-   "Reconnaissance",
-   "Spirit Mantle",
-   "Steel of the Godhead",
-   "Unquestioned Authority"
+   "Touch the Spirit Realm",
+   "Witness Protection",
+   "Wizard Class"
   ]
  },
  "blind_spots": [],
@@ -639,21 +649,31 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 18,
-    "in_copies": 18,
+    "in": 16,
+    "in_copies": 16,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 18,
-    "out_copies": 18,
-    "spells_in": 18,
-    "spells_out": 18
+    "out": 16,
+    "out_copies": 16,
+    "spells_in": 16,
+    "spells_out": 16
    },
    "in": [
     {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Aqueous Form",
+     "name": "Phyrexian Reclamation",
+     "pair": null,
+     "state": "box",
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Witness Protection",
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment \u2014 Aura",
@@ -663,19 +683,19 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Reconnaissance",
+     "name": "Wizard Class",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment",
+     "type_line": "Enchantment \u2014 Class",
      "why": null
     },
     {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Aether Tunnel",
+     "name": "Animate Dead",
      "pair": null,
-     "state": "buy",
+     "state": "box",
      "type_line": "Enchantment \u2014 Aura",
      "why": null
     },
@@ -713,6 +733,16 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Darksteel Mutation",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Declaration of Naught",
      "pair": null,
      "state": "buy",
@@ -723,50 +753,30 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Light-Paws, Emperor's Voice",
+     "name": "Seal of Cleansing",
      "pair": null,
-     "state": "buy",
-     "type_line": "Legendary Creature \u2014 Fox Advisor",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Open the Armory",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Spirit Mantle",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Enchantment \u2014 Aura",
+     "state": "box",
+     "type_line": "Enchantment",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Eidolon of Countless Battles",
+     "name": "Aura of Silence",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment Creature \u2014 Spirit",
+     "type_line": "Enchantment",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Fear of Impostors",
+     "name": "Banishing Light",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment Creature \u2014 Nightmare",
+     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -777,16 +787,6 @@
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Heliod's Pilgrim",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Creature \u2014 Human Cleric",
      "why": null
     },
     {
@@ -813,20 +813,10 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Steel of the Godhead",
+     "name": "Touch the Spirit Realm",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment \u2014 Aura",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Unquestioned Authority",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Enchantment \u2014 Aura",
+     "type_line": "Enchantment",
      "why": null
     }
    ],
@@ -836,16 +826,16 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Brainstorm",
+     "name": "Hypnotic Siren",
      "pair": null,
-     "type_line": "Instant",
+     "type_line": "Enchantment Creature \u2014 Siren",
      "why": null
     },
     {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Curiosity",
+     "name": "Oppressive Rays",
      "pair": null,
      "type_line": "Enchantment \u2014 Aura",
      "why": null
@@ -854,43 +844,7 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Dizzy Spell",
-     "pair": null,
-     "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Ethereal Armor",
-     "pair": null,
-     "type_line": "Enchantment \u2014 Aura",
-     "why": null
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Pongify",
-     "pair": null,
-     "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Preordain",
-     "pair": null,
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Call of the Ring",
+     "name": "Soul Snare",
      "pair": null,
      "type_line": "Enchantment",
      "why": null
@@ -899,7 +853,34 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Daybreak Coronet",
+     "name": "Glyph Elemental",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Elemental",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Journey to Nowhere",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Nyx-Fleece Ram",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Sheep",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Reprobation",
      "pair": null,
      "type_line": "Enchantment \u2014 Aura",
      "why": null
@@ -908,97 +889,88 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Negate",
+     "name": "Silent Hallcreeper",
      "pair": null,
-     "type_line": "Instant",
+     "type_line": "Enchantment Creature \u2014 Horror",
      "why": null
     },
     {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Ominous Seas",
+     "name": "Tymaret, Chosen from Death",
      "pair": null,
-     "type_line": "Enchantment",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Waste Not",
-     "pair": null,
-     "type_line": "Enchantment",
+     "type_line": "Legendary Enchantment Creature \u2014 Demigod",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Elspeth's Nightmare",
+     "name": "Athreos, God of Passage",
      "pair": null,
-     "type_line": "Enchantment \u2014 Saga",
+     "type_line": "Legendary Enchantment Creature \u2014 God",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Kaito Shizuki",
+     "name": "Eidolon of Astral Winds",
      "pair": null,
-     "type_line": "Legendary Planeswalker \u2014 Kaito",
+     "type_line": "Enchantment Creature \u2014 Spirit",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Monologue Tax",
+     "name": "Heliod, Sun-Crowned",
      "pair": null,
-     "type_line": "Enchantment",
+     "type_line": "Legendary Enchantment Creature \u2014 God",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Naiad of Hidden Coves",
+     "name": "Master of the Feast",
      "pair": null,
-     "type_line": "Enchantment Creature \u2014 Nymph",
+     "type_line": "Enchantment Creature \u2014 Demon",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Toxic Deluge",
+     "name": "Nighthowler",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Enchantment Creature \u2014 Horror",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Wavebreak Hippocamp",
+     "name": "The Master of Keys",
      "pair": null,
-     "type_line": "Enchantment Creature \u2014 Horse Fish",
+     "type_line": "Legendary Enchantment Creature \u2014 Horror",
      "why": null
     },
     {
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Diabolic Tutor",
+     "name": "Enduring Tenacity",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Enchantment Creature \u2014 Snake Glimmer",
      "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 18,
-    "out": 18
+    "in": 16,
+    "out": 16
    }
   },
   "lands": [],
@@ -1153,17 +1125,17 @@
    },
    {
     "colour": "B",
-    "delta": -1,
+    "delta": 14,
     "gap": [
-     3,
+     -12,
      2
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
-     22,
+     36,
      22
     ]
    },
@@ -1221,7 +1193,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.936,
+    0.694,
     0.927
    ],
    "G": [
@@ -1249,44 +1221,39 @@
   "why": "pillars-v1 PROVED THE ENGINE FIX AND EXPOSED THE NEXT CONSTRAINT. Measured over 40 games a side against the playgroup table: Zur attacked 0.20 -> 0.60 a game and the tutor fired 0.28 -> 1.00 a game, a 3x and 3.6x improvement from the evasion package alone. The win rate did not move (0/40 both arms) because the engine now runs and finds a deck it cannot convert: every pillar piece resolves in roughly one game in four or five (Propaganda 0.20, Ghostly Prison 0.23, Doomwake Giant 0.25, Vito 0.47, Counterspell 0.07), which is what a singleton with no tutoring does. v2 attacks CONSISTENCY rather than adding win conditions: three more Zur-fetchable enablers, and four ways to FIND one (Idyllic Tutor finds any enchantment; Open the Armory, Light-Paws and Heliod's Pilgrim find an Aura, which is what every enabler is). The cuts are the expensive non-fetchable one-ofs the measurement showed resolving least."
  },
  "objective_grade": {
-  "reading": 0.7414,
-  "shortfall": 0.0586,
-  "state": "not met"
+  "reading": 0.8173,
+  "shortfall": null,
+  "state": "met"
  },
  "recommendation": {
-  "because": "The objective is not met.",
+  "because": "You buy stall, 2 in a row and interaction affordable @T6 and pay damage @T10, board power @T6 and killed by T10.",
   "bill": {
-   "box": 0,
-   "buy": 17,
+   "box": 3,
+   "buy": 12,
    "elsewhere": 1,
-   "in_deck": 72
+   "in_deck": 74
   },
   "cost": {
-   "buy": 17,
+   "buy": 12,
    "buy_cards": [
-    "Aether Tunnel",
-    "Aqueous Form",
+    "Aura of Silence",
+    "Banishing Light",
     "Blind Obedience",
     "Brave the Sands",
     "Cover of Darkness",
+    "Darksteel Mutation",
     "Declaration of Naught",
-    "Eidolon of Countless Battles",
-    "Fear of Impostors",
     "Ghostly Prison",
-    "Heliod's Pilgrim",
     "Idyllic Tutor",
-    "Light-Paws, Emperor's Voice",
-    "Open the Armory",
-    "Reconnaissance",
-    "Spirit Mantle",
-    "Steel of the Godhead",
-    "Unquestioned Authority"
+    "Touch the Spirit Realm",
+    "Witness Protection",
+    "Wizard Class"
    ],
    "counts": {
-    "box": 0,
-    "buy": 17,
+    "box": 3,
+    "buy": 12,
     "elsewhere": 1,
-    "in_deck": 72
+    "in_deck": 74
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1298,31 +1265,61 @@
      "name": "Propaganda"
     }
    ],
-   "owned": 73,
-   "reads_as": "17 to buy; 1 to pull out of a deck that is still together; 73 of 90 already owned",
+   "owned": 78,
+   "reads_as": "12 to buy; 1 to pull out of a deck that is still together; 78 of 90 already owned",
    "total": 90
   },
-  "fell": [],
+  "fell": [
+   "damage @T10",
+   "board power @T6",
+   "killed by T10"
+  ],
   "no_call": [
-   "stall, 2 in a row",
+   "killed by T6",
    "missed drop by T5",
    "mulliganed",
-   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [
-   "Nothing moved: all 5 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+  "notes": [],
+  "reward": [
+   {
+    "measure": "stall, 2 in a row",
+    "reads_as": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
+    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   {
+    "measure": "interaction affordable @T6",
+    "reads_as": "71 games in 100 -> 82 in 100, a swing of 11 games per 100",
+    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   }
   ],
-  "reward": [],
   "risk": [
    {
-    "detail": "the largest is interaction affordable @T6 at +0.013 against an MDE of 0.018. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "15.92 -> 7.56, a change of -8.35 (-52%)",
+    "kind": "paid",
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "detail": "8.44 -> 4.85, a change of -3.59 (-43%)",
+    "kind": "paid",
+    "what": "board power @T6",
+    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
+   {
+    "detail": "83 games in 100 -> 33 in 100, a swing of 50 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "the largest is missed drop by T5 at +0.013 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "5 row(s) returned no call",
+    "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "U gap +2 -> -12, B gap +3 -> +2",
+    "detail": "U gap +2 -> -12",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1334,34 +1331,93 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
-  "state": "do not merge"
+  "rose": [
+   "stall, 2 in a row",
+   "interaction affordable @T6"
+  ],
+  "state": "a trade"
  },
  "slug": "zur-enchantress",
  "staged": 0,
  "table": [
   {
-   "better_is": "lower",
-   "branch": 0.0035,
-   "champion": 0.0039,
-   "delta": -0.0004,
-   "mde": 0.0025,
-   "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
+   "better_is": "higher",
+   "branch": 7.5643,
+   "champion": 15.9173,
+   "delta": -8.353,
+   "mde": 0.2332,
+   "measure": "damage @T10",
+   "reads_as": "15.92 -> 7.56, a change of -8.35 (-52%)",
+   "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
+   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+  },
+  {
+   "better_is": "higher",
+   "branch": 4.8484,
+   "champion": 8.4432,
+   "delta": -3.5948,
+   "mde": 0.1646,
+   "measure": "board power @T6",
+   "reads_as": "8.44 -> 4.85, a change of -3.59 (-43%)",
    "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Total power on the battlefield at the end of turn 6.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.0,
+   "champion": 0.0,
+   "delta": 0.0,
+   "mde": 0.0,
+   "measure": "killed by T6",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.3295,
+   "champion": 0.8259,
+   "delta": -0.4964,
+   "mde": 0.0186,
+   "measure": "killed by T10",
+   "reads_as": "83 games in 100 -> 33 in 100, a swing of 50 games per 100",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0016,
+   "champion": 0.0053,
+   "delta": -0.0037,
+   "mde": 0.0029,
+   "measure": "stall, 2 in a row",
+   "reads_as": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "better",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
   {
    "better_is": "lower",
-   "branch": 0.4331,
-   "champion": 0.4196,
+   "branch": 0.418,
+   "champion": 0.4045,
    "delta": 0.0135,
-   "mde": 0.0196,
+   "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1371,11 +1427,11 @@
   {
    "better_is": "lower",
    "branch": 0.1981,
-   "champion": 0.1902,
-   "delta": 0.0079,
+   "champion": 0.196,
+   "delta": 0.0021,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1384,26 +1440,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.7414,
-   "champion": 0.7283,
-   "delta": 0.0131,
-   "mde": 0.0185,
+   "branch": 0.8173,
+   "champion": 0.7059,
+   "delta": 0.1114,
+   "mde": 0.0197,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.018 this run can resolve",
+   "reads_as": "71 games in 100 -> 82 in 100, a swing of 11 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
    "branch": 0.9944,
-   "champion": 0.9959,
-   "delta": -0.0015,
+   "champion": 0.9941,
+   "delta": 0.0003,
    "mde": 0.003,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

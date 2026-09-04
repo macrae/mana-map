@@ -286,6 +286,34 @@ def test_it_fires_on_exactly_the_fleet_it_was_measured_against():
     assert fired == {"ur-dragon", "zur-enchantress"}, fired
 
 
+def test_the_note_survives_a_rename_of_the_kill():
+    """THE STRUCTURED FIELD, NOT THE LABEL PROSE.
+
+    zur-enchantress abandoned commander damage and renamed its kill from
+    "KILL — commander damage: a buff aura on Zur" to "KILL — a BOARD: a real
+    body plus a way through". The rename was correct — the deck really did
+    change win-con — and `_COMBAT_ROUTE`, which greps the label, silently
+    stopped firing on a route that still has to CONNECT.
+
+    That is the note's whole subject. A deck can rename its way out of the one
+    warning that says its assembly rate is about the draw and not the kill.
+    """
+    from manamap.pilot.validate_goldfish_targets import _combat_route_notes
+
+    renamed = {"model_combat": True, "targets": [
+        {"label": "KILL — a BOARD: a real body plus a way through",
+         "route": "board", "any_of": [["Sol Ring"]]}]}
+    notes = _combat_route_notes(renamed)
+    assert len(notes) == 1 and "NO BLOCKERS" in notes[0]
+
+    # The control: a route the model grades honestly must stay silent, or this
+    # widening would have fired on every deck with a declared kill.
+    for route in ("drain", "entry"):
+        quiet = {"targets": [{"label": "KILL — drain", "route": route,
+                              "any_of": [["Sol Ring"]]}]}
+        assert _combat_route_notes(quiet) == [], route
+
+
 # ── the checks that did not run ─────────────────────────────────────────────
 
 def test_a_missing_cards_json_is_said_and_never_printed_as_OK(tmp_path, capsys,

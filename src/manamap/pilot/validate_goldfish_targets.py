@@ -65,6 +65,21 @@ WIN_LINE_QUORUM = 2
 #: no check — and this one is a NOTE rather than a failure, because a combat
 #: route is a legitimate thing to declare. What is not legitimate is reading the
 #: goldfish's number for it as evidence that the kill lands.
+#: Route values whose kill has to CONNECT, so the goldfish's assembly rate is
+#: about the DRAW and never about the kill. `drain` and `entry` are absent
+#: deliberately — a drain does not care about blockers and the model grades it
+#: honestly. Kept as a set rather than folded into `_COMBAT_ROUTE` because a
+#: route is a declared token and a label is prose; matching them with one regex
+#: is what let a rename switch the note off.
+#:
+#: HELD TO THE VALUES THE FLEET ACTUALLY USES. The first draft of this also
+#: listed "commander" and "voltron", which sound obviously right and appear
+#: nowhere — and adding them broke a fixture whose default route is "commander",
+#: which is how the speculation announced itself. Widening a matcher past what
+#: was swept is the mistake this file's own history is made of. Add a value when
+#: a deck declares it, not before.
+_COMBAT_ROUTES = frozenset({"board", "combat"})
+
 _COMBAT_ROUTE = re.compile(
     r"commander damage|combat|attack|swing|voltron|lord or anthem", re.I)
 
@@ -94,7 +109,22 @@ def _combat_route_notes(doc):
     combat_on = doc.get("model_combat") is True
     for target in doc.get("targets", []):
         label = target.get("label") or ""
-        if not target.get("route") or not _COMBAT_ROUTE.search(label):
+        route = target.get("route")
+        # THE STRUCTURED FIELD FIRST, the label prose second. `_COMBAT_ROUTE`
+        # greps the label, and a label is free text: zur-enchantress renamed its
+        # kill from "KILL — commander damage: a buff aura on Zur" to "KILL — a
+        # BOARD: a real body plus a way through" and the note stopped firing on
+        # a route that still has to CONNECT — the exact thing the note exists to
+        # say. The rename was correct and the matcher was reading the wrong
+        # field.
+        #
+        # Swept across all 13 declarations on 2026-09-04 before this was kept:
+        # 4 newly firing, all of them the same board route on zur-enchantress
+        # and its three branches, all genuinely combat kills. Zero decks that
+        # were correct started reporting. The whole route vocabulary in the
+        # fleet is {entry, combat, board, drain}; `drain` and `entry` are graded
+        # fine by a model with no blockers, which is why they are not here.
+        if not route or not (route in _COMBAT_ROUTES or _COMBAT_ROUTE.search(label)):
             continue
         head = f"\n     COMBAT ROUTE — \"{label[:56]}\"."
         if combat_on:

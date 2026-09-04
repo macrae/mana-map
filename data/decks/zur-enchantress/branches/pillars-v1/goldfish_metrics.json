@@ -5,6 +5,9 @@
       "modelled": 0,
       "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
     },
+    "combat_effects_not_modelled": [
+      "Aqueous Form"
+    ],
     "commander": "Zur the Enchanter",
     "commander_cmc": 4,
     "deck": "zur-enchantress",
@@ -55,87 +58,147 @@
       "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
       "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
       "Rituals are not modeled (conservative).",
-      "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
+      "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
+      "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+      "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+      "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
+      "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
+      "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
+      "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
     "model_version": "28475e307d29",
     "seed": 42
   },
   "metrics": {
-    "commander": {
-      "cast_by_turn_6_rate": 0.868,
-      "cast_turn_histogram": {
-        "10": 134,
-        "4": 7110,
-        "5": 961,
-        "6": 609,
-        "7": 403,
-        "8": 271,
-        "9": 238,
-        "not_by_max_turn": 274
+    "attack_tutor": {
+      "basis": "fires once a turn from the turn after the commander lands, pulling the highest-mana-value match from the library onto the battlefield. A goldfish has no blockers so the commander always attacks — this is the engine's CEILING, not an estimate of it.",
+      "declared": true,
+      "games_it_fired": 9657,
+      "mean_fired": 5.251
+    },
+    "combat": {
+      "kill_by_turn_rate": {
+        "1": 0.0,
+        "10": 0.331,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.022,
+        "9": 0.133
       },
-      "mean_cast_turn": 4.665,
+      "kill_turn_histogram": {
+        "10": 1983,
+        "7": 2,
+        "8": 217,
+        "9": 1110
+      },
+      "mean_board_power_by_turn": {
+        "1": 0.0,
+        "10": 8.308,
+        "2": 0.441,
+        "3": 1.271,
+        "4": 2.178,
+        "5": 3.714,
+        "6": 4.871,
+        "7": 5.798,
+        "8": 6.661,
+        "9": 7.478
+      },
+      "mean_damage_by_turn": {
+        "1": 0.0,
+        "10": 7.67,
+        "2": 0.0,
+        "3": 0.476,
+        "4": 1.31,
+        "5": 2.309,
+        "6": 3.861,
+        "7": 5.016,
+        "8": 5.958,
+        "9": 6.834
+      },
+      "mean_kill_turn": 9.532,
+      "median_kill_turn": 10,
+      "no_kill_by_max_turn_rate": 0.669
+    },
+    "commander": {
+      "cast_by_turn_6_rate": 0.88,
+      "cast_turn_histogram": {
+        "10": 117,
+        "4": 7220,
+        "5": 978,
+        "6": 603,
+        "7": 392,
+        "8": 250,
+        "9": 214,
+        "not_by_max_turn": 226
+      },
+      "mean_cast_turn": 4.627,
       "median_cast_turn": 4
     },
     "interaction_castable_by_turn": {
       "1": 0.138,
-      "10": 0.924,
+      "10": 0.97,
       "2": 0.347,
-      "3": 0.256,
-      "4": 0.121,
-      "5": 0.538,
-      "6": 0.682,
-      "7": 0.781,
-      "8": 0.847,
-      "9": 0.886
+      "3": 0.254,
+      "4": 0.116,
+      "5": 0.602,
+      "6": 0.774,
+      "7": 0.87,
+      "8": 0.919,
+      "9": 0.946
     },
     "interaction_in_hand_by_turn": {
       "1": 0.877,
-      "10": 0.97,
+      "10": 0.995,
       "2": 0.894,
-      "3": 0.905,
-      "4": 0.926,
-      "5": 0.931,
-      "6": 0.936,
-      "7": 0.944,
-      "8": 0.953,
-      "9": 0.961
+      "3": 0.906,
+      "4": 0.929,
+      "5": 0.948,
+      "6": 0.961,
+      "7": 0.975,
+      "8": 0.984,
+      "9": 0.991
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.384,
+      "10": 0.586,
       "2": 0.998,
-      "3": 0.911,
-      "4": 0.789,
-      "5": 0.669,
-      "6": 0.574,
-      "7": 0.482,
-      "8": 0.438,
-      "9": 0.402
+      "3": 0.914,
+      "4": 0.802,
+      "5": 0.686,
+      "6": 0.649,
+      "7": 0.609,
+      "8": 0.585,
+      "9": 0.589
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 6.646,
+      "10": 7.417,
       "2": 1.997,
-      "3": 2.908,
-      "4": 3.698,
-      "5": 4.367,
-      "6": 4.941,
-      "7": 5.422,
-      "8": 5.86,
-      "9": 6.262
+      "3": 2.911,
+      "4": 3.713,
+      "5": 4.399,
+      "6": 5.048,
+      "7": 5.657,
+      "8": 6.242,
+      "9": 6.831
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 3.926,
+      "10": 5.349,
       "2": 0.402,
-      "3": 1.159,
-      "4": 1.338,
-      "5": 2.083,
-      "6": 2.64,
-      "7": 3.036,
-      "8": 3.358,
-      "9": 3.651
+      "3": 1.055,
+      "4": 1.202,
+      "5": 2.251,
+      "6": 2.999,
+      "7": 3.617,
+      "8": 4.207,
+      "9": 4.771
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -164,58 +227,58 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.88,
-        "assembled_rate_assisted": 0.936,
-        "by_turn_6_rate": 0.795,
-        "by_turn_6_rate_assisted": 0.866,
+        "assembled_rate": 0.813,
+        "assembled_rate_assisted": 0.902,
+        "by_turn_6_rate": 0.754,
+        "by_turn_6_rate_assisted": 0.84,
         "label": "RESOURCE ENGINE drawn — a draw engine that keeps drawing",
-        "mean_turn": 2.315,
-        "mean_turn_assisted": 2.196
+        "mean_turn": 2.145,
+        "mean_turn_assisted": 2.186
       },
       {
-        "assembled_rate": 0.975,
-        "assembled_rate_assisted": 0.984,
-        "by_turn_6_rate": 0.931,
-        "by_turn_6_rate_assisted": 0.951,
+        "assembled_rate": 0.848,
+        "assembled_rate_assisted": 0.901,
+        "by_turn_6_rate": 0.734,
+        "by_turn_6_rate_assisted": 0.802,
         "label": "AN ANSWER drawn — spot removal, a sweeper or a counterspell",
-        "mean_turn": 1.684,
-        "mean_turn_assisted": 1.596
+        "mean_turn": 2.704,
+        "mean_turn_assisted": 2.562
       },
       {
-        "assembled_rate": 0.0,
-        "assembled_rate_assisted": 0.416,
-        "by_turn_6_rate": 0.0,
-        "by_turn_6_rate_assisted": 0.316,
-        "label": "KILL — commander damage: a buff aura on Zur",
-        "mean_turn": null,
-        "mean_turn_assisted": 4.454
+        "assembled_rate": 0.349,
+        "assembled_rate_assisted": 0.589,
+        "by_turn_6_rate": 0.245,
+        "by_turn_6_rate_assisted": 0.424,
+        "label": "KILL — a BOARD: a real body plus a way through",
+        "mean_turn": 4.512,
+        "mean_turn_assisted": 4.574
       },
       {
-        "assembled_rate": 0.41,
-        "assembled_rate_assisted": 0.621,
-        "by_turn_6_rate": 0.28,
-        "by_turn_6_rate_assisted": 0.454,
+        "assembled_rate": 0.424,
+        "assembled_rate_assisted": 0.642,
+        "by_turn_6_rate": 0.291,
+        "by_turn_6_rate_assisted": 0.467,
         "label": "KILL — drain: a payoff plus something to feed it",
-        "mean_turn": 4.562,
-        "mean_turn_assisted": 4.419
+        "mean_turn": 4.56,
+        "mean_turn_assisted": 4.473
       },
       {
-        "assembled_rate": 0.683,
-        "assembled_rate_assisted": 0.822,
-        "by_turn_6_rate": 0.572,
-        "by_turn_6_rate_assisted": 0.717,
+        "assembled_rate": 0.613,
+        "assembled_rate_assisted": 0.795,
+        "by_turn_6_rate": 0.516,
+        "by_turn_6_rate_assisted": 0.681,
         "label": "RAMP drawn — an accelerant of any kind",
-        "mean_turn": 3.012,
-        "mean_turn_assisted": 2.907
+        "mean_turn": 3.032,
+        "mean_turn_assisted": 3.097
       },
       {
-        "assembled_rate": 0.429,
-        "assembled_rate_assisted": 0.429,
-        "by_turn_6_rate": 0.336,
-        "by_turn_6_rate_assisted": 0.336,
+        "assembled_rate": 0.474,
+        "assembled_rate_assisted": 0.474,
+        "by_turn_6_rate": 0.353,
+        "by_turn_6_rate_assisted": 0.353,
         "label": "A TUTOR drawn",
-        "mean_turn": 3.448,
-        "mean_turn_assisted": 3.448
+        "mean_turn": 3.796,
+        "mean_turn_assisted": 3.796
       }
     ]
   }

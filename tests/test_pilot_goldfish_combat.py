@@ -229,12 +229,15 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # named set makes adding the third an edit somebody has to justify, which is
     # the whole point of "retire this deliberately rather than letting it
     # quietly stop checking anything".
-    assert sorted(opted) == ["edgar-vampires", "ur-dragon"], (
-        f"the opted-in set changed to {sorted(opted)}. Both of these were "
+    assert sorted(opted) == ["edgar-vampires", "ur-dragon", "zur-enchantress"], (
+        f"the opted-in set changed to {sorted(opted)}. All three were "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
         "edgar-vampires with the drain refactor, which needed `model_combat` "
         "for a clock and `model_draw` for the card advantage its log kept "
-        "running out of. Add a deck here only with its re-baseline.")
+        "running out of, and zur-enchantress on 2026-09-04, which abandoned "
+        "commander damage after Forge returned 0 of 39 games reaching 21 and "
+        "now kills with a BOARD — a clock that does not exist at all with the "
+        "flag off. Add a deck here only with its re-baseline.")
     assert checked >= len(decks) - len(opted), "the loop stopped checking"
     # THREE, NOT FIVE. The floor exists so an empty or near-empty loop cannot
     # pass by iterating nothing — the guard this repo added after fourteen tests
