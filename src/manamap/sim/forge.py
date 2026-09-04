@@ -56,6 +56,7 @@ from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_AR
                             SIM_GAME_CLOCK_SECONDS, SIM_CLOCK_ID_BASELINE)
 from manamap.pilot.common import deck_dir, load_json
 from manamap.sim import parse as sim_parse
+from manamap.sim import pods as _pods
 
 # Forge's own verdict on its AI, from its docs/AI.md. Quoted into every run record so a
 # number never travels without the limit that bounds it.
@@ -634,7 +635,7 @@ def _profiles_for(rotation, subject, profile, pod):
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
         seed=None, force=False, dry_run=False, home=None, decks_dir=None,
-        profile=None, vs_profile=None):
+        profile=None, vs_profile=None, pod_name=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -806,6 +807,12 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                                    if outcomes else None),
                     "mean_global_turn": (round(sum(o["global_turn"] or 0 for o in outcomes) / len(outcomes), 1)
                                          if outcomes and all(o["global_turn"] for o in outcomes) else None)},
+        # THE TABLE, NAMED. A run faces one pod, and until pods existed the only
+        # record of which was the opponent slugs in the run id — so "report by
+        # pod composition" (PRD §6 B-2) had nothing to group on. `named` says
+        # whether the pilot passed `--pod` (a fact about the run) or the pod was
+        # inferred from the opponents against today's files (a reading).
+        "pod": _pods.record_for(pod_name, opponents),
         "outcomes": outcomes,
         "analysis": analysis,
         "games": [sim_parse.compact(f, label) for f in facts],
@@ -846,6 +853,14 @@ def analyze(slug, run_id_or_path):
         record_commanders(rec))
     rec["analysis"] = analysis
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
+    # THE POD, BACKFILLED — and marked `named: false`, because a record written
+    # before pods existed faced a table nobody named and this is a reading of
+    # today's files rather than a fact about the run. A stamp made by `--pod`
+    # already carries `named: true` and is left alone.
+    if not (rec.get("pod") or {}).get("named"):
+        pod = _pods.record_for(None, [s["slug"] for s in rec["seats"][1:]])
+        if pod:
+            rec["pod"] = pod
     # THE ASSUMPTIONS ARE A PROPERTY OF THE HARNESS, NOT OF THE RUN, so a
     # re-derive refreshes them. They were not, and that left a claim the harness
     # had been PROVEN NOT TO MEET sitting in a freshly written record: every run
@@ -954,12 +969,20 @@ def main(args):
             print(f"{r['run_id']}  {r['at']}  {r['games_completed']}/{r['games_requested']} games  "
                   f"win {s['win_rate']}{' ci95 ' + str(ci) if ci else ''}  mean round {s['mean_round']}  "
                   f"{r['wall_seconds']}s on {r['jobs']} JVM(s)")
-            print(f"      vs {', '.join(x['slug'] for x in r['seats'][1:])}  ·  wins {s['wins']}")
+            pod = r.get("pod")
+            table = ", ".join(x["slug"] for x in r["seats"][1:])
+            if pod:
+                # `~` for an inferred pod: the record predates pods and this is
+                # today's files read against it, not what was configured.
+                mark = "" if pod.get("named") else "~"
+                table = f"{mark}{pod['name']} ({pod['players']}p) — {table}"
+            print(f"      vs {table}  ·  wins {s['wins']}")
         return
     path, rec = run(slug, opponents, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
                     profile=getattr(args, "profile", None),
+                    pod_name=getattr(args, "pod", None),
                     vs_profile=getattr(args, "vs_profile", None) or seat_profiles)
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "

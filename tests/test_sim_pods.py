@@ -266,3 +266,69 @@ def test_every_seat_a_pod_names_exists_on_disk():
             assert seat.exists() or deck.exists(), f"{name}: no seat for {slug!r}"
             checked += 1
     assert checked >= 10, "the guard iterated almost nothing"
+
+
+# ── the table a record faced ────────────────────────────────────────────────
+
+def test_a_record_says_which_table_it_faced():
+    """Until pods existed, the only record of the table was the run id.
+
+    So "report by pod composition" (B-2) had nothing to group on. `pod.named`
+    is the load-bearing field: True when the pilot passed `--pod` (a fact about
+    the run), False when it was inferred from the opponents against today's
+    files (a reading of an older record).
+    """
+    import glob
+
+    runs = sorted(glob.glob(str(ROOT / "data/decks/*/sim/*.json")))
+    assert len(runs) >= 15
+    named, inferred, unmatched = 0, 0, 0
+    for path in runs:
+        pod = json.loads(pathlib.Path(path).read_text(encoding="utf-8")).get("pod")
+        if pod is None:
+            unmatched += 1
+            continue
+        assert set(pod) == {"name", "named", "players", "composition", "brackets"}
+        assert pod["name"] in pods.available()
+        assert pod["composition"] == sorted(pod["composition"])
+        named += bool(pod["named"])
+        inferred += not pod["named"]
+
+    # Every record on disk predates `--pod`, so all of them are readings.
+    assert named == 0, "a stamped record appeared without --pod being run"
+    assert inferred >= 15, "the backfill reached almost nothing"
+
+
+def test_most_of_the_record_faced_the_table_the_docs_call_unfair():
+    """The readout the stamp exists to make possible.
+
+    `vito` is bracket 4 with 13 two-card infinites at a bracket-3 table, wins by
+    life loss the damage parser cannot see, and was dropped as the default on
+    2026-09-02. Knowing how much of the evidence base was measured against it
+    was previously invisible without reading nineteen run ids by hand.
+    """
+    import collections
+    import glob
+
+    seen = collections.Counter()
+    for path in sorted(glob.glob(str(ROOT / "data/decks/*/sim/*.json"))):
+        pod = json.loads(pathlib.Path(path).read_text(encoding="utf-8")).get("pod")
+        seen[(pod or {}).get("name")] += 1
+    assert seen["vito-era"] > seen["standard"], \
+        "if this flips, the fleet has been re-measured and the caveat is stale"
+
+
+def test_an_ad_hoc_table_matches_nothing_rather_than_the_nearest_pod():
+    """A near miss must be no match. Matching loosely would mislabel a record."""
+    assert pods.match(["giada-angels", "baylen-tokens"]) is None
+    assert pods.match(["abaddon", "baylen-tokens", "giada-angels"]) is None, \
+        "order is part of the identity — it is the run id"
+    assert pods.match(["giada-angels", "baylen-tokens", "abaddon"]) == "standard"
+
+
+def test_a_stamped_pod_is_not_overwritten_by_a_reading():
+    """`--analyze` backfills a reading and must never downgrade a fact."""
+    stamped = pods.record_for("standard", [])
+    assert stamped["named"] is True
+    reading = pods.record_for(None, ["giada-angels", "baylen-tokens", "abaddon"])
+    assert reading["named"] is False and reading["name"] == "standard"

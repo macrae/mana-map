@@ -5128,5 +5128,20 @@
     "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
     "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
-  "logs": "sim/logs/giada-angels-vs-vito-vs-baylen-tokens-n20-5499aa10-s1419356688/ (gitignored; regenerate by re-running)"
+  "logs": "sim/logs/giada-angels-vs-vito-vs-baylen-tokens-n20-5499aa10-s1419356688/ (gitignored; regenerate by re-running)",
+  "pod": {
+    "name": "vito-era",
+    "named": false,
+    "players": 4,
+    "composition": [
+      "angels / lifegain go-wide",
+      "mono-black drain combo",
+      "tokens go-wide"
+    ],
+    "brackets": [
+      3,
+      3,
+      4
+    ]
+  }
 }

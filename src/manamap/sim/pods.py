@@ -144,6 +144,44 @@ def mixed_tag(profile_map, seat_slugs, default):
     return f"Mixed{digest}"
 
 
+def match(slugs):
+    """The pod whose seats ARE this ordered list, or None.
+
+    DERIVED, never a stamp. Every record written before pods existed faced a
+    table nobody named, and matching its opponents against today's files is a
+    convenience for reading old runs — not a claim about what was configured.
+    A pod edited later stops matching, which is correct: the record did not
+    change, the file did. `record_for` marks the difference.
+    """
+    want = list(slugs)
+    for name in available():
+        try:
+            if seats(name) == want:
+                return name
+        except PodError:
+            continue
+    return None
+
+
+def record_for(name, opponents):
+    """The block a run record carries about the table it faced.
+
+    `named` is the load-bearing field: True when the pilot passed `--pod`, so
+    the name is a FACT about the run; False when it was inferred from the
+    opponent list, so it is a reading of today's files against an old record.
+    """
+    if name:
+        info = compose(name)
+        return {"name": name, "named": True, "players": info["players"],
+                "composition": info["composition"], "brackets": info["brackets"]}
+    inferred = match(opponents)
+    if not inferred:
+        return None
+    info = compose(inferred)
+    return {"name": inferred, "named": False, "players": info["players"],
+            "composition": info["composition"], "brackets": info["brackets"]}
+
+
 def format_list():
     """Every pod, as the pilot reads it."""
     names = available()
