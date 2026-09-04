@@ -75,7 +75,6 @@ import shutil
 from manamap.pilot import check_in, collection
 from manamap.pilot.common import (
     BRANCHES_DIR,
-    DECKS_DIR,
     deck_dir,
     deck_is_apart,
     deck_lifecycle,
@@ -194,9 +193,18 @@ def _deck_holders(name, skip):
     can see the trade-off, and it carries the holder's lifecycle because a
     finished deck is not a donor — and a BROKEN-DOWN one is not a deck.
     """
+    from manamap.pilot import common as _common
     from manamap.pilot import deck_versions
+
+    # `_common.DECKS_DIR` AT CALL TIME, not a `from`-import binding. This module
+    # took its own copy at import, and a copy captured while a test had patched
+    # `common.DECKS_DIR` survives that test's teardown forever — monkeypatch
+    # restores the name it was given and knows nothing about the copy. The
+    # symptom is silent and total: every card reports ZERO holders, so
+    # `source`, `pull_list` and `merge`'s refusal all under-report while looking
+    # exactly right. Same class as the resolved-path memo PLAN.md records.
     out = []
-    for d in sorted(DECKS_DIR.iterdir()):
+    for d in sorted(_common.DECKS_DIR.iterdir()):
         if not d.is_dir() or d.name == skip:
             continue
         doc = load_json(d / "cards.json")

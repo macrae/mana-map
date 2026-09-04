@@ -35,6 +35,7 @@ from manamap.pilot import deck_facts as facts_mod
 from manamap.pilot import deck_model as dm
 from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
+from manamap.pilot import promote as promote_mod
 from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_json
 from manamap.pilot.deck_notes import annotations, causes, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
@@ -384,6 +385,12 @@ def compose(slug, verify=False):
         "commander": facts.get("commander"),
         "lifecycle": ({"status": life[0], "headline": life[1], "body": life[2]}
                       if life else None),
+        # WHICH ENVIRONMENT (PRD §3). Derived, and composed here rather than in
+        # the browser: `workbench.js` computed `living.filter(e => !e.locked)`
+        # and called the result "on the bench", which made the ladder a fact the
+        # frontend invented. `promote.stage` is the one predicate — SLEEVED is
+        # the paper lock, BENCH is the default, and only `dev` is ever stored.
+        "stage": promote_mod.stage(slug),
         "colour_identity": identity,
         "size": counts.get("copies"), "lands": counts.get("land_copies"),
         "version": {"current": vdoc["current_version"], "of": len(vdoc["versions"]),

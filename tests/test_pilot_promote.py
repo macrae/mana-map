@@ -310,3 +310,36 @@ def test_every_tracked_versions_file_still_passes_its_gate():
         slug = _pl.Path(path).parent.name
         doc = json.loads(_pl.Path(path).read_text(encoding="utf-8"))
         assert validate(doc, slug) == [], f"{slug}: {validate(doc, slug)}"
+
+
+# ── a from-import binding is not a path ─────────────────────────────────────
+
+def test_deck_holders_reads_the_deck_root_at_call_time(tmp_path, monkeypatch):
+    """A `from`-import copy captured under a patch outlives the patch.
+
+    `deck_branch` bound `DECKS_DIR` at import. Any test that patched
+    `common.DECKS_DIR` and caused the first import of `deck_branch` left that
+    copy pointing at a torn-down tmp directory FOR THE REST OF THE SESSION —
+    monkeypatch restores the name it was given and knows nothing about a copy
+    someone else took.
+
+    The symptom is silent and total: `_deck_holders` iterates an empty
+    directory, so every card reports zero holders and `source`, `pull_list` and
+    `merge`'s refusal all under-report while looking exactly right. Found when a
+    real ownership assertion passed alone and failed after `test_pilot_deck_info`.
+    """
+    from manamap.pilot import common, deck_branch
+
+    real = common.DECKS_DIR
+    empty = tmp_path / "decks"
+    empty.mkdir()
+
+    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", empty)
+    assert deck_branch._deck_holders("Sol Ring", skip=None) == [], \
+        "the patched root must be the one that is read"
+    monkeypatch.undo()
+
+    assert common.DECKS_DIR == real
+    # And the module must follow it back. Before the fix this stayed empty.
+    assert not hasattr(deck_branch, "DECKS_DIR"), \
+        "a module-level copy is the defect; read it from `common` at call time"

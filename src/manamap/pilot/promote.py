@@ -104,12 +104,19 @@ def stored(slug):
 
 
 def stage(slug):
-    """Which environment this deck is in, derived where nothing says.
+    """Which environment this deck is in, or None if it is not in one.
 
-    The paper lock wins outright: it is the claim, and a stored stage that could
-    disagree with it would be the second source of truth this module exists to
-    avoid.
+    A BROKEN-DOWN OR RETIRED DECK HAS NO STAGE. It is not in dev, on the bench
+    or in sleeves — it is history, and reporting `bench` for it would put a pile
+    of cards on a rack of things you could work on. Absent means absent, and
+    `main` refuses to move such a deck for the same reason.
+
+    Otherwise the paper lock wins outright: it is the claim, and a stored stage
+    that could disagree with it would be the second source of truth this module
+    exists to avoid.
     """
+    if deck_lifecycle(slug):
+        return None
     if deck_versions.paper(slug):
         return SLEEVED
     return stored(slug) or BENCH

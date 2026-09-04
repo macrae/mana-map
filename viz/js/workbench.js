@@ -618,7 +618,25 @@
     var dead = decks.filter(function (e) { return e.status; });
     var living = decks.filter(function (e) { return !e.status; });
     var locked = living.filter(function (e) { return e.locked; });
-    var live = living.filter(function (e) { return !e.locked; });
+
+    /* THE LADDER IS READ, NOT INVENTED. This line used to BE the definition of
+     * "on the bench" — `living.filter(e => !e.locked)` — which made the third
+     * environment a fact the frontend computed and no command could gate on.
+     * `info.stage` is `promote.stage`: SLEEVED is the paper lock, BENCH is the
+     * default, and only `dev` is ever stored.
+     *
+     * The old expression is kept as the FALLBACK, because `info.json` is
+     * regenerated per deck and a page must not empty a rack while one deck is
+     * mid-refresh. A deck whose info has not caught up reads as bench, which is
+     * exactly what it read as before. */
+    var stageOf = function (e) {
+      var info = infos[e.slug];
+      return (info && info.stage) || (e.locked ? 'sleeved' : 'bench');
+    };
+    var brewing = living.filter(function (e) { return stageOf(e) === 'dev'; });
+    var live = living.filter(function (e) {
+      return !e.locked && stageOf(e) !== 'dev';
+    });
 
     var toggle = '<div class="wb-views">'
       + '<button class="wb-view' + (state.view === 'racks' ? ' is-on' : '')
@@ -647,6 +665,9 @@
                locked, infos)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
                + 'sleeved yet.', live, infos)
+        + rack('Brewing', 'Fresh builds in dev. Optimised for throughput, not rigour \u2014 '
+               + 'most of these get thrown away. <code>manamap pilot promote &lt;slug&gt;</code> '
+               + 'says what each owes to reach the bench.', brewing, infos)
         + rack('Archive',
                'Broken down for parts, superseded, or retired \u2014 and builds you '
                + 'put down. Kept as published, so you can come back and read them.',
