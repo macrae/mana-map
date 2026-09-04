@@ -31,6 +31,10 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("promote", "manamap.pilot.promote",
+     "Which ENVIRONMENT a deck is in (dev / bench / sleeved), and every requirement for the next rung"),
+    ("demote", "manamap.pilot.promote",
+     "Step a deck back down the ladder"),
     ("pods", "manamap.sim.pods",
      "The named tables: which decks, which archetypes, which brackets — and the --vs flags each expands to"),
     ("metrics", "manamap.metrics",
@@ -190,7 +194,7 @@ _DECK_COMMANDS = {
     "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
-    "build", "validate-brief",
+    "build", "validate-brief", "promote", "demote",
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
@@ -754,6 +758,18 @@ def add_pilot_parser(subparsers):
                                   "real EDHREC archetypes. Off by default: a "
                                   "gate that fails when the network is down is "
                                   "a gate that gets switched off")
+        if name in ("promote", "demote"):
+            cmd.add_argument("--to", default=None, choices=["dev", "bench", "sleeved"],
+                             help="the rung to move to (default: one step). A "
+                                  "promotion may not SKIP a rung — the gate for "
+                                  "the one it skipped would never run")
+            cmd.add_argument("--show", action="store_true",
+                             help="report the gate and change nothing")
+            cmd.add_argument("--force", action="store_true",
+                             help="promote past an unmet requirement (needs --reason)")
+            cmd.add_argument("--reason", default=None,
+                             help="why a gate was waived — a waiver with no "
+                                  "reason is a gate nobody will trust")
         if name == "pods":
             cmd.add_argument("name", nargs="?", default=None,
                              help="one pod; omit to list them all")

@@ -40,6 +40,9 @@ from manamap.pilot.deck_notes import read_log
 
 TAGS_FILE = "deck_versions.json"
 PAPER_KEY = "paper"
+#: The environment rung, written by `pilot.promote` and only ever "dev".
+#: Named here because `_write_tags` is the one serializer and must order it.
+STAGE_KEY = "stage"
 BASELINE_KEY = "baseline"
 #: The deck's LIFECYCLE — broken down, superseded, retired, or absent for a live
 #: deck. It moved here from `issue.json` (see `common.deck_lifecycle`); this
@@ -345,6 +348,13 @@ def _write_tags(path, doc):
     # this file should meet that before the numbers it invalidates.
     if LIFECYCLE_KEY in doc:
         ordered[LIFECYCLE_KEY] = doc[LIFECYCLE_KEY]
+    # THE ENVIRONMENT, after the lifecycle and before the numbers. This function
+    # is the one writer of the file, so a key it does not know about is a key
+    # that silently disappears on the next write — which is exactly what
+    # happened to `stage` the first time it was set, and is the cost of the
+    # single-serializer design working as intended.
+    if STAGE_KEY in doc:
+        ordered[STAGE_KEY] = doc[STAGE_KEY]
     if BASELINE_KEY in doc:
         ordered[BASELINE_KEY] = doc[BASELINE_KEY]
     if PAPER_KEY in doc:

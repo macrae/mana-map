@@ -385,6 +385,11 @@ def build(args, quiet=False):
     # here, so theirs is captured — and captured rather than silenced, so a
     # traceback still carries whatever the failing command had already said.
     said = io.StringIO()
+    # Whether this deck already existed decides whether the build may set its
+    # stage: rebuilding a deck the pilot has moved to the bench must not put it
+    # back in dev.
+    new_deck_existed = (deck_dir(slug) / "deck_versions.json").exists() \
+        if (DECKS_DIR / slug).is_dir() else False
 
     with console.task(f"Building {slug}", total=len(STAGES), unit="stages") as bar:
         bar.state(STAGES[0])
@@ -435,6 +440,15 @@ def build(args, quiet=False):
 
         with contextlib.redirect_stdout(said):
             _run("manamap.pilot.build_index")
+            # A NEW DECK LANDS IN DEV. PRD §3: "most decks here will be thrown
+            # away — the environment is optimised for throughput, not rigour."
+            # Only a build says this; nothing infers `dev` for the ten decks
+            # that predate the ladder, because nobody has said they are brews.
+            from manamap.pilot import promote as _promote
+
+            if not new_deck_existed:
+                _promote.set_stage(slug, _promote.DEV)
+        record["stage"] = _promote.stage(slug)
         record["composition"] = composition(slug, plan)
         record["flagged"] = flagged(plan, brief, record.get("theme_decks"))
         bar.advance(1)
@@ -472,7 +486,8 @@ def format_report(record):
     style = record.get("theme") or "none resolved"
     if record.get("theme_decks"):
         style += f" ({record['theme_decks']} decks)"
-    lines.append(f"  {lands} lands · style {style}")
+    lines.append(f"  {lands} lands · style {style}"
+                 + (f" · {record['stage'].upper()}" if record.get("stage") else ""))
 
     # A-1's composition report: category depth, curve, land count, and
     # pip-to-source coverage per colour.
@@ -531,6 +546,8 @@ def format_report(record):
         "  brief.json is a note that reaches `info.json` and no algorithm.",
         "",
         f"  next:  git add data/decks/{slug} && git commit",
+        f"         manamap pilot promote {slug}"
+        "            # what it owes to reach the bench",
         f"         manamap pilot deck-version {slug} tag v0.1.0"
         "   # 0.x is a list; 1.0.0 is sleeved",
         f"         manamap pilot deck-info {slug}",

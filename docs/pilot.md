@@ -83,6 +83,15 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare block
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
 manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
+manamap pilot promote <slug> [--to bench|sleeved] [--show] [--force --reason "…"]
+manamap pilot demote  <slug> [--to dev|bench]
+                                        #   THE ENVIRONMENT LADDER (PRD §3): dev / bench /
+                                        #   sleeved. SLEEVED **is** the paper lock and is never
+                                        #   stored; BENCH is the default and stores nothing; only
+                                        #   `dev` is written, by `build`. The gate reports PER
+                                        #   REQUIREMENT with the command that clears each one,
+                                        #   and ownership comes back in C-3's three buckets —
+                                        #   in a box / sleeved elsewhere (named) / to buy
 manamap pilot deck-state <slug>                     # is this still a deck, or a pile of cards
 manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
 manamap pilot deck-delete <slug>                    # never sleeved, never played, never published
