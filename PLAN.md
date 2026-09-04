@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-09-01**. Everything below is committed and pushed to `main` except
+Last updated **2026-09-03**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -136,6 +136,75 @@ status and withholds the suggestions that would need a deck to shuffle.
 | **The paper lock's third state** | UNLOCKED is not dead. Four of eleven decks are unlocked and now say so; three rehearsal locks withdrawn | `docs/pilot.md` |
 
 ## Open work
+
+### IN FLIGHT — the PRD v2 build-out (2026-09-03)
+
+**New investors, and the vision changed.** `docs/prd.md` is the September PRD,
+now tracked; `docs/prd-2026-08.md` is the superseded one that ~27 `PRD-v1 §N`
+citations across 15 source files resolve against. Neither had ever been in the
+repo, so every one of those citations pointed at nothing.
+
+**The four blocking decisions are resolved** and recorded in `prd.md`'s intake
+notes: bracket is a HARD CONSTRAINT that refuses (which is what `enforce_bracket`
+already did); the dev batch is the GOLDFISH, not Forge; twelve opponents, ~6 real
+and ~6 from EDHREC; and old and new paths run in parallel, with nothing deleted
+before its replacement is live.
+
+#### The measurement that inverted an epic
+
+Epic D dispositions the goldfish as "folded into Forge as the no-interaction
+batch". Measured at intake, **that would delete half the metrics catalog.**
+Forge emits exactly two zone transitions and there are **zero `from Library`
+lines** and **zero `to Battlefield` lines** in a 100-game run, so cards drawn,
+turns with empty hand, draw-engine uptime, missed land drops, mulligan-conditioned
+keeps, mean available mana and post-wipe BOARD recovery are not unimplemented —
+they are unrecoverable. The goldfish simulates the library and hand; it is the
+only engine that can answer the Mana and Card-flow groups at all.
+
+The timing follows from the same place. A Forge game is **~100s at the median on
+four jobs**, so a twelve-minute dev build buys 15-20 games against an MDE of
+**42 points at n=20**. A dev-stage Forge batch is statistically inert. The
+goldfish is 10,000 seeded games in ~4s and the benchmark adds 2.3s, so
+`manamap pilot build` finishes a Zur deck in **9.4 seconds**.
+
+**B-1's reproducibility criterion was rewritten** rather than met: Forge's seed
+fixes the shuffle only, AI evaluation is budgeted in wall time, and the
+2026-09-02 measurement has the same seed producing four different games and a
+different winner. No test can assert what the engine does not do.
+
+#### DONE
+
+| | |
+|---|---|
+| `manamap pilot build` | Epic A as one command — intent, anchor, build, resolve, measure, land. Composes `commander-search`, `archetypes`, `brew`, `build_deck`, `manabase`, `bracket`, `goldfish`, `benchmark`. A `--brief` yields a bracket and a style, the style matched only against the commander's REAL archetypes; every other prose key is stored and consumed by nothing, and the report says so |
+| `validate-brief` | the gate `brief.json` never had. Every check measured against all four briefs first and firing on none; inert keys and the EDHREC theme lookup REPORTED, never failed |
+| `experiment`, four defects | it raised `KeyError` on `ci95_a` on **every real run**, after writing its artifact; `_run_arm` had no timeout; and the pod ran on Default while `simulate` has run it on Experimental since 2026-08-30, so the two measured different populations. `experiment_id` carries `profile_tag` now, so no record on disk is renamed or reinterpreted |
+| `manuals/p/` has one writer | `build_page` and `poh` both wrote it, and `deck-branch merge` plus `make demo` both called the superseded one over the live one. `build-page` has no default output any more |
+
+#### NEXT, in order
+
+1. **The metrics registry.** Promote `net_change.METRICS` to a shared
+   `metrics.py` with a `from` key naming the log events or goldfish field a
+   figure derives from — B-3's explicit ask, and the idiom already exists with a
+   both-ways test. Tag each catalog entry with the engine that can answer it, and
+   mark the Forge-unreachable ones ABSENT WITH A REASON.
+2. **`mulligan` is parsed per game and thrown away** — `parse.compact()` drops it
+   and `aggregate()` never reads it. A catalog metric already being measured.
+   Adding it moves every tracked record's `analysis`, so it needs the 19 records
+   re-derived in the same commit (130 logs are on disk; `simulate --analyze`).
+3. **The pod object.** There is no `STANDARD_POD` constant — the standard pod is
+   a sentence in `docs/simulation.md` and three `--vs` flags typed by hand.
+4. **Twelve opponents**, six of them from the captain's log: Oliver on Krenko
+   token-and-ping, Tom on Purphoros / blue-black / enchantment, Alex on
+   fight-based green / Sauron / mono-red Tannuk warp.
+5. **Per-opponent AI profiles** — the seam exists (`forge.command()` takes a
+   profiles list, Forge's `-a` is index-aligned); only the data path is missing.
+6. **One pipeline definition.** The rebuild chain is written out three times —
+   `deck_branch.py` twice and `regen.STAGES` once — with `goldfish` and
+   `mana-analysis` duplicated between two of them.
+7. **Environments** (Epic C): a `stage` token beside `lifecycle`/`baseline`/
+   `paper`, `promote`/`demote` verbs, and the gates read off `deck_status`.
+
 
 ### DONE — the speed sprint (2026-08-30/31)
 

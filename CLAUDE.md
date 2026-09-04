@@ -79,10 +79,21 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   merge_prose.py   pilot-notes' five keys in; frozen legacy keys untouched
                       #   agent_cache.py / impact.py / card_refs.py  incremental regen
                       #   validate_tutor_guide / validate_strategy
-                      # ---- PAGE — LEGACY magazine renderer, frozen (docs/manual-v5-spec.md) ----
-                      #   issue_spec.py / design.py / build_manual.py / build_index.py
-                      #   validate_issue.py / validate_considering.py / issue_length.py
-                      #   artist_credits.py / short_list_art.py
+                      # ---- PAGE ----
+                      #   poh.py / poh_spec.py / poh_design.py / validate_poh.py
+                      #                    THE PILOT'S OPERATING HANDBOOK — LIVE.
+                      #                    Owns manuals/p/<slug>.html
+                      #   build_index.py   LIVE, and NOT legacy however it reads:
+                      #                    it writes data/decks/index.json, the
+                      #                    manifest the whole frontend fetches,
+                      #                    and six modules import `line_cards`
+                      #   LEGACY, frozen (docs/manual-v5-spec.md): issue_spec.py /
+                      #   design.py / build_manual.py / validate_issue.py /
+                      #   validate_considering.py / issue_length.py /
+                      #   artist_credits.py / short_list_art.py, plus build_page.py
+                      #   — superseded by the handbook, and it has no default
+                      #   output because it used to clobber one.
+                      #   design.py and issue_length.py are imported by LIVE code
                       # ---- DIAGNOSE — a finished deck -> what limits it ----
                       #   deck_status.py   IS THIS DECK FINISHED? lifecycle +
                       #                    staleness; STAGES is the sequence
@@ -189,6 +200,13 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
 manamap pilot <cmd>           # the bench (97 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
+manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
+                              # THE ONE COMMAND (PRD Epic A): brief -> a legal, MEASURED 99
+                              # on the bench, six stages in ~10s. Omit --commander and it
+                              # proposes three and halts. The dev batch is the GOLDFISH,
+                              # not Forge: a 12-minute Forge batch is ~20 games, whose MDE
+                              # is 42 points. `simulate` against a pod is the staging gate.
+manamap pilot validate-brief <slug> [--themes]          # the gate brief.json never had
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
 manamap pilot deck-version <slug> [list|show|tag|restore|paper]  # every list from git, joined to the log;
                                                         #   `paper` marks the version you have SLEEVED
@@ -381,6 +399,7 @@ engine-health word were absent on decks that are played.
 ## Pointers
 
 - **`docs/vision.md`** — START HERE: what the workbench is, the hypothesis loop, the evidence contract, what is live / legacy / honest, the vocabulary
+- **`docs/prd.md`** — WHAT IS BEING BUILT (Sept 2026): three environments, five epics, the metrics catalog, and the four blocking decisions resolved in its **Intake notes**. `vision.md` says what the bench IS; this says where it is going. `docs/prd-2026-08.md` is the superseded one that ~27 `PRD-v1 §N` citations resolve against
 - **`docs/simulation.md`** — the centre: Forge's spike and verdict, the seeded harness, the parser, the pod, the bridge, commander damage, the distribution, S0–S5
 - `PLAN.md` — current state and what's next (read second when resuming work)
 - **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate; `manamap pilot deck-info <slug>` is the workbench view and the thing to run first on any deck
