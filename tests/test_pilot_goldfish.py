@@ -450,3 +450,41 @@ def test_more_shrines_drain_more():
     assert many > few, (
         f"twenty Shrines drained {many} against two Shrines' {few} — X is not "
         f"being counted")
+
+
+def test_both_idioms_for_an_enchantment_entering_are_read():
+    """THEROS AND DUSKMOURN WROTE THE SAME TRIGGER TWO WAYS.
+
+    "Constellation — Whenever this creature or another enchantment you control
+    enters" and "Eerie — Whenever an enchantment you control enters and whenever
+    you fully unlock a Room" are the same event. The first pattern read only the
+    older wording, so Balemurk Leech — chosen precisely because it is a second
+    Grim Guardian at mana value 2 — scored as a 2-power body and drained
+    nothing, on a branch whose whole thesis is that Zur puts an enchantment onto
+    the battlefield every attack.
+
+    The first fix broke both originals by dropping a space in an alternation,
+    which the corpus sweep caught immediately: it returned Balemurk Leech alone
+    where it should return two. That is what the sweep is for.
+    """
+    from manamap.pilot.goldfish import drain_profile
+
+    def prof(text):
+        return drain_profile({"name": "X", "oracle_text": text, "type_line": ""})
+
+    theros = prof("Constellation — Whenever this creature or another enchantment "
+                  "you control enters, each opponent loses 1 life.")
+    duskmourn = prof("Eerie — Whenever an enchantment you control enters and "
+                     "whenever you fully unlock a Room, each opponent loses 1 life.")
+    assert theros["drain_per_enchantment"] == 1
+    assert duskmourn["drain_per_enchantment"] == 1, (
+        "the Duskmourn wording is the same trigger and must read the same")
+
+    gain = prof("Constellation — Whenever this creature or another enchantment "
+                "you control enters, you gain 1 life.")
+    assert gain["gain_per_enchantment"] == 1
+
+    # The bound matters: the effect must be in the SAME sentence as the trigger.
+    assert prof("Whenever an enchantment you control enters, draw a card. "
+                "Each opponent loses 1 life at end of turn."
+                )["drain_per_enchantment"] == 0

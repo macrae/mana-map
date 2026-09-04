@@ -1040,12 +1040,25 @@ _DRAIN_FIXED_RE = re.compile(
 #: Constellation and its plain-language twin. In a deck of forty enchantments
 #: with a commander that puts one onto the battlefield on every attack, this is
 #: the largest single drain source in the list and it was entirely unread.
+#: TWO IDIOMS FOR THE SAME EVENT. Theros wrote "Constellation — Whenever this
+#: creature or another enchantment you control enters"; Duskmourn writes
+#: "Eerie — Whenever an enchantment you control enters and whenever you fully
+#: unlock a Room". They are the same trigger and the first pattern read only the
+#: older one, so Balemurk Leech — chosen precisely because it is a second Grim
+#: Guardian at mana value 2 — scored as a 2-power body and drained nothing.
+#:
+#: Corpus sweep 2026-09-04: 23 cards use the Theros wording and 37 the plain
+#: one, with 2 and 1 of them draining respectively. The clause between the
+#: trigger and the effect is skipped with `[^.]*?` because the Room half sits
+#: there, and it is bounded to the SENTENCE so a later unrelated clause cannot
+#: be captured.
+_ENCHANTMENT_ENTERS = (
+    r"whenever (?:this (?:creature|enchantment) or another enchantment you control"
+    r"|an(?:other)? enchantment(?: you control)?) enters[^.]*?, ")
 _CONSTELLATION_DRAIN_RE = re.compile(
-    r"whenever this (?:creature|enchantment) or another enchantment you control enters,"
-    r" each opponent loses (\w+) life", re.I)
+    _ENCHANTMENT_ENTERS + r"each opponent loses (\w+) life", re.I)
 _CONSTELLATION_GAIN_RE = re.compile(
-    r"whenever this (?:creature|enchantment) or another enchantment you control enters,"
-    r" you gain (\w+) life", re.I)
+    _ENCHANTMENT_ENTERS + r"you gain (\w+) life", re.I)
 
 #: Recurring, on a phase this model has a turn for.
 _RECURRING_GAIN_RE = re.compile(
