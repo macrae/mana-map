@@ -191,6 +191,14 @@ def test_a_declaration_with_no_required_marking_says_so(capsys, monkeypatch, tmp
         path = tmp_path / "goldfish_targets.json"
         path.write_text(json.dumps(payload))
         monkeypatch.setattr(vgt, "deck_dir", lambda *a, **k: tmp_path)
+        # REAL CARDS, because without them the deck-dependent checks do not run
+        # and the headline is PARTIAL, not OK. This test asserted `OK` for
+        # months over a run that had checked nothing but the file's shape —
+        # it was passing THROUGH the blind spot fixed on 2026-09-04, which is
+        # how that blind spot stayed invisible.
+        monkeypatch.setattr(vgt, "load_deck_cards", lambda *a, **k: {"cards": [
+            {"name": "Sol Ring"}, {"name": "Mana Crypt"},
+            {"name": "Cmd", "is_commander": True}]})
         try:
             vgt.main(argparse.Namespace(slug="x", branch=None))
         except SystemExit:
@@ -276,3 +284,79 @@ def test_it_fires_on_exactly_the_fleet_it_was_measured_against():
     fired = {_pl.Path(f).parent.name for f in files
              if _combat_route_notes(json.loads(_pl.Path(f).read_text(encoding="utf-8")))}
     assert fired == {"ur-dragon", "zur-enchantress"}, fired
+
+
+# ── the checks that did not run ─────────────────────────────────────────────
+
+def test_a_missing_cards_json_is_said_and_never_printed_as_OK(tmp_path, capsys,
+                                                              monkeypatch):
+    """A GUARD THAT CANNOT FAIL IS A CLAIM, NOT A GUARD.
+
+    Every check below the shape pass needs the deck's cards. Without them
+    `validate` caught a bare `Exception` and returned an empty error list, which
+    `main` printed as a clean `OK` — the validator asserting, in its own voice,
+    that a declaration held when it had looked at nothing but the file's shape.
+
+    Caught live on 2026-09-04: `deck-branch new` writes `decklist.txt` and no
+    `cards.json`, so a branch validated between `new` and `fetch-deck` reported
+    OK on a declaration naming two cards the swap had just removed. The goldfish
+    found them a minute later. Nothing in the gate would ever have.
+
+    Reported, not failed — a fresh clone legitimately has no card data, and a
+    gate that reddens one teaches its reader to ignore the gate.
+    """
+    import argparse
+
+    doc = _doc(["Cut Long Ago", "Also Gone"])
+    (tmp_path / "goldfish_targets.json").write_text(json.dumps(doc))
+    monkeypatch.setattr(vgt, "deck_dir", lambda *a, **k: tmp_path)
+
+    def no_cards(*a, **k):
+        raise FileNotFoundError("cards.json not found")
+
+    monkeypatch.setattr(vgt, "load_deck_cards", no_cards)
+    try:
+        vgt.main(argparse.Namespace(slug="x", branch=None))
+    except SystemExit:
+        pass
+    out = capsys.readouterr().out
+
+    assert not out.startswith("OK"), (
+        "the validator reported OK over checks it never ran:\n" + out)
+    assert "PARTIAL" in out
+    assert "DID NOT RUN" in out
+    assert "fetch-deck x" in out, "the note must name the command that fixes it"
+
+
+def test_the_branch_form_of_the_fix_is_named(tmp_path, capsys, monkeypatch):
+    """The note has to be runnable on the deck it was printed for.
+
+    A branch needs `--branch <name>` and the deck-level command would not help,
+    which is exactly the state this was found in.
+    """
+    import argparse
+
+    (tmp_path / "goldfish_targets.json").write_text(json.dumps(_doc(["A"])))
+    monkeypatch.setattr(vgt, "deck_dir", lambda *a, **k: tmp_path)
+    monkeypatch.setattr(vgt, "load_deck_cards",
+                        lambda *a, **k: (_ for _ in ()).throw(FileNotFoundError("no")))
+    try:
+        vgt.main(argparse.Namespace(slug="zur-enchantress", branch="toolbox-v1"))
+    except SystemExit:
+        pass
+    assert "fetch-deck zur-enchantress --branch toolbox-v1" in capsys.readouterr().out
+
+
+def test_a_deck_that_loads_still_reports_OK():
+    """The control. Without it this change could have made every run PARTIAL."""
+    import argparse
+
+    from manamap.pilot.common import deck_dir
+
+    base = deck_dir("zur-enchantress")
+    if not (base / "goldfish_targets.json").exists():
+        pytest.skip("zur-enchantress targets not present")
+    notes = []
+    with open(base / "goldfish_targets.json") as f:
+        vgt.validate(json.load(f), "zur-enchantress", base, None, notes=notes)
+    assert notes == [], f"a deck with real cards should skip nothing: {notes}"

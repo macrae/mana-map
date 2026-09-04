@@ -248,15 +248,37 @@ def _validate_win_line_coverage(doc, slug, main_names, commander_names, base,
     return errors
 
 
-def validate(doc, slug, base, branch=None):
-    """Return a list of error strings (empty = the declaration holds)."""
+def validate(doc, slug, base, branch=None, notes=None):
+    """Return a list of error strings (empty = the declaration holds).
+
+    `notes` collects things the caller must SAY but that are not failures. The
+    one that matters is a missing `cards.json`: every check below the shape pass
+    needs the deck, and without it this used to `return errors` — an empty list,
+    which `main` printed as a clean `OK`. A guard that cannot fail is a claim,
+    not a guard, and this one made the claim in the validator's own voice.
+
+    Caught live on 2026-09-04: `deck-branch new` writes `decklist.txt` and no
+    `cards.json`, so a branch validated between `new` and `fetch-deck` reported
+    OK on a declaration with two stranded card names. The goldfish found them a
+    minute later, which is the only reason it was noticed at all.
+    """
     errors = _validate_shape(doc)
     if errors:
         return errors                      # shape first; the rest would cascade
 
     try:
         deck_doc = load_deck_cards(slug, branch)
-    except Exception:                      # pragma: no cover — fresh clone
+    except Exception as exc:
+        # NOT an error — a fresh clone has no card data and reddening it would
+        # teach the reader to ignore this gate. Said instead, every run.
+        if notes is not None:
+            notes.append(
+                f"MEMBERSHIP AND WIN-LINE CHECKS DID NOT RUN — {type(exc).__name__}: "
+                f"{exc}. Only the SHAPE of this file was checked. A stranded "
+                f"card name, a group whose size overstates its redundancy, and "
+                f"an undeclared win line would all pass unseen. Run "
+                f"`manamap pilot fetch-deck {slug}"
+                f"{' --branch ' + branch if branch else ''}` and validate again.")
         return errors
     cards = deck_doc.get("cards", [])
     main_names = {c["name"] for c in cards}
@@ -279,7 +301,8 @@ def main(args):
             f"block. Author it before running `manamap pilot goldfish {args.slug}`.")
     with open(path) as f:
         doc = json.load(f)
-    errors = validate(doc, args.slug, base, branch)
+    notes = []
+    errors = validate(doc, args.slug, base, branch, notes=notes)
     groups = sum(len(t.get("need", []) or []) for t in doc.get("targets", []))
 
     # AN UNEDITED SCAFFOLD IS REPORTED, NOT FAILED.
@@ -340,11 +363,17 @@ def main(args):
             f"\"<name>\" and are counted as a union"
             + (f" ({routes} already carry a route)." if routes else "."))
 
+    # THE HEADLINE WORD CARRIES HOW MUCH WAS ACTUALLY CHECKED. "OK" over a run
+    # that only checked the file's shape is the validator asserting something it
+    # did not look at, which is worse than saying nothing.
+    headline = "OK  " if not notes else "PARTIAL"
+    note_block = "".join("\n     " + n for n in notes)
     report_errors(
         path.name, errors,
-        f"OK   {path.name} — {len(doc.get('targets', []))} target(s), "
+        f"{headline} {path.name} — {len(doc.get('targets', []))} target(s), "
         f"{groups} component group(s); sizes are redundancy claims ◆"
-        + required_note + scaffold_note + "".join(_combat_route_notes(doc)))
+        + note_block + required_note + scaffold_note
+        + "".join(_combat_route_notes(doc)))
 
 
 if __name__ == "__main__":
