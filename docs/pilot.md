@@ -267,6 +267,13 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
+manamap pilot metrics [--group G] [--status S] [--verbose] [--problems]
+                                        #   THE CATALOG (PRD §14): one definition per figure,
+                                        #   which ENGINE answers it, and what is UNAVAILABLE
+                                        #   and why. 13 published, 2 opt-in, 2 derivable,
+                                        #   10 unavailable. `--problems` puts today's answer
+                                        #   beside each of PRD §2's six pod-night problems:
+                                        #   2 of 6 fully answerable, 2 partly, 2 not at all
 manamap pilot benchmark [<slug>|--all]  # THE STANDARD BENCHMARK (PRD-v1 §9): four measures
                                         #   under ONE frozen configuration — fixed seed,
                                         #   fixed iterations, UNIFORM model flags that

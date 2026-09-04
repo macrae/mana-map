@@ -31,6 +31,8 @@ PILOT_STEPS = [
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
+    ("metrics", "manamap.metrics",
+     "The metrics catalog: one definition per figure, which engine answers it, and what is unavailable and why"),
     ("build", "manamap.pilot.autobuild",
      "A brief -> a legal, measured 99 on the bench: intent, anchor, build, "
      "resolve, measure, land"),
@@ -738,6 +740,17 @@ def add_pilot_parser(subparsers):
                                   "real EDHREC archetypes. Off by default: a "
                                   "gate that fails when the network is down is "
                                   "a gate that gets switched off")
+        if name == "metrics":
+            from manamap.metrics import GROUPS, STATUSES
+            cmd.add_argument("--group", default=None, choices=sorted(GROUPS))
+            cmd.add_argument("--status", default=None, choices=sorted(STATUSES),
+                             help="published / opt_in / derivable / unavailable")
+            cmd.add_argument("--verbose", "-v", action="store_true",
+                             help="the definition, the source, and the caveat")
+            cmd.add_argument("--problems", action="store_true",
+                             help="PRD §2's six observed pod-night problems, "
+                                  "with today's answer beside each")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "build":
             # The same inputs as `brew`, deliberately: `build` is `brew --build`
             # plus the four stages that come after it, and two commands that
