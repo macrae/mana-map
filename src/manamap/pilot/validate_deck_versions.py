@@ -51,7 +51,7 @@ from manamap.pilot.common import (
     DECK_STATUSES, UNPLAYABLE_STATUSES, deck_dir, report_errors)
 from manamap.pilot.deck_versions import (
     _NEARLY_RELEASE_RE, _RELEASE_RE, BASELINE_KEY, LIFECYCLE_KEY, PAPER_KEY,
-    TAGS_FILE)
+    STAGE_KEY, TAGS_FILE)
 
 ARTIFACT = TAGS_FILE
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -99,6 +99,44 @@ def validate(doc, slug=None):
                 f"in sleeves — withdraw the lock "
                 f"(`deck-version {doc.get('slug', '<slug>')} paper --clear`) or "
                 f"revive the deck")
+
+    stage = doc.get(STAGE_KEY)
+    if stage is not None:
+        # A NEW KEY IN A GATED ARTIFACT NEEDS THE GATE EXTENDED IN THE SAME
+        # COMMIT, and this one was not — it shipped one commit early. The rule
+        # exists because an unchecked key is indistinguishable from a typo'd
+        # one, and `promote.stage` falls back to BENCH for anything it does not
+        # recognise, so a misspelling reads as "on the bench" and stays there.
+        from manamap.pilot.promote import BENCH, LADDER, SLEEVED
+
+        if not isinstance(stage, dict):
+            errors.append(f"{STAGE_KEY} must be an object, got "
+                          f"{type(stage).__name__}")
+            stage = {}
+        name = stage.get("name")
+        if name not in LADDER:
+            errors.append(
+                f"{STAGE_KEY}.name {name!r} is not one of {list(LADDER)} — "
+                f"`promote.stage` falls back to {BENCH!r} for anything it does "
+                f"not recognise, so a typo reads as a deck on the bench")
+        elif name == BENCH:
+            errors.append(
+                f"{STAGE_KEY}.name is {BENCH!r}, which is the DEFAULT and is "
+                f"never stored — its absence is what means bench, and writing it "
+                f"makes the absence mean something new on every other deck")
+        elif name == SLEEVED:
+            errors.append(
+                f"{STAGE_KEY}.name is {SLEEVED!r}, which is the PAPER LOCK and "
+                f"not a stage. Two claims about cardboard can disagree; "
+                f"`{PAPER_KEY}` is the one that counts")
+        if not stage.get("at"):
+            errors.append(f"{STAGE_KEY}.at is absent — a stage with no date "
+                          f"cannot be read against anything")
+        if doc.get(PAPER_KEY):
+            errors.append(
+                f"{STAGE_KEY} is set AND a paper lock is present. The lock wins "
+                f"in `promote.stage`, so the stored stage is dead text that "
+                f"reads as a contradiction — withdraw one of them")
 
     if doc.get(PAPER_KEY) is not None:
         paper = doc[PAPER_KEY]

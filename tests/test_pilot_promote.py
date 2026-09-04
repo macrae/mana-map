@@ -245,3 +245,68 @@ def test_a_file_holding_other_claims_survives_the_round_trip(deck):
     doc = json.loads(path.read_text(encoding="utf-8"))
     assert doc["tags"] == {"v1.0.0": {"decklist_sha256": "c" * 64}}
     assert promote.STAGE_KEY not in doc
+
+
+# ── the gate on the key itself ──────────────────────────────────────────────
+
+def _doc(**over):
+    doc = {"slug": "x", "tags": {}}
+    doc.update(over)
+    return doc
+
+
+@pytest.mark.parametrize("block,expected", [
+    ({"name": "dev", "at": "2026-01-01"}, None),
+    ({"name": "developement", "at": "2026-01-01"}, "is not one of"),
+    ({"name": BENCH, "at": "2026-01-01"}, "is the DEFAULT"),
+    ({"name": SLEEVED, "at": "2026-01-01"}, "PAPER LOCK"),
+    ({"name": "dev"}, ".at is absent"),
+    ("dev", "must be an object"),
+])
+def test_the_stage_key_is_gated(block, expected):
+    """A new key in a gated artifact needs the gate extended in the SAME commit.
+
+    This one shipped a commit early, which is the failure the rule names: an
+    unchecked key is indistinguishable from a typo'd one, and `promote.stage`
+    falls back to BENCH for anything it does not recognise — so a misspelling
+    reads as "on the bench" and stays there quietly.
+    """
+    from manamap.pilot.validate_deck_versions import validate
+
+    errors = [e for e in validate(_doc(stage=block), "x") if "stage" in e]
+    if expected is None:
+        assert errors == []
+    else:
+        assert any(expected in e for e in errors), errors
+
+
+def test_a_stored_stage_beside_a_paper_lock_is_an_error():
+    """The lock wins in `promote.stage`, so the stored stage is dead text.
+
+    Dead text that reads as a contradiction is worse than no text: someone will
+    believe it.
+    """
+    from manamap.pilot.validate_deck_versions import validate
+
+    errors = validate(_doc(
+        stage={"name": DEV, "at": "2026-01-01"},
+        paper={"version": 1, "decklist_sha256": "a" * 64,
+               "built_at": "2026-01-01"}), "x")
+    assert any("paper lock is present" in e for e in errors)
+
+
+@requires_deck
+def test_every_tracked_versions_file_still_passes_its_gate():
+    """The entry criterion: a check must not fire on correct data."""
+    import glob
+    import pathlib as _pl
+
+    from manamap.pilot.validate_deck_versions import validate
+
+    files = sorted(glob.glob(str(_pl.Path(__file__).resolve().parent.parent /
+                                 "data/decks/*/deck_versions.json")))
+    assert len(files) >= 8, "the guard iterated almost nothing"
+    for path in files:
+        slug = _pl.Path(path).parent.name
+        doc = json.loads(_pl.Path(path).read_text(encoding="utf-8"))
+        assert validate(doc, slug) == [], f"{slug}: {validate(doc, slug)}"
