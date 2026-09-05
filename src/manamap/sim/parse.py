@@ -222,6 +222,15 @@ def _settle_outcome(o):
     elif won:
         o["winner"], o["won_by"] = won[0]
 
+    # EVERY SEAT LOST AND NOBODY WON — a simultaneous loss, which the rules
+    # call a draw and Forge does not announce as one. Found 2026-09-05 in a
+    # 60-game run whose accounting came to 59: all four players hit 0 life on
+    # the same turn. Derived from the `lost` map rather than from a log line,
+    # because there is no line to match.
+    if not o.get("winner") and not o.get("truncated") and o.get("lost") \
+            and len(o["lost"]) >= 2:
+        o["draw"] = True
+
 
 def _event(line, g):
     m = RX["phase"].match(line)
@@ -502,6 +511,10 @@ def game_facts(g, commanders=None):
     return {"seats": seats, "started": g.get("started"),
             "winner": o["winner"], "won_by": o["won_by"], "round": o["round"],
             "truncated": bool(o.get("truncated")),
+            # THE DRAW HAD TO SURVIVE THREE HOPS to reach the summary — settle,
+            # facts, compact — and it was dropped at this one. `_settle_outcome`
+            # set it correctly and nothing downstream ever saw it.
+            "draw": bool(o.get("draw")),
             "global_turn": o["global_turn"], "ms": o["ms"], "lost": dict(o["lost"]),
             "mulligan": dict(g["mulligan"]), "per_seat": per}
 
@@ -981,6 +994,13 @@ def compact(fact, label):
             # from one the clock stopped, and re-deriving a record would quietly
             # reintroduce the bug it exists to repair.
             "truncated": bool(fact.get("truncated")),
+            # AND THE DRAW, for exactly the same reason one door along.
+            # `analyze` rebuilds its summary from games carrying a winner, a
+            # draw or a truncation — so a game with none of the three is DROPPED
+            # SILENTLY, and a simultaneous loss (every seat at 0 life on the
+            # same turn) is precisely that game. One run's accounting came to 59
+            # of 60 and nothing but the balance test said so.
+            "draw": bool(fact.get("draw")),
             "per_seat": {label.get(s, s): {k: v for k, v in p.items()
                                            if k not in ("life_by_turn", "damage_to_players_by_turn")}
                          for s, p in fact["per_seat"].items()}}

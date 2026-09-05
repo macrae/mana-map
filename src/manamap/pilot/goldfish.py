@@ -1143,6 +1143,24 @@ def _life_amount(word):
     return _LIFE_WORDS.get(word.strip().lower(), 1)
 
 
+#: AN EFFECT THAT MAKES ATTACKING FREE. Narrow on purpose: a bare
+#: "can't be blocked" matches 1306 cards in the corpus, most of them about
+#: somebody else's creature or a conditional restriction. Scoped to an effect
+#: attached to a creature I control, plus the one card that removes an
+#: attacker from combat, it matches 57 — of which 40 are Esper-legal at mana
+#: value 3, including every one of zur-enchantress's own six.
+#:
+#: This exists because the tutor rate was a CONSTANT once it was measured, so
+#: no deck change could move it and "make the commander swing more often" was
+#: not a question the model could answer. With an enabler on the battlefield
+#: there is no combat cost to attacking, so the rate rises.
+_ATTACK_ENABLER_RE = re.compile(
+    r"enchanted creature[^.]*?can't be blocked"
+    r"|enchanted creature[^.]*?protection from creatures"
+    r"|equipped creature[^.]*?can't be blocked"
+    r"|remove target attacking creature you control from combat", re.I)
+
+
 def drain_profile(card):
     """How this card turns life into damage, and how it gains life to do it.
 
@@ -1922,6 +1940,8 @@ def classify(card, pool=None):
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
         "drain": drain_profile(card),
+        "attack_enabler": bool(_ATTACK_ENABLER_RE.search(
+            card.get("oracle_text", "") or "")),
         "draw": draw_profile(card),
         "death": death_profile(card),
         "token_doubler": token_doubler(card),
@@ -2044,6 +2064,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
     attack_tutor_fired = 0
     attack_tutor_debt = 0.0
+    attack_enabler_out = False
+    tutor_enabled_turns = 0
+    tutor_eligible_turns = 0
     # DEVOTION, and the gods waiting on it. `battlefield_pips` is one pip list
     # per nonland permanent in play; `pending_gods` holds the gods that have
     # RESOLVED but are not creatures yet. A god below its threshold is an
@@ -2475,19 +2498,50 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # SOURCED LIKE `model_deaths`: a rate driving a figure must name where it
         # was measured, or it is the deleted engine lift wearing a new hat.
         if attack_tutor and commander_turn is not None and turn > commander_turn:
-            attack_tutor_debt += attack_tutor["fires_per_turn"]
+            tutor_eligible_turns += 1
+            if attack_enabler_out:
+                tutor_enabled_turns += 1
+            attack_tutor_debt += (attack_tutor["fires_per_turn_when_enabled"]
+                                  if attack_enabler_out
+                                  else attack_tutor["fires_per_turn"])
         while (attack_tutor and attack_tutor_debt >= 1.0
                and commander_turn is not None and turn > commander_turn):
             attack_tutor_debt -= 1.0
+            # THE FIRST FETCH IS THE ENABLER, and modelling it as "take the
+            # biggest thing" was wrong about the only decision this engine makes.
+            #
+            # A pilot whose commander has just attacked into an open board does
+            # not go and get a four-power body. They get the one-mana Aura that
+            # makes every FUTURE attack free, because the trigger is worth more
+            # than anything it can fetch. Aqueous Form costs {U} and turns a
+            # once-a-game trigger into a once-a-turn one.
+            #
+            # So: while no enabler is out, prefer one — cheapest, because it has
+            # to be cast this turn to matter. After that, revert to the biggest
+            # legal card, which is the right greed once attacking is free.
             match = None
+            want_enabler = not attack_enabler_out
             for i, cand in enumerate(deck):
                 if cand["cmc"] > attack_tutor["max_mv"]:
                     continue
                 tl = cand["type_line"] or ""
                 if attack_tutor["type"] not in tl:
                     continue
-                if match is None or cand["cmc"] > deck[match]["cmc"]:
+                if want_enabler:
+                    if not cand["attack_enabler"]:
+                        continue
+                    if match is None or cand["cmc"] < deck[match]["cmc"]:
+                        match = i
+                elif match is None or cand["cmc"] > deck[match]["cmc"]:
                     match = i
+            if match is None and want_enabler:
+                for i, cand in enumerate(deck):
+                    if cand["cmc"] > attack_tutor["max_mv"]:
+                        continue
+                    if attack_tutor["type"] not in (cand["type_line"] or ""):
+                        continue
+                    if match is None or cand["cmc"] > deck[match]["cmc"]:
+                        match = i
             if match is not None:
                 fetched = deck.pop(match)
                 hand.append(fetched)
@@ -2680,9 +2734,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_deaths and (c["death"]["death_drain"]
                                  or c["death"]["gain_on_opponent_death"]):
                 return True
+            # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
+            # has bitten, and the worst of them, because it was a DEADLOCK. Four
+            # of zur-enchantress's six enablers matched no casting loop,
+            # including both one-mana ones, so the only route to an enabler was
+            # the tutor — which needs an attack, which needs an enabler. The
+            # model had made the deck unable to start its own engine.
+            if attack_tutor and c["attack_enabler"]:
+                return True
             return bool(model_sacrifice and c["sac_outlet"])
 
-        if model_drain or model_sacrifice or model_deaths:
+        if model_drain or model_sacrifice or model_deaths or attack_tutor:
             for card in sorted((c for c in hand if _engine_permanent(c)),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if not spend(reduced_cost(card, reductions, chosen_type),
@@ -2718,6 +2780,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         death_drains.append(card["death"])
                     if card["death"]["gain_on_opponent_death"]:
                         opponent_death_gains.append(card["death"])
+                if card["attack_enabler"]:
+                    attack_enabler_out = True
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
@@ -2842,6 +2906,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         death_drains.append(card["death"])
                     if card["death"]["gain_on_opponent_death"]:
                         opponent_death_gains.append(card["death"])
+                if card["attack_enabler"]:
+                    attack_enabler_out = True
                 # Casting it turns its Treasure engine on for later turns, and
                 # an ETB or cast trigger pays out immediately.
                 if not model_treasures:
@@ -3104,6 +3170,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "keep_can_act_by_t3": keep_can_act_by_t3,
         "mulligans": mulligans,
         "attack_tutor_fired": attack_tutor_fired,
+        "tutor_enabled_turns": tutor_enabled_turns,
+        "tutor_eligible_turns": tutor_eligible_turns,
         "land_hits": land_hits,
         "stall_by_turn": stall_by_turn,
         "hand_size_by_turn": hand_size_by_turn,
@@ -3209,6 +3277,13 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             # per game" must be able to find out where that came from without
             # leaving the record.
             **({"rate": attack_tutor_rate} if attack_tutor_rate else {}),
+            # HOW OFTEN THE DECK ACHIEVED THE FREE ATTACK. This is the number
+            # "make the commander swing more often" is actually about, and it is
+            # an OUTPUT of the simulation rather than a declared rate — it moves
+            # when the decklist moves, which the rate cannot.
+            "enabled_share": _round(
+                sum(r["tutor_enabled_turns"] for r in results)
+                / max(1, sum(r["tutor_eligible_turns"] for r in results))),
             "basis": ("fires at the DECLARED RATE from the turn after the "
                       "commander lands, pulling the highest-mana-value match "
                       "from the library onto the battlefield. The rate is "
@@ -3447,7 +3522,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         # attack every turn, and pretending otherwise inflated every figure
         # built on the tutor. `source` names the run the rate was read off, the
         # same contract `model_deaths` keeps.
-        missing = [k for k in ("fires_per_turn", "source") if k not in attack_tutor]
+        missing = [k for k in ("fires_per_turn", "fires_per_turn_when_enabled",
+                              "source") if k not in attack_tutor]
         if missing:
             raise SystemExit(
                 f"model_commander_attack_tutor is missing {', '.join(missing)} — "
@@ -3457,6 +3533,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         attack_tutor = {"type": str(attack_tutor.get("type") or "Enchantment"),
                         "max_mv": int(attack_tutor.get("max_mv", 3)),
                         "fires_per_turn": float(attack_tutor["fires_per_turn"]),
+                        "fires_per_turn_when_enabled": float(
+                            attack_tutor["fires_per_turn_when_enabled"]),
                         "source": str(attack_tutor["source"])}
     model_combat = declared_combat if model_combat is None else bool(model_combat)
     model_draw = declared_draw if model_draw is None else bool(model_draw)

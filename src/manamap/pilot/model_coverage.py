@@ -52,6 +52,7 @@ CHANNELS = {
     "draw": "model_draw",
     "sacrifice": "model_sacrifice",
     "drain": "model_drain",
+    "attack_enabler": "model_commander_attack_tutor",
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -113,6 +114,8 @@ def channels_for(profile):
     # Named keys, not the truthiness of the dict — `drain` carries an
     # "unmodelled" sentinel like `draw` does, and reading the dict as a whole
     # would repeat the treasure bug fixed in dfe72f9 one channel over.
+    if profile.get("attack_enabler"):
+        found.add("attack_enabler")
     if _nonzero(profile.get("drain"), (
             "payoff_equal", "payoff_fixed", "gain_recurring",
             "gain_per_enchantment", "gain_per_creature",
@@ -170,6 +173,10 @@ def never_cast(profile, flags):
     # only checked by hand is a mirror that is wrong.
     if flags.get("model_deaths") and _nonzero(profile.get("death"), (
             "death_drain", "gain_on_opponent_death")):
+        return False
+    # An attack enabler is only meaningful where a commander attack trigger is
+    # declared; there it is the card that lets the engine start at all.
+    if flags.get("model_commander_attack_tutor") and profile.get("attack_enabler"):
         return False
     return True
 

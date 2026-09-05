@@ -608,6 +608,15 @@ def _settle(game):
         game["won_by"] = None
     elif won:
         game["winner"], game["won_by"] = won[0]
+
+    # EVERY SEAT LOST AND NOBODY WON — a simultaneous loss, which the rules
+    # call a draw and Forge does not announce as one. Found 2026-09-05 in a
+    # 60-game run whose accounting came to 59: all four players hit 0 life on
+    # the same turn. Derived from the `lost` map rather than from a log line,
+    # because there is no line to match.
+    if not game.get("winner") and not game.get("truncated") and game.get("lost") \
+            and len(game["lost"]) >= 2:
+        game["draw"] = True
     return game
 
 
