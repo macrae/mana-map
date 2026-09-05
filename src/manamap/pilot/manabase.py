@@ -288,6 +288,42 @@ def fetch_targets(card, pool):
     return out
 
 
+#: A land whose only coloured mode costs EXTRA MANA on top of the tap —
+#: "{1}, {T}: Add one mana of any color" — or that filters mana it does not yet
+#: have. `land_colors` counts these at FULL VALUE, and for a source count that
+#: is an overcount: Karsten's targets are about casting a spell ON CURVE, and a
+#: land needing an extra generic cannot pay a {1}{B}{B} cost on turn three the
+#: way a Swamp can.
+#:
+#: NOT DISCOUNTED — REPORTED. Choosing a fraction to divide them by would be an
+#: authored number driving a headline figure, which this repo has deleted a
+#: metric for before. The count is published beside the total so a reader can
+#: see how much of it is gated.
+#:
+#: Fleet sweep 2026-09-05: 11 lands across 2 decks. The free-mode escape is
+#: load-bearing — City of Brass and Mana Confluence carry a pay-life clause and
+#: a FREE coloured tap, and must not be counted here.
+_GATED_MANA_RE = re.compile(r"\{\d+\}\s*,\s*\{T\}[^.]*?:\s*Add", re.I)
+#: ANCHORED TO THE START OF AN ABILITY. A lookbehind for "}" does not work:
+#: Opal Palace writes "{1}, {T}: Add one mana of any color", and the character
+#: before {T} is a SPACE, so the gated clause read as a free one and the whole
+#: check returned zero.
+_FREE_COLOUR_TAP_RE = re.compile(
+    r"(?:^|\.\s+)\{T\}(?:,\s*Pay \d+ life)?:\s*Add "
+    r"(?:\{[WUBRG]|one mana of any)", re.I)
+
+
+def gated_colour_source(card):
+    """True when this land counts as a coloured source but cannot pay on curve."""
+    type_line = card.get("type_line", "") or ""
+    if "Land" not in type_line or "Basic Land" in type_line:
+        return False
+    text = " ".join((card.get("oracle_text") or "").split())
+    if not land_colors(card):
+        return False
+    return bool(_GATED_MANA_RE.search(text)) and not _FREE_COLOUR_TAP_RE.search(text)
+
+
 def land_colors(card, pool=None):
     """Which colours a land can produce *for general purposes*.
 

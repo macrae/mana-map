@@ -164,6 +164,11 @@ def analyze(slug, branch=None):
     land_entries = sorted((c for c in entries if is_land(c)),
                           key=lambda c: c["name"])
     class_counts, land_sources = {}, {c: 0 for c in WUBRG}
+    # THE SAME COUNT WITH THE GATED LANDS LEFT OUT — a LOWER BOUND on what can
+    # pay a coloured cost on curve. Both arms are reported and neither is
+    # collapsed into the other: the truth is between them, and choosing a
+    # fraction to place it at would be an authored number driving the headline.
+    ungated_sources = {c: 0 for c in WUBRG}
     tapped = always_tapped = 0
     for card in lands:
         for cls in land_classes(card):
@@ -174,6 +179,8 @@ def analyze(slug, branch=None):
             always_tapped += 1
         for colour in land_colors(card, pool=lands) & (identity or set(WUBRG)):
             land_sources[colour] += 1
+            if not manabase.gated_colour_source(card):
+                ungated_sources[colour] += 1
     # The table lists one row per distinct land, with its copy count — a reader
     # wants "Island x11", not eleven identical rows.
     land_rows = [{"name": card["name"],
@@ -206,6 +213,7 @@ def analyze(slug, branch=None):
     total_sources = {c: land_sources[c] + nonland_sources[c] for c in WUBRG}
     p_lands = achieved_probability(requirements, land_sources)
     p_all = achieved_probability(requirements, total_sources)
+    p_ungated = achieved_probability(requirements, ungated_sources)
 
     # Pip share vs source share — the intuitive check: a colour demanding 40%
     # of the pips wants roughly 40% of the sources.
@@ -274,6 +282,18 @@ def analyze(slug, branch=None):
             "lands": land_sources,
             "nonland": nonland_sources,
             "total": total_sources,
+            # HOW MUCH OF `total` CANNOT PAY ON CURVE. Counted, because they do
+            # make the colour, and NAMED, because a reader comparing `have`
+            # against a Karsten target deserves to know that some of it arrives
+            # a turn late and a mana short.
+            "gated": {
+                "count": sum(1 for c in lands if manabase.gated_colour_source(c)),
+                "names": sorted(c["name"] for c in lands
+                                if manabase.gated_colour_source(c)),
+                "why": ("counted in `total` and in every colour they can make, "
+                        "but their coloured mode costs extra mana on top of the "
+                        "tap, so they cannot pay a coloured cost on curve"),
+            },
             "producers": producers,
         },
         "pips": {c: requirements[c] for c in sorted(requirements)},
@@ -282,6 +302,12 @@ def analyze(slug, branch=None):
         "on_curve_probability": {
             "lands_only": p_lands,
             "with_rocks_and_dorks": p_all,
+            # THE LOWER BOUND. `lands_only` counts a land whose coloured mode
+            # costs extra mana as though it were a Swamp, which flatters every
+            # deck running them — and made a change that RAISED real sources by
+            # 2/2/3 read as a drop of 2-3 points, because it had cut four such
+            # lands. A figure and its floor, so a reader can see the spread.
+            "lands_only_ungated": p_ungated,
         },
         "ramp": dict(sorted(ramp_counts.items())),
         "goldfish": {
