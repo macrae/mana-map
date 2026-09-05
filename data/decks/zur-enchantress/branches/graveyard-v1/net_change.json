@@ -502,10 +502,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "The Grey Havens",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -608,8 +616,8 @@
   "counts": {
    "box": 2,
    "buy": 5,
-   "elsewhere": 5,
-   "in_deck": 80
+   "elsewhere": 6,
+   "in_deck": 79
   },
   "counts_are": "distinct names",
   "diff": {
@@ -623,6 +631,7 @@
     "Opal Palace",
     "Oppressive Rays",
     "Soul Snare",
+    "The Grey Havens",
     "The Master of Keys",
     "The Mycosynth Gardens",
     "Tymaret, Chosen from Death"
@@ -641,13 +650,14 @@
     "Gremlin Tamer",
     "Hallowed Fountain",
     "Northern Air Temple",
-    "Sanctum of Stone Fangs"
+    "Sanctum of Stone Fangs",
+    "Shattered Sanctum"
    ],
    "size": 100
   },
-  "free": 5,
+  "free": 6,
   "mergeable": false,
-  "owned_but_elsewhere": 5,
+  "owned_but_elsewhere": 6,
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": [
@@ -676,12 +686,12 @@
     }
    ],
    "counts": {
-    "in": 12,
-    "in_copies": 12,
-    "lands_in": 4,
-    "lands_out": 3,
-    "out": 11,
-    "out_copies": 12,
+    "in": 13,
+    "in_copies": 13,
+    "lands_in": 5,
+    "lands_out": 4,
+    "out": 12,
+    "out_copies": 13,
     "spells_in": 8,
     "spells_out": 8
    },
@@ -800,6 +810,16 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "The Grey Havens",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Legendary Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "The Mycosynth Gardens",
      "pair": null,
      "state": "elsewhere",
@@ -907,12 +927,21 @@
      "pair": null,
      "type_line": "Land \u2014 Plains Island",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Shattered Sanctum",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 12,
-    "out": 11
+    "in": 13,
+    "out": 12
    }
   },
   "lands": [],
@@ -1051,13 +1080,13 @@
    },
    {
     "colour": "U",
-    "delta": 3,
+    "delta": 4,
     "gap": [
-     0,
+     -1,
      3
     ],
     "have": [
-     22,
+     21,
      25
     ],
     "target": [
@@ -1147,7 +1176,7 @@
     null
    ],
    "U": [
-    0.907,
+    0.895,
     0.936
    ],
    "W": [
@@ -1168,12 +1197,12 @@
   "state": "not met"
  },
  "recommendation": {
-  "because": "The objective is not met. Stall, 2 in a row, interaction affordable @t6 and hand can act by t3 improved anyway, which is a different branch's case.",
+  "because": "The objective is not met. Stall, 2 in a row and interaction affordable @t6 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 2,
    "buy": 5,
-   "elsewhere": 5,
-   "in_deck": 80
+   "elsewhere": 6,
+   "in_deck": 79
   },
   "cost": {
    "buy": 5,
@@ -1187,8 +1216,8 @@
    "counts": {
     "box": 2,
     "buy": 5,
-    "elsewhere": 5,
-    "in_deck": 80
+    "elsewhere": 6,
+    "in_deck": 79
    },
    "free_to_raid": [
     {
@@ -1219,13 +1248,19 @@
      "decks": [
       "hapatra"
      ],
+     "name": "The Grey Havens"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
      "name": "The Mycosynth Gardens"
     }
    ],
    "mergeable": false,
    "must_unsleeve": [],
    "owned": 87,
-   "reads_as": "5 to buy; 5 sitting in a retired or broken-down deck, which cost nothing; 87 of 92 already owned",
+   "reads_as": "5 to buy; 6 sitting in a retired or broken-down deck, which cost nothing; 87 of 92 already owned",
    "total": 92
   },
   "fell": [
@@ -1237,7 +1272,8 @@
   "no_call": [
    "killed by T6",
    "missed drop by T5",
-   "mulliganed"
+   "mulliganed",
+   "hand can act by T3"
   ],
   "notes": [],
   "reward": [
@@ -1248,44 +1284,39 @@
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "56 games in 100 -> 64 in 100, a swing of 8 games per 100",
+    "reads_as": "55 games in 100 -> 64 in 100, a swing of 8 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "measure": "hand can act by T3",
-    "reads_as": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
-    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "17.66 -> 13.06, a change of -4.59 (-26%)",
+    "detail": "17.60 -> 13.06, a change of -4.54 (-26%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "7.10 -> 6.42, a change of -0.68 (-10%)",
+    "detail": "7.08 -> 6.42, a change of -0.66 (-9%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "82 games in 100 -> 68 in 100, a swing of 13 games per 100",
+    "detail": "82 games in 100 -> 68 in 100, a swing of 14 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "2.18 -> 1.35, a change of -0.83 (-38%)",
+    "detail": "2.17 -> 1.35, a change of -0.82 (-38%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.001. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hand can act by T3 at +0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "3 row(s) returned no call",
+    "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1297,8 +1328,7 @@
   ],
   "rose": [
    "stall, 2 in a row",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "interaction affordable @T6"
   ],
   "state": "do not merge"
  },
@@ -1308,11 +1338,11 @@
   {
    "better_is": "higher",
    "branch": 13.065,
-   "champion": 17.6556,
-   "delta": -4.5906,
-   "mde": 0.3939,
+   "champion": 17.6046,
+   "delta": -4.5396,
+   "mde": 0.3908,
    "measure": "damage @T10",
-   "reads_as": "17.66 -> 13.06, a change of -4.59 (-26%)",
+   "reads_as": "17.60 -> 13.06, a change of -4.54 (-26%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1322,11 +1352,11 @@
   {
    "better_is": "higher",
    "branch": 6.4244,
-   "champion": 7.1004,
-   "delta": -0.676,
-   "mde": 0.1676,
+   "champion": 7.0794,
+   "delta": -0.655,
+   "mde": 0.1685,
    "measure": "board power @T6",
-   "reads_as": "7.10 -> 6.42, a change of -0.68 (-10%)",
+   "reads_as": "7.08 -> 6.42, a change of -0.66 (-9%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1336,9 +1366,9 @@
   {
    "better_is": "higher",
    "branch": 0.0002,
-   "champion": 0.001,
-   "delta": -0.0008,
-   "mde": 0.0013,
+   "champion": 0.0008,
+   "delta": -0.0006,
+   "mde": 0.0011,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1350,11 +1380,11 @@
   {
    "better_is": "higher",
    "branch": 0.6826,
-   "champion": 0.817,
-   "delta": -0.1344,
+   "champion": 0.8181,
+   "delta": -0.1355,
    "mde": 0.0184,
    "measure": "killed by T10",
-   "reads_as": "82 games in 100 -> 68 in 100, a swing of 13 games per 100",
+   "reads_as": "82 games in 100 -> 68 in 100, a swing of 14 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1364,8 +1394,8 @@
   {
    "better_is": "lower",
    "branch": 0.0318,
-   "champion": 0.047,
-   "delta": -0.0152,
+   "champion": 0.0475,
+   "delta": -0.0157,
    "mde": 0.0084,
    "measure": "stall, 2 in a row",
    "reads_as": "5 games in 100 -> 3 in 100, a swing of 2 games per 100",
@@ -1392,11 +1422,11 @@
   {
    "better_is": "lower",
    "branch": 0.198,
-   "champion": 0.1931,
-   "delta": 0.0049,
+   "champion": 0.196,
+   "delta": 0.002,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1406,11 +1436,11 @@
   {
    "better_is": "higher",
    "branch": 1.3518,
-   "champion": 2.1812,
-   "delta": -0.8294,
-   "mde": 0.1191,
+   "champion": 2.1693,
+   "delta": -0.8175,
+   "mde": 0.1188,
    "measure": "extra cards by T8",
-   "reads_as": "2.18 -> 1.35, a change of -0.83 (-38%)",
+   "reads_as": "2.17 -> 1.35, a change of -0.82 (-38%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1420,11 +1450,11 @@
   {
    "better_is": "higher",
    "branch": 0.636,
-   "champion": 0.5594,
-   "delta": 0.0766,
+   "champion": 0.5549,
+   "delta": 0.0811,
    "mde": 0.0236,
    "measure": "interaction affordable @T6",
-   "reads_as": "56 games in 100 -> 64 in 100, a swing of 8 games per 100",
+   "reads_as": "55 games in 100 -> 64 in 100, a swing of 8 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
@@ -1434,14 +1464,14 @@
   {
    "better_is": "higher",
    "branch": 0.9941,
-   "champion": 0.9901,
-   "delta": 0.004,
-   "mde": 0.0039,
+   "champion": 0.9918,
+   "delta": 0.0023,
+   "mde": 0.0036,
    "measure": "hand can act by T3",
-   "reads_as": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }

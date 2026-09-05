@@ -395,16 +395,8 @@
    {
     "free": false,
     "name": "Shattered Sanctum",
-    "state": "elsewhere",
-    "where": [
-     {
-      "apart": false,
-      "kind": "deck",
-      "locked": true,
-      "slug": "edgar-vampires",
-      "status": null
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -560,30 +552,24 @@
   "counts": {
    "box": 0,
    "buy": 0,
-   "elsewhere": 1,
-   "in_deck": 90
+   "elsewhere": 0,
+   "in_deck": 91
   },
   "counts_are": "distinct names",
   "diff": {
-   "add": [
-    "Shattered Sanctum"
-   ],
+   "add": [],
    "base_names": 91,
    "base_size": 100,
    "names": 91,
-   "out": [
-    "The Grey Havens"
-   ],
+   "out": [],
    "size": 100
   },
   "free": 0,
-  "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "mergeable": true,
+  "owned_but_elsewhere": 0,
   "proxy": false,
   "slug": "zur-enchantress",
-  "unsourced": [
-   "Shattered Sanctum"
-  ]
+  "unsourced": []
  },
  "blind_spots": [],
  "branch": "grey-havens-out",
@@ -594,43 +580,22 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 1,
-    "in_copies": 1,
-    "lands_in": 1,
-    "lands_out": 1,
-    "out": 1,
-    "out_copies": 1,
+    "in": 0,
+    "in_copies": 0,
+    "lands_in": 0,
+    "lands_out": 0,
+    "out": 0,
+    "out_copies": 0,
     "spells_in": 0,
     "spells_out": 0
    },
-   "in": [
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Shattered Sanctum",
-     "pair": null,
-     "state": "elsewhere",
-     "type_line": "Land",
-     "why": null
-    }
-   ],
+   "in": [],
    "names": 91,
-   "out": [
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "The Grey Havens",
-     "pair": null,
-     "type_line": "Legendary Land",
-     "why": null
-    }
-   ],
+   "out": [],
    "size": 100,
    "unexplained": {
-    "in": 1,
-    "out": 1
+    "in": 0,
+    "out": 0
    }
   },
   "lands": [],
@@ -769,13 +734,13 @@
    },
    {
     "colour": "U",
-    "delta": -1,
+    "delta": 0,
     "gap": [
-     0,
+     -1,
      -1
     ],
     "have": [
-     22,
+     21,
      21
     ],
     "target": [
@@ -865,7 +830,7 @@
     null
    ],
    "U": [
-    0.907,
+    0.895,
     0.895
    ],
    "W": [
@@ -891,8 +856,8 @@
   "bill": {
    "box": 0,
    "buy": 0,
-   "elsewhere": 1,
-   "in_deck": 90
+   "elsewhere": 0,
+   "in_deck": 91
   },
   "cost": {
    "buy": 0,
@@ -900,21 +865,14 @@
    "counts": {
     "box": 0,
     "buy": 0,
-    "elsewhere": 1,
-    "in_deck": 90
+    "elsewhere": 0,
+    "in_deck": 91
    },
    "free_to_raid": [],
-   "mergeable": false,
-   "must_unsleeve": [
-    {
-     "decks": [
-      "edgar-vampires"
-     ],
-     "name": "Shattered Sanctum"
-    }
-   ],
+   "mergeable": true,
+   "must_unsleeve": [],
    "owned": 91,
-   "reads_as": "0 to buy; 1 to pull out of a deck that is still together; 91 of 91 already owned",
+   "reads_as": "0 to buy; 91 of 91 already owned",
    "total": 91
   },
   "fell": [],
@@ -936,16 +894,10 @@
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is hand can act by T3 at +0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.391. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
-   },
-   {
-    "detail": "U gap +0 -> -1",
-    "kind": "paid",
-    "what": "colour sources went backwards",
-    "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@grey-havens-out --vs <pod>` puts it at a table and writes where this reads",
@@ -963,11 +915,11 @@
   {
    "better_is": "higher",
    "branch": 17.6046,
-   "champion": 17.6556,
-   "delta": -0.051,
-   "mde": 0.3939,
+   "champion": 17.6046,
+   "delta": 0.0,
+   "mde": 0.3908,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.051 is smaller than the 0.394 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.391 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -977,11 +929,11 @@
   {
    "better_is": "higher",
    "branch": 7.0794,
-   "champion": 7.1004,
-   "delta": -0.021,
+   "champion": 7.0794,
+   "delta": 0.0,
    "mde": 0.1685,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.021 is smaller than the 0.169 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.169 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -991,9 +943,9 @@
   {
    "better_is": "higher",
    "branch": 0.0008,
-   "champion": 0.001,
-   "delta": -0.0002,
-   "mde": 0.0013,
+   "champion": 0.0008,
+   "delta": 0.0,
+   "mde": 0.0011,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1005,11 +957,11 @@
   {
    "better_is": "higher",
    "branch": 0.8181,
-   "champion": 0.817,
-   "delta": 0.0011,
+   "champion": 0.8181,
+   "delta": 0.0,
    "mde": 0.0153,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.015 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.015 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1019,11 +971,11 @@
   {
    "better_is": "lower",
    "branch": 0.0475,
-   "champion": 0.047,
-   "delta": 0.0005,
+   "champion": 0.0475,
+   "delta": 0.0,
    "mde": 0.0084,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.008 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1047,11 +999,11 @@
   {
    "better_is": "lower",
    "branch": 0.196,
-   "champion": 0.1931,
-   "delta": 0.0029,
+   "champion": 0.196,
+   "delta": 0.0,
    "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1061,11 +1013,11 @@
   {
    "better_is": "higher",
    "branch": 2.1693,
-   "champion": 2.1812,
-   "delta": -0.0119,
-   "mde": 0.1191,
+   "champion": 2.1693,
+   "delta": 0.0,
+   "mde": 0.1188,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.119 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.119 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1075,11 +1027,11 @@
   {
    "better_is": "higher",
    "branch": 0.5549,
-   "champion": 0.5594,
-   "delta": -0.0045,
+   "champion": 0.5549,
+   "delta": 0.0,
    "mde": 0.0236,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.024 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1089,11 +1041,11 @@
   {
    "better_is": "higher",
    "branch": 0.9918,
-   "champion": 0.9901,
-   "delta": 0.0017,
-   "mde": 0.0039,
+   "champion": 0.9918,
+   "delta": 0.0,
+   "mde": 0.0036,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
