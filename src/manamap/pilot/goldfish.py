@@ -1077,6 +1077,25 @@ _CONSTELLATION_DRAIN_RE = re.compile(
     _ENCHANTMENT_ENTERS + r"each opponent loses (\w+) life", re.I)
 _CONSTELLATION_GAIN_RE = re.compile(
     _ENCHANTMENT_ENTERS + r"you gain (\w+) life", re.I)
+#: A PERMANENT ANTHEM ON THE WHOLE TEAM. "Put X +1/+1 counters on each
+#: creature you control, where X is the number of Shrines you control" — with
+#: six Shrines out that is +6/+6 on every body, and the model scored Southern
+#: Air Temple at ZERO, which made the entire Shrine package measure worse than
+#: it is. Its second half puts one more counter on everything each time another
+#: Shrine lands, so it COMPOUNDS with the count it reads.
+#:
+#: Corpus sweep 2026-09-05: 126 cards put +1/+1 counters on each creature you
+#: control — 107 of them one at a time, 5 of them an X. Counters are permanent,
+#: so this is modelled as a standing bonus to every creature rather than a
+#: one-shot pump; a "until end of turn" effect is a DIFFERENT card and is not
+#: matched here.
+_TEAM_COUNTER_ETB_RE = re.compile(
+    r"(?:when|whenever)[^.]*?enters[^.]*?, put (a|X|one|two|three) \+1/\+1 "
+    r"counters? on each creature you control", re.I)
+_TEAM_COUNTER_ON_TYPE_RE = re.compile(
+    r"whenever another ([A-Z][a-z]+) you control enters, put (a|X|one|two) "
+    r"\+1/\+1 counters? on each creature you control", re.I)
+
 _CONSTELLATION_TOKEN_RE = re.compile(
     _ENCHANTMENT_ENTERS + r"create a (\d+)/(\d+)[^.]*?creature token", re.I)
 
@@ -1249,6 +1268,10 @@ def combat_profile(card):
         # forever. Corpus sweep 2026-09-04: four cards in the whole corpus.
         "enchantment_token_power": 0,
         "enchantment_token_bodies": 0,
+        # A standing +N/+N on every creature, and the type whose count sets N.
+        "team_counters_etb": 0,
+        "team_counters_scale_type": None,
+        "team_counters_per_type": 0,
         "attack_mana": 0,
         "attack_treasure": 0,
         "attack_draw": 0,
@@ -1423,6 +1446,17 @@ def combat_profile(card):
     if m:
         profile["enchantment_token_power"] = int(m.group(1))
         profile["enchantment_token_bodies"] = 1
+
+    m = _TEAM_COUNTER_ETB_RE.search(text)
+    if m:
+        word = m.group(1).lower()
+        profile["team_counters_etb"] = (
+            -1 if word == "x" else {"a": 1, "one": 1, "two": 2, "three": 3}[word])
+    m = _TEAM_COUNTER_ON_TYPE_RE.search(text)
+    if m:
+        profile["team_counters_scale_type"] = m.group(1)
+        word = m.group(2).lower()
+        profile["team_counters_per_type"] = {"a": 1, "one": 1, "two": 2}.get(word, 1)
 
     return profile
 
@@ -2215,6 +2249,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
     # dies here. Arrival counters are reset each turn.
+    # Types some card in THIS deck counts ("X is the number of Shrines you
+    # control"). A permanent of such a type is worth casting for the count
+    # alone.
+    scaled_types = {c["drain"]["scales_with"] for c in library
+                    if c["drain"]["scales_with"]}
+    scaled_types |= {c["combat"]["team_counters_scale_type"] for c in library
+                     if c["combat"]["team_counters_scale_type"]}
+    # A STANDING +N/+N ON EVERY CREATURE. Counters do not wear off, so this is a
+    # bonus applied to the whole board and to everything that joins it later —
+    # not a pump. `team_anthem_on_type` is the second half of Southern Air
+    # Temple: one more counter on everything each time another Shrine lands.
+    team_anthem = 0
+    team_anthem_on_type = []
     drain_permanents = []
     # Cards that mint a creature token every time an enchantment enters.
     enchantment_token_engines = []
@@ -2742,6 +2789,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # model had made the deck unable to start its own engine.
             if attack_tutor and c["attack_enabler"]:
                 return True
+            # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
+            # Sanctum of Tranquil Light does almost nothing on its own — its job
+            # is to be a SHRINE, so that the two cards reading "X is the number
+            # of Shrines you control" see a bigger number. It feeds no channel,
+            # so nothing would ever cast it, so the count it exists to raise
+            # stayed low and the whole package measured worse than it is.
+            #
+            # Derived from the deck, not declared: if any card here scales with
+            # a type, a permanent of that type is worth playing.
+            if model_drain and scaled_types and not c["is_land"]:
+                tl = c["type_line"] or ""
+                if any(s in tl for s in scaled_types):
+                    return True
             return bool(model_sacrifice and c["sac_outlet"])
 
         if model_drain or model_sacrifice or model_deaths or attack_tutor:
@@ -2782,6 +2842,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                cb_ = card["combat"]
+                if cb_["team_counters_etb"]:
+                    n_ = cb_["team_counters_etb"]
+                    if n_ < 0:            # X = the count of its own named type
+                        ty_ = cb_["team_counters_scale_type"] or ""
+                        n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
+                    team_anthem += n_
+                if cb_["team_counters_scale_type"]:
+                    team_anthem_on_type.append(
+                        (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
+                for ty_, per_ in team_anthem_on_type:
+                    if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
+                        team_anthem += per_
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
@@ -2908,6 +2981,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                cb_ = card["combat"]
+                if cb_["team_counters_etb"]:
+                    n_ = cb_["team_counters_etb"]
+                    if n_ < 0:            # X = the count of its own named type
+                        ty_ = cb_["team_counters_scale_type"] or ""
+                        n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
+                    team_anthem += n_
+                if cb_["team_counters_scale_type"]:
+                    team_anthem_on_type.append(
+                        (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
+                for ty_, per_ in team_anthem_on_type:
+                    if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
+                        team_anthem += per_
                 # Casting it turns its Treasure engine on for later turns, and
                 # an ETB or cast trigger pays out immediately.
                 if not model_treasures:
@@ -2942,7 +3028,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # DOUBLE STRIKE IS PER CREATURE; the team multiplier is per board.
             # Kept apart because they have different scopes and stack: a
             # double-striker under Twinflame Tyrant deals its power four times.
-            attackers = [p * mult for p, arrived, haste, mult, _tok in battlefield
+            # THE ANTHEM IS PER CREATURE AND IS PART OF ITS POWER, so it
+            # rides inside the double-strike multiplier exactly as printed power
+            # does. A +6/+6 team on a double-striker swings twelve extra.
+            attackers = [(p + team_anthem) * mult
+                         for p, arrived, haste, mult, _tok in battlefield
                          if haste or arrived < turn]
             swing = sum(attackers)
             phases = 1 + extra_combat_free
@@ -3045,7 +3135,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         still.append((card, combat))
                 pending_gods[:] = still
 
-            board_power_by_turn.append(sum(p for p, _, _, _, _ in battlefield))
+            board_power_by_turn.append(
+                sum(p for p, _, _, _, _ in battlefield)
+                + team_anthem * len(battlefield))
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 

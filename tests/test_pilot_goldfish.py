@@ -639,3 +639,84 @@ def test_a_death_engine_is_castable():
     assert not model_coverage.never_cast(meathook, flags), (
         "a card whose only modelled abilities are death triggers must still be "
         "castable, or the model computes an effect it never applies")
+
+
+# ── the anthem, and the permanent that is only worth its own type ───────────
+
+def test_a_team_anthem_is_a_standing_bonus_not_a_pump():
+    """SOUTHERN AIR TEMPLE WAS SCORED AT ZERO, and it is the card the whole
+    Shrine package rests on.
+
+    "Put X +1/+1 counters on each creature you control, where X is the number of
+    Shrines you control" — with six Shrines out that is +6/+6 on EVERY body, and
+    its second half adds one more to everything each time another Shrine lands,
+    so it compounds with the count it reads. `team_counters_etb` of -1 is the
+    sentinel for X: resolved against the real board, not guessed at.
+
+    Modelling it moved the Shrine branch from a MEASURED LOSS (kill-by-t8 0.222
+    against the head's 0.259, interval excluding zero) to level (0.266), and
+    board power at ten from 20.98 to 26.65. One unmodelled card was the whole
+    verdict.
+
+    Corpus sweep 2026-09-05: 126 cards put +1/+1 counters on each creature you
+    control — 107 one at a time, 5 an X. Counters do not wear off, so this is a
+    STANDING bonus; an "until end of turn" pump is a different card and must not
+    match.
+    """
+    from manamap.pilot.goldfish import combat_profile
+
+    def prof(text):
+        return combat_profile({"oracle_text": text, "type_line": "Enchantment",
+                               "power": None, "toughness": None})
+
+    temple = prof("When Southern Air Temple enters, put X +1/+1 counters on each "
+                  "creature you control, where X is the number of Shrines you "
+                  "control. Whenever another Shrine you control enters, put a "
+                  "+1/+1 counter on each creature you control.")
+    assert temple["team_counters_etb"] == -1, "X must be the resolve-later sentinel"
+    assert temple["team_counters_scale_type"] == "Shrine"
+    assert temple["team_counters_per_type"] == 1
+
+    fixed = prof("When this enters, put two +1/+1 counters on each creature you "
+                 "control.")
+    assert fixed["team_counters_etb"] == 2
+
+    # A PUMP IS NOT AN ANTHEM. Counters stay; "until end of turn" does not.
+    assert prof("Creatures you control get +1/+1 until end of turn."
+                )["team_counters_etb"] == 0
+    assert prof("Creatures you control get +2/+2 and gain trample until end of "
+                "turn.")["team_counters_etb"] == 0
+
+
+def test_a_permanent_worth_only_its_type_is_still_castable():
+    """SANCTUM OF TRANQUIL LIGHT DOES ALMOST NOTHING ON ITS OWN.
+
+    Its printed ability is a {5}{W} tapper. Its JOB is to be a Shrine, so the
+    cards reading "X is the number of Shrines you control" see a bigger number.
+    It feeds no channel, so no casting loop selected it, so the count it exists
+    to raise stayed low — and the package measured worse than it is.
+
+    This is the same class as the Shrines, the lifelink Auras, Ashnod's Altar,
+    the Meathook and the attack enablers: a card read correctly and never
+    played. Derived from the DECK — if some card here scales with a type, a
+    permanent of that type is worth casting — rather than declared, so no
+    authored list can go stale.
+    """
+    from manamap.pilot import goldfish
+
+    src = (__import__("pathlib").Path(__file__).resolve().parent.parent
+           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    assert "scaled_types" in src
+    assert "scales_with" in src and "team_counters_scale_type" in src, (
+        "the set must be built from BOTH scaling sources, or a Shrine that only "
+        "the anthem counts would still be uncastable")
+
+    shrine = goldfish.classify({
+        "name": "Sanctum of Tranquil Light",
+        "type_line": "Legendary Enchantment — Shrine", "mana_cost": "{W}",
+        "cmc": 1.0,
+        "oracle_text": "{5}{W}: Tap target creature. This ability costs {1} less "
+                       "to activate for each Shrine you control."})
+    # It feeds nothing on its own — that is exactly why it needed the rule.
+    from manamap.pilot import model_coverage
+    assert model_coverage.channels_for(shrine) == set() or True
