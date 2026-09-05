@@ -1,37 +1,23 @@
 {
   "slug": "zur-enchantress",
-  "decklist_sha256": "9354852add4eecf095256fd10165e1af995bec9d838c406fb5337c93c97d7202",
+  "decklist_sha256": "f871b3944e55be7dc5f8266959173986e96cb3ef87d3ca2c03d095b6a71d9a8c",
   "lands": {
     "total": 36,
-    "entries": 28,
+    "entries": 27,
     "life": {
       "recurring_per_tap_cycle": 5,
-      "one_time_on_entry": 4
+      "one_time_on_entry": 6
     },
-    "enters_tapped": 4,
+    "enters_tapped": 7,
     "enters_tapped_always": 1,
     "classes": {
-      "basic": 11,
-      "fixing": 14,
-      "tapped": 4,
-      "untapped-dual": 19,
-      "utility": 10
+      "basic": 12,
+      "fixing": 10,
+      "tapped": 7,
+      "untapped-dual": 15,
+      "utility": 8
     },
     "list": [
-      {
-        "name": "Abstergo Entertainment",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "U",
-          "W"
-        ]
-      },
       {
         "name": "Caves of Koilos",
         "copies": 1,
@@ -83,16 +69,25 @@
         ]
       },
       {
-        "name": "Conduit Pylons",
+        "name": "Concealed Courtyard",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual"
+          "tapped"
         ],
         "produces": [
           "B",
-          "U",
           "W"
+        ]
+      },
+      {
+        "name": "Darkslick Shores",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "U"
         ]
       },
       {
@@ -176,6 +171,17 @@
         ]
       },
       {
+        "name": "Hallowed Fountain",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Island",
         "copies": 3,
         "classes": [
@@ -225,19 +231,6 @@
         ]
       },
       {
-        "name": "Opal Palace",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Plains",
         "copies": 3,
         "classes": [
@@ -263,7 +256,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 5,
+        "copies": 6,
         "classes": [
           "basic"
         ],
@@ -309,20 +302,6 @@
         ]
       },
       {
-        "name": "The Mycosynth Gardens",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Underground River",
         "copies": 1,
         "classes": [
@@ -357,9 +336,9 @@
   },
   "sources": {
     "lands": {
-      "W": 22,
-      "U": 21,
-      "B": 28,
+      "W": 20,
+      "U": 19,
+      "B": 27,
       "R": 0,
       "G": 0
     },
@@ -371,21 +350,17 @@
       "G": 0
     },
     "total": {
-      "W": 24,
-      "U": 24,
-      "B": 31,
+      "W": 22,
+      "U": 22,
+      "B": 30,
       "R": 0,
       "G": 0
     },
     "gated": {
-      "count": 6,
+      "count": 2,
       "names": [
-        "Abstergo Entertainment",
-        "Conduit Pylons",
         "Darkwater Catacombs",
-        "Opal Palace",
-        "Talon Gates of Madara",
-        "The Mycosynth Gardens"
+        "Talon Gates of Madara"
       ],
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
     },
@@ -459,15 +434,15 @@
   "shares": {
     "B": {
       "pip_share": 0.329,
-      "source_share": 0.394
+      "source_share": 0.409
     },
     "U": {
       "pip_share": 0.226,
-      "source_share": 0.296
+      "source_share": 0.288
     },
     "W": {
       "pip_share": 0.445,
-      "source_share": 0.31
+      "source_share": 0.303
     }
   },
   "source_targets": {
@@ -477,19 +452,19 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.907,
-      "U": 0.895,
-      "B": 0.785
+      "W": 0.881,
+      "U": 0.866,
+      "B": 0.764
     },
     "with_rocks_and_dorks": {
-      "W": 0.927,
-      "U": 0.927,
-      "B": 0.839
+      "W": 0.907,
+      "U": 0.907,
+      "B": 0.822
     },
     "lands_only_ungated": {
-      "W": 0.831,
-      "U": 0.787,
-      "B": 0.639
+      "W": 0.866,
+      "U": 0.831,
+      "B": 0.718
     }
   },
   "ramp": {
@@ -503,24 +478,24 @@
       "10": 0.758,
       "2": 0.997,
       "3": 0.915,
-      "4": 0.804,
-      "5": 0.715,
-      "6": 0.676,
-      "7": 0.678,
-      "8": 0.697,
-      "9": 0.725
+      "4": 0.811,
+      "5": 0.709,
+      "6": 0.674,
+      "7": 0.681,
+      "8": 0.699,
+      "9": 0.72
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.792,
-      "2": 2.146,
-      "3": 3.246,
-      "4": 4.087,
-      "5": 4.832,
-      "6": 5.586,
-      "7": 6.332,
-      "8": 7.106,
-      "9": 7.928
+      "10": 8.773,
+      "2": 2.143,
+      "3": 3.241,
+      "4": 4.089,
+      "5": 4.831,
+      "6": 5.582,
+      "7": 6.322,
+      "8": 7.097,
+      "9": 7.906
     }
   },
   "assumptions": [
@@ -530,7 +505,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 31.",
-    "U: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 24."
+    "B: 27 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 30.",
+    "U: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
+    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22."
   ]
 }

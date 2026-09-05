@@ -3,10 +3,18 @@
   "branch": "ramp-v3",
   "cards": [
    {
-    "free": false,
+    "free": true,
     "name": "Abstergo Entertainment",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -81,10 +89,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "Conduit Pylons",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -334,10 +350,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "Opal Palace",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -501,10 +525,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "The Mycosynth Gardens",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -576,41 +608,48 @@
   "counts": {
    "box": 2,
    "buy": 6,
-   "elsewhere": 1,
-   "in_deck": 83
+   "elsewhere": 5,
+   "in_deck": 79
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Abstergo Entertainment",
+    "Conduit Pylons",
     "Fear of Impostors",
     "Heliod's Pilgrim",
     "Light-Paws, Emperor's Voice",
     "Lotus Petal",
     "Mesa Enchantress",
+    "Opal Palace",
     "Oppressive Rays",
     "Soul Snare",
     "The Master of Keys",
+    "The Mycosynth Gardens",
     "Tymaret, Chosen from Death"
    ],
-   "base_names": 92,
+   "base_names": 91,
    "base_size": 100,
    "names": 92,
    "out": [
     "Ajani's Chosen",
     "Archon of Sun's Grace",
     "Balemurk Leech",
+    "Concealed Courtyard",
+    "Darkslick Shores",
     "Entity Tracker",
     "Fear of Infinity",
     "Gremlin Tamer",
+    "Hallowed Fountain",
     "Northern Air Temple",
     "Sanctum of Stone Fangs",
     "Summoner's Sending"
    ],
    "size": 100
   },
-  "free": 1,
+  "free": 5,
   "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "owned_but_elsewhere": 5,
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": [
@@ -627,16 +666,25 @@
  "changes": {
   "count": 0,
   "diff": {
-   "base_names": 92,
+   "base_names": 91,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 6,
+     "kind": "land",
+     "name": "Swamp",
+     "to": 5
+    }
+   ],
    "counts": {
-    "in": 9,
-    "in_copies": 9,
-    "lands_in": 0,
-    "lands_out": 0,
-    "out": 9,
-    "out_copies": 9,
+    "in": 13,
+    "in_copies": 13,
+    "lands_in": 4,
+    "lands_out": 3,
+    "out": 12,
+    "out_copies": 13,
     "spells_in": 9,
     "spells_out": 9
    },
@@ -730,6 +778,46 @@
      "state": "box",
      "type_line": "Legendary Enchantment Creature \u2014 Horror",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Abstergo Entertainment",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Legendary Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Conduit Pylons",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land \u2014 Desert",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Opal Palace",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "The Mycosynth Gardens",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land \u2014 Sphere",
+     "why": null
     }
    ],
    "names": 92,
@@ -814,12 +902,39 @@
      "pair": null,
      "type_line": "Creature \u2014 Archon",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Concealed Courtyard",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Darkslick Shores",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Hallowed Fountain",
+     "pair": null,
+     "type_line": "Land \u2014 Plains Island",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 9,
-    "out": 9
+    "in": 13,
+    "out": 12
    }
   },
   "lands": [],
@@ -942,13 +1057,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 1,
+    "delta": 3,
     "gap": [
-     2,
+     0,
      3
     ],
     "have": [
-     24,
+     22,
      25
     ],
     "target": [
@@ -958,13 +1073,13 @@
    },
    {
     "colour": "U",
-    "delta": 1,
+    "delta": 3,
     "gap": [
-     2,
+     0,
      3
     ],
     "have": [
-     24,
+     22,
      25
     ],
     "target": [
@@ -974,13 +1089,13 @@
    },
    {
     "colour": "B",
-    "delta": 1,
+    "delta": 2,
     "gap": [
-     -5,
+     -6,
      -4
     ],
     "have": [
-     31,
+     30,
      32
     ],
     "target": [
@@ -1031,7 +1146,7 @@
   ],
   "life": [
    {
-    "one_time_on_entry": 4,
+    "one_time_on_entry": 6,
     "recurring_per_tap_cycle": 5
    },
    {
@@ -1042,7 +1157,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.839,
+    0.822,
     0.855
    ],
    "G": [
@@ -1054,11 +1169,11 @@
     null
    ],
    "U": [
-    0.927,
+    0.907,
     0.936
    ],
    "W": [
-    0.927,
+    0.907,
     0.936
    ]
   }
@@ -1079,8 +1194,8 @@
   "bill": {
    "box": 2,
    "buy": 6,
-   "elsewhere": 1,
-   "in_deck": 83
+   "elsewhere": 5,
+   "in_deck": 79
   },
   "cost": {
    "buy": 6,
@@ -1095,21 +1210,45 @@
    "counts": {
     "box": 2,
     "buy": 6,
-    "elsewhere": 1,
-    "in_deck": 83
+    "elsewhere": 5,
+    "in_deck": 79
    },
    "free_to_raid": [
     {
      "decks": [
       "hapatra"
      ],
+     "name": "Abstergo Entertainment"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "Conduit Pylons"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
      "name": "Lotus Petal"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "Opal Palace"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "The Mycosynth Gardens"
     }
    ],
    "mergeable": false,
    "must_unsleeve": [],
    "owned": 86,
-   "reads_as": "6 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 86 of 92 already owned",
+   "reads_as": "6 to buy; 5 sitting in a retired or broken-down deck, which cost nothing; 86 of 92 already owned",
    "total": 92
   },
   "fell": [
@@ -1128,7 +1267,7 @@
   "reward": [
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "4 games in 100 -> 3 in 100, a swing of 1 games per 100",
+    "reads_as": "5 games in 100 -> 3 in 100, a swing of 2 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
@@ -1139,19 +1278,19 @@
   ],
   "risk": [
    {
-    "detail": "17.87 -> 13.29, a change of -4.57 (-26%)",
+    "detail": "17.66 -> 13.29, a change of -4.36 (-25%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "7.13 -> 6.55, a change of -0.58 (-8%)",
+    "detail": "7.10 -> 6.55, a change of -0.55 (-8%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "82 games in 100 -> 70 in 100, a swing of 13 games per 100",
+    "detail": "82 games in 100 -> 70 in 100, a swing of 12 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
@@ -1163,7 +1302,7 @@
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hand can act by T3 at +0.004 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1187,11 +1326,11 @@
   {
    "better_is": "higher",
    "branch": 13.2928,
-   "champion": 17.8674,
-   "delta": -4.5746,
-   "mde": 0.3943,
+   "champion": 17.6556,
+   "delta": -4.3628,
+   "mde": 0.3939,
    "measure": "damage @T10",
-   "reads_as": "17.87 -> 13.29, a change of -4.57 (-26%)",
+   "reads_as": "17.66 -> 13.29, a change of -4.36 (-25%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1201,11 +1340,11 @@
   {
    "better_is": "higher",
    "branch": 6.5486,
-   "champion": 7.1257,
-   "delta": -0.5771,
-   "mde": 0.1681,
+   "champion": 7.1004,
+   "delta": -0.5518,
+   "mde": 0.1676,
    "measure": "board power @T6",
-   "reads_as": "7.13 -> 6.55, a change of -0.58 (-8%)",
+   "reads_as": "7.10 -> 6.55, a change of -0.55 (-8%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1215,11 +1354,11 @@
   {
    "better_is": "higher",
    "branch": 0.0001,
-   "champion": 0.0018,
-   "delta": -0.0017,
-   "mde": 0.0017,
+   "champion": 0.001,
+   "delta": -0.0009,
+   "mde": 0.0013,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.002 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1229,11 +1368,11 @@
   {
    "better_is": "higher",
    "branch": 0.6964,
-   "champion": 0.824,
-   "delta": -0.1276,
+   "champion": 0.817,
+   "delta": -0.1206,
    "mde": 0.0182,
    "measure": "killed by T10",
-   "reads_as": "82 games in 100 -> 70 in 100, a swing of 13 games per 100",
+   "reads_as": "82 games in 100 -> 70 in 100, a swing of 12 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1243,11 +1382,11 @@
   {
    "better_is": "lower",
    "branch": 0.0314,
-   "champion": 0.0423,
-   "delta": -0.0109,
-   "mde": 0.008,
+   "champion": 0.047,
+   "delta": -0.0156,
+   "mde": 0.0084,
    "measure": "stall, 2 in a row",
-   "reads_as": "4 games in 100 -> 3 in 100, a swing of 1 games per 100",
+   "reads_as": "5 games in 100 -> 3 in 100, a swing of 2 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -1257,11 +1396,11 @@
   {
    "better_is": "lower",
    "branch": 0.3936,
-   "champion": 0.3946,
-   "delta": -0.001,
+   "champion": 0.3938,
+   "delta": -0.0002,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1271,11 +1410,11 @@
   {
    "better_is": "lower",
    "branch": 0.1913,
-   "champion": 0.1957,
-   "delta": -0.0044,
-   "mde": 0.0157,
+   "champion": 0.1931,
+   "delta": -0.0018,
+   "mde": 0.0156,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1285,9 +1424,9 @@
   {
    "better_is": "higher",
    "branch": 1.3432,
-   "champion": 2.1816,
-   "delta": -0.8384,
-   "mde": 0.1188,
+   "champion": 2.1812,
+   "delta": -0.838,
+   "mde": 0.1191,
    "measure": "extra cards by T8",
    "reads_as": "2.18 -> 1.34, a change of -0.84 (-38%)",
    "scale": "against the 8 cards every deck draws for free by then",
@@ -1299,9 +1438,9 @@
   {
    "better_is": "higher",
    "branch": 0.6239,
-   "champion": 0.5616,
-   "delta": 0.0623,
-   "mde": 0.0235,
+   "champion": 0.5594,
+   "delta": 0.0645,
+   "mde": 0.0236,
    "measure": "interaction affordable @T6",
    "reads_as": "56 games in 100 -> 62 in 100, a swing of 6 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
@@ -1313,11 +1452,11 @@
   {
    "better_is": "higher",
    "branch": 0.9939,
-   "champion": 0.9917,
-   "delta": 0.0022,
-   "mde": 0.0036,
+   "champion": 0.9901,
+   "delta": 0.0038,
+   "mde": 0.0039,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

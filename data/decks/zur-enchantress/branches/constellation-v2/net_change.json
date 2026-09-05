@@ -3,10 +3,18 @@
   "branch": "constellation-v2",
   "cards": [
    {
-    "free": false,
+    "free": true,
     "name": "Abstergo Entertainment",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -99,10 +107,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "Conduit Pylons",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -327,10 +343,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "Opal Palace",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -494,10 +518,18 @@
     "where": []
    },
    {
-    "free": false,
+    "free": true,
     "name": "The Mycosynth Gardens",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -563,25 +595,32 @@
   "counts": {
    "box": 1,
    "buy": 0,
-   "elsewhere": 0,
-   "in_deck": 91
+   "elsewhere": 4,
+   "in_deck": 87
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
-    "The Master of Keys"
+    "Abstergo Entertainment",
+    "Conduit Pylons",
+    "Opal Palace",
+    "The Master of Keys",
+    "The Mycosynth Gardens"
    ],
-   "base_names": 92,
+   "base_names": 91,
    "base_size": 100,
    "names": 92,
    "out": [
-    "Fear of Infinity"
+    "Concealed Courtyard",
+    "Darkslick Shores",
+    "Fear of Infinity",
+    "Hallowed Fountain"
    ],
    "size": 100
   },
-  "free": 0,
+  "free": 4,
   "mergeable": true,
-  "owned_but_elsewhere": 0,
+  "owned_but_elsewhere": 4,
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": []
@@ -591,16 +630,25 @@
  "changes": {
   "count": 0,
   "diff": {
-   "base_names": 92,
+   "base_names": 91,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 6,
+     "kind": "land",
+     "name": "Swamp",
+     "to": 5
+    }
+   ],
    "counts": {
-    "in": 1,
-    "in_copies": 1,
-    "lands_in": 0,
-    "lands_out": 0,
-    "out": 1,
-    "out_copies": 1,
+    "in": 5,
+    "in_copies": 5,
+    "lands_in": 4,
+    "lands_out": 3,
+    "out": 4,
+    "out_copies": 5,
     "spells_in": 1,
     "spells_out": 1
    },
@@ -614,6 +662,46 @@
      "state": "box",
      "type_line": "Legendary Enchantment Creature \u2014 Horror",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Abstergo Entertainment",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Legendary Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Conduit Pylons",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land \u2014 Desert",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Opal Palace",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "The Mycosynth Gardens",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land \u2014 Sphere",
+     "why": null
     }
    ],
    "names": 92,
@@ -626,12 +714,39 @@
      "pair": null,
      "type_line": "Enchantment Creature \u2014 Nightmare",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Concealed Courtyard",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Darkslick Shores",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Hallowed Fountain",
+     "pair": null,
+     "type_line": "Land \u2014 Plains Island",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 1,
-    "out": 1
+    "in": 5,
+    "out": 4
    }
   },
   "lands": [],
@@ -754,13 +869,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 0,
+    "delta": 2,
     "gap": [
-     2,
+     0,
      2
     ],
     "have": [
-     24,
+     22,
      24
     ],
     "target": [
@@ -770,13 +885,13 @@
    },
    {
     "colour": "U",
-    "delta": 0,
+    "delta": 2,
     "gap": [
-     2,
+     0,
      2
     ],
     "have": [
-     24,
+     22,
      24
     ],
     "target": [
@@ -786,13 +901,13 @@
    },
    {
     "colour": "B",
-    "delta": 0,
+    "delta": 1,
     "gap": [
-     -5,
+     -6,
      -5
     ],
     "have": [
-     31,
+     30,
      31
     ],
     "target": [
@@ -843,7 +958,7 @@
   ],
   "life": [
    {
-    "one_time_on_entry": 4,
+    "one_time_on_entry": 6,
     "recurring_per_tap_cycle": 5
    },
    {
@@ -854,7 +969,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.839,
+    0.822,
     0.839
    ],
    "G": [
@@ -866,11 +981,11 @@
     null
    ],
    "U": [
-    0.927,
+    0.907,
     0.927
    ],
    "W": [
-    0.927,
+    0.907,
     0.927
    ]
   }
@@ -891,8 +1006,8 @@
   "bill": {
    "box": 1,
    "buy": 0,
-   "elsewhere": 0,
-   "in_deck": 91
+   "elsewhere": 4,
+   "in_deck": 87
   },
   "cost": {
    "buy": 0,
@@ -900,14 +1015,39 @@
    "counts": {
     "box": 1,
     "buy": 0,
-    "elsewhere": 0,
-    "in_deck": 91
+    "elsewhere": 4,
+    "in_deck": 87
    },
-   "free_to_raid": [],
+   "free_to_raid": [
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "Abstergo Entertainment"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "Conduit Pylons"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "Opal Palace"
+    },
+    {
+     "decks": [
+      "hapatra"
+     ],
+     "name": "The Mycosynth Gardens"
+    }
+   ],
    "mergeable": true,
    "must_unsleeve": [],
    "owned": 92,
-   "reads_as": "0 to buy; 92 of 92 already owned",
+   "reads_as": "0 to buy; 4 sitting in a retired or broken-down deck, which cost nothing; 92 of 92 already owned",
    "total": 92
   },
   "fell": [],
@@ -926,13 +1066,13 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "7.13 -> 7.32, a change of +0.19 (+3%)",
+    "reads_as": "7.10 -> 7.32, a change of +0.22 (+3%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is stall, 2 in a row at +0.005 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.391 against an MDE of 0.395. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -955,11 +1095,11 @@
   {
    "better_is": "higher",
    "branch": 18.0464,
-   "champion": 17.8674,
-   "delta": 0.179,
+   "champion": 17.6556,
+   "delta": 0.3908,
    "mde": 0.395,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.179 is smaller than the 0.395 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.391 is smaller than the 0.395 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -969,11 +1109,11 @@
   {
    "better_is": "higher",
    "branch": 7.3162,
-   "champion": 7.1257,
-   "delta": 0.1905,
+   "champion": 7.1004,
+   "delta": 0.2158,
    "mde": 0.173,
    "measure": "board power @T6",
-   "reads_as": "7.13 -> 7.32, a change of +0.19 (+3%)",
+   "reads_as": "7.10 -> 7.32, a change of +0.22 (+3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -983,11 +1123,11 @@
   {
    "better_is": "higher",
    "branch": 0.002,
-   "champion": 0.0018,
-   "delta": 0.0002,
+   "champion": 0.001,
+   "delta": 0.001,
    "mde": 0.0018,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.002 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.002 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -997,11 +1137,11 @@
   {
    "better_is": "higher",
    "branch": 0.8288,
-   "champion": 0.824,
-   "delta": 0.0048,
-   "mde": 0.0151,
+   "champion": 0.817,
+   "delta": 0.0118,
+   "mde": 0.0153,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.015 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.015 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1011,11 +1151,11 @@
   {
    "better_is": "lower",
    "branch": 0.0476,
-   "champion": 0.0423,
-   "delta": 0.0053,
+   "champion": 0.047,
+   "delta": 0.0006,
    "mde": 0.0084,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1025,11 +1165,11 @@
   {
    "better_is": "lower",
    "branch": 0.3941,
-   "champion": 0.3946,
-   "delta": -0.0005,
+   "champion": 0.3938,
+   "delta": 0.0003,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1039,11 +1179,11 @@
   {
    "better_is": "lower",
    "branch": 0.1993,
-   "champion": 0.1957,
-   "delta": 0.0036,
+   "champion": 0.1931,
+   "delta": 0.0062,
    "mde": 0.0158,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1053,11 +1193,11 @@
   {
    "better_is": "higher",
    "branch": 2.1508,
-   "champion": 2.1816,
-   "delta": -0.0308,
-   "mde": 0.1188,
+   "champion": 2.1812,
+   "delta": -0.0304,
+   "mde": 0.1191,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.031 is smaller than the 0.119 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.030 is smaller than the 0.119 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1067,11 +1207,11 @@
   {
    "better_is": "higher",
    "branch": 0.5631,
-   "champion": 0.5616,
-   "delta": 0.0015,
+   "champion": 0.5594,
+   "delta": 0.0037,
    "mde": 0.0236,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.024 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1081,11 +1221,11 @@
   {
    "better_is": "higher",
    "branch": 0.9927,
-   "champion": 0.9917,
-   "delta": 0.001,
-   "mde": 0.0036,
+   "champion": 0.9901,
+   "delta": 0.0026,
+   "mde": 0.0039,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
