@@ -232,3 +232,121 @@ def test_no_corpus_land_is_both_recurring_and_one_time():
         assert not (cost["recurring"] and cost["one_time"]), name
     assert checked >= 1000, f"only {checked} lands swept"
     assert rec >= 40 and one >= 30, f"rec={rec} one={one}"
+
+
+# ── sources that cannot pay on curve ────────────────────────────────────────
+
+def _gated_land(name, text):
+    """NOT `_land` — that name is taken at the top of this file, and appending a
+    second definition silently overrode it and broke three passing tests. The
+    identical mistake was made with `_doc` in the goldfish-targets suite the same
+    week; a shadowed helper fails somewhere else, which is why it is hard to see.
+    """
+    return {"name": name, "type_line": "Land", "oracle_text": text, "mana_cost": ""}
+
+
+def test_a_coloured_mode_that_costs_extra_mana_is_not_a_source_on_curve():
+    """KARSTEN'S TARGETS ARE ABOUT CASTING ON CURVE.
+
+    `land_colors` counts "{1}, {T}: Add one mana of any color" at FULL VALUE in
+    every colour it makes, and a land needing an extra generic cannot pay a
+    {1}{B}{B} cost on turn three the way a Swamp can. Six such lands made every
+    colour in zur-enchantress read at or above target when all three were short.
+
+    NOT DISCOUNTED — REPORTED: choosing a fraction to divide them by would be an
+    authored number driving a headline figure.
+    """
+    from manamap.pilot.manabase import gated_colour_source
+
+    assert gated_colour_source(_gated_land(
+        "Opal Palace", "{T}: Add {C}. {1}, {T}: Add one mana of any color in "
+                       "your commander's color identity."))
+    assert gated_colour_source(_gated_land(
+        "Darkwater Catacombs", "{1}, {T}: Add {U}{B}."))
+
+    # THE FREE-MODE ESCAPE IS LOAD-BEARING. Both of these carry a cost clause
+    # AND a free coloured tap, and flagging them would be a false positive on
+    # two of the best lands in the format.
+    assert not gated_colour_source(_gated_land(
+        "City of Brass", "Whenever this land becomes tapped, it deals 1 damage "
+                         "to you. {T}: Add one mana of any color."))
+    assert not gated_colour_source(_gated_land(
+        "Mana Confluence", "{T}, Pay 1 life: Add one mana of any color."))
+    assert not gated_colour_source(_gated_land(
+        "Command Tower", "{T}: Add one mana of any color in your commander's "
+                         "color identity."))
+
+
+def test_the_lookbehind_that_returned_zero_stays_fixed():
+    """The first pattern used a lookbehind for "}" to spot a cost before {T}.
+
+    Opal Palace writes "{1}, {T}: Add one mana of any color" — the character
+    immediately before {T} is a SPACE — so the gated clause matched the FREE
+    pattern and the whole check returned zero across the fleet. Anchoring the
+    free pattern to the start of an ability is what fixes it, and this is the
+    case that proves it.
+    """
+    from manamap.pilot.manabase import _FREE_COLOUR_TAP_RE
+
+    assert not _FREE_COLOUR_TAP_RE.search(
+        "{T}: Add {C}. {1}, {T}: Add one mana of any color in your commander's "
+        "color identity."), "the gated clause must not read as a free tap"
+    assert _FREE_COLOUR_TAP_RE.search("{T}: Add one mana of any color.")
+    assert _FREE_COLOUR_TAP_RE.search(
+        "Whenever this land becomes tapped, it deals 1 damage to you. "
+        "{T}: Add one mana of any color.")
+
+
+def test_a_state_gated_land_is_flagged_and_an_opponent_gated_one_is_not():
+    """THE GREY HAVENS IS A WASTES THAT SCRIES.
+
+    "{T}: Add one mana of any color among legendary creature cards IN YOUR
+    GRAVEYARD" is free to activate and dead until one of your legendary
+    creatures has died and stayed dead. In zur-enchantress that is two cards —
+    the other four are the commander (command zone) and three indestructible
+    Gods — and NOTHING in the deck mills, surveils or discards.
+
+    Corpus sweep 2026-09-05: 132 "add one mana of any color" clauses on lands,
+    11 distinct qualifiers, 117 clauses with none at all. The judgement in this
+    check is what it EXCLUDES — Exotic Orchard reads an opponent's lands, and in
+    a four-player pod somebody is producing something, so flagging it would be a
+    false positive on a land that works.
+    """
+    from manamap.pilot.manabase import gated_colour_source
+
+    assert gated_colour_source(_gated_land(
+        "The Grey Havens", "When this land enters, scry 1. {T}: Add {C}. {T}: "
+                           "Add one mana of any color among legendary creature "
+                           "cards in your graveyard."))
+    assert gated_colour_source(_gated_land(
+        "Plaza of Heroes", "{T}: Add one mana of any color among legendary "
+                           "permanents you control."))
+    assert not gated_colour_source(_gated_land(
+        "Exotic Orchard", "{T}: Add one mana of any color that a land an "
+                          "opponent controls could produce."))
+
+
+def test_the_floor_and_the_headline_are_both_reported():
+    """A FIGURE AND ITS FLOOR, because the headline counts gated lands at full
+    value and flatters every deck running them.
+
+    A change that RAISED real coloured sources by 2/2/3 read as a DROP of two to
+    three points on `lands_only`, because it had cut four gated lands. Reporting
+    only one of the two numbers would have made that change look wrong.
+    """
+    import json
+    import pathlib as _pl
+
+    import pytest
+
+    path = (_pl.Path(__file__).resolve().parent.parent
+            / "data/decks/zur-enchantress/mana_analysis.json")
+    if not path.exists():
+        pytest.skip("zur-enchantress mana_analysis.json not present")
+    d = json.loads(path.read_text(encoding="utf-8"))
+    p = d["on_curve_probability"]
+    assert "lands_only" in p and "lands_only_ungated" in p
+    assert "gated" in d["sources"] and "names" in d["sources"]["gated"]
+    for c in ("W", "U", "B"):
+        assert p["lands_only_ungated"][c] <= p["lands_only"][c], (
+            f"{c}: the floor must not exceed the headline")

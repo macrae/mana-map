@@ -313,14 +313,47 @@ _FREE_COLOUR_TAP_RE = re.compile(
     r"(?:\{[WUBRG]|one mana of any)", re.I)
 
 
+#: A COLOURED MODE GATED ON A BOARD STATE RATHER THAN ON MANA. The Grey Havens
+#: taps for "one mana of any color among legendary creature cards IN YOUR
+#: GRAVEYARD" — free to activate, and dead until a legendary creature of yours
+#: has died and stayed dead. `land_colors` returns all five colours for it.
+#:
+#: Corpus sweep 2026-09-05: 132 "add one mana of any color" clauses on lands,
+#: 11 distinct qualifiers, and 117 of the clauses have NO qualifier at all. The
+#: set below is the ones whose condition is about YOUR OWN board or graveyard,
+#: which a deck may simply never meet.
+#:
+#: DELIBERATELY EXCLUDED, and this is the judgement in the check:
+#:   "in your commander's color identity"  — always true in Commander (6 cards)
+#:   "that a land an opponent controls could produce"  — Exotic Orchard. In a
+#:       four-player pod somebody is producing something on turn one; treating
+#:       it as dead would be a false positive, and a check that fires on correct
+#:       data is worse than no check.
+_STATE_GATED_QUALIFIERS = (
+    "among legendary creature cards in your graveyard",
+    "among legendary permanents you control",
+    "that a gate you control could produce",
+)
+
+
 def gated_colour_source(card):
-    """True when this land counts as a coloured source but cannot pay on curve."""
+    """True when this land counts as a coloured source but cannot pay on curve.
+
+    Two classes, both measured against the corpus before being kept: a coloured
+    mode that costs EXTRA MANA, and one gated on a board state the deck may
+    never reach. A FILTER (Fetid Heath, "{W/B}, {T}: Add {W}{W}…") is a third
+    class and is NOT here — the sweep covered numeric costs and named
+    qualifiers, and the pattern was not widened past what it measured.
+    """
     type_line = card.get("type_line", "") or ""
     if "Land" not in type_line or "Basic Land" in type_line:
         return False
     text = " ".join((card.get("oracle_text") or "").split())
     if not land_colors(card):
         return False
+    low = text.lower()
+    if any(q in low for q in _STATE_GATED_QUALIFIERS):
+        return True
     return bool(_GATED_MANA_RE.search(text)) and not _FREE_COLOUR_TAP_RE.search(text)
 
 
