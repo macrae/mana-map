@@ -8,6 +8,7 @@ control: the other seats, played by the same AI, in the same games.
 
 import glob
 import json
+import os
 
 import pytest
 
@@ -104,15 +105,55 @@ def test_one_game_yields_no_verdict():
     assert "too few" in q["reading"]
 
 
+#: Runs the gate fires on DELIBERATELY, each with the reason it is kept anyway.
+#: A named set rather than a widened threshold: the flag exists to say a run is
+#: uninformative about the DECK, and a run that earns it is still evidence about
+#: the harness. Adding an entry here is an edit somebody has to justify, which
+#: is the whole point — the same shape as the `model_combat` opt-in registry.
+KNOWN_FLAGGED = {
+    # 2026-09-04, zur-enchantress on the value-chains table. Land drops 78% and
+    # spells cast 66% of the pod's rate. The record is kept because it is the
+    # ONLY run against that pod and the observations are worth having; its
+    # win rate (0.173) is explicitly not read as a result, and the record says
+    # so in its own verdict text.
+    "jarad-graveyard-vs-muldrotha-value-vs-sythis-enchantress-n60-d1c155a1"
+    "-s1519108513-podExperimental-c600.json",
+}
+
+
 def test_no_tracked_run_is_flagged_by_accident():
     """Run the verdict over every tracked run: a false positive here would teach
-    its reader to ignore the flag."""
+    its reader to ignore the flag.
+
+    A TRUE positive is recorded in `KNOWN_FLAGGED` with its reason rather than
+    silenced by moving the threshold, so a NEW badly-piloted run still fails.
+    """
     bad = []
     for path in _runs():
         rec = json.load(open(path))
         q = pq.from_record(rec)
-        if q and q["comparable"] is False:
+        if q and q["comparable"] is False and os.path.basename(path) not in KNOWN_FLAGGED:
             bad.append((path, q[pq.LANDS]["ratio"]))
     assert not bad, (
         f"the piloting gate fires on tracked run(s): {bad}. Check it is a true "
-        f"positive before widening the threshold.")
+        f"positive before widening the threshold; if it is, add it to "
+        f"KNOWN_FLAGGED with the reason.")
+
+
+def test_the_known_flagged_set_is_not_a_dumping_ground():
+    """Every name in KNOWN_FLAGGED must still exist and must still be flagged.
+
+    A stale entry silences a gate for a run that is gone, or — worse — for one
+    that has since been re-derived clean, and nothing would say so.
+    """
+    seen = {os.path.basename(p) for p in _runs()}
+    for name in KNOWN_FLAGGED:
+        assert name in seen, f"{name} is in KNOWN_FLAGGED but no longer tracked"
+    still = set()
+    for path in _runs():
+        rec = json.load(open(path))
+        q = pq.from_record(rec)
+        if q and q["comparable"] is False:
+            still.add(os.path.basename(path))
+    stale = KNOWN_FLAGGED - still
+    assert not stale, f"no longer flagged, so the exception should go: {stale}"

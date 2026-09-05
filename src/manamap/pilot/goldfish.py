@@ -496,6 +496,14 @@ def sac_outlet_profile(card):
     return None
 
 
+#: "Whenever a creature an opponent controls dies, you gain N life" — the
+#: Meathook's third ability, and the one that makes somebody else's removal
+#: spell into our damage. Separate from `_DEATH_TRIGGER_RE`, which is about OUR
+#: creatures dying.
+_OPPONENT_DEATH_GAIN_RE = re.compile(
+    r"whenever a creature an opponent controls dies, you gain (\d+) life", re.I)
+
+
 def death_profile(card):
     """What fires when ANOTHER creature you control dies.
 
@@ -505,7 +513,15 @@ def death_profile(card):
     """
     text = card.get("oracle_text", "") or ""
     out = {"death_drain": 0, "death_draw": 0, "death_treasure": 0,
-           "unreadable": None}
+           "gain_on_opponent_death": 0, "unreadable": None}
+    # THE OTHER HALF OF THE MEATHOOK. "Whenever a creature an OPPONENT controls
+    # dies, you gain 1 life" is a separate trigger from the one above, and in a
+    # deck that turns life gained into life lost it means every removal spell
+    # anyone casts is damage from us. Parsed independently because the two
+    # clauses can appear alone.
+    m_opp = _OPPONENT_DEATH_GAIN_RE.search(text)
+    if m_opp:
+        out["gain_on_opponent_death"] = int(m_opp.group(1))
     m = _DEATH_TRIGGER_RE.search(text)
     if not m:
         return out
@@ -518,14 +534,16 @@ def death_profile(card):
         out["death_draw"] = _DRAW_WORDS[draw.group(1).lower()]
     if _DEATH_TREASURE_RE.search(clause):
         out["death_treasure"] = 1
-    if not any((out["death_drain"], out["death_draw"], out["death_treasure"])):
+    if not any((out["death_drain"], out["death_draw"], out["death_treasure"],
+                out["gain_on_opponent_death"])):
         out["unreadable"] = card.get("name")
     return out
 
 
 def is_death_engine(prof):
     """One predicate, one home — the same lesson `is_etb_engine` records."""
-    return bool(prof["death_drain"] or prof["death_draw"] or prof["death_treasure"])
+    return bool(prof["death_drain"] or prof["death_draw"] or prof["death_treasure"]
+                or prof["gain_on_opponent_death"])
 
 
 def draw_profile(card):
@@ -2004,7 +2022,7 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_treasures=False, model_combat=False, model_draw=False,
-                  model_sacrifice=False, model_drain=False,
+                  model_sacrifice=False, model_drain=False, model_deaths=None,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
                   commander_subtypes=frozenset(), commander_combat=None,
@@ -2176,6 +2194,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     drain_permanents = []
     # Cards that mint a creature token every time an enchantment enters.
     enchantment_token_engines = []
+    # DEATHS. `death_engines` already exists for the sacrifice channel; these
+    # accumulate FRACTIONAL deaths so a measured rate like 0.187 per turn fires
+    # a trigger every fifth or sixth turn rather than never.
+    own_death_debt = 0.0
+    opponent_death_debt = 0.0
+    death_drains = []          # profiles that fire when OUR creature dies
+    opponent_death_gains = []  # profiles that gain when THEIRS does
     lifelink_power = 0
     drain_by_turn = []
     # Type lines of nonland permanents on the battlefield, so a card whose X is
@@ -2190,6 +2215,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     for turn in range(1, max_turn + 1):
         enchantments_entered = 0
         creatures_entered_this_turn = 0
+        deaths_drained = 0      # damage from OUR creatures dying, this turn
+        deaths_gained = 0       # life from THEIRS dying, this turn
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -2622,9 +2649,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     "drain_recurring", "drain_per_enchantment"))
                     or c["drain"]["lifelink"]):
                 return True
+            # A DEATH ENGINE IS A PERMANENT TOO, and this is the third time
+            # this exact gap has bitten: a card gains a modelled ability and the
+            # CASTING predicate is not taught about it, so the model reads it
+            # perfectly and never puts it on the table. The Meathook Massacre
+            # went straight back into the never-cast bucket the moment its death
+            # triggers started working.
+            if model_deaths and (c["death"]["death_drain"]
+                                 or c["death"]["gain_on_opponent_death"]):
+                return True
             return bool(model_sacrifice and c["sac_outlet"])
 
-        if model_drain or model_sacrifice:
+        if model_drain or model_sacrifice or model_deaths:
             for card in sorted((c for c in hand if _engine_permanent(c)),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if not spend(reduced_cost(card, reductions, chosen_type),
@@ -2655,6 +2691,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         death_engines.append(card["death"])
                     if card["sac_outlet"] == "free":
                         free_sac_outlet = True
+                if model_deaths:
+                    if card["death"]["death_drain"]:
+                        death_drains.append(card["death"])
+                    if card["death"]["gain_on_opponent_death"]:
+                        opponent_death_gains.append(card["death"])
 
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
@@ -2774,6 +2815,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         death_engines.append(card["death"])
                     if card["sac_outlet"] == "free":
                         free_sac_outlet = True
+                if model_deaths:
+                    if card["death"]["death_drain"]:
+                        death_drains.append(card["death"])
+                    if card["death"]["gain_on_opponent_death"]:
+                        opponent_death_gains.append(card["death"])
                 # Casting it turns its Treasure engine on for later turns, and
                 # an ETB or cast trigger pays out immediately.
                 if not model_treasures:
@@ -2915,6 +2961,45 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
 
+        # ── deaths ──────────────────────────────────────────────────────────
+        #
+        # NOTHING DIED IN THIS SIMULATION UNTIL NOW, and that blanked two cards
+        # in zur-enchantress outright: The Meathook Massacre and Bastion of
+        # Remembrance, both named in `meta.drain_not_modelled`. In a deck with
+        # eleven token-makers feeding them, that is not a rounding error.
+        #
+        # THE RATE IS MEASURED, NOT AUTHORED. `model_deaths` carries a
+        # per-own-turn rate for our creatures and for the opponents', and a
+        # `source` naming the Forge run it was read off. That distinction is the
+        # whole design: a figure computed from a rate somebody invented is the
+        # deleted engine lift again, where three defensible declarations of one
+        # list gave +0.007, -0.036 and +0.014 on the same 10,000 games.
+        #
+        # AND THE CREATURES ACTUALLY LEAVE. Firing the drain without removing
+        # the body would hand the deck free damage and no cost, which is worse
+        # than not modelling it at all — the board is already overstated here by
+        # never losing anything. Weakest first: chump blockers and tokens die
+        # before real threats.
+        if model_deaths and turn > 1:
+            own_death_debt += model_deaths["own_per_turn"]
+            opponent_death_debt += model_deaths["opponent_per_turn"]
+            n_own = int(own_death_debt)
+            own_death_debt -= n_own
+            n_opp = int(opponent_death_debt)
+            opponent_death_debt -= n_opp
+
+            for _ in range(n_own):
+                if not battlefield:
+                    break
+                battlefield.sort(key=lambda row: row[0])
+                battlefield.pop(0)
+                bodies_cum = max(0, bodies_cum - 1)
+                for prof in death_drains:
+                    deaths_drained += prof["death_drain"]
+            for _ in range(n_opp):
+                for prof in opponent_death_gains:
+                    deaths_gained += prof["gain_on_opponent_death"]
+
         # ── the drain pillar ────────────────────────────────────────────────
         #
         # Runs OUTSIDE the combat block, because a drain deck kills without ever
@@ -2949,12 +3034,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Lifelink gains what those creatures DEALT, so it is capped by the
             # damage actually dealt this turn — one event, because the combat
             # model resolves a swing as a single number.
+            # A death that gains life is a GAIN EVENT like any other, so it
+            # feeds Vito and Marauding Blight-Priest exactly as a Shrine tick
+            # does. That chain is the reason the Meathook's third ability is
+            # worth anything here.
+            if deaths_gained:
+                gain_total += deaths_gained
+                gain_events += 1
             if lifelink_power and damage_by_turn:
                 linked = min(lifelink_power, damage_by_turn[-1])
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
-            drained = 0
+            drained = deaths_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)
                 drained += d["drain_per_enchantment"] * enchantments_entered
@@ -3269,6 +3361,25 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         declared_draw = bool(targets_doc.get("model_draw"))
         declared_sacrifice = bool(targets_doc.get("model_sacrifice"))
         declared_drain = bool(targets_doc.get("model_drain"))
+        # THE RATE MUST NAME WHERE IT CAME FROM. A death rate somebody invented
+        # driving a damage figure is the deleted engine lift; a rate read off a
+        # Forge run on this deck is evidence. `source` is REQUIRED, and the
+        # value lands in the record's assumptions so a reader can go and check.
+        declared_deaths = targets_doc.get("model_deaths") or None
+        if declared_deaths:
+            missing = [k for k in ("own_per_turn", "opponent_per_turn", "source")
+                       if k not in declared_deaths]
+            if missing:
+                raise SystemExit(
+                    f"model_deaths is missing {', '.join(missing)} — a death rate "
+                    f"without a `source` naming the run it was measured from is "
+                    f"an authored number driving a damage figure, which is the "
+                    f"failure `engine_online` was deleted for.")
+            declared_deaths = {
+                "own_per_turn": float(declared_deaths["own_per_turn"]),
+                "opponent_per_turn": float(declared_deaths["opponent_per_turn"]),
+                "source": str(declared_deaths["source"]),
+            }
         # A target member not in the deck can never be drawn — it silently
         # deflates the assembly rate (a target naming a card ur-dragon had moved
         # out once cost it a wrong "cost reducer drawn" figure). Warn loudly; the
@@ -3307,6 +3418,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
                        else bool(model_sacrifice))
     model_drain = declared_drain
+    model_deaths = declared_deaths
+    if model_deaths and not model_drain and not quiet:
+        print("  WARNING model_deaths is set without model_drain: death triggers "
+              "feed the drain channel, so nothing will be counted.")
     # LOUD, NOT SILENT. The drain half of this model is DAMAGE, and damage only
     # exists under `model_combat`. A deck that sets one flag and not the other
     # would otherwise get the draw and the Treasures and silently lose the
@@ -3434,8 +3549,15 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # contribute zero — and a reader with no list of names cannot tell a deck
     # whose drain is small from one whose drain is unread. Same contract as
     # `draw_not_modelled` and `combat_effects_not_modelled`.
+    # A CARD IS ONLY UNMODELLED IF NO CHANNEL READS IT. Both of these were
+    # death triggers, so switching `model_deaths` on moves them out of this list
+    # — and leaving them in would have told a reader the figure was a floor
+    # because of the very cards it had just started counting.
     drain_unmodelled = sorted({
-        c["drain"]["unmodelled"] for c in library if c["drain"]["unmodelled"]
+        c["drain"]["unmodelled"] for c in library
+        if c["drain"]["unmodelled"]
+        and not (model_deaths and (c["death"]["death_drain"]
+                                   or c["death"]["gain_on_opponent_death"]))
     }) if model_drain else []
 
     rng = random.Random(seed)
@@ -3464,6 +3586,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_draw=model_draw,
                               model_sacrifice=model_sacrifice,
                               model_drain=model_drain,
+                              model_deaths=model_deaths,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips))
@@ -3516,6 +3639,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                if model_combat and combat_unreadable else {}),
             **({"drain_not_modelled": drain_unmodelled}
                if model_drain and drain_unmodelled else {}),
+            **({"death_rate": model_deaths} if model_deaths else {}),
         },
         "metrics": aggregate(results, targets, max_turn, model_treasures,
                              model_combat, model_draw, model_sacrifice,

@@ -521,3 +521,121 @@ def test_a_token_per_enchantment_is_not_a_token_once():
     # A plain ETB token maker must NOT be read as recurring.
     plain = prof("When this creature enters, create a 2/2 white Cat creature token.")
     assert plain["enchantment_token_bodies"] == 0
+
+
+# ── deaths ──────────────────────────────────────────────────────────────────
+
+def test_the_opponent_death_half_is_parsed_separately():
+    """THE MEATHOOK HAS TWO DEATH TRIGGERS AND THEY POINT OPPOSITE WAYS.
+
+    "Whenever a creature YOU control dies, each opponent loses 1 life" and
+    "Whenever a creature an OPPONENT controls dies, you gain 1 life" are
+    separate clauses that can appear alone. The second is the one that makes
+    somebody else's removal spell into our damage, because this deck turns life
+    gained into life lost three ways.
+    """
+    from manamap.pilot.goldfish import death_profile, is_death_engine
+
+    meathook = death_profile({"name": "The Meathook Massacre", "oracle_text":
+        "When this enters, each creature gets -X/-X until end of turn. Whenever "
+        "a creature you control dies, each opponent loses 1 life. Whenever a "
+        "creature an opponent controls dies, you gain 1 life."})
+    assert meathook["death_drain"] == 1
+    assert meathook["gain_on_opponent_death"] == 1
+    assert meathook["unreadable"] is None
+
+    bastion = death_profile({"name": "Bastion of Remembrance", "oracle_text":
+        "Whenever a creature you control dies, each opponent loses 1 life and "
+        "you gain 1 life."})
+    assert bastion["death_drain"] == 1
+    assert bastion["gain_on_opponent_death"] == 0, (
+        "Bastion's gain is on OUR creature dying, not an opponent's")
+
+    assert is_death_engine(meathook) and is_death_engine(bastion)
+
+
+def test_a_death_rate_without_a_source_is_refused():
+    """A RATE SOMEBODY INVENTED DRIVING A DAMAGE FIGURE IS THE DELETED ENGINE
+    LIFT.
+
+    `engine_online` was removed because a measure was computed from flags the
+    same hand authored: three defensible declarations of one Ur-Dragon list gave
+    +0.007, -0.036 and +0.014 on the same 10,000 games, one of them saying at an
+    interval excluding zero that assembling the engine made the deck win LESS.
+
+    A death rate is exactly that shape unless it names where it was measured, so
+    `source` is required and the value is echoed into the record's assumptions
+    for a reader to check.
+    """
+    import pathlib as _pl
+
+    src = (_pl.Path(__file__).resolve().parent.parent
+           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    assert '"own_per_turn", "opponent_per_turn", "source"' in src, (
+        "the required-key list moved; the source requirement is the point")
+    assert "engine lift" in src or "engine_online" in src, (
+        "the reason for the requirement must travel with it")
+
+
+def test_deaths_remove_the_body_they_drain_for():
+    """FIRING THE DRAIN WITHOUT REMOVING THE CREATURE IS FREE DAMAGE.
+
+    The board is already overstated in this model because nothing ever leaves
+    it. Counting a death for its trigger and not for its cost would make every
+    death-drain deck look better for a change that is, on the table, a loss of a
+    creature.
+
+    Driven through `simulate_once` on a synthetic library, comparing the same
+    seed with the rate on and off.
+    """
+    import random
+
+    from manamap.pilot.goldfish import classify, simulate_once
+
+    swamp = {"name": "Swamp", "type_line": "Basic Land — Swamp",
+             "mana_cost": "", "cmc": 0.0, "oracle_text": "({T}: Add {B}.)"}
+    guy = {"name": "Guy", "type_line": "Creature — Zombie", "mana_cost": "{B}",
+           "cmc": 1.0, "power": "2", "toughness": "2", "oracle_text": ""}
+    cmdr = {"name": "C", "type_line": "Legendary Creature — Human",
+            "mana_cost": "{B}", "cmc": 1.0, "oracle_text": ""}
+
+    lib = [classify(guy) for _ in range(30)] + [classify(swamp) for _ in range(30)]
+    rate = {"own_per_turn": 1.0, "opponent_per_turn": 0.0, "source": "test"}
+
+    def run(deaths):
+        return simulate_once(random.Random(11), [dict(c) for c in lib], 1.0, [], 10,
+                             model_combat=True, model_drain=True,
+                             model_deaths=deaths, model_colors=False,
+                             commander_pips=[frozenset("B")])
+
+    without = run(None)["board_power_by_turn"][-1]
+    with_deaths = run(rate)["board_power_by_turn"][-1]
+    assert with_deaths < without, (
+        f"a creature dying every turn left board power at {with_deaths} against "
+        f"{without} with nothing dying — the bodies are not being removed")
+
+
+def test_a_death_engine_is_castable():
+    """THE THIRD TIME THIS GAP HAS BITTEN.
+
+    A card gains a modelled ability and the CASTING predicate is not taught
+    about it, so the model reads it perfectly and never puts it on the table.
+    It happened to the Shrines, to the lifelink Auras and to Ashnod's Altar —
+    and The Meathook Massacre went straight back into the never-cast bucket the
+    moment its death triggers started working, because its DRAIN profile is
+    empty and that was all the predicate checked.
+    """
+    from manamap.pilot import goldfish, model_coverage
+
+    meathook = goldfish.classify({
+        "name": "The Meathook Massacre", "type_line": "Legendary Enchantment",
+        "mana_cost": "{X}{B}{B}", "cmc": 2.0,
+        "oracle_text": ("When this enters, each creature gets -X/-X until end of "
+                        "turn. Whenever a creature you control dies, each "
+                        "opponent loses 1 life. Whenever a creature an opponent "
+                        "controls dies, you gain 1 life.")})
+    flags = {"model_drain": True, "model_deaths": {"own_per_turn": 0.1,
+             "opponent_per_turn": 0.1, "source": "x"}}
+    assert not model_coverage.never_cast(meathook, flags), (
+        "a card whose only modelled abilities are death triggers must still be "
+        "castable, or the model computes an effect it never applies")

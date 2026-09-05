@@ -164,6 +164,13 @@ def never_cast(profile, flags):
         return False
     if flags.get("model_sacrifice") and profile.get("sac_outlet"):
         return False
+    # DEATH ENGINES. Added when `model_deaths` shipped and NOT at the same time
+    # as goldfish's own casting predicate — the fleet test caught the drift
+    # within the hour, which is the whole reason it exists. A mirror that is
+    # only checked by hand is a mirror that is wrong.
+    if flags.get("model_deaths") and _nonzero(profile.get("death"), (
+            "death_drain", "gain_on_opponent_death")):
+        return False
     return True
 
 

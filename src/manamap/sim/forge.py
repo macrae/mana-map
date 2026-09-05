@@ -506,7 +506,20 @@ _TURN = re.compile(r"^Turn: Turn (\d+)")
 # the first tracked run: two heliod wins read as draws until the second form was matched.
 _OUTCOME_WON = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has won (?:because|due to) (.*)$")
 _OUTCOME_LOST = re.compile(r"^Game Outcome: (Ai\(\d+\)-\S+) has lost because (.*)$")
-_OUTCOME_DRAW = re.compile(r"^Game Outcome: .*draw", re.I)
+#: Forge's own draw verdict. THE NEGATIVE LOOKAHEAD IS THE WHOLE PATTERN: the
+#: first version was `^Game Outcome: .*draw`, and Forge writes
+#:
+#:     Game Outcome: <SEAT> has lost trying to draw cards from empty library
+#:
+#: for a player who DECKS OUT — which contains "draw" and is not a draw at all.
+#: Measured 2026-09-04: every one of the 14 lines matching the loose pattern
+#: across every log on disk was that decking line, and ZERO were a genuine draw.
+#: The consequence was not cosmetic: 12 games in one 60-game run were recorded
+#: as draws while still carrying a winner, `tally_wins` counted those winners
+#: anyway, and the run's own accounting came to 72 of 60 games — which is what
+#: `test_every_tracked_run_accounts_for_all_its_games` fired on.
+_OUTCOME_DRAW = re.compile(
+    r"^Game Outcome: (?!.*\btrying to draw cards\b).*\bdraw\b", re.I)
 # TWO ENDINGS, TWO FORMAT STRINGS. Forge prints
 #   "Game Result: Game %d ended in %d ms."          -- a decided game
 #   "Game Result: Game %d ended in a Draw! Took %d ms."  -- GameOutcome.isDraw()
