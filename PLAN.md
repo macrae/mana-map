@@ -135,6 +135,30 @@ status and withholds the suggestions that would need a deck to shuffle.
 | **The version policy** | PATCH/MINOR/MAJOR by capability, every slug from v1.0.0; releases sort numerically, near-misses refused, re-tagging needs `--force` | `docs/pilot.md` |
 | **The paper lock's third state** | UNLOCKED is not dead. Four of eleven decks are unlocked and now say so; three rehearsal locks withdrawn | `docs/pilot.md` |
 
+## The measurement audit (2026-09-04/05)
+
+Two days spent making the goldfish honest, prompted by one deck refusing to
+close. Every entry below is a defect that was reporting a number, not a missing
+feature. The full record is in `docs/gotchas-bench.md`.
+
+| what was wrong | what it cost |
+|---|---|
+| **The commander's attack tutor fired EVERY turn** | reported 5.70 fires a game against Forge's measured 1.22. Correcting it: kill-by-t8 0.501 -> 0.173, board power 27.30 -> 16.64. **More than half of one day's measured gains were this assumption** |
+| **A card can be read correctly and never PLAYED** | five instances, caught as a class on the fourth. Two Shrines measured as exactly nothing; a SLEEVED deck ran its sacrifice engine on 2 of 4 outlets; four of six attack enablers were uncastable, so the model could not start its own engine |
+| **Lifegain-drains was unmodelled entirely** | the deck's declared third pillar scored ZERO. No drain metric existed anywhere; the only occurrence of the word was a target LABEL |
+| **A token per enchantment priced as one token** | Archon of Sun's Grace, the best card on its branch, valued at a single 2/2 forever |
+| **Six lands counted as coloured sources that cannot pay on curve** | every colour in zur-enchantress short, while the headline read at or above target on two of three |
+| **`^Game Outcome: .*draw` matched a DECKING LOSS** | 12 games recorded as draws while carrying winners; one run's accounting came to 72 of 60 |
+| **A game nobody won was dropped from the summary** | a simultaneous loss — all four seats at 0 life — vanished; another run came to 59 of 60 |
+| **A validator printed `OK ◆` over checks it never ran** | membership and win-line checks skipped in silence whenever `cards.json` was absent |
+| **`model-coverage` pointed at a switch connected to nothing** | 21 cards across 7 decks told the pilot to set a flag that returns byte-identical figures |
+
+What the deck itself is now measured at: **v2.3.1**, kill-by-t8 0.278 as a
+CEILING, and 3 wins in 60 Forge games against a table whose own null is 0.159 —
+an interval that excludes zero. The engine runs when Zur attacks, and Forge
+attacks about once in four eligible turns. **That gap is the pilot, and it is
+the largest single lever left.** No games have been logged.
+
 ## Open work
 
 ### IN FLIGHT — the PRD v2 build-out (2026-09-03)

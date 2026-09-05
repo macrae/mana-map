@@ -515,3 +515,132 @@ stealing, and the straggler tail is **+4061s / +6734s / +1304s** on the three
 biggest runs — 12% to 50% of the wall spent with idle cores waiting on one job.
 Both are left alone deliberately: `run_id` does not encode `jobs`, so changing
 the default would change the SAMPLE a given run id produces.
+
+---
+
+## 2026-09-04/05 — A card read correctly and never played
+
+The single most expensive class this bench has produced, found **five times in
+one session** and only caught as a class on the fourth.
+
+Every casting loop in `goldfish.simulate_once`'s main phase selects on a
+CHANNEL: cards that draw, cards that ramp, cards that make Treasure, cards with
+a body. **A card matching none of them sits in hand for ten turns while its
+profile says exactly what it would have done.** The figure that results is not
+low — it is a number about a different deck.
+
+`goldfish.py` already carried a comment about patching this once, for damage
+doublers: *"Gratuitous Violence and Dictate of the Twin Gods are enchantments,
+read correctly and never cast."* It was patched case by case and nothing looked
+for the next one.
+
+| found | cards | what it cost |
+|---|---|---|
+| drain permanents | Sanctum of Stone Fangs, Northern Air Temple | two Shrines measured as EXACTLY nothing; casting them nearly doubled the deck's drain and moved kill-by-t8 +0.051 |
+| lifelink Auras | Steel of the Godhead, Sheltered by Ghosts | the gain side of the drain engine |
+| free sacrifice outlets | Ashnod's Altar, Altar of Dementia | a SLEEVED deck ran its engine on 2 of its 4 outlets |
+| death engines | The Meathook Massacre | went straight back into the bucket the moment its death triggers started working, because its DRAIN profile is empty and that was all the predicate checked |
+| attack enablers | Aqueous Form, Reconnaissance, Aether Tunnel, Spirit Mantle | **a DEADLOCK** — see below |
+
+The fleet sweep that found the rest: **228 of 873 cards (26%) are never cast**,
+heliod 48%. Most of that is CORRECT and the number alone means nothing — a
+counterspell should never be cast in a goldfish. The defect is only ever a card
+that is never cast **and feeds a channel the deck switched ON**. Four, on two
+decks, and both classes were real.
+
+`model_coverage.never_cast` and `silent_losses` put the predicate in production
+and a fleet test asserts the list is EMPTY on every deck. It MIRRORS the casting
+loops rather than replacing them, which is a real risk of drift — and the drift
+happened within the hour, when `model_deaths` was taught to goldfish and not to
+the mirror. The test caught it. That is what it is for.
+
+### The deadlock
+
+Four of zur-enchantress's six attack enablers — including BOTH one-mana ones —
+matched no casting loop. The only route to an enabler was Zur's tutor, which
+needs an attack, which needs an enabler. **The model had built a deck that could
+not start its own engine, and then reported the result as a fact about the
+deck.** `enabled_share` 0.132 -> 0.581 on the fix.
+
+## A rate that nothing had ever asked about
+
+`model_commander_attack_tutor` fired ONCE A TURN from the turn after the
+commander landed, and reported **5.70 fires a game**. Forge — 60 games, piloting
+confirmed COMPARABLE — resolved that search **73 times. 1.22 a game.**
+
+    tutor fires   5.70 -> 0.877        board power t10   27.30 -> 16.64
+    kill by t8    0.501 -> 0.173       drain t10         17.47 ->  9.43
+    kill by t10   0.924 -> 0.732
+
+**More than half of one day's measured gains were that assumption.** Five
+branches were merged against a tutor firing five times more often than evidence
+describes. The branches were compared against EACH OTHER under the same wrong
+assumption, so the directions mostly survive; the levels do not.
+
+`fires_per_turn` and `source` are now REQUIRED, the same contract `model_deaths`
+keeps. **A rate driving a figure must name where it was measured**, or it is the
+deleted engine lift wearing a new hat. And where a rate is a CEILING — 1.0 when
+an enabler is out, because once a turn is the most that can happen — the record
+says so, because the `basis` string had described the old model as a ceiling
+while the figure was being read as a forecast.
+
+## Six lands counted as coloured sources that cannot pay a coloured cost
+
+`land_colors` counts a land whose ONLY coloured mode is `{1}, {T}: Add one mana
+of any color` at FULL VALUE, in every colour it makes. Karsten's targets are
+about casting ON CURVE, and a land needing an extra generic cannot pay a
+`{1}{B}{B}` cost on turn three the way a Swamp can.
+
+    colour   sources   gated   real   target
+    W             24       6     18       22
+    U             24       6     18       22
+    B             31       6     25       36
+
+Every colour short; the headline read 24/24/31 and only black looked wrong.
+
+**NOT DISCOUNTED — REPORTED.** Choosing a fraction to divide a gated land by
+would be an authored number driving a headline. `sources.gated` names them and
+`on_curve_probability.lands_only_ungated` is the FLOOR, so the figure travels as
+a band.
+
+Two things the sweep bought. The obvious fix is backwards: cutting those lands
+for basics made every colour WORSE, because they really are counted for all
+three and cutting the fixing loses more than it gains. And the free-mode escape
+is load-bearing — City of Brass and Mana Confluence carry a cost clause AND a
+free coloured tap. The first pattern used a lookbehind for `}` and failed on
+`{1}, {T}`, where a SPACE sits between them, so the whole check returned zero.
+
+`Fetid Heath` is a FILTER (`{W/B}, {T}`) and is a different class; the sweep
+covered numeric costs only and the pattern was not widened past it.
+
+## Two regexes in the parser, both wrong about a game's outcome
+
+- **`^Game Outcome: .*draw` matched a DECKING LOSS.** Forge writes `has lost
+  trying to draw cards from empty library`. Every one of the 14 lines matching
+  the loose pattern across every log on disk was that line and ZERO were a
+  genuine draw. Twelve games in one 60-game run were recorded as draws while
+  still carrying a winner, `tally_wins` counted those winners anyway, and the
+  run's accounting came to **72 of 60**.
+- **A game nobody won was DROPPED.** `analyze` rebuilds its summary from games
+  carrying a winner, a draw or a truncation, so a game with none of the three
+  vanished — and a simultaneous loss (all four seats at 0 life on the same turn,
+  a draw the rules recognise and Forge does not announce) is exactly that game.
+  Derived from the `lost` map because there is no line to match. The flag then
+  had to survive three hops — settle, `game_facts`, `compact` — and was dropped
+  at two of them.
+
+`test_every_tracked_run_accounts_for_all_its_games` found both. A balance test
+over a tracked artifact is worth more than it looks.
+
+## `OK` from a validator that checked nothing but the file's shape
+
+`validate-goldfish-targets` caught a bare `Exception` around `load_deck_cards`
+and returned an empty error list, which `main` printed as `OK … ◆`. Every
+membership and win-line check was skipped in silence. Caught when `deck-branch
+new` (which writes `decklist.txt` and no `cards.json`) produced a clean OK over
+a declaration naming two cards the swap had just removed.
+
+The headline word now carries how much was checked — `PARTIAL`, with the note
+naming what did not run and the exact command that fixes it. **One existing test
+had been asserting `OK` on a run that checked nothing, for months, which is how
+the blind spot stayed invisible.**
