@@ -2043,6 +2043,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     first_seven_lands = sum(1 for c in hand if c["is_land"])
 
     attack_tutor_fired = 0
+    attack_tutor_debt = 0.0
     # DEVOTION, and the gods waiting on it. `battlefield_pips` is one pip list
     # per nonland permanent in play; `pending_gods` holds the gods that have
     # RESOLVED but are not creatures yet. A god below its threshold is an
@@ -2456,7 +2457,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # crude part: a real pilot fetches for the board, not for the curve. It
         # is stated rather than hidden, and it is the same rule for every list
         # being compared.
+        # THE COMMANDER DOES NOT ATTACK EVERY TURN, and modelling it as though
+        # it does was worth a factor of nearly five.
+        #
+        # This fired once per turn from the turn after the commander landed.
+        # Forge, 60 games on the standard pod with piloting confirmed
+        # COMPARABLE, resolved Zur's search 73 times — 1.22 per game against
+        # the 5.70 this model was reporting. The attack window is about 5.25 own
+        # turns (games run ~10.3 own turns, first attack ~5.05), so the measured
+        # rate is 0.232 fires per turn in that window.
+        #
+        # The reason is not a Forge quirk. Attacking with a 1/4 into a developed
+        # board is a real decision with a real cost, and neither the AI nor a
+        # person makes it every turn. Reconnaissance is the card that would
+        # change the answer and it was discarded in all three games it appeared.
+        #
+        # SOURCED LIKE `model_deaths`: a rate driving a figure must name where it
+        # was measured, or it is the deleted engine lift wearing a new hat.
         if attack_tutor and commander_turn is not None and turn > commander_turn:
+            attack_tutor_debt += attack_tutor["fires_per_turn"]
+        while (attack_tutor and attack_tutor_debt >= 1.0
+               and commander_turn is not None and turn > commander_turn):
+            attack_tutor_debt -= 1.0
             match = None
             for i, cand in enumerate(deck):
                 if cand["cmc"] > attack_tutor["max_mv"]:
@@ -3110,7 +3132,7 @@ def _round(x):
 
 def aggregate(results, targets, max_turn, model_treasures=False,
               model_combat=False, model_draw=False, model_sacrifice=False,
-              model_drain=False):
+              model_drain=False, attack_tutor_rate=None):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -3183,11 +3205,18 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "declared": any(r["attack_tutor_fired"] for r in results),
             "mean_fired": _round(sum(r["attack_tutor_fired"] for r in results) / n),
             "games_it_fired": sum(1 for r in results if r["attack_tutor_fired"]),
-            "basis": ("fires once a turn from the turn after the commander lands, "
-                      "pulling the highest-mana-value match from the library onto "
-                      "the battlefield. A goldfish has no blockers so the "
-                      "commander always attacks — this is the engine's CEILING, "
-                      "not an estimate of it."),
+            # THE RATE TRAVELS WITH THE FIGURE. A reader who sees "0.877 fires
+            # per game" must be able to find out where that came from without
+            # leaving the record.
+            **({"rate": attack_tutor_rate} if attack_tutor_rate else {}),
+            "basis": ("fires at the DECLARED RATE from the turn after the "
+                      "commander lands, pulling the highest-mana-value match "
+                      "from the library onto the battlefield. The rate is "
+                      "measured from a sim run and named in `rate.source`. It "
+                      "used to fire EVERY turn, which was the engine's ceiling "
+                      "reported as its output: 5.70 fires a game against the "
+                      "1.22 Forge resolved over 60 games with piloting "
+                      "confirmed comparable."),
         }} if any(r["attack_tutor_fired"] for r in results) else {}),
         "land_drop_hit_rate_by_turn": {
             str(t): _round(sum(1 for r in results if r["land_hits"][t - 1]) / n) for t in turns
@@ -3411,8 +3440,24 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # plan is fetching bodies. Absent means absent: no other deck's figures move.
     attack_tutor = targets_doc.get("model_commander_attack_tutor") or None
     if attack_tutor:
+        # `fires_per_turn` AND `source` ARE REQUIRED. Without a rate this model
+        # fired the tutor EVERY turn after the commander landed, and Forge — 60
+        # games, piloting confirmed comparable — resolved Zur's search 1.22
+        # times a game against the 5.70 that produced. A commander does not
+        # attack every turn, and pretending otherwise inflated every figure
+        # built on the tutor. `source` names the run the rate was read off, the
+        # same contract `model_deaths` keeps.
+        missing = [k for k in ("fires_per_turn", "source") if k not in attack_tutor]
+        if missing:
+            raise SystemExit(
+                f"model_commander_attack_tutor is missing {', '.join(missing)} — "
+                f"an attack rate without a source is an authored number driving "
+                f"every figure the tutor touches. Measure it from a sim run "
+                f"(searches resolved / games / attack-window turns) and name it.")
         attack_tutor = {"type": str(attack_tutor.get("type") or "Enchantment"),
-                        "max_mv": int(attack_tutor.get("max_mv", 3))}
+                        "max_mv": int(attack_tutor.get("max_mv", 3)),
+                        "fires_per_turn": float(attack_tutor["fires_per_turn"]),
+                        "source": str(attack_tutor["source"])}
     model_combat = declared_combat if model_combat is None else bool(model_combat)
     model_draw = declared_draw if model_draw is None else bool(model_draw)
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
@@ -3643,7 +3688,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         },
         "metrics": aggregate(results, targets, max_turn, model_treasures,
                              model_combat, model_draw, model_sacrifice,
-                             model_drain),
+                             model_drain, attack_tutor),
         # OPT-IN, and default off so the returned document is byte-identical
         # to every tracked `goldfish_metrics.json`. Two tests compare `run`'s
         # output against the artifact directly, and they caught this the first

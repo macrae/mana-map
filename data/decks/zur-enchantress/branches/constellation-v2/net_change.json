@@ -882,13 +882,12 @@
   "why": "Two more payoffs on the axis that multiplies, and both cuts pay a second time in the mana. Gremlin Tamer mints a 1/1 per enchantment at mana value 2; Ajani's Chosen mints a 2/2. Zur makes an enchantment enter on every attack, so each of these is another body per turn on top of Archon's Pegasus. THE CUTS LOWER TWO COLOUR REQUIREMENTS: Fear of Impostors is the deck's remaining {U}{U} card and Tymaret its cheapest {B}{B} one, and a source target is driven by the earliest double pip -- black has been 7 sources short since manabase-v1 precisely because Tymaret wants {B}{B} on turn two. Cutting them should move the targets down as well as the payoffs up. Cost stated: a counterspell and a body leave, and Tymaret was also a graveyard answer."
  },
  "objective_grade": {
-  "reading": 0.4893,
-  "shortfall": 0.0107,
-  "state": "not resolvable",
-  "why": "missed by 0.0107, which is under the 0.0198 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 0.1668,
+  "shortfall": 0.3332,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0107, which is under the 0.0198 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The objective is not met.",
   "bill": {
    "box": 1,
    "buy": 0,
@@ -914,6 +913,7 @@
   "fell": [],
   "no_call": [
    "damage @T10",
+   "board power @T6",
    "killed by T6",
    "killed by T10",
    "stall, 2 in a row",
@@ -923,19 +923,15 @@
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
-  "reward": [
-   {
-    "measure": "board power @T6",
-    "reads_as": "9.24 -> 9.52, a change of +0.27 (+3%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   }
+  "notes": [
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
   ],
+  "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.308 against an MDE of 0.442. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is board power @T6 at +0.124 against an MDE of 0.143. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "9 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -945,22 +941,20 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [
-   "board power @T6"
-  ],
-  "state": "inconclusive"
+  "rose": [],
+  "state": "do not merge"
  },
  "slug": "zur-enchantress",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 22.5795,
-   "champion": 22.2719,
-   "delta": 0.3076,
-   "mde": 0.4416,
+   "branch": 14.2492,
+   "champion": 13.9921,
+   "delta": 0.2571,
+   "mde": 0.3129,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.308 is smaller than the 0.442 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.257 is smaller than the 0.313 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -969,26 +963,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 9.5164,
-   "champion": 9.2425,
-   "delta": 0.2739,
-   "mde": 0.2095,
+   "branch": 6.3103,
+   "champion": 6.186,
+   "delta": 0.1243,
+   "mde": 0.1435,
    "measure": "board power @T6",
-   "reads_as": "9.24 -> 9.52, a change of +0.27 (+3%)",
+   "reads_as": "no call \u2014 the gap of 0.124 is smaller than the 0.143 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
-   "branch": 0.0055,
-   "champion": 0.0054,
-   "delta": 0.0001,
-   "mde": 0.0029,
+   "branch": 0.0012,
+   "champion": 0.0013,
+   "delta": -0.0001,
+   "mde": 0.0014,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -997,12 +991,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9215,
-   "champion": 0.9172,
-   "delta": 0.0043,
-   "mde": 0.0109,
+   "branch": 0.7325,
+   "champion": 0.7214,
+   "delta": 0.0111,
+   "mde": 0.0178,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.018 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1011,12 +1005,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0126,
-   "champion": 0.0122,
-   "delta": 0.0004,
-   "mde": 0.0044,
+   "branch": 0.0307,
+   "champion": 0.0268,
+   "delta": 0.0039,
+   "mde": 0.0068,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.007 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1025,12 +1019,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3823,
-   "champion": 0.3854,
-   "delta": -0.0031,
-   "mde": 0.0193,
+   "branch": 0.3913,
+   "champion": 0.3937,
+   "delta": -0.0024,
+   "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1053,12 +1047,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 3.1279,
-   "champion": 3.155,
-   "delta": -0.0271,
-   "mde": 0.15,
+   "branch": 1.6241,
+   "champion": 1.6457,
+   "delta": -0.0216,
+   "mde": 0.0986,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.027 is smaller than the 0.150 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.022 is smaller than the 0.099 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1067,12 +1061,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6201,
-   "champion": 0.6293,
-   "delta": -0.0092,
-   "mde": 0.0228,
+   "branch": 0.5688,
+   "champion": 0.5703,
+   "delta": -0.0015,
+   "mde": 0.0239,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.023 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

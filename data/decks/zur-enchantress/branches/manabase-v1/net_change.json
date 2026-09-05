@@ -1142,12 +1142,12 @@
   "why": "The worst axis in the audit and the only one that is deterministic. Black wants 36 sources and has 24 -- a -12 gap driven by six double-black cards, four of which ARE the drain engine -- and black is on-curve in 66.7% of games against 91.8% for white and blue. One game in three cannot cast its black cards on time. The cuts are mana-fit`s OWN cut candidates (Adarkar Wastes and Skycloud Expanse make only colours already at target, and Skycloud costs {1} to use) plus two Islands -- blue is the LEAST-pipped colour at 21.5% and had the MOST basics at five -- and Valgavoth`s Lair, the deck`s only always-tapped land. Every add makes black while keeping a second colour, so black rises without white or blue falling below target. Measured by mana-analysis, which is deterministic: this is arithmetic over the decklist, not a simulation, and the goldfish cannot rank two lands that make the same colours."
  },
  "objective_grade": {
-  "reading": 0.8533,
-  "shortfall": null,
-  "state": "met"
+  "reading": 0.5817,
+  "shortfall": 0.2083,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "You buy nothing and pay damage @T10, board power @T6, killed by T6, killed by T10, extra cards by T8 and interaction affordable @T6.",
+  "because": "The objective is not met. Stall, 2 in a row improved anyway, which is a different branch's case.",
   "bill": {
    "box": 2,
    "buy": 10,
@@ -1184,60 +1184,53 @@
   "fell": [
    "damage @T10",
    "board power @T6",
-   "killed by T6",
    "killed by T10",
-   "extra cards by T8",
-   "interaction affordable @T6"
+   "extra cards by T8"
   ],
   "no_call": [
-   "stall, 2 in a row",
+   "killed by T6",
    "missed drop by T5",
    "mulliganed",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [],
-  "reward": [],
+  "reward": [
+   {
+    "measure": "stall, 2 in a row",
+    "reads_as": "3 games in 100 -> 2 in 100, a swing of 1 games per 100",
+    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   }
+  ],
   "risk": [
    {
-    "detail": "22.27 -> 16.66, a change of -5.61 (-25%)",
+    "detail": "13.99 -> 11.18, a change of -2.82 (-20%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.24 -> 8.09, a change of -1.16 (-13%)",
+    "detail": "6.19 -> 5.65, a change of -0.53 (-9%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
-    "kind": "paid",
-    "what": "killed by T6",
-    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "detail": "92 games in 100 -> 85 in 100, a swing of 6 games per 100",
+    "detail": "72 games in 100 -> 58 in 100, a swing of 14 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "3.15 -> 1.72, a change of -1.44 (-46%)",
+    "detail": "1.65 -> 0.97, a change of -0.68 (-41%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "63 games in 100 -> 60 in 100, a swing of 3 games per 100",
-    "kind": "paid",
-    "what": "interaction affordable @T6",
-    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "detail": "the largest is hand can act by T3 at +0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.001. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1253,20 +1246,22 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
-  "state": "a trade"
+  "rose": [
+   "stall, 2 in a row"
+  ],
+  "state": "do not merge"
  },
  "slug": "zur-enchantress",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 16.6627,
-   "champion": 22.2719,
-   "delta": -5.6092,
-   "mde": 0.4416,
+   "branch": 11.1762,
+   "champion": 13.9921,
+   "delta": -2.8159,
+   "mde": 0.3129,
    "measure": "damage @T10",
-   "reads_as": "22.27 -> 16.66, a change of -5.61 (-25%)",
+   "reads_as": "13.99 -> 11.18, a change of -2.82 (-20%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1275,12 +1270,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.086,
-   "champion": 9.2425,
-   "delta": -1.1565,
-   "mde": 0.2055,
+   "branch": 5.6532,
+   "champion": 6.186,
+   "delta": -0.5328,
+   "mde": 0.1408,
    "measure": "board power @T6",
-   "reads_as": "9.24 -> 8.09, a change of -1.16 (-13%)",
+   "reads_as": "6.19 -> 5.65, a change of -0.53 (-9%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1290,25 +1285,25 @@
   {
    "better_is": "higher",
    "branch": 0.0,
-   "champion": 0.0054,
-   "delta": -0.0054,
-   "mde": 0.0029,
+   "champion": 0.0013,
+   "delta": -0.0013,
+   "mde": 0.0014,
    "measure": "killed by T6",
-   "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
-   "branch": 0.8533,
-   "champion": 0.9172,
-   "delta": -0.0639,
-   "mde": 0.014,
+   "branch": 0.5817,
+   "champion": 0.7214,
+   "delta": -0.1397,
+   "mde": 0.0195,
    "measure": "killed by T10",
-   "reads_as": "92 games in 100 -> 85 in 100, a swing of 6 games per 100",
+   "reads_as": "72 games in 100 -> 58 in 100, a swing of 14 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1317,26 +1312,26 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0101,
-   "champion": 0.0122,
-   "delta": -0.0021,
-   "mde": 0.0043,
+   "branch": 0.0198,
+   "champion": 0.0268,
+   "delta": -0.007,
+   "mde": 0.0064,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "3 games in 100 -> 2 in 100, a swing of 1 games per 100",
    "scale": null,
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
   {
    "better_is": "lower",
    "branch": 0.3917,
-   "champion": 0.3854,
-   "delta": 0.0063,
-   "mde": 0.0193,
+   "champion": 0.3937,
+   "delta": -0.002,
+   "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1359,12 +1354,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.7173,
-   "champion": 3.155,
-   "delta": -1.4377,
-   "mde": 0.1495,
+   "branch": 0.9674,
+   "champion": 1.6457,
+   "delta": -0.6783,
+   "mde": 0.0984,
    "measure": "extra cards by T8",
-   "reads_as": "3.15 -> 1.72, a change of -1.44 (-46%)",
+   "reads_as": "1.65 -> 0.97, a change of -0.68 (-41%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1373,15 +1368,15 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6036,
-   "champion": 0.6293,
-   "delta": -0.0257,
-   "mde": 0.0225,
+   "branch": 0.5584,
+   "champion": 0.5703,
+   "delta": -0.0119,
+   "mde": 0.0238,
    "measure": "interaction affordable @T6",
-   "reads_as": "63 games in 100 -> 60 in 100, a swing of 3 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
