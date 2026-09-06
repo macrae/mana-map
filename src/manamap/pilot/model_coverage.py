@@ -119,7 +119,13 @@ def channels_for(profile):
     if _nonzero(profile.get("drain"), (
             "payoff_equal", "payoff_fixed", "gain_recurring",
             "gain_per_enchantment", "gain_per_creature",
-            "drain_recurring", "drain_per_enchantment", "lifelink")):
+            "drain_recurring", "drain_per_enchantment",
+            # ADDED WITH THE FIELDS THEMSELVES, and only because the fleet
+            # test failed first. This mirror has now drifted twice — once
+            # for `model_deaths`, once here — and both times the guard
+            # caught it inside the hour. That is the argument for the
+            # guard, not against the mirror.
+            "drain_etb", "gain_etb", "drain_per_type", "gain_per_type", "lifelink")):
         found.add("drain")
     return found
 
@@ -162,7 +168,13 @@ def never_cast(profile, flags):
     if flags.get("model_drain") and (_nonzero(profile.get("drain"), (
             "payoff_equal", "payoff_fixed", "gain_recurring",
             "gain_per_enchantment", "gain_per_creature",
-            "drain_recurring", "drain_per_enchantment"))
+            "drain_recurring", "drain_per_enchantment",
+            # ADDED WITH THE FIELDS THEMSELVES, and only because the fleet
+            # test failed first. This mirror has now drifted twice — once
+            # for `model_deaths`, once here — and both times the guard
+            # caught it inside the hour. That is the argument for the
+            # guard, not against the mirror.
+            "drain_etb", "gain_etb", "drain_per_type", "gain_per_type"))
             or (profile.get("drain") or {}).get("lifelink")):
         return False
     if flags.get("model_sacrifice") and profile.get("sac_outlet"):

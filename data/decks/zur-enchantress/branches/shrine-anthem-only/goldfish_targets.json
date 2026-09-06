@@ -1,0 +1,148 @@
+{
+  "_note": "AUTHORED 2026-09-04 for bodies-v3, the enchantment-CREATURE list. `model_combat` is ON for the first time on this deck: until now the goldfish reported `output.available: false` \u2014 \"no magnitude series ... that is an absent measurement, not a zero\" \u2014 so there was no clock to read and no way to ask whether the deck kills anything.\n\nREAD THE CLOCK AS A CLOCK. The goldfish has NO BLOCKERS and no opponents, so kill_by_N is measured against one 40-life opponent who never interacts. It OVERSTATES a creature plan by construction \u2014 this repo has paid for that once already, when the model preferred a go-wide Edgar refactor that Forge then scored 31/400 against the champion's 50/400 because 1/1 tokens do not connect. It is used here anyway because Forge's AI cannot pilot Zur's attack-to-tutor line at all (measured: Zur attacked in 17-47% of games where a human attacks every turn, since the trigger fires on ATTACK and not on connect), so the alternative is no instrument rather than a better one. The error is in a KNOWN DIRECTION and is identical for every list being compared.\n\nCOMMANDER DAMAGE IS GONE as a route, on measurement: 0 of 39 games reached 21, 0.35 commander damage a game, and 2.33 total combat damage against edgar-vampires' 32.30 on the same table. The kill is now a BOARD \u2014 Zur's trigger puts an enchantment onto the battlefield, so fetching an enchantment CREATURE is a free body every attack.\n\nZUR'S TRIGGER IS NOW MODELLED, imperfectly and on purpose \u2014 `model_commander_attack_tutor` pulls the highest-mana-value enchantment at MV<=3 from the library onto the battlefield once a turn from the turn after Zur lands. It is a CEILING, not an estimate: a goldfish has no blockers so the commander always attacks, where Forge's AI attacked in 17-47% of games and a real pilot attacks when it is safe. Before this the floor was ZERO \u2014 the deck's entire engine was invisible and every figure counted only cards it DREW, which is a systematic understatement of exactly this deck's plan. A ceiling and a floor bound it; one number alone did not. And read the engine figure as a DESCRIPTION, never as evidence of a lift \u2014 the same hand writes this file and reads the number, which is why `deck_branch.MEMBERSHIP_AXES` refuses these axes as branch objectives.",
+  "targets": [
+    {
+      "label": "RESOURCE ENGINE drawn \u2014 a draw engine that keeps drawing",
+      "required": true,
+      "_why": "The deck out-resources the table and then converts; without a repeating engine it is a pile of answers with nothing to answer toward. One-shot selection (Brainstorm, Preordain) is deliberately EXCLUDED \u2014 it smooths a hand, it does not refill one.",
+      "need": [
+        {
+          "any_of": [
+            "Caretaker's Talent",
+            "Dawn of Hope",
+            "Enduring Innocence",
+            "Entity Tracker",
+            "Mystic Remora",
+            "Phyrexian Arena",
+            "Rhystic Study",
+            "The Spirit Oasis",
+            "Tocasia's Welcome",
+            "Tribute to Horobi // Echo of Death's Wail"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "AN ANSWER drawn \u2014 spot removal, a sweeper or a counterspell",
+      "required": true,
+      "_why": "The table plays at a turn-four clock and some seats hold hard lockout effects. A Zur deck that draws no interaction loses before its commander has attacked twice. Widened 2026-09-03: the engine block named this the bottleneck at 0.709 by turn three, and the fix is COUNT, not cost \u2014 eight of the original ten were already MV<=2.",
+      "need": [
+        {
+          "any_of": [
+            "Reprobation",
+            "Counterspell",
+            "Imprisoned in the Moon",
+            "Muddle the Mixture",
+            "No More Lies",
+            "Ossification",
+            "Path to Exile",
+            "Sheltered by Ghosts",
+            "Swords to Plowshares",
+            "The Meathook Massacre",
+            "Journey to Nowhere"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "KILL \u2014 a BOARD: a real body plus a way through",
+      "route": "board",
+      "need": [
+        {
+          "any_of": [
+            "Southern Air Temple",
+            "Heliod, Sun-Crowned",
+            "Athreos, God of Passage",
+            "Fear of Infinity",
+            "Eidolon of Countless Battles",
+            "Nighthowler",
+            "Eidolon of Astral Winds",
+            "Enduring Innocence",
+            "Grim Guardian",
+            "Underworld Coinsmith",
+            "Daxos, Blessed by the Sun"
+          ]
+        },
+        {
+          "any_of": [
+            "Aqueous Form",
+            "Steel of the Godhead",
+            "Spirit Mantle",
+            "Unquestioned Authority",
+            "Aether Tunnel",
+            "Reconnaissance",
+            "Thassa, God of the Sea"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "KILL \u2014 drain: a payoff plus something to feed it",
+      "route": "drain",
+      "_why": "Rebuilt around Vito, which is the CONVERTER the deck was missing: lifegain becomes life loss at full value, so Daybreak Coronet's lifelink turns a connection into twice its damage. Marauding Blight-Priest hits every opponent for 1 on the same trigger, and the constellation pair turn each enchantment that lands into both. NOTE Exquisite Blood and Sanguine Bond are DELIBERATELY ABSENT \u2014 either would make this a two-card infinite, which is the thing the pilot rejected. Vito alone is a payoff, not a loop. NOTE ALSO the simulation still cannot see any of it: life loss and death triggers are unmodelled, so this measures the PIECES, never the kill. Underworld Coinsmith sits in the PAYOFF leg only: it is both a payoff and fuel, and leaving it in both let one draw satisfy an AND of ORs twice \u2014 the defect `_validate_shared_leg` exists to catch, and it caught it here.",
+      "need": [
+        {
+          "any_of": [
+            "Bastion of Remembrance",
+            "Grim Guardian",
+            "Marauding Blight-Priest",
+            "The Meathook Massacre",
+            "Underworld Coinsmith",
+            "Vito, Thorn of the Dusk Rose"
+          ]
+        },
+        {
+          "any_of": [
+            "Bitterblossom",
+            "Black Market Connections",
+            "Dawn of Hope",
+            "Tribute to Horobi // Echo of Death's Wail"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "RAMP drawn \u2014 an accelerant of any kind",
+      "_why": "Context, not a component: the mana block already reports land drops directly.",
+      "need": [
+        {
+          "any_of": [
+            "Black Market Connections",
+            "Inquisitive Glimmer",
+            "Land Tax",
+            "The Spirit Oasis",
+            "Transcendent Envoy"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A TUTOR drawn",
+      "_why": "Context. Tutor density is reported and never scored, and a tutor is only as good as the target it fetches \u2014 which is what the routes above are for.",
+      "need": [
+        {
+          "any_of": [
+            "Demonic Tutor",
+            "Enlightened Tutor",
+            "Muddle the Mixture"
+          ]
+        }
+      ]
+    }
+  ],
+  "model_combat": true,
+  "model_commander_attack_tutor": {
+    "type": "Enchantment",
+    "max_mv": 3,
+    "fires_per_turn": 0.232,
+    "source": "giada-angels-vs-baylen-tokens-vs-abaddon-n60-cfaf142a-s1484357674-podExperimental-c600: 73 searches resolved / 60 games / ~5.25 own-turn attack window | when_enabled = 1.0 is a CEILING, not a measurement: with an unblockable aura or Reconnaissance out there is no combat cost to attacking, so once a turn is the most that can happen. Read `enabled_share` for how often the deck actually got there.",
+    "fires_per_turn_when_enabled": 1.0
+  },
+  "model_draw": true,
+  "model_drain": true,
+  "model_deaths": {
+    "own_per_turn": 0.187,
+    "opponent_per_turn": 0.613,
+    "source": "giada-angels-vs-baylen-tokens-vs-abaddon-n60-cfaf142a-s1484357674-podExperimental-c600"
+  }
+}

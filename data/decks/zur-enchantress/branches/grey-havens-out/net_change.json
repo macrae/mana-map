@@ -939,13 +939,12 @@
   "why": "The Grey Havens taps for {C} and, separately, for one mana of any colour AMONG LEGENDARY CREATURE CARDS IN YOUR GRAVEYARD. This deck runs six legendary creatures and can put none of them there: Zur goes to the command zone, Athreos and Heliod and Thassa are INDESTRUCTIBLE, and nothing in the 100 mills, surveils or discards. That leaves Daxos and Vito, both of which have to die and stay dead. In this deck it is a Wastes that scries 1 -- and land_colors counts it as a source of all five colours. It is a leftover from the build that ran Tymaret and The Master of Keys, both now cut. Shattered Sanctum is a real white-black source in a deck whose black is the tightest colour."
  },
  "objective_grade": {
-  "reading": 0.2573,
-  "shortfall": 0.0027,
-  "state": "not resolvable",
-  "why": "missed by 0.0027, which is under the 0.0173 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 0.2388,
+  "shortfall": 0.0212,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0027, which is under the 0.0173 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The objective is not met. Board power @t6 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 0,
    "buy": 4,
@@ -1008,7 +1007,7 @@
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1023,7 +1022,7 @@
   "rose": [
    "board power @T6"
   ],
-  "state": "inconclusive"
+  "state": "do not merge"
  },
  "slug": "zur-enchantress",
  "staged": 0,
@@ -1058,12 +1057,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0008,
-   "champion": 0.0027,
-   "delta": -0.0019,
-   "mde": 0.0021,
+   "branch": 0.0005,
+   "champion": 0.0019,
+   "delta": -0.0014,
+   "mde": 0.0017,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.002 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.002 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1072,12 +1071,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8181,
-   "champion": 0.8081,
-   "delta": 0.01,
-   "mde": 0.0156,
+   "branch": 0.8024,
+   "champion": 0.7912,
+   "delta": 0.0112,
+   "mde": 0.0161,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.016 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",

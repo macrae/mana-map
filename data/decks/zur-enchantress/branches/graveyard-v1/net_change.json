@@ -1358,11 +1358,11 @@
   "fell": [
    "damage @T10",
    "board power @T6",
-   "killed by T6",
    "killed by T10",
    "extra cards by T8"
   ],
   "no_call": [
+   "killed by T6",
    "missed drop by T5",
    "mulliganed",
    "hand can act by T3"
@@ -1394,13 +1394,7 @@
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "0 games in 100 -> 0 in 100, a swing of 0 games per 100",
-    "kind": "paid",
-    "what": "killed by T6",
-    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "detail": "81 games in 100 -> 68 in 100, a swing of 13 games per 100",
+    "detail": "79 games in 100 -> 68 in 100, a swing of 11 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
@@ -1412,9 +1406,9 @@
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is hand can act by T3 at +0.004 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "3 row(s) returned no call",
+    "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1464,25 +1458,25 @@
   {
    "better_is": "higher",
    "branch": 0.0002,
-   "champion": 0.0027,
-   "delta": -0.0025,
-   "mde": 0.0021,
+   "champion": 0.0019,
+   "delta": -0.0017,
+   "mde": 0.0017,
    "measure": "killed by T6",
-   "reads_as": "0 games in 100 -> 0 in 100, a swing of 0 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.002 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.6826,
-   "champion": 0.8081,
-   "delta": -0.1255,
+   "champion": 0.7912,
+   "delta": -0.1086,
    "mde": 0.0184,
    "measure": "killed by T10",
-   "reads_as": "81 games in 100 -> 68 in 100, a swing of 13 games per 100",
+   "reads_as": "79 games in 100 -> 68 in 100, a swing of 11 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",

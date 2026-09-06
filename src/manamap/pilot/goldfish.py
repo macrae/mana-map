@@ -1113,8 +1113,27 @@ _RECURRING_DRAIN_RE = re.compile(
 #: wording on a DEATH trigger and nothing dies in this simulation — scoring it
 #: as recurring would have invented a drain engine out of a card that cannot
 #: fire here at all.
+#: RECURRING ONLY. The first version matched the clause anywhere in a sentence,
+#: so Northern Air Temple's ONE-SHOT ETB — "When Northern Air Temple enters,
+#: each opponent loses X life and you gain X life" — was scored as a drain that
+#: fires EVERY TURN. Caught 2026-09-05 by the poh-procedures agent, which read
+#: the card and said the deck has no first-main-phase trigger except Sanctum of
+#: Stone Fangs. It was right; the model had been inflating the drain figure
+#: since the channel shipped, and the Shrine package's measured value rested
+#: partly on it.
 _SYMMETRIC_DRAIN_GAIN_RE = re.compile(
-    r"([^.]*?each opponent loses (\w+) life and you gain (?:\w+) life[^.]*)\.", re.I)
+    r"(at the beginning of[^.]*?each opponent loses (\w+) life and you gain "
+    r"(?:\w+) life[^.]*)\.", re.I)
+#: The one-shot version of the same clause: pays once, on entry.
+_SYMMETRIC_DRAIN_GAIN_ETB_RE = re.compile(
+    r"(when [^.]*?enters[^.]*?, each opponent loses (\w+) life and you gain "
+    r"(?:\w+) life[^.]*)\.", re.I)
+#: And the per-type version: "whenever another Shrine you control enters, each
+#: opponent loses 1 life and you gain 1 life" — the half that makes a Shrine
+#: count compound.
+_SYMMETRIC_DRAIN_GAIN_PER_TYPE_RE = re.compile(
+    r"whenever another ([A-Z][a-z]+) you control enters, each opponent loses "
+    r"(\w+) life and you gain (?:\w+) life", re.I)
 
 #: Lifelink the card HAS, or grants to a creature it will keep — not a pump that
 #: expires and not a token it makes. Corpus sweep 2026-09-04: a naive
@@ -1191,6 +1210,8 @@ def drain_profile(card):
     out = {"payoff_equal": False, "payoff_fixed": 0,
            "gain_recurring": 0, "gain_per_enchantment": 0, "gain_per_creature": 0,
            "drain_recurring": 0, "drain_per_enchantment": 0,
+           "drain_etb": 0, "gain_etb": 0,
+           "drain_per_type": 0, "gain_per_type": 0, "per_type": None,
            "lifelink": False, "scales_with": None, "unmodelled": None}
     if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
         return out
@@ -1209,6 +1230,14 @@ def drain_profile(card):
     if m and "dies" not in m.group(1).lower():
         n = _life_amount(m.group(2))
         out["drain_recurring"] = out["gain_recurring"] = n
+    m = _SYMMETRIC_DRAIN_GAIN_ETB_RE.search(text)
+    if m and "dies" not in m.group(1).lower():
+        n = _life_amount(m.group(2))
+        out["drain_etb"] = out["gain_etb"] = n
+    m = _SYMMETRIC_DRAIN_GAIN_PER_TYPE_RE.search(text)
+    if m:
+        out["per_type"] = m.group(1)
+        out["drain_per_type"] = out["gain_per_type"] = _life_amount(m.group(2))
 
     for rx, key in ((_CONSTELLATION_GAIN_RE, "gain_per_enchantment"),
                     (_ARRIVAL_GAIN_RE, "gain_per_creature"),
@@ -1237,7 +1266,7 @@ def drain_profile(card):
     if not any((out["payoff_equal"], out["payoff_fixed"], out["gain_recurring"],
                 out["gain_per_enchantment"], out["gain_per_creature"],
                 out["drain_recurring"], out["drain_per_enchantment"],
-                out["lifelink"])):
+                out["drain_etb"], out["drain_per_type"], out["lifelink"])):
         # A card that plainly drains but through an event this model has none
         # of. Death triggers are the big class: nothing dies here.
         if re.search(r"each opponent loses|target opponent loses", text, re.I):
@@ -2263,6 +2292,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     team_anthem = 0
     team_anthem_on_type = []
     drain_permanents = []
+    # Permanents that pay when another of a named type lands ("whenever another
+    # Shrine you control enters"). A one-shot ETB and a per-type trigger are
+    # DIFFERENT from a per-turn one, and reading all three as recurring is what
+    # inflated the drain figure before 2026-09-05.
+    per_type_watchers = []
     # Cards that mint a creature token every time an enchantment enters.
     enchantment_token_engines = []
     # DEATHS. `death_engines` already exists for the sacrifice channel; these
@@ -2288,6 +2322,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         creatures_entered_this_turn = 0
         deaths_drained = 0      # damage from OUR creatures dying, this turn
         deaths_gained = 0       # life from THEIRS dying, this turn
+        etb_drained = 0         # one-shot and per-type drain, this turn
+        etb_gained = 0
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -2842,6 +2878,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                if model_drain:
+                    d_ = card["drain"]
+                    # PAYS ONCE, ON ENTRY — scaled by its own named type if it
+                    # names one, counted on the board it is joining.
+                    if d_["drain_etb"] or d_["gain_etb"]:
+                        x_ = 1
+                        if d_["scales_with"]:
+                            x_ = max(1, sum(1 for tl_ in battlefield_types
+                                            if d_["scales_with"] in tl_))
+                        etb_drained += d_["drain_etb"] * x_
+                        etb_gained += d_["gain_etb"] * x_
+                    # And every permanent of a named type that lands afterwards
+                    # pays the ones already out.
+                    for prof_ in per_type_watchers:
+                        if prof_["per_type"] in (card.get("type_line") or ""):
+                            etb_drained += prof_["drain_per_type"]
+                            etb_gained += prof_["gain_per_type"]
+                    if d_["per_type"]:
+                        per_type_watchers.append(d_)
                 cb_ = card["combat"]
                 if cb_["team_counters_etb"]:
                     n_ = cb_["team_counters_etb"]
@@ -2981,6 +3036,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                if model_drain:
+                    d_ = card["drain"]
+                    # PAYS ONCE, ON ENTRY — scaled by its own named type if it
+                    # names one, counted on the board it is joining.
+                    if d_["drain_etb"] or d_["gain_etb"]:
+                        x_ = 1
+                        if d_["scales_with"]:
+                            x_ = max(1, sum(1 for tl_ in battlefield_types
+                                            if d_["scales_with"] in tl_))
+                        etb_drained += d_["drain_etb"] * x_
+                        etb_gained += d_["gain_etb"] * x_
+                    # And every permanent of a named type that lands afterwards
+                    # pays the ones already out.
+                    for prof_ in per_type_watchers:
+                        if prof_["per_type"] in (card.get("type_line") or ""):
+                            etb_drained += prof_["drain_per_type"]
+                            etb_gained += prof_["gain_per_type"]
+                    if d_["per_type"]:
+                        per_type_watchers.append(d_)
                 cb_ = card["combat"]
                 if cb_["team_counters_etb"]:
                     n_ = cb_["team_counters_etb"]
@@ -3221,12 +3295,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if deaths_gained:
                 gain_total += deaths_gained
                 gain_events += 1
+            if etb_gained:
+                gain_total += etb_gained
+                gain_events += 1
             if lifelink_power and damage_by_turn:
                 linked = min(lifelink_power, damage_by_turn[-1])
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
-            drained = deaths_drained
+            drained = deaths_drained + etb_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)
                 drained += d["drain_per_enchantment"] * enchantments_entered

@@ -73,7 +73,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "00674da2ff5e",
+    "model_version": "d307e75ba05d",
     "seed": 42
   },
   "metrics": {
@@ -94,22 +94,22 @@
     "combat": {
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.812,
+        "10": 0.799,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
-        "6": 0.002,
-        "7": 0.038,
-        "8": 0.259,
-        "9": 0.594
+        "6": 0.001,
+        "7": 0.032,
+        "8": 0.238,
+        "9": 0.572
       },
       "kill_turn_histogram": {
-        "10": 2187,
-        "6": 16,
-        "7": 362,
-        "8": 2209,
-        "9": 3350
+        "10": 2274,
+        "6": 13,
+        "7": 302,
+        "8": 2069,
+        "9": 3331
       },
       "mean_board_power_by_turn": {
         "1": 0.032,
@@ -135,9 +135,9 @@
         "8": 9.935,
         "9": 13.422
       },
-      "mean_kill_turn": 8.902,
+      "mean_kill_turn": 8.945,
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.188
+      "no_kill_by_max_turn_rate": 0.201
     },
     "commander": {
       "cast_by_turn_6_rate": 0.912,
@@ -158,27 +158,27 @@
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.047,
-        "10": 12.629,
-        "2": 0.182,
-        "3": 0.39,
-        "4": 0.651,
-        "5": 1.2,
-        "6": 2.09,
-        "7": 3.694,
-        "8": 5.643,
-        "9": 8.472
+        "10": 11.024,
+        "2": 0.135,
+        "3": 0.266,
+        "4": 0.432,
+        "5": 0.865,
+        "6": 1.601,
+        "7": 3.012,
+        "8": 4.726,
+        "9": 7.255
       },
       "mean_drain_by_turn": {
         "1": 0.047,
-        "10": 4.157,
-        "2": 0.135,
-        "3": 0.208,
-        "4": 0.261,
-        "5": 0.548,
-        "6": 0.89,
-        "7": 1.604,
-        "8": 1.949,
-        "9": 2.829
+        "10": 3.768,
+        "2": 0.088,
+        "3": 0.131,
+        "4": 0.167,
+        "5": 0.433,
+        "6": 0.736,
+        "7": 1.412,
+        "8": 1.714,
+        "9": 2.529
       },
       "share_of_games_draining_by_turn_10": 0.886
     },

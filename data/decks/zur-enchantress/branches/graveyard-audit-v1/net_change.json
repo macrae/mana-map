@@ -1089,8 +1089,8 @@
   "why": "The Master of Keys is a 3-mana 3/3 flier whose whole text box is dead here, and the audit says why. Its escape grant needs enchantment cards IN YOUR GRAVEYARD and three more to exile, and this deck has exactly TWO cards that put anything into its own graveyard -- Conduit Pylons (surveil 1, once) and Master of Keys itself. Worse, the deck's main way of deploying enchantments is Zur's fetch, and X is 0 outside the stack: fetched, it enters with NO counters and mills NOTHING, so the one card that could have fuelled the engine does not even fuel itself. Turning it on means hard-casting at X=4 for seven mana in a deck whose curve tops at four. Fear of Infinity is the same mana value, also Zur-fetchable, and every word of it works here: FLYING and LIFELINK, and lifelink is damage in this list because three cards turn life gained into life lost; Eerie, so it is another payoff reading the enchantment-enters trigger Zur hands over free; and it returns ITSELF from the graveyard off that same trigger. Cost stated: three coloured pips become two, so devotion drops by one, and it cannot block."
  },
  "objective_grade": {
-  "reading": 0.2588,
-  "shortfall": 0.2512,
+  "reading": 0.2405,
+  "shortfall": 0.2695,
   "state": "not met"
  },
  "recommendation": {
@@ -1173,7 +1173,7 @@
    },
    {
     "measure": "killed by T10",
-    "reads_as": "81 games in 100 -> 82 in 100, a swing of 2 games per 100",
+    "reads_as": "79 games in 100 -> 81 in 100, a swing of 2 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
@@ -1196,7 +1196,7 @@
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.008 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1248,10 +1248,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0018,
-   "champion": 0.0027,
-   "delta": -0.0009,
-   "mde": 0.0021,
+   "branch": 0.0013,
+   "champion": 0.0019,
+   "delta": -0.0006,
+   "mde": 0.0017,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.002 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1262,12 +1262,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.824,
-   "champion": 0.8081,
-   "delta": 0.0159,
-   "mde": 0.0156,
+   "branch": 0.8103,
+   "champion": 0.7912,
+   "delta": 0.0191,
+   "mde": 0.0161,
    "measure": "killed by T10",
-   "reads_as": "81 games in 100 -> 82 in 100, a swing of 2 games per 100",
+   "reads_as": "79 games in 100 -> 81 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",

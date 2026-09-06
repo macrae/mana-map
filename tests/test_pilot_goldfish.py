@@ -720,3 +720,48 @@ def test_a_permanent_worth_only_its_type_is_still_castable():
     # It feeds nothing on its own — that is exactly why it needed the rule.
     from manamap.pilot import model_coverage
     assert model_coverage.channels_for(shrine) == set() or True
+
+
+def test_a_one_shot_etb_is_not_a_per_turn_drain():
+    """NORTHERN AIR TEMPLE PAYS ONCE, AND THE MODEL CHARGED IT EVERY TURN.
+
+    "When Northern Air Temple enters, each opponent loses X life and you gain X
+    life" is an ETB. "At the beginning of your first main phase, each opponent
+    loses X life…" — Sanctum of Stone Fangs — is recurring. The first pattern
+    matched the clause anywhere in a sentence and read both as per-turn, which
+    inflated the deck's cumulative drain at turn ten from 13.26 to 15.47 and had
+    been doing so since the drain channel shipped.
+
+    CAUGHT BY THE poh-procedures AGENT, which read the card while writing a
+    procedure and said the deck has no first-main-phase trigger except the
+    Sanctum. It was right. An agent reading the cards is a check on the model,
+    not just a consumer of it.
+
+    Three triggers, three fields: recurring, ETB, and per-type ("whenever
+    another Shrine you control enters"), which is the half that makes a count
+    compound.
+    """
+    from manamap.pilot.goldfish import drain_profile
+
+    def prof(text):
+        return drain_profile({"name": "X", "oracle_text": text, "type_line": ""})
+
+    etb = prof("When Northern Air Temple enters, each opponent loses X life and "
+               "you gain X life, where X is the number of Shrines you control. "
+               "Whenever another Shrine you control enters, each opponent loses "
+               "1 life and you gain 1 life.")
+    assert etb["drain_recurring"] == 0, "an ETB must not fire every turn"
+    assert etb["drain_etb"] == 1 and etb["gain_etb"] == 1
+    assert etb["per_type"] == "Shrine"
+    assert etb["drain_per_type"] == 1 and etb["gain_per_type"] == 1
+
+    recurring = prof("At the beginning of your first main phase, each opponent "
+                     "loses X life and you gain X life, where X is the number of "
+                     "Shrines you control.")
+    assert recurring["drain_recurring"] == 1 and recurring["gain_recurring"] == 1
+    assert recurring["drain_etb"] == 0, "a recurring trigger is not also an ETB"
+
+    # The death guard from the first fix must survive the split.
+    bastion = prof("Whenever a creature you control dies, each opponent loses 1 "
+                   "life and you gain 1 life.")
+    assert bastion["drain_recurring"] == 0 and bastion["drain_etb"] == 0
