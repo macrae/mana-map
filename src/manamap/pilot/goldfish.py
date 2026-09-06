@@ -1089,6 +1089,20 @@ _CONSTELLATION_GAIN_RE = re.compile(
 #: so this is modelled as a standing bonus to every creature rather than a
 #: one-shot pump; a "until end of turn" effect is a DIFFERENT card and is not
 #: matched here.
+#: MASS ANIMATION. "As long as you control five or more enchantments, each
+#: other non-Aura enchantment you control is a creature … with base power and
+#: base toughness each equal to its mana value." ONE CARD in the corpus —
+#: Starfield of Nyx — and it is the free, static, board-wide version of the
+#: commander's {1}{W} ability. Unread, it fed NO channel at all, so it was also
+#: never cast: the sixth instance of that class.
+#:
+#: Parsed rather than declared because, unlike the commander's ability, this is
+#: a card that may or may not be in any given 99 and the deck should not have to
+#: announce it.
+_MASS_ANIMATE_RE = re.compile(
+    r"as long as you control (\w+) or more enchantments, each other non-Aura "
+    r"enchantment you control is a creature", re.I)
+
 _TEAM_COUNTER_ETB_RE = re.compile(
     r"(?:when|whenever)[^.]*?enters[^.]*?, put (a|X|one|two|three) \+1/\+1 "
     r"counters? on each creature you control", re.I)
@@ -1142,6 +1156,18 @@ _SYMMETRIC_DRAIN_GAIN_PER_TYPE_RE = re.compile(
 #: until end of turn") or a token-maker. The strip-then-test shape matters: a
 #: scoped positive pattern dropped Behemoth Sledge ("has trample AND lifelink")
 #: and Fear of Infinity ("Flying, lifelink"), both of which do have it.
+#: A STATIC GRANT OF LIFELINK TO A WHOLE TYPE. Zur, Eternal Schemer says
+#: "Enchantment creatures you control have deathtouch, lifelink, and hexproof",
+#: which in a deck of twenty-odd enchantment creatures turns EVERY body into a
+#: drain source — this list converts life gained into life lost three ways.
+#: Read per-card lifelink only, the commander contributed nothing.
+#:
+#: Corpus sweep 2026-09-06: 7 cards grant lifelink to a named type this way.
+#: Narrow, so the subject is taken as the WORD BEFORE "creatures" rather than a
+#: general noun phrase — "Flying Enchantment creatures" must yield Enchantment.
+_LIFELINK_GRANT_TYPE_RE = re.compile(
+    r"(\w+) creatures you control have (?:[^.]*?\b)?lifelink", re.I)
+
 _LIFELINK_NOT_SELF_RE = re.compile(r"gains? lifelink|token[^.]*?with lifelink", re.I)
 _LIFELINK_RE = re.compile(r"\blifelink\b", re.I)
 
@@ -1212,7 +1238,8 @@ def drain_profile(card):
            "drain_recurring": 0, "drain_per_enchantment": 0,
            "drain_etb": 0, "gain_etb": 0,
            "drain_per_type": 0, "gain_per_type": 0, "per_type": None,
-           "lifelink": False, "scales_with": None, "unmodelled": None}
+           "lifelink": False, "grants_lifelink_to": None,
+           "scales_with": None, "unmodelled": None}
     if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
         return out
 
@@ -1254,6 +1281,10 @@ def drain_profile(card):
 
     out["lifelink"] = bool(_LIFELINK_RE.search(text)) and bool(
         _LIFELINK_RE.search(_LIFELINK_NOT_SELF_RE.sub("", text)))
+
+    m = _LIFELINK_GRANT_TYPE_RE.search(text)
+    if m:
+        out["grants_lifelink_to"] = m.group(1).capitalize()
 
     # X IS A COUNT, AND SCORING IT AS 1 MAKES A SCALING CARD UNABLE TO SCALE.
     # Sanctum of Stone Fangs drains "X, where X is the number of Shrines you
@@ -1298,6 +1329,7 @@ def combat_profile(card):
         "enchantment_token_power": 0,
         "enchantment_token_bodies": 0,
         # A standing +N/+N on every creature, and the type whose count sets N.
+        "mass_animate_threshold": 0,
         "team_counters_etb": 0,
         "team_counters_scale_type": None,
         "team_counters_per_type": 0,
@@ -1475,6 +1507,10 @@ def combat_profile(card):
     if m:
         profile["enchantment_token_power"] = int(m.group(1))
         profile["enchantment_token_bodies"] = 1
+
+    m = _MASS_ANIMATE_RE.search(text)
+    if m:
+        profile["mass_animate_threshold"] = _LIFE_WORDS.get(m.group(1).lower(), 5)
 
     m = _TEAM_COUNTER_ETB_RE.search(text)
     if m:
@@ -2109,6 +2145,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   model_colors=False, commander_pips=None,
                   command_zone_reduction=(), chosen_type=None,
                   commander_subtypes=frozenset(), commander_combat=None,
+                  commander_grants_lifelink_to=None,
+                  commander_animate=None,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None):
     """One goldfish iteration. Returns a per-iteration result dict."""
@@ -2311,6 +2349,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Type lines of nonland permanents on the battlefield, so a card whose X is
     # "the number of Shrines you control" can be given the real count.
     battlefield_types = []
+    # Mana value of each nonland permanent, index-aligned with battlefield_types.
+    # `model_commander_animate` turns a non-Aura enchantment into a body whose
+    # power IS its mana value, so the two have to travel together.
+    battlefield_mv = []
+    # Types a static grant gives lifelink to ("Enchantment creatures you control
+    # have … lifelink"). A creature already counted for its own lifelink is not
+    # counted twice.
+    lifelink_granted_types = set()
+    animated_idx = set()
+    # Type line of each battlefield creature, index-aligned with `battlefield`.
+    creature_types = []
+    mass_animate_threshold = 0
     damage_by_turn = []
     board_power_by_turn = []
     target_turns = [None] * len(targets)
@@ -2381,7 +2431,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         treasure_online_by_turn.append(bool(treasure_engines))
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
-                             is_token=False, is_legendary=False):
+                             is_token=False, is_legendary=False, type_line=""):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -2396,6 +2446,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """
             nonlocal etb_damage, etb_chain_hits
             battlefield.append((power, arrived, haste, mult, is_token))
+            # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
+            # the two can never drift the way the zip that preceded this did.
+            creature_types.append(type_line)
             # BODIES INTO CARDS, on the same door the damage payoffs use.
             # The power condition is honoured in both directions: Welcoming
             # Vampire ("power 2 or less") draws off a 1/1 token, Garruk's
@@ -2506,6 +2559,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # toward devotion — Zur is {1}{W}{U}{B}, one each of three colours.
             battlefield_pips.append(commander_pips or [])
             battlefield_types.append(commander_card.get("type_line") or "")
+            battlefield_mv.append(commander_cmc)
+            # THE COMMANDER IS A STUB HERE, not a classified card — it carries
+            # pips, cmc and subtypes and nothing else — so a static grant it
+            # makes has to be threaded in explicitly, the same way its combat
+            # profile already is.
+            if commander_grants_lifelink_to:
+                lifelink_granted_types.add(commander_grants_lifelink_to)
             # THE COMMANDER USED TO BE CAST AND THEN DROPPED. It set this flag,
             # spent the mana, and never joined the battlefield — so a 10/10
             # flier contributed no power, never attacked, and fired none of its
@@ -2825,6 +2885,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # model had made the deck unable to start its own engine.
             if attack_tutor and c["attack_enabler"]:
                 return True
+            # MASS ANIMATION IS A BODY ENGINE, and a card that stands the whole
+            # board up must be castable or it does nothing at all — the sixth
+            # time this class has bitten.
+            if model_combat and c["combat"]["mass_animate_threshold"]:
+                return True
             # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
             # Sanctum of Tranquil Light does almost nothing on its own — its job
             # is to be a SHRINE, so that the two cards reading "X is the number
@@ -2878,6 +2943,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                if card["combat"]["mass_animate_threshold"]:
+                    mass_animate_threshold = card["combat"]["mass_animate_threshold"]
                 if model_drain:
                     d_ = card["drain"]
                     # PAYS ONCE, ON ENTRY — scaled by its own named type if it
@@ -2960,6 +3027,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if not card["is_land"]:
                     battlefield_pips.append(card["pips"])
                     battlefield_types.append(card.get("type_line") or "")
+                    battlefield_mv.append(card["cmc"])
                     if "Enchantment" in (card.get("type_line") or ""):
                         enchantments_entered += 1
                     if any(card["drain"][k] for k in
@@ -2969,6 +3037,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         drain_permanents.append(card["drain"])
                     if card["drain"]["lifelink"] and combat["is_creature"]:
                         lifelink_power += combat["power"]
+                    if card["drain"]["grants_lifelink_to"]:
+                        lifelink_granted_types.add(
+                            card["drain"]["grants_lifelink_to"])
                 if model_combat and combat["enchantment_token_bodies"]:
                     enchantment_token_engines.append(combat)
                 if model_combat:
@@ -2990,7 +3061,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         creature_entered(
                             combat["power"], turn, combat["haste"],
                             2 if combat["double_strike"] else 1,
-                            is_legendary="Legendary" in (card.get("type_line") or ""))
+                            is_legendary="Legendary" in (card.get("type_line") or ""),
+                            type_line=card.get("type_line") or "")
                         creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
@@ -3036,6 +3108,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         opponent_death_gains.append(card["death"])
                 if card["attack_enabler"]:
                     attack_enabler_out = True
+                if card["combat"]["mass_animate_threshold"]:
+                    mass_animate_threshold = card["combat"]["mass_animate_threshold"]
                 if model_drain:
                     d_ = card["drain"]
                     # PAYS ONCE, ON ENTRY — scaled by its own named type if it
@@ -3204,7 +3278,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if devotion_of(battlefield_pips, gate["colors"]) >= gate["threshold"]:
                         creature_entered(
                             combat["power"], turn, combat["haste"],
-                            2 if combat["double_strike"] else 1, is_legendary=True)
+                            2 if combat["double_strike"] else 1, is_legendary=True,
+                            type_line=card.get("type_line") or "")
                     else:
                         still.append((card, combat))
                 pending_gods[:] = still
@@ -3214,6 +3289,63 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 + team_anthem * len(battlefield))
             if kill_turn is None and opponent_life <= 0:
                 kill_turn = turn
+
+        # ── the commander animates an enchantment ───────────────────────────
+        #
+        # "{1}{W}: Target non-Aura enchantment you control becomes a creature in
+        # addition to its other types and has base power and base toughness each
+        # equal to its mana value." UNIQUE IN THE CORPUS — one card — so it is
+        # DECLARED per deck like the attack tutor was, not pattern-matched.
+        #
+        # An animated permanent has been under your control since the turn began,
+        # so it is NOT summoning sick and can attack the same turn. Biggest mana
+        # value first, because power is mana value here and the ability is
+        # repeatable but mana-limited.
+        if commander_animate and commander_turn is not None:
+            cost = commander_animate["cost"]
+            while pool >= cost:
+                best, best_mv = -1, 0
+                for i, (tl_, mv_) in enumerate(zip(battlefield_types, battlefield_mv)):
+                    if i in animated_idx:
+                        continue
+                    if commander_animate["scope"] not in tl_:
+                        continue
+                    if commander_animate.get("exclude", "Aura") in tl_:
+                        continue
+                    if "Creature" in tl_:      # already a body
+                        continue
+                    if mv_ > best_mv:
+                        best, best_mv = i, mv_
+                if best < 0 or best_mv <= 0:
+                    break
+                pool -= cost
+                animated_idx.add(best)
+                # "becomes a creature IN ADDITION TO ITS OTHER TYPES" — so an
+                # animated enchantment is now an ENCHANTMENT CREATURE, and the
+                # commander's own grant of deathtouch, lifelink and hexproof
+                # covers it. That is the synergy, and it only works if the type
+                # line travels with the body.
+                creature_entered(int(best_mv), turn - 1, False, 1,
+                                 type_line=battlefield_types[best] + " Creature")
+
+        # ── mass animation ──────────────────────────────────────────────────
+        #
+        # Starfield of Nyx: once five or more enchantments are out, every OTHER
+        # non-Aura enchantment is a creature with power equal to its mana value.
+        # Free, static, and board-wide — the commander's {1}{W} without the
+        # mana. Applied after the turn's permanents have resolved, because they
+        # are what crosses the threshold.
+        if model_combat and mass_animate_threshold:
+            ench = sum(1 for tl_ in battlefield_types if "Enchantment" in tl_)
+            if ench >= mass_animate_threshold:
+                for i, (tl_, mv_) in enumerate(zip(battlefield_types, battlefield_mv)):
+                    if i in animated_idx or "Aura" in tl_ or "Creature" in tl_:
+                        continue
+                    if "Enchantment" not in tl_ or mv_ <= 0:
+                        continue
+                    animated_idx.add(i)
+                    creature_entered(int(mv_), turn - 1, False, 1,
+                                     type_line=tl_ + " Creature")
 
         # ── deaths ──────────────────────────────────────────────────────────
         #
@@ -3298,8 +3430,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if etb_gained:
                 gain_total += etb_gained
                 gain_events += 1
-            if lifelink_power and damage_by_turn:
-                linked = min(lifelink_power, damage_by_turn[-1])
+            # A GRANT COVERS THE WHOLE TYPE, and it is worth far more than any
+            # one lifelink creature: Zur, Eternal Schemer gives it to EVERY
+            # enchantment creature, and this deck runs twenty-odd. Summed over
+            # the board rather than accumulated on arrival, because a grant that
+            # lands later covers everything already out.
+            # ZIPPED TWO DIFFERENT LISTS. `battlefield_types` holds every
+            # nonland permanent; `battlefield` holds only creatures. Pairing
+            # them positionally matched a creature's power against an unrelated
+            # permanent's type line, so the grant figure was computed from
+            # garbage. The type line now rides WITH the creature.
+            granted = 0
+            if lifelink_granted_types:
+                for tl_, (pw_, _a, _h, _m, _tok) in zip(creature_types, battlefield):
+                    if any(ty_ in tl_ for ty_ in lifelink_granted_types):
+                        granted += pw_
+            effective_lifelink = max(lifelink_power, granted)
+            if effective_lifelink and damage_by_turn:
+                linked = min(effective_lifelink, damage_by_turn[-1])
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
@@ -3739,6 +3887,25 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # The commander's own combat profile — it is a creature like any other and
     # was the only one the loop never put on the battlefield.
     commander_combat = combat_profile(commanders[0]) if commanders else None
+    # A STATIC GRANT THE COMMANDER MAKES. Zur, Eternal Schemer gives every
+    # ENCHANTMENT CREATURE deathtouch, lifelink and hexproof — and the lifelink
+    # half is this deck's clock, because three cards turn life gained into life
+    # lost. Read from the commander's own text; absent commanders and commanders
+    # without a grant contribute nothing.
+    commander_grants_lifelink_to = (
+        drain_profile(commanders[0])["grants_lifelink_to"] if commanders else None)
+    # DECLARED, and required to name a cost and a scope. A commander ability
+    # that only one card in the corpus has cannot be pattern-matched honestly;
+    # it is the same contract `model_commander_attack_tutor` kept.
+    commander_animate = targets_doc.get("model_commander_animate") or None
+    if commander_animate:
+        missing = [k for k in ("cost", "scope") if k not in commander_animate]
+        if missing:
+            raise SystemExit(
+                f"model_commander_animate is missing {', '.join(missing)}")
+        commander_animate = {"cost": int(commander_animate["cost"]),
+                             "scope": str(commander_animate["scope"]),
+                             "exclude": str(commander_animate.get("exclude", "Aura"))}
     creature_types = _corpus_creature_types()
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
@@ -3868,6 +4035,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,
                               commander_combat=commander_combat,
+                              commander_grants_lifelink_to=commander_grants_lifelink_to,
+                              commander_animate=commander_animate,
                               command_zone_reduction=command_zone_reduction,
                               chosen_type=chosen_type,
                               commander_subtypes=commander_subtypes,

@@ -375,3 +375,56 @@ def test_an_explicit_target_still_overrides_the_recorded_one(tmp_path, monkeypat
     written = _json.loads((deck / "bracket_report.json").read_text())
     assert written["target"] == 3
     assert written["within_target"] is False
+
+
+# ── the pilot's standing constraint, made structural ────────────────────────
+
+#: Decks the pilot has ruled may NEVER contain a two-card infinite. This is not
+#: a bracket rule — bracket 3 permits combos — it is a rule about what he is
+#: willing to win with: "two-card infinite combos are weak, unsatisfying way to
+#: win". Stated repeatedly, and enforced here rather than remembered, because
+#: vigilance failed once already: a rebuild added Sanguine Bond and the very
+#: next message proposed Exquisite Blood, which would have closed one.
+NO_TWO_CARD_INFINITES = {"zur-enchantress"}
+
+
+def test_no_deck_the_pilot_barred_contains_a_two_card_infinite():
+    """A CONSTRAINT NOBODY CHECKS IS A CONSTRAINT NOBODY KEEPS.
+
+    `bracket-check` already computes the count; nothing failed on it. A swap
+    that closes a combo could land in a commit and nothing would say so — and
+    the pilot would find out at a table.
+
+    Reads `bracket_report.json`, which `deck-status` already keeps fresh, so
+    this costs nothing and fires on the artifact the pilot actually reads.
+    """
+    import json
+    import pathlib as _pl
+
+    import pytest
+
+    root = _pl.Path(__file__).resolve().parent.parent
+    checked = 0
+    for slug in sorted(NO_TWO_CARD_INFINITES):
+        path = root / "data/decks" / slug / "bracket_report.json"
+        if not path.exists():
+            pytest.skip(f"{slug} has no bracket report")
+        rep = json.loads(path.read_text(encoding="utf-8"))
+        blob = json.dumps(rep)
+        # The report names the count under a couple of shapes across versions;
+        # find whichever is present rather than pinning one key name.
+        n = None
+        for key in ("two_card_infinites", "two_card_infinite_count",
+                    "infinite_combos", "two_card_combos"):
+            if key in rep:
+                v = rep[key]
+                n = len(v) if isinstance(v, list) else int(v)
+                break
+        if n is None:
+            n = len(rep.get("combos_contained", []) or [])
+        checked += 1
+        assert n == 0, (
+            f"{slug} now contains {n} two-card infinite(s). The pilot's standing "
+            f"rule is that this deck wins without one — see the branch rationale "
+            f"and CLAUDE.md. Cut the half that closed it.\n{blob[:400]}")
+    assert checked >= 1, "the guard iterated nothing"

@@ -5,7 +5,7 @@
    {
     "free": false,
     "name": "Aether Tunnel",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -17,7 +17,7 @@
    {
     "free": false,
     "name": "Aqueous Form",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -371,7 +371,7 @@
    {
     "free": false,
     "name": "Reconnaissance",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -431,13 +431,13 @@
    {
     "free": false,
     "name": "Spirit Mantle",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Steel of the Godhead",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -503,7 +503,7 @@
    {
     "free": false,
     "name": "Tribute to Horobi // Echo of Death's Wail",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -521,7 +521,7 @@
    {
     "free": false,
     "name": "Unquestioned Authority",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -551,26 +551,40 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 4,
+   "buy": 11,
    "elsewhere": 0,
-   "in_deck": 87
+   "in_deck": 80
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Aether Tunnel",
+    "Aqueous Form",
     "Dreadhorde Invasion",
     "Master of the Feast",
+    "Reconnaissance",
     "Silent Hallcreeper",
-    "Smuggler's Share"
+    "Smuggler's Share",
+    "Spirit Mantle",
+    "Steel of the Godhead",
+    "Tribute to Horobi // Echo of Death's Wail",
+    "Unquestioned Authority"
    ],
    "base_names": 91,
    "base_size": 100,
    "names": 91,
    "out": [
+    "Academy Rector",
+    "Anointed Procession",
+    "Cathars' Crusade",
+    "Enduring Curiosity",
+    "Felidar Retreat",
     "Honden of Cleansing Fire",
-    "Sanctum of Tranquil Light",
     "Southern Air Temple",
-    "The Spirit Oasis"
+    "Sphere of Safety",
+    "Starfield of Nyx",
+    "The Spirit Oasis",
+    "Zur, Eternal Schemer"
    ],
    "size": 100
   },
@@ -580,10 +594,17 @@
   "proxy": false,
   "slug": "zur-enchantress",
   "unsourced": [
+   "Aether Tunnel",
+   "Aqueous Form",
    "Dreadhorde Invasion",
    "Master of the Feast",
+   "Reconnaissance",
    "Silent Hallcreeper",
-   "Smuggler's Share"
+   "Smuggler's Share",
+   "Spirit Mantle",
+   "Steel of the Godhead",
+   "Tribute to Horobi // Echo of Death's Wail",
+   "Unquestioned Authority"
   ]
  },
  "blind_spots": [],
@@ -595,16 +616,46 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 4,
-    "in_copies": 4,
+    "in": 11,
+    "in_copies": 11,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 4,
-    "out_copies": 4,
-    "spells_in": 4,
-    "spells_out": 4
+    "out": 11,
+    "out_copies": 11,
+    "spells_in": 11,
+    "spells_out": 11
    },
    "in": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Aqueous Form",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Reconnaissance",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Aether Tunnel",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
     {
      "cmc": 2,
      "copies": 1,
@@ -626,6 +677,26 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Spirit Mantle",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Tribute to Horobi // Echo of Death's Wail",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Saga // Enchantment Creature \u2014 Spirit",
+     "why": null
+    },
+    {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
@@ -644,15 +715,35 @@
      "state": "buy",
      "type_line": "Enchantment",
      "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Steel of the Godhead",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Unquestioned Authority",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Aura",
+     "why": null
     }
    ],
    "names": 91,
    "out": [
     {
-     "cmc": 1,
+     "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Sanctum of Tranquil Light",
+     "name": "The Spirit Oasis",
      "pair": null,
      "type_line": "Legendary Enchantment \u2014 Shrine",
      "why": null
@@ -661,9 +752,45 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "The Spirit Oasis",
+     "name": "Zur, Eternal Schemer",
      "pair": null,
-     "type_line": "Legendary Enchantment \u2014 Shrine",
+     "type_line": "Legendary Creature \u2014 Human Wizard",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Academy Rector",
+     "pair": null,
+     "type_line": "Creature \u2014 Human Cleric",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Anointed Procession",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Enduring Curiosity",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Cat Glimmer",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Felidar Retreat",
+     "pair": null,
+     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -683,12 +810,39 @@
      "pair": null,
      "type_line": "Legendary Enchantment \u2014 Shrine",
      "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Cathars' Crusade",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Sphere of Safety",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Starfield of Nyx",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 4,
-    "out": 4
+    "in": 11,
+    "out": 11
    }
   },
   "lands": [],
@@ -944,72 +1098,91 @@
   "state": "not met"
  },
  "recommendation": {
-  "because": "The objective is not met. Board power @t6 improved anyway, which is a different branch's case.",
+  "because": "The objective is not met. Hand can act by t3 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 0,
-   "buy": 4,
+   "buy": 11,
    "elsewhere": 0,
-   "in_deck": 87
+   "in_deck": 80
   },
   "cost": {
-   "buy": 4,
+   "buy": 11,
    "buy_cards": [
+    "Aether Tunnel",
+    "Aqueous Form",
     "Dreadhorde Invasion",
     "Master of the Feast",
+    "Reconnaissance",
     "Silent Hallcreeper",
-    "Smuggler's Share"
+    "Smuggler's Share",
+    "Spirit Mantle",
+    "Steel of the Godhead",
+    "Tribute to Horobi // Echo of Death's Wail",
+    "Unquestioned Authority"
    ],
    "counts": {
     "box": 0,
-    "buy": 4,
+    "buy": 11,
     "elsewhere": 0,
-    "in_deck": 87
+    "in_deck": 80
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 87,
-   "reads_as": "4 to buy; 87 of 91 already owned",
+   "owned": 80,
+   "reads_as": "11 to buy; 80 of 91 already owned",
    "total": 91
   },
   "fell": [
    "damage @T10",
+   "killed by T6",
+   "killed by T10",
    "extra cards by T8"
   ],
   "no_call": [
-   "killed by T6",
-   "killed by T10",
+   "board power @T6",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "interaction affordable @T6"
   ],
   "notes": [],
   "reward": [
    {
-    "measure": "board power @T6",
-    "reads_as": "6.77 -> 7.08, a change of +0.31 (+5%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+    "measure": "hand can act by T3",
+    "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
+    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "20.68 -> 17.60, a change of -3.08 (-15%)",
+    "detail": "18.99 -> 17.60, a change of -1.39 (-7%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "3.45 -> 2.17, a change of -1.28 (-37%)",
+    "detail": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "killed by T6",
+    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "detail": "86 games in 100 -> 80 in 100, a swing of 5 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "2.37 -> 2.17, a change of -0.20 (-9%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is killed by T6 at -0.001 against an MDE of 0.002. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is interaction affordable @T6 at -0.023 against an MDE of 0.024. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1020,7 +1193,7 @@
    }
   ],
   "rose": [
-   "board power @T6"
+   "hand can act by T3"
   ],
   "state": "do not merge"
  },
@@ -1030,11 +1203,11 @@
   {
    "better_is": "higher",
    "branch": 17.6046,
-   "champion": 20.682,
-   "delta": -3.0774,
-   "mde": 0.72,
+   "champion": 18.9928,
+   "delta": -1.3882,
+   "mde": 0.4661,
    "measure": "damage @T10",
-   "reads_as": "20.68 -> 17.60, a change of -3.08 (-15%)",
+   "reads_as": "18.99 -> 17.60, a change of -1.39 (-7%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1044,50 +1217,50 @@
   {
    "better_is": "higher",
    "branch": 7.0794,
-   "champion": 6.7732,
-   "delta": 0.3062,
-   "mde": 0.1776,
+   "champion": 7.0044,
+   "delta": 0.075,
+   "mde": 0.1685,
    "measure": "board power @T6",
-   "reads_as": "6.77 -> 7.08, a change of +0.31 (+5%)",
+   "reads_as": "no call \u2014 the gap of 0.075 is smaller than the 0.169 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
    "branch": 0.0005,
-   "champion": 0.0019,
-   "delta": -0.0014,
-   "mde": 0.0017,
+   "champion": 0.0074,
+   "delta": -0.0069,
+   "mde": 0.0034,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.002 this run can resolve",
+   "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.8024,
-   "champion": 0.7912,
-   "delta": 0.0112,
-   "mde": 0.0161,
+   "champion": 0.8551,
+   "delta": -0.0527,
+   "mde": 0.0158,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.016 this run can resolve",
+   "reads_as": "86 games in 100 -> 80 in 100, a swing of 5 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0475,
-   "champion": 0.0432,
-   "delta": 0.0043,
+   "champion": 0.0439,
+   "delta": 0.0036,
    "mde": 0.0084,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.008 this run can resolve",
@@ -1100,11 +1273,11 @@
   {
    "better_is": "lower",
    "branch": 0.3938,
-   "champion": 0.3863,
-   "delta": 0.0075,
-   "mde": 0.0194,
+   "champion": 0.4052,
+   "delta": -0.0114,
+   "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1114,11 +1287,11 @@
   {
    "better_is": "lower",
    "branch": 0.196,
-   "champion": 0.2021,
-   "delta": -0.0061,
-   "mde": 0.0159,
+   "champion": 0.1894,
+   "delta": 0.0066,
+   "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1128,11 +1301,11 @@
   {
    "better_is": "higher",
    "branch": 2.1693,
-   "champion": 3.4515,
-   "delta": -1.2822,
-   "mde": 0.1755,
+   "champion": 2.3724,
+   "delta": -0.2031,
+   "mde": 0.1413,
    "measure": "extra cards by T8",
-   "reads_as": "3.45 -> 2.17, a change of -1.28 (-37%)",
+   "reads_as": "2.37 -> 2.17, a change of -0.20 (-9%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1142,11 +1315,11 @@
   {
    "better_is": "higher",
    "branch": 0.5549,
-   "champion": 0.5362,
-   "delta": 0.0187,
-   "mde": 0.0236,
+   "champion": 0.5777,
+   "delta": -0.0228,
+   "mde": 0.0239,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.024 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.023 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1156,14 +1329,14 @@
   {
    "better_is": "higher",
    "branch": 0.9918,
-   "champion": 0.9906,
-   "delta": 0.0012,
-   "mde": 0.0038,
+   "champion": 0.9782,
+   "delta": 0.0136,
+   "mde": 0.0058,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }

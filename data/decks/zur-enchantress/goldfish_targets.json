@@ -16,8 +16,7 @@
             "Phyrexian Arena",
             "Rhystic Study",
             "The Spirit Oasis",
-            "Tocasia's Welcome",
-            "Tribute to Horobi // Echo of Death's Wail"
+            "Tocasia's Welcome"
           ]
         }
       ]
@@ -45,7 +44,7 @@
       ]
     },
     {
-      "label": "KILL \u2014 a BOARD: a real body plus a way through",
+      "label": "KILL \u2014 a BOARD: enchantments animated into bodies",
       "route": "board",
       "need": [
         {
@@ -65,12 +64,6 @@
         },
         {
           "any_of": [
-            "Aqueous Form",
-            "Steel of the Godhead",
-            "Spirit Mantle",
-            "Unquestioned Authority",
-            "Aether Tunnel",
-            "Reconnaissance",
             "Thassa, God of the Sea"
           ]
         }
@@ -95,8 +88,7 @@
           "any_of": [
             "Bitterblossom",
             "Black Market Connections",
-            "Dawn of Hope",
-            "Tribute to Horobi // Echo of Death's Wail"
+            "Dawn of Hope"
           ]
         }
       ]
@@ -131,18 +123,17 @@
     }
   ],
   "model_combat": true,
-  "model_commander_attack_tutor": {
-    "type": "Enchantment",
-    "max_mv": 3,
-    "fires_per_turn": 0.232,
-    "source": "giada-angels-vs-baylen-tokens-vs-abaddon-n60-cfaf142a-s1484357674-podExperimental-c600: 73 searches resolved / 60 games / ~5.25 own-turn attack window | when_enabled = 1.0 is a CEILING, not a measurement: with an unblockable aura or Reconnaissance out there is no combat cost to attacking, so once a turn is the most that can happen. Read `enabled_share` for how often the deck actually got there.",
-    "fires_per_turn_when_enabled": 1.0
-  },
   "model_draw": true,
   "model_drain": true,
   "model_deaths": {
     "own_per_turn": 0.187,
     "opponent_per_turn": 0.613,
     "source": "giada-angels-vs-baylen-tokens-vs-abaddon-n60-cfaf142a-s1484357674-podExperimental-c600"
+  },
+  "model_commander_animate": {
+    "cost": 2,
+    "scope": "Enchantment",
+    "exclude": "Aura",
+    "source": "Zur, Eternal Schemer: {1}{W}: Target non-Aura enchantment you control becomes a creature with base power and toughness each equal to its mana value. Cost is 2 GENERIC in this model, which OVERSTATES slightly: the real cost is {1}{W} and the model does not check the white pip."
   }
 }

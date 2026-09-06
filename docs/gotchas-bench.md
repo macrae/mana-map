@@ -644,3 +644,98 @@ The headline word now carries how much was checked — `PARTIAL`, with the note
 naming what did not run and the exact command that fixes it. **One existing test
 had been asserting `OK` on a run that checked nothing, for months, which is how
 the blind spot stayed invisible.**
+
+## 2026-09-06 — The commander was doing nothing, twice over
+
+zur-enchantress changed commander after Forge measured the old one's engine
+firing **1.08–1.22 times a game** across three 60-game runs — and a direct test
+showed that at that rate the deck performed IDENTICALLY to one with the trigger
+removed entirely (kill-by-t8 0.135 against 0.145). Zur the Enchanter is a 1/4
+who lands on own-turn 5, attacks on 6, and dies to the first sweeper in 27 of 52
+games. Three versions all read below the table's null with the interval
+excluding zero. **The payoffs were never the problem; the deck was converting a
+resource it did not receive.**
+
+The replacement, `Zur, Eternal Schemer`, has two abilities and the model read
+NEITHER:
+
+    Enchantment creatures you control have deathtouch, lifelink, and hexproof.
+    {1}{W}: Target non-Aura enchantment you control becomes a creature … with
+            base power and base toughness each equal to its mana value.
+
+    kill by t8   0.153 (neither) -> 0.214 (grant) -> 0.327 (both)
+    drain t10     8.01           -> 14.96        -> 17.62
+
+**The grant is a whole-type effect and worth far more than any one lifelink
+card.** Corpus sweep: 7 cards grant lifelink to a named type. The animation is
+UNIQUE — one card in the corpus — so it is DECLARED per deck, the same contract
+`model_commander_attack_tutor` keeps. A pattern fitted to a single card is not a
+pattern.
+
+And the synergy only works because "becomes a creature IN ADDITION TO ITS OTHER
+TYPES" means an animated enchantment is an ENCHANTMENT CREATURE, so the grant
+covers it. That required the type line to travel with the body.
+
+### The zip that paired two different lists
+
+The first cut of the grant read
+
+    for tl_, (pw_, …) in zip(battlefield_types, battlefield)
+
+`battlefield_types` holds every nonland permanent; `battlefield` holds only
+creatures. The zip matched a creature's power against an unrelated permanent's
+type line, and the grant figure was computed from garbage — it overstated drain
+by 16%. Fixed by appending the type line at `creature_entered`, the one door
+onto the battlefield, so the two cannot drift.
+
+### Starfield of Nyx, and the sixth never-cast
+
+`Starfield of Nyx` — "as long as you control five or more enchantments, each
+other non-Aura enchantment you control is a creature … equal to its mana value"
+— fed NO channel, so it was never cast and its static mass-animation did
+nothing. Sixth instance of the never-cast class.
+
+Its measured value once fixed was small, and the reason is worth recording: the
+model lets the commander activate `{1}{W}` **unlimited times per turn**, mana
+permitting, so it had already animated everything Starfield would have. That
+probably overstates the commander and understates Starfield, whose real
+advantage is being free and simultaneous. Treat that flat reading as suspect.
+
+## The drain angle, measured against Forge rather than argued
+
+The pilot asked whether the lifegain-drain plan was actually performing. It was
+not, and the numbers are unambiguous:
+
+    life gained per game, six runs:  MEDIAN 0.0 in four of them
+    noncombat damage:                1.3 – 2.5 per game, 9–17% of our damage
+    the goldfish claimed:            26.4 per game, 29% of damage
+
+A tenfold overstatement, and the mechanism is that the payoffs had no fuel —
+`Vito`, `Enduring Tenacity` and `Marauding Blight-Priest` all read "whenever you
+gain life", and the deck gained none.
+
+    seat              wins  combat  noncombat
+    giada-angels        40   98.13       0.00
+    zur-enchantress      5   14.38       2.22
+    a four-player table needs 120 life removed
+
+**Combat wins these games by a factor of four**, and the deck was dealing
+one-seventh of what a kill requires. What changed the answer was not cutting the
+drain but the new commander granting lifelink to seventeen bodies: cutting the
+payoffs afterwards made the deck WORSE (kill-by-t8 0.400 -> 0.309), because the
+fuel finally existed.
+
+## The Shrine count was always a fiction
+
+Six Shrines in a 99 are drawn **1.06 times by turn ten** — 30% of games see
+zero. "For each Shrine you control" was multiplying by one. The whole cycle,
+twelve Shrines, only reaches 1.9.
+
+That explains every earlier measurement: eight Shrines was worse, four was
+worse, six was "best" by a margin that was noise. It was not a curve with a
+peak; the count did nothing and individual cards drove the results. **A flat
+line was read as an optimum.**
+
+Under the new commander they are worth running for a different reason entirely:
+mana value is now POWER, so the MV4–5 Shrines that were unfetchable liabilities
+are 4/4s and 5/5s with deathtouch, lifelink and hexproof.

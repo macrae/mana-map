@@ -765,3 +765,61 @@ def test_a_one_shot_etb_is_not_a_per_turn_drain():
     bastion = prof("Whenever a creature you control dies, each opponent loses 1 "
                    "life and you gain 1 life.")
     assert bastion["drain_recurring"] == 0 and bastion["drain_etb"] == 0
+
+
+# ── a commander that grants, and a commander that animates ──────────────────
+
+def test_a_static_grant_covers_a_whole_type():
+    """ZUR, ETERNAL SCHEMER GIVES EVERY ENCHANTMENT CREATURE LIFELINK.
+
+    "Enchantment creatures you control have deathtouch, lifelink, and hexproof"
+    — and in a deck that converts life gained to life lost three ways, the
+    lifelink half is the clock. Read per-card lifelink only, the commander
+    contributed NOTHING: modelling the grant took cumulative drain at ten from
+    8.01 to 14.96.
+
+    Corpus sweep 2026-09-06: 7 cards grant lifelink to a named type. Narrow, so
+    the subject is the WORD BEFORE "creatures" — "Flying Enchantment creatures
+    you control have…" must yield Enchantment, not "Flying Enchantment".
+    """
+    from manamap.pilot.goldfish import drain_profile
+
+    def prof(text):
+        return drain_profile({"name": "X", "oracle_text": text, "type_line": ""})
+
+    zur = prof("Flying\nEnchantment creatures you control have deathtouch, "
+               "lifelink, and hexproof.")
+    assert zur["grants_lifelink_to"] == "Enchantment"
+
+    archon = prof("Flying Lifelink Pegasus creatures you control have lifelink.")
+    assert archon["grants_lifelink_to"] == "Pegasus"
+
+    # A card with its OWN lifelink grants nothing.
+    assert prof("Lifelink")["grants_lifelink_to"] is None
+    assert prof("Lifelink")["lifelink"] is True
+
+
+def test_the_animation_is_declared_because_one_card_in_the_corpus_has_it():
+    """"{1}{W}: TARGET NON-AURA ENCHANTMENT BECOMES A CREATURE WITH POWER EQUAL
+    TO ITS MANA VALUE" IS UNIQUE.
+
+    Corpus sweep 2026-09-06: exactly ONE card matches — the commander itself. A
+    pattern fitted to a single card is not a pattern, so this is DECLARED per
+    deck with a cost and a scope, the same contract
+    `model_commander_attack_tutor` kept.
+
+    Modelling it took kill-by-t8 from 0.214 to 0.327 on the same 99.
+    """
+    import pathlib as _pl
+
+    src = (_pl.Path(__file__).resolve().parent.parent
+           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    assert "model_commander_animate" in src
+    assert '"cost", "scope"' in src, "both must be required, as for the tutor"
+    # An animated permanent has been under your control since the turn began, so
+    # it is NOT summoning sick — the model must let it attack the same turn.
+    assert "creature_entered(int(best_mv), turn - 1" in src, (
+        "an animated enchantment is not summoning sick and must be able to "
+        "attack the turn it is animated")
+    # Auras cannot be animated by this ability and the exclusion must be real.
+    assert 'commander_animate.get("exclude", "Aura")' in src

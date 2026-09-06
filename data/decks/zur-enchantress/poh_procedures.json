@@ -1,276 +1,279 @@
 {
-  "decklist_sha256_prefix": "734250b03f36",
-  "emergency": [
-    {
-      "condition": "stalled",
-      "condition_text": "Zur is on the battlefield and the search has fired once or not at all",
-      "indications": [
-        "Zur has survived two of your turns and you have fetched once",
-        "No enabler on the battlefield: no Aqueous Form, Reconnaissance, Aether Tunnel, Spirit Mantle, Steel of the Godhead, Unquestioned Authority",
-        "You are declining the attack because a blocker trades with Zur",
-        "Your board is enchantments you hard-cast, and none of them arrived off an attack"
-      ],
-      "immediate": [
-        "Declare Zur as an attacker. The trigger fires on the attack, not on connecting, and it does not require Zur to survive.",
-        "With no enabler on the battlefield, take the cheapest one: Aqueous Form at {U}, Reconnaissance at {W}, then Aether Tunnel or Spirit Mantle at two. An Aura put onto Zur during declare attackers makes that same attack unblockable.",
-        "With Reconnaissance on the battlefield, let the search resolve, then pay {0} to remove Zur from combat and untap him before blockers are declared.",
-        "With no enabler and a blocker that kills Zur, attack and fetch Reprobation onto that blocker. It loses all abilities and becomes a 0/1 Coward, and a creature without flying cannot block Zur (CR 509.1b).",
-        "If Thassa, God of the Sea is on the battlefield and no Aura is, pay {1}{U} in your first main phase to make Zur unblockable, then attack."
-      ],
-      "subsequent": [
-        "Attack every turn from here. Forge resolved the search 1.22 times a game across 60 games, measured on v2.3.0; the goldfish, attacking at its declared maximum, fires it 3.56 times (goldfish_metrics.json, attack_tutor).",
-        "Put one 'an enchantment you control enters' payoff on the battlefield before you spend a third fetch. Nine cards read that event: Grim Guardian, Balemurk Leech, Underworld Coinsmith, Entity Tracker, Fear of Infinity, Eidolon of Astral Winds, Archon of Sun's Grace, Ajani's Chosen and Gremlin Tamer.",
-        "Fetch Northern Air Temple on the first fetch after the enabler. It costs {B}, it drains each opponent for your Shrine count as it enters, and it drains 1 more every time another Shrine enters after it.",
-        "Cast Enlightened Tutor for Reconnaissance or Aqueous Form when you hold neither. It puts the card on top of your library, so cast it in the end step before your attack turn.",
-        "Take the most expensive legal card with every fetch after an enabler is on the battlefield."
-      ],
-      "notes": "The fetch is card advantage out of your library, so an attack that loses Zur still costs you nothing in hand. The one attack to decline is the one where you have already fetched this turn and Zur is your only blocker against a seat that swings for lethal.",
-      "grounded_in": []
-    },
-    {
-      "condition": "removal",
-      "condition_text": "Zur is targeted, or the Aura that lets him attack is",
-      "indications": [
-        "An opponent leaves one or two mana untapped through your turn",
-        "Zur is your only creature on the battlefield",
-        "The enabler on Zur is an Aura, so removal on Zur takes the Aura with it",
-        "Zur has died twice and the next cast costs eight mana"
-      ],
-      "immediate": [
-        "Declare Zur as an attacker before you spend mana on anything else. The trigger does not require Zur to live, so removal cast in response still lets the search resolve.",
-        "Fetch Sheltered by Ghosts and attach it to Zur. It gives him ward {2} and exiles a nonland permanent an opponent controls as it enters.",
-        "After combat, play Talon Gates of Madara for your land drop and phase Zur out with its enters trigger. He phases in untapped on your next untap step.",
-        "If the search has already resolved this turn, let Zur die rather than spending Counterspell, Muddle the Mixture or No More Lies on the removal."
-      ],
-      "subsequent": [
-        "Recast Zur on a turn you can also attack, or on a turn an enabler is already on the battlefield.",
-        "Run the drain while Zur is off the board: Sanctum of Stone Fangs takes X from each opponent in your first main phase where X is your Shrine count, Honden of Cleansing Fire gains 2 life per Shrine at your upkeep, Bastion of Remembrance fires on every creature that dies, and Underworld Coinsmith costs {W}{B} and 1 life per activation. None of them needs an attack.",
-        "Hard-cast the two Shrines Zur cannot fetch: Honden of Cleansing Fire and Southern Air Temple both cost {3}{W} and are mana value 4.",
-        "Cast Enlightened Tutor for Reconnaissance so the recast turn is also an attack turn."
-      ],
-      "notes": "Spirit Mantle and Unquestioned Authority grant protection from creatures, not protection from removal. They make Zur unblockable; they do not stop Swords to Plowshares. Ward {2} on Sheltered by Ghosts and phasing on Talon Gates of Madara are the two effects in the 99 that answer a targeted spell.",
-      "grounded_in": []
-    },
-    {
-      "condition": "wipe",
-      "condition_text": "a sweeper is coming and your board is what the attacks built",
-      "indications": [
-        "A white or black seat holds four or more untapped lands and casts nothing on its own turn",
-        "Your board is four or more permanents and most of them arrived off a Zur attack",
-        "You hold two or more enchantments you do not need to win this turn",
-        "The Meathook Massacre is in hand and not on the battlefield"
-      ],
-      "immediate": [
-        "Attack with Zur before you cast anything from hand. The fetched card comes out of your library, so a sweeper that answers it costs you no card in hand.",
-        "Fetch a permanent a creature sweeper does not answer: Northern Air Temple, Sanctum of Stone Fangs, Bastion of Remembrance, Phyrexian Arena or Dawn of Hope. Every one is a noncreature enchantment and keeps working after the board is gone.",
-        "Stop at two creatures on the battlefield and hold the rest of the hand.",
-        "If you hold Counterspell, Muddle the Mixture or No More Lies, leave its mana untapped through every opponent's turn until the sweeper is cast."
-      ],
-      "subsequent": [
-        "Read your board again after the wipe resolves. Athreos, God of Passage, Heliod, Sun-Crowned and Thassa, God of the Sea are indestructible and are not creatures at low devotion; Enduring Innocence and Enduring Tenacity return themselves as enchantments when they die as creatures.",
-        "Count your Shrines. All six — Northern Air Temple, Sanctum of Stone Fangs, Sanctum of Tranquil Light, The Spirit Oasis, Honden of Cleansing Fire and Southern Air Temple — are noncreature enchantments, so a creature wipe leaves the drain, the draw and the tapper intact.",
-        "Return Fear of Infinity from your graveyard to your hand the next time an enchantment you control enters.",
-        "Recast Zur and pay the tax. The next attack is the rebuild.",
-        "Rebuild to two threats, not five."
-      ],
-      "notes": "The Meathook Massacre is the exception to holding back. With it on the battlefield, every creature you lose to somebody else's sweeper takes 1 life from each opponent and gives you 1. Cast it for X=0, or fetch it, before the wipe rather than after.",
-      "grounded_in": []
-    },
-    {
-      "condition": "mana-drought",
-      "condition_text": "the mana has stopped, and the colour that stops is black",
-      "indications": [
-        "You missed a land drop and hold a double-black card. Four cards cost {B}{B}: Nighthowler, Phyrexian Arena, Enduring Tenacity and The Meathook Massacre.",
-        "Three lands on the battlefield and none of them makes {B}",
-        "Turn five and Zur is still in the command zone",
-        "Black is the colour that fails: 28 real coloured sources against a 36-source target, on an on-curve floor of 0.718 against 0.866 for white and 0.810 for blue (mana_analysis.json)",
-        "You have missed a land drop by turn five. The model does it in 38.6% of games (diagnostic.json)."
-      ],
-      "immediate": [
-        "Play a land before you cast anything. Pay 2 life on Godless Shrine, Hallowed Fountain or Watery Grave only on a turn you are casting a spell; otherwise pay nothing and let them enter tapped.",
-        "Cast the cheapest rock in hand, in this order: Sol Ring, Arcane Signet, Talisman of Dominance.",
-        "If Zur can attack, fetch Land Tax while an opponent controls more lands than you. Fetch Urza's Saga instead if you have already used your land drop — it arrives on the battlefield as a land you did not have to play.",
-        "Hold Nighthowler, Phyrexian Arena, Enduring Tenacity and The Meathook Massacre until a second black source is on the battlefield."
-      ],
-      "subsequent": [
-        "Cast Black Market Connections and take Sell Contraband in every first main phase while you are a land behind.",
-        "Tap Fetid Heath for {C} when you have nothing else; its filter mode needs {W} or {B} from another source first.",
-        "Tap Tainted Field for {W} or {B} only while you control a Swamp. Six of your twelve basics are Swamps.",
-        "Sacrifice a creature to Lazotep Quarry for one mana of any colour when the colour is what is missing.",
-        "Urza's Saga chapter III searches for an artifact with mana cost {0} or {1}. Sol Ring is the one in this deck; if Sol Ring is already on the battlefield, chapter III finds nothing."
-      ],
-      "notes": "Sequence black first when the choice is free. Twelve of the 36 lands are basics — three Island, three Plains, six Swamp — and Ossification enchants a basic land you control, so a board with no basic land makes Ossification an illegal fetch.",
-      "grounded_in": []
-    },
-    {
-      "condition": "combo",
-      "condition_text": "a seat is assembling a line and you are not going to outrace it",
-      "indications": [
-        "A seat tutors twice in one turn cycle",
-        "A seat holds seven or more cards and casts nothing",
-        "The piece already on the battlefield has hexproof or ward",
-        "A seat asks how much life you have before it taps out"
-      ],
-      "immediate": [
-        "Name the piece out loud and say what you will spend on it.",
-        "If Zur can attack this turn, attack and fetch Imprisoned in the Moon or Reprobation onto the piece. Putting an Aura onto the battlefield does not target (CR 303.4f), so hexproof and ward do not stop it, and the Aura arrives in the declare attackers step (CR 508.2).",
-        "If the piece is a creature you can target, cast Swords to Plowshares, Path to Exile or Journey to Nowhere on it now rather than holding it.",
-        "If the piece is still in hand and you hold Counterspell, Muddle the Mixture or No More Lies, keep its mana untapped through every opponent's turn."
-      ],
-      "subsequent": [
-        "Transmute Muddle the Mixture for a two-mana answer: Journey to Nowhere, Reprobation, Ossification or Sheltered by Ghosts.",
-        "Activate Sanctum of Tranquil Light on the creature piece at the start of the turn it would be used. The activation costs {5}{W} minus {1} for each Shrine you control, so at five Shrines it is {W}.",
-        "Spend Field of Ruin on the land the line needs.",
-        "Ask the seat with counterspells to hold up mana and tell them which turn you expect the line."
-      ],
-      "notes": "This deck carries no two-card infinite (bracket_report.json, combo_count 0) and its goldfish median kill is turn 9. You do not answer a combo by going faster; you answer it with the fetch, the counterspell or the table.",
-      "grounded_in": []
-    },
-    {
-      "condition": "raced",
-      "condition_text": "a seat is faster and you cannot answer its board in combat",
-      "indications": [
-        "You have taken combat damage from the same seat in two consecutive rounds",
-        "That seat's board is four or more attackers and yours is Zur",
-        "The Meathook Massacre is in hand and you have five or more lands",
-        "Your life total is below 25 before round six"
-      ],
-      "immediate": [
-        "Hard-cast The Meathook Massacre for the X that kills their board. Fetched with the attack trigger it enters with X=0 and sweeps nothing.",
-        "Count your own creatures against that X before you cast it. Southern Air Temple's counters put your tokens above it; without them your 2/2 Cats and Pegasi die with theirs.",
-        "Cast Swords to Plowshares or Path to Exile on their attacker with the highest power. The life they gain is smaller than the damage it stops.",
-        "Attack with Zur and fetch Reconnaissance, then pay {0} to pull him out of combat so he untaps and blocks on the way back.",
-        "Activate Sanctum of Tranquil Light on the attacker you cannot block. The activation costs {5}{W} minus {1} for each Shrine you control."
-      ],
-      "subsequent": [
-        "Convert the lifegain: with Vito, Thorn of the Dusk Rose or Enduring Tenacity on the battlefield, every point you gain takes that much off one opponent; with Marauding Blight-Priest each opponent loses 1 per gain.",
-        "Hard-cast Honden of Cleansing Fire. It gains 2 life for each Shrine you control at every upkeep, in one event, and Vito, Thorn of the Dusk Rose turns the whole lump into life loss.",
-        "Put Archon of Sun's Grace on the battlefield. Every enchantment that enters makes a 2/2 flying Pegasus, and the Archon gives Pegasi lifelink.",
-        "Use Ossification or Journey to Nowhere on the attacker you cannot block.",
-        "Stop drawing off Phyrexian Arena, Black Market Connections and Bitterblossom while you are inside four turns of dead."
-      ],
-      "notes": "The Meathook Massacre and Urza's Saga both have mana value counted with X=0 outside the stack, so Zur can fetch either. Fetch Meathook for its two death triggers, which work permanently; hard-cast it when you need the sweep.",
-      "grounded_in": []
-    },
-    {
-      "condition": "politics",
-      "condition_text": "the table has decided you are the seat to answer",
-      "indications": [
-        "Two seats have answered your permanents in one turn cycle",
-        "Your drains took every opponent down in the same turn and three players said so",
-        "An opponent names Zur before naming a board",
-        "An opponent counts your Shrines out loud"
-      ],
-      "immediate": [
-        "Point combat at one seat and keep it there. Sanctum of Stone Fangs and the constellation drains take from all three opponents whatever you do; combat is the part you choose.",
-        "Stop activating Underworld Coinsmith until the activations take a seat out.",
-        "Spend Swords to Plowshares, Path to Exile or Journey to Nowhere on the permanent the rest of the table is afraid of, and say which one before you cast it.",
-        "Hold Vito, Thorn of the Dusk Rose, Enduring Tenacity and Marauding Blight-Priest in hand until the turn you convert."
-      ],
-      "subsequent": [
-        "Fetch a permanent that reads as defence while the table is looking at you: Reconnaissance, Journey to Nowhere or Sheltered by Ghosts.",
-        "Block with Zur. With Reconnaissance on the battlefield he attacks and blocks in the same round.",
-        "Tap Forbidden Orchard only when you need the colour; every tap hands a named opponent a 1/1 Spirit.",
-        "Cast Tribute to Horobi when you need the table looking elsewhere. Chapters I and II give each opponent a 1/1 Rat; chapter III exiles the Saga and returns it transformed, and it gains control of every Rat token as it enters."
-      ],
-      "notes": "The drains are symmetric and that is what makes this seat everybody's problem at once: Grim Guardian, Balemurk Leech, Sanctum of Stone Fangs, Northern Air Temple, Bastion of Remembrance and Marauding Blight-Priest all take from three opponents on the same trigger. In the 60-game Forge run on v2.3.0 this seat received 0.33 interaction per game, so the model's table did not converge; a human table does.",
-      "grounded_in": []
-    }
-  ],
-  "normal": {
-    "preflight": {
-      "keep": [
-        "Three lands, or two lands and a rock, with a source of {B} among them",
-        "A play on turn one or turn two: Aqueous Form, Reconnaissance, Land Tax, Mystic Remora, Bitterblossom, Northern Air Temple, Sanctum of Tranquil Light, Sol Ring, or a two-mana enchantment",
-        "Four mana on turn four with {W}, {U} and {B} available between the lands you hold",
-        "Two lands, Sol Ring or Arcane Signet, and an enabler",
-        "Any hand holding Reconnaissance or Aqueous Form plus three lands"
-      ],
-      "ship": [
-        "One land, whatever else is in it",
-        "Seven cards with no black source and two or more black cards",
-        "A hand whose cheapest spell costs three, with no enabler and no tutor",
-        "Five lands and two spells you cannot cast before turn five",
-        "Six cards after one mulligan with no play before turn three"
-      ],
-      "note": "Gemstone Caverns is a land you have already played if you are not the starting player: begin the game with it on the battlefield and exile a card from your hand. Count it as a land before you decide."
-    },
-    "startup": {
-      "steps": [
-        "Turn one: play a land and cast Aqueous Form, Reconnaissance, Land Tax, Mystic Remora, Northern Air Temple or Sanctum of Tranquil Light if you hold one.",
-        "Play Concealed Courtyard and Darkslick Shores on turns one, two and three: each enters untapped only while you control two or fewer other lands. Play Shattered Sanctum from turn three, when you control two or more.",
-        "Play Isolated Chapel once you control a Plains or a Swamp, and Choked Estuary while you can reveal an Island or a Swamp from hand. Pay 2 life on Godless Shrine, Hallowed Fountain or Watery Grave only on a turn you are casting a spell.",
-        "Turn two: cast the enabler ahead of the payoff. Aqueous Form and Reconnaissance are what make Zur attack; a constellation body is worth what the attacks fetch.",
-        "Turn three: cast a three-mana draw enchantment — Rhystic Study, Phyrexian Arena, Caretaker's Talent, Tocasia's Welcome or Black Market Connections — and play the land that makes {B}.",
-        "Turn four: cast Zur. The measured median cast turn is 4 and 90.6% of games have him cast by turn six (goldfish_metrics.json).",
-        "Cast Enlightened Tutor in the end step before your Zur turn when you hold no enabler; it puts Reconnaissance or Aqueous Form on top of your library."
-      ]
-    },
-    "assembly": {
-      "steps": [
-        "Get an enabler onto the battlefield before Zur, or on the turn after him.",
-        "Cast Zur.",
-        "Attack on the first turn Zur can attack, whatever the board looks like.",
-        "First fetch with no enabler on the battlefield: take the cheapest one — Aqueous Form {U}, Reconnaissance {W}, Aether Tunnel {1}{U}, Spirit Mantle {1}{W}, Steel of the Godhead {2}{W/U}, Unquestioned Authority {2}{W}.",
-        "Put an 'an enchantment you control enters' payoff on the battlefield before the third fetch: Grim Guardian, Balemurk Leech, Underworld Coinsmith, Entity Tracker, Fear of Infinity, Eidolon of Astral Winds, Archon of Sun's Grace, Ajani's Chosen or Gremlin Tamer.",
-        "Fetch Northern Air Temple before any other Shrine, then The Spirit Oasis. Each reads every Shrine that enters after it and neither reads one that entered before.",
-        "Hard-cast Honden of Cleansing Fire and Southern Air Temple. Both cost {3}{W} and are mana value 4; the four Shrines Zur can fetch are Northern Air Temple, Sanctum of Tranquil Light, Sanctum of Stone Fangs and The Spirit Oasis.",
-        "Take the most expensive legal card with every fetch after the enabler and the first Shrine are on the battlefield.",
-        "Add the conversion last: Vito, Thorn of the Dusk Rose, Enduring Tenacity or Marauding Blight-Priest behind Underworld Coinsmith's constellation gain and Honden of Cleansing Fire's upkeep gain."
-      ],
-      "note": "An Aura put onto the battlefield attaches to an object you choose and does not target (CR 303.4f), but the object still has to be legal. Ossification enchants a basic land you control and Sheltered by Ghosts enchants a creature you control — count what you control before you name either."
-    },
-    "cruise": {
-      "steps": [
-        "Upkeep: pay Mystic Remora's cumulative upkeep or let it go, then take Honden of Cleansing Fire's gain, Phyrexian Arena's draw and Bitterblossom's token.",
-        "First main: take Sanctum of Stone Fangs' drain for X, where X is the number of Shrines you control, choose Black Market Connections' modes, and play a land.",
-        "Declare Zur as an attacker.",
-        "Let the search resolve: the cheapest enabler if none is on the battlefield, otherwise the most expensive legal card.",
-        "With Reconnaissance out, pay {0} to remove Zur from combat and untap him before blockers are declared.",
-        "Second main: cast enchantments one at a time and take each constellation and Eerie trigger before you cast the next.",
-        "End step: leave {U}{U} or {W}{U} untapped when you hold Counterspell, Muddle the Mixture or No More Lies. From turn five the model has interaction in hand in 71% of games and the mana for it in 27%, so the gap is mana — hold it rather than casting a second enchantment."
-      ],
-      "note": "A lifegain payoff counts EVENTS, not points, except Vito, Thorn of the Dusk Rose and Enduring Tenacity, which count points. Honden of Cleansing Fire gains 2 life per Shrine in one event: at four Shrines that is 8 life in one lump, so Vito takes 8 off one opponent while Marauding Blight-Priest takes 1 off each and Heliod, Sun-Crowned puts down one counter. Underworld Coinsmith's gain is a separate event per enchantment that enters."
-    },
-    "closing": {
-      "steps": [
-        "Count your reach before you attack: Sanctum of Stone Fangs takes X from each opponent in your first main phase where X is your Shrine count, Northern Air Temple takes 1 more for every Shrine that enters this turn, Underworld Coinsmith costs {W}{B} and 1 life per activation, and Bastion of Remembrance and The Meathook Massacre fire on every creature that dies.",
-        "Count the lifegain line: with Vito, Thorn of the Dusk Rose or Enduring Tenacity on the battlefield, each point of life you gain takes that much off one opponent, and Honden of Cleansing Fire's upkeep gain is 2 per Shrine in one lump.",
-        "Attack the seat you can kill, not the seat that hurt you.",
-        "Fetch Reprobation onto the creature that would block lethal. It arrives in the declare attackers step (CR 508.2), before blockers are declared (CR 509).",
-        "Wait one turn when the drain takes a second seat out next turn and the attack takes nobody out this turn."
-      ],
-      "note": "The fetch is a pre-emption, not a reaction: the search resolves before blockers are declared, so you choose the answer without seeing the block. Fetch for the block you expect, and take Reconnaissance instead when you cannot name one. The model kills by turn eight in 26.6% of games and by turn ten in 81.2%, with mean board power 26.65 and mean cumulative drain 15.47 at ten — every one of those is a ceiling, measured with the attack rate at its declared maximum (goldfish_metrics.json)."
-    }
+ "decklist_sha256_prefix": "a17b0f4ac40f",
+ "emergency": [
+  {
+   "condition": "wipe",
+   "condition_text": "a sweeper is coming, and under Zur or Starfield of Nyx your enchantments are creatures that die to it",
+   "indications": [
+    "A seat is holding four or more mana in white and has cast nothing on their turn",
+    "Starfield of Nyx is on the battlefield and you control five or more enchantments, so every other non-Aura enchantment you own is already a creature",
+    "You animated three or more enchantments on earlier turns and they are still creatures — Zur's ability has no duration",
+    "A sweeper has already resolved this game from a seat that plays more than one",
+    "Your hand is empty and your enchantment count is the whole board"
+   ],
+   "immediate": [
+    "Stop animating. Zur's {1}{W} lasts forever, so an enchantment you animate this turn is still a creature when the sweeper resolves.",
+    "Animate Heliod, Sun-Crowned, Thassa, God of the Sea and Athreos, God of Passage instead. All three are indestructible, and {1}{W} makes each a 3/3 whatever your devotion is.",
+    "Keep one enchantment in hand. The board you rebuild from is the card you did not commit.",
+    "If Academy Rector is on the battlefield, let the sweeper kill it and fetch Sphere of Safety onto the battlefield — it enters after the sweeper and taxes the crack-back.",
+    "If you hold Counterspell or No More Lies, spend it on the sweeper rather than on the ramp spell in front of it."
+   ],
+   "subsequent": [
+    "Recast Zur before you animate anything. Without him the bodies are vanilla and every removal spell in the pod works again.",
+    "Rebuild to two threats, not five: the draw engine first, then one enchantment creature.",
+    "Return an enchantment from your graveyard on each upkeep with Starfield of Nyx.",
+    "Cast the drain that needs no combat step: Sanctum of Stone Fangs takes X in your first main phase, and Grim Guardian and Balemurk Leech each take 1 from every opponent whenever an enchantment enters.",
+    "Spend {1}{W} on Enduring Tenacity, Enduring Innocence and Enduring Curiosity after they come back. Each returns itself to the battlefield as an enchantment when it dies as a creature, and animation makes it a body again."
+   ],
+   "notes": "Zur's ability sets base power and toughness, so it shrinks as well as grows. Heliod and Thassa are 5/5 and Athreos is 5/4 once devotion turns them on; animate one then and you have a 3/3. Animate a God while your devotion is short, not after.",
+   "grounded_in": []
   },
-  "handling": {
-    "optics": [
-      "The table prices Zur before your board shows anything. A four-mana commander that searches the library reads as an engine on sight.",
-      "The drains are symmetric: three seats watch their life totals fall on the same trigger, so three seats respond at once.",
-      "Sanctum of Stone Fangs takes X from each opponent in your first main phase, where X is the number of Shrines you control. The table can count your Shrines and will.",
-      "Forbidden Orchard hands a named opponent a 1/1 Spirit on every tap. Tap it last.",
-      "In the 60-game Forge run against giada-angels, baylen-tokens and abaddon — measured on v2.3.0, an older list than this one — this seat received 0.33 interaction per game and dealt 11.82 combat damage against 44.68 taken. Forge's table left this seat alone; do not plan on a human one doing the same."
-    ],
-    "reveal": [
-      "Fetch the enabler early and the conversion late. Reconnaissance on turn five tells the table nothing; Vito, Thorn of the Dusk Rose tells them the whole plan.",
-      "Hold Vito, Thorn of the Dusk Rose, Enduring Tenacity and Marauding Blight-Priest in hand until the turn you convert lifegain into a kill.",
-      "Hard-cast Honden of Cleansing Fire on a turn no conversion payoff is on the battlefield. It gains life and takes none, so it reads as a lifegain card until the turn it is not.",
-      "Say what a fetched Aura does when it answers somebody's permanent. Journey to Nowhere and Sheltered by Ghosts buy goodwill only if the table sees who you pointed them at.",
-      "Show Reconnaissance once and let the table watch Zur untap. A seat that knows Zur blocks after attacking attacks somebody else."
-    ],
-    "alliances": [
-      "Ask for the land answer you do not have, and offer Swords to Plowshares, Path to Exile, Journey to Nowhere or Ossification for it.",
-      "Offer Sheltered by Ghosts as removal: it exiles a nonland permanent and stays on your creature, so you pay one card for two jobs.",
-      "Offer Sanctum of Tranquil Light's tap for the attacker aimed at somebody else, and name the creature before you activate.",
-      "Never trade away a turn of attacking. Zur's trigger fires on the attack, so a turn you do not attack is a fetch you do not get — promise a target instead of a pass.",
-      "Name the threat before you pass, every turn, with one permanent and what you would spend on it."
-    ],
-    "targets": [
-      "Attack the seat least able to punish the attack. The search resolves whoever you attack.",
-      "With Reconnaissance on the battlefield, attack the seat holding blockers: you remove Zur from combat after the trigger and he untaps to block.",
-      "Point removal at fliers and at anything with four or more power. This deck blocks with a 1/4 Zur and 2/2 Pegasi until Southern Air Temple's counters land.",
-      "Answer the go-wide flier seat first. In the 60-game run on v2.3.0, giada-angels accounted for 25 of the 38 eliminations Forge attributed against this seat.",
-      "Aim combat at one seat and let the drains take the other two down together."
-    ]
+  {
+   "condition": "removal",
+   "condition_text": "a removal spell is on the stack, aimed at Zur or at an enchantment you have not animated",
+   "indications": [
+    "The target is an enchantment you have not animated — Rhystic Study, Phyrexian Arena and Sphere of Safety carry no hexproof until they are creatures",
+    "The target is Zur himself: a 1/4 with flying and no hexproof of his own",
+    "A seat passes on your animated bodies and points removal at Zur",
+    "The spell is enchantment removal rather than creature removal",
+    "You have less than two mana untapped and one of it is not white"
+   ],
+   "immediate": [
+    "Animate the targeted enchantment with {1}{W} in response. It becomes an enchantment creature, Zur grants it hexproof, and the spell has no legal target left.",
+    "If Zur is the target, counter the spell. The deck holds Counterspell {U}{U} and No More Lies {W}{U}; Muddle the Mixture counters an instant or a sorcery only.",
+    "If the target is Academy Rector and the spell destroys rather than exiles, let it resolve. The death trigger fetches any enchantment onto the battlefield with no mana-value limit.",
+    "If Zur dies, animate nothing else this turn. {1}{W} without him buys a vanilla body that the next removal spell kills.",
+    "Recast Zur on the first turn you can also hold {1}{W} open."
+   ],
+   "subsequent": [
+    "Hold {1}{W} through every opponent's turn. Each two mana you keep is one removal spell you can blank.",
+    "Put Sheltered by Ghosts on an enchantment creature rather than on Zur — hexproof stops the pod removing the body to break the Aura, and your own Aura can still target it.",
+    "Animate the enchantments whose text the deck runs on — Rhystic Study, Phyrexian Arena, Black Market Connections — before you animate the ones you only want for power.",
+    "Cast Enlightened Tutor for Sphere of Safety in an opponent's end step when the pod is spending removal one card at a time; it goes on top of your library and you draw it next turn."
+   ],
+   "notes": "Hexproof stops opponents only. Zur's own {1}{W}, Sheltered by Ghosts, Heliod's counter and Eidolon of Astral Winds all still target your own enchantment creatures.",
+   "grounded_in": []
+  },
+  {
+   "condition": "combo",
+   "condition_text": "a seat is assembling a two-card line and you are the seat holding blue mana",
+   "indications": [
+    "A seat has passed with two or more blue sources untapped for two turns",
+    "A tutor resolved and the card went to hand rather than to the battlefield",
+    "A commander that is a known combo piece has just been recast",
+    "Rhystic Study or Mystic Remora drew you a card off a spell that made no board",
+    "A seat is drawing three or more cards a turn and has stopped attacking"
+   ],
+   "immediate": [
+    "Counter the piece that comes out of the library, not the ritual in front of it. Counterspell {U}{U} and No More Lies {W}{U} stop any spell; Muddle the Mixture {U}{U} stops an instant or a sorcery.",
+    "If the line runs through a creature, exile it: Swords to Plowshares {W}, Path to Exile {W}, Sheltered by Ghosts {1}{W} or Ossification {1}{W}.",
+    "If the line runs through an opponent's commander, cast Imprisoned in the Moon on it. It becomes a colourless land with no abilities and stays on the battlefield, so it is not recast from the command zone.",
+    "If the line runs through a graveyard, exile the card with Summoner's Sending in your end step.",
+    "If you hold no answer, count your own lethal before you pass: animate everything, attack, and point Enduring Tenacity at the combo seat."
+   ],
+   "subsequent": [
+    "Transmute Muddle the Mixture for {1}{U}{U} on your own turn to fetch a mana-value-2 card to hand — The Meathook Massacre and Journey to Nowhere are both in range.",
+    "Hold Counterspell over casting a fourth enchantment on the turn the combo seat untaps.",
+    "Cast Rhystic Study before the combo seat's turn and make them pay {1} on every piece.",
+    "Tell the table which card you are holding up. A pod that knows the counterspell exists spends a turn playing around it, and a turn is what this deck needs."
+   ],
+   "notes": "This deck contains no two-card infinite line of its own — deck-facts reports zero contained combos and zero two-card infinites in the 99, and a test enforces it. Say so at the table; it is true, and it is why the pod should be pointing its answers elsewhere.",
+   "grounded_in": []
+  },
+  {
+   "condition": "mana-drought",
+   "condition_text": "the land drops have stopped, or the colour you need is the one you do not have",
+   "indications": [
+    "You have missed a land drop — the model misses one by turn five in 41% of games, and its land-drop hit rate falls to 0.64 by turn ten (diagnostic.json, 10,000 seeded iterations)",
+    "You hold a double-black card — Enduring Tenacity {2}{B}{B}, Nighthowler {1}{B}{B}, Phyrexian Arena {1}{B}{B} — and one black source",
+    "You hold Zur and are missing one of {W}, {U} or {B}",
+    "Darkwater Catacombs or Talon Gates of Madara is your only source of a colour",
+    "You have five or more cards in hand and cast one spell last turn"
+   ],
+   "immediate": [
+    "Play the painland untapped and pay the life. Caves of Koilos, City of Brass, Mana Confluence, Underground River and Spire of Industry each cost 1 life a tap, and lifelink pays it back.",
+    "Crack Field of Ruin for {2}: destroy an opponent's nonbasic and search a basic onto the battlefield in the colour you are short.",
+    "If Land Tax is on the battlefield and any opponent controls more lands than you, take three basics and choose for the colour you are short — six Swamps, three Plains and three Islands are in the deck.",
+    "Cast the rock before the enchantment: Sol Ring, Arcane Signet, Talisman of Dominance.",
+    "Spend down to {1}{W} rather than to zero. One animation is the cheapest body this deck makes."
+   ],
+   "subsequent": [
+    "Cast Enlightened Tutor {W} for Land Tax or Mystic Remora rather than for a payoff you cannot cast; it puts the card on top, so cast it in an opponent's end step.",
+    "Hold the double-black cards until you control two black sources. Black is the tight colour: 27 land sources against the 36 a 90% on-curve rate would take, and 0.718 on curve for a double-black cost once the two gated lands are excluded (mana_analysis.json).",
+    "Cast Black Market Connections and take Sell Contraband every turn until the land drops resume.",
+    "Play Urza's Saga and take chapter III for Sol Ring when it is still in the library."
+   ],
+   "notes": "Darkwater Catacombs and Talon Gates of Madara are counted as sources of three colours each and cannot pay a coloured cost on curve: both charge extra mana on top of the tap (mana_analysis.json, sources.gated).",
+   "grounded_in": []
+  },
+  {
+   "condition": "stalled",
+   "condition_text": "it is turn six or later, Zur is not on the battlefield, and the enchantments you control are doing nothing but sitting there",
+   "indications": [
+    "Turn six or later and Zur has not resolved",
+    "You control four or fewer enchantments, so Starfield of Nyx would animate nothing worth animating",
+    "You are drawing one card a turn: none of Rhystic Study, Mystic Remora, Phyrexian Arena, Black Market Connections, Entity Tracker or Enduring Curiosity is on the battlefield",
+    "Your board is enchantments you have never animated",
+    "You have passed two turns without attacking"
+   ],
+   "immediate": [
+    "Cast Zur ahead of anything else that costs three. Zur and Starfield of Nyx are the two cards that turn an enchantment you control into a body, and Starfield needs five enchantments on the battlefield first.",
+    "Animate the largest non-Aura enchantment you control. Power equals mana value, so Sphere of Safety and Cathars' Crusade are 5/5s and Rhystic Study is a 3/3.",
+    "Cast the draw engine ahead of the payoff. The model reaches a draw engine that keeps drawing by turn three in 68% of games, and names it the bottleneck (diagnostic.json).",
+    "Cast Academy Rector and put it in front of the largest attacker. You want it to die: it fetches any enchantment onto the battlefield with no mana-value limit.",
+    "Take Starfield of Nyx with Demonic Tutor once you control four enchantments. From the fifth onward it animates every other non-Aura enchantment for no mana."
+   ],
+   "subsequent": [
+    "Count your enchantments at the start of every turn and say the number out loud. Five is the line Starfield of Nyx turns on at.",
+    "Cast the expensive enchantment over the cheap one when both are castable and you intend to attack.",
+    "Hard-cast Bitterblossom, Dawn of Hope and Felidar Retreat to put bodies on the board while the enchantment count climbs.",
+    "Fetch to the battlefield with Academy Rector rather than to hand with Enlightened Tutor when you are behind on board."
+   ],
+   "notes": "Zur the Enchanter is a card in the 99 now, not the command zone. His attack trigger still fetches an enchantment of mana value 3 or less when he is on the battlefield, but he costs four and he is not the plan — do not build a turn around attacking with him.",
+   "grounded_in": []
+  },
+  {
+   "condition": "politics",
+   "condition_text": "the pod has decided you are the problem, and the removal is coming to your seat",
+   "indications": [
+    "Two seats have named Rhystic Study or Sphere of Safety out loud",
+    "Removal is being pointed at Zur rather than at anything on your board",
+    "A seat has stopped attacking you and is holding cards",
+    "Your drain triggers have taken one opponent below 20 while the others are near 40",
+    "Nobody has attacked the seat with the largest board for two turns"
+   ],
+   "immediate": [
+    "Spread the drain. Enduring Tenacity and Vito, Thorn of the Dusk Rose each pick a target per trigger, so take the two lowest totals down together rather than one to zero.",
+    "Spend your next removal spell on somebody else's threat and name the seat before you cast it — Swords to Plowshares, Path to Exile, Journey to Nowhere, Ossification and Sheltered by Ghosts all read as help.",
+    "Cast Sphere of Safety. Each attacker must pay {X} for your enchantment count, so a table that has decided to kill you pays for it three times over.",
+    "Animate only what you need to block. A standing animated board reads as a threat every turn; {1}{W} on an opponent's turn makes the same deathtouch blocker and shows nothing until it is needed.",
+    "Tap Forbidden Orchard last and name the seat with the fewest attackers — every tap hands a named opponent a 1/1 Spirit."
+   ],
+   "subsequent": [
+    "Hold Starfield of Nyx until the turn you attack with what it animates.",
+    "Take Sell Contraband on Black Market Connections rather than Hire a Mercenary while you are the target; a Treasure is quiet and a 3/2 body that costs you 3 life is not.",
+    "Recast the drain payoff after the pod has moved on to another seat.",
+    "Stop reminding the table about Rhystic Study once they are paying {1} every time. A tax the pod has learned is still a tax."
+   ],
+   "notes": "Deathtouch changes the arithmetic of a block, not its optics. An animated 3/3 Rhystic Study kills whatever it blocks, and the pod prices it as a 3/3 until the first time it does.",
+   "grounded_in": []
+  },
+  {
+   "condition": "raced",
+   "condition_text": "a seat is faster than you and your board will not stop it on the ground",
+   "indications": [
+    "A seat is attacking for eight or more a turn and you are not blocking profitably",
+    "Your life total is below 25 and you have paid for lands, Bitterblossom, Phyrexian Arena and Black Market Connections",
+    "You control no lifelink body: Zur has not resolved, or every enchantment creature you own is still in hand",
+    "Sphere of Safety is in the library and you control fewer than eight enchantments",
+    "The racing seat has more power on the battlefield than you and untaps first"
+   ],
+   "immediate": [
+    "Animate a blocker at instant speed. {1}{W} on any non-Aura enchantment during their turn makes a deathtouch body they did not declare around.",
+    "Block with it. Deathtouch makes the trade theirs to lose, and lifelink turns the damage it deals into life.",
+    "Cast Sphere of Safety. Animating an enchantment does not remove it from Sphere's count — it is a creature in addition to its other types — so the tax holds while you make blockers.",
+    "Turn the block into a drain: with Enduring Tenacity or Vito, Thorn of the Dusk Rose on the battlefield, the life you gain comes off the racing seat's total.",
+    "Cast The Meathook Massacre with X large enough to clear their board. Every creature you lose to it drains each opponent for 1."
+   ],
+   "subsequent": [
+    "Chump-block with Academy Rector and fetch Sphere of Safety onto the battlefield off the death trigger.",
+    "Cast Bitterblossom and chump with a flying Faerie every upkeep.",
+    "Gain life back with Honden of Cleansing Fire, Underworld Coinsmith and Daxos, Blessed by the Sun, and stop paying life for lands the turn you go below 15.",
+    "Race back rather than stabilise once your board power passes theirs; the model puts board power at 22.09 by turn ten with combat modelled (goldfish_metrics.json, 10,000 seeded games)."
+   ],
+   "notes": "The Enduring cycle pays for a chump block. Enduring Tenacity, Enduring Innocence and Enduring Curiosity each return to the battlefield as an enchantment when they die as a creature, and {1}{W} makes one a creature again — the body is spent, the text is not.",
+   "grounded_in": []
   }
+ ],
+ "normal": {
+  "preflight": {
+   "keep": [
+    "Three lands with a white source among them: {1}{W} is the animation cost, and white carries 42 pips across 36 cards (mana_analysis.json)",
+    "Two lands plus Sol Ring, Arcane Signet or Talisman of Dominance",
+    "{W}, {U} and {B} all reachable by turn three, so Zur is castable on curve",
+    "A play on turn one or turn two: Land Tax, Mystic Remora, Hypnotic Siren, Sol Ring, Bitterblossom, Northern Air Temple, Sanctum of Stone Fangs, Daxos, Blessed by the Sun or Inquisitive Glimmer",
+    "Two black sources if the hand holds two or more black cards — black is the tight colour at 27 land sources"
+   ],
+   "ship": [
+    "One land, whatever else is in it",
+    "No white source with three or more white cards",
+    "Nothing castable before turn four",
+    "Five lands and two spells that both cost four or more",
+    "Zur plus five cards that all cost four or more"
+   ],
+   "note": "Gemstone Caverns is a land you have already played when you are not the starting player: begin the game with it on the battlefield with a luck counter and exile a card from your hand. Count it as a land, and as any colour, before you decide."
+  },
+  "startup": {
+   "steps": [
+    "Play the land that makes black first when the hand holds a black two-drop. Black is the tight colour: 27 land sources against the 36 a 90% on-curve rate would take.",
+    "Turn one, cast Land Tax, Mystic Remora, Hypnotic Siren or Sol Ring, in that order of preference.",
+    "Turn two, cast the two-mana enchantment that draws or drains over the one that makes a body: Dawn of Hope, Sanctum of Stone Fangs, Bitterblossom, Journey to Nowhere.",
+    "Turn three, cast Zur when you already control two or more enchantments. Otherwise cast the three-mana draw engine and cast Zur on turn four.",
+    "Pay Mystic Remora's cumulative upkeep while it costs {1} or {2}. Let it go the turn it costs {3}."
+   ],
+   "note": "This deck pays life to run: five lands cost 1 life a tap and the three shocklands cost 2 on entry, and Bitterblossom, Phyrexian Arena and Black Market Connections each bill you every turn. Lifelink is what pays it back, so every point you spend before Zur lands is spent on credit."
+  },
+  "assembly": {
+   "steps": [
+    "Land a draw engine first: Rhystic Study, Mystic Remora, Phyrexian Arena, Black Market Connections, Entity Tracker, Tocasia's Welcome or Caretaker's Talent.",
+    "Cast Zur second. Until he is on the battlefield the 16 enchantment creatures in the 99 are plain bodies with no deathtouch, no lifelink and no hexproof.",
+    "Cast a drain payoff third — Enduring Tenacity, Vito, Thorn of the Dusk Rose or Marauding Blight-Priest — so that lifelinked combat damage takes life off a named opponent as well.",
+    "Count to five enchantments, then cast Starfield of Nyx. From the fifth onward every other non-Aura enchantment you control is a creature with power equal to its mana value, for no mana.",
+    "Cast Academy Rector last and put it where it dies. It fetches any enchantment onto the battlefield with no mana-value limit; Starfield of Nyx and Sphere of Safety are the two that change a board."
+   ],
+   "note": "Mana value is a virtue here, not a cost. Power equals mana value under both Zur and Starfield of Nyx, so the five-drop is the 5/5 and the one-drop is the 1/1. Cast the expensive enchantment over the cheap one whenever both fit and you intend to attack."
+  },
+  "cruise": {
+   "steps": [
+    "Upkeep: pay Mystic Remora or let it go, then return an enchantment from your graveyard with Starfield of Nyx.",
+    "Make the land drop. Take the painland untapped over the tapland; lifelink gives the life back.",
+    "Count your enchantments. Below five, cast the cheapest enchantment that raises the count. At five or more with Starfield of Nyx out, cast the most expensive one you can afford.",
+    "Before declaring attackers, spend {1}{W} per animation, largest mana value first.",
+    "Attack with every enchantment creature. Deathtouch makes each block a trade the opponent loses; lifelink turns the damage that connects into a drain through Enduring Tenacity or Vito, Thorn of the Dusk Rose.",
+    "Pass with {1}{W} open. Animation has no timing restriction, so it makes a deathtouch blocker on an opponent's turn."
+   ],
+   "note": "Never animate Urza's Saga: its mana value is 0, so it becomes a 0/0 and dies on the spot. Starfield of Nyx does it for you — it animates each other non-Aura enchantment you control, the Saga included — so resolve Starfield only after the Saga has taken chapter III, or accept losing it."
+  },
+  "closing": {
+   "steps": [
+    "Total the mana values of every non-Aura enchantment you can afford to animate, and add the power already on the battlefield.",
+    "Add the drain. With Enduring Tenacity or Vito, Thorn of the Dusk Rose on the battlefield, every point of lifelinked damage that connects is a matching point off one opponent you name.",
+    "Animate everything you intend to attack with before you declare attackers. A body animated after blockers cannot attack.",
+    "Name a target for each trigger. Enduring Tenacity and Vito pick an opponent per lifegain event, so split the drain across two seats or focus one.",
+    "Wait a turn when Sphere of Safety is not on the battlefield and the crack-back is lethal."
+   ],
+   "note": "Every speed figure in this book is the goldfish's: 10,000 seeded games against one opponent at 40 life who does not block and does not remove. It is the model's clock, not an expectation, and its combat figures have run 4-5x ahead of Forge on this deck. No Forge run exists for this commander at all — every simulated game on this list was played with Zur the Enchanter in the command zone."
+  }
+ },
+ "handling": {
+  "optics": [
+   "Zur, Eternal Schemer costs three and reads as an unanswerable board the moment the table reads hexproof. A pod that cannot target you reaches for a sweeper instead — play as though a wipe is in every hand from the turn he lands.",
+   "Rhystic Study taxes every opponent on every spell. Expect it named and expect it answered.",
+   "Sphere of Safety is public arithmetic: each attacker pays {X} for your enchantment count, and the table can count your enchantments.",
+   "Forbidden Orchard hands a named opponent a 1/1 Spirit on every tap. Tap it last.",
+   "Enduring Tenacity and Vito, Thorn of the Dusk Rose take life off an opponent you name every time you gain any. The seat you name is the seat that comes for you.",
+   "An animated Rhystic Study is a 3/3 that also draws you cards. The pod prices the body and forgets the text."
+  ],
+  "reveal": [
+   "Cast the draw engine before the drain payoff. Rhystic Study and Phyrexian Arena read as value; Vito, Thorn of the Dusk Rose reads as a clock.",
+   "Hold Starfield of Nyx until the turn you can animate and attack. It costs nothing once you control five enchantments and it changes the whole board in one step.",
+   "Animate on an opponent's turn rather than in your own main phase while you are ahead. A body that appears during combat is a blocker; a body that stands there all round is a threat.",
+   "Cast Sphere of Safety the turn before you expect to be attacked, not the turn you can first afford it.",
+   "Keep the Enduring cycle's return trigger to yourself. A pod that has watched Enduring Tenacity come back once stops trading with it."
+  ],
+  "alliances": [
+   "Say the deck runs no infinite combo. Deck-facts reports zero contained combos and zero two-card infinites in the 99, and a test enforces it.",
+   "Cast Swords to Plowshares or Path to Exile on the table's fastest board, on their turn, so the seat you helped sees it happen.",
+   "Point the drain at the seat with the most life and tell the table you are doing it.",
+   "Spend a counterspell on the spell that beats three seats before the one that beats you.",
+   "Offer Imprisoned in the Moon on the commander the whole table is afraid of; it stays on the battlefield as a land and never returns to the command zone."
+  ],
+  "targets": [
+   "Attack the seat whose blockers are largest. Deathtouch means a bigger blocker trades for the same body a 1/1 would.",
+   "Leave the seat whose only interaction is targeted removal until last — hexproof blanks it, so that seat costs you the least while it is alive.",
+   "Kill the seat you have been draining. Enduring Tenacity and Vito, Thorn of the Dusk Rose have already done half the work on whoever you named.",
+   "Hit the seat holding the sweeper first when you control Starfield of Nyx; under it your enchantments die with your creatures.",
+   "Split attackers across two seats once your board power passes 15. Every lifelinked hit is a drain trigger, and each trigger picks its own opponent."
+  ]
+ }
 }
