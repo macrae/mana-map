@@ -104,3 +104,49 @@ def test_a_half_open_room_animates_at_one_door_and_a_full_one_at_both():
                            "{2}{B} // {3}{B}{B}"))
     assert card["cmc"] == 3, "half open — the body is the open door"
     assert card["room"]["full_mv"] == 8, "fully unlocked — both doors"
+
+
+def test_a_locked_door_gives_you_nothing_until_you_open_it():
+    """THE BUG THIS EXISTS FOR, and it is the one that flattered Rooms.
+
+    Scryfall concatenates both halves into `oracle_text`, so every text-derived
+    profile read the LOCKED door too. `Unholy Annex // Ritual Chamber` was
+    charged 3 for its {2}{B} front half and handed the 6/6 flying Demon printed
+    on the {3}{B}{B} back half at the same instant. Correcting it moved rooms-v1
+    from 0.3842 to 0.3192 — the over-credit was larger than the under-credit the
+    same commit fixed.
+
+    `token_power` is the TOTAL across bodies, so a lone 6/6 is (6, 1). Reaching
+    for `combat_profile(...)["power"]` instead gives 0 — a Room has no power of
+    its own — and the Demon enters as a 1/1.
+    """
+    card = g.classify(room(
+        "Unholy Annex // Ritual Chamber", ROOM_TYPE, "{2}{B} // {3}{B}{B}",
+        "At the beginning of your end step, draw a card. If you control a Demon, "
+        "each opponent loses 2 life and you gain 2 life. Otherwise, you lose 2 life."
+        " // When you unlock this door, create a 6/6 black Demon creature token "
+        "with flying."))
+    assert card["cmc"] == 3
+    assert card["combat"]["token_bodies"] == 0, (
+        "the Demon is printed on the LOCKED door and must not arrive at cast time")
+    on_unlock = card["room"]["on_unlock"]
+    assert on_unlock["combat"]["token_bodies"] == 1
+    assert on_unlock["combat"]["token_power"] == 6, (
+        "total power across bodies, so a lone 6/6 is (6, 1) — reading the card's "
+        "own power would enter it as a 1/1")
+
+
+def test_casting_a_door_fires_that_doors_own_unlock_clause():
+    """CR 709.5d: a permanent is given the 'left half unlocked' designation as it
+    ENTERS if its left half was cast. So a "when you unlock this door" ability on
+    the door you cast triggers immediately, and belongs to the CAST profile — not
+    to `on_unlock`. Grand Entryway really does make its Glimmer on turn two."""
+    card = g.classify(room(
+        "Grand Entryway // Elegant Rotunda", ROOM_TYPE, "{1}{W} // {2}{W}",
+        "When you unlock this door, create a 1/1 white Glimmer enchantment "
+        "creature token."
+        " // When you unlock this door, put a +1/+1 counter on each of up to two "
+        "target creatures."))
+    assert card["cmc"] == 2
+    assert card["combat"]["token_bodies"] == 1, (
+        "the door you cast is unlocked as it enters, so its own clause fires now")

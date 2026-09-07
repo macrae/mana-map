@@ -1600,11 +1600,23 @@ def room_profile(card):
         return None
     costs = [mana_value(h) for h in halves]
     entry = 0 if costs[0] <= costs[1] else 1
+    # SCRYFALL CONCATENATES BOTH HALVES INTO `oracle_text`, so every text-derived
+    # profile read a LOCKED door's rules text. `Unholy Annex // Ritual Chamber`
+    # was charged 3 for its {2}{B} front half AND handed the 6/6 Demon printed on
+    # the {3}{B}{B} back half at the same instant. Splitting the text on the same
+    # separator as the cost, in the same order, is what lets each door be paid
+    # for and credited separately.
+    faces = [t.strip() for t in
+             (card.get("oracle_text") or "").split(" // ")]
+    if len(faces) != 2:
+        faces = ["", ""]
     return {
         "entry_cost": costs[entry],
         "entry_pips": cast_pips(halves[entry]),
+        "entry_text": faces[entry],
         "unlock_cost": costs[1 - entry],
         "unlock_pips": cast_pips(halves[1 - entry]),
+        "unlock_text": faces[1 - entry],
         "full_mv": costs[0] + costs[1],
     }
 
@@ -2078,6 +2090,29 @@ def classify(card, pool=None):
     # with no Room takes the same `cmc` and the same `pips` it always did, and
     # its output is byte-identical.
     room = room_profile(card)
+    if room:
+        # EVERY TEXT-DERIVED PROFILE BELOW NOW READS ONE DOOR. Rebinding `card`
+        # and `text` here rather than patching each profile call means bodies,
+        # draw, drain, combat and the rest are all attributed correctly by
+        # construction, and a profile added later inherits the fix for free.
+        # The TYPE LINE is deliberately left whole: the permanent really is an
+        # Enchantment whichever door is open.
+        card = dict(card, oracle_text=room["entry_text"])
+        text = room["entry_text"]
+        # What the OTHER door does, applied when it is unlocked and not before.
+        # Same parsers, different half — no new effect vocabulary is invented,
+        # and the corpus sweep says that is enough: of the 26 Rooms with a "when
+        # you unlock this door" clause the effects are tokens (5), counters (4),
+        # recursion (4) and draw (2), all of which these already read.
+        _unlocked = dict(card, oracle_text=room["unlock_text"])
+        room["on_unlock"] = {
+            "bodies": body_count(_unlocked),
+            "creature_bodies": creature_body_count(_unlocked),
+            "draw": draw_profile(_unlocked),
+            "drain": dict(drain_profile(_unlocked),
+                          eerie=bool(_EERIE_RE.search(room["unlock_text"]))),
+            "combat": combat_profile(_unlocked),
+        }
     return {
         "name": card["name"],
         "is_land": is_land,
@@ -3428,6 +3463,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _room["open"] = True
             battlefield_mv[_i] = _room["full_mv"]
             rooms_unlocked += 1
+
+            # WHAT THE DOOR ACTUALLY DOES, applied here and nowhere earlier.
+            # 26 of the 30 Rooms in the corpus carry a "When you unlock this
+            # door" clause and none of it was read: the model paid the unlock
+            # cost and got a bigger animation target for it, which made an
+            # 8-mana investment look like a body and nothing else.
+            _on = _room.get("on_unlock") or {}
+            # The same token convention the cast path uses: `token_power` is the
+            # TOTAL across bodies, so a 6/6 Demon is (6, 1) and not (6, 6). Doing
+            # this by hand was worth catching -- `combat_profile(card)["power"]`
+            # is the CARD's power, which is 0 for a Room, so a 6/6 would have
+            # entered as a 1/1.
+            _uc = _on.get("combat") or {}
+            if (model_combat or model_draw) and _uc.get("token_bodies"):
+                _each = _uc["token_power"] // max(_uc["token_bodies"], 1)
+                for _ in range(_uc["token_bodies"] * token_multiplier):
+                    creature_entered(_each, turn, False, 1, is_token=True)
+                    bodies_cum += 1
+            _ud = _on.get("drain")
+            if model_drain and _ud and any(
+                    _ud[k] for k in ("payoff_equal", "payoff_fixed",
+                                     "gain_recurring", "gain_per_enchantment",
+                                     "gain_per_creature", "drain_recurring",
+                                     "drain_per_enchantment")):
+                drain_permanents.append(_ud)
+            _udr = _on.get("draw") or {}
+            if model_draw and _udr.get("etb_draw"):
+                drawn_extra += _udr["etb_draw"]
 
         if commander_animate and commander_turn is not None:
             cost = commander_animate["cost"]

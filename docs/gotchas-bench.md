@@ -838,3 +838,50 @@ that **parallel lists maintained by more than one writer will drift**, and `zip`
 hides it by truncating instead of raising. A fourth list was added here for
 Rooms, which is a reason to be suspicious of the shape rather than a defence
 of it.
+
+## THE UNLOCK DOOR, MODELLED — AND IT MADE ROOMS WORSE
+
+Completed 2026-09-06, and the direction is the finding.
+
+`room_profile` now splits `oracle_text` on the same ` // ` separator as the cost,
+in the same order, so each door is paid for and credited separately. `classify`
+rebinds `card` and `text` to the ENTRY face before every text-derived profile
+runs — bodies, draw, drain, combat and anything added later inherit the fix by
+construction — and stores the other door's profiles as `room["on_unlock"]`,
+applied in the unlock block and nowhere earlier.
+
+    rooms-v1, locked door read free      0.3842
+    rooms-v1, correctly attributed       0.3192
+    champion                             0.3810
+
+**THE OVER-CREDIT WAS LARGER THAN THE UNDER-CREDIT**, which is the opposite of
+what the earlier note in this file predicted, and it is why that note said not to
+describe a Room reading as a floor. `Unholy Annex // Ritual Chamber` was handing
+the model a 6/6 flying Demon the instant its `{2}{B}` front half resolved. Making
+that Demon cost the `{3}{B}{B}` it actually costs drops board power at T6 from
+7.70 to 7.00, and the twenty-six "When you unlock this door" clauses the same
+commit taught the model to read do not make it back.
+
+**THE MECHANISM IS ARITHMETIC AND IT IS NOT ABOUT THE CARDS.**
+
+    entry + unlock, the five Rooms in rooms-v1   30 mana
+    mean available mana at turn 10                8.2
+
+One door opens, maybe two. The 8/8 animated Room and the 6/6 Demon are real and
+they are on the far side of a mana wall, in a deck whose objective is a kill by
+turn eight. Rooms want a slower deck than this one.
+
+**WHAT SURVIVES IS A ONE-ROOM ARGUMENT, NOT A PACKAGE.** rooms-v1 is still best
+in the fleet on stall (0.026 against 0.043) and interaction affordable at T6
+(0.627 against 0.577), because a cheap front door is a real enchantment that
+fires four Eerie cards for one mana. That is a case for a single `{U}` Room, and
+it is not the case that was tested.
+
+TWO IMPLEMENTATION NOTES THAT COST SOMETHING TO GET RIGHT:
+
+* `combat_profile(card)["power"]` is the CARD's power, which is 0 for a Room, so
+  a hand-rolled body loop entered the 6/6 Demon as a 1/1. The model's own token
+  convention is `token_bodies` and `token_power`, where the power is the TOTAL
+  across bodies — (6, 1), never (6, 6).
+* The draw key is `etb_draw`. An invented `on_etb` silently read nothing, which
+  no test would have caught because absent draw looks exactly like no draw.
