@@ -123,8 +123,27 @@ def _convergence(flags, target):
     return rows, projected
 
 
+def _arm_started(paths):
+    """When THIS arm began, from its own log files.
+
+    The run directory is created when the whole job starts, so an experiment's
+    arm B was being credited with arm A's two and a half hours: seven games over
+    145 minutes read as 0.05 games/min and "about 1921 min left". The arms run in
+    SEQUENCE, so only the arm's own files can say when it started.
+    """
+    times = []
+    for p in paths:
+        try:
+            st = os.stat(p)
+        except OSError:
+            continue
+        times.append(getattr(st, "st_birthtime", st.st_ctime))
+    return min(times) if times else None
+
+
 def _report(paths, label, target, started, ours_hint=None):
     texts = [Path(p).read_text(errors="replace") for p in paths]
+    started = _arm_started(paths) or started
     done = sum(len(_DONE_RE.findall(t)) for t in texts)
     started_n = sum(len(_START_RE.findall(t)) for t in texts)
     elapsed = time.time() - started if started else 0

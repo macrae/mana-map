@@ -96,3 +96,30 @@ def test_an_experiment_arm_token_resolves_to_the_deck_slug():
     assert lab["Ai(1)-mm-x-heliod-a"] == "heliod"
     assert lab["Ai(2)-mm-giada-angels"] == "giada-angels"
     assert lab["Ai(3)-mm-abaddon"] == "abaddon"
+
+
+def test_an_arms_rate_is_measured_from_its_OWN_start(tmp_path):
+    """THE ARMS RUN IN SEQUENCE. The run directory is created when the whole job
+    starts, so timing arm B against it credits arm B with arm A's hours: seven
+    games over 145 minutes read as 0.05 games/min and "about 1921 min left" on a
+    run that was a couple of hours from finishing.
+
+    Only the arm's own log files can say when that arm began.
+    """
+    import os
+    import time
+    old = tmp_path / "a-part-00.log"
+    old.write_text("x")
+    # backdate arm A by an hour; arm B is written now
+    long_ago = time.time() - 3600
+    os.utime(old, (long_ago, long_ago))
+    new = tmp_path / "b-part-00.log"
+    new.write_text("x")
+
+    a = progress._arm_started([str(old)])
+    b = progress._arm_started([str(new)])
+    assert a is not None and b is not None
+    # st_birthtime is not settable, so assert the two are read SEPARATELY rather
+    # than a specific gap: the defect was using one timestamp for both arms.
+    assert progress._arm_started([str(old), str(new)]) == min(a, b)
+    assert progress._arm_started([]) is None
