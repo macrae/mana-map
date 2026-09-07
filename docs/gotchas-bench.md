@@ -1008,3 +1008,92 @@ twenty put +1/+1 counters on something and three drain. That is a
 one-card pattern in a shared model, and the card Forge never casts.
 
 Absent, with the reason stated, is the answer. Forge measures the clock.
+
+---
+
+## The goldfish had no reason to cast 24 of a deck's 28 instants and sorceries
+
+**2026-09-07, heliod.** The deck's entire plan is drawing cards.
+`mean_extra_cards_drawn_by_turn` read **0.428 by turn eight**. The cause was
+not the draw model — it was the CASTING side:
+
+```
+  instants/sorceries in the 99            28
+    the model had a reason to cast         4   (3 tutors + Arcane Denial's cantrip)
+    INVISIBLE to every casting loop       24   Braingeyser, Stroke of Genius,
+                                               Prosperity, Skyscribing, Mathemagics,
+                                               every counterspell, every sweeper
+```
+
+Removal and interaction are *correctly* invisible — the model has no opponent to
+aim them at. What was not correct is that every X-cost draw spell was invisible
+too, and those are the deck's engine.
+
+**A magecraft channel was scoped and rejected on this ground.** The sweep found
+only **8 cards** in 34,890 that draw off a `whenever you cast an instant or
+sorcery` trigger, and — much worse — the trigger they need almost never happens
+here: with four castable spells in 28, Archmage Emeritus would have fired a
+handful of times a game and the number would have been driven by which spells
+happened to carry a readable draw profile rather than by the deck. **A payoff
+whose trigger the model cannot produce is worse than an unmodelled payoff: it
+looks like a measurement.**
+
+### X-spell draw: 33 in the corpus, 28 credited
+
+```
+  13  Draw X cards                     6  Target player draws X cards
+   3  Each player draws X cards       11  the same with a rider
+```
+
+All four shapes give the CASTER the cards, so one rule covers them.
+
+**The fixed part is already `cmc`** — Scryfall counts `{X}` as zero, so Stroke of
+Genius at `{X}{2}{U}` has cmc 3 and Braingeyser at `{X}{U}{U}` has 2.
+`x_draw_multiplier` is the count of `{X}` symbols, because `{X}{X}` buys one card
+per two mana.
+
+Two things had to be true, and each was a bug first:
+
+* **`draw_profile` returned before the block ever ran.** Its `_DRAW_RE` guard
+  wants a written-out quantity ("draw two cards") and does not recognise "draws
+  X cards", so the whole family returned an all-zero profile **with `unmodelled`
+  still None** — the one value that means "there is nothing here to model".
+  Braingeyser read as a card with no draw on it.
+* **The spell must be cast LAST.** Because `cmc` is only the fixed part, every
+  cheapest-first loop in the module would have fired Stroke of Genius on turn
+  three for X=0 — drawing nothing and burning the card. `X_DRAW_MIN = 2` is the
+  floor and the only authored number in the channel; casting after every other
+  loop also makes the figure conservative, since the spell can only ever spend
+  mana nothing else wanted.
+
+Result on heliod, and the size of what was missing:
+
+```
+  mean extra cards drawn   @T6    0.197 -> 1.214
+                           @T8    0.428 -> 2.329      5.4x
+                           @T10   0.722 -> 3.471
+  board power @T6                 2.444 -> 2.547      it did NOT starve the board
+```
+
+**FIVE REFUSALS, each read card by card, each with its own test.** Expansion //
+Explosion (CR 202.3d — a split card's mana value is both halves, so the fixed
+part is wrong by the other half); Ingenious Mastery (an alternative cost under
+which X is 0); Occult Epiphany and Read the Runes (draw X, discard X — a filter,
+and Read the Runes has the *cheapest* fixed cost in the family, so crediting it
+would have made the worst card read as the best); Skeletal Scrying (X is cards
+exiled from a graveyard this model does not have). The rule divides the
+remaining **mana pool**, so it is only correct where X is bought with mana.
+
+The opt-in contract held on the fleet: edgar-vampires, goblin-storm and ur-dragon
+each moved by **three lines** — the `model_version` sha and the assumption text —
+and not one figure.
+
+### A test that names a deck inherits that deck's declarations
+
+`test_a_deck_that_has_not_opted_into_draw_has_no_draw_series` used **heliod** as
+its example of a deck with `model_draw` off. Heliod declared `model_draw` the
+same morning, so the test began asserting the opposite of the deck's own targets
+file and failed — correctly, and not because of the model change it failed
+alongside. It now reads `ur-dragon` **and asserts that stand-in has not opted
+in**, so the day ur-dragon declares draw this fails loudly instead of passing on
+a premise that stopped being true.

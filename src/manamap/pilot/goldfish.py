@@ -64,6 +64,14 @@ def model_version():
         pathlib.Path(__file__).read_bytes()).hexdigest()[:12]
 
 
+#: A PILOT DOES NOT CAST STROKE OF GENIUS FOR X=1. Scryfall counts {X} as
+#: zero, so an X spell's `cmc` is its FIXED part and every cheapest-first
+#: casting loop in this module would fire it on the turn that part is
+#: affordable — Stroke of Genius on turn three for X=0, drawing nothing and
+#: burning the card. The floor is authored and it is the only authored number
+#: in this channel; it is stated in `model_assumptions` for that reason.
+X_DRAW_MIN = 2
+
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
     "Draw every turn including turn 1 (multiplayer Commander).",
@@ -88,6 +96,18 @@ MODEL_ASSUMPTIONS = [
     "Commander cast on first affordable turn (highest spending priority).",
     "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
     "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+    "X-SPELL DRAW IS PAID FOR OUT OF WHAT IS LEFT. An {X} instant or sorcery "
+    "that draws X is cast AFTER every other loop has spent what it wanted, "
+    "with the whole remaining pool, and only when X would be at least "
+    f"{X_DRAW_MIN} — a pilot does not cast Stroke of Genius for one card, and "
+    "every cheapest-first loop in this module would have, because Scryfall "
+    "counts {X} as zero and the card's `cmc` is only its fixed part. That "
+    "floor is the one authored number in this channel. Casting last makes the "
+    "figure a FLOOR in the other direction too: the spell only ever gets mana "
+    "nothing else asked for. Corpus sweep: 33 X-cost instants and sorceries "
+    "that draw X, 28 credited and 5 skipped — a split card whose cmc is both "
+    "halves, an alternative cost under which X is 0, and three whose X is "
+    "bounded by a discard or by a graveyard this model does not have.",
     "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four "
     "channels are modelled — a card's own ETB draw, an instant or sorcery that "
     "draws, an upkeep trigger, and an ARRIVAL trigger that draws when other "
@@ -546,6 +566,46 @@ def is_death_engine(prof):
                 or prof["gain_on_opponent_death"])
 
 
+#: X-SPELL DRAW — the class this model reads as NOTHING, on decks built out of it.
+#:
+#: Measured on heliod, a deck whose entire card-advantage plan is X spells:
+#: of 28 instants and sorceries the model had a reason to cast FOUR, and the
+#: 24 it could not see included Braingeyser, Stroke of Genius, Prosperity and
+#: Skyscribing. `mean_extra_cards_drawn_by_turn` read 0.428 by turn eight on a
+#: deck that draws for a living. `net_change`'s own caveat already named the
+#: class — "X-based draw is unmodelled" — so this closes a gap the harness was
+#: honest about rather than one it hid.
+#:
+#: CORPUS SWEEP: 33 X-cost instants and sorceries that draw X. Four shapes and
+#: they all give the CASTER the cards, which is why one rule covers them:
+#:     13  Draw X cards
+#:      6  Target player draws X cards
+#:      3  Each player draws X cards
+#:     11  the same with a rider (lose X life, discard, mill)
+#:
+#: THE FIXED COST IS ALREADY `cmc`. Scryfall counts {X} as zero, so
+#: Stroke of Genius at {X}{2}{U} has cmc 3 and Braingeyser at {X}{U}{U} has 2 —
+#: the number to subtract before dividing. `x_draw_multiplier` is how many {X}
+#: symbols the cost carries, because {X}{X} buys one card per TWO mana.
+_X_DRAW_RE = re.compile(
+    r"(?:you|target player|each player)?\s*draws? X cards?", re.I)
+#: NET, NOT GROSS. Read the Runes draws X and discards X — a filter, not card
+#: advantage, and crediting it X would have made the worst card in the family
+#: read as the best. Pull from Tomorrow discards ONE, so it is X-1.
+_X_DRAW_DISCARD_X_RE = re.compile(
+    r"discards? X cards?|discard that many"
+    # Read the Runes writes the same clause the long way round: "Draw X cards.
+    # For each card drawn this way, discard a card unless you sacrifice a
+    # permanent." Crediting it X would have made the worst card in the family
+    # read as one of the best, at {X}{U} — the cheapest fixed cost of all 33.
+    r"|for each card drawn this way, discard", re.I)
+_X_DRAW_DISCARD_ONE_RE = re.compile(r"then discard a card", re.I)
+#: "You may pay {2}{U} rather than pay this spell's mana cost" — under the
+#: alternative cost X is zero, and the model has no way to choose.
+_X_DRAW_ALT_COST_RE = re.compile(
+    r"rather than pay this spell's mana cost", re.I)
+
+
 def draw_profile(card):
     """How many cards this card draws, and through which channel.
 
@@ -559,7 +619,33 @@ def draw_profile(card):
     out = {"etb_draw": 0, "spell_draw": 0, "recurring_draw": 0,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
+           "x_draw_multiplier": 0, "x_draw_discard": 0,
            "unmodelled": None}
+    # BEFORE the `_DRAW_RE` guard, which wants a WRITTEN-OUT quantity ("draw
+    # two cards") and does not recognise "draws X cards" — so every card in
+    # this family returned here with an all-zero profile and, worse, with
+    # `unmodelled` still None, which is the one value that means "nothing to
+    # see". Braingeyser read as a card with no draw on it at all.
+    _mc = str(card.get("mana_cost") or "")
+    if (("Instant" in type_line or "Sorcery" in type_line)
+            and "{X}" in _mc
+            # A SPLIT CARD'S `cmc` IS BOTH HALVES (CR 202.3d), so the fixed part
+            # this rule subtracts is wrong for it by the other half's cost.
+            # Expansion // Explosion is the only one in the family; excluded
+            # rather than guessed at.
+            and "//" not in _mc
+            and _X_DRAW_RE.search(text)
+            and not _X_DRAW_DISCARD_X_RE.search(text)
+            # X IS NOT ALWAYS BOUGHT WITH MANA. Skeletal Scrying exiles X cards
+            # from a graveyard this model does not have, and Ingenious Mastery
+            # has an alternative cost under which X is 0. Both would have been
+            # credited the whole remaining pool. The additional-cost pattern is
+            # the one `spell_draw` already uses, for the same reason.
+            and not _DRAW_ADDITIONAL_COST_RE.search(text)
+            and not _X_DRAW_ALT_COST_RE.search(text)):
+        out["x_draw_multiplier"] = _mc.count("{X}")
+        out["x_draw_discard"] = 1 if _X_DRAW_DISCARD_ONE_RE.search(text) else 0
+
     if not _DRAW_RE.search(text):
         return out
 
@@ -584,7 +670,7 @@ def draw_profile(card):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
 
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
-                out["arrival_draw"])):
+                out["arrival_draw"], out["x_draw_multiplier"])):
         out["unmodelled"] = card.get("name")
     return out
 
@@ -3299,6 +3385,37 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 elif card["treasure_trigger"] in ("etb", "cast"):
                     treasures += ((card["treasure_n"] + treasure_bonus)
                                   * treasure_multiplier)
+        # ── X SPELLS: the mana sink, cast LAST with whatever is left ─────
+        #
+        # Deliberately after every other loop, because that is how the card is
+        # played and because it makes the channel CONSERVATIVE: an X spell here
+        # can only ever spend mana nothing else wanted. A loop placed earlier
+        # would have eaten the whole pool and starved the board.
+        #
+        # `cmc` is the fixed part (Scryfall counts {X} as zero) and
+        # `x_draw_multiplier` is how many {X} symbols the cost carries, so
+        # {X}{X}{U}{U} buys one card per two mana. Largest X first: with two in
+        # hand the deck casts the one that draws more, and the second is left
+        # for a later turn rather than cast for nothing.
+        if model_draw:
+            while True:
+                _avail = pool + treasures
+                _best, _bx = None, 0
+                for _c in hand:
+                    _m = _c["draw"]["x_draw_multiplier"]
+                    if not _m:
+                        continue
+                    _x = (_avail - _c["cmc"]) // _m
+                    if _x > _bx:
+                        _best, _bx = _c, _x
+                if _best is None or _bx < X_DRAW_MIN:
+                    break
+                _cost = _best["cmc"] + _bx * _best["draw"]["x_draw_multiplier"]
+                if not spend(_cost, _best["pips"]):
+                    break
+                hand.remove(_best)
+                draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
+
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
         drawn_extra_by_turn.append(drawn_extra)

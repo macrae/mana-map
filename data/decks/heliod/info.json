@@ -4,7 +4,7 @@
     "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
   ],
   "lifecycle": null,
-  "stage": "bench",
+  "stage": "sleeved",
   "colour_identity": [
     "W",
     "U"
@@ -12,11 +12,16 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 14,
+    "complete": 10,
     "of": 15,
-    "stale": [],
+    "stale": [
+      "frame",
+      "map"
+    ],
     "invalid": [
-      "diagnosis.json"
+      "engine",
+      "tutors",
+      "considering.json"
     ],
     "verified": true,
     "missing": [
@@ -31,15 +36,1534 @@
     ]
   },
   "brief": null,
-  "branches": [],
-  "diagnostic": null,
+  "branches": [
+    {
+      "name": "deckout-v1",
+      "opened": "2026-09-07",
+      "why": "THE GROUP HUG BECOMES THE WIN CONDITION. The deck already forces every opponent to draw 3-6 a turn out of a 99-card library and then bills them 2 or 3 for it; this branch stops billing and takes the library instead. Out: the three hand-size punishers, Tireless Tribe, Wall of Glare, Darien, plus the counters/token cards that do not serve the plan (The Ozolith, Hangarback Walker, United Front). In: Otherworld Atlas (colourless, scales every turn), Mind's Eye (a card off EVERY opponent draw), Folio of Fancies (no maximum hand size, an {X}{X} group draw, and a mill-for-hand-size kill), and five X-spell finishers - Blue Sun's Zenith (reusable, point it at a library), Fascination (draw X or mill X, same card), Drown in Dreams (both modes with a commander out), Even the Score (costs {U}{U}{U} less if an opponent drew four or more this turn, which Font of Mythos makes automatic) and Universal Surveillance (improvise - the eight rocks pay for it). Plus Krang the All-Powerful to double every draw trigger. NEITHER INSTRUMENT CAN GRADE THE UPSIDE. All nine adds return NOTHING or draw={unmodelled} from goldfish.classify, and Otherworld Atlas, Fascination and Folio of Fancies each carry Forge's AI:RemoveDeck:All, so the sim would hold the three keystones and never cast them. That is why the pre-registered objective grades the DOWNSIDE instead: the real risk of a list this full of X spells is unkeepable hands, and keep_t3 is a figure the model does see. This branch is a paper playtest, not a simulation result, and must not be merged on a sim number.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Blue Sun's Zenith"
+          },
+          {
+            "name": "Drown in Dreams"
+          },
+          {
+            "name": "Even the Score"
+          },
+          {
+            "name": "Fascination"
+          },
+          {
+            "name": "Krang, the All-Powerful"
+          },
+          {
+            "name": "Mind's Eye"
+          },
+          {
+            "name": "Otherworld Atlas"
+          },
+          {
+            "name": "Universal Surveillance"
+          }
+        ],
+        "unsleeve": [],
+        "proxy": [],
+        "free": [],
+        "box": [
+          {
+            "name": "Folio of Fancies",
+            "where": [
+              "Heliod Parts"
+            ]
+          }
+        ],
+        "blocking": 8,
+        "procurement": null
+      },
+      "base_version": 7,
+      "size": 100,
+      "add": 9,
+      "out": 9,
+      "counts": {
+        "in_deck": 76,
+        "box": 1,
+        "elsewhere": 0,
+        "buy": 8
+      },
+      "unsourced": [
+        "Blue Sun's Zenith",
+        "Drown in Dreams",
+        "Even the Score",
+        "Fascination",
+        "Krang, the All-Powerful",
+        "Mind's Eye",
+        "Otherworld Atlas",
+        "Universal Surveillance"
+      ],
+      "mergeable": false,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Adarkar Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Alhammarret's Archive",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "An Offer You Can't Refuse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Approach of the Second Sun",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Denial",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Archmage's Charm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Azorius Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blue Sun's Zenith",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Braingeyser",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cathar Commando",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Consecrated Sphinx",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Counterspell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cyclonic Rift",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Day of Judgment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Decanter of Endless Water",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Deserted Beach",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dictate of Kruphix",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dig Through Time",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Disenchant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dovin's Veto",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Drown in Dreams",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Eiganjo, Seat of the Empire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enlightened Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Even the Score",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Faerie Mastermind",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fascination",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Fierce Guardianship",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Flooded Strand",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Folio of Fancies",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Font of Mythos",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Force of Negation",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Forced Fruition",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glacial Fortress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hallowed Fountain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Howling Mine",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Irrigated Farmland",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Kami of the Crescent Moon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Krang, the All-Powerful",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Kwain, Itinerant Meddler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Long-Term Plans",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Loran of the Third Path",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mathemagics",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mikaeus, the Lunarch",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mikokoro, Center of the Sea",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mind's Eye",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mystic Remora",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystical Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Otawara, Soaring City",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Otherworld Atlas",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Path to Exile",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Pearl Medallion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Prairie Stream",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Propaganda",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Prosperity",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Psychosis Crawler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reliquary Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rhystic Study",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sapphire Medallion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scrawling Crawler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Seachrome Coast",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Secure the Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skycloud Expanse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skyscribing",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smothering Tithe",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Stroke of Genius",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Supreme Verdict",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swan Song",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talisman of Progress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Ageless Insight",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Protection",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Temple Bell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Temple of Enlightenment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Second Doctor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thought Vessel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Universal Surveillance",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Walking Ballista",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "White Sun's Zenith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true
+    },
+    {
+      "name": "teeth-v1",
+      "opened": "2026-09-07",
+      "why": "THE HAND-SIZE PUNISHER PACKAGE IS THE WORST THING IN THE DECK; convert card flow into a board instead. Measured on the 20-game pod run: our seat's noncombat damage to players was mean 1.75 with a MEDIAN OF 0 over ~34-turn games, and we were eliminated by creature decks 13 times in 20. Iron Maiden and Viseling read hand-size-minus-four and Ebony Owl Netsuke wants seven, so all three are dead against anyone who spends their hand. Out: those three plus Tireless Tribe, Wall of Glare and Darien. In: Leyline of Anticipation (the flash redundancy the paper list cut - the deck has THREE cards with Flash printed and the whole end-step plan rides on a commander that resolved in 30% of games), Archmage Emeritus and Murmuring Mystic (28 instants and sorceries in the 99, and the Mystic is a 1/5 that answers the creature decks in the same slot), Chasm Skulker and Teferi Temporal Pilgrim (payoffs for our OWN draws), and Krang the All-Powerful, which makes every draw-triggered permanent we control trigger twice - Psychosis Crawler, Scrawling Crawler, Consecrated Sphinx, Faerie Mastermind, Smothering Tithe. THE GOLDFISH CANNOT GRADE THE HYPOTHESIS: classify() returns draw={unmodelled} for Archmage Emeritus, Chasm Skulker and Teferi, and reads Krang as a bare 3-power body, so four of the six adds have their text unread. board_power_6 is pre-registered because it is the one component the model CAN see; the verdict is the Forge experiment against v1.0.1, where all six are trigger-based and none carries an AI:RemoveDeck flag.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Krang, the All-Powerful"
+          }
+        ],
+        "unsleeve": [],
+        "proxy": [],
+        "free": [],
+        "box": [
+          {
+            "name": "Archmage Emeritus",
+            "where": [
+              "Heliod Parts"
+            ]
+          },
+          {
+            "name": "Chasm Skulker",
+            "where": [
+              "Heliod Parts"
+            ]
+          },
+          {
+            "name": "Leyline of Anticipation",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
+            "name": "Murmuring Mystic",
+            "where": [
+              "Heliod Parts"
+            ]
+          },
+          {
+            "name": "Teferi, Temporal Pilgrim",
+            "where": [
+              "Heliod Parts"
+            ]
+          }
+        ],
+        "blocking": 1,
+        "procurement": null
+      },
+      "base_version": 7,
+      "size": 100,
+      "add": 6,
+      "out": 6,
+      "counts": {
+        "in_deck": 79,
+        "box": 5,
+        "elsewhere": 0,
+        "buy": 1
+      },
+      "unsourced": [
+        "Krang, the All-Powerful"
+      ],
+      "mergeable": false,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Adarkar Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Alhammarret's Archive",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "An Offer You Can't Refuse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Approach of the Second Sun",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Denial",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Archmage Emeritus",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Archmage's Charm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Azorius Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Braingeyser",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cathar Commando",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Chasm Skulker",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Consecrated Sphinx",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Counterspell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cyclonic Rift",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Day of Judgment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Decanter of Endless Water",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Deserted Beach",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dictate of Kruphix",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dig Through Time",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Disenchant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dovin's Veto",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Eiganjo, Seat of the Empire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enlightened Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Faerie Mastermind",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fierce Guardianship",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Flooded Strand",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Font of Mythos",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Force of Negation",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Forced Fruition",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glacial Fortress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hallowed Fountain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hangarback Walker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Howling Mine",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Irrigated Farmland",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Kami of the Crescent Moon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Krang, the All-Powerful",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Kwain, Itinerant Meddler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Leyline of Anticipation",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Long-Term Plans",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Loran of the Third Path",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mathemagics",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mikaeus, the Lunarch",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mikokoro, Center of the Sea",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Murmuring Mystic",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mystic Remora",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystical Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Otawara, Soaring City",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Path to Exile",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Pearl Medallion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Prairie Stream",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Propaganda",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Prosperity",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Psychosis Crawler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reliquary Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rhystic Study",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sapphire Medallion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scrawling Crawler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Seachrome Coast",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Secure the Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skycloud Expanse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skyscribing",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smothering Tithe",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Stroke of Genius",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Supreme Verdict",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swan Song",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talisman of Progress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Ageless Insight",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Protection",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi, Temporal Pilgrim",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Temple Bell",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Temple of Enlightenment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Ozolith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Second Doctor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thought Vessel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "United Front",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Walking Ballista",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "White Sun's Zenith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true
+    }
+  ],
+  "diagnostic": {
+    "harness": {
+      "version": 1,
+      "iterations": 10000,
+      "seed": 20260826,
+      "max_turn": 10
+    },
+    "engine": {
+      "available": false,
+      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+      "declared_targets": 9
+    },
+    "stall": {
+      "by_turn": {
+        "1": {
+          "rate": 0.4238,
+          "ci95": [
+            0.4141,
+            0.4335
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.0541,
+          "ci95": [
+            0.0498,
+            0.0587
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.0107,
+          "ci95": [
+            0.0089,
+            0.0129
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.0039,
+          "ci95": [
+            0.0029,
+            0.0053
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.0028,
+          "ci95": [
+            0.0019,
+            0.004
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0016,
+          "ci95": [
+            0.001,
+            0.0026
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0007,
+          "ci95": [
+            0.0003,
+            0.0014
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.0007,
+          "ci95": [
+            0.0003,
+            0.0014
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.0004,
+          "ci95": [
+            0.0002,
+            0.001
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.0002,
+          "ci95": [
+            0.0001,
+            0.0007
+          ],
+          "n": 10000
+        }
+      },
+      "two_in_a_row": {
+        "rate": 0.0097,
+        "ci95": [
+          0.008,
+          0.0118
+        ],
+        "n": 10000
+      },
+      "fleet": "below the fleet median",
+      "from_turn": 2,
+      "cause": {
+        "stall_turns": 751,
+        "hand_empty": 6,
+        "mana_short": 745
+      },
+      "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
+    },
+    "mana": {
+      "missed_land_drop_by_five": {
+        "rate": 0.5099,
+        "ci95": [
+          0.5001,
+          0.5197
+        ],
+        "n": 10000
+      },
+      "missed_land_drop_rate": 0.3235,
+      "mulliganed": {
+        "rate": 0.2554,
+        "ci95": [
+          0.2469,
+          0.264
+        ],
+        "n": 10000
+      },
+      "mean_mana_by_turn": {
+        "1": 0.998,
+        "2": 2.137,
+        "3": 3.39,
+        "4": 4.264,
+        "5": 4.994,
+        "6": 5.663,
+        "7": 6.316,
+        "8": 6.946,
+        "9": 7.578,
+        "10": 8.216
+      },
+      "fleet": "above the fleet median",
+      "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+      "mana_stdev_turn_five": 1.3079
+    },
+    "decklist_sha256": "442fc5689e0e2c097aec2eab760401fbeb9ce17f40a5e7030f49396acc752fe4"
+  },
   "bracket": {
     "floor": 4,
     "floor_name": "Optimized",
     "target": 4,
     "within_target": true
   },
-  "paper": null,
+  "paper": {
+    "version": 6,
+    "sha": "898c37bb29bb",
+    "decklist_sha256": "decc32b080fe821b8307181265a6b5f8344378bd1a66e8de8ca96d4bd415d2cd",
+    "built_at": "2026-09-07",
+    "note": "Sleeved and played. Checked in from the pilot's paper list 2026-09-07; drift is computed against this from here.",
+    "release": "v1.0.0"
+  },
   "record": {
     "games": 1,
     "win": 0,
@@ -62,7 +1586,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 78,
+          "value": 89,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -71,35 +1595,56 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "absent_because": "combat is opt-in and this deck has not been re-baselined for it (`model_combat` in goldfish.py)",
-          "weight": "body"
+          "value": 10,
+          "tier": "data",
+          "weight": "headline",
+          "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
+          "unit": "turn",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.577,
+          "value": 4.246,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:Table draw engine drawn": {
-          "value": 75,
+        "target:Table draw engine online (opponents are drawing)": {
+          "value": 85,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Table draw engine drawn' by turn six",
+          "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Draw punisher drawn": {
-          "value": 56,
+        "target:Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})": {
+          "value": 64,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Draw punisher drawn' by turn six",
+          "definition": "share of games assembling 'Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Hand-size punisher drawn (bills them for holding it)": {
+          "value": 36,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Hand-size punisher drawn (bills them for holding it)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Draw-trigger punisher drawn (bills them for taking it)": {
+          "value": 26,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Draw-trigger punisher drawn (bills them for taking it)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
         "target:Engine + punisher assembled (the deck's core two-piece)": {
-          "value": 41,
+          "value": 43,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"Engine + punisher assembled (the deck's core two-piece)\" by turn six",
@@ -107,7 +1652,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod down with an asymmetric card engine": {
-          "value": 46,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod down with an asymmetric card engine' by turn six",
@@ -115,26 +1660,26 @@
           "source": "goldfish_metrics.json"
         },
         "target:Free or cheap interaction held": {
-          "value": 67,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Free or cheap interaction held' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Win condition access": {
-          "value": 50,
+        "target:An X-spell finisher drawn (the mana sink the discount pays for)": {
+          "value": 76,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Win condition access' by turn six",
+          "definition": "share of games assembling 'An X-spell finisher drawn (the mana sink the discount pays for)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir": {
-          "value": 0,
+        "target:Win condition access (Approach, or a tutor that finds one)": {
+          "value": 54,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir' by turn six",
+          "definition": "share of games assembling 'Win condition access (Approach, or a tutor that finds one)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -149,6 +1694,7 @@
             "Commander cast on first affordable turn (highest spending priority).",
             "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
             "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+            "X-SPELL DRAW IS PAID FOR OUT OF WHAT IS LEFT. An {X} instant or sorcery that draws X is cast AFTER every other loop has spent what it wanted, with the whole remaining pool, and only when X would be at least 2 — a pilot does not cast Stroke of Genius for one card, and every cheapest-first loop in this module would have, because Scryfall counts {X} as zero and the card's `cmc` is only its fixed part. That floor is the one authored number in this channel. Casting last makes the figure a FLOOR in the other direction too: the spell only ever gets mana nothing else asked for. Corpus sweep: 33 X-cost instants and sorceries that draw X, 28 credited and 5 skipped — a split card whose cmc is both halves, an alternative cost under which X is 0, and three whose X is bounded by a discard or by a graveyard this model does not have.",
             "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which rides the same single door the ETB damage payoffs use. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent), and death- or attack-triggered draw (no deaths, and attacks only under `model_combat`) are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one.",
             "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
             "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
@@ -158,7 +1704,14 @@
             "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
             "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
             "Rituals are not modeled (conservative).",
-            "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
+            "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
+            "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+            "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+            "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+            "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
+            "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
+            "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
+            "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
           ],
           "tier": "data",
           "weight": "detail",
@@ -177,15 +1730,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 7.184,
-            "2": 2.138,
-            "3": 3.39,
-            "4": 4.204,
-            "5": 4.875,
-            "6": 5.436,
-            "7": 5.915,
-            "8": 6.359,
-            "9": 6.785
+            "10": 8.208,
+            "2": 2.129,
+            "3": 3.388,
+            "4": 4.25,
+            "5": 4.981,
+            "6": 5.649,
+            "7": 6.3,
+            "8": 6.935,
+            "9": 7.564
           },
           "tier": "data",
           "weight": "detail",
@@ -196,15 +1749,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 0.334,
-            "2": 0.992,
-            "3": 0.866,
-            "4": 0.725,
-            "5": 0.58,
-            "6": 0.471,
-            "7": 0.405,
-            "8": 0.374,
-            "9": 0.352
+            "10": 0.508,
+            "2": 0.99,
+            "3": 0.875,
+            "4": 0.722,
+            "5": 0.602,
+            "6": 0.54,
+            "7": 0.525,
+            "8": 0.506,
+            "9": 0.502
           },
           "tier": "data",
           "weight": "detail",
@@ -214,16 +1767,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.0,
-            "10": 2.522,
-            "2": 0.171,
-            "3": 0.389,
-            "4": 0.687,
-            "5": 1.112,
-            "6": 1.472,
-            "7": 1.777,
-            "8": 2.037,
-            "9": 2.288
+            "1": 0.3,
+            "10": 3.426,
+            "2": 0.555,
+            "3": 0.831,
+            "4": 1.129,
+            "5": 1.571,
+            "6": 1.99,
+            "7": 2.37,
+            "8": 2.739,
+            "9": 3.095
           },
           "tier": "data",
           "weight": "detail",
@@ -233,18 +1786,29 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 581,
-            "1": 1991,
-            "2": 3126,
-            "3": 2638,
-            "4": 1259,
-            "5": 353,
-            "6": 51,
-            "7": 1
+            "0": 565,
+            "1": 1981,
+            "2": 3164,
+            "3": 2706,
+            "4": 1216,
+            "5": 319,
+            "6": 47,
+            "7": 2
           },
           "tier": "data",
           "weight": "detail",
           "definition": "lands in the opening seven, over every seeded hand",
+          "source": "goldfish_metrics.json"
+        },
+        "kill_distribution": {
+          "value": {
+            "10": 411,
+            "8": 17,
+            "9": 118
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "how many of the seeded games killed on each turn",
           "source": "goldfish_metrics.json"
         }
       },
@@ -256,40 +1820,65 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.577,
-    "commander_cast_by_turn_6_pct": 78,
+    "commander_mean_cast_turn": 4.246,
+    "commander_cast_by_turn_6_pct": 89,
     "targets": [
       {
-        "label": "Table draw engine drawn",
-        "by_turn_6_pct": 75
+        "label": "Table draw engine online (opponents are drawing)",
+        "by_turn_6_pct": 85
       },
       {
-        "label": "Draw punisher drawn",
-        "by_turn_6_pct": 56
+        "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
+        "by_turn_6_pct": 64
+      },
+      {
+        "label": "Hand-size punisher drawn (bills them for holding it)",
+        "by_turn_6_pct": 36
+      },
+      {
+        "label": "Draw-trigger punisher drawn (bills them for taking it)",
+        "by_turn_6_pct": 26
       },
       {
         "label": "Engine + punisher assembled (the deck's core two-piece)",
-        "by_turn_6_pct": 41
+        "by_turn_6_pct": 43
       },
       {
         "label": "Heliod down with an asymmetric card engine",
-        "by_turn_6_pct": 46
+        "by_turn_6_pct": 58
       },
       {
         "label": "Free or cheap interaction held",
-        "by_turn_6_pct": 67
+        "by_turn_6_pct": 70
       },
       {
-        "label": "Win condition access",
-        "by_turn_6_pct": 50
+        "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
+        "by_turn_6_pct": 76
       },
       {
-        "label": "THE KILL (stacks 001/006): Hullbreaker Horror + a cheap rock + Aetherflux Reservoir",
-        "by_turn_6_pct": 0
+        "label": "Win condition access (Approach, or a tutor that finds one)",
+        "by_turn_6_pct": 54
       }
-    ]
+    ],
+    "combat": {
+      "mean_kill_turn": 9.722,
+      "median_kill_turn": 10,
+      "kill_by_turn_6_pct": 0,
+      "kill_by_turn_8_pct": 0,
+      "max_turn": 10,
+      "no_kill_by_max_turn_pct": 94,
+      "kill_turn_histogram": {
+        "10": 411,
+        "8": 17,
+        "9": 118
+      }
+    }
   },
-  "engine_health": null,
+  "engine_health": {
+    "word": null,
+    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "basis": "diagnostic.json"
+  },
   "engine": {
     "thesis": "Heliod hands the whole table free cards and then bills them for holding the cards: ten symmetric-draw permanents fill every hand, three punishers charge for hand size on each opponent's upkeep (Iron Maiden, Viseling, Ebony Owl Netsuke) while three more drain or mill per card drawn, and the same turbulence pays the commander's discount and the tax layer's rent — behind that median plan sits a rules-verified but very rare one-turn kill built on a single creature.",
     "critic": "pass",
@@ -299,7 +1888,7 @@
   "diagnosis": {
     "verdict": "The engine turns over and the deck never runs out of cards: the table-draw half is drawn in 85.2% of goldfish games, the punisher half in 67.2%, both in 56.7%, on a 0.866 turn-three land-drop rate and six checker-passed stacks. What binds is white mana at the point of deployment — 18 white sources against a target of 36, and a measured 0.515 probability of two white sources on curve against blue's 0.804, in a deck whose commander costs {2}{W}{W}. Behind that sits a ceiling the mana fix does not touch: the verified Reservoir kill assembles in 0.7% of goldfish games, and in the deck's one 20-game pod run it dealt a median 0 combat damage and no elimination in the run was attributed to it. Buy the colour first; the kill is a separate question and it is asked in open_questions.",
     "skeptic": null,
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": "control",
@@ -389,7 +1978,7 @@
     "runs": 1,
     "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-92280ee6-s452098790",
     "at": "2026-08-26",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
     "games": 20,
     "vs": [
@@ -418,11 +2007,14 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "not marked as built in paper — if it is sleeved, `deck-version heliod paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
+    "branch `deckout-v1` needs 8 card(s) sourced — `manamap pilot deck-branch heliod source deckout-v1`",
+    "branch `teeth-v1` needs 1 card(s) sourced — `manamap pilot deck-branch heliod source teeth-v1`",
+    "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
-    "5 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "7 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

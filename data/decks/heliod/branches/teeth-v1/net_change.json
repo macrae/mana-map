@@ -967,13 +967,12 @@
   "why": "THE HAND-SIZE PUNISHER PACKAGE IS THE WORST THING IN THE DECK; convert card flow into a board instead. Measured on the 20-game pod run: our seat's noncombat damage to players was mean 1.75 with a MEDIAN OF 0 over ~34-turn games, and we were eliminated by creature decks 13 times in 20. Iron Maiden and Viseling read hand-size-minus-four and Ebony Owl Netsuke wants seven, so all three are dead against anyone who spends their hand. Out: those three plus Tireless Tribe, Wall of Glare and Darien. In: Leyline of Anticipation (the flash redundancy the paper list cut - the deck has THREE cards with Flash printed and the whole end-step plan rides on a commander that resolved in 30% of games), Archmage Emeritus and Murmuring Mystic (28 instants and sorceries in the 99, and the Mystic is a 1/5 that answers the creature decks in the same slot), Chasm Skulker and Teferi Temporal Pilgrim (payoffs for our OWN draws), and Krang the All-Powerful, which makes every draw-triggered permanent we control trigger twice - Psychosis Crawler, Scrawling Crawler, Consecrated Sphinx, Faerie Mastermind, Smothering Tithe. THE GOLDFISH CANNOT GRADE THE HYPOTHESIS: classify() returns draw={unmodelled} for Archmage Emeritus, Chasm Skulker and Teferi, and reads Krang as a bare 3-power body, so four of the six adds have their text unread. board_power_6 is pre-registered because it is the one component the model CAN see; the verdict is the Forge experiment against v1.0.1, where all six are trigger-based and none carries an AI:RemoveDeck flag."
  },
  "objective_grade": {
-  "reading": 2.7709,
-  "shortfall": 0.0291,
-  "state": "not resolvable",
-  "why": "missed by 0.0291, which is under the 0.0844 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 2.8833,
+  "shortfall": null,
+  "state": "met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0291, which is under the 0.0844 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "You buy damage @T10, board power @T6 and killed by T10 and pay interaction affordable @T6.",
   "bill": {
    "box": 5,
    "buy": 1,
@@ -1013,23 +1012,23 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "3.58 -> 4.27, a change of +0.69 (+19%)",
+    "reads_as": "4.07 -> 4.84, a change of +0.76 (+19%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "2.37 -> 2.77, a change of +0.41 (+17%)",
+    "reads_as": "2.47 -> 2.88, a change of +0.42 (+17%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T10",
-    "reads_as": "4 games in 100 -> 7 in 100, a swing of 2 games per 100",
+    "reads_as": "5 games in 100 -> 8 in 100, a swing of 3 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    }
   ],
   "risk": [
    {
-    "detail": "80 games in 100 -> 76 in 100, a swing of 4 games per 100",
+    "detail": "66 games in 100 -> 63 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
@@ -1052,19 +1051,19 @@
    "board power @T6",
    "killed by T10"
   ],
-  "state": "inconclusive"
+  "state": "a trade"
  },
  "slug": "heliod",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 4.2724,
-   "champion": 3.5784,
-   "delta": 0.694,
-   "mde": 0.1117,
+   "branch": 4.8389,
+   "champion": 4.0749,
+   "delta": 0.764,
+   "mde": 0.1162,
    "measure": "damage @T10",
-   "reads_as": "3.58 -> 4.27, a change of +0.69 (+19%)",
+   "reads_as": "4.07 -> 4.84, a change of +0.76 (+19%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1073,12 +1072,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.7709,
-   "champion": 2.3656,
-   "delta": 0.4053,
-   "mde": 0.0844,
+   "branch": 2.8833,
+   "champion": 2.4664,
+   "delta": 0.4169,
+   "mde": 0.0842,
    "measure": "board power @T6",
-   "reads_as": "2.37 -> 2.77, a change of +0.41 (+17%)",
+   "reads_as": "2.47 -> 2.88, a change of +0.42 (+17%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1101,12 +1100,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0661,
-   "champion": 0.043,
-   "delta": 0.0231,
-   "mde": 0.0098,
+   "branch": 0.0791,
+   "champion": 0.0523,
+   "delta": 0.0268,
+   "mde": 0.0107,
    "measure": "killed by T10",
-   "reads_as": "4 games in 100 -> 7 in 100, a swing of 2 games per 100",
+   "reads_as": "5 games in 100 -> 8 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1116,8 +1115,8 @@
   {
    "better_is": "lower",
    "branch": 0.0103,
-   "champion": 0.0095,
-   "delta": 0.0008,
+   "champion": 0.0097,
+   "delta": 0.0006,
    "mde": 0.004,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
@@ -1129,9 +1128,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.5301,
-   "champion": 0.5235,
-   "delta": 0.0066,
+   "branch": 0.5172,
+   "champion": 0.5099,
+   "delta": 0.0073,
    "mde": 0.0198,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.020 this run can resolve",
@@ -1157,12 +1156,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4217,
-   "champion": 0.4252,
-   "delta": -0.0035,
-   "mde": 0.0369,
+   "branch": 2.2706,
+   "champion": 2.3378,
+   "delta": -0.0672,
+   "mde": 0.1214,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.037 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.067 is smaller than the 0.121 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1171,12 +1170,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.7573,
-   "champion": 0.7954,
-   "delta": -0.0381,
-   "mde": 0.0181,
+   "branch": 0.6268,
+   "champion": 0.6613,
+   "delta": -0.0345,
+   "mde": 0.0203,
    "measure": "interaction affordable @T6",
-   "reads_as": "80 games in 100 -> 76 in 100, a swing of 4 games per 100",
+   "reads_as": "66 games in 100 -> 63 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "worse",

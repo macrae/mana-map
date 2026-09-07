@@ -205,8 +205,26 @@ def test_the_drain_channels_move_the_clock():
 @requires_deck
 def test_a_deck_that_has_not_opted_into_draw_has_no_draw_series():
     """Absent means ABSENT. A zero series is a measurement and a reader cannot
-    tell it from one."""
-    off = goldfish.run("heliod", iterations=300, quiet=True)
+    tell it from one.
+
+    THE EXAMPLE MOVED, NOT THE RULE. This read `heliod` until 2026-09-07, when
+    that deck declared `model_draw` — so the test began asserting the opposite
+    of the deck's own declaration and failed, correctly. `ur-dragon` is the
+    replacement: it has not opted in, and it is already the fixture two other
+    tests in this file use for the byte-identical opt-out contract.
+
+    A test that names a deck as its example inherits that deck's declarations.
+    There is no way around it here — the contract IS about a real deck's
+    targets file — so the guard is the assertion below: if the stand-in ever
+    opts in, this fails loudly rather than passing on a premise that stopped
+    being true."""
+    import json as _json
+    assert not _json.loads(
+        (DATA_DIR / "decks" / "ur-dragon" / "goldfish_targets.json").read_text()
+    ).get("model_draw"), (
+        "ur-dragon has opted into model_draw — this test needs a deck that has "
+        "not, or it proves nothing")
+    off = goldfish.run("ur-dragon", iterations=300, quiet=True)
     assert "mean_extra_cards_drawn_by_turn" not in off["metrics"]
     assert off["meta"]["card_advantage"]["modelled"] == 0
 
