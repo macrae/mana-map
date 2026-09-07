@@ -212,7 +212,8 @@ def paper_state(slug, vers=None, current_version=None):
         out["versions_behind"] = max(0, current_version - n)
     if not out["in_sync"]:
         d = diff_vs_working(slug, target)
-        out["drift"] = {"pull": d["in_then_not_now"], "add": d["in_now_not_then"]}
+        out["drift"] = {"pull": d["in_then_not_now"], "add": d["in_now_not_then"],
+                        "pull_copies": d["pull_copies"], "add_copies": d["add_copies"]}
     return out
 
 
@@ -444,8 +445,8 @@ def report(slug):
     if state and state.get("in_sync") is False and state.get("drift"):
         d = state["drift"]
         notes.append(f"the sleeved list is V{state['version']}; the repo is at "
-                     f"V{current_version} — pull {len(d['pull'])}, add {len(d['add'])} "
-                     f"to bring the cardboard level")
+                     f"V{current_version} — pull {d['pull_copies']}, "
+                     f"add {d['add_copies']} to bring the cardboard level")
     return {"slug": slug, "current_version": current_version,
             "working_decklist_sha256": current, "versions": vers,
             "tags": tags(slug), "paper": state, "baseline": base,
@@ -534,10 +535,35 @@ def blob_at(slug, version):
 
 
 def diff_vs_working(slug, version):
+    """What moves between a version and the working list — IN COPIES.
+
+    COUNT COPIES, NOT ENTRIES. This compared NAME MEMBERSHIP, so a change in
+    quantity was invisible: heliod's v1.0.1 moved five Islands to five Plains
+    and the drift line read "pull 0, add 0 to bring the cardboard level" — on
+    the one report whose entire job is telling the pilot what cardboard to move.
+    Both names are in both lists; only the counts changed.
+
+    `dh._entries` has always returned name -> copies. Nothing here used the
+    second half of it.
+
+    Same defect this repo already documents from the magazine era, where
+    counting entries once published "18 lands" for a 33-land deck.
+    """
     then = dh._entries(blob_at(slug, version) or "")
     now = dh._entries((deck_dir(slug) / "decklist.txt").read_text(encoding="utf-8"))
-    return {"in_then_not_now": sorted(n for n in then if n not in now),
-            "in_now_not_then": sorted(n for n in now if n not in then)}
+    pull, add = [], []
+    for n in sorted(set(then) | set(now)):
+        delta = then.get(n, 0) - now.get(n, 0)
+        if delta > 0:
+            pull.append((n, delta))
+        elif delta < 0:
+            add.append((n, -delta))
+    def _fmt(rows):
+        return [f"{c}x {n}" if c > 1 else n for n, c in rows]
+    return {"in_then_not_now": _fmt(pull), "in_now_not_then": _fmt(add),
+            # The COPY totals, which is what "pull N, add M" has to count.
+            "pull_copies": sum(c for _, c in pull),
+            "add_copies": sum(c for _, c in add)}
 
 
 def restore(slug, version, write=False):
@@ -628,8 +654,12 @@ def main(args):
             print(line)
         if state and state.get("in_sync") is False:
             d = state["drift"]
-            print(f"  the repo has moved on: pull {len(d['pull'])}, add {len(d['add'])} "
-                  f"to bring the cardboard level")
+            print(f"  the repo has moved on: pull {d['pull_copies']}, "
+                  f"add {d['add_copies']} to bring the cardboard level")
+            for n in d["pull"]:
+                print(f"    - {n}")
+            for n in d["add"]:
+                print(f"    + {n}")
         return
     if action == "tag":
         if not args.ref:

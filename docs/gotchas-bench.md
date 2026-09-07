@@ -1137,3 +1137,66 @@ attacks, so a taxer and a sweeper are invisible; it reads the draw payoffs on
 The reward is decided in Forge for all three. An objective that cannot see the
 upside should be chosen to grade the branch's specific DOWNSIDE and read as
 nothing more.
+
+---
+
+## teeth-v1, called at 36 of 100 — and the drift report that would have sent the pilot to the wrong sleeves
+
+**2026-09-07, heliod.** The A/B of v1.0.1 against `teeth-v1` was stopped by the
+pilot at arm B 36/100. No experiment record exists; the logs are gitignored, so
+this is the record.
+
+```
+  arm A  v1.0.1     100/100   82 decided   heliod 0.244 [0.16, 0.35]
+  arm B  teeth-v1    36/100   35 decided   heliod 0.147 [0.06, 0.30]
+```
+
+Arm B's trace ran 0.200 → 0.150 → 0.133 → 0.147 and did not wander after the
+first ten games. The intervals still overlap and **no interval on the difference
+was ever computed**, so this is a pilot's judgment call on a consistent
+direction, not a measured refutation. The gap is ~9.7 points against a run whose
+MDE at the full 100 was ~17.5 — it was heading for INCONCLUSIVE even completed,
+which is the more useful thing to record than the direction.
+
+**A finding that looked real for twenty minutes and was not.** Arm B was
+clocking out 0/24 where arm A clocked out 17/100, and that read as "teeth-v1
+makes games end" — the branch doing what its hypothesis says. The second
+measurement killed it:
+
+```
+  rounds      A 21.19   B 19.79   Δ 1.40    95% [-0.70, +3.50]   contains zero
+  seconds     A 246.6   B 125.3   Δ 121.3   95% [+69.9, +172.7]  EXCLUDES ZERO
+  clocked out A 0.170   B 0.000   Δ 0.170   95% [+0.019, +0.256] EXCLUDES ZERO
+```
+
+The games are not shorter. They take **half the wall time at the same number of
+rounds** — and `-c` is a wall clock. Arm A ran while the same eight cores were
+building `sim-progress`, running test suites and sweeping the corpus; arm B ran
+while the machine was quiet. That is `test_oversubscribing_the_machine_censors_games`
+happening live, inside one experiment, between its two arms: the arm played on
+the busier machine was piloted worse and had 17% of its games censored out of
+the denominator.
+
+**Run nothing else on the machine while an experiment is running.** The
+confound here pointed against the observed direction — arm B had the easier
+conditions and still lost — so the reading survives, but only by luck.
+
+### The drift report counted entries, not copies
+
+Found immediately after, while confirming what cardboard to move:
+
+```
+  the sleeved list is V6; the repo is at V7 — pull 0, add 0 to bring the
+  cardboard level
+```
+
+v1.0.1 IS five Islands becoming five Plains. `diff_vs_working` compared name
+MEMBERSHIP, and both names are in both lists, so the deck's largest measured fix
+was invisible to the one report whose entire job is telling the pilot what to
+physically move. `deck_history._entries` has always returned name → copies and
+nothing used the second half of it.
+
+The same defect the magazine era already paid for — counting entries once
+published "18 lands" for a 33-land deck — in a different file, six weeks later.
+The naive fix is wrong too and has its own test: `10 Island → 8 Island` is a
+two-card swap, not a ten-card one.
