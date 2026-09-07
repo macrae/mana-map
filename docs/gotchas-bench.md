@@ -1097,3 +1097,43 @@ file and failed — correctly, and not because of the model change it failed
 alongside. It now reads `ur-dragon` **and asserts that stand-in has not opted
 in**, so the day ur-dragon declares draw this fails loudly instead of passing on
 a premise that stopped being true.
+
+---
+
+## A pre-registered threshold read off a baseline that has since moved
+
+**2026-09-07, heliod. Twice in one session, the same way.** `--objective` takes
+a NUMBER, and the number has to come from somewhere. Both times it came from a
+figure printed by a different run than the one that would grade it:
+
+| branch | objective | champion when the line was set | champion when it was graded |
+|---|---|---|---|
+| `teeth-v1` | `board_power_6 >= 2.80` | 2.438 — a bare `goldfish` run | **2.366** — `net_change`'s own seed |
+| `survive-v1/v2` | `interaction_6 >= 0.78` | 0.795 — a net-change run at 09:xx | **0.661** — after the X-draw model landed |
+
+The first is a seed difference: `goldfish` runs the deck's own seed and
+`net_change` runs 20260826, so the same list reads 2.438 and 2.366 and neither
+is wrong. The second is worse and more instructive — **a model change moved the
+control by 13 points between the branch being opened and being graded.**
+Teaching the goldfish X-spell draw made big X spells eat the whole remaining
+pool, which is correct play and correctly leaves less mana for interaction. The
+control fell 0.795 → 0.661 and the branch's line did not.
+
+Both objectives stand as written and both read NOT MET, because a
+pre-registration that gets rewritten once it is inconvenient is not one. But the
+reading changes completely: against the control it was actually graded on,
+`survive-v2` **improves** the axis its objective was guarding, +0.027.
+
+**Take the number from a `net-change` run of the CURRENT champion, immediately
+before opening the branch** — not from `goldfish`, not from a table printed
+earlier in the session, and never from before a model change. `net_change` is
+the harness that grades it, so it is the only harness whose baseline means
+anything.
+
+And the deeper point, which is why this cost nothing real here: on this deck the
+goldfish objective can only ever be a RISK check. It has no opponent that
+attacks, so a taxer and a sweeper are invisible; it reads the draw payoffs on
+`teeth-v1` as `unmodelled`; and every card in `deckout-v1` is invisible to it.
+The reward is decided in Forge for all three. An objective that cannot see the
+upside should be chosen to grade the branch's specific DOWNSIDE and read as
+nothing more.
