@@ -73,6 +73,9 @@ PILOT_STEPS = [
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
+    ("sim-progress", "manamap.sim.progress",
+     "What a RUNNING simulation has done so far: a bar, the rate, an ETA, "
+     "the estimate with its interval, and how far the interval still has to shrink"),
     ("validate-sim", "manamap.sim.validate_sim",
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("model-coverage", "manamap.pilot.model_coverage",
@@ -197,7 +200,7 @@ _DECK_COMMANDS = {
     "build", "validate-brief", "promote", "demote",
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
-    "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-scenario", "experiment",
+    "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
 }
 
 
@@ -415,6 +418,12 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "sim-progress":
+            cmd.add_argument("run", nargs="?", default=None,
+                             help="a run id or any substring of one (default: the "
+                                  "most recently touched)")
+            cmd.add_argument("--all", action="store_true",
+                             help="every run with logs, not just the newest")
         if name == "simulate":
             cmd.add_argument("--vs", action="append", default=[], metavar="SLUG",
                              help="an opponent seat (data/opponents/<slug> or data/decks/<slug>); repeatable")
