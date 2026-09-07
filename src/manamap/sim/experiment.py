@@ -379,6 +379,16 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
     names_a = install_named(f"mm-x-{slug}-a", a["decklist_text"])
     names_b = install_named(f"mm-x-{slug}-b", b["decklist_text"])
     opp_names = [install_deck(o) for o in opponents]
+    # THE SHA OF WHAT WAS PLAYED, SNAPSHOT AT LAUNCH — the same rule `forge.run`
+    # keeps, and the same defect one door along. `install_deck` has just written
+    # each opponent's .dck and the JVMs read those and nothing else; the record
+    # is built hours later and called `seat_sha` there, so an opponent seat
+    # edited mid-run would be recorded as a table nobody sat at.
+    #
+    # Latent rather than observed, unlike the run-record case: nobody has edited
+    # an opponent during an experiment. It is fixed anyway because it is the
+    # identical bug, and "no one has done it yet" is not a property of the code.
+    opp_shas = {o: seat_sha(o) for o in opponents}
     log_dir = out_dir / "logs" / eid
     t0 = time.time()
     texts_a, seeds_a, bad_a = _run_arm("a", names_a, opp_names, games, jobs, clock, seed, profiles, log_dir, jar)
@@ -411,7 +421,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         "experiment_id": eid, "slug": slug, "at": date.today().isoformat(),
         "engine": {"forge": forge_version(), "java": _java_version()},
         "question": f"{a['label']}  vs  {b['label']}, same table",
-        "opponents": [{"slug": o, "decklist_sha256": seat_sha(o)} for o in opponents],
+        "opponents": [{"slug": o, "decklist_sha256": opp_shas[o]} for o in opponents],
         "games_per_arm": int(games), "seed_base": seed, "seeds": seeds_a,
         "profiles": profiles, "clock_seconds": clock, "wall_seconds": wall,
         "nonzero_exit_jobs": bad_a + bad_b,

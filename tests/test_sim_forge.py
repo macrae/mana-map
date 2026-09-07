@@ -346,3 +346,28 @@ def test_a_run_records_the_list_it_PLAYED_not_the_one_on_disk_when_it_ends(
     assert rec["seats"][0]["decklist_sha256"] == at_launch, (
         "the record stamped the decklist as it stood when the run FINISHED; the "
         "games were played on the list that was there when the .dck was written")
+
+
+def test_neither_harness_computes_a_seat_sha_while_writing_the_record():
+    """A STRUCTURAL GUARD, and it says so — the behavioural test above drives
+    `forge.run` and proves the fix there, but `experiment.run` resolves two arms
+    from git refs and cannot be stood up in a fixture, so its identical defect
+    would otherwise be covered by nothing.
+
+    The regression has exactly one shape in both files: `seat_sha(...)` called
+    inline where the record is built, hours after the .dck the JVMs actually
+    read was written. Both modules now snapshot at launch — `seat_shas` in
+    `forge.run`, `opp_shas` in `experiment.run` — so a `decklist_sha256` key
+    and a `seat_sha(` call must never appear together.
+    """
+    import inspect
+    from manamap.sim import experiment
+    for mod in (forge, experiment):
+        src = inspect.getsource(mod)
+        bad = [ln.strip() for ln in src.splitlines()
+               if '"decklist_sha256"' in ln and "seat_sha(" in ln]
+        assert not bad, (
+            f"{mod.__name__} computes a seat sha while writing the record:\n  "
+            + "\n  ".join(bad)
+            + "\nSnapshot it beside install_deck instead — the games were played "
+              "on the list that was on disk THEN, not now.")
