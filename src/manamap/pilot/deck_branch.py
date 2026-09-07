@@ -435,6 +435,45 @@ def grade_objective(objective, reading, mde=None):
             "shortfall": None if hit else round(miss, 4)}
 
 
+def champion_reading(slug, objective):
+    """What the CHAMPION currently reads on this objective's axis, through the
+    harness that will grade the branch — `net_change`'s own diagnostic, at its
+    own seed, not `goldfish`'s.
+
+    Returns lines to print. Never raises: a missing corpus or an axis the
+    diagnostic has no cell for must not stop a branch being opened, so it says
+    so and moves on.
+    """
+    from manamap.pilot import candidates, diagnostic, net_change
+    axis = objective["axis"]
+    block, key, turn = candidates.OBJECTIVE_AXES.get(axis, (None, None, None))
+    if not block:
+        return [f"  champion: no diagnostic cell for {axis!r} — cannot anchor this line"]
+    try:
+        # `diagnostic.HARNESS` is where `net_change.build` takes both from, so
+        # this is the same run the grading will make — not a near-miss of it.
+        doc = diagnostic.run(slug, iterations=diagnostic.HARNESS["iterations"],
+                             seed=diagnostic.HARNESS["seed"], quiet=True)
+        cell = net_change._cell(doc, block, key, turn)
+    except Exception as exc:                      # pragma: no cover - defensive
+        return [f"  champion: could not be read ({exc.__class__.__name__}) — "
+                f"the line is unanchored"]
+    if not cell:
+        return [f"  champion: {axis} is absent from this deck's diagnostic — "
+                f"the line is unanchored"]
+    now, mde = cell["rate"], diagnostic.mde(cell)
+    gap = objective["value"] - now
+    lines = [f"  champion:  {axis} reads {now:.4f} right now "
+             f"(same harness, same seed as the grading run)"]
+    if mde:
+        lines.append(f"             this run can resolve {mde:.4f}; your line asks "
+                     f"for a move of {gap:+.4f}")
+        if abs(gap) < mde:
+            lines.append("             THE LINE IS INSIDE THE NOISE — it cannot "
+                         "come back MET or NOT MET on evidence")
+    return lines
+
+
 def new(slug, branch, text, why=None, at=None, objective=None):
     if not NAME_RE.match(branch or ""):
         raise SystemExit(
@@ -1253,6 +1292,22 @@ def main(args):
                   why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
         print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}")
+        # ANCHOR THE THRESHOLD TO THE CONTROL THAT WILL GRADE IT.
+        #
+        # `--objective` takes a bare number and the number has to come from
+        # somewhere. Twice in one session it came from the wrong place: once
+        # from a `goldfish` run (a different seed to net-change's, 2.438 against
+        # 2.366) and once from a net-change table printed BEFORE a model change
+        # moved the control 13 points underneath it. Both branches then read NOT
+        # MET against lines that were never the right yardstick, and the second
+        # one was actually an IMPROVEMENT on the control it was graded against.
+        #
+        # The fix is not a rule in a document. It is printing the number, here,
+        # at the moment it is being chosen, from the same harness that will do
+        # the grading. Cheap — one goldfish run — and it makes the mistake
+        # visible instead of arriving hours later inside a verdict.
+        for line in champion_reading(slug, objective):
+            print(line)
         for w in got["warnings"]:
             print(f"  warning: {w}")
         print(f"  next: `manamap pilot deck-branch {slug} source {branch}`")
