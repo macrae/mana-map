@@ -739,3 +739,48 @@ line was read as an optimum.**
 Under the new commander they are worth running for a different reason entirely:
 mana value is now POWER, so the MV4–5 Shrines that were unfetchable liabilities
 are 4/4s and 5/5s with deathtouch, lifelink and hexproof.
+
+## A ROOM'S `cmc` IS BOTH DOORS, AND THE MODEL CHARGES IT TO CAST THE FIRST ONE
+
+Measured 2026-09-06 on `zur-enchantress/rooms-v1`, which read 0.3108 against the
+champion's 0.3540 on kill-by-t8 and **is not evidence about Rooms at all**.
+
+Scryfall reports a Room's `cmc` as the combined mana value of both halves, per
+CR 202.3d. `goldfish.py` builds its casting cost straight from that field —
+`"cmc": int(card.get("cmc") or 0)`, spent through `spend(card["cmc"], ...)` —
+so the model charged:
+
+| card | left door | model charged |
+|---|---|---|
+| Bottomless Pool // Locker Room | `{U}` = 1 | **6** |
+| Underwater Tunnel // Slimy Aquarium | `{U}` = 1 | **5** |
+| Grand Entryway // Elegant Rotunda | `{1}{W}` = 2 | **5** |
+| Surgical Suite // Hospital Room | `{1}{W}` = 2 | **6** |
+| Unholy Annex // Ritual Chamber | `{2}{B}` = 3 | **8** |
+
+A one-mana enchantment was priced at six. This is the `never_cast` class again —
+the branch measured five cards the model could rarely afford, and the reading
+says nothing about the line.
+
+**Three separate blind spots stack here, and only the first is a pricing error:**
+
+1. **Cost.** You cast ONE half. `cmc` is both.
+2. **The unlock trigger.** `goldfish.py` contains no concept of unlocking.
+   `_ENCHANTMENT_ENTERS` reads the Eerie idiom as a plain enchantment-ETB, so
+   the "and whenever you fully unlock a Room" half of four cards already in the
+   deck — Balemurk Leech, Entity Tracker, Fear of Infinity, Gremlin Tamer —
+   has never been modelled, and has never been able to fire in paper either
+   because the deck owns no Rooms.
+3. **Animation size.** CR 709.5 says a permanent does not have the mana cost of
+   a locked half, so by CR 202.3d a FULLY UNLOCKED Room's mana value is both
+   doors combined — and `model_commander_animate` sets power from mana value.
+   `Unholy Annex // Ritual Chamber` is an 8/8 with deathtouch, lifelink and
+   hexproof once both doors are open. The model sees none of that.
+
+Note the direction: (1) makes Rooms look WORSE than they are, (2) and (3) also
+make them look worse. Every error points the same way, so 0.3108 is a floor
+under a floor — which is exactly why it must not be read as a verdict.
+
+**Do not fix (1) alone.** Charging the left door while still ignoring the unlock
+and the animation would make Rooms cheap AND empty, and the model would then
+recommend them for the wrong reason. The three are one piece of work.

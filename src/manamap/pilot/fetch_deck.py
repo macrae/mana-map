@@ -214,10 +214,34 @@ def _post_collection(identifiers):
 
 
 def fetch_collection(names):
-    """Fetch by name. Returns (by_name_lower, not_found_names)."""
+    """Fetch by name. Returns (by_name_lower, not_found_names).
+
+    A NAME /cards/collection REJECTS IS NOT NECESSARILY A NAME SCRYFALL REJECTS.
+    A Room prints two halves under one shared type line, and the corpus, the
+    synergy graph and every decklist in this repo carry such a card by its full
+    `A // B` name. `/cards/named?exact=` resolves that form; `/cards/collection`
+    does NOT, and returns it in `not_found`. So five Duskmourn Rooms were
+    unfetchable and therefore unbuildable, on a deck holding four cards whose
+    text reads "whenever you fully unlock a Room".
+
+    The retry sends the LEFT HALF ALONE, which the endpoint does accept, and
+    Scryfall answers with the full `A // B` name — so `by_name` is keyed exactly
+    as it would have been and no caller can tell the difference. Only names
+    containing the separator are retried, and only after the first pass has
+    already failed on them, so a real typo still surfaces as not-found.
+    """
     cards, not_found = _post_collection([{"name": n} for n in names])
+    missing = [nf.get("name", "?") for nf in not_found]
+    halves = [n.split(" // ")[0] for n in missing if " // " in n]
+    if halves:
+        retry, _ = _post_collection([{"name": h} for h in halves])
+        cards.extend(retry)
+        # Scryfall answers the half with the card's FULL `A // B` name, which is
+        # the form `missing` holds, so this subtraction needs no bookkeeping.
+        found = {card["name"] for card in retry}
+        missing = [n for n in missing if n not in found]
     by_name = {card["name"].lower(): card for card in cards}
-    return by_name, [nf.get("name", "?") for nf in not_found]
+    return by_name, missing
 
 
 def fetch_printings(printings):

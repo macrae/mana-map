@@ -76,7 +76,18 @@ def observed(logs=None):
 #: MEASURED 2026-08-26 across 1,143 opponent-games of tracked Forge play. Used
 #: when the logs are absent — they are gitignored and only exist where the run
 #: was made, and a checkout still deserves the estimate.
-POD = {"casts_per_turn": 1.09, "second_spell_rate": 0.232, "n_seat_games": 1143}
+#: RE-DERIVED 2026-09-06 from 65,132 logged opponent turns, up from the 1,143
+#: seat-games these constants first carried. The four calibration runs against
+#: `standard-v2` moved the corpus enough that the old 1.09 fell outside the
+#: test's own 0.05 tolerance, which is exactly the drift
+#: `test_the_constants_cannot_outlive_their_evidence` exists to catch. The
+#: CONCLUSION these numbers were introduced for is unchanged and slightly
+#: strengthened: a per-draw trigger still fires 3.0 times a round against three
+#: opponents by rule, against 0.75 for a second-spell trigger (was 0.70), so the
+#: cheap "second card each turn" card remains the weak one — by a ratio of
+#: exactly 4.0, down from 4.3, which is a drift in the magnitude and not in the
+#: finding.
+POD = {"casts_per_turn": 1.154, "second_spell_rate": 0.25, "n_seat_games": 4898}
 
 #: A second DRAW in a turn needs a draw spell, and Forge does not log draws. This
 #: is bounded rather than measured: it cannot exceed the rate of casting a second

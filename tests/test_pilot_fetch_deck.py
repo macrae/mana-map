@@ -598,3 +598,71 @@ def test_giving_up_says_what_to_do_rather_than_naming_a_socket(monkeypatch):
     assert "again" in message, "it must say what to do"
     assert "RemoteDisconnected" not in message
     assert "urllib3" not in message
+
+
+def test_a_room_resolves_though_the_collection_endpoint_rejects_its_full_name(monkeypatch):
+    """A Room's `A // B` name is rejected by /cards/collection; the half is not.
+
+    THE BUG THIS EXISTS FOR: five Duskmourn Rooms were unfetchable and therefore
+    unbuildable, on a deck holding four cards whose text reads "whenever you
+    fully unlock a Room". `/cards/named?exact=` resolves `A // B`; the
+    collection endpoint returns it in `not_found`, and the old
+    `fetch_collection` reported that straight to the caller as a bad name.
+
+    The fake below reproduces exactly that asymmetry, so deleting the retry in
+    `fetch_collection` fails this test rather than merely changing its shape.
+    """
+    full = "Bottomless Pool // Locker Room"
+    seen = []
+
+    def fake_post(url, json=None, timeout=None):
+        asked = [i["name"] for i in json["identifiers"]]
+        seen.append(asked)
+
+        class FakeResponse:
+            status_code = 200
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                # The endpoint's real behaviour: the joined name is refused,
+                # the left half resolves — and answers with the FULL name.
+                data = [scryfall_card(full) for n in asked if n == "Bottomless Pool"]
+                missing = [{"name": n} for n in asked if n != "Bottomless Pool"]
+                return {"data": data, "not_found": missing}
+
+        return FakeResponse()
+
+    monkeypatch.setattr(fetch_deck.SESSION, "post", fake_post)
+    by_name, not_found = fetch_deck.fetch_collection([full])
+
+    assert not_found == [], f"the Room should resolve on the retry, got {not_found}"
+    assert full.lower() in by_name, sorted(by_name)
+    assert by_name[full.lower()]["name"] == full
+    assert seen == [[full], ["Bottomless Pool"]], (
+        "the full name must be tried FIRST and the half only as a fallback, so a "
+        f"genuine typo still surfaces as not-found; calls were {seen}"
+    )
+
+
+def test_a_genuine_typo_containing_the_separator_still_fails(monkeypatch):
+    """The retry must not turn every unresolvable name into a silent success."""
+    def fake_post(url, json=None, timeout=None):
+        asked = [i["name"] for i in json["identifiers"]]
+
+        class FakeResponse:
+            status_code = 200
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return {"data": [], "not_found": [{"name": n} for n in asked]}
+
+        return FakeResponse()
+
+    monkeypatch.setattr(fetch_deck.SESSION, "post", fake_post)
+    by_name, not_found = fetch_deck.fetch_collection(["Bottomlesss Pool // Locker Room"])
+    assert by_name == {}
+    assert not_found == ["Bottomlesss Pool // Locker Room"]
