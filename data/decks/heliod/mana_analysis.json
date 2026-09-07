@@ -1,11 +1,11 @@
 {
   "slug": "heliod",
-  "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
+  "decklist_sha256": "decc32b080fe821b8307181265a6b5f8344378bd1a66e8de8ca96d4bd415d2cd",
   "lands": {
     "total": 33,
     "entries": 18,
     "life": {
-      "recurring_per_tap_cycle": 4,
+      "recurring_per_tap_cycle": 2,
       "one_time_on_entry": 3
     },
     "enters_tapped": 7,
@@ -16,7 +16,7 @@
       "fixing": 2,
       "tapped": 7,
       "untapped-dual": 4,
-      "utility": 8
+      "utility": 7
     },
     "list": [
       {
@@ -30,14 +30,6 @@
           "U",
           "W"
         ]
-      },
-      {
-        "name": "Ancient Tomb",
-        "copies": 1,
-        "classes": [
-          "utility"
-        ],
-        "produces": []
       },
       {
         "name": "Command Tower",
@@ -181,6 +173,12 @@
         ]
       },
       {
+        "name": "Reliquary Tower",
+        "copies": 1,
+        "classes": [],
+        "produces": []
+      },
+      {
         "name": "Seachrome Coast",
         "copies": 1,
         "classes": [
@@ -224,15 +222,15 @@
       "G": 0
     },
     "nonland": {
-      "W": 3,
-      "U": 3,
+      "W": 4,
+      "U": 4,
       "B": 0,
       "R": 0,
       "G": 0
     },
     "total": {
-      "W": 19,
-      "U": 30,
+      "W": 20,
+      "U": 31,
       "B": 0,
       "R": 0,
       "G": 0
@@ -264,6 +262,15 @@
         ]
       },
       {
+        "name": "Decanter of Endless Water",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": [
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Sol Ring",
         "kind": "ramp:rock",
         "cmc": 1.0,
@@ -288,27 +295,27 @@
   },
   "pips": {
     "U": {
-      "total_pips": 61.0,
+      "total_pips": 42.0,
       "max_pips": 3,
-      "cards": 40,
+      "cards": 29,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "W": {
-      "total_pips": 18.0,
-      "max_pips": 2,
-      "cards": 15,
+      "total_pips": 29.0,
+      "max_pips": 3,
+      "cards": 22,
       "earliest_turn": 1,
       "effective_pips": 2
     }
   },
   "shares": {
     "U": {
-      "pip_share": 0.772,
+      "pip_share": 0.592,
       "source_share": 0.628
     },
     "W": {
-      "pip_share": 0.228,
+      "pip_share": 0.408,
       "source_share": 0.372
     }
   },
@@ -322,8 +329,8 @@
       "U": 0.764
     },
     "with_rocks_and_dorks": {
-      "W": 0.548,
-      "U": 0.822
+      "W": 0.58,
+      "U": 0.839
     },
     "lands_only_ungated": {
       "W": 0.41,
@@ -332,32 +339,32 @@
   },
   "ramp": {
     "ramp:cost-reduction": 3,
-    "ramp:rock": 5
+    "ramp:rock": 6
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.998,
-      "10": 0.334,
-      "2": 0.992,
-      "3": 0.866,
+      "10": 0.371,
+      "2": 0.991,
+      "3": 0.87,
       "4": 0.725,
-      "5": 0.58,
-      "6": 0.471,
-      "7": 0.405,
-      "8": 0.374,
-      "9": 0.352
+      "5": 0.591,
+      "6": 0.49,
+      "7": 0.423,
+      "8": 0.398,
+      "9": 0.386
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 7.184,
-      "2": 2.138,
-      "3": 3.39,
-      "4": 4.204,
-      "5": 4.875,
-      "6": 5.436,
-      "7": 5.915,
-      "8": 6.359,
-      "9": 6.785
+      "10": 7.527,
+      "2": 2.132,
+      "3": 3.391,
+      "4": 4.262,
+      "5": 4.976,
+      "6": 5.577,
+      "7": 6.092,
+      "8": 6.581,
+      "9": 7.059
     }
   },
   "assumptions": [
@@ -367,7 +374,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "U: 27 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 30.",
-    "W: 16 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 19."
+    "U: 27 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 31.",
+    "W: 16 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 33-land deck; rocks and dorks lift the count to 20."
   ]
 }
