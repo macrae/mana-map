@@ -292,3 +292,57 @@ def test_oversubscribing_the_machine_censors_games():
     assert high > low * 2, (
         f"4 jobs censor {low:.1%}, 7 jobs censor {high:.1%} — if that gap has "
         f"closed, `default_jobs` needs re-deriving rather than trusting")
+
+
+# ── The list a run says it measured ───────────────────────────────────────
+
+def test_a_run_records_the_list_it_PLAYED_not_the_one_on_disk_when_it_ends(
+        seats, tmp_path, monkeypatch):
+    """`install_deck` writes each seat's .dck at LAUNCH and the JVMs read those
+    files and nothing else. The record was built at the END and called
+    `seat_sha` there — so a decklist edited while the games ran stamped the run
+    with a list it never played.
+
+    NOT HYPOTHETICAL. A 120-game heliod run launched 07:04 and finished 09:35
+    on 2026-09-07; a five-basic mana patch landed at 07:50. The record claimed
+    the patched list while the .dck on disk still held 14 Islands to 3 Plains,
+    so a baseline for v1.0.0 was filed under v1.0.1 and `deck-info` would have
+    read it as a measurement of the current deck.
+
+    Same class as the branch-write bug this repo has already paid for twice: a
+    measurement must record the list it MEASURED, not the one that happens to
+    be on disk when it is written down.
+    """
+    import hashlib
+    from manamap import config
+    if not list(config.FORGE_HOME.glob("forge-gui-desktop-*-jar-with-dependencies.jar")):
+        pytest.skip("Forge is not installed at FORGE_HOME (docs/simulation.md)")
+
+    played = seats / "decks" / "mine" / "decklist.txt"
+    at_launch = hashlib.sha256(played.read_bytes()).hexdigest()
+
+    real = forge.subprocess.run
+
+    def fake_subprocess_run(cmd, **kw):
+        # `java -version` and the like still go through; only the game jobs are
+        # replaced, and they are the ones that take the hours.
+        if "stdout" not in kw:
+            return real(cmd, **kw)
+        # The pilot edits the deck while the JVMs are running — which is the
+        # whole scenario, and the only way the two shas can differ.
+        played.write_text(DECK.replace("30 Forest", "25 Forest\n5 Mountain"))
+        kw["stdout"].write(FIX.read_text())
+
+        class _Proc:
+            returncode = 0
+        return _Proc()
+
+    monkeypatch.setattr(forge.subprocess, "run", fake_subprocess_run)
+    _path, rec = forge.run("mine", ["rival"], games=2, jobs=1, clock=10,
+                           decks_dir=tmp_path / "forge-decks")
+
+    after = hashlib.sha256(played.read_bytes()).hexdigest()
+    assert after != at_launch, "the edit did not land — this test proves nothing"
+    assert rec["seats"][0]["decklist_sha256"] == at_launch, (
+        "the record stamped the decklist as it stood when the run FINISHED; the "
+        "games were played on the list that was there when the .dck was written")

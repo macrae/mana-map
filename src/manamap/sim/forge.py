@@ -715,6 +715,22 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     rotations = [seats[i % len(seats):] + seats[:i % len(seats)]
                  for i in range(len(parts))]
     job_names = [[install_deck(s, decks_dir) for s in rot] for rot in rotations]
+    # THE SHA OF WHAT WAS PLAYED, SNAPSHOT AT LAUNCH. `install_deck` has just
+    # written each seat's .dck from the decklist as it stands NOW, and the JVMs
+    # read those files and nothing else for the rest of the run. The record was
+    # built at the END and called `seat_sha` there, so a decklist edited while
+    # the games ran stamped the run with a list it never played.
+    #
+    # NOT HYPOTHETICAL. A 120-game heliod run launched 07:04 and finished 09:35;
+    # the mana patch landed at 07:50. The record claimed the patched list while
+    # the .dck on disk still held 14 Islands to 3 Plains — so a baseline for
+    # v1.0.0 was filed under v1.0.1, and `deck-info` would have read it as a
+    # measurement of the current deck.
+    #
+    # Same class as the branch-write bug this repo has already paid for twice:
+    # a measurement must record the list it MEASURED, not the one that happens
+    # to be on disk when it is written down.
+    seat_shas = {s: seat_sha(s) for s in seats}
     cmds = [command(job_names[i], g, clock, jar, seed=seeds[i],
                     profiles=_profiles_for(rotations[i], slug, profile, pod)
                     if profiles else None)
@@ -820,7 +836,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "truncated_jobs": timed_out,
         "run_id": record_path.stem, "slug": slug, "at": date.today().isoformat(),
         "engine": {"forge": forge_version(home), "java": _java_version()},
-        "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_sha(s),
+        "seats": [{"slug": s, "forge_name": names[i], "decklist_sha256": seat_shas[s],
                    "commander": sorted(cmd_by_slug.get(s, []))}
                   for i, s in enumerate(seats)],
         "games_requested": int(games), "games_completed": len(outcomes),
