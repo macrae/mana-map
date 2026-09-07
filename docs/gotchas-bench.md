@@ -777,10 +777,64 @@ says nothing about the line.
    `Unholy Annex // Ritual Chamber` is an 8/8 with deathtouch, lifelink and
    hexproof once both doors are open. The model sees none of that.
 
-Note the direction: (1) makes Rooms look WORSE than they are, (2) and (3) also
-make them look worse. Every error points the same way, so 0.3108 is a floor
-under a floor — which is exactly why it must not be read as a verdict.
+**FIXED 2026-09-06, all three together** — deliberately, because charging the
+left door while still ignoring the unlock and the animation would have made
+Rooms cheap AND empty, and the model would then have recommended them for the
+wrong reason. `rooms-v1` moved **0.3108 -> 0.3842** on the strength of the
+pricing alone, which is the size of the error.
 
-**Do not fix (1) alone.** Charging the left door while still ignoring the unlock
-and the animation would make Rooms cheap AND empty, and the model would then
-recommend them for the wrong reason. The three are one piece of work.
+The cheaper door is cast, NOT the front one, and the corpus sweep is what
+settles it: the front door is cheaper-or-equal on 24 of the 30 Rooms, so a
+front-door rule passes casual inspection — and is a fourfold error on `Defiled
+Crypt // Cadaver Lab`, whose doors are `{3}{B}` and `{B}`. The pips come from the
+same door; `front_field` cannot be reused because it always answers with the
+left half, which is the wrong half exactly when the cost is.
+
+**WHAT IS STILL WRONG, AND IT IS NO LONGER A CLEAN FLOOR.** Scryfall
+concatenates both halves into `oracle_text`, so the model reads text off a
+LOCKED door:
+
+* **Over-credited.** `Unholy Annex // Ritual Chamber` is charged 3 for its
+  `{2}{B}` front half and handed the 6/6 Demon printed on the `{3}{B}{B}` back
+  half at the same moment. Two of five Rooms in `rooms-v1` gain a body this way.
+* **Under-credited.** The "When you unlock this door, …" effect itself is
+  modelled for none of the 26 Rooms that have one. `Unholy Annex` is wrong in
+  BOTH directions on one card: its front half drains 2 from each opponent every
+  end step *only if you control a Demon* — `drain_profile` flags the whole card
+  `unmodelled` — while the Demon that would switch it on is credited free.
+
+So a Room reading is now a mix of an over-credit and an under-credit, not a
+bound in either direction. Do not describe it as a floor.
+
+## THREE PARALLEL LISTS, TWO CASTING LOOPS, AND ONLY ONE OF THEM APPENDED
+
+Found 2026-09-06 while wiring Rooms, and it is the larger of the two bugs.
+
+`battlefield_pips`, `battlefield_types` and `battlefield_mv` are index-aligned by
+convention and nothing enforced it. The `_engine_permanent` loop — which casts
+drain payoffs, sac outlets, death engines and attack enablers — appended to the
+first two and not the third. So `zip(battlefield_types, battlefield_mv)` in the
+animate scan paired a type line with ANOTHER card's mana value, and then
+truncated at the shorter list, hiding every later permanent from animation.
+
+It bites exactly the deck that has both halves — `model_drain` AND
+`model_commander_animate` — which is zur-enchantress and nothing else. The
+champion had been understated all along:
+
+    kill by T8   0.354 -> 0.381   (+0.027)
+    kill by T10  0.864 -> 0.888
+    no kill      0.137 -> 0.112
+
+**IT INVALIDATED A PROPOSAL THAT WAS ALREADY MADE.** `bodies-v4` had been
+proposed as v3.1.0 on the reading that it was FLAT (0.3549 against 0.3540) while
+gaining board power. Corrected, the champion is 0.3810 and the branch is 0.3683
+— not flat, 0.0127 BEHIND — and the proposal was withdrawn. Five card purchases
+were riding on a number produced by a `zip` over misaligned lists.
+
+This is the THIRD instance of the same class in this file. `zip(battlefield_types,
+battlefield)` paired two different lists; `merge_deck_map` measured membership
+rather than reading names; and now this. The lesson that keeps not sticking is
+that **parallel lists maintained by more than one writer will drift**, and `zip`
+hides it by truncating instead of raising. A fourth list was added here for
+Rooms, which is a reason to be suspicious of the shape rather than a defence
+of it.

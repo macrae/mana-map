@@ -1156,7 +1156,7 @@
   ],
   "risk": [
    {
-    "detail": "18.99 -> 17.60, a change of -1.39 (-7%)",
+    "detail": "20.49 -> 17.60, a change of -2.88 (-14%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1168,19 +1168,19 @@
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "86 games in 100 -> 80 in 100, a swing of 5 games per 100",
+    "detail": "88 games in 100 -> 80 in 100, a swing of 8 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "2.37 -> 2.17, a change of -0.20 (-9%)",
+    "detail": "2.43 -> 2.17, a change of -0.26 (-11%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is interaction affordable @T6 at -0.023 against an MDE of 0.024. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is interaction affordable @T6 at -0.022 against an MDE of 0.024. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1203,11 +1203,11 @@
   {
    "better_is": "higher",
    "branch": 17.6046,
-   "champion": 18.9928,
-   "delta": -1.3882,
-   "mde": 0.4661,
+   "champion": 20.4861,
+   "delta": -2.8815,
+   "mde": 0.4985,
    "measure": "damage @T10",
-   "reads_as": "18.99 -> 17.60, a change of -1.39 (-7%)",
+   "reads_as": "20.49 -> 17.60, a change of -2.88 (-14%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1217,11 +1217,11 @@
   {
    "better_is": "higher",
    "branch": 7.0794,
-   "champion": 7.0044,
-   "delta": 0.075,
+   "champion": 7.0899,
+   "delta": -0.0105,
    "mde": 0.1685,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.075 is smaller than the 0.169 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.169 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1231,9 +1231,9 @@
   {
    "better_is": "higher",
    "branch": 0.0005,
-   "champion": 0.0074,
-   "delta": -0.0069,
-   "mde": 0.0034,
+   "champion": 0.0081,
+   "delta": -0.0076,
+   "mde": 0.0036,
    "measure": "killed by T6",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1245,11 +1245,11 @@
   {
    "better_is": "higher",
    "branch": 0.8024,
-   "champion": 0.8551,
-   "delta": -0.0527,
+   "champion": 0.8783,
+   "delta": -0.0759,
    "mde": 0.0158,
    "measure": "killed by T10",
-   "reads_as": "86 games in 100 -> 80 in 100, a swing of 5 games per 100",
+   "reads_as": "88 games in 100 -> 80 in 100, a swing of 8 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1259,8 +1259,8 @@
   {
    "better_is": "lower",
    "branch": 0.0475,
-   "champion": 0.0439,
-   "delta": 0.0036,
+   "champion": 0.043,
+   "delta": 0.0045,
    "mde": 0.0084,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.008 this run can resolve",
@@ -1301,11 +1301,11 @@
   {
    "better_is": "higher",
    "branch": 2.1693,
-   "champion": 2.3724,
-   "delta": -0.2031,
-   "mde": 0.1413,
+   "champion": 2.4326,
+   "delta": -0.2633,
+   "mde": 0.1441,
    "measure": "extra cards by T8",
-   "reads_as": "2.37 -> 2.17, a change of -0.20 (-9%)",
+   "reads_as": "2.43 -> 2.17, a change of -0.26 (-11%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1315,11 +1315,11 @@
   {
    "better_is": "higher",
    "branch": 0.5549,
-   "champion": 0.5777,
-   "delta": -0.0228,
+   "champion": 0.5774,
+   "delta": -0.0225,
    "mde": 0.0239,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.023 is smaller than the 0.024 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.022 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

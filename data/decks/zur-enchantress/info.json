@@ -987,32 +987,9 @@
       "name": "bodies-v4",
       "opened": "2026-09-06",
       "why": "THE COMMANDER'S GRANT IS FREE AND DOES NOT CARE WHAT ANYTHING COSTS, so the cheapest enchantment creature is the most efficient carrier of deathtouch, lifelink and hexproof. This is the hypothesis the Shrine failure pointed at: shrines-v4 and v5 both raised the curve and both lost board power at T6 (7.00 -> 6.43 / 6.66). Five one- and two-drops instead. Every one is a BUY -- the owned pool holds only three cheap enchantment creatures and all three are marginal -- so this branch is also the price check on that hypothesis.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "5 card(s) still to find",
-      "proposal": {
-        "at": "2026-09-06",
-        "as_version": "v3.1.0",
-        "why": "",
-        "base_version": 14,
-        "decklist_sha256": "e2e1cbd1630630f30208a524d9c1e5ade193b4404d9992695d39b926700f9aeb",
-        "accepted_on": {
-          "decklist_sha256": "e2e1cbd1630630f30208a524d9c1e5ade193b4404d9992695d39b926700f9aeb",
-          "state": "do not merge",
-          "objective": {
-            "axis": "kill_by_8",
-            "op": ">=",
-            "value": 0.38,
-            "why": "THE COMMANDER'S GRANT IS FREE AND DOES NOT CARE WHAT ANYTHING COSTS, so the cheapest enchantment creature is the most efficient carrier of deathtouch, lifelink and hexproof. This is the hypothesis the Shrine failure pointed at: shrines-v4 and v5 both raised the curve and both lost board power at T6 (7.00 -> 6.43 / 6.66). Five one- and two-drops instead. Every one is a BUY -- the owned pool holds only three cheap enchantment creatures and all three are marginal -- so this branch is also the price check on that hypothesis."
-          },
-          "grade": "not met",
-          "reading": 0.3549,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        },
-        "forced_reason": "THE OBJECTIVE WAS AIMED AT THE WRONG THING AND THE BRANCH IS PROPOSED ON A DIFFERENT CASE, STATED HERE RATHER THAN BY MOVING THE GOALPOST. kill_by_8 >= 0.38 asked these five slots to make the deck FASTER. They do not: 0.3549 against the champion's 0.3540 is flat, and the objective is correctly graded NOT MET. What the branch actually does is retire a line the pilot cannot support -- five Shrines is far too few for 'for each Shrine you control', and the whole twelve-card cycle only reaches 1.9 drawn by turn ten -- AT NO COST TO THE CLOCK, while improving board power at T6 (7.00 -> 7.49), killed-by-T10 (0.855 -> 0.869), hand can act by T3 and interaction affordable at T6. Four measured hypotheses competed for these slots and the other three all LOST the objective outright (rocks -0.068, evasion -0.044, cantrip auras -0.059). Cheap enchantment creatures are the only replacement that has ever held, which is what the commander's free grant predicts. COST: five cards to buy, no unsleeving, nothing raided. LIMIT CARRIED FORWARD: damage at T10 falls 18.99 -> 17.41 because the Shrines were paying rent as DRAIN and DRAW rather than as bodies, and that is a real loss this branch does not replace."
-      },
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
       "pull_list": {
         "buy": [
           {
@@ -19591,15 +19568,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.219,
+            "10": 8.242,
             "2": 2.145,
             "3": 3.24,
             "4": 4.061,
             "5": 4.809,
-            "6": 5.486,
-            "7": 6.141,
-            "8": 6.811,
-            "9": 7.498
+            "6": 5.487,
+            "7": 6.145,
+            "8": 6.82,
+            "9": 7.513
           },
           "tier": "data",
           "weight": "detail",
@@ -19610,15 +19587,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.64,
+            "10": 0.645,
             "2": 0.998,
             "3": 0.914,
             "4": 0.801,
             "5": 0.688,
-            "6": 0.625,
-            "7": 0.602,
-            "8": 0.61,
-            "9": 0.611
+            "6": 0.626,
+            "7": 0.605,
+            "8": 0.614,
+            "9": 0.617
           },
           "tier": "data",
           "weight": "detail",
@@ -19629,15 +19606,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.032,
-            "10": 6.796,
+            "10": 6.84,
             "2": 0.335,
             "3": 0.548,
             "4": 1.167,
             "5": 2.074,
             "6": 3.126,
-            "7": 4.203,
-            "8": 4.311,
-            "9": 5.488
+            "7": 4.206,
+            "8": 4.322,
+            "9": 5.51
           },
           "tier": "data",
           "weight": "detail",
@@ -19663,12 +19640,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1818,
+            "10": 1714,
             "5": 1,
-            "6": 63,
-            "7": 826,
-            "8": 2654,
-            "9": 3273
+            "6": 72,
+            "7": 870,
+            "8": 2863,
+            "9": 3356
           },
           "tier": "data",
           "weight": "detail",
@@ -19713,19 +19690,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.69,
+      "mean_kill_turn": 8.65,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 35,
+      "kill_by_turn_8_pct": 38,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 14,
+      "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1818,
+        "10": 1714,
         "5": 1,
-        "6": 63,
-        "7": 826,
-        "8": 2654,
-        "9": 3273
+        "6": 72,
+        "7": 870,
+        "8": 2863,
+        "9": 3356
       }
     }
   },
@@ -19834,7 +19811,7 @@
     "not marked as built in paper — if it is sleeved, `deck-version zur-enchantress paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes zur-enchantress add \"…\" --result win|loss --opponents N`",
     "branch `bodies-v3` needs 26 card(s) sourced — `manamap pilot deck-branch zur-enchantress source bodies-v3`",
-    "`bodies-v4` is PROPOSED as v3.1.0 and waiting on cardboard — 5 card(s) (5 to buy) — `manamap pilot deck-branch zur-enchantress show bodies-v4` has the pull list",
+    "branch `bodies-v4` needs 5 card(s) sourced — `manamap pilot deck-branch zur-enchantress source bodies-v4`",
     "branch `bodies-v5` needs 5 card(s) sourced — `manamap pilot deck-branch zur-enchantress source bodies-v5`",
     "branch `constellation-v1` needs 13 card(s) sourced — `manamap pilot deck-branch zur-enchantress source constellation-v1`",
     "branch `constellation-v2` needs 11 card(s) sourced — `manamap pilot deck-branch zur-enchantress source constellation-v2`",

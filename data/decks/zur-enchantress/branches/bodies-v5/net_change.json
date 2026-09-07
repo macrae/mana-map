@@ -961,8 +961,8 @@
   "why": "bodies-v4 plus the draw the model can actually see. bodies-v4 was the best of three hypotheses -- the only one to raise board power at T6 (7.00 -> 7.49) and killed-by-T10 (0.855 -> 0.869) -- but every branch lost card draw, and model-coverage shows why in part: Wavebreak Hippocamp and Hateful Eidolon both have draw the parser does NOT read, so two of the five adds were vanilla bodies to the model. Those two are replaced by CANTRIP EVASION AURAS. Angelic Gift and Feather of Flight are {1}{W}, grant FLYING and draw a card, so they cost no card; Unquestioned Authority grants protection from creatures, which is unblockable. On a body the commander has already made hexproof, deathtouch and lifelink, a flier is close to unanswerable, and each aura is also one more animation target. This tests evasion and bodies TOGETHER, which the three single-axis branches could not."
  },
  "objective_grade": {
-  "reading": 0.2952,
-  "shortfall": 0.0848,
+  "reading": 0.3082,
+  "shortfall": 0.0718,
   "state": "not met"
  },
  "recommendation": {
@@ -997,14 +997,14 @@
   },
   "fell": [
    "damage @T10",
+   "board power @T6",
    "killed by T6",
-   "killed by T10"
+   "killed by T10",
+   "extra cards by T8"
   ],
   "no_call": [
-   "board power @T6",
    "stall, 2 in a row",
    "mulliganed",
-   "extra cards by T8",
    "hand can act by T3"
   ],
   "notes": [],
@@ -1022,10 +1022,16 @@
   ],
   "risk": [
    {
-    "detail": "18.99 -> 16.11, a change of -2.88 (-15%)",
+    "detail": "20.49 -> 16.75, a change of -3.73 (-18%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "detail": "7.09 -> 6.92, a change of -0.17 (-2%)",
+    "kind": "paid",
+    "what": "board power @T6",
+    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "detail": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
@@ -1034,15 +1040,21 @@
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "86 games in 100 -> 83 in 100, a swing of 3 games per 100",
+    "detail": "88 games in 100 -> 84 in 100, a swing of 4 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "the largest is extra cards by T8 at -0.133 against an MDE of 0.141. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "2.43 -> 2.26, a change of -0.17 (-7%)",
+    "kind": "paid",
+    "what": "extra cards by T8",
+    "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "the largest is hand can act by T3 at +0.005 against an MDE of 0.006. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "5 row(s) returned no call",
+    "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1069,12 +1081,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 16.1101,
-   "champion": 18.9928,
-   "delta": -2.8827,
-   "mde": 0.4661,
+   "branch": 16.7533,
+   "champion": 20.4861,
+   "delta": -3.7328,
+   "mde": 0.4985,
    "measure": "damage @T10",
-   "reads_as": "18.99 -> 16.11, a change of -2.88 (-15%)",
+   "reads_as": "20.49 -> 16.75, a change of -3.73 (-18%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1083,24 +1095,24 @@
   },
   {
    "better_is": "higher",
-   "branch": 6.8782,
-   "champion": 7.0044,
-   "delta": -0.1262,
-   "mde": 0.1594,
+   "branch": 6.9188,
+   "champion": 7.0899,
+   "delta": -0.1711,
+   "mde": 0.1626,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.126 is smaller than the 0.159 this run can resolve",
+   "reads_as": "7.09 -> 6.92, a change of -0.17 (-2%)",
    "scale": null,
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
-   "branch": 0.0032,
-   "champion": 0.0074,
-   "delta": -0.0042,
-   "mde": 0.0034,
+   "branch": 0.0034,
+   "champion": 0.0081,
+   "delta": -0.0047,
+   "mde": 0.0036,
    "measure": "killed by T6",
    "reads_as": "1 games in 100 -> 0 in 100, a swing of 0 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1111,12 +1123,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8275,
-   "champion": 0.8551,
-   "delta": -0.0276,
-   "mde": 0.015,
+   "branch": 0.843,
+   "champion": 0.8783,
+   "delta": -0.0353,
+   "mde": 0.0144,
    "measure": "killed by T10",
-   "reads_as": "86 games in 100 -> 83 in 100, a swing of 3 games per 100",
+   "reads_as": "88 games in 100 -> 84 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1125,12 +1137,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0462,
-   "champion": 0.0439,
-   "delta": 0.0023,
+   "branch": 0.046,
+   "champion": 0.043,
+   "delta": 0.003,
    "mde": 0.0083,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.008 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1139,9 +1151,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3833,
+   "branch": 0.3832,
    "champion": 0.4052,
-   "delta": -0.0219,
+   "delta": -0.022,
    "mde": 0.0195,
    "measure": "missed drop by T5",
    "reads_as": "41 games in 100 -> 38 in 100, a swing of 2 games per 100",
@@ -1167,23 +1179,23 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.2397,
-   "champion": 2.3724,
-   "delta": -0.1327,
-   "mde": 0.1413,
+   "branch": 2.2583,
+   "champion": 2.4326,
+   "delta": -0.1743,
+   "mde": 0.1441,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.133 is smaller than the 0.141 this run can resolve",
+   "reads_as": "2.43 -> 2.26, a change of -0.17 (-7%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
   },
   {
    "better_is": "higher",
-   "branch": 0.611,
-   "champion": 0.5777,
-   "delta": 0.0333,
+   "branch": 0.6113,
+   "champion": 0.5774,
+   "delta": 0.0339,
    "mde": 0.0239,
    "measure": "interaction affordable @T6",
    "reads_as": "58 games in 100 -> 61 in 100, a swing of 3 games per 100",

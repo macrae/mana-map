@@ -1545,6 +1545,70 @@ def combat_profile(card):
 _CAST_PIP_RE = re.compile(r"\{([^}]+)\}")
 
 
+#: A ROOM IS TWO CARDS UNDER ONE TYPE LINE, AND SCRYFALL'S `cmc` IS BOTH OF THEM.
+#:
+#: CR 202.3d takes a split card's mana value from the combined costs of its
+#: halves, so `Bottomless Pool // Locker Room` reports `cmc` 6.0 — while the door
+#: you actually cast costs `{U}`. `classify` spent straight from that field, so
+#: the model charged SIX MANA FOR A ONE-MANA ENCHANTMENT and every Room in a
+#: branch sat in hand. All 30 Rooms in the corpus share one exact type line, so
+#: detection is unambiguous rather than a heuristic.
+#:
+#: THE CHEAPER DOOR IS CAST, NOT THE FRONT ONE, and the sweep is what settles it:
+#: the front door is cheaper-or-equal on 24 of 30, but `Defiled Crypt // Cadaver
+#: Lab` is `{3}{B} // {B}` — front 4, back 1 — so a front-door rule would be a
+#: fourfold error on six cards. The PIPS come from the same door for the same
+#: reason; `front_field` cannot be reused here because it always answers with the
+#: left half, which is the wrong half exactly when the cost is.
+_ROOM_TYPE_RE = re.compile(
+    r"Enchantment\s+—\s+Room\s*//\s*Enchantment\s+—\s+Room", re.I)
+
+#: EERIE IS NOT CONSTELLATION AND THE DIFFERENCE IS THE WHOLE POINT OF A ROOM.
+#: "Constellation — whenever … an enchantment you control enters" fires once, when
+#: the Room is cast. Eerie reads "whenever an enchantment you control enters AND
+#: WHENEVER YOU FULLY UNLOCK A ROOM", so it fires a SECOND time for no card. 17
+#: cards in the corpus carry the clause, four of them already in zur-enchantress,
+#: where it has never once been able to trigger because the deck owns no Rooms.
+#: Crediting an unlock to every per-enchantment payoff would over-pay the five
+#: plain constellation cards, which is why this is a separate flag.
+_EERIE_RE = re.compile(r"fully unlock a Room", re.I)
+
+_GENERIC_PIP_RE = re.compile(r"\{(\d+)\}")
+
+
+def mana_value(mana_cost):
+    """Mana value of ONE cost string — generic plus every coloured symbol."""
+    generic = sum(int(n) for n in _GENERIC_PIP_RE.findall(mana_cost or ""))
+    return generic + len(cast_pips(mana_cost))
+
+
+def room_profile(card):
+    """Door costs for a Room, or None for every other card in the game.
+
+    `entry` is the door the model casts and `unlock` the one it may open later
+    as a special action (CR 709.5e: sorcery speed, own main phase, empty stack).
+    `full_mv` is what the permanent's mana value becomes once BOTH doors are
+    unlocked — CR 709.5 says a permanent does not have the mana cost of a locked
+    half, so a half-open Room's mana value is just the open door, which is
+    already what `cmc` carries. That is what `model_commander_animate` reads to
+    set base power, so an 8-mana Room is an 8/8 only after it is fully open.
+    """
+    if not _ROOM_TYPE_RE.search(card.get("type_line") or ""):
+        return None
+    halves = (card.get("mana_cost") or "").split(" // ")
+    if len(halves) != 2:
+        return None
+    costs = [mana_value(h) for h in halves]
+    entry = 0 if costs[0] <= costs[1] else 1
+    return {
+        "entry_cost": costs[entry],
+        "entry_pips": cast_pips(halves[entry]),
+        "unlock_cost": costs[1 - entry],
+        "unlock_pips": cast_pips(halves[1 - entry]),
+        "full_mv": costs[0] + costs[1],
+    }
+
+
 def cast_pips(mana_cost):
     """One entry per coloured pip: the set of colours that can pay it."""
     out = []
@@ -2010,10 +2074,23 @@ def classify(card, pool=None):
     is_land = "Land" in type_line and "Creature" not in type_line.split("//")[0]
     is_tutor_card = bool(not is_land and is_tutor(card))
     mode_cost = _TUTOR_MODE_COST_RE.search(text) if is_tutor_card else None
+    # None for every card that is not a Room, so this is a pure widening: a deck
+    # with no Room takes the same `cmc` and the same `pips` it always did, and
+    # its output is byte-identical.
+    room = room_profile(card)
     return {
         "name": card["name"],
         "is_land": is_land,
-        "cmc": int(card.get("cmc") or 0),
+        # A ROOM COSTS ONE DOOR, NOT BOTH. `cmc` is what the model SPENDS, and
+        # it doubles as the animated body's size — which is correct for a Room
+        # with one door open, per CR 709.5. `room["full_mv"]` takes over once
+        # both are.
+        "cmc": room["entry_cost"] if room else int(card.get("cmc") or 0),
+        "room": room,
+        # The eerie flag lives on the DRAIN PROFILE and not here, because the
+        # scorer holds profiles rather than cards — and a duplicate on the card
+        # was set and never read, which `test_metric_hygiene` caught by name.
+        # A flag the model sets is a claim the model must act on.
         # A GOD IS NOT A CREATURE BELOW ITS DEVOTION THRESHOLD. None when the
         # card carries no such clause, which is 20 of the 23 enchantment
         # creatures in the list this was written for.
@@ -2038,7 +2115,9 @@ def classify(card, pool=None):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
-        "drain": drain_profile(card),
+        # The scorer holds a drain profile, not the card, so the flag that
+        # decides whether an unlock re-fires this payoff has to travel with it.
+        "drain": dict(drain_profile(card), eerie=bool(_EERIE_RE.search(text))),
         "attack_enabler": bool(_ATTACK_ENABLER_RE.search(
             card.get("oracle_text", "") or "")),
         "draw": draw_profile(card),
@@ -2062,7 +2141,11 @@ def classify(card, pool=None):
         # `pool` resolves a fetchland against what it can actually go and get.
         # A non-land is unaffected: `fetch_profile` gates on the type line.
         "colors": frozenset(manabase.land_colors(card, pool=pool)),
-        "pips": cast_pips(front_field(card, "mana_cost") or ""),
+        # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`
+        # always answers with the left half, which is the wrong half on the six
+        # Rooms whose back door is cheaper.
+        "pips": room["entry_pips"] if room
+                else cast_pips(front_field(card, "mana_cost") or ""),
         "treasure_bonus": bool(TREASURE_BONUS_RE.search(text)),
         # Anointed Procession et al. make none either, and DOUBLE every event.
         # Rides on the card always and is read only under `model_treasures`, so
@@ -2353,6 +2436,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # `model_commander_animate` turns a non-Aura enchantment into a body whose
     # power IS its mana value, so the two have to travel together.
     battlefield_mv = []
+    # Index-aligned with `battlefield_mv`: the Room profile for a half-open Room,
+    # None for everything else. A Room's mana value CHANGES on the battlefield
+    # when its second door opens, which no other permanent in the game does.
+    battlefield_rooms = []
     # Types a static grant gives lifelink to ("Enchantment creatures you control
     # have … lifelink"). A creature already counted for its own lifelink is not
     # counted twice.
@@ -2369,6 +2456,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
     for turn in range(1, max_turn + 1):
         enchantments_entered = 0
+        # Rooms whose SECOND door opened this turn. Separate from
+        # `enchantments_entered` because only Eerie reads it — see _EERIE_RE.
+        rooms_unlocked = 0
         creatures_entered_this_turn = 0
         deaths_drained = 0      # damage from OUR creatures dying, this turn
         deaths_gained = 0       # life from THEIRS dying, this turn
@@ -2560,6 +2650,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             battlefield_pips.append(commander_pips or [])
             battlefield_types.append(commander_card.get("type_line") or "")
             battlefield_mv.append(commander_cmc)
+            battlefield_rooms.append(None)
             # THE COMMANDER IS A STUB HERE, not a classified card — it carries
             # pips, cmc and subtypes and nothing else — so a static grant it
             # makes has to be threaded in explicitly, the same way its combat
@@ -2914,6 +3005,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 hand.remove(card)
                 battlefield_pips.append(card["pips"])
                 battlefield_types.append(card.get("type_line") or "")
+                # THREE PARALLEL LISTS AND THIS LOOP FED TWO OF THEM. Every
+                # permanent cast here — a drain payoff, a sac outlet, a death
+                # engine, an attack enabler — grew `battlefield_types` while
+                # `battlefield_mv` stood still, so the animate scan's
+                # `zip(battlefield_types, battlefield_mv)` paired a type line
+                # with ANOTHER card's mana value and then truncated at the
+                # shorter list, hiding every later permanent from animation
+                # entirely. It bites exactly the deck that has both halves:
+                # zur-enchantress runs model_drain AND model_commander_animate.
+                battlefield_mv.append(card["cmc"])
+                battlefield_rooms.append(dict(card["room"], open=False)
+                                         if card["room"] else None)
                 if "Enchantment" in (card.get("type_line") or ""):
                     enchantments_entered += 1
                 if model_drain:
@@ -3028,6 +3131,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     battlefield_pips.append(card["pips"])
                     battlefield_types.append(card.get("type_line") or "")
                     battlefield_mv.append(card["cmc"])
+                    battlefield_rooms.append(dict(card["room"], open=False)
+                                             if card["room"] else None)
                     if "Enchantment" in (card.get("type_line") or ""):
                         enchantments_entered += 1
                     if any(card["drain"][k] for k in
@@ -3301,6 +3406,29 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # so it is NOT summoning sick and can attack the same turn. Biggest mana
         # value first, because power is mana value here and the ability is
         # repeatable but mana-limited.
+        # ── unlocking a Room ────────────────────────────────────────────────
+        #
+        # CR 709.5e: paying a locked half's mana cost is a SPECIAL ACTION, taken
+        # at sorcery speed in your own main phase with an empty stack — so it
+        # belongs here, after the turn's casting and before animation, and it
+        # spends from the same pool.
+        #
+        # It buys two things a card in hand does not. The permanent's mana value
+        # becomes both doors combined (CR 709.5 + 202.3d), which is what the
+        # animate scan below reads to set base power; and it FULLY UNLOCKS a
+        # Room, which re-fires every Eerie payoff for no card from hand. Cheapest
+        # door first, because opening two small ones beats opening one large one
+        # when the Eerie trigger is the point.
+        for _i, _room in sorted(
+                ((i, r) for i, r in enumerate(battlefield_rooms)
+                 if r and not r["open"]),
+                key=lambda ir: ir[1]["unlock_cost"]):
+            if not spend(_room["unlock_cost"], _room["unlock_pips"]):
+                continue
+            _room["open"] = True
+            battlefield_mv[_i] = _room["full_mv"]
+            rooms_unlocked += 1
+
         if commander_animate and commander_turn is not None:
             cost = commander_animate["cost"]
             while pool >= cost:
@@ -3409,11 +3537,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             gain_total = gain_events = 0
             for d in drain_permanents:
+                # EERIE FIRES ON AN UNLOCK AND CONSTELLATION DOES NOT. Both read
+                # "whenever an enchantment you control enters"; only Eerie adds
+                # "and whenever you fully unlock a Room". Crediting the unlock to
+                # every per-enchantment payoff would over-pay the plain
+                # constellation cards, which is the whole reason the flag exists.
+                _events = enchantments_entered + (
+                    rooms_unlocked if d.get("eerie") else 0)
                 if d["gain_recurring"]:
                     gain_total += d["gain_recurring"] * _x_for(d); gain_events += 1
-                if d["gain_per_enchantment"] and enchantments_entered:
-                    gain_total += d["gain_per_enchantment"] * enchantments_entered
-                    gain_events += enchantments_entered
+                if d["gain_per_enchantment"] and _events:
+                    gain_total += d["gain_per_enchantment"] * _events
+                    gain_events += _events
                 if d["gain_per_creature"] and creatures_entered_this_turn:
                     gain_total += d["gain_per_creature"] * creatures_entered_this_turn
                     gain_events += creatures_entered_this_turn
@@ -3454,7 +3589,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             drained = deaths_drained + etb_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)
-                drained += d["drain_per_enchantment"] * enchantments_entered
+                drained += d["drain_per_enchantment"] * (
+                    enchantments_entered + (rooms_unlocked if d.get("eerie") else 0))
                 if d["payoff_equal"]:
                     drained += gain_total
                 drained += d["payoff_fixed"] * gain_events
