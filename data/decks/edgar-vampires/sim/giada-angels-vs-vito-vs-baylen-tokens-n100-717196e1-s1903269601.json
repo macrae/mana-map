@@ -2009,6 +2009,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Edgar Markov"
+          ],
+          "casts": {
+            "mean": 1.02,
+            "median": 1.0,
+            "min": 0,
+            "max": 2,
+            "n": 100,
+            "ci95": [
+              0.88,
+              1.16
+            ]
+          },
+          "games_resolved": 77,
+          "resolved_rate": 0.77,
+          "resolved_rate_ci95": [
+            0.678,
+            0.842
+          ],
+          "first_resolved_global_turn": {
+            "mean": 21.61,
+            "median": 21,
+            "min": 9,
+            "max": 36,
+            "n": 77,
+            "ci95": [
+              20.35,
+              22.88
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Edgar Markov"
@@ -2389,6 +2422,39 @@
             "ci95": [
               0.01,
               0.13
+            ]
+          }
+        },
+        "commander_access": {
+          "commander": [
+            "Giada, Font of Hope"
+          ],
+          "casts": {
+            "mean": 1.68,
+            "median": 2.0,
+            "min": 1,
+            "max": 4,
+            "n": 100,
+            "ci95": [
+              1.53,
+              1.83
+            ]
+          },
+          "games_resolved": 100,
+          "resolved_rate": 1.0,
+          "resolved_rate_ci95": [
+            0.963,
+            1.0
+          ],
+          "first_resolved_global_turn": {
+            "mean": 6.84,
+            "median": 6.0,
+            "min": 5,
+            "max": 26,
+            "n": 100,
+            "ci95": [
+              6.28,
+              7.4
             ]
           }
         },
@@ -2775,6 +2841,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Vito, Thorn of the Dusk Rose"
+          ],
+          "casts": {
+            "mean": 1.37,
+            "median": 1.0,
+            "min": 0,
+            "max": 4,
+            "n": 100,
+            "ci95": [
+              1.25,
+              1.49
+            ]
+          },
+          "games_resolved": 99,
+          "resolved_rate": 0.99,
+          "resolved_rate_ci95": [
+            0.946,
+            0.998
+          ],
+          "first_resolved_global_turn": {
+            "mean": 14.05,
+            "median": 13,
+            "min": 3,
+            "max": 34,
+            "n": 99,
+            "ci95": [
+              12.91,
+              15.19
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Vito, Thorn of the Dusk Rose"
@@ -3158,6 +3257,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Baylen, the Haymaker"
+          ],
+          "casts": {
+            "mean": 1.04,
+            "median": 1.0,
+            "min": 0,
+            "max": 3,
+            "n": 100,
+            "ci95": [
+              0.9,
+              1.18
+            ]
+          },
+          "games_resolved": 82,
+          "resolved_rate": 0.82,
+          "resolved_rate_ci95": [
+            0.733,
+            0.883
+          ],
+          "first_resolved_global_turn": {
+            "mean": 18.01,
+            "median": 16.0,
+            "min": 11,
+            "max": 40,
+            "n": 82,
+            "ci95": [
+              16.77,
+              19.26
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Baylen, the Haymaker"
@@ -3469,6 +3601,7 @@
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+      "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -3480,6 +3613,7 @@
       "global_turn": 30,
       "ms": 79590,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 6,
@@ -3508,6 +3642,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -3545,6 +3681,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -3579,6 +3717,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8,
             "Ai(4)-mm-baylen-tokens": 17
@@ -3617,6 +3757,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 3,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 6
@@ -3636,6 +3778,7 @@
       "global_turn": 38,
       "ms": 55291,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 4,
@@ -3664,6 +3807,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 34,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3696,6 +3841,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3730,6 +3877,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 10,
@@ -3766,6 +3915,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -3784,6 +3935,7 @@
       "global_turn": 29,
       "ms": 49458,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -3810,6 +3962,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -3848,6 +4002,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 7,
@@ -3887,6 +4043,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(4)-mm-baylen-tokens": 2
@@ -3925,6 +4083,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3941,6 +4101,7 @@
       "global_turn": 34,
       "ms": 136013,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 7,
@@ -3969,6 +4130,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 17
           },
@@ -4005,6 +4168,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 5,
             "Ai(3)-mm-vito": 15,
@@ -4041,6 +4206,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4073,6 +4240,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4089,6 +4258,7 @@
       "global_turn": 35,
       "ms": 59333,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 10,
@@ -4120,6 +4290,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 10
           },
@@ -4158,6 +4330,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4192,6 +4366,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4226,6 +4402,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4242,6 +4420,7 @@
       "global_turn": 37,
       "ms": 77429,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -4270,6 +4449,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4302,6 +4483,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4337,6 +4520,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9,
             "Ai(3)-mm-vito": 3,
@@ -4373,6 +4558,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4389,6 +4576,7 @@
       "global_turn": 27,
       "ms": 135692,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -4415,6 +4603,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -4449,6 +4639,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9,
             "Ai(3)-mm-vito": 5,
@@ -4488,6 +4680,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4520,6 +4714,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4536,6 +4732,7 @@
       "global_turn": 30,
       "ms": 86540,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 9,
@@ -4564,6 +4761,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4599,6 +4798,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -4635,6 +4836,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4670,6 +4873,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4686,6 +4891,7 @@
       "global_turn": 28,
       "ms": 44029,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -4714,6 +4920,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -4748,6 +4956,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4782,6 +4992,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 15
           },
@@ -4816,6 +5028,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4832,6 +5046,7 @@
       "global_turn": 23,
       "ms": 46587,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 2,
@@ -4858,6 +5073,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4890,6 +5107,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 6
           },
@@ -4924,6 +5143,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4956,6 +5177,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4972,6 +5195,7 @@
       "global_turn": 36,
       "ms": 53391,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -5000,6 +5224,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 35,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5034,6 +5260,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -5070,6 +5298,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -5108,6 +5338,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5124,6 +5356,7 @@
       "global_turn": 26,
       "ms": 300010,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -5152,6 +5385,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5186,6 +5421,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -5220,6 +5457,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5252,6 +5491,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5268,6 +5509,7 @@
       "global_turn": 28,
       "ms": 69361,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -5294,6 +5536,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8,
             "Ai(3)-mm-vito": 12,
@@ -5332,6 +5576,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5366,6 +5612,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5400,6 +5648,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5416,6 +5666,7 @@
       "global_turn": 43,
       "ms": 212002,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 10,
@@ -5446,6 +5697,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(4)-mm-baylen-tokens": 5
@@ -5484,6 +5737,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 10,
             "Ai(3)-mm-vito": 9,
@@ -5523,6 +5778,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -5561,6 +5818,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -5579,6 +5838,7 @@
       "global_turn": 48,
       "ms": 286587,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 6,
@@ -5607,6 +5867,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5645,6 +5907,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 4,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 11,
             "Ai(4)-mm-baylen-tokens": 10
@@ -5682,6 +5946,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5717,6 +5983,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -5735,6 +6003,7 @@
       "global_turn": 35,
       "ms": 97073,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -5763,6 +6032,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5795,6 +6066,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 24,
@@ -5831,6 +6104,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -5867,6 +6142,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -5885,6 +6162,7 @@
       "global_turn": 35,
       "ms": 143100,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -5911,6 +6189,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5946,6 +6226,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 7,
             "Ai(4)-mm-baylen-tokens": 7
@@ -5981,6 +6263,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6013,6 +6297,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -6031,6 +6317,7 @@
       "global_turn": 37,
       "ms": 83767,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 2,
@@ -6059,6 +6346,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6093,6 +6382,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 3
           },
@@ -6127,6 +6418,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6159,6 +6452,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6175,6 +6470,7 @@
       "global_turn": 34,
       "ms": 190324,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -6203,6 +6499,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6239,6 +6537,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 5,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -6273,6 +6573,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6305,6 +6607,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6321,6 +6625,7 @@
       "global_turn": 25,
       "ms": 39081,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -6349,6 +6654,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9
           },
@@ -6383,6 +6690,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6415,6 +6724,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6447,6 +6758,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6463,6 +6776,7 @@
       "global_turn": 36,
       "ms": 129200,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 9,
@@ -6489,6 +6803,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6523,6 +6839,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -6557,6 +6875,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8,
             "Ai(3)-mm-vito": 4,
@@ -6593,6 +6913,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -6611,6 +6933,7 @@
       "global_turn": 24,
       "ms": 77820,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -6640,6 +6963,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6672,6 +6997,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -6706,6 +7033,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6740,6 +7069,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6756,6 +7087,7 @@
       "global_turn": 34,
       "ms": 125420,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -6785,6 +7117,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -6819,6 +7153,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6853,6 +7189,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 14
           },
@@ -6889,6 +7227,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -6907,6 +7247,7 @@
       "global_turn": 32,
       "ms": 100827,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -6935,6 +7276,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 4
@@ -6972,6 +7315,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7007,6 +7352,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7039,6 +7386,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7055,6 +7404,7 @@
       "global_turn": 36,
       "ms": 281789,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -7081,6 +7431,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7118,6 +7470,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6
           },
@@ -7154,6 +7508,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 2,
@@ -7190,6 +7546,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7206,6 +7564,7 @@
       "global_turn": 35,
       "ms": 169317,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -7237,6 +7596,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7272,6 +7633,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7306,6 +7669,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -7342,6 +7707,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7358,6 +7725,7 @@
       "global_turn": 33,
       "ms": 227086,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -7387,6 +7755,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(4)-mm-baylen-tokens": 2
@@ -7422,6 +7792,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -7456,6 +7828,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7488,6 +7862,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7504,6 +7880,7 @@
       "global_turn": 41,
       "ms": 68915,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -7532,6 +7909,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8,
             "Ai(4)-mm-baylen-tokens": 4
@@ -7570,6 +7949,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7607,6 +7988,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 12
@@ -7642,6 +8025,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7658,6 +8043,7 @@
       "global_turn": 38,
       "ms": 18287,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -7688,6 +8074,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 2
@@ -7725,6 +8113,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 2
           },
@@ -7761,6 +8151,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7793,6 +8185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7809,6 +8203,7 @@
       "global_turn": 40,
       "ms": 44840,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 8,
@@ -7835,6 +8230,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7871,6 +8268,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 11
           },
@@ -7909,6 +8308,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 2,
@@ -7948,6 +8349,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7964,6 +8367,7 @@
       "global_turn": 37,
       "ms": 284201,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -7994,6 +8398,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 14,
             "Ai(3)-mm-vito": 5,
@@ -8030,6 +8436,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8062,6 +8470,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8096,6 +8506,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 10,
             "Ai(2)-mm-giada-angels": 21,
@@ -8116,6 +8528,7 @@
       "global_turn": 51,
       "ms": 229228,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 9,
@@ -8145,6 +8558,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 8
@@ -8184,6 +8599,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 4,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 7,
             "Ai(3)-mm-vito": 2
@@ -8222,6 +8639,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8254,6 +8673,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8270,6 +8691,7 @@
       "global_turn": 32,
       "ms": 65809,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 3,
@@ -8296,6 +8718,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8328,6 +8752,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8360,6 +8786,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -8397,6 +8825,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8413,6 +8843,7 @@
       "global_turn": 32,
       "ms": 59857,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -8439,6 +8870,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -8473,6 +8906,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8505,6 +8940,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8539,6 +8976,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8555,6 +8994,7 @@
       "global_turn": 40,
       "ms": 95343,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -8585,6 +9025,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 3
@@ -8623,6 +9065,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8659,6 +9103,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(4)-mm-baylen-tokens": 5
@@ -8694,6 +9140,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8710,6 +9158,7 @@
       "global_turn": 37,
       "ms": 137043,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -8736,6 +9185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -8772,6 +9223,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 13,
             "Ai(3)-mm-vito": 7,
@@ -8811,6 +9264,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8843,6 +9298,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8859,6 +9316,7 @@
       "global_turn": 32,
       "ms": 300009,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -8888,6 +9346,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -8924,6 +9384,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -8958,6 +9420,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8990,6 +9454,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9006,6 +9472,7 @@
       "global_turn": 29,
       "ms": 300036,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "vito": {
           "lands": 4,
@@ -9032,6 +9499,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9066,6 +9535,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -9100,6 +9571,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -9134,6 +9607,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9150,6 +9625,7 @@
       "global_turn": 31,
       "ms": 179328,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -9179,6 +9655,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(4)-mm-baylen-tokens": 2
@@ -9214,6 +9692,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9246,6 +9726,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9278,6 +9760,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9294,6 +9778,7 @@
       "global_turn": 34,
       "ms": 154334,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -9320,6 +9805,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9354,6 +9841,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9388,6 +9877,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9420,6 +9911,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9436,6 +9929,7 @@
       "global_turn": 43,
       "ms": 65368,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 9,
@@ -9464,6 +9958,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9498,6 +9994,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(4)-mm-baylen-tokens": 4
@@ -9533,6 +10031,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(2)-mm-giada-angels": 4,
@@ -9572,6 +10072,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 36,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6
           },
@@ -9590,6 +10092,7 @@
       "global_turn": 37,
       "ms": 33386,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -9618,6 +10121,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 3,
@@ -9654,6 +10159,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9686,6 +10193,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9721,6 +10230,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(4)-mm-baylen-tokens": 6
@@ -9740,6 +10251,7 @@
       "global_turn": 28,
       "ms": 30080,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 3,
@@ -9766,6 +10278,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9798,6 +10312,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9830,6 +10346,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 7
           },
@@ -9864,6 +10382,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -9882,6 +10402,7 @@
       "global_turn": 29,
       "ms": 21435,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -9908,6 +10429,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9940,6 +10463,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3,
             "Ai(3)-mm-vito": 3,
@@ -9976,6 +10501,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10008,6 +10535,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10024,6 +10553,7 @@
       "global_turn": 40,
       "ms": 139675,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -10053,6 +10583,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10088,6 +10620,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 5,
             "Ai(3)-mm-vito": 2,
@@ -10124,6 +10658,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10158,6 +10694,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10174,6 +10712,7 @@
       "global_turn": 21,
       "ms": 46031,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -10202,6 +10741,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 11
           },
@@ -10238,6 +10779,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -10272,6 +10815,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10306,6 +10851,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10322,6 +10869,7 @@
       "global_turn": 30,
       "ms": 101559,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -10350,6 +10898,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(4)-mm-baylen-tokens": 8
@@ -10388,6 +10938,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10420,6 +10972,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10454,6 +11008,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 17
           },
@@ -10472,6 +11028,7 @@
       "global_turn": 31,
       "ms": 56328,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -10500,6 +11057,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 3
           },
@@ -10534,6 +11093,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10568,6 +11129,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10600,6 +11163,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10616,6 +11181,7 @@
       "global_turn": 30,
       "ms": 56187,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 3,
@@ -10644,6 +11210,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10676,6 +11244,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10708,6 +11278,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 13
           },
@@ -10742,6 +11314,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -10760,6 +11334,7 @@
       "global_turn": 31,
       "ms": 55153,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -10788,6 +11363,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10822,6 +11399,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -10856,6 +11435,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 5,
             "Ai(4)-mm-baylen-tokens": 11
@@ -10891,6 +11472,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10907,6 +11490,7 @@
       "global_turn": 39,
       "ms": 269187,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -10935,6 +11519,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10967,6 +11553,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11001,6 +11589,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -11038,6 +11628,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 8,
@@ -11058,6 +11650,7 @@
       "global_turn": 21,
       "ms": 88881,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -11084,6 +11677,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -11120,6 +11715,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11154,6 +11751,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11186,6 +11785,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11202,6 +11803,7 @@
       "global_turn": 33,
       "ms": 73872,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -11230,6 +11832,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11264,6 +11868,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11296,6 +11902,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11328,6 +11936,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9,
             "Ai(3)-mm-vito": 16,
@@ -11348,6 +11958,7 @@
       "global_turn": 25,
       "ms": 61148,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -11377,6 +11988,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11409,6 +12022,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -11443,6 +12058,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11475,6 +12092,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11491,6 +12110,7 @@
       "global_turn": 29,
       "ms": 112820,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -11517,6 +12137,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 2,
             "Ai(4)-mm-baylen-tokens": 6
@@ -11552,6 +12174,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 5
           },
@@ -11586,6 +12210,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11618,6 +12244,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11634,6 +12262,7 @@
       "global_turn": 45,
       "ms": 147275,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -11665,6 +12294,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 4,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -11704,6 +12335,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 5
           },
@@ -11738,6 +12371,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11774,6 +12409,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11790,6 +12427,7 @@
       "global_turn": 35,
       "ms": 140379,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 5,
@@ -11816,6 +12454,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11850,6 +12490,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11884,6 +12526,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 2
           },
@@ -11920,6 +12564,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -11938,6 +12584,7 @@
       "global_turn": 37,
       "ms": 300008,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "baylen-tokens": {
           "lands": 3,
@@ -11966,6 +12613,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -12002,6 +12651,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12034,6 +12685,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12068,6 +12721,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -12086,6 +12741,7 @@
       "global_turn": 33,
       "ms": 110068,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -12112,6 +12768,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12146,6 +12804,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4,
             "Ai(4)-mm-baylen-tokens": 2
@@ -12181,6 +12841,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12216,6 +12878,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -12234,6 +12898,7 @@
       "global_turn": 45,
       "ms": 300014,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -12260,6 +12925,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 3,
             "Ai(4)-mm-baylen-tokens": 2
@@ -12298,6 +12965,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12333,6 +13002,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -12369,6 +13040,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12385,6 +13058,7 @@
       "global_turn": 35,
       "ms": 108983,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -12411,6 +13085,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12443,6 +13119,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12478,6 +13156,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8,
             "Ai(3)-mm-vito": 10,
@@ -12516,6 +13196,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12532,6 +13214,7 @@
       "global_turn": 34,
       "ms": 300010,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -12558,6 +13241,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -12592,6 +13277,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12626,6 +13313,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8,
             "Ai(4)-mm-baylen-tokens": 4
@@ -12661,6 +13350,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -12679,6 +13370,7 @@
       "global_turn": 27,
       "ms": 60664,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -12705,6 +13397,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12737,6 +13431,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9,
             "Ai(3)-mm-vito": 3,
@@ -12773,6 +13469,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12805,6 +13503,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12821,6 +13521,7 @@
       "global_turn": 37,
       "ms": 92842,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -12849,6 +13550,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6,
             "Ai(4)-mm-baylen-tokens": 5
@@ -12886,6 +13589,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 12
@@ -12923,6 +13628,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1,
             "Ai(2)-mm-giada-angels": 1,
@@ -12962,6 +13669,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 10
@@ -12981,6 +13690,7 @@
       "global_turn": 44,
       "ms": 278420,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -13011,6 +13721,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -13050,6 +13762,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(4)-mm-baylen-tokens": 4
@@ -13088,6 +13802,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -13125,6 +13841,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 7
           },
@@ -13143,6 +13861,7 @@
       "global_turn": 39,
       "ms": 300007,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -13169,6 +13888,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(4)-mm-baylen-tokens": 6
@@ -13204,6 +13925,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13236,6 +13959,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13271,6 +13996,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13287,6 +14014,7 @@
       "global_turn": 36,
       "ms": 100698,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -13318,6 +14046,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8
           },
@@ -13355,6 +14085,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -13393,6 +14125,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -13429,6 +14163,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13445,6 +14181,7 @@
       "global_turn": 41,
       "ms": 52899,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -13475,6 +14212,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -13511,6 +14250,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 2
@@ -13548,6 +14289,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13580,6 +14323,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13596,6 +14341,7 @@
       "global_turn": 35,
       "ms": 39558,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -13624,6 +14370,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13656,6 +14404,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13691,6 +14441,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -13725,6 +14477,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13741,6 +14495,7 @@
       "global_turn": 31,
       "ms": 76119,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -13767,6 +14522,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 30,
             "Ai(3)-mm-vito": 4
@@ -13802,6 +14559,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 2,
@@ -13840,6 +14599,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -13876,6 +14637,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 7
           },
@@ -13894,6 +14657,7 @@
       "global_turn": 41,
       "ms": 109710,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -13922,6 +14686,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13957,6 +14723,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 8,
@@ -13995,6 +14763,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14027,6 +14797,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14043,6 +14815,7 @@
       "global_turn": 28,
       "ms": 73560,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -14069,6 +14842,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14101,6 +14876,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(4)-mm-baylen-tokens": 2
@@ -14136,6 +14913,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14170,6 +14949,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14186,6 +14967,7 @@
       "global_turn": 29,
       "ms": 53607,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -14214,6 +14996,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 9
           },
@@ -14250,6 +15034,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -14287,6 +15073,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4,
             "Ai(3)-mm-vito": 5
@@ -14325,6 +15113,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14341,6 +15131,7 @@
       "global_turn": 34,
       "ms": 80425,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -14371,6 +15162,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8,
             "Ai(4)-mm-baylen-tokens": 5
@@ -14408,6 +15201,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 4,
@@ -14447,6 +15242,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14481,6 +15278,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -14499,6 +15298,7 @@
       "global_turn": 35,
       "ms": 109434,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -14527,6 +15327,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -14561,6 +15363,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3,
             "Ai(3)-mm-vito": 3,
@@ -14597,6 +15401,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14631,6 +15437,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14647,6 +15455,7 @@
       "global_turn": 46,
       "ms": 162314,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -14673,6 +15482,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 40,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14710,6 +15521,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6,
             "Ai(3)-mm-vito": 5,
@@ -14749,6 +15562,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14781,6 +15596,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14797,6 +15614,7 @@
       "global_turn": 36,
       "ms": 112751,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 5,
@@ -14823,6 +15641,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 13
           },
@@ -14857,6 +15677,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(3)-mm-vito": 2
@@ -14894,6 +15716,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -14930,6 +15754,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 7,
             "Ai(4)-mm-baylen-tokens": 11
@@ -14949,6 +15775,7 @@
       "global_turn": 24,
       "ms": 29997,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -14978,6 +15805,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15010,6 +15839,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -15044,6 +15875,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15076,6 +15909,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15092,6 +15927,7 @@
       "global_turn": 27,
       "ms": 40426,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 5,
@@ -15121,6 +15957,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15155,6 +15993,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -15191,6 +16031,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2,
             "Ai(2)-mm-giada-angels": 3
@@ -15226,6 +16068,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15242,6 +16086,7 @@
       "global_turn": 41,
       "ms": 127747,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 11,
@@ -15271,6 +16116,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 5,
@@ -15309,6 +16156,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15345,6 +16194,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15380,6 +16231,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15396,6 +16249,7 @@
       "global_turn": 39,
       "ms": 273909,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 7,
@@ -15424,6 +16278,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15459,6 +16315,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 6
           },
@@ -15496,6 +16354,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 10,
             "Ai(4)-mm-baylen-tokens": 3
@@ -15531,6 +16391,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15547,6 +16409,7 @@
       "global_turn": 29,
       "ms": 48084,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -15573,6 +16436,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15607,6 +16472,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15642,6 +16509,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -15678,6 +16547,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15694,6 +16565,7 @@
       "global_turn": 42,
       "ms": 87121,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 11,
@@ -15722,6 +16594,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 13
           },
@@ -15758,6 +16632,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3,
             "Ai(3)-mm-vito": 3
@@ -15793,6 +16669,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15829,6 +16707,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15845,6 +16725,7 @@
       "global_turn": 34,
       "ms": 154979,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -15875,6 +16756,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15909,6 +16792,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3,
             "Ai(3)-mm-vito": 6
@@ -15944,6 +16829,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15978,6 +16865,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15994,6 +16883,7 @@
       "global_turn": 26,
       "ms": 66306,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -16020,6 +16910,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 3,
             "Ai(3)-mm-vito": 2
@@ -16057,6 +16949,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16089,6 +16983,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16123,6 +17019,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16139,6 +17037,7 @@
       "global_turn": 32,
       "ms": 196180,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -16165,6 +17064,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16199,6 +17100,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -16235,6 +17138,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16267,6 +17172,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16283,6 +17190,7 @@
       "global_turn": 41,
       "ms": 91406,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -16313,6 +17221,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4
           },
@@ -16351,6 +17261,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 7
           },
@@ -16387,6 +17299,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 2
           },
@@ -16425,6 +17339,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 4,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16441,6 +17357,7 @@
       "global_turn": 41,
       "ms": 108420,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -16470,6 +17387,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4
           },
@@ -16510,6 +17429,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 4,
+          "commander_casts": 3,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(3)-mm-vito": 2,
@@ -16548,6 +17469,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16582,6 +17505,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(4)-mm-baylen-tokens": 5
@@ -16601,6 +17526,7 @@
       "global_turn": 34,
       "ms": 53105,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -16627,6 +17553,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6
           },
@@ -16663,6 +17591,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },
@@ -16700,6 +17630,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16732,6 +17664,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16748,6 +17682,7 @@
       "global_turn": 31,
       "ms": 78641,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -16777,6 +17712,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(4)-mm-baylen-tokens": 6
@@ -16812,6 +17749,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16844,6 +17783,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(3)-mm-vito": 4,
@@ -16882,6 +17823,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16898,6 +17841,7 @@
       "global_turn": 34,
       "ms": 137184,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 6,
@@ -16926,6 +17870,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -16963,6 +17909,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16997,6 +17945,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4,
             "Ai(4)-mm-baylen-tokens": 6
@@ -17034,6 +17984,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17050,6 +18002,7 @@
       "global_turn": 32,
       "ms": 110945,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 6,
@@ -17076,6 +18029,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17108,6 +18063,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17143,6 +18100,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8,
             "Ai(4)-mm-baylen-tokens": 2
@@ -17178,6 +18137,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17194,6 +18155,7 @@
       "global_turn": 34,
       "ms": 172454,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -17223,6 +18185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -17257,6 +18221,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17291,6 +18257,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -17327,6 +18295,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -17345,6 +18315,7 @@
       "global_turn": 32,
       "ms": 107364,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -17374,6 +18345,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 8
           },
@@ -17411,6 +18384,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -17447,6 +18422,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17479,6 +18456,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -17497,6 +18476,7 @@
       "global_turn": 33,
       "ms": 300014,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "edgar-vampires": {
           "lands": 4,
@@ -17523,6 +18503,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17558,6 +18540,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 11
           },
@@ -17592,6 +18576,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17624,6 +18610,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17640,6 +18628,7 @@
       "global_turn": 35,
       "ms": 203356,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -17670,6 +18659,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -17706,6 +18697,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 9
           },
@@ -17742,6 +18735,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -17776,6 +18771,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17792,6 +18789,7 @@
       "global_turn": 34,
       "ms": 75262,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 8,
@@ -17820,6 +18818,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-vito": 6
@@ -17855,6 +18855,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17889,6 +18891,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17921,6 +18925,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17937,6 +18943,7 @@
       "global_turn": 34,
       "ms": 157063,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -17965,6 +18972,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(4)-mm-baylen-tokens": 19
@@ -18000,6 +19009,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6,
             "Ai(4)-mm-baylen-tokens": 6
@@ -18035,6 +19046,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18067,6 +19080,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18083,6 +19098,7 @@
       "global_turn": 37,
       "ms": 116606,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "edgar-vampires": {
           "lands": 7,
@@ -18113,6 +19129,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 15,
             "Ai(3)-mm-vito": 5
@@ -18150,6 +19168,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 6
           },
@@ -18187,6 +19207,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18224,6 +19246,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 5
           },
@@ -18242,6 +19266,7 @@
       "global_turn": 40,
       "ms": 81094,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 8,
@@ -18271,6 +19296,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 1
           },
@@ -18305,6 +19332,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6
           },
@@ -18341,6 +19370,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 10,
             "Ai(3)-mm-vito": 2,
@@ -18377,6 +19408,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {
             "Ai(1)-mm-edgar-vampires": 4
           },

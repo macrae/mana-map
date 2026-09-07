@@ -2000,6 +2000,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Zada, Hedron Grinder"
+          ],
+          "casts": {
+            "mean": 1.27,
+            "median": 1.0,
+            "min": 0,
+            "max": 3,
+            "n": 100,
+            "ci95": [
+              1.13,
+              1.41
+            ]
+          },
+          "games_resolved": 90,
+          "resolved_rate": 0.9,
+          "resolved_rate_ci95": [
+            0.826,
+            0.945
+          ],
+          "first_resolved_global_turn": {
+            "mean": 17.64,
+            "median": 17.0,
+            "min": 5,
+            "max": 36,
+            "n": 90,
+            "ci95": [
+              16.5,
+              18.79
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Zada, Hedron Grinder"
@@ -2383,6 +2416,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Giada, Font of Hope"
+          ],
+          "casts": {
+            "mean": 1.57,
+            "median": 1.0,
+            "min": 1,
+            "max": 3,
+            "n": 100,
+            "ci95": [
+              1.44,
+              1.7
+            ]
+          },
+          "games_resolved": 100,
+          "resolved_rate": 1.0,
+          "resolved_rate_ci95": [
+            0.963,
+            1.0
+          ],
+          "first_resolved_global_turn": {
+            "mean": 7.5,
+            "median": 6.0,
+            "min": 5,
+            "max": 26,
+            "n": 100,
+            "ci95": [
+              6.71,
+              8.29
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Giada, Font of Hope"
@@ -2761,6 +2827,39 @@
             "ci95": [
               -0.01,
               0.03
+            ]
+          }
+        },
+        "commander_access": {
+          "commander": [
+            "Vito, Thorn of the Dusk Rose"
+          ],
+          "casts": {
+            "mean": 1.39,
+            "median": 1.0,
+            "min": 0,
+            "max": 3,
+            "n": 100,
+            "ci95": [
+              1.28,
+              1.5
+            ]
+          },
+          "games_resolved": 99,
+          "resolved_rate": 0.99,
+          "resolved_rate_ci95": [
+            0.946,
+            0.998
+          ],
+          "first_resolved_global_turn": {
+            "mean": 15.58,
+            "median": 15,
+            "min": 3,
+            "max": 31,
+            "n": 99,
+            "ci95": [
+              14.5,
+              16.65
             ]
           }
         },
@@ -3147,6 +3246,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Baylen, the Haymaker"
+          ],
+          "casts": {
+            "mean": 1.1,
+            "median": 1.0,
+            "min": 0,
+            "max": 3,
+            "n": 100,
+            "ci95": [
+              0.97,
+              1.23
+            ]
+          },
+          "games_resolved": 83,
+          "resolved_rate": 0.83,
+          "resolved_rate_ci95": [
+            0.745,
+            0.891
+          ],
+          "first_resolved_global_turn": {
+            "mean": 18.64,
+            "median": 16,
+            "min": 9,
+            "max": 48,
+            "n": 83,
+            "ci95": [
+              17.2,
+              20.07
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Baylen, the Haymaker"
@@ -3458,6 +3590,7 @@
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+      "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -3469,6 +3602,7 @@
       "global_turn": 34,
       "ms": 125943,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -3498,6 +3632,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(3)-mm-vito": 15
@@ -3535,6 +3671,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3567,6 +3705,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3599,6 +3739,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10,
             "Ai(3)-mm-vito": 4
@@ -3618,6 +3760,7 @@
       "global_turn": 25,
       "ms": 35511,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -3647,6 +3790,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3682,6 +3827,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3714,6 +3861,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3746,6 +3895,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3762,6 +3913,7 @@
       "global_turn": 27,
       "ms": 117743,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -3788,6 +3940,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3822,6 +3976,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3856,6 +4012,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5,
             "Ai(4)-mm-baylen-tokens": 6
@@ -3891,6 +4049,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3907,6 +4067,7 @@
       "global_turn": 28,
       "ms": 119619,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -3933,6 +4094,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3968,6 +4131,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 2,
@@ -4004,6 +4169,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4036,6 +4203,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4052,6 +4221,7 @@
       "global_turn": 25,
       "ms": 300009,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -4078,6 +4248,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 3
           },
@@ -4112,6 +4284,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 2
@@ -4147,6 +4321,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -4183,6 +4359,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4199,6 +4377,7 @@
       "global_turn": 42,
       "ms": 188840,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -4225,6 +4404,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4259,6 +4440,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 7,
             "Ai(3)-mm-vito": 8,
@@ -4297,6 +4480,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4331,6 +4516,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4347,6 +4534,7 @@
       "global_turn": 33,
       "ms": 218127,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -4373,6 +4561,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4405,6 +4595,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 7,
             "Ai(3)-mm-vito": 7,
@@ -4441,6 +4633,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4475,6 +4669,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4491,6 +4687,7 @@
       "global_turn": 25,
       "ms": 37859,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -4519,6 +4716,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -4553,6 +4752,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -4587,6 +4788,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4619,6 +4822,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4635,6 +4840,7 @@
       "global_turn": 33,
       "ms": 73858,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -4663,6 +4869,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -4697,6 +4905,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(4)-mm-baylen-tokens": 7
@@ -4732,6 +4942,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4764,6 +4976,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4780,6 +4994,7 @@
       "global_turn": 28,
       "ms": 99921,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -4808,6 +5023,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 10
           },
@@ -4846,6 +5063,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 7
           },
@@ -4882,6 +5101,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4914,6 +5135,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4930,6 +5153,7 @@
       "global_turn": 41,
       "ms": 226406,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 9,
@@ -4958,6 +5182,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 4,
@@ -4994,6 +5220,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5028,6 +5256,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5060,6 +5290,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -5078,6 +5310,7 @@
       "global_turn": 43,
       "ms": 118320,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -5106,6 +5339,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5141,6 +5376,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 4
@@ -5176,6 +5413,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5210,6 +5449,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 38,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5226,6 +5467,7 @@
       "global_turn": 51,
       "ms": 82873,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 9,
@@ -5255,6 +5497,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 7,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 13,
             "Ai(3)-mm-vito": 3,
@@ -5294,6 +5538,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 32,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -5331,6 +5577,8 @@
           "proliferate_events": 0,
           "interaction_cast": 7,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -5365,6 +5613,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5381,6 +5631,7 @@
       "global_turn": 35,
       "ms": 190793,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -5409,6 +5660,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -5445,6 +5698,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5479,6 +5734,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1
           },
@@ -5516,6 +5773,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 4
@@ -5535,6 +5794,7 @@
       "global_turn": 29,
       "ms": 34169,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -5565,6 +5825,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(4)-mm-baylen-tokens": 2
@@ -5600,6 +5862,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5634,6 +5898,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5668,6 +5934,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5684,6 +5952,7 @@
       "global_turn": 38,
       "ms": 85587,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 7,
@@ -5710,6 +5979,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5742,6 +6013,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5774,6 +6047,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(3)-mm-vito": 16,
@@ -5810,6 +6085,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5826,6 +6103,7 @@
       "global_turn": 27,
       "ms": 102184,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -5852,6 +6130,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5886,6 +6166,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5920,6 +6202,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5
           },
@@ -5954,6 +6238,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5970,6 +6256,7 @@
       "global_turn": 21,
       "ms": 24591,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -5996,6 +6283,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6028,6 +6317,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6063,6 +6354,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 2
           },
@@ -6097,6 +6390,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6113,6 +6408,7 @@
       "global_turn": 36,
       "ms": 300011,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "giada-angels": {
           "lands": 9,
@@ -6143,6 +6439,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -6177,6 +6475,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -6211,6 +6511,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6243,6 +6545,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -6261,6 +6565,7 @@
       "global_turn": 30,
       "ms": 300013,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -6290,6 +6595,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6324,6 +6631,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4
           },
@@ -6360,6 +6669,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6394,6 +6705,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6410,6 +6723,7 @@
       "global_turn": 30,
       "ms": 219151,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -6438,6 +6752,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 5,
             "Ai(4)-mm-baylen-tokens": 4
@@ -6473,6 +6789,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5,
             "Ai(4)-mm-baylen-tokens": 9
@@ -6510,6 +6828,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6542,6 +6862,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6558,6 +6880,7 @@
       "global_turn": 31,
       "ms": 105755,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -6586,6 +6909,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -6620,6 +6945,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 7,
             "Ai(3)-mm-vito": 7,
@@ -6658,6 +6985,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6692,6 +7021,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6708,6 +7039,7 @@
       "global_turn": 32,
       "ms": 84673,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -6734,6 +7066,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6,
             "Ai(3)-mm-vito": 2
@@ -6769,6 +7103,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6801,6 +7137,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6835,6 +7173,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6851,6 +7191,7 @@
       "global_turn": 38,
       "ms": 196829,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 6,
@@ -6880,6 +7221,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8,
             "Ai(4)-mm-baylen-tokens": 2
@@ -6915,6 +7258,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6950,6 +7295,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6985,6 +7332,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7001,6 +7350,7 @@
       "global_turn": 46,
       "ms": 175328,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 14,
@@ -7031,6 +7381,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(3)-mm-vito": 9,
@@ -7069,6 +7421,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7103,6 +7457,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 3,
             "Ai(4)-mm-baylen-tokens": 3
@@ -7140,6 +7496,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -7158,6 +7516,7 @@
       "global_turn": 42,
       "ms": 76996,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -7186,6 +7545,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(3)-mm-vito": 3
@@ -7225,6 +7586,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -7261,6 +7624,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -7297,6 +7662,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7313,6 +7680,7 @@
       "global_turn": 33,
       "ms": 87689,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 9,
@@ -7339,6 +7707,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -7375,6 +7745,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7409,6 +7781,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7443,6 +7817,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 7,
             "Ai(2)-mm-giada-angels": 8
@@ -7462,6 +7838,7 @@
       "global_turn": 31,
       "ms": 49510,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 2,
@@ -7488,6 +7865,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7522,6 +7901,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7556,6 +7937,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(4)-mm-baylen-tokens": 4
@@ -7591,6 +7974,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7607,6 +7992,7 @@
       "global_turn": 52,
       "ms": 83289,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 9,
@@ -7639,6 +8025,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7675,6 +8063,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(3)-mm-vito": 6,
@@ -7713,6 +8103,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7749,6 +8141,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 8
           },
@@ -7767,6 +8161,7 @@
       "global_turn": 46,
       "ms": 85322,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 9,
@@ -7795,6 +8190,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7830,6 +8227,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 5,
@@ -7868,6 +8267,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7902,6 +8303,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4
           },
@@ -7920,6 +8323,7 @@
       "global_turn": 35,
       "ms": 163127,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -7948,6 +8352,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7982,6 +8388,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(3)-mm-vito": 5
@@ -8017,6 +8425,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8049,6 +8459,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8065,6 +8477,7 @@
       "global_turn": 26,
       "ms": 47143,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 7,
@@ -8091,6 +8504,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 1
           },
@@ -8127,6 +8542,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 9
           },
@@ -8161,6 +8578,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -8198,6 +8617,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -8216,6 +8637,7 @@
       "global_turn": 34,
       "ms": 300020,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -8245,6 +8667,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -8281,6 +8705,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(4)-mm-baylen-tokens": 6
@@ -8318,6 +8744,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8350,6 +8778,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8366,6 +8796,7 @@
       "global_turn": 37,
       "ms": 300012,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -8392,6 +8823,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8426,6 +8859,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8462,6 +8897,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8494,6 +8931,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8
           },
@@ -8512,6 +8951,7 @@
       "global_turn": 33,
       "ms": 260185,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 3,
@@ -8538,6 +8978,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -8575,6 +9017,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8607,6 +9051,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 1
           },
@@ -8644,6 +9090,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 20
           },
@@ -8662,6 +9110,7 @@
       "global_turn": 34,
       "ms": 107477,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -8688,6 +9137,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8726,6 +9177,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8758,6 +9211,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 10,
             "Ai(3)-mm-vito": 2,
@@ -8794,6 +9249,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 3,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8810,6 +9267,7 @@
       "global_turn": 41,
       "ms": 66114,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -8840,6 +9298,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 2,
@@ -8876,6 +9336,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8908,6 +9370,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8942,6 +9406,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8958,6 +9424,7 @@
       "global_turn": 41,
       "ms": 74083,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -8987,6 +9454,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 7,
             "Ai(3)-mm-vito": 8,
@@ -9026,6 +9495,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -9062,6 +9533,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9097,6 +9570,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9113,6 +9588,7 @@
       "global_turn": 34,
       "ms": 197793,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -9139,6 +9615,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9173,6 +9651,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9207,6 +9687,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(4)-mm-baylen-tokens": 4
@@ -9245,6 +9727,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9261,6 +9745,7 @@
       "global_turn": 30,
       "ms": 49218,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -9289,6 +9774,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9326,6 +9813,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(4)-mm-baylen-tokens": 4
@@ -9361,6 +9850,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9393,6 +9884,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9409,6 +9902,7 @@
       "global_turn": 20,
       "ms": 19587,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -9435,6 +9929,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9467,6 +9963,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4
           },
@@ -9501,6 +9999,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9533,6 +10033,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9549,6 +10051,7 @@
       "global_turn": 38,
       "ms": 134512,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -9577,6 +10080,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 13,
             "Ai(3)-mm-vito": 4,
@@ -9616,6 +10121,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9651,6 +10158,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9685,6 +10194,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9701,6 +10212,7 @@
       "global_turn": 39,
       "ms": 237885,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -9727,6 +10239,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 36,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9761,6 +10275,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(3)-mm-vito": 14,
@@ -9799,6 +10315,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9831,6 +10349,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9847,6 +10367,7 @@
       "global_turn": 45,
       "ms": 42783,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -9875,6 +10396,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9912,6 +10435,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 11
           },
@@ -9949,6 +10474,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 6,
@@ -9989,6 +10516,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10005,6 +10534,7 @@
       "global_turn": 31,
       "ms": 76943,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 5,
@@ -10033,6 +10563,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -10067,6 +10599,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10099,6 +10633,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10134,6 +10670,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(4)-mm-baylen-tokens": 10
@@ -10153,6 +10691,7 @@
       "global_turn": 42,
       "ms": 81441,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -10179,6 +10718,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10213,6 +10754,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -10247,6 +10790,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10282,6 +10827,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 5
           },
@@ -10300,6 +10847,7 @@
       "global_turn": 38,
       "ms": 47206,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 5,
@@ -10326,6 +10874,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10362,6 +10912,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 12
           },
@@ -10399,6 +10951,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6,
             "Ai(3)-mm-vito": 7
@@ -10436,6 +10990,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10452,6 +11008,7 @@
       "global_turn": 33,
       "ms": 300013,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -10480,6 +11037,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10512,6 +11071,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -10546,6 +11107,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10580,6 +11143,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10596,6 +11161,7 @@
       "global_turn": 36,
       "ms": 285761,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -10625,6 +11191,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -10661,6 +11229,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 9,
             "Ai(4)-mm-baylen-tokens": 2
@@ -10698,6 +11268,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10732,6 +11304,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10748,6 +11322,7 @@
       "global_turn": 27,
       "ms": 81614,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -10774,6 +11349,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6
           },
@@ -10811,6 +11388,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 5,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10845,6 +11424,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -10881,6 +11462,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 5
           },
@@ -10899,6 +11482,7 @@
       "global_turn": 19,
       "ms": 42628,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 4,
@@ -10925,6 +11509,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10957,6 +11543,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10989,6 +11577,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11021,6 +11611,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11037,6 +11629,7 @@
       "global_turn": 27,
       "ms": 76515,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -11063,6 +11656,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11099,6 +11694,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11133,6 +11730,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11168,6 +11767,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11184,6 +11785,7 @@
       "global_turn": 43,
       "ms": 160349,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -11214,6 +11816,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11249,6 +11853,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(3)-mm-vito": 8
@@ -11284,6 +11890,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1
           },
@@ -11318,6 +11926,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11334,6 +11944,7 @@
       "global_turn": 27,
       "ms": 75638,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -11360,6 +11971,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11392,6 +12005,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(3)-mm-vito": 2,
@@ -11428,6 +12043,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11460,6 +12077,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8
           },
@@ -11478,6 +12097,7 @@
       "global_turn": 32,
       "ms": 50381,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -11504,6 +12124,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11536,6 +12158,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -11572,6 +12196,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -11606,6 +12232,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5,
             "Ai(3)-mm-vito": 5,
@@ -11626,6 +12254,7 @@
       "global_turn": 37,
       "ms": 71850,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -11652,6 +12281,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11686,6 +12317,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 10
@@ -11721,6 +12354,8 @@
           "proliferate_events": 0,
           "interaction_cast": 5,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11756,6 +12391,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11772,6 +12409,7 @@
       "global_turn": 45,
       "ms": 156117,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -11800,6 +12438,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -11838,6 +12478,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 10,
             "Ai(3)-mm-vito": 8,
@@ -11874,6 +12516,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11909,6 +12553,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11925,6 +12571,7 @@
       "global_turn": 27,
       "ms": 60584,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -11953,6 +12600,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11985,6 +12634,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 2,
@@ -12023,6 +12674,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12055,6 +12708,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12071,6 +12726,7 @@
       "global_turn": 49,
       "ms": 251897,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -12101,6 +12757,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 3,
             "Ai(4)-mm-baylen-tokens": 3
@@ -12139,6 +12797,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 13,
             "Ai(4)-mm-baylen-tokens": 6
@@ -12177,6 +12837,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12209,6 +12871,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12225,6 +12889,7 @@
       "global_turn": 22,
       "ms": 26617,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 3,
@@ -12251,6 +12916,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 3,
             "Ai(4)-mm-baylen-tokens": 7
@@ -12286,6 +12953,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -12320,6 +12989,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12352,6 +13023,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12368,6 +13041,7 @@
       "global_turn": 33,
       "ms": 223095,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -12396,6 +13070,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -12432,6 +13108,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6,
             "Ai(3)-mm-vito": 4,
@@ -12468,6 +13146,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12503,6 +13183,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12519,6 +13201,7 @@
       "global_turn": 21,
       "ms": 300015,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -12545,6 +13228,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12577,6 +13262,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6
           },
@@ -12611,6 +13298,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12645,6 +13334,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12661,6 +13352,7 @@
       "global_turn": 30,
       "ms": 300014,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -12689,6 +13381,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -12723,6 +13417,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 2,
             "Ai(4)-mm-baylen-tokens": 4
@@ -12758,6 +13454,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 2
           },
@@ -12794,6 +13492,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -12812,6 +13512,7 @@
       "global_turn": 39,
       "ms": 109402,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -12845,6 +13546,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12880,6 +13583,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(3)-mm-vito": 14
@@ -12918,6 +13623,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1,
             "Ai(2)-mm-giada-angels": 1
@@ -12955,6 +13662,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12971,6 +13680,7 @@
       "global_turn": 47,
       "ms": 254136,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 3,
@@ -12997,6 +13707,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13031,6 +13743,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(3)-mm-vito": 3
@@ -13068,6 +13782,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 5,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5,
             "Ai(3)-mm-vito": 5,
@@ -13106,6 +13822,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13122,6 +13840,7 @@
       "global_turn": 54,
       "ms": 120258,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 6,
@@ -13151,6 +13870,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1
           },
@@ -13188,6 +13909,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13224,6 +13947,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13258,6 +13983,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 10
           },
@@ -13276,6 +14003,7 @@
       "global_turn": 37,
       "ms": 174532,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 7,
@@ -13302,6 +14030,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13336,6 +14066,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -13374,6 +14106,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 7,
@@ -13412,6 +14146,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13428,6 +14164,7 @@
       "global_turn": 21,
       "ms": 37202,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -13454,6 +14191,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13488,6 +14227,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -13522,6 +14263,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13554,6 +14297,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13570,6 +14315,7 @@
       "global_turn": 44,
       "ms": 83627,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -13599,6 +14345,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 11,
             "Ai(3)-mm-vito": 13
@@ -13637,6 +14385,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -13674,6 +14424,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 4,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6
           },
@@ -13713,6 +14465,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -13731,6 +14485,7 @@
       "global_turn": 35,
       "ms": 93312,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -13760,6 +14515,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3
           },
@@ -13797,6 +14554,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10,
             "Ai(3)-mm-vito": 6
@@ -13834,6 +14593,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1,
             "Ai(2)-mm-giada-angels": 1
@@ -13871,6 +14632,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13887,6 +14650,7 @@
       "global_turn": 26,
       "ms": 9892,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -13913,6 +14677,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13947,6 +14713,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5,
             "Ai(3)-mm-vito": 9,
@@ -13983,6 +14751,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14015,6 +14785,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14031,6 +14803,7 @@
       "global_turn": 37,
       "ms": 64402,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -14060,6 +14833,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14092,6 +14867,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4
           },
@@ -14126,6 +14903,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -14164,6 +14943,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 13,
@@ -14184,6 +14965,7 @@
       "global_turn": 37,
       "ms": 110110,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 3,
@@ -14210,6 +14992,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14242,6 +15026,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14276,6 +15062,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 6
           },
@@ -14312,6 +15100,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 6,
@@ -14332,6 +15122,7 @@
       "global_turn": 23,
       "ms": 39735,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -14358,6 +15149,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -14392,6 +15185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(4)-mm-baylen-tokens": 2
@@ -14427,6 +15222,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14459,6 +15256,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14475,6 +15274,7 @@
       "global_turn": 43,
       "ms": 79344,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -14503,6 +15303,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 6,
             "Ai(4)-mm-baylen-tokens": 9
@@ -14541,6 +15343,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8
           },
@@ -14577,6 +15381,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 9
           },
@@ -14613,6 +15419,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14629,6 +15437,7 @@
       "global_turn": 28,
       "ms": 300014,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "vito": {
           "lands": 3,
@@ -14655,6 +15464,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14687,6 +15498,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14719,6 +15532,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(3)-mm-vito": 3,
@@ -14757,6 +15572,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -14775,6 +15592,7 @@
       "global_turn": 27,
       "ms": 300035,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "vito": {
           "lands": 5,
@@ -14801,6 +15619,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14833,6 +15653,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14865,6 +15687,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4
           },
@@ -14899,6 +15723,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14915,6 +15741,7 @@
       "global_turn": 36,
       "ms": 300015,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -14945,6 +15772,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -14979,6 +15808,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(4)-mm-baylen-tokens": 3
@@ -15016,6 +15847,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15050,6 +15883,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15066,6 +15901,7 @@
       "global_turn": 43,
       "ms": 159359,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -15094,6 +15930,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15129,6 +15967,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15164,6 +16004,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -15202,6 +16044,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 20
           },
@@ -15220,6 +16064,7 @@
       "global_turn": 44,
       "ms": 86562,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -15248,6 +16093,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15284,6 +16131,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6
           },
@@ -15321,6 +16170,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -15357,6 +16208,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -15375,6 +16228,7 @@
       "global_turn": 36,
       "ms": 61258,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "baylen-tokens": {
           "lands": 7,
@@ -15401,6 +16255,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 28
           },
@@ -15435,6 +16291,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 3,
             "Ai(3)-mm-vito": 5
@@ -15470,6 +16328,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6,
             "Ai(4)-mm-baylen-tokens": 6
@@ -15507,6 +16367,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15523,6 +16385,7 @@
       "global_turn": 25,
       "ms": 43858,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 4,
@@ -15549,6 +16412,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 10
           },
@@ -15583,6 +16448,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15615,6 +16482,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15649,6 +16518,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15665,6 +16536,7 @@
       "global_turn": 31,
       "ms": 43065,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 5,
@@ -15693,6 +16565,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3
           },
@@ -15727,6 +16601,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 3,
             "Ai(4)-mm-baylen-tokens": 3
@@ -15762,6 +16638,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15797,6 +16675,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(2)-mm-giada-angels": 8
@@ -15816,6 +16696,7 @@
       "global_turn": 30,
       "ms": 28677,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 4,
@@ -15842,6 +16723,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15877,6 +16760,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -15913,6 +16798,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 6,
             "Ai(3)-mm-vito": 3
@@ -15948,6 +16835,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15964,6 +16853,7 @@
       "global_turn": 31,
       "ms": 78283,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -15990,6 +16880,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16026,6 +16918,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(4)-mm-baylen-tokens": 4
@@ -16061,6 +16955,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16095,6 +16991,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 11
           },
@@ -16113,6 +17011,7 @@
       "global_turn": 31,
       "ms": 100674,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -16141,6 +17040,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(3)-mm-vito": 3,
@@ -16179,6 +17080,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16211,6 +17114,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16246,6 +17151,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16262,6 +17169,7 @@
       "global_turn": 44,
       "ms": 145531,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -16295,6 +17203,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16331,6 +17241,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1,
             "Ai(4)-mm-baylen-tokens": 2
@@ -16370,6 +17282,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 12
           },
@@ -16407,6 +17321,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16423,6 +17339,7 @@
       "global_turn": 28,
       "ms": 54508,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -16449,6 +17366,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16483,6 +17402,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(4)-mm-baylen-tokens": 6
@@ -16518,6 +17439,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16550,6 +17473,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16566,6 +17491,7 @@
       "global_turn": 34,
       "ms": 95127,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 7,
@@ -16595,6 +17521,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 9,
             "Ai(3)-mm-vito": 4
@@ -16630,6 +17558,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16662,6 +17592,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16696,6 +17628,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16712,6 +17646,7 @@
       "global_turn": 37,
       "ms": 205314,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -16738,6 +17673,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16772,6 +17709,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 11,
             "Ai(3)-mm-vito": 6,
@@ -16808,6 +17747,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16840,6 +17781,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16856,6 +17799,7 @@
       "global_turn": 28,
       "ms": 161165,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 4,
@@ -16885,6 +17829,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16920,6 +17866,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2
           },
@@ -16954,6 +17902,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16988,6 +17938,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17004,6 +17956,7 @@
       "global_turn": 32,
       "ms": 168478,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -17037,6 +17990,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -17071,6 +18026,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(3)-mm-vito": 4,
@@ -17107,6 +18064,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17139,6 +18098,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -17157,6 +18118,7 @@
       "global_turn": 34,
       "ms": 172757,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "giada-angels": {
           "lands": 8,
@@ -17185,6 +18147,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 8,
             "Ai(3)-mm-vito": 4,
@@ -17221,6 +18185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17253,6 +18219,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17285,6 +18253,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17301,6 +18271,7 @@
       "global_turn": 47,
       "ms": 173106,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "vito": {
           "lands": 10,
@@ -17331,6 +18302,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 1
           },
@@ -17371,6 +18344,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17406,6 +18381,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 3,
             "Ai(3)-mm-vito": 3
@@ -17444,6 +18421,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 12
           },
@@ -17462,6 +18441,7 @@
       "global_turn": 22,
       "ms": 34777,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 5,
@@ -17491,6 +18471,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17523,6 +18505,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17555,6 +18539,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17587,6 +18573,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17603,6 +18591,7 @@
       "global_turn": 31,
       "ms": 300006,
       "truncated": true,
+      "draw": true,
       "per_seat": {
         "baylen-tokens": {
           "lands": 6,
@@ -17631,6 +18620,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -17668,6 +18659,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8
           },
@@ -17704,6 +18697,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 2,
             "Ai(4)-mm-baylen-tokens": 6
@@ -17741,6 +18736,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17757,6 +18754,7 @@
       "global_turn": 35,
       "ms": 62924,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -17785,6 +18783,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10
           },
@@ -17822,6 +18822,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 4,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(4)-mm-baylen-tokens": 3
@@ -17859,6 +18861,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 1
           },
@@ -17896,6 +18900,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(2)-mm-giada-angels": 4
@@ -17915,6 +18921,7 @@
       "global_turn": 36,
       "ms": 62724,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 6,
@@ -17943,6 +18950,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17977,6 +18986,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 4,
             "Ai(3)-mm-vito": 4,
@@ -18013,6 +19024,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18047,6 +19060,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18063,6 +19078,7 @@
       "global_turn": 39,
       "ms": 86894,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 8,
@@ -18092,6 +19108,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18124,6 +19142,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 4
           },
@@ -18158,6 +19178,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18194,6 +19216,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-goblin-storm": 5
           },
@@ -18212,6 +19236,7 @@
       "global_turn": 62,
       "ms": 226883,
       "truncated": false,
+      "draw": false,
       "per_seat": {
         "goblin-storm": {
           "lands": 7,
@@ -18241,6 +19266,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18277,6 +19304,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-vito": 4,
             "Ai(4)-mm-baylen-tokens": 3
@@ -18317,6 +19346,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -18351,6 +19382,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 48,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,

@@ -1808,6 +1808,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Abaddon the Despoiler"
+          ],
+          "casts": {
+            "mean": 1.63,
+            "median": 1.0,
+            "min": 0,
+            "max": 6,
+            "n": 60,
+            "ci95": [
+              1.35,
+              1.92
+            ]
+          },
+          "games_resolved": 56,
+          "resolved_rate": 0.933,
+          "resolved_rate_ci95": [
+            0.841,
+            0.974
+          ],
+          "first_resolved_global_turn": {
+            "mean": 20.36,
+            "median": 18.0,
+            "min": 9,
+            "max": 39,
+            "n": 56,
+            "ci95": [
+              18.59,
+              22.13
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Abaddon the Despoiler"
@@ -2188,6 +2221,39 @@
             "ci95": [
               -0.01,
               0.11
+            ]
+          }
+        },
+        "commander_access": {
+          "commander": [
+            "Baylen, the Haymaker"
+          ],
+          "casts": {
+            "mean": 1.43,
+            "median": 1.0,
+            "min": 0,
+            "max": 6,
+            "n": 60,
+            "ci95": [
+              1.14,
+              1.73
+            ]
+          },
+          "games_resolved": 52,
+          "resolved_rate": 0.867,
+          "resolved_rate_ci95": [
+            0.758,
+            0.931
+          ],
+          "first_resolved_global_turn": {
+            "mean": 18.98,
+            "median": 18.5,
+            "min": 9,
+            "max": 44,
+            "n": 52,
+            "ci95": [
+              16.87,
+              21.09
             ]
           }
         },
@@ -2574,6 +2640,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Giada, Font of Hope"
+          ],
+          "casts": {
+            "mean": 1.85,
+            "median": 2.0,
+            "min": 1,
+            "max": 4,
+            "n": 60,
+            "ci95": [
+              1.61,
+              2.09
+            ]
+          },
+          "games_resolved": 60,
+          "resolved_rate": 1.0,
+          "resolved_rate_ci95": [
+            0.94,
+            1.0
+          ],
+          "first_resolved_global_turn": {
+            "mean": 8.18,
+            "median": 7.0,
+            "min": 5,
+            "max": 27,
+            "n": 60,
+            "ci95": [
+              7.17,
+              9.19
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Giada, Font of Hope"
@@ -2956,6 +3055,39 @@
             ]
           }
         },
+        "commander_access": {
+          "commander": [
+            "Zur the Enchanter"
+          ],
+          "casts": {
+            "mean": 1.38,
+            "median": 1.0,
+            "min": 0,
+            "max": 5,
+            "n": 60,
+            "ci95": [
+              1.1,
+              1.67
+            ]
+          },
+          "games_resolved": 49,
+          "resolved_rate": 0.817,
+          "resolved_rate_ci95": [
+            0.701,
+            0.894
+          ],
+          "first_resolved_global_turn": {
+            "mean": 23.55,
+            "median": 22,
+            "min": 9,
+            "max": 48,
+            "n": 49,
+            "ci95": [
+              21.17,
+              25.93
+            ]
+          }
+        },
         "commander_damage": {
           "commander": [
             "Zur the Enchanter"
@@ -3267,6 +3399,7 @@
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+      "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
       "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
     ]
   },
@@ -3310,6 +3443,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 10
           },
@@ -3348,6 +3483,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 4,
+          "commander_resolved_turn": 10,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1,
             "Ai(4)-mm-abaddon": 6
@@ -3386,6 +3523,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 4,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 4,
             "Ai(4)-mm-abaddon": 2
@@ -3426,6 +3565,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 8
           },
@@ -3471,6 +3612,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1
           },
@@ -3505,6 +3648,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -3539,6 +3684,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 20
           },
@@ -3573,6 +3720,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3618,6 +3767,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3650,6 +3801,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 2,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -3686,6 +3839,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3718,6 +3873,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 5
           },
@@ -3765,6 +3922,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 4
           },
@@ -3801,6 +3960,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3833,6 +3994,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3867,6 +4030,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3912,6 +4077,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3944,6 +4111,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 11,
             "Ai(3)-mm-baylen-tokens": 12,
@@ -3980,6 +4149,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4014,6 +4185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4062,6 +4235,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1
           },
@@ -4100,6 +4275,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4135,6 +4312,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 2,
             "Ai(3)-mm-baylen-tokens": 2
@@ -4175,6 +4354,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 3
           },
@@ -4220,6 +4401,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 8,
             "Ai(3)-mm-baylen-tokens": 2
@@ -4259,6 +4442,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1
           },
@@ -4296,6 +4481,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 20
           },
@@ -4332,6 +4519,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 5
           },
@@ -4382,6 +4571,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -4418,6 +4609,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 4
           },
@@ -4452,6 +4645,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4484,6 +4679,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-baylen-tokens": 5
@@ -4532,6 +4729,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 37,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4564,6 +4763,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 3,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -4600,6 +4801,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4634,6 +4837,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4679,6 +4884,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 5,
             "Ai(3)-mm-baylen-tokens": 3
@@ -4716,6 +4923,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 8,
             "Ai(3)-mm-baylen-tokens": 1,
@@ -4754,6 +4963,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4786,6 +4997,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 35,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4833,6 +5046,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4870,6 +5085,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 4,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 20,
             "Ai(4)-mm-abaddon": 6
@@ -4910,6 +5127,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 6,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 1
           },
@@ -4947,6 +5166,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 6
           },
@@ -4994,6 +5215,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5028,6 +5251,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(4)-mm-abaddon": 2
           },
@@ -5065,6 +5290,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 26,
             "Ai(2)-mm-giada-angels": 22
@@ -5102,6 +5329,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5150,6 +5379,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 2,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -5189,6 +5420,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 4,
+          "commander_casts": 5,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -5225,6 +5458,8 @@
           "proliferate_events": 0,
           "interaction_cast": 6,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 1
           },
@@ -5262,6 +5497,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7,
             "Ai(4)-mm-abaddon": 5
@@ -5310,6 +5547,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 37,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5344,6 +5583,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 10,
             "Ai(3)-mm-baylen-tokens": 9,
@@ -5383,6 +5624,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 15,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 6
           },
@@ -5422,6 +5665,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 5
           },
@@ -5472,6 +5717,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-zur-enchantress": 4,
             "Ai(4)-mm-abaddon": 7
@@ -5507,6 +5754,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5541,6 +5790,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 4,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2,
             "Ai(4)-mm-abaddon": 2
@@ -5581,6 +5832,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 36,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5624,6 +5877,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 4,
             "Ai(3)-mm-abaddon": 6,
@@ -5662,6 +5917,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5694,6 +5951,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5728,6 +5987,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5771,6 +6032,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5807,6 +6070,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 2,
             "Ai(2)-mm-baylen-tokens": 1
@@ -5842,6 +6107,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5876,6 +6143,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 3
           },
@@ -5923,6 +6192,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 3,
             "Ai(4)-mm-zur-enchantress": 4
@@ -5964,6 +6235,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 5,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 15
           },
@@ -6004,6 +6277,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 39,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6041,6 +6316,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 1
           },
@@ -6086,6 +6363,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 5,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(3)-mm-abaddon": 4,
@@ -6124,6 +6403,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6156,6 +6437,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6190,6 +6473,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6235,6 +6520,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 19
           },
@@ -6269,6 +6556,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 5
           },
@@ -6303,6 +6592,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6337,6 +6628,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6383,6 +6676,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6415,6 +6710,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6449,6 +6746,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6483,6 +6782,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 7,
             "Ai(3)-mm-abaddon": 9,
@@ -6530,6 +6831,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6562,6 +6865,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 32,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6594,6 +6899,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6626,6 +6933,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 12,
             "Ai(3)-mm-abaddon": 7,
@@ -6678,6 +6987,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 4,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6713,6 +7024,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 4,
             "Ai(4)-mm-zur-enchantress": 4
@@ -6750,6 +7063,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6786,6 +7101,8 @@
           "proliferate_events": 0,
           "interaction_cast": 5,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 48,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2
           },
@@ -6833,6 +7150,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6867,6 +7186,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -6903,6 +7224,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 1
           },
@@ -6937,6 +7260,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 13,
             "Ai(3)-mm-abaddon": 22,
@@ -6984,6 +7309,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7016,6 +7343,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7048,6 +7377,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7082,6 +7413,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 4,
             "Ai(3)-mm-abaddon": 2,
@@ -7129,6 +7462,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7161,6 +7496,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7196,6 +7533,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 2
           },
@@ -7232,6 +7571,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2,
             "Ai(3)-mm-abaddon": 6,
@@ -7281,6 +7622,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7315,6 +7658,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 5
           },
@@ -7352,6 +7697,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 1
           },
@@ -7388,6 +7735,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(4)-mm-zur-enchantress": 12
           },
@@ -7436,6 +7785,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 12,
             "Ai(4)-mm-zur-enchantress": 3
@@ -7473,6 +7824,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 17
           },
@@ -7507,6 +7860,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7539,6 +7894,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7584,6 +7941,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2
           },
@@ -7618,6 +7977,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7650,6 +8011,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7685,6 +8048,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 4,
             "Ai(3)-mm-abaddon": 6,
@@ -7736,6 +8101,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 4,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(4)-mm-zur-enchantress": 2
           },
@@ -7772,6 +8139,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7809,6 +8178,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 30,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(2)-mm-baylen-tokens": 5,
@@ -7845,6 +8216,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7891,6 +8264,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 2
           },
@@ -7927,6 +8302,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 44,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7961,6 +8338,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 10
           },
@@ -7995,6 +8374,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 8,
             "Ai(2)-mm-abaddon": 8,
@@ -8044,6 +8425,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 7
           },
@@ -8078,6 +8461,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -8114,6 +8499,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 11,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2
           },
@@ -8150,6 +8537,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 4,
             "Ai(2)-mm-abaddon": 6,
@@ -8199,6 +8588,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8233,6 +8624,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5,
             "Ai(2)-mm-abaddon": 8,
@@ -8271,6 +8664,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8303,6 +8698,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8349,6 +8746,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8384,6 +8783,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(3)-mm-zur-enchantress": 2
           },
@@ -8422,6 +8823,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 3,
             "Ai(2)-mm-abaddon": 3
@@ -8459,6 +8862,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6,
             "Ai(2)-mm-abaddon": 2,
@@ -8509,6 +8914,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 4
           },
@@ -8545,6 +8952,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 30,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 10
           },
@@ -8581,6 +8990,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 31,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 1
           },
@@ -8617,6 +9028,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8663,6 +9076,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2
           },
@@ -8702,6 +9117,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 8,
             "Ai(3)-mm-zur-enchantress": 10,
@@ -8742,6 +9159,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 4,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2
           },
@@ -8778,6 +9197,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 39,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 1
           },
@@ -8825,6 +9246,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {
             "Ai(3)-mm-zur-enchantress": 4,
             "Ai(4)-mm-giada-angels": 4
@@ -8860,6 +9283,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -8894,6 +9319,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8928,6 +9355,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 2,
@@ -8975,6 +9404,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9007,6 +9438,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -9044,6 +9477,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 35,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 9
           },
@@ -9078,6 +9513,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 8,
@@ -9127,6 +9564,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9163,6 +9602,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(3)-mm-zur-enchantress": 5,
             "Ai(4)-mm-giada-angels": 5
@@ -9198,6 +9639,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2
           },
@@ -9234,6 +9677,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2
           },
@@ -9283,6 +9728,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 8,
             "Ai(2)-mm-abaddon": 2
@@ -9322,6 +9769,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 4,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 10,
             "Ai(3)-mm-zur-enchantress": 6
@@ -9361,6 +9810,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5,
             "Ai(3)-mm-zur-enchantress": 10
@@ -9399,6 +9850,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 1
           },
@@ -9447,6 +9900,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6,
             "Ai(2)-mm-abaddon": 2,
@@ -9485,6 +9940,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9517,6 +9974,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9551,6 +10010,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 11
           },
@@ -9598,6 +10059,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 8
           },
@@ -9632,6 +10095,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 13,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 15,
             "Ai(3)-mm-zur-enchantress": 5
@@ -9667,6 +10132,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2
           },
@@ -9703,6 +10170,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9750,6 +10219,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 42
           },
@@ -9786,6 +10257,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 4
           },
@@ -9824,6 +10297,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -9860,6 +10335,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9905,6 +10382,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 25
           },
@@ -9947,6 +10426,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 6,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 3
           },
@@ -9985,6 +10466,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 23,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2
           },
@@ -10019,6 +10502,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 7
           },
@@ -10067,6 +10552,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10099,6 +10586,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10134,6 +10623,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10166,6 +10657,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 8,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6,
             "Ai(2)-mm-abaddon": 4,
@@ -10218,6 +10711,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 2,
+          "commander_casts": 3,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 22,
             "Ai(3)-mm-giada-angels": 33
@@ -10253,6 +10748,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10285,6 +10782,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 5,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10317,6 +10816,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 4
           },
@@ -10364,6 +10865,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 32,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10400,6 +10903,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 3,
+          "commander_resolved_turn": 33,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 1
           },
@@ -10438,6 +10943,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(2)-mm-zur-enchantress": 2,
@@ -10474,6 +10981,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 8
           },
@@ -10519,6 +11028,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 11,
             "Ai(4)-mm-baylen-tokens": 5
@@ -10556,6 +11067,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10590,6 +11103,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(4)-mm-baylen-tokens": 8
@@ -10625,6 +11140,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10668,6 +11185,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10703,6 +11222,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10738,6 +11259,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10772,6 +11295,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 7,
             "Ai(2)-mm-zur-enchantress": 9,
@@ -10819,6 +11344,8 @@
           "proliferate_events": 0,
           "interaction_cast": 4,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10853,6 +11380,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 1,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(3)-mm-giada-angels": 1
@@ -10890,6 +11419,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 2
           },
@@ -10928,6 +11459,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 4
           },
@@ -10973,6 +11506,8 @@
           "proliferate_events": 0,
           "interaction_cast": 3,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11005,6 +11540,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11037,6 +11574,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 12,
             "Ai(2)-mm-zur-enchantress": 6,
@@ -11073,6 +11612,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11118,6 +11659,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11152,6 +11695,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11186,6 +11731,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11218,6 +11765,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 12,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4
           },
@@ -11267,6 +11816,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2
           },
@@ -11304,6 +11855,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 4,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(2)-mm-zur-enchantress": 5
@@ -11339,6 +11892,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 19,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11374,6 +11929,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 20,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11420,6 +11977,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11454,6 +12013,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 25,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11486,6 +12047,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 18,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11522,6 +12085,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11569,6 +12134,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 37,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 2
           },
@@ -11606,6 +12173,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 9,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 10,
             "Ai(3)-mm-giada-angels": 10,
@@ -11646,6 +12215,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 3
           },
@@ -11684,6 +12255,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 28,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11730,6 +12303,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 10
           },
@@ -11769,6 +12344,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 3,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(2)-mm-zur-enchantress": 2
@@ -11808,6 +12385,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 26,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 1,
             "Ai(3)-mm-giada-angels": 1,
@@ -11848,6 +12427,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(2)-mm-zur-enchantress": 4
@@ -11896,6 +12477,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11931,6 +12514,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 2,
             "Ai(4)-mm-baylen-tokens": 4
@@ -11969,6 +12554,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 22,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 1
           },
@@ -12006,6 +12593,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 1,
+          "commander_resolved_turn": 32,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 7
           },
@@ -12051,6 +12640,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12085,6 +12676,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 6,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 4,
             "Ai(4)-mm-baylen-tokens": 12
@@ -12120,6 +12713,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 0,
+          "commander_resolved_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12155,6 +12750,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 1,
+          "commander_casts": 2,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 15
           },
@@ -12204,6 +12801,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 21,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12241,6 +12840,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12275,6 +12876,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 2,
+          "commander_casts": 2,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12309,6 +12912,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 0,
+          "commander_casts": 1,
+          "commander_resolved_turn": 16,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 5
           },
@@ -12356,6 +12961,8 @@
           "proliferate_events": 0,
           "interaction_cast": 2,
           "interaction_received": 0,
+          "commander_casts": 2,
+          "commander_resolved_turn": 24,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12391,6 +12998,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 0,
+          "commander_casts": 4,
+          "commander_resolved_turn": 17,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12431,6 +13040,8 @@
           "proliferate_events": 0,
           "interaction_cast": 0,
           "interaction_received": 3,
+          "commander_casts": 5,
+          "commander_resolved_turn": 14,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(4)-mm-baylen-tokens": 2
@@ -12470,6 +13081,8 @@
           "proliferate_events": 0,
           "interaction_cast": 1,
           "interaction_received": 2,
+          "commander_casts": 4,
+          "commander_resolved_turn": 7,
           "commander_damage_by_defender": {
             "Ai(2)-mm-zur-enchantress": 16,
             "Ai(4)-mm-baylen-tokens": 2

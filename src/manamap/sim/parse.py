@@ -383,6 +383,28 @@ def game_facts(g, commanders=None):
                # caster's own commander.
                "interaction_cast": 0,
                "interaction_received": 0,
+               # DID THE COMMANDER EVER LAND, and how many casts did it take?
+               # The whole fleet's goldfish figures answer "can this deck AFFORD
+               # its commander"; nothing here answered "does it STICK", and the
+               # two are not the same question. Measured on heliod's 20-game pod
+               # run, where the goldfish says the commander is castable by turn
+               # six in 80% of games: it RESOLVED in 6 of 20, and the back face
+               # the deck is built around appeared in 3. Counterspells, removal,
+               # commander tax and a table that does not wait are the difference,
+               # and none of them exist in a solitaire model.
+               #
+               # `commander_casts` counts SPELLS, so a recast after removal
+               # increments it and a COUNTERED one still counts — that is the
+               # point, since the gap between casts and arrivals is what tax and
+               # interaction cost. `commander_resolved_turn` is the FIRST
+               # resolution, in global turns.
+               #
+               # ABSENT, never zero, when the seat's commander is unknown: the
+               # log names no commander anywhere, and a seat we cannot identify
+               # one for must not read as "never cast it". Same rule as
+               # `commander_damage_by_defender` one line up.
+               "commander_casts": 0,
+               "commander_resolved_turn": None,
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
@@ -399,6 +421,8 @@ def game_facts(g, commanders=None):
             per[ev["seat"]]["lands"] += 1
         elif k == "cast":
             per[ev["seat"]]["casts"] += 1
+            if _is_commander(ev["what"], commanders.get(ev["seat"])):
+                per[ev["seat"]]["commander_casts"] += 1
             _aim(per, owner, ev, seats)
         elif k == "activated":
             per[ev["seat"]]["activations"] += 1
@@ -406,6 +430,26 @@ def game_facts(g, commanders=None):
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
         elif k == "resolve":
+            # A CAST IS NOT AN ARRIVAL, and the line that separates them is the
+            # PERMANENT ID. Forge writes a resolving spell as `Resolve Stack:
+            # Heliod, the Radiant Dawn - Creature 4 / 4` and an ability of a
+            # permanent already on the battlefield as `Resolve Stack: Heliod,
+            # the Warped Eclipse (100) - Transform Heliod, the Warped Eclipse
+            # (100).` — the second names the BACK FACE, which `_is_commander`
+            # matches on purpose, so the id suffix is the whole difference.
+            #
+            # Swept across every tracked log: 77 transform resolutions, in the
+            # two distinct shapes Forge emits (Heliod and Lord of Lineage), and
+            # ALL 77 carry the id. So the leading name is compared verbatim and
+            # the obvious-looking normalisation — strip a trailing `(nnn)` —
+            # is the bug, not the fix.
+            if commanders:
+                name = ev["text"].split(" - ", 1)[0].strip()
+                for s_ in seats:
+                    if (per[s_]["commander_resolved_turn"] is None
+                            and _is_commander(name, commanders.get(s_))):
+                        per[s_]["commander_resolved_turn"] = ev["turn"]
+                        break
             if ev["creates_token"] and ev["seat"] in per:
                 per[ev["seat"]]["token_resolutions"] += 1
             if _LOSES_LIFE.search(ev["text"]) and ev["seat"] in per:
@@ -487,6 +531,8 @@ def game_facts(g, commanders=None):
             p["commander_damage_lethal"] = p["commander_damage_max"] >= COMMANDER_DAMAGE_LETHAL
         else:
             p.pop("commander_damage_by_defender")
+            p.pop("commander_casts")
+            p.pop("commander_resolved_turn")
         p["life_by_turn"] = dict(sorted(p["life_by_turn"].items()))
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
@@ -908,6 +954,25 @@ def aggregate(facts, slug_label, label, commanders=None):
         # given the LAST seat's commander, and the fixture caught radagast's
         # commander damage being published under Edgar Markov's name.
         cmd = sorted({c for lbl in raw for c in commanders.get(lbl, ())})
+        # DOES THE COMMANDER STICK — the question the goldfish structurally
+        # cannot ask. See game_facts for the measurement that prompted it.
+        if cmd and any("commander_casts" in p for p in ps):
+            landed = [p for p in ps if p.get("commander_resolved_turn") is not None]
+            lo, hi = wilson(len(landed), len(ps))
+            out["seats"][name]["commander_access"] = {
+                "commander": cmd,
+                "casts": mean_ci([p.get("commander_casts", 0) for p in ps]),
+                "games_resolved": len(landed),
+                # THE DENOMINATOR IS GAMES PLAYED, NOT DECIDED. A clock-out is a
+                # game this deck sat through and either did or did not cast its
+                # commander in, which is a fact about the deck rather than about
+                # the ending — unlike a win rate, where a game nobody won is a
+                # game nobody lost.
+                "resolved_rate": round(len(landed) / len(ps), 3) if ps else None,
+                "resolved_rate_ci95": [lo, hi],
+                "first_resolved_global_turn": mean_ci(
+                    [p["commander_resolved_turn"] for p in landed]),
+            }
         if cmd and any("commander_damage_max" in p for p in ps):
             maxes = [p.get("commander_damage_max", 0) for p in ps]
             lethal = sum(1 for p in ps if p.get("commander_damage_lethal"))
@@ -975,6 +1040,15 @@ def aggregate(facts, slug_label, label, commanders=None):
         "change recovers them; the goldfish is the only place those are measured.",
         "ci95 is a Wilson interval for rates and a normal interval for means; both are "
         "meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+        "commander_access.resolved_rate is the share of games this seat's commander "
+        "actually RESOLVED. An activated ability of the permanent (a transform, a flip) "
+        "is not mistaken for that arrival: Forge suffixes such a line with the "
+        "permanent's id and a resolving spell has none, swept across every tracked log "
+        "at 77 of 77. `casts` counts spells, so a countered one and a recast after removal "
+        "increments it and the gap between casts and games_resolved is what commander "
+        "tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, "
+        "not a property of the decklist: the same seat's goldfish figure asks only "
+        "whether the mana was there. ABSENT when the seat's commander is unknown.",
         "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander "
         "on one player), so max_on_one_defender is the number the win condition reads and "
         "dealt_total is not — a commander that hit three seats for 20 each dealt 60 and "

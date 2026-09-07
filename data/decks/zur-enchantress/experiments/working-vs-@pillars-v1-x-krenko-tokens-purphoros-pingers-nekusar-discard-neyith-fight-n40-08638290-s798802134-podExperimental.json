@@ -411,6 +411,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Zur the Enchanter"
+              ],
+              "casts": {
+                "mean": 0.6,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  0.42,
+                  0.78
+                ]
+              },
+              "games_resolved": 22,
+              "resolved_rate": 0.55,
+              "resolved_rate_ci95": [
+                0.398,
+                0.693
+              ],
+              "first_resolved_global_turn": {
+                "mean": 26.32,
+                "median": 26.0,
+                "min": 16,
+                "max": 41,
+                "n": 22,
+                "ci95": [
+                  23.81,
+                  28.83
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Zur the Enchanter"
@@ -794,6 +827,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Krenko, Mob Boss"
+              ],
+              "casts": {
+                "mean": 1.2,
+                "median": 1.0,
+                "min": 0,
+                "max": 3,
+                "n": 40,
+                "ci95": [
+                  0.95,
+                  1.45
+                ]
+              },
+              "games_resolved": 35,
+              "resolved_rate": 0.875,
+              "resolved_rate_ci95": [
+                0.739,
+                0.945
+              ],
+              "first_resolved_global_turn": {
+                "mean": 21.54,
+                "median": 22,
+                "min": 7,
+                "max": 34,
+                "n": 35,
+                "ci95": [
+                  19.72,
+                  23.37
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Krenko, Mob Boss"
@@ -1173,6 +1239,39 @@
                 "ci95": [
                   0.01,
                   0.19
+                ]
+              }
+            },
+            "commander_access": {
+              "commander": [
+                "Purphoros, God of the Forge"
+              ],
+              "casts": {
+                "mean": 1.2,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  1.06,
+                  1.34
+                ]
+              },
+              "games_resolved": 39,
+              "resolved_rate": 0.975,
+              "resolved_rate_ci95": [
+                0.871,
+                0.996
+              ],
+              "first_resolved_global_turn": {
+                "mean": 17.9,
+                "median": 18,
+                "min": 8,
+                "max": 33,
+                "n": 39,
+                "ci95": [
+                  16.23,
+                  19.56
                 ]
               }
             },
@@ -1559,6 +1658,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Nekusar, the Mindrazer"
+              ],
+              "casts": {
+                "mean": 0.8,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  0.57,
+                  1.03
+                ]
+              },
+              "games_resolved": 24,
+              "resolved_rate": 0.6,
+              "resolved_rate_ci95": [
+                0.446,
+                0.737
+              ],
+              "first_resolved_global_turn": {
+                "mean": 27.04,
+                "median": 25.5,
+                "min": 19,
+                "max": 44,
+                "n": 24,
+                "ci95": [
+                  24.86,
+                  29.22
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Nekusar, the Mindrazer"
@@ -1942,6 +2074,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Neyith of the Dire Hunt"
+              ],
+              "casts": {
+                "mean": 0.75,
+                "median": 1.0,
+                "min": 0,
+                "max": 3,
+                "n": 40,
+                "ci95": [
+                  0.52,
+                  0.98
+                ]
+              },
+              "games_resolved": 24,
+              "resolved_rate": 0.6,
+              "resolved_rate_ci95": [
+                0.446,
+                0.737
+              ],
+              "first_resolved_global_turn": {
+                "mean": 23.88,
+                "median": 25.0,
+                "min": 11,
+                "max": 38,
+                "n": 24,
+                "ci95": [
+                  20.93,
+                  26.82
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Neyith of the Dire Hunt"
@@ -2253,6 +2418,7 @@
           "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
           "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
           "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+          "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
           "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
         ]
       },
@@ -2264,6 +2430,7 @@
           "global_turn": 35,
           "ms": 364915,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 5,
@@ -2294,6 +2461,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 34,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2326,6 +2495,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2358,6 +2529,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2390,6 +2563,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2424,6 +2599,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 1
               },
@@ -2442,6 +2619,7 @@
           "global_turn": 48,
           "ms": 255442,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -2470,6 +2648,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2504,6 +2684,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 0,
+              "commander_casts": 3,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2538,6 +2720,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2574,6 +2758,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2608,6 +2794,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2624,6 +2812,7 @@
           "global_turn": 32,
           "ms": 215848,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 5,
@@ -2650,6 +2839,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2684,6 +2875,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2718,6 +2911,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2754,6 +2949,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 7
               },
@@ -2790,6 +2987,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2806,6 +3005,7 @@
           "global_turn": 38,
           "ms": 99389,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -2832,6 +3032,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2870,6 +3072,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 8
               },
@@ -2907,6 +3111,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -2939,6 +3145,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 2
               },
@@ -2973,6 +3181,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3
               },
@@ -2991,6 +3201,7 @@
           "global_turn": 35,
           "ms": 65668,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 7,
@@ -3020,6 +3231,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3054,6 +3267,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 8
               },
@@ -3088,6 +3303,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3122,6 +3339,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3154,6 +3373,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3170,6 +3391,7 @@
           "global_turn": 60,
           "ms": 164500,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 9,
@@ -3199,6 +3421,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3233,6 +3457,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3269,6 +3495,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 8
               },
@@ -3313,6 +3541,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 9,
+              "commander_casts": 2,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6
               },
@@ -3351,6 +3581,8 @@
               "proliferate_events": 0,
               "interaction_cast": 8,
               "interaction_received": 1,
+              "commander_casts": 3,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3367,6 +3599,7 @@
           "global_turn": 37,
           "ms": 208770,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 9,
@@ -3396,6 +3629,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 2
               },
@@ -3430,6 +3665,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3462,6 +3699,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3498,6 +3737,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 3,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 6
               },
@@ -3534,6 +3775,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 7
               },
@@ -3552,6 +3795,7 @@
           "global_turn": 37,
           "ms": 316817,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -3580,6 +3824,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3612,6 +3858,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3644,6 +3892,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 12
               },
@@ -3682,6 +3932,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3716,6 +3968,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3732,6 +3986,7 @@
           "global_turn": 33,
           "ms": 182802,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 5,
@@ -3767,6 +4022,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -3806,6 +4063,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3838,6 +4097,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3870,6 +4131,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3902,6 +4165,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -3918,6 +4183,7 @@
           "global_turn": 33,
           "ms": 420315,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 6,
@@ -3944,6 +4210,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 8
               },
@@ -3978,6 +4246,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4010,6 +4280,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4042,6 +4314,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4074,6 +4348,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4090,6 +4366,7 @@
           "global_turn": 31,
           "ms": 39630,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -4116,6 +4393,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4150,6 +4429,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4182,6 +4463,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 8,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4214,6 +4497,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4246,6 +4531,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4262,6 +4549,7 @@
           "global_turn": 39,
           "ms": 42752,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -4290,6 +4578,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4322,6 +4612,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 3
               },
@@ -4358,6 +4650,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 12,
                 "Ai(4)-mm-nekusar-discard": 7
@@ -4395,6 +4689,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4427,6 +4723,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 38,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4443,6 +4741,7 @@
           "global_turn": 51,
           "ms": 587540,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 7,
@@ -4474,6 +4773,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4510,6 +4811,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4546,6 +4849,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 44,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4578,6 +4883,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 8
               },
@@ -4614,6 +4921,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4630,6 +4939,7 @@
           "global_turn": 44,
           "ms": 308344,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 5,
@@ -4658,6 +4968,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4690,6 +5002,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4727,6 +5041,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 7,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 7
               },
@@ -4761,6 +5077,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6
               },
@@ -4795,6 +5113,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 2
               },
@@ -4813,6 +5133,7 @@
           "global_turn": 29,
           "ms": 38651,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 4,
@@ -4839,6 +5160,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4873,6 +5196,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4907,6 +5232,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 8,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4941,6 +5268,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4973,6 +5302,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -4989,6 +5320,7 @@
           "global_turn": 32,
           "ms": 92790,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 6,
@@ -5015,6 +5347,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5047,6 +5381,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5079,6 +5415,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5114,6 +5452,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 3
               },
@@ -5150,6 +5490,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 2
               },
@@ -5168,6 +5510,7 @@
           "global_turn": 28,
           "ms": 55620,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -5194,6 +5537,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5226,6 +5571,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5258,6 +5605,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5290,6 +5639,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5322,6 +5673,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5338,6 +5691,7 @@
           "global_turn": 34,
           "ms": 69292,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -5364,6 +5718,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5396,6 +5752,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -5432,6 +5790,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 6
               },
@@ -5466,6 +5826,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5498,6 +5860,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5514,6 +5878,7 @@
           "global_turn": 44,
           "ms": 404487,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 5,
@@ -5545,6 +5910,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5579,6 +5946,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 11,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3,
                 "Ai(4)-mm-nekusar-discard": 15
@@ -5616,6 +5985,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5652,6 +6023,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 3,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 3
               },
@@ -5690,6 +6063,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 2
               },
@@ -5708,6 +6083,7 @@
           "global_turn": 18,
           "ms": 130763,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 4,
@@ -5734,6 +6110,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5766,6 +6144,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5798,6 +6178,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5830,6 +6212,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5862,6 +6246,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5878,6 +6264,7 @@
           "global_turn": 52,
           "ms": 228366,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 8,
@@ -5910,6 +6297,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -5946,6 +6335,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3
               },
@@ -5983,6 +6374,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6019,6 +6412,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6056,6 +6451,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 4
               },
@@ -6074,6 +6471,7 @@
           "global_turn": 27,
           "ms": 98351,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 3,
@@ -6100,6 +6498,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6132,6 +6532,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6166,6 +6568,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6200,6 +6604,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6
               },
@@ -6234,6 +6640,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6250,6 +6658,7 @@
           "global_turn": 29,
           "ms": 144358,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 4,
@@ -6276,6 +6685,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6310,6 +6721,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 4,
                 "Ai(3)-mm-purphoros-pingers": 4
@@ -6345,6 +6758,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 7
               },
@@ -6382,6 +6797,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6414,6 +6831,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6430,6 +6849,7 @@
           "global_turn": 32,
           "ms": 62247,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 6,
@@ -6456,6 +6876,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6488,6 +6910,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6520,6 +6944,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6552,6 +6978,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6,
                 "Ai(4)-mm-nekusar-discard": 6
@@ -6587,6 +7015,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6603,6 +7033,7 @@
           "global_turn": 15,
           "ms": 600111,
           "truncated": true,
+          "draw": true,
           "per_seat": {
             "nekusar-discard": {
               "lands": 2,
@@ -6629,6 +7060,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6661,6 +7094,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6693,6 +7128,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6725,6 +7162,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6757,6 +7196,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6773,6 +7214,7 @@
           "global_turn": 34,
           "ms": 157309,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 7,
@@ -6801,6 +7243,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6836,6 +7280,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3,
                 "Ai(3)-mm-purphoros-pingers": 3
@@ -6871,6 +7317,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6907,6 +7355,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6942,6 +7392,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -6958,6 +7410,7 @@
           "global_turn": 43,
           "ms": 106492,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -6984,6 +7437,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7018,6 +7473,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 3
               },
@@ -7054,6 +7511,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7088,6 +7547,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7120,6 +7581,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7136,6 +7599,7 @@
           "global_turn": 36,
           "ms": 195541,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 7,
@@ -7167,6 +7631,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 32,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 5
               },
@@ -7201,6 +7667,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7233,6 +7701,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7265,6 +7735,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7299,6 +7771,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7315,6 +7789,7 @@
           "global_turn": 32,
           "ms": 92432,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -7345,6 +7820,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 1
               },
@@ -7382,6 +7859,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7417,6 +7896,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7449,6 +7930,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7481,6 +7964,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7497,6 +7982,7 @@
           "global_turn": 31,
           "ms": 56107,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 5,
@@ -7527,6 +8013,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -7563,6 +8051,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 2,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 9,
                 "Ai(5)-mm-neyith-fight": 11
@@ -7598,6 +8088,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 2
               },
@@ -7635,6 +8127,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7667,6 +8161,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7683,6 +8179,7 @@
           "global_turn": 33,
           "ms": 409980,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 6,
@@ -7711,6 +8208,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7743,6 +8242,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7777,6 +8278,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 1,
                 "Ai(4)-mm-nekusar-discard": 4
@@ -7814,6 +8317,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7846,6 +8351,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7862,6 +8369,7 @@
           "global_turn": 33,
           "ms": 218113,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 6,
@@ -7891,6 +8399,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 2,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7925,6 +8435,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7960,6 +8472,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -7995,6 +8509,8 @@
               "proliferate_events": 0,
               "interaction_cast": 4,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8029,6 +8545,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8045,6 +8563,7 @@
           "global_turn": 45,
           "ms": 227212,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 8,
@@ -8073,6 +8592,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6
               },
@@ -8109,6 +8630,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 41,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8145,6 +8668,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 5
               },
@@ -8181,6 +8706,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 2
               },
@@ -8215,6 +8742,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8231,6 +8760,7 @@
           "global_turn": 31,
           "ms": 57204,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -8259,6 +8789,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 1
               },
@@ -8295,6 +8827,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8329,6 +8863,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 3
               },
@@ -8366,6 +8902,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8398,6 +8936,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8414,6 +8954,7 @@
           "global_turn": 39,
           "ms": 159300,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 9,
@@ -8443,6 +8984,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 33,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 8
               },
@@ -8477,6 +9020,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 1
               },
@@ -8513,6 +9058,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 6
               },
@@ -8550,6 +9097,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8585,6 +9134,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 32,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8601,6 +9152,7 @@
           "global_turn": 35,
           "ms": 212801,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 6,
@@ -8630,6 +9182,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8668,6 +9222,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8702,6 +9258,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8734,6 +9292,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 14,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3
               },
@@ -8772,6 +9332,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8788,6 +9350,7 @@
           "global_turn": 32,
           "ms": 600002,
           "truncated": true,
+          "draw": true,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -8814,6 +9377,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8849,6 +9414,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-a": 4
               },
@@ -8883,6 +9450,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8915,6 +9484,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8947,6 +9518,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -8963,6 +9536,7 @@
           "global_turn": 39,
           "ms": 110565,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 6,
@@ -8993,6 +9567,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9025,6 +9601,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 1
               },
@@ -9064,6 +9642,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9099,6 +9679,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 33,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9133,6 +9715,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 30,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9149,6 +9733,7 @@
           "global_turn": 43,
           "ms": 254450,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -9177,6 +9762,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9213,6 +9800,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9250,6 +9839,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 3,
+              "commander_casts": 2,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9282,6 +9873,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 38,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9314,6 +9907,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9330,6 +9925,7 @@
           "global_turn": 30,
           "ms": 22010,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 4,
@@ -9356,6 +9952,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9388,6 +9986,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9420,6 +10020,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9455,6 +10057,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 7,
                 "Ai(5)-mm-neyith-fight": 7
@@ -9490,6 +10094,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -9858,6 +10464,39 @@
                 "ci95": [
                   -0.02,
                   0.12
+                ]
+              }
+            },
+            "commander_access": {
+              "commander": [
+                "Zur the Enchanter"
+              ],
+              "casts": {
+                "mean": 0.88,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  0.64,
+                  1.11
+                ]
+              },
+              "games_resolved": 25,
+              "resolved_rate": 0.625,
+              "resolved_rate_ci95": [
+                0.47,
+                0.758
+              ],
+              "first_resolved_global_turn": {
+                "mean": 23.92,
+                "median": 21,
+                "min": 11,
+                "max": 55,
+                "n": 25,
+                "ci95": [
+                  20.4,
+                  27.44
                 ]
               }
             },
@@ -10244,6 +10883,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Krenko, Mob Boss"
+              ],
+              "casts": {
+                "mean": 1.07,
+                "median": 1.0,
+                "min": 0,
+                "max": 3,
+                "n": 40,
+                "ci95": [
+                  0.85,
+                  1.3
+                ]
+              },
+              "games_resolved": 33,
+              "resolved_rate": 0.825,
+              "resolved_rate_ci95": [
+                0.68,
+                0.913
+              ],
+              "first_resolved_global_turn": {
+                "mean": 22.88,
+                "median": 22,
+                "min": 7,
+                "max": 36,
+                "n": 33,
+                "ci95": [
+                  20.59,
+                  25.17
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Krenko, Mob Boss"
@@ -10627,6 +11299,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Purphoros, God of the Forge"
+              ],
+              "casts": {
+                "mean": 1.05,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  0.95,
+                  1.15
+                ]
+              },
+              "games_resolved": 39,
+              "resolved_rate": 0.975,
+              "resolved_rate_ci95": [
+                0.871,
+                0.996
+              ],
+              "first_resolved_global_turn": {
+                "mean": 19.87,
+                "median": 18,
+                "min": 13,
+                "max": 38,
+                "n": 39,
+                "ci95": [
+                  18.02,
+                  21.73
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Purphoros, God of the Forge"
@@ -11006,6 +11711,39 @@
                 "ci95": [
                   -0.02,
                   0.07
+                ]
+              }
+            },
+            "commander_access": {
+              "commander": [
+                "Nekusar, the Mindrazer"
+              ],
+              "casts": {
+                "mean": 1.05,
+                "median": 1.0,
+                "min": 0,
+                "max": 3,
+                "n": 40,
+                "ci95": [
+                  0.83,
+                  1.27
+                ]
+              },
+              "games_resolved": 32,
+              "resolved_rate": 0.8,
+              "resolved_rate_ci95": [
+                0.652,
+                0.895
+              ],
+              "first_resolved_global_turn": {
+                "mean": 24.47,
+                "median": 24.0,
+                "min": 9,
+                "max": 39,
+                "n": 32,
+                "ci95": [
+                  22.43,
+                  26.51
                 ]
               }
             },
@@ -11392,6 +12130,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Neyith of the Dire Hunt"
+              ],
+              "casts": {
+                "mean": 0.68,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 40,
+                "ci95": [
+                  0.47,
+                  0.88
+                ]
+              },
+              "games_resolved": 23,
+              "resolved_rate": 0.575,
+              "resolved_rate_ci95": [
+                0.422,
+                0.715
+              ],
+              "first_resolved_global_turn": {
+                "mean": 22.96,
+                "median": 20,
+                "min": 11,
+                "max": 45,
+                "n": 23,
+                "ci95": [
+                  19.27,
+                  26.65
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Neyith of the Dire Hunt"
@@ -11703,6 +12474,7 @@
           "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
           "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
           "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+          "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
           "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
         ]
       },
@@ -11714,6 +12486,7 @@
           "global_turn": 38,
           "ms": 159207,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 4,
@@ -11744,6 +12517,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11778,6 +12553,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11812,6 +12589,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11846,6 +12625,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3,
                 "Ai(3)-mm-purphoros-pingers": 3
@@ -11883,6 +12664,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 34,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11899,6 +12682,7 @@
           "global_turn": 42,
           "ms": 175128,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -11925,6 +12709,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11959,6 +12745,8 @@
               "proliferate_events": 0,
               "interaction_cast": 4,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 33,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -11995,6 +12783,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 5,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12032,6 +12822,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 2
               },
@@ -12066,6 +12858,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12082,6 +12876,7 @@
           "global_turn": 30,
           "ms": 42455,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "neyith-fight": {
               "lands": 5,
@@ -12108,6 +12903,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12140,6 +12937,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12174,6 +12973,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12208,6 +13009,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12240,6 +13043,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12256,6 +13061,7 @@
           "global_turn": 33,
           "ms": 74405,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 4,
@@ -12282,6 +13088,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12314,6 +13122,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12352,6 +13162,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 3
               },
@@ -12388,6 +13200,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12422,6 +13236,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12438,6 +13254,7 @@
           "global_turn": 28,
           "ms": 63631,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 6,
@@ -12467,6 +13284,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12501,6 +13320,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12535,6 +13356,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12567,6 +13390,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12599,6 +13424,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12615,6 +13442,7 @@
           "global_turn": 35,
           "ms": 89223,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 6,
@@ -12641,6 +13469,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 4
               },
@@ -12675,6 +13505,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 1
               },
@@ -12712,6 +13544,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12744,6 +13578,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12776,6 +13612,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -12794,6 +13632,7 @@
           "global_turn": 40,
           "ms": 224050,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 9,
@@ -12823,6 +13662,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12855,6 +13696,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12890,6 +13733,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 1
               },
@@ -12930,6 +13775,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 33,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12964,6 +13811,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -12980,6 +13829,7 @@
           "global_turn": 48,
           "ms": 240720,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -13008,6 +13858,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 2,
                 "Ai(4)-mm-nekusar-discard": 6
@@ -13046,6 +13898,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13081,6 +13935,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 38,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13113,6 +13969,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 39,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13147,6 +14005,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13163,6 +14023,7 @@
           "global_turn": 40,
           "ms": 204968,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -13194,6 +14055,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 3,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13226,6 +14089,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13258,6 +14123,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13294,6 +14161,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 3
               },
@@ -13332,6 +14201,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 7,
                 "Ai(4)-mm-nekusar-discard": 7
@@ -13351,6 +14222,7 @@
           "global_turn": 39,
           "ms": 99297,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -13377,6 +14249,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13416,6 +14290,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13452,6 +14328,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13486,6 +14364,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13518,6 +14398,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 3,
                 "Ai(2)-mm-krenko-tokens": 3,
@@ -13539,6 +14421,7 @@
           "global_turn": 38,
           "ms": 60670,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 6,
@@ -13567,6 +14450,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13602,6 +14487,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 2
               },
@@ -13640,6 +14527,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13674,6 +14563,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 6,
                 "Ai(5)-mm-neyith-fight": 6
@@ -13711,6 +14602,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13727,6 +14620,7 @@
           "global_turn": 63,
           "ms": 56395,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 5,
@@ -13760,6 +14654,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13795,6 +14691,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13827,6 +14725,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 55,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13864,6 +14764,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 32,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -13902,6 +14804,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 45,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 5,
                 "Ai(4)-mm-nekusar-discard": 10
@@ -13921,6 +14825,7 @@
           "global_turn": 32,
           "ms": 600372,
           "truncated": true,
+          "draw": true,
           "per_seat": {
             "krenko-tokens": {
               "lands": 7,
@@ -13949,6 +14854,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -13981,6 +14888,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14013,6 +14922,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14045,6 +14956,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14079,6 +14992,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14095,6 +15010,7 @@
           "global_turn": 34,
           "ms": 205123,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 6,
@@ -14124,6 +15040,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14156,6 +15074,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14190,6 +15110,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 34,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14224,6 +15146,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 4
               },
@@ -14260,6 +15184,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14276,6 +15202,7 @@
           "global_turn": 25,
           "ms": 38592,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -14302,6 +15229,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14334,6 +15263,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14366,6 +15297,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 38,
                 "Ai(4)-mm-nekusar-discard": 44
@@ -14401,6 +15334,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14433,6 +15368,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14449,6 +15386,7 @@
           "global_turn": 41,
           "ms": 600012,
           "truncated": true,
+          "draw": true,
           "per_seat": {
             "neyith-fight": {
               "lands": 7,
@@ -14475,6 +15413,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 40,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14507,6 +15447,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14544,6 +15486,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 4,
                 "Ai(3)-mm-purphoros-pingers": 5
@@ -14581,6 +15525,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14615,6 +15561,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14631,6 +15579,7 @@
           "global_turn": 32,
           "ms": 69584,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 5,
@@ -14659,6 +15608,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 4
               },
@@ -14697,6 +15648,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14729,6 +15682,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14763,6 +15718,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14797,6 +15754,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14813,6 +15772,7 @@
           "global_turn": 28,
           "ms": 22892,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -14839,6 +15799,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14873,6 +15835,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14907,6 +15871,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14941,6 +15907,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14973,6 +15941,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -14989,6 +15959,7 @@
           "global_turn": 38,
           "ms": 203978,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -15017,6 +15988,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(5)-mm-neyith-fight": 1
               },
@@ -15055,6 +16028,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15090,6 +16065,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 11,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3
               },
@@ -15126,6 +16103,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15161,6 +16140,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 2
               },
@@ -15179,6 +16160,7 @@
           "global_turn": 29,
           "ms": 51742,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -15208,6 +16190,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 1
               },
@@ -15242,6 +16226,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15274,6 +16260,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15310,6 +16298,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15344,6 +16334,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15360,6 +16352,7 @@
           "global_turn": 40,
           "ms": 98298,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -15388,6 +16381,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 11,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 1
               },
@@ -15425,6 +16420,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 3,
+              "commander_resolved_turn": 7,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 3
               },
@@ -15463,6 +16460,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 7,
                 "Ai(5)-mm-neyith-fight": 6
@@ -15498,6 +16497,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15530,6 +16531,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15546,6 +16549,7 @@
           "global_turn": 30,
           "ms": 80867,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 5,
@@ -15572,6 +16576,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15604,6 +16610,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15636,6 +16644,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15670,6 +16680,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15704,6 +16716,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 2,
                 "Ai(3)-mm-purphoros-pingers": 2
@@ -15723,6 +16737,7 @@
           "global_turn": 31,
           "ms": 47326,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 6,
@@ -15752,6 +16767,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15784,6 +16801,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15816,6 +16835,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15851,6 +16872,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 6
               },
@@ -15887,6 +16910,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15903,6 +16928,7 @@
           "global_turn": 37,
           "ms": 91333,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 8,
@@ -15932,6 +16958,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15964,6 +16992,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -15996,6 +17026,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16030,6 +17062,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16064,6 +17098,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16080,6 +17116,7 @@
           "global_turn": 38,
           "ms": 500205,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 10,
@@ -16108,6 +17145,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 2
               },
@@ -16142,6 +17181,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16178,6 +17219,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 3,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 1,
                 "Ai(5)-mm-neyith-fight": 4
@@ -16213,6 +17256,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16245,6 +17290,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 14,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16261,6 +17308,7 @@
           "global_turn": 39,
           "ms": 79699,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 4,
@@ -16289,6 +17337,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 4
               },
@@ -16323,6 +17373,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 34,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16355,6 +17407,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -16389,6 +17443,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 6,
                 "Ai(2)-mm-krenko-tokens": 6
@@ -16424,6 +17480,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 37,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16440,6 +17498,7 @@
           "global_turn": 44,
           "ms": 71923,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -16468,6 +17527,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 1,
                 "Ai(5)-mm-neyith-fight": 1
@@ -16505,6 +17566,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16541,6 +17604,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 4
               },
@@ -16577,6 +17642,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 33,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16611,6 +17678,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16627,6 +17696,7 @@
           "global_turn": 30,
           "ms": 26536,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 5,
@@ -16653,6 +17723,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16685,6 +17757,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16717,6 +17791,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 12
               },
@@ -16751,6 +17827,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16783,6 +17861,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16799,6 +17879,7 @@
           "global_turn": 41,
           "ms": 58414,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 4,
@@ -16825,6 +17906,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16862,6 +17945,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 31,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16898,6 +17983,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16938,6 +18025,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 18
               },
@@ -16974,6 +18063,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -16990,6 +18081,7 @@
           "global_turn": 37,
           "ms": 44828,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 5,
@@ -17018,6 +18110,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 36,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17050,6 +18144,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17082,6 +18178,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 6
               },
@@ -17118,6 +18216,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17150,6 +18250,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -17168,6 +18270,7 @@
           "global_turn": 37,
           "ms": 139553,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 4,
@@ -17196,6 +18299,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17228,6 +18333,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17262,6 +18369,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 35,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17297,6 +18406,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {
                 "Ai(4)-mm-nekusar-discard": 4,
                 "Ai(5)-mm-neyith-fight": 5
@@ -17334,6 +18445,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17350,6 +18463,7 @@
           "global_turn": 38,
           "ms": 184541,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 4,
@@ -17378,6 +18492,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17410,6 +18526,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17445,6 +18563,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 1,
                 "Ai(5)-mm-neyith-fight": 1
@@ -17482,6 +18602,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17516,6 +18638,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17532,6 +18656,7 @@
           "global_turn": 35,
           "ms": 48409,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "krenko-tokens": {
               "lands": 7,
@@ -17558,6 +18683,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 27,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17592,6 +18719,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17628,6 +18757,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 1,
                 "Ai(5)-mm-neyith-fight": 1
@@ -17663,6 +18794,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 8
               },
@@ -17699,6 +18832,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17715,6 +18850,7 @@
           "global_turn": 40,
           "ms": 64768,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 8,
@@ -17744,6 +18880,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17779,6 +18917,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17813,6 +18953,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -17849,6 +18991,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 6
               },
@@ -17883,6 +19027,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17899,6 +19045,7 @@
           "global_turn": 39,
           "ms": 215636,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 6,
@@ -17927,6 +19074,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 3,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -17962,6 +19111,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-purphoros-pingers": 3
               },
@@ -17998,6 +19149,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-zur-enchantress-b": 6,
                 "Ai(2)-mm-krenko-tokens": 6
@@ -18036,6 +19189,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 3,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18068,6 +19223,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18084,6 +19241,7 @@
           "global_turn": 31,
           "ms": 103803,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "purphoros-pingers": {
               "lands": 4,
@@ -18113,6 +19271,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18148,6 +19308,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18185,6 +19347,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 26,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18217,6 +19381,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18249,6 +19415,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18265,6 +19433,7 @@
           "global_turn": 28,
           "ms": 63939,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "nekusar-discard": {
               "lands": 3,
@@ -18291,6 +19460,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18323,6 +19494,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18355,6 +19528,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18389,6 +19564,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18423,6 +19600,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18439,6 +19618,7 @@
           "global_turn": 44,
           "ms": 144237,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -18467,6 +19647,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 21,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18502,6 +19684,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 17,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18538,6 +19722,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 23,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18575,6 +19761,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 3,
+              "commander_resolved_turn": 24,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18610,6 +19798,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 4
               },
@@ -18628,6 +19818,7 @@
           "global_turn": 39,
           "ms": 131893,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 8,
@@ -18656,6 +19847,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 8,
                 "Ai(4)-mm-nekusar-discard": 3
@@ -18691,6 +19884,8 @@
               "proliferate_events": 0,
               "interaction_cast": 3,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18728,6 +19923,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 32,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18763,6 +19960,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 28,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18797,6 +19996,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18813,6 +20014,7 @@
           "global_turn": 40,
           "ms": 121571,
           "truncated": false,
+          "draw": false,
           "per_seat": {
             "zur-enchantress": {
               "lands": 7,
@@ -18841,6 +20043,8 @@
               "proliferate_events": 0,
               "interaction_cast": 1,
               "interaction_received": 1,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 3
               },
@@ -18879,6 +20083,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18914,6 +20120,8 @@
               "proliferate_events": 0,
               "interaction_cast": 2,
               "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18946,6 +20154,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 29,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
@@ -18978,6 +20188,8 @@
               "proliferate_events": 0,
               "interaction_cast": 0,
               "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-krenko-tokens": 12
               },

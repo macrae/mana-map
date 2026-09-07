@@ -334,3 +334,98 @@ def test_every_tracked_record_carries_the_opening_hand():
         for slug, seat in doc["analysis"]["seats"].items():
             assert "mulligans_taken" in seat, f"{path.name}: {slug}"
             assert "mulligan_kept" in seat, f"{path.name}: {slug}"
+
+
+# ── Does the commander STICK — the question the goldfish cannot ask ────────
+#
+# Every deck in the fleet has a goldfish figure for its commander, and every one
+# of them answers "was the mana there". Measured on heliod's 20-game pod run,
+# where the goldfish reports the commander castable by turn six in 80% of games:
+# it RESOLVED in 6 of 20, and the back face the whole deck is built around
+# appeared in 3. A solitaire model has no counterspells, no removal, no
+# commander tax and no table, so the gap is not a defect in either instrument —
+# it is the measurement nothing was making.
+
+def test_the_commander_is_counted_when_it_is_cast_and_when_it_resolves(game):
+    """Both commanders resolve in the fixture: Radagast on global turn 10 and Edgar
+    on 15, one cast each. `commander_casts` counts SPELLS and `commander_resolved_turn`
+    the first ARRIVAL, because the difference between them is what interaction and
+    commander tax cost the deck."""
+    f = parse.game_facts(game, CMD)
+    rad = f["per_seat"]["Ai(1)-radagast"]
+    edg = f["per_seat"]["Ai(2)-edgar-vampires"]
+    assert rad["commander_casts"] == 1 and rad["commander_resolved_turn"] == 10
+    assert edg["commander_casts"] == 1 and edg["commander_resolved_turn"] == 15
+
+
+def test_an_unidentified_commander_is_absent_from_the_access_block_too(game):
+    """Same rule as the damage block: the log names no commander, so a seat whose
+    commander is unknown must carry no key at all rather than `casts: 0`, which a
+    reader cannot tell from a deck that never cast it."""
+    f = parse.game_facts(game)
+    for p in f["per_seat"].values():
+        assert "commander_casts" not in p and "commander_resolved_turn" not in p
+    _, agg = parse.analyze_logs([FIX], LABEL)
+    assert all("commander_access" not in s for s in agg["seats"].values())
+
+
+#: A CAST IS NOT AN ARRIVAL, and this game has the three lines that confuse them,
+#: all taken verbatim from heliod's pod logs. The transform is placed BEFORE the
+#: real arrival on purpose: it is the ordering under which the id rule is
+#: load-bearing rather than incidentally right.
+_COMMANDER_TRAPS = """\
+Mulligan: Ai(1)-mm-heliod has kept a hand of 7 cards
+Mulligan: Ai(2)-mm-abaddon has kept a hand of 7 cards
+Turn: Turn 1 (Ai(1)-mm-heliod)
+Add To Stack: Ai(1)-mm-heliod cast Heliod, the Radiant Dawn
+Add To Stack: Ai(2)-mm-abaddon cast Counterspell targeting [Heliod, the Radiant Dawn]
+Resolve Stack: Counterspell
+Resolve Stack: Heliod, the Warped Eclipse (100) - Transform Heliod, the Warped Eclipse (100).
+Turn: Turn 5 (Ai(1)-mm-heliod)
+Add To Stack: Ai(1)-mm-heliod cast Heliod, the Radiant Dawn
+Resolve Stack: Heliod, the Radiant Dawn - Creature 4 / 4
+Resolve Stack: When Heliod, the Radiant Dawn enters, return target enchantment card that isn't a God from your graveyard to your hand. (Targeting: [[Forced Fruition (53)]]) [Zone Changer: Heliod, the Radiant Dawn (100)]
+Game Outcome: Turn 5
+Game Outcome: Ai(1)-mm-heliod has won because Ai(2)-mm-abaddon has lost
+Game Result: Game 1 ended in 1000 ms
+"""
+
+
+def test_a_transform_is_not_a_second_arrival_and_a_countered_cast_still_counts():
+    """The trap is that Forge names an ability of a permanent already on the
+    battlefield with the SAME leading text as the spell that put it there:
+
+        Resolve Stack: Heliod, the Radiant Dawn - Creature 4 / 4
+        Resolve Stack: Heliod, the Warped Eclipse (100) - Transform Heliod, the Warped Eclipse (100).
+
+    and `Heliod, the Warped Eclipse` is a face of the commander card, which
+    `_is_commander` matches deliberately. The only thing separating the two is
+    the permanent id, so the leading name is compared VERBATIM. Add the
+    obvious-looking normalisation — strip a trailing `(nnn)` before matching —
+    and this game reports the commander arriving on turn 1 instead of turn 5,
+    because the transform is the first line that matches.
+
+    The first cast is also countered, so `commander_casts` is 2 against one
+    arrival: that gap is the figure, not an error in it.
+    """
+    cmd = {"Ai(1)-mm-heliod": {"Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"}}
+    games = parse.parse_games(_COMMANDER_TRAPS)
+    assert len(games) == 1
+    p = parse.game_facts(games[0], cmd)["per_seat"]["Ai(1)-mm-heliod"]
+    assert p["commander_casts"] == 2, "the countered spell was still cast"
+    assert p["commander_resolved_turn"] == 5, "the transform is not an arrival"
+
+
+def test_the_access_block_reports_casts_against_arrivals():
+    """The gap between `casts` and `games_resolved` is the figure: two casts and one
+    arrival in one game is a deck paying tax, not a deck with a reliable commander."""
+    cmd = {"Ai(1)-mm-heliod": {"Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"}}
+    _, agg = parse.analyze_logs([_COMMANDER_TRAPS],
+                                {"Ai(1)-mm-heliod": "heliod", "Ai(2)-mm-abaddon": "abaddon"},
+                                cmd)
+    acc = agg["seats"]["heliod"]["commander_access"]
+    assert acc["casts"]["mean"] == 2.0 and acc["games_resolved"] == 1
+    assert acc["resolved_rate"] == 1.0
+    assert acc["first_resolved_global_turn"]["mean"] == 5.0
+    # the opponent's commander is unknown, so it gets no block at all
+    assert "commander_access" not in agg["seats"]["abaddon"]

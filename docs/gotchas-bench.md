@@ -885,3 +885,126 @@ TWO IMPLEMENTATION NOTES THAT COST SOMETHING TO GET RIGHT:
   across bodies — (6, 1), never (6, 6).
 * The draw key is `etb_draw`. An invented `on_etb` silently read nothing, which
   no test would have caught because absent draw looks exactly like no draw.
+
+---
+
+## The goldfish asks whether the mana was there; nothing asked whether the commander STICKS
+
+**2026-09-07, heliod.** Every deck in the fleet had a goldfish figure for its
+commander and every one of them answered the same question: *could this deck
+afford it by turn N.* Heliod's read **80% by turn six**. Then the Forge logs:
+
+```
+  Heliod RESOLVED in        6/20 games   (30%)
+  transformed to Eclipse    3/20 games   (15%)
+  first cast, global turn   21 25 30 32 34 41      (median 31 — the fleet's latest)
+```
+
+The solitaire model has no counterspells, no removal, no commander tax and no
+table that is doing something else. It is not wrong — it answers its own
+question correctly — but nothing in the repo was asking the other one, and the
+two had been read as the same number.
+
+`commander_access` in `sim/parse.py` is the measurement. Across the whole fleet
+on the runs already on disk:
+
+| deck | n | casts/game | resolved | ci95 |
+|---|---|---|---|---|
+| hapatra | 20 | 1.70 | 1.000 | [0.84, 1.00] |
+| yawgmoth-swarm | 20 | 1.20 | 0.950 | [0.76, 0.99] |
+| goblin-storm | 100 | 1.55 | 0.910 | [0.84, 0.95] |
+| radagast | 20 | 1.10 | 0.900 | [0.70, 0.97] |
+| zur-enchantress | 60 | 1.57 | 0.867 | [0.76, 0.93] |
+| sisay | 20 | 0.95 | 0.850 | [0.64, 0.95] |
+| edgar-vampires | 400 | 0.82 | 0.657 | [0.61, 0.70] |
+| gishath | 20 | 0.60 | 0.550 | [0.34, 0.74] |
+| ur-dragon | 60 | 0.42 | 0.350 | [0.24, 0.48] |
+| **heliod** | **20** | **0.30** | **0.300** | **[0.14, 0.52]** |
+
+Heliod is last on both columns and its deck is named for the back face of a card
+it casts 0.30 times a game. Read beside `mana-analysis` — {2}{W}{W} against a
+white on-curve probability of 0.446 on lands alone, in a base of **14 Islands to
+3 Plains** — that is not an AI-piloting story, it is a colour-source story, and
+it is the first thing to fix.
+
+### The id suffix is what separates a cast from an arrival
+
+Forge writes a resolving spell and an ability of a permanent already on the
+battlefield with the same leading text:
+
+```
+Resolve Stack: Heliod, the Radiant Dawn - Creature 4 / 4
+Resolve Stack: Heliod, the Warped Eclipse (100) - Transform Heliod, the Warped Eclipse (100).
+```
+
+`Heliod, the Warped Eclipse` is a face of the commander card and `_is_commander`
+matches faces on purpose, so the **obvious-looking normalisation — strip a
+trailing `(nnn)` before matching — is the bug.** With it, this deck's commander
+arrives on the turn it TRANSFORMS, which is later than it arrived and earlier
+than the next cast. Swept across every tracked log: 77 transform resolutions in
+the two shapes Forge emits, all 77 carrying the id.
+
+An earlier cut paired each resolution to a PENDING cast instead. It was
+defensible and it was deleted, because no real log distinguishes it from the id
+rule and a mechanism nobody can write a failing test for is a mechanism nobody
+is testing.
+
+`commander_casts` counts SPELLS: a countered one counts and a recast after
+removal counts. The gap between casts and arrivals is what tax and interaction
+cost the deck, and it is the figure, not an error in it.
+
+## Forge models the card correctly and the AI barely uses it
+
+**2026-09-07, heliod.** *Heliod, the Warped Eclipse* grants flash to every spell
+and reduces each by {1} for each card the opponents drew this turn. The pilot's
+question was whether Forge could model it. It can, exactly:
+
+```
+S:Mode$ CastWithFlash | ValidCard$ Card | ValidSA$ Spell | Caster$ You
+S:Mode$ ReduceCost | Type$ Spell | Activator$ You | Amount$ X
+SVar:X:PlayerCountOpponents$CardsDrawn
+```
+
+All 100 cards in the deck exist in Forge's `cardsfolder`, every punisher trigger
+is scripted, and `AILogic$ Always` on the transform means the AI does flip him.
+**What the AI does not do is sequence for the ability.** Over 20 games our seat
+cast 226 spells: 196 on its own turn and 30 on an opponent's — and 24 of the 30
+were counterspells and removal, which are instants that would have been cast in
+that window with or without the commander. Non-instants cast in the flash window
+the deck is built around, in twenty games: **two** (a Talisman and a Loran).
+
+The symmetric-draw half fares better than expected and is worth recording
+because it contradicts the obvious guess: the AI **does** pull a lever that
+helps opponents when the payoff is on its own board. Temple Bell was activated
+14 times off 4 castings, Kwain 9 times off 5, and Iron Maiden / Ebony Owl
+Netsuke / Viseling landed 5 / 6 / 5 times and dealt real damage.
+
+Six cards in the deck carry Forge's own `AI:RemoveDeck` marker — `RemoveDeck:All`
+on Psychosis Crawler and Skyscribing, `RemoveDeck:Random` on Forced Fruition,
+Prosperity, Mystic Remora and Loran of the Third Path. That flag governs deck
+GENERATION, not a supplied `.dck`, so the cards stay in and their triggers fire;
+what it marks is that the AI has no logic for them. **Psychosis Crawler was cast
+0 times in 20 games** — a {5} artifact creature with `SVar:NeedsToPlayVar:X GE3`
+that the evaluator prices as a `*/*`. Same class as the Ashnod's Altar finding:
+read correctly, never played.
+
+**So a Forge win rate for this deck is a FLOOR**, in the sense `simulate`'s
+PILOTING block already reports — and the floor is the honest number for a
+comparison between two of your own lists, which is what `experiment` is for.
+
+### What the goldfish cannot be taught here
+
+The deck's clock is *opponent state*: Iron Maiden and Viseling read the number of
+cards in an opponent's hand minus four; Ebony Owl Netsuke wants seven; the
+commander's discount counts what the opponents drew. The goldfish has **one
+opponent at 40 life who does nothing** and no opponents' draws at all, so none of
+it is reachable — and a model of one of the five punishers would produce a figure
+shaped like the clock that is not the clock.
+
+The one thing that *is* reachable was swept and rejected: `whenever you draw a
+card, each opponent loses N life` matches **exactly one card in 34,890**
+(Psychosis Crawler). Of the 49 cards using `whenever you draw a card`, about
+twenty put +1/+1 counters on something and three drain. That is a
+one-card pattern in a shared model, and the card Forge never casts.
+
+Absent, with the reason stated, is the answer. Forge measures the clock.

@@ -164,11 +164,47 @@ def _case_id(case):
 NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 
 
+#: `<slug>/<artifact>` -> why it fails today. STRICT xfail, the same contract
+#: `ISSUE_XFAIL` uses below: if one starts passing, this table is wrong and the
+#: test says so rather than going quiet.
+#:
+#: THIS IS FOR AN ARTIFACT AN AGENT MUST REWRITE, NEVER FOR ONE A COMMAND CAN
+#: REGENERATE. A stale `goldfish_metrics.json` is a command away and belongs
+#: nowhere near this table; agent-authored prose describing cards the deck no
+#: longer runs is a spawn, and deferring a spawn is a scheduling decision that
+#: should be visible in the tree rather than a red suite everyone learns to
+#: scroll past.
+#:
+#: A validator that fires on correct data is worse than no validator — and a
+#: suite that is permanently red is the same failure wearing different clothes,
+#: because a tenth failure joining nine is invisible.
+STALE_XFAIL = {
+    "heliod/engine.json":
+        "the paper check-in of 2026-09-07 replaced fifteen cards, and the engine "
+        "model still names the kill they took out — Hullbreaker Horror, Aetherflux "
+        "Reservoir, Displacer Kitten, Ancient Tomb, Grand Abolisher. It is not "
+        "wrong about the deck it was written for; it is a model of a different 99. "
+        "Rewriting it is a `/analyze-engine` spawn, deliberately deferred until "
+        "the swap round the pilot has queued lands, so it is written once.",
+    "heliod/tutor_guide.json":
+        "same check-in: the tutor lines fetch Aetherflux Reservoir and Hullbreaker "
+        "Horror, which are no longer in the 99. A `/publish-deck` prose spawn, "
+        "deferred with the engine model for the same reason.",
+    "heliod/considering.json":
+        "same check-in, and this one is LEGACY besides — the Short List belongs to "
+        "the frozen magazine renderer. Its natural cuts name Jace Beleren and "
+        "Teferi, Time Raveler, both of which the paper list already cut.",
+}
+
+
 @requires_deck
 @pytest.mark.parametrize("case", _cases(), ids=_case_id)
 def test_tracked_artifact_passes_its_validator(case, capsys, unchanged, request):
     """A tracked artifact that fails its own gate is a published error."""
     slug, branch, artifact = case
+    if not branch and f"{slug}/{artifact}" in STALE_XFAIL:
+        request.node.add_marker(pytest.mark.xfail(
+            strict=True, reason=STALE_XFAIL[f"{slug}/{artifact}"]))
     if artifact in NEEDS_STRATEGY and not STRATEGY_INDEX_PATH.exists():
         pytest.skip("requires the strategy DB (run `manamap pilot build-strategy-db`)")
     if artifact in NEEDS_CORPUS and not OUTPUT_CSV_PATH.exists():
@@ -310,6 +346,16 @@ ISSUE_XFAIL = {
         "quotes '31 lands' in three places — the DISTINCT-CARD count, where "
         "the deck runs 36 copies. The copies-vs-entries defect this repo "
         "documents, live in tracked prose.",
+    "heliod":
+        "prose predates the paper check-in of 2026-09-07, whose fifteen swaps "
+        "took out the entire kill the issue is written around — the-kill names "
+        "Aetherflux Reservoir and Grand Abolisher, at-the-table names Drannith "
+        "Magistrate, sources-say names Ancient Tomb. THIRD deck to land here for "
+        "the same reason and by the same route: the magazine renderer is frozen "
+        "and magazine-editor was retired 2026-08-19, so a deck that changes after "
+        "its issue shipped has no author left to re-run. That is what makes the "
+        "compact deck page (docs/manual-v5-spec.md) the replacement rather than a "
+        "preference.",
 }
 
 

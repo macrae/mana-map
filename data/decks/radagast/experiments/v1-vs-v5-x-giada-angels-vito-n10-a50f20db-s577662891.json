@@ -41,6 +41,7 @@
       "games": 10,
       "analysis": {
         "games": 10,
+        "decided": 10,
         "seats": {
           "radagast": {
             "wins": 0,
@@ -49,6 +50,7 @@
               0.0,
               0.278
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 21.78,
               "median": 21,
@@ -90,6 +92,61 @@
                 9.45
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.5,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                0.06,
+                0.94
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 8,
+              "started_rate": 0.8,
+              "win_rate_when_starting": {
+                "rate": 0.0,
+                "wins": 0,
+                "games": 8,
+                "ci95": [
+                  0.0,
+                  0.324
+                ]
+              },
+              "win_rate_when_not": {
+                "rate": 0.0,
+                "wins": 0,
+                "games": 2,
+                "ci95": [
+                  0.0,
+                  0.658
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "2": 3,
+                "3": 7
+              },
+              "mean_position": 2.7,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 6.9,
+              "median": 7.0,
+              "min": 6,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                6.7,
+                7.1
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 3.4,
               "median": 1.0,
@@ -110,6 +167,138 @@
               "ci95": [
                 18.72,
                 48.28
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 3.4,
+              "median": 1.0,
+              "min": 0,
+              "max": 10,
+              "n": 10,
+              "ci95": [
+                0.78,
+                6.02
+              ]
+            },
+            "life_gained": {
+              "mean": 0.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                -0.19,
+                0.59
+              ]
+            },
+            "life_lost": {
+              "mean": 39.7,
+              "median": 37.0,
+              "min": 9,
+              "max": 90,
+              "n": 10,
+              "ci95": [
+                27.04,
+                52.36
+              ]
+            },
+            "creatures_lost": {
+              "mean": 1.4,
+              "median": 0.5,
+              "min": 0,
+              "max": 5,
+              "n": 10,
+              "ci95": [
+                0.15,
+                2.65
+              ]
+            },
+            "counter_events": {
+              "mean": 0.6,
+              "median": 0.0,
+              "min": 0,
+              "max": 6,
+              "n": 10,
+              "ci95": [
+                -0.58,
+                1.78
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_received": {
+              "mean": 0.3,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                -0.12,
+                0.72
+              ]
+            },
+            "activations": {
+              "mean": 1.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 4,
+              "n": 10,
+              "ci95": [
+                0.15,
+                2.25
+              ]
+            },
+            "triggers": {
+              "mean": 4.8,
+              "median": 3.0,
+              "min": 0,
+              "max": 23,
+              "n": 10,
+              "ci95": [
+                0.59,
+                9.01
               ]
             },
             "first_attack_turn": {
@@ -202,6 +391,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Radagast of Rhosgobel"
+              ],
+              "casts": {
+                "mean": 0.8,
+                "median": 1.0,
+                "min": 0,
+                "max": 2,
+                "n": 10,
+                "ci95": [
+                  0.41,
+                  1.19
+                ]
+              },
+              "games_resolved": 7,
+              "resolved_rate": 0.7,
+              "resolved_rate_ci95": [
+                0.397,
+                0.892
+              ],
+              "first_resolved_global_turn": {
+                "mean": 12.71,
+                "median": 13,
+                "min": 10,
+                "max": 16,
+                "n": 7,
+                "ci95": [
+                  11.02,
+                  14.41
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Radagast of Rhosgobel"
@@ -241,6 +463,7 @@
               0.397,
               0.892
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 23.0,
               "median": 26,
@@ -281,6 +504,62 @@
                 11.39
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.4,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                0.08,
+                0.72
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 2,
+              "started_rate": 0.2,
+              "win_rate_when_starting": {
+                "rate": 1.0,
+                "wins": 2,
+                "games": 2,
+                "ci95": [
+                  0.342,
+                  1.0
+                ]
+              },
+              "win_rate_when_not": {
+                "rate": 0.625,
+                "wins": 5,
+                "games": 8,
+                "ci95": [
+                  0.306,
+                  0.863
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "1": 7,
+                "2": 2,
+                "3": 1
+              },
+              "mean_position": 1.4,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 7.0,
+              "median": 7.0,
+              "min": 7,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                7.0,
+                7.0
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 82.6,
               "median": 93.5,
@@ -301,6 +580,138 @@
               "ci95": [
                 2.22,
                 8.38
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 82.6,
+              "median": 93.5,
+              "min": 14,
+              "max": 148,
+              "n": 10,
+              "ci95": [
+                56.94,
+                108.26
+              ]
+            },
+            "life_gained": {
+              "mean": 34.1,
+              "median": 17.0,
+              "min": 0,
+              "max": 101,
+              "n": 10,
+              "ci95": [
+                10.29,
+                57.91
+              ]
+            },
+            "life_lost": {
+              "mean": 25.1,
+              "median": 14.0,
+              "min": 0,
+              "max": 82,
+              "n": 10,
+              "ci95": [
+                7.8,
+                42.4
+              ]
+            },
+            "creatures_lost": {
+              "mean": 1.2,
+              "median": 1.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                0.5,
+                1.9
+              ]
+            },
+            "counter_events": {
+              "mean": 3.1,
+              "median": 1.5,
+              "min": 0,
+              "max": 12,
+              "n": 10,
+              "ci95": [
+                0.4,
+                5.8
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 0.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                -0.19,
+                0.59
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 0.1,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                -0.1,
+                0.3
+              ]
+            },
+            "interaction_received": {
+              "mean": 1.0,
+              "median": 1.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                0.35,
+                1.65
+              ]
+            },
+            "activations": {
+              "mean": 1.3,
+              "median": 1.0,
+              "min": 0,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                -0.01,
+                2.61
+              ]
+            },
+            "triggers": {
+              "mean": 10.0,
+              "median": 10.0,
+              "min": 2,
+              "max": 21,
+              "n": 10,
+              "ci95": [
+                5.61,
+                14.39
               ]
             },
             "first_attack_turn": {
@@ -393,6 +804,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Giada, Font of Hope"
+              ],
+              "casts": {
+                "mean": 1.4,
+                "median": 1.0,
+                "min": 1,
+                "max": 3,
+                "n": 10,
+                "ci95": [
+                  0.97,
+                  1.83
+                ]
+              },
+              "games_resolved": 10,
+              "resolved_rate": 1.0,
+              "resolved_rate_ci95": [
+                0.722,
+                1.0
+              ],
+              "first_resolved_global_turn": {
+                "mean": 6.9,
+                "median": 5.0,
+                "min": 5,
+                "max": 22,
+                "n": 10,
+                "ci95": [
+                  3.59,
+                  10.21
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Giada, Font of Hope"
@@ -432,6 +876,7 @@
               0.108,
               0.603
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 25.86,
               "median": 24,
@@ -471,6 +916,54 @@
                 10.54
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.7,
+              "median": 0.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                0.04,
+                1.36
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 0,
+              "started_rate": 0.0,
+              "win_rate_when_starting": null,
+              "win_rate_when_not": {
+                "rate": 0.3,
+                "wins": 3,
+                "games": 10,
+                "ci95": [
+                  0.108,
+                  0.603
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "1": 3,
+                "2": 5,
+                "3": 2
+              },
+              "mean_position": 1.9,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 6.7,
+              "median": 7.0,
+              "min": 5,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                6.28,
+                7.12
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 4.2,
               "median": 3.5,
@@ -491,6 +984,138 @@
               "ci95": [
                 32.54,
                 71.86
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.7,
+              "median": 0.0,
+              "min": 0,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                -0.67,
+                2.07
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 4.9,
+              "median": 3.5,
+              "min": 0,
+              "max": 23,
+              "n": 10,
+              "ci95": [
+                0.88,
+                8.92
+              ]
+            },
+            "life_gained": {
+              "mean": 23.8,
+              "median": 17.5,
+              "min": 0,
+              "max": 63,
+              "n": 10,
+              "ci95": [
+                10.26,
+                37.34
+              ]
+            },
+            "life_lost": {
+              "mean": 51.5,
+              "median": 58.0,
+              "min": 0,
+              "max": 87,
+              "n": 10,
+              "ci95": [
+                32.06,
+                70.94
+              ]
+            },
+            "creatures_lost": {
+              "mean": 0.3,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                -0.12,
+                0.72
+              ]
+            },
+            "counter_events": {
+              "mean": 0.5,
+              "median": 0.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                -0.17,
+                1.17
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 1.3,
+              "median": 1.5,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                0.52,
+                2.08
+              ]
+            },
+            "interaction_received": {
+              "mean": 0.1,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                -0.1,
+                0.3
+              ]
+            },
+            "activations": {
+              "mean": 0.4,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                0.08,
+                0.72
+              ]
+            },
+            "triggers": {
+              "mean": 14.9,
+              "median": 7.5,
+              "min": 0,
+              "max": 44,
+              "n": 10,
+              "ci95": [
+                5.66,
+                24.14
               ]
             },
             "first_attack_turn": {
@@ -583,6 +1208,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Vito, Thorn of the Dusk Rose"
+              ],
+              "casts": {
+                "mean": 1.4,
+                "median": 1.0,
+                "min": 1,
+                "max": 3,
+                "n": 10,
+                "ci95": [
+                  0.88,
+                  1.92
+                ]
+              },
+              "games_resolved": 10,
+              "resolved_rate": 1.0,
+              "resolved_rate_ci95": [
+                0.722,
+                1.0
+              ],
+              "first_resolved_global_turn": {
+                "mean": 11.2,
+                "median": 11.5,
+                "min": 8,
+                "max": 15,
+                "n": 10,
+                "ci95": [
+                  9.66,
+                  12.74
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Vito, Thorn of the Dusk Rose"
@@ -615,6 +1273,10 @@
               "games_dealing_any": 2
             }
           }
+        },
+        "wipe_recovery": {
+          "available": false,
+          "why": "no turn in 10 game(s) lost 5+ permanents across 2+ seats. That is an absent measurement, not a claim that the pod runs no wipes."
         },
         "our_cumulative_combat_damage_by_round": [
           {
@@ -840,7 +1502,11 @@
           "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
           "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
           "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-          "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+          "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+          "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
+          "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
+          "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+          "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
           "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
         ]
       },
@@ -851,34 +1517,9 @@
           "round": 17,
           "global_turn": 33,
           "ms": 25156,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "giada-angels": {
-              "lands": 5,
-              "casts": 14,
-              "activations": 0,
-              "triggers": 21,
-              "combat_damage_dealt_to_players": 80,
-              "combat_damage_taken": 2,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 3,
-              "eliminated_turn": null,
-              "eliminated_by": null,
-              "eliminated_how": null,
-              "first_attack_turn": 13,
-              "commander_damage_by_defender": {
-                "Ai(1)-mm-x-radagast-a": 2,
-                "Ai(3)-mm-vito": 6
-              },
-              "commander_damage_max": 6,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
             "vito": {
               "lands": 9,
               "casts": 14,
@@ -898,10 +1539,63 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 26,
+              "permanents_lost_by_turn": {
+                "21": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 2,
+              "interaction_received": 0,
+              "commander_casts": 3,
+              "commander_resolved_turn": 8,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 2,
+              "mulligan_kept": 6
+            },
+            "giada-angels": {
+              "lands": 5,
+              "casts": 14,
+              "activations": 0,
+              "triggers": 21,
+              "combat_damage_dealt_to_players": 80,
+              "combat_damage_taken": 2,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 3,
+              "eliminated_turn": null,
+              "eliminated_by": null,
+              "eliminated_how": null,
+              "first_attack_turn": 13,
+              "permanents_lost_by_turn": {
+                "14": 1,
+                "20": 1,
+                "21": 1
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 7,
+              "commander_damage_by_defender": {
+                "Ai(1)-mm-x-radagast-a": 2,
+                "Ai(3)-mm-vito": 6
+              },
+              "commander_damage_max": 6,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "radagast": {
               "lands": 6,
@@ -922,10 +1616,23 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 6,
+              "permanents_lost_by_turn": {
+                "15": 1,
+                "18": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -935,6 +1642,8 @@
           "round": 8,
           "global_turn": 16,
           "ms": 7665,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 6,
@@ -955,10 +1664,20 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 4,
+              "permanents_lost_by_turn": {},
+              "counter_events": 6,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 2,
+              "mulligan_kept": 6
             },
             "giada-angels": {
               "lands": 5,
@@ -979,12 +1698,22 @@
               "eliminated_by": "Ai(1)-mm-x-radagast-a",
               "eliminated_how": "life loss",
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 4
               },
               "commander_damage_max": 4,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 5,
@@ -1005,10 +1734,20 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 12,
+              "permanents_lost_by_turn": {},
+              "counter_events": 2,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1018,31 +1757,9 @@
           "round": 11,
           "global_turn": 22,
           "ms": 18380,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "radagast": {
-              "lands": 7,
-              "casts": 5,
-              "activations": 0,
-              "triggers": 2,
-              "combat_damage_dealt_to_players": 1,
-              "combat_damage_taken": 29,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 0,
-              "eliminated_turn": 21,
-              "eliminated_by": "Ai(3)-mm-vito",
-              "eliminated_how": "life loss",
-              "first_attack_turn": 7,
-              "commander_damage_by_defender": {},
-              "commander_damage_max": 0,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
             "giada-angels": {
               "lands": 6,
               "casts": 8,
@@ -1062,13 +1779,57 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {},
+              "counter_events": 3,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 6,
                 "Ai(3)-mm-vito": 8
               },
               "commander_damage_max": 8,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
+            "radagast": {
+              "lands": 7,
+              "casts": 5,
+              "activations": 0,
+              "triggers": 2,
+              "combat_damage_dealt_to_players": 1,
+              "combat_damage_taken": 29,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 0,
+              "eliminated_turn": 21,
+              "eliminated_by": "Ai(3)-mm-vito",
+              "eliminated_how": "life loss",
+              "first_attack_turn": 7,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 10,
+              "commander_damage_by_defender": {},
+              "commander_damage_max": 0,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 4,
@@ -1089,10 +1850,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 15,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1102,7 +1873,46 @@
           "round": 12,
           "global_turn": 23,
           "ms": 20962,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 3,
+              "casts": 7,
+              "activations": 0,
+              "triggers": 1,
+              "combat_damage_dealt_to_players": 3,
+              "combat_damage_taken": 63,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 2,
+              "eliminated_turn": 23,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "damage",
+              "first_attack_turn": 18,
+              "permanents_lost_by_turn": {
+                "18": 1,
+                "21": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 2,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
+              "commander_damage_by_defender": {},
+              "commander_damage_max": 0,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "radagast": {
               "lands": 6,
               "casts": 7,
@@ -1122,10 +1932,22 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "damage",
               "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "7": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 3,
@@ -1146,37 +1968,25 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {
+                "21": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 2,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 6,
                 "Ai(3)-mm-vito": 4
               },
               "commander_damage_max": 6,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
-            "vito": {
-              "lands": 3,
-              "casts": 7,
-              "activations": 0,
-              "triggers": 1,
-              "combat_damage_dealt_to_players": 3,
-              "combat_damage_taken": 63,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 2,
-              "eliminated_turn": 23,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "damage",
-              "first_attack_turn": 18,
-              "commander_damage_by_defender": {},
-              "commander_damage_max": 0,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1186,7 +1996,43 @@
           "round": 12,
           "global_turn": 24,
           "ms": 17177,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 7,
+              "casts": 9,
+              "activations": 0,
+              "triggers": 7,
+              "combat_damage_dealt_to_players": 4,
+              "combat_damage_taken": 57,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 0,
+              "eliminated_turn": 24,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "damage",
+              "first_attack_turn": 12,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 3,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
+              "commander_damage_by_defender": {},
+              "commander_damage_max": 0,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 3,
+              "mulligan_kept": 5
+            },
             "radagast": {
               "lands": 6,
               "casts": 10,
@@ -1206,10 +2052,26 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "7": 1,
+                "10": 1,
+                "15": 1,
+                "16": 1,
+                "19": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 2,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 5,
@@ -1230,37 +2092,26 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {
+                "17": 1,
+                "23": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 7,
                 "Ai(3)-mm-vito": 5
               },
               "commander_damage_max": 7,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.101
-            },
-            "vito": {
-              "lands": 7,
-              "casts": 9,
-              "activations": 0,
-              "triggers": 7,
-              "combat_damage_dealt_to_players": 4,
-              "combat_damage_taken": 57,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 0,
-              "eliminated_turn": 24,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "damage",
-              "first_attack_turn": 12,
-              "commander_damage_by_defender": {},
-              "commander_damage_max": 0,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.101,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1270,6 +2121,8 @@
           "round": 17,
           "global_turn": 34,
           "ms": 16660,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 6,
@@ -1290,10 +2143,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 16,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 10,
@@ -1314,13 +2177,27 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 14,
+              "permanents_lost_by_turn": {
+                "7": 1,
+                "23": 1,
+                "32": 1
+              },
+              "counter_events": 2,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 2,
                 "Ai(3)-mm-vito": 4
               },
               "commander_damage_max": 4,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.608
+              "token_damage_share": 0.608,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 10,
@@ -1341,10 +2218,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 27,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 3,
+              "commander_resolved_turn": 15,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1354,7 +2241,47 @@
           "round": 14,
           "global_turn": 27,
           "ms": 36997,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "radagast": {
+              "lands": 8,
+              "casts": 10,
+              "activations": 0,
+              "triggers": 7,
+              "combat_damage_dealt_to_players": 10,
+              "combat_damage_taken": 40,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 1,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 1,
+              "eliminated_turn": 25,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "damage",
+              "first_attack_turn": 18,
+              "permanents_lost_by_turn": {
+                "21": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 15,
+              "commander_damage_by_defender": {
+                "Ai(3)-mm-vito": 5
+              },
+              "commander_damage_max": 5,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "giada-angels": {
               "lands": 7,
               "casts": 10,
@@ -1374,13 +2301,25 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 16,
+              "permanents_lost_by_turn": {
+                "7": 1
+              },
+              "counter_events": 3,
+              "mass_counter_events": 2,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 3,
                 "Ai(3)-mm-vito": 5
               },
               "commander_damage_max": 5,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.254
+              "token_damage_share": 0.254,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 5,
@@ -1401,38 +2340,22 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 17,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 11,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 1
               },
               "commander_damage_max": 1,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
-            "radagast": {
-              "lands": 8,
-              "casts": 10,
-              "activations": 0,
-              "triggers": 7,
-              "combat_damage_dealt_to_players": 10,
-              "combat_damage_taken": 40,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 1,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 1,
-              "eliminated_turn": 25,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "damage",
-              "first_attack_turn": 18,
-              "commander_damage_by_defender": {
-                "Ai(3)-mm-vito": 5
-              },
-              "commander_damage_max": 5,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1442,6 +2365,8 @@
           "round": 10,
           "global_turn": 20,
           "ms": 8095,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 3,
@@ -1462,10 +2387,20 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "life loss",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 0,
+              "commander_resolved_turn": null,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 5,
@@ -1486,13 +2421,23 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {},
+              "counter_events": 10,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 6,
                 "Ai(3)-mm-vito": 10
               },
               "commander_damage_max": 10,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 7,
@@ -1513,10 +2458,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 2,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1526,31 +2481,9 @@
           "round": 13,
           "global_turn": 26,
           "ms": 33319,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "radagast": {
-              "lands": 9,
-              "casts": 10,
-              "activations": 4,
-              "triggers": 23,
-              "combat_damage_dealt_to_players": 8,
-              "combat_damage_taken": 37,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 1,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 5,
-              "eliminated_turn": 26,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "life loss",
-              "first_attack_turn": 4,
-              "commander_damage_by_defender": {},
-              "commander_damage_max": 0,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
             "giada-angels": {
               "lands": 4,
               "casts": 7,
@@ -1570,12 +2503,64 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {
+                "24": 1
+              },
+              "counter_events": 12,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-a": 12
               },
               "commander_damage_max": 12,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
+            "radagast": {
+              "lands": 9,
+              "casts": 10,
+              "activations": 4,
+              "triggers": 23,
+              "combat_damage_dealt_to_players": 8,
+              "combat_damage_taken": 37,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 1,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 5,
+              "eliminated_turn": 26,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "life loss",
+              "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "10": 1,
+                "19": 1,
+                "21": 1,
+                "22": 1,
+                "25": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 10,
+              "commander_damage_by_defender": {},
+              "commander_damage_max": 0,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 8,
@@ -1596,10 +2581,20 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 12,
+              "permanents_lost_by_turn": {},
+              "counter_events": 3,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 1,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -1609,6 +2604,8 @@
           "round": 14,
           "global_turn": 27,
           "ms": 24774,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 7,
@@ -1629,10 +2626,20 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "life loss",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 8,
@@ -1653,10 +2660,22 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "life loss",
               "first_attack_turn": 14,
+              "permanents_lost_by_turn": {
+                "18": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 1,
+              "interaction_received": 3,
+              "commander_casts": 3,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.302
+              "token_damage_share": 0.302,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 7,
@@ -1677,12 +2696,22 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 18,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 3,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 1
               },
               "commander_damage_max": 1,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         }
@@ -1696,6 +2725,7 @@
       "games": 10,
       "analysis": {
         "games": 10,
+        "decided": 10,
         "seats": {
           "radagast": {
             "wins": 0,
@@ -1704,6 +2734,7 @@
               0.0,
               0.278
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 27.2,
               "median": 26.0,
@@ -1745,6 +2776,61 @@
                 13.67
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                -0.06,
+                0.46
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 8,
+              "started_rate": 0.8,
+              "win_rate_when_starting": {
+                "rate": 0.0,
+                "wins": 0,
+                "games": 8,
+                "ci95": [
+                  0.0,
+                  0.324
+                ]
+              },
+              "win_rate_when_not": {
+                "rate": 0.0,
+                "wins": 0,
+                "games": 2,
+                "ci95": [
+                  0.0,
+                  0.658
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "2": 4,
+                "3": 6
+              },
+              "mean_position": 2.6,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 7.0,
+              "median": 7.0,
+              "min": 7,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                7.0,
+                7.0
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 31.0,
               "median": 23.5,
@@ -1765,6 +2851,138 @@
               "ci95": [
                 12.34,
                 97.06
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 31.0,
+              "median": 23.5,
+              "min": 0,
+              "max": 110,
+              "n": 10,
+              "ci95": [
+                12.43,
+                49.57
+              ]
+            },
+            "life_gained": {
+              "mean": 0.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                -0.19,
+                0.59
+              ]
+            },
+            "life_lost": {
+              "mean": 65.7,
+              "median": 40.5,
+              "min": 32,
+              "max": 252,
+              "n": 10,
+              "ci95": [
+                24.05,
+                107.35
+              ]
+            },
+            "creatures_lost": {
+              "mean": 2.0,
+              "median": 1.0,
+              "min": 0,
+              "max": 8,
+              "n": 10,
+              "ci95": [
+                0.37,
+                3.63
+              ]
+            },
+            "counter_events": {
+              "mean": 0.7,
+              "median": 0.0,
+              "min": 0,
+              "max": 4,
+              "n": 10,
+              "ci95": [
+                -0.08,
+                1.48
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_received": {
+              "mean": 0.7,
+              "median": 0.5,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                0.19,
+                1.21
+              ]
+            },
+            "activations": {
+              "mean": 0.7,
+              "median": 1.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                0.28,
+                1.12
+              ]
+            },
+            "triggers": {
+              "mean": 6.6,
+              "median": 6.0,
+              "min": 1,
+              "max": 16,
+              "n": 10,
+              "ci95": [
+                3.44,
+                9.76
               ]
             },
             "first_attack_turn": {
@@ -1857,6 +3075,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Radagast of Rhosgobel"
+              ],
+              "casts": {
+                "mean": 1.4,
+                "median": 1.0,
+                "min": 1,
+                "max": 4,
+                "n": 10,
+                "ci95": [
+                  0.8,
+                  2.0
+                ]
+              },
+              "games_resolved": 10,
+              "resolved_rate": 1.0,
+              "resolved_rate_ci95": [
+                0.722,
+                1.0
+              ],
+              "first_resolved_global_turn": {
+                "mean": 11.0,
+                "median": 10.0,
+                "min": 7,
+                "max": 25,
+                "n": 10,
+                "ci95": [
+                  7.69,
+                  14.31
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Radagast of Rhosgobel"
@@ -1896,6 +3147,7 @@
               0.237,
               0.763
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 27.17,
               "median": 26.5,
@@ -1937,6 +3189,62 @@
                 13.01
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.3,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.6
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 2,
+              "started_rate": 0.2,
+              "win_rate_when_starting": {
+                "rate": 1.0,
+                "wins": 2,
+                "games": 2,
+                "ci95": [
+                  0.342,
+                  1.0
+                ]
+              },
+              "win_rate_when_not": {
+                "rate": 0.375,
+                "wins": 3,
+                "games": 8,
+                "ci95": [
+                  0.137,
+                  0.694
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "1": 4,
+                "2": 3,
+                "3": 3
+              },
+              "mean_position": 1.9,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 7.0,
+              "median": 7.0,
+              "min": 7,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                7.0,
+                7.0
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 95.9,
               "median": 46.0,
@@ -1957,6 +3265,138 @@
               "ci95": [
                 7.04,
                 37.16
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 95.9,
+              "median": 46.0,
+              "min": 5,
+              "max": 429,
+              "n": 10,
+              "ci95": [
+                15.7,
+                176.1
+              ]
+            },
+            "life_gained": {
+              "mean": 28.2,
+              "median": 13.5,
+              "min": 0,
+              "max": 84,
+              "n": 10,
+              "ci95": [
+                7.49,
+                48.91
+              ]
+            },
+            "life_lost": {
+              "mean": 39.4,
+              "median": 39.0,
+              "min": 5,
+              "max": 83,
+              "n": 10,
+              "ci95": [
+                23.6,
+                55.2
+              ]
+            },
+            "creatures_lost": {
+              "mean": 1.2,
+              "median": 1.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                0.63,
+                1.77
+              ]
+            },
+            "counter_events": {
+              "mean": 4.7,
+              "median": 0.0,
+              "min": 0,
+              "max": 26,
+              "n": 10,
+              "ci95": [
+                -0.83,
+                10.23
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 1.8,
+              "median": 0.0,
+              "min": 0,
+              "max": 12,
+              "n": 10,
+              "ci95": [
+                -0.71,
+                4.31
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 0.1,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                -0.1,
+                0.3
+              ]
+            },
+            "interaction_received": {
+              "mean": 0.7,
+              "median": 0.0,
+              "min": 0,
+              "max": 3,
+              "n": 10,
+              "ci95": [
+                -0.08,
+                1.48
+              ]
+            },
+            "activations": {
+              "mean": 1.8,
+              "median": 2.0,
+              "min": 0,
+              "max": 6,
+              "n": 10,
+              "ci95": [
+                0.75,
+                2.85
+              ]
+            },
+            "triggers": {
+              "mean": 19.6,
+              "median": 7.5,
+              "min": 0,
+              "max": 83,
+              "n": 10,
+              "ci95": [
+                1.65,
+                37.55
               ]
             },
             "first_attack_turn": {
@@ -2049,6 +3489,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Giada, Font of Hope"
+              ],
+              "casts": {
+                "mean": 1.1,
+                "median": 1.0,
+                "min": 1,
+                "max": 2,
+                "n": 10,
+                "ci95": [
+                  0.9,
+                  1.3
+                ]
+              },
+              "games_resolved": 10,
+              "resolved_rate": 1.0,
+              "resolved_rate_ci95": [
+                0.722,
+                1.0
+              ],
+              "first_resolved_global_turn": {
+                "mean": 8.4,
+                "median": 5.0,
+                "min": 5,
+                "max": 20,
+                "n": 10,
+                "ci95": [
+                  4.71,
+                  12.09
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Giada, Font of Hope"
@@ -2088,6 +3561,7 @@
               0.237,
               0.763
             ],
+            "games_played": 10,
             "eliminated_turn": {
               "mean": 31.4,
               "median": 26,
@@ -2127,6 +3601,54 @@
                 13.1
               ]
             },
+            "mulligans_taken": {
+              "mean": 0.7,
+              "median": 1.0,
+              "min": 0,
+              "max": 2,
+              "n": 10,
+              "ci95": [
+                0.28,
+                1.12
+              ]
+            },
+            "turn_order": {
+              "games_with_a_starter": 10,
+              "games_started": 0,
+              "started_rate": 0.0,
+              "win_rate_when_starting": null,
+              "win_rate_when_not": {
+                "rate": 0.5,
+                "wins": 5,
+                "games": 10,
+                "ci95": [
+                  0.237,
+                  0.763
+                ]
+              },
+              "basis": "who is active on turn 1, from the log — NOT the `-d` seat order, which Forge overrides from game 2 of a job onward by giving the first turn to the lowest-indexed seat that did not win the previous game. Read `started_rate` first: a seat that starts far more than its share is being measured on its own losing streak, not on turn order."
+            },
+            "placement": {
+              "games_ranked": 10,
+              "by_position": {
+                "1": 6,
+                "2": 3,
+                "3": 1
+              },
+              "mean_position": 1.5,
+              "basis": "1 is the seat still standing; the rest are ordered by how late they were eliminated. Clock-outs have no ordering and are excluded, so `games_ranked` is below the game count."
+            },
+            "mulligan_kept": {
+              "mean": 6.9,
+              "median": 7.0,
+              "min": 6,
+              "max": 7,
+              "n": 10,
+              "ci95": [
+                6.7,
+                7.1
+              ]
+            },
             "combat_damage_dealt_to_players": {
               "mean": 5.6,
               "median": 4.5,
@@ -2147,6 +3669,138 @@
               "ci95": [
                 20.73,
                 93.07
+              ]
+            },
+            "noncombat_damage_dealt_to_players": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "damage_dealt_total": {
+              "mean": 5.6,
+              "median": 4.5,
+              "min": 0,
+              "max": 18,
+              "n": 10,
+              "ci95": [
+                1.88,
+                9.32
+              ]
+            },
+            "life_gained": {
+              "mean": 25.0,
+              "median": 22.0,
+              "min": 1,
+              "max": 57,
+              "n": 10,
+              "ci95": [
+                13.07,
+                36.93
+              ]
+            },
+            "life_lost": {
+              "mean": 54.4,
+              "median": 32.5,
+              "min": 12,
+              "max": 183,
+              "n": 10,
+              "ci95": [
+                20.03,
+                88.77
+              ]
+            },
+            "creatures_lost": {
+              "mean": 1.1,
+              "median": 1.0,
+              "min": 0,
+              "max": 4,
+              "n": 10,
+              "ci95": [
+                0.25,
+                1.95
+              ]
+            },
+            "counter_events": {
+              "mean": 0.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 1,
+              "n": 10,
+              "ci95": [
+                -0.06,
+                0.46
+              ]
+            },
+            "mass_counter_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "proliferate_events": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "interaction_cast": {
+              "mean": 1.3,
+              "median": 0.5,
+              "min": 0,
+              "max": 4,
+              "n": 10,
+              "ci95": [
+                0.24,
+                2.36
+              ]
+            },
+            "interaction_received": {
+              "mean": 0.0,
+              "median": 0.0,
+              "min": 0,
+              "max": 0,
+              "n": 10,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "activations": {
+              "mean": 1.2,
+              "median": 0.0,
+              "min": 0,
+              "max": 5,
+              "n": 10,
+              "ci95": [
+                0.08,
+                2.32
+              ]
+            },
+            "triggers": {
+              "mean": 13.6,
+              "median": 10.5,
+              "min": 2,
+              "max": 32,
+              "n": 10,
+              "ci95": [
+                7.35,
+                19.85
               ]
             },
             "first_attack_turn": {
@@ -2239,6 +3893,39 @@
                 ]
               }
             },
+            "commander_access": {
+              "commander": [
+                "Vito, Thorn of the Dusk Rose"
+              ],
+              "casts": {
+                "mean": 1.1,
+                "median": 1.0,
+                "min": 1,
+                "max": 2,
+                "n": 10,
+                "ci95": [
+                  0.9,
+                  1.3
+                ]
+              },
+              "games_resolved": 10,
+              "resolved_rate": 1.0,
+              "resolved_rate_ci95": [
+                0.722,
+                1.0
+              ],
+              "first_resolved_global_turn": {
+                "mean": 13.4,
+                "median": 12.0,
+                "min": 8,
+                "max": 22,
+                "n": 10,
+                "ci95": [
+                  10.55,
+                  16.25
+                ]
+              }
+            },
             "commander_damage": {
               "commander": [
                 "Vito, Thorn of the Dusk Rose"
@@ -2271,6 +3958,10 @@
               "games_dealing_any": 4
             }
           }
+        },
+        "wipe_recovery": {
+          "available": false,
+          "why": "no turn in 10 game(s) lost 5+ permanents across 2+ seats. That is an absent measurement, not a claim that the pod runs no wipes."
         },
         "our_cumulative_combat_damage_by_round": [
           {
@@ -2496,7 +4187,11 @@
           "token_resolutions counts token-creating abilities that resolved; it is blind to how many tokens each made (X, doubling) — a floor on creation events, not a token count.",
           "eliminated_by is the controller of the last thing that could have cost the seat life before the life line that crossed zero — a damage source (its controller learned from attack/block/land/cast lines) or a resolved ability whose text says the victim loses life (its Activator/Player tag, else the active seat); eliminated_how says which. Null when neither was seen.",
           "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
-          "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. Seeded runs replay exactly; the interval is still the claim.",
+          "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
+          "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
+          "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
+          "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
+          "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
           "commander_damage is per DEFENDER (CR 903.10a asks for 21 from the same commander on one player), so max_on_one_defender is the number the win condition reads and dealt_total is not — a commander that hit three seats for 20 each dealt 60 and killed nobody. It counts COMBAT damage by a permanent whose logged name matches the seat's commander; a commander dealing noncombat damage does not count toward 903.10a and is excluded here too. The block is ABSENT when the seat's commander is unknown, because the log never names one."
         ]
       },
@@ -2507,34 +4202,9 @@
           "round": 27,
           "global_turn": 53,
           "ms": 71262,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "giada-angels": {
-              "lands": 6,
-              "casts": 24,
-              "activations": 2,
-              "triggers": 83,
-              "combat_damage_dealt_to_players": 154,
-              "combat_damage_taken": 14,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 8,
-              "tokens_observed": 5,
-              "token_attackers": 5,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 31,
-              "tokens_chumped": 0,
-              "creatures_lost": 2,
-              "eliminated_turn": 51,
-              "eliminated_by": null,
-              "eliminated_how": null,
-              "first_attack_turn": 13,
-              "commander_damage_by_defender": {
-                "Ai(1)-mm-x-radagast-b": 6,
-                "Ai(3)-mm-vito": 4
-              },
-              "commander_damage_max": 6,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.201
-            },
             "vito": {
               "lands": 13,
               "casts": 21,
@@ -2554,12 +4224,65 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {
+                "18": 1,
+                "22": 3
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 4,
+              "interaction_received": 0,
+              "commander_casts": 2,
+              "commander_resolved_turn": 8,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 1
               },
               "commander_damage_max": 1,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 2,
+              "mulligan_kept": 6
+            },
+            "giada-angels": {
+              "lands": 6,
+              "casts": 24,
+              "activations": 2,
+              "triggers": 83,
+              "combat_damage_dealt_to_players": 154,
+              "combat_damage_taken": 14,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 8,
+              "tokens_observed": 5,
+              "token_attackers": 5,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 31,
+              "tokens_chumped": 0,
+              "creatures_lost": 2,
+              "eliminated_turn": 51,
+              "eliminated_by": null,
+              "eliminated_how": null,
+              "first_attack_turn": 13,
+              "permanents_lost_by_turn": {
+                "14": 1,
+                "18": 1
+              },
+              "counter_events": 15,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 1,
+              "interaction_received": 3,
+              "commander_casts": 2,
+              "commander_resolved_turn": 7,
+              "commander_damage_by_defender": {
+                "Ai(1)-mm-x-radagast-b": 6,
+                "Ai(3)-mm-vito": 4
+              },
+              "commander_damage_max": 6,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.201,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "radagast": {
               "lands": 11,
@@ -2580,10 +4303,27 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 6,
+              "permanents_lost_by_turn": {
+                "20": 1,
+                "22": 1,
+                "32": 1,
+                "34": 1,
+                "40": 1,
+                "46": 3
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 2,
+              "commander_casts": 4,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.476
+              "token_damage_share": 0.476,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -2593,34 +4333,9 @@
           "round": 9,
           "global_turn": 18,
           "ms": 4242,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "radagast": {
-              "lands": 6,
-              "casts": 8,
-              "activations": 0,
-              "triggers": 16,
-              "combat_damage_dealt_to_players": 110,
-              "combat_damage_taken": 12,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 1,
-              "tokens_observed": 4,
-              "token_attackers": 4,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 48,
-              "tokens_chumped": 0,
-              "creatures_lost": 1,
-              "eliminated_turn": 18,
-              "eliminated_by": "Ai(3)-mm-vito",
-              "eliminated_how": "life loss",
-              "first_attack_turn": 7,
-              "commander_damage_by_defender": {
-                "Ai(2)-mm-giada-angels": 11,
-                "Ai(3)-mm-vito": 6
-              },
-              "commander_damage_max": 11,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.436
-            },
             "giada-angels": {
               "lands": 4,
               "casts": 3,
@@ -2640,10 +4355,20 @@
               "eliminated_by": "Ai(1)-mm-x-radagast-b",
               "eliminated_how": "damage",
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 7,
@@ -2664,10 +4389,61 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 18,
+              "permanents_lost_by_turn": {
+                "17": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
+            "radagast": {
+              "lands": 6,
+              "casts": 8,
+              "activations": 0,
+              "triggers": 16,
+              "combat_damage_dealt_to_players": 110,
+              "combat_damage_taken": 12,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 1,
+              "tokens_observed": 4,
+              "token_attackers": 4,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 48,
+              "tokens_chumped": 0,
+              "creatures_lost": 1,
+              "eliminated_turn": 18,
+              "eliminated_by": "Ai(3)-mm-vito",
+              "eliminated_how": "life loss",
+              "first_attack_turn": 7,
+              "permanents_lost_by_turn": {
+                "17": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 7,
+              "commander_damage_by_defender": {
+                "Ai(2)-mm-giada-angels": 11,
+                "Ai(3)-mm-vito": 6
+              },
+              "commander_damage_max": 11,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.436,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -2677,6 +4453,8 @@
           "round": 11,
           "global_turn": 22,
           "ms": 9842,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 7,
@@ -2697,12 +4475,24 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "12": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 10,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 5
               },
               "commander_damage_max": 5,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 7,
@@ -2723,13 +4513,23 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {},
+              "counter_events": 6,
+              "mass_counter_events": 6,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 16,
                 "Ai(3)-mm-vito": 11
               },
               "commander_damage_max": 16,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.164
+              "token_damage_share": 0.164,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 5,
@@ -2750,10 +4550,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 1,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 9,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -2763,7 +4573,45 @@
           "round": 15,
           "global_turn": 30,
           "ms": 21953,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 8,
+              "casts": 13,
+              "activations": 3,
+              "triggers": 9,
+              "combat_damage_dealt_to_players": 18,
+              "combat_damage_taken": 21,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 0,
+              "eliminated_turn": null,
+              "eliminated_by": null,
+              "eliminated_how": null,
+              "first_attack_turn": 22,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 4,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 22,
+              "commander_damage_by_defender": {
+                "Ai(1)-mm-x-radagast-b": 3
+              },
+              "commander_damage_max": 3,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "radagast": {
               "lands": 10,
               "casts": 11,
@@ -2783,13 +4631,26 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "damage",
               "first_attack_turn": 13,
+              "permanents_lost_by_turn": {
+                "21": 1,
+                "24": 1
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 10,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 4,
                 "Ai(3)-mm-vito": 7
               },
               "commander_damage_max": 7,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 4,
@@ -2810,36 +4671,22 @@
               "eliminated_by": "Ai(1)-mm-x-radagast-b",
               "eliminated_how": "damage",
               "first_attack_turn": 11,
+              "permanents_lost_by_turn": {
+                "13": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 3,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
-            "vito": {
-              "lands": 8,
-              "casts": 13,
-              "activations": 3,
-              "triggers": 9,
-              "combat_damage_dealt_to_players": 18,
-              "combat_damage_taken": 21,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 0,
-              "eliminated_turn": null,
-              "eliminated_by": null,
-              "eliminated_how": null,
-              "first_attack_turn": 22,
-              "commander_damage_by_defender": {
-                "Ai(1)-mm-x-radagast-b": 3
-              },
-              "commander_damage_max": 3,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -2849,7 +4696,45 @@
           "round": 13,
           "global_turn": 26,
           "ms": 17454,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 7,
+              "casts": 12,
+              "activations": 0,
+              "triggers": 23,
+              "combat_damage_dealt_to_players": 5,
+              "combat_damage_taken": 70,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 1,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 0,
+              "eliminated_turn": 26,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "damage",
+              "first_attack_turn": 12,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
+              "commander_damage_by_defender": {
+                "Ai(1)-mm-x-radagast-b": 1
+              },
+              "commander_damage_max": 1,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "radagast": {
               "lands": 7,
               "casts": 8,
@@ -2869,13 +4754,23 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 10,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 7,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 2,
                 "Ai(3)-mm-vito": 6
               },
               "commander_damage_max": 6,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 3,
@@ -2896,39 +4791,25 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {
+                "11": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 10,
                 "Ai(3)-mm-vito": 2
               },
               "commander_damage_max": 10,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
-            "vito": {
-              "lands": 7,
-              "casts": 12,
-              "activations": 0,
-              "triggers": 23,
-              "combat_damage_dealt_to_players": 5,
-              "combat_damage_taken": 70,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 1,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 0,
-              "eliminated_turn": 26,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "damage",
-              "first_attack_turn": 12,
-              "commander_damage_by_defender": {
-                "Ai(1)-mm-x-radagast-b": 1
-              },
-              "commander_damage_max": 1,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -2938,7 +4819,45 @@
           "round": 14,
           "global_turn": 27,
           "ms": 15067,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 7,
+              "casts": 6,
+              "activations": 3,
+              "triggers": 4,
+              "combat_damage_dealt_to_players": 14,
+              "combat_damage_taken": 14,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 0,
+              "eliminated_turn": null,
+              "eliminated_by": null,
+              "eliminated_how": null,
+              "first_attack_turn": 15,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 9,
+              "commander_damage_by_defender": {
+                "Ai(1)-mm-x-radagast-b": 1
+              },
+              "commander_damage_max": 1,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "radagast": {
               "lands": 3,
               "casts": 9,
@@ -2958,10 +4877,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 7,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 25,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.115
+              "token_damage_share": 0.115,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 3,
@@ -2982,39 +4911,25 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "damage",
               "first_attack_turn": 14,
+              "permanents_lost_by_turn": {
+                "26": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 8,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 6,
                 "Ai(3)-mm-vito": 2
               },
               "commander_damage_max": 6,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
-            "vito": {
-              "lands": 7,
-              "casts": 6,
-              "activations": 3,
-              "triggers": 4,
-              "combat_damage_dealt_to_players": 14,
-              "combat_damage_taken": 14,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 0,
-              "eliminated_turn": null,
-              "eliminated_by": null,
-              "eliminated_how": null,
-              "first_attack_turn": 15,
-              "commander_damage_by_defender": {
-                "Ai(1)-mm-x-radagast-b": 1
-              },
-              "commander_damage_max": 1,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -3024,6 +4939,8 @@
           "round": 17,
           "global_turn": 33,
           "ms": 71788,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "giada-angels": {
               "lands": 12,
@@ -3044,13 +4961,26 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 16,
+              "permanents_lost_by_turn": {
+                "7": 1,
+                "25": 1
+              },
+              "counter_events": 26,
+              "mass_counter_events": 12,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 19,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 16,
                 "Ai(3)-mm-vito": 12
               },
               "commander_damage_max": 16,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.289
+              "token_damage_share": 0.289,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 5,
@@ -3071,10 +5001,22 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 14,
+              "permanents_lost_by_turn": {
+                "25": 1
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 14,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "radagast": {
               "lands": 8,
@@ -3095,10 +5037,20 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": null,
+              "permanents_lost_by_turn": {},
+              "counter_events": 4,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": null,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -3108,6 +5060,8 @@
           "round": 13,
           "global_turn": 26,
           "ms": 7599,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
             "radagast": {
               "lands": 7,
@@ -3128,12 +5082,27 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "life loss",
               "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "12": 1,
+                "16": 1,
+                "18": 1,
+                "25": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 2,
+              "commander_casts": 2,
+              "commander_resolved_turn": 10,
               "commander_damage_by_defender": {
                 "Ai(2)-mm-giada-angels": 2
               },
               "commander_damage_max": 2,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 5,
@@ -3154,10 +5123,22 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 20,
+              "permanents_lost_by_turn": {
+                "21": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.333
+              "token_damage_share": 0.333,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 7,
@@ -3178,10 +5159,22 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 21,
+              "permanents_lost_by_turn": {
+                "22": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 3,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 18,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -3191,33 +5184,9 @@
           "round": 14,
           "global_turn": 27,
           "ms": 30454,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
-            "radagast": {
-              "lands": 9,
-              "casts": 14,
-              "activations": 1,
-              "triggers": 7,
-              "combat_damage_dealt_to_players": 31,
-              "combat_damage_taken": 32,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 0,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 4,
-              "eliminated_turn": 27,
-              "eliminated_by": null,
-              "eliminated_how": null,
-              "first_attack_turn": 4,
-              "commander_damage_by_defender": {
-                "Ai(2)-mm-giada-angels": 2
-              },
-              "commander_damage_max": 2,
-              "commander_damage_lethal": false,
-              "token_damage_share": 0.0
-            },
             "giada-angels": {
               "lands": 3,
               "casts": 7,
@@ -3237,12 +5206,66 @@
               "eliminated_by": "Ai(3)-mm-vito",
               "eliminated_how": "life loss",
               "first_attack_turn": 8,
+              "permanents_lost_by_turn": {
+                "16": 1,
+                "22": 1,
+                "27": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 5,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 11
               },
               "commander_damage_max": 11,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
+            "radagast": {
+              "lands": 9,
+              "casts": 14,
+              "activations": 1,
+              "triggers": 7,
+              "combat_damage_dealt_to_players": 31,
+              "combat_damage_taken": 32,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 0,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 4,
+              "eliminated_turn": 27,
+              "eliminated_by": null,
+              "eliminated_how": null,
+              "first_attack_turn": 4,
+              "permanents_lost_by_turn": {
+                "7": 1,
+                "24": 2,
+                "25": 1
+              },
+              "counter_events": 1,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 1,
+              "commander_casts": 1,
+              "commander_resolved_turn": 13,
+              "commander_damage_by_defender": {
+                "Ai(2)-mm-giada-angels": 2
+              },
+              "commander_damage_max": 2,
+              "commander_damage_lethal": false,
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "vito": {
               "lands": 9,
@@ -3263,10 +5286,23 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 12,
+              "permanents_lost_by_turn": {
+                "16": 1,
+                "27": 2
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 1,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
               "commander_damage_by_defender": {},
               "commander_damage_max": 0,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.0
+              "token_damage_share": 0.0,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         },
@@ -3276,7 +5312,45 @@
           "round": 13,
           "global_turn": 25,
           "ms": 25099,
+          "truncated": false,
+          "draw": false,
           "per_seat": {
+            "vito": {
+              "lands": 3,
+              "casts": 7,
+              "activations": 1,
+              "triggers": 12,
+              "combat_damage_dealt_to_players": 0,
+              "combat_damage_taken": 44,
+              "noncombat_damage_dealt_to_players": 0,
+              "token_resolutions": 3,
+              "tokens_observed": 0,
+              "token_attackers": 0,
+              "token_blockers": 0,
+              "token_combat_damage_to_players": 0,
+              "tokens_chumped": 0,
+              "creatures_lost": 1,
+              "eliminated_turn": 25,
+              "eliminated_by": "Ai(2)-mm-giada-angels",
+              "eliminated_how": "damage",
+              "first_attack_turn": null,
+              "permanents_lost_by_turn": {
+                "25": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 12,
+              "commander_damage_by_defender": {},
+              "commander_damage_max": 0,
+              "commander_damage_lethal": false,
+              "token_damage_share": null,
+              "mulligans_taken": 1,
+              "mulligan_kept": 7
+            },
             "radagast": {
               "lands": 6,
               "casts": 13,
@@ -3296,12 +5370,22 @@
               "eliminated_by": "Ai(2)-mm-giada-angels",
               "eliminated_how": "damage",
               "first_attack_turn": 13,
+              "permanents_lost_by_turn": {},
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 7,
               "commander_damage_by_defender": {
                 "Ai(3)-mm-vito": 5
               },
               "commander_damage_max": 5,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.643
+              "token_damage_share": 0.643,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             },
             "giada-angels": {
               "lands": 5,
@@ -3322,37 +5406,25 @@
               "eliminated_by": null,
               "eliminated_how": null,
               "first_attack_turn": 17,
+              "permanents_lost_by_turn": {
+                "8": 1
+              },
+              "counter_events": 0,
+              "mass_counter_events": 0,
+              "proliferate_events": 0,
+              "interaction_cast": 0,
+              "interaction_received": 0,
+              "commander_casts": 1,
+              "commander_resolved_turn": 20,
               "commander_damage_by_defender": {
                 "Ai(1)-mm-x-radagast-b": 2,
                 "Ai(3)-mm-vito": 2
               },
               "commander_damage_max": 2,
               "commander_damage_lethal": false,
-              "token_damage_share": 0.333
-            },
-            "vito": {
-              "lands": 3,
-              "casts": 7,
-              "activations": 1,
-              "triggers": 12,
-              "combat_damage_dealt_to_players": 0,
-              "combat_damage_taken": 44,
-              "noncombat_damage_dealt_to_players": 0,
-              "token_resolutions": 3,
-              "tokens_observed": 0,
-              "token_attackers": 0,
-              "token_blockers": 0,
-              "token_combat_damage_to_players": 0,
-              "tokens_chumped": 0,
-              "creatures_lost": 1,
-              "eliminated_turn": 25,
-              "eliminated_by": "Ai(2)-mm-giada-angels",
-              "eliminated_how": "damage",
-              "first_attack_turn": null,
-              "commander_damage_by_defender": {},
-              "commander_damage_max": 0,
-              "commander_damage_lethal": false,
-              "token_damage_share": null
+              "token_damage_share": 0.333,
+              "mulligans_taken": 0,
+              "mulligan_kept": 7
             }
           }
         }
