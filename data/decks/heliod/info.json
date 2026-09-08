@@ -12,14 +12,12 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 9,
+    "complete": 11,
     "of": 15,
     "stale": [
-      "frame",
-      "map"
+      "frame"
     ],
     "invalid": [
-      "targets",
       "engine",
       "tutors",
       "considering.json"
@@ -716,8 +714,8 @@
       "name": "lynchpin-v1",
       "opened": "2026-09-07",
       "why": "HELIOD IS THE LYNCHPIN AND HE IS REMOVED IN 45% OF THE GAMES HE LANDS. Measured across 220 games: 173 casts, 173 resolutions, and 78 departures from the battlefield — 57 to the graveyard, 21 EXILED. Decomposed by what caused them: 50% MASS (three or more permanents left the same turn), 31% TARGETED, 19% unattributed. And ZERO of the 173 casts were ever countered, so the eight counterspells in this list have never once protected the engine. Three needs, one card each. CONTINGENCY when he is gone and ACCELERATION before he lands: Leyline of Anticipation, which the paper list cut and which is the only card here that grants flash without him — free from an opening hand, so it is also the turn-zero version of the plan. PROTECTION against the 31%: Lightning Greaves, shroud at a zero-mana equip, immediate the turn it lands. PROTECTION against the 50% that hexproof cannot touch: Guardian of Faith phases Heliod out at instant speed in response to a sweeper, which is Teferi's Protection on a body, and Mithril Coat flashes in and attaches itself to a legendary creature with indestructible, covering every destroy-based wipe though not the 21 exiles. THE GOLDFISH CANNOT GRADE ANY OF IT — it has no opponents, no removal and no sweepers, so protection is structurally invisible to it and this objective grades the branch's RISK instead: four cards that do nothing on their own, in a deck that already misses a land drop by turn five in half its games. keep_t3 is whether the opening hand can act at all. All four are clean in Forge with no AI:RemoveDeck flag; Vexilus Praetor was considered and rejected for carrying one.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-07 into the list after VNone",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -3553,14 +3551,6 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Hand-size punisher drawn (bills them for holding it)": {
-          "value": 0,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'Hand-size punisher drawn (bills them for holding it)' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
         "target:Draw-trigger punisher drawn (bills them for taking it)": {
           "value": 25,
           "tier": "data",
@@ -3606,6 +3596,14 @@
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Win condition access (Approach, or a tutor that finds one)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Heliod protected, or a flash grant that does not need him": {
+          "value": 52,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Heliod protected, or a flash grant that does not need him' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -3758,10 +3756,6 @@
         "by_turn_6_pct": 64
       },
       {
-        "label": "Hand-size punisher drawn (bills them for holding it)",
-        "by_turn_6_pct": 0
-      },
-      {
         "label": "Draw-trigger punisher drawn (bills them for taking it)",
         "by_turn_6_pct": 25
       },
@@ -3784,6 +3778,10 @@
       {
         "label": "Win condition access (Approach, or a tutor that finds one)",
         "by_turn_6_pct": 53
+      },
+      {
+        "label": "Heliod protected, or a flash grant that does not need him",
+        "by_turn_6_pct": 52
       }
     ],
     "combat": {
@@ -3933,9 +3931,8 @@
   },
   "experiments": null,
   "next": [
-    "4 artifact(s) fail their own gate (targets, engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `deckout-v1` needs 8 card(s) sourced — `manamap pilot deck-branch heliod source deckout-v1`",
     "branch `lynchpin-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge lynchpin-v1 --write`",
@@ -3944,7 +3941,7 @@
     "branch `teeth-v1` needs 1 card(s) sourced — `manamap pilot deck-branch heliod source teeth-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
-    "7 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "8 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
