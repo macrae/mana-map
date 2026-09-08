@@ -17,6 +17,7 @@ written against it.**
 | **[simulation.md](simulation.md)** | 254 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
 | **[pipeline.md](pipeline.md)** | 43 | The 15 card-pipeline steps: command, inputs, outputs, runtime, when to re-run what. |
 | **[data-artifacts.md](data-artifacts.md)** | 85 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
+| **[known-issues.md](known-issues.md)** | 156 | **WHAT IS RED AND WHY.** `make test` does not pass on `main`. Most of it is blocked deliberately (ur-dragon's definition is in question) and some of it is unowned (three goldfish fidelity findings). A row leaves that page when the test goes green, never because the test was changed to suit the artifact. |
 | **[testing.md](testing.md)** | 553 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
 
 ## The gotchas — every measurement this project has paid for
