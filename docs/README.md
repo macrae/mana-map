@@ -17,7 +17,7 @@ written against it.**
 | **[simulation.md](simulation.md)** | 254 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
 | **[pipeline.md](pipeline.md)** | 43 | The 15 card-pipeline steps: command, inputs, outputs, runtime, when to re-run what. |
 | **[data-artifacts.md](data-artifacts.md)** | 85 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
-| **[known-issues.md](known-issues.md)** | 353 | **THE INVENTORY OF WHAT IS BROKEN.** Twelve sections. The first four are the nine red tests and the parser bug that drops 88% of noncombat damage; the rest are gaps NO TEST FAILS ON — undecidable staleness on 19 artifacts, 50 undispatched open questions, 11 logged games and 0 debriefs, two uncriticised engine models. §12 lists what is already FIXED so it is not re-investigated. |
+| **[known-issues.md](known-issues.md)** | 353 | **THE INVENTORY OF WHAT IS BROKEN.** The first four entries are the nine red tests and the parser bug that drops 88% of noncombat damage; the rest are gaps NO TEST FAILS ON — undecidable staleness on 19 artifacts, 50 undispatched open questions, 11 logged games and 0 debriefs, two uncriticised engine models. §12 lists what is already FIXED so it is not re-investigated. |
 | **[testing.md](testing.md)** | 553 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
 
 ## The gotchas — every measurement this project has paid for
