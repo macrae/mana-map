@@ -12,14 +12,12 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 9,
+    "complete": 11,
     "of": 15,
     "stale": [
-      "frame",
-      "map"
+      "frame"
     ],
     "invalid": [
-      "targets",
       "engine",
       "tutors",
       "considering.json"
@@ -1377,8 +1375,8 @@
       "name": "skies-v1",
       "opened": "2026-09-08",
       "why": "THE SURVIVAL PACKAGE IS ON THE GROUND AND WHAT KILLS US IS IN THE AIR. giada-angels took 39 of this deck's 53 eliminations across 120 games and every one of its threats flies. Of the deck's sixteen creatures, TWO can block a flier — Consecrated Sphinx and Faerie Mastermind — and every token its X spells make is groundbound: 1/1 Warriors from Secure the Wastes, 1/1 Allies from United Front, 2/2 Cats from White Sun's Zenith. Wall of Glare reads like the answer, 'can block any number of creatures', and has no reach, so against the one deck beating us it blocks nothing at all. This deck does not win through combat; it controls, survives, tutors and casts Approach of the Second Sun twice, and the board exists to keep it alive long enough. So the board has to be able to block the thing that kills it. OUT: Wall of Glare (a 0/5 that cannot block a flier), Darien King of Kjeldor (six mana for groundbound 1/1s), United Front (the weakest of three X-spell ground-token makers, and the most white-intensive at {X}{W}{W}), and The Ozolith, whose counters payoff thins with United Front gone. IN, and every one is cheap on purpose because a {1}{W} flying wall blocks an Angel every turn for the rest of the game while {X}{X}{W}{W}{W} for two 4/4 Angels is a one-shot at seven mana that competes with casting Approach: Angelic Wall {1}{W} 0/4 flying, Kefnet the Mindful {2}{U} a 5/5 flying INDESTRUCTIBLE that survives our own two sweepers and needs seven cards in hand to block, which this deck always has - Reliquary Tower, Decanter of Endless Water and The Second Doctor all remove the maximum hand size, Drift of Phantasms {2}{U} 0/5 flying defender whose transmute is a tutor for any mana-value-three card, and Ghostly Prison {2}{W}, a second Propaganda that taxes an attacker whether or not it flies. Net white pips DOWN three and blue up two, on a list whose white was the binding colour. THE GOLDFISH CANNOT SEE ANY OF THIS - it has no opponents and nothing attacks it, so flying, reach and taxing are structurally invisible and only the bodies register. board_power_6 is pre-registered as the risk check: four groundbound bodies out and four defensive ones in must not cost the deck its board.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-08 into the list after VNone",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -4015,7 +4013,7 @@
     "engine": {
       "available": false,
       "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
-      "declared_targets": 9
+      "declared_targets": 11
     },
     "stall": {
       "by_turn": {
@@ -4286,6 +4284,22 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
+        "target:A body that can block a FLIER (39 of 53 eliminations came from the air)": {
+          "value": 53,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A taxer down (attackers pay, flying or not)": {
+          "value": 26,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
         "assumptions": {
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
@@ -4462,6 +4476,14 @@
       {
         "label": "Heliod protected, or a flash grant that does not need him",
         "by_turn_6_pct": 53
+      },
+      {
+        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air)",
+        "by_turn_6_pct": 53
+      },
+      {
+        "label": "A taxer down (attackers pay, flying or not)",
+        "by_turn_6_pct": 26
       }
     ],
     "combat": {
@@ -4611,9 +4633,8 @@
   },
   "experiments": null,
   "next": [
-    "4 artifact(s) fail their own gate (targets, engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `deckout-v1` needs 8 card(s) sourced — `manamap pilot deck-branch heliod source deckout-v1`",
     "branch `lynchpin-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source lynchpin-v1`",
@@ -4623,7 +4644,7 @@
     "branch `teeth-v1` needs 3 card(s) sourced — `manamap pilot deck-branch heliod source teeth-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
-    "8 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "9 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
