@@ -238,6 +238,12 @@
    },
    {
     "free": false,
+    "name": "Karametra's Blessing",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Kwain, Itinerant Meddler",
     "state": "in_deck",
     "where": []
@@ -302,12 +308,6 @@
     "free": false,
     "name": "Mikokoro, Center of the Sea",
     "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Mithril Coat",
-    "state": "buy",
     "where": []
    },
    {
@@ -537,9 +537,9 @@
   "diff": {
    "add": [
     "Guardian of Faith",
+    "Karametra's Blessing",
     "Leyline of Anticipation",
-    "Lightning Greaves",
-    "Mithril Coat"
+    "Lightning Greaves"
    ],
    "base_names": 85,
    "base_size": 100,
@@ -559,13 +559,23 @@
   "slug": "heliod",
   "unsourced": [
    "Guardian of Faith",
-   "Mithril Coat"
+   "Karametra's Blessing"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Karametra's Blessing",
+    "Mithril Coat"
+   ],
+   "class": "protection",
+   "headline": "2 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  }
+ ],
  "branch": "lynchpin-v1",
  "changes": {
-  "count": 0,
+  "count": 1,
   "diff": {
    "base_names": 85,
    "base_size": 100,
@@ -581,6 +591,16 @@
     "spells_out": 4
    },
    "in": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Karametra's Blessing",
+     "pair": "Mithril Coat",
+     "state": "buy",
+     "type_line": "Instant",
+     "why": "Same 60% share of measured commander losses, at {W} instead of {3} and at instant speed. Mithril Coat's indestructible is blind to the 33 exiles among the 119 departures, which is exactly why both sit at 60% rather than Guardian of Faith's 82%; the Blessing grants hexproof AND indestructible, so it covers the same ground for a third of the mana. It is conditional \u2014 'if it's an enchanted creature or enchantment creature' \u2014 and Heliod, the Radiant Dawn is a Legendary Enchantment Creature, so the condition is met by the card the branch exists to protect."
+    },
     {
      "cmc": 2,
      "copies": 1,
@@ -599,16 +619,6 @@
      "pair": null,
      "state": "buy",
      "type_line": "Creature \u2014 Spirit Knight",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Mithril Coat",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Legendary Artifact \u2014 Equipment",
      "why": null
     },
     {
@@ -663,16 +673,23 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 4,
+    "in": 3,
     "out": 4
    }
   },
   "lands": [],
   "opened": "2026-09-07",
-  "spells": [],
+  "spells": [
+   {
+    "at": "2026-09-07",
+    "in": "Karametra's Blessing",
+    "out": "Mithril Coat",
+    "why": "Same 60% share of measured commander losses, at {W} instead of {3} and at instant speed. Mithril Coat's indestructible is blind to the 33 exiles among the 119 departures, which is exactly why both sit at 60% rather than Guardian of Faith's 82%; the Blessing grants hexproof AND indestructible, so it covers the same ground for a third of the mana. It is conditional \u2014 'if it's an enchanted creature or enchantment creature' \u2014 and Heliod, the Radiant Dawn is a Legendary Enchantment Creature, so the condition is met by the card the branch exists to protect."
+   }
+  ],
   "why": "HELIOD IS THE LYNCHPIN AND HE IS REMOVED IN 45% OF THE GAMES HE LANDS. Measured across 220 games: 173 casts, 173 resolutions, and 78 departures from the battlefield \u2014 57 to the graveyard, 21 EXILED. Decomposed by what caused them: 50% MASS (three or more permanents left the same turn), 31% TARGETED, 19% unattributed. And ZERO of the 173 casts were ever countered, so the eight counterspells in this list have never once protected the engine. Three needs, one card each. CONTINGENCY when he is gone and ACCELERATION before he lands: Leyline of Anticipation, which the paper list cut and which is the only card here that grants flash without him \u2014 free from an opening hand, so it is also the turn-zero version of the plan. PROTECTION against the 31%: Lightning Greaves, shroud at a zero-mana equip, immediate the turn it lands. PROTECTION against the 50% that hexproof cannot touch: Guardian of Faith phases Heliod out at instant speed in response to a sweeper, which is Teferi's Protection on a body, and Mithril Coat flashes in and attaches itself to a legendary creature with indestructible, covering every destroy-based wipe though not the 21 exiles. THE GOLDFISH CANNOT GRADE ANY OF IT \u2014 it has no opponents, no removal and no sweepers, so protection is structurally invisible to it and this objective grades the branch's RISK instead: four cards that do nothing on their own, in a deck that already misses a land drop by turn five in half its games. keep_t3 is whether the opening hand can act at all. All four are clean in Forge with no AI:RemoveDeck flag; Vexilus Praetor was considered and rejected for carrying one."
  },
- "decklist_sha256": "82c7369e2becf09078c4a93df6071aa929184cc7f2d5bc555b4fd0a0d9f7d213",
+ "decklist_sha256": "8b187e767f3ebd7c16cf13d48cbac5ab529ba38fdcb572f31d509f0c454c0c0e",
  "definitions": {
   "derived": [
    {
@@ -915,12 +932,12 @@
   "why": "HELIOD IS THE LYNCHPIN AND HE IS REMOVED IN 45% OF THE GAMES HE LANDS. Measured across 220 games: 173 casts, 173 resolutions, and 78 departures from the battlefield \u2014 57 to the graveyard, 21 EXILED. Decomposed by what caused them: 50% MASS (three or more permanents left the same turn), 31% TARGETED, 19% unattributed. And ZERO of the 173 casts were ever countered, so the eight counterspells in this list have never once protected the engine. Three needs, one card each. CONTINGENCY when he is gone and ACCELERATION before he lands: Leyline of Anticipation, which the paper list cut and which is the only card here that grants flash without him \u2014 free from an opening hand, so it is also the turn-zero version of the plan. PROTECTION against the 31%: Lightning Greaves, shroud at a zero-mana equip, immediate the turn it lands. PROTECTION against the 50% that hexproof cannot touch: Guardian of Faith phases Heliod out at instant speed in response to a sweeper, which is Teferi's Protection on a body, and Mithril Coat flashes in and attaches itself to a legendary creature with indestructible, covering every destroy-based wipe though not the 21 exiles. THE GOLDFISH CANNOT GRADE ANY OF IT \u2014 it has no opponents, no removal and no sweepers, so protection is structurally invisible to it and this objective grades the branch's RISK instead: four cards that do nothing on their own, in a deck that already misses a land drop by turn five in half its games. keep_t3 is whether the opening hand can act at all. All four are clean in Forge with no AI:RemoveDeck flag; Vexilus Praetor was considered and rejected for carrying one."
  },
  "objective_grade": {
-  "reading": 0.9828,
+  "reading": 0.9835,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse.",
+  "because": "The objective is met and nothing measured here got worse; interaction affordable @T6 improved.",
   "bill": {
    "box": 2,
    "buy": 2,
@@ -931,7 +948,7 @@
    "buy": 2,
    "buy_cards": [
     "Guardian of Faith",
-    "Mithril Coat"
+    "Karametra's Blessing"
    ],
    "counts": {
     "box": 2,
@@ -956,19 +973,32 @@
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
-   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [
-   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+  "notes": [],
+  "reward": [
+   {
+    "measure": "interaction affordable @T6",
+    "reads_as": "66 games in 100 -> 69 in 100, a swing of 3 games per 100",
+    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   }
   ],
-  "reward": [],
   "risk": [
    {
-    "detail": "the largest is board power @T6 at +0.072 against an MDE of 0.086. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at +0.009 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Karametra's Blessing",
+     "Mithril Coat"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate heliod@lynchpin-v1 --vs <pod>` puts it at a table and writes where this reads",
@@ -977,20 +1007,22 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
+  "rose": [
+   "interaction affordable @T6"
+  ],
   "state": "merge"
  },
  "slug": "heliod",
- "staged": 0,
+ "staged": 1,
  "table": [
   {
    "better_is": "higher",
-   "branch": 4.138,
+   "branch": 4.1362,
    "champion": 4.0749,
-   "delta": 0.0631,
-   "mde": 0.1146,
+   "delta": 0.0613,
+   "mde": 0.1152,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.063 is smaller than the 0.115 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.061 is smaller than the 0.115 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -999,12 +1031,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.5383,
+   "branch": 2.5297,
    "champion": 2.4664,
-   "delta": 0.0719,
-   "mde": 0.0857,
+   "delta": 0.0633,
+   "mde": 0.0856,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.072 is smaller than the 0.086 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.063 is smaller than the 0.086 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1027,12 +1059,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0583,
+   "branch": 0.0608,
    "champion": 0.0523,
-   "delta": 0.006,
-   "mde": 0.0093,
+   "delta": 0.0085,
+   "mde": 0.0095,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.009 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.009 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1041,9 +1073,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0083,
+   "branch": 0.0085,
    "champion": 0.0097,
-   "delta": -0.0014,
+   "delta": -0.0012,
    "mde": 0.0039,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
@@ -1055,9 +1087,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.5148,
+   "branch": 0.5145,
    "champion": 0.5099,
-   "delta": 0.0049,
+   "delta": 0.0046,
    "mde": 0.0198,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.020 this run can resolve",
@@ -1069,12 +1101,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2546,
+   "branch": 0.2581,
    "champion": 0.2554,
-   "delta": -0.0008,
+   "delta": 0.0027,
    "mde": 0.0173,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1083,12 +1115,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.3513,
+   "branch": 2.3554,
    "champion": 2.3378,
-   "delta": 0.0135,
+   "delta": 0.0176,
    "mde": 0.1214,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.121 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.121 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1097,26 +1129,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6748,
+   "branch": 0.6873,
    "champion": 0.6613,
-   "delta": 0.0135,
+   "delta": 0.026,
    "mde": 0.0199,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.020 this run can resolve",
+   "reads_as": "66 games in 100 -> 69 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
-   "branch": 0.9828,
+   "branch": 0.9835,
    "champion": 0.9849,
-   "delta": -0.0021,
-   "mde": 0.0052,
+   "delta": -0.0014,
+   "mde": 0.005,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.005 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
