@@ -912,6 +912,16 @@ CLI_READONLY = frozenset({
     "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
     "deck-status", "mana-fit", "card-search", "pool-facts", "deck-history",
     "deck-version", "impact", "cache-status", "bracket-check",
+    # A RUNNING BATCH, read out of its logs' mtimes — it writes nothing (grep it:
+    # no open-for-write, no json.dump, no mkdir). It is here because "how is that
+    # run going" is a question worth answering without a cold start, and because
+    # the alternative is the pilot watching a silent terminal for four hours.
+    #
+    # Its answer is true only at the moment it is asked, so `sven.tools.VOLATILE`
+    # names it and no turn that reads it may be cached. That pairing is the
+    # point: read-only is about what a command WRITES, cacheable is about how
+    # long its answer stays true, and they are different questions.
+    "sim-progress",
 })
 
 #: Any of these on the parsed namespace means the command intends to WRITE.

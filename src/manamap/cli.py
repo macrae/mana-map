@@ -194,9 +194,91 @@ def build_parser():
     ecs.add_argument("--limit", type=int, default=None,
                      help="cap the number of decks fetched when refreshing")
 
+    ask_parser = subparsers.add_parser(
+        "ask", help="Ask Sven — the one front door over the 102 commands")
+    ask_parser.add_argument("question", nargs="+", help="what you want to know")
+    ask_parser.add_argument(
+        "--no-cache", action="store_true",
+        help="re-ask even if the same question was answered against this exact "
+             "state of the repo")
+    ask_parser.add_argument(
+        "--deep", action="store_true",
+        help="start on the stronger model instead of escalating into it")
+    ask_parser.add_argument(
+        "--json", dest="as_json", action="store_true",
+        help="emit the raw event stream on stdout, nothing on stderr")
+
     add_pilot_parser(subparsers)
 
     return parser
+
+
+def _ask(args):
+    """`mm ask` — one question, streamed.
+
+    THE STDOUT/STDERR SPLIT IS THE WHOLE CONTRACT, and it is `console.py`'s first
+    rule: stdout is the ANSWER, stderr is the theatre. So `mm ask "..." > out.txt`
+    captures the answer and nothing else, while the narration still reaches a
+    terminal.
+
+    On a TTY the two streams share a cursor, so a narration line arriving
+    mid-sentence would land beside the answer text. The fix is to write the
+    newline TO STDERR — `_col` tracks how far into a line stdout is, and the
+    break goes on the theatre stream. Injecting it into stdout would corrupt a
+    redirect, which is exactly what the rule above forbids.
+    """
+    import sys
+
+    from manamap import console
+
+    question = " ".join(args.question)
+    out, err = sys.stdout, sys.stderr
+    as_json = getattr(args, "as_json", False)
+
+    try:
+        from manamap.sven import llm, loop
+    except ImportError as exc:                      # pragma: no cover - defensive
+        err.write(f"sven is not importable: {exc}\n")
+        return 1
+
+    model = llm.DEEP_MODEL if getattr(args, "deep", False) else None
+    col = 0
+    try:
+        frames = loop.run(question, model=model,
+                          use_cache=not getattr(args, "no_cache", False))
+        for kind, data in frames:
+            if as_json:
+                import json as _json
+                out.write(_json.dumps({"t": kind, "d": data}) + "\n")
+                out.flush()
+                continue
+            if kind == "text":
+                out.write(data)
+                out.flush()
+                col = 0 if data.endswith("\n") else col + len(data)
+                continue
+            if col:                                  # break the line on STDERR
+                err.write("\n")
+                col = 0
+            if kind == "tool":
+                err.write(f"  · {data}\n" if not console.is_plain()
+                          else f"  tool {data}\n")
+            elif kind == "note":
+                err.write(f"  {data}\n")
+            elif kind == "error":
+                err.write(f"  ! {data}\n")
+            elif kind == "done" and isinstance(data, dict):
+                err.write(f"  {data.get('summary', '')}\n")
+            err.flush()
+    except llm.SvenUnavailable as exc:
+        err.write(f"\n{exc}\n")
+        return 1
+    except KeyboardInterrupt:
+        err.write("\n  interrupted\n")
+        return 130
+    if not as_json:
+        out.write("\n")
+    return 0
 
 
 def main():
@@ -239,6 +321,8 @@ def main():
     elif args.command == "eval-commander-search":
         from manamap.analysis import eval_commander_search
         eval_commander_search.main(args)
+    elif args.command == "ask":
+        raise SystemExit(_ask(args))
     elif args.command == "pilot":
         import sys
 

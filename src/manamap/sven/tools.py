@@ -219,3 +219,125 @@ TIER1 = {
     "fleet": fleet,
     "stat_test": stat_test,
 }
+
+#: A tool result longer than this is truncated. One careless `card-search
+#: --limit 500` would otherwise be the whole turn, and the model would have
+#: spent its context on rows nobody asked for. The truncation SAYS SO and says
+#: how to narrow, so it reads as a boundary rather than as the end of the data.
+TOOL_RESULT_CAP = 8000
+
+_STAT_SIGNATURES = """  wilson(k, n)                          a rate's 95% interval
+  diff_proportions(k_a, n_a, k_b, n_b)  Newcombe: the interval ON THE DIFFERENCE
+  diff_means(xs, ys)                    Welch
+  diff_medians(xs, ys)                  bootstrap, seeded
+  permutation_p(xs, ys)                 two-sided, seeded, 10k iterations
+  power(p_a, p_b, n_a, n_b)             exact, not a normal approximation
+  mde(p_a, n_a)                         smallest effect this n could detect
+  games_needed(p_a, difference)         n per arm for 80% power"""
+
+
+def tool_block():
+    """The `tools` list for the model. Sorted and deterministic, so it caches.
+
+    ARGV IS THE SCHEMA. There is no generated JSON schema per command, and that
+    is a decision rather than an economy: `_cli`'s own docstring says the argv is
+    re-parsed with the CLI's parser "so the semantics are identical to the
+    terminal by construction — there is no second place where a flag can mean
+    something slightly else." A generated schema WOULD BE that second place, and
+    it would drift silently, because `add_pilot_parser` uses `nargs="?"`,
+    `action="append"`, `dest=` renames and `choices` computed at build time.
+
+    So the model passes argv and argparse judges it. A hallucinated flag comes
+    back as the same error message a human would get, and the model corrects
+    itself in one round trip. That is the intended path, not a failure.
+
+    Cost: about 1.6k tokens, against roughly 8k for eighteen generated schemas.
+    """
+    commands = sorted(name for name, _ in readonly_commands())
+    table = "\n".join(f"  {name:16s}{desc}" for name, desc in
+                       sorted(readonly_commands()))
+    return [
+        {
+            "name": "run_command",
+            "description": (
+                "Run one read-only pilot command and get its terminal output. "
+                "`args` is literally the argv after the command name, so "
+                "`['--json']` or `['heliod', '--limit', '5']`. Most take a deck "
+                "slug first. If you are unsure of a flag, call `command_help` "
+                "rather than guessing — a wrong flag costs a round trip.\n\n"
+                f"{table}"),
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "command": {"type": "string", "enum": commands},
+                    "args": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["command"],
+            },
+        },
+        {
+            "name": "command_help",
+            "description": (
+                "The full `--help` for one command: every flag, with its "
+                "meaning. Progressive disclosure — read the flags for the one "
+                "command you are about to use rather than carrying all eighteen."),
+            "input_schema": {
+                "type": "object",
+                "properties": {"command": {"type": "string", "enum": commands}},
+                "required": ["command"],
+            },
+        },
+        {
+            "name": "stats",
+            "description": (
+                "Run a statistical test and get its exact return value. USE "
+                "THIS RATHER THAN COMPUTING OR PARAPHRASING — you must never "
+                "state an interval, a power figure or an MDE in your own "
+                "arithmetic.\n\n" + _STAT_SIGNATURES),
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "fn": {"type": "string", "enum": sorted(_STAT_FNS)},
+                    "args": {"type": "object"},
+                },
+                "required": ["fn", "args"],
+            },
+        },
+        {
+            "name": "escalate",
+            "description": (
+                "Hand this question to a stronger model. Call it when the "
+                "question needs judgement rather than lookup, when the evidence "
+                "conflicts, or when you are about to state a statistical "
+                "conclusion. Everything you have already read is carried over, "
+                "so this costs one step and not a restart."),
+            "input_schema": {
+                "type": "object",
+                "properties": {"reason": {"type": "string"}},
+                "required": ["reason"],
+            },
+        },
+    ]
+
+
+_STAT_FNS = ("wilson", "diff_proportions", "diff_means", "diff_medians",
+             "permutation_p", "power", "mde", "games_needed")
+
+
+def command_help(name):
+    """One command's `--help`, for progressive disclosure."""
+    import argparse
+    import contextlib
+    import io
+
+    from manamap.pilot.registry import add_pilot_parser
+    from manamap.serve import CLI_READONLY
+
+    if name not in CLI_READONLY:
+        raise ValueError(f"command_help: {name!r} is not a command Sven may run")
+    parser = argparse.ArgumentParser(prog="manamap")
+    add_pilot_parser(parser.add_subparsers(dest="command"))
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf), contextlib.suppress(SystemExit):
+        parser.parse_args(["pilot", name, "--help"])
+    return buf.getvalue()
