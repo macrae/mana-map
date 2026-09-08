@@ -12,11 +12,9 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 12,
+    "complete": 13,
     "of": 15,
-    "stale": [
-      "frame"
-    ],
+    "stale": [],
     "invalid": [
       "engine",
       "considering.json"
@@ -874,7 +872,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 85,
+          "value": 83,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -1104,7 +1102,7 @@
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 85
+        "by_turn_6_pct": 83
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
@@ -1179,11 +1177,10 @@
     "stale": true
   },
   "audit": {
-    "archetype": "control",
+    "archetype": "combo",
     "under": [
       "mana-base",
       "colour-sources",
-      "sweepers",
       "interaction-breadth"
     ],
     "over": [],
@@ -1295,7 +1292,6 @@
   "experiments": null,
   "next": [
     "2 artifact(s) fail their own gate (engine, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
