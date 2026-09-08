@@ -12,11 +12,10 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 15,
     "stale": [],
     "invalid": [
-      "engine",
       "considering.json"
     ],
     "verified": true,
@@ -887,19 +886,19 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Draw-trigger punisher drawn (bills them for taking it)": {
+        "target:Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)": {
           "value": 26,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Draw-trigger punisher drawn (bills them for taking it)' by turn six",
+          "definition": "share of games assembling 'Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Engine + punisher assembled (the deck's core two-piece)": {
+        "target:Table draw engine plus a draw-triggered drain, both drawn": {
           "value": 20,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling \"Engine + punisher assembled (the deck's core two-piece)\" by turn six",
+          "definition": "share of games assembling 'Table draw engine plus a draw-triggered drain, both drawn' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -928,7 +927,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Win condition access (Approach, or a tutor that can actually find a sorcery)": {
-          "value": 45,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Win condition access (Approach, or a tutor that can actually find a sorcery)' by turn six",
@@ -943,11 +942,11 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A body that can block a FLIER (39 of 53 eliminations came from the air)": {
+        "target:A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)": {
           "value": 60,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air)' by turn six",
+          "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -1109,11 +1108,11 @@
         "by_turn_6_pct": 64
       },
       {
-        "label": "Draw-trigger punisher drawn (bills them for taking it)",
+        "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
         "by_turn_6_pct": 26
       },
       {
-        "label": "Engine + punisher assembled (the deck's core two-piece)",
+        "label": "Table draw engine plus a draw-triggered drain, both drawn",
         "by_turn_6_pct": 20
       },
       {
@@ -1130,14 +1129,14 @@
       },
       {
         "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-        "by_turn_6_pct": 45
+        "by_turn_6_pct": 36
       },
       {
         "label": "Heliod protected, or a flash grant that does not need him",
         "by_turn_6_pct": 53
       },
       {
-        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air)",
+        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
         "by_turn_6_pct": 60
       },
       {
@@ -1166,10 +1165,10 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod hands the whole table free cards and then bills them for holding the cards: ten symmetric-draw permanents fill every hand, three punishers charge for hand size on each opponent's upkeep (Iron Maiden, Viseling, Ebony Owl Netsuke) while three more drain or mill per card drawn, and the same turbulence pays the commander's discount and the tax layer's rent — behind that median plan sits a rules-verified but very rare one-turn kill built on a single creature.",
-    "critic": "pass",
-    "lines": 13,
-    "verified_lines": 4
+    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice.",
+    "critic": null,
+    "lines": 11,
+    "verified_lines": 2
   },
   "diagnosis": {
     "verdict": "The engine turns over and the deck never runs out of cards: the table-draw half is drawn in 85.2% of goldfish games, the punisher half in 67.2%, both in 56.7%, on a 0.866 turn-three land-drop rate and six checker-passed stacks. What binds is white mana at the point of deployment — 18 white sources against a target of 36, and a measured 0.515 probability of two white sources on curve against blue's 0.804, in a deck whose commander costs {2}{W}{W}. Behind that sits a ceiling the mana fix does not touch: the verified Reservoir kill assembles in 0.7% of goldfish games, and in the deck's one 20-game pod run it dealt a median 0 combat damage and no elimination in the run was attributed to it. Buy the colour first; the kill is a separate question and it is asked in open_questions.",
@@ -1194,33 +1193,28 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "How many upkeeps does the punisher clock actually need to kill one opponent, and how often does the deck get them? The pair (a donation engine plus a punisher) is measured at 56.7% assembled, 41.2% by turn six — but nothing measures the clock those two produce as a WIN, so the deck's median route to victory has no rate at all.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Does the punisher rank need The Second Doctor or Folio of Fancies to be lethal at all? With a seven-card maximum hand size the cleanup discard caps Iron Maiden and Viseling at 3 damage per upkeep; those two cards remove the cap and nothing measures whether one of them is present.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Can the Aetherflux Reservoir kill be executed through interaction? Stack 006 states every loop cast and every activation opens a fully open priority window on an unprotected board and names Grand Abolisher as the in-99 closer, but no stack has walked the kill with Abolisher deployed or with an opponent holding an instant.",
+      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch - and if so, is X chosen before or after the reduction applies?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Stack 003 passed the checker and walks the deck's median conversion to an exact number, but build_index.line_cards returns ['Naturalize', 'Arcane Denial'] from its stack and hand and never reads the board, so Forced Fruition, Iron Maiden and Ebony Owl Netsuke are unreachable as a `verified_by`. Naturalize is an opponent's card and not in the 99. Should the threshold be gated on the deck's own cards (a one-condition change in build_index.py) rather than a companion stack being authored?",
+      "question": "While Lightning Greaves is equipped to Heliod, can you still target him with Karametra's Blessing or Guardian of Faith's enters trigger, and is moving the Greaves off in response possible at instant speed?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "What is Heliod's discount worth in practice — how many cards do opponents draw per turn cycle once one or two donation permanents are down, and therefore how much does the flipped face take off a spell?",
+      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod himself is the commander on the battlefield?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "No declared target measures the deck's actual win: Approach in hand AND seven mana available on two separate turns. Can the harness express a mana condition, or must the gap be recorded rather than modelled?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "How often, and on what turn, does this deck empty its own library? Font of Mythos plus a doubler draws the controller four or more cards a turn cycle, and Jace, Wielder of Mysteries turns that from the archetype's characteristic loss into a win — but goldfish models resource development over ten turns and measures no library count, so the third win route has no rate at all.",
-      "settled_by": "goldfish"
+      "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
+      "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
@@ -1291,11 +1285,12 @@
   },
   "experiments": null,
   "next": [
-    "2 artifact(s) fail their own gate (engine, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
+    "engine.json's critic verdict is None — `/analyze-engine heliod`",
+    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
