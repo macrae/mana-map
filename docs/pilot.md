@@ -1717,3 +1717,39 @@ would change `prose:shape` and invalidate both prose routines for no gain. The w
 `upgrades` key is the section's opening copy and is cached separately. Tiers are marked
 inline: computed evidence ◆, every ranking and verdict ★.
 
+
+## Version numbers: what earns which digit
+
+`vMAJOR.MINOR.PATCH`, every slug starting at `v1.0.0`.
+
+| digit | earns it |
+|---|---|
+| **patch** | a mana fix, or a **single-card swap** |
+| **minor** | a sizable change — several cards, or a new capability |
+| **major** | the strategy or the commander changed |
+
+**Patch grew a second clause on 2026-09-08**, because the original wording —
+"patch = mana only" — could not describe most of what actually happens to a
+deck. Three tags had already fallen through the gap:
+
+```
+  ur-dragon      V2  +5  -5    tagged v1.0.1   ->  v1.1.0
+  ur-dragon      V3  +18 -17   tagged v1.0.2   ->  v1.2.0
+  edgar-vampires V2  +12 -12   tagged v1.0.1   ->  v1.1.0
+```
+
+An eighteen-card rebuild reading as a mana patch is not a cosmetic problem: the
+version is what the captain's log stamps a game against, and it is the first
+thing a reader uses to judge how much of a deck's record still applies.
+
+`heliod` v1.2.1 is the case that surfaced it — Archangel of Tithes in for White
+Sun's Zenith, one card for one card at identical pip cost. It was tagged a patch
+with a note saying the scheme did not quite cover it. Under the corrected rule
+it simply is one.
+
+**RENAMES ARE ADDITIVE.** The old name is kept as an alias on the same version
+rather than deleted, because prose cites tags BY NAME and that prose is
+authored: `ur-dragon/engine.json` names v1.0.2 four times and the pilot's own
+`log.jsonl` — append-only — narrates "v1.0.1 added lands and fixing; v1.0.2
+swapped the mana density". Retiring those names would leave the pilot's own
+record pointing at nothing, to tidy a number.

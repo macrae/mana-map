@@ -1325,3 +1325,45 @@ The tests caught all of it. Nothing shipped wrong — but they caught it hours
 late, on a full `make test` nobody runs between commits, and the failures
 pointed at zur-enchantress branches rather than at the one line in `goldfish.py`
 that caused them.
+
+---
+
+## A test that names a deck inherits that deck's decisions
+
+**2026-09-08. Four instances in one day**, all the same shape and none of them
+caught by anything except a full suite run hours later.
+
+| test | named | assumed | what changed |
+|---|---|---|---|
+| `..._has_no_draw_series` | heliod | declares no `model_draw` | it declared one |
+| `test_heliod_primary_win_line` | heliod | runs Hullbreaker Horror | the card was cut |
+| `..._names_the_flag_rather_than_reading_zero` | heliod | declares NO flag | it declared two |
+| `..._byte_identical_with_the_flag_absent` | the un-opted POOL | at least three decks | heliod opted in, leaving two |
+
+Every one of them was a good test. Each encoded a real invariant — absent means
+absent, an undeclared win line is measured by nothing, the opt-in contract holds
+across decks. What failed was the EXAMPLE, not the rule.
+
+**The fix is the same every time and it is not "stop naming decks".** These
+invariants are about real decks and cannot be tested on fixtures alone. The fix
+is that a test naming a deck must ASSERT THE PREMISE IT DEPENDS ON, so the day
+that premise dies it fails saying so instead of failing on the conclusion:
+
+```python
+    assert not _d.get("model_draw"), (
+        "gishath has opted into a model — this test needs a deck that declares "
+        "NOTHING, or it proves nothing")
+```
+
+Without that line the failure reads as a broken model. With it, it reads as a
+test pointing at the wrong deck, which is what it is.
+
+The fourth one is different and worth separating: the un-opted pool SHRINKS as
+the fleet adopts a model, and that is adoption rather than decay. The floor
+moved 3 → 2 rather than the invariant being abandoned — two decks still prove it
+ACROSS decks, which is what the guard is for, and one would not.
+
+**Cost of not doing this:** a decklist change on 2026-09-07 left four tests
+asserting the old deck, and they were found on a `make test` nobody runs between
+commits, pointing at zur-enchantress branches and a "broken" diagnostic model
+rather than at the check-in that caused them.

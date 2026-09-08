@@ -660,10 +660,12 @@ def add_pilot_parser(subparsers):
                                   "baseline: restart version numbering at the working list")
             cmd.add_argument("ref", nargs="?", default=None,
                              help="V4, a tag name, or a sha prefix. For `tag`: the new "
-                                  "name — vMAJOR.MINOR.PATCH for a release (patch = mana "
-                                  "only, minor = the deck can do something new, major = "
-                                  "the strategy or the commander changed; every slug "
-                                  "starts at v1.0.0), or any word not starting with a "
+                                  "name — vMAJOR.MINOR.PATCH for a release "
+                                  "(PATCH = a mana fix or a SINGLE-CARD swap; "
+                                  "MINOR = a sizable change, several cards or a "
+                                  "new capability; MAJOR = the strategy or the "
+                                  "commander changed; every slug starts at "
+                                  "v1.0.0), or any word not starting with a "
                                   "digit for a nickname (the-lock)")
             cmd.add_argument("--at", default=None, dest="at",
                              help="tag: the version to name (default: the committed working list)")
