@@ -1,4 +1,4 @@
-# Known issues
+# Known issues — the inventory
 
 **The board of what is red and why.** `make test` does not pass on `main`, and it
 has not for some days. That is a deliberate state for most of what is on this
@@ -212,6 +212,131 @@ own session, its own corpus sweep over the log grammar, and a test that fails
 first on a stored log.
 
 **Do not quote a `noncombat_damage_dealt_to_players` figure until this lands.**
+
+---
+
+# The rest of the inventory
+
+Sections 1–4 are the red tests and the one confirmed engine bug. Everything
+below is a real gap that **no test is currently failing on**, which is why it
+needs writing down: a problem nothing asserts is a problem nobody is reminded of.
+
+Taken 2026-09-08 by sweeping `deck-status` across the live fleet, the strict-
+xfail registries, the engine models' `open_questions`, the branch states, and
+the captain's logs.
+
+## 5. Fleet artifact state
+
+| deck | OK | STALE | FAIL | gated | unstamped |
+|---|---:|---:|---:|---:|---:|
+| edgar-vampires | 14 | 0 | 0 | 7 | 2 |
+| gishath | 14 | 0 | 0 | 5 | 3 |
+| goblin-storm | 14 | 0 | 0 | 6 | 4 |
+| heliod | 13 | 0 | **1** | 5 | 2 |
+| radagast | 14 | 0 | **1** | 4 | 4 |
+| sisay | 13 | 0 | **1** | 2 | 4 |
+| ur-dragon | 9 | **4** | **1** | 6 | 0 |
+| zur-enchantress | 8 | 0 | 0 | 3 | 0 |
+
+Two FAILs are new here — **radagast and sisay both fail `diagnosis.json` on the
+same axis**, `axes[3] (colour-sources)`, where the diagnosis's `measured.value`
+disagrees with what `deck-audit` computes (9 against audit for radagast, **−15**
+for sisay). A negative colour-source count is not a plausible measurement, so
+this is one bug in one place rather than two decks drifting. Neither is asserted
+by a failing test because neither deck is pinned.
+
+## 6. Staleness is undecidable on 19 artifacts
+
+`unstamped — staleness cannot be checked` appears **19 times across six decks**.
+An agent-authored artifact that carries no decklist sha cannot be told from a
+current one, so the gate reports OK and means "no opinion". ur-dragon and
+zur-enchantress are the only decks at zero, because they are the two whose
+artifacts were most recently rebuilt.
+
+This is the quiet version of the staleness problem the `meta.model_version`
+stamp was introduced to solve for computed figures. The authored side never got
+it. Until it does, "OK" on those rows is not evidence.
+
+## 7. Two engine models have never been criticised
+
+`critic` is null on **edgar-vampires** and **ur-dragon** (heliod's is now `fail`
+— see §2). No test notices, because only heliod is named by one. Three of eight
+live decks were in this state this morning and exactly one test could see it.
+
+## 8. Fifty open questions, and no queue
+
+The engine models carry **50 `open_questions`** — 37 on live decks — routed
+`resolve-stack` 30, `goldfish` 11, `research-strategy` 9. `analyze-engine`
+step 7 says the orchestrator dispatches these, because subagents cannot spawn
+subagents. Nothing tracks which have been dispatched. They accumulate.
+
+The `resolve-stack` thirty are the cheapest real evidence available: the fleet's
+verified-line counts are as thin as 1-of-11 (heliod), and each of those thirty
+is a scenario waiting to be written.
+
+## 9. Eleven games logged, zero debriefed
+
+| deck | logged | debriefed |
+|---|---:|---:|
+| edgar-vampires | 4 | 0 |
+| ur-dragon | 3 | 0 |
+| goblin-storm | 2 | 0 |
+| gishath | 1 | 0 |
+| heliod | 1 | 0 |
+
+No log entry on any deck carries a `debrief` key. The captain's log is the only
+artifact in the bench sourced from a real table rather than a simulation, and
+none of it has been read back. `/debrief` is the cheapest agent in the set.
+
+## 10. Branch hygiene
+
+Twenty-five branch directories exist. **Eight are MERGED and still on disk** —
+seven on zur-enchantress, one on heliod (`archangel-v1`, merged into v1.2.1).
+Seventeen are open experiments on zur-enchantress alone.
+
+Every merged branch records its target as **`into_version_before: null`**, which
+is why `branch_state` prints "merged … into the list after **VNone**" for all
+eight. `base_version` is written correctly (9 on archangel-v1); the merge record
+simply never fills the field it prints. Cosmetic today, wrong in an artifact
+that exists to say what a change was measured against.
+
+## 11. Two artifacts are held by retired agents
+
+`STALE_XFAIL` and `ISSUE_XFAIL` in `tests/test_pilot_tracked_artifacts_validate.py`
+carry three entries between them, all strict:
+
+- `heliod/considering.json` — the Short List, part of the frozen magazine
+  renderer whose editor was retired 2026-08-19
+- `edgar-vampires/issue.json` — prose predating THE LOCK's 12 swaps
+- `ur-dragon/issue.json` — quotes "31 lands" where the deck runs 36 copies;
+  the copies-vs-entries defect, live in tracked prose
+
+**There is no agent left to re-run for any of them.** The honest options are to
+delete the artifacts or leave them marked. They are marked, which keeps the gate
+live for the other seven decks — but it is a permanent xfail, and a permanent
+xfail is a decision deferred rather than made.
+
+Note that **both heliod entries came OFF this list on 2026-09-08** when the
+rebuilt `engine.json` and `tutor_guide.json` XPASSed — the strict marker working
+exactly as designed.
+
+## 12. Fixed since the last sweep — do not re-investigate
+
+Six bugs recorded during the PRD exploration were checked again today and five
+are gone: `experiment`'s `KeyError: 'ci95_a'` on the final print; `experiment`
+running a different pod profile from `simulate` (it reads `STANDARD_POD_PROFILE`
+now); `_run_arm` having no timeout (it passes `per_job_cap`); the `manuals/p/`
+three-writer collision (`build_page` has no default output any more, so `poh`
+owns it); and `mulligan` being parsed then discarded (`mulligans_taken` and
+`mulligan_kept` are both aggregated, with the London-mulligan derivation
+recorded).
+
+**One is still live:** `experiment` does not rotate seats. Both arms sit at
+`Ai(1)` (`experiment.py:416-417`), while `forge.py` rotates per job for
+`simulate` and is careful to rotate the AI profiles alongside the decks. So an
+A/B carries whatever seat-1 bias the table has, and the two commands are still
+not measuring under the same conditions — a narrower version of the pod-profile
+bug that was fixed.
 
 ## What is NOT on this page
 
