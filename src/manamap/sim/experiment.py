@@ -328,7 +328,7 @@ def _run_arm(arm_letter, meta_name, opp_names, games, jobs, clock, seed, profile
 
 def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False,
-        vs_profile=None):
+        vs_profile=None, detect=None):
     if not opponents:
         raise SystemExit("experiment needs at least one opponent: --vs <slug> (repeatable)")
     import os
@@ -371,6 +371,24 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
     if path.exists() and not dry_run:
         raise SystemExit(f"{slug}: {path.name} exists — the same arms, table and seed replay "
                          f"the same games. A new sample is a new --seed.")
+    # THE ARITHMETIC, AT THE ONE MOMENT IT CAN STILL CHANGE THE DECISION.
+    # `stats` has carried the power functions since the statistics went in and
+    # nothing called them before a run — so a 100-per-arm A/B was launched
+    # against a 0.244 baseline with a 0.34 chance of seeing a real ten-point
+    # improvement. Four hours to be more likely to miss than to find.
+    #
+    # It PRINTS and does not refuse. An A/B that cannot resolve the effect the
+    # pilot cares about is still a legitimate thing to run — as a noise floor,
+    # as a smoke test, as the first half of a bigger sample — and a gate that
+    # blocked it would be a validator firing on correct use.
+    from manamap.sim import power as _power
+    p_a, from_run = _power.baseline_rate(slug, opponents)
+    for line in _power.preflight(p_a, int(games), detect=detect):
+        print(line)
+    if from_run:
+        print(f"    baseline from {from_run}")
+    print()
+
     if dry_run:
         return path, {"experiment_id": eid, "arms": {"a": a["label"], "b": b["label"]},
                       "seed": seed, "games_per_arm": games, "profiles": profiles}
@@ -584,7 +602,8 @@ def main(args):
                     jobs=args.jobs, clock=args.clock or SIM_GAME_CLOCK_SECONDS,
                     seed=getattr(args, "seed", None), profile=getattr(args, "profile", None),
                     vs_profile=getattr(args, "vs_profile", None) or seat_profiles,
-                    dry_run=getattr(args, "dry_run", False))
+                    dry_run=getattr(args, "dry_run", False),
+                    detect=getattr(args, "detect", None))
     if getattr(args, "dry_run", False):
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")
         return

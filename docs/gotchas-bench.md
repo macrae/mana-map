@@ -1200,3 +1200,71 @@ The same defect the magazine era already paid for — counting entries once
 published "18 lands" for a 33-land deck — in a different file, six weeks later.
 The naive fix is wrong too and has its own test: `10 Island → 8 Island` is a
 two-card swap, not a ten-card one.
+
+---
+
+## The win rate is a low-power endpoint, and the arithmetic was always available
+
+**2026-09-07, heliod.** A 100-game-per-arm A/B was launched against a 0.244
+baseline. It ran four hours. Its probability of detecting a real ten-point
+improvement was **0.34** — more likely to miss than to find, and knowable in a
+millisecond from functions `stats` has carried since the statistics went in.
+
+```
+  games/arm at 80% power, baseline 0.244
+    +0.05   >1000/arm       —
+    +0.10     324/arm    15.4 h
+    +0.15     149/arm     7.1 h
+
+  what 100/arm actually resolves:  +0.190 or larger
+  power at 400/arm vs +0.10:       0.88   (24 hours)
+```
+
+Three things make the win rate expensive here and no care fixes any of them: it
+is BINARY, it is RARE (0.244), and **a clocked-out game has no winner so it is
+DISCARDED** — 17% of one run's games were paid for and thrown out of the
+denominator.
+
+Mechanism endpoints are better but not enough better. Commander uptime
+(mean 3.22, sd 4.01), the removal rate per resolution (0.451), the share of
+games the commander never lands (0.368) all still want 100–500 games per arm.
+**Forge cannot price a three-card swap.** Reserve it for changes of fifteen
+points or more, and for the final gate on a list about to be sleeved.
+
+### Decompose the failure instead of A/B-ing the fix
+
+The cheapest rigorous answer is usually not a faster experiment — it is a
+smaller question, answered from logs already on disk.
+
+Asked of the protection branch: hexproof and shroud stop TARGETED removal and
+nothing else, so the only empirical question is what share of the problem that
+is. 78 departures across 220 games already recorded:
+
+```
+  39   50%   MASS — three or more permanents left the same turn
+  24   31%   TARGETED — hexproof/shroud stops this
+  15   19%   other / unattributed
+
+  removal rate now            78/173 resolutions = 0.451
+  with hexproof              ~0.312
+```
+
+Greaves and Boots buy about **fourteen points of commander survival**, derived
+from the rules plus a decomposition of games already paid for, with no new
+simulation at all. Half the problem is sweepers, which no amount of hexproof
+touches — which is also the argument against loading up on protection.
+
+Measured beside it: **0 of 173 commander casts were countered.** Eight
+counterspells have never once protected the engine.
+
+### The preflight
+
+`experiment` now prints what the run can see before it launches, and takes
+`--detect DELTA` for the change the pilot actually cares about. It PRINTS and
+never refuses: an underpowered A/B is still legitimate as a noise floor, a smoke
+test, or the first half of a bigger sample, and a gate blocking it would be a
+validator firing on correct use.
+
+The baseline is the deck's largest measured run **against the same table**, and
+is ABSENT when there is none — a preflight computed from a default rate would be
+a number about nothing that looked exactly like a number about something.

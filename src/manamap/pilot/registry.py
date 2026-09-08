@@ -687,6 +687,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--merge", default=None, metavar="ID",
                              help="merge the doctor's (and skeptic's) handoff into prescription ID")
         if name == "experiment":
+            cmd.add_argument("--detect", type=float, default=None, metavar="DELTA",
+                             help="the win-rate change you care about, e.g. 0.10. "
+                                  "The power preflight then says whether this run "
+                                  "can see it and how many games it would take — "
+                                  "before four hours are spent finding out")
             cmd.add_argument("--a", dest="a", default=None, metavar="REF",
                              help="arm A: a version (V4 / tag / sha) or `working`")
             cmd.add_argument("--b", dest="b", default=None, metavar="REF",
