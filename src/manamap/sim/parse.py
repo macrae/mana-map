@@ -405,6 +405,19 @@ def game_facts(g, commanders=None):
                # `commander_damage_by_defender` one line up.
                "commander_casts": 0,
                "commander_resolved_turn": None,
+               # A TRANSFORMING COMMANDER HAS TWO FACES AND THEY ARE NOT THE
+               # SAME EVENT. `commander_resolved_turn` records the FRONT face
+               # arriving. Heliod's whole engine — the cost reduction and the
+               # flash grant — lives on the BACK face and needs a {3}{U/P}
+               # activation on top.
+               #
+               # Measured on the 120-game run: the front face resolved in 68
+               # games (0.567) and the back face appeared in 35 (0.292). An
+               # engine model quoted 0.567 to support a claim about the
+               # discount, so the deck's defining ability was credited at
+               # nearly twice its rate. An adversarial critic caught it; the
+               # instrument had made the two indistinguishable.
+               "commander_transformed_turn": None,
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
@@ -450,6 +463,17 @@ def game_facts(g, commanders=None):
                             and _is_commander(name, commanders.get(s_))):
                         per[s_]["commander_resolved_turn"] = ev["turn"]
                         break
+                # THE TRANSFORM, which the id suffix marks as an ability of a
+                # permanent already on the battlefield — the same line shape the
+                # arrival check excludes on purpose, read here for the opposite
+                # reason.
+                if " - Transform " in ev["text"]:
+                    bare = re.sub(r" \(\d+\)$", "", name)
+                    for s_ in seats:
+                        if (per[s_]["commander_transformed_turn"] is None
+                                and _is_commander(bare, commanders.get(s_))):
+                            per[s_]["commander_transformed_turn"] = ev["turn"]
+                            break
             if ev["creates_token"] and ev["seat"] in per:
                 per[ev["seat"]]["token_resolutions"] += 1
             if _LOSES_LIFE.search(ev["text"]) and ev["seat"] in per:
@@ -533,6 +557,7 @@ def game_facts(g, commanders=None):
             p.pop("commander_damage_by_defender")
             p.pop("commander_casts")
             p.pop("commander_resolved_turn")
+            p.pop("commander_transformed_turn")
         p["life_by_turn"] = dict(sorted(p["life_by_turn"].items()))
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
@@ -973,6 +998,22 @@ def aggregate(facts, slug_label, label, commanders=None):
                 "first_resolved_global_turn": mean_ci(
                     [p["commander_resolved_turn"] for p in landed]),
             }
+            # ABSENT unless a transform was actually seen — a commander with one
+            # face must not carry a "transformed 0% of the time" row, which
+            # reads as a failure rather than as a card that does not do that.
+            flipped = [p for p in ps if p.get("commander_transformed_turn") is not None]
+            if flipped:
+                flo, fhi = wilson(len(flipped), len(ps))
+                out["seats"][name]["commander_access"]["transformed"] = {
+                    "games": len(flipped),
+                    "rate": round(len(flipped) / len(ps), 3),
+                    "ci95": [flo, fhi],
+                    "first_global_turn": mean_ci(
+                        [p["commander_transformed_turn"] for p in flipped]),
+                    "basis": "THE BACK FACE. A double-faced commander's second "
+                             "half is a separate event from its arrival, and an "
+                             "ability that lives there is gated on THIS rate.",
+                }
         if cmd and any("commander_damage_max" in p for p in ps):
             maxes = [p.get("commander_damage_max", 0) for p in ps]
             lethal = sum(1 for p in ps if p.get("commander_damage_lethal"))

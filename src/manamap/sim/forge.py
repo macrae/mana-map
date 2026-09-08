@@ -168,6 +168,25 @@ def commanders_from_text(decklist_text):
     return {e["name"] for e in parse_decklist(decklist_text) if e.get("is_commander")}
 
 
+def _joined_name(slug, name):
+    """`A // B` for a double-faced card, from the seat's own `cards.json`.
+
+    Falls back to the name as given: a seat with no cards.json, or a
+    single-faced commander, is unchanged.
+    """
+    try:
+        doc = load_json(seat_dir(slug).parent / seat_dir(slug).name / "cards.json")
+        for c in (doc or {}).get("cards", []):
+            full = c.get("name") or ""
+            if full == name:
+                return full
+            if " // " in full and name in [f.strip() for f in full.split(" // ")]:
+                return full
+    except Exception:                              # pragma: no cover - defensive
+        pass
+    return name
+
+
 def _commanders_by_slug(seats):
     """{slug -> set of commander names} read from each seat's decklist.
 
@@ -184,6 +203,18 @@ def _commanders_by_slug(seats):
             cmd = {e["name"] for e in parse_decklist(text) if e.get("is_commander")}
         except (SystemExit, OSError):
             continue
+        # BOTH FACES, OR THE BACK ONE IS INVISIBLE. A decklist names a
+        # double-faced card by its FRONT face — "Heliod, the Radiant Dawn" —
+        # while `cards.json` holds the joined "A // B" that `_is_commander`
+        # splits. With only the front stored, a log line naming the back face
+        # matched nothing.
+        #
+        # It cost a real reading. Heliod's whole engine, the cost reduction and
+        # the flash grant, lives on the BACK face; the front resolved in 68 of
+        # 120 games and the back appeared in 35, and an engine model quoted the
+        # 0.567 to support a claim about the discount. The parser could not tell
+        # them apart because the record only knew half the card.
+        cmd = {_joined_name(slug, n) for n in cmd}
         if cmd:
             out[slug] = cmd
     return out
@@ -894,8 +925,23 @@ def analyze(slug, run_id_or_path):
     # the record is self-describing and nothing reads disk again.
     by_slug = _commanders_by_slug([s["slug"] for s in rec["seats"]])
     for seat in rec["seats"]:
-        if not seat.get("commander") and by_slug.get(seat["slug"]):
-            seat["commander"] = sorted(by_slug[seat["slug"]])
+        got = by_slug.get(seat["slug"])
+        if not seat.get("commander") and got:
+            seat["commander"] = sorted(got)
+        elif got and seat.get("commander"):
+            # MIGRATION, narrow on purpose: upgrade a stored FRONT-FACE-ONLY
+            # name to the joined `A // B`, and nothing else. Records written
+            # before `_joined_name` know half of a double-faced commander, which
+            # made the back face — where Heliod's entire engine lives —
+            # unmatchable. Only a name that is a face of the fuller one is
+            # replaced, so a genuine commander swap on a seat still reads as
+            # what it is rather than being silently rewritten.
+            upgraded = []
+            for n in seat["commander"]:
+                better = next((g for g in got
+                               if " // " in g and n in [f.strip() for f in g.split(" // ")]), None)
+                upgraded.append(better or n)
+            seat["commander"] = sorted(set(upgraded))
     facts, analysis = sim_parse.analyze_logs(
         [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
         record_commanders(rec))

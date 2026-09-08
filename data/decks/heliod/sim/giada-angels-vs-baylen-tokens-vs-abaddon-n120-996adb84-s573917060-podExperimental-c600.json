@@ -16,7 +16,7 @@
       "forge_name": "mm-heliod",
       "decklist_sha256": "decc32b080fe821b8307181265a6b5f8344378bd1a66e8de8ca96d4bd415d2cd",
       "commander": [
-        "Heliod, the Radiant Dawn"
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
       ],
       "decklist_sha256_note": "CORRECTED 2026-09-07. The record was written with the sha of decklist.txt as it stood when the run FINISHED (442fc5689e0e, V7/v1.0.1). The games were played on the .dck written at launch, 07:04, which held 14 Islands to 3 Plains — V6/v1.0.0, the paper list. The .dck on disk is the receipt. `forge.run` now snapshots every seat's sha at launch; this is the one record made before that fix that could differ, because it is the only run long enough for the deck to have changed underneath it."
     },
@@ -4392,7 +4392,7 @@
         },
         "commander_access": {
           "commander": [
-            "Heliod, the Radiant Dawn"
+            "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
           ],
           "casts": {
             "mean": 0.69,
@@ -4421,38 +4421,58 @@
               32.62,
               36.38
             ]
+          },
+          "transformed": {
+            "games": 35,
+            "rate": 0.292,
+            "ci95": [
+              0.218,
+              0.378
+            ],
+            "first_global_turn": {
+              "mean": 36.14,
+              "median": 34,
+              "min": 23,
+              "max": 53,
+              "n": 35,
+              "ci95": [
+                33.76,
+                38.52
+              ]
+            },
+            "basis": "THE BACK FACE. A double-faced commander's second half is a separate event from its arrival, and an ability that lives there is gated on THIS rate."
           }
         },
         "commander_damage": {
           "commander": [
-            "Heliod, the Radiant Dawn"
+            "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
           ],
           "dealt_total": {
-            "mean": 0.04,
+            "mean": 0.16,
             "median": 0.0,
             "min": 0,
-            "max": 5,
+            "max": 10,
             "n": 120,
             "ci95": [
-              -0.04,
-              0.12
+              -0.03,
+              0.35
             ]
           },
           "max_on_one_defender": {
-            "mean": 0.04,
+            "mean": 0.12,
             "median": 0.0,
             "min": 0,
             "max": 5,
             "n": 120,
             "ci95": [
-              -0.04,
-              0.12
+              -0.01,
+              0.25
             ]
           },
           "best_single_game_max": 5,
           "games_reaching_21": 0,
           "games_reaching_21_rate": 0.0,
-          "games_dealing_any": 1
+          "games_dealing_any": 3
         }
       }
     },
@@ -4780,6 +4800,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4816,6 +4837,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 34,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4852,6 +4874,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5,
             "Ai(3)-mm-baylen-tokens": 10
@@ -4892,6 +4915,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 51,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4937,6 +4961,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -4974,6 +4999,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 4,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -5012,6 +5038,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5049,6 +5076,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 32,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5094,6 +5122,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5128,6 +5157,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 7,
             "Ai(4)-mm-abaddon": 3
@@ -5172,6 +5202,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4,
             "Ai(4)-mm-abaddon": 4
@@ -5212,6 +5243,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 10
           },
@@ -5259,6 +5291,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5293,6 +5326,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 36,
+          "commander_transformed_turn": 36,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5330,6 +5364,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 9,
@@ -5368,6 +5403,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5413,6 +5449,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": 33,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5451,6 +5488,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 39,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5488,6 +5526,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 10,
             "Ai(3)-mm-baylen-tokens": 5
@@ -5529,6 +5568,7 @@
           "interaction_received": 3,
           "commander_casts": 3,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 13,
             "Ai(4)-mm-abaddon": 2
@@ -5580,6 +5620,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5616,6 +5657,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5653,6 +5695,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -5689,6 +5732,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5736,6 +5780,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 6,
             "Ai(3)-mm-baylen-tokens": 11,
@@ -5774,6 +5819,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5808,6 +5854,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5842,6 +5889,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 33,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5890,6 +5938,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -5928,6 +5977,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-abaddon": 8
           },
@@ -5968,6 +6018,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 4
           },
@@ -6007,6 +6058,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 15
           },
@@ -6054,6 +6106,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6088,6 +6141,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 7
@@ -6125,6 +6179,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -6161,6 +6216,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6208,6 +6264,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6242,6 +6299,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 6,
             "Ai(3)-mm-baylen-tokens": 4,
@@ -6280,6 +6338,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6314,6 +6373,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6361,6 +6421,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 3,
             "Ai(3)-mm-baylen-tokens": 10,
@@ -6402,6 +6463,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": 32,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6436,6 +6498,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6472,6 +6535,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6520,6 +6584,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6554,6 +6619,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6591,6 +6657,7 @@
           "interaction_received": 3,
           "commander_casts": 1,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2
           },
@@ -6627,6 +6694,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6676,6 +6744,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6715,6 +6784,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 7
           },
@@ -6756,6 +6826,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6792,6 +6863,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 48,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6837,6 +6909,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 37,
+          "commander_transformed_turn": 37,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6874,6 +6947,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 6
           },
@@ -6912,6 +6986,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 5
           },
@@ -6948,6 +7023,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -6993,6 +7069,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 33,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7030,6 +7107,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 9,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -7068,6 +7146,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7102,6 +7181,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7149,6 +7229,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7183,6 +7264,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7219,6 +7301,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 5,
             "Ai(4)-mm-abaddon": 2
@@ -7258,6 +7341,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7305,6 +7389,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 44,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7341,6 +7426,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7378,6 +7464,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2
           },
@@ -7416,6 +7503,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 32,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7464,6 +7552,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7502,6 +7591,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 4
@@ -7541,6 +7631,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -7577,6 +7668,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7622,6 +7714,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7656,6 +7749,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7692,6 +7786,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 13,
             "Ai(4)-mm-abaddon": 12
@@ -7729,6 +7824,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7774,6 +7870,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7808,6 +7905,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(4)-mm-abaddon": 6
@@ -7845,6 +7943,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7879,6 +7978,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7924,6 +8024,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7961,6 +8062,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -7998,6 +8100,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -8036,6 +8139,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8083,6 +8187,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2,
             "Ai(4)-mm-abaddon": 4
@@ -8124,6 +8229,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 27,
             "Ai(4)-mm-abaddon": 13
@@ -8164,6 +8270,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 35,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 5
           },
@@ -8202,6 +8309,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8250,6 +8358,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 2
@@ -8290,6 +8399,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -8326,6 +8436,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8360,6 +8471,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8407,6 +8519,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8443,6 +8556,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 3,
@@ -8483,6 +8597,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8517,6 +8632,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8566,6 +8682,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 6,
             "Ai(4)-mm-abaddon": 4
@@ -8605,6 +8722,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-giada-angels": 4
           },
@@ -8641,6 +8759,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 33,
+          "commander_transformed_turn": 41,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8678,6 +8797,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8723,6 +8843,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8757,6 +8878,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8793,6 +8915,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8829,6 +8952,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8877,6 +9001,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2
           },
@@ -8916,6 +9041,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -8952,6 +9078,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 6
           },
@@ -8990,6 +9117,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9039,6 +9167,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 5
           },
@@ -9079,6 +9208,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9113,6 +9243,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9150,6 +9281,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 5
           },
@@ -9199,6 +9331,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9233,6 +9366,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-heliod": 2,
             "Ai(3)-mm-baylen-tokens": 2,
@@ -9271,6 +9405,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9305,6 +9440,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": 27,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9352,6 +9488,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9390,6 +9527,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-baylen-tokens": 2
           },
@@ -9429,6 +9567,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9467,6 +9606,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 40,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9512,6 +9652,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 32,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9548,6 +9689,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 33,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9585,6 +9727,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9619,6 +9762,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9668,6 +9812,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 35,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -9707,6 +9852,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8
           },
@@ -9746,6 +9892,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 11
           },
@@ -9782,6 +9929,7 @@
           "interaction_received": 2,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9827,6 +9975,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9861,6 +10010,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(3)-mm-abaddon": 2
@@ -9900,6 +10050,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 6
           },
@@ -9936,6 +10087,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -9985,6 +10137,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -10028,6 +10181,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10064,6 +10218,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -10102,6 +10257,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10147,6 +10303,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10181,6 +10338,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(3)-mm-abaddon": 3,
@@ -10219,6 +10377,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10255,6 +10414,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10305,6 +10465,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 5
           },
@@ -10347,6 +10508,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 45,
+          "commander_transformed_turn": 45,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10385,6 +10547,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 4,
             "Ai(3)-mm-abaddon": 4
@@ -10428,6 +10591,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2,
             "Ai(3)-mm-abaddon": 2
@@ -10479,6 +10643,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(3)-mm-abaddon": 8
@@ -10518,6 +10683,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 5
           },
@@ -10556,6 +10722,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 38,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10593,6 +10760,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(3)-mm-abaddon": 2,
@@ -10644,6 +10812,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": 32,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10680,6 +10849,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 8
           },
@@ -10718,6 +10888,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 7
           },
@@ -10754,6 +10925,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 6,
             "Ai(3)-mm-abaddon": 5,
@@ -10805,6 +10977,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -10841,6 +11014,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10877,6 +11051,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10914,6 +11089,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -10961,6 +11137,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 9,
             "Ai(3)-mm-abaddon": 4,
@@ -10999,6 +11176,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11033,6 +11211,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11067,6 +11246,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11115,6 +11295,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 4,
             "Ai(3)-mm-abaddon": 4
@@ -11155,6 +11336,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -11191,6 +11373,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 43,
+          "commander_transformed_turn": 43,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11229,6 +11412,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 2,
             "Ai(4)-mm-heliod": 6
@@ -11277,6 +11461,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 7
           },
@@ -11316,6 +11501,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11350,6 +11536,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 38,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11386,6 +11573,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 6,
             "Ai(3)-mm-abaddon": 8,
@@ -11438,6 +11626,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11475,6 +11664,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 8
           },
@@ -11513,6 +11703,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 10,
             "Ai(4)-mm-heliod": 5
@@ -11552,6 +11743,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 4
           },
@@ -11601,6 +11793,7 @@
           "interaction_received": 3,
           "commander_casts": 2,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2
           },
@@ -11637,6 +11830,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11673,6 +11867,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11707,6 +11902,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11752,6 +11948,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11786,6 +11983,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5
           },
@@ -11822,6 +12020,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11856,6 +12055,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 3
           },
@@ -11903,6 +12103,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 14,
             "Ai(4)-mm-heliod": 12
@@ -11944,6 +12145,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -11980,6 +12182,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 10
           },
@@ -12016,6 +12219,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": 31,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12063,6 +12267,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 1,
             "Ai(2)-mm-baylen-tokens": 5
@@ -12103,6 +12308,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12140,6 +12346,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12179,6 +12386,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 10,
             "Ai(3)-mm-abaddon": 4
@@ -12231,6 +12439,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(3)-mm-abaddon": 2
@@ -12271,6 +12480,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 4
           },
@@ -12309,6 +12519,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(2)-mm-baylen-tokens": 5
@@ -12346,6 +12557,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 47,
+          "commander_transformed_turn": 47,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12391,6 +12603,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 6,
             "Ai(3)-mm-abaddon": 2,
@@ -12429,6 +12642,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12463,6 +12677,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12497,6 +12712,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12544,6 +12760,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12580,6 +12797,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 4
           },
@@ -12619,6 +12837,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 10
           },
@@ -12659,6 +12878,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2,
             "Ai(3)-mm-abaddon": 4
@@ -12710,6 +12930,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12746,6 +12967,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 2,
             "Ai(4)-mm-heliod": 8
@@ -12787,6 +13009,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 5
           },
@@ -12826,6 +13049,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12873,6 +13097,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12907,6 +13132,7 @@
           "interaction_received": 2,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 4,
             "Ai(3)-mm-abaddon": 2,
@@ -12945,6 +13171,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -12979,6 +13206,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13027,6 +13255,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 4,
             "Ai(3)-mm-abaddon": 8,
@@ -13070,6 +13299,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(2)-mm-baylen-tokens": 15
@@ -13113,6 +13343,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 48,
+          "commander_transformed_turn": 48,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13151,6 +13382,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 2,
             "Ai(4)-mm-heliod": 4
@@ -13202,6 +13434,7 @@
           "interaction_received": 3,
           "commander_casts": 3,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-abaddon": 4
           },
@@ -13238,6 +13471,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13274,6 +13508,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13311,6 +13546,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(2)-mm-baylen-tokens": 10
@@ -13361,6 +13597,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 3,
             "Ai(3)-mm-abaddon": 4,
@@ -13401,6 +13638,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13435,6 +13673,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13469,6 +13708,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": 29,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13516,6 +13756,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13550,6 +13791,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13584,6 +13826,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": 23,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13620,6 +13863,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 8,
             "Ai(4)-mm-heliod": 3
@@ -13670,6 +13914,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 8,
             "Ai(4)-mm-heliod": 24
@@ -13707,6 +13952,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13741,6 +13987,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13775,6 +14022,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 11
           },
@@ -13824,6 +14072,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13860,6 +14109,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 6
           },
@@ -13899,6 +14149,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -13935,6 +14186,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-giada-angels": 5,
             "Ai(2)-mm-baylen-tokens": 5,
@@ -13984,6 +14236,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14021,6 +14274,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 5,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 6
           },
@@ -14057,6 +14311,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14095,6 +14350,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14146,6 +14402,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 4
           },
@@ -14186,6 +14443,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 3,
             "Ai(4)-mm-heliod": 3
@@ -14227,6 +14485,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-baylen-tokens": 5
           },
@@ -14267,6 +14526,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": 35,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14317,6 +14577,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -14353,6 +14614,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 4
           },
@@ -14389,6 +14651,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14430,6 +14693,7 @@
           "interaction_received": 4,
           "commander_casts": 4,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5,
             "Ai(2)-mm-abaddon": 3
@@ -14481,6 +14745,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14521,6 +14786,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 15,
             "Ai(4)-mm-giada-angels": 10
@@ -14561,6 +14827,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14599,6 +14866,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 5
           },
@@ -14646,6 +14914,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14680,6 +14949,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 4,
             "Ai(3)-mm-heliod": 25,
@@ -14720,6 +14990,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14754,6 +15025,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6
           },
@@ -14804,6 +15076,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 45,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14840,6 +15113,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -14878,6 +15152,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -14916,6 +15191,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 5
           },
@@ -14965,6 +15241,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 9,
             "Ai(2)-mm-abaddon": 4
@@ -15002,6 +15279,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 8
           },
@@ -15040,6 +15318,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -15076,6 +15355,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15121,6 +15401,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -15160,6 +15441,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15200,6 +15482,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 45,
+          "commander_transformed_turn": 45,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15239,6 +15522,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 2
@@ -15289,6 +15573,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 3,
             "Ai(2)-mm-abaddon": 3
@@ -15326,6 +15611,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 7
           },
@@ -15364,6 +15650,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15400,6 +15687,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15445,6 +15733,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 28
           },
@@ -15484,6 +15773,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15518,6 +15808,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15554,6 +15845,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15602,6 +15894,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -15642,6 +15935,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 8,
             "Ai(3)-mm-heliod": 2
@@ -15684,6 +15978,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 51,
+          "commander_transformed_turn": 53,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15720,6 +16015,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15765,6 +16061,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15802,6 +16099,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 10
           },
@@ -15840,6 +16138,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15876,6 +16175,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 3,
             "Ai(2)-mm-abaddon": 6
@@ -15928,6 +16228,7 @@
           "interaction_received": 1,
           "commander_casts": 4,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -15964,6 +16265,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16000,6 +16302,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16038,6 +16341,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 7
           },
@@ -16088,6 +16392,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 4,
             "Ai(4)-mm-giada-angels": 30
@@ -16127,6 +16432,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": 34,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16166,6 +16472,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 10,
             "Ai(3)-mm-heliod": 10
@@ -16206,6 +16513,7 @@
           "interaction_received": 3,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2
           },
@@ -16256,6 +16564,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -16292,6 +16601,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16326,6 +16636,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 11,
             "Ai(2)-mm-abaddon": 12,
@@ -16364,6 +16675,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16416,6 +16728,7 @@
           "interaction_received": 2,
           "commander_casts": 5,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -16454,6 +16767,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16493,6 +16807,7 @@
           "interaction_received": 2,
           "commander_casts": 5,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 5,
             "Ai(4)-mm-giada-angels": 10
@@ -16533,6 +16848,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16578,6 +16894,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16612,6 +16929,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5,
             "Ai(4)-mm-giada-angels": 5
@@ -16652,6 +16970,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16686,6 +17005,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 8,
             "Ai(2)-mm-abaddon": 4
@@ -16739,6 +17059,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 16,
             "Ai(3)-mm-heliod": 10,
@@ -16780,6 +17101,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -16818,6 +17140,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16855,6 +17178,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 3
@@ -16906,6 +17230,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16942,6 +17267,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -16978,6 +17304,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17014,6 +17341,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17061,6 +17389,7 @@
           "interaction_received": 2,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 29,
             "Ai(4)-mm-giada-angels": 34
@@ -17101,6 +17430,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17137,6 +17467,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17171,6 +17502,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17218,6 +17550,7 @@
           "interaction_received": 2,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2
           },
@@ -17256,6 +17589,7 @@
           "interaction_received": 2,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -17292,6 +17626,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17326,6 +17661,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17375,6 +17711,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 4
           },
@@ -17418,6 +17755,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5,
             "Ai(4)-mm-giada-angels": 5
@@ -17458,6 +17796,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 48,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17497,6 +17836,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 4,
@@ -17549,6 +17889,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 36,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 8
           },
@@ -17587,6 +17928,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 8,
             "Ai(3)-mm-heliod": 2
@@ -17624,6 +17966,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17658,6 +18001,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17703,6 +18047,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17737,6 +18082,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17771,6 +18117,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -17808,6 +18155,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 3,
             "Ai(3)-mm-heliod": 3
@@ -17861,6 +18209,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 6
           },
@@ -17901,6 +18250,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 4
           },
@@ -17939,6 +18289,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 22,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 10
           },
@@ -17977,6 +18328,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18022,6 +18374,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 37,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18056,6 +18409,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 5,
             "Ai(3)-mm-heliod": 6
@@ -18095,6 +18449,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 10
           },
@@ -18131,6 +18486,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6
           },
@@ -18184,6 +18540,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 5
           },
@@ -18222,6 +18579,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18259,6 +18617,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 6
           },
@@ -18295,6 +18654,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18340,6 +18700,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18376,6 +18737,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18410,6 +18772,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 35,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18444,6 +18807,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 2,
             "Ai(3)-mm-heliod": 2
@@ -18496,6 +18860,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 4
           },
@@ -18534,6 +18899,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -18570,6 +18936,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 39,
+          "commander_transformed_turn": 39,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18606,6 +18973,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 2,
             "Ai(2)-mm-abaddon": 6
@@ -18658,6 +19026,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-giada-angels": 14
           },
@@ -18698,6 +19067,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 10,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 5
           },
@@ -18734,6 +19104,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 42,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18771,6 +19142,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-baylen-tokens": 6,
             "Ai(2)-mm-abaddon": 4
@@ -18823,6 +19195,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18860,6 +19233,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-abaddon": 3
           },
@@ -18899,6 +19273,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 31,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18935,6 +19310,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -18983,6 +19359,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19017,6 +19394,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19053,6 +19431,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19091,6 +19470,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-heliod": 58,
             "Ai(4)-mm-giada-angels": 115
@@ -19139,6 +19519,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 9,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 5,
             "Ai(3)-mm-giada-angels": 5
@@ -19176,6 +19557,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 43,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19212,6 +19594,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 8,
             "Ai(2)-mm-heliod": 2,
@@ -19253,6 +19636,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19298,6 +19682,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 19,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(2)-mm-heliod": 2
@@ -19338,6 +19723,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 15
           },
@@ -19376,6 +19762,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19410,6 +19797,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19457,6 +19845,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19491,6 +19880,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19525,6 +19915,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19561,6 +19952,7 @@
           "interaction_received": 2,
           "commander_casts": 1,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 52
           },
@@ -19610,6 +20002,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 7
           },
@@ -19648,6 +20041,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19686,6 +20080,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 41,
+          "commander_transformed_turn": 45,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19725,6 +20120,7 @@
           "interaction_received": 2,
           "commander_casts": 4,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 6,
             "Ai(2)-mm-heliod": 2
@@ -19773,6 +20169,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19809,6 +20206,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19843,6 +20241,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19879,6 +20278,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(2)-mm-heliod": 2,
@@ -19928,6 +20328,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 41,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -19964,6 +20365,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 11
           },
@@ -20002,6 +20404,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20038,6 +20441,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 23,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20085,6 +20489,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20121,6 +20526,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 3,
             "Ai(4)-mm-baylen-tokens": 2
@@ -20160,6 +20566,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 34,
+          "commander_transformed_turn": 34,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20194,6 +20601,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20241,6 +20649,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20275,6 +20684,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20312,6 +20722,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20350,6 +20761,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(3)-mm-giada-angels": 7
@@ -20401,6 +20813,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 5,
             "Ai(4)-mm-baylen-tokens": 10
@@ -20441,8 +20854,11 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 30,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
+          "commander_transformed_turn": 34,
+          "commander_damage_by_defender": {
+            "Ai(4)-mm-baylen-tokens": 4
+          },
+          "commander_damage_max": 4,
           "commander_damage_lethal": false,
           "token_damage_share": 0.333,
           "mulligans_taken": 0,
@@ -20478,6 +20894,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20514,6 +20931,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20561,6 +20979,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20595,6 +21014,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20631,6 +21051,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 3,
             "Ai(4)-mm-baylen-tokens": 5
@@ -20668,6 +21089,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20713,6 +21135,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 34,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20751,6 +21174,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -20789,6 +21213,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 2
           },
@@ -20827,6 +21252,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20874,6 +21300,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20910,6 +21337,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -20944,6 +21372,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(2)-mm-heliod": 2,
@@ -20986,6 +21415,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21035,6 +21465,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 5
           },
@@ -21071,6 +21502,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 44,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21110,6 +21542,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 4,
             "Ai(4)-mm-baylen-tokens": 4
@@ -21151,6 +21584,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21201,6 +21635,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 3,
             "Ai(2)-mm-heliod": 7,
@@ -21243,6 +21678,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 10
           },
@@ -21281,6 +21717,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 38,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21320,6 +21757,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 12
           },
@@ -21369,6 +21807,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21406,6 +21845,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 5
           },
@@ -21442,6 +21882,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21478,6 +21919,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 9
           },
@@ -21525,6 +21967,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21559,6 +22002,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21593,6 +22037,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21629,6 +22074,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -21676,6 +22122,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21710,6 +22157,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21744,6 +22192,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21778,6 +22227,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 12,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21823,6 +22273,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21859,6 +22310,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 5
           },
@@ -21897,6 +22349,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21933,6 +22386,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 24,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -21978,6 +22432,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 8,
             "Ai(2)-mm-heliod": 2,
@@ -22016,6 +22471,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22053,6 +22509,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22089,6 +22546,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": 32,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22136,6 +22594,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22172,6 +22631,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 44,
+          "commander_transformed_turn": 44,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22209,6 +22669,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 2,
             "Ai(4)-mm-baylen-tokens": 2
@@ -22249,6 +22710,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 32,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 3,
             "Ai(3)-mm-giada-angels": 28
@@ -22297,6 +22759,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 41,
+          "commander_transformed_turn": 44,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22338,6 +22801,7 @@
           "interaction_received": 3,
           "commander_casts": 4,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 10
           },
@@ -22379,6 +22843,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 3
           },
@@ -22418,6 +22883,7 @@
           "interaction_received": 5,
           "commander_casts": 1,
           "commander_resolved_turn": 28,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 13
           },
@@ -22465,6 +22931,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": 30,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22501,6 +22968,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22538,6 +23006,7 @@
           "interaction_received": 3,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(2)-mm-heliod": 4
@@ -22578,6 +23047,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 4
           },
@@ -22625,6 +23095,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22659,6 +23130,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22696,6 +23168,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 14,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-giada-angels": 5
           },
@@ -22734,6 +23207,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 8,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 11,
             "Ai(4)-mm-baylen-tokens": 4
@@ -22785,6 +23259,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22819,6 +23294,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22853,6 +23329,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 33,
+          "commander_transformed_turn": 36,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22889,6 +23366,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(4)-mm-baylen-tokens": 8
@@ -22942,6 +23420,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 46,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -22980,6 +23459,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-baylen-tokens": 20
           },
@@ -23020,8 +23500,12 @@
           "interaction_received": 4,
           "commander_casts": 3,
           "commander_resolved_turn": 38,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
+          "commander_transformed_turn": 38,
+          "commander_damage_by_defender": {
+            "Ai(1)-mm-abaddon": 5,
+            "Ai(4)-mm-baylen-tokens": 5
+          },
+          "commander_damage_max": 5,
           "commander_damage_lethal": false,
           "token_damage_share": 0.0,
           "mulligans_taken": 0,
@@ -23058,6 +23542,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(4)-mm-baylen-tokens": 6
@@ -23108,6 +23593,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23145,6 +23631,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 43,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23183,6 +23670,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 3,
             "Ai(2)-mm-heliod": 4,
@@ -23223,6 +23711,7 @@
           "interaction_received": 0,
           "commander_casts": 4,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23270,6 +23759,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23306,6 +23796,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23340,6 +23831,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 2,
             "Ai(2)-mm-heliod": 2,
@@ -23378,6 +23870,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23423,6 +23916,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 30,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23460,6 +23954,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23498,6 +23993,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 7,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23536,6 +24032,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 8
           },
@@ -23588,6 +24085,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 8,
             "Ai(4)-mm-baylen-tokens": 5
@@ -23628,6 +24126,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 38,
+          "commander_transformed_turn": 42,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23668,6 +24167,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 11,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-abaddon": 3
           },
@@ -23706,6 +24206,7 @@
           "interaction_received": 0,
           "commander_casts": 3,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23751,6 +24252,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23789,6 +24291,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 6,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-heliod": 6,
             "Ai(4)-mm-baylen-tokens": 2
@@ -23826,6 +24329,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -23862,6 +24366,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,

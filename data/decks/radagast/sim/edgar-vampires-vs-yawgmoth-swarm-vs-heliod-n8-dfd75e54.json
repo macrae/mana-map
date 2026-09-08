@@ -39,7 +39,7 @@
       "forge_name": "mm-heliod",
       "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
       "commander": [
-        "Heliod, the Radiant Dawn"
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
       ]
     }
   ],
@@ -1770,7 +1770,7 @@
         },
         "commander_access": {
           "commander": [
-            "Heliod, the Radiant Dawn"
+            "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
           ],
           "casts": {
             "mean": 0.5,
@@ -1799,38 +1799,58 @@
               36.45,
               42.55
             ]
+          },
+          "transformed": {
+            "games": 2,
+            "rate": 0.25,
+            "ci95": [
+              0.071,
+              0.591
+            ],
+            "first_global_turn": {
+              "mean": 44.5,
+              "median": 44.5,
+              "min": 41,
+              "max": 48,
+              "n": 2,
+              "ci95": [
+                37.64,
+                51.36
+              ]
+            },
+            "basis": "THE BACK FACE. A double-faced commander's second half is a separate event from its arrival, and an ability that lives there is gated on THIS rate."
           }
         },
         "commander_damage": {
           "commander": [
-            "Heliod, the Radiant Dawn"
+            "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
           ],
           "dealt_total": {
-            "mean": 0.0,
+            "mean": 0.5,
             "median": 0.0,
             "min": 0,
-            "max": 0,
+            "max": 4,
             "n": 8,
             "ci95": [
-              0.0,
-              0.0
+              -0.48,
+              1.48
             ]
           },
           "max_on_one_defender": {
-            "mean": 0.0,
+            "mean": 0.5,
             "median": 0.0,
             "min": 0,
-            "max": 0,
+            "max": 4,
             "n": 8,
             "ci95": [
-              0.0,
-              0.0
+              -0.48,
+              1.48
             ]
           },
-          "best_single_game_max": 0,
+          "best_single_game_max": 4,
           "games_reaching_21": 0,
           "games_reaching_21_rate": 0.0,
-          "games_dealing_any": 0
+          "games_dealing_any": 1
         }
       }
     },
@@ -2159,6 +2179,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 6
           },
@@ -2198,6 +2219,7 @@
           "interaction_received": 3,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(3)-mm-yawgmoth-swarm": 12
           },
@@ -2236,6 +2258,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2270,6 +2293,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 37,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2319,6 +2343,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2357,6 +2382,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2396,6 +2422,7 @@
           "interaction_received": 1,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2430,6 +2457,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2477,6 +2505,7 @@
           "interaction_received": 3,
           "commander_casts": 2,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 6
           },
@@ -2516,6 +2545,7 @@
           "interaction_received": 1,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2553,6 +2583,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2590,6 +2621,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 27,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2640,6 +2672,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 13,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 8
           },
@@ -2676,6 +2709,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2712,6 +2746,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 2
           },
@@ -2748,6 +2783,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2797,6 +2833,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 25,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 5
           },
@@ -2836,6 +2873,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 38,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2874,6 +2912,7 @@
           "interaction_received": 0,
           "commander_casts": 0,
           "commander_resolved_turn": null,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2911,6 +2950,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 16,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 2
           },
@@ -2960,6 +3000,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 29,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -2999,6 +3040,7 @@
           "interaction_received": 1,
           "commander_casts": 3,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5,
             "Ai(3)-mm-yawgmoth-swarm": 5,
@@ -3044,6 +3086,7 @@
           "interaction_received": 2,
           "commander_casts": 3,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 2
           },
@@ -3082,6 +3125,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 44,
+          "commander_transformed_turn": 48,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3129,6 +3173,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 21,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 6
           },
@@ -3171,6 +3216,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 18,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 4,
             "Ai(4)-mm-heliod": 2
@@ -3210,8 +3256,11 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 38,
-          "commander_damage_by_defender": {},
-          "commander_damage_max": 0,
+          "commander_transformed_turn": 41,
+          "commander_damage_by_defender": {
+            "Ai(3)-mm-yawgmoth-swarm": 4
+          },
+          "commander_damage_max": 4,
           "commander_damage_lethal": false,
           "token_damage_share": 0.0,
           "mulligans_taken": 0,
@@ -3248,6 +3297,7 @@
           "interaction_received": 2,
           "commander_casts": 2,
           "commander_resolved_turn": 20,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 8
           },
@@ -3298,6 +3348,7 @@
           "interaction_received": 3,
           "commander_casts": 2,
           "commander_resolved_turn": 17,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(2)-mm-edgar-vampires": 5
           },
@@ -3336,6 +3387,7 @@
           "interaction_received": 0,
           "commander_casts": 2,
           "commander_resolved_turn": 15,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(4)-mm-heliod": 2
           },
@@ -3374,6 +3426,7 @@
           "interaction_received": 1,
           "commander_casts": 1,
           "commander_resolved_turn": 39,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {},
           "commander_damage_max": 0,
           "commander_damage_lethal": false,
@@ -3411,6 +3464,7 @@
           "interaction_received": 0,
           "commander_casts": 1,
           "commander_resolved_turn": 26,
+          "commander_transformed_turn": null,
           "commander_damage_by_defender": {
             "Ai(1)-mm-radagast": 5
           },

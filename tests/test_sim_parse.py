@@ -429,3 +429,59 @@ def test_the_access_block_reports_casts_against_arrivals():
     assert acc["first_resolved_global_turn"]["mean"] == 5.0
     # the opponent's commander is unknown, so it gets no block at all
     assert "commander_access" not in agg["seats"]["abaddon"]
+
+
+def test_a_double_faced_commander_reports_BOTH_faces():
+    """THE FRONT ARRIVING AND THE BACK APPEARING ARE DIFFERENT EVENTS.
+
+    Heliod's entire engine — the cost reduction and the flash grant — lives on
+    the BACK face and needs a {3}{U/P} activation on top of casting him. The
+    front resolved in 68 of 120 games (0.567); the back appeared in 35 (0.292).
+    An engine model quoted the 0.567 to support a claim about the discount, and
+    credited the deck's defining ability at nearly twice its rate. The parser
+    had made them indistinguishable; an adversarial critic caught it.
+
+    The transform is recognised by the SAME id suffix the arrival check excludes
+    on purpose — `Heliod, the Warped Eclipse (100) - Transform ...` — read here
+    for the opposite reason.
+    """
+    cmd = {"Ai(1)-mm-h": {"Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"}}
+    text = (
+        "Mulligan: Ai(1)-mm-h has kept a hand of 7 cards\n"
+        "Mulligan: Ai(2)-mm-o has kept a hand of 7 cards\n"
+        "Turn: Turn 1 (Ai(1)-mm-h)\n"
+        "Add To Stack: Ai(1)-mm-h cast Heliod, the Radiant Dawn\n"
+        "Resolve Stack: Heliod, the Radiant Dawn - Creature 4 / 4\n"
+        "Turn: Turn 9 (Ai(1)-mm-h)\n"
+        "Add To Stack: Ai(1)-mm-h activated Heliod, the Radiant Dawn\n"
+        "Resolve Stack: Heliod, the Warped Eclipse (100) - Transform Heliod, the Warped Eclipse (100).\n"
+        "Game Outcome: Turn 5\n"
+        "Game Outcome: Ai(1)-mm-h has won because Ai(2)-mm-o has lost\n"
+        "Game Result: Game 1 ended in 1000 ms\n"
+        # a SECOND game where he lands and never flips
+        "Mulligan: Ai(1)-mm-h has kept a hand of 7 cards\n"
+        "Mulligan: Ai(2)-mm-o has kept a hand of 7 cards\n"
+        "Turn: Turn 1 (Ai(1)-mm-h)\n"
+        "Add To Stack: Ai(1)-mm-h cast Heliod, the Radiant Dawn\n"
+        "Resolve Stack: Heliod, the Radiant Dawn - Creature 4 / 4\n"
+        "Game Outcome: Turn 5\n"
+        "Game Outcome: Ai(1)-mm-h has won because Ai(2)-mm-o has lost\n"
+        "Game Result: Game 2 ended in 1000 ms\n")
+    _facts, agg = parse.analyze_logs([text], {"Ai(1)-mm-h": "h", "Ai(2)-mm-o": "o"}, cmd)
+    acc = agg["seats"]["h"]["commander_access"]
+    assert acc["games_resolved"] == 2, "the front face landed in both games"
+    assert acc["transformed"]["games"] == 1, "the back face appeared in one"
+    assert acc["transformed"]["rate"] == 0.5
+    assert acc["transformed"]["first_global_turn"]["median"] == 9
+    assert acc["resolved_rate"] != acc["transformed"]["rate"], (
+        "the fixture exists to make the two rates disagree")
+
+
+def test_a_single_faced_commander_carries_no_transform_row():
+    """ABSENT, not 0%. A commander that does not transform must not report
+    "transformed 0% of the time", which reads as a failure rather than as a card
+    that does not do that."""
+    _facts, agg = parse.analyze_logs([FIX], LABEL, CMD)
+    for seat in agg["seats"].values():
+        acc = seat.get("commander_access") or {}
+        assert "transformed" not in acc
