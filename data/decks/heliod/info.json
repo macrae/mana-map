@@ -12,12 +12,14 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 11,
+    "complete": 9,
     "of": 15,
     "stale": [
-      "frame"
+      "frame",
+      "map"
     ],
     "invalid": [
+      "targets",
       "engine",
       "tutors",
       "considering.json"
@@ -37,1346 +39,11 @@
   "brief": null,
   "branches": [
     {
-      "name": "deckout-v1",
-      "opened": "2026-09-07",
-      "why": "THE GROUP HUG BECOMES THE WIN CONDITION. The deck already forces every opponent to draw 3-6 a turn out of a 99-card library and then bills them 2 or 3 for it; this branch stops billing and takes the library instead. Out: the three hand-size punishers, Tireless Tribe, Wall of Glare, Darien, plus the counters/token cards that do not serve the plan (The Ozolith, Hangarback Walker, United Front). In: Otherworld Atlas (colourless, scales every turn), Mind's Eye (a card off EVERY opponent draw), Folio of Fancies (no maximum hand size, an {X}{X} group draw, and a mill-for-hand-size kill), and five X-spell finishers - Blue Sun's Zenith (reusable, point it at a library), Fascination (draw X or mill X, same card), Drown in Dreams (both modes with a commander out), Even the Score (costs {U}{U}{U} less if an opponent drew four or more this turn, which Font of Mythos makes automatic) and Universal Surveillance (improvise - the eight rocks pay for it). Plus Krang the All-Powerful to double every draw trigger. NEITHER INSTRUMENT CAN GRADE THE UPSIDE. All nine adds return NOTHING or draw={unmodelled} from goldfish.classify, and Otherworld Atlas, Fascination and Folio of Fancies each carry Forge's AI:RemoveDeck:All, so the sim would hold the three keystones and never cast them. That is why the pre-registered objective grades the DOWNSIDE instead: the real risk of a list this full of X spells is unkeepable hands, and keep_t3 is a figure the model does see. This branch is a paper playtest, not a simulation result, and must not be merged on a sim number.",
+      "name": "archangel-v1",
+      "opened": "2026-09-08",
+      "why": "ONE CARD, ONE SWAP, AND THE PIP LOAD IS UNCHANGED. Archangel of Tithes is {1}{W}{W}{W} and White Sun's Zenith is {X}{W}{W}{W} — the same three white pips, so this tests the CARD and not the mana, which is why it was held out of skies-v1 rather than folded in. Archangel is the only card the flier sweep returned that does both jobs on one body: a 3/5 FLYING blocker against the seat that took 39 of 53 eliminations with nothing but evasive threats, and a taxer whose 'creatures can't attack you unless their controller pays {1}' works whether or not the attacker flies, making it a third Propaganda beside Ghostly Prison. It is the exact card giada-angels beats us with. What it replaces is the deck's most white-intensive card and the one skies-v1's own logic argues against: X 2/2 CATS, on the ground, in a deck that dies to the air, as a one-shot at four-plus mana competing directly with casting Approach of the Second Sun. Secure the Wastes stays as the cheap X mana sink at {X}{W}. THE GOLDFISH CANNOT SEE THE POINT OF THIS CARD — no opponents, nothing attacks it, so flying and taxing are invisible and a 3/5 registers as three power. The objective is a RISK check: swapping a scaling X-spell token maker for one fixed body must not cost the board. THE FIRST LINE SET HERE WAS 2.85 AND THE ANCHOR REFUSED IT — the champion reads 2.9506 and this run resolves 0.1012, so a 0.1006 tolerance was inside the noise and could only have come back as whichever side it landed on. 2.80 is outside it. Reset before any measurement was taken, which is the only time a threshold may move.",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Blue Sun's Zenith"
-          },
-          {
-            "name": "Drown in Dreams"
-          },
-          {
-            "name": "Even the Score"
-          },
-          {
-            "name": "Fascination"
-          },
-          {
-            "name": "Krang, the All-Powerful"
-          },
-          {
-            "name": "Mind's Eye"
-          },
-          {
-            "name": "Otherworld Atlas"
-          },
-          {
-            "name": "Universal Surveillance"
-          }
-        ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [
-          {
-            "name": "Folio of Fancies",
-            "where": [
-              "Heliod Parts"
-            ]
-          }
-        ],
-        "blocking": 8,
-        "procurement": null
-      },
-      "base_version": 7,
-      "size": 100,
-      "add": 9,
-      "out": 9,
-      "counts": {
-        "in_deck": 76,
-        "box": 1,
-        "elsewhere": 0,
-        "buy": 8
-      },
-      "unsourced": [
-        "Blue Sun's Zenith",
-        "Drown in Dreams",
-        "Even the Score",
-        "Fascination",
-        "Krang, the All-Powerful",
-        "Mind's Eye",
-        "Otherworld Atlas",
-        "Universal Surveillance"
-      ],
-      "mergeable": false,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Alhammarret's Archive",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "An Offer You Can't Refuse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Approach of the Second Sun",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Denial",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Archmage's Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Azorius Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Blue Sun's Zenith",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Braingeyser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cathar Commando",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Consecrated Sphinx",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cyclonic Rift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Day of Judgment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Decanter of Endless Water",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deserted Beach",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dictate of Kruphix",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dig Through Time",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Disenchant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dovin's Veto",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Drown in Dreams",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Eiganjo, Seat of the Empire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Even the Score",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fascination",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Fierce Guardianship",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flooded Strand",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Folio of Fancies",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Font of Mythos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Force of Negation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forced Fruition",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Howling Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Krang, the All-Powerful",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Kwain, Itinerant Meddler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Long-Term Plans",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Loran of the Third Path",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mathemagics",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mind's Eye",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystical Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Otawara, Soaring City",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Otherworld Atlas",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Path to Exile",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prairie Stream",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Propaganda",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rhystic Study",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sapphire Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smothering Tithe",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stroke of Genius",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Progress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Ageless Insight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple Bell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple of Enlightenment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Second Doctor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thought Vessel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Universal Surveillance",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Walking Ballista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "lynchpin-v1",
-      "opened": "2026-09-07",
-      "why": "HELIOD IS THE LYNCHPIN AND HE IS REMOVED IN 45% OF THE GAMES HE LANDS. Measured across 220 games: 173 casts, 173 resolutions, and 78 departures from the battlefield — 57 to the graveyard, 21 EXILED. Decomposed by what caused them: 50% MASS (three or more permanents left the same turn), 31% TARGETED, 19% unattributed. And ZERO of the 173 casts were ever countered, so the eight counterspells in this list have never once protected the engine. Three needs, one card each. CONTINGENCY when he is gone and ACCELERATION before he lands: Leyline of Anticipation, which the paper list cut and which is the only card here that grants flash without him — free from an opening hand, so it is also the turn-zero version of the plan. PROTECTION against the 31%: Lightning Greaves, shroud at a zero-mana equip, immediate the turn it lands. PROTECTION against the 50% that hexproof cannot touch: Guardian of Faith phases Heliod out at instant speed in response to a sweeper, which is Teferi's Protection on a body, and Mithril Coat flashes in and attaches itself to a legendary creature with indestructible, covering every destroy-based wipe though not the 21 exiles. THE GOLDFISH CANNOT GRADE ANY OF IT — it has no opponents, no removal and no sweepers, so protection is structurally invisible to it and this objective grades the branch's RISK instead: four cards that do nothing on their own, in a deck that already misses a land drop by turn five in half its games. keep_t3 is whether the opening hand can act at all. All four are clean in Forge with no AI:RemoveDeck flag; Vexilus Praetor was considered and rejected for carrying one.",
-      "state": "MERGED",
-      "state_why": "merged 2026-09-07 into the list after VNone",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "The Ozolith"
-          },
-          {
-            "name": "United Front"
-          }
-        ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [
-          {
-            "name": "Darien, King of Kjeldor",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Wall of Glare",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          }
-        ],
-        "blocking": 2,
-        "procurement": null
-      },
-      "base_version": 7,
-      "size": 100,
-      "add": 4,
-      "out": 4,
-      "counts": {
-        "in_deck": 81,
-        "box": 2,
-        "elsewhere": 0,
-        "buy": 2
-      },
-      "unsourced": [
-        "The Ozolith",
-        "United Front"
-      ],
-      "mergeable": false,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Alhammarret's Archive",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "An Offer You Can't Refuse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Approach of the Second Sun",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Denial",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Archmage's Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Azorius Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Braingeyser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cathar Commando",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Consecrated Sphinx",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cyclonic Rift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Darien, King of Kjeldor",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Day of Judgment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Decanter of Endless Water",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deserted Beach",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dictate of Kruphix",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dig Through Time",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Disenchant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dovin's Veto",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Eiganjo, Seat of the Empire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fierce Guardianship",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flooded Strand",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Font of Mythos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Force of Negation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forced Fruition",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Guardian of Faith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hangarback Walker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Howling Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Karametra's Blessing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kwain, Itinerant Meddler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Leyline of Anticipation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Lightning Greaves",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Long-Term Plans",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Loran of the Third Path",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mathemagics",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystical Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Otawara, Soaring City",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path to Exile",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prairie Stream",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Propaganda",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rhystic Study",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sapphire Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smothering Tithe",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stroke of Genius",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Progress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Ageless Insight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple Bell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple of Enlightenment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ozolith",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "The Second Doctor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thought Vessel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "United Front",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Walking Ballista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Wall of Glare",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "skies-v1",
-      "opened": "2026-09-08",
-      "why": "THE SURVIVAL PACKAGE IS ON THE GROUND AND WHAT KILLS US IS IN THE AIR. giada-angels took 39 of this deck's 53 eliminations across 120 games and every one of its threats flies. Of the deck's sixteen creatures, TWO can block a flier — Consecrated Sphinx and Faerie Mastermind — and every token its X spells make is groundbound: 1/1 Warriors from Secure the Wastes, 1/1 Allies from United Front, 2/2 Cats from White Sun's Zenith. Wall of Glare reads like the answer, 'can block any number of creatures', and has no reach, so against the one deck beating us it blocks nothing at all. This deck does not win through combat; it controls, survives, tutors and casts Approach of the Second Sun twice, and the board exists to keep it alive long enough. So the board has to be able to block the thing that kills it. OUT: Wall of Glare (a 0/5 that cannot block a flier), Darien King of Kjeldor (six mana for groundbound 1/1s), United Front (the weakest of three X-spell ground-token makers, and the most white-intensive at {X}{W}{W}), and The Ozolith, whose counters payoff thins with United Front gone. IN, and every one is cheap on purpose because a {1}{W} flying wall blocks an Angel every turn for the rest of the game while {X}{X}{W}{W}{W} for two 4/4 Angels is a one-shot at seven mana that competes with casting Approach: Angelic Wall {1}{W} 0/4 flying, Kefnet the Mindful {2}{U} a 5/5 flying INDESTRUCTIBLE that survives our own two sweepers and needs seven cards in hand to block, which this deck always has - Reliquary Tower, Decanter of Endless Water and The Second Doctor all remove the maximum hand size, Drift of Phantasms {2}{U} 0/5 flying defender whose transmute is a tutor for any mana-value-three card, and Ghostly Prison {2}{W}, a second Propaganda that taxes an attacker whether or not it flies. Net white pips DOWN three and blue up two, on a list whose white was the binding colour. THE GOLDFISH CANNOT SEE ANY OF THIS - it has no opponents and nothing attacks it, so flying, reach and taxing are structurally invisible and only the bodies register. board_power_6 is pre-registered as the risk check: four groundbound bodies out and four defensive ones in must not cost the deck its board.",
-      "state": "MERGED",
-      "state_why": "merged 2026-09-08 into the list after VNone",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -1387,7 +54,7 @@
         "blocking": 0,
         "procurement": null
       },
-      "base_version": 8,
+      "base_version": 9,
       "size": 100,
       "add": 0,
       "out": 0,
@@ -1445,6 +112,13 @@
         },
         {
           "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Archangel of Tithes",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1988,2016 +662,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "survive-v1",
-      "opened": "2026-09-07",
-      "why": "THE DECK ALREADY HAS TEETH AND THEY ARE NAMED APPROACH OF THE SECOND SUN. Over 120 games against the standard pod it won 0.252 [0.18, 0.34] against a table null of 0.144 — second in the fleet, and above the null with no interval overlap. Twenty of its roughly thirty-eight win-events read 'effect of Approach of the Second Sun' against eighteen by attrition, so the win condition is a seven-mana sorcery cast twice and the deck wins by OUTLIVING the table (mean finishing position 2.32). What kills it is one seat: giada-angels took 39 of its 53 eliminations and won 0.477 of the table. Against that the deck holds TWO sweepers where the audit wants five to seven, and one protection effect where it wants five to seven. Wall of Glare cannot block a flier and Giada's angels all fly. So the hypothesis is not more damage, it is MORE TURNS: cut the package that produced a MEDIAN OF ZERO noncombat damage over 120 games across 116 castings of Iron Maiden, Viseling, Ebony Owl Netsuke and Scrawling Crawler, and buy the turns the second Approach needs. In: Ghostly Prison and Baird (a second and third Propaganda, taxing every attacker), Wrath of God and Cleansing Nova (sweepers three and four, and Forge demonstrably casts the two already here 67 times in 120 games), Settle the Wreckage (a fog and a sweeper at instant speed, which is the flash plan), and Leyline of Anticipation, which the paper list cut and which is the only flash redundancy the deck ever had. THE GOLDFISH CANNOT GRADE THE UPSIDE - it has no opponent that attacks, so a taxer and a sweeper are invisible to it and board power will fall because three creatures leave. FORGE CAN: every one of the six carries no AI:RemoveDeck flag, the sweepers are cast today, and the taxers are static. The pre-registered objective therefore grades the RISK this branch takes rather than the reward it claims: four more white cards, three of them double-white, on a list whose white was only just brought to parity. interaction_6 is the share of games where an answer in hand on turn six could actually be PAID FOR, it is colour-aware, and the champion reads 0.795.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Cleansing Nova"
-          },
-          {
-            "name": "Settle the Wreckage"
-          },
-          {
-            "name": "The Ozolith"
-          },
-          {
-            "name": "United Front"
-          },
-          {
-            "name": "Wrath of God"
-          }
-        ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [
-          {
-            "name": "Baird, Steward of Argive",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          }
-        ],
-        "blocking": 5,
-        "procurement": null
-      },
-      "base_version": 7,
-      "size": 100,
-      "add": 6,
-      "out": 6,
-      "counts": {
-        "in_deck": 79,
-        "box": 1,
-        "elsewhere": 0,
-        "buy": 5
-      },
-      "unsourced": [
-        "Cleansing Nova",
-        "Settle the Wreckage",
-        "The Ozolith",
-        "United Front",
-        "Wrath of God"
-      ],
-      "mergeable": false,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Alhammarret's Archive",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "An Offer You Can't Refuse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Approach of the Second Sun",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Denial",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Archmage's Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Azorius Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Baird, Steward of Argive",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Braingeyser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cathar Commando",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cleansing Nova",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Consecrated Sphinx",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cyclonic Rift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Day of Judgment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Decanter of Endless Water",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deserted Beach",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dictate of Kruphix",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dig Through Time",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Disenchant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dovin's Veto",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Eiganjo, Seat of the Empire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fierce Guardianship",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flooded Strand",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Font of Mythos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Force of Negation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forced Fruition",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ghostly Prison",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hangarback Walker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Howling Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kwain, Itinerant Meddler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Leyline of Anticipation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Long-Term Plans",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Loran of the Third Path",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mathemagics",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystical Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Otawara, Soaring City",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path to Exile",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prairie Stream",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Propaganda",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rhystic Study",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sapphire Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Settle the Wreckage",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smothering Tithe",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stroke of Genius",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Progress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Ageless Insight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple Bell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple of Enlightenment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ozolith",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "The Second Doctor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thought Vessel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "United Front",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Walking Ballista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Wrath of God",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "survive-v2",
-      "opened": "2026-09-07",
-      "why": "survive-v1 WITH THE COLOUR FIXED. Same hypothesis and the same six cuts; v1's own pre-registered risk check refused it. It added nine white pips against the four its cuts removed — Baird, Wrath of God, Cleansing Nova and Settle the Wreckage are all double-white — on a list whose white had only just been brought to parity at 21 sources, and interaction_6 fell 0.795 to 0.675. The answers were in hand and could not be paid for, which is the exact defect the branch existed to fix, arriving through the mana instead of the board. THIS IS A DESIGN FIX, NOT A SECOND ROLL AT THE SAME DICE: the objective grades the branch's RISK rather than its reward, so tuning the list until the risk clears is the work, and the reward is still decided in Forge where none of it has been measured yet. Kept: Ghostly Prison (one white pip, the cheapest taxer), Wrath of God (the single best sweeper), Leyline of Anticipation. Replaced Baird, Cleansing Nova and Settle the Wreckage with answers that cost no white at all — Aetherize {3}{U} returns all ATTACKING creatures at instant speed, which is Settle the Wreckage in blue and is the flash plan; Evacuation {3}{U}{U} resets the whole board; Nevinyrral's Disk is a colourless sweeper that also answers the artifacts and enchantments giada-angels wins through. Three white pips added against four removed, so the branch is now white-NEGATIVE. All six are clean in Forge: no AI:RemoveDeck flag on any of them, and Oblivion Stone was rejected for carrying one.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Aetherize"
-          },
-          {
-            "name": "Evacuation"
-          },
-          {
-            "name": "Nevinyrral's Disk"
-          },
-          {
-            "name": "The Ozolith"
-          },
-          {
-            "name": "United Front"
-          },
-          {
-            "name": "Wrath of God"
-          }
-        ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [],
-        "blocking": 6,
-        "procurement": null
-      },
-      "base_version": 7,
-      "size": 100,
-      "add": 6,
-      "out": 6,
-      "counts": {
-        "in_deck": 79,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 6
-      },
-      "unsourced": [
-        "Aetherize",
-        "Evacuation",
-        "Nevinyrral's Disk",
-        "The Ozolith",
-        "United Front",
-        "Wrath of God"
-      ],
-      "mergeable": false,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Aetherize",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Alhammarret's Archive",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "An Offer You Can't Refuse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Approach of the Second Sun",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Denial",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Archmage's Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Azorius Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Braingeyser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cathar Commando",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Consecrated Sphinx",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cyclonic Rift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Day of Judgment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Decanter of Endless Water",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deserted Beach",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dictate of Kruphix",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dig Through Time",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Disenchant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dovin's Veto",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Eiganjo, Seat of the Empire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Evacuation",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fierce Guardianship",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flooded Strand",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Font of Mythos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Force of Negation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forced Fruition",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ghostly Prison",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hangarback Walker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Howling Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kwain, Itinerant Meddler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Leyline of Anticipation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Long-Term Plans",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Loran of the Third Path",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mathemagics",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystical Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Nevinyrral's Disk",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Otawara, Soaring City",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path to Exile",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prairie Stream",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Propaganda",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rhystic Study",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sapphire Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smothering Tithe",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stroke of Genius",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Progress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Ageless Insight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple Bell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple of Enlightenment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ozolith",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "The Second Doctor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thought Vessel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "United Front",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Walking Ballista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Wrath of God",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        }
-      ],
-      "has_cards": true
-    },
-    {
-      "name": "teeth-v1",
-      "opened": "2026-09-07",
-      "why": "THE HAND-SIZE PUNISHER PACKAGE IS THE WORST THING IN THE DECK; convert card flow into a board instead. Measured on the 20-game pod run: our seat's noncombat damage to players was mean 1.75 with a MEDIAN OF 0 over ~34-turn games, and we were eliminated by creature decks 13 times in 20. Iron Maiden and Viseling read hand-size-minus-four and Ebony Owl Netsuke wants seven, so all three are dead against anyone who spends their hand. Out: those three plus Tireless Tribe, Wall of Glare and Darien. In: Leyline of Anticipation (the flash redundancy the paper list cut - the deck has THREE cards with Flash printed and the whole end-step plan rides on a commander that resolved in 30% of games), Archmage Emeritus and Murmuring Mystic (28 instants and sorceries in the 99, and the Mystic is a 1/5 that answers the creature decks in the same slot), Chasm Skulker and Teferi Temporal Pilgrim (payoffs for our OWN draws), and Krang the All-Powerful, which makes every draw-triggered permanent we control trigger twice - Psychosis Crawler, Scrawling Crawler, Consecrated Sphinx, Faerie Mastermind, Smothering Tithe. THE GOLDFISH CANNOT GRADE THE HYPOTHESIS: classify() returns draw={unmodelled} for Archmage Emeritus, Chasm Skulker and Teferi, and reads Krang as a bare 3-power body, so four of the six adds have their text unread. board_power_6 is pre-registered because it is the one component the model CAN see; the verdict is the Forge experiment against v1.0.1, where all six are trigger-based and none carries an AI:RemoveDeck flag.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Krang, the All-Powerful"
-          },
-          {
-            "name": "The Ozolith"
-          },
-          {
-            "name": "United Front"
-          }
-        ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [],
-        "box": [
-          {
-            "name": "Archmage Emeritus",
-            "where": [
-              "Heliod Parts"
-            ]
-          },
-          {
-            "name": "Chasm Skulker",
-            "where": [
-              "Heliod Parts"
-            ]
-          },
-          {
-            "name": "Murmuring Mystic",
-            "where": [
-              "Heliod Parts"
-            ]
-          },
-          {
-            "name": "Teferi, Temporal Pilgrim",
-            "where": [
-              "Heliod Parts"
-            ]
-          }
-        ],
-        "blocking": 3,
-        "procurement": null
-      },
-      "base_version": 7,
-      "size": 100,
-      "add": 7,
-      "out": 7,
-      "counts": {
-        "in_deck": 78,
-        "box": 4,
-        "elsewhere": 0,
-        "buy": 3
-      },
-      "unsourced": [
-        "Krang, the All-Powerful",
-        "The Ozolith",
-        "United Front"
-      ],
-      "mergeable": false,
-      "free": 0,
-      "cards": [
-        {
-          "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Alhammarret's Archive",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "An Offer You Can't Refuse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Approach of the Second Sun",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Denial",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Archmage Emeritus",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Archmage's Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Azorius Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Braingeyser",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cathar Commando",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Chasm Skulker",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Consecrated Sphinx",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cyclonic Rift",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Day of Judgment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Decanter of Endless Water",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Deserted Beach",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dictate of Kruphix",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dig Through Time",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Disenchant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Dovin's Veto",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Eiganjo, Seat of the Empire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Fierce Guardianship",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Flooded Strand",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Font of Mythos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Force of Negation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Forced Fruition",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Hangarback Walker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Howling Mine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Krang, the All-Powerful",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Kwain, Itinerant Meddler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Leyline of Anticipation",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Long-Term Plans",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Loran of the Third Path",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mathemagics",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Murmuring Mystic",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mystical Tutor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Otawara, Soaring City",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path to Exile",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prairie Stream",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Propaganda",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Rhystic Study",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sapphire Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smothering Tithe",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stroke of Genius",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swords to Plowshares",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Progress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Ageless Insight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Teferi, Temporal Pilgrim",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Temple Bell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Temple of Enlightenment",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Ozolith",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "The Second Doctor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Thought Vessel",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "United Front",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Walking Ballista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "White Sun's Zenith",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
         }
       ],
       "has_cards": true
@@ -4018,138 +682,138 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4385,
+          "rate": 0.4345,
           "ci95": [
-            0.4288,
-            0.4482
+            0.4248,
+            0.4442
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0625,
+          "rate": 0.0623,
           "ci95": [
-            0.0579,
-            0.0674
+            0.0577,
+            0.0672
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0082,
+          "rate": 0.0095,
           "ci95": [
-            0.0066,
-            0.0102
+            0.0078,
+            0.0116
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0022,
+          "rate": 0.003,
           "ci95": [
-            0.0015,
-            0.0033
+            0.0021,
+            0.0043
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0019,
+          "rate": 0.0023,
           "ci95": [
-            0.0012,
-            0.003
+            0.0015,
+            0.0034
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0011,
+          "rate": 0.0008,
           "ci95": [
-            0.0006,
-            0.002
+            0.0004,
+            0.0016
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0003,
+          "rate": 0.0007,
           "ci95": [
-            0.0001,
-            0.0009
+            0.0003,
+            0.0014
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0002,
+          "rate": 0.0005,
           "ci95": [
-            0.0001,
-            0.0007
+            0.0002,
+            0.0012
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0002,
+          "rate": 0.0001,
           "ci95": [
-            0.0001,
-            0.0007
+            0.0,
+            0.0006
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0002,
+          "rate": 0.0,
           "ci95": [
-            0.0001,
-            0.0007
+            0.0,
+            0.0004
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0072,
+        "rate": 0.0091,
         "ci95": [
-          0.0057,
-          0.0091
+          0.0074,
+          0.0112
         ],
         "n": 10000
       },
-      "fleet": "better than any tracked deck",
+      "fleet": "below the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 768,
-        "hand_empty": 5,
-        "mana_short": 763
+        "stall_turns": 792,
+        "hand_empty": 6,
+        "mana_short": 786
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.5095,
+        "rate": 0.5194,
         "ci95": [
-          0.4997,
-          0.5193
+          0.5096,
+          0.5292
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3212,
+      "missed_land_drop_rate": 0.3247,
       "mulliganed": {
-        "rate": 0.2564,
+        "rate": 0.2619,
         "ci95": [
-          0.2479,
-          0.2651
+          0.2534,
+          0.2706
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.998,
-        "2": 2.141,
-        "3": 3.384,
-        "4": 4.278,
-        "5": 4.997,
-        "6": 5.676,
-        "7": 6.326,
-        "8": 6.97,
-        "9": 7.611,
-        "10": 8.245
+        "2": 2.14,
+        "3": 3.396,
+        "4": 4.273,
+        "5": 4.987,
+        "6": 5.666,
+        "7": 6.298,
+        "8": 6.923,
+        "9": 7.565,
+        "10": 8.196
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.2972
+      "mana_stdev_turn_five": 1.3226
     },
-    "decklist_sha256": "dfc872a58a5c6f74987a64b769fda31f0075a69f89327b142aa6717c7d209123"
+    "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175"
   },
   "bracket": {
     "floor": 4,
@@ -4187,7 +851,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 90,
+          "value": 89,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -4205,7 +869,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.222,
+          "value": 4.221,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -4213,7 +877,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 86,
+          "value": 85,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -4221,7 +885,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})": {
-          "value": 65,
+          "value": 64,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})' by turn six",
@@ -4237,7 +901,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Engine + punisher assembled (the deck's core two-piece)": {
-          "value": 21,
+          "value": 20,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"Engine + punisher assembled (the deck's core two-piece)\" by turn six",
@@ -4261,7 +925,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:An X-spell finisher drawn (the mana sink the discount pays for)": {
-          "value": 73,
+          "value": 67,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'An X-spell finisher drawn (the mana sink the discount pays for)' by turn six",
@@ -4285,7 +949,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A body that can block a FLIER (39 of 53 eliminations came from the air)": {
-          "value": 53,
+          "value": 54,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air)' by turn six",
@@ -4293,7 +957,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 26,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -4346,16 +1010,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 8.21,
-            "2": 2.137,
-            "3": 3.402,
-            "4": 4.277,
-            "5": 4.997,
-            "6": 5.677,
-            "7": 6.316,
-            "8": 6.954,
-            "9": 7.587
+            "1": 0.997,
+            "10": 8.241,
+            "2": 2.139,
+            "3": 3.404,
+            "4": 4.28,
+            "5": 5.01,
+            "6": 5.679,
+            "7": 6.319,
+            "8": 6.966,
+            "9": 7.612
           },
           "tier": "data",
           "weight": "detail",
@@ -4365,16 +1029,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 0.502,
-            "2": 0.994,
-            "3": 0.873,
-            "4": 0.73,
-            "5": 0.597,
-            "6": 0.543,
+            "1": 0.997,
+            "10": 0.506,
+            "2": 0.993,
+            "3": 0.869,
+            "4": 0.729,
+            "5": 0.603,
+            "6": 0.54,
             "7": 0.518,
-            "8": 0.515,
-            "9": 0.503
+            "8": 0.517,
+            "9": 0.509
           },
           "tier": "data",
           "weight": "detail",
@@ -4384,16 +1048,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.263,
-            "10": 3.107,
-            "2": 0.487,
-            "3": 0.773,
-            "4": 1.069,
-            "5": 1.516,
-            "6": 1.887,
-            "7": 2.216,
-            "8": 2.526,
-            "9": 2.823
+            "1": 0.251,
+            "10": 3.256,
+            "2": 0.477,
+            "3": 0.754,
+            "4": 1.059,
+            "5": 1.53,
+            "6": 1.931,
+            "7": 2.279,
+            "8": 2.617,
+            "9": 2.938
           },
           "tier": "data",
           "weight": "detail",
@@ -4403,14 +1067,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 572,
-            "1": 2036,
-            "2": 3155,
-            "3": 2579,
-            "4": 1258,
-            "5": 352,
-            "6": 47,
-            "7": 1
+            "0": 546,
+            "1": 2069,
+            "2": 3138,
+            "3": 2583,
+            "4": 1267,
+            "5": 347,
+            "6": 44,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -4419,10 +1083,10 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 725,
-            "7": 9,
-            "8": 81,
-            "9": 367
+            "10": 807,
+            "7": 5,
+            "8": 98,
+            "9": 435
           },
           "tier": "data",
           "weight": "detail",
@@ -4438,16 +1102,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.222,
-    "commander_cast_by_turn_6_pct": 90,
+    "commander_mean_cast_turn": 4.221,
+    "commander_cast_by_turn_6_pct": 89,
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 86
+        "by_turn_6_pct": 85
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
-        "by_turn_6_pct": 65
+        "by_turn_6_pct": 64
       },
       {
         "label": "Draw-trigger punisher drawn (bills them for taking it)",
@@ -4455,7 +1119,7 @@
       },
       {
         "label": "Engine + punisher assembled (the deck's core two-piece)",
-        "by_turn_6_pct": 21
+        "by_turn_6_pct": 20
       },
       {
         "label": "Heliod down with an asymmetric card engine",
@@ -4467,7 +1131,7 @@
       },
       {
         "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
-        "by_turn_6_pct": 73
+        "by_turn_6_pct": 67
       },
       {
         "label": "Win condition access (Approach, or a tutor that finds one)",
@@ -4479,25 +1143,25 @@
       },
       {
         "label": "A body that can block a FLIER (39 of 53 eliminations came from the air)",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 54
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 25
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.53,
+      "mean_kill_turn": 9.52,
       "median_kill_turn": 10,
       "kill_by_turn_6_pct": 0,
       "kill_by_turn_8_pct": 1,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 88,
+      "no_kill_by_max_turn_pct": 87,
       "kill_turn_histogram": {
-        "10": 725,
-        "7": 9,
-        "8": 81,
-        "9": 367
+        "10": 807,
+        "7": 5,
+        "8": 98,
+        "9": 435
       }
     }
   },
@@ -4633,15 +1297,11 @@
   },
   "experiments": null,
   "next": [
-    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
+    "4 artifact(s) fail their own gate (targets, engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
-    "branch `deckout-v1` needs 8 card(s) sourced — `manamap pilot deck-branch heliod source deckout-v1`",
-    "branch `lynchpin-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source lynchpin-v1`",
-    "branch `skies-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge skies-v1 --write`",
-    "branch `survive-v1` needs 5 card(s) sourced — `manamap pilot deck-branch heliod source survive-v1`",
-    "branch `survive-v2` needs 6 card(s) sourced — `manamap pilot deck-branch heliod source survive-v2`",
-    "branch `teeth-v1` needs 3 card(s) sourced — `manamap pilot deck-branch heliod source teeth-v1`",
+    "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
     "9 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"

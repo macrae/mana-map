@@ -47,7 +47,7 @@
    {
     "free": false,
     "name": "Archangel of Tithes",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -515,31 +515,25 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 1,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 84
+   "in_deck": 85
   },
   "counts_are": "distinct names",
   "diff": {
-   "add": [
-    "Archangel of Tithes"
-   ],
+   "add": [],
    "base_names": 85,
    "base_size": 100,
    "names": 85,
-   "out": [
-    "White Sun's Zenith"
-   ],
+   "out": [],
    "size": 100
   },
   "free": 0,
-  "mergeable": false,
+  "mergeable": true,
   "owned_but_elsewhere": 0,
   "proxy": false,
   "slug": "heliod",
-  "unsourced": [
-   "Archangel of Tithes"
-  ]
+  "unsourced": []
  },
  "blind_spots": [],
  "branch": "archangel-v1",
@@ -550,43 +544,22 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 1,
-    "in_copies": 1,
+    "in": 0,
+    "in_copies": 0,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 1,
-    "out_copies": 1,
-    "spells_in": 1,
-    "spells_out": 1
+    "out": 0,
+    "out_copies": 0,
+    "spells_in": 0,
+    "spells_out": 0
    },
-   "in": [
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Archangel of Tithes",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Creature \u2014 Angel",
-     "why": null
-    }
-   ],
+   "in": [],
    "names": 85,
-   "out": [
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "White Sun's Zenith",
-     "pair": null,
-     "type_line": "Instant",
-     "why": null
-    }
-   ],
+   "out": [],
    "size": 100,
    "unexplained": {
-    "in": 1,
-    "out": 1
+    "in": 0,
+    "out": 0
    }
   },
   "lands": [],
@@ -842,34 +815,35 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; damage @T10, board power @T6 and killed by T10 improved.",
+  "because": "The objective is met and nothing measured here got worse.",
   "bill": {
    "box": 0,
-   "buy": 1,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 84
+   "in_deck": 85
   },
   "cost": {
-   "buy": 1,
-   "buy_cards": [
-    "Archangel of Tithes"
-   ],
+   "buy": 0,
+   "buy_cards": [],
    "counts": {
     "box": 0,
-    "buy": 1,
+    "buy": 0,
     "elsewhere": 0,
-    "in_deck": 84
+    "in_deck": 85
    },
    "free_to_raid": [],
-   "mergeable": false,
+   "mergeable": true,
    "must_unsleeve": [],
-   "owned": 84,
-   "reads_as": "1 to buy; 84 of 85 already owned",
+   "owned": 85,
+   "reads_as": "0 to buy; 85 of 85 already owned",
    "total": 85
   },
   "fell": [],
   "no_call": [
+   "damage @T10",
+   "board power @T6",
    "killed by T6",
+   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -877,29 +851,15 @@
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
-  "reward": [
-   {
-    "measure": "damage @T10",
-    "reads_as": "4.57 -> 5.11, a change of +0.54 (+12%)",
-    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "measure": "board power @T6",
-    "reads_as": "2.95 -> 3.19, a change of +0.24 (+8%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "measure": "killed by T10",
-    "reads_as": "11 games in 100 -> 14 in 100, a swing of 2 games per 100",
-    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
-   }
+  "notes": [
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
   ],
+  "reward": [],
   "risk": [
    {
-    "detail": "the largest is stall, 2 in a row at +0.002 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.135. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -909,11 +869,7 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [
-   "damage @T10",
-   "board power @T6",
-   "killed by T10"
-  ],
+  "rose": [],
   "state": "merge"
  },
  "slug": "heliod",
@@ -922,28 +878,28 @@
   {
    "better_is": "higher",
    "branch": 5.112,
-   "champion": 4.5735,
-   "delta": 0.5385,
+   "champion": 5.112,
+   "delta": 0.0,
    "mde": 0.1352,
    "measure": "damage @T10",
-   "reads_as": "4.57 -> 5.11, a change of +0.54 (+12%)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.135 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {
    "better_is": "higher",
    "branch": 3.1877,
-   "champion": 2.9506,
-   "delta": 0.2371,
+   "champion": 3.1877,
+   "delta": 0.0,
    "mde": 0.1038,
    "measure": "board power @T6",
-   "reads_as": "2.95 -> 3.19, a change of +0.24 (+8%)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.104 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
@@ -964,25 +920,25 @@
   {
    "better_is": "higher",
    "branch": 0.1359,
-   "champion": 0.114,
-   "delta": 0.0219,
+   "champion": 0.1359,
+   "delta": 0.0,
    "mde": 0.0136,
    "measure": "killed by T10",
-   "reads_as": "11 games in 100 -> 14 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.014 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0091,
-   "champion": 0.0072,
-   "delta": 0.0019,
+   "champion": 0.0091,
+   "delta": 0.0,
    "mde": 0.0038,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -992,11 +948,11 @@
   {
    "better_is": "lower",
    "branch": 0.5194,
-   "champion": 0.5095,
-   "delta": 0.0099,
+   "champion": 0.5194,
+   "delta": 0.0,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1006,11 +962,11 @@
   {
    "better_is": "lower",
    "branch": 0.2619,
-   "champion": 0.2564,
-   "delta": 0.0055,
+   "champion": 0.2619,
+   "delta": 0.0,
    "mde": 0.0174,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1020,11 +976,11 @@
   {
    "better_is": "higher",
    "branch": 2.3215,
-   "champion": 2.3747,
-   "delta": -0.0532,
-   "mde": 0.1219,
+   "champion": 2.3215,
+   "delta": 0.0,
+   "mde": 0.1199,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.053 is smaller than the 0.122 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.120 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1034,11 +990,11 @@
   {
    "better_is": "higher",
    "branch": 0.6762,
-   "champion": 0.6748,
-   "delta": 0.0014,
-   "mde": 0.0193,
+   "champion": 0.6762,
+   "delta": 0.0,
+   "mde": 0.0192,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1048,11 +1004,11 @@
   {
    "better_is": "higher",
    "branch": 0.9831,
-   "champion": 0.9811,
-   "delta": 0.002,
-   "mde": 0.0054,
+   "champion": 0.9831,
+   "delta": 0.0,
+   "mde": 0.0051,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.005 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
