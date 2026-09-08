@@ -178,22 +178,19 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 #: A validator that fires on correct data is worse than no validator — and a
 #: suite that is permanently red is the same failure wearing different clothes,
 #: because a tenth failure joining nine is invisible.
+#: BOTH heliod ENTRIES CAME OFF ON 2026-09-08, and that is the contract
+#: working rather than a cleanup. `deck-engineer` and `pilot-notes` rebuilt
+#: `engine.json` and `tutor_guide.json` against the current 99; the strict xfail
+#: then FAILED as XPASS, which is exactly what "if one starts passing, this list
+#: is wrong and the test says so rather than going quiet" is for. A non-strict
+#: xfail would have swallowed both and left two rebuilt artifacts ungated.
 STALE_XFAIL = {
-    "heliod/engine.json":
-        "the paper check-in of 2026-09-07 replaced fifteen cards, and the engine "
-        "model still names the kill they took out — Hullbreaker Horror, Aetherflux "
-        "Reservoir, Displacer Kitten, Ancient Tomb, Grand Abolisher. It is not "
-        "wrong about the deck it was written for; it is a model of a different 99. "
-        "Rewriting it is a `/analyze-engine` spawn, deliberately deferred until "
-        "the swap round the pilot has queued lands, so it is written once.",
-    "heliod/tutor_guide.json":
-        "same check-in: the tutor lines fetch Aetherflux Reservoir and Hullbreaker "
-        "Horror, which are no longer in the 99. A `/publish-deck` prose spawn, "
-        "deferred with the engine model for the same reason.",
     "heliod/considering.json":
-        "same check-in, and this one is LEGACY besides — the Short List belongs to "
-        "the frozen magazine renderer. Its natural cuts name Jace Beleren and "
-        "Teferi, Time Raveler, both of which the paper list already cut.",
+        "the paper check-in of 2026-09-07 replaced fifteen cards, and this one "
+        "is LEGACY besides — the Short List belongs to the frozen magazine "
+        "renderer, whose editor was retired 2026-08-19. Its natural cuts name "
+        "Jace Beleren and Teferi, Time Raveler, both of which the paper list "
+        "already cut, and there is no author left to re-run.",
 }
 
 

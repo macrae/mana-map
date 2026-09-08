@@ -78,31 +78,54 @@ def test_quorum_is_two_stacks():
 
 
 @requires_deck
-def test_heliod_primary_win_line_is_undeclared():
-    """The regression this module exists for, now the other way round.
+def test_heliod_primary_win_line_is_declared():
+    """The regression this module exists for, and the deck it was written on has
+    since changed its win condition.
 
-    Hullbreaker Horror + a cheap rock + Aetherflux Reservoir is heliod's primary
-    win line, verified by checker-passed stacks 001 and 006 and named in four
-    other artifacts. No goldfish target mentioned it, so the simulator had never
-    measured how the deck actually wins — and when one was finally declared the
-    answer was 0.7% assembled, 0.3% by turn six.
+    WRITTEN 2026-07 for Hullbreaker Horror + a cheap rock + Aetherflux
+    Reservoir, heliod's primary win line at the time. No goldfish target
+    mentioned it, so the simulator had never measured how the deck actually
+    won — and when one was declared the answer was 0.7% assembled.
 
-    This asserts the declaration STAYS. Deleting the target would restore the
-    blind spot silently: every rate the engine block prints would still be
-    correct, and the one that matters would simply be absent again.
+    THAT LINE NO LONGER EXISTS. The pilot removed Aetherflux Reservoir,
+    Hullbreaker Horror and Displacer Kitten in the paper check-in of
+    2026-09-07; they hold a standing constraint against two-card infinite
+    combos, `bracket_report.json` reads zero of them, and the five stack
+    resolutions built on that line were retired to `stacks/retired/`.
+
+    The deck's win condition is now APPROACH OF THE SECOND SUN, cast twice —
+    20 of 27 wins over 120 Forge games, and `engine.json` marks it
+    `single_point_of_failure`. So the assertion moves to the card that is
+    actually the win line, and the RULE is unchanged: whatever wins the game
+    must be named in a target, or the simulator measures everything except
+    the thing that matters.
+
+    A test that names a deck's card inherits that deck's decisions. This one
+    would have gone on asserting a premise that stopped being true, which is
+    the same failure as the `model_draw` opt-out test one file over — so the
+    guard below is that the named card is STILL IN THE 99, and this fails
+    loudly rather than quietly if the win condition moves again.
     """
+    import json as _json
     from manamap.pilot.common import deck_dir
     base = deck_dir("heliod")
     path = base / "goldfish_targets.json"
-    if not path.exists():
+    cards = base / "cards.json"
+    if not path.exists() or not cards.exists():
         pytest.skip("heliod goldfish_targets.json not present")
+    WIN = "Approach of the Second Sun"
+    names = {c["name"] for c in _json.loads(cards.read_text())["cards"]}
+    assert WIN in names, (
+        f"{WIN!r} is no longer in heliod's 99 — this test names a card the deck "
+        f"has moved on from, exactly as it did for Hullbreaker Horror. Point it "
+        f"at the new win condition rather than deleting it.")
     with open(path) as f:
-        doc = json.load(f)
+        doc = _json.load(f)
     declared = vgt._declared_names(doc)
-    assert "Hullbreaker Horror" in declared, (
+    assert WIN in declared, (
         "the primary win line must stay declared — an undeclared win line is "
         "measured by nothing")
-    assert not any("Hullbreaker Horror" in e for e in vgt.validate(doc, "heliod", base))
+    assert not any(WIN in e for e in vgt.validate(doc, "heliod", base))
 
 
 @requires_deck
