@@ -759,6 +759,31 @@ def deck_state(info):
     return STATE_ON_BENCH, "nobody has said whether this exists in paper"
 
 
+def drift_lines(slug, current_version):
+    """What to physically move, from the sleeved list to the one on disk.
+
+    READS ONLY. `deck-version <slug> paper` with no ref MOVES the lock, and it
+    was run once to READ this — claiming heliod was sleeved at V8 while two of
+    its cards were unbought. `paper_state` is the read side of the same
+    question and this is the only thing the dossier is allowed to call.
+
+    Never raises: a deck with no git history, no lock, or a corrupt tags file
+    gets no block rather than a broken dossier.
+    """
+    try:
+        st = versions_mod.paper_state(slug)
+    except Exception:                              # pragma: no cover - defensive
+        return []
+    d = (st or {}).get("drift") or {}
+    if not (d.get("pull_copies") or d.get("add_copies")):
+        return []
+    out = [f"  TO SLEEVE   V{st.get('version')} is in your hands; the repo is at "
+           f"V{current_version} — pull {d['pull_copies']}, add {d['add_copies']}"]
+    out += [f"               - {n}" for n in d.get("pull", [])]
+    out += [f"               + {n}" for n in d.get("add", [])]
+    return out
+
+
 def _print(info):
     ci = "".join(info["colour_identity"]) or "C"
     state, why = deck_state(info)
@@ -777,6 +802,18 @@ def _print(info):
     if v["tags"]:
         vline += f" · [{', '.join(v['tags'])}]"
     print(f"  version    {vline}")
+    # WHAT TO PHYSICALLY DO. The lock says which list is sleeved and the version
+    # line says which list the repo holds; until now NOTHING printed the
+    # difference, so the pilot could read "SLEEVED · V6" above "V8 of 8" and
+    # have no idea that nine cards had to move. This is the whole reason the
+    # lock exists — it is not a status badge, it is the thing drift is measured
+    # from — and it is computed here rather than stored, because `info.json` is
+    # committed and the git walk is not free for CI.
+    #
+    # COPIES, not entries: five basics moving read as "pull 0, add 0" until the
+    # same morning this printed for the first time.
+    for line in drift_lines(info["slug"], v.get("current")):
+        print(line)
     s = info["status"]
     sline = f"{s['complete']}/{s['of']} stages"
     if s["stale"]:
