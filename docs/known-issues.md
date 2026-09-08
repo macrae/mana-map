@@ -59,11 +59,36 @@ guess. Leave them red.
 |---|---|
 | `test_pilot_deck_info::test_a_real_deck_composes_every_panel` | a sleeved deck's dossier has an engine panel with a critic verdict |
 
-**Cause.** `data/decks/heliod/engine.json` has `critic: null`. The engineer was
-re-run on 2026-09-03 *with the critic's findings*, and the resulting document was
-never put back in front of the critic — so the model that answered the critique
-carries no verdict saying it answered it. `deck_info.py:701` reads
-`critic.verdict != "pass"` and the panel comes back unverified.
+**Cause, as of 2026-09-08:** the critic has now RUN, and returned **`fail`** —
+16 findings, 5 of them `supported`. The panel stays unverified because the
+verdict is `fail`, not because it is missing, which is the test working
+correctly. Round 2 (engineer answers the findings, critic re-judges) is the
+thing that turns it green; the loop allows three rounds and this was one.
+
+Nothing here is cache-recorded. A `fail` model is kept because it documents what
+could not be grounded, and recording it would say the opposite.
+
+**The finding worth reading even if you never touch the engine model.** The model
+implied Heliod's flip carries the deck. Cross-tabbing
+`per_seat.heliod.commander_transformed_turn` against `winner` over the 120-game
+standard-pod run says the reverse, and it re-derives exactly:
+
+| | games | wins | rate | Approach wins |
+|---|---:|---:|---:|---:|
+| Heliod NEVER flipped | 85 | 23 | **0.271** | 18 |
+| Heliod flipped | 35 | 4 | **0.114** | 2 |
+
+The critic's instruction is to rebut rather than weaken, and this is what that
+looks like: the correction makes the model's own thesis stronger, not softer.
+Whether flipping is *causally* bad or merely marks the longer games it survives
+into is open — the split is a fact, the mechanism is not.
+
+Four other figures a reader would take as measured are wrong: the "four gift
+pieces" enumeration is six inside the stage and more outside it; a proposed
+goldfish edit argues for dropping two Medallions that were already removed at
+`c879dcd`, the very commit that shipped this `engine.json`, so its cited 0.823
+is a pre-edit rate against a live 0.732; a roleless-card count reads five where
+six is right; and "whose every threat flies" is 30 of 32.
 
 **edgar-vampires and ur-dragon are in the same state** and are not asserted by
 any test, which is its own gap: three of nine decks have an uncriticised engine
