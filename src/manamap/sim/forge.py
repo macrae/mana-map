@@ -954,8 +954,31 @@ def _java_version():
 
 
 def list_runs(slug):
+    """Every run record for this deck, OLDEST FIRST — so `[-1]` is the latest.
+
+    SORTED BY DATE, NOT BY FILENAME. It sorted by filename, and a run id begins
+    with the opponents: `giada-angels-vs-baylen-tokens-vs-abaddon-n120` sorts
+    BEFORE `giada-angels-vs-vito-vs-baylen-tokens-n20` because 'b' precedes 'v'.
+    So the dossier's "latest" was a 20-game run from 2026-08-26 reading 0.118,
+    while a 120-game run from 2026-09-07 reading 0.252 sat beside it unread —
+    six times the sample and more than twice the rate, hidden by an alphabet.
+    Change the pod and the answer changes; nothing about it was detectable from
+    the output, which showed a real run with a real interval.
+
+    `at` is a DATE with no clock, so same-day runs tie and the file's mtime
+    breaks it. Records written before `at` existed sort first rather than last:
+    an undated run is old, not new.
+    """
     base = _out_dir(slug)
-    return [load_json(p) for p in sorted(base.glob("*.json"))] if base.is_dir() else []
+    if not base.is_dir():
+        return []
+    rows = []
+    for path in sorted(base.glob("*.json")):
+        doc = load_json(path)
+        if doc is None:
+            continue
+        rows.append((doc.get("at") or "", path.stat().st_mtime, doc))
+    return [doc for _at, _m, doc in sorted(rows, key=lambda r: (r[0], r[1]))]
 
 
 def resolve_table(args):
