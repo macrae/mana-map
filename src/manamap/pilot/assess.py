@@ -144,6 +144,7 @@ def job_of(text, roles):
 
 def assess(slug, pool, branch=None):
     from manamap.pilot import card_pool, candidates as _cand, deck_branch
+    from manamap.sim import failure, forge_cards
     from manamap.pilot.common import load_card_roles
     frame = card_pool.load_frame()
     by = {}
@@ -176,6 +177,30 @@ def assess(slug, pool, branch=None):
         src = {r["name"]: r for r in deck_branch.source(slug, branch)["cards"]}
     except Exception:
         src = {}
+
+    # THE THREE FILTERS THIS DECK'S OWN MEASUREMENTS ASKED FOR.
+    #
+    # 1. WHAT SHARE OF A MEASURED FAILURE DOES IT ANSWER. A pile of protection
+    #    cards ranked by taste puts hexproof and phasing side by side; ranked
+    #    against heliod's 119 recorded commander departures it does not, because
+    #    48% of them were WIPES and hexproof does nothing about a wipe.
+    # 2. CAN FORGE PILOT IT. `AI:RemoveDeck` marks a card the AI has no logic
+    #    for. It does NOT mean "never cast" — Swan Song carries it and was cast
+    #    28 times in 160 games — so it is reported as a fact about the
+    #    INSTRUMENT: a flagged card may be fine in paper and unpriceable here.
+    # 3. IS THE FLASH GRANTED OR PRINTED. Leyline of Anticipation gives the
+    #    whole deck flash; a flash creature only ever flashes itself. On a deck
+    #    whose plan is casting at end of turn those are different cards.
+    decomposition = None
+    cmdr = doc.get("commander") or (doc.get("cards") and next(
+        (c["name"] for c in doc["cards"] if c.get("is_commander")), None))
+    if cmdr:
+        try:
+            got = failure.commander_departures(slug, cmdr)
+            if got.get("departures"):
+                decomposition = got
+        except Exception:                          # pragma: no cover - defensive
+            decomposition = None
 
     rows = []
     for name in pool:
@@ -231,12 +256,27 @@ def assess(slug, pool, branch=None):
              "type_line": str(r.get("type_line") or ""),
              "mana_cost": str(r.get("mana_cost") or ""),
              "power": r.get("power"), "toughness": r.get("toughness")})
+        # 1 — the share of measured commander losses this card could answer.
+        row["answers"] = (failure.coverage(text, decomposition)
+                          if decomposition else None)
+        # 2 — can the instrument pilot it.
+        flag = forge_cards.ai_flag(name) if forge_cards.installed() else None
+        row["forge_ai_flag"] = flag
+        # 3 — granted to the deck, or printed on this one card.
+        if re.search(r"as though (?:it|they) had flash|cards? in your hand have flash"
+                     r"|you may cast .*? as though (?:it|they) had flash", text, re.I):
+            row["flash"] = "grants flash to your whole hand"
+        elif re.search(r"\bFlash\b", text):
+            row["flash"] = "flash on itself only"
+        else:
+            row["flash"] = None
         eq = cheapest.get(job)
         row["cheaper_than_ours"] = bool(eq and mv < eq[1])
         row["ours_cheapest"] = f"{eq[0]} (mv{int(eq[1])})" if eq else None
         rows.append(dict(row, verdict=_verdict(row, slug, branch)))
     return {"slug": slug, "branch": branch, "cards": rows,
-            "axes": sorted(axes), "identity": sorted(identity)}
+            "axes": sorted(axes), "identity": sorted(identity),
+            "commander_losses": decomposition}
 
 
 def _channels(card):
@@ -318,6 +358,23 @@ def main(args):
     where = doc["slug"] + (f"/{doc['branch']}" if doc.get("branch") else "")
     rows = doc["cards"]
     print(f"\nASSESSMENT — {len(rows)} card(s) against {where}\n")
+    cl = doc.get("commander_losses")
+    if cl:
+        c = cl["causes"]
+        rr = cl.get("removal_rate") or {}
+        print(f"  MEASURED FAILURE — {cl['commander'].split(' // ')[0]} left the "
+              f"battlefield {cl['departures']} times over {cl['games']} games")
+        print(f"    removal rate {rr.get('rate')} of {rr.get('n')} resolutions "
+              f"ci95 {rr.get('ci95')}")
+        for k in ("mass", "targeted", "other", "combat"):
+            v = c.get(k) or {}
+            if not v.get("n"):
+                continue
+            print(f"      {k:<10}{v['n']:>4}  {v['share']:>6.1%}  "
+                  f"ci95 [{v['ci95'][0]:.2f}, {v['ci95'][1]:.2f}]")
+        print(f"    `other` is REPORTED, never redistributed — attributing it "
+              f"proportionally\n    would turn unknown into confident percentage "
+              f"points.\n")
     order = {"already in the list": 3}
     rows = sorted(rows, key=lambda r: (order.get(r["verdict"], 0), r.get("mv", 99)))
     for r in rows:
@@ -330,6 +387,18 @@ def main(args):
         print(f"       {r['verdict']}")
         if r["on_axis"]:
             print(f"       feeds: {', '.join(x[:44] for x in r['on_axis'])}")
+        a = r.get("answers")
+        if a:
+            print(f"       ANSWERS {a['share_of_losses']:.0%} of measured commander "
+                  f"losses ({'+'.join(a['stops'])}) — upper bound, {a['basis']}")
+            if a.get("caveat"):
+                print(f"         {a['caveat']}")
+        if r.get("flash"):
+            print(f"       flash: {r['flash']}")
+        if r.get("forge_ai_flag"):
+            print(f"       FORGE: AI:RemoveDeck:{r['forge_ai_flag']} — the AI has no "
+                  f"logic for this. Not 'never cast' (Swan Song carries it and was "
+                  f"cast 28 times in 160 games), but it cannot be priced reliably here")
     worth = [r for r in rows if any(m in r.get("verdict", "") for m in MEASURABLE)]
     print(f"\n  {len(worth)} of {len(rows)} worth measuring:")
     for r in worth:
