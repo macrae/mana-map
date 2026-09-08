@@ -499,7 +499,7 @@
    {
     "free": false,
     "name": "The Ozolith",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -517,7 +517,7 @@
    {
     "free": false,
     "name": "United Front",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -535,9 +535,9 @@
   ],
   "counts": {
    "box": 4,
-   "buy": 1,
+   "buy": 3,
    "elsewhere": 0,
-   "in_deck": 80
+   "in_deck": 78
   },
   "counts_are": "distinct names",
   "diff": {
@@ -546,17 +546,21 @@
     "Chasm Skulker",
     "Krang, the All-Powerful",
     "Murmuring Mystic",
-    "Teferi, Temporal Pilgrim"
+    "Teferi, Temporal Pilgrim",
+    "The Ozolith",
+    "United Front"
    ],
    "base_names": 85,
    "base_size": 100,
    "names": 85,
    "out": [
-    "Darien, King of Kjeldor",
+    "Angelic Wall",
+    "Drift of Phantasms",
+    "Ghostly Prison",
     "Guardian of Faith",
     "Karametra's Blessing",
-    "Lightning Greaves",
-    "Wall of Glare"
+    "Kefnet the Mindful",
+    "Lightning Greaves"
    ],
    "size": 100
   },
@@ -566,7 +570,9 @@
   "proxy": false,
   "slug": "heliod",
   "unsourced": [
-   "Krang, the All-Powerful"
+   "Krang, the All-Powerful",
+   "The Ozolith",
+   "United Front"
   ]
  },
  "blind_spots": [],
@@ -578,16 +584,36 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 5,
-    "in_copies": 5,
+    "in": 7,
+    "in_copies": 7,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 5,
-    "out_copies": 5,
-    "spells_in": 5,
-    "spells_out": 5
+    "out": 7,
+    "out_copies": 7,
+    "spells_in": 7,
+    "spells_out": 7
    },
    "in": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "The Ozolith",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "United Front",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
+    },
     {
      "cmc": 3,
      "copies": 1,
@@ -654,18 +680,36 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Lightning Greaves",
+     "name": "Angelic Wall",
      "pair": null,
-     "type_line": "Artifact \u2014 Equipment",
+     "type_line": "Creature \u2014 Wall",
      "why": null
     },
     {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Wall of Glare",
+     "name": "Lightning Greaves",
      "pair": null,
-     "type_line": "Creature \u2014 Wall",
+     "type_line": "Artifact \u2014 Equipment",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Drift of Phantasms",
+     "pair": null,
+     "type_line": "Creature \u2014 Spirit",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ghostly Prison",
+     "pair": null,
+     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -678,19 +722,19 @@
      "why": null
     },
     {
-     "cmc": 6,
+     "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Darien, King of Kjeldor",
+     "name": "Kefnet the Mindful",
      "pair": null,
-     "type_line": "Legendary Creature \u2014 Human Soldier",
+     "type_line": "Legendary Creature \u2014 God",
      "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 5,
-    "out": 5
+    "in": 7,
+    "out": 7
    }
   },
   "lands": [],
@@ -946,35 +990,39 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy damage @T10, board power @T6 and killed by T10 and pay interaction affordable @T6.",
+  "because": "You buy damage @T10 and pay killed by T10 and interaction affordable @T6.",
   "bill": {
    "box": 4,
-   "buy": 1,
+   "buy": 3,
    "elsewhere": 0,
-   "in_deck": 80
+   "in_deck": 78
   },
   "cost": {
-   "buy": 1,
+   "buy": 3,
    "buy_cards": [
-    "Krang, the All-Powerful"
+    "Krang, the All-Powerful",
+    "The Ozolith",
+    "United Front"
    ],
    "counts": {
     "box": 4,
-    "buy": 1,
+    "buy": 3,
     "elsewhere": 0,
-    "in_deck": 80
+    "in_deck": 78
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 84,
-   "reads_as": "1 to buy; 84 of 85 already owned",
+   "owned": 82,
+   "reads_as": "3 to buy; 82 of 85 already owned",
    "total": 85
   },
   "fell": [
+   "killed by T10",
    "interaction affordable @T6"
   ],
   "no_call": [
+   "board power @T6",
    "killed by T6",
    "stall, 2 in a row",
    "missed drop by T5",
@@ -986,31 +1034,27 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "4.14 -> 4.84, a change of +0.70 (+17%)",
+    "reads_as": "4.57 -> 4.84, a change of +0.27 (+6%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "measure": "board power @T6",
-    "reads_as": "2.53 -> 2.88, a change of +0.35 (+14%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "measure": "killed by T10",
-    "reads_as": "6 games in 100 -> 8 in 100, a swing of 2 games per 100",
-    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    }
   ],
   "risk": [
    {
-    "detail": "69 games in 100 -> 63 in 100, a swing of 6 games per 100",
+    "detail": "11 games in 100 -> 8 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "67 games in 100 -> 63 in 100, a swing of 5 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    {
-    "detail": "the largest is extra cards by T8 at -0.085 against an MDE of 0.120. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is extra cards by T8 at -0.104 against an MDE of 0.122. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "6 row(s) returned no call",
+    "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1021,9 +1065,7 @@
    }
   ],
   "rose": [
-   "damage @T10",
-   "board power @T6",
-   "killed by T10"
+   "damage @T10"
   ],
   "state": "a trade"
  },
@@ -1033,11 +1075,11 @@
   {
    "better_is": "higher",
    "branch": 4.8389,
-   "champion": 4.1362,
-   "delta": 0.7027,
-   "mde": 0.1162,
+   "champion": 4.5735,
+   "delta": 0.2654,
+   "mde": 0.1289,
    "measure": "damage @T10",
-   "reads_as": "4.14 -> 4.84, a change of +0.70 (+17%)",
+   "reads_as": "4.57 -> 4.84, a change of +0.27 (+6%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1047,14 +1089,14 @@
   {
    "better_is": "higher",
    "branch": 2.8833,
-   "champion": 2.5297,
-   "delta": 0.3536,
-   "mde": 0.0856,
+   "champion": 2.9506,
+   "delta": -0.0673,
+   "mde": 0.1012,
    "measure": "board power @T6",
-   "reads_as": "2.53 -> 2.88, a change of +0.35 (+14%)",
+   "reads_as": "no call \u2014 the gap of 0.067 is smaller than the 0.101 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
@@ -1075,25 +1117,25 @@
   {
    "better_is": "higher",
    "branch": 0.0791,
-   "champion": 0.0608,
-   "delta": 0.0183,
-   "mde": 0.0107,
+   "champion": 0.114,
+   "delta": -0.0349,
+   "mde": 0.0126,
    "measure": "killed by T10",
-   "reads_as": "6 games in 100 -> 8 in 100, a swing of 2 games per 100",
+   "reads_as": "11 games in 100 -> 8 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0103,
-   "champion": 0.0085,
-   "delta": 0.0018,
+   "champion": 0.0072,
+   "delta": 0.0031,
    "mde": 0.004,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1103,11 +1145,11 @@
   {
    "better_is": "lower",
    "branch": 0.5172,
-   "champion": 0.5145,
-   "delta": 0.0027,
+   "champion": 0.5095,
+   "delta": 0.0077,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1117,11 +1159,11 @@
   {
    "better_is": "lower",
    "branch": 0.2595,
-   "champion": 0.2581,
-   "delta": 0.0014,
+   "champion": 0.2564,
+   "delta": 0.0031,
    "mde": 0.0174,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1131,11 +1173,11 @@
   {
    "better_is": "higher",
    "branch": 2.2706,
-   "champion": 2.3554,
-   "delta": -0.0848,
-   "mde": 0.1202,
+   "champion": 2.3747,
+   "delta": -0.1041,
+   "mde": 0.1219,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.085 is smaller than the 0.120 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.104 is smaller than the 0.122 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1145,11 +1187,11 @@
   {
    "better_is": "higher",
    "branch": 0.6268,
-   "champion": 0.6873,
-   "delta": -0.0605,
+   "champion": 0.6748,
+   "delta": -0.048,
    "mde": 0.0203,
    "measure": "interaction affordable @T6",
-   "reads_as": "69 games in 100 -> 63 in 100, a swing of 6 games per 100",
+   "reads_as": "67 games in 100 -> 63 in 100, a swing of 5 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "worse",
@@ -1159,11 +1201,11 @@
   {
    "better_is": "higher",
    "branch": 0.9799,
-   "champion": 0.9835,
-   "delta": -0.0036,
+   "champion": 0.9811,
+   "delta": -0.0012,
    "mde": 0.0056,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.006 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
