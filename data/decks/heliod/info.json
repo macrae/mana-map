@@ -12,14 +12,12 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 9,
+    "complete": 11,
     "of": 15,
     "stale": [
-      "frame",
-      "map"
+      "frame"
     ],
     "invalid": [
-      "targets",
       "engine",
       "tutors",
       "considering.json"
@@ -42,8 +40,8 @@
       "name": "archangel-v1",
       "opened": "2026-09-08",
       "why": "ONE CARD, ONE SWAP, AND THE PIP LOAD IS UNCHANGED. Archangel of Tithes is {1}{W}{W}{W} and White Sun's Zenith is {X}{W}{W}{W} — the same three white pips, so this tests the CARD and not the mana, which is why it was held out of skies-v1 rather than folded in. Archangel is the only card the flier sweep returned that does both jobs on one body: a 3/5 FLYING blocker against the seat that took 39 of 53 eliminations with nothing but evasive threats, and a taxer whose 'creatures can't attack you unless their controller pays {1}' works whether or not the attacker flies, making it a third Propaganda beside Ghostly Prison. It is the exact card giada-angels beats us with. What it replaces is the deck's most white-intensive card and the one skies-v1's own logic argues against: X 2/2 CATS, on the ground, in a deck that dies to the air, as a one-shot at four-plus mana competing directly with casting Approach of the Second Sun. Secure the Wastes stays as the cheap X mana sink at {X}{W}. THE GOLDFISH CANNOT SEE THE POINT OF THIS CARD — no opponents, nothing attacks it, so flying and taxing are invisible and a 3/5 registers as three power. The objective is a RISK check: swapping a scaling X-spell token maker for one fixed body must not cost the board. THE FIRST LINE SET HERE WAS 2.85 AND THE ANCHOR REFUSED IT — the champion reads 2.9506 and this run resolves 0.1012, so a 0.1006 tolerance was inside the noise and could only have come back as whichever side it landed on. 2.80 is outside it. Reset before any measurement was taken, which is the only time a threshold may move.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-08 into the list after VNone",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -949,7 +947,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A body that can block a FLIER (39 of 53 eliminations came from the air)": {
-          "value": 54,
+          "value": 60,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air)' by turn six",
@@ -957,7 +955,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 25,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -1143,11 +1141,11 @@
       },
       {
         "label": "A body that can block a FLIER (39 of 53 eliminations came from the air)",
-        "by_turn_6_pct": 54
+        "by_turn_6_pct": 60
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 36
       }
     ],
     "combat": {
@@ -1297,14 +1295,13 @@
   },
   "experiments": null,
   "next": [
-    "4 artifact(s) fail their own gate (targets, engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: goldfish ×7, research-strategy ×1, resolve-stack ×5",
-    "9 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
