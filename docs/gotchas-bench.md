@@ -1367,3 +1367,52 @@ ACROSS decks, which is what the guard is for, and one would not.
 asserting the old deck, and they were found on a `make test` nobody runs between
 commits, pointing at zur-enchantress branches and a "broken" diagnostic model
 rather than at the check-in that caused them.
+
+---
+
+## The paper lock is a claim, and drift only runs one way
+
+**2026-09-08, ur-dragon.** The repo was two cards behind the cardboard for two
+days and nothing could see it.
+
+`landbase-v1`, opened 2026-08-30, proposed six land swaps and was **never
+merged** — no merge commit, the branch directory gone, every "out" card still in
+`decklist.txt` and no "in" card ever arrived. The pilot sleeved two of the six as
+proxies. The lock was then set on 2026-09-01 at V3, note "sleeved 2026-09-01",
+asserting that the committed list is what is in the sleeves.
+
+```
+  repo V3 · lock V3 · drift report: nothing to do
+  actual: Volcanic Island and Plateau in the sleeves, Shivan Reef and
+          Stormcarved Coast in the file
+```
+
+**`deck-version <slug> paper` records a CLAIM; nothing verifies it, and nothing
+can.** The drift report compares the lock's version against the repo's, so it
+fires only when the REPO moves ahead. Paper moving ahead of the repo is
+invisible by construction — there is no sensor on the other side.
+
+Consequences, all real:
+
+* every Forge run, every audit and every goldfish figure for two days measured a
+  list the pilot was not playing;
+* `deck-branch merge` refused cards as "unsourced" that were physically in a
+  sleeve;
+* `regen.is_pinned` kept the whole chain current for a list that did not exist.
+
+### What to do about it
+
+**A lock is only as good as the check-in behind it.** Set it from a
+`check-in --from <the paper list>`, which diffs and refuses, and not from
+"I think that's what I built". The two-minute version is `deck-version <slug>
+show <ref> --full` read against the sleeves before pinning.
+
+**And when a deck's definition comes into question, WITHDRAW the lock** —
+`deck-version <slug> paper --clear` — rather than leaving it asserting. It went
+back to ON THE BENCH here, which is the honest state for a list nobody has
+verified, and it stops `regen` maintaining figures for a deck whose contents are
+unknown.
+
+The two-card fix is committed as v1.2.1 and is correct as far as it goes. What
+is NOT established is the other 98, and a lock claiming otherwise is worse than
+no lock: it is the difference between "unknown" and "wrong".
