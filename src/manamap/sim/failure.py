@@ -72,6 +72,20 @@ def commander_departures(slug, commander):
     counts = {"mass": 0, "targeted": 0, "combat": 0, "other": 0}
     zones = {"Graveyard": 0, "Exile": 0}
     resolutions = games = 0
+    # TWO DENOMINATORS, AND THEY ARE DIFFERENT QUESTIONS. A commander can
+    # resolve twice in one game and be removed twice, so "how often does he get
+    # removed when he lands" (EVENTS) and "in how many games is he removed at
+    # least once" (GAMES) are not the same number. Measured here: 0.454 of
+    # resolutions against 0.412 of games he resolved in.
+    #
+    # Both are reported because a protection spell answers the EVENT — each time
+    # he lands, what are the odds — while a pilot planning a game wants the
+    # GAME. Reporting one under the other's label is what happened: "removed in
+    # 45% of the games he lands" was the event rate wearing the game rate's
+    # words, and a subagent caught it.
+    games_landed = set()
+    games_lost_him = set()
+    game_no = 0
     for path in _logs(slug):
         on_bf = False; window = []; leaves = 0
         for line in open(path, errors="ignore"):
@@ -79,18 +93,20 @@ def commander_departures(slug, commander):
             m = _TURN.match(line)
             if m:
                 if int(m.group(1)) == 1:
-                    games += 1
+                    games += 1; game_no += 1
                 leaves = 0; window = []
                 continue
             if _ANY_LEAVES.match(line):
                 leaves += 1
             if resolved_re.match(line):
                 resolutions += 1; on_bf = True; window = []
+                games_landed.add((path, game_no))
                 continue
             if on_bf:
                 m = left_re.match(line)
                 if m:
                     on_bf = False
+                    games_lost_him.add((path, game_no))
                     zones[m.group(1)] = zones.get(m.group(1), 0) + 1
                     w = " | ".join(window[-14:])
                     if leaves >= MASS_THRESHOLD:
@@ -114,8 +130,17 @@ def commander_departures(slug, commander):
                             "ci95": [lo, hi]}
     if resolutions:
         lo, hi = wilson(total, resolutions)
-        out["removal_rate"] = {"rate": round(total / resolutions, 3), "ci95": [lo, hi],
-                               "n": resolutions}
+        out["removal_rate"] = {
+            "rate": round(total / resolutions, 3), "ci95": [lo, hi],
+            "n": resolutions,
+            "basis": "EVENTS: departures per resolution. He can land and be "
+                     "removed more than once in a game."}
+    if games_landed:
+        k, n = len(games_lost_him), len(games_landed)
+        lo, hi = wilson(k, n)
+        out["games_losing_him"] = {
+            "rate": round(k / n, 3), "ci95": [lo, hi], "n": n, "k": k,
+            "basis": "GAMES: he was removed at least once, over games he landed in."}
     return out
 
 

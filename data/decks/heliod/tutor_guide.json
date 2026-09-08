@@ -1,84 +1,124 @@
 {
   "slug": "heliod",
-  "assessment": "Three opponents have decided you are the friendly seat. They are right about the cards and completely wrong about the reason. Every wish here is a delivery rather than an arrival — Enlightened Tutor and Mystical Tutor put the card on top, Long-Term Plans buries it third — and the couriers are the draw engines you handed out yourself. Your generosity IS the delivery system, so count your draws per turn before you name a card. Every time.\n\nTwo clocks give these three cards their jobs. The verified storm kill (stack 006) wants its fourth piece scheduled and never shown: Enlightened Tutor reaches every artifact piece of it at instant speed, and Long-Term Plans is the only card in the 99 that can find its one creature. The clean kill (stack 002) wants Approach of the Second Sun on top, and Mystical Tutor is that line's own verified setup.\n\nThen spend them like access, because half the time they ARE the access. You reach a win condition by turn six in 50.5% of games — in the other half these three cards are the whole route there, so stop playing them as card selection and start playing them as the win.",
+  "assessment": "Four tutors, and only one of them puts a card in your hand. Enlightened Tutor and Mystical Tutor put it on top. Long-Term Plans buries it third. Drift of Phantasms transmutes it straight to hand and pays a card and a 0/5 flying body for the privilege. So three of these four wishes are deliveries on a schedule, and the schedule is your own draw count — the one resource this deck never lacks. The goldfish assembles 'Table draw engine online (opponents are drawing)' in 0.935 of games, mean turn 2.319. Count your draws per turn before you name a card.\n\nThe win is Approach of the Second Sun, cast twice. In the 120-game pod run this seat recorded 38 win-events and 20 of them read \"due to effect of 'Approach of the Second Sun'\"; the other 18 were the table running out of players. Approach is a sorcery, so Enlightened Tutor cannot find it — it searches for an artifact or enchantment card. Its mana value is 7, so Drift of Phantasms cannot find it either. Mystical Tutor and Long-Term Plans are the only two of the four tutors that reach it. Stack 002 is the verified line for the second cast, counter war included.\n\nThe other half of the job is living long enough to cast it twice, and that is where most of these wishes go. Giada's angels took 39 of 53 eliminations from the air. Heliod resolved in 68 of 120 games and was destroyed or exiled in 28 of those. The two weakest numbers in the goldfish target set are 'A taxer down (attackers pay, flying or not)' at 0.487 assembled, 0.355 by turn six, and 'Draw-trigger punisher drawn' at 0.366. When you spend a tutor on a wall or a tax, you are not hedging — you are buying the turns the second Approach needs.",
   "tutors": [
     {
       "card": "Enlightened Tutor",
       "targets": [
         {
-          "scenario": "Turn 1 or 2, {W} open at an opponent's end step. Your hand has lands and engines but no card advantage, and the pod has not sorted its threats yet.",
+          "scenario": "Turn 1 or 2, {W} open at the end step of the opponent to your right. Your hand has lands and a rock but nothing that draws you a card the table is not also drawing.",
           "fetch": "Rhystic Study",
-          "why": "Take the default wish and spend the tell on a card that is not the kill. Study on top, drawn, cast on turn 2 is a firehose in a pod this dense with forced action — every opponent spell becomes a card or a tax, and the long game is decided in exactly that currency. An early Enlightened Tutor reads as value, which is precisely the information schedule you want to be running."
+          "why": "Take the default and take it early. The symmetric draw is not the problem — 'Table draw engine online' assembles at 0.935, mean turn 2.319 — the asymmetry is: 'Heliod down with an asymmetric card engine' sits at 0.787 assembled and only 0.581 by turn six, mean turn 5.254. Study taxes every spell in a four-player game and turns your own generosity into a lead instead of a stalemate. Cast the tutor at an end step, draw Study on your turn, cast it on turn 2 or 3 while nobody has sorted their threats yet. An early Enlightened Tutor reads as ramp or value, and on turn 1 or 2 the reveal tells the table almost nothing it can act on."
         },
         {
-          "scenario": "You are at 26 and falling. The aggro seat has connected twice and you are currently the cheapest attack at the table.",
-          "fetch": "Propaganda",
-          "why": "Go and get the wall, and understand you are fetching combo protection rather than defence. Stack 006's fifteen-cast minimum is computed from 32 life, and the requirement scales the wrong way as you fall: 20 life makes it sixteen casts, 8 life makes it seventeen, and every extra cast is another priority window you hand three opponents. Charge two per attacker and protect the ledger."
+          "scenario": "Turn 4 or later. Two seats have boards, you are on 30-something and falling, and you have already been attacked once because you are the cheapest attack at the table.",
+          "fetch": "Ghostly Prison",
+          "why": "Buy turns by the attacker rather than by the creature. 'A taxer down (attackers pay, flying or not)' is the weakest target this deck measures — 0.487 assembled, 0.355 by turn six, mean turn 4.044 — and there are only three cards in it: Ghostly Prison, Propaganda and Archangel of Tithes. Prison charges {2} per attacker and does not care that the attacker flies, which is the whole difference against a go-wide board. Take Prison over Propaganda when your open mana is white; the two effects are identical and the pips are not. It does not stop a single large flier — that is what Swords to Plowshares and Path to Exile are for."
         },
         {
-          "scenario": "Hullbreaker Horror and both rocks are accounted for — on the battlefield or in hand behind counter mana. The Reservoir is the only missing piece, and it is the end step of the opponent to your right.",
-          "fetch": "Aetherflux Reservoir",
-          "why": "Fire the signature wish at their end step and let your draw step deliver the confession. The commit turn then opens with Grand Abolisher, having never shown the table a three-of-four board — and stack 006 does the rest: fifteen casts from 32 life, three fifty-point activations, dead table. The loudest card in the deck should spend zero turns on the battlefield before the turn it wins."
+          "scenario": "Heliod has resolved and you want to flip him, but the seat to your left has held two mana open for a turn and a half and cast nothing.",
+          "fetch": "Lightning Greaves",
+          "why": "Make the removal miss before you spend {3}{U/P}. Heliod resolved in 68 of 120 pod games and was destroyed or exiled in 28 of those, and 'Heliod protected, or a flash grant that does not need him' assembles at 0.680, only 0.526 by turn six. Greaves equips for {0}, so the shield lands the same turn the tutor's card arrives. Two things to hold in your head: shroud is yours too, so Greaves shuts off Karametra's Blessing and Guardian of Faith on that creature; and Heliod's own {3}{U/P} transform does not target, so it still works under shroud. Move the Greaves off before you need to protect him with a spell instead."
         },
         {
-          "scenario": "Midgame. You hold Hullbreaker Horror and Sol Ring, the second rock is missing, and your hand is bulging past seven off your own engines.",
-          "fetch": "Thought Vessel",
-          "why": "Fetch the kill piece wearing a utility card's face. Stack 004 pins the loop to Hullbreaker plus Sol Ring plus any two-mana rock, and Thought Vessel qualifies exactly — while the no-maximum-hand-size clause gives you a cover story that happens to be true. It hoards your doubled draws and survives the creature wraths The Second Doctor does not."
+          "scenario": "A donation permanent is already down, every opponent is drawing an extra card each turn, and you are one land short of the turn you want.",
+          "fetch": "Smothering Tithe",
+          "why": "Bill the table for the cards you handed them. Tithe fires on every opponent draw, and this deck manufactures those draws on purpose — Howling Mine, Font of Mythos, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain and The Second Doctor all pay it. Each unpaid draw is a Treasure, and Treasures are what carry you from the goldfish's 5.679 mean available mana on turn six to the eight it takes to cast Approach of the Second Sun with a counter still up. The opponents who do pay {2} are spending mana they were going to spend on you. Both outcomes are yours."
         }
       ],
-      "notes": "The reveal is public and the timing does the talking. Cast it early and the table files it as value. Cast it late at an end step and every awake opponent reads 'the go turn is their untap' — so run that version behind untapped counter mana, or on a board that does not already look like three of four."
-    },
-    {
-      "card": "Long-Term Plans",
-      "targets": [
-        {
-          "scenario": "Rocks and Reservoir are accounted for and the Horror is the missing piece. Font of Mythos or a doubled Howling Mine has you drawing three or more per turn.",
-          "fetch": "Hullbreaker Horror",
-          "why": "Grant the wish only this card can grant. Enlightened Tutor stops at artifacts and enchantments and Mystical Tutor at instants and sorceries, so Plans is the kill's one creature's only courier in the 99. Buried third under a Font it is in hand on your next draw step, and stacks 004 and 006 take it from there — so cast Plans on the turn your draw count makes 'third' mean 'tomorrow'."
-        },
-        {
-          "scenario": "The first Approach of the Second Sun resolved turns ago, Mystical Tutor is spent or absent, and your engines are drawing you three cards a turn.",
-          "fetch": "Approach of the Second Sun",
-          "why": "Take the backup route to the stack 002 win. Third from the top is far shallower than the seventh its own first cast bought, and at three draws a turn the winning second cast is one draw step out. The only window anyone gets is while it sits on the stack, so hold the counter mana that walk budgeted before you commit."
-        },
-        {
-          "scenario": "You flipped Heliod early, the table has named you the problem, and two seats are sitting on what smells like mass removal.",
-          "fetch": "Teferi's Protection",
-          "why": "Put the panic button on a schedule while you still have the schedule. Your engines make third-from-the-top a one-turn wait, and once Protection is in hand every wrath and every alpha strike at your seat is a bluff you have already called. Being the archenemy is entirely comfortable when the table cannot actually kill you."
-        },
-        {
-          "scenario": "Your commit turn is two draws out, the kill pieces are gathering, and the table has started counting your artifacts.",
-          "fetch": "Grand Abolisher",
-          "why": "Fetch the shield in secret, because Plans is the one tutor here that reveals nothing. He arrives on schedule, gets cast as the commit turn's first spell, and closes every priority window stack 006 honestly opens — no opponent spells, no artifact, creature or enchantment activations, all turn. The table read your Plans as card selection."
-        }
-      ],
-      "notes": "Third from the top is a schedule, not a sentence, so count your draws per turn before you cast it. On a bare board the wish is three draw steps away; under Howling Mine two; under Font of Mythos, or a Mine doubled by Alhammarret's Archive or Teferi's Ageless Insight, your very next draw step. Advance the schedule with Temple Bell, Mikokoro or Folio of Fancies when the turn demands it."
+      "notes": "The reveal is public and the timing carries the information. Cast it on turn 1 or 2 and the table files it as ramp or value. Cast it at an end step on turn 7 with the second Approach already banked and every awake opponent knows what is coming. It also costs your next draw step: the card goes on top, so a tutor cast on your own main phase does nothing until your next turn. Enlightened Tutor cannot find Approach of the Second Sun, and it cannot find a nonartifact creature — no Archangel of Tithes, no Angelic Wall, no Consecrated Sphinx. Those belong to Long-Term Plans."
     },
     {
       "card": "Mystical Tutor",
       "targets": [
         {
-          "scenario": "The first Approach resolved — 7 life banked, the card buried seventh. It is the end step before your turn and you hold {U} for the tutor plus counter backup for tomorrow.",
+          "scenario": "The first Approach of the Second Sun resolved several turns ago — 7 life gained, the card seventh from the top. It is the end step before your turn and you hold {U} for the tutor plus enough mana next turn for {6}{W} and a counter.",
           "fetch": "Approach of the Second Sun",
-          "why": "Do the thing this card exists to do, and do it at their end step. Stack 002 walks the exact line, counter war included: tutor, draw it, cast it, and the win is checked while it resolves — the first casting still counts. You can only be stopped while the second Approach sits on the stack, so bring the Swan Song that walk budgeted and cast nothing else that turn."
+          "why": "This is the card's job and stack 002 is the proof. Cast the tutor at their end step, draw Approach on your draw step, cast it from your hand for {6}{W}. The first casting still counts even though the card went back into the library, and the win is checked on resolution — stack 002 walks the whole sequence with citations. Twenty of this seat's 38 win-events in the 120-game pod run ended exactly this way. The one window anyone gets is while the second Approach sits on the stack, so bring the Swan Song or the Dovin's Veto that walk budgets for and cast nothing else that turn."
         },
         {
-          "scenario": "Two seats have flooded the board, your walkers are taking chip attacks, and the control player is holding up counter mana like a toll booth.",
-          "fetch": "Supreme Verdict",
-          "why": "Fetch the wrath that cannot be countered and swing at it through their open mana — that open mana is the reason this is the fetch. Your clock lives in artifacts and enchantments, and the sim has you at 1.513 bodies by turn six, so sweep freely: you are trading their board for almost nothing of yours, and all four walkers live through it in both directions."
-        },
-        {
-          "scenario": "The commit turn is scheduled for your untap, kill pieces in hand, and you want insurance more than you want another threat.",
+          "scenario": "Your commit turn is one untap away, the second Approach is in hand or on top, and one opponent has kept exactly two blue mana open all cycle.",
           "fetch": "Dovin's Veto",
-          "why": "Buy the last word instead of another threat. The commit turn's one interactable moment is the response window to Grand Abolisher himself, and a Veto that cannot be countered closes it on your terms. Fetch it the end step before, while the table is still reading your Mystical Tutor as digging for action."
+          "why": "Buy the last word rather than another threat. Approach is a noncreature spell and so is nearly everything that would answer it, and Veto cannot itself be countered — which matters because a counter war over the second Approach is where this deck loses a game it has already won. Fetch it the end step before, while the table still reads a Mystical Tutor as digging for action. 'Free or cheap interaction held' assembles at 0.843, 0.707 by turn six, so you will usually have something; this is for the turn you want to know which something."
+        },
+        {
+          "scenario": "Two seats have real boards, you have taken a hit or two, and your own battlefield is enchantments and artifacts with at most one creature on it.",
+          "fetch": "Supreme Verdict",
+          "why": "Sweep, because the trade is close to free for you. In the pod run this seat lost 1.33 creatures a game on average with a median of 0, and took 36.08 combat damage on average, median 24.0. Verdict kills their board and almost nothing of yours, and it cannot be countered, so you can cast it into the control seat's open mana instead of waiting the extra turn you do not have. It is a sorcery, so fetch it at an end step and cast it on your own turn — the tutor buys the certainty, not the speed."
+        },
+        {
+          "scenario": "One flier is doing all the damage — a Giada or an Archangel-sized body that has connected once and will kill you in two more swings. You are not dead this turn.",
+          "fetch": "Swords to Plowshares",
+          "why": "Answer the single threat rather than the board. Giada's angels took 39 of 53 eliminations off this seat and taxes do not stop one big attacker — they charge {2} and it pays. Swords exiles for {W}, which leaves the rest of your mana for the counter you also want up. The delay is the cost and you must price it: the card goes on top, so you draw it next turn and answer next turn. Fetch it on the swing that hurt, not on the swing that kills. Path to Exile is the same fetch when you would rather not hand out the life."
         }
       ],
-      "notes": "The reveal is public here too, and an end-step Mystical Tutor after a first Approach is read correctly by anyone awake. Cast it at the last legal moment and price the counter war in before you tap, not after."
+      "notes": "Instants and sorceries only, and it goes on top, so Mystical Tutor is never an answer to something already on the stack. Teferi's Protection is in this deck and Mystical Tutor can find it — but fetching Protection does not save you this turn, it saves you next turn. Drift of Phantasms is the tutor that puts Protection in your hand. An end-step Mystical Tutor after a first Approach has resolved is read correctly by anyone awake at the table; price the counter war in before you tap."
+    },
+    {
+      "card": "Long-Term Plans",
+      "targets": [
+        {
+          "scenario": "The first Approach resolved, Mystical Tutor is in the graveyard or was never drawn, and you have at least one donation permanent on the battlefield.",
+          "fetch": "Approach of the Second Sun",
+          "why": "Take the second courier to the win. Third from the top is far shallower than the seventh the first casting bought, and this deck shortens it further: on a bare board the card arrives on your third draw step; with Howling Mine untapped it is your second; with Font of Mythos, which draws each player two additional cards, it is your very next one. Alhammarret's Archive and Teferi's Ageless Insight double every draw after the first each draw step, which collapses it again. Temple Bell, Mikokoro, Stroke of Genius and Braingeyser advance the schedule on demand. Plans is an instant, so cast it at an end step and keep your own turn for the win."
+        },
+        {
+          "scenario": "The air is the problem. One or two fliers are connecting every turn, you have no blocker that reaches them, and taxing alone has not been enough.",
+          "fetch": "Archangel of Tithes",
+          "why": "Fetch the one card that does both jobs at once. Enumerate them: the fliers that can block are Angelic Wall, Drift of Phantasms, Kefnet the Mindful, Faerie Mastermind, Consecrated Sphinx and Archangel of Tithes; the taxers are Ghostly Prison, Propaganda and Archangel of Tithes. She is the only card on both lists — a 3/5 flier that also charges {1} per attacker while she is untapped. She is mana value 4 and not an artifact, so Long-Term Plans is the only tutor in the deck that can find her: Enlightened Tutor takes artifacts and enchantments, Mystical Tutor takes instants and sorceries, and Drift of Phantasms takes mana value 3."
+        },
+        {
+          "scenario": "Turn 8 or later. The board has stalled behind taxes, you have seven or more mana available, and nobody can profitably attack anybody.",
+          "fetch": "Consecrated Sphinx",
+          "why": "Close a long game by turning the table's own draws into yours. Every opponent draw gives you two cards, and this deck guarantees opponent draws — that is what the donation permanents do. The goldfish has you at 6.966 mean available mana on turn eight and 8.241 on turn ten, so {4}{U}{U} is a turn-eight card and not a turn-six one; fetch it when the arithmetic supports it, not before. She also flies and blocks at 4/6. Expect the removal: she is the most obvious thing you will ever put on the battlefield, so cast her with a counter up or after the wraths are spent."
+        },
+        {
+          "scenario": "Approach of the Second Sun has been countered, exiled, or is otherwise not the plan any more. Two or three donation permanents are on the battlefield and every hand at the table is full.",
+          "fetch": "Psychosis Crawler",
+          "why": "Switch to the clock. 'Draw-trigger punisher drawn (bills them for taking it)' assembles at only 0.366, 0.256 by turn six, mean turn 4.252, and the group holds exactly two cards — Psychosis Crawler and Scrawling Crawler. That number is why this is worth a tutor. The Crawler drains each opponent 1 for every card you draw, and its power and toughness equal your hand size, so the same engines that make it a threat make it a body: 1.211 extra cards drawn by turn six, 2.367 by turn eight, 3.586 by turn ten in the goldfish, before Alhammarret's Archive doubles them. Reliquary Tower, Thought Vessel, Decanter of Endless Water and The Second Doctor mean you never discard the size back down."
+        }
+      ],
+      "notes": "Long-Term Plans reveals nothing and finds anything, and that combination is scarce enough that you should not spend it on a card another tutor can reach. It is the only tutor here that reaches a creature Drift of Phantasms cannot — anything that is neither an artifact nor mana value 3, which is Angelic Wall, Archangel of Tithes, Cathar Commando, Consecrated Sphinx, Faerie Mastermind, Kami of the Crescent Moon, Kwain, Mikaeus and The Second Doctor — and the only one besides Mystical Tutor that finds Approach of the Second Sun — those two jobs compete, so decide which one the game is about before you cast it. Third from the top is a schedule, not a sentence: count your draws per turn first. On a bare board the wish is three draw steps away; under Font of Mythos it is your next one."
+    },
+    {
+      "card": "Drift of Phantasms",
+      "targets": [
+        {
+          "scenario": "Your own main phase, {1}{U}{U} spare, and two seats are visibly building toward something that ends with your name in it — an alpha strike, a wrath, or both.",
+          "fetch": "Teferi's Protection",
+          "why": "This is the wish that only Drift delivers on time. Transmute puts the card in your hand, not on top and not third, so Protection is castable the moment you have {2}{W} — Mystical Tutor and Long-Term Plans hand you Protection a turn or more after you needed it, and Enlightened Tutor cannot find it at all. The catch is the other half of the same rule: transmute is sorcery-speed, so you must do this on your turn, before the thing happens. 'Heliod protected, or a flash grant that does not need him' assembles at 0.680 and only 0.526 by turn six, and Heliod was destroyed or exiled in 28 of the 68 pod games he resolved in. Fetch it the turn you first suspect, not the turn you are sure.",
+          "citations": [
+            {
+              "rule": "702.53a",
+              "quote": "Discard this card: Search your library for a card with the same mana value as the discarded card, reveal that card, and put it into your hand. Then shuffle your library. Activate only as a sorcery."
+            }
+          ]
+        },
+        {
+          "scenario": "Turn 6 or 7, six or more mana available, and the pod has gone wide on the ground and in the air. You are the seat with the fewest blockers and everyone knows it.",
+          "fetch": "Propaganda",
+          "why": "Buy the tax and cast it the same turn. Transmute costs {1}{U}{U} and Propaganda costs {2}{U}, so the whole operation is six mana — the goldfish has you at 5.679 mean available mana on turn six and 6.319 on turn seven, which makes this a turn-seven play unless a rock is down. Propaganda over Ghostly Prison when your untapped mana is blue; they charge the same {2} per attacker. You are giving up a 0/5 flying blocker to get it, so only make this trade when the tax stops more attackers than the body would have blocked."
+        },
+        {
+          "scenario": "Heliod is on the battlefield, you have no counter in hand, and you would like one without spending mana on your opponents' turns for the rest of the game.",
+          "fetch": "Fierce Guardianship",
+          "why": "Convert three mana now into free interaction forever. Guardianship costs nothing while you control a commander, and it counters any noncreature spell — which is what removal aimed at Heliod usually is, and what Day of Judgment is, and what an opposing Approach or Cyclonic Rift is. This seat cast 0.41 pieces of interaction a game in the pod run, and a free counter is the kind you actually cast. It does not stop a creature spell and it needs your commander on the battlefield, so it is worthless in the games where Heliod never lands."
+        },
+        {
+          "scenario": "The angels seat is ahead in the air, your hand is seven or more cards off your own engines, and Drift's 0/5 body is not going to survive the trade you need it to make.",
+          "fetch": "Kefnet the Mindful",
+          "why": "Trade a wall that dies for one that cannot. Kefnet is a 5/5 indestructible flier for {2}{U}: he blocks an angel and lives, and he lives through Day of Judgment and Supreme Verdict, which Drift does not. His condition is the one this deck is built to satisfy — he cannot attack or block unless you have seven or more cards in hand, and Reliquary Tower, Thought Vessel, Decanter of Endless Water and The Second Doctor all remove the maximum hand size that would otherwise cut you back to seven at cleanup. Check the count before you rely on him; an empty hand turns him off, and he is a God, so Heliod's return-an-enchantment trigger cannot get him back."
+        }
+      ],
+      "notes": "The first decision is whether to transmute at all. Drift is a 0/5 flier with defender, and 39 of 53 eliminations off this seat in the pod run came from the air — 'A body that can block a FLIER' assembles at 0.750, 0.604 by turn six, mean turn 3.387, and Drift is one of six cards in that group. On the turn the angels are the game, cast it and block. Transmute when the wish is worth more than the blocker, and remember the reveal is public: the card is revealed as it goes to your hand, so the table sees the answer arrive even though it never sees your library. One line worth knowing: Long-Term Plans is itself mana value 3, so transmuting for Plans converts Drift's mana-value-3 window into access to any card in the deck, third from the top, for {1}{U}{U} plus {2}{U}. That is nine mana all told with Drift's own cast and it is almost never right — but it is how Drift reaches a card outside its own mana value."
     }
   ],
   "gaps": [
-    "No tutor in this deck puts a card into your hand — every wish is a delivery, top or top or third, and a delivery can die in transit to a well-timed answer. The engines are the couriers, so count your per-turn draws before you count on the fetch.",
-    "The kill's one creature has exactly one courier: only Long-Term Plans can find Hullbreaker Horror, and only Plans or Mystical Tutor can find Approach of the Second Sun. Lose the courier a line depends on and that line runs on raw draws — so hold Plans for the piece nothing else reaches, not for the piece you happen to want.",
-    "Two of the three wishes are announced. Treat the reveal, not the mana, as these cards' real price and budget it like the information it is: keep Long-Term Plans for the secrets and let the other two carry the cover story."
+    "goldfish_targets.json's 'Win condition access (Approach, or a tutor that finds one)' group names Enlightened Tutor, which cannot find Approach of the Second Sun — Approach is a sorcery and Enlightened Tutor searches for an artifact or enchantment card. Drift of Phantasms is correctly absent (Approach is mana value 7, Drift transmutes for 3), but the group's 0.679 assembled / 0.527 by turn six overstates real Approach access. The true couriers are Mystical Tutor and Long-Term Plans. Fixing the targets file is not mine to do; the figure is quoted here as measured and labelled where it is used.",
+    "The 120-game pod run was played on v1.0.0 — the run record's own decklist_sha256_note says the games ran on the list as it stood at launch, before this session's fourteen changes. Every sim figure in this guide (39 of 53 eliminations from the air, 20 of 38 win-events by Approach, 68 of 120 commander resolutions, 1.33 creatures lost, 36.08 combat damage taken, 0.41 interaction cast) therefore describes the previous 99. The goldfish figures do not have this problem: goldfish_metrics.json carries decklist_sha256 214af3084f80…, which matches decklist.txt exactly.",
+    "The brief states Heliod leaves the battlefield in 45% of the games he lands. Counting the run's committed logs, a Heliod face was put into a graveyard or exile from the battlefield in 28 distinct games, against the record's commander_access.games_resolved of 68 — 0.412, not 0.45. I have used '28 of the 68 games he resolved' throughout. The orchestrator should settle which denominator the 45% was taken over.",
+    "engine.json and strategic_frame.json are stale against this decklist. Both describe Iron Maiden, Ebony Owl Netsuke, Viseling, Folio of Fancies, Jace Beleren, Teferi Hero of Dominaria, Hullbreaker Horror, Aetherflux Reservoir and Grand Abolisher, none of which appear in cards.json. I did not draw a card name or a stage claim from either file; the deck's stage vocabulary in this guide comes from goldfish_targets.json's labels instead.",
+    "Five of the six stacks are stale for the same reason: 001, 004, 005 and 006 resolve lines built on Hullbreaker Horror, Aetherflux Reservoir or Displacer Kitten, and 003 names Iron Maiden and Ebony Owl Netsuke. Stack 002 (Approach of the Second Sun, second cast off Mystical Tutor) is the only one whose LINE is intact — Approach, Mystical Tutor, Swan Song and Howling Mine are all still in the 99 — and it is the only stack this guide cites. Its board also lists an Ancient Tomb this deck does not run, which changes the mana in the scenario and not the ruling.",
+    "No tutor here finds a land, and none puts a permanent onto the battlefield. Three of the four cost you a full turn of delay. That is the real price of this suite and it is why the tutors want to be cast at an opponent's end step, one turn earlier than feels necessary."
   ]
 }

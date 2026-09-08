@@ -12,14 +12,13 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 15,
     "stale": [
       "frame"
     ],
     "invalid": [
       "engine",
-      "tutors",
       "considering.json"
     ],
     "verified": true,
@@ -930,11 +929,11 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Win condition access (Approach, or a tutor that finds one)": {
-          "value": 53,
+        "target:Win condition access (Approach, or a tutor that can actually find a sorcery)": {
+          "value": 45,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Win condition access (Approach, or a tutor that finds one)' by turn six",
+          "definition": "share of games assembling 'Win condition access (Approach, or a tutor that can actually find a sorcery)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -1132,8 +1131,8 @@
         "by_turn_6_pct": 67
       },
       {
-        "label": "Win condition access (Approach, or a tutor that finds one)",
-        "by_turn_6_pct": 53
+        "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
+        "by_turn_6_pct": 45
       },
       {
         "label": "Heliod protected, or a flash grant that does not need him",
@@ -1295,7 +1294,7 @@
   },
   "experiments": null,
   "next": [
-    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (engine, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",

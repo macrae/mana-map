@@ -158,3 +158,58 @@ def test_a_keyword_on_one_line_does_not_bless_a_grant_on_another():
     must not inherit a score from the keyword sitting elsewhere."""
     assert failure.coverage("Flash\nVigilance\nWhen this creature enters, draw a "
                             "card.", D) is None
+
+
+def test_events_and_games_are_reported_as_two_different_numbers():
+    """A commander can land twice in one game and be removed twice, so "how
+    often is he removed when he lands" (EVENTS) and "in how many games does he
+    get removed at least once" (GAMES) are different questions with different
+    denominators.
+
+    Reporting one under the other's label is exactly what happened: "removed in
+    45% of the games he lands" was the EVENT rate wearing the GAME rate's words,
+    and a subagent rewriting the tutor guide caught it by counting distinct
+    games and getting a different number. Both are reported now, each carrying
+    the basis it was computed on.
+    """
+    import pathlib
+    import tempfile
+    log = (
+        "Turn: Turn 1 (Ai(1)-mm-x)\n"
+        "Resolve Stack: C - Creature 4 / 4\n"
+        "Turn: Turn 3 (Ai(2)-mm-y)\n"
+        "Add To Stack: Ai(2)-mm-y cast Swords to Plowshares targeting [C (100)]\n"
+        "Zone Change: C (100) was put into Exile from Battlefield.\n"
+        # he comes back, and dies again — ONE game, TWO departures
+        "Turn: Turn 7 (Ai(1)-mm-x)\n"
+        "Resolve Stack: C - Creature 4 / 4\n"
+        "Turn: Turn 9 (Ai(2)-mm-y)\n"
+        "Add To Stack: Ai(2)-mm-y cast Path to Exile targeting [C (100)]\n"
+        "Zone Change: C (100) was put into Graveyard from Battlefield.\n"
+        # a second game where he lands and SURVIVES
+        "Turn: Turn 1 (Ai(1)-mm-x)\n"
+        "Resolve Stack: C - Creature 4 / 4\n"
+        "Turn: Turn 5 (Ai(2)-mm-y)\n")
+    with tempfile.TemporaryDirectory() as tmp:
+        d = pathlib.Path(tmp) / "decks" / "x" / "sim" / "logs" / "run"
+        d.mkdir(parents=True)
+        (d / "part-00.log").write_text(log)
+        old = failure.DECKS_DIR
+        failure.DECKS_DIR = pathlib.Path(tmp) / "decks"
+        try:
+            got = failure.commander_departures("x", "C")
+        finally:
+            failure.DECKS_DIR = old
+
+    assert got["resolutions"] == 3 and got["departures"] == 2
+    # EVENTS: two departures over three resolutions
+    assert got["removal_rate"]["rate"] == round(2 / 3, 3)
+    assert got["removal_rate"]["n"] == 3
+    # GAMES: he was lost in one of the two games he landed in
+    assert got["games_losing_him"]["k"] == 1
+    assert got["games_losing_him"]["n"] == 2
+    assert got["games_losing_him"]["rate"] == 0.5
+    assert got["removal_rate"]["rate"] != got["games_losing_him"]["rate"], (
+        "the fixture exists to make the two denominators disagree")
+    for k in ("removal_rate", "games_losing_him"):
+        assert "basis" in got[k], f"{k} must say which question it answers"
