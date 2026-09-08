@@ -1268,3 +1268,60 @@ validator firing on correct use.
 The baseline is the deck's largest measured run **against the same table**, and
 is ABSENT when there is none — a preflight computed from a default rate would be
 a number about nothing that looked exactly like a number about something.
+
+---
+
+## `regen` is not the fleet, and a model change needs the fleet
+
+**2026-09-08.** One model change — teaching the goldfish X-spell draw — left
+**54 tests failing**, and it was not discovered for several hours because the
+command whose whole job is "regenerate after a model change" does not do that.
+
+```
+  manamap pilot regen              22 targets: SLEEVED decks only
+  the live fleet                   7 decks, and zur-enchantress alone has
+                                   14 branches with tracked goldfish_metrics
+```
+
+`regen.targets()` is documented and deliberate: a sleeved deck is played so its
+figures are kept current automatically; a bench deck is malleable and rebuilding
+it on a sweep measures a list that will be different tomorrow. That rule is
+right for a **decklist** change, which is local to one deck.
+
+**It is exactly wrong for a MODEL change, which invalidates every deck at
+once** — sleeved, benched, and every branch of both. CLAUDE.md says
+"regenerate the fleet after any model change" and the command that sounds like
+it does that quietly covers a third of it.
+
+What it actually took:
+
+```
+  for d in edgar-vampires gishath goblin-storm heliod radagast ur-dragon zur-enchantress
+      manamap pilot regen --slug $d          # NAMED = manual = this deck, sleeved or not
+```
+
+`zur-enchantress` alone was 69 targets and 173 seconds.
+
+**Two further artifacts no `regen` stage touches at all**, both found the same
+way:
+
+* `versions.json` — rebuilt by `deck-version <slug> list --write`, and it must
+  be a SEPARATE COMMIT from the decklist that changes it, because a version's
+  sha is not knowable inside the commit that creates it. Its freshness test says
+  so in its own failure message.
+* `info.json` on decks the sweep skipped, which drifts on any change to
+  `deck_info` — and three landed today (the drift block, the run ordering, the
+  archetype fix).
+
+### The shape of it
+
+A staleness rule keyed on **who plays the deck** cannot protect artifacts
+invalidated by **what the code computes**. Those are different blast radii and
+the tool models only the first. Until `regen` grows a model-change sweep, the
+loop above is the fleet, and it belongs in the same commit as any change to
+`goldfish.py`, `parse.py`, `diagnostic.py` or `deck_info.py`.
+
+The tests caught all of it. Nothing shipped wrong — but they caught it hours
+late, on a full `make test` nobody runs between commits, and the failures
+pointed at zur-enchantress branches rather than at the one line in `goldfish.py`
+that caused them.
