@@ -191,7 +191,7 @@
    {
     "free": false,
     "name": "Guardian of Faith",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -239,7 +239,7 @@
    {
     "free": false,
     "name": "Karametra's Blessing",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -251,28 +251,14 @@
    {
     "free": false,
     "name": "Leyline of Anticipation",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Zur Parts"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
     "name": "Lightning Greaves",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Mystery Booster 2"
-     },
-     {
-      "kind": "box",
-      "name": "Zur Parts"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -528,39 +514,26 @@
    }
   ],
   "counts": {
-   "box": 2,
-   "buy": 2,
+   "box": 0,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 81
+   "in_deck": 85
   },
   "counts_are": "distinct names",
   "diff": {
-   "add": [
-    "Guardian of Faith",
-    "Karametra's Blessing",
-    "Leyline of Anticipation",
-    "Lightning Greaves"
-   ],
+   "add": [],
    "base_names": 85,
    "base_size": 100,
    "names": 85,
-   "out": [
-    "Ebony Owl Netsuke",
-    "Iron Maiden",
-    "Tireless Tribe",
-    "Viseling"
-   ],
+   "out": [],
    "size": 100
   },
   "free": 0,
-  "mergeable": false,
+  "mergeable": true,
   "owned_but_elsewhere": 0,
   "proxy": false,
   "slug": "heliod",
-  "unsourced": [
-   "Guardian of Faith",
-   "Karametra's Blessing"
-  ]
+  "unsourced": []
  },
  "blind_spots": [
   {
@@ -581,100 +554,22 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 4,
-    "in_copies": 4,
+    "in": 0,
+    "in_copies": 0,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 4,
-    "out_copies": 4,
-    "spells_in": 4,
-    "spells_out": 4
+    "out": 0,
+    "out_copies": 0,
+    "spells_in": 0,
+    "spells_out": 0
    },
-   "in": [
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Karametra's Blessing",
-     "pair": "Mithril Coat",
-     "state": "buy",
-     "type_line": "Instant",
-     "why": "Same 60% share of measured commander losses, at {W} instead of {3} and at instant speed. Mithril Coat's indestructible is blind to the 33 exiles among the 119 departures, which is exactly why both sit at 60% rather than Guardian of Faith's 82%; the Blessing grants hexproof AND indestructible, so it covers the same ground for a third of the mana. It is conditional \u2014 'if it's an enchanted creature or enchantment creature' \u2014 and Heliod, the Radiant Dawn is a Legendary Enchantment Creature, so the condition is met by the card the branch exists to protect."
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Lightning Greaves",
-     "pair": null,
-     "state": "box",
-     "type_line": "Artifact \u2014 Equipment",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Guardian of Faith",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Creature \u2014 Spirit Knight",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Leyline of Anticipation",
-     "pair": null,
-     "state": "box",
-     "type_line": "Enchantment",
-     "why": null
-    }
-   ],
+   "in": [],
    "names": 85,
-   "out": [
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Tireless Tribe",
-     "pair": null,
-     "type_line": "Creature \u2014 Human Nomad",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Ebony Owl Netsuke",
-     "pair": null,
-     "type_line": "Artifact",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Iron Maiden",
-     "pair": null,
-     "type_line": "Artifact",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Viseling",
-     "pair": null,
-     "type_line": "Artifact Creature \u2014 Phyrexian Construct",
-     "why": null
-    }
-   ],
+   "out": [],
    "size": 100,
    "unexplained": {
-    "in": 3,
-    "out": 4
+    "in": 0,
+    "out": 0
    }
   },
   "lands": [],
@@ -937,30 +832,27 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; interaction affordable @T6 improved.",
+  "because": "The objective is met and nothing measured here got worse.",
   "bill": {
-   "box": 2,
-   "buy": 2,
+   "box": 0,
+   "buy": 0,
    "elsewhere": 0,
-   "in_deck": 81
+   "in_deck": 85
   },
   "cost": {
-   "buy": 2,
-   "buy_cards": [
-    "Guardian of Faith",
-    "Karametra's Blessing"
-   ],
+   "buy": 0,
+   "buy_cards": [],
    "counts": {
-    "box": 2,
-    "buy": 2,
+    "box": 0,
+    "buy": 0,
     "elsewhere": 0,
-    "in_deck": 81
+    "in_deck": 85
    },
    "free_to_raid": [],
-   "mergeable": false,
+   "mergeable": true,
    "must_unsleeve": [],
-   "owned": 83,
-   "reads_as": "2 to buy; 83 of 85 already owned",
+   "owned": 85,
+   "reads_as": "0 to buy; 85 of 85 already owned",
    "total": 85
   },
   "fell": [],
@@ -973,21 +865,18 @@
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
-  "reward": [
-   {
-    "measure": "interaction affordable @T6",
-    "reads_as": "66 games in 100 -> 69 in 100, a swing of 3 games per 100",
-    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   }
+  "notes": [
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. With 1 swap(s) staged this branch is nearly the deck. A 100-card singleton dilutes one card below what this run can resolve unless it is a Game Changer or a table-warper \u2014 so this is not a verdict on the swap(s). Stage the rest of the treatment and measure the lift on the whole thing."
   ],
+  "reward": [],
   "risk": [
    {
-    "detail": "the largest is killed by T10 at +0.009 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.115. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "9 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1007,9 +896,7 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [
-   "interaction affordable @T6"
-  ],
+  "rose": [],
   "state": "merge"
  },
  "slug": "heliod",
@@ -1018,11 +905,11 @@
   {
    "better_is": "higher",
    "branch": 4.1362,
-   "champion": 4.0749,
-   "delta": 0.0613,
+   "champion": 4.1362,
+   "delta": 0.0,
    "mde": 0.1152,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.061 is smaller than the 0.115 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.115 this run can resolve",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "noise",
@@ -1032,11 +919,11 @@
   {
    "better_is": "higher",
    "branch": 2.5297,
-   "champion": 2.4664,
-   "delta": 0.0633,
+   "champion": 2.5297,
+   "delta": 0.0,
    "mde": 0.0856,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.063 is smaller than the 0.086 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.086 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1060,11 +947,11 @@
   {
    "better_is": "higher",
    "branch": 0.0608,
-   "champion": 0.0523,
-   "delta": 0.0085,
+   "champion": 0.0608,
+   "delta": 0.0,
    "mde": 0.0095,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.009 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.009 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1074,11 +961,11 @@
   {
    "better_is": "lower",
    "branch": 0.0085,
-   "champion": 0.0097,
-   "delta": -0.0012,
-   "mde": 0.0039,
+   "champion": 0.0085,
+   "delta": 0.0,
+   "mde": 0.0036,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.004 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1088,11 +975,11 @@
   {
    "better_is": "lower",
    "branch": 0.5145,
-   "champion": 0.5099,
-   "delta": 0.0046,
+   "champion": 0.5145,
+   "delta": 0.0,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1102,11 +989,11 @@
   {
    "better_is": "lower",
    "branch": 0.2581,
-   "champion": 0.2554,
-   "delta": 0.0027,
+   "champion": 0.2581,
+   "delta": 0.0,
    "mde": 0.0173,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1116,11 +1003,11 @@
   {
    "better_is": "higher",
    "branch": 2.3554,
-   "champion": 2.3378,
-   "delta": 0.0176,
-   "mde": 0.1214,
+   "champion": 2.3554,
+   "delta": 0.0,
+   "mde": 0.1202,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.121 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.120 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1130,25 +1017,25 @@
   {
    "better_is": "higher",
    "branch": 0.6873,
-   "champion": 0.6613,
-   "delta": 0.026,
-   "mde": 0.0199,
+   "champion": 0.6873,
+   "delta": 0.0,
+   "mde": 0.0191,
    "measure": "interaction affordable @T6",
-   "reads_as": "66 games in 100 -> 69 in 100, a swing of 3 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
    "branch": 0.9835,
-   "champion": 0.9849,
-   "delta": -0.0014,
+   "champion": 0.9835,
+   "delta": 0.0,
    "mde": 0.005,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.005 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

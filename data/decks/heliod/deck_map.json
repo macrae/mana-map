@@ -1,30 +1,21 @@
 {
   "slug": "heliod",
-  "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
+  "decklist_sha256": "8b187e767f3ebd7c16cf13d48cbac5ab529ba38fdcb572f31d509f0c454c0c0e",
   "meta": {
     "space": "embeddings_ability.npy",
+    "space_digest": "4773335227f46499",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 85,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
-    "named_by": "deck-cartographer",
-    "cartographer_notes": [
-      "The two-piece donation engine is SPLIT ACROSS TWO CITIES: Howling Mine, Kami of the Crescent Moon and the three upkeep punishers (Iron Maiden, Ebony Owl Netsuke, Viseling) sit in city-2's SET AND FORGET, while the rest of the give-and-charge machine sits in city-3. The split tracks cost and card type, not function — membership reads right, but anyone tracing the engine has to read both cities.",
-      "city-2-hood-1 is the most far-flung thing on the map: two cards (the Medallions) at cx -0.98 while their city's centroid is -0.15. They are unusual for this deck's space, not misplaced — per-spell cost reduction is the commander's own back-face text, so they are the only cards that stack with the deck's central asymmetry.",
-      "Mikokoro, Center of the Sea is an eleventh table-draw engine filed in the land city. The map is right that it is mana; the reader should know the giveaway count under GIVE THEN CHARGE understates by one because one of those effects is a land.",
-      "An Offer You Can't Refuse is the odd member of city-4 — a counterspell clustered with mana rocks, almost certainly on 'creates two Treasure tokens'. Functionally it belongs with THE HARD NO. Not a membership complaint: the ability space weighed the treasure clause over the counter clause, and Smothering Tithe next door makes the same treasure off the same donated draws.",
-      "city-3-hood-2 is the thinnest split on the map: three cards whose jobs genuinely differ (donate, break an artifact, untap lands). The label names the only shared shape I can see — permanents that arrive and keep working — rather than pretending the cluster has a single function.",
-      "city-0 and city-4 each contain exactly one neighbourhood identical to the parent city. Nothing narrower to say, so both are omitted and the deterministic word stands.",
-      "city-5 carries 4 of the map's 10 verified cards on 9 cards — the densest verified block. city-1 (18 lands) carries none, which is expected and not a gap."
-    ]
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-      "x": -0.77918,
-      "y": 0.09463,
-      "city": 2,
+      "x": -0.72288,
+      "y": -0.16493,
+      "city": 0,
       "hood": 0,
       "roles": [
         "ramp:cost-reduction",
@@ -36,8 +27,8 @@
     },
     {
       "name": "Adarkar Wastes",
-      "x": 0.70817,
-      "y": 0.01526,
+      "x": 0.67759,
+      "y": -0.03025,
       "city": 1,
       "hood": 0,
       "roles": [
@@ -48,23 +39,11 @@
       "commander": false
     },
     {
-      "name": "Aetherflux Reservoir",
-      "x": 0.18315,
-      "y": -0.25763,
-      "city": 2,
-      "hood": 2,
-      "roles": [
-        "removal:damage"
-      ],
-      "verified": true,
-      "commander": false
-    },
-    {
       "name": "Alhammarret's Archive",
-      "x": -0.42256,
-      "y": -0.33152,
+      "x": -0.31215,
+      "y": -0.44606,
       "city": 3,
-      "hood": 3,
+      "hood": 0,
       "roles": [
         "draw:burst"
       ],
@@ -73,9 +52,9 @@
     },
     {
       "name": "An Offer You Can't Refuse",
-      "x": -0.59387,
-      "y": 0.65507,
-      "city": 4,
+      "x": -0.85047,
+      "y": 0.12423,
+      "city": 2,
       "hood": 0,
       "roles": [
         "counterspell",
@@ -87,23 +66,11 @@
       "commander": false
     },
     {
-      "name": "Ancient Tomb",
-      "x": 0.644,
-      "y": 0.01086,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Approach of the Second Sun",
-      "x": -0.08735,
-      "y": -0.40434,
+      "x": -0.28368,
+      "y": -0.17473,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "wincon:alt"
       ],
@@ -112,9 +79,9 @@
     },
     {
       "name": "Arcane Denial",
-      "x": -0.55187,
-      "y": 0.46236,
-      "city": 5,
+      "x": -0.73336,
+      "y": 0.05951,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell",
@@ -125,9 +92,9 @@
     },
     {
       "name": "Arcane Signet",
-      "x": 0.38779,
-      "y": -0.70351,
-      "city": 4,
+      "x": 0.38689,
+      "y": -0.66182,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -137,10 +104,23 @@
       "commander": false
     },
     {
-      "name": "Azorius Signet",
-      "x": 0.37791,
-      "y": -0.73375,
+      "name": "Archmage's Charm",
+      "x": -0.66298,
+      "y": 0.05431,
       "city": 4,
+      "hood": 0,
+      "roles": [
+        "counterspell",
+        "draw:burst"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Azorius Signet",
+      "x": 0.37796,
+      "y": -0.70523,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -151,18 +131,32 @@
     },
     {
       "name": "Braingeyser",
-      "x": 0.19977,
-      "y": 0.2217,
-      "city": 2,
+      "x": 0.14036,
+      "y": 0.17035,
+      "city": 0,
       "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
+      "name": "Cathar Commando",
+      "x": -0.17321,
+      "y": 0.70765,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "removal:spot",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Command Tower",
-      "x": 0.78481,
-      "y": -0.01378,
+      "x": 0.76947,
+      "y": -0.09834,
       "city": 1,
       "hood": 0,
       "roles": [
@@ -174,10 +168,10 @@
     },
     {
       "name": "Consecrated Sphinx",
-      "x": -0.52893,
-      "y": -0.41141,
+      "x": -0.40826,
+      "y": -0.58519,
       "city": 3,
-      "hood": 3,
+      "hood": 0,
       "roles": [
         "draw:burst",
         "draw:engine",
@@ -188,9 +182,9 @@
     },
     {
       "name": "Counterspell",
-      "x": -0.45093,
-      "y": 0.69346,
-      "city": 5,
+      "x": -0.78008,
+      "y": 0.26419,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell"
@@ -200,10 +194,10 @@
     },
     {
       "name": "Cyclonic Rift",
-      "x": -0.88441,
-      "y": 0.37583,
-      "city": 5,
-      "hood": 1,
+      "x": -0.98155,
+      "y": -0.0694,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "removal:bounce"
       ],
@@ -211,9 +205,47 @@
       "commander": false
     },
     {
+      "name": "Darien, King of Kjeldor",
+      "x": 0.10972,
+      "y": 0.36961,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Day of Judgment",
+      "x": -0.08519,
+      "y": 1.0,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "removal:sweeper"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Decanter of Endless Water",
+      "x": 0.32814,
+      "y": -0.68035,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "ramp:rock",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Deserted Beach",
-      "x": 0.88216,
-      "y": 0.11006,
+      "x": 0.83518,
+      "y": 0.0785,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -224,8 +256,8 @@
     },
     {
       "name": "Dictate of Kruphix",
-      "x": -0.22815,
-      "y": -0.16358,
+      "x": -0.18309,
+      "y": -0.27597,
       "city": 3,
       "hood": 1,
       "roles": [],
@@ -234,31 +266,31 @@
     },
     {
       "name": "Dig Through Time",
-      "x": -0.22657,
-      "y": 0.11866,
-      "city": 2,
+      "x": -0.19396,
+      "y": -0.00086,
+      "city": 0,
       "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Displacer Kitten",
-      "x": 0.00805,
-      "y": 0.14845,
-      "city": 2,
+      "name": "Disenchant",
+      "x": -0.17365,
+      "y": 0.73865,
+      "city": 5,
       "hood": 0,
       "roles": [
-        "threat:body"
+        "removal:spot"
       ],
-      "verified": true,
+      "verified": false,
       "commander": false
     },
     {
       "name": "Dovin's Veto",
-      "x": -0.44727,
-      "y": 0.74191,
-      "city": 5,
+      "x": -0.80725,
+      "y": 0.30495,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell"
@@ -267,33 +299,11 @@
       "commander": false
     },
     {
-      "name": "Drannith Magistrate",
-      "x": -0.02944,
-      "y": 0.095,
-      "city": 2,
-      "hood": 2,
-      "roles": [
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Ebony Owl Netsuke",
-      "x": -0.09814,
-      "y": -0.09865,
-      "city": 2,
-      "hood": 2,
-      "roles": [],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Eiganjo, Seat of the Empire",
-      "x": 0.76529,
-      "y": 0.27834,
+      "x": 0.7542,
+      "y": 0.20463,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:utility"
       ],
@@ -301,11 +311,23 @@
       "commander": false
     },
     {
+      "name": "Enlightened Tutor",
+      "x": -0.35391,
+      "y": 0.55921,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Faerie Mastermind",
-      "x": -0.49857,
-      "y": -0.51508,
+      "x": -0.35571,
+      "y": -0.64535,
       "city": 3,
-      "hood": 3,
+      "hood": 0,
       "roles": [
         "draw:engine",
         "draw:wheel",
@@ -316,9 +338,9 @@
     },
     {
       "name": "Fierce Guardianship",
-      "x": -0.38465,
-      "y": 0.59127,
-      "city": 5,
+      "x": -0.65824,
+      "y": 0.20424,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell"
@@ -328,10 +350,10 @@
     },
     {
       "name": "Flooded Strand",
-      "x": 0.91847,
-      "y": 0.53462,
+      "x": 0.98,
+      "y": 0.37558,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -340,22 +362,9 @@
       "commander": false
     },
     {
-      "name": "Folio of Fancies",
-      "x": -0.24241,
-      "y": -0.38836,
-      "city": 3,
-      "hood": 1,
-      "roles": [
-        "draw:wheel",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Font of Mythos",
-      "x": -0.29709,
-      "y": -0.25022,
+      "x": -0.22032,
+      "y": -0.37922,
       "city": 3,
       "hood": 1,
       "roles": [],
@@ -364,9 +373,9 @@
     },
     {
       "name": "Force of Negation",
-      "x": -0.41272,
-      "y": 0.6873,
-      "city": 5,
+      "x": -0.73964,
+      "y": 0.28527,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell"
@@ -376,8 +385,8 @@
     },
     {
       "name": "Forced Fruition",
-      "x": -0.37893,
-      "y": -0.24545,
+      "x": -0.3341,
+      "y": -0.37142,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -388,8 +397,8 @@
     },
     {
       "name": "Glacial Fortress",
-      "x": 0.92215,
-      "y": 0.12971,
+      "x": 0.86868,
+      "y": 0.09896,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -399,21 +408,23 @@
       "commander": false
     },
     {
-      "name": "Grand Abolisher",
-      "x": 0.11311,
-      "y": 0.03461,
-      "city": 2,
-      "hood": 2,
+      "name": "Guardian of Faith",
+      "x": -0.29786,
+      "y": 0.28788,
+      "city": 0,
+      "hood": 0,
       "roles": [
-        "threat:body"
+        "protection:self",
+        "threat:body",
+        "value:etb"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Hallowed Fountain",
-      "x": 0.91107,
-      "y": 0.09361,
+      "x": 0.86168,
+      "y": 0.06357,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -423,44 +434,49 @@
       "commander": false
     },
     {
-      "name": "Howling Mine",
-      "x": -0.00994,
-      "y": -0.11224,
-      "city": 2,
+      "name": "Hangarback Walker",
+      "x": 0.24792,
+      "y": 0.73138,
+      "city": 0,
       "hood": 2,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "threat:tokens",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Howling Mine",
+      "x": 0.01409,
+      "y": -0.16345,
+      "city": 3,
+      "hood": 1,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Hullbreaker Horror",
-      "x": -0.83031,
-      "y": 0.46731,
-      "city": 5,
-      "hood": 1,
+      "name": "Irrigated Farmland",
+      "x": 0.74621,
+      "y": -0.00658,
+      "city": 1,
+      "hood": 0,
       "roles": [
-        "removal:bounce",
-        "threat:body"
+        "land:tapped",
+        "land:utility"
       ],
-      "verified": true,
-      "commander": false
-    },
-    {
-      "name": "Iron Maiden",
-      "x": -0.01795,
-      "y": -0.0507,
-      "city": 2,
-      "hood": 2,
-      "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Island",
-      "x": 0.78014,
-      "y": -0.07045,
+      "x": 0.71596,
+      "y": -0.05015,
       "city": 1,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -468,36 +484,11 @@
       "commander": false
     },
     {
-      "name": "Jace Beleren",
-      "x": -0.30969,
-      "y": -0.1836,
+      "name": "Kami of the Crescent Moon",
+      "x": 0.00107,
+      "y": -0.10547,
       "city": 3,
       "hood": 1,
-      "roles": [
-        "draw:wheel"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Jace, Wielder of Mysteries",
-      "x": -0.53386,
-      "y": -0.48384,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "draw:burst",
-        "wincon:alt"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Kami of the Crescent Moon",
-      "x": -0.01717,
-      "y": -0.07341,
-      "city": 2,
-      "hood": 2,
       "roles": [
         "threat:body"
       ],
@@ -505,11 +496,24 @@
       "commander": false
     },
     {
+      "name": "Karametra's Blessing",
+      "x": -0.50685,
+      "y": 0.62977,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "buff:pump",
+        "protection:self"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Kwain, Itinerant Meddler",
-      "x": -0.19304,
-      "y": -0.59915,
+      "x": -0.10598,
+      "y": -0.61784,
       "city": 3,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "threat:body",
         "utility:activated"
@@ -519,20 +523,33 @@
     },
     {
       "name": "Leyline of Anticipation",
-      "x": 0.06658,
-      "y": 0.15977,
-      "city": 2,
+      "x": 0.00238,
+      "y": 0.06704,
+      "city": 0,
       "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Long-Term Plans",
-      "x": -0.62773,
-      "y": 0.35032,
+      "name": "Lightning Greaves",
+      "x": -0.73992,
+      "y": -0.4281,
       "city": 0,
       "hood": 0,
+      "roles": [
+        "buff:attached",
+        "protection:self"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Long-Term Plans",
+      "x": -0.48677,
+      "y": 0.40914,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "tutor:unrestricted"
       ],
@@ -541,10 +558,10 @@
     },
     {
       "name": "Loran of the Third Path",
-      "x": -0.13657,
-      "y": -0.5276,
+      "x": -0.09706,
+      "y": -0.52279,
       "city": 3,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "threat:body",
         "utility:activated",
@@ -555,8 +572,8 @@
     },
     {
       "name": "Mana Confluence",
-      "x": 0.87999,
-      "y": -0.06057,
+      "x": 0.84828,
+      "y": -0.11756,
       "city": 1,
       "hood": 0,
       "roles": [
@@ -569,8 +586,8 @@
     },
     {
       "name": "Mathemagics",
-      "x": -0.38414,
-      "y": -0.22768,
+      "x": -0.30826,
+      "y": -0.37376,
       "city": 3,
       "hood": 1,
       "roles": [],
@@ -578,22 +595,23 @@
       "commander": false
     },
     {
-      "name": "Metallurgic Summonings",
-      "x": 0.08961,
-      "y": 0.4134,
-      "city": 2,
-      "hood": 0,
+      "name": "Mikaeus, the Lunarch",
+      "x": 0.33065,
+      "y": 0.68173,
+      "city": 0,
+      "hood": 2,
       "roles": [
-        "recursion",
-        "threat:tokens"
+        "buff:counters",
+        "threat:body",
+        "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Mikokoro, Center of the Sea",
-      "x": 0.67318,
-      "y": -0.12946,
+      "x": 0.68291,
+      "y": -0.20451,
       "city": 1,
       "hood": 0,
       "roles": [
@@ -604,10 +622,10 @@
     },
     {
       "name": "Mystic Remora",
-      "x": -0.43407,
-      "y": -0.63766,
+      "x": -0.3116,
+      "y": -0.72306,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "draw:engine"
       ],
@@ -616,10 +634,10 @@
     },
     {
       "name": "Mystical Tutor",
-      "x": -0.08466,
-      "y": 0.72017,
+      "x": -0.40222,
+      "y": 0.45878,
       "city": 0,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "tutor:narrow"
       ],
@@ -628,10 +646,10 @@
     },
     {
       "name": "Otawara, Soaring City",
-      "x": 0.76775,
-      "y": 0.29348,
+      "x": 0.77066,
+      "y": 0.20578,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:utility"
       ],
@@ -640,9 +658,9 @@
     },
     {
       "name": "Path to Exile",
-      "x": 0.11105,
-      "y": 0.65957,
-      "city": 0,
+      "x": -0.13461,
+      "y": 0.56879,
+      "city": 5,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -652,10 +670,10 @@
     },
     {
       "name": "Pearl Medallion",
-      "x": -1.0,
-      "y": -0.08492,
-      "city": 2,
-      "hood": 1,
+      "x": -0.92008,
+      "y": -0.39041,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "ramp:cost-reduction"
       ],
@@ -664,10 +682,10 @@
     },
     {
       "name": "Plains",
-      "x": 0.75973,
-      "y": -0.11232,
+      "x": 0.70333,
+      "y": -0.10392,
       "city": 1,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -676,8 +694,8 @@
     },
     {
       "name": "Prairie Stream",
-      "x": 0.91167,
-      "y": 0.12715,
+      "x": 0.85611,
+      "y": 0.09764,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -688,18 +706,18 @@
     },
     {
       "name": "Propaganda",
-      "x": 0.13899,
-      "y": 0.15212,
-      "city": 2,
-      "hood": 2,
+      "x": 0.06727,
+      "y": 0.11234,
+      "city": 0,
+      "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Prosperity",
-      "x": -0.17303,
-      "y": -0.1776,
+      "x": -0.11066,
+      "y": -0.23757,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -710,10 +728,10 @@
     },
     {
       "name": "Psychosis Crawler",
-      "x": -0.37861,
-      "y": -0.47423,
+      "x": -0.27914,
+      "y": -0.53427,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "draw:engine",
         "threat:body",
@@ -723,11 +741,21 @@
       "commander": false
     },
     {
-      "name": "Rhystic Study",
-      "x": -0.37508,
-      "y": -0.41209,
-      "city": 3,
+      "name": "Reliquary Tower",
+      "x": 0.59156,
+      "y": -0.11784,
+      "city": 1,
       "hood": 0,
+      "roles": [],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Rhystic Study",
+      "x": -0.2605,
+      "y": -0.48344,
+      "city": 3,
+      "hood": 2,
       "roles": [
         "draw:engine"
       ],
@@ -736,10 +764,10 @@
     },
     {
       "name": "Sapphire Medallion",
-      "x": -0.95874,
-      "y": -0.02591,
-      "city": 2,
-      "hood": 1,
+      "x": -0.88568,
+      "y": -0.32127,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "ramp:cost-reduction"
       ],
@@ -748,10 +776,10 @@
     },
     {
       "name": "Scrawling Crawler",
-      "x": -0.10102,
-      "y": -0.37229,
+      "x": -0.06535,
+      "y": -0.33088,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "draw:engine",
         "draw:wheel",
@@ -763,8 +791,8 @@
     },
     {
       "name": "Seachrome Coast",
-      "x": 0.87808,
-      "y": 0.10619,
+      "x": 0.83054,
+      "y": 0.07556,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -774,19 +802,31 @@
       "commander": false
     },
     {
+      "name": "Secure the Wastes",
+      "x": 0.17374,
+      "y": 0.55643,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Skycloud Expanse",
-      "x": 0.72757,
-      "y": -0.05034,
+      "x": 0.6757,
+      "y": -0.0574,
       "city": 1,
-      "hood": 2,
+      "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Skyscribing",
-      "x": -0.05351,
-      "y": -0.17162,
+      "x": -0.04,
+      "y": -0.16711,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -797,9 +837,9 @@
     },
     {
       "name": "Smothering Tithe",
-      "x": 0.18412,
-      "y": -0.73127,
-      "city": 4,
+      "x": 0.21449,
+      "y": -0.67958,
+      "city": 2,
       "hood": 0,
       "roles": [
         "draw:engine",
@@ -812,9 +852,9 @@
     },
     {
       "name": "Sol Ring",
-      "x": 0.36505,
-      "y": -0.77682,
-      "city": 4,
+      "x": 0.37027,
+      "y": -0.74789,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -824,21 +864,9 @@
       "commander": false
     },
     {
-      "name": "Sphinx's Tutelage",
-      "x": -0.35625,
-      "y": -0.59123,
-      "city": 3,
-      "hood": 3,
-      "roles": [
-        "draw:engine"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Stroke of Genius",
-      "x": -0.22287,
-      "y": -0.11234,
+      "x": -0.16819,
+      "y": -0.21054,
       "city": 3,
       "hood": 1,
       "roles": [],
@@ -847,9 +875,9 @@
     },
     {
       "name": "Supreme Verdict",
-      "x": 0.12603,
-      "y": 0.8933,
-      "city": 0,
+      "x": -0.16618,
+      "y": 0.85351,
+      "city": 5,
       "hood": 0,
       "roles": [
         "removal:sweeper"
@@ -859,9 +887,9 @@
     },
     {
       "name": "Swan Song",
-      "x": -0.49972,
-      "y": 0.75547,
-      "city": 5,
+      "x": -0.80082,
+      "y": 0.35452,
+      "city": 4,
       "hood": 0,
       "roles": [
         "counterspell",
@@ -872,9 +900,9 @@
     },
     {
       "name": "Swords to Plowshares",
-      "x": 0.17966,
-      "y": 0.75625,
-      "city": 0,
+      "x": -0.12657,
+      "y": 0.70035,
+      "city": 5,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -884,9 +912,9 @@
     },
     {
       "name": "Talisman of Progress",
-      "x": 0.36833,
-      "y": -0.68906,
-      "city": 4,
+      "x": 0.36191,
+      "y": -0.67459,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -897,10 +925,10 @@
     },
     {
       "name": "Teferi's Ageless Insight",
-      "x": -0.34523,
-      "y": -0.25858,
+      "x": -0.26163,
+      "y": -0.35748,
       "city": 3,
-      "hood": 3,
+      "hood": 0,
       "roles": [
         "draw:burst"
       ],
@@ -909,9 +937,9 @@
     },
     {
       "name": "Teferi's Protection",
-      "x": 0.31645,
-      "y": 0.81767,
-      "city": 2,
+      "x": -0.43109,
+      "y": 0.73241,
+      "city": 0,
       "hood": 0,
       "roles": [
         "protection:self"
@@ -920,26 +948,11 @@
       "commander": false
     },
     {
-      "name": "Teferi, Temporal Pilgrim",
-      "x": -0.71266,
-      "y": -0.17511,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "buff:counters",
-        "draw:engine",
-        "payoff:counters",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Temple Bell",
-      "x": -0.19513,
-      "y": -0.33552,
+      "x": -0.10597,
+      "y": -0.435,
       "city": 3,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "draw:wheel",
         "utility:activated"
@@ -948,98 +961,9 @@
       "commander": false
     },
     {
-      "name": "The Second Doctor",
-      "x": -0.35252,
-      "y": -0.52232,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "draw:engine",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Thought Vessel",
-      "x": 0.26914,
-      "y": -0.72982,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "ramp:rock",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Torrential Gearhulk",
-      "x": -0.22628,
-      "y": 0.33406,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Viseling",
-      "x": 0.05767,
-      "y": 0.02523,
-      "city": 2,
-      "hood": 2,
-      "roles": [
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Teferi, Hero of Dominaria",
-      "x": -0.47336,
-      "y": -0.07668,
-      "city": 3,
-      "hood": 2,
-      "roles": [
-        "draw:engine",
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Archmage's Charm",
-      "x": -0.47555,
-      "y": 0.44265,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "counterspell",
-        "draw:burst"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Enlightened Tutor",
-      "x": -0.03019,
-      "y": 0.80851,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "tutor:narrow"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Temple of Enlightenment",
-      "x": 0.84822,
-      "y": 0.08893,
+      "x": 0.80695,
+      "y": 0.05669,
       "city": 1,
       "hood": 1,
       "roles": [
@@ -1049,14 +973,88 @@
       "commander": false
     },
     {
-      "name": "Irrigated Farmland",
-      "x": 0.747,
-      "y": 0.08943,
-      "city": 1,
+      "name": "The Ozolith",
+      "x": 0.02741,
+      "y": 0.43307,
+      "city": 0,
+      "hood": 0,
+      "roles": [],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "The Second Doctor",
+      "x": -0.27664,
+      "y": -0.57271,
+      "city": 3,
+      "hood": 2,
+      "roles": [
+        "draw:engine",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Thought Vessel",
+      "x": 0.28815,
+      "y": -0.719,
+      "city": 2,
       "hood": 0,
       "roles": [
-        "land:tapped",
-        "land:utility"
+        "ramp:rock",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "United Front",
+      "x": 0.25543,
+      "y": 0.81066,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Walking Ballista",
+      "x": 0.326,
+      "y": 0.77298,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "removal:damage",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Wall of Glare",
+      "x": 0.12375,
+      "y": 0.07278,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "White Sun's Zenith",
+      "x": 0.18071,
+      "y": 0.41068,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "threat:tokens"
       ],
       "verified": false,
       "commander": false
@@ -1066,52 +1064,112 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": "SEEK AND ERASE",
-      "fallback": "Tutors",
-      "cx": -0.05431,
-      "cy": 0.69802,
-      "count": 6,
+      "label": null,
+      "fallback": "Bodies",
+      "cx": -0.20573,
+      "cy": 0.28714,
+      "count": 24,
       "cards": [
+        "Braingeyser",
+        "Cyclonic Rift",
+        "Darien, King of Kjeldor",
+        "Dig Through Time",
         "Enlightened Tutor",
+        "Guardian of Faith",
+        "Hangarback Walker",
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+        "Karametra's Blessing",
+        "Leyline of Anticipation",
+        "Lightning Greaves",
         "Long-Term Plans",
+        "Mikaeus, the Lunarch",
         "Mystical Tutor",
-        "Path to Exile",
-        "Supreme Verdict",
-        "Swords to Plowshares"
+        "Pearl Medallion",
+        "Propaganda",
+        "Sapphire Medallion",
+        "Secure the Wastes",
+        "Teferi's Protection",
+        "The Ozolith",
+        "United Front",
+        "Walking Ballista",
+        "Wall of Glare",
+        "White Sun's Zenith"
       ],
-      "verified_count": 1,
-      "gloss": "Half of these go find the card you need; the other half erase a threat that already resolved."
+      "verified_count": 1
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
       "label": null,
+      "fallback": "Bodies",
+      "cx": -0.28556,
+      "cy": 0.14514,
+      "count": 17,
+      "cards": [
+        "Braingeyser",
+        "Cyclonic Rift",
+        "Darien, King of Kjeldor",
+        "Dig Through Time",
+        "Guardian of Faith",
+        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+        "Karametra's Blessing",
+        "Leyline of Anticipation",
+        "Lightning Greaves",
+        "Pearl Medallion",
+        "Propaganda",
+        "Sapphire Medallion",
+        "Secure the Wastes",
+        "Teferi's Protection",
+        "The Ozolith",
+        "Wall of Glare",
+        "White Sun's Zenith"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-0-hood-1",
+      "level": 1,
+      "parent": "city-0",
+      "label": null,
       "fallback": "Tutors",
-      "cx": -0.05431,
-      "cy": 0.69802,
-      "count": 6,
+      "cx": -0.4143,
+      "cy": 0.47571,
+      "count": 3,
       "cards": [
         "Enlightened Tutor",
         "Long-Term Plans",
-        "Mystical Tutor",
-        "Path to Exile",
-        "Supreme Verdict",
-        "Swords to Plowshares"
+        "Mystical Tutor"
       ],
       "verified_count": 1
     },
     {
+      "id": "city-0-hood-2",
+      "level": 1,
+      "parent": "city-0",
+      "label": null,
+      "fallback": "Bodies II",
+      "cx": 0.29,
+      "cy": 0.74919,
+      "count": 4,
+      "cards": [
+        "Hangarback Walker",
+        "Mikaeus, the Lunarch",
+        "United Front",
+        "Walking Ballista"
+      ],
+      "verified_count": 0
+    },
+    {
       "id": "city-1",
       "level": 0,
-      "label": "THE OPEN MANA",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.80608,
-      "cy": 0.08004,
+      "cx": 0.77639,
+      "cy": 0.02613,
       "count": 18,
       "cards": [
         "Adarkar Wastes",
-        "Ancient Tomb",
         "Command Tower",
         "Deserted Beach",
         "Eiganjo, Seat of the Empire",
@@ -1125,44 +1183,43 @@
         "Otawara, Soaring City",
         "Plains",
         "Prairie Stream",
+        "Reliquary Tower",
         "Seachrome Coast",
         "Skycloud Expanse",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0,
-      "gloss": "Eighteen lands feeding a mostly-blue deck, whose job is to be untapped on someone else's turn."
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": "SECOND JOBS",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.76541,
-      "cy": 0.11313,
+      "cx": 0.71233,
+      "cy": -0.08739,
       "count": 9,
       "cards": [
         "Adarkar Wastes",
-        "Ancient Tomb",
         "Command Tower",
-        "Eiganjo, Seat of the Empire",
-        "Flooded Strand",
         "Irrigated Farmland",
+        "Island",
         "Mana Confluence",
         "Mikokoro, Center of the Sea",
-        "Otawara, Soaring City"
+        "Plains",
+        "Reliquary Tower",
+        "Skycloud Expanse"
       ],
-      "verified_count": 0,
-      "gloss": "Lands that charge life, cycle, channel, fetch or hand the table a card — mana with a bill attached."
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": "CONDITIONS APPLY",
+      "label": null,
       "fallback": "Mana II",
-      "cx": 0.89222,
-      "cy": 0.10928,
+      "cx": 0.84319,
+      "cy": 0.07849,
       "count": 6,
       "cards": [
         "Deserted Beach",
@@ -1172,273 +1229,37 @@
         "Seachrome Coast",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0,
-      "gloss": "Six duals in both colours, five with a condition on entry; one checks for basics the deck runs two of."
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": "JUST MANA",
+      "label": null,
       "fallback": "Mana III",
-      "cx": 0.75581,
-      "cy": -0.0777,
+      "cx": 0.83495,
+      "cy": 0.262,
       "count": 3,
       "cards": [
-        "Island",
-        "Plains",
-        "Skycloud Expanse"
+        "Eiganjo, Seat of the Empire",
+        "Flooded Strand",
+        "Otawara, Soaring City"
       ],
-      "verified_count": 0,
-      "gloss": "The plain ones: two basics and a filter land, no life paid, no condition, nothing else printed."
+      "verified_count": 0
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": "THE FLASH FORT",
-      "fallback": "Bodies",
-      "cx": -0.14513,
-      "cy": 0.08684,
-      "count": 20,
-      "cards": [
-        "Aetherflux Reservoir",
-        "Braingeyser",
-        "Dig Through Time",
-        "Displacer Kitten",
-        "Drannith Magistrate",
-        "Ebony Owl Netsuke",
-        "Grand Abolisher",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-        "Howling Mine",
-        "Iron Maiden",
-        "Kami of the Crescent Moon",
-        "Leyline of Anticipation",
-        "Metallurgic Summonings",
-        "Pearl Medallion",
-        "Propaganda",
-        "Sapphire Medallion",
-        "Teferi's Protection",
-        "Teferi, Temporal Pilgrim",
-        "Torrential Gearhulk",
-        "Viseling"
-      ],
-      "verified_count": 2,
-      "gloss": "Your side of the board: it taxes their turns, and the flipped commander lets you add to it on theirs."
-    },
-    {
-      "id": "city-2-hood-0",
-      "level": 1,
-      "parent": "city-2",
-      "label": "ON THEIR TURN",
-      "fallback": "Bodies",
-      "cx": -0.14047,
-      "cy": 0.23702,
-      "count": 9,
-      "cards": [
-        "Braingeyser",
-        "Dig Through Time",
-        "Displacer Kitten",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-        "Leyline of Anticipation",
-        "Metallurgic Summonings",
-        "Teferi's Protection",
-        "Teferi, Temporal Pilgrim",
-        "Torrential Gearhulk"
-      ],
-      "verified_count": 1,
-      "gloss": "Flash granters and the payoffs for having it: everything here can arrive on an opponent's end step."
-    },
-    {
-      "id": "city-2-hood-1",
-      "level": 1,
-      "parent": "city-2",
-      "label": "THE DISCOUNT",
-      "fallback": "Ramp II",
-      "cx": -0.97937,
-      "cy": -0.05541,
-      "count": 2,
-      "cards": [
-        "Pearl Medallion",
-        "Sapphire Medallion"
-      ],
-      "verified_count": 0,
-      "gloss": "Two artifacts that shave one generic off your white and blue spells, stacking with the commander's per-draw discount."
-    },
-    {
-      "id": "city-2-hood-2",
-      "level": 1,
-      "parent": "city-2",
-      "label": "SET AND FORGET",
-      "fallback": "Interaction",
-      "cx": 0.03559,
-      "cy": -0.03174,
-      "count": 9,
-      "cards": [
-        "Aetherflux Reservoir",
-        "Drannith Magistrate",
-        "Ebony Owl Netsuke",
-        "Grand Abolisher",
-        "Howling Mine",
-        "Iron Maiden",
-        "Kami of the Crescent Moon",
-        "Propaganda",
-        "Viseling"
-      ],
-      "verified_count": 1,
-      "gloss": "Play them once and never act again: they hand out cards, bill a full hand, and price attacking you."
-    },
-    {
-      "id": "city-3",
-      "level": 0,
-      "label": "GIVE THEN CHARGE",
-      "fallback": "Card Flow",
-      "cx": -0.30808,
-      "cy": -0.35496,
-      "count": 25,
-      "cards": [
-        "Alhammarret's Archive",
-        "Approach of the Second Sun",
-        "Consecrated Sphinx",
-        "Dictate of Kruphix",
-        "Faerie Mastermind",
-        "Folio of Fancies",
-        "Font of Mythos",
-        "Forced Fruition",
-        "Jace Beleren",
-        "Jace, Wielder of Mysteries",
-        "Kwain, Itinerant Meddler",
-        "Loran of the Third Path",
-        "Mathemagics",
-        "Mystic Remora",
-        "Prosperity",
-        "Psychosis Crawler",
-        "Rhystic Study",
-        "Scrawling Crawler",
-        "Skyscribing",
-        "Sphinx's Tutelage",
-        "Stroke of Genius",
-        "Teferi's Ageless Insight",
-        "Teferi, Hero of Dominaria",
-        "Temple Bell",
-        "The Second Doctor"
-      ],
-      "verified_count": 1,
-      "gloss": "The deck's mass, and its median win: hand the table free cards, then bill every one of them."
-    },
-    {
-      "id": "city-3-hood-0",
-      "level": 1,
-      "parent": "city-3",
-      "label": "THE SURCHARGE",
-      "fallback": "Finishers",
-      "cx": -0.32322,
-      "cy": -0.4724,
-      "count": 7,
-      "cards": [
-        "Approach of the Second Sun",
-        "Jace, Wielder of Mysteries",
-        "Mystic Remora",
-        "Psychosis Crawler",
-        "Rhystic Study",
-        "Scrawling Crawler",
-        "The Second Doctor"
-      ],
-      "verified_count": 1,
-      "gloss": "Everything here bills the table for drawing or casting; two of them simply end the game instead."
-    },
-    {
-      "id": "city-3-hood-1",
-      "level": 1,
-      "parent": "city-3",
-      "label": "THE GIVEAWAY",
-      "fallback": "Card Flow",
-      "cx": -0.2485,
-      "cy": -0.2256,
-      "count": 10,
-      "cards": [
-        "Dictate of Kruphix",
-        "Folio of Fancies",
-        "Font of Mythos",
-        "Forced Fruition",
-        "Jace Beleren",
-        "Mathemagics",
-        "Prosperity",
-        "Skyscribing",
-        "Stroke of Genius",
-        "Temple Bell"
-      ],
-      "verified_count": 0,
-      "gloss": "The donation half: symmetric draw you deploy first, inert until a punisher lands to make it asymmetric."
-    },
-    {
-      "id": "city-3-hood-2",
-      "level": 1,
-      "parent": "city-3",
-      "label": "PERMANENT STAFF",
-      "fallback": "Value",
-      "cx": -0.26766,
-      "cy": -0.40114,
-      "count": 3,
-      "cards": [
-        "Kwain, Itinerant Meddler",
-        "Loran of the Third Path",
-        "Teferi, Hero of Dominaria"
-      ],
-      "verified_count": 0,
-      "gloss": "Legends that land and keep working: one hands out cards, one breaks artifacts, one untaps your lands."
-    },
-    {
-      "id": "city-3-hood-3",
-      "level": 1,
-      "parent": "city-3",
-      "label": "THE MULTIPLIERS",
-      "fallback": "Card Flow III",
-      "cx": -0.43031,
-      "cy": -0.42157,
-      "count": 5,
-      "cards": [
-        "Alhammarret's Archive",
-        "Consecrated Sphinx",
-        "Faerie Mastermind",
-        "Sphinx's Tutelage",
-        "Teferi's Ageless Insight"
-      ],
-      "verified_count": 0,
-      "gloss": "Each triggers on a draw, yours or theirs, so the table's generosity compounds on your side only."
-    },
-    {
-      "id": "city-4",
-      "level": 0,
-      "label": "TWO SPELLS A TURN",
-      "fallback": "Ramp",
-      "cx": 0.19407,
-      "cy": -0.52988,
-      "count": 7,
-      "cards": [
-        "An Offer You Can't Refuse",
-        "Arcane Signet",
-        "Azorius Signet",
-        "Smothering Tithe",
-        "Sol Ring",
-        "Talisman of Progress",
-        "Thought Vessel"
-      ],
-      "verified_count": 2,
-      "gloss": "Rocks bought so you can deploy an engine and still hold a counter; two also fund the verified kill."
-    },
-    {
-      "id": "city-4-hood-0",
-      "level": 1,
-      "parent": "city-4",
       "label": null,
       "fallback": "Ramp",
-      "cx": 0.19407,
-      "cy": -0.52988,
-      "count": 7,
+      "cx": 0.18467,
+      "cy": -0.59303,
+      "count": 8,
       "cards": [
         "An Offer You Can't Refuse",
         "Arcane Signet",
         "Azorius Signet",
+        "Decanter of Endless Water",
         "Smothering Tithe",
         "Sol Ring",
         "Talisman of Progress",
@@ -1447,35 +1268,128 @@
       "verified_count": 2
     },
     {
-      "id": "city-5",
-      "level": 0,
-      "label": "THE HARD NO",
-      "fallback": "Interaction",
-      "cx": -0.5486,
-      "cy": 0.57973,
-      "count": 9,
+      "id": "city-2-hood-0",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Ramp",
+      "cx": 0.18467,
+      "cy": -0.59303,
+      "count": 8,
       "cards": [
-        "Arcane Denial",
-        "Archmage's Charm",
-        "Counterspell",
-        "Cyclonic Rift",
-        "Dovin's Veto",
-        "Fierce Guardianship",
-        "Force of Negation",
-        "Hullbreaker Horror",
-        "Swan Song"
+        "An Offer You Can't Refuse",
+        "Arcane Signet",
+        "Azorius Signet",
+        "Decanter of Endless Water",
+        "Smothering Tithe",
+        "Sol Ring",
+        "Talisman of Progress",
+        "Thought Vessel"
       ],
-      "verified_count": 4,
-      "gloss": "Mana you keep open. Four of these sit in rules-verified lines, more than any other city here."
+      "verified_count": 2
     },
     {
-      "id": "city-5-hood-0",
+      "id": "city-3",
+      "level": 0,
+      "label": null,
+      "fallback": "Card Flow",
+      "cx": -0.20332,
+      "cy": -0.39606,
+      "count": 22,
+      "cards": [
+        "Alhammarret's Archive",
+        "Approach of the Second Sun",
+        "Consecrated Sphinx",
+        "Dictate of Kruphix",
+        "Faerie Mastermind",
+        "Font of Mythos",
+        "Forced Fruition",
+        "Howling Mine",
+        "Kami of the Crescent Moon",
+        "Kwain, Itinerant Meddler",
+        "Loran of the Third Path",
+        "Mathemagics",
+        "Mystic Remora",
+        "Prosperity",
+        "Psychosis Crawler",
+        "Rhystic Study",
+        "Scrawling Crawler",
+        "Skyscribing",
+        "Stroke of Genius",
+        "Teferi's Ageless Insight",
+        "Temple Bell",
+        "The Second Doctor"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-3-hood-0",
       "level": 1,
-      "parent": "city-5",
-      "label": "CHEAP OR FREE",
+      "parent": "city-3",
+      "label": null,
+      "fallback": "Value",
+      "cx": -0.23525,
+      "cy": -0.51567,
+      "count": 7,
+      "cards": [
+        "Alhammarret's Archive",
+        "Consecrated Sphinx",
+        "Faerie Mastermind",
+        "Kwain, Itinerant Meddler",
+        "Loran of the Third Path",
+        "Teferi's Ageless Insight",
+        "Temple Bell"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-3-hood-1",
+      "level": 1,
+      "parent": "city-3",
+      "label": null,
+      "fallback": "Card Flow",
+      "cx": -0.14994,
+      "cy": -0.25383,
+      "count": 9,
+      "cards": [
+        "Dictate of Kruphix",
+        "Font of Mythos",
+        "Forced Fruition",
+        "Howling Mine",
+        "Kami of the Crescent Moon",
+        "Mathemagics",
+        "Prosperity",
+        "Skyscribing",
+        "Stroke of Genius"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-3-hood-2",
+      "level": 1,
+      "parent": "city-3",
+      "label": null,
+      "fallback": "Finishers",
+      "cx": -0.24615,
+      "cy": -0.46985,
+      "count": 6,
+      "cards": [
+        "Approach of the Second Sun",
+        "Mystic Remora",
+        "Psychosis Crawler",
+        "Rhystic Study",
+        "Scrawling Crawler",
+        "The Second Doctor"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-4",
+      "level": 0,
+      "label": null,
       "fallback": "Card Flow II",
-      "cx": -0.46038,
-      "cy": 0.62492,
+      "cx": -0.74034,
+      "cy": 0.21814,
       "count": 7,
       "cards": [
         "Arcane Denial",
@@ -1486,656 +1400,661 @@
         "Force of Negation",
         "Swan Song"
       ],
-      "verified_count": 3,
-      "gloss": "Seven counters, two of them free, which is how you deploy an engine and still say no."
+      "verified_count": 3
     },
     {
-      "id": "city-5-hood-1",
+      "id": "city-4-hood-0",
+      "level": 1,
+      "parent": "city-4",
+      "label": null,
+      "fallback": "Card Flow II",
+      "cx": -0.74034,
+      "cy": 0.21814,
+      "count": 7,
+      "cards": [
+        "Arcane Denial",
+        "Archmage's Charm",
+        "Counterspell",
+        "Dovin's Veto",
+        "Fierce Guardianship",
+        "Force of Negation",
+        "Swan Song"
+      ],
+      "verified_count": 3
+    },
+    {
+      "id": "city-5",
+      "level": 0,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": -0.14324,
+      "cy": 0.76149,
+      "count": 6,
+      "cards": [
+        "Cathar Commando",
+        "Day of Judgment",
+        "Disenchant",
+        "Path to Exile",
+        "Supreme Verdict",
+        "Swords to Plowshares"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": "THE RESET",
-      "fallback": "Interaction II",
-      "cx": -0.85736,
-      "cy": 0.42157,
-      "count": 2,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": -0.14324,
+      "cy": 0.76149,
+      "count": 6,
       "cards": [
-        "Cyclonic Rift",
-        "Hullbreaker Horror"
+        "Cathar Commando",
+        "Day of Judgment",
+        "Disenchant",
+        "Path to Exile",
+        "Supreme Verdict",
+        "Swords to Plowshares"
       ],
-      "verified_count": 1,
-      "gloss": "Both undo a board at seven mana; one is also the loop the verified kill runs on."
+      "verified_count": 0
     }
   ],
   "edges": [
     {
       "a": 0,
-      "b": 59,
+      "b": 61,
       "d": 0.1433
     },
     {
       "a": 0,
-      "b": 78,
-      "d": 0.1601
+      "b": 32,
+      "d": 0.1604
     },
     {
       "a": 1,
-      "b": 5,
-      "d": 0.0143
-    },
-    {
-      "a": 1,
-      "b": 62,
+      "b": 65,
       "d": 0.035
     },
     {
-      "a": 2,
-      "b": 21,
-      "d": 0.0905
+      "a": 1,
+      "b": 11,
+      "d": 0.036
     },
     {
       "a": 2,
-      "b": 35,
-      "d": 0.1249
-    },
-    {
-      "a": 3,
-      "b": 72,
+      "b": 74,
       "d": 0.0316
     },
     {
-      "a": 3,
+      "a": 2,
       "b": 12,
       "d": 0.0665
     },
     {
-      "a": 4,
-      "b": 64,
+      "a": 3,
+      "b": 67,
       "d": 0.1652
     },
     {
-      "a": 4,
-      "b": 7,
+      "a": 3,
+      "b": 5,
       "d": 0.23
     },
     {
-      "a": 5,
-      "b": 11,
-      "d": 0.0367
-    },
-    {
-      "a": 6,
-      "b": 60,
+      "a": 4,
+      "b": 62,
       "d": 0.1068
     },
     {
-      "a": 6,
-      "b": 38,
-      "d": 0.1214
+      "a": 4,
+      "b": 69,
+      "d": 0.1294
     },
     {
-      "a": 7,
-      "b": 81,
+      "a": 5,
+      "b": 7,
       "d": 0.0295
     },
     {
-      "a": 7,
+      "a": 5,
       "b": 13,
       "d": 0.0407
     },
     {
-      "a": 8,
-      "b": 9,
+      "a": 6,
+      "b": 17,
+      "d": 0.0167
+    },
+    {
+      "a": 6,
+      "b": 8,
       "d": 0.0245
     },
     {
-      "a": 8,
-      "b": 65,
-      "d": 0.0246
+      "a": 7,
+      "b": 26,
+      "d": 0.0395
     },
     {
-      "a": 9,
-      "b": 65,
+      "a": 8,
+      "b": 68,
       "d": 0.0098
     },
     {
-      "a": 10,
-      "b": 79,
-      "d": 0.1085
+      "a": 9,
+      "b": 83,
+      "d": 0.1006
     },
     {
-      "a": 10,
+      "a": 9,
       "b": 41,
       "d": 0.1127
     },
     {
+      "a": 10,
+      "b": 21,
+      "d": 0.0464
+    },
+    {
+      "a": 10,
+      "b": 52,
+      "d": 0.0695
+    },
+    {
       "a": 11,
-      "b": 44,
+      "b": 45,
       "d": 0.0114
     },
     {
-      "a": 1,
-      "b": 11,
-      "d": 0.036
-    },
-    {
       "a": 12,
-      "b": 23,
+      "b": 25,
       "d": 0.0348
     },
     {
       "a": 12,
-      "b": 72,
+      "b": 74,
       "d": 0.0462
     },
     {
       "a": 13,
-      "b": 24,
+      "b": 26,
       "d": 0.0155
     },
     {
       "a": 13,
-      "b": 19,
+      "b": 22,
       "d": 0.0195
     },
     {
       "a": 14,
-      "b": 34,
-      "d": 0.0603
-    },
-    {
-      "a": 14,
-      "b": 17,
+      "b": 20,
       "d": 0.2098
     },
     {
-      "a": 15,
-      "b": 61,
-      "d": 0.0002
+      "a": 7,
+      "b": 14,
+      "d": 0.2154
     },
     {
       "a": 15,
-      "b": 30,
-      "d": 0.0038
+      "b": 64,
+      "d": 0.0558
+    },
+    {
+      "a": 15,
+      "b": 84,
+      "d": 0.07
     },
     {
       "a": 16,
-      "b": 27,
-      "d": 0.0326
+      "b": 70,
+      "d": 0.0377
     },
     {
       "a": 16,
-      "b": 29,
-      "d": 0.04
+      "b": 21,
+      "d": 0.1341
     },
     {
       "a": 17,
-      "b": 37,
-      "d": 0.1043
-    },
-    {
-      "a": 17,
-      "b": 56,
-      "d": 0.1142
+      "b": 80,
+      "d": 0.0146
     },
     {
       "a": 18,
-      "b": 55,
-      "d": 0.1129
+      "b": 63,
+      "d": 0.0002
     },
     {
       "a": 18,
       "b": 31,
-      "d": 0.1138
+      "d": 0.0038
     },
     {
       "a": 19,
       "b": 28,
-      "d": 0.0169
-    },
-    {
-      "a": 20,
-      "b": 31,
-      "d": 0.0543
-    },
-    {
-      "a": 20,
-      "b": 55,
-      "d": 0.0804
-    },
-    {
-      "a": 21,
-      "b": 35,
       "d": 0.0326
     },
     {
+      "a": 19,
+      "b": 30,
+      "d": 0.04
+    },
+    {
+      "a": 20,
+      "b": 57,
+      "d": 0.1142
+    },
+    {
+      "a": 20,
+      "b": 69,
+      "d": 0.1145
+    },
+    {
       "a": 21,
-      "b": 79,
-      "d": 0.0653
+      "b": 72,
+      "d": 0.0562
     },
     {
       "a": 22,
-      "b": 50,
-      "d": 0.018
-    },
-    {
-      "a": 5,
-      "b": 22,
-      "d": 0.0549
+      "b": 29,
+      "d": 0.0169
     },
     {
       "a": 23,
-      "b": 58,
-      "d": 0.0677
+      "b": 51,
+      "d": 0.018
+    },
+    {
+      "a": 1,
+      "b": 23,
+      "d": 0.0627
     },
     {
       "a": 24,
-      "b": 28,
+      "b": 50,
+      "d": 0.0186
+    },
+    {
+      "a": 24,
+      "b": 43,
+      "d": 0.036
+    },
+    {
+      "a": 25,
+      "b": 60,
+      "d": 0.0677
+    },
+    {
+      "a": 26,
+      "b": 29,
       "d": 0.0249
     },
     {
-      "a": 25,
-      "b": 84,
+      "a": 27,
+      "b": 36,
       "d": 0.109
     },
     {
-      "a": 25,
-      "b": 44,
+      "a": 27,
+      "b": 45,
       "d": 0.1319
     },
     {
-      "a": 26,
-      "b": 37,
-      "d": 0.0622
-    },
-    {
-      "a": 26,
-      "b": 75,
-      "d": 0.064
-    },
-    {
-      "a": 27,
-      "b": 29,
+      "a": 28,
+      "b": 30,
       "d": 0.0352
     },
     {
       "a": 13,
-      "b": 28,
+      "b": 29,
       "d": 0.0217
     },
     {
-      "a": 30,
-      "b": 61,
+      "a": 31,
+      "b": 63,
       "d": 0.0035
     },
     {
-      "a": 31,
-      "b": 55,
-      "d": 0.0751
-    },
-    {
       "a": 32,
-      "b": 54,
-      "d": 0.0095
-    },
-    {
-      "a": 30,
-      "b": 32,
-      "d": 0.0154
+      "b": 39,
+      "d": 0.1484
     },
     {
       "a": 33,
-      "b": 39,
-      "d": 0.0423
+      "b": 55,
+      "d": 0.0095
     },
     {
-      "a": 16,
+      "a": 31,
       "b": 33,
-      "d": 0.0502
+      "d": 0.0154
     },
     {
-      "a": 28,
-      "b": 34,
-      "d": 0.1695
+      "a": 34,
+      "b": 81,
+      "d": 0.0528
+    },
+    {
+      "a": 34,
+      "b": 47,
+      "d": 0.1047
     },
     {
       "a": 35,
-      "b": 79,
-      "d": 0.0443
+      "b": 38,
+      "d": 0.0423
+    },
+    {
+      "a": 19,
+      "b": 35,
+      "d": 0.0502
     },
     {
       "a": 36,
-      "b": 53,
+      "b": 48,
+      "d": 0.0506
+    },
+    {
+      "a": 36,
+      "b": 59,
+      "d": 0.0563
+    },
+    {
+      "a": 37,
+      "b": 54,
       "d": 0.0148
     },
     {
-      "a": 36,
-      "b": 62,
+      "a": 37,
+      "b": 65,
       "d": 0.0172
     },
     {
-      "a": 29,
-      "b": 37,
-      "d": 0.0527
-    },
-    {
-      "a": 37,
-      "b": 45,
-      "d": 0.0532
-    },
-    {
-      "a": 37,
+      "a": 19,
       "b": 38,
-      "d": 0.0657
-    },
-    {
-      "a": 29,
-      "b": 38,
-      "d": 0.077
-    },
-    {
-      "a": 16,
-      "b": 39,
       "d": 0.0707
     },
     {
-      "a": 40,
+      "a": 39,
+      "b": 42,
+      "d": 0.1246
+    },
+    {
+      "a": 39,
       "b": 75,
+      "d": 0.1288
+    },
+    {
+      "a": 40,
+      "b": 76,
       "d": 0.0807
     },
     {
       "a": 40,
-      "b": 43,
+      "b": 44,
       "d": 0.1109
     },
     {
       "a": 41,
-      "b": 55,
+      "b": 56,
       "d": 0.0885
     },
     {
       "a": 42,
-      "b": 49,
-      "d": 0.0108
-    },
-    {
-      "a": 42,
-      "b": 82,
-      "d": 0.036
+      "b": 75,
+      "d": 0.1307
     },
     {
       "a": 43,
-      "b": 75,
+      "b": 50,
+      "d": 0.0108
+    },
+    {
+      "a": 44,
+      "b": 76,
       "d": 0.1315
     },
     {
-      "a": 5,
-      "b": 44,
-      "d": 0.0537
+      "a": 1,
+      "b": 45,
+      "d": 0.0551
     },
     {
-      "a": 27,
-      "b": 45,
+      "a": 28,
+      "b": 46,
       "d": 0.0451
     },
     {
-      "a": 29,
-      "b": 45,
+      "a": 30,
+      "b": 46,
       "d": 0.046
     },
     {
-      "a": 17,
-      "b": 46,
-      "d": 0.1396
+      "a": 47,
+      "b": 82,
+      "d": 0.0606
     },
     {
-      "a": 41,
-      "b": 46,
-      "d": 0.1515
+      "a": 48,
+      "b": 59,
+      "d": 0.0453
     },
     {
       "a": 11,
-      "b": 47,
+      "b": 48,
       "d": 0.0464
     },
     {
-      "a": 47,
-      "b": 84,
-      "d": 0.0506
-    },
-    {
-      "a": 48,
-      "b": 58,
+      "a": 49,
+      "b": 60,
       "d": 0.061
     },
     {
-      "a": 48,
-      "b": 57,
+      "a": 49,
+      "b": 58,
       "d": 0.0968
     },
     {
-      "a": 49,
-      "b": 82,
-      "d": 0.0186
-    },
-    {
-      "a": 5,
-      "b": 50,
-      "d": 0.0701
-    },
-    {
-      "a": 51,
-      "b": 70,
-      "d": 0.0493
-    },
-    {
-      "a": 51,
-      "b": 68,
-      "d": 0.1613
+      "a": 1,
+      "b": 51,
+      "d": 0.0809
     },
     {
       "a": 52,
-      "b": 59,
+      "b": 72,
+      "d": 0.0493
+    },
+    {
+      "a": 21,
+      "b": 52,
+      "d": 0.0603
+    },
+    {
+      "a": 53,
+      "b": 61,
       "d": 0.0091
     },
     {
       "a": 0,
-      "b": 52,
+      "b": 53,
       "d": 0.1732
     },
     {
-      "a": 53,
-      "b": 62,
+      "a": 54,
+      "b": 65,
       "d": 0.0311
     },
     {
-      "a": 30,
-      "b": 54,
+      "a": 31,
+      "b": 55,
       "d": 0.0064
     },
     {
-      "a": 15,
-      "b": 54,
+      "a": 18,
+      "b": 55,
       "d": 0.0082
     },
     {
-      "a": 45,
-      "b": 56,
+      "a": 56,
+      "b": 83,
+      "d": 0.1119
+    },
+    {
+      "a": 46,
+      "b": 57,
       "d": 0.0471
     },
     {
-      "a": 29,
-      "b": 56,
+      "a": 30,
+      "b": 57,
       "d": 0.0554
     },
     {
-      "a": 57,
-      "b": 58,
+      "a": 58,
+      "b": 60,
       "d": 0.0675
     },
     {
-      "a": 57,
-      "b": 60,
+      "a": 58,
+      "b": 62,
       "d": 0.0755
     },
     {
-      "a": 58,
-      "b": 72,
+      "a": 11,
+      "b": 59,
+      "d": 0.0437
+    },
+    {
+      "a": 60,
+      "b": 74,
       "d": 0.0626
     },
     {
-      "a": 56,
-      "b": 63,
+      "a": 64,
+      "b": 84,
+      "d": 0.0336
+    },
+    {
+      "a": 57,
+      "b": 66,
       "d": 0.0766
     },
     {
-      "a": 45,
-      "b": 63,
+      "a": 46,
+      "b": 66,
       "d": 0.0787
     },
     {
-      "a": 9,
-      "b": 64,
+      "a": 8,
+      "b": 67,
       "d": 0.1269
     },
     {
-      "a": 64,
-      "b": 65,
-      "d": 0.1308
-    },
-    {
-      "a": 12,
-      "b": 66,
-      "d": 0.0857
-    },
-    {
-      "a": 66,
-      "b": 72,
-      "d": 0.0898
-    },
-    {
-      "a": 45,
+      "a": 17,
       "b": 67,
-      "d": 0.0528
+      "d": 0.1295
     },
     {
-      "a": 37,
-      "b": 67,
-      "d": 0.0602
+      "a": 6,
+      "b": 68,
+      "d": 0.0246
     },
     {
-      "a": 68,
-      "b": 70,
-      "d": 0.1867
-    },
-    {
-      "a": 13,
+      "a": 46,
       "b": 69,
-      "d": 0.0684
+      "d": 0.0528
     },
     {
       "a": 28,
       "b": 69,
+      "d": 0.0604
+    },
+    {
+      "a": 21,
+      "b": 70,
+      "d": 0.0992
+    },
+    {
+      "a": 13,
+      "b": 71,
+      "d": 0.0684
+    },
+    {
+      "a": 29,
+      "b": 71,
       "d": 0.0742
     },
     {
-      "a": 70,
-      "b": 80,
-      "d": 0.1525
-    },
-    {
-      "a": 9,
-      "b": 71,
+      "a": 8,
+      "b": 73,
       "d": 0.0258
     },
     {
-      "a": 8,
-      "b": 71,
+      "a": 6,
+      "b": 73,
       "d": 0.0376
     },
     {
-      "a": 27,
-      "b": 72,
+      "a": 28,
+      "b": 74,
       "d": 0.0409
     },
     {
-      "a": 41,
-      "b": 73,
-      "d": 0.2219
-    },
-    {
-      "a": 55,
-      "b": 73,
-      "d": 0.2307
-    },
-    {
-      "a": 58,
-      "b": 74,
-      "d": 0.1673
-    },
-    {
-      "a": 74,
-      "b": 80,
-      "d": 0.186
-    },
-    {
-      "a": 27,
-      "b": 75,
+      "a": 28,
+      "b": 76,
       "d": 0.0735
     },
     {
-      "a": 57,
+      "a": 19,
       "b": 76,
-      "d": 0.0806
+      "d": 0.0739
     },
     {
-      "a": 58,
-      "b": 76,
-      "d": 0.0982
-    },
-    {
-      "a": 65,
+      "a": 63,
       "b": 77,
-      "d": 0.0252
-    },
-    {
-      "a": 9,
-      "b": 77,
-      "d": 0.0332
+      "d": 0.0218
     },
     {
       "a": 18,
-      "b": 78,
-      "d": 0.1247
-    },
-    {
-      "a": 72,
-      "b": 80,
-      "d": 0.1179
-    },
-    {
-      "a": 3,
-      "b": 80,
-      "d": 0.1258
-    },
-    {
-      "a": 24,
-      "b": 81,
-      "d": 0.0395
-    },
-    {
-      "a": 61,
-      "b": 83,
+      "b": 77,
       "d": 0.0218
+    },
+    {
+      "a": 41,
+      "b": 78,
+      "d": 0.1476
     },
     {
       "a": 15,
-      "b": 83,
-      "d": 0.0218
+      "b": 78,
+      "d": 0.1567
     },
     {
-      "a": 83,
-      "b": 84,
-      "d": 0.0573
+      "a": 58,
+      "b": 79,
+      "d": 0.0806
+    },
+    {
+      "a": 60,
+      "b": 79,
+      "d": 0.0982
+    },
+    {
+      "a": 68,
+      "b": 80,
+      "d": 0.0252
+    },
+    {
+      "a": 64,
+      "b": 81,
+      "d": 0.1013
+    },
+    {
+      "a": 34,
+      "b": 82,
+      "d": 0.1161
     }
   ]
 }
