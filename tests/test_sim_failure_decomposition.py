@@ -101,3 +101,60 @@ def test_an_experiments_arm_B_is_excluded():
     import inspect
     src = inspect.getsource(failure._logs)
     assert "b-part" in src and "not in" in src
+
+
+# ── The keyword must land on something YOU control ────────────────────────
+#
+# The first cut matched a protection word anywhere in the text. On a real
+# 46-card pile that scored six of the thirteen top-ranked cards for protecting
+# something other than the commander — in a ranking about to decide a purchase.
+
+@pytest.mark.parametrize("name,text", [
+    ("Thassa, God of the Sea", "Indestructible\nAs long as your devotion to blue "
+     "is less than five, Thassa isn't a creature."),
+    ("Aegis of the Gods", "You have hexproof."),
+    ("Dragonlord Ojutai", "Flying\nDragonlord Ojutai has hexproof as long as "
+     "it's untapped."),
+    ("Darksteel Sentinel", "Flash\nVigilance\nIndestructible"),
+    ("Defender of Law", "Flash\nProtection from red"),
+    ("Seht's Tiger", "Flash\nWhen this creature enters, you gain protection from "
+     "the color of your choice until end of turn."),
+])
+def test_protection_a_card_gives_ITSELF_or_YOU_scores_nothing(name, text):
+    """Six real cards from one pile. A God that is itself indestructible does
+    not keep the commander alive, and 'You have hexproof' is the player."""
+    assert failure.coverage(text, D) is None, name
+
+
+@pytest.mark.parametrize("name,text", [
+    ("Teferi's Protection", "Your life total can't change. You gain protection "
+     "from everything. All permanents you control phase out."),
+    ("Guardian of Faith", "Flash\nVigilance\nWhen this creature enters, any number "
+     "of other target creatures you control phase out."),
+    ("Spectacular Spider-Man", "Flash\n{1}: Spectacular Spider-Man gains flying "
+     "until end of turn.\n{1}, Sacrifice Spectacular Spider-Man: Creatures you "
+     "control gain hexproof and indestructible until end of turn."),
+    ("Lightning Greaves", "Equipped creature has haste and shroud.\nEquip {0}"),
+])
+def test_protection_GRANTED_to_what_you_control_does_score(name, text):
+    assert failure.coverage(text, D) is not None, name
+
+
+def test_permanents_counts_as_well_as_creatures():
+    """THE FALSE NEGATIVE THE FIX INTRODUCED, caught by checking the new rule
+    against a card whose answer was already known. Teferi's Protection — the
+    card already in this deck and the reference case for the whole column —
+    phases out PERMANENTS, and a creature-only grant list scored it at nothing.
+
+    That is the only way a false negative in a filter like this ever surfaces:
+    a positive control that must keep passing."""
+    tp = failure.coverage("All permanents you control phase out.", D)
+    assert tp is not None and tp["stops"] == ["targeted", "mass"]
+
+
+def test_a_keyword_on_one_line_does_not_bless_a_grant_on_another():
+    """Sentence-scoped. Spectacular Spider-Man carries Flash on line one and
+    grants hexproof on line three; a card carrying Flash and granting NOTHING
+    must not inherit a score from the keyword sitting elsewhere."""
+    assert failure.coverage("Flash\nVigilance\nWhen this creature enters, draw a "
+                            "card.", D) is None

@@ -122,33 +122,76 @@ def commander_departures(slug, commander):
 #: WHAT A CARD CAN ACTUALLY STOP, and the four answers are not interchangeable.
 #:
 #: PHASING is the strongest: phase out in response and a targeted spell fizzles
-#: for want of a legal target, and a wipe finds nothing to destroy. It covers
-#: both classes.
-#: PROTECTION FROM EVERYTHING covers both for the same reason — it cannot be
-#: targeted, and damage is prevented.
-#: INDESTRUCTIBLE covers only DESTROY. It does nothing about exile, bounce or
-#: sacrifice, and 33 of this deck's 119 departures were EXILE — so its share is
+#: for want of a legal target, and a wipe finds nothing to destroy. Both classes.
+#: PROTECTION FROM EVERYTHING covers both, for the same reason.
+#: INDESTRUCTIBLE covers DESTROY only — nothing about exile, bounce or
+#: sacrifice, and 33 of heliod's 119 departures were EXILE. Its share is
 #: discounted by the graveyard fraction rather than credited in full. Getting
-#: this wrong would have priced Mithril Coat identically to Guardian of Faith.
+#: this wrong would price Mithril Coat identically to Guardian of Faith.
 #: HEXPROOF and SHROUD stop targeting and nothing else. A wipe does not target.
+#:
+#: THE KEYWORD MUST BE GRANTED TO A CREATURE YOU CONTROL. The first cut matched
+#: the word anywhere in the text, and on a real 46-card pile that scored:
+#:
+#:   Thassa, God of the Sea    "Indestructible"           — the GOD is, not yours
+#:   Aegis of the Gods         "You have hexproof"        — the PLAYER, not a creature
+#:   Dragonlord Ojutai         "Ojutai has hexproof"      — itself
+#:   Darksteel Sentinel        "Indestructible", 6 mana   — itself
+#:   Defender of Law           "Protection from red"      — itself
+#:   Seht's Tiger              "you gain protection"      — the player again
+#:
+#: Six of thirteen top-ranked cards were protecting something other than the
+#: commander, in a ranking about to choose what to buy. A keyword is only an
+#: answer here if it lands on a creature you control.
+#: PERMANENTS, not just creatures. Teferi's Protection — the card already IN
+#: this deck and the reference case for the whole column — says "All permanents
+#: you control phase out", and a creature-only grant list scored the deck's own
+#: best protection card at nothing. Caught by checking the new rule against a
+#: card whose answer was already known, which is the only way that class of
+#: false NEGATIVE ever surfaces.
+_GRANT = (r"(?:target |another target |other |each |all )?"
+          r"(?:creature|permanent)s? you control"
+          r"|equipped creature|enchanted creature|commanders? you control"
+          r"|target creature")
+_SELF_OR_PLAYER = re.compile(r"^\s*(?:you (?:have|gain)|players? (?:have|gain))", re.I)
+
 _PHASES = re.compile(r"phase(?:s)? out|phasing", re.I)
 _PROT_ALL = re.compile(r"protection from everything", re.I)
 _INDESTRUCTIBLE = re.compile(r"indestructible", re.I)
 _UNTARGETABLE = re.compile(r"hexproof|shroud|can't be the target|protection from", re.I)
 
 
+def _sentences(text):
+    return [x.strip() for x in re.split(r"(?<=[.;])\s+|\n", str(text or "")) if x.strip()]
+
+
+def _granted(text, keyword_re):
+    """Does this card put `keyword_re` onto a creature YOU CONTROL?
+
+    Sentence-scoped, because a card can carry a keyword itself in one line and
+    grant a different one in another — Spectacular Spider-Man has Flash on line
+    one and grants hexproof and indestructible on line three.
+    """
+    for sent in _sentences(text):
+        if not keyword_re.search(sent):
+            continue
+        if _SELF_OR_PLAYER.match(sent):
+            continue                                  # "You have hexproof"
+        if re.search(_GRANT, sent, re.I):
+            return True
+    return False
+
+
 def what_a_card_answers(text):
     """(stops_targeted, stops_mass, destroy_only) from the card's own text."""
     t = str(text or "")
-    if _PHASES.search(t) or _PROT_ALL.search(t):
+    if _granted(t, _PHASES) or _granted(t, _PROT_ALL):
         return True, True, False
-    if _INDESTRUCTIBLE.search(t):
+    if _granted(t, _INDESTRUCTIBLE):
         return True, True, True
-    if _UNTARGETABLE.search(t):
+    if _granted(t, _UNTARGETABLE):
         return True, False, False
     return False, False, False
-
-
 def coverage(text, decomposition):
     """The SHARE of this deck's measured commander losses a card could address.
 
