@@ -1,0 +1,262 @@
+{
+ "slug": "heliod",
+ "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
+ "emergency": [
+  {
+   "condition": "removal",
+   "condition_text": "Heliod is targeted, or the answer you just cast is being answered.",
+   "indications": [
+    "A removal spell is on the stack and Heliod is the target.",
+    "The stack is two objects deep and both of them are yours to lose — your answer, and their answer to it.",
+    "One opponent has held two or more mana open across a full turn cycle and cast nothing.",
+    "Heliod has been on the battlefield a full turn and Lightning Greaves is not equipped to him."
+   ],
+   "immediate": [
+    "Count the untapped mana at every seat before you respond. Say the numbers out loud.",
+    "If Heliod is the target and you hold Karametra's Blessing, cast it for {W}. He is an enchantment creature on both faces, so he gains hexproof and indestructible until end of turn.",
+    "If you hold Guardian of Faith instead, cast it for {1}{W}{W} and phase out Heliod and every other creature you want out of range. It has flash.",
+    "If you hold neither, let Heliod go. Keep the counterspell for a spell that wins the game or kills you."
+   ],
+   "subsequent": [
+    "Equip Lightning Greaves to Heliod on your next main phase. Equip costs {0}.",
+    "Move the Greaves off before you cast Karametra's Blessing or Guardian of Faith — both target, and shroud stops your targeting too.",
+    "Recast Heliod for {2}{W}{W} when the enters trigger is worth the tax: it returns one non-God enchantment from your graveyard to your hand, and nine of them are in the 99.",
+    "Keep casting without him. Leyline of Anticipation grants the same flash and does not read the commander."
+   ],
+   "notes": "Indestructible stops “destroy” and nothing else. 33 of Heliod's 119 logged departures were to exile, and Karametra's Blessing covers those only through its hexproof half — against a sweeper that exiles, phase him out with Guardian of Faith or Teferi's Protection instead.",
+   "grounded_in": [
+    "log:001"
+   ]
+  },
+  {
+   "condition": "wipe",
+   "condition_text": "A sweeper is on the stack, or a seat is holding four mana and has not cast anything.",
+   "indications": [
+    "Two or more opponents have committed creatures and one of them is holding four or more mana.",
+    "You control more than one creature.",
+    "Heliod is on the battlefield. 57 of his 119 logged departures came from a mass effect, against 41 from a targeted spell.",
+    "Your board is enchantments, artifacts and lands — a wrath costs you nothing."
+   ],
+   "immediate": [
+    "Count your own permanents a wrath would kill. In 120 logged games this seat lost 1.33 creatures a game on the mean, median 0.",
+    "If the count is one or two and none of them is Heliod, let it resolve. Day of Judgment and Supreme Verdict do not read your enchantments or your artifacts.",
+    "If Heliod is on the battlefield and you hold Guardian of Faith, cast it for {1}{W}{W} while the sweeper is on the stack and phase him out.",
+    "If your whole board is the plan, cast Teferi's Protection for {2}{W}: every permanent you control phases out and your life total cannot change until your next turn.",
+    "Do not counter a sweeper that kills three boards and one of your creatures."
+   ],
+   "subsequent": [
+    "Recast Heliod if he died. The enters trigger returns a non-God enchantment from your graveyard, and the deck runs nine.",
+    "Rebuild to two permanents, not five. The win is a card, not a board.",
+    "When you are the one casting it, cast Supreme Verdict rather than Day of Judgment into an open blue seat — Supreme Verdict cannot be countered.",
+    "Wrath your own board on the turn you intend to resolve Approach, and count Kefnet the Mindful as a survivor: he is indestructible."
+   ],
+   "notes": "Kefnet survives both of your own sweepers and still cannot block below seven cards in hand. Reliquary Tower, Decanter of Endless Water and The Second Doctor are what keep the hand that size.",
+   "grounded_in": []
+  },
+  {
+   "condition": "raced",
+   "condition_text": "A flying board is turning sideways at you and you have nothing on the ground that blocks it.",
+   "indications": [
+    "Every creature at one seat flies.",
+    "You control no untapped flier and no taxer.",
+    "Kefnet the Mindful is on the battlefield and your hand is below seven cards, so he cannot block.",
+    "You are on the lowest life total and nobody has attacked the largest board."
+   ],
+   "immediate": [
+    "Count the attackers and the damage against your life total before you spend anything.",
+    "If one flier is doing the damage, exile it: Swords to Plowshares for {W} or Path to Exile for {W}. Eiganjo's channel deals 4 damage to an attacking creature for {2}{W} from your hand, {1} less for each legendary creature you control.",
+    "If the whole board is coming and you hold Cyclonic Rift, overload it for {6}{U} at their beginning of combat.",
+    "Block with Angelic Wall, Drift of Phantasms, Archangel of Tithes, Consecrated Sphinx or Faerie Mastermind. Those five and Kefnet are every flier in the 99, and no card in it has reach.",
+    "Keep Archangel of Tithes untapped. Its tax applies only while it is untapped, and it charges {1} for each attacking creature."
+   ],
+   "subsequent": [
+    "Get a taxer down. Propaganda, Ghostly Prison and Archangel of Tithes assemble as a group in 0.487 of goldfish games and 0.355 by turn six.",
+    "Spend Enlightened Tutor for {W} on Ghostly Prison rather than on a draw engine while you are being attacked. Take Prison over Propaganda when your open mana is white.",
+    "Cast The Second Doctor for {2}{W}{U}. Each opponent who takes the end-step card cannot attack you or your permanents during their next turn.",
+    "Hold Secure the Wastes for {X}{W} at their end step when you need blockers rather than a board."
+   ],
+   "notes": "The Forge figures behind this page come from the 120-game run whose heliod seat is decklist decc32b080fe — v1.0.0, before the fliers and the taxers went in. giada-angels dealt 39 of the 74 eliminations that run recorded, 53 of the 74 as damage. That is why these cards are in the deck; it is not a measurement of them.",
+   "grounded_in": []
+  },
+  {
+   "condition": "politics",
+   "condition_text": "The first Approach of the Second Sun has resolved. You gained 7 life in front of the table and the card is seventh from the top.",
+   "indications": [
+    "Your life total went up by 7 on your own turn and nothing attacked.",
+    "One opponent has kept blue or white mana open every turn since.",
+    "The table has stopped attacking the largest board and started attacking you.",
+    "You hold Mystical Tutor or Long-Term Plans."
+   ],
+   "immediate": [
+    "Say nothing about Approach. Do not count your library out loud.",
+    "Name the seat that can counter you and count its untapped mana at every upkeep from here.",
+    "If you hold Long-Term Plans, cast it now for {2}{U} and bury Approach third from the top. That is three draws rather than seven.",
+    "If you hold Mystical Tutor, hold it. Cast it for {U} at the end step before the turn you can pay {6}{W} and a counterspell — not sooner.",
+    "Keep {U} open for Swan Song, or {W}{U} for Dovin's Veto, every turn cycle until you commit."
+   ],
+   "subsequent": [
+    "Bank the mana. Approach costs {6}{W} and mean available mana crosses 7 between turn 8 (6.966) and turn 9 (7.612).",
+    "Flip Heliod for {3}{U/P} before the commit turn. His back face cuts {1} from each spell for each card your opponents drew this turn, and lets you cast at instant speed.",
+    "Cast Supreme Verdict or Day of Judgment first if a board can kill you before you untap again. You keep Kefnet, your enchantments and your artifacts.",
+    "Cast the second Approach on a turn you can also pay for a counterspell, and cast nothing else that turn."
+   ],
+   "notes": "The stack is the only window. Verified stack 002: the win is checked during Approach's resolution as a spell effect, so once resolution begins no player has priority again — and Swan Song answers a spell only, never an activated or triggered ability.",
+   "grounded_in": []
+  },
+  {
+   "condition": "combo",
+   "condition_text": "A seat is assembling or executing a two-card win, and your own gift permanents are feeding it.",
+   "indications": [
+    "An opponent cast three or more spells in one turn.",
+    "A tutor resolved at a seat that has committed no board.",
+    "Forced Fruition is on your battlefield: each opponent spell draws that player seven cards.",
+    "Your answers are in hand and not payable. The goldfish measures interaction in hand at 0.927 on turn six against 0.626 castable."
+   ],
+   "immediate": [
+    "Stop developing. Hold the mana.",
+    "Name the piece that wins, not the largest permanent on the table.",
+    "Counter the first piece you can pay for. Force of Negation is free on any turn that is not yours if you exile a blue card from hand; Fierce Guardianship is free while Heliod is on the battlefield.",
+    "If Forced Fruition is yours and that seat is casting spells, destroy your own Forced Fruition: Disenchant for {1}{W}, Cathar Commando for {1} and a sacrifice, or Loran of the Third Path's enters trigger.",
+    "Do not activate Temple Bell or Mikokoro, and do not pay Faerie Mastermind's {3}{U}, while that seat is live."
+   ],
+   "subsequent": [
+    "Recount the table's open mana at every upkeep until the seat is dead.",
+    "Hold Dovin's Veto for the counter war. It cannot be countered.",
+    "Overload Cyclonic Rift for {6}{U} against a lock or a board — it answers permanents, never a spell on the stack.",
+    "Turn the table onto that seat. Say which card wins and how many mana it needs."
+   ],
+   "notes": "Fierce Guardianship's alternative cost needs Heliod on the battlefield, and across 120 logged pod games he was there in 0.567 of them. Count it as a free counter only when you can see him.",
+   "grounded_in": []
+  },
+  {
+   "condition": "mana-drought",
+   "condition_text": "You have missed a land drop and nothing in hand is castable with the mana you have.",
+   "indications": [
+    "You missed a land drop. The model measures 0.5194 of games missing one by turn five, CI95 [0.5096, 0.5292].",
+    "You have had a turn on which nothing in hand was castable. 786 of 792 measured stall turns were mana-short; 6 were hand-empty.",
+    "You are short of white. 25 W sources against a 36-source target, on-curve 0.610 from lands alone.",
+    "You are below seven mana and Approach costs {6}{W}."
+   ],
+   "immediate": [
+    "Play the land that makes the colour you are missing, not the one that has been in hand longest.",
+    "Cast the rock the turn you draw it: Sol Ring for {1}, Arcane Signet, Azorius Signet, Talisman of Progress or Thought Vessel for {2}.",
+    "Cast the cheapest gift permanent you can pay for. Howling Mine costs {2}, Kami of the Crescent Moon {U}{U}, Dictate of Kruphix {1}{U}{U} with flash — each hands you an extra card in your own draw step too.",
+    "Cast Smothering Tithe for {3}{W} ahead of any answer. Every opponent draw they decline to pay {2} for is a Treasure, and this deck manufactures those draws."
+   ],
+   "subsequent": [
+    "Stop holding a counterspell you cannot pay for. Spend the mana on a rock or a gift permanent instead.",
+    "Cast an X-spell rather than holding it once X reaches 2: Braingeyser, Stroke of Genius, Prosperity, Skyscribing and Mathemagics all turn spare mana into cards.",
+    "Flip Heliod for {3}{U/P} and pay the {U/P} with 2 life when blue is the colour you are short of.",
+    "Keep Eiganjo and Otawara as lands while you are short. Their channel costs {2}{W} and {3}{U} and neither is affordable on four mana."
+   ],
+   "notes": "Skycloud Expanse is counted in the 25 white and 26 blue sources and its coloured mode costs extra mana on top of the tap, so it cannot pay a coloured cost on curve. Read the ungated on-curve figures on the turn you need {W}{W}: 0.580 white, 0.610 blue.",
+   "grounded_in": []
+  },
+  {
+   "condition": "stalled",
+   "condition_text": "No gift permanent, no converter and no route to Approach, and another seat is ahead of you on mana.",
+   "indications": [
+    "No permanent you control makes an opponent draw.",
+    "You hold none of Approach, Mystical Tutor or Long-Term Plans. That group assembles in 0.495 of goldfish games and 0.361 by turn six.",
+    "Another seat has nine or more mana available.",
+    "Your hand is answers and nothing that produces."
+   ],
+   "immediate": [
+    "Cast the gift permanent, whichever one you hold. The group assembles in 0.92 of games at mean turn 2.461 — not having one down is the miss.",
+    "Cast Enlightened Tutor for {W} and take Rhystic Study, Smothering Tithe or Ghostly Prison. It searches for an artifact or enchantment, so it cannot find Approach.",
+    "Cast Long-Term Plans for {2}{U} and bury Approach third from the top. Five cards in the 99 search the library — Long-Term Plans, Mystical Tutor, Enlightened Tutor, Drift of Phantasms and Flooded Strand — and the first two are the ones that can name a sorcery of mana value 7.",
+    "Stop holding one-for-ones you have been given no target for. Cast the converter instead."
+   ],
+   "subsequent": [
+    "Convert the gift. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight and Alhammarret's Archive assemble as a group in 0.787 of games and 0.581 by turn six.",
+    "Cast Dig Through Time once four or more cards are in your graveyard and pay the delve cost.",
+    "Activate Mikokoro for {2} and Temple Bell for {T} on your own turn to dig, and accept that they dig for everybody.",
+    "Take the attrition route when Approach is out of reach. 7 of the 27 wins in the 120-game run read “all opponents have lost”."
+   ],
+   "notes": "Drift of Phantasms transmutes for {1}{U}{U} and finds any mana value 3 card — Rhystic Study, Propaganda, Ghostly Prison, Teferi's Protection, Fierce Guardianship and Force of Negation are all in range. It cannot find Approach, which is mana value 7.",
+   "grounded_in": []
+  }
+ ],
+ "normal": {
+  "preflight": {
+   "keep": [
+    "Two to five lands, and at least one that makes white.",
+    "One permanent that makes the table draw: Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain, Loran of the Third Path, The Second Doctor, Scrawling Crawler or Forced Fruition.",
+    "One answer you can pay for by turn three.",
+    "A rock — Sol Ring, Arcane Signet, Azorius Signet, Talisman of Progress or Thought Vessel — when you are on two lands."
+   ],
+   "ship": [
+    "Zero or one land, or six or more.",
+    "A hand whose only action costs more than four mana. Six cards in the 99 sit above mana value four.",
+    "A hand with no permanent that makes an opponent draw and no way to find one.",
+    "A hand kept for one named card. Eleven permanents start the gift; mulligan to the class."
+   ],
+   "note": "Keep for classes, not names: a land pair, one gift permanent, one answer. 0.981 of kept hands can act by turn three, and the free first mulligan costs one card."
+  },
+  "startup": {
+   "steps": [
+    "Turn one, play a land. Cast Sol Ring if you drew it, and Mystic Remora for {U} if you did not.",
+    "Turn two, put the cheapest gift permanent on the battlefield. Howling Mine costs {2}; Kami of the Crescent Moon costs {U}{U}.",
+    "Pay Mystic Remora's cumulative upkeep while it costs {1} or {2}, then let it go.",
+    "Turn three, cast Rhystic Study for {2}{U} ahead of any other three-drop.",
+    "Do not hold up mana before turn four. Interaction is castable in 0.320 of games on turn three and 0.626 on turn six."
+   ]
+  },
+  "assembly": {
+   "steps": [
+    "Gift first. A permanent that makes every opponent draw assembles in 0.92 of games at mean turn 2.461, the earliest of the eleven declared groups.",
+    "Converter second. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight or Alhammarret's Archive makes the symmetric gift one-sided. The group assembles in 0.787 of games, 0.581 by turn six.",
+    "Fort third. Propaganda, Ghostly Prison or Archangel of Tithes assembles in 0.487 of games and 0.355 by turn six — against 0.680 for the commander insurance, 0.750 for a flying blocker and 0.843 for held interaction, it is the group that arrives last and least.",
+    "Commander fourth. Cast Heliod for {2}{W}{W} on mean turn 4.221 and flip him for {3}{U/P} when the table has already drawn this turn.",
+    "Spend the first tutor on the fort or the converter, not on Approach. You cast Approach on turn eight at the earliest and the fort has to hold until then."
+   ]
+  },
+  "cruise": {
+   "steps": [
+    "Untap. Count your mana and subtract what one counterspell costs.",
+    "At each opponent's draw step, take the extra draws and take Smothering Tithe's Treasure when they decline to pay {2}.",
+    "Bill every opponent spell out loud: Rhystic Study's {1}, Mystic Remora's {4}. Every time.",
+    "On your own main phase, add one permanent. One, not three.",
+    "At the end step of the player before you, cast what Heliod's back face or Leyline of Anticipation lets you cast at instant speed.",
+    "Before you pass, leave {U} up for Swan Song or {W}{U} for Dovin's Veto."
+   ]
+  },
+  "closing": {
+   "steps": [
+    "Recognise the window: the first Approach has resolved, the second is in hand or on top, and you can pay {6}{W} with a counterspell still up.",
+    "Count every opponent's untapped mana. Name the seat that can say no.",
+    "Cast the second Approach and cast nothing else that turn.",
+    "Hold the counter for the stack. Once Approach begins to resolve nobody has priority again — verified stack 002.",
+    "Wait one turn when you cannot pay for both Approach and an answer and two seats have mana open.",
+    "Take the gamble from behind: when you are on the lowest life total and a seat is one turn from lethal, cast Approach into the open mana rather than waiting for a turn that does not get safer."
+   ]
+  }
+ },
+ "handling": {
+  "optics": [
+   "The gift reads as generosity, and the table prices it as one. Ten permanents hand everybody cards and none of them says what the group is for.",
+   "Offer the draw before anybody asks. The Second Doctor's end-step trigger buys peace outright: each opponent who takes the card cannot attack you or your permanents during their next turn.",
+   "Nothing you control looks like a clock. Across 120 logged games this seat dealt combat damage to players with mean 4.11 and median 0.5, and reached 21 commander damage in zero of them.",
+   "Cast Enlightened Tutor on turn one or two. The reveal tells the table almost nothing then, and tells them the whole plan on turn seven."
+  ],
+  "reveal": [
+   "Say the life gain on the first Approach and move on. Do not name the card.",
+   "Ask for Rhystic Study's {1} every time. That one question is how three seats learn to respect your open mana without you showing a card.",
+   "Cast Mystical Tutor at an end step rather than on your own main phase. The card lands on top either way and the timing says less.",
+   "Do not show a held answer to deter an attack. Propaganda and Ghostly Prison do that job for one card and charge {2} per attacker."
+  ],
+  "alliances": [
+   "Point at the seat with the flying board and keep pointing. In the 120-game run giada-angels dealt 39 of the 74 eliminations this seat suffered.",
+   "Let another player's board be the reason a wrath gets cast. You hold two sweepers and your own board is enchantments, artifacts and lands.",
+   "Trade the gift for a turn of peace. Name the seat you want to stop attacking you and hand them the card.",
+   "Do not counter a spell aimed at somebody else unless it wins the game or kills you."
+  ],
+  "targets": [
+   "Kill the flier that connected, not the largest creature. Swords to Plowshares and Path to Exile cost {W} each.",
+   "Answer the permanent that stops Approach or stops your draw before the one that is largest.",
+   "Answer an artifact or enchantment lock with Disenchant, Cathar Commando or Loran of the Third Path. Those three are the whole of it.",
+   "Save the overloaded Cyclonic Rift at {6}{U} for a board you cannot block or a lock built out of permanents.",
+   "Leave the seat that has not attacked you alone."
+  ]
+ }
+}
