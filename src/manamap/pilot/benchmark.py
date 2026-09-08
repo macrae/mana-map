@@ -218,6 +218,11 @@ def measure(slug):
         model_treasures=HARNESS["model_treasures"],
         model_combat=HARNESS["model_combat"],
         with_results=True,
+        # NO BAND. The frozen harness overrides every model flag so twelve decks
+        # are comparable — a band measured under those overrides would describe
+        # the harness, not the deck, and this caller discards it anyway. It is
+        # a second full simulation per declaring deck.
+        _band=False,
     )
     metrics = doc["metrics"]
     cards = load_deck_cards(slug)

@@ -4025,10 +4025,29 @@ class _Silent:
         pass
 
 
+#: The figures the band is reported on, as PATHS INTO THIS MODULE'S OWN metrics
+#: document. Headline speed, board and damage only — a declared commander
+#: ability moves those and not the mana or the opening hand, and a band on every
+#: row would bury the four that matter.
+#:
+#: NOT `candidates.OBJECTIVE_AXES`, which maps the DIAGNOSTIC's shape
+#: (`output.kill_by_turn`) and not the goldfish's (`combat.kill_by_turn_rate`).
+#: Reusing it returned an empty band in silence — every lookup missed and the
+#: block rendered with no rows, which reads as "no difference" rather than
+#: "nothing was read".
+BAND_ROWS = {
+    "kill_by_8":     ("combat", "kill_by_turn_rate", "8"),
+    "kill_by_10":    ("combat", "kill_by_turn_rate", "10"),
+    "board_power_6": ("combat", "mean_board_power_by_turn", "6"),
+    "damage_10":     ("combat", "mean_damage_by_turn", "10"),
+}
+
+
 def run(slug, iterations=None, seed=None, max_turn=None,
         model_treasures=None, model_combat=None, model_draw=None,
         model_sacrifice=None, with_results=False, branch=None,
-        doc=None, quiet=False, targets_override=None, model_colors=None):
+        doc=None, quiet=False, targets_override=None, model_colors=None,
+        _band=True, _targets_doc=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
 
     `model_treasures` and `model_combat` default to None, meaning READ THE
@@ -4080,13 +4099,36 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     declared_combat = False
     declared_draw = False
     declared_sacrifice = False
+    # AND DRAIN, which was bound only INSIDE the `targets_path.exists()` branch
+    # while its four siblings were bound outside — the comment below explains
+    # why they were lifted and drain was missed. Latent until something skipped
+    # the file read: a deck with no goldfish_targets.json raised
+    # UnboundLocalError, and so did the band's floor run, which supplies the
+    # declaration directly instead of reading it.
+    declared_drain = False
+    declared_deaths = None
     # Bound before the branch: a deck with no declaration still has colours,
     # and reading it only inside the `if` made every declaration-less deck
     # (which is the benchmark's whole fleet path) raise UnboundLocalError.
     targets_doc = {}
-    if targets_path.exists():
+    # `_targets_doc` REPLACES the file read, flags and all. `targets_override`
+    # only ever replaced the `targets` LIST, so it could not switch a declared
+    # commander ability off — which is the one thing the band run needs.
+    if _targets_doc is not None:
+        targets_doc = _targets_doc
+    elif targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
+
+    # UNCONDITIONAL ON THE DOCUMENT, NOT ON WHERE IT CAME FROM. The first cut of
+    # the band put this body inside the `elif`, so a caller supplying the
+    # declaration directly skipped every read in it — and `model_combat` /
+    # `model_draw` fell back to False. The floor run was then measuring a
+    # DIFFERENT MODEL rather than the same model with one ability off, which is
+    # the whole claim the band makes. It read kill_by_8 0.102 against a true
+    # floor of 0.219: the band would have blamed the ability for a gap that was
+    # mostly combat being switched off.
+    if targets_doc:
         # AN OVERRIDE MUST REACH THE SIMULATION, NOT JUST THE REPORT. The first
         # cut passed a modified declaration to the reporting layer while this
         # loop still read the file — so `target_turns` was indexed by the FILE's
@@ -4369,6 +4411,14 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               commander_pips=commander_pips))
             t.advance()
 
+    _metrics = aggregate(results, targets, max_turn, model_treasures,
+                         model_combat, model_draw, model_sacrifice,
+                         model_drain, attack_tutor)
+    _band_doc = _ability_band(slug, branch, targets_doc, _metrics, iterations,
+                              seed, max_turn, model_treasures, model_combat,
+                              model_draw, model_sacrifice,
+                              model_colors) if _band else None
+
     return {
         "meta": {
             "deck": slug,
@@ -4418,9 +4468,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                if model_drain and drain_unmodelled else {}),
             **({"death_rate": model_deaths} if model_deaths else {}),
         },
-        "metrics": aggregate(results, targets, max_turn, model_treasures,
-                             model_combat, model_draw, model_sacrifice,
-                             model_drain, attack_tutor),
+        "metrics": _metrics,
+        # THE BAND. See `_ability_band`. Absent unless the deck declares an
+        # ability the simulation cannot confirm.
+        **({"commander_ability_band": _band_doc} if _band_doc else {}),
         # OPT-IN, and default off so the returned document is byte-identical
         # to every tracked `goldfish_metrics.json`. Two tests compare `run`'s
         # output against the artifact directly, and they caught this the first
@@ -4430,6 +4481,90 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         # for the rows rather than the shared artifact growing a stdev key to
         # serve one caller.
         **({"_results": results} if with_results else {}),
+    }
+
+
+#: A declared commander ability the SIM CANNOT CONFIRM.
+#: `model_commander_animate` and `model_commander_attack_tutor` are AUTHORED —
+#: a human writes them into `goldfish_targets.json` because one card in the
+#: corpus has the ability and no pattern can find it. The model then applies
+#: them every turn it can afford to, and reports one number.
+_DECLARED_ABILITIES = ("model_commander_animate", "model_commander_attack_tutor")
+
+
+def _band_value(metrics, axis):
+    """One BAND_ROWS figure out of a metrics document, or None."""
+    block, key, turn = BAND_ROWS.get(axis, (None, None, None))
+    if not block:
+        return None
+    got = (metrics.get(block) or {}).get(key)
+    if turn and isinstance(got, dict):
+        got = got.get(turn)
+    return got if isinstance(got, (int, float)) else None
+
+
+def _ability_band(slug, branch, targets_doc, ceiling, iterations, seed, max_turn,
+                  model_treasures, model_combat, model_draw, model_sacrifice,
+                  model_colors):
+    """The same deck WITHOUT its declared commander abilities — the floor.
+
+    WHY A BAND AND NOT A NUMBER. zur-enchantress declares
+    `model_commander_animate` for Zur, Eternal Schemer's "{1}{W}: target non-Aura
+    enchantment becomes a creature with power and toughness equal to its mana
+    value". The goldfish activates it every turn it can afford. Forge's AI
+    activated it FIVE TIMES ACROSS 119 GAMES — 5% and 3% of the two runs that
+    played the right commander — because its evaluator cannot price a benefit
+    with no immediate board change.
+
+        kill_by_8      0.381 with the ability, 0.219 without
+        kill_by_10     0.888 with, 0.745 without
+        board_power_6  7.168 with, 6.313 without
+
+    Forty-three percent of the headline kill figure came from an ability that
+    fires in one game in twenty at a real table. TWENTY-FOUR zur branches were
+    graded on `kill_by_8` before anybody measured that.
+
+    So a deck that declares one gets a CEILING and a FLOOR instead of a figure
+    that looks like a measurement. The truth is between them and neither
+    instrument reaches it — which a reader can act on, where 0.381 alone is not.
+
+    ABSENT when nothing is declared. A zero-width band on an ordinary commander
+    is noise on every other deck's page, and this repo's rule is that a figure
+    nobody measured must be missing rather than reported.
+
+    THE FLOOR RUN IS NOT FREE: it doubles the deck's simulation time, ~4s to ~8s
+    at ten thousand games. It runs only for the decks that declare an ability —
+    two of ten today.
+    """
+    declared = [k for k in _DECLARED_ABILITIES if (targets_doc or {}).get(k)]
+    if not declared:
+        return None
+    stripped = {k: v for k, v in (targets_doc or {}).items() if k not in declared}
+    try:
+        floor = run(slug, iterations=iterations, seed=seed, max_turn=max_turn,
+                    model_treasures=model_treasures, model_combat=model_combat,
+                    model_draw=model_draw, model_sacrifice=model_sacrifice,
+                    branch=branch, quiet=True, model_colors=model_colors,
+                    _band=False, _targets_doc=stripped)
+    except Exception as exc:                       # pragma: no cover - defensive
+        return {"abilities": declared,
+                "unavailable": f"{exc.__class__.__name__} — the floor run failed"}
+    rows = {}
+    for axis in BAND_ROWS:  # dict iteration: the keys, in declaration order
+        hi = _band_value(ceiling, axis)
+        lo = _band_value(floor["metrics"], axis)
+        if hi is None or lo is None:
+            continue
+        rows[axis] = {"ceiling": hi, "floor": lo, "owed_to_the_ability": round(hi - lo, 4)}
+    return {
+        "abilities": declared,
+        "ceiling_is": ("the ability fires whenever the deck can afford it, which "
+                       "is what this model does"),
+        "floor_is": "the same 99 with the ability switched off",
+        "why": ("Forge's AI fired zur's animate in 5% of games. Neither end is "
+                "the truth; read the pair. A branch graded on one end is graded "
+                "on an assumption."),
+        "rows": rows,
     }
 
 
@@ -4472,6 +4607,28 @@ def main(args):
     )
     for target in doc["metrics"]["targets"]:
         print(f"  {target['label']}: by turn 6 in {target['by_turn_6_rate']:.0%} of games")
+    _print_band(doc.get("commander_ability_band"))
+
+
+def _print_band(band):
+    """Say the headline is a BAND, at the point the headline is printed.
+
+    A reader who has to open the JSON to learn that `kill_by_8` rests on an
+    ability Forge fires in one game in twenty will not open the JSON. Twenty-four
+    zur branches were graded on the ceiling before anybody measured the floor.
+    """
+    if not band:
+        return
+    print(f"\n  BAND — this deck declares {', '.join(band['abilities'])}, which "
+          f"this model applies\n  every turn it can afford. Read the pair; the "
+          f"table is somewhere between.")
+    if band.get("unavailable"):
+        print(f"    floor unavailable: {band['unavailable']}")
+        return
+    print(f"    {'':<14}{'ceiling':>9}{'floor':>9}{'owed':>9}")
+    for axis, row in band["rows"].items():
+        print(f"    {axis:<14}{row['ceiling']:>9.3f}{row['floor']:>9.3f}"
+              f"{row['owed_to_the_ability']:>+9.3f}")
 
 
 if __name__ == "__main__":

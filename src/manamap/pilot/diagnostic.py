@@ -487,6 +487,13 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         targets = targets_doc.get("targets") or []
     got = goldfish.run(slug, branch=branch, with_results=True, doc=doc, quiet=quiet,
                        targets_override=targets,
+                       # NO BAND HERE. It costs a SECOND full simulation, and a
+                       # candidate sweep calls this once per card — a twelve-card
+                       # sweep would pay for twelve floor runs nothing reads.
+                       # The band is shaped for the goldfish's own metrics
+                       # document, not this one; `deck_branch.champion_reading`
+                       # asks for it explicitly, once, where it changes a choice.
+                       _band=False,
                        iterations=iterations or HARNESS["iterations"],
                        seed=seed if seed is not None else HARNESS["seed"],
                        max_turn=HARNESS["max_turn"])

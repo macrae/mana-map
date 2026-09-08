@@ -76,6 +76,8 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
+manamap pilot sim-progress <slug> [--experiment NAME]   # a RUNNING batch: bar, rate, ETA, and the running
+                                        #   estimate with its Wilson interval + a convergence trace. Read-only
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
 manamap pilot experiment <slug> --a V4 --b working --vs <opp>… --games N   # A/B same table; one artifact with the delta

@@ -471,7 +471,46 @@ def champion_reading(slug, objective):
         if abs(gap) < mde:
             lines.append("             THE LINE IS INSIDE THE NOISE — it cannot "
                          "come back MET or NOT MET on evidence")
+    lines += _band_caveat(slug, axis, now)
     return lines
+
+
+def _band_caveat(slug, axis, now):
+    """How much of the number you are aiming at is owed to a DECLARED ability.
+
+    zur-enchantress declares `model_commander_animate`; the goldfish fires it
+    every turn it can afford and Forge's AI fired it in FIVE of 119 games. On
+    `kill_by_8` that declaration is worth 0.162 of a reading of 0.381 — so a
+    branch asking for +0.05 is asking for a third of what one unfireable ability
+    already supplies, and TWENTY-FOUR zur branches were graded that way before
+    anybody measured the floor.
+
+    Measured on the DIAGNOSTIC's harness, which is the one doing the grading —
+    reading the committed `goldfish_metrics.json` instead would mix two seeds and
+    two iteration counts into one comparison, which is how three figures in one
+    session got computed against the wrong baseline.
+    """
+    from manamap.pilot import diagnostic, goldfish
+    if axis not in goldfish.BAND_ROWS:
+        return []
+    try:
+        band = goldfish.run(slug, iterations=diagnostic.HARNESS["iterations"],
+                            seed=diagnostic.HARNESS["seed"],
+                            max_turn=diagnostic.HARNESS["max_turn"],
+                            quiet=True).get("commander_ability_band")
+    except Exception:                             # pragma: no cover - never block
+        return []
+    row = (band or {}).get("rows", {}).get(axis)
+    if not row:
+        return []
+    owed = row["owed_to_the_ability"]
+    share = (f", {owed / now:.0%} of the reading" if now else "")
+    return [f"             BAND: {owed:+.4f} of this axis is owed to "
+            f"{', '.join(band['abilities'])}{share}.",
+            f"             Forge's AI fires it far less often than this model "
+            f"does. Grade against the FLOOR",
+            f"             ({row['floor']:.4f}) too, or the line rewards an "
+            f"assumption rather than a card."]
 
 
 def new(slug, branch, text, why=None, at=None, objective=None):

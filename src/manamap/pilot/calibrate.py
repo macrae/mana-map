@@ -163,7 +163,10 @@ def calibrate(iterations=3000):
         try:
             got = goldfish.run(slug, branch=branch or None, iterations=iterations,
                                seed=20260826, max_turn=10, model_treasures=True,
-                               model_combat=True, quiet=True)
+                               model_combat=True, quiet=True,
+                               # Same reason as the benchmark: overridden flags,
+                               # discarded result, doubled cost per seat.
+                               _band=False)
         except Exception:
             continue
         m = got["metrics"]

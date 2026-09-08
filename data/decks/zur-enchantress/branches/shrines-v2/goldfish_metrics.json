@@ -1,4 +1,34 @@
 {
+  "commander_ability_band": {
+    "abilities": [
+      "model_commander_attack_tutor"
+    ],
+    "ceiling_is": "the ability fires whenever the deck can afford it, which is what this model does",
+    "floor_is": "the same 99 with the ability switched off",
+    "rows": {
+      "board_power_6": {
+        "ceiling": 6.797,
+        "floor": 5.888,
+        "owed_to_the_ability": 0.909
+      },
+      "damage_10": {
+        "ceiling": 20.641,
+        "floor": 13.438,
+        "owed_to_the_ability": 7.203
+      },
+      "kill_by_10": {
+        "ceiling": 0.794,
+        "floor": 0.654,
+        "owed_to_the_ability": 0.14
+      },
+      "kill_by_8": {
+        "ceiling": 0.243,
+        "floor": 0.145,
+        "owed_to_the_ability": 0.098
+      }
+    },
+    "why": "Forge's AI fired zur's animate in 5% of games. Neither end is the truth; read the pair. A branch graded on one end is graded on an assumption."
+  },
   "meta": {
     "card_advantage": {
       "cards_that_draw": 12,
@@ -72,7 +102,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "fb749dfd4252",
+    "model_version": "2b6b293dcfb2",
     "seed": 42
   },
   "metrics": {
