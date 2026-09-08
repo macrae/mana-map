@@ -18,7 +18,10 @@ atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`) and th
 workbench (`viz/branch.html`) — all rendering committed artifacts, with sim figures that
 carry their intervals. The magazine that used to be the product is a
 **frozen legacy renderer** until the compact deck page (`docs/manual-v5-spec.md`) replaces
-it. Runs locally on a Mac; the Python makes zero LLM calls.
+it. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
+calls**; two deliberate, opt-in exceptions do — `serve.py`'s `ask` bridge, which
+shells out to `claude -p` as a polled job, and `mm ask` (Sven Botstrom), whose
+SDK is an optional extra the core install does not pull.
 
 ## Layout
 
@@ -256,8 +259,12 @@ manamap pilot deck-info <slug> --write                  # write info.json for th
 manamap pilot build-page <slug> && manamap pilot build-index   # the Pilot's Manual + the manifest
 # agents (Claude Code skills): /publish-deck /debrief /prescribe /resolve-stack /analyze-engine /diagnose-deck
 
-make test                     # THE INNER LOOP — non-browser, -n auto, cached. ~22s
-make test-fresh               # same with nothing cached; trust this one. ~29s
+make test                     # THE INNER LOOP — non-browser, -n auto, cached.
+make test-fresh               # same with nothing cached; trust this one.
+                              # RUNTIMES LIVE IN docs/testing.md, not here. This
+                              # line said ~22s/~29s for weeks while the real
+                              # figure was 772s — a number nobody re-measured
+                              # after the suite tripled.
 make test-browser             # the playwright suite, ~4 min
 .venv/bin/pytest -n0 -k NAME  # one test, no worker startup
 .venv/bin/pytest -m ""        # literally everything, ~10 min

@@ -1429,7 +1429,8 @@ the pass.
 ## Agent invocation cache
 
 Subagent spawns are the only real cost here (the renderer is free and deterministic —
-there are **no LLM calls in Python at all**). A full manual regeneration is ~330k
+**no pilot command calls a model**; `serve.py`'s `ask` bridge and `mm ask` are the
+two opt-in exceptions, and neither is a pilot command). A full manual regeneration is ~330k
 tokens across four serially-dependent agents, so every skill that spawns one checks
 first:
 

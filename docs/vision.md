@@ -80,8 +80,12 @@ That is the rule the simulation layer is built to keep, and it is enforced in co
 cannot render a win rate without its interval and Forge's own caveat about its AI.
 
 Every agent returns JSON a validator checks. No agent writes prose claiming a tier it was
-not granted. The Python makes **zero LLM calls**; the deployed site and your machine run
-the same code.
+not granted. **The pipeline and the pilot commands make zero LLM calls** — every figure
+on this bench is arithmetic you can re-derive, and that is not negotiable. Two local,
+opt-in surfaces do call a model: `serve.py`'s `ask` bridge, and `mm ask` (Sven Botstrom),
+which routes questions to those same deterministic commands and is installed only by the
+`ask` extra. Neither can compute a figure; both can only read one back. The deployed site
+calls nothing, and your machine runs the same code.
 
 ## The frontend
 

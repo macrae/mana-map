@@ -45,6 +45,18 @@ dependencies = [
 # session-scoped, so each xdist worker gets its own of both.
 dev = ["pytest", "pytest-xdist", "playwright"]
 
+# SVEN — `mm ask`. An EXTRA, not a dependency, and the split is the point: the
+# pipeline and every pilot command stay deterministic and installable with no
+# model, no key and no network. `pip install -e .` pulls nothing from this line.
+#
+# The precedent is `rich` above, inverted. `rich` is declared because
+# `console.py` is load-bearing and was silently relying on a transitive copy;
+# this is the opposite case — nothing in the deterministic layer imports it, so
+# declaring it would make every install pay for a surface most runs never touch.
+# `sven/llm.py` guards the import and says how to fix it, the way `console.py`
+# degrades when `rich` is absent.
+ask = ["anthropic>=0.40"]
+
 [project.scripts]
 manamap = "manamap.cli:main"
 # `mm` is the same entry point under the name the PRD's CLI mocks use

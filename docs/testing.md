@@ -28,6 +28,22 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
+### Measured 2026-09-08, idle 8-core machine
+
+| | |
+|---|---:|
+| `make test` — warm cache | **772 s** (3,217 passed, 208 skipped, 5 xfailed, 11 failed; 164 served from the cache) |
+
+**This is the only page that states a runtime.** `CLAUDE.md` carried ~22s/~29s
+for weeks — off by more than an order of magnitude — because the figure was
+written when the suite was a third of this size and nobody re-measured it. It
+now points here instead of quoting a number.
+
+The eleven failures are inventoried in `docs/known-issues.md`, and nine of them
+are load-bearing rather than rot: five are ur-dragon artifacts deliberately
+frozen until a paper check-in, one is heliod's engine critic returning `fail`,
+and three are real goldfish fidelity bugs.
+
 ### Measured 2026-08-31, idle 8-core machine
 
 | | |

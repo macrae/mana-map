@@ -82,7 +82,9 @@ Infrastructure, not deck-facing and not part of the consolidation:
 ## Front-end surfaces that depend on the harness
 
 D-1's third clause. Every one reads a **committed artifact**, never an agent —
-the Python makes zero LLM calls and the deployed site makes none either.
+the pipeline and pilot commands make zero LLM calls and the deployed site makes
+none either. The two local exceptions — `serve.py`'s `ask` bridge and `mm ask` —
+are opt-in and never run on the deployed site.
 
 | Surface | Artifacts it needs | Agents behind them |
 |---|---|---|
