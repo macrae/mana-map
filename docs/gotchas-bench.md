@@ -1416,3 +1416,75 @@ unknown.
 The two-card fix is committed as v1.2.1 and is correct as far as it goes. What
 is NOT established is the other 98, and a lock claiming otherwise is worse than
 no lock: it is the difference between "unknown" and "wrong".
+
+---
+
+## Zur: the goldfish and Forge were not measuring the same deck, twice over
+
+**2026-09-08.** zur-enchantress reports `kill_by_10` of **0.888** in the goldfish
+and a **0.118** win rate in Forge. That is not a modelling gap. It is two
+separate defects, and between them almost none of this deck's evidence describes
+the list a pilot would sleeve.
+
+### 1. Six of eight Forge runs played the WRONG COMMANDER
+
+```
+  2026-09-06  n=59   Zur, Eternal Schemer   sha a17b0f4a   <- the current list
+  2026-09-06  n=60   Zur, Eternal Schemer   sha a17b0f4a   <- the current list
+  2026-09-05  n=60   Zur the Enchanter      sha 734250b0
+  2026-09-04  n=60   Zur the Enchanter      sha 9354852a
+  2026-09-04  n=60   Zur the Enchanter      sha 7cdbafc9
+  2026-09-04  n=60   Zur the Enchanter      sha 9354852a
+  2026-09-03  n=40   Zur the Enchanter      sha c63a265e
+  2026-08-27  n=20   Zur the Enchanter      sha e71580a7
+```
+
+They are different cards. **Zur the Enchanter** attacks and tutors a
+mana-value-3 enchantment onto the battlefield. **Zur, Eternal Schemer** grants
+deathtouch, lifelink and hexproof to enchantment creatures and carries
+`{1}{W}: target non-Aura enchantment becomes a creature with power and toughness
+equal to its mana value`. The deck was rebuilt around the Schemer; 300 of its
+419 Forge games were played by the Enchanter, who cannot animate anything.
+
+Nothing flagged it. The runs are correctly stamped with their own decklist shas
+and `deck-info` marked them stale — but "stale" and "different commander" render
+identically, and a reader comparing eight runs sees eight runs.
+
+### 2. Forge's AI does not use the ability the deck is built on
+
+Isolating the two runs that DID play Zur, Eternal Schemer:
+
+```
+  standard pod  n=60   Zur cast 94, resolved 97
+                       ANIMATE fired 3 times, in 3 of 60 games   (5%)
+  value pod     n=59   Zur cast 74, resolved 76
+                       ANIMATE fired 2 times, in 2 of 59 games   (3%)
+```
+
+**The commander lands and then does nothing.** Five activations across 119
+games, on a deck whose entire kill is animated enchantments.
+
+It is not AI paralysis: the same seat activated Profane Procession 37 times,
+Thassa 8, Caretaker's Talent 8. It uses activated abilities freely. It will not
+use THIS one, because the evaluator cannot price "a 3-mana enchantment becomes a
+3/3" as worth `{1}{W}`.
+
+Third instance of this class recorded here, after Psychosis Crawler (0 casts in
+120 games) and Ashnod's Altar (0 for 59 castings). **THE FORGE AI WILL NOT PAY
+FOR A BENEFIT ITS EVALUATOR CANNOT SEE**, and an animate is the purest case: it
+spends real mana and produces no immediate board change the evaluator counts.
+
+### What this invalidates
+
+`goldfish` applies `model_commander_animate` every turn it can afford. Forge
+applies it in 5% of games. So the goldfish is a CEILING and Forge is a FLOOR,
+and the truth is between them where neither instrument reaches.
+
+**All 24 zur branches were graded on `kill_by_8`** — a figure produced almost
+entirely by that ability. The ranking measured how well each list feeds an engine
+that, at a table Forge plays, does not run. `deck_branch.MEMBERSHIP_AXES` already
+refuses authored engine axes because the same hand sets the target and reads the
+verdict; this is the same failure through a different door — an axis whose value
+depends on an ability one instrument fires and the other does not.
+
+**Do not open a 25th zur branch graded on `kill_by_8`.**
