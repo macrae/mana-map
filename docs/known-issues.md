@@ -211,7 +211,27 @@ re-checked. It is a parser change with a fleet-wide blast radius and wants its
 own session, its own corpus sweep over the log grammar, and a test that fails
 first on a stored log.
 
-**Do not quote a `noncombat_damage_dealt_to_players` figure until this lands.**
+**And what survives the drop is pointed the wrong way.** Re-derived over the
+same run, the 201 the record *does* credit heliod breaks down as:
+
+    Viseling         117      (of its true 382)
+    Adarkar Wastes    82      aimed at HELIOD'S OWN SEAT
+    Walking Ballista   2
+
+**41% of the deck's measured "noncombat damage dealt to players" is a painland
+hurting its own controller.** That is not a coding error — Adarkar Wastes really
+does deal noncombat damage to a player, and the metric never said *to opponents*
+— but every consumer reads the figure as offence, and on this deck it is closer
+to a tax than a threat. Found independently by `deck-engineer` in round 2 and by
+this repo's own re-derivation; the two agree on the mechanism.
+
+So the metric is wrong twice over: it misses seven-eighths of what the table
+deals, and a large minority of the remainder is self-inflicted. Fixing the owner
+map addresses the first. The second needs a decision — either split the figure
+by whether the target is an opponent, or rename it so it stops being read as
+damage the deck *did to someone else*.
+
+**Do not quote a `noncombat_damage_dealt_to_players` figure until both land.**
 
 ---
 
