@@ -269,6 +269,44 @@ def _axis(name, value, unit, cards, how, low=None, high=None, extra=None,
 
 # ── Archetype ────────────────────────────────────────────────────────────
 
+#: "no two-card combo", "not a combo deck", "without a combo" — a hint inside a
+#: NEGATION is the opposite of a declaration.
+_NEGATED = re.compile(r"\b(?:no|not|never|without|nor|zero)\b[^.;]{0,40}$")
+
+
+def _first_archetype_hint(text):
+    """The EARLIEST hint in the text that is not negated: (archetype, word, at).
+
+    TWO BUGS IN ONE LINE, and a real frame hit both. It iterated
+    `_ARCHETYPE_HINTS` IN LIST ORDER and took the first archetype with any
+    substring match anywhere in the field. heliod's frame opens "Azorius
+    draw-go CONTROL that gifts the whole table cards" and says, two hundred
+    characters later, "there is NO TWO-CARD COMBO" — so the audit called a
+    control deck `combo`, off the back of a sentence denying it, because
+    `combo` is tested before `control`.
+
+    It was not cosmetic: under `combo` the sweepers axis reads AT target, and
+    under `control` it reads UNDER at 2 against 5-7. The one axis that changes
+    is the one the deck had just been rebuilt around.
+
+    So: position decides, not list order — a frame declares its archetype in its
+    opening words — and a hint sitting inside a negation is skipped. Same class
+    as the `enters_tapped_unconditionally` bug this repo already paid for, where
+    a condition was read outside the clause it attached to.
+    """
+    best = None
+    for name, hints in _ARCHETYPE_HINTS:
+        for word in hints:
+            at = text.find(word)
+            while at != -1:
+                if not _NEGATED.search(text[:at]):
+                    if best is None or at < best[2]:
+                        best = (name, word, at)
+                    break
+                at = text.find(word, at + 1)
+    return best
+
+
 def detect_archetype(slug, override=None, branch=None):
     """Which archetype's budget applies, and how we decided.
 
@@ -281,11 +319,11 @@ def detect_archetype(slug, override=None, branch=None):
     frame = load_json(deck_file(slug, "strategic_frame.json", branch), default=None)
     if frame:
         text = str(frame.get("archetype", "")).lower()
-        for name, hints in _ARCHETYPE_HINTS:
-            hit = next((h for h in hints if h in text), None)
-            if hit:
-                return {"archetype": name, "source": "strategic_frame.json",
-                        "matched": hit}
+        hit = _first_archetype_hint(text)
+        if hit:
+            name, word, _at = hit
+            return {"archetype": name, "source": "strategic_frame.json",
+                    "matched": word}
     return {"archetype": None, "source": "none — base targets apply"}
 
 

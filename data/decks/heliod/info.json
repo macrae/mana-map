@@ -1171,15 +1171,16 @@
     "verified_lines": 2
   },
   "diagnosis": {
-    "verdict": "The engine turns over and the deck never runs out of cards: the table-draw half is drawn in 85.2% of goldfish games, the punisher half in 67.2%, both in 56.7%, on a 0.866 turn-three land-drop rate and six checker-passed stacks. What binds is white mana at the point of deployment — 18 white sources against a target of 36, and a measured 0.515 probability of two white sources on curve against blue's 0.804, in a deck whose commander costs {2}{W}{W}. Behind that sits a ceiling the mana fix does not touch: the verified Reservoir kill assembles in 0.7% of goldfish games, and in the deck's one 20-game pod run it dealt a median 0 combat damage and no elimination in the run was attributed to it. Buy the colour first; the kill is a separate question and it is asked in open_questions.",
+    "verdict": "This deck owns the long game and cannot close it. Over 120 Forge games it placed first 16 times and second 43 times of 94 ranked games, mean position 2.319, and won 0.252 (ci95 [0.180, 0.342], n=120) against a table null of 0.144 — the record of a deck that outlives the pod and then runs out of ways to end it. What binds is access to the card that ends it, not survival: 20 of the 27 wins were Approach, five cards in the 99 search a library and two can name a seven-mana sorcery, and that three-card group is drawn in 0.495 of goldfish games and 0.361 by turn six. Mana is the same bottleneck's second half and ranks below it, because a game in which Approach was never drawn cannot be fixed with a land.",
     "skeptic": null,
-    "stale": true
+    "stale": false
   },
   "audit": {
-    "archetype": "combo",
+    "archetype": "control",
     "under": [
       "mana-base",
       "colour-sources",
+      "sweepers",
       "interaction-breadth"
     ],
     "over": [],
@@ -1218,38 +1219,33 @@
     },
     {
       "from": "diagnosis",
-      "question": "Re-run mana-analysis and goldfish on the list with the basics at 11 Islands / 6 Plains and the four mana adds applied (Sea of Clouds, Floodfarm Verge, Mystic Gate, Chromatic Lantern), and report colour-sources, on_curve_probability and the turn-three land-drop rate against the current -18 / W 0.515 / 0.866.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "goldfish_targets.json's 'Win condition access' group names Approach of the Second Sun, Aetherflux Reservoir, Mystical Tutor, Jace Wielder of Mysteries and Enlightened Tutor, and never names Hullbreaker Horror — without which the Reservoir is not a kill. Should that group be split into 'Approach access' and 'Reservoir access', and both measured?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Re-run goldfish with Black Vise added to the punisher any_of group and Forced Fruition removed from the table-draw group, and report the new 'Engine + punisher assembled' by-turn-six rate against the current 41.2%.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "With Forced Fruition cut, does the punisher clock still resolve as stack 003 proved it does? Build the equivalent board — Iron Maiden and Ebony Owl Netsuke with Howling Mine or Font of Mythos as the gift — and resolve an opponent's upkeep under a Naturalize on the gift.",
+      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod, the Warped Eclipse's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod is the commander on the battlefield?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Teferi's Protection cast on the turn BEFORE yours: 'Until your next turn, your life total can't change', and the phased-out permanents phase in before your untap step. Do the restriction and the phase-out both end before your first main phase, so it can be held on an opponent's end step and the Aetherflux Reservoir ledger still run on your own turn?",
+      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch — and is X chosen before or after the reduction applies?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Does Grand Abolisher's static close every priority window stack 006 leaves open, including a channel ability activated from a card in hand (Otawara, Soaring City)?",
+      "question": "While Lightning Greaves is equipped to Heliod, can Karametra's Blessing or Guardian of Faith's enters trigger still target him, and can the Greaves be moved off in response?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Is there a strategy section to be written on forced-draw / group-hug punisher archetypes — specifically, the arithmetic of when a symmetric draw effect pays for itself against three opponents?",
+      "question": "When is a symmetrical resource gift net-positive? Specifically: how many converters does a deck need before handing three opponents N cards a round is better than not, and how does the answer change against an aggressive seat?",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Can goldfish_targets express the deck's actual win — Approach in hand AND seven mana available on two separate turns — or must the gap be recorded rather than modelled?",
+      "settled_by": "goldfish"
     }
   ],
   "simulation": {
@@ -1289,9 +1285,8 @@
     "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
-    "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "engine.json's critic verdict is None — `/analyze-engine heliod`",
-    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×6",
+    "open questions routed: goldfish ×2, research-strategy ×3, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
