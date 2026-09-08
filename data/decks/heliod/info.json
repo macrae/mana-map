@@ -879,7 +879,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})": {
-          "value": 64,
+          "value": 55,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})' by turn six",
@@ -1105,7 +1105,7 @@
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
-        "by_turn_6_pct": 64
+        "by_turn_6_pct": 55
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
@@ -1168,7 +1168,7 @@
     "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice.",
     "critic": null,
     "lines": 11,
-    "verified_lines": 2
+    "verified_lines": 1
   },
   "diagnosis": {
     "verdict": "This deck owns the long game and cannot close it. Over 120 Forge games it placed first 16 times and second 43 times of 94 ranked games, mean position 2.319, and won 0.252 (ci95 [0.180, 0.342], n=120) against a table null of 0.144 — the record of a deck that outlives the pod and then runs out of ways to end it. What binds is access to the card that ends it, not survival: 20 of the 27 wins were Approach, five cards in the 99 search a library and two can name a seven-mana sorcery, and that three-card group is drawn in 0.495 of goldfish games and 0.361 by turn six. Mana is the same bottleneck's second half and ranks below it, because a game in which Approach was never drawn cannot be fixed with a land.",
@@ -1216,6 +1216,11 @@
       "from": "engine",
       "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Kefnet, Alhammarret's Archive, Teferi's Ageless Insight, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
@@ -1286,7 +1291,7 @@
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "engine.json's critic verdict is None — `/analyze-engine heliod`",
-    "open questions routed: goldfish ×2, research-strategy ×3, resolve-stack ×6",
+    "open questions routed: goldfish ×3, research-strategy ×3, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
