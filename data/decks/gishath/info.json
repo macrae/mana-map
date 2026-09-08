@@ -16,9 +16,7 @@
     "complete": 14,
     "of": 15,
     "stale": [],
-    "invalid": [
-      "diagnosis.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -299,8 +297,8 @@
     "verified_lines": 4
   },
   "diagnosis": {
-    "verdict": "The deck functions early and interacts unusually well for a linear typal list: 89.4% turn-3 land drop, ramp assembled 93.9% at mean turn 2.044, 11 removal pieces inside an 18-card interactive suite, all five permanent classes covered. What limits it is the top end. Six of 65 nonland entries sit at mana value 8+ against a corpus average of ~1.5, the commander is one of them, and the deck's own goldfish puts mean available mana at 7.321 on turn 10. Two of the six discount themselves off a board — Blasphemous Act and Ghalta — so it is four of them, the commander among them, that compete for the one big-mana cast a seven-to-ten-turn game pays for. Colour compounds it: white and red sit at 20 sources each against a 36 target, 58% on curve. The enrage web is the healthier plan and is not commander-gated.",
-    "skeptic": "pass",
+    "verdict": "The deck functions early and interacts unusually well for a linear typal list: 89.4% turn-3 land drop, ramp assembled 93.9% at mean turn 2.044, 11 removal pieces inside an 18-card interactive suite, all five permanent classes covered. What limits it is the top end. Six of 65 nonland entries sit at mana value 8+ against a corpus average of ~1.5, the commander is one of them, and the deck's own goldfish puts mean available mana at 7.621 on turn 10. Two of the six discount themselves off a board — Blasphemous Act and Ghalta — so it is four of them, the commander among them, that compete for the one big-mana cast a seven-to-ten-turn game pays for. Colour compounds it: white and red sit at 22 sources each against a 36 target, 63.9% on curve with rocks and dorks counted. The enrage web is the healthier plan and is not commander-gated.",
+    "skeptic": null,
     "stale": false
   },
   "audit": {
@@ -348,7 +346,7 @@
     },
     {
       "from": "diagnosis",
-      "question": "Does the commander's mean cast turn actually move when two more cost reducers are added? The goldfish's own assumption block says 'Cost reducers, rituals, and extra card draw are not modeled (conservative)'.",
+      "question": "Re-run the goldfish with two more command-zone-reaching cost reducers in the 99 and read the commander's mean cast turn off it. The model NOW applies static typed cost reduction from a permanent on the battlefield — generic only, floored at the coloured pip count — which it did not when this prescription was first sized.",
       "settled_by": "goldfish"
     },
     {
@@ -400,7 +398,6 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status gishath` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version gishath paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "1 logged game(s) not yet debriefed (001) — `/debrief gishath`",
     "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×3",

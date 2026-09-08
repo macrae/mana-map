@@ -14,9 +14,7 @@
     "complete": 14,
     "of": 15,
     "stale": [],
-    "invalid": [
-      "diagnosis.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -410,7 +408,7 @@
     "verified_lines": 10
   },
   "diagnosis": {
-    "verdict": "It functions, and five checker-passed stacks record what its board actually does. Mana is at or over target on every mana axis and the turn-3 land drop lands 90%; the reminder-text fix did not create a mana problem, it narrowed a cushion from 7 sources above the Karsten yardstick to 4. What limits it is conversion. The ceiling assembles 26.5% because the storm target is an AND of two independent four-card groups, and the 60% swarm floor that has to carry the other games does not close — the pod run's median combat damage dealt is 6.5 against 28.5 taken over a mean 16.8 rounds, and the deck's ten reach cards are filed by the taxonomy as removal, which is why threat-density reads 2.",
+    "verdict": "It functions and it does not convert. Every mana axis is at or over target and the turn-3 land drop lands 90%, so nothing downstream is waiting on mana; five checker-passed stacks record what the board can do. What limits it is turning bodies into life totals — across 100 games on the standard pod it won 3 (0.031, ci95 [0.01, 0.086]) against the 0.144 seat-0 null this table gives our decks, dealt a median 4.0 combat damage against a mean 44.58 taken, and dealt a mean 0.28 noncombat damage to players (median 0, ci95 [0.01, 0.55]) while a mean 4.93 token-creation events resolved. threat-density reads 2 because the taxonomy files the ten reach cards as removal, and the ceiling assembles 26.5% because the storm target is an AND of two independent four-card groups.",
     "skeptic": null,
     "stale": false
   },
@@ -483,6 +481,11 @@
       "from": "diagnosis",
       "question": "When a spell targets only Zada and Frontline Heroism is on the battlefield, does the Heroism Soldier token exist in time to be a legal target for Zada's copies, and does Heroism's own copy trigger?",
       "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Re-run the goldfish with a keep rule that requires a Goblin body at mana value 2 or less in the opening hand, and compare the token target's 60.0% / 48.7%-by-turn-6 and the Zada target's 66.3% against the current 79.1% keep rate. Does the gate the log names cost or buy assembly?",
+      "settled_by": "goldfish"
     }
   ],
   "simulation": {
@@ -519,9 +522,8 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief goblin-storm`",
-    "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×5"
+    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

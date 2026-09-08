@@ -15,12 +15,17 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 9,
     "of": 15,
     "stale": [
+      "frame",
+      "map",
+      "tutors",
       "prose"
     ],
-    "invalid": [],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -55,164 +60,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.0775,
+          "rate": 0.0762,
           "ci95": [
-            0.0724,
-            0.0829
+            0.0712,
+            0.0816
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1489,
+          "rate": 0.147,
           "ci95": [
-            0.1421,
-            0.156
+            0.1402,
+            0.1541
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.2472,
+          "rate": 0.2465,
           "ci95": [
-            0.2388,
-            0.2558
+            0.2382,
+            0.255
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.3321,
+          "rate": 0.331,
           "ci95": [
-            0.3229,
-            0.3414
+            0.3218,
+            0.3403
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.4025,
+          "rate": 0.4008,
           "ci95": [
-            0.3929,
-            0.4121
+            0.3912,
+            0.4104
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.4626,
+          "rate": 0.4608,
           "ci95": [
-            0.4528,
-            0.4724
+            0.451,
+            0.4706
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.5154,
+          "rate": 0.5144,
           "ci95": [
-            0.5056,
-            0.5252
+            0.5046,
+            0.5242
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.5656,
+          "rate": 0.561,
           "ci95": [
-            0.5559,
-            0.5753
+            0.5513,
+            0.5707
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.6142,
+          "rate": 0.6097,
           "ci95": [
-            0.6046,
-            0.6237
+            0.6001,
+            0.6192
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.6576,
+          "rate": 0.6535,
           "ci95": [
-            0.6482,
-            0.6668
+            0.6441,
+            0.6628
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.115,
+          "rate": 0.1161,
           "ci95": [
-            0.1089,
-            0.1214
+            0.11,
+            0.1225
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1838,
+          "rate": 0.1862,
           "ci95": [
-            0.1763,
-            0.1915
+            0.1787,
+            0.1939
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.2803,
+          "rate": 0.2834,
           "ci95": [
-            0.2716,
-            0.2892
+            0.2747,
+            0.2923
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.3606,
+          "rate": 0.3626,
           "ci95": [
-            0.3512,
-            0.3701
+            0.3532,
+            0.3721
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.4269,
+          "rate": 0.4284,
           "ci95": [
-            0.4172,
-            0.4366
+            0.4187,
+            0.4381
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.4833,
+          "rate": 0.481,
           "ci95": [
-            0.4735,
-            0.4931
+            0.4712,
+            0.4908
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.5298,
+          "rate": 0.53,
           "ci95": [
-            0.52,
-            0.5396
+            0.5202,
+            0.5398
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.5741,
+          "rate": 0.575,
           "ci95": [
-            0.5644,
-            0.5838
+            0.5653,
+            0.5847
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.6143,
+          "rate": 0.6163,
           "ci95": [
-            0.6047,
-            0.6238
+            0.6067,
+            0.6258
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.6497,
+          "rate": 0.6545,
           "ci95": [
-            0.6403,
-            0.659
+            0.6451,
+            0.6638
           ],
           "n": 10000
         }
@@ -220,10 +225,10 @@
       "bottleneck": {
         "label": "Payoff + a castable dragon by mid-game",
         "by_turn_three": {
-          "rate": 0.3529,
+          "rate": 0.3514,
           "ci95": [
-            0.3436,
-            0.3623
+            0.3421,
+            0.3608
           ],
           "n": 10000
         }
@@ -233,113 +238,113 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6537,
+          "rate": 0.6546,
           "ci95": [
-            0.6443,
-            0.663
+            0.6452,
+            0.6639
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2897,
+          "rate": 0.2908,
           "ci95": [
-            0.2809,
-            0.2987
+            0.282,
+            0.2998
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0725,
+          "rate": 0.0693,
           "ci95": [
-            0.0676,
-            0.0777
+            0.0645,
+            0.0744
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.035,
+          "rate": 0.0338,
           "ci95": [
-            0.0316,
-            0.0388
+            0.0304,
+            0.0375
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0211,
+          "rate": 0.0206,
           "ci95": [
-            0.0185,
-            0.0241
+            0.018,
+            0.0236
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0155,
+          "rate": 0.0158,
           "ci95": [
-            0.0133,
-            0.0181
+            0.0135,
+            0.0184
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0133,
+          "rate": 0.0142,
           "ci95": [
-            0.0112,
-            0.0157
+            0.0121,
+            0.0167
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0106,
+          "rate": 0.0121,
           "ci95": [
-            0.0088,
-            0.0128
+            0.0101,
+            0.0144
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0096,
+          "rate": 0.0099,
           "ci95": [
-            0.0079,
-            0.0117
+            0.0081,
+            0.012
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0067,
+          "rate": 0.0073,
           "ci95": [
-            0.0053,
-            0.0085
+            0.0058,
+            0.0092
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0801,
+        "rate": 0.0768,
         "ci95": [
-          0.0749,
-          0.0856
+          0.0717,
+          0.0822
         ],
         "n": 10000
       },
-      "fleet": "worse than any tracked deck",
+      "fleet": "above the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4740,
-        "hand_empty": 362,
-        "mana_short": 4378
+        "stall_turns": 4738,
+        "hand_empty": 372,
+        "mana_short": 4366
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4617,
+        "rate": 0.4543,
         "ci95": [
-          0.4519,
-          0.4715
+          0.4446,
+          0.4641
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3521,
+      "missed_land_drop_rate": 0.3517,
       "mulliganed": {
         "rate": 0.2133,
         "ci95": [
@@ -350,21 +355,21 @@
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.238,
-        "3": 3.567,
-        "4": 4.833,
-        "5": 5.876,
-        "6": 6.678,
-        "7": 7.35,
-        "8": 7.977,
-        "9": 8.564,
-        "10": 9.128
+        "2": 2.249,
+        "3": 3.586,
+        "4": 4.874,
+        "5": 5.936,
+        "6": 6.733,
+        "7": 7.42,
+        "8": 8.041,
+        "9": 8.627,
+        "10": 9.189
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 2.1734
+      "mana_stdev_turn_five": 2.1845
     },
-    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645"
+    "decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2"
   },
   "bracket": {
     "floor": 3,
@@ -373,12 +378,12 @@
     "within_target": true
   },
   "paper": {
-    "version": 3,
-    "sha": "8c7a677d2b74",
-    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
-    "built_at": "2026-09-01",
-    "note": "sleeved 2026-09-01",
-    "release": "v1.0.2"
+    "version": 4,
+    "sha": "f7bc720f9ecc",
+    "decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
+    "built_at": "2026-09-08",
+    "note": "Sleeved at v1.2.1, 2026-09-08. Reconciles the drift: the pilot had Volcanic Island and Plateau in as proxies from the unmerged landbase-v1 branch, and has now swapped both for Turbulent Springs and Sunbaked Canyon. The four fetches that branch also proposed were never sleeved.",
+    "release": "v1.2.1"
   },
   "record": {
     "games": 3,
@@ -425,7 +430,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.916,
+          "value": 6.92,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -473,7 +478,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the big turn": {
-          "value": 56,
+          "value": 57,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the big turn' by turn six",
@@ -505,7 +510,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with": {
-          "value": 16,
+          "value": 15,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with' by turn six",
@@ -560,12 +565,12 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 9.209,
-            "2": 2.245,
-            "3": 3.595,
-            "4": 4.895,
-            "5": 5.934,
+            "1": 1.0,
+            "10": 9.207,
+            "2": 2.236,
+            "3": 3.585,
+            "4": 4.886,
+            "5": 5.933,
             "6": 6.734,
             "7": 7.423,
             "8": 8.044,
@@ -579,16 +584,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
+            "1": 1.0,
             "10": 0.372,
-            "2": 0.996,
-            "3": 0.906,
-            "4": 0.775,
-            "5": 0.65,
-            "6": 0.544,
-            "7": 0.47,
-            "8": 0.414,
-            "9": 0.383
+            "2": 0.997,
+            "3": 0.901,
+            "4": 0.769,
+            "5": 0.646,
+            "6": 0.548,
+            "7": 0.475,
+            "8": 0.415,
+            "9": 0.386
           },
           "tier": "data",
           "weight": "detail",
@@ -600,14 +605,14 @@
           "value": {
             "1": 0.0,
             "10": 6.328,
-            "2": 0.184,
-            "3": 0.63,
-            "4": 1.383,
-            "5": 2.35,
-            "6": 3.251,
-            "7": 4.072,
-            "8": 4.858,
-            "9": 5.607
+            "2": 0.174,
+            "3": 0.608,
+            "4": 1.363,
+            "5": 2.316,
+            "6": 3.225,
+            "7": 4.053,
+            "8": 4.845,
+            "9": 5.599
           },
           "tier": "data",
           "weight": "detail",
@@ -617,14 +622,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 359,
-            "1": 1611,
-            "2": 2965,
-            "3": 2919,
-            "4": 1589,
-            "5": 470,
-            "6": 86,
-            "7": 1
+            "0": 345,
+            "1": 1649,
+            "2": 2973,
+            "3": 2924,
+            "4": 1562,
+            "5": 457,
+            "6": 87,
+            "7": 3
           },
           "tier": "data",
           "weight": "detail",
@@ -633,14 +638,14 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 432,
-            "3": 4,
-            "4": 96,
-            "5": 898,
-            "6": 2570,
-            "7": 2978,
-            "8": 1757,
-            "9": 842
+            "10": 409,
+            "3": 1,
+            "4": 78,
+            "5": 894,
+            "6": 2512,
+            "7": 3045,
+            "8": 1715,
+            "9": 917
           },
           "tier": "data",
           "weight": "detail",
@@ -656,7 +661,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.916,
+    "commander_mean_cast_turn": 6.92,
     "commander_cast_by_turn_6_pct": 33,
     "targets": [
       {
@@ -681,7 +686,7 @@
       },
       {
         "label": "Protection held for the big turn",
-        "by_turn_6_pct": 56
+        "by_turn_6_pct": 57
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
@@ -697,34 +702,34 @@
       },
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-        "by_turn_6_pct": 16
+        "by_turn_6_pct": 15
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.007,
+      "mean_kill_turn": 7.025,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 36,
-      "kill_by_turn_8_pct": 83,
+      "kill_by_turn_6_pct": 35,
+      "kill_by_turn_8_pct": 82,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 432,
-        "3": 4,
-        "4": 96,
-        "5": 898,
-        "6": 2570,
-        "7": 2978,
-        "8": 1757,
-        "9": 842
+        "10": 409,
+        "3": 1,
+        "4": 78,
+        "5": 894,
+        "6": 2512,
+        "7": 3045,
+        "8": 1715,
+        "9": 917
       }
     }
   },
   "engine_health": {
     "word": "HEALTHY",
-    "rate": 0.4025,
+    "rate": 0.4008,
     "ci95": [
-      0.3929,
-      0.4121
+      0.3912,
+      0.4104
     ],
     "n": 10000,
     "turn": 5,
@@ -874,7 +879,7 @@
     "runs": 3,
     "latest": "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600",
     "at": "2026-09-06",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
     "games": 60,
     "vs": [
@@ -904,12 +909,13 @@
   },
   "experiments": null,
   "next": [
-    "stale: prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
+    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "2 logged game(s) not yet debriefed (002, 003) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×2, resolve-stack ×8",
-    "3 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "4 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
