@@ -166,6 +166,53 @@ by a sweep rather than by reasoning about the code.
 
 ---
 
+## 4. The parser drops 88% of all noncombat damage — CONFIRMED, unfixed
+
+Found 2026-09-08 by following up a finding from heliod's engine critic, which
+claimed 1,002 noncombat damage from three cards against a record reporting 202.
+The first read was that the critic had counted pings at creatures alongside
+pings at players. **That was wrong.** All of it is damage to players.
+
+Measured over the 120-game standard-pod run
+(`giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84`):
+
+| | |
+|---|---:|
+| noncombat damage to players **in the logs** | 4,420 |
+| **attributed to a seat by the record** | 521 |
+| dropped — source permanent has no owner | **3,901 (88%)** |
+
+**Cause.** `parse.py` learns its `owner` map from exactly three line kinds:
+`land` (line 244), `attack` (263) and `block` (269). A permanent that is neither
+a land nor ever attacks or blocks **never enters the map**. At line 510
+`src_seat = owner.get(src_id)` is then `None`, and line 524's guard —
+`elif ev["noncombat"] and src_seat in per:` — drops the damage in silence.
+
+So every artifact and enchantment that deals damage is invisible to the seat
+tallies. The largest unattributed sources in that one run:
+
+    Descent into Avernus   880     Impact Tremors        333
+    Warleader's Call       697     Viseling              265
+    Iron Maiden            381     Delayed Blast Fireball 250
+
+**What it costs.** heliod's punisher axis — Viseling, Iron Maiden, Ebony Owl
+Netsuke, 1,003 damage between them — reads as 202. That is the deck's entire
+secondary win condition understated FIVE-FOLD, in the artifact the engine model
+and the dossier both quote. It is not a heliod problem: any deck whose damage
+comes off noncreature permanents is understated, and the four seats in this pod
+are wrong by different factors, so seats are not comparable on the axis either.
+
+**Why it is not fixed yet.** The fix is to teach the owner map from the lines
+that put a permanent onto the battlefield, not just the three that happen to
+name a controller. That changes `analyze` output for every stored run, and
+`validate-sim` re-derives `analysis` from the logs — so every tracked sim record
+must be re-derived in the same commit, and every figure quoted from one
+re-checked. It is a parser change with a fleet-wide blast radius and wants its
+own session, its own corpus sweep over the log grammar, and a test that fails
+first on a stored log.
+
+**Do not quote a `noncombat_damage_dealt_to_players` figure until this lands.**
+
 ## What is NOT on this page
 
 - **`make test-browser`** is a local pre-push gate and is deliberately outside
