@@ -17,6 +17,7 @@ index error far from this file.
 """
 
 import re
+import threading
 from collections import Counter
 
 import numpy as np
@@ -45,6 +46,16 @@ from manamap.mechanical_tags import encode_tags_multihot
 
 _MODEL_CACHE = {}
 
+#: CHECK-THEN-SET IS A RACE ONCE ANYTHING IS THREADED. Two callers that both miss
+#: the cache each construct a MiniLM — ~5.5 s of work done twice, a transient 2x
+#: memory spike with torch loaded, and one of the two instances discarded.
+#:
+#: Harmless while exactly one thread ever reached this. `manamap serve` warms the
+#: model on a background thread at boot, so a question arriving in those first
+#: seconds is the second caller, and that is the common case rather than a rare
+#: one. Double-checked below so the lock is paid only on the miss.
+_MODEL_LOCK = threading.Lock()
+
 
 def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     """Encode texts with a frozen sentence-transformer model.
@@ -62,13 +73,16 @@ def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
     are frozen, so a cached instance cannot change any output.
     """
     if model_name not in _MODEL_CACHE:
-        # Imported HERE, not at module scope. `import sentence_transformers` costs
-        # ~3.5 s and it pulls in torch; at module scope every consumer of this file
-        # paid it, including pytest COLLECTION — so the price was on `-k`, on
-        # `--collect-only`, on a single-file run, on everything. Nothing outside
-        # this branch needs the symbol, and the vocab/encoding tests never reach it.
-        from sentence_transformers import SentenceTransformer
-        _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
+        with _MODEL_LOCK:
+            if model_name not in _MODEL_CACHE:   # re-check: another thread may have won
+                # Imported HERE, not at module scope. `import sentence_transformers`
+                # costs ~3.5 s and it pulls in torch; at module scope every consumer
+                # of this file paid it, including pytest COLLECTION — so the price
+                # was on `-k`, on `--collect-only`, on a single-file run, on
+                # everything. Nothing outside this branch needs the symbol, and the
+                # vocab/encoding tests never reach it.
+                from sentence_transformers import SentenceTransformer
+                _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
     model = _MODEL_CACHE[model_name]
     embeddings = model.encode(
         texts, batch_size=batch_size, show_progress_bar=True, convert_to_numpy=True

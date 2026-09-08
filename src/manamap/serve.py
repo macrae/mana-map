@@ -920,6 +920,22 @@ CLI_READONLY = frozenset({
 _CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway")
 
 
+#: `_cli` captures output by swapping `sys.stdout`, which is PROCESS-GLOBAL while
+#: this server is one thread per request. Two overlapping calls interleave as
+#: A-enter, B-enter, A-print, A-exit, B-exit — and that has two failures, not one:
+#: A's output is returned as B's result, and the nested restore leaves
+#: `sys.stdout` pointing at a StringIO nobody holds, so every later print in the
+#: process vanishes until someone restarts the server.
+#:
+#: Latent for as long as `/api/cli` was called one request at a time. Sven makes
+#: 3-8 tool calls a turn, so it stopped being theoretical the day he shipped.
+#:
+#: The cost of this lock is real and worth saying out loud: warm read-only
+#: commands now serialize, at 0.15-1.25 s each. Attributing one deck's figures to
+#: another deck's question is not a trade this bench would make to get them back.
+_STDOUT_LOCK = threading.Lock()
+
+
 def _cli(argv=None):
     """Run one read-only pilot command in this warm process; return its stdout.
 
@@ -957,7 +973,7 @@ def _cli(argv=None):
     buf = _io.StringIO()
     code = 0
     try:
-        with contextlib.redirect_stdout(buf):
+        with _STDOUT_LOCK, contextlib.redirect_stdout(buf):
             run_pilot_step(ns)
     except SystemExit as exit_:
         code = int(exit_.code or 0)
