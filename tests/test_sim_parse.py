@@ -485,3 +485,49 @@ def test_a_single_faced_commander_carries_no_transform_row():
     for seat in agg["seats"].values():
         acc = seat.get("commander_access") or {}
         assert "transformed" not in acc
+
+
+# ── the owner map, and the damage it used to drop ─────────────────────────
+
+ARTIFACT_FIX = (Path(__file__).parent / "fixtures" / "forge"
+                / "noncombat-artifact-source.log").read_text()
+
+
+def test_an_artifact_that_never_attacks_still_has_a_controller():
+    """The owner map was learned from THREE line kinds — `Land:`, `Combat:
+    assigned … to attack`, and `… to block`. A permanent that is neither a land
+    nor ever attacks or blocks never entered it, so `owner.get(src_id)` was None
+    and the noncombat-damage tally dropped the event in silence.
+
+    Measured across all 33 stored runs (1,943 games) before the fix: **38,938
+    points of noncombat damage to players unattributed**, which was 88% of the
+    total on heliod's own 120-game run. Iron Maiden, Viseling, Ebony Owl
+    Netsuke, Impact Tremors, Descent into Avernus, Warleader's Call — every
+    damage-dealing artifact and enchantment in the corpus.
+
+    Re-introduce the bug by deleting the name fallback in `game_facts` and this
+    reads 0.
+    """
+    games = parse.parse_games(ARTIFACT_FIX)
+    assert len(games) == 1
+    facts = parse.game_facts(games[0])
+    per = facts["per_seat"]
+    assert per["Ai(1)-punisher"]["noncombat_damage_dealt_to_players"] == 4, (
+        "3 from Iron Maiden, which never attacks or blocks, plus 1 from the "
+        "painland — the artifact's share is what used to vanish")
+
+
+def test_the_name_fallback_never_overrides_the_exact_map():
+    """The id map is learned from lines that name a controller outright and is
+    exact; the name map is an inference. Where both answer, the id map wins.
+
+    The sweep is why this matters: across 52,648 controlled events the two
+    disagree 161 times (0.30%), and EVERY disagreement is a creature — Giada,
+    Baylen, Hare Apparent — because a creature can change controller or be
+    copied while its name still points at whoever cast one. Restricted to the
+    population the fallback actually serves (noncombat), the two disagree
+    **2 times in 10,104, or 0.02%**.
+    """
+    game = parse.parse_games(ARTIFACT_FIX)[0]
+    assert game["owner"]["11"] == "Ai(1)-punisher", (
+        "the painland is learned from the Land: line, exactly, as before")

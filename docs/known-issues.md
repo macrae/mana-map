@@ -358,6 +358,34 @@ A/B carries whatever seat-1 bias the table has, and the two commands are still
 not measuring under the same conditions — a narrower version of the pod-profile
 bug that was fixed.
 
+## 13. Every Forge figure for heliod describes a deck that was replaced
+
+The 120-game standard-pod run is dated 2026-09-07. `skies-v1` and
+`archangel-v1` both merged on **2026-09-08**. The run's own record says which
+list it played — `seats[0].decklist_sha256` is `decc32b0…` against a current
+`214af30…` — and **Viseling, Iron Maiden and Ebony Owl Netsuke were all cut**
+in that merge.
+
+So the entire punisher axis argued over in two rounds of the engine loop, the
+1,003-against-202 damage discrepancy, the 45% commander-removal rate, the
+39-of-53 eliminations from the air, and the flip cross-tab
+(23/85 = 0.271 against 4/35 = 0.114) all describe **v1.0.0**, not the v1.2.1
+list that is sleeved. `engine.json`, `diagnosis.json` and `strategic_frame.json`
+all quote from it.
+
+Nothing here is *wrong* — every figure is a true statement about the list it
+measured, and the record names that list. What is missing is a reader who knows
+that. The parser defect the punisher argument uncovered is entirely unaffected:
+it is about attribution, not about which cards were in the deck, and it was
+measured across 33 runs and 1,943 games.
+
+**What unblocks it:** a Forge run on v1.2.1. Until then, a Forge figure quoted
+for heliod needs the version said out loud beside it.
+
+*How it was found:* the pilot, reading a claim about his own deck — "viseling was
+pulled from the recent deck list". Two agent rounds and a fleet-wide parser sweep
+had all reasoned about those three cards without one of them checking the list.
+
 ## What is NOT on this page
 
 - **`make test-browser`** is a local pre-push gate and is deliberately outside

@@ -421,6 +421,38 @@ def game_facts(g, commanders=None):
                "commander_damage_by_defender": defaultdict(int)}
            for s in seats}
     owner = g["owner"]
+    # THE FALLBACK OWNER MAP, BY NAME. `owner` is learned from three line kinds
+    # that name a controller outright — `Land:` (244), `Combat: … to attack`
+    # (263) and `… to block` (269) — so a permanent that is neither a land nor
+    # ever attacks or blocks NEVER ENTERED IT. Every damage-dealing artifact and
+    # enchantment in the corpus was therefore anonymous, and the guard below
+    # dropped its damage in silence: 38,938 points of noncombat damage to
+    # players across the 33 stored runs, 88% of the total on heliod's own
+    # 120-game run.
+    #
+    # `Add To Stack:` names the seat and the card but carries NO id, and the
+    # damage line carries the id but no seat, so the only join available is the
+    # NAME. That makes this an inference where `owner` is a fact, and it is
+    # used ONLY where `owner` is silent — never to override it.
+    #
+    # THE SWEEP THAT SIZES THE RISK (1,943 games, all 33 runs). Where both maps
+    # answer they agree 52,648 times and disagree 161 — 0.30% — and every
+    # disagreement is a CREATURE (Giada, Baylen, Hare Apparent), because a
+    # creature can change controller or be copied while its name still points at
+    # whoever cast one. Restricted to noncombat damage, which is the only
+    # population this fallback serves, they disagree **2 times in 10,104:
+    # 0.02%**. That is why the fallback is scoped to noncombat below rather than
+    # applied to combat as well: combat needs it for nothing (attack and block
+    # lines already name the seat) and carries ten times the measured error.
+    #
+    # A name two seats both cast stays UNATTRIBUTED — 1,224 points, mostly pod
+    # staples like Impact Tremors and Warleader's Call. Absent, not guessed.
+    by_name = defaultdict(set)
+    for _ev in g["events"]:
+        if _ev.get("kind") in ("cast", "triggered", "activated"):
+            _seat, _what = _ev.get("seat"), _ev.get("what")
+            if _seat and _what:
+                by_name[_what.split(" (")[0].strip()].add(_seat)
     # The last thing that could have cost a seat life: a DAMAGE line (source's controller)
     # or a resolved ability whose text says the victim LOSES life (its controller, from the
     # Activator/Player tag or the active seat). Measured on the pod run: Vito wins 9 of 20
@@ -521,8 +553,17 @@ def game_facts(g, commanders=None):
                             if _is_token(src_name):
                                 per[src_seat]["token_combat_damage_to_players"] += ev["amount"]
                                 per[src_seat]["tokens_observed"].add(src_id)
-                    elif ev["noncombat"] and src_seat in per:
-                        per[src_seat]["noncombat_damage_dealt_to_players"] += ev["amount"]
+                    elif ev["noncombat"]:
+                        # `owner` first, always. The name map only speaks when
+                        # the exact one has nothing to say, and only when the
+                        # name belongs to exactly one seat this game.
+                        seat = src_seat
+                        if seat is None:
+                            guess = by_name.get(src_name) or ()
+                            if len(guess) == 1:
+                                seat = next(iter(guess))
+                        if seat in per:
+                            per[seat]["noncombat_damage_dealt_to_players"] += ev["amount"]
                 last_cause = (src_seat, ev["turn"], "damage")
         elif k == "life":
             p = per.get(ev["seat"])
