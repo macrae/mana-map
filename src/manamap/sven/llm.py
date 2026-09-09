@@ -128,6 +128,19 @@ class AnthropicTurn:
                 f"Could not reach the API ({exc}). The deterministic commands "
                 f"still work offline — `manamap pilot deck-info <slug>`."
             ) from exc
+        except anthropic.APIStatusError as exc:
+            # THE CATCH-ALL, ADDED AFTER THE FIRST REAL CALL PRODUCED A
+            # TRACEBACK. The three handlers above cover the failures that were
+            # imagined; the one that actually happened was a 400 saying the
+            # account had no credit, which fell straight through as a stack
+            # trace. Every remaining API status is a sentence the pilot can act
+            # on, and none of them is a bug in this repo.
+            message = str(exc)
+            if "credit balance" in message.lower():
+                message = ("This account has no API credit. Add some at "
+                           "console.anthropic.com -> Plans & Billing.\n"
+                           "The key itself is fine — it authenticated.")
+            raise SvenUnavailable(f"The API refused the request: {message}") from exc
 
         for block in final.content:
             if getattr(block, "type", None) == "tool_use":

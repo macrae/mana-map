@@ -344,3 +344,41 @@ def test_a_missing_key_says_what_to_do_about_it():
     finally:
         if key is not None:
             os.environ["ANTHROPIC_API_KEY"] = key
+
+
+def test_every_api_failure_reads_as_a_sentence_not_a_traceback():
+    """FOUND BY THE FIRST REAL CALL. The handlers covered auth, rate limits and
+    connection errors — the failures that were imagined. What actually happened
+    was a 400 saying the account had no credit, which fell through as a stack
+    trace: fourteen frames of SDK internals to say "add money".
+
+    None of these is a bug in this repo, so none should look like one.
+    """
+    import types
+
+    import pytest as _pytest
+
+    anthropic = _pytest.importorskip("anthropic")
+
+    def raising(exc):
+        turn = llm.AnthropicTurn.__new__(llm.AnthropicTurn)
+
+        def boom(**kw):
+            raise exc
+        turn._client = types.SimpleNamespace(
+            messages=types.SimpleNamespace(stream=boom))
+        return turn
+
+    response = types.SimpleNamespace(status_code=400, headers={}, request=None)
+    cases = [
+        anthropic.BadRequestError(
+            "Your credit balance is too low to access the Anthropic API.",
+            response=response, body=None),
+    ]
+    for exc in cases:
+        with _pytest.raises(llm.SvenUnavailable) as caught:
+            list(raising(exc).stream(system="s", messages=[], tools=[], model="m"))
+        text = str(caught.value)
+        assert "Traceback" not in text
+        assert "credit" in text.lower(), text
+        assert "console.anthropic.com" in text, "it must say where to fix it"
