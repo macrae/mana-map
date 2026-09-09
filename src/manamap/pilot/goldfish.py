@@ -526,12 +526,42 @@ def token_doubler(card):
     return not _TOKEN_DOUBLER_TEMPORARY_RE.search(window)
 
 
-def cast_token_profile(card):
-    """The commander's "cast an X spell -> make a token" trigger, or None.
+#: Gates that name a CARD TYPE rather than a creature subtype. Same four as
+#: `_CAST_DRAW_GATES`, for the same reason: a cast trigger fires in this model at
+#: the two doors a non-land PERMANENT joins the battlefield, so a permanent-type
+#: gate is counted completely. A gate the type line does not settle stays a
+#: SUBTYPE gate and keeps the old behaviour.
+_CAST_TOKEN_TYPE_GATES = {"enchantment": "Enchantment", "creature": "Creature",
+                          "artifact": "Artifact", "aura": "Aura"}
+#: A TOKEN WHOSE SIZE THIS MODEL CANNOT PRICE. Hallowed Haunting mints a Spirit
+#: whose power and toughness each equal "the number of SPIRITS you control" — a
+#: self-referential snowball, since the only Spirits in the list are the ones it
+#: has already made. Nothing here tracks a creature-type count, so the token is
+#: priced at its FLOOR of 1/1 and the understatement is NAMED in the metrics
+#: rather than guessed at. An absent figure beats a wrong one; a floor beats
+#: both when the direction is known.
+_CAST_TOKEN_SCALES_RE = re.compile(
+    r"power and toughness are each equal to the number of", re.I)
 
-    Returns `{subtype, bodies, power}`. `subtype` is the spell type that
-    triggers it, matched against a cast card's own subtypes; an empty subtype
-    means any spell and is left unmodelled rather than fired on everything.
+
+def cast_token_profile(card):
+    """A "cast an X spell -> make a token" trigger, or None.
+
+    Returns `{subtype, gate_kind, bodies, power, scales}`.
+
+    THIS WAS COMMANDER-ONLY AND SUBTYPE-ONLY, and that hid the enchantment
+    archetype's entire payoff. `subtype` was matched against a cast card's
+    `subtypes` — creature types like Vampire, for Edgar Markov's eminence — so a
+    gate naming a CARD TYPE could never fire, and the profile was computed only
+    for the commander, so a card in the 99 was never even asked.
+
+    Sigil of the Empty Throne ("whenever you cast an enchantment spell, create a
+    4/4 white Angel creature token with flying") parsed CORRECTLY here the whole
+    time and was thrown away twice over. On a list of 44 enchantments that is
+    a 4/4 flier per cast, worth nothing to the model.
+
+    CORPUS SWEEP 2026-09-09: 93 cards in the family; 2 are gated on enchantment
+    spells (Sigil, Hallowed Haunting) and 17 more on another permanent type.
     """
     text = card.get("oracle_text", "") or ""
     m = _CAST_TOKEN_RE.search(text)
@@ -541,9 +571,12 @@ def cast_token_profile(card):
     if not subtype:
         return None
     pt = _PT_RE.search(m.group(3) or "")
-    return {"subtype": subtype,
+    gate = _CAST_TOKEN_TYPE_GATES.get(subtype.lower())
+    return {"subtype": gate or subtype,
+            "gate_kind": "type" if gate else "subtype",
             "bodies": _DRAW_WORDS[m.group(2).lower()],
-            "power": int(pt.group(1)) if pt else 1}
+            "power": int(pt.group(1)) if pt else 1,
+            "scales": bool(_CAST_TOKEN_SCALES_RE.search(text))}
 
 
 def sac_outlet_profile(card):
@@ -2314,6 +2347,10 @@ def classify(card, pool=None):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
+        # ON EVERY CARD, not only the commander. Read under `model_combat` /
+        # `model_draw` like the rest, so a deck that opts into neither is
+        # byte-identical.
+        "cast_token": cast_token_profile(card),
         # The scorer holds a drain profile, not the card, so the flag that
         # decides whether an unlock re-fires this payoff has to travel with it.
         "drain": dict(drain_profile(card), eerie=bool(_EERIE_RE.search(text))),
@@ -2619,6 +2656,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     per_type_watchers = []
     # Cards that mint a creature token every time an enchantment enters.
     enchantment_token_engines = []
+    # CAST-TOKEN ENGINES FROM THE 99, not just the commander. `cast_token_profile`
+    # was computed for the commander alone, so Sigil of the Empty Throne parsed
+    # correctly and was never asked for.
+    cast_token_engines = []
     # DEATHS. `death_engines` already exists for the sacrifice channel; these
     # accumulate FRACTIONAL deaths so a measured rate like 0.187 per turn fires
     # a trigger every fifth or sixth turn rather than never.
@@ -3189,6 +3230,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # time this class has bitten.
             if model_combat and c["combat"]["mass_animate_threshold"]:
                 return True
+            # A CAST-TOKEN ENGINE IS A BODY ENGINE. Sigil of the Empty Throne
+            # has no body of its own, makes no mana and draws nothing, so
+            # without this it sits in hand while its profile says what it would
+            # have minted — the seventh time this class has bitten.
+            if model_combat and c["cast_token"]:
+                return True
             # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
             # Sanctum of Tranquil Light does almost nothing on its own — its job
             # is to be a SHRINE, so that the two cards reading "X is the number
@@ -3227,6 +3274,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          if card["room"] else None)
                 if "Enchantment" in (card.get("type_line") or ""):
                     enchantments_entered += 1
+                # CAST-TRIGGERED BODIES, same door and the same rule: engines
+                # already in play only. `gate_kind` decides what is matched —
+                # a CARD TYPE against the type line (Sigil: any enchantment) or
+                # a creature SUBTYPE against the card's subtypes (eminence:
+                # Vampire). Matching a card type against subtypes is what made
+                # this channel invisible.
+                if model_combat or model_draw:   # `arrivals_matter` is bound at the other door only
+                    _tl2 = card.get("type_line") or ""
+                    for _eng in cast_token_engines:
+                        if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
+                                else _eng["subtype"] in card["subtypes"]):
+                            _n = _eng["bodies"] * token_multiplier
+                            for _ in range(_n):
+                                creature_entered(_eng["power"], turn, False, 1,
+                                                 is_token=True)
+                            bodies_cum += _n
+                if card["cast_token"]:
+                    cast_token_engines.append(card["cast_token"])
                 # CAST-TRIGGERED DRAW fires here because in this model a
                 # permanent spell is CAST and ENTERS in the same step, so
                 # this door is every cast of one. Engines already in play
@@ -3365,6 +3430,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              if card["room"] else None)
                     if "Enchantment" in (card.get("type_line") or ""):
                         enchantments_entered += 1
+                    # CAST-TRIGGERED BODIES, same door and the same rule: engines
+                    # already in play only. `gate_kind` decides what is matched —
+                    # a CARD TYPE against the type line (Sigil: any enchantment) or
+                    # a creature SUBTYPE against the card's subtypes (eminence:
+                    # Vampire). Matching a card type against subtypes is what made
+                    # this channel invisible.
+                    if arrivals_matter:
+                        _tl2 = card.get("type_line") or ""
+                        for _eng in cast_token_engines:
+                            if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
+                                    else _eng["subtype"] in card["subtypes"]):
+                                _n = _eng["bodies"] * token_multiplier
+                                for _ in range(_n):
+                                    creature_entered(_eng["power"], turn, False, 1,
+                                                     is_token=True)
+                                bodies_cum += _n
+                    if card["cast_token"]:
+                        cast_token_engines.append(card["cast_token"])
                     # CAST-TRIGGERED DRAW fires here because in this model a
                     # permanent spell is CAST and ENTERS in the same step, so
                     # this door is every cast of one. Engines already in play

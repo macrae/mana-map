@@ -1,0 +1,1484 @@
+Error handling registered!
+16:15:03 [INFO ] GuiBase: ##########################################
+16:15:03 [INFO ] GuiBase: APP: Forge v.2.0.14-SNAPSHOT-08.08
+16:15:03 [INFO ] GuiBase: Java: 21.0.9 (Oracle Corporation)
+16:15:03 [INFO ] GuiBase: OS: Mac OS X 26.3 aarch64
+16:15:03 [INFO ] GuiBase: RAM: 4096 MB max, 8 CPUs
+16:15:03 [INFO ] GuiBase: ##########################################
+Language 'en-US' loaded successfully.
+(ThreadUtil first call): Running with priority 5
+Read cards: 33617 archived files in 1 ms (25 parts) using thread pool
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+The card A-Alrund's Epiphany was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Baba Lysaga, Night Witch was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Divide by Zero was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Esika's Chariot was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Faceless Haven was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Fires of Invention was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Goldspan Dragon was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Hullbreaker Horror was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Kumano Faces Kakkazan was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Luminarch Aspirant was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Monster Manual was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Omnath, Locus of Creation was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-The Meathook Massacre was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Unholy Heat was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Blinding Radiance was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Goblin Bruiser was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Ogre Painbringer was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Titanic Pelagosaur was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Treetop Recluse was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+Read cards: 836 files in 0 ms (8 parts) using thread pool
+Simulation mode
+Ai(1)-mm-abaddon [Experimental] vs Ai(2)-mm-baylen-tokens [Experimental] vs Ai(3)-mm-muldrotha-value [Experimental] vs Ai(4)-mm-talrand-spells [Experimental] - two games of Commander seed 249713554
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at com.google.common.collect.AbstractMapBasedMultimap$Itr.next(AbstractMapBasedMultimap.java:1181)
+	at forge.game.keyword.KeywordCollection.applyStaticAbility(KeywordCollection.java:207)
+	at forge.game.card.Card.updateStaticAbilities(Card.java:7014)
+	at forge.game.card.CardState.getStaticAbilities(CardState.java:712)
+	at forge.game.card.Card.getStaticAbilities(Card.java:6993)
+	at forge.game.staticability.StaticAbilityCantPreventDamage.cantPreventDamage(StaticAbilityCantPreventDamage.java:13)
+	at forge.game.card.Card.canDamagePrevented(Card.java:6160)
+	at forge.game.GameEntity.staticDamagePrevention(GameEntity.java:92)
+	at forge.ai.ComputerUtilCombat.predictDamageTo(ComputerUtilCombat.java:2231)
+	at forge.ai.ComputerUtilCombat.canDestroyBlocker(ComputerUtilCombat.java:1924)
+	at forge.ai.AiBlockController.getSafeBlockers(AiBlockController.java:106)
+	at forge.ai.AiBlockController.makeGoodBlocks(AiBlockController.java:198)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1083)
+	at forge.ai.AiBlockController.assignBlockersGivenAttackers(AiBlockController.java:1041)
+	at forge.ai.ComputerUtilCard.canBeBlockedProfitably(ComputerUtilCard.java:881)
+	at forge.ai.AiAttackController$SpellAbilityFactors.calculate(AiAttackController.java:1445)
+	at forge.ai.AiAttackController.shouldAttack(AiAttackController.java:1493)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1300)
+	at forge.ai.AiController.getPredictedCombat(AiController.java:145)
+	at forge.ai.ComputerUtilCard.doesCreatureAttackAI(ComputerUtilCard.java:806)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1446)
+	at forge.ai.ability.CountersPutAi.checkApiLogic(CountersPutAi.java:627)
+	at forge.ai.SpellAbilityAi.canPlayWithoutRestrict(SpellAbilityAi.java:98)
+	at forge.ai.SpellAbilityAi.canPlay(SpellAbilityAi.java:76)
+	at forge.ai.SpellAbilityAi.canPlayWithSubs(SpellAbilityAi.java:55)
+	at forge.ai.AiController.canPlaySa(AiController.java:909)
+	at forge.ai.AiController.canPlayAndPayForFace(AiController.java:855)
+	at forge.ai.AiController.canPlayAndPayFor(AiController.java:833)
+	at forge.ai.AiController.lambda$chooseSpellAbilityToPlayFromList$9(AiController.java:1675)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at java.base/java.util.ArrayList.addAll(ArrayList.java:752)
+	at forge.util.collect.FCollection.<init>(FCollection.java:100)
+	at forge.game.card.CardState.getStaticAbilities(CardState.java:705)
+	at forge.game.card.Card.getStaticAbilities(Card.java:6993)
+	at forge.game.staticability.StaticAbilityCantAttackBlock.cantBlockBy(StaticAbilityCantAttackBlock.java:215)
+	at forge.game.combat.CombatUtil.canBeBlocked(CombatUtil.java:534)
+	at forge.game.combat.CombatUtil.canBlock(CombatUtil.java:915)
+	at forge.ai.AiBlockController.getPossibleBlockers(AiBlockController.java:87)
+	at forge.ai.AiBlockController.makeTradeBlocks(AiBlockController.java:617)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1089)
+	at forge.ai.AiBlockController.assignBlockersForCombat(AiBlockController.java:1014)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3214)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3179)
+	at forge.ai.AiAttackController.notNeededAsBlockers(AiAttackController.java:426)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1279)
+	at forge.ai.AiController.getPredictedCombat(AiController.java:145)
+	at forge.ai.ComputerUtilCard.doesCreatureAttackAI(ComputerUtilCard.java:806)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1446)
+	at forge.ai.ability.CountersPutAi.checkApiLogic(CountersPutAi.java:627)
+	at forge.ai.SpellAbilityAi.canPlayWithoutRestrict(SpellAbilityAi.java:98)
+	at forge.ai.SpellAbilityAi.canPlay(SpellAbilityAi.java:76)
+	at forge.ai.SpellAbilityAi.canPlayWithSubs(SpellAbilityAi.java:55)
+	at forge.ai.AiController.canPlaySa(AiController.java:909)
+	at forge.ai.AiController.canPlayAndPayForFace(AiController.java:855)
+	at forge.ai.AiController.canPlayAndPayFor(AiController.java:833)
+	at forge.ai.AiController.lambda$chooseSpellAbilityToPlayFromList$9(AiController.java:1675)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Abaddon the Despoiler for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Talrand, Sky Summoner for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Mulligan: Ai(2)-mm-baylen-tokens has mulliganed down to 7 cards.
+Mulligan: Ai(3)-mm-muldrotha-value has mulliganed down to 7 cards.
+Mulligan: Ai(2)-mm-baylen-tokens has mulliganed down to 6 cards.
+Mulligan: Ai(3)-mm-muldrotha-value has mulliganed down to 6 cards.
+Mulligan: Ai(2)-mm-baylen-tokens has mulliganed down to 5 cards.
+Mulligan: Ai(4)-mm-talrand-spells has kept a hand of 7 cards
+Mulligan: Ai(1)-mm-abaddon has kept a hand of 7 cards
+Mulligan: Ai(2)-mm-baylen-tokens has kept a hand of 5 cards
+Mulligan: Ai(3)-mm-muldrotha-value has kept a hand of 6 cards
+Turn: Turn 1 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (350)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Sol Ring
+Resolve Stack: Sol Ring
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 2 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Replacement Effect: Xander's Lounge enters tapped.
+Land: Ai(1)-mm-abaddon played Xander's Lounge (60)
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 3 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(2)-mm-baylen-tokens played Plains (189)
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 4 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Land: Ai(3)-mm-muldrotha-value played Forest (245)
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 5 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (330)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (350) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Mana: Island (330) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Jace's Sanctum
+Resolve Stack: Jace's Sanctum
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 6 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Replacement Effect: Sulfur Falls enters tapped unless you control an Island or a Mountain.
+Land: Ai(1)-mm-abaddon played Sulfur Falls (20)
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Talisman of Creativity
+Resolve Stack: Talisman of Creativity
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 7 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Clifftop Retreat enters tapped unless you control a Mountain or a Plains.
+Land: Ai(2)-mm-baylen-tokens played Clifftop Retreat (129)
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(2)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (145)]
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 8 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Land: Ai(3)-mm-muldrotha-value played Forest (244)
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Arcane Signet
+Resolve Stack: Arcane Signet
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 9 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (331)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (350) - {T}: Add {U}.
+Mana: Island (330) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Mana: Island (331) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Archmage of Runes
+Resolve Stack: Archmage of Runes - Creature 3 / 6
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 10 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Replacement Effect: Dragonskull Summit enters tapped unless you control a Swamp or a Mountain.
+Land: Ai(1)-mm-abaddon played Dragonskull Summit (40)
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Frantic Search
+Discard: Ai(1)-mm-abaddon discards Mountain (87).
+Discard: Ai(1)-mm-abaddon discards Bloodstained Mire (51).
+Resolve Stack: Frantic Search (22) - Ai(1)-mm-abaddon draws two cards. Ai(1)-mm-abaddon discards two cards. Untap up to 3 Lands.
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Passionate Archaeologist
+Resolve Stack: Passionate Archaeologist
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Mana: Talisman of Creativity (92) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-abaddon cast Lightning Greaves
+Resolve Stack: Lightning Greaves
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 11 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: As Temple Garden enters, you may pay 2 life. If you don't, it enters tapped.
+Land: Ai(2)-mm-baylen-tokens played Temple Garden (176)
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(2)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (155)]
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 12 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Forest (245) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Skull Prophet
+Resolve Stack: Skull Prophet - Creature 3 / 1
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 13 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Snap targeting [Skull Prophet (283)]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Snap (368), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand. Untap up to two lands. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Snap (368), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand. Untap up to two lands. ]
+Resolve Stack: Snap (368) - Return Skull Prophet (283) to its owner's hand. Untap up to 2 Lands.
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (339)
+Mana: Island (350) - {T}: Add {U}.
+Mana: Island (330) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Bident of Thassa
+Resolve Stack: Bident of Thassa
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Archmage of Runes (317) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens didn't block Archmage of Runes (317).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Archmage of Runes (317) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 40 > 37
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (331) - {T}: Add {U}.
+Mana: Island (339) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Baral, Chief of Compliance
+Resolve Stack: Baral, Chief of Compliance - Creature 1 / 3
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 14 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Creeping Bloodsucker
+Resolve Stack: Creeping Bloodsucker - Creature 1 / 2
+Add To Stack: Ai(1)-mm-abaddon activated Lightning Greaves targeting [Creeping Bloodsucker (65)]
+Resolve Stack: Lightning Greaves (93) -  Attach to Creeping Bloodsucker (65)
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Replacement Effect: Crumbling Necropolis enters tapped.
+Land: Ai(1)-mm-abaddon played Crumbling Necropolis (52)
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 15 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(2)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (150)]
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 16 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Land: Ai(3)-mm-muldrotha-value played Terramorphic Expanse (301)
+Zone Change: Terramorphic Expanse (301) was put into Graveyard from Battlefield.
+Add To Stack: Ai(3)-mm-muldrotha-value activated Terramorphic Expanse
+Resolve Stack: Terramorphic Expanse (301) - Ai(3)-mm-muldrotha-value searches their library for a basic land card, puts it onto the battlefield tapped, then shuffles.
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Mana: Temple Garden (176) - {T}: Add {G}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast March of the Multitudes
+Resolve Stack: March of the Multitudes (163) - Ai(2)-mm-baylen-tokens creates four 1/1 white Soldier creature tokens with lifelink. (X=4)
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Forest (245) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Skull Prophet
+Resolve Stack: Skull Prophet - Creature 3 / 1
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 17 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (335)
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Heraldic Banner
+Replacement Effect: As Heraldic Banner enters, choose a color.
+Resolve Stack: Heraldic Banner
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Archmage of Runes (317) and Baral, Chief of Compliance (321) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens didn't block Archmage of Runes (317).
+Ai(2)-mm-baylen-tokens didn't block Baral, Chief of Compliance (321).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Baral, Chief of Compliance (321) deals 2 combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 37 > 31
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Baral, Chief of Compliance (321), Damaged: Ai(2)-mm-baylen-tokens, Amount: 2]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(2)-mm-baylen-tokens, Amount: 4]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (330) - {T}: Add {U}.
+Mana: Island (331) - {T}: Add {U}.
+Mana: Island (339) - {T}: Add {U}.
+Mana: Island (335) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Talrand, Sky Summoner
+Resolve Stack: Talrand, Sky Summoner - Creature 2 / 2
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 18 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Add To Stack: Ai(1)-mm-abaddon triggered Creeping Bloodsucker
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(4)-mm-talrand-spells.
+Life: Life: Ai(2)-mm-baylen-tokens 31 > 30
+Life: Life: Ai(3)-mm-muldrotha-value 40 > 39
+Life: Life: Ai(4)-mm-talrand-spells 40 > 39
+Life: Life: Ai(1)-mm-abaddon 40 > 43
+Resolve Stack: At the beginning of your upkeep, Creeping Bloodsucker deals 1 damage to each opponent. You gain life equal to the damage dealt this way. [Phase: Ai(1)-mm-abaddon]
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Replacement Effect: As Watery Grave enters, you may pay 2 life. If you don't, it enters tapped.
+Land: Ai(1)-mm-abaddon played Watery Grave (23)
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Crumbling Necropolis (52) - {T}: Add {U}, {B}, or {R}.
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Mana: Talisman of Creativity (92) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-abaddon cast Abaddon the Despoiler
+Resolve Stack: Abaddon the Despoiler - Creature 5 / 5
+Add To Stack: Ai(1)-mm-abaddon activated Lightning Greaves targeting [Abaddon the Despoiler (100)]
+Resolve Stack: Lightning Greaves (93) -  Attach to Abaddon the Despoiler (100)
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 19 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Lightning Greaves
+Mana: Heraldic Banner (308) - {T}: Add one mana of the chosen color.
+Add To Stack: Ai(4)-mm-talrand-spells cast An Offer You Can't Refuse targeting [Lightning Greaves]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: An Offer You Can't Refuse (395), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: An Offer You Can't Refuse (395), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: An Offer You Can't Refuse (395), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: An Offer You Can't Refuse (395) - Counter Lightning Greaves (192). Its controller creates two Treasure tokens.
+Add To Stack: Ai(4)-mm-talrand-spells triggered Baral, Chief of Compliance
+Discard: Ai(4)-mm-talrand-spells discards Island (329).
+Resolve Stack: Whenever a spell or ability you control counters a spell, you may draw a card. If you do, discard a card. [Countered: Lightning Greaves (192), Cause: Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")]
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Zone Change: Treasure Token (560) was put into Graveyard from Battlefield.
+Mana: Treasure Token (560) - {T}, Sacrifice this token: Add one mana of any color.
+Mana: Temple Garden (176) - {T}: Add {W}.
+Zone Change: Treasure Token (559) was put into Graveyard from Battlefield.
+Mana: Treasure Token (559) - {T}, Sacrifice this token: Add one mana of any color.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker - Creature 4 / 3
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens draws a card.
+Land: Ai(2)-mm-baylen-tokens played Reliquary Tower (175)
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens draws a card.
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 20 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Swiftfoot Boots
+Resolve Stack: Swiftfoot Boots
+Mana: Island (235) - {T}: Add {U}.
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Doc Aurlock, Grizzled Genius
+Resolve Stack: Doc Aurlock, Grizzled Genius - Creature 2 / 3
+Mana: Skull Prophet (283) - {T}: Add {B} or {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value activated Swiftfoot Boots targeting [Skull Prophet (283)]
+Resolve Stack: Swiftfoot Boots (259) -  Attach to Skull Prophet (283)
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 21 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (358)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Archmage of Runes (317) and Drake Token (557) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens didn't block Archmage of Runes (317).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (557).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (557) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 30 > 23
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (557), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(2)-mm-baylen-tokens, Amount: 4]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Arcane Signet
+Resolve Stack: Arcane Signet
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 22 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Add To Stack: Ai(1)-mm-abaddon triggered Creeping Bloodsucker
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(4)-mm-talrand-spells.
+Life: Life: Ai(2)-mm-baylen-tokens 23 > 22
+Life: Life: Ai(3)-mm-muldrotha-value 39 > 38
+Life: Life: Ai(4)-mm-talrand-spells 39 > 38
+Life: Life: Ai(1)-mm-abaddon 43 > 46
+Resolve Stack: At the beginning of your upkeep, Creeping Bloodsucker deals 1 damage to each opponent. You gain life equal to the damage dealt this way. [Phase: Ai(1)-mm-abaddon]
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Combat: Ai(1)-mm-abaddon assigned Abaddon the Despoiler (100) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens didn't block Abaddon the Despoiler (100).
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Damage: Abaddon the Despoiler (100) deals 5 combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 22 > 17
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Land: Ai(1)-mm-abaddon played Swamp (49)
+Mana: Swamp (49) - {T}: Add {B}.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Watery Grave (23) - {T}: Add {B}.
+Add To Stack: Ai(1)-mm-abaddon cast Plague Drone
+Add To Stack: Ai(1)-mm-abaddon triggered Plague Drone
+Add To Stack: Ai(1)-mm-abaddon cast Brainstorm
+Resolve Stack: Cascade - Plague Drone [Card: Plague Drone (98), Activator: Ai(1)-mm-abaddon, SpellAbility: Plague Drone - Creature 3 / 3]
+Add To Stack: Ai(1)-mm-abaddon triggered Abaddon the Despoiler targeting [Ai(2)-mm-baylen-tokens]
+Damage: Abaddon the Despoiler (100) deals 1 non-combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 17 > 16
+Resolve Stack: Whenever you cast a spell from exile, Abaddon the Despoiler deals damage equal to that spell's mana value to target opponent. (Targeting: [[Ai(2)-mm-baylen-tokens]]) [Card: Brainstorm (79), Activator: Ai(1)-mm-abaddon, SpellAbility: Draw three cards, then put two cards from your hand on top of your library in any order. (without paying its mana cost) ]
+Resolve Stack: Brainstorm (79) - Ai(1)-mm-abaddon draws three cards, then puts two cards from their hand on top of their library in any order.
+Resolve Stack: Plague Drone - Creature 3 / 3
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 23 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Reliquary Tower (175) - {T}: Add {C}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(2)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (144)]
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(2)-mm-baylen-tokens assigned Baylen, the Haymaker (201) to attack Ai(4)-mm-talrand-spells.
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(4)-mm-talrand-spells didn't block Baylen, the Haymaker (201).
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens puts three +1/+1 counters on Baylen, the Haymaker (201). Baylen, the Haymaker (201) gains trample until end of turn.
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens puts three +1/+1 counters on Baylen, the Haymaker (201). Baylen, the Haymaker (201) gains trample until end of turn.
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Damage: Baylen, the Haymaker (201) deals 10 combat damage to Ai(4)-mm-talrand-spells.
+Life: Life: Ai(4)-mm-talrand-spells 38 > 28
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Mana: Temple Garden (176) - {T}: Add {G}.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Arcane Signet
+Resolve Stack: Arcane Signet
+Phase: Ai(2)-mm-baylen-tokens' End step
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 24 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Island (235) - {T}: Add {U}.
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Kheru Goldkeeper
+Resolve Stack: Kheru Goldkeeper - Creature 3 / 3
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 25 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (357)
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Preordain
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Preordain (363), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.) ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Preordain (363), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.) ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Preordain (363), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 2, then draw a card. (To scry 2, look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.) ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library and 1 card(s) to the bottom of the library
+Resolve Stack: Preordain (363) - Ai(4)-mm-talrand-spells scries 2. Ai(4)-mm-talrand-spells draws a card.
+Mana: Island (330) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Ponder
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Ponder (314), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library, then put them back in any order. You may shuffle. Draw a card. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Ponder (314), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library, then put them back in any order. You may shuffle. Draw a card. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Ponder (314), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library, then put them back in any order. You may shuffle. Draw a card. ]
+Resolve Stack: Ponder (314) - Look at the top 3 cards of Ai(4)-mm-talrand-spells' library. Then put them back in any order.You may have that player shuffle their library. Ai(4)-mm-talrand-spells draws a card.
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Archmage of Runes (317), Drake Token (557) and Baral, Chief of Compliance (321) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens didn't block Archmage of Runes (317).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (557).
+Ai(2)-mm-baylen-tokens didn't block Baral, Chief of Compliance (321).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (557) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Baral, Chief of Compliance (321) deals 2 combat damage to Ai(2)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-baylen-tokens 16 > 7
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Baral, Chief of Compliance (321), Damaged: Ai(2)-mm-baylen-tokens, Amount: 2]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (557), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(2)-mm-baylen-tokens, Amount: 4]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Discard: Ai(4)-mm-talrand-spells discards Island (348).
+Turn: Turn 26 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Add To Stack: Ai(1)-mm-abaddon triggered Creeping Bloodsucker
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(4)-mm-talrand-spells.
+Life: Life: Ai(2)-mm-baylen-tokens 7 > 6
+Life: Life: Ai(3)-mm-muldrotha-value 38 > 37
+Life: Life: Ai(4)-mm-talrand-spells 28 > 27
+Life: Life: Ai(1)-mm-abaddon 46 > 49
+Resolve Stack: At the beginning of your upkeep, Creeping Bloodsucker deals 1 damage to each opponent. You gain life equal to the damage dealt this way. [Phase: Ai(1)-mm-abaddon]
+Mana: Island (331) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Opt
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Opt (319), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 1. Draw a card.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Opt (319), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 1. Draw a card.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Opt (319), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Scry 1. Draw a card.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Opt (319) - Ai(4)-mm-talrand-spells scries 1. Ai(4)-mm-talrand-spells draws a card.
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Combat: Ai(1)-mm-abaddon assigned Abaddon the Despoiler (100) and Plague Drone (98) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens assigned Rabbit Token (566), Hare Apparent (145) and Hare Apparent (155) to block Abaddon the Despoiler (100).
+Ai(2)-mm-baylen-tokens didn't block Plague Drone (98).
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Damage: Abaddon the Despoiler (100) deals 2 damage to Hare Apparent (145).
+Damage: Abaddon the Despoiler (100) deals 1 damage to Rabbit Token (566).
+Damage: Abaddon the Despoiler (100) deals 2 damage to Hare Apparent (155).
+Damage: Plague Drone (98) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Rabbit Token (566) deals 1 damage to Abaddon the Despoiler (100).
+Damage: Hare Apparent (145) deals 2 damage to Abaddon the Despoiler (100).
+Damage: Hare Apparent (155) deals 2 damage to Abaddon the Despoiler (100).
+Life: Life: Ai(2)-mm-baylen-tokens 6 > 3
+Zone Change: Abaddon the Despoiler (100) was put into Graveyard from Battlefield.
+Zone Change: Hare Apparent (145) was put into Graveyard from Battlefield.
+Zone Change: Hare Apparent (155) was put into Graveyard from Battlefield.
+Zone Change: Rabbit Token (566) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Land: Ai(1)-mm-abaddon played Mountain (86)
+Add To Stack: Ai(1)-mm-abaddon activated Lightning Greaves targeting [Plague Drone (98)]
+Mana: Island (339) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Frantic Search
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Frantic Search (327), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards, then discard two cards. Untap up to three lands.  ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Frantic Search (327), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards, then discard two cards. Untap up to three lands.  ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Frantic Search (327), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards, then discard two cards. Untap up to three lands.  ]
+Discard: Ai(4)-mm-talrand-spells discards Island (351).
+Discard: Ai(4)-mm-talrand-spells discards Island (341).
+Resolve Stack: Frantic Search (327) - Ai(4)-mm-talrand-spells draws two cards. Ai(4)-mm-talrand-spells discards two cards. Untap up to 3 Lands.
+Resolve Stack: Lightning Greaves (93) -  Attach to Plague Drone (98)
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Swamp (49) - {T}: Add {B}.
+Mana: Mountain (86) - {T}: Add {R}.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Watery Grave (23) - {T}: Add {B}.
+Mana: Crumbling Necropolis (52) - {T}: Add {U}, {B}, or {R}.
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Abaddon the Despoiler
+Resolve Stack: Abaddon the Despoiler - Creature 5 / 5
+Phase: Ai(1)-mm-abaddon's End step
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 27 (Ai(2)-mm-baylen-tokens)
+Phase: Ai(2)-mm-baylen-tokens' Untap step
+Phase: Ai(2)-mm-baylen-tokens' Upkeep step
+Phase: Ai(2)-mm-baylen-tokens' Draw step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Cinder Glade enters tapped unless you control two or more basic lands.
+Land: Ai(2)-mm-baylen-tokens played Cinder Glade (112)
+Phase: Ai(2)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(2)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(2)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(2)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(2)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(2)-mm-baylen-tokens' Main phase, postcombat
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens draws a card.
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens draws a card.
+Add To Stack: Ai(2)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (201) - Ai(2)-mm-baylen-tokens draws a card.
+Mana: Temple Garden (176) - {T}: Add {G}.
+Mana: Reliquary Tower (175) - {T}: Add {C}.
+Mana: Plains (189) - {T}: Add {W}.
+Mana: Clifftop Retreat (129) - {T}: Add {R} or {W}.
+Mana: Arcane Signet (193) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(2)-mm-baylen-tokens cast Doubling Season
+Mana: Island (330) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Swan Song targeting [Doubling Season]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Swan Song (370), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Swan Song (370), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Swan Song (370), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Swan Song (370) - Counter Doubling Season (134). 
+Add To Stack: Ai(4)-mm-talrand-spells triggered Baral, Chief of Compliance
+Discard: Ai(4)-mm-talrand-spells discards Island (337).
+Resolve Stack: Whenever a spell or ability you control counters a spell, you may draw a card. If you do, discard a card. [Countered: Doubling Season (134), Cause: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Phase: Ai(2)-mm-baylen-tokens' End step
+Add To Stack: Ai(3)-mm-muldrotha-value activated Skull Prophet
+Zone Change: Ai(3)-mm-muldrotha-value milled Kaya's Ghostform (293) and Command Beacon (207).
+Resolve Stack: Skull Prophet (283) - Ai(3)-mm-muldrotha-value mills two cards.
+Phase: Ai(2)-mm-baylen-tokens' Cleanup step
+Turn: Turn 28 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Island (235) - {T}: Add {U}.
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Glen Elendra Archmage
+Resolve Stack: Glen Elendra Archmage - Creature 2 / 2
+Phase: Ai(3)-mm-muldrotha-value's End step
+Mana: Island (331) - {T}: Add {U}.
+Mana: Island (339) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Mana: Island (335) - {T}: Add {U}.
+Mana: Heraldic Banner (308) - {T}: Add one mana of the chosen color.
+Mana: Island (358) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Hullbreaker Horror
+Resolve Stack: Hullbreaker Horror - Creature 7 / 8
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 29 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Reliquary Tower (384)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Hullbreaker Horror (369), Archmage of Runes (317), Talrand, Sky Summoner (403), Drake Token (557), Drake Token (570), Drake Token (573), Drake Token (596), Drake Token (615), Drake Token (644) and Baral, Chief of Compliance (321) to attack Ai(2)-mm-baylen-tokens.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(2)-mm-baylen-tokens assigned Bird Token (646) to block Hullbreaker Horror (369).
+Ai(2)-mm-baylen-tokens assigned Hare Apparent (150) to block Archmage of Runes (317).
+Ai(2)-mm-baylen-tokens assigned Hare Apparent (144) to block Talrand, Sky Summoner (403).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (557).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (570).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (573).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (596).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (615).
+Ai(2)-mm-baylen-tokens didn't block Drake Token (644).
+Ai(2)-mm-baylen-tokens assigned Baylen, the Haymaker (201) to block Baral, Chief of Compliance (321).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Hullbreaker Horror (369) deals 8 damage to Bird Token (646).
+Damage: Archmage of Runes (317) deals 4 damage to Hare Apparent (150).
+Damage: Talrand, Sky Summoner (403) deals 3 damage to Hare Apparent (144).
+Damage: Drake Token (557) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (570) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (573) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (596) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (615) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Drake Token (644) deals 3 combat damage to Ai(2)-mm-baylen-tokens.
+Damage: Baral, Chief of Compliance (321) deals 2 damage to Baylen, the Haymaker (201).
+Damage: Bird Token (646) deals 2 damage to Hullbreaker Horror (369).
+Damage: Hare Apparent (150) deals 2 damage to Archmage of Runes (317).
+Damage: Hare Apparent (144) deals 2 damage to Talrand, Sky Summoner (403).
+Damage: Baylen, the Haymaker (201) deals 10 damage to Baral, Chief of Compliance (321).
+Life: Life: Ai(2)-mm-baylen-tokens 3 > -15
+Zone Change: Baral, Chief of Compliance (321) was put into Graveyard from Battlefield.
+Zone Change: Talrand, Sky Summoner (403) was put into Graveyard from Battlefield.
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (644), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (615), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (596), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (573), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (570), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (557), Damaged: Ai(2)-mm-baylen-tokens, Amount: 3]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (350) - {T}: Add {U}.
+Mana: Island (330) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Mana: Reliquary Tower (384) - {T}: Add {C}.
+Mana: Island (331) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Talrand, Sky Summoner
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Abaddon the Despoiler (100)) [Card: Talrand, Sky Summoner (403), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Talrand, Sky Summoner - Creature 2 / 2]
+Resolve Stack: Talrand, Sky Summoner - Creature 2 / 2
+Mana: Island (339) - {T}: Add {U}.
+Mana: Island (335) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Sapphire Medallion
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Kheru Goldkeeper (274)) [Card: Sapphire Medallion (361), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Sapphire Medallion]
+Resolve Stack: Sapphire Medallion
+Mana: Heraldic Banner (308) - {T}: Add one mana of the chosen color.
+Add To Stack: Ai(4)-mm-talrand-spells cast Serum Visions
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Serum Visions (378), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw a card. Scry 2. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Serum Visions (378), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw a card. Scry 2. ]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Glen Elendra Archmage (289)) [Card: Serum Visions (378), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw a card. Scry 2. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Serum Visions (378), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw a card. Scry 2. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library and 1 card(s) to the bottom of the library
+Resolve Stack: Serum Visions (378) - Ai(4)-mm-talrand-spells draws a card. Ai(4)-mm-talrand-spells scries 2.
+Mana: Island (358) - {T}: Add {U}.
+Mana: Arcane Signet (399) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(4)-mm-talrand-spells cast Propaganda
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Doc Aurlock, Grizzled Genius (225)) [Card: Propaganda (393), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Propaganda]
+Resolve Stack: Propaganda
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 30 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Add To Stack: Ai(1)-mm-abaddon triggered Creeping Bloodsucker
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Creeping Bloodsucker (65) deals 1 non-combat damage to Ai(4)-mm-talrand-spells.
+Life: Life: Ai(3)-mm-muldrotha-value 37 > 36
+Life: Life: Ai(4)-mm-talrand-spells 27 > 26
+Life: Life: Ai(1)-mm-abaddon 49 > 51
+Resolve Stack: At the beginning of your upkeep, Creeping Bloodsucker deals 1 damage to each opponent. You gain life equal to the damage dealt this way. [Phase: Ai(1)-mm-abaddon]
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Replacement Effect: As Blood Crypt enters, you may pay 2 life. If you don't, it enters tapped.
+Land: Ai(1)-mm-abaddon played Blood Crypt (10)
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Swamp (49) - {T}: Add {B}.
+Mana: Mountain (86) - {T}: Add {R}.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Mana: Watery Grave (23) - {T}: Add {B}.
+Add To Stack: Ai(1)-mm-abaddon cast Abaddon the Despoiler
+Resolve Stack: Abaddon the Despoiler - Creature 5 / 5
+Phase: Ai(1)-mm-abaddon's End step
+Add To Stack: Ai(3)-mm-muldrotha-value activated Skull Prophet
+Zone Change: Ai(3)-mm-muldrotha-value milled Undergrowth Stadium (294) and Animate Dead (206).
+Resolve Stack: Skull Prophet (283) - Ai(3)-mm-muldrotha-value mills two cards.
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 31 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Island (235) - {T}: Add {U}.
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Kheru Goldkeeper
+Resolve Stack: Kheru Goldkeeper - Creature 3 / 3
+Phase: Ai(3)-mm-muldrotha-value's End step
+Mana: Island (357) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Anticipate
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Anticipate (313), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Anticipate (313), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Abaddon the Despoiler (100)) [Card: Anticipate (313), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Anticipate (313), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top three cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Anticipate (313) - Ai(4)-mm-talrand-spells looks at the top three cards of their library. They put one of them into their hand and put the rest on the bottom of their library in any order.
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Turn: Turn 32 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Rapid Hybridization targeting [Kheru Goldkeeper (274)]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Rapid Hybridization (365), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Rapid Hybridization (365), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Kheru Goldkeeper (274)) [Card: Rapid Hybridization (365), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Rapid Hybridization (365), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Rapid Hybridization ability fizzles.
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (354)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Hullbreaker Horror (369), Archmage of Runes (317), Drake Token (557), Drake Token (570), Drake Token (573), Drake Token (596), Drake Token (615), Drake Token (644), Talrand, Sky Summoner (403), Drake Token (691) and Drake Token (738) to attack Ai(1)-mm-abaddon.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(1)-mm-abaddon didn't block Hullbreaker Horror (369).
+Ai(1)-mm-abaddon didn't block Archmage of Runes (317).
+Ai(1)-mm-abaddon didn't block Drake Token (557).
+Ai(1)-mm-abaddon didn't block Drake Token (570).
+Ai(1)-mm-abaddon didn't block Drake Token (573).
+Ai(1)-mm-abaddon didn't block Drake Token (596).
+Ai(1)-mm-abaddon didn't block Drake Token (615).
+Ai(1)-mm-abaddon didn't block Drake Token (644).
+Ai(1)-mm-abaddon didn't block Talrand, Sky Summoner (403).
+Ai(1)-mm-abaddon didn't block Drake Token (691).
+Ai(1)-mm-abaddon didn't block Drake Token (738).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Hullbreaker Horror (369) deals 8 combat damage to Ai(1)-mm-abaddon.
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (557) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (570) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (573) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (596) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (615) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (644) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Talrand, Sky Summoner (403) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (691) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (738) deals 3 combat damage to Ai(1)-mm-abaddon.
+Life: Life: Ai(1)-mm-abaddon 51 > 12
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (738), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (691), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Talrand, Sky Summoner (403), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (644), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (615), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (596), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (573), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (570), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (557), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(1)-mm-abaddon, Amount: 4]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Hullbreaker Horror (369), Damaged: Ai(1)-mm-abaddon, Amount: 8]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (330) - {T}: Add {U}.
+Mana: Island (331) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Haughty Djinn
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Creeping Bloodsucker (65)) [Card: Haughty Djinn (366), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Haughty Djinn - Creature * / 4]
+Resolve Stack: Haughty Djinn - Creature * / 4
+Mana: Island (339) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Mocking Sprite
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Talisman of Creativity (92)) [Card: Mocking Sprite (390), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Mocking Sprite - Creature 2 / 1]
+Resolve Stack: Mocking Sprite - Creature 2 / 1
+Mana: Island (335) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Winged Words
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Winged Words (396), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Winged Words (396), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Passionate Archaeologist (32)) [Card: Winged Words (396), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Winged Words (396), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Winged Words (396) - Ai(4)-mm-talrand-spells draws two cards.
+Phase: Ai(4)-mm-talrand-spells' End step
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 33 (Ai(1)-mm-abaddon)
+Phase: Ai(1)-mm-abaddon's Untap step
+Phase: Ai(1)-mm-abaddon's Upkeep step
+Phase: Ai(1)-mm-abaddon's Draw step
+Phase: Ai(1)-mm-abaddon's Main phase, precombat
+Land: Ai(1)-mm-abaddon played Exotic Orchard (35)
+Mana: Mountain (86) - {T}: Add {R}.
+Mana: Sulfur Falls (20) - {T}: Add {U} or {R}.
+Mana: Swamp (49) - {T}: Add {B}.
+Mana: Exotic Orchard (35) - {T}: Add one mana of any color that a land an opponent controls could produce.
+Mana: Dragonskull Summit (40) - {T}: Add {B} or {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Neheb, the Eternal
+Mana: Heraldic Banner (308) - {T}: Add one mana of the chosen color.
+Mana: Island (358) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Wizard's Retort targeting [Neheb, the Eternal - Creature 4 / 6]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Wizard's Retort (391), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Wizard's Retort (391), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Arcane Signet (298)) [Card: Wizard's Retort (391), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Wizard's Retort (391), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Wizard's Retort (391) - Counter Neheb, the Eternal (39).
+Phase: Ai(1)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(1)-mm-abaddon's Declare Attackers Step
+Phase: Ai(1)-mm-abaddon's Declare Blockers Step
+Phase: Ai(1)-mm-abaddon's First Strike Damage Step
+Phase: Ai(1)-mm-abaddon's Combat Damage Step
+Phase: Ai(1)-mm-abaddon's End of Combat Step
+Phase: Ai(1)-mm-abaddon's Main phase, postcombat
+Mana: Watery Grave (23) - {T}: Add {B}.
+Mana: Blood Crypt (10) - {T}: Add {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Creeping Bloodsucker
+Resolve Stack: Creeping Bloodsucker - Creature 1 / 2
+Mana: Crumbling Necropolis (52) - {T}: Add {U}, {B}, or {R}.
+Mana: Xander's Lounge (60) - {T}: Add {R}.
+Add To Stack: Ai(1)-mm-abaddon cast Talisman of Creativity
+Mana: Arcane Signet (399) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(4)-mm-talrand-spells cast Unwind targeting [Talisman of Creativity]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Unwind (379), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Untap up to three lands. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Unwind (379), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Untap up to three lands. ]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Creeping Bloodsucker (65)) [Card: Unwind (379), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Untap up to three lands. ]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Unwind (379), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Untap up to three lands. ]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Unwind (379) - Counter Talisman of Creativity (92). Untap up to 3 Lands.
+Phase: Ai(1)-mm-abaddon's End step
+Add To Stack: Ai(3)-mm-muldrotha-value activated Skull Prophet
+Zone Change: Ai(3)-mm-muldrotha-value milled Spore Frog (252) and Zagoth Triome (217).
+Resolve Stack: Skull Prophet (283) - Ai(3)-mm-muldrotha-value mills two cards.
+Phase: Ai(1)-mm-abaddon's Cleanup step
+Turn: Turn 34 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Island (235) - {T}: Add {U}.
+Mana: Skull Prophet (283) - {T}: Add {B} or {G}.
+Mana: Forest (245) - {T}: Add {G}.
+Mana: Forest (244) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Kheru Goldkeeper
+Resolve Stack: Kheru Goldkeeper - Creature 3 / 3
+Phase: Ai(3)-mm-muldrotha-value's End step
+Mana: Island (350) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Impulse
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Impulse (386), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Impulse (386), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Kheru Goldkeeper (274)) [Card: Impulse (386), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Impulse (386), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Impulse (386) - Ai(4)-mm-talrand-spells looks at the top four cards of their library. They put one of them into their hand and put the rest on the bottom of their library in any order.
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Discard: Ai(3)-mm-muldrotha-value discards Sidisi, Brood Tyrant (221).
+Discard: Ai(3)-mm-muldrotha-value discards Jace, Wielder of Mysteries (280).
+Discard: Ai(3)-mm-muldrotha-value discards Glen Elendra Archmage (289).
+Turn: Turn 35 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (340)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Haughty Djinn (366), Hullbreaker Horror (369), Archmage of Runes (317), Drake Token (557), Drake Token (570), Drake Token (573), Drake Token (596), Drake Token (615), Drake Token (644), Talrand, Sky Summoner (403), Drake Token (691), Drake Token (738), Drake Token (747), Mocking Sprite (390), Drake Token (766), Drake Token (777), Drake Token (790) and Drake Token (817) to attack Ai(1)-mm-abaddon.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(1)-mm-abaddon assigned Plague Drone (98) to block Haughty Djinn (366).
+Ai(1)-mm-abaddon didn't block Hullbreaker Horror (369).
+Ai(1)-mm-abaddon didn't block Archmage of Runes (317).
+Ai(1)-mm-abaddon didn't block Drake Token (557).
+Ai(1)-mm-abaddon didn't block Drake Token (570).
+Ai(1)-mm-abaddon didn't block Drake Token (573).
+Ai(1)-mm-abaddon didn't block Drake Token (596).
+Ai(1)-mm-abaddon didn't block Drake Token (615).
+Ai(1)-mm-abaddon didn't block Drake Token (644).
+Ai(1)-mm-abaddon didn't block Talrand, Sky Summoner (403).
+Ai(1)-mm-abaddon didn't block Drake Token (691).
+Ai(1)-mm-abaddon didn't block Drake Token (738).
+Ai(1)-mm-abaddon didn't block Drake Token (747).
+Ai(1)-mm-abaddon didn't block Mocking Sprite (390).
+Ai(1)-mm-abaddon didn't block Drake Token (766).
+Ai(1)-mm-abaddon didn't block Drake Token (777).
+Ai(1)-mm-abaddon didn't block Drake Token (790).
+Ai(1)-mm-abaddon didn't block Drake Token (817).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Haughty Djinn (366) deals 15 damage to Plague Drone (98).
+Damage: Hullbreaker Horror (369) deals 8 combat damage to Ai(1)-mm-abaddon.
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (557) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (570) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (573) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (596) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (615) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (644) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Talrand, Sky Summoner (403) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (691) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (738) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (747) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Mocking Sprite (390) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (766) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (777) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (790) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Drake Token (817) deals 3 combat damage to Ai(1)-mm-abaddon.
+Damage: Plague Drone (98) deals 3 damage to Haughty Djinn (366).
+Life: Life: Ai(1)-mm-abaddon 12 > -45
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Add To Stack: Ai(4)-mm-talrand-spells triggered Bident of Thassa
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (817), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (790), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (777), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (766), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Mocking Sprite (390), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (747), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (738), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (691), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Talrand, Sky Summoner (403), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (644), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (615), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (596), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (573), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (570), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Drake Token (557), Damaged: Ai(1)-mm-abaddon, Amount: 3]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Archmage of Runes (317), Damaged: Ai(1)-mm-abaddon, Amount: 4]
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Hullbreaker Horror (369), Damaged: Ai(1)-mm-abaddon, Amount: 8]
+Phase: Ai(4)-mm-talrand-spells' End of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (350) - {T}: Add {U}.
+Mana: Sol Ring (320) - {T}: Add {C}{C}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Rhystic Study
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Swiftfoot Boots (259)) [Card: Rhystic Study (324), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Rhystic Study]
+Resolve Stack: Rhystic Study
+Phase: Ai(4)-mm-talrand-spells' End step
+Mana: Island (330) - {T}: Add {U}.
+Add To Stack: Ai(4)-mm-talrand-spells cast Unsummon targeting [Skull Prophet (283)]
+Add To Stack: Ai(4)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(4)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(4)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(4)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Unsummon (388), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Unsummon (388), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Skull Prophet (283)) [Card: Unsummon (388), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Ai(4)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Unsummon (388), Activator: Ai(4)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Unsummon ability fizzles.
+Phase: Ai(4)-mm-talrand-spells' Cleanup step
+Turn: Turn 36 (Ai(3)-mm-muldrotha-value)
+Phase: Ai(3)-mm-muldrotha-value's Untap step
+Phase: Ai(3)-mm-muldrotha-value's Upkeep step
+Phase: Ai(3)-mm-muldrotha-value's Draw step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, precombat
+Phase: Ai(3)-mm-muldrotha-value's Beginning of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Attackers Step
+Phase: Ai(3)-mm-muldrotha-value's Declare Blockers Step
+Phase: Ai(3)-mm-muldrotha-value's First Strike Damage Step
+Phase: Ai(3)-mm-muldrotha-value's Combat Damage Step
+Phase: Ai(3)-mm-muldrotha-value's End of Combat Step
+Phase: Ai(3)-mm-muldrotha-value's Main phase, postcombat
+Mana: Island (235) - {T}: Add {U}.
+Mana: Forest (245) - {T}: Add {G}.
+Add To Stack: Ai(3)-mm-muldrotha-value cast Doc Aurlock, Grizzled Genius
+Add To Stack: Ai(4)-mm-talrand-spells triggered Rhystic Study
+Mana: Forest (244) - {T}: Add {G}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Doc Aurlock, Grizzled Genius (225), Activator: Ai(3)-mm-muldrotha-value, SpellAbility: Doc Aurlock, Grizzled Genius - Creature 2 / 3]
+Resolve Stack: Doc Aurlock, Grizzled Genius - Creature 2 / 3
+Phase: Ai(3)-mm-muldrotha-value's End step
+Phase: Ai(3)-mm-muldrotha-value's Cleanup step
+Discard: Ai(3)-mm-muldrotha-value discards World Shaper (261).
+Discard: Ai(3)-mm-muldrotha-value discards Kheru Goldkeeper (274).
+Turn: Turn 37 (Ai(4)-mm-talrand-spells)
+Phase: Ai(4)-mm-talrand-spells' Untap step
+Phase: Ai(4)-mm-talrand-spells' Upkeep step
+Phase: Ai(4)-mm-talrand-spells' Draw step
+Phase: Ai(4)-mm-talrand-spells' Main phase, precombat
+Land: Ai(4)-mm-talrand-spells played Island (356)
+Phase: Ai(4)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(4)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(4)-mm-talrand-spells assigned Haughty Djinn (366), Hullbreaker Horror (369), Archmage of Runes (317), Drake Token (557), Drake Token (570), Drake Token (573), Drake Token (596), Drake Token (615), Drake Token (644), Talrand, Sky Summoner (403), Drake Token (691), Drake Token (738), Drake Token (747), Mocking Sprite (390), Drake Token (766), Drake Token (777), Drake Token (790), Drake Token (817) and Drake Token (842) to attack Ai(3)-mm-muldrotha-value.
+Phase: Ai(4)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(3)-mm-muldrotha-value didn't block Haughty Djinn (366).
+Ai(3)-mm-muldrotha-value assigned Doc Aurlock, Grizzled Genius (225) to block Hullbreaker Horror (369).
+Ai(3)-mm-muldrotha-value didn't block Archmage of Runes (317).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (557).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (570).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (573).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (596).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (615).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (644).
+Ai(3)-mm-muldrotha-value didn't block Talrand, Sky Summoner (403).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (691).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (738).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (747).
+Ai(3)-mm-muldrotha-value didn't block Mocking Sprite (390).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (766).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (777).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (790).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (817).
+Ai(3)-mm-muldrotha-value didn't block Drake Token (842).
+Phase: Ai(4)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(4)-mm-talrand-spells' Combat Damage Step
+Damage: Haughty Djinn (366) deals 16 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Hullbreaker Horror (369) deals 8 damage to Doc Aurlock, Grizzled Genius (225).
+Damage: Archmage of Runes (317) deals 4 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (557) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (570) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (573) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (596) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (615) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (644) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Talrand, Sky Summoner (403) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (691) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (738) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (747) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Mocking Sprite (390) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (766) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (777) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (790) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (817) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Drake Token (842) deals 3 combat damage to Ai(3)-mm-muldrotha-value.
+Damage: Doc Aurlock, Grizzled Genius (225) deals 2 damage to Hullbreaker Horror (369).
+Life: Life: Ai(3)-mm-muldrotha-value 36 > -32
+Player Control: Ai(1)-mm-abaddon has restored control over themself
+Player Control: Ai(2)-mm-baylen-tokens has restored control over themself
+Player Control: Ai(3)-mm-muldrotha-value has restored control over themself
+Player Control: Ai(4)-mm-talrand-spells has restored control over themself
+Game Outcome: Turn 19
+Game Outcome: Ai(1)-mm-abaddon has lost because life total reached 0
+Game Outcome: Ai(2)-mm-baylen-tokens has lost because life total reached 0
+Game Outcome: Ai(3)-mm-muldrotha-value has lost because life total reached 0
+Game Outcome: Ai(4)-mm-talrand-spells has won because all opponents have lost
+Match Result: Ai(1)-mm-abaddon: 0 Ai(2)-mm-baylen-tokens: 0 Ai(3)-mm-muldrotha-value: 0 Ai(4)-mm-talrand-spells: 1 
+
+Game Result: Game 1 ended in 158087 ms. Ai(4)-mm-talrand-spells has won!
+
+Warning: default (ie. inherited from base class) implementation of chkAIDrawback is used by Jeska's Will for forge.ai.ability.ManaAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of chkAIDrawback is used by Jeska's Will for forge.ai.ability.ManaAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Abaddon the Despoiler for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Talrand, Sky Summoner for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Baylen, the Haymaker for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
