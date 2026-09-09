@@ -29,7 +29,7 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 
 | Agent | Owns | Spawned by | Class |
 |---|---|---|---|
-| `captains-log` | the six prose sections of `captains_log.json` | `captains-log` | keep → Build (piloting guidance) |
+| `captains-log` | `read` (the deck-level roll-up) + the night summaries of `captains_log.json` | `captains-log` | keep → Build (piloting guidance) |
 | `debrief` | `log_annotations.json` — a structured reading of each logged game | `debrief`, `captains-log`, `diagnose-deck`, `prescribe`, `publish-deck` | keep → Build |
 | `deck-analyst` | `candidate_pool.json` | `build-deck`, `write-manual` | keep → shared service under Auto-Build |
 | `deck-architect` | `build_plan.json` | `build-deck` | keep → Auto-Build |

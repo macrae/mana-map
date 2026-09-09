@@ -1330,9 +1330,12 @@ SIM_DECK_PREFIX = "mm-"               # our .dck files in Forge's folder carry t
 # cache still read HIT, which is the "green board over a stale document" this
 # registry exists to prevent — the data inputs were declared and the measurer was not.
 DECK_AUDIT_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "deck_audit.py"
-# The captain's-log vocabulary and the stardate function. Declared as a routine
-# input because editing `STATIONS` or `stardate()` changes what the agent may
-# write — and a green board over a stale vocabulary is what that mechanism is for.
+# The captain's-log vocabulary — `SECTION_KEYS`, `READ_KEYS`, `LOG_KINDS` and the
+# night grouping. Declared as a routine input because editing any of them changes
+# what the agent may write, and a green board over a stale vocabulary is what
+# that mechanism is for. It named `STATIONS` and `stardate()` until the ship's
+# register was retired; the mechanism is why that rewrite invalidated all five
+# rendered decks automatically instead of needing a list of them.
 CAPTAINS_LOG_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "captains_log.py"
 # The handbook's section registry and closed vocabularies. Declared for the same
 # reason: editing EMERGENCY_CONDITIONS or NORMAL_PHASES changes what the

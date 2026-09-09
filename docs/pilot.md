@@ -360,7 +360,7 @@ data/decks/<slug>/             all tracked:
                                log.jsonl             AUTHORED, append-only — `deck-notes add` (the captain's log)
                                log_annotations.json  debrief agent, by entry id — `merge-debrief` / `validate-debrief`
                                log_causes.json       AUTHORED — how each game ended, closed vocabulary, by entry id
-                               captains_log.json     the LANGUAGE LAYER over the log: each night as a ship's log
+                               captains_log.json     THE READ over the log: what the games taught + a summary per night
                                                      (Situation / Narrative / Assessment / Orders / Coda), the
                                                      pilot's own note preserved verbatim behind every entry.
                                                      A RENDERING, never a replacement — the doctor reads the
