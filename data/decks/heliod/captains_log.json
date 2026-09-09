@@ -1,6 +1,29 @@
 {
   "slug": "heliod",
-  "ship": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+  "commander": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+  "read_meta": {
+    "as_of_version": 10,
+    "as_of_sha": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
+    "games_considered": [
+      {
+        "id": "001",
+        "at": "2026-08-28",
+        "version": 5,
+        "current": false
+      },
+      {
+        "id": "002",
+        "at": "2026-09-08",
+        "version": 10,
+        "current": true
+      }
+    ],
+    "versions_spanned": [
+      5,
+      10
+    ],
+    "unmatched": []
+  },
   "nights": {
     "2026-08-28": {
       "night": "2026-08-28",
@@ -26,41 +49,54 @@
         }
       ],
       "logs": {
-        "ship": {
-          "header": "Captain's log, stardate 80240.8. Heliod, the Radiant Dawn // Heliod, the Warped Eclipse; the list carries no tagged version.",
-          "situation": "We are at Alex's house on Moraga Way in Orinda, on the evening of Friday the twenty-eighth. This was the third engagement of the evening of four, taken up after Edgar Markov left the line. Two vessels opposite, under Alex and under Stuart.",
-          "narrative": "The opening hand I chose to keep was a good one and dense with answers, and I spent them where I meant to; the ship did the thing it is built to do and lost anyway. The structural cost showed itself early: the card flow we generate is symmetric, so every card we hand ourselves we also hand to the vessels we are trying to answer, and they were never short of material with which to fight our counters. The game closed in a long exchange over a single spell. I answered a spell of theirs, Alex answered my answer, and when I cast Swords to Plowshares he redirected it onto Heliod. The engine was offline from that point forward. Psychosis Crawler stood on the battlefield with the pieces present to grow it, and we never arrived.",
-          "assessment": [
-            {
-              "attribution": "self",
-              "text": "The design of this ship is mine and so is the fault in it. I have laid in too many separate lines of attack and provided none of them with cover; committing my removal into an open answer was an error of judgment on my part, but the deeper error was made long before the game, at the drawing board."
-            },
-            {
-              "attribution": "ship",
-              "text": "Two things about the vessel are now plain. The card flow is symmetric and arms the table at the rate it arms us, which is the archetype's own problem and not an accident of this list. And the whole engine rests on the commander, with nothing aboard that answers an exchange of counters followed by redirected removal. Losing Heliod ended our participation in the game."
-            },
-            {
-              "attribution": "circumstance",
-              "text": "Alex held the two answers the situation required and played them in the correct order. I do not find that remarkable; I find that it was available to him, which is the part that concerns me."
-            }
-          ],
-          "orders": [
-            {
-              "station": "tactical",
-              "text": "I have ordered Tactical to place protection for the commander ahead of every other acquisition. Nothing further is added to this ship until it can survive a contested exchange over one spell."
-            },
-            {
-              "station": "helm",
-              "text": "I have instructed Helm to reduce the number of routes we are attempting to hold open at once and to choose among them rather than carry all of them thinly."
-            },
-            {
-              "station": "ops",
-              "text": "I have directed Ops to review the symmetry in our card flow, which at present supplies the table at the same rate it supplies us."
-            }
-          ],
-          "coda": "I am not persuaded that the concepts aboard are wrong; I am persuaded that there are too many of them for one hull. We refit, and we go out again with fewer errands and better cover."
+        "pilot": {
+          "summary": "Game three of four at Alex's house in Orinda, three-player with Alex and Stuart, on a list five versions behind the one sleeved now. Good hand, dense interaction, and I countered at the right moments — the deck did what it is built to do and still lost. I lost Heliod in a stack war: I countered a spell, Alex countered my counter, I cast Swords to Plowshares and Alex redirected it onto Heliod. Engine offline from there, Psychosis Crawler stranded on the battlefield. My read that night was too many axes and not enough of any one, and that the rebuild direction is protection first."
+        }
+      }
+    },
+    "2026-09-08": {
+      "night": "2026-09-08",
+      "stardate": "80251.8",
+      "version": "v1.2.1",
+      "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
+      "source_ids": [
+        "002"
+      ],
+      "position_in_evening": {
+        "n": 2,
+        "of": 2,
+        "after": "ur-dragon"
+      },
+      "games": [
+        {
+          "id": "002",
+          "at": "2026-09-08T21:30:00-07:00",
+          "result": "loss",
+          "cause": "combo",
+          "opponents": 3,
+          "supplemental_index": 0
+        }
+      ],
+      "logs": {
+        "pilot": {
+          "summary": "Second game at Oliver's, four-player with Oliver on Cranko, Alex on a fight deck and Ryan on Scorpion King. Kept three lands, Smothering Tithe, a creature and Long-Term Plans; the Tithe came down early alongside Kami of the Crescent Moon and I was netting about three treasure a cycle — which made me the target with no creatures out. Three sequencing errors: Supreme Verdict after Heliod had resolved, so I killed my own commander; sitting on Long-Term Plans instead of tutoring Approach of the Second Sun to third-from-top; and using the channel-tutor spirit as a blocker rather than a tutor. Oliver assembled his one-card Cranko line while the table beat on me. Loss."
         }
       }
     }
+  },
+  "read": {
+    "what_it_does": "On the current list the game showed a resource deck that wants to live long enough to cast Approach of the Second Sun: Smothering Tithe and Kami of the Crescent Moon down early, about three treasure a cycle, and Long-Term Plans to put Approach third from the top (002). The mana half worked. The finish never happened, because I sat on the tutor. The hand-size punisher axis has not converted in either logged game — Psychosis Crawler was on the battlefield with the pieces to grow it and never got there on the older list (001), and after the current-list game I wrote that the axis needed too many pieces and only ever pinged (002).",
+    "how_it_plays": "Slow and visible, and it ends up as the seat the table beats on. Smothering Tithe made me the target immediately with no creatures out (002). Both logged games ended with somebody else closing while I was still assembling: a stack war took Heliod and the engine went offline on the older list (001), and on the current list Oliver put together a one-card Cranko line while the table hit me (002). Sean's own cross-game note is that momentum, tempo and table optics are the recurring gap and that it is him rather than the deck (002), and that he avoids this deck partly because blue-white control feels intimidating (002).",
+    "mindful_of": [
+      "Wipe first, then resolve Heliod. Supreme Verdict came down after the commander and killed it (002).",
+      "Long-Term Plans is a tutor, and it wants using early. I overthought the cost of Approach of the Second Sun — with the treasure and the discount it is two or three, not seven — waited, got desperate, and the window closed (002).",
+      "Deploy Smothering Tithe behind blockers, or hold it until there are some. It bought the whole table's attention while my board was empty (002).",
+      "The channel-tutor spirit is a tutor first. I used it as a blocker, caught between surviving and assembling, and took the short-term play (002).",
+      "There is no pressure to rush the commander out in this build, and I keep acting as though there is (002).",
+      "The commander going away takes the engine with it. That was the stack war on the older list (001) and my own wipe on the current one (002).",
+      "Symmetric card draw arms the table against me. That read was made against the counterspell-heavy list, which is superseded — but Kami of the Crescent Moon is still the deck's early engine piece and was on the table in the current-list game (001, 002).",
+      "The hand-size punisher axis has not paid in either game (001, 002)."
+    ],
+    "what_changed": "The two games sit five versions apart. Game 001 was played on V5; the paper list was checked in at V6 with fifteen swaps and the combo it no longer runs, then lynchpin-v1, skies-v1 and archangel-v1 landed — the version notes describe those as the commander getting a bodyguard, a backup plan, and a board that can finally block what kills it. That is 001's conclusion, protection before more axes, acted on directly. The one game since has not tested it: I lost Heliod to my own Supreme Verdict rather than to a stack war, and had nothing on board when the Tithe drew fire (002). The direction coming out of the current-list game is different again — keep the Approach build-around and the live-long-enough plan, find more ways to turn opponents' card draw into value, and stop feeding the hand-size punisher axis (002)."
   }
 }
