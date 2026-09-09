@@ -673,6 +673,44 @@ deck is exactly that case. NOT changed here: it is a real widening, it needs its
 own measurement across the fleet, and this session had already changed the model
 once.
 
+## O7 — An aborted run is returned as a run
+
+`forge.list_runs` globs `sim/*.json` and applies **no guard at all**. A record
+whose `nonzero_exit_jobs` is 4 and whose `games_completed` is 77 of a requested
+120 comes back looking exactly like a finished one, and consumers that read
+`summary.win_rate` — which IS populated on a partial — get a figure with no
+signal that the run was killed.
+
+Found 2026-09-09 by killing a 120-game run on zur-enchantress@drain-v2 at 77
+games. Two things saved it from being quoted:
+
+- The **writer is honest**. It set `games_requested` 120 against
+  `games_completed` 77, `nonzero_exit_jobs` 4, `summary.games` null, and
+  crucially `win_rate_ci95` **null** — it declined to compute an interval on a
+  partial sample, which is the right call and the reason a careful reader would
+  notice.
+- The record was quarantined by hand before anything read it.
+
+Neither is a control. The gap is in the READER:
+
+1. `list_runs` should carry a `complete` flag, or filter, or at minimum surface
+   `games_completed`/`games_requested` to every caller.
+2. `summary.win_rate` on an incomplete run is the same defect as
+   `win_rate_ci95` would have been, one field over. If the interval is withheld
+   for being unsound, the rate it centres on is unsound too. **Absent means
+   absent** — that rule already exists in this repo and this field breaks it.
+3. **The run id lies.** The filename says `n120` and the run is 77 games. A run
+   id is the most-quoted string in this subsystem — it appears in every report,
+   every `--analyze` invocation and every commit message — and this one is false
+   on its face. The id is fixed at launch from the REQUESTED n, so any killed or
+   crashed run inherits a wrong name.
+
+The partial figures are preserved in the quarantine's `WHY.md` rather than
+deleted, with the reason they are not a result: the convergence trace fell
+monotonically from 0.250 at n=20 to 0.134 at n=67, so stopping early would have
+flattered the deck by seven points. That is optional stopping, and it is the
+failure mode `sim-progress` was written to refuse.
+
 ## O1 — You are paying for games that produce no decision
 
 Regenerating every dossier surfaced the clock-out rate, which nothing had ever
