@@ -160,29 +160,19 @@ def test_a_deck_that_has_never_been_played_has_no_nights():
 
 
 def test_the_vocabularies_are_closed_and_small():
-    assert set(cl.STATIONS) == {"engineering", "tactical", "ops", "helm"}
-    assert cl.ATTRIBUTION_ORDER == ("self", "ship", "circumstance")
-    assert cl.LOG_KINDS == ("ship", "personal")
-    assert set(cl.STATION_ROLES) == set(cl.STATIONS), (
-        "every station needs a role mapping or its cards are unreachable")
-    assert len(cl.SECTION_KEYS) == 6
+    """One section per night, four keys in the read, and no ship.
 
-
-@requires_deck
-def test_every_station_has_cards_on_a_real_deck():
-    """A station nothing answers to is a word the agent cannot use.
-
-    `helm` is the reason this test exists: it was added because Engineering /
-    Tactical / Ops left the deck's win route with nowhere to file, and a
-    vocabulary that is incomplete makes the agent misfile under the nearest
-    station — which reads as correct and counts as nothing.
+    `STATIONS` and `ATTRIBUTION_ORDER` are gone with the register that needed
+    them: there is no officer to take an order and no captain to assign blame
+    to. `LOG_KINDS` says `pilot` because that is who is playing.
     """
-    roster = cl.stations_for_deck("ur-dragon")
-    for station in cl.STATIONS:
-        assert roster[station], f"no ur-dragon card answers to {station}"
+    assert cl.SECTION_KEYS == ("summary",)
+    assert cl.READ_KEYS == ("what_it_does", "how_it_plays",
+                            "mindful_of", "what_changed")
+    assert cl.LOG_KINDS == ("pilot", "personal")
+    assert not hasattr(cl, "STATIONS"), "the stations were retired"
+    assert not hasattr(cl, "ATTRIBUTION_ORDER"), "attribution was retired"
 
-
-# ------------------------------------------------------------------- the merge
 
 def _handoff(tmp_deck, payload):
     out = tmp_deck / ".agent-out"
@@ -235,25 +225,31 @@ def test_the_merge_takes_prose_and_recomputes_every_fact(fake_deck):
     """
     from manamap.pilot import merge_captains_log as mcl
 
-    _handoff(fake_deck, {"nights": {"2026-09-01": {
-        "header": "Captain's log, stardate 99999.9.",
-        "situation": "s", "narrative": "n",
-        "assessment": [{"attribution": "self", "text": "a"}],
-        "orders": [{"station": "helm", "text": "I have ordered Helm to hold."}],
-        "coda": "c",
-        # Smuggled facts, every one of which must be ignored.
-        "stardate": "99999.9", "source_ids": ["999"], "version": "v9.9.9",
-        "games": [], "night": "1999-01-01",
-    }}})
+    _handoff(fake_deck, {
+        "nights": {"2026-09-01": {
+            "summary": "Lost to a wipe.",
+            # Smuggled facts, every one of which must be ignored.
+            "source_ids": ["999"], "version": "v9.9.9",
+            "games": [], "night": "1999-01-01",
+        }},
+        "read": {"what_it_does": "w", "how_it_plays": "h",
+                 "mindful_of": ["m"], "what_changed": "c",
+                 # The read may not decide which games count as current — that
+                 # is the join's answer, not a writer's.
+                 "read_meta": {"as_of_version": "v9.9.9"}},
+    })
     merged, rejected, path = mcl.merge("twice")
     assert merged == ["2026-09-01"] and not rejected
     doc = json.loads(path.read_text())
     night = doc["nights"]["2026-09-01"]
-    assert night["stardate"] == "80244.7", "the merge recomputed the stardate"
     assert night["source_ids"] == ["001", "002"]
     assert night["version"] is None
-    assert set(night["logs"]["ship"]) == set(cl.SECTION_KEYS), (
-        "only the six prose sections survive the whitelist")
+    assert set(night["logs"]["pilot"]) == set(cl.SECTION_KEYS), (
+        "only the prose survives the whitelist")
+    assert set(doc["read"]) == set(cl.READ_KEYS), (
+        "the agent smuggled read_meta and the merge took it")
+    assert doc["read_meta"]["as_of_version"] != "v9.9.9", (
+        "read_meta is recomputed, never taken from the handoff")
 
 
 def test_the_merge_refuses_a_night_the_log_does_not_have(fake_deck):
@@ -281,108 +277,116 @@ def test_a_second_merge_carries_the_first_nights_prose_forward(fake_deck):
     """A scoped re-spawn must not drop the nights it was not asked about."""
     from manamap.pilot import merge_captains_log as mcl
 
-    good = {"header": "Captain's log, stardate 80244.7.", "situation": "s",
-            "narrative": "n", "assessment": [{"attribution": "self", "text": "a"}],
-            "orders": [{"station": "ops", "text": "I have ordered Ops to look."}],
-            "coda": "c"}
+    good = {"summary": "Lost to a wipe."}
     _handoff(fake_deck, {"nights": {"2026-09-01": good}})
     mcl.merge("twice")
 
     # A later run that renders nothing new still must not erase what is there.
-    _handoff(fake_deck, {"nights": {"2026-09-01": dict(good, coda="revised")}})
+    _handoff(fake_deck, {"nights": {"2026-09-01": {"summary": "revised"}}})
     _m, _r, path = mcl.merge("twice")
     doc = json.loads(path.read_text())
-    assert doc["nights"]["2026-09-01"]["logs"]["ship"]["coda"] == "revised"
+    assert doc["nights"]["2026-09-01"]["logs"]["pilot"]["summary"] == "revised"
 
 
 # --------------------------------------------------------------- the validator
 
-def _night_doc(**over):
-    block = {"header": "Captain's log, stardate 80244.7.",
-             "situation": "s", "narrative": "n",
-             "assessment": [{"attribution": "self", "text": "mine"},
-                            {"attribution": "ship", "text": "hers"}],
-             "orders": [{"station": "tactical", "text": "I have ordered Tactical to hold."}],
-             "coda": "c"}
+def _night_doc(read=None, **over):
+    """A document in the CURRENT shape: one summary per night, plus a read.
+
+    It was six sections dictated in a starship captain's register, with a
+    stardate in the header and orders issued to stations. That went when the
+    pilot pointed out that he is a person playing a deck of cards.
+    """
+    block = {"summary": "Lost to a wipe on turn seven. Kept a two-lander."}
     block.update(over)
-    return {"slug": "twice", "ship": None,
-            "nights": {"2026-09-01": dict(cl.nights("twice")["2026-09-01"],
-                                          logs={"ship": block})}}
+    doc = {"slug": "twice", "commander": None,
+           "nights": {"2026-09-01": dict(cl.nights("twice")["2026-09-01"],
+                                         logs={"pilot": block})}}
+    if read is not None:
+        doc["read"] = read
+    return doc
+
+
+def _read(**over):
+    r = {"what_it_does": "Ramps and swings.",
+         "how_it_plays": "Faster than it looks.",
+         "mindful_of": ["You telegraph the treasure pile."],
+         "what_changed": "Nothing since V1."}
+    r.update(over)
+    return r
 
 
 def test_a_sound_log_passes(fake_deck):
     from manamap.pilot import validate_captains_log as v
-    errors, _notes = v.validate(_night_doc(), "twice")
+    errors, _notes = v.validate(_night_doc(read=_read()), "twice")
     assert errors == []
 
 
-def test_the_header_must_quote_the_stardate(fake_deck):
+def test_a_night_that_says_nothing_fails(fake_deck):
+    """A stub recorded as a cache HIT renders empty forever with every check
+    green. The six-section rule existed for this; one section still needs it."""
     from manamap.pilot import validate_captains_log as v
-    errors, _ = v.validate(_night_doc(header="Captain's log, stardate 12345.6."),
-                           "twice")
-    assert any("does not quote the stardate" in e for e in errors)
+    errors, _ = v.validate(_night_doc(summary="   ", read=_read()), "twice")
+    assert any("says nothing" in e for e in errors)
 
 
-def test_responsibility_goes_to_the_captain_first(fake_deck):
-    """The pilot's hardest style rule, and it is only checkable because the
-    ordering was pushed out of prose and into structure."""
+def test_a_partial_read_fails(fake_deck):
+    """Same reasoning one level up: the read is why the artifact exists, and a
+    partial one recorded as a HIT stays partial."""
     from manamap.pilot import validate_captains_log as v
-
-    errors, _ = v.validate(_night_doc(assessment=[
-        {"attribution": "circumstance", "text": "the table"},
-        {"attribution": "self", "text": "mine"}]), "twice")
-    assert any("does not begin with `self`" in e for e in errors)
-
-    errors, _ = v.validate(_night_doc(assessment=[
-        {"attribution": "self", "text": "mine"},
-        {"attribution": "circumstance", "text": "the table"},
-        {"attribution": "ship", "text": "hers"}]), "twice")
-    assert any("out of order" in e for e in errors)
+    errors, _ = v.validate(_night_doc(read=_read(what_changed="")), "twice")
+    assert any("read.what_changed" in e for e in errors)
 
 
-def test_an_exclamation_mark_fails(fake_deck):
+def test_a_read_may_not_cite_a_game_that_does_not_exist(fake_deck):
+    """The one mechanical property a read has. Everything else about it is
+    judgment, which is not this file's business — but a citation is checkable,
+    and a read whose evidence cannot be found is an opinion about a decklist.
+    Four other artifacts already have those.
+
+    Modelled on `validate_debrief`'s rule that a debrief may not name a card the
+    pilot did not.
+    """
     from manamap.pilot import validate_captains_log as v
-    errors, _ = v.validate(_night_doc(coda="We came within a turn!"), "twice")
-    assert any("exclamation mark" in e for e in errors)
+    errors, _ = v.validate(
+        _night_doc(read=_read(mindful_of=["You telegraph it (007)."])), "twice")
+    assert any("not in the log" in e for e in errors)
 
 
-def test_a_station_outside_the_vocabulary_fails(fake_deck):
+def test_a_read_citing_a_real_game_passes(fake_deck):
+    """The other half, and the reason the check can be trusted: it must not fire
+    on correct data."""
     from manamap.pilot import validate_captains_log as v
-    errors, _ = v.validate(_night_doc(
-        orders=[{"station": "weapons", "text": "I have ordered it."}]), "twice")
-    assert any("is not a station" in e for e in errors)
-
-
-def test_five_of_six_sections_fails(fake_deck):
-    """A short log frozen as a cache HIT renders short forever, green throughout."""
-    from manamap.pilot import validate_captains_log as v
-    errors, _ = v.validate(_night_doc(coda=""), "twice")
-    assert any("coda is missing or empty" in e for e in errors)
-
-
-def test_a_drifted_stardate_is_caught_by_recomputation(fake_deck):
-    from manamap.pilot import validate_captains_log as v
-    doc = _night_doc()
-    doc["nights"]["2026-09-01"]["stardate"] = "80244.9"
-    errors, _ = v.validate(doc, "twice")
-    assert any("stardate" in e and "recomputed as" in e for e in errors)
+    real = sorted({e["id"] for e in
+                   __import__("manamap.pilot.deck_notes", fromlist=["x"]).read_log("twice")})
+    errors, _ = v.validate(
+        _night_doc(read=_read(mindful_of=[f"Seen in {real[0]}."])), "twice")
+    assert errors == []
 
 
 def test_the_style_checks_that_cannot_be_proved_harmless_only_report(fake_deck):
-    """SHIPPED REPORTING-ONLY, ON PURPOSE.
+    """SHIPPED REPORTING-ONLY, ON PURPOSE — and the doctrine outlived the list.
 
-    Shouty capitals, jargon, superlatives and order phrasing are the abstraction
-    layer's real failure modes, and none of them could be proved harmless before
-    there was any prose to measure. A validator that fires on correct data is
-    worse than no validator, so these print and do not fail until a fleet run has
-    graded them.
+    Shouty capitals and superlatives still only print. What changed is what
+    counts as style at all:
+
+    `_JARGON` is GONE. It banned mulligan, wipe, ramp, ETB, pod and tutor
+    because the retired register could not admit them, and the paraphrases it
+    forced — "a hand I chose to keep" for a mulligan — were the strangest prose
+    on the page. Those are the pilot's own words and the log is his account.
+
+    The EXCLAMATION MARK was a hard failure and is now a note. It was correct
+    for a register that forbade emotion; it is not a correctness property, and a
+    check that fails on prose a human would accept is precisely what this file's
+    own doctrine refuses.
     """
     from manamap.pilot import validate_captains_log as v
-    errors, notes = v.validate(_night_doc(
-        narrative="THE MULLIGAN was my mistake; the wipe was brutal.",
-        orders=[{"station": "ops", "text": "Ops will review the draw."}]), "twice")
-    assert errors == [], "none of these may fail the gate yet"
+
+    errors, notes = v.validate(
+        _night_doc(summary="The MULLIGAN was brutal! I kept a two-lander.",
+                   read=_read()), "twice")
+    assert errors == [], "style must never fail the gate"
     joined = " ".join(notes)
-    assert "shouty caps" in joined and "jargon" in joined
-    assert "superlative" in joined
-    assert "already issued" in joined
+    assert "shouty caps" in joined and "superlative" in joined
+    assert "exclamation mark" in joined
+    assert "jargon" not in joined, "the jargon list should be gone"

@@ -40,96 +40,103 @@ _JARGON = re.compile(
 
 
 def _prose(block):
-    """Every prose string in one log, section by section, for the text checks."""
+    """Every prose string in one night's account.
+
+    Driven by `SECTION_KEYS` rather than a hand-written tuple. The old version
+    listed the six sections by name, so renaming one silently dropped it from
+    every style check while the checks kept reporting green — the same class of
+    defect as a loop over an empty collection with no `assert checked >= N`.
+    """
     out = []
-    for key in ("header", "situation", "narrative", "coda"):
-        if isinstance(block.get(key), str):
-            out.append((key, block[key]))
-    for i, a in enumerate(block.get("assessment") or []):
-        if isinstance(a, dict) and isinstance(a.get("text"), str):
-            out.append((f"assessment[{i}]", a["text"]))
-    for i, o in enumerate(block.get("orders") or []):
-        if isinstance(o, dict) and isinstance(o.get("text"), str):
-            out.append((f"orders[{i}]", o["text"]))
+    for key in cl.SECTION_KEYS:
+        val = block.get(key)
+        if isinstance(val, str):
+            out.append((key, val))
+        elif isinstance(val, list):
+            for i, item in enumerate(val):
+                if isinstance(item, str):
+                    out.append((f"{key}[{i}]", item))
     return out
 
 
 def _check_block(where, block, night, errors, notes):
-    """One log — the main entry or a supplemental."""
-    # 7. ALL SIX SECTIONS, PRESENT AND NON-EMPTY. A five-section log recorded as
-    # a cache HIT renders short forever with every check green — the same
-    # reasoning `agent_cache.record` uses to refuse a partial keyed artifact.
+    """One night's account.
+
+    Six sections became one. The header-quotes-the-stardate check, the
+    attribution ordering and the closed station set all went with the register
+    they policed: there is no ship, no officer to take an order, and a stardate
+    the pilot could not read.
+
+    What survives is the property that is not about voice — a rendered night
+    must actually say something, because a stub recorded as a cache HIT renders
+    empty forever with every check still green.
+    """
     for key in cl.SECTION_KEYS:
         val = block.get(key)
         if val is None or (isinstance(val, str) and not val.strip()) \
                 or (isinstance(val, list) and not val):
-            errors.append(f"{where}.{key} is missing or empty — a log is not a "
-                          f"log with five of its six sections")
+            errors.append(f"{where}.{key} is missing or empty — a rendered night "
+                          f"that says nothing is worse than an unrendered one, "
+                          f"which at least prints a prompt to write it")
 
-    # 4. THE HEADER QUOTES THE FACTS VERBATIM. `validate_debrief`'s substring
-    # trick, turned around: it proves the prose consistent with the number the
-    # renderer sorts by, while judging no word of it. The agent is handed both
-    # strings, so it cannot fire on correct data.
-    header = block.get("header") or ""
-    if isinstance(header, str) and header.strip():
-        if night["stardate"] not in header:
-            errors.append(f"{where}.header does not quote the stardate "
-                          f"{night['stardate']} — the header and the field the "
-                          f"page sorts by must agree")
-        if night.get("version") and night["version"] not in header:
-            errors.append(f"{where}.header does not quote the version "
-                          f"{night['version']!r}")
-
-    # 5. RESPONSIBILITY IN ORDER: self, then ship, then circumstance, never
-    # reversed. The pilot's hardest style rule, made structural.
-    seen = []
-    for i, a in enumerate(block.get("assessment") or []):
-        if not isinstance(a, dict):
-            errors.append(f"{where}.assessment[{i}] is not an object")
-            continue
-        attr = a.get("attribution")
-        if attr not in cl.ATTRIBUTION_ORDER:
-            errors.append(f"{where}.assessment[{i}].attribution {attr!r} is not "
-                          f"one of {list(cl.ATTRIBUTION_ORDER)}")
-            continue
-        seen.append(cl.ATTRIBUTION_ORDER.index(attr))
-    if seen:
-        if seen[0] != 0:
-            errors.append(f"{where}.assessment does not begin with `self` — the "
-                          f"captain assigns responsibility to himself first")
-        if any(b < a for a, b in zip(seen, seen[1:])):
-            errors.append(f"{where}.assessment attributes out of order "
-                          f"({[cl.ATTRIBUTION_ORDER[i] for i in seen]}) — the "
-                          f"order is self, ship, circumstance and never reversed")
-
-    # 6. THE STATIONS ARE A CLOSED SET.
-    for i, o in enumerate(block.get("orders") or []):
-        if not isinstance(o, dict):
-            errors.append(f"{where}.orders[{i}] is not an object")
-            continue
-        if o.get("station") not in cl.STATIONS:
-            errors.append(f"{where}.orders[{i}].station {o.get('station')!r} is "
-                          f"not a station — one of {sorted(cl.STATIONS)}")
-
-    # 8. NO EXCLAMATION MARKS. The one style rule in the spec that is binary, and
-    # correct Picard prose contains none by construction.
-    for key, text in _prose(block):
-        if "!" in text:
-            errors.append(f"{where}.{key} contains an exclamation mark")
-
-    # ---- reporting only, pending measurement over a full fleet run ----
+    # ---- reporting only ----
+    #
+    # THE JARGON LIST IS GONE. It banned mulligan, wipe, ramp, ETB, pod and
+    # tutor because the old register could not admit them, and the paraphrases
+    # it forced ("a hand I chose to keep") were the strangest thing on the page.
+    # Those are the pilot's own words and the log is his account.
+    #
+    # THE EXCLAMATION MARK IS NO LONGER A FAILURE. It was correct for a register
+    # that forbade emotion; it is not a correctness property, and a check that
+    # fails on prose a human would accept is the failure mode this file's own
+    # doctrine refuses.
     for key, text in _prose(block):
         for label, rx in (("shouty caps carried from the source", _SHOUTY),
-                          ("superlative", _SUPERLATIVE),
-                          ("jargon", _JARGON)):
+                          ("superlative", _SUPERLATIVE)):
             hits = sorted(set(rx.findall(text)))
             if hits:
                 notes.append(f"{where}.{key}: {label} — {', '.join(map(str, hits))}")
-    for i, o in enumerate(block.get("orders") or []):
-        text = (o or {}).get("text") or ""
-        if text and not _ISSUED.search(text):
-            notes.append(f"{where}.orders[{i}] is not phrased as already issued "
-                         f"— \"I have ordered …\"")
+        if "!" in text:
+            notes.append(f"{where}.{key}: exclamation mark")
+
+
+def _check_read(doc, slug, errors, notes):
+    """The deck-level roll-up, and the one thing it may not do.
+
+    IT MAY NOT CITE A GAME THAT DOES NOT EXIST. Everything else about a read is
+    judgment, and judgment is not this file's business — but a citation is
+    mechanically checkable, and a read whose evidence cannot be found is an
+    opinion about a decklist. Four other artifacts already have those.
+
+    Modelled on `validate_debrief`'s rule that the debrief may not name a card
+    the pilot did not.
+    """
+    import re as _re
+
+    read = doc.get("read")
+    log_ids = {e["id"] for e in read_log(slug)}
+    if not read:
+        if log_ids:
+            notes.append(f"no `read` — {len(log_ids)} logged game(s) and nothing "
+                         f"synthesised across them yet")
+        return
+    for key in cl.READ_KEYS:
+        val = read.get(key)
+        if val is None or (isinstance(val, str) and not val.strip()) \
+                or (isinstance(val, list) and not val):
+            errors.append(f"read.{key} is missing or empty — the read is the "
+                          f"reason this artifact exists and a partial one "
+                          f"recorded as a HIT stays partial")
+    cited = set()
+    for key in cl.READ_KEYS:
+        val = read.get(key)
+        for text in (val if isinstance(val, list) else [val or ""]):
+            cited |= set(_re.findall(r"\b(\d{3})\b", str(text)))
+    unknown = sorted(cited - log_ids)
+    if unknown:
+        errors.append(f"read cites game(s) {', '.join(unknown)} which are not in "
+                      f"the log — the log is the authority and a read cannot "
+                      f"add games to it")
 
 
 def validate(doc, slug):
@@ -153,7 +160,7 @@ def validate(doc, slug):
                           f"nights to it")
             continue
         want = truth[key]
-        for field in ("stardate", "source_ids", "position_in_evening", "version"):
+        for field in ("source_ids", "position_in_evening", "version"):
             if night.get(field) != want[field]:
                 errors.append(
                     f"nights[{key}].{field} is {night.get(field)!r}, recomputed "
@@ -191,6 +198,9 @@ def validate(doc, slug):
                 errors.append(f"log entry {eid!r} is filed under both "
                               f"{seen[eid]} and {key}")
             seen[eid] = key
+
+    # 3. THE READ — the deck-level roll-up, and its one mechanical property.
+    _check_read(doc, slug, errors, notes)
     return errors, notes
 
 
@@ -211,7 +221,7 @@ def main(args):
     # reddens history.
     truth = cl.nights(slug)
     rendered = [k for k, n in (doc.get("nights") or {}).items()
-                if "ship" in (n.get("logs") or {})]
+                if "pilot" in (n.get("logs") or {})]
     games = sum(len(n["source_ids"]) for n in truth.values())
     reachable = sum(len(n.get("source_ids") or [])
                     for k, n in (doc.get("nights") or {}).items() if k in truth)

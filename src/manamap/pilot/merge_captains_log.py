@@ -4,11 +4,12 @@ The agent writes `.agent-out/captains-log.json` and this puts it beside the log
 it renders. Same shape as `merge_debrief`: additive by key, refuses to write on
 zero matches, and the MERGE STAMPS RATHER THAN THE AGENT.
 
-THE WHITELIST IS THE POINT. The skeleton — stardate, grouping, version, the
-games — is recomputed here from `log.jsonl` on every merge, and only the six
-prose sections are taken from the handoff. An agent that invents a stardate, or
-groups two nights into one because the story flowed better, is not caught later
-by a reader; its invention never lands at all.
+THE WHITELIST IS THE POINT. The skeleton — the grouping, the version, the games,
+the log-to-version join — is recomputed here from `log.jsonl` on every merge, and
+only the PROSE is taken from the handoff: one summary per night, plus the
+deck-level `read`. An agent that invents a version, or groups two nights into one
+because the story flowed better, is not caught later by a reader; its invention
+never lands at all.
 """
 
 import json
@@ -25,7 +26,7 @@ def _sections(incoming):
     return {k: incoming[k] for k in cl.SECTION_KEYS if k in incoming}
 
 
-def merge(slug, kind="ship"):
+def merge(slug, kind="pilot"):
     base = DECKS_DIR / slug
     handoff = load_json(base / ".agent-out" / AGENT_FILE)
     if handoff is None:
@@ -36,10 +37,12 @@ def merge(slug, kind="ship"):
         raise SystemExit(f"unknown log kind {kind!r} — one of {list(cl.LOG_KINDS)}")
 
     incoming = handoff.get("nights") or {}
-    if not incoming:
+    incoming_read = handoff.get("read") or {}
+    if not incoming and not incoming_read:
         # MERGING NOTHING AND REPORTING SUCCESS is how a log reads as rendered
         # with every check still green. Same refusal as `merge_debrief`.
-        raise SystemExit(f"{AGENT_FILE} carries no `nights` — nothing to merge")
+        raise SystemExit(
+            f"{AGENT_FILE} carries neither `nights` nor `read` — nothing to merge")
 
     # THE SKELETON IS RECOMPUTED, ALWAYS. It is a pure function of tracked
     # inputs, so recomputing costs nothing and propagates a corrected stardate or
@@ -47,6 +50,17 @@ def merge(slug, kind="ship"):
     # prose is the expensive half; the facts are free.
     doc = cl.skeleton(slug)
     previous = cl.read(slug).get("nights") or {}
+
+    # THE READ, whitelisted the same way the nights are. `read_meta` beside it is
+    # recomputed and never taken from the handoff, so an agent cannot decide for
+    # itself which games count as current — that is the join's answer, not a
+    # writer's.
+    previous_read = cl.read(slug).get("read") or {}
+    doc["read"] = {**previous_read,
+                   **{k: incoming_read[k] for k in cl.READ_KEYS
+                      if k in incoming_read}}
+    if not doc["read"]:
+        doc.pop("read")
 
     merged, rejected = [], []
     for key, night in doc["nights"].items():
@@ -74,7 +88,7 @@ def merge(slug, kind="ship"):
 
 
 def main(args):
-    merged, rejected, path = merge(args.slug, getattr(args, "kind", None) or "ship")
+    merged, rejected, path = merge(args.slug, getattr(args, "kind", None) or "pilot")
     print(f"merged {len(merged)} night(s) into {path}: {', '.join(merged)}")
     if rejected:
         print(f"  REJECTED (no such night in the log): {', '.join(sorted(rejected))}")

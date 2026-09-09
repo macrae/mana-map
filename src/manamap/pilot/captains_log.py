@@ -34,77 +34,57 @@ from manamap.pilot.deck_notes import causes, read_log
 
 ARTIFACT = "captains_log.json"
 
-#: The prose sections, in the order Picard dictates them. A log is not valid
-#: with five of them (see `validate_captains_log`): a short log frozen as a cache
-#: HIT renders short forever with every check still green.
-SECTION_KEYS = ("header", "situation", "narrative", "assessment", "orders", "coda")
-
-#: A night can hold a SHIP's log and, later, a PERSONAL one. Only `ship` is
-#: minted today. The reserved key is why the deterministic facts sit OUTSIDE
-#: `logs` — the two kinds share a stardate, and two copies of one fact is how
-#: they come to disagree. Adding `personal` is one entry in this set: no
-#: migration, no reader change.
-LOG_KINDS = ("ship", "personal")
-
-#: WHO IS RESPONSIBLE, in the order the captain assigns it: himself, then the
-#: ship, then circumstance, and never reversed. Pushing this out of prose and
-#: into structure is what turns the pilot's hardest style rule into a two-line
-#: check with no judgment in it.
-ATTRIBUTION_ORDER = ("self", "ship", "circumstance")
-
-#: THE STATIONS. Officers are named by post, not by card type — the log refers to
-#: Engineering's report rather than reproducing it, which is the whole reason the
-#: jargon stays out of the prose.
+#: ONE SECTION PER NIGHT. It was six — header, situation, narrative, assessment,
+#: orders, coda — dictated in the register of a starship captain, with a stardate
+#: the pilot could not read and stations answering to an officer who does not
+#: exist. What is actually happening is one person playing a deck of cards.
 #:
-#: `helm` is the fourth because the other three leave the deck's WIN ROUTE with
-#: nowhere to file, and half of these notes are about exactly that ("Edgar was
-#: the only vampire I cast", "swung lethal into Alex"). A closed vocabulary must
-#: be complete enough to use, or the agent misfiles under the nearest station and
-#: the count silently means nothing — the same argument `deck_notes.CAUSES` makes.
-#:
-#: There is deliberately NO "Command" station for pilot error. `attribution:
-#: "self"` already carries it, and an order to Command would have to read "I
-#: will…", which breaks the rule that orders are stated as already issued.
-STATIONS = {
-    "engineering": "the mana base — lands, rocks, dorks, rituals, treasure",
-    "tactical":    "interaction — removal, counterspells, protection, hate",
-    "ops":         "card flow — draw, selection, tutors, recursion",
-    "helm":        "the win route — the commander, the threats, the finishers",
-}
+#: A night now gets a short plain paragraph, and the synthesis that was missing
+#: entirely moved to `READ_KEYS` below.
+SECTION_KEYS = ("summary",)
 
-#: Which `card_roles.json` role prefixes answer to which station.
+#: THE READ — the deck-level roll-up, and the reason this artifact exists at all.
 #:
-#: WRITTEN AGAINST THE ACTUAL VOCABULARY, which is 52 tags long and was read
-#: before this was written down. The first cut was written against a GUESS at it
-#: — inventing prefixes `mana` and `selection` that no card in the corpus
-#: carries — and every station came back empty on every deck. A station nothing
-#: answers to is a word the agent cannot use, and the test below exists because
-#: that failure was silent.
-#:
-#: Measured across all ten decks with these prefixes: unassigned runs 0 to 12
-#: cards out of ~99, and every deck fills every station. A card may answer to
-#: SEVERAL stations — Edgar Markov carries four `buff:`/`payoff:`/`threat:` roles
-#: — so membership is a set, never a value.
-STATION_ROLES = {
-    "engineering": ("ramp:", "land:"),
-    "tactical":    ("removal:", "counterspell", "protection:", "stax", "hate:"),
-    "ops":         ("draw:", "tutor:", "recursion", "value:etb"),
-    "helm":        ("wincon:", "threat:", "buff:", "payoff:", "doubler:",
-                    "sac-outlet"),
-}
+#: Eleven rendered nights across five decks, and nothing had ever synthesised
+#: ACROSS them: every entry described one evening and no artifact answered "what
+#: is this deck, learned from playing it". Four other artifacts answer that
+#: question from the DECKLIST (`engine.json:thesis`, `manual_prose.how_it_wins`,
+#: `strategic_frame`, `diagnosis.verdict`). This one answers it from the GAMES,
+#: and cites them — which is the whole of its justification for existing beside
+#: them.
+READ_KEYS = ("what_it_does", "how_it_plays", "mindful_of", "what_changed")
 
-#: Roles that answer to NO station, listed so the omission is a decision rather
-#: than an oversight. `utility:activated` sits on 4,514 cards and says only that
-#: a permanent has an ability; `sac-cost` describes a cost, not a job. Filing
-#: either would make its station mean nothing.
-UNSTATIONED_ROLES = ("utility:activated", "sac-cost")
+#: A night holds the PILOT's account. `personal` is reserved and nothing mints
+#: it. The reserved key is why the deterministic facts sit OUTSIDE `logs` — two
+#: kinds would share one version and two copies of a fact is how they come to
+#: disagree.
+#:
+#: This said `ship` until the register was retired. There is no ship; there is a
+#: person and a deck of cards, and every reader of `logs.ship` moves with it.
+LOG_KINDS = ("pilot", "personal")
+
+# THE STATIONS, ATTRIBUTION_ORDER AND STATION_ROLES WERE DELETED HERE.
+#
+# They named an engineering officer, a tactical officer and an order of blame —
+# self, then ship, then circumstance — for a register that no longer exists.
+# There is one person and a deck of cards.
+#
+# `stations_for_deck` went with them, and it was already dead: its docstring
+# promised "the validator holds it to this roster" and NO CODE EVER CALLED IT.
+# The equivalent guard is real in `validate_debrief`. Carrying a tested,
+# documented, unreferenced function is worse than not having one — it reads as
+# a working check.
 
 #: A game logged at 01:30 belongs to the night before. Commander runs late.
 NIGHT_CUTOFF_HOUR = 4
 
+#: THE STARDATE IS NO LONGER RENDERED — the pilot could not read it, which was
+#: the point of it going. `stardate()` and these constants stay because the
+#: night grouping is derived from the same wall-clock parsing and the function
+#: is exercised by tests that pin that behaviour. It is now an internal ordering
+#: aid rather than something a header quotes.
 STARDATE_EPOCH = 80000
 STARDATE_EPOCH_YEAR = 2026
-
 
 def _dt(at):
     """Parse a log entry's `at` AS LOCAL WALL-CLOCK TIME, and do not normalise.
@@ -251,43 +231,56 @@ def nights(slug):
     return out
 
 
-def stations_for_deck(slug):
-    """Which cards answer to which station, from `card_roles.json`.
-
-    THE AGENT MAPS NOTHING. It picks which stations a night's story involves and
-    writes orders addressed to them; if it names a card while doing so, the
-    validator holds it to this roster. Same move as `validate_debrief`'s "the
-    debrief may not name a card the pilot did not", one turn further out.
-    """
-    from manamap.pilot.common import expand_copies
-    from manamap.pilot.deck_facts import load_card_roles
-
-    roles = load_card_roles()
-    cards = load_json(DECKS_DIR / slug / "cards.json") or {}
-    names = sorted({c.get("name") for c in expand_copies(cards.get("cards", []))
-                    if c.get("name")})
-
-    out = {k: [] for k in STATIONS}
-    out["unassigned"] = []
-    for name in names:
-        card_roles = roles.get(name) or []
-        hit = False
-        for station, prefixes in STATION_ROLES.items():
-            if any(str(r).startswith(p) for r in card_roles for p in prefixes):
-                out[station].append(name)
-                hit = True
-        if not hit:
-            out["unassigned"].append(name)
-    return out
-
-
 def read(slug):
     return load_json(DECKS_DIR / slug / ARTIFACT) or {}
 
 
+def read_meta(slug):
+    """WHICH GAMES THE READ MAY REST ON, and which list each was played against.
+
+    The read is supposed to describe the deck AS IT IS NOW, so it needs to know
+    which of its games are about the current 99 and which are about a list that
+    has been superseded. That join already exists — `deck_versions.report` maps
+    every log entry's `decklist_sha256` to a version — and `deck_info.compose`
+    computes it and throws it away. This keeps it.
+
+    `current` is the flag the charter's history rule turns on: a game on the
+    current list needs no caveat, and an older one earns its place only when the
+    lesson still applies and says which version it came from.
+    """
+    from manamap.pilot import deck_notes, deck_versions
+
+    try:
+        report = deck_versions.report(slug)
+    except Exception:                              # noqa: BLE001 - never block
+        report = {}
+    current = report.get("current_version")
+    by_sha = {}
+    for version in report.get("versions") or []:
+        for sha in version.get("decklist_sha256s") or []:
+            by_sha[sha] = version.get("version")
+    games, spanned = [], []
+    for entry in deck_notes.read_log(slug):
+        version = by_sha.get(entry.get("decklist_sha256"))
+        games.append({"id": entry["id"], "at": entry.get("at", "")[:10],
+                      "version": version, "current": version == current})
+        if version and version not in spanned:
+            spanned.append(version)
+    return {"as_of_version": current,
+            "as_of_sha": report.get("working_decklist_sha256"),
+            "games_considered": games,
+            "versions_spanned": spanned,
+            # A game whose sha matches no committed version. Named rather than
+            # dropped: `deck-notes --at` stamps the CURRENT decklist on a
+            # backfilled game, so an entry can be honestly logged and still
+            # join to the wrong list.
+            "unmatched": [g["id"] for g in games if g["version"] is None]}
+
+
 def skeleton(slug):
     """The whole deterministic document, prose-free."""
-    return {"slug": slug, "ship": _ship(slug), "nights": nights(slug)}
+    return {"slug": slug, "commander": _ship(slug),
+            "read_meta": read_meta(slug), "nights": nights(slug)}
 
 
 def main(args):
@@ -307,13 +300,13 @@ def main(args):
         where = (f"  game {pos['n']} of {pos['of']} that night"
                  + (f", after {pos['after']}" if pos.get("after") else "")
                  if pos else "")
-        done = "ship" in ((rendered.get(key) or {}).get("logs") or {})
+        done = "pilot" in ((rendered.get(key) or {}).get("logs") or {})
         print(f"  stardate {night['stardate']}  {key}  "
               f"{night['version'] or 'unversioned'}  "
               f"{'rendered' if done else 'NOT YET RENDERED'}")
         print(f"    entries {', '.join(night['source_ids'])}{where}")
     missing = [k for k in doc["nights"]
-               if "ship" not in ((rendered.get(k) or {}).get("logs") or {})]
+               if "pilot" not in ((rendered.get(k) or {}).get("logs") or {})]
     if missing:
         print(f"\n{len(missing)} night(s) not yet rendered — /captains-log {slug}")
     return 0

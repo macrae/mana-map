@@ -431,6 +431,54 @@ for heliod needs the version said out loud beside it.
 pulled from the recent deck list". Two agent rounds and a fleet-wide parser sweep
 had all reasoned about those three cards without one of them checking the list.
 
+---
+
+# Debt, gaps and opportunities
+
+Not red, not blocking, and worth writing down before they are rediscovered.
+Sections 1–14 above are things that FAIL; these are things that are merely
+wrong, wasteful, or half-built. Added 2026-09-09 while rewriting the captain's
+log — most were found by reading code adjacent to the change rather than by
+looking for them, which is the usual way.
+
+| # | what | where | why it matters |
+|---|---|---|---|
+| D1 | **A backfilled game is stamped with TODAY's decklist** | `deck_notes.append_entry` — `--at` overrides the date, never the sha | ur-dragon entry 004 was played 3 Sep on V3 and joins to V4. The log-to-version join is by sha, so a correctly-logged game attaches to the wrong list. Now VISIBLE in `captains_log.read_meta`, which is how it was confirmed |
+| D2 | **`supplementals` is silently dropped by the merge** | `merge_captains_log._sections` whitelists `SECTION_KEYS`, which never contained it | The validator and the renderer both handle the key; the merge cannot deliver it. Latent — no deck has a second game by one deck on one night yet |
+| D3 | **`stations_for_deck` is built, tested, and consumed by nothing** | `captains_log.py:254`, `STATION_ROLES`, `UNSTATIONED_ROLES` | Its docstring promises "the validator holds it to this roster" and no code calls it. The equivalent guard IS implemented for `validate_debrief`. Dead weight or an unfinished check — decide which |
+| D4 | **Two POH sections are registered with no renderer** | `poh_spec.SECTIONS` §8 `matchups`, §9 `appendices`; `poh.RENDERERS` covers seven of nine | They never render. §9's promise already reads "revision log", which is the natural home for a game-history appendix |
+| D5 | **`compose` computes the log-to-version join and discards it** | `deck_info.compose` calls `deck_versions.report(slug)` and keeps only `current_version` and a count | Per-version records exist inside that call. `info.record` is a flat all-time roll-up, so the dossier cannot say "3–1 on the current list" without recomputing |
+| D6 | **Game-derived prose renders with no version predicate** | `deck-view.js logPanel`, and `build_page.render_debrief` in the frozen renderer | Every night renders regardless of which list it was played on, while versions, diagnoses, sims and experiments all carry staleness. The join (`versionOfSha`) is right there and unused |
+| D7 | **`agent_cache._SHA_MEMO` never evicts** | `agent_cache.py:64` — keyed `(path, mtime, size)`, `if key not in _SHA_MEMO` | Fine in a CLI process that exits in seconds; an unbounded leak in `manamap serve`, which Sven now keeps alive for days. Every other memo in the repo replaces on signature change |
+| D8 | **CLAUDE.md's deck-page section order is stale** | `CLAUDE.md` line ~155 vs `deck-view.js render()` | It lists "case file / log / next / status …". The page was reorganised into the nine-section dossier (`page_spec.DOSSIER_SECTIONS`) and a test locks those two together — but not the prose |
+
+## O1 — You are paying for games that produce no decision
+
+Regenerating every dossier surfaced the clock-out rate, which nothing had ever
+put in one place:
+
+| deck | decided | played |
+|---|---:|---:|
+| goblin-storm | 88 | 100 |
+| zur-enchantress | 51 | 60 |
+| heliod | 100 | 120 |
+| gishath | 18 | 20 |
+| ur-dragon | 60 | 60 |
+
+**A clock-out has no winner and is excluded from the rate, correctly.** But it
+is not excluded from the wall clock: heliod's last run cost 361 minutes and
+bought 100 games of evidence, not 120.
+
+That matters wherever a sample size is quoted. The power arithmetic says ~329
+games per arm to resolve a 0.10 difference; at goblin-storm's rate that is ~374
+games to PLAY, and at heliod's ~395. Any estimate of "how long would this take"
+that multiplies decided games by the per-game clock is short by 15-20%.
+
+Worth measuring before it is worth fixing: raising `-c` might convert clock-outs
+into decisions, or might just make each one cost longer. Nobody has run that
+comparison, and it is cheap — one run at the current clock against one at double,
+same seed, same pod.
+
 ## What is NOT on this page
 
 - **`make test-browser`** is a local pre-push gate and is deliberately outside

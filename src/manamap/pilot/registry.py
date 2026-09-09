@@ -304,7 +304,7 @@ def add_pilot_parser(subparsers):
             # `deck-facts`; the tracked artifact is written by the merge.
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "merge-captains-log":
-            cmd.add_argument("--kind", default="ship",
+            cmd.add_argument("--kind", default="pilot",
                              help="which log to merge into (ship; personal is reserved)")
         if name == "validate-issue":
             cmd.add_argument("--strict", action="store_true",
