@@ -154,7 +154,31 @@ def _out_dir(slug):
     """
     from manamap.pilot.common import deck_dir as _dd
     base, branch = split_seat(slug)
-    return _dd(base, branch) / SIM_DIR
+    try:
+        return _dd(base, branch) / SIM_DIR
+    except FileNotFoundError:
+        # AN OPPONENT CAN BE THE SUBJECT, and until this fallback existed it
+        # could not be. `data/opponents/<slug>/` holds a list exactly as
+        # `data/decks/<slug>/` does, so the rule above — a record goes BESIDE
+        # THE LIST IT MEASURED — resolves there without changing.
+        #
+        # This is the missing capability behind the note in `data/pods/`: "the
+        # measurement that has never been made is a ROUND ROBIN AMONG CANDIDATE
+        # OPPONENTS WITH NONE OF OUR DECKS SEATED — that ranks them on a level
+        # field instead of inferring strength from tables they happened to sit
+        # at." It had never been made partly because it could not be EXPRESSED:
+        # every seat resolved for reading through `seat_dir`, but the subject
+        # resolved for WRITING through `deck_dir` alone, so a table of four
+        # opponents raised FileNotFoundError before Forge was ever invoked.
+        #
+        # Decks are still tried FIRST, so nothing about an existing call
+        # changes: a slug that names one of our decks keeps writing where it
+        # always did, and only a slug that is not a deck at all reaches here.
+        if branch is None:
+            opp = DECKS_DIR.parent / "opponents" / base
+            if (opp / "decklist.txt").exists():
+                return opp / SIM_DIR
+        raise
 
 
 def commanders_from_text(decklist_text):
