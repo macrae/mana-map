@@ -110,6 +110,41 @@ Extracted verbatim from `CLAUDE.md` — every measurement here was in that file 
 - **THE STANDARD BENCHMARK RUNS ITS OWN CONFIGURATION, and the reason is that the fleet's own goldfish figures are NOT comparable.** PRD-v1 §9.2: "uncontrolled sim output cannot be aggregated into a ranking." Of twelve decks with a 99, **exactly one** opts into `model_combat`/`model_treasures` — so ranking off each deck's tracked `goldfish_metrics.json` would compare one deck measured with a kill clock against eleven measured without, and `mean_bodies_by_turn` does not even mean the same thing across the two. Two decks have no declaration at all, a third's is an unedited scaffold. So `pilot/benchmark.py` freezes seed, iterations, max turn and **uniform model flags that override the declaration**, and **reads the 99 rather than the declaration** — otherwise a deck would be ranked partly on how well its pilot writes JSON, and the two decks without one could not be scored at all. `goldfish.run` grew `model_treasures`/`model_combat` overrides (None = read the declaration, the tracked behaviour) and `with_results=True` for the raw per-iteration rows; **both default off, and the rows leaking unconditionally turned two freshness tests red immediately** — they compare `run()` against the tracked artifact byte for byte, which is what they are for. Whole fleet: **30 seconds**.
 - **§14.1 IS ANSWERED WITH A REFUSAL, and the refusal is the finding: DO NOT publish an aggregate score yet.** Three defects, all found by running the fleet and looking rather than by reasoning. (1) **`speed` is not archetype-neutral.** `kill_by_turn_8` ranges **0.001 to 0.405** — a 400x spread — and the bottom is heliod and hapatra, whose declared kills are "win condition access" and a two-card combo. The goldfish's combat model cannot see either, so a weighted sum including speed ranks a combo deck last **for not attacking**: an archetype filter wearing a ranking's clothes. (2) **`consistency` was speed under another name**, r = 0.78, because the first version took the spread of the kill-turn histogram — computed over the games that KILLED, so a deck killing in 0.1% of games contributed ten clustered late kills and scored as supremely consistent. Exactly backwards. It measures mana spread now (every deck, every game, nothing censored) and reads −0.08 against speed. (3) **`missed_land_drop_rate` and `mulligan_rate` correlate at 0.97** — one measurement reported twice, and two of those in one total is that quantity counted twice. `consistency` sits at 0.78 with the mana LEVEL, checked rather than assumed: a coefficient of variation moves it only to 0.78 from 0.90, so the relationship is substantive (ramp drawn and ramp not drawn are different games) and it is left as a plain stdev rather than dressed up. **`benchmark.json` is tracked and freshness-gated** — deterministic under a fixed seed, verified identical across runs — so the workbench can read it on a static host.
 
+## RE-DERIVING A NUMBER IS NOT REPLICATING A FINDING
+
+On 2026-09-08 heliod's engine critic reported that the deck wins more when its
+commander never flips. It was checked before being believed — the cross-tab was
+re-derived straight from the run's own logs and matched the critic exactly:
+
+    never flipped   85 games   23 wins   0.271
+    flipped         35 games    4 wins   0.114
+
+It was committed as a headline finding, called "the correction that strengthens
+the model", and written into the engine document.
+
+The next day, a fresh 120-game run on the current list:
+
+    never flipped   85 games   14 wins   0.165
+    flipped         35 games    6 wins   0.171
+    difference +0.0067  ci95 [-0.1230, +0.1748]  SPANS ZERO
+
+**It was noise.** Flat, and the interval on the difference is wider than the
+effect first claimed.
+
+The verification that was done proved the ARITHMETIC — that 23/85 and 4/35 were
+correctly computed from those logs. It could not prove the finding, because it
+used the same sample. A number re-derived from the run that produced it will
+always agree with itself; that is what re-derivation means.
+
+The tell was available and unread: 4 wins in 35 games is a rate with an interval
+about twenty points wide, and no interval was ever put on the split. Every rate
+carries its interval is the rule this bench states in five places, and it was
+broken on the very figure being celebrated for correcting somebody else.
+
+So: **a cross-tab discovered inside one run is a HYPOTHESIS.** It earns the word
+finding when a second sample agrees, or when its own interval excludes zero —
+and this one's never did.
+
 ## A branch aimed at a MECHANISM still has to be graded on a sample that can see it
 
 heliod's `skies-v1` and `archangel-v1` merges were built for one purpose: the
