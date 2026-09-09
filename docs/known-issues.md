@@ -554,6 +554,48 @@ byte-identical, which is good evidence they were all re-measured against the
 same list — but NOTHING IN THE FILE SAYS SO, and the next reader has to infer it
 from a coincidence. Two lines in `net_change.build` close it.
 
+## O5 — A colour's target can jump 14 sources because a rounding boundary moved
+
+`manabase.effective_pips` returns "the heaviest pip requirement that at least
+`PIP_WEIGHT_QUORUM` of that colour's cards share", with the threshold computed as
+`ceil(n * 0.2)`. That makes the reported target a STEP FUNCTION of the number of
+cards in a colour, and the step can be crossed by a card that has nothing to do
+with the requirement.
+
+Measured on zur-enchantress/drain-v1, 2026-09-09. The branch cuts The Spirit
+Oasis — a `{2}{U}` Shrine, one blue pip — and touches no other blue card:
+
+```
+                blue cards   threshold      3 UU cards meet it?   effective_pips
+champion            16       ceil(16*.2)=4          no                  1
+drain-v1            15       ceil(15*.2)=3          yes                 2
+```
+
+Reported consequence: U target `22 -> 36`, gap `-1 -> -15`, on-curve
+`0.895 -> 0.610`, and `net-change` printed **"colour sources went backwards"**
+as a paid cost of the branch.
+
+**Nothing about blue castability changed.** The same three UU cards —
+Counterspell, Muddle the Mixture, Enduring Curiosity — sit in both lists and are
+exactly as hard to cast. The branch's 0.610 is the HONEST figure for them; the
+champion's 0.895 was reporting the single-pip case on a deck that contains UU
+cards, and has been doing so all along.
+
+Two separable problems, and the second is the worse one:
+
+1. A branch can be charged for a regression it did not cause, and a pilot reading
+   "colour sources went backwards, U gap -1 -> -15" has no way to tell this from
+   a real one. `net-change` should say WHICH card set `effective_pips` and note
+   when the quorum threshold moved between the two arms.
+2. A deck sitting just under the quorum reports the easy colour requirement and
+   hides the hard one. zur-enchantress has been reporting blue at 0.895 while its
+   counterspells sit at 0.610. That is not a branch problem at all — it is the
+   CHAMPION's figure being optimistic, found only because a branch tipped it.
+
+The quorum itself is defensible: one `{U}{U}` card in a 40-card blue deck should
+not size the whole manabase. A step function with no reported provenance is the
+part that is not.
+
 ## O1 — You are paying for games that produce no decision
 
 Regenerating every dossier surfaced the clock-out rate, which nothing had ever
