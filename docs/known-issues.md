@@ -247,6 +247,23 @@ map addresses the first. The second needs a decision — either split the figure
 by whether the target is an opponent, or rename it so it stops being read as
 damage the deck *did to someone else*.
 
+**UPDATED 2026-09-09, and the case is now much stronger.** With the three
+punishers cut in skies-v1, heliod's v1.2.1 run reads:
+
+    at ITSELF    128   Adarkar Wastes 83 · Talisman of Progress 43 · two more
+    at OTHERS     20   Walking Ballista, all of it
+
+**Eighty-six percent of the deck's measured "noncombat damage dealt to players"
+is the deck hurting itself**, and twenty points across 120 games is what reaches
+an opponent. The figure is now not merely polluted — for this deck it is
+predominantly a measure of its own manabase.
+
+That also settles which fix matters more. The owner-map bug was the bigger
+number and it is fixed; the naming decision is the one still doing damage,
+because the metric's current definition makes a painland indistinguishable from
+a win condition. The two candidates remain: split by whether the target is an
+opponent, or rename it so it stops being read as offence.
+
 **Do not quote a `noncombat_damage_dealt_to_players` figure until both land.**
 
 ---
