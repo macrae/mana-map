@@ -475,6 +475,85 @@ by a backfill — see D1a. The difference between the two is instructive: the lo
 is a claim a human makes on purpose, and the sha is a claim a command makes on
 that human's behalf, silently, at the wrong moment.
 
+## O2 — A pod deck's best cards are graded at one-third, and no axis grades them at all
+
+Found on zur-enchantress 2026-09-09, while trying to settle its list.
+
+**The under-credit.** `goldfish` tracks ONE opponent at 40 life, and says so at
+`goldfish.py:1123`: *"'target opponent loses that much' credits the full amount
+and 'each opponent loses N' credits N — the other seats' losses are real but do
+not help kill the one being tracked."* That is honest and deliberate. The
+consequence for CARD CHOICE is not recorded anywhere, and it is sharp:
+
+| clause | model credits | worth at the pilot's four-player table |
+|---|---|---|
+| `target opponent loses that much life` | full | full, against ONE seat |
+| `each opponent loses N life` | N | **3N** |
+
+zur-enchantress runs **eight** each-opponent drain sources (Balemurk Leech,
+Bastion of Remembrance, Grim Guardian, Marauding Blight-Priest, Northern Air
+Temple, Sanctum of Stone Fangs, The Meathook Massacre, Underworld Coinsmith)
+against **two** target-opponent ones (Vito, Enduring Tenacity). The deck is
+already four-fifths built on the kind that scales to a pod, and every one of
+those eight is graded at a third of its table value. A branch that trades an
+each-opponent source for anything else measures as neutral-or-better when it is
+strictly worse at the table — `oil-v1` does exactly that, cutting Sanctum of
+Stone Fangs and Northern Air Temple for mana rocks.
+
+This is the same SHAPE as the bug the drain pillar already fixed once. The
+comment at `goldfish.py:1118` records it: `kill_by_turn_rate` was combat-only,
+so *"any change trading a body for a drain effect could ONLY ever measure as a
+loss"*. The pillar is read now; its POD SCALING still is not.
+
+**Not proposing a 3x multiplier.** An authored constant applied to a headline is
+exactly what the engine-lift deletion was about. The honest fix is to REPORT the
+split — how much of `mean_cumulative_drain_by_turn` comes from each-opponent
+sources — and let the pilot read the pair, the same way `commander_ability_band`
+reports a ceiling and a floor rather than picking one.
+
+**And the corpus says there is no card-shaped way out.** A sweep of all 34,900
+oracle cards for `each opponent loses that much life` returns THREE: Vizkopa
+Guildmage, Caustic Bronco, Lulu. Only the Guildmage ties it to lifegain, and it
+is an ACTIVATION — which `simulate` shows this deck's pilot never presses
+(median 0 activations across 60 games). Sanguine Bond, Vito and Defiant
+Bloodlord all read `target opponent`. Full-amount table-wide lifegain drain
+essentially does not exist, so a pod drain plan is built by COUNTING
+each-opponent triggers, not by finding a better payoff.
+
+## O3 — The deck's own win condition has no objective axis
+
+`candidates.OBJECTIVE_AXES` offers 13 axes: combat (`kill_by_*`, `damage_8`,
+`board_power_6`), mana, steam and treasure. **There is no drain axis**, and
+`diagnostic.run()`'s `output` block carries no drain series for one to read.
+
+So on a deck whose drain is 16.77 of ~37 damage by turn ten and fires in 84.7%
+of games, every branch objective has to be stated in combat. Twenty-two branches
+on zur-enchantress were, and `simulate` says that deck deals a MEDIAN OF 2
+combat damage and has never once reached 21 commander damage in 39 games.
+
+`candidates.py` already argues the case for adding this, for `extra_cards_8`:
+*"a correlated measure is a perfectly good thing to aim at even when it is a
+useless thing to sort by... the pilot says 'draw more cards' and means it."* The
+pilot says "drain the table" and means it. An axis is AIMABLE without being
+RANKABLE, and this one would live in `OBJECTIVE_AXES` alone.
+
+`kill_by_turn` DOES count drain (`opponent_life` is one pool that both `dealt`
+and `drained` reduce), so the newer branches were graded fairly — but on a
+BINARY at a fixed turn, for a deck that survives to global turn 34. `damage_8`
+is combat-only and blind to 45% of this deck's output.
+
+## O4 — `net_change.json` records neither the model nor the champion it measured against
+
+It stamps the branch's own `decklist_sha256` and nothing else. It does NOT stamp
+`meta.model_version`, which `goldfish.model_version()` computes and
+`model_staleness.py` exists to check, and it does NOT stamp the champion's sha.
+
+Twenty-two of them exist on zur-enchantress, written across three days during
+which the goldfish model demonstrably changed. Their champion columns are
+byte-identical, which is good evidence they were all re-measured against the
+same list — but NOTHING IN THE FILE SAYS SO, and the next reader has to infer it
+from a coincidence. Two lines in `net_change.build` close it.
+
 ## O1 — You are paying for games that produce no decision
 
 Regenerating every dossier surfaced the clock-out rate, which nothing had ever
