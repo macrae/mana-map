@@ -444,7 +444,7 @@ looking for them, which is the usual way.
 | # | what | where | why it matters |
 |---|---|---|---|
 | D1 | **A backfilled game is stamped with TODAY's decklist** | `deck_notes.append_entry` — `--at` overrides the date, never the sha | ur-dragon entry 004 was played 3 Sep on V3 and joins to V4. The log-to-version join is by sha, so a correctly-logged game attaches to the wrong list. Now VISIBLE in `captains_log.read_meta`, which is how it was confirmed |
-| D1a | **A backfilled entry can claim a list it was never played on — and gishath proves it** | `deck_notes.append_entry`; `data/decks/gishath/log.jsonl` entry 001 | The game was played 2026-08-28 and logged on 09-01, so `--at` set the date and stamped the CURRENT sha. That sha **matches `decklist.txt` exactly today**, and the note says the game was won by drawing **Enlarge — which has never appeared in any committed version of the list.** So the entry asserts it was played on a deck it demonstrably was not. Found by the `debrief` agent, not by any check. The gishath list may simply be wrong, the same way ur-dragon's is in question |
+| D1a | **A backfilled entry can claim a list it was never played on — and gishath proves it** | `deck_notes.append_entry`; `data/decks/gishath/log.jsonl` entry 001 | The game was played 2026-08-28 and logged on 09-01, so `--at` set the date and stamped the CURRENT sha. That sha **matches `decklist.txt` exactly today**, and the note says the game was won by drawing **Enlarge — which has never appeared in any committed version of the list.** So the entry asserts it was played on a deck it demonstrably was not. Found by the `debrief` agent, not by any check. **CONFIRMED BY THE PILOT 2026-09-09: the paper deck has Enlarge and he won with it.** So the tracked 99 differs from the sleeved deck by at least one card in each direction — the repo list is 100 cards WITHOUT Enlarge, so something in it is not in paper either. Every artifact under `gishath/` is computed against a list he does not play. Needs `check-in`, exactly like ur-dragon |
 | D2 | **`supplementals` is silently dropped by the merge** | `merge_captains_log._sections` whitelists `SECTION_KEYS`, which never contained it | The validator and the renderer both handle the key; the merge cannot deliver it. Latent — no deck has a second game by one deck on one night yet |
 | ~~D3~~ | ~~`stations_for_deck` is built, tested, and consumed by nothing~~ **DELETED 2026-09-09** with the register that needed it | `captains_log.py:254`, `STATION_ROLES`, `UNSTATIONED_ROLES` | Its docstring promises "the validator holds it to this roster" and no code calls it. The equivalent guard IS implemented for `validate_debrief`. Dead weight or an unfinished check — decide which |
 | D4 | **Two POH sections are registered with no renderer** | `poh_spec.SECTIONS` §8 `matchups`, §9 `appendices`; `poh.RENDERERS` covers seven of nine | They never render. §9's promise already reads "revision log", which is the natural home for a game-history appendix |
@@ -452,6 +452,28 @@ looking for them, which is the usual way.
 | D6 | **Game-derived prose renders with no version predicate** | `deck-view.js logPanel`, and `build_page.render_debrief` in the frozen renderer | Every night renders regardless of which list it was played on, while versions, diagnoses, sims and experiments all carry staleness. The join (`versionOfSha`) is right there and unused |
 | D7 | **`agent_cache._SHA_MEMO` never evicts** | `agent_cache.py:64` — keyed `(path, mtime, size)`, `if key not in _SHA_MEMO` | Fine in a CLI process that exits in seconds; an unbounded leak in `manamap serve`, which Sven now keeps alive for days. Every other memo in the repo replaces on signature change |
 | ~~D8~~ | ~~CLAUDE.md's deck-page section order is stale~~ **FIXED 2026-09-09** | `CLAUDE.md` ~line 155 | It listed "case file / log / next / status …" against a page that had been reorganised into the nine-section dossier. Now names the nine and notes that a test locks the JS to `page_spec` — the prose was the only unlocked copy |
+
+## The thing that worked: the paper lock refused to lie
+
+Worth recording beside D1a, because it is the system behaving correctly under a
+condition nobody designed for.
+
+gishath's tracked decklist does not match the deck the pilot owns. Twenty-odd
+artifacts are computed from it. And yet nothing in the repo *claims* the two
+match — because `deck_versions.paper` is absent on gishath, and the paper lock
+is the ONE assertion that the tracked 99 is the cardboard 99. Nobody had made
+it, so nothing was lying.
+
+`docs/data-artifacts.md` says why the lock exists: it "is a fact about cardboard"
+that "no artifact can derive". This is the case that proves it. The lock is not
+a convenience for the rack; it is the only place the repo can be wrong about
+reality, which is exactly why it is authored and why `deck-state` withdraws it
+rather than letting it drift.
+
+What DID assert something false was the log entry's `decklist_sha256`, stamped
+by a backfill — see D1a. The difference between the two is instructive: the lock
+is a claim a human makes on purpose, and the sha is a claim a command makes on
+that human's behalf, silently, at the wrong moment.
 
 ## O1 — You are paying for games that produce no decision
 
