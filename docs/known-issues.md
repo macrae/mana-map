@@ -596,6 +596,58 @@ The quorum itself is defensible: one `{U}{U}` card in a 40-card blue deck should
 not size the whole manabase. A step function with no reported provenance is the
 part that is not.
 
+## O6 — Two thirds of a deck's card draw can be invisible to the metric that grades card draw
+
+zur-enchantress, 2026-09-09. `goldfish_metrics.meta.card_advantage` reads:
+
+```
+cards_that_draw: 12   modelled: 4
+not modelled:  Black Market Connections · Dawn of Hope · Enduring Curiosity
+               Lunar Convocation · Mesa Enchantress · Mystic Remora
+               Rhystic Study · Tocasia's Welcome
+```
+
+The file states this honestly and names the cards, which is the repo working. What
+is NOT stated anywhere is the consequence: `extra_cards_8` — a legal branch
+objective, and a row `net-change` prints as a paid cost — is computed over the
+four cards the model can price, on a deck whose card advantage is twelve cards
+deep. Three branch iterations were partly steered by that row before anyone
+checked what it covered, and the two conclusions drawn from it were both wrong:
+
+- drain-v3/v4 "lost draw by cutting token-makers, because Enduring Curiosity
+  draws on combat damage". Enduring Curiosity is UNMODELLED. Whatever moved that
+  row, it was not that.
+- drain-v5 added Mesa Enchantress — the single most-included card in the meta at
+  72.6% — to fix the draw hole, and the row went DOWN. Mesa Enchantress is
+  UNMODELLED. The add was worth zero to the measurement by construction.
+
+**The fix is not to model everything.** It is that a row whose coverage is 4 of
+12 must say so where it is printed. `net-change` already carries `limits` and
+`blind_spots`; the per-deck coverage fraction belongs in them, and `deck-branch
+new` should refuse — or at least warn on — an `extra_cards_8` objective on a deck
+whose modelled fraction is below some line. The same question should be asked of
+every other axis: `damage_8` is combat-only on a deck that drains, which is the
+same defect in a different channel (O3).
+
+### The narrower thing underneath it
+
+Mesa Enchantress is unmodelled for one clause: it says "you may draw a card", and
+`_DRAW_CONDITIONAL_RE` treats a bare "you may" identically to "you may pay {2}.
+If you do, draw a card". A corpus sweep of `you may draw`:
+
+```
+ 80 cards  the draw is FREE and unconditional in its own sentence
+ 60 cards  the same sentence carries a real cost or gate — correctly unmodelled
+```
+
+So the rule is over-conservative on 80 cards. Most of those 80 trigger on things
+this model does not simulate anyway (combat damage, being targeted, blocking,
+creatures dying), so widening it would change little — EXCEPT where the trigger
+IS simulated, and "whenever you cast an enchantment spell" on a 44-enchantment
+deck is exactly that case. NOT changed here: it is a real widening, it needs its
+own measurement across the fleet, and this session had already changed the model
+once.
+
 ## O1 — You are paying for games that produce no decision
 
 Regenerating every dossier surfaced the clock-out rate, which nothing had ever
