@@ -1091,8 +1091,8 @@
   "why": "THE META ANSWERED EVERY COST drain-v2 PAID, AND THE ANSWERS ARE ALREADY IN A BOX. Moxfield is Cloudflare-blocked to every route tried, so this is EDHREC's aggregate over ~6,703 Zur, Eternal Schemer decks rather than a handful of individual lists -- which is the better sample for a benchmark anyway. Read as a ranking, not as a verdict: EDHREC truncates each section at its top 50, so a card absent from it is UNRANKED and not unplayed.\n\nTHE SINGLE MOST-INCLUDED CARD THIS DECK LACKED IS MESA ENCHANTRESS AT 72.6%, synergy +0.64, and it is the direct answer to the one real cost drain-v2 paid: extra cards by turn eight fell 2.43 -> 1.53. 'Whenever you cast an enchantment spell, you may draw a card' in a list of 44 enchantments is the fix the meta already found, and it is the only enchantress in this colour identity.\n\nSTARFIELD MYSTIC (61.8%, syn +0.55) ANSWERS THE CURVE TAX. drain-v2 bought its result by taking average mana value 2.667 -> 2.905, and drain-v3 tried to pay that back with cheaper cards and measured WORSE on every axis. 'Enchantment spells you cast cost {1} less' pays it back without cutting anything, and it is redundancy on Inquisitive Glimmer, which the deck already runs and which the same measurement says is not enough on its own.\n\nSIGIL OF THE EMPTY THRONE (48.2%, syn +0.43) REPLACES A WORSE VERSION OF ITSELF. Ajani's Chosen makes a 2/2 Cat when an enchantment ENTERS; the Sigil makes a 4/4 white Angel WITH FLYING when an enchantment is CAST. Twice the body, evasive, in a deck with 44 triggers. This also respects the lesson drain-v3 and drain-v4 both taught the hard way -- cutting a token-maker costs card draw, because this deck's draw runs through Enduring Curiosity on combat damage -- by replacing the bodies rather than deleting them.\n\nEVERY ADD IS IN A BOX AND EVERY CUT IS ON THE BUY LIST, so this branch makes the deck cheaper as well as better. Transcendent Envoy discounts AURA spells in a list that runs four Auras.\n\nTWO CARDS THE META RATES HIGHLY ARE DELIBERATELY HELD BACK, because this harness cannot see either and including them would corrupt the reading. EXTINGUISH ALL HOPE (55.0%, and already in a box) destroys all NONENCHANTMENT creatures -- a one-sided board wipe for a deck whose entire board is enchantment creatures -- and the goldfish models no opponents and no removal, so it is worth exactly zero here. SOARING LIGHTBRINGER (63.9%, syn +0.60) grants flying to other enchantment creatures and makes attacking 1/1 Glimmer ENCHANTMENT tokens that take the commander's grant, and evasion is likewise invisible to a model with no blockers. Both belong in a Forge run, not in this measurement."
  },
  "objective_grade": {
-  "reading": 0.3884,
-  "shortfall": 0.1116,
+  "reading": 0.3918,
+  "shortfall": 0.1082,
   "state": "not met"
  },
  "recommendation": {
@@ -1156,7 +1156,7 @@
   ],
   "risk": [
    {
-    "detail": "20.49 -> 18.32, a change of -2.16 (-11%)",
+    "detail": "20.49 -> 18.56, a change of -1.93 (-9%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1168,7 +1168,7 @@
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "2.43 -> 1.46, a change of -0.97 (-40%)",
+    "detail": "2.43 -> 1.70, a change of -0.73 (-30%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -1214,12 +1214,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 18.3228,
+   "branch": 18.5591,
    "champion": 20.4861,
-   "delta": -2.1633,
+   "delta": -1.927,
    "mde": 0.4985,
    "measure": "damage @T10",
-   "reads_as": "20.49 -> 18.32, a change of -2.16 (-11%)",
+   "reads_as": "20.49 -> 18.56, a change of -1.93 (-9%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1228,9 +1228,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 6.283,
+   "branch": 6.2849,
    "champion": 7.0899,
-   "delta": -0.8069,
+   "delta": -0.805,
    "mde": 0.1626,
    "measure": "board power @T6",
    "reads_as": "7.09 -> 6.28, a change of -0.81 (-11%)",
@@ -1256,12 +1256,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8783,
+   "branch": 0.8806,
    "champion": 0.8783,
-   "delta": 0.0,
+   "delta": 0.0023,
    "mde": 0.013,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.013 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1270,9 +1270,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0339,
+   "branch": 0.0316,
    "champion": 0.043,
-   "delta": -0.0091,
+   "delta": -0.0114,
    "mde": 0.008,
    "measure": "stall, 2 in a row",
    "reads_as": "4 games in 100 -> 3 in 100, a swing of 1 games per 100",
@@ -1284,9 +1284,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4162,
+   "branch": 0.4158,
    "champion": 0.4052,
-   "delta": 0.011,
+   "delta": 0.0106,
    "mde": 0.0195,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.019 this run can resolve",
@@ -1312,12 +1312,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.4609,
+   "branch": 1.7026,
    "champion": 2.4326,
-   "delta": -0.9717,
+   "delta": -0.73,
    "mde": 0.1441,
    "measure": "extra cards by T8",
-   "reads_as": "2.43 -> 1.46, a change of -0.97 (-40%)",
+   "reads_as": "2.43 -> 1.70, a change of -0.73 (-30%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1326,9 +1326,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5472,
+   "branch": 0.5462,
    "champion": 0.5774,
-   "delta": -0.0302,
+   "delta": -0.0312,
    "mde": 0.0239,
    "measure": "interaction affordable @T6",
    "reads_as": "58 games in 100 -> 55 in 100, a swing of 3 games per 100",

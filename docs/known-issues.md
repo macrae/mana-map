@@ -629,6 +629,31 @@ whose modelled fraction is below some line. The same question should be asked of
 every other axis: `damage_8` is combat-only on a deck that drains, which is the
 same defect in a different channel (O3).
 
+### FIXED 2026-09-09 — and the narrow diagnosis was wrong
+
+The first theory was that Mesa Enchantress's "you may draw a card" tripped
+`_DRAW_CONDITIONAL_RE`, which rejects "you may". **Deleting "you may" from the
+oracle text and re-profiling still read nothing.** There was no cast-trigger
+channel in the file at all: not the ETB pattern (needs "enters"), not the
+recurring one (needs an upkeep), not the arrival one (needs "you control …
+enters"), and not the spell one, which only runs on instants and sorceries.
+
+`_CAST_DRAW_RE` now reads the family. Sweep: 68 cards, and **only 23 are
+modelled** — the four gates whose spells are permanents, so this model sees
+every cast of them. `(any)`, `noncreature` and `instant or sorcery` are refused
+DESPITE trivial regexes, because this model casts few instants and would
+under-report those engines by an unknown amount; `legendary`, `historic` and
+twelve tribal or mechanic gates are refused because a type line does not settle
+them. An absent figure beats a wrong one.
+
+`cast_draw` went into the casting predicate in the same commit, which is the
+rule this file has broken six times.
+
+Fleet impact, measured rather than assumed: **zero live decks.** The only card
+the tracked fleet held was Beast Whisperer in radagast, which is `broken-down`
+and correctly not measured — the first sweep counted it anyway, which is its own
+small lesson about using `common.deck_is_apart`.
+
 ### The narrower thing underneath it
 
 Mesa Enchantress is unmodelled for one clause: it says "you may draw a card", and

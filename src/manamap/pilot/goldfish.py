@@ -344,6 +344,46 @@ _ARRIVAL_DRAW_RE = re.compile(
     r"whenever (?:this creature or )?(?:another |a |one or more )?"
     r"(?:other )?(?:nontoken )?([\w' ]{0,28}?)you control"
     r"([^.,]{0,44}?)enters?[^.]{0,60}?,\s*(?:you )?draw (a|one|two) cards?", re.I)
+#: CAST-TRIGGERED DRAW — THE ENCHANTRESS CHANNEL, and it read as NOTHING.
+#:
+#: "Whenever you cast an enchantment spell, you may draw a card" matched no
+#: pattern in this file: not `_ETB_DRAW_RE` (needs "enters"), not
+#: `_RECURRING_DRAW_RE` (needs an upkeep), not `_ARRIVAL_DRAW_RE` (needs "you
+#: control … enters"), and not `_SPELL_DRAW_RE`, which only runs on instants and
+#: sorceries. So Mesa Enchantress — the single most-included card in the Zur,
+#: Eternal Schemer meta at 72.6% of ~6,703 decks — was `unmodelled` on a list
+#: with 44 enchantments, and adding it to a branch measured as a LOSS.
+#:
+#: The first diagnosis was wrong and is recorded because it was expensive: the
+#: "you may" in its text looked like the culprit, since `_DRAW_CONDITIONAL_RE`
+#: rejects it. Deleting "you may" from the oracle text and re-profiling still
+#: read nothing. There was no channel at all.
+#:
+#: CORPUS SWEEP 2026-09-09 — 68 cards, and the TYPE GATE is load-bearing in both
+#: directions: Beast Whisperer must not draw off an enchantment and Mesa
+#: Enchantress must not draw off a creature. By gate:
+#:
+#:   19 (any)   11 creature   8 instant-or-sorcery   5 enchantment   4 artifact
+#:    3 aura     3 noncreature  2 legendary  2 historic  and 12 one-offs
+#:      (druid, doctor, hero, loud, kicked, multicolored, blue permanent,
+#:       dragon-or-omen, adventure, eldrazi creature, spirit-or-arcane)
+#:
+#: ONLY FOUR GATES ARE MODELLED, and the rule is not "which can I write a regex
+#: for" but WHICH ONES DOES THIS MODEL SEE EVERY CAST OF. A cast trigger fires
+#: in this simulation at the two places a non-land permanent joins the
+#: battlefield, so a gate whose spells are permanents is counted completely.
+#: `(any)`, `noncreature` and `instant or sorcery` are NOT modelled even though
+#: their regex is trivial, because this model casts few instants and sorceries
+#: and would under-report those engines by an unknown amount — a wrong number
+#: rather than an absent one. `legendary`, `historic` and the twelve tribal and
+#: mechanic gates go to `unmodelled` because the type line does not settle them.
+#: 23 of 68 modelled, 45 named and refused.
+_CAST_DRAW_RE = re.compile(
+    r"whenever you cast (?:a|an|another) ([\w' -]{0,28}?)spell[^.]{0,50}?,\s*"
+    r"(?:you may )?draw (a|one|two|three) cards?", re.I)
+#: gate -> the substring that must appear in the CAST card's type line.
+_CAST_DRAW_GATES = {"enchantment": "Enchantment", "creature": "Creature",
+                    "artifact": "Artifact", "aura": "Aura"}
 _DRAW_POWER_MAX_RE = re.compile(r"power (\d+) or less", re.I)
 _DRAW_POWER_MIN_RE = re.compile(r"power (\d+) or greater", re.I)
 _DRAW_ONCE_RE = re.compile(r"once each turn", re.I)
@@ -619,6 +659,7 @@ def draw_profile(card):
     out = {"etb_draw": 0, "spell_draw": 0, "recurring_draw": 0,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
+           "cast_draw": 0, "cast_draw_gate": None,
            "x_draw_multiplier": 0, "x_draw_discard": 0,
            "unmodelled": None}
     # BEFORE the `_DRAW_RE` guard, which wants a WRITTEN-OUT quantity ("draw
@@ -658,6 +699,13 @@ def draw_profile(card):
         out["arrival_power_min"] = int(lo.group(1)) if lo else None
         out["arrival_power_max"] = int(hi.group(1)) if hi else None
 
+    cast = _CAST_DRAW_RE.search(text)
+    if cast:
+        gate = _CAST_DRAW_GATES.get((cast.group(1) or "").strip().lower())
+        if gate:
+            out["cast_draw"] = _DRAW_WORDS[cast.group(2).lower()]
+            out["cast_draw_gate"] = gate
+
     etb = _ETB_DRAW_RE.search(text)
     if etb and not _DRAW_CONDITIONAL_RE.search(etb.group(0)):
         out["etb_draw"] = _DRAW_WORDS[etb.group(1).lower()]
@@ -670,7 +718,8 @@ def draw_profile(card):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
 
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
-                out["arrival_draw"], out["x_draw_multiplier"])):
+                out["arrival_draw"], out["cast_draw"],
+                out["x_draw_multiplier"])):
         out["unmodelled"] = card.get("name")
     return out
 
@@ -3059,16 +3108,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for card in sorted((c for c in hand if not c["is_land"]
                                 and c["bodies"] == 0 and c["produces"] == 0
                                 and not c["tutor"]
+                                # cast_draw IS IN THE PREDICATE, in the same
+                                # commit as the channel. A card the model reads
+                                # and never casts is the failure this file has
+                                # documented six times: Mesa Enchantress has no
+                                # body, makes no mana and tutors nothing, so
+                                # without this line she sits in hand for ten
+                                # turns while her profile says what she'd draw.
                                 and any((c["draw"]["spell_draw"],
                                          c["draw"]["etb_draw"],
                                          c["draw"]["recurring_draw"],
-                                         c["draw"]["arrival_draw"]))),
+                                         c["draw"]["arrival_draw"],
+                                         c["draw"]["cast_draw"]))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 hand.remove(card)
                 draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
-                if card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]:
+                if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
+                        or card["draw"]["cast_draw"]):
                     draw_engines.append(card["draw"])
 
         # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
@@ -3169,6 +3227,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          if card["room"] else None)
                 if "Enchantment" in (card.get("type_line") or ""):
                     enchantments_entered += 1
+                # CAST-TRIGGERED DRAW fires here because in this model a
+                # permanent spell is CAST and ENTERS in the same step, so
+                # this door is every cast of one. Engines already in play
+                # only — a card does not trigger itself, and the registration
+                # below happens after this loop for exactly that reason.
+                if model_draw:
+                    _tl = card.get("type_line") or ""
+                    for _eng in draw_engines:
+                        if _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl:
+                            draw_n(_eng["cast_draw"])
                 if model_drain:
                     if any(card["drain"][k] for k in (
                             "payoff_equal", "payoff_fixed", "gain_recurring",
@@ -3268,7 +3336,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if model_draw:
                     draw_n(card["draw"]["etb_draw"])
                     if (card["draw"]["recurring_draw"]
-                            or card["draw"]["arrival_draw"]):
+                            or card["draw"]["arrival_draw"]
+                            or card["draw"]["cast_draw"]):
                         pending_draw_engine = card["draw"]
                 # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
                 # also reduce; from here on they pay for every Dragon behind them.
@@ -3296,6 +3365,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              if card["room"] else None)
                     if "Enchantment" in (card.get("type_line") or ""):
                         enchantments_entered += 1
+                    # CAST-TRIGGERED DRAW fires here because in this model a
+                    # permanent spell is CAST and ENTERS in the same step, so
+                    # this door is every cast of one. Engines already in play
+                    # only — a card does not trigger itself, and the registration
+                    # below happens after this loop for exactly that reason.
+                    if model_draw:
+                        _tl = card.get("type_line") or ""
+                        for _eng in draw_engines:
+                            if _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl:
+                                draw_n(_eng["cast_draw"])
                     if any(card["drain"][k] for k in
                            ("payoff_equal", "payoff_fixed", "gain_recurring",
                             "gain_per_enchantment", "gain_per_creature",
