@@ -68,3 +68,44 @@ def test_the_pod_seats_are_all_usable_as_subjects(subject):
     got = forge._out_dir(subject)
     assert got.parent.name == subject
     assert (got.parent / "decklist.txt").exists()
+
+
+# ── ONE PREDICATE, ONE HOME ───────────────────────────────────────────────
+
+def test_every_seat_artifact_path_resolves_through_one_function():
+    """THE FAILURE THIS PREVENTS COSTS AN HOUR EACH TIME. `_out_dir` gained an
+    opponent fallback so a four-opponent table could run; the strategic-frame
+    read one function later did NOT. So Forge played every game, for fifty
+    minutes across five tables, and then the record write raised
+    FileNotFoundError — full logs, zero records, and the error was invisible
+    because the caller filtered stdout.
+
+    `deck_dir` may be CALLED in exactly one place: inside `seat_home`. Parsed
+    with `ast` rather than grepped, because the first version of this test
+    counted a mention of `deck_dir(base, branch)` inside a DOCSTRING as a call.
+    """
+    import ast
+    import inspect
+
+    tree = ast.parse(inspect.getsource(forge))
+    holders = []
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        for sub in ast.walk(node):
+            if (isinstance(sub, ast.Call) and isinstance(sub.func, ast.Name)
+                    and sub.func.id == "deck_dir"):
+                holders.append(node.name)
+    assert holders == ["seat_home"], (
+        f"deck_dir is called from {holders} — every one but seat_home will raise "
+        "for an opponent subject, AFTER the games have already been played")
+
+
+def test_the_strategic_frame_read_survives_an_opponent_subject():
+    """The exact call that crashed. It must return a value, not raise."""
+    import inspect
+
+    src = inspect.getsource(forge)
+    assert 'seat_home(split_seat(slug)[0]) / "strategic_frame.json"' in src
+    # and it resolves for a real opponent
+    assert forge.seat_home("giada-angels").name == "giada-angels"

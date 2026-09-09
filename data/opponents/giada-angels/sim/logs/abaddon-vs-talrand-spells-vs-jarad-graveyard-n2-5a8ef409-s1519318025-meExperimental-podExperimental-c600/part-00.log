@@ -1,0 +1,1824 @@
+Error handling registered!
+14:27:44 [INFO ] GuiBase: ##########################################
+14:27:44 [INFO ] GuiBase: APP: Forge v.2.0.14-SNAPSHOT-08.08
+14:27:44 [INFO ] GuiBase: Java: 21.0.9 (Oracle Corporation)
+14:27:44 [INFO ] GuiBase: OS: Mac OS X 26.3 aarch64
+14:27:44 [INFO ] GuiBase: RAM: 4096 MB max, 8 CPUs
+14:27:44 [INFO ] GuiBase: ##########################################
+Language 'en-US' loaded successfully.
+(ThreadUtil first call): Running with priority 5
+Read cards: 33617 archived files in 1 ms (25 parts) using thread pool
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+The card A-Alrund's Epiphany was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Baba Lysaga, Night Witch was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Divide by Zero was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Esika's Chariot was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Faceless Haven was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Fires of Invention was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Goldspan Dragon was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Hullbreaker Horror was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Kumano Faces Kakkazan was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Luminarch Aspirant was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Monster Manual was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Omnath, Locus of Creation was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-The Meathook Massacre was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Unholy Heat was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Blinding Radiance was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Goblin Bruiser was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Ogre Painbringer was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Titanic Pelagosaur was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Treetop Recluse was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+Read cards: 836 files in 0 ms (8 parts) using thread pool
+Simulation mode
+Ai(1)-mm-giada-angels [Experimental] vs Ai(2)-mm-abaddon [Experimental] vs Ai(3)-mm-talrand-spells [Experimental] vs Ai(4)-mm-jarad-graveyard [Experimental] - one game of Commander seed 1519318025
+Warning: default (ie. inherited from base class) implementation of chooseSinglePlayer is used by Fact or Fiction for forge.ai.ability.TwoPilesAi. Consider declaring an overloaded method
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.util.collect.FCollection.addAll(FCollection.java:345)
+	at forge.util.collect.FCollection.addAll(FCollection.java:325)
+	at forge.game.player.PlayerCollection.getCardsIn(PlayerCollection.java:33)
+	at forge.game.Game.getCardsIn(Game.java:610)
+	at forge.game.Game.getCardsIn(Game.java:628)
+	at forge.game.staticability.StaticAbilityCastWithFlash.anyWithFlashNeedsInfo(StaticAbilityCastWithFlash.java:14)
+	at forge.game.spellability.SpellAbilityRestriction.canPlay(SpellAbilityRestriction.java:559)
+	at forge.game.spellability.AbilityActivated.canPlay(AbilityActivated.java:98)
+	at forge.ai.ComputerUtilMana.lambda$getAvailableManaSources$16(ComputerUtilMana.java:1341)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:178)
+	at java.base/java.util.Spliterators$IteratorSpliterator.tryAdvance(Spliterators.java:1950)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.lambda$initPartialTraversalState$0(StreamSpliterators.java:292)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.fillBuffer(StreamSpliterators.java:206)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.doAdvance(StreamSpliterators.java:161)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:298)
+	at java.base/java.util.Spliterators$1Adapter.hasNext(Spliterators.java:681)
+	at forge.util.collect.FCollection.addAll(FCollection.java:345)
+	at forge.util.collect.FCollection.<init>(FCollection.java:103)
+	at forge.game.card.CardCollection.<init>(CardCollection.java:118)
+	at forge.game.card.CardLists.filter(CardLists.java:331)
+	at forge.ai.ComputerUtilMana.getAvailableManaSources(ComputerUtilMana.java:1338)
+	at forge.ai.ComputerUtilMana.groupSourcesByManaColor(ComputerUtilMana.java:1496)
+	at forge.ai.ComputerUtilMana.getSourcesForShards(ComputerUtilMana.java:831)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:638)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:74)
+	at forge.ai.ComputerUtilMana.canPayManaCost(ComputerUtilMana.java:63)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:634)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:530)
+	at forge.ai.ComputerUtilCombat.canGainKeyword(ComputerUtilCombat.java:2290)
+	at forge.ai.ComputerUtilCombat.dealsFirstStrikeDamage(ComputerUtilCombat.java:2251)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.card.CardType.isSaga(CardType.java:565)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:747)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:723)
+	at forge.game.card.Card.getReplacementEffects(Card.java:7055)
+	at forge.game.replacement.ReplacementHandler.lambda$getReplacementList$0(ReplacementHandler.java:134)
+	at forge.util.Visitor.visitAll(Visitor.java:16)
+	at forge.game.Game.forEachCardInGame(Game.java:760)
+	at forge.game.replacement.ReplacementHandler.getReplacementList(ReplacementHandler.java:102)
+	at forge.ai.ComputerUtilMana.groupSourcesByManaColor(ComputerUtilMana.java:1537)
+	at forge.ai.ComputerUtilMana.getSourcesForShards(ComputerUtilMana.java:831)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:638)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:74)
+	at forge.ai.ComputerUtilMana.canPayManaCost(ComputerUtilMana.java:63)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:634)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:530)
+	at forge.ai.ComputerUtilCombat.canGainKeyword(ComputerUtilCombat.java:2290)
+	at forge.ai.ComputerUtilCombat.dealsFirstStrikeDamage(ComputerUtilCombat.java:2251)
+	at forge.ai.ComputerUtilCombat.predictPowerBonusOfBlocker(ComputerUtilCombat.java:880)
+	at forge.ai.ComputerUtilCombat.canDestroyAttacker(ComputerUtilCombat.java:1687)
+	at forge.ai.ComputerUtilCombat.canDestroyAttacker(ComputerUtilCombat.java:1642)
+	at forge.ai.AiAttackController$SpellAbilityFactors.calculate(AiAttackController.java:1396)
+	at forge.ai.AiAttackController.shouldAttack(AiAttackController.java:1493)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1300)
+	at forge.ai.AiController.getPredictedCombat(AiController.java:145)
+	at forge.ai.ComputerUtilCard.doesCreatureAttackAI(ComputerUtilCard.java:806)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ability.PumpAi.checkApiLogic(PumpAi.java:316)
+	at forge.ai.SpellAbilityAi.canPlayWithoutRestrict(SpellAbilityAi.java:98)
+	at forge.ai.SpellAbilityAi.canPlay(SpellAbilityAi.java:76)
+	at forge.ai.SpellAbilityAi.canPlayWithSubs(SpellAbilityAi.java:55)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.game.card.Card.updateReplacementEffects(Card.java:7066)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:754)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:723)
+	at forge.game.card.Card.getReplacementEffects(Card.java:7055)
+	at forge.game.replacement.ReplacementHandler.lambda$getReplacementList$0(ReplacementHandler.java:134)
+	at forge.util.Visitor.visitAll(Visitor.java:16)
+	at forge.game.Game.forEachCardInGame(Game.java:751)
+	at forge.game.replacement.ReplacementHandler.getReplacementList(ReplacementHandler.java:102)
+	at forge.game.replacement.ReplacementHandler.cantHappenCheck(ReplacementHandler.java:174)
+	at forge.game.card.Card.canTap(Card.java:4696)
+	at forge.game.card.Card.canTap(Card.java:4688)
+	at forge.game.cost.CostTap.canPay(CostTap.java:69)
+	at forge.game.cost.Cost.canPay(Cost.java:1085)
+	at forge.game.cost.CostPayment.canPayAdditionalCosts(CostPayment.java:104)
+	at forge.game.cost.CostPayment.canPayAdditionalCosts(CostPayment.java:96)
+	at forge.game.spellability.AbilityActivated.canPlay(AbilityActivated.java:103)
+	at forge.ai.ComputerUtilMana.groupSourcesByManaColor(ComputerUtilMana.java:1505)
+	at forge.ai.ComputerUtilMana.getSourcesForShards(ComputerUtilMana.java:831)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:638)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:74)
+	at forge.ai.ComputerUtilMana.canPayManaCost(ComputerUtilMana.java:63)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:634)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:530)
+	at forge.ai.ComputerUtilCombat.canGainKeyword(ComputerUtilCombat.java:2290)
+	at forge.ai.ComputerUtilCombat.dealsFirstStrikeDamage(ComputerUtilCombat.java:2251)
+	at forge.ai.ComputerUtilCombat.predictPowerBonusOfBlocker(ComputerUtilCombat.java:880)
+	at forge.ai.ComputerUtilCombat.canDestroyAttacker(ComputerUtilCombat.java:1687)
+	at forge.ai.AiBlockController.getKillingBlockers(AiBlockController.java:120)
+	at forge.ai.AiBlockController.makeGoodBlocks(AiBlockController.java:239)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1083)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.util.collect.FCollection.addAll(FCollection.java:346)
+	at forge.util.collect.FCollection.addAll(FCollection.java:325)
+	at forge.game.Game.getCardsIn(Game.java:628)
+	at forge.game.combat.CombatUtil.getBlockCost(CombatUtil.java:338)
+	at forge.game.combat.CombatUtil.mustBlockAnAttacker(CombatUtil.java:756)
+	at forge.game.combat.CombatUtil.canBlock(CombatUtil.java:953)
+	at forge.ai.AiBlockController.getPossibleBlockers(AiBlockController.java:87)
+	at forge.ai.AiBlockController.makeTradeBlocks(AiBlockController.java:617)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1115)
+	at forge.ai.AiBlockController.assignBlockersForCombat(AiBlockController.java:1014)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3214)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3179)
+	at forge.ai.AiAttackController.notNeededAsBlockers(AiAttackController.java:426)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1279)
+	at forge.ai.ComputerUtilCard.doesSpecifiedCreatureAttackAI(ComputerUtilCard.java:820)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1613)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1446)
+	at forge.ai.ability.PumpAllAi.lambda$checkApiLogic$2(PumpAllAi.java:132)
+	at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:230)
+	at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:196)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.anyMatch(ReferencePipeline.java:632)
+	at forge.util.collect.FCollection.anyMatch(FCollection.java:622)
+	at forge.ai.ability.PumpAllAi.checkApiLogic(PumpAllAi.java:131)
+Mulligan: Ai(1)-mm-giada-angels has kept a hand of 7 cards
+Mulligan: Ai(2)-mm-abaddon has kept a hand of 7 cards
+Mulligan: Ai(3)-mm-talrand-spells has kept a hand of 7 cards
+Mulligan: Ai(4)-mm-jarad-graveyard has kept a hand of 7 cards
+Turn: Turn 1 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (83)
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 2 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Land: Ai(2)-mm-abaddon played Island (126)
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Phase: Ai(2)-mm-abaddon's End step
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 3 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (240)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 4 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Land: Ai(4)-mm-jarad-graveyard played Svogthos, the Restless Tomb (315)
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 5 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (75)
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Giada, Font of Hope
+Resolve Stack: Giada, Font of Hope - Creature 2 / 2
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 6 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Land: Ai(2)-mm-abaddon played Swamp (147)
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Mana: Swamp (147) - {T}: Add {B}.
+Mana: Island (126) - {T}: Add {U}.
+Add To Stack: Ai(2)-mm-abaddon cast Talisman of Dominance
+Resolve Stack: Talisman of Dominance
+Phase: Ai(2)-mm-abaddon's End step
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 7 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (254)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 8 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Land: Ai(4)-mm-jarad-graveyard played Swamp (364)
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 9 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (69)
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Firemane Commando
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Firemane Commando - Creature 4 / 3
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 10 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Replacement Effect: Sunken Hollow enters tapped unless you control two or more basic lands.
+Land: Ai(2)-mm-abaddon played Sunken Hollow (122)
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Mana: Swamp (147) - {T}: Add {B}.
+Mana: Island (126) - {T}: Add {U}.
+Add To Stack: Ai(2)-mm-abaddon cast Arcane Signet
+Resolve Stack: Arcane Signet
+Mana: Sunken Hollow (122) - {T}: Add {B}.
+Mana: Arcane Signet (195) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(2)-mm-abaddon cast Lightning Greaves
+Resolve Stack: Lightning Greaves
+Phase: Ai(2)-mm-abaddon's End step
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Anticipate
+Resolve Stack: Anticipate (212) - Ai(3)-mm-talrand-spells looks at the top three cards of their library. They put one of them into their hand and put the rest on the bottom of their library in any order.
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 11 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (234)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Wavebreak Hippocamp
+Resolve Stack: Wavebreak Hippocamp - Creature 2 / 2
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 12 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Replacement Effect: Deathcap Glade enters tapped unless you control two or more other lands.
+Land: Ai(4)-mm-jarad-graveyard played Deathcap Glade (344)
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Deathcap Glade (344) - {T}: Add {B} or {G}.
+Mana: Swamp (364) - {T}: Add {B}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Skull Prophet
+Resolve Stack: Skull Prophet - Creature 3 / 1
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 13 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (88)
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Thraben Watcher
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Thraben Watcher - Creature 2 / 2
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Firemane Commando (16) and Giada, Font of Hope (100) to attack Ai(2)-mm-abaddon.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Firemane Commando (16), Giada, Font of Hope (100)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(2)-mm-abaddon didn't block Firemane Commando (16).
+Ai(2)-mm-abaddon didn't block Giada, Font of Hope (100).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(2)-mm-abaddon.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(2)-mm-abaddon.
+Life: Life: Ai(2)-mm-abaddon 40 > 31
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 14 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Mana: Arcane Signet (195) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Island (126) - {T}: Add {U}.
+Mana: Swamp (147) - {T}: Add {B}.
+Mana: Sunken Hollow (122) - {T}: Add {B}.
+Mana: Talisman of Dominance (102) - {T}: Add {C}.
+Add To Stack: Ai(2)-mm-abaddon cast Abaddon the Despoiler
+Resolve Stack: Abaddon the Despoiler - Creature 5 / 5
+Add To Stack: Ai(2)-mm-abaddon activated Lightning Greaves targeting [Abaddon the Despoiler (201)]
+Resolve Stack: Lightning Greaves (194) -  Attach to Abaddon the Despoiler (201)
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Phase: Ai(2)-mm-abaddon's End step
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 15 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Replacement Effect: Myriad Landscape enters tapped.
+Land: Ai(3)-mm-talrand-spells played Myriad Landscape (286)
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 16 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Land: Ai(4)-mm-jarad-graveyard played Forest (337)
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Forest (337) - {T}: Add {G}.
+Mana: Swamp (364) - {T}: Add {B}.
+Mana: Deathcap Glade (344) - {T}: Add {B} or {G}.
+Mana: Svogthos, the Restless Tomb (315) - {T}: Add {C}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Brawn
+Resolve Stack: Brawn - Creature 3 / 3
+Mana: Skull Prophet (385) - {T}: Add {B} or {G}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Llanowar Elves
+Resolve Stack: Llanowar Elves - Creature 1 / 1
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 17 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (80)
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Cleansing Nova
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Unwind targeting [Choose one —
+• Destroy all creatures.
+• Destroy all artifacts and enchantments.
+
+ Destroy all artifacts and enchantments.]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Unwind (278), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Untap up to three lands. ]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Unwind (278) - Counter Cleansing Nova (49). Untap up to 3 Lands.
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Zone Change: Myriad Landscape (286) was put into Graveyard from Battlefield.
+Add To Stack: Ai(3)-mm-talrand-spells activated Myriad Landscape
+Resolve Stack: Myriad Landscape (286) - Ai(3)-mm-talrand-spells searches their library for  up to two basic land cards, puts them onto the battlefield tapped, then shuffles.
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Firemane Commando (16), Thraben Watcher (32) and Giada, Font of Hope (100) to attack Ai(2)-mm-abaddon.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(2)-mm-abaddon didn't block Firemane Commando (16).
+Ai(2)-mm-abaddon didn't block Thraben Watcher (32).
+Ai(2)-mm-abaddon didn't block Giada, Font of Hope (100).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(2)-mm-abaddon.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(2)-mm-abaddon.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(2)-mm-abaddon.
+Life: Life: Ai(2)-mm-abaddon 31 > 18
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 18 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Mana: Arcane Signet (195) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Island (126) - {T}: Add {U}.
+Mana: Swamp (147) - {T}: Add {B}.
+Mana: Sunken Hollow (122) - {T}: Add {B}.
+Add To Stack: Ai(2)-mm-abaddon cast Exalted Flamer of Tzeentch
+Resolve Stack: Exalted Flamer of Tzeentch - Creature 2 / 4
+Phase: Ai(2)-mm-abaddon's End step
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 19 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Fact or Fiction
+Resolve Stack: Fact or Fiction (266) - Ai(3)-mm-talrand-spells reveals the top five cards of their library. An opponent separates those cards into two piles. Ai(3)-mm-talrand-spells puts one pile into their hand and the other into their graveyard.
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (242)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Discard: Ai(3)-mm-talrand-spells discards Dig Through Time (284).
+Turn: Turn 20 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Land: Ai(4)-mm-jarad-graveyard played Swamp (367)
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Swamp (364) - {T}: Add {B}.
+Mana: Swamp (367) - {T}: Add {B}.
+Mana: Forest (337) - {T}: Add {G}.
+Mana: Deathcap Glade (344) - {T}: Add {B} or {G}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Jarad, Golgari Lich Lord
+Resolve Stack: Jarad, Golgari Lich Lord - Creature 2 / 2
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 21 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Land: Ai(1)-mm-giada-angels played Plains (90)
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Firemane Commando (16), Thraben Watcher (32) and Giada, Font of Hope (100) to attack Ai(2)-mm-abaddon.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(2)-mm-abaddon didn't block Firemane Commando (16).
+Ai(2)-mm-abaddon didn't block Thraben Watcher (32).
+Ai(2)-mm-abaddon didn't block Giada, Font of Hope (100).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(2)-mm-abaddon.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(2)-mm-abaddon.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(2)-mm-abaddon.
+Life: Life: Ai(2)-mm-abaddon 18 > 5
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Baneslayer Angel
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Baneslayer Angel - Creature 5 / 5
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 22 (Ai(2)-mm-abaddon)
+Phase: Ai(2)-mm-abaddon's Untap step
+Phase: Ai(2)-mm-abaddon's Upkeep step
+Add To Stack: Ai(2)-mm-abaddon triggered Exalted Flamer of Tzeentch
+Resolve Stack: Sorcerous Inspiration — At the beginning of your upkeep, return an instant or sorcery card at random from your graveyard to your hand. [Phase: Ai(2)-mm-abaddon]
+Phase: Ai(2)-mm-abaddon's Draw step
+Phase: Ai(2)-mm-abaddon's Main phase, precombat
+Phase: Ai(2)-mm-abaddon's Beginning of Combat Step
+Phase: Ai(2)-mm-abaddon's Declare Attackers Step
+Phase: Ai(2)-mm-abaddon's Declare Blockers Step
+Phase: Ai(2)-mm-abaddon's First Strike Damage Step
+Phase: Ai(2)-mm-abaddon's Combat Damage Step
+Phase: Ai(2)-mm-abaddon's End of Combat Step
+Phase: Ai(2)-mm-abaddon's Main phase, postcombat
+Mana: Arcane Signet (195) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Swamp (147) - {T}: Add {B}.
+Mana: Island (126) - {T}: Add {U}.
+Mana: Sunken Hollow (122) - {T}: Add {B}.
+Add To Stack: Ai(2)-mm-abaddon cast The Ruinous Powers
+Mana: Island (231) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast An Offer You Can't Refuse targeting [The Ruinous Powers]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: An Offer You Can't Refuse (294), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target noncreature spell. Its controller creates two Treasure tokens. (They're artifacts with "{T}, Sacrifice this token: Add one mana of any color.")]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: An Offer You Can't Refuse (294) - Counter The Ruinous Powers (176). Its controller creates two Treasure tokens.
+Damage: Talisman of Dominance (102) deals 1 non-combat damage to Ai(2)-mm-abaddon.
+Life: Life: Ai(2)-mm-abaddon 5 > 4
+Mana: Talisman of Dominance (102) - {T}: Add {U} or {B}. Talisman of Dominance deals 1 damage to you. 
+Zone Change: Treasure Token (407) was put into Graveyard from Battlefield.
+Mana: Treasure Token (407) - {T}, Sacrifice this token: Add one mana of any color.
+Zone Change: Treasure Token (406) was put into Graveyard from Battlefield.
+Mana: Treasure Token (406) - {T}, Sacrifice this token: Add one mana of any color.
+Resolve Stack: Ai(2)-mm-abaddon has suspended Inevitable Betrayal with 3 time counters on it.
+Phase: Ai(2)-mm-abaddon's End step
+Phase: Ai(2)-mm-abaddon's Cleanup step
+Turn: Turn 23 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Reality Shift targeting [Baneslayer Angel (39)]
+Zone Change: Baneslayer Angel (39) was put into Exile from Battlefield.
+Resolve Stack: Reality Shift (281) - Exile Baneslayer Angel (39). 
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (239)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Mana: Island (231) - {T}: Add {U}.
+Mana: Island (242) - {T}: Add {U}.
+Mana: Island (239) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Archmage of Runes
+Resolve Stack: Archmage of Runes - Creature 3 / 6
+Phase: Ai(3)-mm-talrand-spells' End step
+Add To Stack: Ai(4)-mm-jarad-graveyard activated Skull Prophet
+Zone Change: Ai(4)-mm-jarad-graveyard milled Buried Alive (320) and Sakura-Tribe Elder (387).
+Resolve Stack: Skull Prophet (385) - Ai(4)-mm-jarad-graveyard mills two cards.
+Mana: Llanowar Elves (386) - {T}: Add {G}.
+Mana: Svogthos, the Restless Tomb (315) - {T}: Add {C}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Grapple with the Past
+Zone Change: Ai(4)-mm-jarad-graveyard milled Evolving Wilds (327), Command Tower (313) and Moldervine Reclamation (349).
+Resolve Stack: Grapple with the Past (304) - Ai(4)-mm-jarad-graveyard mills three cards. Ai(4)-mm-jarad-graveyard returns up to one Creature.YouCtrl or Land.YouCtrl card from their graveyard to their hand.
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 24 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Forest (337) - {T}: Add {G}.
+Mana: Swamp (364) - {T}: Add {B}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Sakura-Tribe Elder
+Resolve Stack: Sakura-Tribe Elder - Creature 1 / 1
+Zone Change: Sakura-Tribe Elder (387) was put into Graveyard from Battlefield.
+Add To Stack: Ai(4)-mm-jarad-graveyard activated Sakura-Tribe Elder
+Resolve Stack: Sakura-Tribe Elder (387) - Ai(4)-mm-jarad-graveyard searches their library for a basic land card, puts it onto the battlefield tapped, then shuffles.
+Mana: Deathcap Glade (344) - {T}: Add {B} or {G}.
+Mana: Swamp (367) - {T}: Add {B}.
+Mana: Svogthos, the Restless Tomb (315) - {T}: Add {C}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Splinterfright
+Resolve Stack: Splinterfright - Creature * / *
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 25 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100) and Face-down card (H1) to attack Ai(2)-mm-abaddon.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100), Face-down card (H1)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(2)-mm-abaddon didn't block Firemane Commando (16).
+Ai(2)-mm-abaddon didn't block Thraben Watcher (32).
+Ai(2)-mm-abaddon didn't block Giada, Font of Hope (100).
+Ai(2)-mm-abaddon assigned Exalted Flamer of Tzeentch (179) and Abaddon the Despoiler (201) to block Face-down card (H1).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(2)-mm-abaddon.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(2)-mm-abaddon.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(2)-mm-abaddon.
+Damage: Face-down card (H1) deals 3 damage to Abaddon the Despoiler (201).
+Damage: Exalted Flamer of Tzeentch (179) deals 2 damage to Face-down card (H1).
+Damage: Abaddon the Despoiler (201) deals 5 damage to Face-down card (H1).
+Life: Life: Ai(2)-mm-abaddon 4 > -9
+Zone Change: Face-down card (H1) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Replacement Effect: Path of Ancestry enters tapped.
+Land: Ai(1)-mm-giada-angels played Path of Ancestry (12)
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Herald of War
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Herald of War - Creature 3 / 3
+Mana: Plains (90) - {T}: Add {W}.
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Resplendent Angel
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Resplendent Angel - Creature 3 / 3
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 26 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Replacement Effect: Mystic Sanctuary enters tapped unless you control three or more other Islands.
+Land: Ai(3)-mm-talrand-spells played Mystic Sanctuary (261)
+Add To Stack: Ai(3)-mm-talrand-spells triggered Mystic Sanctuary targeting [Dig Through Time (284)]
+Resolve Stack: When Mystic Sanctuary enters untapped, you may put target instant or sorcery card from your graveyard on top of your library. (Targeting: [[Dig Through Time (284)]]) [Zone Changer: Mystic Sanctuary (261)]
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Mocking Sprite
+Resolve Stack: Mocking Sprite - Creature 2 / 1
+Mana: Island (250) - {T}: Add {U}.
+Mana: Island (231) - {T}: Add {U}.
+Mana: Island (242) - {T}: Add {U}.
+Mana: Island (239) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Talrand, Sky Summoner
+Resolve Stack: Talrand, Sky Summoner - Creature 2 / 2
+Phase: Ai(3)-mm-talrand-spells' End step
+Add To Stack: Ai(4)-mm-jarad-graveyard activated Skull Prophet
+Zone Change: Ai(4)-mm-jarad-graveyard milled Conduit of Worlds (389) and Yargle and Multani (356).
+Resolve Stack: Skull Prophet (385) - Ai(4)-mm-jarad-graveyard mills two cards.
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 27 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Add To Stack: Ai(4)-mm-jarad-graveyard triggered Splinterfright
+Zone Change: Ai(4)-mm-jarad-graveyard milled Toxic Deluge (312) and Elvish Mystic (311).
+Resolve Stack: At the beginning of your upkeep, mill two cards. [Phase: Ai(4)-mm-jarad-graveyard]
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Mana: Forest (337) - {T}: Add {G}.
+Mana: Forest (332) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Rampant Growth
+Resolve Stack: Rampant Growth (390) - Search your library for a basic land card, put that card onto the battlefield tapped, then shuffle.
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Deathcap Glade (344) - {T}: Add {B} or {G}.
+Mana: Swamp (364) - {T}: Add {B}.
+Mana: Swamp (367) - {T}: Add {B}.
+Mana: Svogthos, the Restless Tomb (315) - {T}: Add {C}.
+Mana: Llanowar Elves (386) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Golgari Grave-Troll
+Replacement Effect: Golgari Grave-Troll enters with a +1/+1 counter on it for each creature card in your graveyard.
+Resolve Stack: Golgari Grave-Troll - Creature 0 / 0
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 28 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Herald of War (40), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32) and Giada, Font of Hope (100) to attack Ai(4)-mm-jarad-graveyard.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Herald of War (40), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(4)-mm-jarad-graveyard didn't block Herald of War (40).
+Ai(4)-mm-jarad-graveyard didn't block Resplendent Angel (1).
+Ai(4)-mm-jarad-graveyard didn't block Firemane Commando (16).
+Ai(4)-mm-jarad-graveyard didn't block Thraben Watcher (32).
+Ai(4)-mm-jarad-graveyard didn't block Giada, Font of Hope (100).
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (1) - Resplendent Angel (1) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (40) deals 8 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Resplendent Angel (1) deals 10 combat damage to Ai(4)-mm-jarad-graveyard.
+Life: Life: Ai(1)-mm-giada-angels 40 > 50
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(4)-mm-jarad-graveyard.
+Life: Life: Ai(4)-mm-jarad-graveyard 40 > 9
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Exemplar of Light
+Add To Stack: Ai(1)-mm-giada-angels triggered Path of Ancestry
+Resolve Stack: Ai(1)-mm-giada-angels scried 1 card(s) to the bottom of the library
+Resolve Stack: When mana produced by Path of Ancestry is spent to cast a creature spell that shares a creature type with your commander, scry 1. ([Exemplar of Light - Creature 3 / 3]) [Card: Exemplar of Light (59), Activator: Ai(1)-mm-giada-angels, SpellAbility: Exemplar of Light - Creature 3 / 3]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Exemplar of Light - Creature 3 / 3
+Add To Stack: Ai(1)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you put one or more +1/+1 counters on this creature, draw a card. This ability triggers only once each turn. [Added once: Exemplar of Light (59) Amount: 5]
+Phase: Ai(1)-mm-giada-angels' End step
+Add To Stack: Ai(1)-mm-giada-angels triggered Resplendent Angel
+Mana: Mystic Sanctuary (261) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Impulse
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Impulse (285), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Impulse (285), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Impulse (285), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top four cards of your library. Put one of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Impulse (285) - Ai(3)-mm-talrand-spells looks at the top four cards of their library. They put one of them into their hand and put the rest on the bottom of their library in any order.
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 5 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(1)-mm-giada-angels]
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 29 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (228)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Rhystic Study
+Resolve Stack: Rhystic Study
+Phase: Ai(3)-mm-talrand-spells' End step
+Add To Stack: Ai(4)-mm-jarad-graveyard activated Skull Prophet
+Zone Change: Ai(4)-mm-jarad-graveyard milled Reanimate (358) and Golgari Thug (347).
+Resolve Stack: Skull Prophet (385) - Ai(4)-mm-jarad-graveyard mills two cards.
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 30 (Ai(4)-mm-jarad-graveyard)
+Phase: Ai(4)-mm-jarad-graveyard's Untap step
+Phase: Ai(4)-mm-jarad-graveyard's Upkeep step
+Add To Stack: Ai(4)-mm-jarad-graveyard triggered Splinterfright
+Zone Change: Ai(4)-mm-jarad-graveyard milled Nyx Weaver (373) and Dread Return (379).
+Resolve Stack: At the beginning of your upkeep, mill two cards. [Phase: Ai(4)-mm-jarad-graveyard]
+Phase: Ai(4)-mm-jarad-graveyard's Draw step
+Zone Change: Ai(4)-mm-jarad-graveyard milled Forest (336), Eternal Witness (308), Stinkweed Imp (392) and World Shaper (359).
+Replacement Effect: Golgari Thug - Dredge 4
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, precombat
+Phase: Ai(4)-mm-jarad-graveyard's Beginning of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Attackers Step
+Phase: Ai(4)-mm-jarad-graveyard's Declare Blockers Step
+Phase: Ai(4)-mm-jarad-graveyard's First Strike Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's Combat Damage Step
+Phase: Ai(4)-mm-jarad-graveyard's End of Combat Step
+Phase: Ai(4)-mm-jarad-graveyard's Main phase, postcombat
+Mana: Swamp (364) - {T}: Add {B}.
+Mana: Forest (337) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-jarad-graveyard cast Golgari Thug
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Mana: Swamp (367) - {T}: Add {B}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Golgari Thug (347), Activator: Ai(4)-mm-jarad-graveyard, SpellAbility: Golgari Thug - Creature 1 / 1]
+Mana: Island (250) - {T}: Add {U}.
+Mana: Island (231) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Rewind targeting [Golgari Thug - Creature 1 / 1]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Rewind (296), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell. Untap up to four lands. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Rewind (296), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell. Untap up to four lands. ]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Rewind (296), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell. Untap up to four lands. ]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Rewind (296) - Counter Golgari Thug (347). Untap up to 4 Lands.
+Phase: Ai(4)-mm-jarad-graveyard's End step
+Phase: Ai(4)-mm-jarad-graveyard's Cleanup step
+Turn: Turn 31 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Angel Token (414), Exemplar of Light (59), Herald of War (40), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32) and Giada, Font of Hope (100) to attack Ai(4)-mm-jarad-graveyard.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Angel Token (414), Exemplar of Light (59), Herald of War (40), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100)]]
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Generous Gift targeting [Jarad, Golgari Lich Lord (403)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Mana: Plains (88) - {T}: Add {W}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Generous Gift (42), Activator: Ai(1)-mm-giada-angels, SpellAbility: Destroy target permanent. Its controller creates a 3/3 green Elephant creature token. ]
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Counterspell targeting [Destroy target permanent. Its controller creates a 3/3 green Elephant creature token. ]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Counterspell (222), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Counterspell (222), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Counterspell (222), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell.]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Counterspell (222) - Counter Generous Gift (42).
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(4)-mm-jarad-graveyard didn't block Angel Token (414).
+Ai(4)-mm-jarad-graveyard didn't block Exemplar of Light (59).
+Ai(4)-mm-jarad-graveyard didn't block Herald of War (40).
+Ai(4)-mm-jarad-graveyard didn't block Resplendent Angel (1).
+Ai(4)-mm-jarad-graveyard didn't block Firemane Commando (16).
+Ai(4)-mm-jarad-graveyard didn't block Thraben Watcher (32).
+Ai(4)-mm-jarad-graveyard didn't block Giada, Font of Hope (100).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Angel Token (414) deals 10 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Exemplar of Light (59) deals 9 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Herald of War (40) deals 9 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Resplendent Angel (1) deals 8 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(4)-mm-jarad-graveyard.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(4)-mm-jarad-graveyard.
+Life: Life: Ai(4)-mm-jarad-graveyard 9 > -40
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Add To Stack: Ai(1)-mm-giada-angels cast Avacyn, Angel of Hope
+Add To Stack: Ai(1)-mm-giada-angels triggered Path of Ancestry
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Avacyn, Angel of Hope (51), Activator: Ai(1)-mm-giada-angels, SpellAbility: Avacyn, Angel of Hope - Creature 8 / 8]
+Resolve Stack: Ai(1)-mm-giada-angels scried 1 card(s) to the bottom of the library
+Resolve Stack: When mana produced by Path of Ancestry is spent to cast a creature spell that shares a creature type with your commander, scry 1. ([Avacyn, Angel of Hope - Creature 8 / 8]) [Card: Avacyn, Angel of Hope (51), Activator: Ai(1)-mm-giada-angels, SpellAbility: Avacyn, Angel of Hope - Creature 8 / 8]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Avacyn, Angel of Hope - Creature 8 / 8
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Metropolis Reformer
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Metropolis Reformer (26), Activator: Ai(1)-mm-giada-angels, SpellAbility: Metropolis Reformer - Creature 2 / 3]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Metropolis Reformer - Creature 2 / 3
+Phase: Ai(1)-mm-giada-angels' End step
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Dig Through Time
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Dig Through Time (284), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top seven cards of your library. Put two of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Dig Through Time (284), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top seven cards of your library. Put two of them into your hand and the rest on the bottom of your library in any order.]
+Resolve Stack: Dig Through Time (284) - Ai(3)-mm-talrand-spells looks at the top seven cards of their library. They put two of them into their hand and put the rest on the bottom of their library in any order.
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 32 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (255)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Murmuring Mystic
+Resolve Stack: Murmuring Mystic - Creature 1 / 5
+Mana: Island (231) - {T}: Add {U}.
+Mana: Island (242) - {T}: Add {U}.
+Mana: Island (239) - {T}: Add {U}.
+Mana: Mystic Sanctuary (261) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Archmage Emeritus
+Resolve Stack: Archmage Emeritus - Creature 2 / 2
+Mana: Island (228) - {T}: Add {U}.
+Mana: Island (255) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Mind Stone
+Resolve Stack: Mind Stone
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Discard: Ai(3)-mm-talrand-spells discards Island (230).
+Turn: Turn 33 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(1)-mm-giada-angels assigned Herald of War (40), Avacyn, Angel of Hope (51), Metropolis Reformer (26), Angel Token (414), Exemplar of Light (59), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32) and Giada, Font of Hope (100) to attack Ai(3)-mm-talrand-spells.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Herald of War (40), Avacyn, Angel of Hope (51), Metropolis Reformer (26), Angel Token (414), Exemplar of Light (59), Resplendent Angel (1), Firemane Commando (16), Thraben Watcher (32), Giada, Font of Hope (100)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-talrand-spells assigned Drake Token (420) to block Herald of War (40).
+Ai(3)-mm-talrand-spells assigned Drake Token (412) to block Avacyn, Angel of Hope (51).
+Ai(3)-mm-talrand-spells assigned Drake Token (417) to block Metropolis Reformer (26).
+Ai(3)-mm-talrand-spells assigned Drake Token (424) to block Angel Token (414).
+Ai(3)-mm-talrand-spells didn't block Exemplar of Light (59).
+Ai(3)-mm-talrand-spells didn't block Resplendent Angel (1).
+Ai(3)-mm-talrand-spells didn't block Firemane Commando (16).
+Ai(3)-mm-talrand-spells didn't block Thraben Watcher (32).
+Ai(3)-mm-talrand-spells didn't block Giada, Font of Hope (100).
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (1) - Resplendent Angel (1) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (40) deals 10 damage to Drake Token (420).
+Damage: Avacyn, Angel of Hope (51) deals 16 damage to Drake Token (412).
+Damage: Metropolis Reformer (26) deals 11 damage to Drake Token (417).
+Damage: Angel Token (414) deals 10 damage to Drake Token (424).
+Damage: Exemplar of Light (59) deals 9 combat damage to Ai(3)-mm-talrand-spells.
+Damage: Resplendent Angel (1) deals 10 combat damage to Ai(3)-mm-talrand-spells.
+Life: Life: Ai(1)-mm-giada-angels 50 > 60
+Damage: Firemane Commando (16) deals 6 combat damage to Ai(3)-mm-talrand-spells.
+Damage: Thraben Watcher (32) deals 4 combat damage to Ai(3)-mm-talrand-spells.
+Damage: Giada, Font of Hope (100) deals 3 combat damage to Ai(3)-mm-talrand-spells.
+Damage: Drake Token (412) deals 2 damage to Avacyn, Angel of Hope (51).
+Damage: Drake Token (417) deals 2 damage to Metropolis Reformer (26).
+Damage: Drake Token (420) deals 2 damage to Herald of War (40).
+Damage: Drake Token (424) deals 2 damage to Angel Token (414).
+Life: Life: Ai(3)-mm-talrand-spells 40 > 8
+Zone Change: Drake Token (412) was put into Graveyard from Battlefield.
+Zone Change: Drake Token (417) was put into Graveyard from Battlefield.
+Zone Change: Drake Token (420) was put into Graveyard from Battlefield.
+Zone Change: Drake Token (424) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-giada-angels triggered Metropolis Reformer
+Add To Stack: Ai(1)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on this creature. [Player: Ai(1)-mm-giada-angels, Gained Amount: 10]
+Add To Stack: Ai(1)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you put one or more +1/+1 counters on this creature, draw a card. This ability triggers only once each turn. [Added once: Exemplar of Light (59) Amount: 1]
+Life: Life: Ai(1)-mm-giada-angels 60 > 62
+Resolve Stack: Whenever Metropolis Reformer is dealt damage, you gain that much life. [Damaged: Metropolis Reformer (26), Amount: 2]
+Add To Stack: Ai(1)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on this creature. [Player: Ai(1)-mm-giada-angels, Gained Amount: 2]
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Valkyrie Harbinger
+Add To Stack: Ai(1)-mm-giada-angels triggered Path of Ancestry
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Valkyrie Harbinger (47), Activator: Ai(1)-mm-giada-angels, SpellAbility: Valkyrie Harbinger - Creature 4 / 5]
+Resolve Stack: Ai(1)-mm-giada-angels scried 1 card(s) to the top of the library
+Resolve Stack: When mana produced by Path of Ancestry is spent to cast a creature spell that shares a creature type with your commander, scry 1. ([Valkyrie Harbinger - Creature 4 / 5]) [Card: Valkyrie Harbinger (47), Activator: Ai(1)-mm-giada-angels, SpellAbility: Valkyrie Harbinger - Creature 4 / 5]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Valkyrie Harbinger - Creature 4 / 5
+Phase: Ai(1)-mm-giada-angels' End step
+Add To Stack: Ai(1)-mm-giada-angels triggered Resplendent Angel
+Add To Stack: Ai(1)-mm-giada-angels triggered Valkyrie Harbinger
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 4 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(1)-mm-giada-angels]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 5 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(1)-mm-giada-angels]
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Discard: Ai(1)-mm-giada-angels discards Authority of the Consuls (96).
+Turn: Turn 34 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (257)
+Mana: Island (240) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Ravenform targeting [Avacyn, Angel of Hope (51)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Ravenform (274), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 1/1 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Ravenform (274), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 1/1 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Ravenform (274), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 1/1 blue Bird creature token with flying. ]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Ravenform (274), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 1/1 blue Bird creature token with flying. ]
+Zone Change: Avacyn, Angel of Hope (51) was put into Exile from Battlefield.
+Resolve Stack: Ravenform (274) - Exile Avacyn, Angel of Hope (51). 
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Mana: Island (231) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Jace's Sanctum
+Resolve Stack: Jace's Sanctum
+Mana: Island (242) - {T}: Add {U}.
+Mana: Island (239) - {T}: Add {U}.
+Mana: Mystic Sanctuary (261) - {T}: Add {U}.
+Mana: Island (228) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Curiosity Crafter
+Resolve Stack: Curiosity Crafter - Creature 3 / 3
+Mana: Island (255) - {T}: Add {U}.
+Mana: Island (257) - {T}: Add {U}.
+Mana: Mind Stone (227) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Propaganda
+Resolve Stack: Propaganda
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 35 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Combat: Ai(1)-mm-giada-angels assigned Herald of War (40), Bird Token (439) and Angel Token (430) to attack Ai(3)-mm-talrand-spells.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Herald of War (40), Bird Token (439), Angel Token (430)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-talrand-spells assigned Mocking Sprite (289) to block Herald of War (40).
+Ai(3)-mm-talrand-spells assigned Drake Token (437) to block Bird Token (439).
+Ai(3)-mm-talrand-spells assigned Bird Illusion Token (435) to block Angel Token (430).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (40) deals 11 damage to Mocking Sprite (289).
+Damage: Bird Token (439) deals 1 damage to Drake Token (437).
+Damage: Angel Token (430) deals 15 damage to Bird Illusion Token (435).
+Damage: Drake Token (437) deals 2 damage to Bird Token (439).
+Damage: Bird Illusion Token (435) deals 1 damage to Angel Token (430).
+Damage: Mocking Sprite (289) deals 2 damage to Herald of War (40).
+Zone Change: Bird Token (439) was put into Graveyard from Battlefield.
+Zone Change: Mocking Sprite (289) was put into Graveyard from Battlefield.
+Zone Change: Bird Illusion Token (435) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Add To Stack: Ai(1)-mm-giada-angels cast Starnheim Aspirant
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Starnheim Aspirant (46), Activator: Ai(1)-mm-giada-angels, SpellAbility: Starnheim Aspirant - Creature 2 / 2]
+Resolve Stack: Starnheim Aspirant - Creature 2 / 2
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Segovian Angel
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Segovian Angel (17), Activator: Ai(1)-mm-giada-angels, SpellAbility: Segovian Angel - Creature 1 / 1]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Segovian Angel - Creature 1 / 1
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 36 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (245)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (240) - {T}: Add {U}.
+Mana: Island (254) - {T}: Add {U}.
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Reconnaissance Mission
+Resolve Stack: Reconnaissance Mission
+Mana: Island (231) - {T}: Add {U}.
+Mana: Island (242) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Arcane Signet
+Resolve Stack: Arcane Signet
+Mana: Island (239) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Winged Words
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Winged Words (295), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Winged Words (295), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Winged Words (295), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Winged Words (295), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Winged Words (295), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Draw two cards.]
+Resolve Stack: Winged Words (295) - Ai(3)-mm-talrand-spells draws two cards.
+Mana: Mystic Sanctuary (261) - {T}: Add {U}.
+Mana: Island (228) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Favorable Winds
+Resolve Stack: Favorable Winds
+Mana: Island (255) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Pongify targeting [Valkyrie Harbinger (47)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Pongify (299), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. Its controller creates a 3/3 green Ape creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Pongify (299), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. Its controller creates a 3/3 green Ape creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Pongify (299), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. Its controller creates a 3/3 green Ape creature token. ]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Pongify (299), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. Its controller creates a 3/3 green Ape creature token. ]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Pongify (299), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. Its controller creates a 3/3 green Ape creature token. ]
+Zone Change: Valkyrie Harbinger (47) was put into Graveyard from Battlefield.
+Resolve Stack: Pongify (299) - Destroy Valkyrie Harbinger (47). It can't be regenerated. 
+Mana: Island (257) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Sol Ring
+Resolve Stack: Sol Ring
+Mana: Island (245) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Sleight of Hand
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Sleight of Hand (301), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top two cards of your library. Put one of them into your hand and the other on the bottom of your library.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Sleight of Hand (301), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top two cards of your library. Put one of them into your hand and the other on the bottom of your library.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Sleight of Hand (301), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top two cards of your library. Put one of them into your hand and the other on the bottom of your library.]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Sleight of Hand (301), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top two cards of your library. Put one of them into your hand and the other on the bottom of your library.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Sleight of Hand (301), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Look at the top two cards of your library. Put one of them into your hand and the other on the bottom of your library.]
+Resolve Stack: Sleight of Hand (301) - Ai(3)-mm-talrand-spells looks at the top two cards of their library. They put one of them into their hand and put the rest on the bottom of their library in any order.
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 37 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Stroke of Midnight targeting [Curiosity Crafter (224)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Mana: Plains (88) - {T}: Add {W}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Stroke of Midnight (65), Activator: Ai(1)-mm-giada-angels, SpellAbility: Destroy target nonland permanent. Its controller creates a 1/1 white Human creature token. ]
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Add To Stack: Ai(3)-mm-talrand-spells cast Swan Song targeting [Destroy target nonland permanent. Its controller creates a 1/1 white Human creature token. ]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Swan Song (269), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target enchantment, instant or sorcery spell. Its controller creates a 2/2 blue Bird creature token with flying. ]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Swan Song (269) - Counter Stroke of Midnight (65). 
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Combat: Ai(1)-mm-giada-angels assigned Herald of War (40) to attack Ai(3)-mm-talrand-spells.
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-talrand-spells assigned Bird Illusion Token (443) to block Herald of War (40).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (40) deals 12 damage to Bird Illusion Token (443).
+Damage: Bird Illusion Token (443) deals 2 damage to Herald of War (40).
+Zone Change: Bird Illusion Token (443) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Turn: Turn 38 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Mana: Island (240) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Unsummon targeting [Angel Token (430)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Unsummon (287), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Unsummon (287), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Unsummon (287), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Unsummon (287), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Unsummon (287), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target creature to its owner's hand.]
+Resolve Stack: Unsummon (287) - Return Angel Token (430) to its owner's hand.
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Cyclonic Rift targeting [Angel Token (428)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Cyclonic Rift (208), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target nonland permanent you don't control to its owner's hand.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Cyclonic Rift (208), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target nonland permanent you don't control to its owner's hand.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Cyclonic Rift (208), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target nonland permanent you don't control to its owner's hand.]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Cyclonic Rift (208), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target nonland permanent you don't control to its owner's hand.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the bottom of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Cyclonic Rift (208), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Return target nonland permanent you don't control to its owner's hand.]
+Resolve Stack: Cyclonic Rift (208) - Return Angel Token (428) to its owner's hand.
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (241)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Island (234) - {T}: Add {U}.
+Mana: Island (250) - {T}: Add {U}.
+Mana: Sol Ring (219) - {T}: Add {C}{C}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Alandra, Sky Dreamer
+Resolve Stack: Alandra, Sky Dreamer - Creature 2 / 4
+Mana: Island (231) - {T}: Add {U}.
+Mana: Island (242) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Baral, Chief of Compliance
+Resolve Stack: Baral, Chief of Compliance - Creature 1 / 3
+Mana: Island (239) - {T}: Add {U}.
+Mana: Mystic Sanctuary (261) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Sky Diamond
+Replacement Effect: Sky Diamond enters tapped.
+Resolve Stack: Sky Diamond
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 39 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Mana: Plains (90) - {T}: Add {W}.
+Combat: Ai(1)-mm-giada-angels assigned Herald of War (40), Segovian Angel (17) and Exemplar of Light (59) to attack Ai(3)-mm-talrand-spells.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Add To Stack: Ai(1)-mm-giada-angels triggered Herald of War
+Mana: Island (228) - {T}: Add {U}.
+Mana: Island (255) - {T}: Add {U}.
+Mana: Island (257) - {T}: Add {U}.
+Mana: Island (245) - {T}: Add {U}.
+Mana: Arcane Signet (298) - {T}: Add one mana of any color in your commander's color identity.
+Mana: Island (241) - {T}: Add {U}.
+Mana: Mind Stone (227) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Hullbreaker Horror
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Hullbreaker Horror (268), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Hullbreaker Horror - Creature 7 / 8]
+Resolve Stack: Hullbreaker Horror - Creature 7 / 8
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (40)]
+Resolve Stack: Whenever you attack with two or more creatures, draw a card. [Number Attackers: [Herald of War (40), Segovian Angel (17), Exemplar of Light (59)]]
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-talrand-spells assigned Bird Illusion Token (450) to block Herald of War (40).
+Ai(3)-mm-talrand-spells assigned Bird Illusion Token (458) to block Segovian Angel (17).
+Ai(3)-mm-talrand-spells assigned Bird Illusion Token (464) to block Exemplar of Light (59).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (40) deals 13 damage to Bird Illusion Token (450).
+Damage: Segovian Angel (17) deals 13 damage to Bird Illusion Token (458).
+Damage: Exemplar of Light (59) deals 11 damage to Bird Illusion Token (464).
+Damage: Bird Illusion Token (450) deals 2 damage to Herald of War (40).
+Damage: Bird Illusion Token (458) deals 2 damage to Segovian Angel (17).
+Damage: Bird Illusion Token (464) deals 2 damage to Exemplar of Light (59).
+Zone Change: Bird Illusion Token (450) was put into Graveyard from Battlefield.
+Zone Change: Bird Illusion Token (458) was put into Graveyard from Battlefield.
+Zone Change: Bird Illusion Token (464) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Discard: Ai(1)-mm-giada-angels discards Luminarch Ascension (57).
+Discard: Ai(1)-mm-giada-angels discards Pearl Medallion (25).
+Turn: Turn 40 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (238)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Mana: Sol Ring (219) - {T}: Add {C}{C}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Sapphire Medallion
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Herald of War (40)) [Card: Sapphire Medallion (260), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Sapphire Medallion]
+Resolve Stack: Sapphire Medallion
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 41 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Plains (80) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Serra's Emissary
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Mana: Plains (90) - {T}: Add {W}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Serra's Emissary (61), Activator: Ai(1)-mm-giada-angels, SpellAbility: Serra's Emissary - Creature 7 / 7]
+Mana: Island (240) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Disdainful Stroke targeting [Serra's Emissary - Creature 7 / 7]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Alandra, Sky Dreamer
+Resolve Stack: Whenever you draw your second card each turn, create a 2/2 blue Drake creature token with flying. [Player: Ai(3)-mm-talrand-spells]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Segovian Angel (17)) [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Disdainful Stroke (276), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target spell with mana value 4 or greater.]
+Zone Change: Send countered spell to Graveyard
+Resolve Stack: Disdainful Stroke (276) - Counter Serra's Emissary (61).
+Add To Stack: Ai(3)-mm-talrand-spells triggered Baral, Chief of Compliance
+Discard: Ai(3)-mm-talrand-spells discards Island (249).
+Resolve Stack: Whenever a spell or ability you control counters a spell, you may draw a card. If you do, discard a card. [Countered: Serra's Emissary (61), Cause: Counter target spell with mana value 4 or greater.]
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Resculpt targeting [Exemplar of Light (59)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Alandra, Sky Dreamer
+Resolve Stack: Whenever you draw your fifth card each turn, Alandra, Sky Dreamer and Drakes you control get +X/+X until end of turn, where X is the number of cards in your hand. [Player: Ai(3)-mm-talrand-spells]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Metropolis Reformer (26)) [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Resculpt (205), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Exile target artifact or creature. Its controller creates a 4/4 blue and red Elemental creature token. ]
+Zone Change: Exemplar of Light (59) was put into Exile from Battlefield.
+Resolve Stack: Resculpt (205) - Exile Exemplar of Light (59). 
+Mana: Island (234) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Rapid Hybridization targeting [Thraben Watcher (32)]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Angel Token (414)) [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Rapid Hybridization (264), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Destroy target creature. It can't be regenerated. That creature's controller creates a 3/3 green Frog Lizard creature token. ]
+Zone Change: Thraben Watcher (32) was put into Graveyard from Battlefield.
+Resolve Stack: Rapid Hybridization (264) - Destroy Thraben Watcher (32). It can't be regenerated. 
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Add To Stack: Ai(1)-mm-giada-angels cast Metropolis Reformer
+Add To Stack: Ai(1)-mm-giada-angels triggered Path of Ancestry
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Metropolis Reformer (26), Activator: Ai(1)-mm-giada-angels, SpellAbility: Metropolis Reformer - Creature 2 / 3]
+Resolve Stack: Ai(1)-mm-giada-angels scried 1 card(s) to the top of the library
+Resolve Stack: When mana produced by Path of Ancestry is spent to cast a creature spell that shares a creature type with your commander, scry 1. ([Metropolis Reformer - Creature 2 / 3]) [Card: Metropolis Reformer (26), Activator: Ai(1)-mm-giada-angels, SpellAbility: Metropolis Reformer - Creature 2 / 3]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Metropolis Reformer - Creature 2 / 3
+Mana: Giada, Font of Hope (100) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(1)-mm-giada-angels cast Segovian Angel
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Segovian Angel (17), Activator: Ai(1)-mm-giada-angels, SpellAbility: Segovian Angel - Creature 1 / 1]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Segovian Angel - Creature 1 / 1
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Discard: Ai(1)-mm-giada-angels discards Folk Hero (30).
+Turn: Turn 42 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (232)
+Mana: Sol Ring (219) - {T}: Add {C}{C}.
+Mana: Island (240) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Heraldic Banner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Resolve Stack: Whenever you cast a spell, return target nonland permanent to its owner's hand. (Targeting: Resplendent Angel (1)) [Card: Heraldic Banner (207), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Heraldic Banner]
+Replacement Effect: As Heraldic Banner enters, choose a color.
+Resolve Stack: Heraldic Banner
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(3)-mm-talrand-spells assigned Hullbreaker Horror (268) to attack Ai(1)-mm-giada-angels.
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(1)-mm-giada-angels didn't block Hullbreaker Horror (268).
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Damage: Hullbreaker Horror (268) deals 8 combat damage to Ai(1)-mm-giada-angels.
+Life: Life: Ai(1)-mm-giada-angels 62 > 54
+Add To Stack: Ai(3)-mm-talrand-spells triggered Reconnaissance Mission
+Resolve Stack: Whenever a creature you control deals combat damage to a player, you may draw a card. [Damage Source: Hullbreaker Horror (268), Damaged: Ai(1)-mm-giada-angels, Amount: 8]
+Phase: Ai(3)-mm-talrand-spells' End of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Main phase, postcombat
+Phase: Ai(3)-mm-talrand-spells' End step
+Phase: Ai(3)-mm-talrand-spells' Cleanup step
+Turn: Turn 43 (Ai(1)-mm-giada-angels)
+Phase: Ai(1)-mm-giada-angels' Untap step
+Phase: Ai(1)-mm-giada-angels' Upkeep step
+Phase: Ai(1)-mm-giada-angels' Draw step
+Mana: Plains (83) - {T}: Add {W}.
+Mana: Plains (75) - {T}: Add {W}.
+Mana: Plains (69) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-giada-angels cast Akroma's Will
+Add To Stack: Ai(3)-mm-talrand-spells triggered Rhystic Study
+Mana: Plains (80) - {T}: Add {W}.
+Resolve Stack: Whenever an opponent casts a spell, you may draw a card unless that player pays {1}. [Card: Akroma's Will (15), Activator: Ai(1)-mm-giada-angels, SpellAbility: Choose one. If you control a commander as you cast this spell, you may choose both.
+• Creatures you control gain flying, vigilance, and double strike until end of turn.
+• Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.
+
+ Creatures you control gain flying, vigilance, and double strike until end of turn. Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.]
+Mana: Island (254) - {T}: Add {U}.
+Add To Stack: Ai(3)-mm-talrand-spells cast Dispel targeting [Choose one. If you control a commander as you cast this spell, you may choose both.
+• Creatures you control gain flying, vigilance, and double strike until end of turn.
+• Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.
+
+ Creatures you control gain flying, vigilance, and double strike until end of turn. Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Jace's Sanctum
+Add To Stack: Ai(3)-mm-talrand-spells triggered Hullbreaker Horror
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage Emeritus
+Add To Stack: Ai(3)-mm-talrand-spells triggered Wavebreak Hippocamp
+Add To Stack: Ai(3)-mm-talrand-spells triggered Archmage of Runes
+Add To Stack: Ai(3)-mm-talrand-spells triggered Talrand, Sky Summoner
+Add To Stack: Ai(3)-mm-talrand-spells triggered Murmuring Mystic
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying. [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, create a 2/2 blue Drake creature token with flying. [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Whenever you cast an instant or sorcery spell, draw a card. [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Whenever you cast your first spell during each opponent's turn, draw a card. [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Add To Stack: Ai(3)-mm-talrand-spells triggered Alandra, Sky Dreamer
+Resolve Stack: Whenever you draw your second card each turn, create a 2/2 blue Drake creature token with flying. [Player: Ai(3)-mm-talrand-spells]
+Resolve Stack: Magecraft — Whenever you cast or copy an instant or sorcery spell, draw a card. [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Whenever you cast a spell, return target spell you don't control to its owner's hand. (Targeting: Akroma's Will (15)) [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Ai(3)-mm-talrand-spells scried 1 card(s) to the top of the library
+Resolve Stack: Whenever you cast a instant or sorcery spell, scry 1. (Look at the top card of your library. You may put that card on the bottom.) [Card: Dispel (215), Activator: Ai(3)-mm-talrand-spells, SpellAbility: Counter target instant spell.]
+Resolve Stack: Dispel ability fizzles.
+Phase: Ai(1)-mm-giada-angels' Main phase, precombat
+Phase: Ai(1)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(1)-mm-giada-angels' Declare Attackers Step
+Mana: Plains (90) - {T}: Add {W}.
+Mana: Path of Ancestry (12) - {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)
+Combat: Ai(1)-mm-giada-angels assigned Metropolis Reformer (26) to attack Ai(3)-mm-talrand-spells.
+Phase: Ai(1)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-talrand-spells assigned Bird Illusion Token (472) and Curiosity Crafter (224) to block Metropolis Reformer (26).
+Phase: Ai(1)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(1)-mm-giada-angels' Combat Damage Step
+Damage: Metropolis Reformer (26) deals 4 damage to Curiosity Crafter (224).
+Damage: Metropolis Reformer (26) deals 1 damage to Bird Illusion Token (472).
+Damage: Bird Illusion Token (472) deals 3 damage to Metropolis Reformer (26).
+Damage: Curiosity Crafter (224) deals 5 damage to Metropolis Reformer (26).
+Zone Change: Metropolis Reformer (26) was put into Graveyard from Battlefield.
+Zone Change: Curiosity Crafter (224) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-giada-angels triggered Metropolis Reformer
+Life: Life: Ai(1)-mm-giada-angels 54 > 62
+Resolve Stack: Whenever Metropolis Reformer is dealt damage, you gain that much life. [Damaged: Metropolis Reformer (26), Amount: 8]
+Phase: Ai(1)-mm-giada-angels' End of Combat Step
+Phase: Ai(1)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(1)-mm-giada-angels' End step
+Phase: Ai(1)-mm-giada-angels' Cleanup step
+Discard: Ai(1)-mm-giada-angels discards Herald's Horn (54).
+Discard: Ai(1)-mm-giada-angels discards Urza's Incubator (63).
+Turn: Turn 44 (Ai(3)-mm-talrand-spells)
+Phase: Ai(3)-mm-talrand-spells' Untap step
+Phase: Ai(3)-mm-talrand-spells' Upkeep step
+Phase: Ai(3)-mm-talrand-spells' Draw step
+Phase: Ai(3)-mm-talrand-spells' Main phase, precombat
+Land: Ai(3)-mm-talrand-spells played Island (236)
+Phase: Ai(3)-mm-talrand-spells' Beginning of Combat Step
+Phase: Ai(3)-mm-talrand-spells' Declare Attackers Step
+Combat: Ai(3)-mm-talrand-spells assigned Hullbreaker Horror (268), Archmage of Runes (216), Drake Token (437), Drake Token (445), Drake Token (452), Drake Token (460), Drake Token (466), Drake Token (474), Drake Token (480), Drake Token (486), Drake Token (489), Drake Token (496), Drake Token (505), Drake Token (514), Drake Token (517), Wavebreak Hippocamp (271), Talrand, Sky Summoner (302), Archmage Emeritus (279), Bird Illusion Token (472), Bird Illusion Token (478), Alandra, Sky Dreamer (204), Bird Illusion Token (484), Bird Illusion Token (494), Bird Illusion Token (503), Bird Illusion Token (512), Murmuring Mystic (270) and Baral, Chief of Compliance (220) to attack Ai(1)-mm-giada-angels.
+Add To Stack: Ai(1)-mm-giada-angels triggered Firemane Commando
+Resolve Stack: Whenever another player attacks with two or more creatures, they draw a card if none of those creatures attacked you. [Number Attackers: [Hullbreaker Horror (268), Archmage of Runes (216), Drake Token (437), Drake Token (445), Drake Token (452), Drake Token (460), Drake Token (466), Drake Token (474), Drake Token (480), Drake Token (486), Drake Token (489), Drake Token (496), Drake Token (505), Drake Token (514), Drake Token (517), Wavebreak Hippocamp (271), Talrand, Sky Summoner (302), Archmage Emeritus (279), Bird Illusion Token (472), Bird Illusion Token (478), Alandra, Sky Dreamer (204), Bird Illusion Token (484), Bird Illusion Token (494), Bird Illusion Token (503), Bird Illusion Token (512), Murmuring Mystic (270), Baral, Chief of Compliance (220)]]
+Phase: Ai(3)-mm-talrand-spells' Declare Blockers Step
+Combat: Ai(1)-mm-giada-angels assigned Bird Token (468) to block Hullbreaker Horror (268).
+Ai(1)-mm-giada-angels assigned Ape Token (454) to block Archmage of Runes (216).
+Ai(1)-mm-giada-angels assigned Giada, Font of Hope (100) to block Drake Token (437).
+Ai(1)-mm-giada-angels assigned Firemane Commando (16) to block Drake Token (445).
+Ai(1)-mm-giada-angels assigned Segovian Angel (17) to block Drake Token (452).
+Ai(1)-mm-giada-angels didn't block Drake Token (460).
+Ai(1)-mm-giada-angels didn't block Drake Token (466).
+Ai(1)-mm-giada-angels didn't block Drake Token (474).
+Ai(1)-mm-giada-angels didn't block Drake Token (480).
+Ai(1)-mm-giada-angels didn't block Drake Token (486).
+Ai(1)-mm-giada-angels didn't block Drake Token (489).
+Ai(1)-mm-giada-angels didn't block Drake Token (496).
+Ai(1)-mm-giada-angels didn't block Drake Token (505).
+Ai(1)-mm-giada-angels didn't block Drake Token (514).
+Ai(1)-mm-giada-angels didn't block Drake Token (517).
+Ai(1)-mm-giada-angels didn't block Wavebreak Hippocamp (271).
+Ai(1)-mm-giada-angels assigned Starnheim Aspirant (46) to block Talrand, Sky Summoner (302).
+Ai(1)-mm-giada-angels assigned Elemental Token (498) to block Archmage Emeritus (279).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (472).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (478).
+Ai(1)-mm-giada-angels assigned Frog Lizard Token (507) to block Alandra, Sky Dreamer (204).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (484).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (494).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (503).
+Ai(1)-mm-giada-angels didn't block Bird Illusion Token (512).
+Ai(1)-mm-giada-angels didn't block Murmuring Mystic (270).
+Ai(1)-mm-giada-angels didn't block Baral, Chief of Compliance (220).
+Phase: Ai(3)-mm-talrand-spells' First Strike Damage Step
+Phase: Ai(3)-mm-talrand-spells' Combat Damage Step
+Damage: Hullbreaker Horror (268) deals 8 damage to Bird Token (468).
+Damage: Archmage of Runes (216) deals 4 damage to Ape Token (454).
+Damage: Drake Token (437) deals 4 damage to Giada, Font of Hope (100).
+Damage: Drake Token (445) deals 4 damage to Firemane Commando (16).
+Damage: Drake Token (452) deals 4 damage to Segovian Angel (17).
+Damage: Drake Token (460) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (466) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (474) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (480) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (486) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (489) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (496) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (505) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (514) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Drake Token (517) deals 4 combat damage to Ai(1)-mm-giada-angels.
+Damage: Wavebreak Hippocamp (271) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Talrand, Sky Summoner (302) deals 3 damage to Starnheim Aspirant (46).
+Damage: Archmage Emeritus (279) deals 3 damage to Elemental Token (498).
+Damage: Bird Illusion Token (472) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Bird Illusion Token (478) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Alandra, Sky Dreamer (204) deals 3 damage to Frog Lizard Token (507).
+Damage: Bird Illusion Token (484) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Bird Illusion Token (494) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Bird Illusion Token (503) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Bird Illusion Token (512) deals 3 combat damage to Ai(1)-mm-giada-angels.
+Damage: Murmuring Mystic (270) deals 2 combat damage to Ai(1)-mm-giada-angels.
+Damage: Baral, Chief of Compliance (220) deals 2 combat damage to Ai(1)-mm-giada-angels.
+Damage: Bird Token (468) deals 2 damage to Hullbreaker Horror (268).
+Damage: Ape Token (454) deals 3 damage to Archmage of Runes (216).
+Damage: Giada, Font of Hope (100) deals 2 damage to Drake Token (437).
+Damage: Firemane Commando (16) deals 5 damage to Drake Token (445).
+Damage: Segovian Angel (17) deals 5 damage to Drake Token (452).
+Damage: Frog Lizard Token (507) deals 3 damage to Alandra, Sky Dreamer (204).
+Damage: Starnheim Aspirant (46) deals 2 damage to Talrand, Sky Summoner (302).
+Damage: Elemental Token (498) deals 4 damage to Archmage Emeritus (279).
+Life: Life: Ai(1)-mm-giada-angels 62 > -3
+Player Control: Ai(1)-mm-giada-angels has restored control over themself
+Player Control: Ai(2)-mm-abaddon has restored control over themself
+Player Control: Ai(3)-mm-talrand-spells has restored control over themself
+Player Control: Ai(4)-mm-jarad-graveyard has restored control over themself
+Game Outcome: Turn 22
+Game Outcome: Ai(1)-mm-giada-angels has lost because life total reached 0
+Game Outcome: Ai(2)-mm-abaddon has lost because life total reached 0
+Game Outcome: Ai(3)-mm-talrand-spells has won because all opponents have lost
+Game Outcome: Ai(4)-mm-jarad-graveyard has lost because life total reached 0
+Match Result: Ai(1)-mm-giada-angels: 0 Ai(2)-mm-abaddon: 0 Ai(3)-mm-talrand-spells: 1 Ai(4)-mm-jarad-graveyard: 0 
+
+Game Result: Game 1 ended in 269119 ms. Ai(3)-mm-talrand-spells has won!
+

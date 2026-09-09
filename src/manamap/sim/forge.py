@@ -144,6 +144,29 @@ def seat_dir(slug):
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
 
 
+def seat_home(slug):
+    """Where a seat's ARTIFACTS live: `data/decks/<slug>` for one of ours,
+    `data/decks/<slug>/branches/<b>` for a branch, `data/opponents/<slug>` for a
+    pod seat.
+
+    ONE PREDICATE, ONE HOME. This exists because the two callers below drifted:
+    `_out_dir` gained an opponent fallback so a table of four opponents could be
+    run at all, and the strategic-frame read one function down did NOT — so the
+    games ran to completion, for eighty minutes, and then the record write raised
+    FileNotFoundError and nothing was saved. Five tables of a round robin
+    produced full logs and zero records that way.
+    """
+    base, branch = split_seat(slug)
+    try:
+        return deck_dir(base, branch)
+    except FileNotFoundError:
+        if branch is None:
+            opp = DECKS_DIR.parent / "opponents" / base
+            if (opp / "decklist.txt").exists():
+                return opp
+        raise
+
+
 def _out_dir(slug):
     """Where a run record goes — BESIDE THE LIST IT MEASURED.
 
@@ -152,33 +175,7 @@ def _out_dir(slug):
     silent-overwrite class this repo keeps finding. `deck_dir(base, branch)`
     resolves it structurally, the same way every other `--branch` command scopes.
     """
-    from manamap.pilot.common import deck_dir as _dd
-    base, branch = split_seat(slug)
-    try:
-        return _dd(base, branch) / SIM_DIR
-    except FileNotFoundError:
-        # AN OPPONENT CAN BE THE SUBJECT, and until this fallback existed it
-        # could not be. `data/opponents/<slug>/` holds a list exactly as
-        # `data/decks/<slug>/` does, so the rule above — a record goes BESIDE
-        # THE LIST IT MEASURED — resolves there without changing.
-        #
-        # This is the missing capability behind the note in `data/pods/`: "the
-        # measurement that has never been made is a ROUND ROBIN AMONG CANDIDATE
-        # OPPONENTS WITH NONE OF OUR DECKS SEATED — that ranks them on a level
-        # field instead of inferring strength from tables they happened to sit
-        # at." It had never been made partly because it could not be EXPRESSED:
-        # every seat resolved for reading through `seat_dir`, but the subject
-        # resolved for WRITING through `deck_dir` alone, so a table of four
-        # opponents raised FileNotFoundError before Forge was ever invoked.
-        #
-        # Decks are still tried FIRST, so nothing about an existing call
-        # changes: a slug that names one of our decks keeps writing where it
-        # always did, and only a slug that is not a deck at all reaches here.
-        if branch is None:
-            opp = DECKS_DIR.parent / "opponents" / base
-            if (opp / "decklist.txt").exists():
-                return opp / SIM_DIR
-        raise
+    return seat_home(slug) / SIM_DIR
 
 
 def commanders_from_text(decklist_text):
@@ -884,7 +881,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     decided = [o for o in outcomes if not o.get("truncated")]
     draws = sum(1 for o in outcomes if o["draw"] and not o.get("truncated"))
     wins = tally_wins(decided, seats)
-    frame = load_json(deck_dir(split_seat(slug)[0]) / "strategic_frame.json") or {}
+    # THE BASE deck's frame, not the branch's — a branch has no frame of its own.
+    # Through `seat_home` so an opponent subject resolves instead of raising here
+    # after the games have already been played.
+    frame = load_json(seat_home(split_seat(slug)[0]) / "strategic_frame.json") or {}
     record = {
         # ABSENT MEANS ABSENT: a run with no truncation carries an empty list,
         # never a missing key, so a reader can tell "none" from "not checked".
