@@ -75,8 +75,24 @@ standard-pod run says the reverse, and it re-derives exactly:
 
 | | games | wins | rate | Approach wins |
 |---|---:|---:|---:|---:|
-| Heliod NEVER flipped | 85 | 23 | **0.271** | 18 |
-| Heliod flipped | 35 | 4 | **0.114** | 2 |
+| Heliod NEVER flipped | 85 | 23 | 0.271 | 18 |
+| Heliod flipped | 35 | 4 | 0.114 | 2 |
+
+> **RETRACTED 2026-09-09. This did not replicate and was never a finding.** A
+> fresh 120-game run on v1.2.1 reads 0.165 against 0.171 — flat, difference
+> +0.007 with a 95% interval of [−0.123, +0.175]. The engineer and the doctor
+> found the non-replication independently, and so did a direct re-derivation.
+>
+> It was "verified" at the time by re-deriving the cross-tab from the same run's
+> logs, which proves the ARITHMETIC and cannot prove the finding — a number
+> re-derived from the run that produced it agrees with itself by construction.
+> No interval was ever put on the split, in a commit that quoted the rule that
+> every rate carries one. Four wins in thirty-five games has an interval about
+> twenty points wide.
+>
+> Kept on the page rather than deleted, because a retraction that removes the
+> claim removes the lesson with it. See `docs/gotchas-bench.md`, "re-deriving a
+> number is not replicating a finding".
 
 The critic's instruction is to rebut rather than weaken, and this is what that
 looks like: the correction makes the model's own thesis stronger, not softer.
@@ -381,7 +397,7 @@ in that merge.
 So the entire punisher axis argued over in two rounds of the engine loop, the
 1,003-against-202 damage discrepancy, the 45% commander-removal rate, the
 39-of-53 eliminations from the air, and the flip cross-tab
-(23/85 = 0.271 against 4/35 = 0.114) all describe **v1.0.0**, not the v1.2.1
+(23/85 against 4/35 — since RETRACTED, see §2) all describe **v1.0.0**, not the v1.2.1
 list that is sleeved. `engine.json`, `diagnosis.json` and `strategic_frame.json`
 all quote from it.
 
