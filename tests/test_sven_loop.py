@@ -275,3 +275,72 @@ def test_editing_the_charter_reaches_the_next_turn(tmp_path, monkeypatch):
     assert loop.charter() == "first"
     path.write_text("second")
     assert loop.charter() == "second"
+
+
+# ── the SDK seam ──────────────────────────────────────────────────────────
+
+def test_the_sdk_conversion_yields_the_events_the_loop_expects():
+    """`ScriptedTurn` speaks this module's event shape natively, so every other
+    test here proves the loop and none of them prove the CONVERSION — which is
+    the one place a vendor object becomes an internal one, and the only part of
+    Sven a scripted transport structurally cannot cover.
+
+    Fakes the SDK's objects rather than its behaviour: text arrives through
+    `text_stream` while tool calls arrive on the final message, and getting that
+    split wrong yields an answer with no tools or tools with no answer.
+    """
+    import types
+
+    class Block:
+        def __init__(self, **kw):
+            self.__dict__.update(kw)
+
+    class Usage:
+        input_tokens, output_tokens = 1234, 56
+
+    class Final:
+        content = [Block(type="text", text="arrives via text_stream, not here"),
+                   Block(type="tool_use", id="tu_1", name="run_command",
+                         input={"command": "deck-status", "args": ["heliod"]})]
+        stop_reason = "tool_use"
+        usage = Usage()
+
+    class Stream:
+        text_stream = iter(["zur is ", "on the bench."])
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def get_final_message(self):
+            return Final()
+
+    turn = llm.AnthropicTurn.__new__(llm.AnthropicTurn)   # no key, no __init__
+    turn._client = types.SimpleNamespace(
+        messages=types.SimpleNamespace(stream=lambda **kw: Stream()))
+
+    events = list(turn.stream(system="s", messages=[], tools=[], model="m"))
+    assert [e["type"] for e in events] == ["text", "text", "tool_use", "end"]
+    assert "".join(e["text"] for e in events if e["type"] == "text") == \
+        "zur is on the bench."
+    call = events[2]
+    assert call["name"] == "run_command"
+    assert call["input"] == {"command": "deck-status", "args": ["heliod"]}
+    assert events[-1]["usage"] == {"in": 1234, "out": 56}
+
+
+def test_a_missing_key_says_what_to_do_about_it():
+    """A setup problem should read as one, not as a stack trace."""
+    import os
+
+    from manamap.sven import llm as _llm
+
+    key = os.environ.pop("ANTHROPIC_API_KEY", None)
+    try:
+        with pytest.raises(_llm.SvenUnavailable, match="ANTHROPIC_API_KEY"):
+            _llm.AnthropicTurn()
+    finally:
+        if key is not None:
+            os.environ["ANTHROPIC_API_KEY"] = key
