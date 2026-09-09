@@ -32,7 +32,12 @@ instead. To print the current numbers rather than trust a snapshot:
 
 | | |
 |---|---:|
-| `make test` — warm cache | **772 s** (3,217 passed, 208 skipped, 5 xfailed, 11 failed; 164 served from the cache) |
+| `make test` — warm cache | **735 s** (3,291 passed, 217 skipped, 5 xfailed, **9 failed**; 173 served from the cache) |
+
+Nine, down from eleven earlier the same day: the two docs-count failures were
+fixed, and the Sven work added none. The remaining nine are the same nine, which
+is the number worth watching — a suite that is permanently red only stays
+readable if the red is a known set rather than a vibe.
 
 **This is the only page that states a runtime.** `CLAUDE.md` carried ~22s/~29s
 for weeks — off by more than an order of magnitude — because the figure was
