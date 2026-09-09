@@ -922,6 +922,11 @@ CLI_READONLY = frozenset({
     # point: read-only is about what a command WRITES, cacheable is about how
     # long its answer stays true, and they are different questions.
     "sim-progress",
+    # This repo's own docs and source, semantically searchable. `query-docs` is
+    # what turns "why did we do it this way" from a memory test into a query —
+    # 7,500 lines of measurements that were previously findable only by already
+    # knowing they existed.
+    "query-docs", "lookup-doc", "query-code",
 })
 
 #: Any of these on the parsed namespace means the command intends to WRITE.

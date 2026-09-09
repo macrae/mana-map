@@ -84,8 +84,18 @@ def compute_text_embeddings(texts, model_name=TEXT_MODEL_NAME, batch_size=512):
                 from sentence_transformers import SentenceTransformer
                 _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
     model = _MODEL_CACHE[model_name]
+    # A BAR FOR A BATCH, NEVER FOR A QUESTION. This was hardcoded True, so a
+    # single-text query — which is every `query-rules`, `query-strategy`,
+    # `query-docs` and every question Sven asks — emitted a one-item tqdm bar.
+    # `docs/agent-cost.md` had it listed as deferred: it lands in the `--json`
+    # interface, and it would land in the middle of Sven's streamed answer.
+    #
+    # The threshold is a batch, not a flag, because the caller that wants a bar
+    # (the pipeline, embedding 34,000 cards) and the caller that does not (a
+    # question) are already distinguishable by how much work they asked for.
     embeddings = model.encode(
-        texts, batch_size=batch_size, show_progress_bar=True, convert_to_numpy=True
+        texts, batch_size=batch_size,
+        show_progress_bar=len(texts) > batch_size, convert_to_numpy=True
     )
     return embeddings.astype(np.float32)
 

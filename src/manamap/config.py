@@ -1226,6 +1226,34 @@ STRATEGY_INDEX_PATH = STRATEGY_DIR / "strategy_index.json"
 STRATEGY_EMBEDDINGS_PATH = STRATEGY_DIR / "strategy_embeddings.npy"
 STRATEGY_DB_META_PATH = STRATEGY_DIR / ".strategy-db-meta.json"
 STRATEGY_QUERY_TOP_K = 6
+
+# ── The prose corpora Sven reads: this repo's own docs, and its own source ────
+#
+# Both are BUILT FROM THE WORKING TREE and both are gitignored, for the same
+# reason `data/rules/` is: they are regenerable from files already in the repo,
+# and a stale committed copy would answer questions about code that has changed.
+#
+# `docs/` is the interesting one. About 7,500 lines, of which `gotchas-bench.md`
+# alone is 121 KB of measurements this project has already paid for — and until
+# now the only way to find any of it was to remember it existed. That is the
+# corpus that answers "why did we do it this way", which is the question a
+# newcomer to a file asks and the one nothing indexed.
+DOCS_DIR = DATA_DIR / "docs_index"
+DOCS_INDEX_PATH = DOCS_DIR / "docs_index.json"
+DOCS_EMBEDDINGS_PATH = DOCS_DIR / "docs_embeddings.npy"
+DOCS_QUERY_TOP_K = 6
+
+CODE_DIR = DATA_DIR / "code_index"
+CODE_INDEX_PATH = CODE_DIR / "code_index.json"
+CODE_EMBEDDINGS_PATH = CODE_DIR / "code_embeddings.npy"
+CODE_QUERY_TOP_K = 6
+
+#: Chunking. A section under this many characters is folded into its neighbour —
+#: a lone heading embeds to noise and crowds out the passage that answers the
+#: question. Over the cap, a section is split on paragraph boundaries so a chunk
+#: is never cut mid-sentence.
+CORPUS_MIN_CHARS = 120
+CORPUS_MAX_CHARS = 2000
 STRATEGY_RESEARCH_MAX_ITERATIONS = 3
 STRATEGY_SECTION_WARN_CHARS = 1200
 

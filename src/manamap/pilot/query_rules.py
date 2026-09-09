@@ -7,33 +7,35 @@ rules with `query-rules`, and the rules-checker verifies citations with
 
 import json
 
-import numpy as np
-
-from manamap.config import RULES_QUERY_TOP_K
-from manamap.ingest.preprocess import compute_text_embeddings
+from manamap.pilot import retrieve
 from manamap.pilot.common import load_rules_db
 
 
 def query(text, k=None):
-    """Semantic search. Returns [(rule_id, rule_text, score)] best-first."""
-    if k is None:
-        k = RULES_QUERY_TOP_K
-    rules, order, embeddings = load_rules_db()
-    q = compute_text_embeddings([text])[0]
-    q = q / max(np.linalg.norm(q), 1e-8)
-    scores = embeddings @ q  # rows pre-normalized -> cosine
-    top = np.argsort(-scores)[:k]
-    return [(order[i], rules[order[i]]["text"], float(scores[i])) for i in top]
+    """Semantic search. Returns [(rule_id, rule_text, score)] best-first.
+
+    THE SHAPE IS THE CONTRACT and it has not moved — the stack-resolver reads
+    this tuple. Only the maths moved, into `retrieve.search`, so that four
+    corpora share one ranking rather than four copies of it.
+    `tests/test_pilot_retrieve.py` pins the results against a baseline captured
+    before the delegation, because "I refactored the ranking function and it
+    looks fine" is not evidence.
+    """
+    return [(cid, rec["text"], score)
+            for cid, rec, score in retrieve.search("rules", text, k=k)]
 
 
 def lookup(rule_id):
     """Exact fetch by rule ID. Raises KeyError with suggestions on a miss."""
-    rules, _, _ = load_rules_db()
-    if rule_id in rules:
-        return {"id": rule_id, **rules[rule_id]}
-    near = sorted(r for r in rules if r.startswith(rule_id))[:8]
-    hint = f" Did you mean: {', '.join(near)}?" if near else ""
-    raise KeyError(f"Rule {rule_id!r} not found in the rules index.{hint}")
+    try:
+        return retrieve.fetch("rules", rule_id)
+    except KeyError:
+        # The wording is preserved verbatim: the rules-checker charter quotes
+        # this sentence, and an agent that greps for it would stop finding it.
+        rules, _, _ = load_rules_db()
+        near = sorted(r for r in rules if r.startswith(rule_id))[:8]
+        hint = f" Did you mean: {', '.join(near)}?" if near else ""
+        raise KeyError(f"Rule {rule_id!r} not found in the rules index.{hint}")
 
 
 def main(args):

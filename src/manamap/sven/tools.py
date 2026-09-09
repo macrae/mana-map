@@ -44,6 +44,8 @@ _CORPUS = {
     "strategy": DATA_DIR / "strategy",
     "decks": DATA_DIR / "decks",
     "pods": DATA_DIR / "pods",
+    "docs": DATA_DIR / "docs_index",
+    "code": DATA_DIR / "code_index",
 }
 
 #: command -> the corpora it reads, beyond its own deck directory. A command
@@ -52,6 +54,10 @@ _CORPUS = {
 _DEPS = {
     "query-rules": ("rules",), "lookup-rule": ("rules",),
     "query-strategy": ("strategy",), "lookup-strategy": ("strategy",),
+    # The docs and code indexes are rebuilt by hand, so they move rarely — but
+    # naming them means an answer citing a passage invalidates when that passage
+    # is re-indexed, rather than quoting a chunk id that no longer exists.
+    "query-docs": ("docs",), "lookup-doc": ("docs",), "query-code": ("code",),
     "card-search": ("cards", "roles"),
     "pool-facts": ("cards", "roles"),
     "bracket-check": ("cards", "combos"),

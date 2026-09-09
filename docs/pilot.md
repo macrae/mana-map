@@ -76,6 +76,12 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
+manamap pilot query-docs "<question>" [--k N] [--full] [--json]   # semantic search over THIS REPO'S DOCS —
+                                        #   the "why did we do it this way" corpus. `build-docs-db` first
+manamap pilot lookup-doc <chunk-id>     # exact fetch, e.g. docs/vision.md#the-evidence-contract
+manamap pilot query-code "<question>" [--k N]    # same over src/; weaker than docs (see below)
+manamap pilot build-docs-db             # (re)index docs/ — gitignored, regenerable, ~30s
+manamap pilot build-code-db             # same over src/; a stale code index answers about code that is gone
 manamap pilot sim-progress <slug> [--experiment NAME]   # a RUNNING batch: bar, rate, ETA, and the running
                                         #   estimate with its Wilson interval + a convergence trace. Read-only
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist

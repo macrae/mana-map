@@ -177,6 +177,14 @@ PILOT_STEPS = [
     ("build-strategy-db", "manamap.pilot.build_strategy_db", "Chunk + embed strategy.md into the strategy DB"),
     ("query-strategy", "manamap.pilot.query_strategy", "Semantic top-k strategy search"),
     ("lookup-strategy", "manamap.pilot.query_strategy", "Exact strategy section fetch by id"),
+    # The two corpora built from this repo's own working tree. `docs` is the
+    # "why did we do it this way" index — 7,500 lines of measurements that were
+    # previously findable only by remembering they existed.
+    ("query-docs", "manamap.pilot.retrieve", "Semantic search over this repo's docs"),
+    ("lookup-doc", "manamap.pilot.retrieve", "Exact doc chunk fetch by id"),
+    ("query-code", "manamap.pilot.retrieve", "Semantic search over this repo's source"),
+    ("build-docs-db", "manamap.pilot.build_corpus", "Index docs/ for semantic search"),
+    ("build-code-db", "manamap.pilot.build_corpus", "Index src/ for semantic search"),
 ]
 
 _DECK_COMMANDS = {
@@ -271,6 +279,15 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "lookup-strategy":
             cmd.add_argument("section_id", help="Exact section id, e.g. strategy:tempo")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name in ("query-docs", "query-code"):
+            cmd.add_argument("query", help="Natural-language question")
+            cmd.add_argument("--k", type=int, default=None, help="Number of results")
+            cmd.add_argument("--full", action="store_true",
+                             help="print each hit's whole passage, not one line")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "lookup-doc":
+            cmd.add_argument("chunk_id", help="Exact chunk id, e.g. docs/vision.md#the-bench")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "artist-credits":
             cmd.add_argument("--json", action="store_true", dest="as_json")

@@ -7,36 +7,30 @@ and ground claims with `lookup-strategy` (exact fetch only — never semantic).
 
 import json
 
-import numpy as np
-
-from manamap.config import STRATEGY_QUERY_TOP_K
-from manamap.ingest.preprocess import compute_text_embeddings
+from manamap.pilot import retrieve
 from manamap.pilot.common import load_strategy_db
 
 
 def query(text, k=None):
-    """Semantic search. Returns [(section_id, title, text, score)] best-first."""
-    if k is None:
-        k = STRATEGY_QUERY_TOP_K
-    sections, order, embeddings = load_strategy_db()
-    q = compute_text_embeddings([text])[0]
-    q = q / max(np.linalg.norm(q), 1e-8)
-    scores = embeddings @ q  # rows pre-normalized -> cosine
-    top = np.argsort(-scores)[:k]
-    return [
-        (order[i], sections[order[i]]["title"], sections[order[i]]["text"], float(scores[i]))
-        for i in top
-    ]
+    """Semantic search. Returns [(section_id, title, text, score)] best-first.
+
+    A four-tuple where the rules query returns a three-tuple, and that stays —
+    the shape is what callers read. Only the ranking moved into
+    `retrieve.search`, shared with three other corpora.
+    """
+    return [(cid, rec["title"], rec["text"], score)
+            for cid, rec, score in retrieve.search("strategy", text, k=k)]
 
 
 def lookup(section_id):
     """Exact fetch by section ID. Raises KeyError with suggestions on a miss."""
-    sections, _, _ = load_strategy_db()
-    if section_id in sections:
-        return {"id": section_id, **sections[section_id]}
-    near = sorted(s for s in sections if s.startswith(section_id))[:8]
-    hint = f" Did you mean: {', '.join(near)}?" if near else ""
-    raise KeyError(f"Strategy section {section_id!r} not found in the index.{hint}")
+    try:
+        return retrieve.fetch("strategy", section_id)
+    except KeyError:
+        sections, _, _ = load_strategy_db()
+        near = sorted(s for s in sections if s.startswith(section_id))[:8]
+        hint = f" Did you mean: {', '.join(near)}?" if near else ""
+        raise KeyError(f"Strategy section {section_id!r} not found in the index.{hint}")
 
 
 def main(args):
