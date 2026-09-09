@@ -219,11 +219,124 @@ def deck_state(slug, facts=None):
                          for r in promote.blockers(rows)],
             "next": info.get("_next"),
             "version": info.get("version"),
+            # THE MEASUREMENTS, not just the gate that says they exist.
+            #
+            # Asked "is heliod's win rate actually good", Sven checked four
+            # commands and concluded the deck "has no meaningful game record" —
+            # while this very tool was telling him the full-sim-batch gate was
+            # MET. It reported that a measurement EXISTED and never what it SAID,
+            # so the only honest thing he could do with it was go looking, and
+            # what he found was a one-game version history from July.
+            #
+            # `simulation` carries `stale` and `ran_on_decklist_sha256`, which
+            # is the fact the charter requires him to state before quoting any
+            # Forge figure — heliod's run describes v1.0.0 and the sleeved list
+            # is v1.2.1. A rule the tools make unfollowable is not a rule.
+            "simulation": _sim_with_comparison(info.get("simulation")),
+            "goldfish": info.get("goldfish"),
+            "record": info.get("record"),
         }
 
     if facts is None:
         return build()
     return facts.get_or_call(("deck_state", slug), depends_on(["deck-info", slug]), build)
+
+
+def _sim_with_comparison(sim):
+    """The win rate, WITH the two comparisons already computed.
+
+    THE MODEL MUST NOT DO THIS ARITHMETIC, and telling it so in a charter did not
+    work. Asked whether heliod's 25.2% was good, it answered "well below
+    functional in a four-player pod" — where par is 25% and the table's measured
+    null is 14.4%, so the deck is at par and above the null. It reasoned about
+    rates in prose because the tool handed it a bare number and an instruction.
+
+    So the tool hands it the answer instead. `par` is 1/seats, the rate a deck
+    that does nothing would post. `null` is what THIS bench's decks actually
+    score in seat 0 at THIS table, which is the more honest comparison and is
+    already measured. Both come back as Newcombe intervals ON THE DIFFERENCE,
+    from `stats.diff_proportions` — never two marginal intervals side by side,
+    which imply nothing.
+
+    This is the repo's own shape: `promote.gate` returns rows and
+    `power.preflight` returns lines, both leaving nothing to re-derive.
+    """
+    if not sim or not sim.get("games"):
+        return sim
+    from manamap.sim import stats
+
+    out = dict(sim)
+    wins = round(sim["win_rate"] * sim["games"])
+    seats = len(sim.get("vs") or []) + 1
+    comparisons = {}
+
+    if seats > 1:
+        par = 1.0 / seats
+        comparisons["vs_par"] = {
+            "par": round(par, 4),
+            "what": f"an equal share of a {seats}-player pod",
+            **(stats.diff_proportions(round(par * sim["games"]), sim["games"],
+                                      wins, sim["games"]) or {}),
+        }
+    null = _null_rate(sim)
+    if null is not None:
+        comparisons["vs_null"] = {
+            "null": null,
+            "what": "what this bench's decks score in seat 0 at this table",
+            **(stats.diff_proportions(round(null * sim["games"]), sim["games"],
+                                      wins, sim["games"]) or {}),
+        }
+    for key, block in comparisons.items():
+        block["reading"] = _reading(key, block)
+    if comparisons:
+        out["comparisons"] = comparisons
+    return out
+
+
+def _reading(key, block):
+    """The comparison as a SENTENCE TO QUOTE, not a field to interpret.
+
+    Handed `excludes_zero: false` and an interval, the model wrote "the interval
+    is [-10.9%, +10.9%] — it excludes zero and so cannot be called resolved."
+    The conclusion was right and the reason was the exact inverse of the truth,
+    which is worse than being wrong outright: a reader skimming for "excludes
+    zero" takes away the opposite of what the sample says.
+
+    So it does not get a boolean to narrate. `power.preflight` already returns
+    lines rather than numbers, and `simulation.piloting` already carries a
+    `reading` — this is that pattern, applied to the figure this bench
+    misreads most.
+    """
+    against = {"vs_par": "par for the pod", "vs_null": "this table's null"}[key]
+    lo, hi = block.get("ci95") or (None, None)
+    if lo is None:
+        return f"not comparable against {against} — no interval"
+    span = f"[{lo:+.3f}, {hi:+.3f}]"
+    if not block.get("excludes_zero"):
+        return (f"INDISTINGUISHABLE from {against}: the interval on the "
+                f"difference is {span}, which SPANS ZERO. This sample cannot "
+                f"tell them apart — that is not the same as saying they are "
+                f"equal, and not the same as saying the deck is bad.")
+    direction = "ABOVE" if block["diff"] > 0 else "BELOW"
+    return (f"{direction} {against} by {block['diff']:+.3f}, interval {span}, "
+            f"which EXCLUDES ZERO — a real difference at this sample size.")
+
+
+def _null_rate(sim):
+    """This table's measured null, or None. Absent is absent."""
+    try:
+        from manamap.sim import pods
+
+        for name in (sim.get("pod"), "standard"):
+            if not name:
+                continue
+            cal = pods.calibration(name)
+            rate = ((cal or {}).get("subject_null") or {}).get("rate")
+            if rate is not None:
+                return rate
+    except Exception:                              # noqa: BLE001
+        pass
+    return None
 
 
 def fleet(facts=None):
@@ -317,8 +430,13 @@ def tool_block():
                 "WHERE ONE DECK STANDS — start here for any question about a "
                 "single deck, and always for 'is X ready'. Returns its rung on "
                 "the dev -> bench -> sleeved ladder, how many PROMOTION GATES it "
-                "meets, which are blocking and how to clear each, plus the "
-                "derived next action.\n\n"
+                "meets, which are blocking and how to clear each, the derived "
+                "next action, AND the deck's measured figures — the simulation "
+                "record with its win rate, interval and the decklist sha it "
+                "actually played, the goldfish, and the table record.\n\n"
+                "`simulation.stale` true means the run describes an OLDER LIST "
+                "than the one on the bench; say so before quoting any figure "
+                "from it.\n\n"
                 "Do NOT answer a readiness question from `deck-status` instead: "
                 "that reports LIFECYCLE STAGES (which artifacts exist), which is "
                 "a different count with different names, and reading one as the "

@@ -317,3 +317,60 @@ def test_the_shorthand_is_resolved_before_the_dependencies_are_recorded():
     assert got["slug"] == "zur-enchantress"
     assert any("zur-enchantress" in p for p in session.touched), (
         f"touched the wrong paths: {session.touched}")
+
+
+# ── the comparison the model must not do itself ───────────────────────────
+
+@requires_deck
+def test_a_win_rate_arrives_with_its_comparisons_already_computed():
+    """ASKED WHETHER 25.2% WAS GOOD, THE MODEL SAID "well below functional in a
+    four-player pod" — where par IS 25% and this table's measured null is 14.4%.
+    It reasoned about rates in prose because the tool handed it a bare number
+    and a charter instruction not to.
+
+    Telling a model to be careful with arithmetic is not a control. Handing it
+    the arithmetic is.
+    """
+    sim = tools.deck_state("heliod")["simulation"]
+    comparisons = sim.get("comparisons")
+    assert comparisons, "a measured win rate arrived with nothing to compare it to"
+    for key in ("vs_par", "vs_null"):
+        block = comparisons[key]
+        assert "diff" in block and "ci95" in block
+        assert block["method"].startswith("Newcombe"), (
+            "the interval must be ON THE DIFFERENCE, not two marginal intervals")
+
+
+@requires_deck
+def test_each_comparison_carries_a_sentence_rather_than_a_boolean():
+    """Handed `excludes_zero: false`, the model wrote "the interval is
+    [-10.9%, +10.9%] — it excludes zero". Right conclusion, inverted reason, and
+    a reader skimming for "excludes zero" takes away the opposite of the truth.
+
+    `power.preflight` returns lines and `simulation.piloting` carries a
+    `reading` for the same reason. This is that pattern applied to the figure
+    this bench misreads most.
+    """
+    comparisons = tools.deck_state("heliod")["simulation"]["comparisons"]
+    for key, block in comparisons.items():
+        reading = block["reading"]
+        spans = not block["excludes_zero"]
+        assert ("SPANS ZERO" in reading) is spans, (
+            f"{key}: the sentence disagrees with the arithmetic — {reading}")
+        assert ("EXCLUDES ZERO" in reading) is (not spans)
+
+
+def test_an_indistinguishable_result_is_not_called_a_tie():
+    """"Not resolved by this sample" is a third state. Reporting it as equality
+    is the same error as reporting a null as a finding, which this repo refuses
+    in three other places."""
+    reading = tools._reading("vs_par", {"diff": 0.0, "ci95": [-0.109, 0.109],
+                                        "excludes_zero": False})
+    assert "INDISTINGUISHABLE" in reading
+    assert "not the same as saying they are equal" in reading
+
+
+def test_a_deck_with_no_simulation_gets_no_comparison():
+    """Absent means absent. A comparison against nothing is not a zero."""
+    assert tools._sim_with_comparison(None) is None
+    assert tools._sim_with_comparison({"runs": 0}) == {"runs": 0}
