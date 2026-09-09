@@ -20,7 +20,7 @@ import json
 from pathlib import Path
 
 from manamap.pilot.common import mtime_memo
-from manamap.sven import cache, core, llm, tools
+from manamap.sven import cache, core, llm, spend, tools
 
 PROMPT_PATH = Path(__file__).with_name("prompt.md")
 
@@ -122,11 +122,26 @@ def run(question, *, turn=None, session=None, model=None, use_cache=True):
                             "facts": session.facts.stats()})
             return
 
+    # THE CEILING IS CHECKED BEFORE THE TRANSPORT EXISTS. An overspend you
+    # learn about afterwards is one you have already paid for, and the account
+    # has no auto-reload.
+    try:
+        spend.check()
+    except spend.BudgetExceeded as exc:
+        yield ("error", str(exc))
+        yield ("done", {"summary": "refused — budget ceiling", "model": model,
+                        "escalated": False, "cacheable": False,
+                        "uncacheable": ["budget"], "tool_calls": 0,
+                        "failed": 0, "paths_touched": 0,
+                        "facts": session.facts.stats()})
+        return
+
     turn = turn or llm.default_turn()
     messages = [{"role": "user", "content": question}]
     tool_block = tools.tool_block()
     escalated = False
     answer = []
+    spent = 0.0
 
     for round_no in range(MAX_ROUNDS):
         text_parts, calls, stop = [], [], None
@@ -140,6 +155,12 @@ def run(question, *, turn=None, session=None, model=None, use_cache=True):
                 calls.append(event)
             elif kind == "end":
                 stop = event
+                # The SDK hands usage back and this used to drop it on the
+                # floor — `stop` was assigned and never read, so there was no
+                # way to answer "what has Sven cost" except to open the console.
+                turn_cost = spend.record(model, event.get("usage"), question)
+                if turn_cost is not None:
+                    spent += turn_cost
 
         if text_parts:
             answer.append("".join(text_parts))
@@ -187,11 +208,12 @@ def run(question, *, turn=None, session=None, model=None, use_cache=True):
         cache.answer_put(question, session.touched_signature(), model, final,
                          meta={"tool_calls": stats["tool_calls"],
                                "touched": sorted(session.touched)})
-    yield ("done", {"summary": _summary(stats, model, escalated),
-                    "model": model, "escalated": escalated, **stats})
+    yield ("done", {"summary": _summary(stats, model, escalated, spent),
+                    "model": model, "escalated": escalated,
+                    "estimated_usd": round(spent, 6), **stats})
 
 
-def _summary(stats, model, escalated):
+def _summary(stats, model, escalated, spent=0.0):
     bits = [f"{stats['tool_calls']} tool call(s)"]
     facts = stats.get("facts") or {}
     if facts.get("hits"):
@@ -201,6 +223,10 @@ def _summary(stats, model, escalated):
         bits.append("escalated")
     if not stats["cacheable"] and stats["uncacheable"]:
         bits.append(f"not cached ({stats['uncacheable'][0]})")
+    if spent:
+        # Shown every turn, not on request. A cost you have to go and look up is
+        # one you look up after it matters.
+        bits.append(f"~${spent:.4f}")
     return " · ".join(bits)
 
 

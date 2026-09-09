@@ -196,7 +196,7 @@ def build_parser():
 
     ask_parser = subparsers.add_parser(
         "ask", help="Ask Sven — the one front door over the 102 commands")
-    ask_parser.add_argument("question", nargs="+", help="what you want to know")
+    ask_parser.add_argument("question", nargs="*", help="what you want to know")
     ask_parser.add_argument(
         "--no-cache", action="store_true",
         help="re-ask even if the same question was answered against this exact "
@@ -207,6 +207,10 @@ def build_parser():
     ask_parser.add_argument(
         "--json", dest="as_json", action="store_true",
         help="emit the raw event stream on stdout, nothing on stderr")
+    ask_parser.add_argument(
+        "--spend", action="store_true",
+        help="what Sven has cost so far (a local ESTIMATE — the console is the "
+             "authority) and the ceiling in force")
 
     add_pilot_parser(subparsers)
 
@@ -270,6 +274,12 @@ def _ask(args):
     import sys
 
     from manamap import console
+
+    if getattr(args, "spend", False):
+        from manamap.sven import spend
+
+        print(spend.report())
+        return 0
 
     question = " ".join(args.question)
     out, err = sys.stdout, sys.stderr
