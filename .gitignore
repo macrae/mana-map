@@ -108,3 +108,13 @@ data/decks/*/pool.txt
 # `git add -A` and became a tracked stray the docs gate then flagged. The gate
 # was right; the file should never have been committable.
 data/decks/*/decklist.txt.bak
+
+# ── Secrets ──────────────────────────────────────────────────────────────
+# Listed BEFORE any of these files exist, which is the only time listing them
+# is worth anything. `.env` was not ignored until the day a key was about to go
+# into one, and `git add -A` is the habit in this repo — every commit in the
+# session that added this line used it.
+.env
+.env.*
+*.pem
+.secrets/

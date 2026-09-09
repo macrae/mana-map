@@ -91,9 +91,18 @@ class AnthropicTurn:
         if not key:
             raise SvenUnavailable(
                 "No ANTHROPIC_API_KEY in the environment.\n"
-                "  export ANTHROPIC_API_KEY=sk-...\n"
-                "Sven is the only thing that needs it; every pilot command runs "
-                "without one.")
+                "\n"
+                "  Store it where a shell reads it and a repo cannot:\n"
+                "    security add-generic-password -a $USER -s manamap-anthropic -w\n"
+                "  then in ~/.zshrc:\n"
+                "    export ANTHROPIC_API_KEY=$(security find-generic-password "
+                "-a $USER -s manamap-anthropic -w)\n"
+                "\n"
+                "  A `.env` in the repo also works and is gitignored — but the\n"
+                "  keychain keeps it off disk in plaintext entirely.\n"
+                "\n"
+                "Sven is the only thing that needs a key; every pilot command "
+                "runs without one.")
         self._client = anthropic.Anthropic(api_key=key)
 
     def stream(self, *, system, messages, tools, model):
