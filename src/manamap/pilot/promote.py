@@ -232,7 +232,19 @@ def gate(slug, to):
             state, detail, missing = _ownership(slug)
             rows.append({"label": label, "artifact": "the boxes", "why": why,
                          "state": state, "detail": detail, "how":
-                         f"manamap pilot deck-branch {slug} source (or buy them)",
+                         # NOT `deck-branch <slug> source`, which this said for
+                         # as long as the gate has existed and which REFUSES as
+                         # printed — that verb needs `--branch NAME`, and the
+                         # question here is about the deck, not a branch.
+                         #
+                         # Found because Sven relayed it to the pilot twice,
+                         # faithfully. A wrong instruction inside an artifact
+                         # becomes confident wrong advice the moment anything
+                         # reads that artifact aloud, and the `missing` list
+                         # below was carrying the real answer all along.
+                         f"the {len(missing)} card(s) in `missing` are not "
+                         f"accounted for — buy them, or free them from the deck "
+                         f"holding them (`manamap pilot deck-info <holder>`)",
                          "missing": missing})
             continue
         if artifact.startswith("manuals/"):

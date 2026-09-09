@@ -232,9 +232,39 @@ def deck_state(slug, facts=None):
             # is the fact the charter requires him to state before quoting any
             # Forge figure — heliod's run describes v1.0.0 and the sleeved list
             # is v1.2.1. A rule the tools make unfollowable is not a rule.
-            "simulation": _sim_with_comparison(info.get("simulation")),
+            "simulation": _sim_with_comparison(info.get("simulation"), slug),
             "goldfish": info.get("goldfish"),
+            "band": _band(slug),
             "record": info.get("record"),
+            # ORIENTATION. Sven did not know a deck's own COMMANDER, which is
+            # why he could not notice that six of zur's eight Forge runs were
+            # played by the wrong one. A tool that describes a deck without
+            # naming it leaves the model with nothing to check against.
+            "commander": info.get("commander"),
+            "colour_identity": info.get("colour_identity"),
+            "size": info.get("size"),
+            "lands": info.get("lands"),
+            "bracket": info.get("bracket"),
+            "engine_health": info.get("engine_health"),
+            "branches": _branch_summary(info.get("branches")),
+            "open_questions": info.get("open_questions"),
+            # THE ANTI-INVENTION CONTRACT. Every gap in a tool result is a place
+            # the model will narrate from nothing: asked what was next for zur it
+            # wrote "you died by turn 5-6", where the record says median 34. It
+            # had elimination data in view nowhere and filled the hole.
+            #
+            # So the payload says what it does NOT carry, and which command does.
+            # Absent means absent — the bench's oldest rule, applied to a tool's
+            # own coverage rather than to a figure.
+            "not_included": {
+                "elimination timing and who killed us":
+                    "run_command simulate <slug> --analyze <run-id>, or read "
+                    "`simulation.eliminated_by` where present — do NOT estimate it",
+                "the decklist itself": "run_command deck-facts <slug>",
+                "per-card analysis": "run_command deck-audit <slug>",
+                "the captain's log": "run_command deck-history <slug>",
+                "why a rule works": "run_command query-rules \"...\"",
+            },
         }
 
     if facts is None:
@@ -242,7 +272,46 @@ def deck_state(slug, facts=None):
     return facts.get_or_call(("deck_state", slug), depends_on(["deck-info", slug]), build)
 
 
-def _sim_with_comparison(sim):
+def _branch_summary(branches):
+    """Counts and names, not the whole branch documents.
+
+    Seventeen open branches on zur is a fact about where the work is; seventeen
+    branch documents is most of a context window.
+    """
+    if not branches:
+        return None
+    open_ = [b.get("branch") for b in branches if b.get("state") != "MERGED"]
+    return {"total": len(branches), "open": len(open_), "names": open_[:12]}
+
+
+def _band(slug):
+    """The goldfish's ceiling/floor pair, when the deck declares an ability.
+
+    A DECK WITH A BAND HAS NO SINGLE KILL NUMBER. zur declares
+    `model_commander_animate`; the model fires it every turn it can afford and
+    Forge's AI fired it in 5% of games, so `kill_by_8` is 0.381 at the ceiling
+    and 0.219 at the floor. TWENTY-FOUR zur branches were graded on the ceiling
+    before anyone measured the floor.
+
+    Quoting either end alone is the documented mistake, so the pair travels
+    together with a sentence saying so.
+    """
+    from manamap.pilot.common import deck_file, load_json
+
+    doc = load_json(deck_file(slug, "goldfish_metrics.json")) or {}
+    band = doc.get("commander_ability_band")
+    if not band or not band.get("rows"):
+        return None
+    return {**band,
+            "reading": (
+                "THIS DECK HAS NO SINGLE KILL NUMBER. It declares "
+                f"{', '.join(band['abilities'])}, which the goldfish fires every "
+                "turn it can afford and Forge's AI fires far less often. Quote "
+                "the PAIR — ceiling and floor — never one end. Twenty-four "
+                "branches were graded on the ceiling before the floor existed.")}
+
+
+def _sim_with_comparison(sim, slug=None):
     """The win rate, WITH the two comparisons already computed.
 
     THE MODEL MUST NOT DO THIS ARITHMETIC, and telling it so in a charter did not
@@ -290,7 +359,78 @@ def _sim_with_comparison(sim):
         block["reading"] = _reading(key, block)
     if comparisons:
         out["comparisons"] = comparisons
+    if slug:
+        out.update(_commander_check(slug, sim))
     return out
+
+
+def _commander_check(slug, sim):
+    """Did Forge play the commander this deck is built around?
+
+    SIX OF ZUR'S EIGHT RUNS DID NOT. They were piloted by `Zur the Enchanter`
+    while the deck is built on `Zur, Eternal Schemer` — a different card with
+    different abilities — and the records are indistinguishable from the good
+    ones at a glance. `docs/gotchas-bench.md` documents the incident; nothing
+    detected it, and nothing would have, because the played commander was in the
+    run record and the declared one was never in the same view.
+
+    Putting both in one payload is the entire fix. A mismatch is not a
+    subtlety to notice — it is a field that says the figure describes a
+    different deck.
+    """
+    from manamap.pilot.common import deck_file, load_json
+    from manamap.sim import forge
+
+    declared = None
+    cards = load_json(deck_file(slug, "cards.json")) or {}
+    for card in cards.get("cards", []):
+        if card.get("is_commander"):
+            declared = card.get("name")
+            break
+
+    played, bad = None, []
+    try:
+        # `list_runs` returns the RECORDS themselves, newest last — the same
+        # documents on disk, so no second read is needed.
+        runs = forge.list_runs(slug) or []
+        for doc in runs:
+            names = (doc.get("seats") or [{}])[0].get("commander") or []
+            name = names[0] if names else None
+            if declared and name and not _same_commander(name, declared):
+                bad.append({"run": (doc.get("run_id") or "")[:60],
+                            "played": name,
+                            "games": doc.get("games_completed")})
+        if sim and sim.get("latest"):
+            for doc in runs:
+                if sim["latest"].startswith(doc.get("run_id") or "\0"):
+                    names = (doc.get("seats") or [{}])[0].get("commander") or []
+                    played = names[0] if names else None
+                    break
+        if played is None and runs:
+            names = (runs[-1].get("seats") or [{}])[0].get("commander") or []
+            played = names[0] if names else None
+    except Exception:                              # noqa: BLE001
+        return {}
+
+    out = {"commander_declared": declared, "commander_forge_played": played}
+    if declared and played and not _same_commander(played, declared):
+        out["WARNING"] = (
+            f"THIS RUN WAS PILOTED BY {played!r}, NOT {declared!r}. Every figure "
+            f"from it describes a different deck. Say so before quoting any of "
+            f"it, and do not compare it against a run that used the right one.")
+    if bad:
+        out["runs_with_the_wrong_commander"] = bad
+        out["runs_warning"] = (
+            f"{len(bad)} stored run(s) were piloted by a commander this deck is "
+            f"not built around. They are indistinguishable from valid runs at a "
+            f"glance and must never be mixed into a comparison.")
+    return out
+
+
+def _same_commander(a, b):
+    """Front-face comparison, so a DFC's two names do not read as two decks."""
+    norm = lambda n: (n or "").split(" // ")[0].strip().lower()
+    return norm(a) == norm(b)
 
 
 def _reading(key, block):

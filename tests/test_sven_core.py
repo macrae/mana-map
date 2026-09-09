@@ -374,3 +374,70 @@ def test_a_deck_with_no_simulation_gets_no_comparison():
     """Absent means absent. A comparison against nothing is not a zero."""
     assert tools._sim_with_comparison(None) is None
     assert tools._sim_with_comparison({"runs": 0}) == {"runs": 0}
+
+
+# ── what a tool must never leave for the model to fill in ─────────────────
+
+@requires_deck
+def test_a_deck_state_names_its_own_commander():
+    """Sven could not catch six wrong-commander runs because he was never told
+    what the deck's commander IS. A tool that describes a deck without naming it
+    leaves nothing to check against."""
+    got = tools.deck_state("zur")
+    assert got["commander"], "a deck's own commander is not optional context"
+
+
+@requires_deck
+def test_a_run_piloted_by_the_wrong_commander_is_flagged_not_left_to_notice():
+    """SIX OF ZUR'S EIGHT RUNS were piloted by `Zur the Enchanter` while the
+    deck is built on `Zur, Eternal Schemer`. The records are indistinguishable
+    from the good ones at a glance, the played commander was in the run record,
+    the declared one was never in the same view, and nothing detected it.
+
+    Putting both in one payload is the whole fix.
+    """
+    sim = tools.deck_state("zur")["simulation"]
+    assert sim["commander_declared"] == "Zur, Eternal Schemer"
+    bad = sim.get("runs_with_the_wrong_commander") or []
+    assert len(bad) >= 5, f"expected the wrong-commander runs to be flagged, got {bad}"
+    assert all("Enchanter" in r["played"] for r in bad)
+    assert "never be mixed into a comparison" in sim["runs_warning"]
+
+
+@requires_deck
+def test_a_clean_deck_is_not_warned_about():
+    """A validator that fires on correct data is worse than none."""
+    sim = tools.deck_state("heliod")["simulation"]
+    assert not sim.get("runs_with_the_wrong_commander")
+    assert "WARNING" not in sim
+
+
+@requires_deck
+def test_a_banded_deck_says_it_has_no_single_number():
+    """Quoting one end of a band as the figure is the mistake twenty-four zur
+    branches were graded on."""
+    band = tools.deck_state("zur")["band"]
+    assert band and band["rows"], "zur declares an ability and has no band"
+    assert "NO SINGLE KILL NUMBER" in band["reading"]
+    assert tools.deck_state("heliod")["band"] is None, (
+        "a deck that declares nothing must carry no band — absent means absent")
+
+
+@requires_deck
+def test_every_payload_says_what_it_does_not_cover():
+    """THE ANTI-INVENTION CONTRACT. Asked what was next for zur, the model wrote
+    "you died by turn 5-6" against a recorded median of 34 — because elimination
+    timing was in no field it could see, and a gap is where a model narrates
+    from nothing.
+
+    Naming the gap, and the command that closes it, turns invention into
+    routing.
+    """
+    absent = tools.deck_state("zur")["not_included"]
+    assert absent, "a partial payload that does not say what it omits"
+    joined = " ".join(absent.values()).lower()
+    assert "elimination" in " ".join(absent).lower()
+    assert "do not estimate" in joined
+    for pointer in absent.values():
+        assert "run_command" in pointer or "read " in pointer, (
+            f"a gap named with no way to close it: {pointer}")
