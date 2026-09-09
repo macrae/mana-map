@@ -335,7 +335,27 @@ def _sim_with_comparison(sim, slug=None):
     from manamap.sim import stats
 
     out = dict(sim)
-    wins = round(sim["win_rate"] * sim["games"])
+    # WINS AND DECIDED ARE READ, NEVER RECONSTRUCTED.
+    #
+    # This computed `round(win_rate * games)`, and the two have DIFFERENT
+    # DENOMINATORS: `win_rate` is over decided games, `games` is the total.
+    # heliod's run is 20 wins in 100 decided out of 120 played — 21 clocked out
+    # and a clock-out has no winner, which the same payload says two fields
+    # earlier. The product was 24: a count belonging to neither.
+    #
+    # Every comparison this function printed used it. The engine critic caught
+    # it by reproducing the arithmetic and finding it matched nothing in the
+    # record. A rate is not a count, and a count rebuilt from a rate is a guess
+    # wearing the rate's authority.
+    wins, decided = sim.get("wins"), sim.get("decided")
+    if wins is None or not decided:
+        # Absent means absent. An older `info.json` predates these fields, and a
+        # comparison computed from a guess is worse than one not offered.
+        out["comparisons_unavailable"] = (
+            "this run record predates `wins`/`decided` — regenerate with "
+            "`deck-info <slug> --write`. A comparison is not computed from a "
+            "rate alone.")
+        return out
     seats = len(sim.get("vs") or []) + 1
     comparisons = {}
 
@@ -344,16 +364,16 @@ def _sim_with_comparison(sim, slug=None):
         comparisons["vs_par"] = {
             "par": round(par, 4),
             "what": f"an equal share of a {seats}-player pod",
-            **(stats.diff_proportions(round(par * sim["games"]), sim["games"],
-                                      wins, sim["games"]) or {}),
+            **(stats.diff_proportions(round(par * decided), decided,
+                                      wins, decided) or {}),
         }
     null = _null_rate(sim)
     if null is not None:
         comparisons["vs_null"] = {
             "null": null,
             "what": "what this bench's decks score in seat 0 at this table",
-            **(stats.diff_proportions(round(null * sim["games"]), sim["games"],
-                                      wins, sim["games"]) or {}),
+            **(stats.diff_proportions(round(null * decided), decided,
+                                      wins, decided) or {}),
         }
     for key, block in comparisons.items():
         block["reading"] = _reading(key, block)

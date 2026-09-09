@@ -558,6 +558,18 @@ def _simulation(slug):
             "stale": bool(ran_on and cur and ran_on != cur),
             "ran_on_decklist_sha256": ran_on,
             "games": r.get("games_completed"),
+            # WINS AND DECIDED, CARRIED RATHER THAN RECONSTRUCTED. `win_rate` is
+            # over DECIDED games and `games` is the TOTAL — heliod's last run was
+            # 20 wins in 100 decided out of 120 played, because 21 clocked out and
+            # a clock-out has no winner. `round(win_rate * games)` therefore gives
+            # 24, a count belonging to neither denominator.
+            #
+            # `sven.tools` did exactly that, and every comparison it printed used
+            # inflated counts until the engine critic caught it. A consumer that
+            # has to rebuild a numerator from a rate will eventually rebuild it
+            # from the wrong one, so both travel with the rate.
+            "wins": (r.get("summary") or {}).get("wins", {}).get(slug),
+            "decided": (r.get("summary") or {}).get("decided"),
             "vs": [s["slug"] for s in r.get("seats", [])[1:]],
             "win_rate": me.get("win_rate"), "win_rate_ci95": me.get("win_rate_ci95"),
             # A WIN RATE NEVER TRAVELS WITHOUT THE PILOTING READING. Forge's AI

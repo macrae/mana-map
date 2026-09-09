@@ -474,3 +474,57 @@ def test_every_payload_says_what_it_does_not_cover():
     for pointer in absent.values():
         assert "run_command" in pointer or "read " in pointer, (
             f"a gap named with no way to close it: {pointer}")
+
+
+# ── a count is never rebuilt from a rate ──────────────────────────────────
+
+def test_a_win_count_is_read_not_reconstructed_from_the_rate():
+    """THE BUG THE ENGINE CRITIC CAUGHT, and it was live in shipped code.
+
+    `win_rate` is over DECIDED games; `games` is the TOTAL. heliod's run is 20
+    wins in 100 decided out of 120 played — 21 clocked out, and a clock-out has
+    no winner, which the same payload states two fields earlier. The old code
+    computed `round(win_rate * games)` = 24: a count belonging to neither
+    denominator, used in every comparison the tool printed.
+
+    The synthetic below is chosen so the two disagree loudly. If anyone
+    reintroduces the reconstruction, `diff` moves and this fails.
+    """
+    sim = {"games": 120, "decided": 100, "wins": 20, "win_rate": 0.202,
+           "vs": ["a", "b", "c"], "latest": "run-1"}
+    got = tools._sim_with_comparison(sim)
+    par = got["comparisons"]["vs_par"]
+    # 20/100 against par 25/100 is -0.05. The reconstruction would have used
+    # 24/120 = 0.20 against 30/120, giving the same diff but a NARROWER interval
+    # off a bigger n — the tell is the interval, not the point estimate.
+    assert par["diff"] == pytest.approx(-0.05, abs=1e-9)
+    assert par["ci95"][0] == pytest.approx(-0.1644, abs=1e-3), (
+        "the interval was computed off the wrong sample size")
+
+
+def test_a_run_without_wins_and_decided_offers_no_comparison():
+    """Absent means absent. An older `info.json` predates these fields, and a
+    comparison computed from a rate alone is a guess wearing the rate's
+    authority."""
+    sim = {"games": 120, "win_rate": 0.202, "vs": ["a", "b", "c"]}
+    got = tools._sim_with_comparison(sim)
+    assert "comparisons" not in got
+    assert "regenerate" in got["comparisons_unavailable"]
+
+
+def test_nothing_in_sven_rebuilds_a_count_from_a_rate():
+    """The shape, not the instance. `rate * n` reconstructing a numerator is
+    what produced the bug, and it is easy to write again in a different
+    function."""
+    import re
+    from pathlib import Path
+
+    from manamap import config
+
+    offenders = []
+    for path in sorted((config._REPO_ROOT / "src" / "manamap" / "sven").glob("*.py")):
+        for n, line in enumerate(path.read_text().splitlines(), 1):
+            if re.search(r"(win_rate|rate)\s*\*\s*\w*(games|n)\b", line) and \
+                    "never" not in line.lower() and not line.strip().startswith("#"):
+                offenders.append(f"{path.name}:{n}  {line.strip()}")
+    assert not offenders, "a count is being rebuilt from a rate:\n  " + "\n  ".join(offenders)

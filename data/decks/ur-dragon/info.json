@@ -388,24 +388,28 @@
   },
   "paper": null,
   "record": {
-    "games": 3,
+    "games": 5,
     "win": 1,
-    "loss": 2,
+    "loss": 4,
     "draw": 0,
-    "last_played": "2026-09-01",
+    "last_played": "2026-09-08",
     "first_played": "2026-08-22",
     "undebriefed": [
       "002",
-      "003"
+      "003",
+      "004",
+      "005"
     ],
     "causes": {
       "001": "mana-drought",
       "002": "won",
-      "003": "politics"
+      "003": "politics",
+      "004": "politics",
+      "005": "mana-drought"
     },
     "cause_counts": {
-      "mana-drought": 1,
-      "politics": 1,
+      "mana-drought": 2,
+      "politics": 2,
       "won": 1
     }
   },
@@ -884,6 +888,8 @@
     "stale": true,
     "ran_on_decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
     "games": 60,
+    "wins": 8,
+    "decided": 60,
     "vs": [
       "abaddon",
       "nekusar-discard",
@@ -914,7 +920,7 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "not marked as built in paper — if it is sleeved, `deck-version ur-dragon paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "2 logged game(s) not yet debriefed (002, 003) — `/debrief ur-dragon`",
+    "4 logged game(s) not yet debriefed (002, 003, 004, 005) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×2, resolve-stack ×8",

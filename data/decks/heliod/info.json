@@ -825,19 +825,22 @@
     "release": "v1.2.1"
   },
   "record": {
-    "games": 1,
+    "games": 2,
     "win": 0,
-    "loss": 1,
+    "loss": 2,
     "draw": 0,
-    "last_played": "2026-08-28",
+    "last_played": "2026-09-08",
     "first_played": "2026-08-28",
     "undebriefed": [
-      "001"
+      "001",
+      "002"
     ],
     "causes": {
-      "001": "removal"
+      "001": "removal",
+      "002": "combo"
     },
     "cause_counts": {
+      "combo": 1,
       "removal": 1
     }
   },
@@ -1166,13 +1169,13 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice.",
+    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
     "critic": "fail",
     "lines": 11,
     "verified_lines": 1
   },
   "diagnosis": {
-    "verdict": "This deck owns the long game and cannot close it. Over 120 Forge games it placed first 16 times and second 43 times of 94 ranked games, mean position 2.319, and won 0.252 (ci95 [0.180, 0.342], n=120) against a table null of 0.144 — the record of a deck that outlives the pod and then runs out of ways to end it. What binds is access to the card that ends it, not survival: 20 of the 27 wins were Approach, five cards in the 99 search a library and two can name a seven-mana sorcery, and that three-card group is drawn in 0.495 of goldfish games and 0.361 by turn six. Mana is the same bottleneck's second half and ranks below it, because a game in which Approach was never drawn cannot be fixed with a land.",
+    "verdict": "Nothing about this deck's mana flow or card flow is what limits it; conversion is. On 120 fresh games against the standard pod on the sleeved list it took first 20 times of 99 decided (0.202, ci95 [0.135, 0.292]) against this table's null of 0.180, reached second place 35 times of 94 ranked games, and dealt 4.52 damage a game (ci95 [3.52, 5.51]) while taking 37.92 in combat alone. Twelve of those 20 wins were `effect of 'Approach of the Second Sun'`, and the group that finds Approach is three cards deep at 0.495 assembled. The difference from the previous 120-game run is NOT a decline and is not read as one here: -0.0500, Newcombe ci95 [-0.1614, +0.0644], on a pair whose minimum detectable difference is 0.185.",
     "skeptic": null,
     "stale": false
   },
@@ -1224,33 +1227,33 @@
       "settled_by": "goldfish"
     },
     {
-      "from": "diagnosis",
-      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod, the Warped Eclipse's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod is the commander on the battlefield?",
-      "settled_by": "resolve-stack"
+      "from": "engine",
+      "question": "Should the gift and fort components be scored on a card being ON THE BATTLEFIELD, or on it having been USED? Loran of the Third Path was cast in 32 of 120 Forge games and its draw ability was activated zero times; Temple Bell was cast in 22 and activated 64 times.",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch — and is X chosen before or after the reduction applies?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "While Lightning Greaves is equipped to Heliod, can Karametra's Blessing or Guardian of Faith's enters trigger still target him, and can the Greaves be moved off in response?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "When is a symmetrical resource gift net-positive? Specifically: how many converters does a deck need before handing three opponents N cards a round is better than not, and how does the answer change against an aggressive seat?",
+      "question": "What is the second win route for a WU deck that gifts the whole table cards, now that Ebony Owl Netsuke, Iron Maiden and Viseling are all cut and no card in the 99 references an opponent's hand size? The pilot holds a standing constraint against replacing the Aetherflux Reservoir kill, so the answer has to be researched rather than assumed, and it should say what strong Heliod, the Warped Eclipse lists actually close with.",
       "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
-      "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
-      "settled_by": "research-strategy"
+      "question": "Re-declare the win-condition-access group in goldfish_targets.json with Personal Tutor and Solve the Equation in it, and re-measure. Does a five-card group move the measured assembled_rate and the by-turn-six rate enough to matter, given the deck's mean Forge game runs to global turn 41.29?",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Can goldfish_targets express the deck's actual win — Approach in hand AND seven mana available on two separate turns — or must the gap be recorded rather than modelled?",
+      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch - and is X chosen before or after the reduction applies?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod, the Warped Eclipse's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod is on the battlefield?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Should the deck's own life total be modelled? heliod loses 44.88 life a game (ci95 [38.19, 51.57]) - the highest of the four seats' point estimates, against baylen-tokens' 39.60, abaddon's 37.86 and giada-angels' 24.22 - and gains 3.14 (ci95 [1.60, 4.69]), while data/decks/heliod/threat/targeting.json measures the pod attacking the lowest-life seat 0.551 of the time (ci95 [0.531, 0.571]) against a uniform 0.431. Adarkar Wastes and Mana Confluence charge life for the colours the deck is already short of.",
       "settled_by": "goldfish"
     }
   ],
@@ -1261,6 +1264,8 @@
     "stale": false,
     "ran_on_decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
     "games": 120,
+    "wins": 20,
+    "decided": 100,
     "vs": [
       "giada-angels",
       "baylen-tokens",
@@ -1289,10 +1294,10 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
+    "2 logged game(s) not yet debriefed (001, 002) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
-    "open questions routed: goldfish ×3, research-strategy ×3, resolve-stack ×6",
+    "open questions routed: goldfish ×5, research-strategy ×2, resolve-stack ×5",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
