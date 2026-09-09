@@ -201,11 +201,7 @@
     "draw": 0,
     "last_played": "2026-09-01",
     "first_played": "2026-08-22",
-    "undebriefed": [
-      "002",
-      "003",
-      "004"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "wipe",
       "002": "wipe",
@@ -631,6 +627,41 @@
       "from": "log:001",
       "question": "\"Two counters decided it\" — Tom countered Champion of Dusk (the refuel the note calls \"the refuel that would have closed the game\") and Bloodthirsty Conqueror. With the wipes settled as variance and Edgar's timing settled as piloting, resolving a key spell through a seat holding counterspells is the one cause the note names that no artifact has looked at. Is that also variance, or is it a real property of a deck that is the table's archenemy from turn three?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "The pilot's structural claim is that this deck can never hold up interaction because its mana is spent casting Vampires. Is that true of the whole interaction suite, or only of the pieces that cost mana? Deflecting Swat — one of the two cards he names as stranded — reads 'If you control a commander, you may cast this spell without paying its mana cost', and engine.json's `protection` stage is labelled 'FIVE CARDS HELD, AND FOUR OF THEM ARE FREE OR NEARLY'. The note does not say whether Edgar was on the battlefield when the windows passed, so the debrief cannot settle it.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "'Neither of my decks generates value on the way down' — the pilot's summary of two consecutive losses to the same rebuild-wipe-rebuild pattern. v1.0.1's twelve swaps brought in seven free sacrifice outlets and a set of death-triggered payoffs (engine.json's `conversion` stage: 'NINE OUTLETS, AND THE ONE THAT MAKES THEM PAY'). Does the current list actually answer the V1 failure mode this note names, or does it only convert bodies the pilot chooses to lose rather than the ones a sweeper takes?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "'Seat 5 again. My read is that the first-seat momentum advantage compounds with my mana deficit rather than just adding to it.' Is the turn-order disadvantage in a five-player pod multiplicative with a deck that is short on mana, as the pilot reads it, or additive?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:003",
+      "question": "'EDGAR WAS THE ONLY VAMPIRE I CAST ALL GAME.' engine.json's `ignition` stage prices the whole deck off a castable Vampire being drawn in 95.1% of games at mean turn 2.19 — a DRAWN figure. How often does the current list actually CAST fewer than two Vampires by turn six? Was this game the tail of a healthy distribution or a shape the model is not showing?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:003",
+      "question": "Alex's reframe, which the pilot has adopted on the strength of one conversation and one game: is 'two or three vampires enormous and fast' the better plan than go-wide at this table, and is deliberate self-mill a viable second dig engine for a white-black lifegain-into-lifedrain deck with graveyard recursion? 'a big deathtouch body that drains when it connects is worth more than four 4/4s.'",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:004",
+      "question": "Does an opponent's removal RUN this engine or STARVE it, and what decides which? Entry 004: 'I was running my engine off his removal' — creature removal aimed at tokens feeding the death-triggered draw. Entry 002 on the older list: 'Ryan's recurring artifact and enchantment removal on a card-draw engine — Anointed Procession and other permanents were picked off repeatedly', then 'I ran out of steam'. The notes together suggest the split is what the removal is AIMED at, bodies versus the permanents that convert them, but two games on two different lists cannot settle it.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:004",
+      "question": "The pilot wants a pod norm against two-card infinite combos and tutorability. This deck's own two checker-passed kill routes are a two-card lifegain loop (Bloodthirsty Conqueror with Sanguine Bond or Vito, stacks 004 and 006) and a doubled attack drain, and Vampiric Tutor is in the 99. Would the norm he proposes disarm his own proven kills, and if so what closes games instead?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -686,10 +717,9 @@
     }
   },
   "next": [
-    "3 logged game(s) not yet debriefed (002, 003, 004) — `/debrief edgar-vampires`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "engine.json's critic verdict is None — `/analyze-engine edgar-vampires`",
-    "open questions routed: diagnose ×1, goldfish ×3, research-strategy ×2, resolve-stack ×5"
+    "open questions routed: diagnose ×5, goldfish ×4, research-strategy ×4, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

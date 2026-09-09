@@ -831,10 +831,7 @@
     "draw": 0,
     "last_played": "2026-09-08",
     "first_played": "2026-08-28",
-    "undebriefed": [
-      "001",
-      "002"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "removal",
       "002": "combo"
@@ -1255,6 +1252,26 @@
       "from": "diagnosis",
       "question": "Should the deck's own life total be modelled? heliod loses 44.88 life a game (ci95 [38.19, 51.57]) - the highest of the four seats' point estimates, against baylen-tokens' 39.60, abaddon's 37.86 and giada-angels' 24.22 - and gains 3.14 (ci95 [1.60, 4.69]), while data/decks/heliod/threat/targeting.json measures the pod attacking the lowest-life seat 0.551 of the time (ci95 [0.531, 0.571]) against a uniform 0.431. Adarkar Wastes and Mana Confluence charge life for the colours the deck is already short of.",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "Does the current V10 list answer the failure this game exposed — a countered counter followed by removal redirected onto Heliod — or is the commander still a single point of failure with no protection that survives a stack war?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "With Heliod, the Warped Eclipse on the battlefield and treasure available, does the cost reduction genuinely bring a second Approach of the Second Sun down to two or three mana, and what does the table have to have drawn that turn for it to get there?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:002",
+      "question": "What lines convert opponents' card draw into value for this build, beyond the hand-size punisher axis?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:002",
+      "question": "Is the hand-size punisher axis worth its slots in the current 99, or should those slots go to the Approach plan and to protection?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -1294,10 +1311,9 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
-    "2 logged game(s) not yet debriefed (001, 002) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
-    "open questions routed: goldfish ×5, research-strategy ×2, resolve-stack ×5",
+    "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

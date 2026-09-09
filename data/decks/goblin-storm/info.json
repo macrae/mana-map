@@ -199,10 +199,7 @@
     "draw": 0,
     "last_played": "2026-09-01",
     "first_played": "2026-08-28",
-    "undebriefed": [
-      "001",
-      "002"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "stalled",
       "002": "raced"
@@ -487,6 +484,16 @@
       "from": "diagnosis",
       "question": "Re-run the goldfish with a keep rule that requires a Goblin body at mana value 2 or less in the opening hand, and compare the token target's 60.0% / 48.7%-by-turn-6 and the Zada target's 66.3% against the current 79.1% keep rate. Does the gate the log names cost or buy assembly?",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "After mulligans, how often does this 99 present an opening hand with at least one cheap goblin body — the gate the pilot says he should be mulliganing to?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:002",
+      "question": "Does the 99 carry enough cheap goblin bodies, and cheap enough instants and sorceries, to support the keep criterion the pilot has now stated twice — or is the gate unmeetable as the list is built?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -525,8 +532,7 @@
   },
   "experiments": null,
   "next": [
-    "2 logged game(s) not yet debriefed (001, 002) — `/debrief goblin-storm`",
-    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×5"
+    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×2, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

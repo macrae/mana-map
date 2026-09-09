@@ -1175,19 +1175,46 @@ _CONSTELLATION_GAIN_RE = re.compile(
 #: so this is modelled as a standing bonus to every creature rather than a
 #: one-shot pump; a "until end of turn" effect is a DIFFERENT card and is not
 #: matched here.
-#: MASS ANIMATION. "As long as you control five or more enchantments, each
-#: other non-Aura enchantment you control is a creature … with base power and
-#: base toughness each equal to its mana value." ONE CARD in the corpus —
-#: Starfield of Nyx — and it is the free, static, board-wide version of the
-#: commander's {1}{W} ability. Unread, it fed NO channel at all, so it was also
-#: never cast: the sixth instance of that class.
+#: MASS ANIMATION — the free, static, board-wide version of the commander's
+#: {1}{W}. Unread, it fed NO channel at all, so it was also never cast: the
+#: sixth instance of that class.
 #:
 #: Parsed rather than declared because, unlike the commander's ability, this is
 #: a card that may or may not be in any given 99 and the deck should not have to
 #: announce it.
+#:
+#: CORPUS SWEEP 2026-09-09, and it corrected this comment. It used to read "ONE
+#: CARD in the corpus — Starfield of Nyx". There are TWO, and the second is the
+#: unconditional one:
+#:
+#:   Starfield of Nyx  "As long as you control five or more enchantments, each
+#:                      other non-Aura enchantment YOU CONTROL is a creature…"
+#:   Opalescence       "Each other non-Aura enchantment is a creature…"
+#:
+#: The broad pattern `enchantment…is a creature | enchantments…are creatures`
+#: returns exactly those two across 34,890 cards. Bello, Bard of the Brambles
+#: is deliberately NOT matched: it makes a flat 4/4 rather than a body whose
+#: power is its mana value, which is a different effect and would need its own
+#: field, and it is Gruul so no WUB list can run it.
+#:
+#: OPALESCENCE HAS NO CONDITION, so it is stored as threshold 1 rather than 0 —
+#: `0` is the sentinel for "this card does not mass-animate" and the consumer
+#: gates on `ench >= threshold`, which is always true once Opalescence itself is
+#: on the battlefield. It is the strictly stronger card in a deck that runs 44
+#: enchantments and was worth exactly nothing to this model.
+#:
+#: The one difference the model cannot see: Opalescence animates EVERY other
+#: non-Aura enchantment, including opponents', where Starfield is "you control"
+#: only. A goldfish has no opponents, so the two collapse here. At a real table
+#: they do not, and Opalescence hands the pod bodies too.
 _MASS_ANIMATE_RE = re.compile(
     r"as long as you control (\w+) or more enchantments, each other non-Aura "
     r"enchantment you control is a creature", re.I)
+#: The unconditional form. Kept as its own pattern rather than folded into the
+#: one above with an optional group, because the two differ in WHAT they animate
+#: and a later model that cares will need to tell them apart.
+_MASS_ANIMATE_ALWAYS_RE = re.compile(
+    r"each other non-Aura enchantment is a creature", re.I)
 
 _TEAM_COUNTER_ETB_RE = re.compile(
     r"(?:when|whenever)[^.]*?enters[^.]*?, put (a|X|one|two|three) \+1/\+1 "
@@ -1597,6 +1624,8 @@ def combat_profile(card):
     m = _MASS_ANIMATE_RE.search(text)
     if m:
         profile["mass_animate_threshold"] = _LIFE_WORDS.get(m.group(1).lower(), 5)
+    elif _MASS_ANIMATE_ALWAYS_RE.search(text):
+        profile["mass_animate_threshold"] = 1
 
     m = _TEAM_COUNTER_ETB_RE.search(text)
     if m:
@@ -3168,7 +3197,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["attack_enabler"]:
                     attack_enabler_out = True
                 if card["combat"]["mass_animate_threshold"]:
-                    mass_animate_threshold = card["combat"]["mass_animate_threshold"]
+                    # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
+                    # cards in the corpus mass-animate and they do it
+                    # independently: Opalescence at 1 (unconditional) and
+                    # Starfield of Nyx at 5. Either one being satisfied stands
+                    # the board up, so holding both must not be WORSE than
+                    # holding the unconditional one alone — which is exactly
+                    # what a plain assignment did, silently, whenever Starfield
+                    # happened to resolve second.
+                    _mat = card["combat"]["mass_animate_threshold"]
+                    mass_animate_threshold = (
+                        _mat if not mass_animate_threshold
+                        else min(mass_animate_threshold, _mat))
                 if model_drain:
                     d_ = card["drain"]
                     # PAYS ONCE, ON ENTRY — scaled by its own named type if it
@@ -3335,7 +3375,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["attack_enabler"]:
                     attack_enabler_out = True
                 if card["combat"]["mass_animate_threshold"]:
-                    mass_animate_threshold = card["combat"]["mass_animate_threshold"]
+                    # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
+                    # cards in the corpus mass-animate and they do it
+                    # independently: Opalescence at 1 (unconditional) and
+                    # Starfield of Nyx at 5. Either one being satisfied stands
+                    # the board up, so holding both must not be WORSE than
+                    # holding the unconditional one alone — which is exactly
+                    # what a plain assignment did, silently, whenever Starfield
+                    # happened to resolve second.
+                    _mat = card["combat"]["mass_animate_threshold"]
+                    mass_animate_threshold = (
+                        _mat if not mass_animate_threshold
+                        else min(mass_animate_threshold, _mat))
                 if model_drain:
                     d_ = card["drain"]
                     # PAYS ONCE, ON ENTRY — scaled by its own named type if it
