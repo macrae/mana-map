@@ -17,6 +17,7 @@ What is asserted here:
 """
 
 import json
+import re
 
 import pytest
 
@@ -242,3 +243,77 @@ def test_a_payload_containing_a_newline_does_not_split_a_frame():
 def test_an_unknown_frame_kind_is_refused_at_the_encoder():
     with pytest.raises(ValueError, match="not one of"):
         stream.encode("shell_command", "rm -rf /")
+
+
+# ── what the first four real turns taught ─────────────────────────────────
+
+def test_every_implemented_tool_is_advertised_to_the_model():
+    """SVEN'S FIRST WRONG ANSWER WAS THIS BUG. `tool_block` listed four tools,
+    `core._dispatch` knew six, and `loop._tool_result` knew three. Asked "is zur
+    ready", he could not reach `deck_state`, fell back to `deck-status`, and
+    reported LIFECYCLE STAGES as PROMOTION GATES — a fluent, specific, wrong
+    answer with the real blocker (fifty-six cards to buy) never mentioned.
+
+    A capability that exists and is not advertised is worse than one that does
+    not exist: the model routes around it and sounds just as confident.
+    """
+    import inspect
+
+    from manamap.sven import loop
+
+    advertised = {t["name"] for t in tools.tool_block()}
+    handled = set(re.findall(r'name (?:==|in) \(?["\']([a-z_]+)["\']',
+                             inspect.getsource(loop._tool_result)))
+    handled |= set(re.findall(r'["\']([a-z_]+)["\'],?\)? *$', ""))
+    for name in advertised - {"escalate"}:
+        assert name in inspect.getsource(loop._tool_result), (
+            f"{name} is advertised to the model and `_tool_result` cannot run it")
+    for name in tools.TIER1:
+        assert name in advertised or name == "stat_test", (
+            f"{name} is implemented and never advertised — the model cannot "
+            f"reach it and will route around it")
+
+
+@requires_deck
+def test_the_pilots_shorthand_resolves_to_a_deck():
+    """"zur" is what a person says. The first time this tool was reachable, Sven
+    passed the shorthand straight through, got a FileNotFoundError, and offered
+    to create a new deck."""
+    assert tools.resolve_slug("zur") == "zur-enchantress"
+    assert tools.resolve_slug("ur") == "ur-dragon"
+    assert tools.resolve_slug("heliod") == "heliod"
+
+
+@requires_deck
+def test_an_ambiguous_shorthand_is_refused_rather_than_guessed():
+    """The wrong deck's figures are indistinguishable from the right deck's
+    until someone notices they describe another list."""
+    with pytest.raises(ValueError, match="Say which one"):
+        tools.resolve_slug("")            # matches everything
+
+
+@requires_deck
+def test_an_unknown_deck_lists_the_ones_that_exist():
+    with pytest.raises(ValueError, match="On the bench"):
+        tools.resolve_slug("no-such-deck-anywhere")
+
+
+@requires_deck
+def test_a_dependency_walk_never_decides_a_deck_does_not_exist():
+    """`deck_dir` RAISES for an unknown slug — correct for a command, wrong for
+    a function whose only job is working out what to hash. It raised before
+    `deck_state` could resolve the shorthand, so the dependency calculation
+    answered a question about existence that was not its to answer."""
+    paths = tools.depends_on(["deck-info", "not-a-deck"])
+    assert paths, "an unknown slug should fall back to the decks tree, not raise"
+
+
+@requires_deck
+def test_the_shorthand_is_resolved_before_the_dependencies_are_recorded():
+    """Otherwise the answer is keyed on the pilot's wording rather than on the
+    deck, and two spellings of one deck cache separately."""
+    session = core.Session()
+    got = session.call("deck_state", slug="zur")
+    assert got["slug"] == "zur-enchantress"
+    assert any("zur-enchantress" in p for p in session.touched), (
+        f"touched the wrong paths: {session.touched}")

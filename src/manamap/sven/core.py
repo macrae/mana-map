@@ -75,7 +75,11 @@ class Session:
             self.touched.update(str(p) for p in tools.depends_on(argv))
             return tools.run(argv, facts=self.facts)
         if name == "deck_state":
-            slug = kw["slug"]
+            # RESOLVE FIRST, then record what was touched. The other order meant
+            # the dependency walk saw the pilot's shorthand ("zur") rather than
+            # the deck ("zur-enchantress"), so the answer was keyed on the wrong
+            # directory even when it worked.
+            slug = tools.resolve_slug(kw["slug"])
             self.touched.update(str(p) for p in tools.depends_on(["deck-info", slug]))
             return tools.deck_state(slug, facts=self.facts)
         if name == "fleet":

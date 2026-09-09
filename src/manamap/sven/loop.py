@@ -56,6 +56,17 @@ def _tool_result(session, name, payload):
             return _cap(tools.command_help(payload.get("command", ""))), False
         except ValueError as exc:
             return str(exc), True
+    if name in ("deck_state", "fleet"):
+        # ADVERTISED AND UNREACHABLE was the state that produced Sven's first
+        # wrong answer: `tool_block` listed four tools, the dispatcher knew six,
+        # and this function knew three. He asked "is zur ready", could not reach
+        # `deck_state`, fell back to `deck-status`, and reported LIFECYCLE
+        # STAGES as promotion GATES — a confident wrong answer with the real
+        # blocker (56 cards to buy) never surfaced.
+        got = session.call(name, **payload)
+        if isinstance(got, dict) and "error" in got:
+            return got["error"], True
+        return json.dumps(got, indent=2, default=str), False
     if name == "stats":
         got = session.call("stat_test", kind=payload.get("fn"),
                            **(payload.get("args") or {}))
@@ -81,6 +92,10 @@ def _label(name, payload):
         return f"reading {argv.strip()}"
     if name == "command_help":
         return f"checking {payload.get('command', '')} flags"
+    if name == "deck_state":
+        return f"reading {payload.get('slug', '?')}'s rung and gates"
+    if name == "fleet":
+        return "reading the fleet"
     if name == "stats":
         return f"computing {payload.get('fn', 'a statistic')}"
     if name == "escalate":

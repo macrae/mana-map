@@ -117,8 +117,17 @@ def depends_on(argv):
 
     slug = next((a for a in rest if not a.startswith("-")), None)
     if slug:
-        candidate = deck_dir(slug)
-        paths.append(candidate if Path(candidate).exists() else _CORPUS["decks"])
+        # `deck_dir` RAISES for an unknown slug rather than returning a path
+        # that does not exist — which is right for a command and wrong here,
+        # where this is only working out what to hash. It raised before
+        # `deck_state` could resolve "zur" to "zur-enchantress", so a
+        # dependency calculation decided a deck did not exist.
+        try:
+            candidate = deck_dir(slug)
+        except Exception:                      # noqa: BLE001
+            candidate = None
+        paths.append(candidate if candidate and Path(candidate).exists()
+                     else _CORPUS["decks"])
     else:
         paths.append(_CORPUS["decks"])
 
@@ -154,9 +163,48 @@ def run(argv, facts=None):
 # it. `promote.gate` already draws this line — pure rows out of `gate()`,
 # presentation isolated in `format_gate()` — and these follow it.
 
+def resolve_slug(name):
+    """`"zur"` -> `"zur-enchantress"`. Raises with candidates when it cannot tell.
+
+    THE PILOT SAYS "ZUR", NOT "ZUR-ENCHANTRESS", and so does anyone repeating
+    the pilot's words back. The first time Sven reached this tool he passed the
+    slug straight out of the question, got a FileNotFoundError, and concluded
+    the deck did not exist — offering to create one. A fluent, helpful, wrong
+    answer, produced by a lookup that could only do exact matches.
+
+    Exact wins, then a unique prefix, then a unique substring. AMBIGUITY IS AN
+    ERROR, never a guess: two decks starting "sh" must produce a question, not a
+    coin flip, because the wrong deck's figures are indistinguishable from the
+    right deck's until someone notices they describe another list. The same
+    reasoning `retrieve.fetch` uses for a rule id, which suggests and refuses
+    rather than falling back to semantic search.
+    """
+    from manamap.config import DECKS_DIR
+
+    name = (name or "").strip()
+    known = sorted(d.name for d in DECKS_DIR.iterdir()
+                   if (d / "decklist.txt").exists()) if DECKS_DIR.is_dir() else []
+    if name in known:
+        return name
+    for match in (
+        [k for k in known if k.startswith(name)],
+        [k for k in known if name.lower() in k.lower()],
+    ):
+        if len(match) == 1:
+            return match[0]
+        if len(match) > 1:
+            raise ValueError(
+                f"{name!r} matches {len(match)} decks: {', '.join(match)}. "
+                f"Say which one.")
+    raise ValueError(
+        f"No deck matches {name!r}. On the bench: {', '.join(known)}")
+
+
 def deck_state(slug, facts=None):
     """Where one deck stands: rung, unmet gates, and the derived next action."""
     from manamap.pilot import deck_info, promote
+
+    slug = resolve_slug(slug)
 
     def build():
         stage = promote.stage(slug)
@@ -263,6 +311,32 @@ def tool_block():
     table = "\n".join(f"  {name:16s}{desc}" for name, desc in
                        sorted(readonly_commands()))
     return [
+        {
+            "name": "deck_state",
+            "description": (
+                "WHERE ONE DECK STANDS — start here for any question about a "
+                "single deck, and always for 'is X ready'. Returns its rung on "
+                "the dev -> bench -> sleeved ladder, how many PROMOTION GATES it "
+                "meets, which are blocking and how to clear each, plus the "
+                "derived next action.\n\n"
+                "Do NOT answer a readiness question from `deck-status` instead: "
+                "that reports LIFECYCLE STAGES (which artifacts exist), which is "
+                "a different count with different names, and reading one as the "
+                "other produces a confident wrong answer."),
+            "input_schema": {
+                "type": "object",
+                "properties": {"slug": {"type": "string"}},
+                "required": ["slug"],
+            },
+        },
+        {
+            "name": "fleet",
+            "description": (
+                "Every deck, one row each, with its rung. The answer to 'what "
+                "should I work on' and to any question spanning more than one "
+                "deck."),
+            "input_schema": {"type": "object", "properties": {}},
+        },
         {
             "name": "run_command",
             "description": (

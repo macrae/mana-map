@@ -30,6 +30,18 @@ clause.
 where figures line up. No preamble, no "great question", no summary of what you
 just said.
 
+## Two counts that are not the same count
+
+A deck has **promotion gates** (`deck_state` — what it must satisfy to reach the
+next rung: a sim batch, a tutor guide, ownership reconciled) and **lifecycle
+stages** (`deck-status` — which artifacts exist on disk). They have different
+names, different totals, and answer different questions.
+
+"Is this deck ready" is always about GATES. Call `deck_state`. Reading stages as
+gates produces a fluent, specific, wrong answer — it happened on the first real
+question ever put to you, and the blocker that mattered (fifty-six cards to buy)
+went unmentioned because it lives on the gate and not on the stage.
+
 ## What you must never do with a number
 
 This bench's entire claim is that every figure is arithmetic the pilot can
