@@ -162,6 +162,24 @@
       out += chip(r.games + ' game' + (r.games === 1 ? '' : 's') + ' · ' + rec
                   + (when ? ' · ' + when : ''), 'ok');
     }
+    /* HOW CLOSE IS THIS DECK TO THE NEXT RUNG. `promote --show` has computed
+     * this all along and no screen rendered it: zur has been two requirements
+     * from the table for days, and the page whose entire job is "what should I
+     * work on" could not say so.
+     *
+     * READ, never counted here. `info.gates` comes from `promote.gate`, the
+     * same rows the CLI prints, for the same reason `info.stage` replaced the
+     * frontend's own definition of "on the bench" — a second definition of
+     * "ready" living in JavaScript is the mistake that field was added to undo.
+     *
+     * Amber at one blocker, neutral further out: one requirement away is a
+     * thing you might finish tonight, four is a plan. Absent when the gate
+     * could not be computed, which reads as "not known" and never as "zero". */
+    var g = info && info.gates;
+    if (g && g.of) {
+      out += chip(g.met + '/' + g.of + ' gates to ' + g.to,
+                  g.met === g.of ? 'ok' : (g.of - g.met === 1 ? 'warn' : ''));
+    }
     /* `N verified lines` IS GONE, from here and from the fleet table's evidence
      * column. It counted passing stack scenarios — how many rules questions
      * this deck happens to have written up — which says nothing about the deck

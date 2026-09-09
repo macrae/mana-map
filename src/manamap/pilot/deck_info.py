@@ -391,6 +391,16 @@ def compose(slug, verify=False):
         # frontend invented. `promote.stage` is the one predicate — SLEEVED is
         # the paper lock, BENCH is the default, and only `dev` is ever stored.
         "stage": promote_mod.stage(slug),
+        # THE GATE COUNT, so the rack can say how close a deck is without
+        # re-deriving it. `promote --show` already computes this and nothing
+        # rendered it: zur has been two requirements from the table for days and
+        # the one screen whose job is "what should I work on" never said so.
+        #
+        # Computed from `promote.gate` rows, never counted in JavaScript — the
+        # frontend inventing a second definition of "ready" is the mistake
+        # `stage` above was added to undo, and doing it again one field later
+        # would be worse for having known.
+        "gates": _gates(slug, promote_mod),
         "colour_identity": identity,
         "size": counts.get("copies"), "lands": counts.get("land_copies"),
         "version": {"current": vdoc["current_version"], "of": len(vdoc["versions"]),
@@ -602,6 +612,27 @@ def _experiments(slug):
         "differs": w.get("excludes_zero"),
         "minimum_detectable_difference": power.get("minimum_detectable_difference"),
         "reading": d["delta"]["reading"]}}
+
+
+def _gates(slug, promote_mod):
+    """`{to, met, of, blocking}` for the next rung, or None at the top.
+
+    Never raises: a deck mid-edit must not empty the rack, and a missing gate
+    count reads as "not computed" rather than as "zero met" — absent means
+    absent, which is this bench's oldest rule about a figure nobody measured.
+    """
+    order = list(promote_mod.LADDER)
+    try:
+        here = promote_mod.stage(slug)
+        if here is None or here == order[-1]:
+            return None
+        rows = promote_mod.gate(slug, order[order.index(here) + 1])
+        stuck = promote_mod.blockers(rows)
+        return {"to": order[order.index(here) + 1],
+                "met": len(rows) - len(stuck), "of": len(rows),
+                "blocking": [r["label"] for r in stuck]}
+    except Exception:                              # noqa: BLE001 - never block a page
+        return None
 
 
 def _next(info):

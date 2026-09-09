@@ -258,12 +258,24 @@ the captain's logs.
 | ur-dragon | 9 | **4** | **1** | 6 | 0 |
 | zur-enchantress | 8 | 0 | 0 | 3 | 0 |
 
-Two FAILs are new here — **radagast and sisay both fail `diagnosis.json` on the
-same axis**, `axes[3] (colour-sources)`, where the diagnosis's `measured.value`
-disagrees with what `deck-audit` computes (9 against audit for radagast, **−15**
-for sisay). A negative colour-source count is not a plausible measurement, so
-this is one bug in one place rather than two decks drifting. Neither is asserted
-by a failing test because neither deck is pinned.
+Two FAILs are listed here — **radagast and sisay both fail `diagnosis.json` on
+the same axis**, `axes[3] (colour-sources)`, where the diagnosis's
+`measured.value` disagrees with what `deck-audit` computes (9 against audit for
+radagast, **−15** for sisay). A negative colour-source count is not a plausible
+measurement, so this is one bug in one place rather than two decks drifting.
+
+**CORRECTED 2026-09-08: neither deck is live.** `radagast` is BROKEN DOWN FOR
+PARTS and `sisay` is RETIRED, both since August. The first version of this table
+called them live, because the sweep that built it read
+`deck_versions.json`'s lifecycle block as `.get("state")` when the key is
+`status` — so the `.get(..., "living")` default answered for every deck in the
+fleet and the column meant nothing.
+
+That changes what the row is worth. A wrong figure in an archived deck's
+diagnosis is a published error, so it stays on this page — but it is a deck that
+no longer physically exists, and the rule about not manufacturing artifacts for
+a pile of cards applies to fixing it as much as to regenerating it. Priority:
+below everything else here.
 
 ## 6. Staleness is undecidable on 19 artifacts
 

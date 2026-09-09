@@ -5,6 +5,7 @@
   ],
   "lifecycle": null,
   "stage": "sleeved",
+  "gates": null,
   "colour_identity": [
     "W",
     "U"
@@ -12,7 +13,7 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 14,
+    "complete": 13,
     "of": 15,
     "stale": [],
     "invalid": [
@@ -1166,7 +1167,7 @@
   },
   "engine": {
     "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice.",
-    "critic": null,
+    "critic": "fail",
     "lines": 11,
     "verified_lines": 1
   },
@@ -1290,7 +1291,7 @@
     "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (001) — `/debrief heliod`",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
-    "engine.json's critic verdict is None — `/analyze-engine heliod`",
+    "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: goldfish ×3, research-strategy ×3, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
