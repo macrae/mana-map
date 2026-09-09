@@ -110,6 +110,42 @@ Extracted verbatim from `CLAUDE.md` — every measurement here was in that file 
 - **THE STANDARD BENCHMARK RUNS ITS OWN CONFIGURATION, and the reason is that the fleet's own goldfish figures are NOT comparable.** PRD-v1 §9.2: "uncontrolled sim output cannot be aggregated into a ranking." Of twelve decks with a 99, **exactly one** opts into `model_combat`/`model_treasures` — so ranking off each deck's tracked `goldfish_metrics.json` would compare one deck measured with a kill clock against eleven measured without, and `mean_bodies_by_turn` does not even mean the same thing across the two. Two decks have no declaration at all, a third's is an unedited scaffold. So `pilot/benchmark.py` freezes seed, iterations, max turn and **uniform model flags that override the declaration**, and **reads the 99 rather than the declaration** — otherwise a deck would be ranked partly on how well its pilot writes JSON, and the two decks without one could not be scored at all. `goldfish.run` grew `model_treasures`/`model_combat` overrides (None = read the declaration, the tracked behaviour) and `with_results=True` for the raw per-iteration rows; **both default off, and the rows leaking unconditionally turned two freshness tests red immediately** — they compare `run()` against the tracked artifact byte for byte, which is what they are for. Whole fleet: **30 seconds**.
 - **§14.1 IS ANSWERED WITH A REFUSAL, and the refusal is the finding: DO NOT publish an aggregate score yet.** Three defects, all found by running the fleet and looking rather than by reasoning. (1) **`speed` is not archetype-neutral.** `kill_by_turn_8` ranges **0.001 to 0.405** — a 400x spread — and the bottom is heliod and hapatra, whose declared kills are "win condition access" and a two-card combo. The goldfish's combat model cannot see either, so a weighted sum including speed ranks a combo deck last **for not attacking**: an archetype filter wearing a ranking's clothes. (2) **`consistency` was speed under another name**, r = 0.78, because the first version took the spread of the kill-turn histogram — computed over the games that KILLED, so a deck killing in 0.1% of games contributed ten clustered late kills and scored as supremely consistent. Exactly backwards. It measures mana spread now (every deck, every game, nothing censored) and reads −0.08 against speed. (3) **`missed_land_drop_rate` and `mulligan_rate` correlate at 0.97** — one measurement reported twice, and two of those in one total is that quantity counted twice. `consistency` sits at 0.78 with the mana LEVEL, checked rather than assumed: a coefficient of variation moves it only to 0.78 from 0.90, so the relationship is substantive (ramp drawn and ramp not drawn are different games) and it is left as a plain stdev rather than dressed up. **`benchmark.json` is tracked and freshness-gated** — deterministic under a fixed seed, verified identical across runs — so the workbench can read it on a static host.
 
+## A branch aimed at a MECHANISM still has to be graded on a sample that can see it
+
+heliod's `skies-v1` and `archangel-v1` merges were built for one purpose: the
+deck was dying to fliers, giada-angels having taken **39 of 53** attributed
+eliminations. Fifteen swaps went in, cheap flying and reach bodies and taxers.
+
+Two 120-game runs against the same pod, one per list:
+
+    win rate      0.250 -> 0.200   difference -0.050  ci95 [-0.161, +0.064]  SPANS ZERO
+    giada's share
+    of our deaths 74%   -> 70%     difference -0.031  ci95 [-0.190, +0.134]  SPANS ZERO
+
+**Neither moved measurably, and the second one is the interesting failure.** The
+win rate not moving is unsurprising — fifteen swaps rarely shift a rate by
+enough to see. But the *mechanism* did not move either, and the mechanism is
+what the branch was for.
+
+The arithmetic says why, and it is worse than it looks. Resolving a 4-point
+share change needs **more than 1000 eliminations per arm** at 80% power; 259 for
+10 points, 50 for 20. We observed **53 and 61**. The effect being hunted was
+roughly an order of magnitude below what the sample could see, and it was
+already an order of magnitude below that when the branch was opened.
+
+So the rule is not "grade a branch on a mechanism rather than an outcome" —
+that much was already known, and `deck_branch.MEMBERSHIP_AXES` exists because of
+it. The rule is that **the mechanism needs its own power calculation, in the
+units the mechanism is counted in.** Eliminations are not games: a 120-game run
+produced fifty-odd of them, so a mechanism measured per-elimination has a
+quarter of the sample the headline rate does, and nobody had noticed because
+nobody had computed it.
+
+Absolute eliminations by giada went UP, 39 to 43, while the share went down.
+Both facts are inside the noise and neither is evidence. Reporting either as a
+result would be the overlap fallacy one layer down from where this repo already
+refuses it.
+
 ## The net change report, 2026-08-28
 
 - **A MEASURE COMPUTED FROM AN AUTHORED FILE IS NOT EVIDENCE, HOWEVER TIGHT ITS INTERVAL — and it sat in the block a spending decision reads first.** `engine_lift` split the 10,000 iterations by whether every component marked `required` in `goldfish_targets.json` had been assembled by turn three, and compared kill rates with a Newcombe interval on the difference. Statistically it was correct. The problem is upstream of the statistics: **`goldfish_targets.json` is authored, and the same hand writes the declaration and reads the verdict.** Measured on one Ur-Dragon list, one seed, the same 10,000 games, three defensible declarations of the same 99, graded against kill-by-T8:
