@@ -152,10 +152,15 @@ viz/                  # static frontend. FOUR pages, one data layer:
                       #                   history, or one fleet table sorted by played /
                       #                   needs-logs / needs-analysis / optimisations /
                       #                   waiting-on-cardboard. Reads every info.json.
-                      #   deck.html       one deck's dossier: case file / log / next /
-                      #                   status / versions / audit / engine / sim +
-                      #                   experiments / prescriptions / questions, and
-                      #                   branches LAST, over info.json
+                      #   deck.html       one deck's dossier, in NINE sections from
+                      #                   `page_spec.DOSSIER_SECTIONS` (a test locks the
+                      #                   JS to it): cover sheet / rap sheet / known
+                      #                   associates / vitals / priors / captain's logs /
+                      #                   exhibits / open leads / analyst's assessment.
+                      #                   The captain's-log section leads with THE READ —
+                      #                   what the games taught, current version first —
+                      #                   then each night plain, then the raw note.
+                      #                   Everything else is appended below, branches LAST.
                       #   branch.html     one candidate 99: the PROPOSAL, the verdict,
                       #                   the measured table with each row's definition,
                       #                   reward/risk/cost, the bill
