@@ -269,6 +269,14 @@ make test-browser             # the playwright suite, ~4 min
 .venv/bin/pytest -n0 -k NAME  # one test, no worker startup
 .venv/bin/pytest -m ""        # literally everything, ~10 min
 
+# .mcp.json registers an MCP SERVER (`manamap.mcp_server`) exposing six read-only
+# tools to Claude Code: deck_state, fleet, search_docs, search_code, stat_test,
+# run_readonly. Structured data from the warm daemon instead of parsed prose —
+# `deck-status heliod` is 2.9s cold, 0.003s warm, byte-identical. No SDK: MCP is
+# JSON-RPC over stdio and the subset a tool server needs is ~150 lines, the same
+# reasoning that keeps scipy out of sim/stats.py. It CANNOT write; the gate is
+# `serve._cli`, imported rather than restated.
+
 manamap serve                 # viz + a LOCAL /api the deployed site does not have
                               # ALSO A WARM WORKER: with it running, every read-only
                               # `manamap pilot <cmd>` routes through /api/cli and skips
