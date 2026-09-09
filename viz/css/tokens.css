@@ -1035,16 +1035,29 @@ details.log-all { margin-top: .7rem; }
   font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.75rem;
   padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
 }
+.pl-body { white-space: pre-wrap; margin: 0 0 0.9rem; }
 .pl-body p { white-space: pre-wrap; margin: 0 0 0.9rem; }
-.pl-body h4 {
+
+/* THE READ sits above the nights and reads as the section's thesis, so it gets
+ * the weight the individual nights no longer need. The nights were six headed
+ * sections each; they are one paragraph now, and the hierarchy inverted with
+ * them. */
+.pl-read {
+  margin: 0 0 2rem; padding: 1.1rem 1.3rem;
+  background: var(--surface-2, rgba(127, 127, 127, 0.05));
+  border-left: 3px solid var(--tier-coach);
+}
+.pl-read p { margin: 0 0 0.9rem; }
+.pl-read p:last-child { margin-bottom: 0; }
+.pl-read ul { margin: 0 0 0.9rem; padding-left: 1.1rem; }
+.pl-read li { margin-bottom: 0.4rem; }
+.pl-read h4, .pl-body h4 {
   font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
   color: var(--muted); margin: 1.1rem 0 0.35rem; font-weight: 600;
 }
-.pl-station {
-  font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); margin-right: 0.4rem;
-}
-.pl-coda { font-style: italic; }
+.pl-read h4:first-child { margin-top: 0; }
+/* `.pl-station` and `.pl-coda` were deleted with the register that used them —
+ * an officer's post and a closing reflection. Nothing emits either. */
 /* A supplemental is an entry appended to a night already logged, so it reads as
  * subordinate to it rather than as a second log. */
 .pl-sup { margin-left: 1rem; padding-left: 1rem; border-left: 2px solid var(--rule); }

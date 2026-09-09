@@ -1340,7 +1340,8 @@
       + (last.at ? ' · last ' + esc(last.at.slice(0, 10)) : '')
       + (undebriefed ? ' · <span class="log-todo">' + undebriefed
                        + ' not yet debriefed</span>' : '')
-      + '</div>';
+      + '</div>'
+      + readBlock((d.captainsLog || {}).read, (d.captainsLog || {}).read_meta);
 
     /* THE RAW NOTE, ALWAYS REACHABLE. Every entry gets one of these whether or
      * not it has been rendered as a log — a game that exists and is invisible is
@@ -1361,32 +1362,56 @@
         + '</details>';
     }
 
-    function block(b) {
-      if (!b) { return ''; }
-      var out = '<p class="pl-head">' + esc(b.header || '') + '</p>'
-        + '<div class="pl-body">';
-      [['Situation', b.situation], ['Narrative', b.narrative]]
-        .forEach(function (pair) {
-          if (pair[1]) {
-            out += '<h4>' + pair[0] + '</h4><p>' + esc(pair[1]) + '</p>';
-          }
-        });
-      if ((b.assessment || []).length) {
-        out += '<h4>Assessment</h4><p>'
-          + b.assessment.map(function (a) { return esc(a.text || ''); }).join(' ')
+    /* THE READ — what the games taught, across all of them.
+     *
+     * This is the part that never existed. Eleven rendered nights across five
+     * decks and nothing had ever synthesised ACROSS them: every entry described
+     * one evening, and the page could answer "what happened last time" and not
+     * "what is this deck, learned from playing it".
+     *
+     * It renders FIRST because that is the question a pilot opening a dossier
+     * is usually asking; the nights are the evidence under it. */
+    function readBlock(r, meta) {
+      if (!r) { return ''; }
+      var out = '<div class="pl-read">';
+      var pairs = [['What it does', r.what_it_does],
+                   ['How it actually plays', r.how_it_plays]];
+      pairs.forEach(function (pair) {
+        if (pair[1]) { out += '<h4>' + pair[0] + '</h4><p>' + esc(pair[1]) + '</p>'; }
+      });
+      if ((r.mindful_of || []).length) {
+        out += '<h4>What to be mindful of</h4>'
+          + list(r.mindful_of.map(function (t) { return esc(t); }));
+      }
+      if (r.what_changed) {
+        out += '<h4>What changed</h4><p>' + esc(r.what_changed) + '</p>';
+      }
+      /* WHICH GAMES IT RESTS ON, and how many of them describe the deck as it
+       * is now. A read drawn mostly from superseded lists is not wrong — it is
+       * about a deck that no longer exists, and the reader has to be able to
+       * tell. Same distinction `assessmentPanel` draws for a stale diagnosis. */
+      if (meta && (meta.games_considered || []).length) {
+        var all = meta.games_considered;
+        var cur = all.filter(function (g) { return g.current; }).length;
+        out += '<p class="ev">drawn from ' + all.length + ' logged game(s)'
+          + (meta.as_of_version ? ', current list V' + esc(meta.as_of_version) : '')
+          + ' · ' + cur + ' on the current list'
+          + (cur < all.length
+              ? ' · <span class="chip stale">' + (all.length - cur)
+                + ' on a list this deck no longer runs</span>'
+              : '')
           + '</p>';
       }
-      if ((b.orders || []).length) {
-        out += '<h4>Orders</h4>' + list(b.orders.map(function (o) {
-          return '<span class="pl-station">' + esc(o.station || '') + '</span> '
-            + esc(o.text || '');
-        }));
-      }
-      if (b.coda) { out += '<h4>Coda</h4><p class="pl-coda">' + esc(b.coda) + '</p>'; }
-      return out + '</div>'
-        + (b.supplementals || []).map(function (sup) {
-            return '<div class="pl-sup">' + block(sup) + '</div>';
-          }).join('');
+      return out + '</div>';
+    }
+
+    /* One night, plain. It was six sections dictated in a starship captain's
+     * register — Situation, Narrative, Assessment, Orders, Coda, under a header
+     * quoting a stardate. The pilot could not read the stardate and did not
+     * recognise himself in the rest. */
+    function block(b) {
+      if (!b || !b.summary) { return ''; }
+      return '<p class="pl-body">' + esc(b.summary) + '</p>';
     }
 
     /* Newest night first — "what happened last time" is the question that
@@ -1405,13 +1430,17 @@
     var rendered = 0;
     keys.forEach(function (k) {
       var night = nights[k] || {};
-      var ship = (night.logs || {}).ship;
-      if (!ship) { return; }
+      var acct = (night.logs || {}).pilot;
+      if (!acct) { return; }
       rendered++;
       var older = rendered > 1;
       var pos = night.position_in_evening;
       if (older && rendered === 2) { body += '<details class="pl-older"><summary>earlier nights</summary>'; }
-      body += '<article class="pl">' + block(ship)
+      body += '<article class="pl">'
+        + '<p class="pl-head">' + esc(k)
+          + (night.version ? ' · ' + esc(night.version) : '')
+          + '</p>'
+        + block(acct)
         + (pos && pos.of > 1
             ? '<p class="ev">game ' + esc(pos.n) + ' of ' + esc(pos.of)
               + ' that night' + (pos.after ? ', after ' + esc(pos.after) : '')
@@ -1429,7 +1458,7 @@
     var unrendered = entries.filter(function (e) {
       return !placed[e.id] || !((nights[Object.keys(nights).filter(function (k) {
         return (nights[k].source_ids || []).indexOf(e.id) >= 0;
-      })[0]] || {}).logs || {}).ship;
+      })[0]] || {}).logs || {}).pilot;
     });
     if (unrendered.length) {
       body += '<div class="pl-todo"><p class="ev">'

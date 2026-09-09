@@ -175,7 +175,13 @@ def main(args):
         print(f"FAIL {slug} handbook ({len(errors)} error(s)):")
         for e in errors:
             print(f"  - {e}")
-        return 1
+        # SYS.EXIT, NOT RETURN. `registry.run_pilot_step` calls `main(args)` and
+        # DISCARDS its return value, so a validator that returns 1 prints FAIL
+        # and exits 0 — a gate that reports failure and reports success in the
+        # same breath. Every other validator here goes through
+        # `common.report_errors`, which exits; these two hand-rolled the tail and
+        # lost the only part that mattered.
+        sys.exit(1)
     n_sec = len({m for m in _ID_RE.findall(html) if "-" not in m})
     print(f"OK   {slug} — {n_sec} section(s), {len(html):,} bytes, no script, "
           f"no build date" + (f"; {len(notes)} note(s)" if notes else ""))

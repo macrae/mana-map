@@ -232,7 +232,13 @@ def main(args):
         print(f"FAIL {slug} captain's log ({len(errors)} error(s)):")
         for e in errors:
             print(f"  - {e}")
-        return 1
+        # SYS.EXIT, NOT RETURN. `registry.run_pilot_step` calls `main(args)` and
+        # DISCARDS its return value, so a validator that returns 1 prints FAIL
+        # and exits 0 — a gate that reports failure and reports success in the
+        # same breath. Every other validator here goes through
+        # `common.report_errors`, which exits; these two hand-rolled the tail and
+        # lost the only part that mattered.
+        sys.exit(1)
     print(f"OK   {slug} — {len(rendered)} of {len(truth)} night(s) rendered, "
           f"{reachable} of {games} game(s) reachable"
           + (f"; {len(notes)} note(s)" if notes else ""))
