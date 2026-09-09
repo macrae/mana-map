@@ -1,0 +1,2687 @@
+Error handling registered!
+02:22:37 [INFO ] GuiBase: ##########################################
+02:22:37 [INFO ] GuiBase: APP: Forge v.2.0.14-SNAPSHOT-08.08
+02:22:37 [INFO ] GuiBase: Java: 21.0.9 (Oracle Corporation)
+02:22:37 [INFO ] GuiBase: OS: Mac OS X 26.3 aarch64
+02:22:37 [INFO ] GuiBase: RAM: 4096 MB max, 8 CPUs
+02:22:37 [INFO ] GuiBase: ##########################################
+Language 'en-US' loaded successfully.
+(ThreadUtil first call): Running with priority 5
+Read cards: 33617 archived files in 1 ms (25 parts) using thread pool
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+The card A-Alrund's Epiphany was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Baba Lysaga, Night Witch was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Divide by Zero was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Esika's Chariot was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Faceless Haven was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Fires of Invention was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Goldspan Dragon was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Hullbreaker Horror was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Kumano Faces Kakkazan was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Luminarch Aspirant was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Monster Manual was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Omnath, Locus of Creation was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-The Meathook Massacre was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card A-Unholy Heat was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Blinding Radiance was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Goblin Bruiser was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Ogre Painbringer was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Titanic Pelagosaur was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+The card Treetop Recluse was not assigned to any set. Adding it to UNKNOWN set... to fix see res/editions/ folder. 
+Upcoming set Star Trek (TRK) dated in the future. All `upcoming` cards will be added to this set with unknown rarity.
+Read cards: 836 files in 0 ms (8 parts) using thread pool
+Simulation mode
+An unsupported card was requested: "Ratonhnhaké꞉ton" from "null". 
+
+Forge could not find this card in the Database. Any chance you might have mistyped the card name?
+An unsupported card was requested: "Ratonhnhaké꞉ton" from "[N.A.]". 
+
+Forge could not find this card in the Database. Any chance you might have mistyped the card name?
+Ai(1)-mm-zur-enchantress vs Ai(2)-mm-giada-angels vs Ai(3)-mm-vito vs Ai(4)-mm-baylen-tokens - two games of Commander seed 204682632
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.util.collect.FCollection.addAll(FCollection.java:343)
+	at forge.util.collect.FCollection.addAll(FCollection.java:325)
+	at forge.game.keyword.KeywordInstance.applyStaticAbility(KeywordInstance.java:255)
+	at forge.game.keyword.KeywordCollection.applyStaticAbility(KeywordCollection.java:208)
+	at forge.game.card.Card.updateStaticAbilities(Card.java:7014)
+	at forge.game.card.CardState.getStaticAbilities(CardState.java:712)
+	at forge.game.card.Card.getStaticAbilities(Card.java:6993)
+	at forge.game.staticability.StaticAbilityCastWithFlash.anyWithFlash(StaticAbilityCastWithFlash.java:34)
+	at forge.game.spellability.SpellAbility.withFlash(SpellAbility.java:2608)
+	at forge.game.spellability.SpellAbility.canCastTiming(SpellAbility.java:2584)
+	at forge.game.spellability.SpellAbilityRestriction.canPlay(SpellAbilityRestriction.java:560)
+	at forge.game.spellability.AbilityActivated.canPlay(AbilityActivated.java:98)
+	at forge.ai.ComputerUtilMana.lambda$getAvailableManaSources$16(ComputerUtilMana.java:1341)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:178)
+	at java.base/java.util.Spliterators$IteratorSpliterator.tryAdvance(Spliterators.java:1950)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.lambda$initPartialTraversalState$0(StreamSpliterators.java:292)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.fillBuffer(StreamSpliterators.java:206)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.doAdvance(StreamSpliterators.java:161)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:298)
+	at java.base/java.util.Spliterators$1Adapter.hasNext(Spliterators.java:681)
+	at forge.util.collect.FCollection.addAll(FCollection.java:345)
+	at forge.util.collect.FCollection.<init>(FCollection.java:103)
+	at forge.game.card.CardCollection.<init>(CardCollection.java:118)
+	at forge.game.card.CardLists.filter(CardLists.java:331)
+	at forge.ai.ComputerUtilMana.getAvailableManaSources(ComputerUtilMana.java:1338)
+	at forge.ai.ComputerUtilMana.groupSourcesByManaColor(ComputerUtilMana.java:1496)
+	at forge.ai.ComputerUtilMana.getSourcesForShards(ComputerUtilMana.java:831)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:638)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:74)
+	at forge.ai.ComputerUtilMana.canPayManaCost(ComputerUtilMana.java:63)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.game.card.Card.updateStaticAbilities(Card.java:7011)
+	at forge.game.card.CardState.getStaticAbilities(CardState.java:712)
+	at forge.game.card.Card.getStaticAbilities(Card.java:6993)
+	at forge.game.staticability.StaticAbilityManaConvert.manaConvert(StaticAbilityManaConvert.java:17)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:625)
+	at forge.ai.ComputerUtilMana.payManaCost(ComputerUtilMana.java:74)
+	at forge.ai.ComputerUtilMana.canPayManaCost(ComputerUtilMana.java:63)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:634)
+	at forge.ai.ComputerUtilCost.canPayCost(ComputerUtilCost.java:530)
+	at forge.ai.ComputerUtilCombat.canGainKeyword(ComputerUtilCombat.java:2290)
+	at forge.ai.ComputerUtilCombat.dealsFirstStrikeDamage(ComputerUtilCombat.java:2251)
+	at forge.ai.ComputerUtilCombat.predictPowerBonusOfAttacker(ComputerUtilCombat.java:1162)
+	at forge.ai.ComputerUtilCombat.canDestroyBlocker(ComputerUtilCombat.java:1912)
+	at forge.ai.AiBlockController.getSafeBlockers(AiBlockController.java:106)
+	at forge.ai.AiBlockController.makeGoodBlocks(AiBlockController.java:198)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1083)
+	at forge.ai.AiBlockController.assignBlockersForCombat(AiBlockController.java:1014)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3214)
+	at forge.ai.ComputerUtil.evaluateBoardPositionChanged(ComputerUtil.java:2959)
+	at forge.ai.ComputerUtil.lambda$evaluateBoardPosition$21(ComputerUtil.java:2930)
+	at forge.ai.AiCache.getCached(AiCache.java:40)
+	at forge.ai.ComputerUtil.evaluateBoardPosition(ComputerUtil.java:2929)
+	at forge.ai.AiAttackController.choosePreferredDefenderPlayer(AiAttackController.java:213)
+	at forge.ai.AiAttackController.<init>(AiAttackController.java:98)
+	at forge.ai.AiAttackController.<init>(AiAttackController.java:93)
+	at forge.ai.AiController.getPredictedCombat(AiController.java:143)
+	at forge.ai.ComputerUtilCard.doesCreatureAttackAI(ComputerUtilCard.java:806)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ability.PumpAi.checkApiLogic(PumpAi.java:316)
+	at forge.ai.SpellAbilityAi.canPlayWithoutRestrict(SpellAbilityAi.java:98)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.game.card.Card.updateReplacementEffects(Card.java:7066)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:754)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:723)
+	at forge.game.card.Card.getReplacementEffects(Card.java:7055)
+	at forge.game.replacement.ReplacementHandler.lambda$getReplacementList$0(ReplacementHandler.java:134)
+	at forge.util.Visitor.visitAll(Visitor.java:16)
+	at forge.game.Game.forEachCardInGame(Game.java:757)
+	at forge.game.replacement.ReplacementHandler.getReplacementList(ReplacementHandler.java:102)
+	at forge.game.replacement.ReplacementHandler.cantHappenCheck(ReplacementHandler.java:174)
+	at forge.game.card.Card.canTap(Card.java:4696)
+	at forge.game.card.Card.canTap(Card.java:4688)
+	at forge.game.cost.CostTap.canPay(CostTap.java:69)
+	at forge.game.cost.Cost.canPay(Cost.java:1085)
+	at forge.game.cost.CostPayment.canPayAdditionalCosts(CostPayment.java:104)
+	at forge.game.cost.CostPayment.canPayAdditionalCosts(CostPayment.java:96)
+	at forge.game.spellability.AbilityActivated.canPlay(AbilityActivated.java:103)
+	at forge.ai.ComputerUtilMana.lambda$getAvailableManaSources$16(ComputerUtilMana.java:1341)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:178)
+	at java.base/java.util.Spliterators$IteratorSpliterator.tryAdvance(Spliterators.java:1950)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.lambda$initPartialTraversalState$0(StreamSpliterators.java:292)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.fillBuffer(StreamSpliterators.java:206)
+	at java.base/java.util.stream.StreamSpliterators$AbstractWrappingSpliterator.doAdvance(StreamSpliterators.java:161)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:298)
+	at java.base/java.util.Spliterators$1Adapter.hasNext(Spliterators.java:681)
+	at forge.util.collect.FCollection.addAll(FCollection.java:345)
+	at forge.util.collect.FCollection.<init>(FCollection.java:103)
+	at forge.game.card.CardCollection.<init>(CardCollection.java:118)
+	at forge.game.card.CardLists.filter(CardLists.java:331)
+	at forge.ai.ComputerUtilMana.getAvailableManaSources(ComputerUtilMana.java:1338)
+	at forge.ai.ComputerUtilMana.groupSourcesByManaColor(ComputerUtilMana.java:1496)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.util.collect.FCollection.addAll(FCollection.java:343)
+	at forge.util.collect.FCollection.addAll(FCollection.java:325)
+	at forge.game.keyword.KeywordInstance.applyStaticAbility(KeywordInstance.java:255)
+	at forge.game.keyword.KeywordCollection.applyStaticAbility(KeywordCollection.java:208)
+	at forge.game.card.Card.updateStaticAbilities(Card.java:7014)
+	at forge.game.card.CardState.getStaticAbilities(CardState.java:712)
+	at forge.game.card.Card.getStaticAbilities(Card.java:6993)
+	at forge.game.staticability.StaticAbilityCombatDamageToughness.combatDamageToughness(StaticAbilityCombatDamageToughness.java:12)
+	at forge.game.card.Card.toughnessAssignsDamage(Card.java:4577)
+	at forge.game.card.Card.getNetCombatDamage(Card.java:4586)
+	at forge.ai.ComputerUtilCombat.damageIfUnblocked(ComputerUtilCombat.java:172)
+	at forge.ai.ComputerUtilCombat.sumDamageIfUnblocked(ComputerUtilCombat.java:249)
+	at forge.ai.ComputerUtilCombat.sumDamageIfUnblocked(ComputerUtilCombat.java:240)
+	at forge.ai.ComputerUtilCombat.lifeThatWouldRemain(ComputerUtilCombat.java:318)
+	at forge.ai.ComputerUtilCombat.lifeInDanger(ComputerUtilCombat.java:453)
+	at forge.ai.ComputerUtilCombat.lifeInDanger(ComputerUtilCombat.java:390)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1109)
+	at forge.ai.AiBlockController.assignBlockersForCombat(AiBlockController.java:1014)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3214)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3179)
+	at forge.ai.AiAttackController.notNeededAsBlockers(AiAttackController.java:426)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1279)
+	at forge.ai.ComputerUtilCard.doesSpecifiedCreatureAttackAI(ComputerUtilCard.java:820)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1446)
+	at forge.ai.ability.PumpAllAi.lambda$checkApiLogic$2(PumpAllAi.java:132)
+	at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at forge.ai.AiController.chooseSpellAbilityToPlayFromList(AiController.java:1696)
+	at forge.ai.AiController.getSpellAbilityToPlay(AiController.java:1583)
+	at forge.ai.AiController.chooseSpellAbilityToPlay(AiController.java:1403)
+	at forge.ai.PlayerControllerAi.chooseSpellAbilityToPlay(PlayerControllerAi.java:832)
+	at forge.game.phase.PhaseHandler.mainLoopStep(PhaseHandler.java:1056)
+	at forge.game.phase.PhaseHandler.mainGameLoop(PhaseHandler.java:1035)
+	at forge.game.phase.PhaseHandler.startFirstTurn(PhaseHandler.java:1029)
+	at forge.game.GameAction.startGame(GameAction.java:2373)
+	at forge.game.Match.startGame(Match.java:92)
+	at forge.game.Match.startGame(Match.java:77)
+	at forge.view.SimulateMatch.lambda$simulateSingleMatch$0(SimulateMatch.java:213)
+	at forge.view.TimeLimitedCodeBlock.lambda$runWithTimeout$0(TimeLimitedCodeBlock.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+AI eval thread at timeout:
+	at forge.game.card.Card.updateReplacementEffects(Card.java:7066)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:754)
+	at forge.game.card.CardState.getReplacementEffects(CardState.java:723)
+	at forge.game.card.Card.getReplacementEffects(Card.java:7055)
+	at forge.game.replacement.ReplacementHandler.lambda$getReplacementList$0(ReplacementHandler.java:134)
+	at forge.util.Visitor.visitAll(Visitor.java:16)
+	at forge.game.Game.forEachCardInGame(Game.java:757)
+	at forge.game.replacement.ReplacementHandler.getReplacementList(ReplacementHandler.java:102)
+	at forge.ai.ComputerUtilCombat.isCombatDamagePrevented(ComputerUtilCombat.java:2348)
+	at forge.ai.ComputerUtilCombat.damageIfUnblocked(ComputerUtilCombat.java:180)
+	at forge.ai.ComputerUtilCombat.sumDamageIfUnblocked(ComputerUtilCombat.java:249)
+	at forge.ai.ComputerUtilCombat.sumDamageIfUnblocked(ComputerUtilCombat.java:240)
+	at forge.ai.ComputerUtilCombat.lifeThatWouldRemain(ComputerUtilCombat.java:318)
+	at forge.ai.ComputerUtilCombat.lifeInDanger(ComputerUtilCombat.java:453)
+	at forge.ai.ComputerUtilCombat.lifeInDanger(ComputerUtilCombat.java:390)
+	at forge.ai.AiBlockController.makeChumpBlocks(AiBlockController.java:658)
+	at forge.ai.AiBlockController.makeChumpBlocks(AiBlockController.java:651)
+	at forge.ai.AiBlockController.makeChumpBlocks(AiBlockController.java:643)
+	at forge.ai.AiBlockController.assignBlockers(AiBlockController.java:1118)
+	at forge.ai.AiBlockController.assignBlockersForCombat(AiBlockController.java:1014)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3214)
+	at forge.ai.ComputerUtil.predictNextCombatsRemainingLife(ComputerUtil.java:3179)
+	at forge.ai.AiAttackController.notNeededAsBlockers(AiAttackController.java:426)
+	at forge.ai.AiAttackController.declareAttackers(AiAttackController.java:1279)
+	at forge.ai.ComputerUtilCard.doesSpecifiedCreatureAttackAI(ComputerUtilCard.java:820)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1557)
+	at forge.ai.ComputerUtilCard.shouldPumpCard(ComputerUtilCard.java:1446)
+	at forge.ai.ability.PumpAllAi.lambda$checkApiLogic$2(PumpAllAi.java:132)
+	at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1685)
+Mulligan: Ai(2)-mm-giada-angels has kept a hand of 7 cards
+Mulligan: Ai(3)-mm-vito has kept a hand of 7 cards
+Mulligan: Ai(4)-mm-baylen-tokens has kept a hand of 7 cards
+Mulligan: Ai(1)-mm-zur-enchantress has kept a hand of 7 cards
+Turn: Turn 1 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (173)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 2 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (248)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 3 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Plains (390)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 4 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Talon Gates of Madara (4)
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Talon Gates of Madara targeting []
+Resolve Stack: When Talon Gates of Madara enters, up to one target creature phases out. (Targeting: [[]]) [Zone Changer: Talon Gates of Madara (4)]
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 5 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Replacement Effect: Myriad Landscape enters tapped.
+Land: Ai(2)-mm-giada-angels played Myriad Landscape (162)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 6 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Radiant Fountain (290)
+Add To Stack: Ai(3)-mm-vito triggered Radiant Fountain
+Life: Life: Ai(3)-mm-vito 40 > 42
+Resolve Stack: When Radiant Fountain enters, you gain 2 life. [Zone Changer: Radiant Fountain (290)]
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 7 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Forest (328)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Plains (390) - {T}: Add {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (348)]
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 8 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Swamp (55)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Talon Gates of Madara (4) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Lightning Greaves
+Resolve Stack: Lightning Greaves
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 9 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (186)
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Zone Change: Myriad Landscape (162) was put into Graveyard from Battlefield.
+Add To Stack: Ai(2)-mm-giada-angels activated Myriad Landscape
+Resolve Stack: Myriad Landscape (162) - Ai(2)-mm-giada-angels searches their library for  up to two basic land cards, puts them onto the battlefield tapped, then shuffles.
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 10 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (246)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-vito cast Qarsi Revenant
+Resolve Stack: Qarsi Revenant - Creature 3 / 3
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 11 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Mana: Plains (390) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Swords to Plowshares targeting [Qarsi Revenant (274)]
+Zone Change: Qarsi Revenant (274) was put into Exile from Battlefield.
+Life: Life: Ai(3)-mm-vito 42 > 45
+Resolve Stack: Swords to Plowshares (341) - Exile Qarsi Revenant (274). Ai(3)-mm-vito gains life equal to its power.
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Reliquary Tower (376)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Hare Apparent (348) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Hare Apparent (348).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Hare Apparent (348) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 40 > 38
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 12 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Plains (85)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Plains (85) - {T}: Add {W}.
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Talon Gates of Madara (4) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast The Restoration of Eiganjo
+Replacement Effect: The Restoration of Eiganjo enters with a lore counter on it.
+Resolve Stack: The Restoration of Eiganjo
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Resolve Stack: I — Search your library for a basic Plains card, reveal it, put it into your hand, then shuffle. [Added once: The Restoration of Eiganjo (52)]
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 13 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (178)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Resplendent Angel
+Resolve Stack: Resplendent Angel - Creature 3 / 3
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Giada, Font of Hope
+Resolve Stack: Giada, Font of Hope - Creature 2 / 2
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 14 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (251)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Swamp (251) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Dread Presence
+Resolve Stack: Dread Presence - Creature 3 / 3
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 15 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: As Stomping Ground enters, you may pay 2 life. If you don't, it enters tapped.
+Land: Ai(4)-mm-baylen-tokens played Stomping Ground (324)
+Mana: Plains (390) - {T}: Add {W}.
+Mana: Reliquary Tower (376) - {T}: Add {C}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (353)]
+Mana: Forest (328) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast For the Common Good targeting [Rabbit Token (413)]
+Life: Life: Ai(4)-mm-baylen-tokens 40 > 41
+Resolve Stack: For the Common Good (395) - Ai(4)-mm-baylen-tokens creates zero tokens that are copies of Rabbit Token (413).  Ai(4)-mm-baylen-tokens gains 1 life. (X=0)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 16 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Discard: Ai(1)-mm-zur-enchantress discards Island (33).
+Resolve Stack: II — You may discard a card. When you do, return target permanent card with mana value 2 or less from your graveyard to the battlefield tapped. [Added once: The Restoration of Eiganjo (52)]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo targeting [Island (33)]
+Resolve Stack: You may discard a card. When you do, return target permanent card with mana value 2 or less from your graveyard to the battlefield tapped. (Targeting: [[Island (33)]])
+Land: Ai(1)-mm-zur-enchantress played Plains (88)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: Talon Gates of Madara (4) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Helm of the Host
+Resolve Stack: Helm of the Host
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 17 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Mana: Plains (173) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Swords to Plowshares targeting [Rabbit Token (413)]
+Zone Change: Rabbit Token (413) was put into Exile from Battlefield.
+Life: Life: Ai(4)-mm-baylen-tokens 41 > 42
+Resolve Stack: Swords to Plowshares (145) - Exile Rabbit Token (413). Ai(4)-mm-baylen-tokens gains life equal to its power.
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (193)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Resplendent Angel (101) and Giada, Font of Hope (200) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Resplendent Angel (101).
+Ai(1)-mm-zur-enchantress didn't block Giada, Font of Hope (200).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Resplendent Angel (101) deals 3 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 38 > 33
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Righteous Valkyrie
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Righteous Valkyrie - Creature 2 / 4
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 18 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (269)
+Add To Stack: Ai(3)-mm-vito triggered Dread Presence
+Damage: Dread Presence (208) deals 2 non-combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 33 > 31
+Life: Life: Ai(3)-mm-vito 45 > 47
+Resolve Stack: Whenever a Swamp you control enters, Dread Presence deals 2 damage to any target and you gain 2 life. (Targeting: Ai(1)-mm-zur-enchantress) Ai(3)-mm-vito gains 2 life. [Zone Changer: Swamp (269)]
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (246) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Vito, Thorn of the Dusk Rose
+Resolve Stack: Vito, Thorn of the Dusk Rose - Creature 1 / 3
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (251) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Cordial Vampire
+Resolve Stack: Cordial Vampire - Creature 1 / 1
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 19 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Mana: Stomping Ground (324) - {T}: Add {R}.
+Mana: Forest (328) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Artifact Mutation targeting [Helm of the Host (28)]
+Zone Change: Helm of the Host (28) was put into Graveyard from Battlefield.
+Resolve Stack: Artifact Mutation (315) - Destroy Helm of the Host (28). It can't be regenerated. Ai(4)-mm-baylen-tokens creates four 1/1 green Saproling creature tokens.
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Plains (391)
+Mana: Reliquary Tower (376) - {T}: Add {C}.
+Mana: Plains (390) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Swiftfoot Boots
+Resolve Stack: Swiftfoot Boots
+Mana: Plains (391) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens activated Swiftfoot Boots targeting [Hare Apparent (348)]
+Resolve Stack: Swiftfoot Boots (338) -  Attach to Hare Apparent (348)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 20 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Zone Change: The Restoration of Eiganjo (52) was put into Exile from Battlefield.
+Resolve Stack: III — Exile this Saga, then return it to the battlefield transformed under your control. [Added once: The Restoration of Eiganjo (52)]
+Land: Ai(1)-mm-zur-enchantress played City of Brass (47)
+Add To Stack: Ai(1)-mm-zur-enchantress activated Lightning Greaves targeting [Architect of Restoration (52)]
+Resolve Stack: Lightning Greaves (91) -  Attach to Architect of Restoration (52)
+Mana: Island (33) - {T}: Add {U}.
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Thief's Knife
+Resolve Stack: Thief's Knife
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Thief's Knife
+Resolve Stack: Job select (When this Equipment enters, create a 1/1 colorless Hero creature token, then attach this to it.) [Zone Changer: Thief's Knife (83)]
+Mana: Plains (88) - {T}: Add {W}.
+Mana: City of Brass (47) - {T}: Add one mana of any color.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Trailblazer's Boots
+Add To Stack: Ai(1)-mm-zur-enchantress triggered City of Brass
+Damage: City of Brass (47) deals 1 non-combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 31 > 30
+Resolve Stack: Whenever City of Brass becomes tapped, it deals 1 damage to you. [Tapped: City of Brass (47)]
+Resolve Stack: Trailblazer's Boots
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 21 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (182)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Righteous Valkyrie (102), Resplendent Angel (101) and Giada, Font of Hope (200) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Righteous Valkyrie (102).
+Ai(4)-mm-baylen-tokens didn't block Resplendent Angel (101).
+Ai(4)-mm-baylen-tokens didn't block Giada, Font of Hope (200).
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Mana: Plains (193) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (101) - Resplendent Angel (101) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Righteous Valkyrie (102) deals 4 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Resplendent Angel (101) deals 5 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-giada-angels 40 > 45
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 42 > 31
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Add To Stack: Ai(2)-mm-giada-angels triggered Resplendent Angel
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 5 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(2)-mm-giada-angels]
+Add To Stack: Ai(2)-mm-giada-angels triggered Righteous Valkyrie
+Life: Life: Ai(2)-mm-giada-angels 45 > 52
+Resolve Stack: Whenever another Angel or Cleric you control enters, you gain life equal to that creature's toughness. [Zone Changer: Angel Token (426)]
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 22 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Bontu's Monument
+Resolve Stack: Bontu's Monument
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 23 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Forest (326)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Plains (390) - {T}: Add {W}.
+Mana: Plains (391) - {T}: Add {W}.
+Mana: Reliquary Tower (376) - {T}: Add {C}.
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Forest (326) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Elspeth, Storm Slayer
+Replacement Effect: Elspeth, Storm Slayer enters with five loyalty counters on it.
+Resolve Stack: Elspeth, Storm Slayer
+Add To Stack: Ai(4)-mm-baylen-tokens activated Elspeth, Storm Slayer targeting [Righteous Valkyrie (102)]
+Zone Change: Righteous Valkyrie (102) was put into Graveyard from Battlefield.
+Resolve Stack: Elspeth, Storm Slayer (399) - Destroy Righteous Valkyrie (102).
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Righteous Valkyrie (102)]
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 24 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Opal Palace (18)
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Trailblazer's Boots targeting [Hero Token (423)]
+Resolve Stack: Trailblazer's Boots (98) -  Attach to Hero Token (423)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Hero Token (423) to attack Elspeth, Storm Slayer (399).
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Hero Token (423).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Zone Change: Elspeth, Storm Slayer (399) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Island (33) - {T}: Add {U}.
+Mana: Plains (88) - {T}: Add {W}.
+Mana: City of Brass (47) - {T}: Add one mana of any color.
+Mana: Opal Palace (18) - {T}: Add {C}.
+Mana: Talon Gates of Madara (4) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Kuldotha Forgemaster
+Add To Stack: Ai(1)-mm-zur-enchantress triggered City of Brass
+Damage: City of Brass (47) deals 1 non-combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 30 > 29
+Resolve Stack: Whenever City of Brass becomes tapped, it deals 1 damage to you. [Tapped: City of Brass (47)]
+Resolve Stack: Kuldotha Forgemaster - Creature 3 / 5
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 25 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Add To Stack: Ai(2)-mm-giada-angels triggered Entreat the Angels
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Mana: Plains (193) - {T}: Add {W}.
+Mana: Plains (182) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Entreat the Angels
+Resolve Stack: Entreat the Angels - Miracle
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Entreat the Angels (150) - Ai(2)-mm-giada-angels creates five 4/4 white Angel creature tokens with flying. (X=5)
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Resplendent Angel (101), Angel Token (426) and Giada, Font of Hope (200) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Resplendent Angel (101).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (426).
+Ai(1)-mm-zur-enchantress didn't block Giada, Font of Hope (200).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Resplendent Angel (101) deals 3 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (426) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 29 > 17
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 26 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Swamp (251) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Epicure of Blood
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(4)-mm-baylen-tokens 31 > 30
+Life: Life: Ai(1)-mm-zur-enchantress 17 > 16
+Life: Life: Ai(2)-mm-giada-angels 52 > 51
+Life: Life: Ai(3)-mm-vito 47 > 48
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Epicure of Blood (207), Activator: Ai(3)-mm-vito, SpellAbility: Epicure of Blood - Creature 4 / 4]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(4)-mm-baylen-tokens]
+Life: Life: Ai(4)-mm-baylen-tokens 30 > 29
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(4)-mm-baylen-tokens]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Epicure of Blood - Creature 4 / 4
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 27 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Stomping Ground (324) - {T}: Add {R}.
+Mana: Plains (390) - {T}: Add {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker - Creature 4 / 3
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 28 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Survivors' Encampment (3)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Zone Change: Trailblazer's Boots (98) was put into Graveyard from Battlefield.
+Zone Change: Lightning Greaves (91) was put into Graveyard from Battlefield.
+Zone Change: Thief's Knife (83) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Kuldotha Forgemaster
+Mana: Reliquary Tower (376) - {T}: Add {C}.
+Mana: Forest (326) - {T}: Add {G}.
+Mana: Plains (391) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast March of the Multitudes
+Resolve Stack: March of the Multitudes (364) - Ai(4)-mm-baylen-tokens creates three 1/1 white Soldier creature tokens with lifelink. (X=3)
+Resolve Stack: Kuldotha Forgemaster (11) - Ai(1)-mm-zur-enchantress searches their library for an artifact card, puts it onto the battlefield, then shuffles.
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Island (33) - {T}: Add {U}.
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Mana: Plains (88) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Zur the Enchanter
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Resolve Stack: Zur the Enchanter - Creature 1 / 4
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 29 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Angel Token (426), Angel Token (432), Angel Token (433), Angel Token (434), Angel Token (435), Angel Token (436), Resplendent Angel (101) and Giada, Font of Hope (200) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Angel Token (426).
+Ai(4)-mm-baylen-tokens didn't block Angel Token (432).
+Ai(4)-mm-baylen-tokens didn't block Angel Token (433).
+Ai(4)-mm-baylen-tokens didn't block Angel Token (434).
+Ai(4)-mm-baylen-tokens didn't block Angel Token (435).
+Ai(4)-mm-baylen-tokens didn't block Angel Token (436).
+Ai(4)-mm-baylen-tokens didn't block Resplendent Angel (101).
+Ai(4)-mm-baylen-tokens didn't block Giada, Font of Hope (200).
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Mana: Plains (193) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (101) - Resplendent Angel (101) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Angel Token (426) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Angel Token (432) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Angel Token (433) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Angel Token (434) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Angel Token (435) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Angel Token (436) deals 7 combat damage to Ai(4)-mm-baylen-tokens.
+Damage: Resplendent Angel (101) deals 5 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(2)-mm-giada-angels 51 > 56
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 29 > -20
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Add To Stack: Ai(2)-mm-giada-angels triggered Resplendent Angel
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 5 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(2)-mm-giada-angels]
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 30 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (252)
+Add To Stack: Ai(3)-mm-vito triggered Dread Presence
+Damage: Dread Presence (208) deals 2 damage to Hero Token (423).
+Life: Life: Ai(3)-mm-vito 48 > 50
+Resolve Stack: Whenever a Swamp you control enters, Dread Presence deals 2 damage to any target and you gain 2 life. (Targeting: Hero Token (423)) Ai(3)-mm-vito gains 2 life. [Zone Changer: Swamp (252)]
+Zone Change: Hero Token (423) was put into Graveyard from Battlefield.
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Add To Stack: Ai(3)-mm-vito triggered Epicure of Blood
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Hero Token (423)]
+Life: Life: Ai(1)-mm-zur-enchantress 16 > 15
+Life: Life: Ai(2)-mm-giada-angels 56 > 55
+Resolve Stack: Whenever you gain life, each opponent loses 1 life. [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Life: Life: Ai(1)-mm-zur-enchantress 15 > 13
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (248) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-vito cast Phyrexian Arena
+Resolve Stack: Phyrexian Arena
+Mana: Swamp (251) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Mana: Swamp (252) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Exsanguinate
+Life: Life: Ai(1)-mm-zur-enchantress 13 > 12
+Life: Life: Ai(2)-mm-giada-angels 55 > 54
+Life: Life: Ai(3)-mm-vito 50 > 52
+Resolve Stack: Exsanguinate (225) - Ai(1)-mm-zur-enchantress and Ai(2)-mm-giada-angels each lose life equal to the life lost this way. You gain life equal to the life lost this way. (X=1)
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Add To Stack: Ai(3)-mm-vito triggered Epicure of Blood
+Life: Life: Ai(1)-mm-zur-enchantress 12 > 11
+Life: Life: Ai(2)-mm-giada-angels 54 > 53
+Resolve Stack: Whenever you gain life, each opponent loses 1 life. [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Life: Life: Ai(1)-mm-zur-enchantress 11 > 9
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 31 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Tamiyo's Journal
+Resolve Stack: At the beginning of your upkeep, investigate. (Create a Clue token. It's an artifact with "{2}, Sacrifice this token: Draw a card.") [Phase: Ai(1)-mm-zur-enchantress]
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Zone Change: Clue Token (478) was put into Graveyard from Battlefield.
+Zone Change: Tamiyo's Journal (80) was put into Graveyard from Battlefield.
+Zone Change: Kuldotha Forgemaster (11) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Kuldotha Forgemaster
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Kuldotha Forgemaster (11)]
+Resolve Stack: Kuldotha Forgemaster (11) - Ai(1)-mm-zur-enchantress searches their library for an artifact card, puts it onto the battlefield, then shuffles.
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Solemn Simulacrum
+Resolve Stack: When Solemn Simulacrum enters, you may search your library for a basic land card, put that card onto the battlefield tapped, then shuffle. [Zone Changer: Solemn Simulacrum (41)]
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Island (33) - {T}: Add {U}.
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Discard: Ai(1)-mm-zur-enchantress discards Contaminated Landscape (2).
+Add To Stack: Ai(1)-mm-zur-enchantress activated Contaminated Landscape
+Resolve Stack: Contaminated Landscape (2) - Ai(1)-mm-zur-enchantress draws a card.
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 32 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Angel Token (476), Angel Token (426), Angel Token (432), Angel Token (433), Angel Token (434), Angel Token (435), Angel Token (436), Resplendent Angel (101) and Giada, Font of Hope (200) to attack Ai(3)-mm-vito.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Angel Token (476).
+Ai(3)-mm-vito didn't block Angel Token (426).
+Ai(3)-mm-vito didn't block Angel Token (432).
+Ai(3)-mm-vito didn't block Angel Token (433).
+Ai(3)-mm-vito didn't block Angel Token (434).
+Ai(3)-mm-vito didn't block Angel Token (435).
+Ai(3)-mm-vito didn't block Angel Token (436).
+Ai(3)-mm-vito didn't block Resplendent Angel (101).
+Ai(3)-mm-vito didn't block Giada, Font of Hope (200).
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Mana: Plains (193) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (101) - Resplendent Angel (101) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Angel Token (476) deals 12 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (426) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (432) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (433) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (434) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (435) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Angel Token (436) deals 7 combat damage to Ai(3)-mm-vito.
+Damage: Resplendent Angel (101) deals 5 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 53 > 58
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(3)-mm-vito 52 > -9
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Add To Stack: Ai(2)-mm-giada-angels triggered Resplendent Angel
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: At the beginning of each end step, if you gained 5 or more life this turn, create a 4/4 white Angel creature token with flying and vigilance. [Phase: Ai(2)-mm-giada-angels]
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 33 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Mana: Swamp (55) - {T}: Add {B}.
+Mana: Plains (85) - {T}: Add {W}.
+Mana: Island (33) - {T}: Add {U}.
+Zone Change: Solemn Simulacrum (41) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Scrounge for Eternity targeting [Kuldotha Forgemaster (11)]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Solemn Simulacrum
+Resolve Stack: When Solemn Simulacrum dies, you may draw a card. [Zone Changer: Solemn Simulacrum (41)]
+Resolve Stack: Scrounge for Eternity (92) - Return Kuldotha Forgemaster (11) from the graveyard to the battlefield. 
+Mana: Island (36) - {T}: Add {U}.
+Mana: Plains (88) - {T}: Add {W}.
+Zone Change: Lander Token (483) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Lander Token
+Resolve Stack: Lander Token (483) - Ai(1)-mm-zur-enchantress searches their library for a basic land card, puts it onto the battlefield tapped, then shuffles.
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: City of Brass (47) - {T}: Add one mana of any color.
+Mana: Opal Palace (18) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Iron Hills Blacksmith
+Add To Stack: Ai(1)-mm-zur-enchantress triggered City of Brass
+Damage: City of Brass (47) deals 1 non-combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 9 > 8
+Resolve Stack: Whenever City of Brass becomes tapped, it deals 1 damage to you. [Tapped: City of Brass (47)]
+Resolve Stack: Iron Hills Blacksmith - Creature 1 / 1
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Iron Hills Blacksmith
+Resolve Stack: When this creature enters, create a colorless Equipment artifact token named Axe with "Equipped creature gets +1/+0" and equip {2}. [Zone Changer: Iron Hills Blacksmith (51)]
+Mana: Talon Gates of Madara (4) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 34 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Angel Token (481), Angel Token (476), Angel Token (426), Angel Token (432), Angel Token (433), Angel Token (434), Angel Token (435), Angel Token (436), Resplendent Angel (101) and Giada, Font of Hope (200) to attack Ai(1)-mm-zur-enchantress.
+Discard: Ai(1)-mm-zur-enchantress discards Swamp (57).
+Add To Stack: Ai(1)-mm-zur-enchantress activated The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook (31) - Ai(1)-mm-zur-enchantress creates a Food token. (It's an artifact with "{2}, {T}, Sacrifice this token: You gain 3 life.")
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Zur the Enchanter (99) to block Angel Token (481).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (476).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (426).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (432).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (433).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (434).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (435).
+Ai(1)-mm-zur-enchantress didn't block Angel Token (436).
+Ai(1)-mm-zur-enchantress didn't block Resplendent Angel (101).
+Ai(1)-mm-zur-enchantress didn't block Giada, Font of Hope (200).
+Mana: Plains (173) - {T}: Add {W}.
+Mana: Plains (186) - {T}: Add {W}.
+Mana: Plains (180) - {T}: Add {W}.
+Mana: Plains (174) - {T}: Add {W}.
+Mana: Plains (178) - {T}: Add {W}.
+Mana: Plains (193) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels activated Resplendent Angel
+Resolve Stack: Resplendent Angel (101) - Resplendent Angel (101) gets +2/+2 and gains lifelink until end of turn.
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Angel Token (481) deals 13 damage to Zur the Enchanter (99).
+Damage: Angel Token (476) deals 12 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (426) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (432) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (433) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (434) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (435) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Angel Token (436) deals 7 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Resplendent Angel (101) deals 5 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(2)-mm-giada-angels 58 > 63
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Zur the Enchanter (99) deals 1 damage to Angel Token (481).
+Life: Life: Ai(1)-mm-zur-enchantress 8 > -53
+Player Control: Ai(1)-mm-zur-enchantress has restored control over themself
+Player Control: Ai(2)-mm-giada-angels has restored control over themself
+Player Control: Ai(3)-mm-vito has restored control over themself
+Player Control: Ai(4)-mm-baylen-tokens has restored control over themself
+Game Outcome: Turn 17
+Game Outcome: Ai(1)-mm-zur-enchantress has lost because life total reached 0
+Game Outcome: Ai(2)-mm-giada-angels has won because all opponents have lost
+Game Outcome: Ai(3)-mm-vito has lost because life total reached 0
+Game Outcome: Ai(4)-mm-baylen-tokens has lost because life total reached 0
+Match Result: Ai(1)-mm-zur-enchantress: 0 Ai(2)-mm-giada-angels: 1 Ai(3)-mm-vito: 0 Ai(4)-mm-baylen-tokens: 0 
+
+Game Result: Game 1 ended in 229284 ms. Ai(2)-mm-giada-angels has won!
+
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Giada, Font of Hope for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Warning: default (ie. inherited from base class) implementation of confirmAction is used by Baylen, the Haymaker for forge.ai.ability.PermanentCreatureAi. Consider declaring an overloaded method
+Mulligan: Ai(3)-mm-vito has mulliganed down to 7 cards.
+Mulligan: Ai(3)-mm-vito has mulliganed down to 6 cards.
+Mulligan: Ai(1)-mm-zur-enchantress has kept a hand of 7 cards
+Mulligan: Ai(2)-mm-giada-angels has kept a hand of 7 cards
+Mulligan: Ai(3)-mm-vito has kept a hand of 6 cards
+Mulligan: Ai(4)-mm-baylen-tokens has kept a hand of 7 cards
+Turn: Turn 1 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Island (35)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 2 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (187)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 3 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (260)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Bloodchief Ascension
+Resolve Stack: Bloodchief Ascension
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 4 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Jetmir's Garden enters tapped.
+Land: Ai(4)-mm-baylen-tokens played Jetmir's Garden (322)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 5 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Wizards' School (45)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 6 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Land: Ai(2)-mm-giada-angels played Plains (171)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Giada, Font of Hope
+Resolve Stack: Giada, Font of Hope - Creature 2 / 2
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 7 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Radiant Fountain (290)
+Add To Stack: Ai(3)-mm-vito triggered Radiant Fountain
+Life: Life: Ai(3)-mm-vito 40 > 42
+Resolve Stack: When Radiant Fountain enters, you gain 2 life. [Zone Changer: Radiant Fountain (290)]
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-vito cast Feed the Swarm targeting [Giada, Font of Hope (200)]
+Add To Stack: Ai(2)-mm-giada-angels cast Flawless Maneuver
+Resolve Stack: Flawless Maneuver (107) - Creatures you control gain indestructible until end of turn.
+Life: Life: Ai(3)-mm-vito 42 > 40
+Resolve Stack: Feed the Swarm (236) - Destroy Giada, Font of Hope (200). Ai(3)-mm-vito loses 2 life.
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 8 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Spectator Seating enters tapped unless you have two or more opponents.
+Land: Ai(4)-mm-baylen-tokens played Spectator Seating (380)
+Mana: Jetmir's Garden (322) - {T}: Add {G}.
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Aura Mutation targeting [Bloodchief Ascension (288)]
+Zone Change: Bloodchief Ascension (288) was put into Graveyard from Battlefield.
+Resolve Stack: Aura Mutation (368) - Destroy Bloodchief Ascension (288). 
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 9 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Swamp (54)
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Sorin of House Markov
+Resolve Stack: Sorin of House Markov - Creature 1 / 4
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 10 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Giada, Font of Hope (200) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Giada, Font of Hope (200).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Giada, Font of Hope (200) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 40 > 38
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Youthful Valkyrie
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Youthful Valkyrie - Creature 1 / 3
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 11 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-vito cast Go for the Throat targeting [Giada, Font of Hope (200)]
+Zone Change: Giada, Font of Hope (200) was put into Graveyard from Battlefield.
+Resolve Stack: Go for the Throat (270) - Destroy Giada, Font of Hope (200).
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (269)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 12 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Canopy Vista enters tapped unless you control two or more basic lands.
+Land: Ai(4)-mm-baylen-tokens played Canopy Vista (370)
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Jetmir's Garden (322) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (358)]
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 13 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played The Grey Havens (39)
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Grey Havens
+Resolve Stack: Ai(1)-mm-zur-enchantress scried 1 card(s) to the top of the library
+Resolve Stack: When The Grey Havens enters, scry 1. [Zone Changer: The Grey Havens (39)]
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Sorin of House Markov (63) to attack Ai(2)-mm-giada-angels.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(2)-mm-giada-angels assigned Youthful Valkyrie (143) to block Sorin of House Markov (63).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Sorin of House Markov (63) deals 1 damage to Youthful Valkyrie (143).
+Life: Life: Ai(1)-mm-zur-enchantress 38 > 39
+Damage: Youthful Valkyrie (143) deals 2 damage to Sorin of House Markov (63).
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Mana: The Grey Havens (39) - {T}: Add {C}.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Misfortune Teller
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Resolve Stack: Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.) [Card: Misfortune Teller (81), Activator: Ai(1)-mm-zur-enchantress, SpellAbility: Misfortune Teller - Creature 3 / 1]
+Resolve Stack: Misfortune Teller - Creature 3 / 1
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Misfortune Teller targeting [Flawless Maneuver (107)]
+Life: Life: Ai(1)-mm-zur-enchantress 39 > 42
+Resolve Stack: Whenever Misfortune Teller enters or deals combat damage to a player, exile target card from a graveyard. If it was a creature card, create a 2/2 black Rogue creature token. If it was a land card, create a Treasure token. Otherwise, you gain 3 life. (Targeting: [[Flawless Maneuver (107)]]) [Zone Changer: Misfortune Teller (81)]
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 14 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Youthful Valkyrie (143) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Youthful Valkyrie (143).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Youthful Valkyrie (143) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 42 > 40
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Pearl Medallion
+Resolve Stack: Pearl Medallion
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 15 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Add To Stack: Ai(3)-mm-vito cast Infernal Grasp targeting [Misfortune Teller (81)]
+Zone Change: Misfortune Teller (81) was put into Graveyard from Battlefield.
+Life: Life: Ai(3)-mm-vito 40 > 38
+Resolve Stack: Infernal Grasp (293) - Destroy Misfortune Teller (81). Ai(3)-mm-vito loses 2 life.
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 16 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Forest (328)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Hare Apparent (358) and Saproling Token (406) to attack Ai(2)-mm-giada-angels.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(2)-mm-giada-angels didn't block Hare Apparent (358).
+Ai(2)-mm-giada-angels didn't block Saproling Token (406).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Hare Apparent (358) deals 2 combat damage to Ai(2)-mm-giada-angels.
+Damage: Saproling Token (406) deals 1 combat damage to Ai(2)-mm-giada-angels.
+Life: Life: Ai(2)-mm-giada-angels 40 > 37
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Canopy Vista (370) - {T}: Add {G}.
+Mana: Jetmir's Garden (322) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Anointed Procession
+Resolve Stack: Anointed Procession
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 17 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Sorin of House Markov (63) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Sorin of House Markov (63).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Sorin of House Markov (63) deals 1 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(1)-mm-zur-enchantress 40 > 41
+Life: Life: Ai(4)-mm-baylen-tokens 40 > 39
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Mana: The Grey Havens (39) - {T}: Add {C}.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Solemn Simulacrum
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Resolve Stack: Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.) [Card: Solemn Simulacrum (41), Activator: Ai(1)-mm-zur-enchantress, SpellAbility: Solemn Simulacrum - Creature 2 / 2]
+Resolve Stack: Solemn Simulacrum - Creature 2 / 2
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Solemn Simulacrum
+Resolve Stack: When Solemn Simulacrum enters, you may search your library for a basic land card, put that card onto the battlefield tapped, then shuffle. [Zone Changer: Solemn Simulacrum (41)]
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 18 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Youthful Valkyrie (143) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Youthful Valkyrie (143).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Youthful Valkyrie (143) deals 2 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 39 > 37
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 19 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (265)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Veinwitch Coven
+Resolve Stack: Veinwitch Coven - Creature 3 / 3
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 20 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Plains (388)
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Plains (388) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Three Visits
+Replacement Effect: Cinder Glade enters tapped unless you control two or more basic lands.
+Resolve Stack: Three Visits (332) - Ai(4)-mm-baylen-tokens searches their library for a Forest card, puts it onto the battlefield, then shuffles.
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Hare Apparent (358) and Saproling Token (406) to attack Ai(2)-mm-giada-angels.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(2)-mm-giada-angels didn't block Hare Apparent (358).
+Ai(2)-mm-giada-angels didn't block Saproling Token (406).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Hare Apparent (358) deals 2 combat damage to Ai(2)-mm-giada-angels.
+Damage: Saproling Token (406) deals 1 combat damage to Ai(2)-mm-giada-angels.
+Life: Life: Ai(2)-mm-giada-angels 37 > 34
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Cinder Glade (313) - {T}: Add {R}.
+Mana: Canopy Vista (370) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker - Creature 4 / 3
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 21 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Mana: Plains (89) - {T}: Add {W}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Buster Sword
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Resolve Stack: Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.) [Card: Buster Sword (71), Activator: Ai(1)-mm-zur-enchantress, SpellAbility: Buster Sword]
+Resolve Stack: Buster Sword
+Mana: The Grey Havens (39) - {T}: Add {C}.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Buster Sword targeting [Sorin of House Markov (63)]
+Resolve Stack: Buster Sword (71) -  Attach to Sorin of House Markov (63)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Sorin of House Markov (63) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Baylen, the Haymaker (402) to block Sorin of House Markov (63).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Sorin of House Markov (63) deals 4 damage to Baylen, the Haymaker (402).
+Life: Life: Ai(1)-mm-zur-enchantress 41 > 45
+Damage: Baylen, the Haymaker (402) deals 4 damage to Sorin of House Markov (63).
+Zone Change: Baylen, the Haymaker (402) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Zone Change: Sorin of House Markov (63) was put into Exile from Battlefield.
+Replacement Effect: Sorin, Ravenous Neonate enters with three loyalty counters on it.
+Resolve Stack: At the beginning of each of your postcombat main phases, if you gained 3 or more life this turn, exile Sorin of House Markov, then return him to the battlefield transformed under his owner's control. [Phase: Ai(1)-mm-zur-enchantress]
+Add To Stack: Ai(1)-mm-zur-enchantress activated Sorin, Ravenous Neonate targeting [Youthful Valkyrie (143)]
+Damage: Sorin, Ravenous Neonate (63) deals 4 damage to Youthful Valkyrie (143).
+Resolve Stack: Sorin, Ravenous Neonate (63) - Sorin, Ravenous Neonate (63) deals 4 damage to Youthful Valkyrie (143).
+Zone Change: Youthful Valkyrie (143) was put into Graveyard from Battlefield.
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 22 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Discard: Ai(2)-mm-giada-angels discards Avacyn, Angel of Hope (151).
+Turn: Turn 23 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Vito, Thorn of the Dusk Rose
+Resolve Stack: Vito, Thorn of the Dusk Rose - Creature 1 / 3
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Combat: Ai(3)-mm-vito assigned Veinwitch Coven (271) to attack Sorin, Ravenous Neonate (63).
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Veinwitch Coven (271).
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Zone Change: Sorin, Ravenous Neonate (63) was put into Graveyard from Battlefield.
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 24 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Mana: Plains (388) - {T}: Add {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Replacement Effect: If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (346)]
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Hare Apparent (358) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Solemn Simulacrum (41) to block Hare Apparent (358).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Hare Apparent (358) deals 2 damage to Solemn Simulacrum (41).
+Damage: Solemn Simulacrum (41) deals 2 damage to Hare Apparent (358).
+Zone Change: Hare Apparent (358) was put into Graveyard from Battlefield.
+Zone Change: Solemn Simulacrum (41) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Solemn Simulacrum
+Resolve Stack: When Solemn Simulacrum dies, you may draw a card. [Zone Changer: Solemn Simulacrum (41)]
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Mana: Canopy Vista (370) - {T}: Add {G}.
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Cinder Glade (313) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Cultivate
+Resolve Stack: Cultivate (331) - Search your library for up to two basic land cards, reveal those cards, put one onto the battlefield tapped and the other into your hand, then shuffle.   
+Land: Ai(4)-mm-baylen-tokens played Plains (389)
+Mana: Plains (389) - {T}: Add {W}.
+Mana: Jetmir's Garden (322) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Idol of Oblivion
+Resolve Stack: Idol of Oblivion
+Add To Stack: Ai(4)-mm-baylen-tokens activated Idol of Oblivion
+Resolve Stack: Idol of Oblivion (374) - Ai(4)-mm-baylen-tokens draws a card.
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 25 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Mana: Plains (89) - {T}: Add {W}.
+Mana: The Grey Havens (39) - {T}: Add one mana of any color among legendary creature cards in your graveyard.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Kuldotha Forgemaster
+Resolve Stack: Kuldotha Forgemaster - Creature 3 / 5
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 26 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Discard: Ai(2)-mm-giada-angels discards Sephara, Sky's Blade (123).
+Turn: Turn 27 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Combat: Ai(3)-mm-vito assigned Veinwitch Coven (271) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Veinwitch Coven (271).
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Damage: Veinwitch Coven (271) deals 3 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 37 > 34
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Bontu's Monument
+Resolve Stack: Bontu's Monument
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 28 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Replacement Effect: Sunpetal Grove enters tapped unless you control a Forest or a Plains.
+Land: Ai(4)-mm-baylen-tokens played Sunpetal Grove (365)
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Plains (388) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Swiftfoot Boots
+Resolve Stack: Swiftfoot Boots
+Mana: Mountain (384) - {T}: Add {R}.
+Mana: Sunpetal Grove (365) - {T}: Add {G} or {W}.
+Mana: Plains (389) - {T}: Add {W}.
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Canopy Vista (370) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker - Creature 4 / 3
+Mana: Cinder Glade (313) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens activated Swiftfoot Boots targeting [Baylen, the Haymaker (402)]
+Resolve Stack: Swiftfoot Boots (338) -  Attach to Baylen, the Haymaker (402)
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Baylen, the Haymaker (402) to attack Ai(3)-mm-vito.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Baylen, the Haymaker (402).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Baylen, the Haymaker (402) deals 4 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(3)-mm-vito 38 > 34
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 29 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Mana: Plains (89) - {T}: Add {W}.
+Mana: Swamp (54) - {T}: Add {B}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast All That Glitters targeting [Kuldotha Forgemaster (11)]
+Resolve Stack: All That Glitters (30) -  Attach to Kuldotha Forgemaster (11)
+Mana: Island (35) - {T}: Add {U}.
+Mana: The Grey Havens (39) - {T}: Add one mana of any color among legendary creature cards in your graveyard.
+Add To Stack: Ai(1)-mm-zur-enchantress cast Brotherhood Regalia
+Resolve Stack: Brotherhood Regalia
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Kuldotha Forgemaster (11) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Kuldotha Forgemaster (11).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Kuldotha Forgemaster (11) deals 8 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 34 > 26
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 30 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Replacement Effect: As Cavern of Souls enters, choose a creature type.
+Land: Ai(2)-mm-giada-angels played Cavern of Souls (156)
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Add To Stack: Ai(2)-mm-giada-angels cast Giada, Font of Hope
+Resolve Stack: Giada, Font of Hope - Creature 2 / 2
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 31 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (246)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (265) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito activated Vito, Thorn of the Dusk Rose
+Resolve Stack: Vito, Thorn of the Dusk Rose (301) - Creatures you control gain lifelink until end of turn.
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Combat: Ai(3)-mm-vito assigned Veinwitch Coven (271) and Vito, Thorn of the Dusk Rose (301) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Veinwitch Coven (271).
+Ai(4)-mm-baylen-tokens assigned Hare Apparent (346) to block Vito, Thorn of the Dusk Rose (301).
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Damage: Veinwitch Coven (271) deals 3 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(3)-mm-vito 34 > 37
+Damage: Vito, Thorn of the Dusk Rose (301) deals 1 damage to Hare Apparent (346).
+Life: Life: Ai(3)-mm-vito 37 > 38
+Damage: Hare Apparent (346) deals 2 damage to Vito, Thorn of the Dusk Rose (301).
+Life: Life: Ai(4)-mm-baylen-tokens 26 > 23
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(4)-mm-baylen-tokens]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(4)-mm-baylen-tokens]
+Life: Life: Ai(4)-mm-baylen-tokens 23 > 22
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(4)-mm-baylen-tokens]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Life: Life: Ai(4)-mm-baylen-tokens 22 > 19
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(4)-mm-baylen-tokens]]) [Player: Ai(3)-mm-vito, Gained Amount: 3]
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 32 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Land: Ai(4)-mm-baylen-tokens played Mountain (386)
+Mana: Plains (388) - {T}: Add {W}.
+Mana: Plains (389) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Replacement Effect: If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (351)]
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Combat: Ai(4)-mm-baylen-tokens assigned Baylen, the Haymaker (402), Hare Apparent (346), Saproling Token (406), Rabbit Token (414) and Rabbit Token (415) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Baylen, the Haymaker (402).
+Ai(1)-mm-zur-enchantress didn't block Hare Apparent (346).
+Ai(1)-mm-zur-enchantress didn't block Saproling Token (406).
+Ai(1)-mm-zur-enchantress didn't block Rabbit Token (414).
+Ai(1)-mm-zur-enchantress didn't block Rabbit Token (415).
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Damage: Baylen, the Haymaker (402) deals 4 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Hare Apparent (346) deals 2 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Saproling Token (406) deals 1 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Rabbit Token (414) deals 1 combat damage to Ai(1)-mm-zur-enchantress.
+Damage: Rabbit Token (415) deals 1 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 45 > 36
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Add To Stack: Ai(4)-mm-baylen-tokens activated Idol of Oblivion
+Resolve Stack: Idol of Oblivion (374) - Ai(4)-mm-baylen-tokens draws a card.
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Mountain (384) - {T}: Add {R}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Cadira, Caller of the Small
+Resolve Stack: Cadira, Caller of the Small - Creature 3 / 3
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 33 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Land: Ai(1)-mm-zur-enchantress played Lazotep Quarry (66)
+Mana: Plains (89) - {T}: Add {W}.
+Mana: Swamp (54) - {T}: Add {B}.
+Mana: Island (35) - {T}: Add {U}.
+Add To Stack: Ai(1)-mm-zur-enchantress cast The Restoration of Eiganjo
+Replacement Effect: The Restoration of Eiganjo enters with a lore counter on it.
+Resolve Stack: The Restoration of Eiganjo
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Resolve Stack: I — Search your library for a basic Plains card, reveal it, put it into your hand, then shuffle. [Added once: The Restoration of Eiganjo (52)]
+Mana: The Grey Havens (39) - {T}: Add one mana of any color among legendary creature cards in your graveyard.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Mana: Lazotep Quarry (66) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Brotherhood Regalia targeting [Kuldotha Forgemaster (11)]
+Resolve Stack: Brotherhood Regalia (94) -  Attach to Kuldotha Forgemaster (11)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Kuldotha Forgemaster (11) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Kuldotha Forgemaster (11).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Kuldotha Forgemaster (11) deals 9 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 19 > 10
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 34 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Mana: Giada, Font of Hope (200) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(2)-mm-giada-angels cast Lyra Dawnbringer
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Lyra Dawnbringer - Creature 5 / 5
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Discard: Ai(1)-mm-zur-enchantress discards Plains (87).
+Add To Stack: Ai(1)-mm-zur-enchantress activated The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook (31) - Ai(1)-mm-zur-enchantress creates a Food token. (It's an artifact with "{2}, {T}, Sacrifice this token: You gain 3 life.")
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 35 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (265) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Diabolic Tutor
+Resolve Stack: Diabolic Tutor (228) - Ai(3)-mm-vito searches their library for a card, reveals it, puts it into their hand, then shuffles.
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 36 (Ai(4)-mm-baylen-tokens)
+Phase: Ai(4)-mm-baylen-tokens' Untap step
+Phase: Ai(4)-mm-baylen-tokens' Upkeep step
+Phase: Ai(4)-mm-baylen-tokens' Draw step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, precombat
+Mana: Plains (388) - {T}: Add {W}.
+Mana: Plains (389) - {T}: Add {W}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Hare Apparent
+Resolve Stack: Hare Apparent - Creature 2 / 2
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Hare Apparent
+Replacement Effect: If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.
+Resolve Stack: When this creature enters, create a number of 1/1 white Rabbit creature tokens equal to the number of other creatures you control named Hare Apparent. [Zone Changer: Hare Apparent (350)]
+Phase: Ai(4)-mm-baylen-tokens' Beginning of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Attackers Step
+Phase: Ai(4)-mm-baylen-tokens' Declare Blockers Step
+Phase: Ai(4)-mm-baylen-tokens' First Strike Damage Step
+Phase: Ai(4)-mm-baylen-tokens' Combat Damage Step
+Phase: Ai(4)-mm-baylen-tokens' End of Combat Step
+Phase: Ai(4)-mm-baylen-tokens' Main phase, postcombat
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Land: Ai(4)-mm-baylen-tokens played Forest (327)
+Add To Stack: Ai(4)-mm-baylen-tokens activated Baylen, the Haymaker
+Resolve Stack: Baylen, the Haymaker (402) - Ai(4)-mm-baylen-tokens draws a card.
+Add To Stack: Ai(4)-mm-baylen-tokens activated Idol of Oblivion
+Resolve Stack: Idol of Oblivion (374) - Ai(4)-mm-baylen-tokens draws a card.
+Mana: Spectator Seating (380) - {T}: Add {R} or {W}.
+Mana: Forest (328) - {T}: Add {G}.
+Mana: Mountain (384) - {T}: Add {R}.
+Mana: Mountain (386) - {T}: Add {R}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Smothering Tithe
+Resolve Stack: Smothering Tithe
+Mana: Sunpetal Grove (365) - {T}: Add {G} or {W}.
+Mana: Forest (327) - {T}: Add {G}.
+Add To Stack: Ai(4)-mm-baylen-tokens cast Intangible Virtue
+Resolve Stack: Intangible Virtue
+Phase: Ai(4)-mm-baylen-tokens' End step
+Phase: Ai(4)-mm-baylen-tokens' Cleanup step
+Turn: Turn 37 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Add To Stack: Ai(4)-mm-baylen-tokens triggered Smothering Tithe
+Replacement Effect: If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead.
+Resolve Stack: Whenever an opponent draws a card, that player may pay {2}. If the player doesn't, you create a Treasure token. (It's an artifact with "{T}, Sacrifice this token: Add one mana of any color.") [Player: Ai(1)-mm-zur-enchantress]
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Discard: Ai(1)-mm-zur-enchantress discards Laboratory Maniac (61).
+Resolve Stack: II — You may discard a card. When you do, return target permanent card with mana value 2 or less from your graveyard to the battlefield tapped. [Added once: The Restoration of Eiganjo (52)]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo targeting [Sorin of House Markov (63)]
+Resolve Stack: You may discard a card. When you do, return target permanent card with mana value 2 or less from your graveyard to the battlefield tapped. (Targeting: [[Sorin of House Markov (63)]])
+Mana: Plains (89) - {T}: Add {W}.
+Mana: Swamp (54) - {T}: Add {B}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Buster Sword targeting [Kuldotha Forgemaster (11)]
+Resolve Stack: Buster Sword (71) -  Attach to Kuldotha Forgemaster (11)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Kuldotha Forgemaster (11) to attack Ai(4)-mm-baylen-tokens.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(4)-mm-baylen-tokens didn't block Kuldotha Forgemaster (11).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Kuldotha Forgemaster (11) deals 13 combat damage to Ai(4)-mm-baylen-tokens.
+Life: Life: Ai(4)-mm-baylen-tokens 10 > -3
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Buster Sword
+Add To Stack: Ai(1)-mm-zur-enchantress cast Silver Surfer, Galactus's Herald
+Resolve Stack: Whenever equipped creature deals combat damage to a player, draw a card, then you may cast a spell from your hand with mana value less than or equal to that damage without paying its mana cost. [Damage Source: Kuldotha Forgemaster (11), Damaged: Ai(4)-mm-baylen-tokens, Amount: 13]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Zone Change: Kuldotha Forgemaster (11) was put into Graveyard from Battlefield.
+Mana: Lazotep Quarry (66) - {T}, Sacrifice a creature: Add one mana of any color.
+Life: Life: Ai(2)-mm-giada-angels 34 > 33
+Life: Life: Ai(3)-mm-vito 38 > 37
+Life: Life: Ai(1)-mm-zur-enchantress 36 > 38
+Resolve Stack: Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.) [Card: Silver Surfer, Galactus's Herald (1), Activator: Ai(1)-mm-zur-enchantress, SpellAbility: Silver Surfer, Galactus's Herald - Creature 4 / 5 (without paying its mana cost)]
+Zone Change: All That Glitters (30) was put into Graveyard from Battlefield.
+Resolve Stack: Silver Surfer, Galactus's Herald - Creature 4 / 5
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Silver Surfer, Galactus's Herald
+Resolve Stack: When Silver Surfer enters, you may search your library for a card named Galactus, Devourer of Worlds, reveal it, put it into your hand, then shuffle. [Zone Changer: Silver Surfer, Galactus's Herald (1)]
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Mana: Island (35) - {T}: Add {U}.
+Mana: The Grey Havens (39) - {T}: Add {C}.
+Mana: Wizards' School (45) - {T}: Add {C}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Brotherhood Regalia targeting [Silver Surfer, Galactus's Herald (1)]
+Resolve Stack: Brotherhood Regalia (94) -  Attach to Silver Surfer, Galactus's Herald (1)
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 38 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add {C}.
+Add To Stack: Ai(2)-mm-giada-angels cast Akroma's Will
+Resolve Stack: Akroma's Will (115) -  Creatures you control gain flying, vigilance, and double strike until end of turn. Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Lyra Dawnbringer (158) and Giada, Font of Hope (200) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Lyra Dawnbringer (158).
+Ai(1)-mm-zur-enchantress didn't block Giada, Font of Hope (200).
+Discard: Ai(1)-mm-zur-enchantress discards Tarnished Citadel (76).
+Add To Stack: Ai(1)-mm-zur-enchantress activated The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook (31) - Ai(1)-mm-zur-enchantress creates a Food token. (It's an artifact with "{2}, {T}, Sacrifice this token: You gain 3 life.")
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 6 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(2)-mm-giada-angels 33 > 39
+Damage: Giada, Font of Hope (200) deals 3 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(2)-mm-giada-angels 39 > 42
+Life: Life: Ai(1)-mm-zur-enchantress 38 > 29
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Lyra Dawnbringer (158) deals 6 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(2)-mm-giada-angels 42 > 48
+Damage: Giada, Font of Hope (200) deals 3 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(2)-mm-giada-angels 48 > 51
+Life: Life: Ai(1)-mm-zur-enchantress 29 > 20
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 39 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Land: Ai(3)-mm-vito played Swamp (258)
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Combat: Ai(3)-mm-vito assigned Veinwitch Coven (271) to attack Ai(1)-mm-zur-enchantress.
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Combat: Ai(1)-mm-zur-enchantress didn't block Veinwitch Coven (271).
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Damage: Veinwitch Coven (271) deals 3 combat damage to Ai(1)-mm-zur-enchantress.
+Life: Life: Ai(1)-mm-zur-enchantress 20 > 17
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Nighthawk Scavenger
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(1)-mm-zur-enchantress 17 > 16
+Life: Life: Ai(2)-mm-giada-angels 51 > 50
+Life: Life: Ai(3)-mm-vito 37 > 38
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Nighthawk Scavenger (222), Activator: Ai(3)-mm-vito, SpellAbility: Nighthawk Scavenger - Creature 1+* / 3]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Life: Life: Ai(1)-mm-zur-enchantress 16 > 15
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Nighthawk Scavenger - Creature 1+* / 3
+Mana: Swamp (265) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Cordial Vampire
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(1)-mm-zur-enchantress 15 > 14
+Life: Life: Ai(2)-mm-giada-angels 50 > 49
+Life: Life: Ai(3)-mm-vito 38 > 39
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Cordial Vampire (292), Activator: Ai(3)-mm-vito, SpellAbility: Cordial Vampire - Creature 1 / 1]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Life: Life: Ai(1)-mm-zur-enchantress 14 > 13
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Cordial Vampire - Creature 1 / 1
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 40 (Ai(1)-mm-zur-enchantress)
+Phase: Ai(1)-mm-zur-enchantress' Untap step
+Phase: Ai(1)-mm-zur-enchantress' Upkeep step
+Phase: Ai(1)-mm-zur-enchantress' Draw step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, precombat
+Add To Stack: Ai(1)-mm-zur-enchantress triggered The Restoration of Eiganjo
+Zone Change: The Restoration of Eiganjo (52) was put into Exile from Battlefield.
+Resolve Stack: III — Exile this Saga, then return it to the battlefield transformed under your control. [Added once: The Restoration of Eiganjo (52)]
+Mana: Plains (89) - {T}: Add {W}.
+Mana: Swamp (54) - {T}: Add {B}.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Buster Sword targeting [Silver Surfer, Galactus's Herald (1)]
+Resolve Stack: Buster Sword (71) -  Attach to Silver Surfer, Galactus's Herald (1)
+Phase: Ai(1)-mm-zur-enchantress' Beginning of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Declare Attackers Step
+Combat: Ai(1)-mm-zur-enchantress assigned Silver Surfer, Galactus's Herald (1) to attack Ai(3)-mm-vito.
+Phase: Ai(1)-mm-zur-enchantress' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Silver Surfer, Galactus's Herald (1).
+Phase: Ai(1)-mm-zur-enchantress' First Strike Damage Step
+Phase: Ai(1)-mm-zur-enchantress' Combat Damage Step
+Damage: Silver Surfer, Galactus's Herald (1) deals 7 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(3)-mm-vito 39 > 32
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Silver Surfer, Galactus's Herald targeting [Lyra Dawnbringer (158)]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Buster Sword
+Add To Stack: Ai(1)-mm-zur-enchantress cast Dauntless Scrapbot
+Resolve Stack: Whenever equipped creature deals combat damage to a player, draw a card, then you may cast a spell from your hand with mana value less than or equal to that damage without paying its mana cost. [Damage Source: Silver Surfer, Galactus's Herald (1), Damaged: Ai(3)-mm-vito, Amount: 7]
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Sorin of House Markov
+Zone Change: Architect of Restoration (52) was put into Graveyard from Battlefield.
+Mana: Lazotep Quarry (66) - {T}, Sacrifice a creature: Add one mana of any color.
+Life: Life: Ai(2)-mm-giada-angels 49 > 48
+Life: Life: Ai(3)-mm-vito 32 > 31
+Life: Life: Ai(1)-mm-zur-enchantress 13 > 15
+Resolve Stack: Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.) [Card: Dauntless Scrapbot (48), Activator: Ai(1)-mm-zur-enchantress, SpellAbility: Dauntless Scrapbot - Creature 3 / 1 (without paying its mana cost)]
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Architect of Restoration (52)]
+Resolve Stack: Dauntless Scrapbot - Creature 3 / 1
+Add To Stack: Ai(1)-mm-zur-enchantress triggered Dauntless Scrapbot
+Resolve Stack: When this creature enters, exile each opponent's graveyard. Create a Lander token. (It's an artifact with "{2}, {T}, Sacrifice this token: Search your library for a basic land card, put it onto the battlefield tapped, then shuffle.") [Zone Changer: Dauntless Scrapbot (48)]
+Resolve Stack: Whenever Silver Surfer deals combat damage to a player, until the end of your next turn, target creature attacks that player each combat if able. (Targeting: [[Lyra Dawnbringer (158)]]) [Damage Source: Silver Surfer, Galactus's Herald (1), Damaged: Ai(3)-mm-vito, Amount: 7]
+Mana: Island (35) - {T}: Add {U}.
+Mana: The Grey Havens (39) - {T}: Add {C}.
+Zone Change: Lander Token (640) was put into Graveyard from Battlefield.
+Add To Stack: Ai(1)-mm-zur-enchantress activated Lander Token
+Resolve Stack: Lander Token (640) - Ai(1)-mm-zur-enchantress searches their library for a basic land card, puts it onto the battlefield tapped, then shuffles.
+Phase: Ai(1)-mm-zur-enchantress' End of Combat Step
+Phase: Ai(1)-mm-zur-enchantress' Main phase, postcombat
+Phase: Ai(1)-mm-zur-enchantress' End step
+Phase: Ai(1)-mm-zur-enchantress' Cleanup step
+Turn: Turn 41 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Mana: Giada, Font of Hope (200) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(2)-mm-giada-angels cast Archangel of Thune
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Archangel of Thune - Creature 3 / 4
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Lyra Dawnbringer (158) to attack Ai(3)-mm-vito.
+Discard: Ai(1)-mm-zur-enchantress discards Gemstone Caverns (78).
+Add To Stack: Ai(1)-mm-zur-enchantress activated The Underworld Cookbook
+Resolve Stack: The Underworld Cookbook (31) - Ai(1)-mm-zur-enchantress creates a Food token. (It's an artifact with "{2}, {T}, Sacrifice this token: You gain 3 life.")
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Lyra Dawnbringer (158).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 6 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 48 > 54
+Life: Life: Ai(3)-mm-vito 31 > 25
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 6]
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 42 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (265) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Gray Merchant of Asphodel
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(1)-mm-zur-enchantress 15 > 14
+Life: Life: Ai(2)-mm-giada-angels 54 > 53
+Life: Life: Ai(3)-mm-vito 25 > 26
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Gray Merchant of Asphodel (218), Activator: Ai(3)-mm-vito, SpellAbility: Gray Merchant of Asphodel - Creature 2 / 4]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Life: Life: Ai(1)-mm-zur-enchantress 14 > 13
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Gray Merchant of Asphodel - Creature 2 / 4
+Add To Stack: Ai(3)-mm-vito triggered Gray Merchant of Asphodel
+Life: Life: Ai(1)-mm-zur-enchantress 13 > 5
+Life: Life: Ai(2)-mm-giada-angels 53 > 45
+Life: Life: Ai(3)-mm-vito 26 > 42
+Resolve Stack: When Gray Merchant of Asphodel enters, each opponent loses X life, where X is your devotion to black. You gain life equal to the life lost this way. [Zone Changer: Gray Merchant of Asphodel (218)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(1)-mm-zur-enchantress]
+Life: Life: Ai(1)-mm-zur-enchantress 5 > -11
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(1)-mm-zur-enchantress]]) [Player: Ai(3)-mm-vito, Gained Amount: 16]
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 43 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Mana: Giada, Font of Hope (200) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(2)-mm-giada-angels cast Herald of War
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Herald of War - Creature 3 / 3
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Lyra Dawnbringer (158) and Archangel of Thune (135) to attack Ai(3)-mm-vito.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Lyra Dawnbringer (158).
+Ai(3)-mm-vito assigned Nighthawk Scavenger (222) to block Archangel of Thune (135).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 7 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 45 > 52
+Life: Life: Ai(3)-mm-vito 42 > 35
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 7]
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Archangel of Thune (135) deals 8 damage to Nighthawk Scavenger (222).
+Life: Life: Ai(2)-mm-giada-angels 52 > 60
+Damage: Nighthawk Scavenger (222) deals 2 damage (Deathtouch) to Archangel of Thune (135).
+Life: Life: Ai(3)-mm-vito 35 > 37
+Zone Change: Archangel of Thune (135) was put into Graveyard from Battlefield.
+Zone Change: Nighthawk Scavenger (222) was put into Graveyard from Battlefield.
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Add To Stack: Ai(3)-mm-vito triggered Veinwitch Coven targeting [Nighthawk Scavenger (222)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Nighthawk Scavenger (222)]
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Archangel of Thune (135)]
+Life: Life: Ai(2)-mm-giada-angels 60 > 58
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Mana: Swamp (246) - {T}: Add {B}.
+Resolve Stack: Whenever you gain life, you may pay {B}. If you do, return target creature card from your graveyard to your hand. (Targeting: [[Nighthawk Scavenger (222)]]) [Player: Ai(3)-mm-vito, Gained Amount: 2]
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 8]
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 44 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Combat: Ai(3)-mm-vito assigned Veinwitch Coven (271) to attack Ai(2)-mm-giada-angels.
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Combat: Ai(2)-mm-giada-angels didn't block Veinwitch Coven (271).
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Damage: Veinwitch Coven (271) deals 6 combat damage to Ai(2)-mm-giada-angels.
+Life: Life: Ai(2)-mm-giada-angels 58 > 52
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Nighthawk Scavenger
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(2)-mm-giada-angels 52 > 51
+Life: Life: Ai(3)-mm-vito 37 > 38
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Nighthawk Scavenger (222), Activator: Ai(3)-mm-vito, SpellAbility: Nighthawk Scavenger - Creature 1+* / 3]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 51 > 50
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Nighthawk Scavenger - Creature 1+* / 3
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (265) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Pristine Talisman
+Resolve Stack: Pristine Talisman
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 45 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Add To Stack: Ai(2)-mm-giada-angels cast Stroke of Midnight targeting [Gray Merchant of Asphodel (218)]
+Zone Change: Gray Merchant of Asphodel (218) was put into Graveyard from Battlefield.
+Resolve Stack: Stroke of Midnight (165) - Destroy Gray Merchant of Asphodel (218). 
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Gray Merchant of Asphodel (218)]
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Mana: Giada, Font of Hope (200) - {T}: Add {W}. Spend this mana only to cast an Angel spell.
+Add To Stack: Ai(2)-mm-giada-angels cast Bruna, the Fading Light
+Add To Stack: Ai(2)-mm-giada-angels triggered Bruna, the Fading Light targeting [Archangel of Thune (135)]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: When you cast Bruna, the Fading Light, you may return target Angel or Human creature card from your graveyard to the battlefield. (Targeting: [[Archangel of Thune (135)]]) [Card: Bruna, the Fading Light (148), Activator: Ai(2)-mm-giada-angels, SpellAbility: Bruna, the Fading Light - Creature 5 / 7]
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Bruna, the Fading Light - Creature 5 / 7
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Herald of War (140) and Lyra Dawnbringer (158) to attack Ai(3)-mm-vito.
+Add To Stack: Ai(2)-mm-giada-angels triggered Herald of War
+Resolve Stack: Whenever Herald of War attacks, put a +1/+1 counter on it. [Attacker: Herald of War (140)]
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito assigned Nighthawk Scavenger (222) to block Herald of War (140).
+Ai(3)-mm-vito didn't block Lyra Dawnbringer (158).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 9 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 50 > 59
+Life: Life: Ai(3)-mm-vito 38 > 29
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 9]
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Herald of War (140) deals 11 damage to Nighthawk Scavenger (222).
+Life: Life: Ai(2)-mm-giada-angels 59 > 70
+Damage: Nighthawk Scavenger (222) deals 3 damage (Deathtouch) to Herald of War (140).
+Life: Life: Ai(3)-mm-vito 29 > 32
+Zone Change: Herald of War (140) was put into Graveyard from Battlefield.
+Zone Change: Nighthawk Scavenger (222) was put into Graveyard from Battlefield.
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Add To Stack: Ai(3)-mm-vito triggered Veinwitch Coven targeting [Nighthawk Scavenger (222)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Add To Stack: Ai(3)-mm-vito triggered Cordial Vampire
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Nighthawk Scavenger (222)]
+Resolve Stack: Whenever Cordial Vampire or another creature dies, put a +1/+1 counter on each Vampire you control. [Zone Changer: Herald of War (140)]
+Life: Life: Ai(2)-mm-giada-angels 70 > 67
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 3]
+Mana: Swamp (258) - {T}: Add {B}.
+Resolve Stack: Whenever you gain life, you may pay {B}. If you do, return target creature card from your graveyard to your hand. (Targeting: [[Nighthawk Scavenger (222)]]) [Player: Ai(3)-mm-vito, Gained Amount: 3]
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 11]
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Life: Life: Ai(3)-mm-vito 32 > 33
+Mana: Pristine Talisman (291) - {T}: Add {C}. You gain 1 life. 
+Add To Stack: Ai(3)-mm-vito triggered Veinwitch Coven targeting [Gray Merchant of Asphodel (218)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 67 > 66
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Whenever you gain life, you may pay {B}. If you do, return target creature card from your graveyard to your hand. (Targeting: [[Gray Merchant of Asphodel (218)]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 46 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Nighthawk Scavenger
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(2)-mm-giada-angels 66 > 65
+Life: Life: Ai(3)-mm-vito 33 > 34
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Nighthawk Scavenger (222), Activator: Ai(3)-mm-vito, SpellAbility: Nighthawk Scavenger - Creature 1+* / 3]
+Add To Stack: Ai(3)-mm-vito triggered Veinwitch Coven targeting [Gray Merchant of Asphodel (218)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 65 > 64
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Mana: Swamp (265) - {T}: Add {B}.
+Resolve Stack: Whenever you gain life, you may pay {B}. If you do, return target creature card from your graveyard to your hand. (Targeting: [[Gray Merchant of Asphodel (218)]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Nighthawk Scavenger - Creature 1+* / 3
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Swamp (258) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Life: Life: Ai(3)-mm-vito 34 > 35
+Mana: Pristine Talisman (291) - {T}: Add {C}. You gain 1 life. 
+Add To Stack: Ai(3)-mm-vito cast Gray Merchant of Asphodel
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Add To Stack: Ai(3)-mm-vito triggered Bontu's Monument
+Life: Life: Ai(2)-mm-giada-angels 64 > 63
+Life: Life: Ai(3)-mm-vito 35 > 36
+Resolve Stack: Whenever you cast a creature spell, each opponent loses 1 life and you gain 1 life. [Card: Gray Merchant of Asphodel (218), Activator: Ai(3)-mm-vito, SpellAbility: Gray Merchant of Asphodel - Creature 2 / 4]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 63 > 62
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Life: Life: Ai(2)-mm-giada-angels 62 > 61
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Gray Merchant of Asphodel - Creature 2 / 4
+Add To Stack: Ai(3)-mm-vito triggered Gray Merchant of Asphodel
+Life: Life: Ai(2)-mm-giada-angels 61 > 53
+Life: Life: Ai(3)-mm-vito 36 > 44
+Resolve Stack: When Gray Merchant of Asphodel enters, each opponent loses X life, where X is your devotion to black. You gain life equal to the life lost this way. [Zone Changer: Gray Merchant of Asphodel (218)]
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 53 > 45
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 8]
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 47 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Add To Stack: Ai(2)-mm-giada-angels cast Exemplar of Light
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Exemplar of Light - Creature 3 / 3
+Add To Stack: Ai(2)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you put one or more +1/+1 counters on this creature, draw a card. This ability triggers only once each turn. [Added once: Exemplar of Light (159) Amount: 4]
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Lyra Dawnbringer (158) to attack Ai(3)-mm-vito.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito didn't block Lyra Dawnbringer (158).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 11 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 45 > 56
+Life: Life: Ai(3)-mm-vito 44 > 33
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Add To Stack: Ai(2)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on this creature. [Player: Ai(2)-mm-giada-angels, Gained Amount: 11]
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 11]
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Phase: Ai(2)-mm-giada-angels' End of Combat Step
+Phase: Ai(2)-mm-giada-angels' Main phase, postcombat
+Phase: Ai(2)-mm-giada-angels' End step
+Phase: Ai(2)-mm-giada-angels' Cleanup step
+Turn: Turn 48 (Ai(3)-mm-vito)
+Phase: Ai(3)-mm-vito's Untap step
+Phase: Ai(3)-mm-vito's Upkeep step
+Phase: Ai(3)-mm-vito's Draw step
+Phase: Ai(3)-mm-vito's Main phase, precombat
+Phase: Ai(3)-mm-vito's Beginning of Combat Step
+Phase: Ai(3)-mm-vito's Declare Attackers Step
+Phase: Ai(3)-mm-vito's Declare Blockers Step
+Phase: Ai(3)-mm-vito's First Strike Damage Step
+Phase: Ai(3)-mm-vito's Combat Damage Step
+Phase: Ai(3)-mm-vito's End of Combat Step
+Phase: Ai(3)-mm-vito's Main phase, postcombat
+Mana: Swamp (260) - {T}: Add {B}.
+Mana: Radiant Fountain (290) - {T}: Add {C}.
+Mana: Swamp (269) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Black Market Connections
+Resolve Stack: Black Market Connections
+Mana: Swamp (265) - {T}: Add {B}.
+Mana: Swamp (246) - {T}: Add {B}.
+Mana: Swamp (258) - {T}: Add {B}.
+Add To Stack: Ai(3)-mm-vito cast Staff of the Death Magus
+Resolve Stack: Staff of the Death Magus
+Life: Life: Ai(3)-mm-vito 33 > 34
+Mana: Pristine Talisman (291) - {T}: Add {C}. You gain 1 life. 
+Add To Stack: Ai(3)-mm-vito cast Sol Ring
+Add To Stack: Ai(3)-mm-vito triggered Vito, Thorn of the Dusk Rose targeting [Ai(2)-mm-giada-angels]
+Life: Life: Ai(2)-mm-giada-angels 56 > 55
+Resolve Stack: Whenever you gain life, target opponent loses that much life. (Targeting: [[Ai(2)-mm-giada-angels]]) [Player: Ai(3)-mm-vito, Gained Amount: 1]
+Resolve Stack: Sol Ring
+Phase: Ai(3)-mm-vito's End step
+Phase: Ai(3)-mm-vito's Cleanup step
+Turn: Turn 49 (Ai(2)-mm-giada-angels)
+Phase: Ai(2)-mm-giada-angels' Untap step
+Phase: Ai(2)-mm-giada-angels' Upkeep step
+Phase: Ai(2)-mm-giada-angels' Draw step
+Phase: Ai(2)-mm-giada-angels' Main phase, precombat
+Mana: Plains (187) - {T}: Add {W}.
+Mana: Plains (171) - {T}: Add {W}.
+Mana: Cavern of Souls (156) - {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.
+Add To Stack: Ai(2)-mm-giada-angels cast Gisela, the Broken Blade
+Replacement Effect: Each other Angel you control enters with an additional +1/+1 counter on it for each Angel you already control.
+Resolve Stack: Gisela, the Broken Blade - Creature 4 / 3
+Phase: Ai(2)-mm-giada-angels' Beginning of Combat Step
+Phase: Ai(2)-mm-giada-angels' Declare Attackers Step
+Combat: Ai(2)-mm-giada-angels assigned Bruna, the Fading Light (148), Lyra Dawnbringer (158), Archangel of Thune (135), Exemplar of Light (159) and Giada, Font of Hope (200) to attack Ai(3)-mm-vito.
+Phase: Ai(2)-mm-giada-angels' Declare Blockers Step
+Combat: Ai(3)-mm-vito assigned Nighthawk Scavenger (222) to block Bruna, the Fading Light (148).
+Ai(3)-mm-vito didn't block Lyra Dawnbringer (158).
+Ai(3)-mm-vito didn't block Archangel of Thune (135).
+Ai(3)-mm-vito didn't block Exemplar of Light (159).
+Ai(3)-mm-vito didn't block Giada, Font of Hope (200).
+Phase: Ai(2)-mm-giada-angels' First Strike Damage Step
+Damage: Lyra Dawnbringer (158) deals 12 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 55 > 67
+Life: Life: Ai(3)-mm-vito 34 > 22
+Add To Stack: Ai(2)-mm-giada-angels triggered Archangel of Thune
+Add To Stack: Ai(2)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on this creature. [Player: Ai(2)-mm-giada-angels, Gained Amount: 12]
+Add To Stack: Ai(2)-mm-giada-angels triggered Exemplar of Light
+Resolve Stack: Whenever you put one or more +1/+1 counters on this creature, draw a card. This ability triggers only once each turn. [Added once: Exemplar of Light (159) Amount: 1]
+Resolve Stack: Whenever you gain life, put a +1/+1 counter on each creature you control. [Player: Ai(2)-mm-giada-angels, Gained Amount: 12]
+Phase: Ai(2)-mm-giada-angels' Combat Damage Step
+Damage: Bruna, the Fading Light (148) deals 14 damage to Nighthawk Scavenger (222).
+Life: Life: Ai(2)-mm-giada-angels 67 > 81
+Damage: Archangel of Thune (135) deals 11 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 81 > 92
+Damage: Exemplar of Light (159) deals 12 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 92 > 104
+Damage: Giada, Font of Hope (200) deals 10 combat damage to Ai(3)-mm-vito.
+Life: Life: Ai(2)-mm-giada-angels 104 > 114
+Damage: Nighthawk Scavenger (222) deals 3 damage (Deathtouch) to Bruna, the Fading Light (148).
+Life: Life: Ai(3)-mm-vito 22 > 25
+Life: Life: Ai(3)-mm-vito 25 > -8
+Player Control: Ai(1)-mm-zur-enchantress has restored control over themself
+Player Control: Ai(2)-mm-giada-angels has restored control over themself
+Player Control: Ai(3)-mm-vito has restored control over themself
+Player Control: Ai(4)-mm-baylen-tokens has restored control over themself
+Game Outcome: Turn 25
+Game Outcome: Ai(1)-mm-zur-enchantress has lost because life total reached 0
+Game Outcome: Ai(2)-mm-giada-angels has won because all opponents have lost
+Game Outcome: Ai(3)-mm-vito has lost because life total reached 0
+Game Outcome: Ai(4)-mm-baylen-tokens has lost because life total reached 0
+Match Result: Ai(1)-mm-zur-enchantress: 0 Ai(2)-mm-giada-angels: 2 Ai(3)-mm-vito: 0 Ai(4)-mm-baylen-tokens: 0 
+
+Game Result: Game 2 ended in 131135 ms. Ai(2)-mm-giada-angels has won!
+
