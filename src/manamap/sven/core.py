@@ -66,34 +66,35 @@ class Session:
         return value
 
     def _dispatch(self, name, kw):
-        if name == "run_readonly":
-            argv = [str(a) for a in (kw.get("argv") or [])]
-            head = argv[1] if argv[:1] == ["pilot"] else (argv[0] if argv else "")
-            if head in tools.VOLATILE:
-                self.uncacheable.append(
-                    f"{head} is true only at the moment it is asked")
-            self.touched.update(str(p) for p in tools.depends_on(argv))
-            return tools.run(argv, facts=self.facts)
+        """ONE DISPATCHER, over `sven.api`'s one registry.
+
+        This used to be a second `if name ==` chain beside `mcp_server`'s, which
+        is how the two transports came to disagree about what a capability is
+        called. The session still owns what only it can: the fact cache, and the
+        ledger of what a turn touched.
+        """
+        from manamap.sven import api
+
         if name == "deck_state":
-            # RESOLVE FIRST, then record what was touched. The other order meant
-            # the dependency walk saw the pilot's shorthand ("zur") rather than
-            # the deck ("zur-enchantress"), so the answer was keyed on the wrong
-            # directory even when it worked.
-            slug = tools.resolve_slug(kw["slug"])
-            self.touched.update(str(p) for p in tools.depends_on(["deck-info", slug]))
-            return tools.deck_state(slug, facts=self.facts)
-        if name == "fleet":
+            # Resolve before recording, so the dependency walk names the DECK
+            # and not the pilot's shorthand.
+            kw = {**kw, "slug": tools.resolve_slug(kw["slug"])}
+            self.touched.update(
+                str(p) for p in tools.depends_on(["deck-info", kw["slug"]]))
+        elif name == "fleet":
             self.touched.update(str(p) for p in tools.depends_on(["deck-status"]))
-            return tools.fleet(facts=self.facts)
-        if name == "stat_test":
-            # Pure arithmetic over numbers already in hand — depends on no file,
-            # so it contributes nothing to the signature. That is correct and
-            # worth stating: a Wilson interval over (27, 120) is the same
-            # interval forever.
-            return tools.stat_test(**kw)
-        raise ValueError(
-            f"{name!r} is not a tool Sven has. Available: "
-            + ", ".join(["run_readonly", *sorted(tools.TIER1)]))
+        elif name == "run_command":
+            argv = [kw.get("command", ""), *(kw.get("args") or [])]
+            if argv[0] in tools.VOLATILE:
+                self.uncacheable.append(
+                    f"{argv[0]} is true only at the moment it is asked")
+            self.touched.update(str(p) for p in tools.depends_on(argv))
+        elif name in ("search_docs", "search_code"):
+            corpus = "docs" if name.endswith("docs") else "code"
+            self.touched.update(str(p) for p in tools.depends_on([f"query-{corpus}"]))
+        # `stats` reads no file — a Wilson interval over (27, 120) is the same
+        # interval forever, so it contributes nothing to the signature.
+        return api.call(name, kw, facts=self.facts)
 
     # ── what the turn depended on ─────────────────────────────────────────
 

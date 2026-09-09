@@ -60,7 +60,7 @@ def test_sven_cannot_reach_a_write_path(argv):
     inside.
     """
     session = core.Session()
-    got = session.call("run_readonly", argv=argv)
+    got = session.call("run_command", command=argv[0], args=argv[1:])
     assert "error" in got, f"{argv} was not refused"
     assert not session.cacheable(), "a refused turn must not be cacheable"
 
@@ -69,7 +69,7 @@ def test_an_unknown_tool_names_what_does_exist():
     session = core.Session()
     got = session.call("delete_everything")
     assert "error" in got
-    assert "run_readonly" in got["error"]
+    assert "run_command" in got["error"]
 
 
 # ── the fact cache ────────────────────────────────────────────────────────
@@ -183,14 +183,14 @@ def test_a_volatile_command_makes_the_turn_uncacheable():
     """`sim-progress` reads logs the signature deliberately skips, so its answer
     is true only when asked. Caching it would report a finished run as 40% done."""
     session = core.Session()
-    session.call("run_readonly", argv=["sim-progress", "heliod"])
+    session.call("run_command", command="sim-progress", args=["heliod"])
     assert not session.cacheable()
     assert any("moment it is asked" in r for r in session.uncacheable)
 
 
 def test_a_turn_that_read_nothing_says_so_rather_than_looking_empty():
     session = core.Session()
-    session.call("stat_test", kind="wilson", k=27, n=120)
+    session.call("stats", fn="wilson", args={"k": 27, "n": 120})
     assert session.touched_signature() == "no-files-read"
     assert session.cacheable()
 
@@ -247,31 +247,44 @@ def test_an_unknown_frame_kind_is_refused_at_the_encoder():
 
 # ── what the first four real turns taught ─────────────────────────────────
 
-def test_every_implemented_tool_is_advertised_to_the_model():
-    """SVEN'S FIRST WRONG ANSWER WAS THIS BUG. `tool_block` listed four tools,
-    `core._dispatch` knew six, and `loop._tool_result` knew three. Asked "is zur
-    ready", he could not reach `deck_state`, fell back to `deck-status`, and
-    reported LIFECYCLE STAGES as PROMOTION GATES — a fluent, specific, wrong
-    answer with the real blocker (fifty-six cards to buy) never mentioned.
+def test_every_advertised_tool_can_actually_be_called():
+    """SVEN'S FIRST WRONG ANSWER WAS THIS BUG. Three lists disagreed: the tool
+    block advertised four capabilities, the session's dispatcher knew six, and
+    the loop's result handler knew three. Asked "is zur ready" he could not
+    reach `deck_state`, fell back to `deck-status`, and reported LIFECYCLE
+    STAGES as PROMOTION GATES — with the real blocker never mentioned.
 
-    A capability that exists and is not advertised is worse than one that does
-    not exist: the model routes around it and sounds just as confident.
+    A capability that exists and is not reachable is worse than one that does
+    not exist: the model routes around it and sounds just as certain.
+
+    Asserted by CALLING each one, not by grepping for its name. The earlier
+    version of this test read the source of the handler chain, and went obsolete
+    the moment that chain became a pass-through — a test that checks HOW rather
+    than WHETHER stops meaning anything the moment the how changes.
     """
-    import inspect
+    from manamap.sven import api
 
-    from manamap.sven import loop
-
-    advertised = {t["name"] for t in tools.tool_block()}
-    handled = set(re.findall(r'name (?:==|in) \(?["\']([a-z_]+)["\']',
-                             inspect.getsource(loop._tool_result)))
-    handled |= set(re.findall(r'["\']([a-z_]+)["\'],?\)? *$', ""))
-    for name in advertised - {"escalate"}:
-        assert name in inspect.getsource(loop._tool_result), (
-            f"{name} is advertised to the model and `_tool_result` cannot run it")
-    for name in tools.TIER1:
-        assert name in advertised or name == "stat_test", (
-            f"{name} is implemented and never advertised — the model cannot "
-            f"reach it and will route around it")
+    probes = {
+        "deck_state": {"slug": "heliod"},
+        "fleet": {},
+        "search_docs": {"query": "evidence contract", "k": 1},
+        "search_code": {"query": "goldfish", "k": 1},
+        "stats": {"fn": "wilson", "args": {"k": 1, "n": 10}},
+        "run_command": {"command": "deck-status", "args": ["heliod"]},
+        "command_help": {"command": "card-search"},
+    }
+    session = core.Session()
+    checked = 0
+    for entry in api._ensure():
+        if entry["handler"] is None:          # `escalate` is handled by the loop
+            continue
+        name = entry["name"]
+        assert name in probes, f"{name} is advertised with no probe in this test"
+        got = session.call(name, **probes[name])
+        assert not (isinstance(got, dict) and set(got) == {"error"}), (
+            f"{name} is advertised and cannot be called: {got}")
+        checked += 1
+    assert checked >= 6
 
 
 @requires_deck

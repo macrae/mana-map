@@ -49,93 +49,14 @@ def _log(message):
 # other eighteen commands, and its description carries their names.
 
 def _tool_defs():
-    from manamap.sven import tools
+    """The MCP rendering of `sven.api` — the SAME registry Sven reads.
 
-    commands = sorted(name for name, _ in tools.readonly_commands())
-    table = "\n".join(f"  {n:16s}{d}" for n, d in sorted(tools.readonly_commands()))
-    return [
-        {
-            "name": "deck_state",
-            "description": (
-                "Where one deck stands: its rung on the dev -> bench -> sleeved "
-                "ladder, how many promotion gates it meets, which are blocking, "
-                "and the derived next action. Start here for any question about "
-                "a single deck."),
-            "inputSchema": {
-                "type": "object",
-                "properties": {"slug": {"type": "string"}},
-                "required": ["slug"],
-            },
-        },
-        {
-            "name": "fleet",
-            "description": (
-                "Every deck, one row each — rung, stage counts, what is stale. "
-                "The answer to 'what should I work on'."),
-            "inputSchema": {"type": "object", "properties": {}},
-        },
-        {
-            "name": "search_docs",
-            "description": (
-                "Semantic search over this repo's own docs — ~7,500 lines "
-                "including 121 KB of measurements in gotchas-bench.md. This is "
-                "the 'why did we do it this way' corpus: reach for it before "
-                "changing a matcher, a metric or a validator, because the answer "
-                "is usually already written down with the number it cost."),
-            "inputSchema": {
-                "type": "object",
-                "properties": {"query": {"type": "string"},
-                               "k": {"type": "integer"}},
-                "required": ["query"],
-            },
-        },
-        {
-            "name": "search_code",
-            "description": (
-                "Semantic search over src/. Weaker than search_docs — it "
-                "retrieves 'what does this module do' well and 'where is X "
-                "built' poorly, so prefer grep when you know the symbol."),
-            "inputSchema": {
-                "type": "object",
-                "properties": {"query": {"type": "string"},
-                               "k": {"type": "integer"}},
-                "required": ["query"],
-            },
-        },
-        {
-            "name": "stat_test",
-            "description": (
-                "Run a statistical test and get its exact return value. USE "
-                "THIS RATHER THAN COMPUTING ONE. Available: wilson(k,n), "
-                "diff_proportions(k_a,n_a,k_b,n_b) [Newcombe — the interval on "
-                "the DIFFERENCE, which is the only correct answer to 'is this "
-                "better'], diff_means(xs,ys) [Welch], diff_medians(xs,ys), "
-                "permutation_p(xs,ys), power(p_a,p_b,n_a,n_b) [exact], "
-                "mde(p_a,n_a), games_needed(p_a,difference)."),
-            "inputSchema": {
-                "type": "object",
-                "properties": {"fn": {"type": "string"},
-                               "args": {"type": "object"}},
-                "required": ["fn", "args"],
-            },
-        },
-        {
-            "name": "run_readonly",
-            "description": (
-                "Run one read-only pilot command and get its terminal output. "
-                "`args` is the argv after the command name. Refuses anything "
-                "that writes — including a read-only command given --write.\n\n"
-                f"{table}"),
-            "inputSchema": {
-                "type": "object",
-                "properties": {
-                    "command": {"type": "string", "enum": commands},
-                    "args": {"type": "array", "items": {"type": "string"}},
-                },
-                "required": ["command"],
-            },
-        },
-    ]
+    Hand-maintained here until the two lists were compared and found already
+    drifted. One registry, two spellings of one schema key.
+    """
+    from manamap.sven import api
+
+    return api.mcp_block()
 
 
 class _Session:
@@ -161,28 +82,20 @@ _SESSION = _Session()
 
 
 def call_tool(name, args):
-    """Run one tool, returning JSON-serialisable data. Raises on refusal."""
-    from manamap.sven import tools
+    """Run one tool through `sven.api.call` — the same dispatcher Sven uses.
 
-    args = args or {}
-    if name == "deck_state":
-        return tools.deck_state(args["slug"], facts=_SESSION.core.facts)
-    if name == "fleet":
-        return tools.fleet(facts=_SESSION.core.facts)
-    if name in ("search_docs", "search_code"):
-        from manamap.pilot import retrieve
-
-        corpus = "docs" if name == "search_docs" else "code"
-        hits = retrieve.search(corpus, args["query"], k=args.get("k"))
-        return [{"id": cid, "score": round(score, 4),
-                 "title": rec.get("title"), "source": rec.get("source"),
-                 "text": rec["text"]} for cid, rec, score in hits]
-    if name == "stat_test":
-        return tools.stat_test(args["fn"], **(args.get("args") or {}))
-    if name == "run_readonly":
-        argv = [args["command"], *(args.get("args") or [])]
-        return tools.run(argv, facts=_SESSION.core.facts)
-    raise ValueError(f"unknown tool {name!r}")
+    A second implementation here would be a second place for a capability to
+    behave differently depending on who asked, which is the class of bug this
+    whole module was collapsed to remove.
+    """
+    # THROUGH THE SESSION, not straight to `api.call`. The session is what
+    # carries the fact cache across calls — an MCP server outlives a single
+    # question, so the second call about a deck should be answered out of the
+    # first call's reads, exactly as it is for Sven.
+    got = _SESSION.core.call(name, **(args or {}))
+    if isinstance(got, dict) and set(got) == {"error"}:
+        raise ValueError(got["error"])
+    return got
 
 
 # ── the protocol ──────────────────────────────────────────────────────────

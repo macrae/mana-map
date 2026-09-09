@@ -544,118 +544,17 @@ _STAT_SIGNATURES = """  wilson(k, n)                          a rate's 95% inter
 
 
 def tool_block():
-    """The `tools` list for the model. Sorted and deterministic, so it caches.
+    """Sven's tool list — rendered from `sven.api`, the single registry.
 
-    ARGV IS THE SCHEMA. There is no generated JSON schema per command, and that
-    is a decision rather than an economy: `_cli`'s own docstring says the argv is
-    re-parsed with the CLI's parser "so the semantics are identical to the
-    terminal by construction — there is no second place where a flag can mean
-    something slightly else." A generated schema WOULD BE that second place, and
-    it would drift silently, because `add_pilot_parser` uses `nargs="?"`,
-    `action="append"`, `dest=` renames and `choices` computed at build time.
-
-    So the model passes argv and argparse judges it. A hallucinated flag comes
-    back as the same error message a human would get, and the model corrects
-    itself in one round trip. That is the intended path, not a failure.
-
-    Cost: about 1.6k tokens, against roughly 8k for eighteen generated schemas.
+    This function used to BUILD the list, and `mcp_server._tool_defs` built a
+    second one by hand. They drifted: the same capability was `run_command` here
+    and `run_readonly` there, `stats` here and `stat_test` there, and two tools
+    existed on one side only — so a question Claude Code could answer, Sven
+    could not.
     """
-    commands = sorted(name for name, _ in readonly_commands())
-    table = "\n".join(f"  {name:16s}{desc}" for name, desc in
-                       sorted(readonly_commands()))
-    return [
-        {
-            "name": "deck_state",
-            "description": (
-                "WHERE ONE DECK STANDS — start here for any question about a "
-                "single deck, and always for 'is X ready'. Returns its rung on "
-                "the dev -> bench -> sleeved ladder, how many PROMOTION GATES it "
-                "meets, which are blocking and how to clear each, the derived "
-                "next action, AND the deck's measured figures — the simulation "
-                "record with its win rate, interval and the decklist sha it "
-                "actually played, the goldfish, and the table record.\n\n"
-                "`simulation.stale` true means the run describes an OLDER LIST "
-                "than the one on the bench; say so before quoting any figure "
-                "from it.\n\n"
-                "Do NOT answer a readiness question from `deck-status` instead: "
-                "that reports LIFECYCLE STAGES (which artifacts exist), which is "
-                "a different count with different names, and reading one as the "
-                "other produces a confident wrong answer."),
-            "input_schema": {
-                "type": "object",
-                "properties": {"slug": {"type": "string"}},
-                "required": ["slug"],
-            },
-        },
-        {
-            "name": "fleet",
-            "description": (
-                "Every deck, one row each, with its rung. The answer to 'what "
-                "should I work on' and to any question spanning more than one "
-                "deck."),
-            "input_schema": {"type": "object", "properties": {}},
-        },
-        {
-            "name": "run_command",
-            "description": (
-                "Run one read-only pilot command and get its terminal output. "
-                "`args` is literally the argv after the command name, so "
-                "`['--json']` or `['heliod', '--limit', '5']`. Most take a deck "
-                "slug first. If you are unsure of a flag, call `command_help` "
-                "rather than guessing — a wrong flag costs a round trip.\n\n"
-                f"{table}"),
-            "input_schema": {
-                "type": "object",
-                "properties": {
-                    "command": {"type": "string", "enum": commands},
-                    "args": {"type": "array", "items": {"type": "string"}},
-                },
-                "required": ["command"],
-            },
-        },
-        {
-            "name": "command_help",
-            "description": (
-                "The full `--help` for one command: every flag, with its "
-                "meaning. Progressive disclosure — read the flags for the one "
-                "command you are about to use rather than carrying all eighteen."),
-            "input_schema": {
-                "type": "object",
-                "properties": {"command": {"type": "string", "enum": commands}},
-                "required": ["command"],
-            },
-        },
-        {
-            "name": "stats",
-            "description": (
-                "Run a statistical test and get its exact return value. USE "
-                "THIS RATHER THAN COMPUTING OR PARAPHRASING — you must never "
-                "state an interval, a power figure or an MDE in your own "
-                "arithmetic.\n\n" + _STAT_SIGNATURES),
-            "input_schema": {
-                "type": "object",
-                "properties": {
-                    "fn": {"type": "string", "enum": sorted(_STAT_FNS)},
-                    "args": {"type": "object"},
-                },
-                "required": ["fn", "args"],
-            },
-        },
-        {
-            "name": "escalate",
-            "description": (
-                "Hand this question to a stronger model. Call it when the "
-                "question needs judgement rather than lookup, when the evidence "
-                "conflicts, or when you are about to state a statistical "
-                "conclusion. Everything you have already read is carried over, "
-                "so this costs one step and not a restart."),
-            "input_schema": {
-                "type": "object",
-                "properties": {"reason": {"type": "string"}},
-                "required": ["reason"],
-            },
-        },
-    ]
+    from manamap.sven import api
+
+    return api.anthropic_block()
 
 
 _STAT_FNS = ("wilson", "diff_proportions", "diff_means", "diff_medians",

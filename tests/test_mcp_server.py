@@ -99,7 +99,7 @@ def test_nothing_but_json_frames_reach_stdout():
     frames = "\n".join(json.dumps(f) for f in [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
         {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
-         "params": {"name": "run_readonly",
+         "params": {"name": "run_command",
                     "arguments": {"command": "deck-status", "args": ["heliod"]}}},
     ])
     proc = subprocess.run([sys.executable, "-m", "manamap.mcp_server"],
@@ -127,7 +127,7 @@ def test_diagnostics_go_to_stderr():
 def test_no_write_is_reachable(command, args):
     """The gate is `serve._cli`, imported rather than reimplemented. A second
     allow-list would disagree with the first within a month."""
-    result = _call("run_readonly", command=command, args=args)
+    result = _call("run_command", command=command, args=args)
     assert result["isError"] is True, f"{command} {args} was not refused"
 
 
@@ -135,7 +135,7 @@ def test_a_refusal_is_a_result_not_a_transport_error():
     """`isError` lets the calling agent read the message and correct itself. A
     JSON-RPC error would look like the server broke, and the agent would retry
     the transport rather than fix the call."""
-    result = _call("run_readonly", command="deck-info", args=["heliod", "--write"])
+    result = _call("run_command", command="deck-info", args=["heliod", "--write"])
     assert result["isError"] is True
     assert "--write" in result["content"][0]["text"]
 
@@ -151,9 +151,9 @@ def test_the_tool_list_offers_no_way_to_write():
     nothing on it that mutates."""
     names = {t["name"] for t in mcp._tool_defs()}
     assert names == {"deck_state", "fleet", "search_docs", "search_code",
-                     "stat_test", "run_readonly"}
+                     "stats", "run_command", "command_help"}
     enum = next(t for t in mcp._tool_defs()
-                if t["name"] == "run_readonly")["inputSchema"]["properties"]["command"]["enum"]
+                if t["name"] == "run_command")["inputSchema"]["properties"]["command"]["enum"]
     from manamap.serve import CLI_READONLY
     assert set(enum) == set(CLI_READONLY), "the enum drifted from the allow-list"
 
@@ -174,7 +174,7 @@ def test_deck_state_returns_structure_rather_than_a_rendered_table():
 def test_a_statistic_is_the_librarys_own_value():
     from manamap.sim import stats
 
-    payload = _payload(_call("stat_test", fn="wilson", args={"k": 27, "n": 120}))
+    payload = _payload(_call("stats", fn="wilson", args={"k": 27, "n": 120}))
     assert tuple(payload["result"]) == stats.wilson_bounds(27, 120)
 
 
@@ -182,6 +182,47 @@ def test_a_statistic_is_the_librarys_own_value():
 def test_the_second_call_about_a_deck_is_served_from_the_first_ones_reads():
     """One session outlives a single question, which is the reason the server is
     long-lived at all."""
-    _call("run_readonly", command="deck-status", args=["heliod"])
-    result = _call("run_readonly", command="deck-status", args=["heliod"])
+    _call("run_command", command="deck-status", args=["heliod"])
+    result = _call("run_command", command="deck-status", args=["heliod"])
     assert _payload(result)["cached"] is True
+
+
+# ── one registry, two transports ──────────────────────────────────────────
+
+def test_both_transports_render_the_same_capabilities():
+    """THEY DID NOT, and nothing noticed. The same tool was `run_command` for
+    Sven and `run_readonly` for MCP, `stats` and `stat_test`, and two tools
+    existed on one side only — so a question Claude Code could answer, Sven
+    could not.
+
+    `escalate` is the one deliberate asymmetry: there is nothing above Claude
+    Code to escalate to.
+    """
+    from manamap.sven import api, tools
+
+    sven = {t["name"] for t in tools.tool_block()}
+    mcp_names = {t["name"] for t in mcp._tool_defs()}
+    assert sven - mcp_names == {"escalate"}
+    assert mcp_names - sven == set()
+
+
+def test_the_two_renderings_differ_only_in_the_schema_key():
+    """One is `input_schema`, the other `inputSchema`. Everything else about a
+    capability must be identical, or it behaves differently depending on who
+    asked."""
+    from manamap.sven import api
+
+    a = {t["name"]: t for t in api.anthropic_block()}
+    m = {t["name"]: t for t in api.mcp_block()}
+    for name in set(a) & set(m):
+        assert a[name]["description"] == m[name]["description"]
+        assert a[name]["input_schema"] == m[name]["inputSchema"]
+
+
+def test_one_dispatcher_serves_both():
+    """A second implementation is a second place for a capability to drift."""
+    import inspect
+
+    from manamap.sven import api
+
+    assert "api.call" in inspect.getsource(mcp.call_tool)

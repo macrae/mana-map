@@ -38,42 +38,27 @@ def charter():
 def _tool_result(session, name, payload):
     """Run one tool call and shape its result for the model.
 
+    A THIN PASS-THROUGH, since `sven.api` is the registry and `core.Session` is
+    the dispatcher. This used to be a third `if name ==` chain — beside the
+    session's and the MCP server's — with its own spellings (`run_readonly`,
+    `stat_test`), which is how a capability came to have two names depending on
+    who asked for it.
+
     Errors come back as CONTENT, not exceptions: the model should see argparse's
     own message and correct itself, which is one round trip and self-teaching.
-    Hiding the error would make it guess again with no new information.
+    Hiding it would make it guess again with no new information.
     """
+    got = session.call(name, **(payload or {}))
+    if isinstance(got, dict) and set(got) == {"error"}:
+        return got["error"], True
     if name == "run_command":
-        argv = [payload.get("command", ""), *(payload.get("args") or [])]
-        got = session.call("run_readonly", argv=argv)
-        if "error" in got:
-            return got["error"], True
         text = got.get("stdout", "")
         if got.get("exit"):
             text = f"(exit {got['exit']})\n{text}"
         return _cap(text), False
     if name == "command_help":
-        try:
-            return _cap(tools.command_help(payload.get("command", ""))), False
-        except ValueError as exc:
-            return str(exc), True
-    if name in ("deck_state", "fleet"):
-        # ADVERTISED AND UNREACHABLE was the state that produced Sven's first
-        # wrong answer: `tool_block` listed four tools, the dispatcher knew six,
-        # and this function knew three. He asked "is zur ready", could not reach
-        # `deck_state`, fell back to `deck-status`, and reported LIFECYCLE
-        # STAGES as promotion GATES — a confident wrong answer with the real
-        # blocker (56 cards to buy) never surfaced.
-        got = session.call(name, **payload)
-        if isinstance(got, dict) and "error" in got:
-            return got["error"], True
-        return json.dumps(got, indent=2, default=str), False
-    if name == "stats":
-        got = session.call("stat_test", kind=payload.get("fn"),
-                           **(payload.get("args") or {}))
-        if isinstance(got, dict) and "error" in got:
-            return got["error"], True
-        return json.dumps(got, indent=2, default=str), False
-    return f"{name!r} is not a tool you have.", True
+        return _cap(got.get("help", "")), False
+    return _cap(json.dumps(got, indent=2, default=str)), False
 
 
 def _cap(text):
@@ -90,6 +75,8 @@ def _label(name, payload):
     if name == "run_command":
         argv = " ".join([payload.get("command", ""), *(payload.get("args") or [])])
         return f"reading {argv.strip()}"
+    if name in ("search_docs", "search_code"):
+        return f"searching the {name.split('_')[1]} for {payload.get('query','')[:40]}"
     if name == "command_help":
         return f"checking {payload.get('command', '')} flags"
     if name == "deck_state":
