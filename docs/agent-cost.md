@@ -271,3 +271,34 @@ spends a single token, and those seconds are what make the whole bench feel heav
 
 Still deferred: `preprocess.py:74` hardcodes `show_progress_bar=True`, so a single-text
 query emits a one-item bar into the `--json` interface.
+
+### Sven — measured 2026-09-08
+
+`mm ask` inherits that warm worker and adds two caches on top. Measured on the
+deterministic path with a scripted transport, so these are the harness's own
+cost and exclude the model's latency entirely:
+
+    cold, no daemon              1.55s   the loop runs in-process
+    warm, fact cache empty       1.38s   through `/api/ask/stream`
+    warm, fact cache populated   0.15s   9x — "1 tool call · 1 from cache"
+    answer cache hit             0.13s   no transport constructed at all
+
+    after touching what the answer read     0.55s   re-ran, correctly
+    and again, once re-answered            0.12s   cached again
+
+Three things worth reading off that table. **The fact cache is the workhorse** —
+1.38s to 0.15s is one deck-status served from memory, and a real turn makes
+three to eight of those. **The answer cache is nearly free but rarely the win**:
+0.15s to 0.13s, because by then the expensive part is already cached. Its value
+is not speed, it is not asking the model at all.
+
+And **the cold figure is the honest floor, not the typical one.** 1.55s is the
+deterministic path; a question that reaches `query-rules` cold pays the ~5.5s
+sentence-transformers import on top, which is the entire reason
+`_sven_prewarm` builds the MiniLM first at boot and why the client prints
+`· cold start (Ns) — manamap serve in another window makes this about 0.4s`
+rather than letting a slow answer read as a slow tool.
+
+The self-invalidation line is the one that makes the cache safe to keep: an
+answer that read zur-enchantress was re-derived the moment zur's decklist moved,
+and an answer about zur is correctly untouched when heliod's does.

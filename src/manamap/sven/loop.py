@@ -97,9 +97,32 @@ def run(question, *, turn=None, session=None, model=None, use_cache=True):
     """
     session = session or core.Session()
     session.reset_turn()
-    turn = turn or llm.default_turn()
     model = model or llm.FAST_MODEL
 
+    # THE ANSWER CACHE IS CHECKED BEFORE THE MODEL IS EVEN CONSTRUCTED, which is
+    # what makes a repeat question free rather than merely fast — no transport,
+    # no key, no request.
+    #
+    # And it ALWAYS SAYS SO. `tests/conftest.py` made the same call for the
+    # regenerate-and-compare cache — "hits are counted and printed, never
+    # silent" — because a cache you cannot see is one you cannot trust. A pilot
+    # who suspects a stale answer and has no way to check will stop believing
+    # the fast ones too.
+    if use_cache:
+        stored = cached_answer(question, model=model)
+        if stored:
+            yield ("text", stored["answer"])
+            yield ("note", "cached answer — nothing it read has changed "
+                           "(--no-cache to re-ask)")
+            yield ("done", {"summary": "served from cache", "model": model,
+                            "escalated": False, "cached": True,
+                            "cacheable": True, "uncacheable": [],
+                            "tool_calls": stored.get("tool_calls", 0),
+                            "failed": 0, "paths_touched": len(stored.get("touched") or []),
+                            "facts": session.facts.stats()})
+            return
+
+    turn = turn or llm.default_turn()
     messages = [{"role": "user", "content": question}]
     tool_block = tools.tool_block()
     escalated = False

@@ -58,8 +58,8 @@ a line somebody should have to write themselves, knowing why.
 import contextlib
 import io
 import json
+import os
 import threading
-
 import traceback
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -945,6 +945,63 @@ _CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway")
 #: another deck's question is not a trade this bench would make to get them back.
 _STDOUT_LOCK = threading.Lock()
 
+#: AT MOST TWO SVEN TURNS AT ONCE. Not a performance tuning knob — this socket is
+#: unauthenticated on 127.0.0.1 and a turn spends money, so a retrying browser
+#: must not become an unbounded stream of model calls. A third caller is refused
+#: with a sentence rather than queued.
+_SVEN_SLOTS = threading.BoundedSemaphore(2)
+
+#: One process-wide Sven session, so its fact cache spans questions — the second
+#: question about a deck is answered out of the first question's reads. Built on
+#: first use rather than at import, because importing `sven` pulls the pilot
+#: modules and `serve` should still start when a deck is mid-edit.
+_SVEN_SESSION = None
+_SVEN_SESSION_LOCK = threading.Lock()
+
+
+def _sven_session():
+    global _SVEN_SESSION
+    if _SVEN_SESSION is None:
+        with _SVEN_SESSION_LOCK:
+            if _SVEN_SESSION is None:          # re-check under the lock
+                from manamap.sven import core
+                _SVEN_SESSION = core.Session()
+    return _SVEN_SESSION
+
+
+def _sven_prewarm():
+    """Warm the expensive, stable things so question #1 costs what #10 costs.
+
+    ORDERED SLOWEST-AND-MOST-STABLE FIRST, which is the opposite of the obvious
+    order. The MiniLM is ~5.5s to import and construct and NEVER invalidates —
+    it is worth every second. A fleet snapshot is seconds too, but it goes stale
+    the moment any deck moves, so what gets kept is the PARSE, never the answer:
+    `deck_status.fleet()` is warmed to populate the memos and recomputed per turn.
+
+    Every failure is swallowed. A prewarm that can break startup is a liability,
+    and the report says what failed rather than hiding it.
+    """
+    import time
+
+    started = time.time()
+    try:
+        from manamap.ingest.preprocess import compute_text_embeddings
+
+        compute_text_embeddings([""])          # builds the frozen MiniLM once
+        console.err("  sven: embedding model warm")
+    except Exception as exc:                   # noqa: BLE001
+        console.err(f"  sven: model not warmed ({type(exc).__name__})")
+    try:
+        from manamap.sven import core
+
+        report = core.prewarm(_sven_session())
+        console.err(f"  sven: {len(report['decks'])} deck(s) warm in "
+                    f"{time.time() - started:.1f}s")
+        for problem in report["errors"][:3]:
+            console.err(f"  sven: {problem}")
+    except Exception as exc:                   # noqa: BLE001
+        console.err(f"  sven: prewarm failed ({type(exc).__name__}: {exc})")
+
 
 def _cli(argv=None):
     """Run one read-only pilot command in this warm process; return its stdout.
@@ -1166,6 +1223,8 @@ class Handler(SimpleHTTPRequestHandler):
         if not self.path.startswith("/api/"):
             return self.send_error(404)
         name = self.path[len("/api/"):].split("?")[0].rstrip("/")
+        if name == "ask/stream":
+            return self._ask_stream()
         length = int(self.headers.get("Content-Length") or 0)
         try:
             payload = json.loads(self.rfile.read(length) or b"{}")
@@ -1174,6 +1233,61 @@ class Handler(SimpleHTTPRequestHandler):
         if not isinstance(payload, dict):
             return self._json(400, {"error": "body must be an object"})
         return self._run(name, payload)
+
+    def _ask_stream(self):
+        """One Sven turn, streamed as it happens.
+
+        ITS OWN BRANCH, ahead of `_run`, because `_run` always terminates in a
+        single JSON body — and the entire reason this exists is that the first
+        token must reach the terminal before the turn is finished.
+
+        Frames go out one per chunk and are flushed immediately; buffering here
+        would undo the feature. A client that hangs up mid-turn raises
+        `BrokenPipeError` on the next write, which ends the turn rather than
+        leaving a model call running and billing against nobody watching.
+
+        The SESSION IS PROCESS-WIDE AND REUSED, which is the whole point of
+        answering from this process at all: the second question about a deck is
+        served out of the first question's reads.
+        """
+        length = int(self.headers.get("Content-Length") or 0)
+        try:
+            payload = json.loads(self.rfile.read(length) or b"{}")
+            question = (payload or {}).get("question") or ""
+        except ValueError:
+            return self._json(400, {"error": "body is not JSON"})
+        if not question.strip():
+            return self._json(400, {"error": "ask: no question"})
+
+        if not _SVEN_SLOTS.acquire(blocking=False):
+            # A queue here would let a retrying browser turn into unbounded
+            # model calls. Refusing with a sentence is the honest answer.
+            return self._json(429, {
+                "error": "Sven is already answering two questions. Try again in "
+                         "a moment, or ask in the terminal."})
+        try:
+            from manamap.sven import llm, loop, stream
+
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            model = llm.DEEP_MODEL if payload.get("deep") else None
+            frames = loop.run(question, session=_sven_session(), model=model,
+                              use_cache=not payload.get("no_cache"))
+            for kind, data in frames:
+                self.wfile.write(stream.encode(kind, data).encode())
+                self.wfile.flush()
+        except BrokenPipeError:
+            console.err("  sven: client hung up mid-turn")
+        except Exception as exc:               # noqa: BLE001 — a server must not die
+            console.err(traceback.format_exc())
+            with contextlib.suppress(Exception):
+                self.wfile.write(
+                    stream.encode("error", f"{type(exc).__name__}: {exc}").encode())
+                self.wfile.flush()
+        finally:
+            _SVEN_SLOTS.release()
 
     def _run(self, name, payload):
         if name not in ENDPOINTS:
@@ -1229,8 +1343,16 @@ def main(args=None):
     print(f"  workbench  {base}/viz/workbench.html")
     print(f"  atlas      {base}/viz/index.html")
     print(f"  api        {base}/api/   ({len(ENDPOINTS)} commands, local only)")
+    print(f"  sven       {base}/api/ask/stream   (`mm ask` routes here)")
     print("\n  The deployed site has no /api — Build shows its static half there,")
     print("  and says so rather than failing quietly.")
+    # AFTER the port is bound, so the server answers while it warms. A question
+    # arriving in the first seconds simply pays inline for whatever is not warm
+    # yet — there is no barrier, because a barrier would trade a slow first
+    # answer for no answer at all.
+    if not os.environ.get("MANAMAP_SVEN_NO_PREWARM"):
+        threading.Thread(target=_sven_prewarm, name="sven-prewarm",
+                         daemon=True).start()
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -213,6 +213,46 @@ def build_parser():
     return parser
 
 
+def _sven_frames(question, deep=False, no_cache=False):
+    """Frames from a WARM Sven, or None if there is no server. Never raises.
+
+    `_daemon_run`'s twin, and the same doctrine: FAILING OPEN IS THE WHOLE
+    DESIGN. No server, a refusal, a malformed frame — any of them returns None
+    and the caller runs the identical loop in-process. The only difference is
+    that the local path pays ~5.5s to import sentence-transformers and build the
+    MiniLM, which the daemon paid once at boot.
+
+    Deliberately does NOT start a server. `serve.py` is unauthenticated on
+    localhost and its lifecycle is a decision somebody should make on purpose;
+    the caller says how to make it instead.
+    """
+    import os
+
+    if os.environ.get("MANAMAP_NO_DAEMON"):
+        return None
+    target = os.environ.get("MANAMAP_DAEMON") or "127.0.0.1:8000"
+    try:
+        import http.client
+        import json as _json
+
+        from manamap.sven import stream
+
+        host, _, port = target.partition(":")
+        conn = http.client.HTTPConnection(host or "127.0.0.1",
+                                          int(port or 8000), timeout=0.15)
+        body = _json.dumps({"question": question, "deep": deep,
+                            "no_cache": no_cache})
+        conn.request("POST", "/api/ask/stream", body,
+                     {"Content-Type": "application/json"})
+        conn.sock.settimeout(600)      # only the CONNECT needs to be impatient
+        response = conn.getresponse()
+        if response.status != 200:
+            return None
+        return stream.iter_frames(iter(lambda: response.readline(), b""))
+    except Exception:                                  # noqa: BLE001 - fail open
+        return None
+
+
 def _ask(args):
     """`mm ask` — one question, streamed.
 
@@ -241,11 +281,17 @@ def _ask(args):
         err.write(f"sven is not importable: {exc}\n")
         return 1
 
-    model = llm.DEEP_MODEL if getattr(args, "deep", False) else None
+    deep = getattr(args, "deep", False)
+    no_cache = getattr(args, "no_cache", False)
     col = 0
+    started = __import__("time").time()
     try:
-        frames = loop.run(question, model=model,
-                          use_cache=not getattr(args, "no_cache", False))
+        frames = _sven_frames(question, deep=deep, no_cache=no_cache)
+        warm = frames is not None
+        if not warm:
+            frames = loop.run(question,
+                              model=llm.DEEP_MODEL if deep else None,
+                              use_cache=not no_cache)
         for kind, data in frames:
             if as_json:
                 import json as _json
@@ -278,6 +324,14 @@ def _ask(args):
         return 130
     if not as_json:
         out.write("\n")
+        # SAY WHAT THE COLD PATH COST, and how to stop paying it. A slow answer
+        # with no explanation reads as "this tool is slow"; the same answer with
+        # this line reads as "there is a server I did not start". The threshold
+        # is 2s so a fast local answer stays quiet.
+        elapsed = __import__("time").time() - started
+        if not warm and elapsed > 2:
+            err.write(f"  · cold start ({elapsed:.1f}s) — `manamap serve` in "
+                      f"another window makes this about 0.4s\n")
     return 0
 
 

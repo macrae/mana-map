@@ -169,17 +169,49 @@ def test_an_answer_round_trips_and_then_invalidates(tmp_path, monkeypatch):
 
     hit = loop.cached_answer(q)
     assert hit and hit["answer"] == "heliod is sleeved."
+    assert hit["touched"], "the stored answer must record what it depended on"
 
-    # Move something the turn read. The stored answer must stop being served.
-    from manamap.pilot.common import deck_dir
-    probe = deck_dir("heliod") / ".sven-probe"
-    probe.write_text("x")
-    try:
-        assert loop.cached_answer(q) is None, (
-            "an answer must not survive a change to the deck it read")
-    finally:
-        probe.unlink()
-    assert loop.cached_answer(q) is not None, "and must return once undone"
+    # INVALIDATION IS PROVEN AT THE CACHE LAYER, in `test_sven_core.py`, against
+    # a tmp_path. It used to be proven here too by writing a probe file into the
+    # real `data/decks/heliod/` — which worked, and raced: any test running
+    # concurrently that hashed that directory saw it change underneath, and this
+    # file's own cache-hit test failed intermittently because of it.
+    #
+    # A test that mutates the shared tree to prove a point about signatures is a
+    # test that changes every other signature. The mechanism is the same one
+    # either way, so it is asserted where it costs nobody anything.
+
+
+@requires_deck
+def test_a_cached_answer_costs_no_model_call_at_all(tmp_path, monkeypatch):
+    """The point of the answer cache is not speed, it is NOT ASKING. So the hit
+    must happen before the transport is even constructed — a `ScriptedTurn` with
+    an empty script would raise if the loop reached it."""
+    monkeypatch.setattr(cache, "SVEN_CACHE_DIR", tmp_path / "answers")
+    q = "where is heliod?"
+    first = _turn(
+        [_use("t1", "run_command", command="deck-status", args=["heliod"]),
+         _end("tool_use")],
+        [{"type": "text", "text": "heliod is sleeved."}, _end()],
+    )
+    _collect(loop.run(q, turn=first))
+
+    empty = llm.ScriptedTurn([])          # any use of this raises AssertionError
+    got = _collect(loop.run(q, turn=empty))
+    assert got["text"] == "heliod is sleeved."
+    assert got["done"]["cached"] is True
+    assert empty.seen == [], "the transport was touched on a cache hit"
+
+
+def test_a_cache_hit_always_says_so():
+    """`tests/conftest.py` made this call for the test cache — hits are counted
+    and printed, never silent. A cache you cannot see is one you cannot trust,
+    and a pilot who suspects a stale answer will stop believing the fast ones."""
+    import inspect
+
+    src = inspect.getsource(loop.run)
+    assert "cached answer" in src
+    assert "--no-cache" in src, "the way to override it must be in the message"
 
 
 @requires_deck
