@@ -588,11 +588,26 @@ def deck_branch_seat(slug, branch):
 
 
 def build(slug, branch, iterations=None, seed=None):
+    from manamap import console
     from manamap.pilot import candidates, diagnostic
+
     it = iterations or diagnostic.HARNESS["iterations"]
     sd = seed if seed is not None else diagnostic.HARNESS["seed"]
-    a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True)
-    b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
+    # TWO 10,000-GAME RUNS, ~15 s, and until now it printed nothing at all until
+    # both had finished. A command that is silent for fifteen seconds is
+    # indistinguishable from one that has hung, and this is the one the pilot
+    # runs on every branch.
+    #
+    # The bar counts ARMS, not games, because that is the honest unit: `run`
+    # does not report progress inside itself, and a bar that crept while a
+    # simulation was actually blocked would be worse than none —
+    # `console.py`'s third rule, never fake a percentage.
+    with console.task(f"Measuring {slug} vs {branch}", total=2, unit="arms") as bar:
+        bar.state("champion")
+        a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True)
+        bar.advance(1, state="branch")
+        b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
+        bar.advance(1)
 
     table = []
     for label, blk, key, turn, want in ROWS:

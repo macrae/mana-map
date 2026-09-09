@@ -389,15 +389,32 @@ def main(args):
     axis = getattr(args, "axis", None) or "engine_online_3"
     branch = getattr(args, "branch", None)
 
-    def tick(i, n, name):
-        print(f"  [{i}/{n}] {name}", flush=True)
+    # The seam was already here — `sweep(progress=...)` takes `(i, n, name)` and
+    # knew nothing about rendering, which is exactly right. It was being handed
+    # a `print` to STDOUT, so a sweep's progress interleaved with the report it
+    # was building. The callback now feeds a bar on stderr, and the module still
+    # knows nothing about rendering.
+    from manamap import console
 
-    doc = sweep(args.slug, pool, axis=axis, branch=branch,
-                cut=getattr(args, "cut", None),
-                iterations=getattr(args, "iterations", None) or SWEEP_ITERATIONS,
-                limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
-                join=getattr(args, "join", None),
-                progress=None if getattr(args, "json", False) else tick)
+    bar = {"t": None}
+
+    def tick(i, n, name):
+        if bar["t"] is None:
+            bar["ctx"] = console.task("Sweeping candidates", total=n, unit="cards")
+            bar["t"] = bar["ctx"].__enter__()
+        bar["t"].state(name)
+        bar["t"].advance(1)
+
+    try:
+        doc = sweep(args.slug, pool, axis=axis, branch=branch,
+                    cut=getattr(args, "cut", None),
+                    iterations=getattr(args, "iterations", None) or SWEEP_ITERATIONS,
+                    limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
+                    join=getattr(args, "join", None),
+                    progress=None if getattr(args, "json", False) else tick)
+    finally:
+        if bar["t"] is not None:
+            bar["ctx"].__exit__(None, None, None)
     if getattr(args, "json", False):
         print(json.dumps(doc, indent=1, default=str)); return
     _print(doc)

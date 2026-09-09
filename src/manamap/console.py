@@ -57,6 +57,61 @@ _RICH_TRIED = False
 #: is two vocabularies for one contract.
 TIERS = {"verified": "✓", "derived": "◆", "coaching": "★"}
 
+#: STATE GLYPHS, one vocabulary. Five dialects were in the wild: `promote.
+#: format_gate` used ✓ ✗ ~ ! ?, `deck_status` had its own `mark` dict,
+#: `deck_info` used ⚑ and ·, `progress.py` used █ and ·. A pilot reading two
+#: commands in one session had to learn both, and the overlap was the dangerous
+#: part — `~` meant "stale" in one place and nothing in another.
+#:
+#: `ok` is not a tick because ✓ is already spoken for by the EVIDENCE tier above,
+#: and a deck whose file merely exists has not been rules-verified. Conflating
+#: those two is the exact claim this bench refuses to let anything make.
+STATES = {
+    "ok": "•",          # present, valid, nothing to do
+    "stale": "~",       # exists, but built against something that has moved
+    "missing": "·",     # absent — and absent is a state, never a zero
+    "fail": "✗",        # present and invalid
+    "gate": "▸",        # waiting on a human, not on the machine
+    "unknown": "?",     # not checked; NOT the same as ok
+}
+
+#: Semantic colour. Names describe MEANING, never appearance, so a change of
+#: palette cannot silently change what a colour claims. Absent when plain, which
+#: includes every pipe and every CI log — `NO_COLOR` is honoured by `is_plain`.
+_SEMANTIC = {
+    "good": "green", "warn": "yellow", "bad": "red",
+    "dim": "bright_black", "key": "cyan",
+}
+
+
+def paint(text, meaning):
+    """`text`, coloured for its MEANING, or unchanged when plain.
+
+    The only place colour is applied in this repo. There is no raw ANSI in
+    `src/` — grep for `\033[` and you get nothing — and that stays true because
+    an escape sequence written by hand is one that will end up in a `--json`
+    payload eventually.
+    """
+    if meaning not in _SEMANTIC:
+        raise ValueError(f"paint: {meaning!r} is not one of {sorted(_SEMANTIC)}")
+    if is_plain():
+        return text
+    return f"[{_SEMANTIC[meaning]}]{text}[/{_SEMANTIC[meaning]}]"
+
+
+def say(message, meaning=None):
+    """One line to stderr, optionally coloured, rendered through rich if present.
+
+    Falls back to `err` whenever rich is absent or the run is plain, so the
+    markup in `paint` is never printed literally.
+    """
+    if meaning is None or is_plain():
+        return err(message if meaning is None else message)
+    rich = _rich()
+    if rich is None:
+        return err(message)
+    rich["Console"](stderr=True).print(paint(message, meaning))
+
 
 def _rich():
     """The rich namespace, or None. Absence is survivable and is not an error."""

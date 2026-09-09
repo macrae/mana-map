@@ -271,14 +271,29 @@ def main(args):
              sorted(d.name for d in DECKS_DIR.iterdir()
                     if (d / "cards.json").exists()))
 
+    from manamap import console
+
     records = []
-    for slug in slugs:
-        # The goldfish narrates to stdout; the benchmark's answer is the table.
-        with contextlib.redirect_stdout(_io.StringIO()):
-            path, record = write(slug)
-        records.append(record)
-        if not getattr(args, "as_json", False):
-            print(f"  measured {slug}")
+    # `  measured <slug>` per deck was the only feedback, on 10,000 sims x four
+    # measures x N decks — a line AFTER each unit of work, which tells you
+    # nothing while the work is happening. `console.task` knows the total, so it
+    # can say how many are left; the per-deck line said only how many were done.
+    #
+    # Silenced under --json: the bar is on stderr and would not corrupt the
+    # payload, but a machine-read invocation has no one watching it.
+    quiet = getattr(args, "as_json", False)
+    ctx = (contextlib.nullcontext(None) if quiet else
+           console.task("Benchmarking", total=len(slugs), unit="decks"))
+    with ctx as bar:
+        for slug in slugs:
+            if bar is not None:
+                bar.state(slug)
+            # The goldfish narrates to stdout; the benchmark's answer is the table.
+            with contextlib.redirect_stdout(_io.StringIO()):
+                path, record = write(slug)
+            records.append(record)
+            if bar is not None:
+                bar.advance(1)
 
     if getattr(args, "as_json", False):
         print(json.dumps(records if len(records) > 1 else records[0], indent=2))
