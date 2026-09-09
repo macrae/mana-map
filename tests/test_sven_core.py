@@ -400,21 +400,41 @@ def test_a_deck_state_names_its_own_commander():
     assert got["commander"], "a deck's own commander is not optional context"
 
 
-@requires_deck
-def test_a_run_piloted_by_the_wrong_commander_is_flagged_not_left_to_notice():
+def test_a_run_piloted_by_the_wrong_commander_is_flagged_not_left_to_notice(monkeypatch):
     """SIX OF ZUR'S EIGHT RUNS were piloted by `Zur the Enchanter` while the
-    deck is built on `Zur, Eternal Schemer`. The records are indistinguishable
-    from the good ones at a glance, the played commander was in the run record,
-    the declared one was never in the same view, and nothing detected it.
+    deck is built on `Zur, Eternal Schemer`. The played commander was in the run
+    record, the declared one was in cards.json, and nothing had ever put them in
+    the same view.
 
-    Putting both in one payload is the whole fix.
+    Asserted on a SYNTHETIC record, not on the repo's own state. The first
+    version of this test asserted that zur HAD such runs — true when written,
+    and it died the moment they were quarantined. A test that depends on a
+    defect still existing stops protecting anything the day the defect is fixed,
+    and reads as a regression when it fails.
     """
-    sim = tools.deck_state("zur")["simulation"]
-    assert sim["commander_declared"] == "Zur, Eternal Schemer"
-    bad = sim.get("runs_with_the_wrong_commander") or []
-    assert len(bad) >= 5, f"expected the wrong-commander runs to be flagged, got {bad}"
-    assert all("Enchanter" in r["played"] for r in bad)
-    assert "never be mixed into a comparison" in sim["runs_warning"]
+    good = {"seats": [{"commander": ["Zur, Eternal Schemer"]}],
+            "run_id": "good-run", "games_completed": 60}
+    bad = {"seats": [{"commander": ["Zur the Enchanter"]}],
+           "run_id": "bad-run", "games_completed": 60}
+
+    from manamap.sim import forge
+
+    monkeypatch.setattr(forge, "list_runs", lambda _slug: [bad, good])
+    got = tools._commander_check("zur-enchantress", {"latest": "good-run"})
+
+    assert got["commander_declared"] == "Zur, Eternal Schemer"
+    assert got["commander_forge_played"] == "Zur, Eternal Schemer"
+    bad_runs = got["runs_with_the_wrong_commander"]
+    assert [r["played"] for r in bad_runs] == ["Zur the Enchanter"]
+    assert "never be mixed into a comparison" in got["runs_warning"]
+
+
+@requires_deck
+def test_the_fleet_currently_has_no_wrong_commander_runs():
+    """The state this repo should stay in. `test_sim_commander_integrity.py`
+    gates it fleet-wide; this is the one-line version for the tool's own view."""
+    assert not tools.deck_state("zur")["simulation"].get(
+        "runs_with_the_wrong_commander")
 
 
 @requires_deck
