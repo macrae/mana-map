@@ -100,6 +100,227 @@
           "why_it_matters": "the note says the whole table's answers were aimed at this deck — \"I was the reason the table's answers left their hands\" — so the deck meets interaction more often than a seat that is not the archenemy. Goldfish cannot speak to it at all: its stated assumption is \"Simulates resource development, not full games (no interaction, no removal)\". One logged game is not enough to size it, which is exactly why it is a question rather than a takeaway."
         }
       ]
+    },
+    "002": {
+      "summary": "Five-player pod at Oliver's, seat 5, on V1 (decklist_sha256 88bffd9b… = v1.0.0; the current list is 7ce22fd6… = v1.0.1/v1.1.0, so one card this note reads on — Throne of the God-Pharaoh — has since left the 99 and that reading is history). A loss the pilot survived a long way into: the drain package genuinely went off (a wipe with Blood Artist and Bloodthirsty Conqueror online killed eleven creatures, took every opponent for 11 and put him at ~50 against a table at ~20), and then the deck ran dry — 'vampires on board, nothing in hand, and no way to rebuild after each wipe', the same failure mode he names from the Saturday game. Two things the pilot logs against himself: he kept a two-land hand after one mulligan knowing it should have gone back, and both interaction spells (Deflecting Swat, Teferi's Protection) sat uncast all game. He offers three behavioural reasons for the second and then overrules them with a structural one — 'my mana was spent casting vampires, so there was never open mana to hold up'.",
+      "opponents": [
+        {
+          "seat": "Ryan",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Ryan's recurring artifact and enchantment removal on a card-draw engine"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Blood Artist",
+          "read": "over",
+          "why": "'Blood Artist and Bloodthirsty Conqueror landed early and drained a significant amount of life', and the note calls the wipe with the drain package online 'the signature play of the night' — eleven creatures died, every opponent lost 11."
+        },
+        {
+          "card": "Bloodthirsty Conqueror",
+          "read": "over",
+          "why": "the other half of the same drain package; the note's figures are 'I gained 11' and life totals of 'me around 50 and the table around 20'."
+        },
+        {
+          "card": "Throne of the God-Pharaoh",
+          "read": "as-expected",
+          "why": "'Throne of the God-Pharaoh was out doing damage on tapped creatures.' HISTORY: this game was played on v1.0.0 and Throne was one of the twelve cards cut in the v1.0.1 swaps, so the reading does not carry to the current 99."
+        },
+        {
+          "card": "Anointed Procession",
+          "read": "under",
+          "why": "'Anointed Procession resolved and was removed the following turn', and again under WHAT BROKE IT — 'Anointed Procession and other permanents were picked off repeatedly'. It was answered, not absent, and it is still in the 99."
+        },
+        {
+          "card": "Deflecting Swat",
+          "read": "under",
+          "why": "drawn and never used: 'Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game.'"
+        },
+        {
+          "card": "Teferi's Protection",
+          "read": "under",
+          "why": "same stranding, plus the one moment the pilot describes weighing it — 'Late in the game I did have open mana, but the board was only two tokens deep and Teferi's Protection did not feel worth it. Then a wipe came.'"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "after one mulligan, a two-land hand: keep, or take the second mulligan under the house rule that makes you discard. The pilot's own account is that he knew it should go back, another player pointed out the mulligan was still available, and 'I kept out of stubbornness'.",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "late game, open mana available, board two tokens deep, a table that has already wiped twice: cast Teferi's Protection now, or hold it for a wider board. The note records the hold and then 'Then a wipe came.'",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "STILL HOLDS ON THE CURRENT LIST — the pilot's structural read on interaction: 'my mana was spent casting vampires, so there was never open mana to hold up… A deck that cannot afford to hold up interaction is a deck that does not run interaction, whatever the list says.' He explicitly ranks this above his three behavioural reasons (trigger-shy, not tracking opponents' boards, uncertain about timing), and both cards he names are still in the 99.",
+        "STILL HOLDS — the drain package is the deck's real output and it does not need an attack: with Blood Artist and Bloodthirsty Conqueror online, somebody else's board wipe was the pilot's best turn of the night. Eleven deaths, 11 off every opponent, 11 gained.",
+        "STILL HOLDS — the loss shape the pilot names twice in one note: 'I ran out of steam: vampires on board, nothing in hand, and no way to rebuild after each wipe. That is the same failure mode that cost me the Saturday game against Alex.' Both games are filed under cause `wipe` in log_causes.json, which matches.",
+        "HISTORY (V1 reading) — the token-conversion axis working as advertised: Throne of the God-Pharaoh doing damage on tapped creatures, and Anointed Procession as a doubler worth an opponent's removal. Throne was cut in the v1.0.1 twelve swaps; Anointed Procession stayed.",
+        "A pod read the pilot states as fact about the table, not the deck: 'this pod runs heavy creature removal and heavy board wipes — both games were rebuild, wipe, rebuild, and neither of my decks generates value on the way down.'"
+      ],
+      "engine_stages": [
+        "mana",
+        "fodder",
+        "fuel",
+        "output",
+        "protection"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "The pilot's structural claim is that this deck can never hold up interaction because its mana is spent casting Vampires. Is that true of the whole interaction suite, or only of the pieces that cost mana? Deflecting Swat — one of the two cards he names as stranded — reads 'If you control a commander, you may cast this spell without paying its mana cost', and engine.json's `protection` stage is labelled 'FIVE CARDS HELD, AND FOUR OF THEM ARE FREE OR NEARLY'. The note does not say whether Edgar was on the battlefield when the windows passed, so the debrief cannot settle it.",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot has overruled his own behavioural explanation with a structural one, and a structural finding usually becomes a list change. If most of the suite is free while the commander is out, the correct fix is a piloting habit and a note in the handbook, not cuts — and the two answers point in opposite directions."
+        },
+        {
+          "question": "'Neither of my decks generates value on the way down' — the pilot's summary of two consecutive losses to the same rebuild-wipe-rebuild pattern. v1.0.1's twelve swaps brought in seven free sacrifice outlets and a set of death-triggered payoffs (engine.json's `conversion` stage: 'NINE OUTLETS, AND THE ONE THAT MAKES THEM PAY'). Does the current list actually answer the V1 failure mode this note names, or does it only convert bodies the pilot chooses to lose rather than the ones a sweeper takes?",
+          "settled_by": "diagnose",
+          "why_it_matters": "two of the four logged games end on cause `wipe`, and this is the one place where a V1 complaint and a V2 change are aimed at the same thing. If they miss each other, the deck is still losing the same way and nobody has noticed."
+        },
+        {
+          "question": "'Seat 5 again. My read is that the first-seat momentum advantage compounds with my mana deficit rather than just adding to it.' Is the turn-order disadvantage in a five-player pod multiplicative with a deck that is short on mana, as the pilot reads it, or additive?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the pilot states it as a read rather than a finding, and it is the one claim in the note that is about Commander generally rather than about this 99. If it holds, it changes how the deck's opening-hand keeps should be graded from a late seat — which is exactly the mulligan decision this game turned on."
+        }
+      ]
+    },
+    "003": {
+      "summary": "Three-player pod at Alex's in Orinda, game two of four, on V1 (decklist_sha256 88bffd9b… = v1.0.0; two cards this note names — Warleader's Call and Purphoros — were cut in the v1.0.1 swaps, so those readings are history). The mana was perfect and irrelevant: two lands plus Sol Ring into a Talisman, four mana on turn one, Edgar down fast, Warleader's Call and the token-enters enchantments in place — 'Everything the deck wants from an opening hand, I had. Then nothing.' EDGAR WAS THE ONLY VAMPIRE THE PILOT CAST ALL GAME; he got Alex to 12 commander damage and Alex closed later with an oversized threat. The pilot's own framing is that the card-draw failure 'is not a new finding, it is the finding, again'. The bulk of the note is a DIRECTION CHANGE argued out with Alex after the game and adopted: the deck is swarm typal and should be lords-and-payoffs, tokens become the DIG ENGINE rather than the win condition, the through-line is white-black lifegain into lifedrain, and 'THIS SUPERSEDES THE TOKEN-CONVERSION AXIS from the 25 August debrief' — a withdrawal the v1.0.1 swaps then enacted, cutting Purphoros, Warleader's Call, Impact Tremors, Shared Animosity, Intangible Virtue and Throne of the God-Pharaoh for bigger single bodies.",
+      "opponents": [
+        {
+          "seat": "Stuart",
+          "archetype": null,
+          "commander": "Jarad",
+          "evidence": "Stuart was on Jarad"
+        },
+        {
+          "seat": "Alex",
+          "archetype": null,
+          "commander": null,
+          "evidence": "he closed later with an oversized threat"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Sol Ring",
+          "read": "as-expected",
+          "why": "the opener the note describes: 'Two lands plus Sol Ring, tapped Sol Ring for a Talisman, ended turn one on four mana.'"
+        },
+        {
+          "card": "Edgar Markov",
+          "read": "as-expected",
+          "why": "'Edgar down fast'; he 'Got Alex to 12 commander damage before he assembled blockers'. The failure the note reports is around him — 'EDGAR WAS THE ONLY VAMPIRE I CAST ALL GAME' — not in him."
+        },
+        {
+          "card": "Warleader's Call",
+          "read": "under",
+          "why": "resolved and did not matter: 'Warleader's Call and the token-enters enchantments in place… Then nothing.' The pilot generalises it in the direction change — converting tokens into value 'is a good idea in isolation but does not change what the deck is'. HISTORY: cut in the v1.0.1 swaps."
+        }
+      ],
+      "decisions": [],
+      "takeaways": [
+        "STILL HOLDS — the pilot's own verdict on the recurring cause: 'I ran out of steam on card draw, which is the same theme as every other game with this build — it is not a new finding, it is the finding, again.' Filed as cause `stalled`. Note that the current list measures a draw component drawn in 84.3% of goldfish games and 72.7% by turn six, which is a measure of DRAWING it, not of resolving or keeping it — 002 lost its draw permanents to removal and 003 never got there.",
+        "THE DIRECTION, adopted and largely enacted: lords and payoffs instead of swarm typal. 'Get two or three vampires enormous and fast rather than an army of medium ones… The tokens stop being the win condition and become the DIG ENGINE — card draw, treasure, moving through the deck fast — because the deck is full of mediocre vampires and the premium ones are what actually close games.' The v1.0.1 swaps moved this way: Immersturm Predator, Vish Kal, The Haunt of Hightower, High-Society Hunter and Liliana, Dreadhorde General in; Purphoros, Warleader's Call, Impact Tremors, Shared Animosity and Intangible Virtue out.",
+        "THE WITHDRAWAL, on the record: 'THIS SUPERSEDES THE TOKEN-CONVERSION AXIS from the 25 August debrief. That direction is withdrawn — not because it was wrong mechanically, but because it was optimising the wrong deck.' Any recommendation that cites the 25 August token-conversion direction is citing something the pilot has retracted.",
+        "NOT A CHANGE REQUEST — the two cards named in the conversation are already in the 99 and were in v1.0.0 too: 'Named as keepers in the conversation: Cordial Vampire… and Welcoming Vampire'. The pilot is protecting them from a future cut, not asking for them.",
+        "STILL OPEN AS A PROPOSAL, not enacted: 'That argues for a mill package as a second way to dig… Card draw is one way through the deck; self-mill is another, and we can be deliberate about it.' Enumerated against the twelve v1.0.1 additions, exactly one can mill the pilot's own library — Altar of Dementia ('Sacrifice a creature: Target player mills cards equal to the sacrificed creature's power'). The Haunt of Hightower and Immersturm Predator touch graveyards but neither self-mills. One card is not a package, and no recursion was added to pay it off.",
+        "A perfect opener is not evidence that the mana is fine or that the deck is: 'Best-case opener and it did not matter.' Four mana on turn one with Edgar down produced one Vampire cast for the whole game."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "fuel"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "'EDGAR WAS THE ONLY VAMPIRE I CAST ALL GAME.' engine.json's `ignition` stage prices the whole deck off a castable Vampire being drawn in 95.1% of games at mean turn 2.19 — a DRAWN figure. How often does the current list actually CAST fewer than two Vampires by turn six? Was this game the tail of a healthy distribution or a shape the model is not showing?",
+          "settled_by": "goldfish",
+          "why_it_matters": "every checker-passed kill proof for this deck opens by casting a Vampire to fire eminence, so the cast rate is the number the engine model rests on and the drawn rate is a ceiling on it. If casts diverge from draws, the 95.1% headline is overstating the deck's floor and this game is structure rather than variance."
+        },
+        {
+          "question": "Alex's reframe, which the pilot has adopted on the strength of one conversation and one game: is 'two or three vampires enormous and fast' the better plan than go-wide at this table, and is deliberate self-mill a viable second dig engine for a white-black lifegain-into-lifedrain deck with graveyard recursion? 'a big deathtouch body that drains when it connects is worth more than four 4/4s.'",
+          "settled_by": "research-strategy",
+          "why_it_matters": "this is the pilot's stated direction for the deck and it superseded the previous one, so the next round of swaps will be argued from it. It is currently supported by one post-game conversation. Note that the go-wide half is already measured against — the 400-game Forge run that killed the swarm thesis — but the lords-and-payoffs and self-mill halves rest on nothing yet."
+        }
+      ]
+    },
+    "004": {
+      "summary": "Five-player pod at Oliver's, game three of three, and the first logged game on the CURRENT list (decklist_sha256 7ce22fd6… = v1.0.1/v1.1.0, the twelve LOCK swaps) — the pilot logged it as refactor validation and read it as one: 'v1.0.0 had too many mediocre cheap vampires and weak card draw, so it stalled once the initial token swarm ran out. v1.0.1 is twelve swaps toward bigger, more impactful vampires… It is working as intended.' The token swarm came out, Tom's Goblin Sharpshooter pinged the tokens and the pilot ran his draw engine off it, a big flyer that draws cards resolved, Edgar came down and swung, Alex's fight deck took some vampires, and the pilot pivoted to Bloodletter of Aclazotz for doubled damage and killed Alex. Tom then tutored a two-card infinite and closed before the pilot's lethal resolved (cause `combo`). The pilot's verdict: 'on board state Edgar was dominating. The deck hung with the table and actually threatened lethal.' He also logs a missed line of his own and a meta note he wants on the record about two-card infinites and tutorability.",
+      "opponents": [
+        {
+          "seat": "Tom",
+          "archetype": "enchantment",
+          "commander": null,
+          "evidence": "Tom had no creatures (enchantment deck)"
+        },
+        {
+          "seat": "Alex",
+          "archetype": "fight",
+          "commander": null,
+          "evidence": "Alex came in with his fight deck and took out some vampires"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Ryan was not going to do anything"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Bloodletter of Aclazotz",
+          "read": "over",
+          "why": "the kill the pilot pivoted into: 'I pivoted, brought in Bloodletter of Aclazotz for the doubled damage and swung lethal into Alex. Took him out.'"
+        },
+        {
+          "card": "Edgar Markov",
+          "read": "over",
+          "why": "'brought Edgar down and started swinging', and after the loss — 'on board state Edgar was dominating'."
+        },
+        {
+          "card": "Crossway Troublemakers",
+          "read": "over",
+          "why": "IDENTIFICATION, not the pilot's word: he writes 'the card-draw creatures (pay two life, draw a card when a creature dies)', and that description matches exactly one card in the 99 — Crossway Troublemakers, 'Whenever a Vampire you control dies, you may pay 2 life. If you do, draw a card.' It came in with the twelve swaps. The read is the note's: 'Tom had Goblin Sharpshooter pinging my tokens — but that fed the card-draw creatures… so I was running my engine off his removal.' The pilot's plural leaves open that a second draw creature was also on board; he does not say which."
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the pilot's own kept piloting moment: during a resolution he could have paid more life to pump a vampire faster — 'BBB, two life, two life, two life while the creature was still there — and generated a pile of extra cards off the death trigger'. He calls it 'Tight play I missed in the moment.' The note does not name the vampire or the pump.",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "with lethal available, choose the target: Alex, who 'has been winning lately', over Tom or Ryan. The pilot argues it as table position rather than grudge — 'taking him out is correct from a table-position standpoint even though it looks personal. That is board state, not grudge.' Tom then won.",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "ON THE CURRENT LIST — the refactor is doing the thing it was swapped for. The pilot's terms: v1.0.0 'stalled once the initial token swarm ran out', v1.0.1 'is twelve swaps toward bigger, more impactful vampires', and this game 'hung with the table and actually threatened lethal'.",
+        "AN OPPONENT'S REMOVAL RAN THE ENGINE — 'Tom had Goblin Sharpshooter pinging my tokens — but that fed the card-draw creatures (pay two life, draw a card when a creature dies), so I was running my engine off his removal.' Judged independently: this does NOT contradict engine.json, whose thesis is that v1.0.1 'stopped asking those bodies to connect and started asking them to DIE'. What the game adds is that the dying can be outsourced. It sits against 002, where an opponent's removal starved the same engine — so the note pair supports a distinction, not a contradiction, and the distinction is untested (see open question).",
+        "The pivot is the play worth keeping: swarm first, then a big body, then Bloodletter for the doubled damage. The note describes a deck that changed gears mid-game rather than one that had one plan — 'Alex came in with his fight deck and took out some vampires, so I pivoted'.",
+        "Pay the life. The pilot's own retrospective is that he under-spent life on a pump while a creature was still on the battlefield and lost 'a pile of extra cards off the death trigger'. A deck whose payoffs charge life is a deck whose life total is a resource to spend, and this game had him choosing not to.",
+        "THE META NOTE, on the record and deliberately not routed anywhere: 'losing to a tutored two-card infinite is UNSATISFYING in a way that losing to a better board is not… The real dimension separating a fun, skilful pod game from a salty one is not power level — it is TWO-CARD INFINITE COMBOS and TUTORABILITY.' The pilot wants it 'written up as a pod-meta proposal'. That is a table-agreement task, not a deck task; it is a takeaway with no analysis route, and the deck-facing half of it is the open question below."
+      ],
+      "engine_stages": [
+        "ignition",
+        "fuel",
+        "wincon"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Does an opponent's removal RUN this engine or STARVE it, and what decides which? Entry 004: 'I was running my engine off his removal' — creature removal aimed at tokens feeding the death-triggered draw. Entry 002 on the older list: 'Ryan's recurring artifact and enchantment removal on a card-draw engine — Anointed Procession and other permanents were picked off repeatedly', then 'I ran out of steam'. The notes together suggest the split is what the removal is AIMED at, bodies versus the permanents that convert them, but two games on two different lists cannot settle it.",
+          "settled_by": "diagnose",
+          "why_it_matters": "if it holds, it inverts the threat model for this deck — creature removal is fuel and only noncreature answers are a real problem — and that changes what the protection suite is for and which seats are dangerous. It is also the single most load-bearing claim the pilot has made about how v1.0.1 behaves, made from one game."
+        },
+        {
+          "question": "The pilot wants a pod norm against two-card infinite combos and tutorability. This deck's own two checker-passed kill routes are a two-card lifegain loop (Bloodthirsty Conqueror with Sanguine Bond or Vito, stacks 004 and 006) and a doubled attack drain, and Vampiric Tutor is in the 99. Would the norm he proposes disarm his own proven kills, and if so what closes games instead?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot has asked for the meta note to go on the record, and the norm and the deck's own wincon stage are pointed at each other. Better to price that before the proposal is made at the table than after."
+        }
+      ]
     }
   }
 }

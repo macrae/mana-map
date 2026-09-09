@@ -76,6 +76,339 @@
           "why_it_matters": "The note says 'The rest of the deck I am happy with', which is a claim about card selection the deck's evidence cannot currently corroborate: after the re-baseline the deck has no verified win line, and both kill targets in goldfish_targets.json are labelled UNVERIFIED in their own titles. This is a disagreement between the pilot's reading and the artifacts, recorded here rather than argued in the annotation."
         }
       ]
+    },
+    "002": {
+      "summary": "A win the pilot refuses to credit to the deck. Five-player pod at Oliver's on 25 August, first game on the raised land base (the entry's sha f77e320bea09 is the 31-to-36-land list, an earlier decklist than the one in the repo now, so its mana figures describe that list). The mana still did not arrive — 4-5 lands on turns six and seven against a table on 8-10 plus dorks — the unnamed cost-reducer was removed before the discount engine did anything, and repeated creature wipes erased the board each time it formed. The pilot closed from off the radar after the other four ground each other down, and calls it 'the shape of most of my recent wins'.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Alex was tapping for something like 12 mana on turns 4-5 while I had 4"
+        },
+        {
+          "seat": "the pod",
+          "archetype": null,
+          "commander": null,
+          "evidence": "The pod runs heavy creature removal and heavy board wipes"
+        }
+      ],
+      "cards": [
+        {
+          "card": "The Ur-Dragon",
+          "read": "under",
+          "why": "kept in the opening hand behind about three lands and a cost-reducer; the note says 'the mana never arrived' and the pilot sat on 4-5 lands through turns six and seven"
+        },
+        {
+          "card": "Miirym, Sentinel Wyrm",
+          "read": "under",
+          "why": "kept as one of the 'more six-drops behind it' on a hand that stalled three to five lands behind curve"
+        }
+      ],
+      "decisions": [],
+      "takeaways": [
+        "The pilot's own verdict on the win: 'the deck did not win, the table's attrition won and I was the last one standing. That works in a five-pod and will not repeat against a tighter table.'",
+        "The mana deficit is a standing claim, not one bad night: 'I have been three to five lands behind curve consistently across the last four or five games' — measured on the raised land base, before the shift toward dorks and rocks that entry 003 reports as working.",
+        "The mechanism the deficit produces is the telegraph, and it is named in every note that follows — 002, 003, 004 and 005, four in a row: 'cards sit in my hand that are castable eventually, so the play gets telegraphed a turn or two ahead, and by the time the mana is there the piece has been answered.'",
+        "The pod is the environment this deck has to survive: 'The pod runs heavy creature removal and heavy board wipes, and this deck generates no value on the way down.'",
+        "The removed cost-reducer is not named ('I did not note which one'), so no ignition card can be scored from this game."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "protection"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "The deck 'generates no value on the way down' against a pod that plays heavy creature removal and heavy board wipes — is that a real gap in the 99, and what would close it without costing dragon slots?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot names the pod's removal density as a standing condition, and 'board established, board erased, repeat' is how this game went even after the mana base was raised"
+        },
+        {
+          "question": "Is 'three to five lands behind curve' still true on the current list? The claim was made on the raised-land-base version, before the mana density shifted toward dorks and rocks.",
+          "settled_by": "goldfish",
+          "why_it_matters": "the pilot's headline finding across four or five games rests on a version that has since been replaced, and entry 003 reports the mana working on the newer one — the two need reconciling before more slots are spent on mana"
+        }
+      ]
+    },
+    "003": {
+      "summary": "The first validation game for the refactor, five-player at Oliver's on 1 September, played on the dork-and-rock mana density (sha 5611a822851c). The mana worked — Sol Ring plus Arcane Signet off a turn-one land for four mana, Bloom Tender on two — and the loss moved to a different axis. The pilot deployed Gadrak, the Crown-Scourge a turn too early, the table read 'Sean is swinging for 28 in the air', and four players converged before he could present lethal: Tom stripped all three artifacts so Gadrak could not activate, Alex fought the dragons, Ryan removed more, Tom pinged with Purphoros. The pilot's own three lessons are speed trap, politics miss, and protection cut for speed.",
+      "opponents": [
+        {
+          "seat": "Tom",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Tom removed all three artifacts so Gadrak could not activate (needs four)"
+        },
+        {
+          "seat": "Alex",
+          "archetype": "fight",
+          "commander": null,
+          "evidence": "Alex fought the dragons with his fight deck"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Ryan removed more"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Sol Ring",
+          "read": "over",
+          "why": "'Turn one land into Sol Ring and Arcane Signet — four mana on turn one'"
+        },
+        {
+          "card": "Arcane Signet",
+          "read": "over",
+          "why": "half of the turn-one four mana the note opens the curve with"
+        },
+        {
+          "card": "Bloom Tender",
+          "read": "over",
+          "why": "'Turn two Bloom Tender, five available in a five-colour deck'"
+        },
+        {
+          "card": "Miirym, Sentinel Wyrm",
+          "read": "as-expected",
+          "why": "named in the curve for what it is meant to do — the note glosses it '(copies dragons)'"
+        },
+        {
+          "card": "Gadrak, the Crown-Scourge",
+          "read": "under",
+          "why": "the telegraph and then a dead body: 'Played Gadrak a turn too early and telegraphed the whole thing', and 'Tom removed all three artifacts so Gadrak could not activate (needs four)'"
+        },
+        {
+          "card": "Terror of the Peaks",
+          "read": "under",
+          "why": "the payoff the plan was priced on — 'Two copies of Terror is twenty targeted damage' — which the note's own lesson says never arrived: 'I ramped fast enough to broadcast the win before I could actually present lethal'"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the turn Gadrak, the Crown-Scourge is castable: deploy it now with the board still forming, or hold it a turn so the table cannot yet read 'Sean is swinging for 28 in the air'",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The mana is no longer the complaint: 'The mana worked.' This is the first note in the log where the pilot says so, and the loss is filed against speed, protection and politics instead.",
+        "The pilot's three piloting lessons, in his words: SPEED TRAP — 'I ramped fast enough to broadcast the win before I could actually present lethal'; POLITICS MISS — 'if I am getting that big that fast I need alliances, or I am the solo target by definition'; and 'I CUT PROTECTION AND COUNTERS FOR SPEED, and it showed. Targeted removal and board wipes take the deck apart now.'",
+        "Haste is the pilot's framing of the speed problem, not size: 'the problem is speed, not size', and 'Terror has to swing the turn it lands, not sit.'",
+        "The pilot asked for a table-politics layer in the handbook: 'read the room, form alliances, hold back a swing to signal you are not the only problem at the table.'"
+      ],
+      "engine_stages": [
+        "mana",
+        "fuel",
+        "conversion",
+        "output",
+        "protection"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Miirym, Sentinel Wyrm",
+            "Terror of the Peaks"
+          ],
+          "status": "needs a stack scenario",
+          "note": "the note prices the plan at 'Two copies of Terror is twenty targeted damage'. Two passing stacks resolve a Miirym + Terror of the Peaks board — stacks/002-miirym-panharmonicon-doubling.json and stacks/007-cascade-without-panharmonicon.json — but both walk a single Lathliss arrival with one Terror on the battlefield. Neither covers two copies of Terror, so the note's arithmetic is unproven."
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Which dragons grant haste to the board, and which haste enablers fit a five-colour dragon curve, so that a dragon swings the turn it lands rather than sitting through a rotation of removal?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the pilot asked for exactly this, twice — items (a) and (b) of his own research list — and frames it as the mechanism of the loss: 'the problem is speed, not size'"
+        },
+        {
+          "question": "What protection density can this deck carry — the pilot floats lock-down such as equipment granting indestructible — without spending dragon slots?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "item (c) of the pilot's list, and the note says the refactor cut protection and counters for speed: 'Targeted removal and board wipes take the deck apart now'"
+        },
+        {
+          "question": "What does a table-politics layer for a deck that visibly presents the biggest board look like — threat management, alliance timing, and when to hold a swing back?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "item (d) of the pilot's list, requested for the handbook, and the cause code on this game and on 004 is `politics` in both"
+        }
+      ]
+    },
+    "004": {
+      "summary": "Four-player at the pilot's house on 3 September: Stuart Gilbert on an Animar precon, Steven on CC Weather, David Epstein on Squirrels. A land sacrificed to tutor found Terror of the Peaks, and after that every dragon ETB was 'about ten targeted damage spread across three targets', used as spot removal — it took out two commanders, Steven's and David's. The deck 'did what it was designed to do: aggressive, fast, more consistent than it has ever been, treasure accumulating', and that was the problem: the treasure pile plus fireballing every ETB made the pilot the obvious threat, David called it out, and three players picked him apart inside one rotation while Steven won quietly with a tap/untap engine. NOTE ON THE JOIN: this entry carries a decklist sha, but it is a backfilled stamp and known-issues D1 records that the game was played on an earlier list than the sha names — so nothing here should be attributed to a version.",
+      "opponents": [
+        {
+          "seat": "Stuart Gilbert",
+          "archetype": "Animar precon",
+          "commander": null,
+          "evidence": "Stuart Gilbert (Animar precon)"
+        },
+        {
+          "seat": "Steven",
+          "archetype": "tap/untap engine",
+          "commander": null,
+          "evidence": "Steven flew under the radar with his tap/untap engine and won it"
+        },
+        {
+          "seat": "David Epstein",
+          "archetype": "Squirrels",
+          "commander": null,
+          "evidence": "David Epstein (Squirrels)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Terror of the Peaks",
+          "read": "over",
+          "why": "found off the tutor and then carried the game as removal: 'every dragon ETB was about ten targeted damage spread across three targets, and I used it as spot removal — took out Steven's commander and David's'"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the dragon ETB damage is on the stack and Steven is assembling quietly: spend it as spot removal on the commander in front of you, or hold your optics and point the table at the quiet assembler",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The pilot's own read, stated flatly: 'this was a political loss, not a deck loss.'",
+        "The deck is working — 'aggressive, fast, more consistent than it has ever been, treasure accumulating' — and being visibly the best deck at a four-player table is what lost the game.",
+        "Two commanders killed with ETB damage is what made the pilot the archenemy: 'The treasure pile plus fireballing every ETB made me the obvious problem. David called it out, the table converged, and three players picked me apart inside one rotation.'",
+        "The lesson the pilot wants carried forward is the 003 lesson plus one: 'manage my own optics, AND call out the quiet assembler before he is unanswerable.'",
+        "This is the second consecutive loss the pilot files under table convergence rather than a deck failure, and the second where the telegraph is the named mechanism."
+      ],
+      "engine_stages": [
+        "fuel",
+        "output"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Steven 'flew under the radar with his tap/untap engine and won it' while the table spent its removal on the pilot — does this deck have any way to interact with an opponent who assembles quietly, or is its only answer to be faster than him?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the deck's own interaction is aimed at its board and its ETB damage was spent killing commanders; if there is no answer in the 99 then 'call out the quiet assembler' is the whole plan and belongs in the handbook rather than in a slot"
+        }
+      ]
+    },
+    "005": {
+      "summary": "Five-player at Oliver's on 8 September, arriving late and swapping off Heliod because the table said 'creatures'. The game was decided by colour, not by cards: no green source all game, so Farseek and the green-needing dragons sat in hand throughout — which the pilot is explicit is not a deck defect, since Delighted Halfling, Birds of Paradise and Bloom Tender are all in the list. Enlightened Tutor found Sol Ring when the pilot's own verdict is that it should have found fixing. Firespitter Whelp with Twinflame Tyrant (the note writes it 'Twin Flame') and Panharmonicon was live and doubling, but the Tyrant was cast before the big dragons were down and was removed immediately. No treasure engine online at any point. Oliver won with Balan. The entry carries the current decklist sha, so every card it names is in the 99 as it stands.",
+      "opponents": [
+        {
+          "seat": "Oliver",
+          "archetype": "token swarm",
+          "commander": "Balan",
+          "evidence": "Oliver won with Balan — token swarm plus the +1/+1-per-attacker anthem"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Farseek",
+          "read": "under",
+          "why": "stranded, not outclassed: 'Farseek and the green-needing dragons sat in hand the whole time' with no green source all game"
+        },
+        {
+          "card": "Delighted Halfling",
+          "read": "missed",
+          "why": "the pilot wanted a green source and none arrived — 'That is not a deck defect — Halfling, Birds and Bloom Tender are all in there'"
+        },
+        {
+          "card": "Birds of Paradise",
+          "read": "missed",
+          "why": "same draw: named by the pilot as one of the green sources that is in the list and did not show up"
+        },
+        {
+          "card": "Bloom Tender",
+          "read": "missed",
+          "why": "same draw: named by the pilot as one of the green sources that is in the list and did not show up"
+        },
+        {
+          "card": "Enlightened Tutor",
+          "read": "under",
+          "why": "the pilot's own call on the get, not on the card: 'It should have gone for a green rock or a signet. I had the fixing problem in front of me and tutored for speed instead.'"
+        },
+        {
+          "card": "Sol Ring",
+          "read": "as-expected",
+          "why": "what the tutor found; the note does not fault the card, it faults choosing speed over the fixing problem that was already visible"
+        },
+        {
+          "card": "Firespitter Whelp",
+          "read": "over",
+          "why": "'Firespitter Whelp with Twin Flame and Panharmonicon was pinging and doubling, and it is mean alongside Terror'"
+        },
+        {
+          "card": "Panharmonicon",
+          "read": "as-expected",
+          "why": "named as part of that live combination; the note credits the combination rather than the piece"
+        },
+        {
+          "card": "Twinflame Tyrant",
+          "read": "under",
+          "why": "deployed into the telegraph and answered: 'I cast Twin Flame before the big dragons were down and it got removed immediately.' The note calls it 'Twin Flame'; Twinflame Tyrant is the doubling card in the 99"
+        },
+        {
+          "card": "Terror of the Peaks",
+          "read": "as-expected",
+          "why": "named only as the card the Whelp-and-doubler combination is 'mean alongside'; the note reports no damage from it this game"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Enlightened Tutor resolves with the fixing problem already visible on the board: fetch Sol Ring for speed, or fetch a green rock or a signet for the colour the hand cannot make",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "mana untapped and Twinflame Tyrant castable before the big dragons are down: deploy it now because you dislike unspent mana, or hold it a turn or two until there is something for it to double",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The mulligan rule the pilot proposes, in his words: 'no green source, consider shipping it.' He is explicit that the game was not a deck defect — the green sources are in the list and did not arrive.",
+        "The telegraph is named in all four notes since 002, and here for the first time with its cause: 'I do not like having unspent mana, so I pour it into the board too early and telegraph. The lesson is to drop the tempo a turn or two and hold Twin Flame until the dragons are actually there.' In 002 the cause was the mana deficit; in 003, 004 and 005 it is deployment. This is a piloting pattern the pilot has identified himself, and it is not routed as a deck defect.",
+        "The deck read is positive on everything except responses: 'happy with the speed, the consistency, the curve and the big dragons. The refactor yanked all the counterspells and I now have zero responses.'",
+        "'No treasure engine online at any point' — the fuel stage did nothing this game, on a list whose treasure accumulation was the story of 004.",
+        "A temperament rule the pilot set for himself, worth keeping in the handbook: he wanted to scoop, took a breath and played it through — 'leave it on the field and get even inside the game.'",
+        "A table-culture note the pilot flags as contested: 'mismatched decks are a real contributor to salt.' Oliver disagrees; the pilot swapped off Heliod because the table said 'creatures'."
+      ],
+      "engine_stages": [
+        "mana",
+        "fuel",
+        "conversion",
+        "output",
+        "protection"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Firespitter Whelp",
+            "Twinflame Tyrant",
+            "Panharmonicon",
+            "Terror of the Peaks"
+          ],
+          "status": "needs a stack scenario",
+          "note": "the note says the first three 'was pinging and doubling, and it is mean alongside Terror'. Of the seven passing stacks, only 002 and 007 touch Terror of the Peaks with Panharmonicon, and neither names Firespitter Whelp or Twinflame Tyrant — the arithmetic on one dragon arrival with the doubler out is unproven."
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "How often does a keepable opening hand for this deck contain no green source? The pilot proposes the mulligan rule 'no green source, consider shipping it' and it needs a rate before it becomes one.",
+          "settled_by": "goldfish",
+          "why_it_matters": "green gates Farseek and the green-needing dragons, and the model can measure how often a hand the pilot would keep has no green source — which is exactly the number that decides whether the rule costs more than the screw"
+        },
+        {
+          "question": "Firespitter Whelp with Twinflame Tyrant and Panharmonicon alongside Terror of the Peaks: how much damage does one nontoken dragon arrival actually deal, and how does the doubling interact with the extra trigger?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "the pilot calls the combination 'mean' and is deciding when to deploy the doubler; the arithmetic decides whether holding it a turn is worth the tempo, and no stack in stacks/ names Firespitter Whelp or Twinflame Tyrant at all"
+        },
+        {
+          "question": "The refactor removed every counterspell and the pilot reports 'zero responses'. What responses — dragons with ETB counters or flash, or protection on dragons or dragon enchantments — fit without slowing the deck down?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the pilot asked for exactly this research, and it is the same gap 003 filed under 'I CUT PROTECTION AND COUNTERS FOR SPEED' — two notes now name it"
+        },
+        {
+          "question": "Across 003, 004 and 005 the pilot presents a board the table can read before he can close. Is the gap between broadcasting a threat and presenting lethal a property of this list — ramp-heavy, protection-thin, no haste — or purely a deployment habit the handbook should fix?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the two answers cost completely different things: one is a piloting rule the pilot has already written himself, the other is slots in the 99. Three consecutive losses name the same mechanism and nothing has decided which it is"
+        }
+      ]
     }
   }
 }

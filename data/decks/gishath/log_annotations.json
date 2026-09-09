@@ -1,0 +1,80 @@
+{
+  "slug": "gishath",
+  "entries": {
+    "001": {
+      "summary": "Game four of four at Alex's, three-player, and the only win of the night — the pilot calls it the funniest game of the year. He ramped through the early removal, the table spent its wipes on mid-tier dinosaurs, and because he rebuilt faster than they could answer he could fire Blasphemous Act into an empty board of his own to clear theirs at no cost. Gishath then connected on Stuart for 7, revealed 7 and hit five dinosaurs; Enlarge the next turn made it a 14-point swing onto Stuart's existing 7 commander damage for lethal. ONE CAVEAT: the entry's decklist_sha256 matches the current list, and Enlarge is not in that list — so either the paper deck differs from the tracked 99 or the finishing card is not one this list can draw.",
+      "opponents": [
+        {
+          "seat": "Stuart",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Swung at Stuart for 7"
+        },
+        {
+          "seat": "Alex",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Three-player pod: me, Alex, Stuart"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Gishath, Sun's Avatar",
+          "read": "over",
+          "why": "\"revealed 7 cards off the trigger, hit FIVE dinosaurs\", then 2 more off a 14-card reveal — the note's own framing is that the deck's actual threat is the commander and the trigger."
+        },
+        {
+          "card": "Blasphemous Act",
+          "read": "over",
+          "why": "\"when my board was empty I could fire BLASPHEMOUS ACT to clear THEIRS at no cost to me. That asymmetry was the whole game.\""
+        },
+        {
+          "card": "Enlarge",
+          "read": "over",
+          "why": "\"+7/+7 on Gishath, swinging for 14 into Stuart's existing 7 commander damage = 21 and lethal by commander damage.\" Flagged: the note names it but it is not in the tracked 99 under this entry's own decklist_sha256."
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "own board empty after the table's wraths, opponents redeveloped: fire Blasphemous Act now for the free one-sided wipe, or hold it and rebuild first",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "In this one game the mid-tier dinosaurs effectively soaked the table's removal and the commander landed into an empty answer slate — the pilot's read is that the deck's actual threat is Gishath and its trigger, not the bodies that precede it.",
+        "Blasphemous Act's asymmetry window is an empty board of your own: in this game it cleared theirs at no cost and the pilot calls that asymmetry the whole game.",
+        "One of the revealed dinosaurs makes opposing creatures enter tapped, which the note says is why the board could not stabilise after the first connect — the reveal is not just bodies.",
+        "The pilot proposes no changes: he reads this single game as the deck working as designed. It is one logged game and a win, so nothing here is yet a pattern."
+      ],
+      "engine_stages": [
+        "ignition",
+        "conversion",
+        "output",
+        "wincon"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Gishath, Sun's Avatar"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/001-gishath-trigger-cascade.json"
+        },
+        {
+          "cards": [
+            "Gishath, Sun's Avatar",
+            "Enlarge"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Does the tracked 99 actually contain a pump effect that converts a Gishath connect into lethal commander damage, given that Enlarge — the card that finished this game — is not in the list this entry's decklist_sha256 points at?",
+          "settled_by": "diagnose",
+          "why_it_matters": "The only logged win ends on a card the tracked list does not hold. Either the paper deck has drifted from the tracked 99 or the finishing line is not repeatable from this list, and the log cannot tell those apart."
+        }
+      ]
+    }
+  }
+}

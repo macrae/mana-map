@@ -1,0 +1,178 @@
+{
+  "slug": "heliod",
+  "entries": {
+    "001": {
+      "summary": "Game three of four at Alex's, three-player. The pilot had a good hand and dense interaction, countered at the right moments, and still lost — he lost Heliod in a stack war (his counter countered by Alex, then his Swords to Plowshares redirected onto Heliod) and the engine was offline from there, with Psychosis Crawler on the battlefield and never grown. His read: the deck has too many axes and not enough of any one, and the rebuild direction is protection first. NOTE: this entry's decklist_sha256 is the V5 list, five versions behind the current V10, with 18 cards different — but every card the note names (Heliod, Swords to Plowshares, Psychosis Crawler) is still in the current 99, so nothing in the note has been orphaned.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": "counterspells and redirection",
+          "commander": null,
+          "evidence": "I countered a spell, Alex countered my counter; I cast Swords to Plowshares, Alex redirected it onto Heliod"
+        },
+        {
+          "seat": "Stuart",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Three-player pod: me, Alex, Stuart"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "read": "under",
+          "why": "lost in the stack war and the engine went offline from there — the note's framing is that \"losing the commander takes the whole engine down\"."
+        },
+        {
+          "card": "Swords to Plowshares",
+          "read": "under",
+          "why": "turned against him: \"I cast Swords to Plowshares, Alex redirected it onto Heliod\"."
+        },
+        {
+          "card": "Psychosis Crawler",
+          "read": "under",
+          "why": "\"Psychosis Crawler was on the battlefield with the pieces to grow it and I never got there.\""
+        }
+      ],
+      "decisions": [],
+      "takeaways": [
+        "WHAT IT NEEDS IS PROTECTION — the pilot's own headline: losing the commander takes the whole engine down and there was no answer to a counter war plus redirected removal.",
+        "The archetype's symmetric draw fuels the table's answers to his counters as much as his own gas: \"I am symmetrically fuelling the table's ability to fight me.\"",
+        "The pilot's structural read is TOO MANY AXES and not enough of any one — he still believes in the shell, but it is spread thin, and protection comes before any new axis.",
+        "The deck did what it is built to do — good hand, dense interaction, counters at the right moments — and still lost, so this is not a game the pilot attributes to draw."
+      ],
+      "engine_stages": [
+        "protection",
+        "output"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Does the current V10 list answer the failure this game exposed — a countered counter followed by removal redirected onto Heliod — or is the commander still a single point of failure with no protection that survives a stack war?",
+          "settled_by": "diagnose",
+          "why_it_matters": "The pilot named protection first as the rebuild direction and five versions have shipped since this game on an 18-card-different list. Whether that direction actually landed is exactly the question the doctor should answer, and nothing in the log settles it."
+        }
+      ]
+    },
+    "002": {
+      "summary": "Second game at Oliver's, four-player, loss. Smothering Tithe landed early alongside Kami of the Crescent Moon and was netting about three treasure a cycle, but with no creatures out the Tithe made the pilot the table's target immediately. He names three sequencing errors of his own — Supreme Verdict cast after Heliod was already out, sitting on Long-Term Plans instead of tutoring Approach of the Second Sun to third-from-top, and playing the channel-tutor spirit as a blocker rather than channelling it — and Oliver assembled a one-card Cranko line while the table beat on him. The entry's decklist_sha256 matches the current V10 list.",
+      "opponents": [
+        {
+          "seat": "Oliver",
+          "archetype": "one-card combo",
+          "commander": "Cranko",
+          "evidence": "Oliver assembled his one-card Cranko line while the table beat on me"
+        },
+        {
+          "seat": "Alex",
+          "archetype": "fight deck",
+          "commander": null,
+          "evidence": "Alex (fight deck)"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": null,
+          "commander": "Scorpion King",
+          "evidence": "Ryan (Scorpion King)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Smothering Tithe",
+          "read": "as-expected",
+          "why": "did its job — \"netting about three treasure a cycle\" with Kami of the Crescent Moon — but the note's finding is deployment, not the card: \"Tithe made me the target immediately and I had no creatures out.\""
+        },
+        {
+          "card": "Kami of the Crescent Moon",
+          "read": "as-expected",
+          "why": "down early alongside the Tithe and part of the pair that was netting about three treasure a cycle."
+        },
+        {
+          "card": "Long-Term Plans",
+          "read": "under",
+          "why": "held rather than used: \"I sat on Long-Term Plans. I should have tutored Approach of the Second Sun to third-from-top immediately.\" The pilot attributes this to himself, not the card."
+        },
+        {
+          "card": "Approach of the Second Sun",
+          "read": "under",
+          "why": "never got there — the tutor that would have set it up was held, and \"I waited, got desperate, and the window closed.\" It is not a `missed` read: the route to it was in hand."
+        },
+        {
+          "card": "Supreme Verdict",
+          "read": "under",
+          "why": "\"Supreme Verdict after Heliod was already out. I killed my own commander.\""
+        },
+        {
+          "card": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "read": "under",
+          "why": "deployed before the wipe and killed by it; the pilot's own conclusion is that \"there is no pressure to rush the commander out in this build and I keep acting as though there is.\""
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Heliod already on the battlefield and Supreme Verdict in hand: cast the wipe now, or hold it until after the board is one you want to keep",
+          "worth_a_spread": false
+        },
+        {
+          "spot": "Long-Term Plans in hand with treasure available: tutor Approach of the Second Sun to third-from-top immediately, or hold the tutor for a better read",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "the channel-tutor spirit while under pressure: play it as a blocker to survive the turn, or channel it to tutor and assemble the win condition",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "Smothering Tithe castable early with no creatures on the battlefield: deploy it now for the treasure, or defer until there is a shell",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "SEQUENCING 1 — Wipe first, then resolve Heliod. Supreme Verdict cast after the commander was already out killed his own commander.",
+        "SEQUENCING 2 — Tutor Approach of the Second Sun to third-from-top with Long-Term Plans immediately. He was overthinking the mana cost: with the treasure and the discount he reads it as two or three, not seven, and waiting closed the window.",
+        "SEQUENCING 3 — Use the channel-tutor spirit to tutor, not as a blocker. Caught between \"I am getting beaten up\" and \"I need to assemble my win condition\", he took the short-term survival play.",
+        "OPTICS — Smothering Tithe makes you the table's target the moment it lands: have a shell or blockers around it, or defer deploying it until you do.",
+        "There is no pressure to rush the commander out in this build, and the pilot says he keeps acting as though there is.",
+        "DECK READ — he likes the Approach build-around and the \"live long enough\" plan and wants to play Heliod more; the hand-size punisher axis needed too many pieces and only ever pinged.",
+        "CROSS-GAME, in the pilot's own words: momentum, tempo and table optics are the recurring gap, and it is him rather than the decks. He avoids Heliod partly because blue-white control feels intimidating and partly out of table-match consideration."
+      ],
+      "engine_stages": [
+        "conversion",
+        "protection",
+        "wincon"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Approach of the Second Sun"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/002-approach-second-sun-tutor-win.json"
+        },
+        {
+          "cards": [
+            "Long-Term Plans",
+            "Approach of the Second Sun"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "With Heliod, the Warped Eclipse on the battlefield and treasure available, does the cost reduction genuinely bring a second Approach of the Second Sun down to two or three mana, and what does the table have to have drawn that turn for it to get there?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "The pilot held Long-Term Plans because he read the cost as seven and now believes it was two or three. The existing passing stack (002) proves the second cast wins but resolves it at {6}{W} with no discount, so the price he actually would have paid is unproven — and the same hesitation will recur every game until it is settled."
+        },
+        {
+          "question": "What lines convert opponents' card draw into value for this build, beyond the hand-size punisher axis?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "The pilot asks for this by name — \"Research: more ways to convert opponents' card draw into value\" — and says the hand-size punisher axis needed too many pieces and only ever pinged, so the axis he has is one he is already discounting."
+        },
+        {
+          "question": "Is the hand-size punisher axis worth its slots in the current 99, or should those slots go to the Approach plan and to protection?",
+          "settled_by": "diagnose",
+          "why_it_matters": "This entry says the axis \"needed too many pieces and only ever pinged\", and entry 001 independently named \"TOO MANY AXES and not enough of any one\" as the deck's structural problem. Two logged games point at the same cut and neither sizes it."
+        }
+      ]
+    }
+  }
+}
