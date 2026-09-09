@@ -31,8 +31,9 @@ import re
 import time
 from pathlib import Path
 
-from manamap.config import DECKS_DIR
-from manamap.sim import parse as sim_parse
+from manamap.config import SIM_DIR
+from manamap.pilot.common import deck_dir
+from manamap.sim import forge, parse as sim_parse
 
 #: Forge writes one of these per finished game, whatever the ending.
 _DONE_RE = re.compile(r"^Game Result: Game (\d+) ended in ", re.M)
@@ -204,8 +205,24 @@ def _report(paths, label, target, started, ours_hint=None):
 
 def main(args):
     slug = args.slug
-    roots = [DECKS_DIR / slug / "sim" / "logs",
-             DECKS_DIR / slug / "experiments" / "logs"]
+    # A BRANCH IS A SEAT HERE TOO. `simulate zur-enchantress@drain-v2` writes its
+    # logs under `branches/drain-v2/sim/logs`, because `forge._out_dir` scopes a
+    # branch run structurally so it cannot land on the champion's record. This
+    # command built `DECKS_DIR / slug` from the raw argument instead, so it went
+    # looking in a literal `data/decks/zur-enchantress@drain-v2/` — a directory
+    # that has never existed — and reported "no simulation logs" while the run
+    # it was asked about was two hours into producing them.
+    #
+    # `forge.split_seat` and `common.deck_dir` are the same two calls the writer
+    # already makes; reusing them is what stops the reader and the writer
+    # disagreeing about where a run lives.
+    base, branch = forge.split_seat(slug)
+    try:
+        root = deck_dir(base, branch)
+    except FileNotFoundError as exc:
+        raise SystemExit(str(exc))
+    roots = [root / SIM_DIR / "logs",
+             root / "experiments" / "logs"]
     dirs = [d for r in roots if r.is_dir() for d in sorted(r.iterdir()) if d.is_dir()]
     if getattr(args, "run", None):
         dirs = [d for d in dirs if args.run in d.name]
@@ -231,12 +248,17 @@ def main(args):
         print(f"\nSIM PROGRESS — {slug}   {'RUNNING' if live else 'idle'}")
         print(f"  {d.name}\n")
         if plain:
-            _report(plain, "run", target, started, ours_hint=slug)
+            # THE HINT IS THE FORGE DECK NAME, not the CLI argument. Forge
+            # names a branch seat `mm-zur-enchantress-drain-v2` — `@` becomes
+            # `-` — so passing the argument through matched no seat and "ours"
+            # silently fell back to whichever token sorted first.
+            _report(plain, "run", target, started,
+                    ours_hint=forge.deck_meta_name(slug))
         else:
             for arm in ("a", "b"):
                 if arms[arm]:
                     _report(arms[arm], f"arm {arm.upper()}", target, started,
-                            ours_hint=slug)
+                            ours_hint=forge.deck_meta_name(slug))
                 else:
                     print(f"  arm {arm.upper()}\n    [{_bar(0, target)}] 0/{target}"
                           f" — not started; the arms run in sequence\n")
