@@ -233,8 +233,11 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # 0.09-0.18 against a fleet at 0.28-0.41) and no longer walked here;
     # ingris-infect opted in on the day it was built, because a deck that wins
     # on poison counters has nothing to measure without the combat model.
+    # sharknado opted in on 2026-09-10 with the discard channel: a wheel deck
+    # whose clock is Shabraz growing on every draw measures nothing without
+    # `model_combat`, and its wheels were invisible before `model_discard`.
     assert sorted(opted) == ["edgar-vampires", "heliod", "ingris-infect",
-                             "ur-dragon"], (
+                             "sharknado", "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
         "edgar-vampires with the drain refactor, which needed `model_combat` "

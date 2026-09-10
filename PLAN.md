@@ -209,6 +209,28 @@ Keeper, Huatli, Den of the Bugbear, Fountainport, Idol of Oblivion, Kher Keep, P
 Mons, Dawn of Hope, Urza's Saga, plus Ingris's own Cadet). Fixing it moves edgar,
 gishath, goblin-storm and zur; do it as its own commit with the sweep.
 
+**THE NORTH-STAR PLAN, pieces 1 and 2 landed 2026-09-10 (plan file:
+`~/.claude/plans/effervescent-churning-wadler.md`).** Forge failed three ways in one
+day -- resolution, a null that moves with the subject, and an AI that will not pay a
+cost (sharknado's seat cast Wheel of Fortune once and Windfall never in 80 games on
+BOTH profiles while discarding them) -- so the rule became: optimise on the
+highest-resolution instrument that PROVABLY covers the deck's plan, checked before the
+run. (1) `record["engine_casts"]`: per-card cast / activated / DISCARDED for our seat
+and own turns, measured, top-level, validated where present; `sim/engine_casts.py`
+reads it at print time against the declaration and prints "held and never cast" at
+the `simulate` tail, in `deck-info` and live in `sim-progress`; `KNOWN_UNCAST` names
+sharknado's two runs and heliod's Crawler. (2) `model_discard` in the goldfish: wheels
+(25 in the corpus, shuffle wheels without discard triggers, no free suspend), loots
+netted, discard/draw/second-draw payoffs paid outside the combat gate, PARTNER
+commanders cast on their own curves (Brallin had never been in the library). Every
+non-opted deck byte-identical beyond the stamp; sharknado's extra cards by T8 went
+0.63 -> 7.5 and both commanders cast. Coverage: 91 of 100 seen.
+
+**Piece 3, the table for the goldfish, is scoped in the plan file with four gates and
+NOT started:** (a) `compact()` keeps the two per-turn series; (b) own turns, discards
+and non-token blocks in `analysis` plus wipes and the by-round curve for all seats,
+with a fleet re-analyse in the same commit; (c) `threat.py` fleet-wide; (d) done.
+
 **Open from it:** zur-enchantress's own reading against v3 is the logs only;
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.

@@ -207,6 +207,20 @@ TREASURE_ASSUMPTIONS = [
 ]
 
 # Appended only for a deck that opts in, same contract as TREASURE_ASSUMPTIONS.
+DISCARD_ASSUMPTIONS = [
+    "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only "
+    "when the hand holds at most three nonland cards or a discard payoff is on "
+    "the battlefield; a loot pitches lands beyond the next drop first, then the "
+    "most expensive nonland. A discarded card stays 'seen' for target assembly "
+    "(assembly is 'drawn by', and it was). Wheel of Misfortune is excluded "
+    "(conditional). Activated loots and rummages, cycling and madness are NOT "
+    "modelled and are named in meta.draw_not_modelled. Discard- and draw-"
+    "triggered payoffs pay a flat amount per event, outside the combat gate; "
+    "+1/+1 counters they put on their own body are added to the swing while the "
+    "commander is out, an approximation. Payoffs that DRAW on a draw are not "
+    "read: an uncapped loop would draw the library and call it steam.",
+]
+
 COMBAT_ASSUMPTIONS = [
     "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, "
     "no interaction. This is a goldfish in the literal sense, so `kill_turn` is "
@@ -413,6 +427,96 @@ _DRAW_CONDITIONAL_RE = re.compile(r"\b(?:if|unless|you may|its controller)\b", r
 _DRAW_ADDITIONAL_COST_RE = re.compile(
     r"as an additional cost to cast", re.I)
 _DRAW_WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+
+# ── Discard: wheels, loots, and the triggers that pay on a discard or a draw ──
+#
+# THE SIX WHEELS IN sharknado WERE INVISIBLE, NOT DARK. `_DRAW_RE` wants a
+# written-out "draw N card"; Wheel of Fortune says "draws seven cards" and
+# Windfall "draws cards equal to the greatest number", so both returned an
+# all-zero profile with `unmodelled` still None -- the one value that means
+# "nothing to see" -- and no casting loop ever selected them. The artifact read
+# `cards_that_draw: 35, modelled: 2` on a deck whose plan is drawing. Corpus
+# sweep 2026-09-10: 11 "each player discards their hand, then draws"; 24
+# "discard your hand, then draw N".
+_WHEEL_RE = re.compile(
+    r"(?:each player |you |^|\. )(discards?|shuffles?) (?:all the cards in |the cards from )?(?:their|your) hand"
+    r"(?: and graveyard)?(?: into (?:their|your) librar(?:y|ies))?, then draws? "
+    r"(seven|six|five|four|three|two|a|one|X|that many|cards equal to the greatest number)",
+    re.I)
+#: The LOOT rider on a spell's own draw: "Draw two cards, then discard two
+#: cards" (Faithless Looting). The X-path riders (`_X_DRAW_DISCARD_*`) do not
+#: match it -- they know "a card" and "X cards" -- so Looting read +2 and
+#: discarded nothing.
+_DRAW_THEN_DISCARD_RE = re.compile(
+    r"then discards? (a|one|two|three) cards?", re.I)
+#: The triggers. 19 corpus cards say "whenever you discard a card", 11 "one or
+#: more cards"; 48 say "whenever you draw a card"; 54 "your second card each
+#: turn". Parsed, not declared: well past the "one card, no pattern" line that
+#: makes an ability a per-deck declaration.
+_EVENT_TRIGGER_RE = re.compile(
+    r"whenever you (discard a card|discard one or more cards|draw a card|"
+    r"draw your second card each turn)\b,?([^.\n]*(?:\.[^.\n]*)?)", re.I)
+#: "deals N damage to each opponent" (Brallin), "deals N damage to any target"
+#: (Niv-Mizzet, Irencrag -- one opponent, which is all this model tracks) and
+#: "each opponent loses N life" (Psychosis Crawler -- life loss is damage
+#: against one seat at 40, the convention the arrival channel already uses).
+_EVENT_DAMAGE_RE = re.compile(
+    r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
+    r"|each opponent loses (\d+) life", re.I)
+_EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+_EVENT_DRAW_RE = re.compile(r"\bdraw (a|two) cards?", re.I)
+_EVENT_TOKEN_RE = re.compile(r"create an? (\d+)/(\d+) [^.]*?creature token", re.I)
+#: Conditional and self-damaging: the lowest chooser does not wheel at all.
+_WHEEL_EXCLUDED = frozenset({"Wheel of Misfortune"})
+#: A wheel is cast only when the hand is this thin (nonland cards) or a discard
+#: payoff is already on the battlefield. AUTHORED: without it the draw loop,
+#: cheapest first, wheels away six good cards on turn three.
+WHEEL_MIN_HAND = 3
+
+
+def event_payoffs(card):
+    """What this card pays on a discard or a draw, and the shape of each.
+
+    Keyed like the drain pillar's `payoff_fixed`: a FLAT amount per EVENT.
+    `second_draw_*` fires once per turn on the second draw. A payoff that
+    DRAWS on a draw (Curiosity-class loops) is deliberately not read: a
+    goldfish with no cap would draw its whole library and call it steam.
+    """
+    text = card.get("oracle_text", "") or ""
+    out = {"per_discard_damage": 0, "per_discard_counter": 0,
+           "per_discard_draw": 0, "per_discard_token_power": 0,
+           "per_draw_damage": 0, "per_draw_counter": 0,
+           "per_draw_token_power": 0,
+           "second_draw_damage": 0, "second_draw_token_power": 0,
+           "unmodelled": None}
+    hit = False
+    for m in _EVENT_TRIGGER_RE.finditer(text):
+        hit = True
+        kind, effect = m.group(1).lower(), m.group(2) or ""
+        prefix = ("per_discard" if kind.startswith("discard")
+                  else "second_draw" if "second" in kind else "per_draw")
+        dmg = _EVENT_DAMAGE_RE.search(effect)
+        if dmg:
+            out[prefix + "_damage"] += int(dmg.group(1) or dmg.group(2))
+        if prefix != "second_draw":
+            if _EVENT_COUNTER_RE.search(effect):
+                out[prefix + "_counter"] += 1
+            # "you gain N life" is NOT read: this model has no own life total,
+            # and a field nothing applies is the silent zero this file exists
+            # to avoid.
+            drw = _EVENT_DRAW_RE.search(effect)
+            if drw and prefix == "per_discard":
+                out["per_discard_draw"] += _DRAW_WORDS[drw.group(1).lower()]
+        tok = _EVENT_TOKEN_RE.search(effect)
+        if tok:
+            out[prefix + "_token_power"] += int(tok.group(1))
+    if hit and not any(v for k, v in out.items() if k != "unmodelled"):
+        out["unmodelled"] = card.get("name")
+    return out
+
+
+def has_event_payoff(profile):
+    return any(v for k, v in (profile or {}).items() if k != "unmodelled")
 
 
 # ── Sacrifice and death ───────────────────────────────────────────────────
@@ -695,7 +799,22 @@ def draw_profile(card):
            "arrival_power_min": None, "arrival_power_max": None,
            "cast_draw": 0, "cast_draw_gate": None,
            "x_draw_multiplier": 0, "x_draw_discard": 0,
+           # A WHEEL: discard the hand, draw `wheel_draws` (-1 = as many as
+           # were discarded). A LOOT: `spell_discard` cards leave hand after
+           # the spell's own draw. Both are ACTED ON only under model_discard.
+           "wheel_draws": 0, "wheel_shuffles": False, "spell_discard": 0,
            "unmodelled": None}
+    _w = _WHEEL_RE.search(text)
+    # A wheel with NO MANA COST (Wheel of Fate, suspend only) would be cast
+    # for nothing by a loop that spends what a card costs; excluded.
+    if _w and card.get("name") not in _WHEEL_EXCLUDED and str(card.get("mana_cost") or "") \
+            and ("Instant" in type_line or "Sorcery" in type_line):
+        _word = _w.group(2).lower()
+        out["wheel_draws"] = (-1 if _word.startswith("cards equal") or _word in ("x", "that many")
+                              else _DRAW_WORDS.get(_word, {"seven": 7, "six": 6}.get(_word, 7)))
+        # A SHUFFLE WHEEL (Echo of Eons, Time Reversal, Molten Psyche) empties
+        # the hand without a discard: no discard trigger fires.
+        out["wheel_shuffles"] = _w.group(1).lower().startswith("shuffle")
     # BEFORE the `_DRAW_RE` guard, which wants a WRITTEN-OUT quantity ("draw
     # two cards") and does not recognise "draws X cards" — so every card in
     # this family returned here with an all-zero profile and, worse, with
@@ -721,7 +840,7 @@ def draw_profile(card):
         out["x_draw_multiplier"] = _mc.count("{X}")
         out["x_draw_discard"] = 1 if _X_DRAW_DISCARD_ONE_RE.search(text) else 0
 
-    if not _DRAW_RE.search(text):
+    if not _DRAW_RE.search(text) and not out["wheel_draws"]:
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -750,10 +869,13 @@ def draw_profile(card):
         sp = _SPELL_DRAW_RE.search(text)
         if sp and not _DRAW_ADDITIONAL_COST_RE.search(text):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
+            td = _DRAW_THEN_DISCARD_RE.search(text)
+            if td:
+                out["spell_discard"] = _DRAW_WORDS[td.group(1).lower()]
 
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
                 out["arrival_draw"], out["cast_draw"],
-                out["x_draw_multiplier"])):
+                out["x_draw_multiplier"], out["wheel_draws"])):
         out["unmodelled"] = card.get("name")
     return out
 
@@ -2447,6 +2569,9 @@ def classify(card, pool=None):
         "attack_enabler": bool(_ATTACK_ENABLER_RE.search(
             card.get("oracle_text", "") or "")),
         "draw": draw_profile(card),
+        # Discard- and draw-triggered payoffs, read on every card and acted on
+        # under `model_discard` only.
+        "event": event_payoffs(card),
         "death": death_profile(card),
         "token_doubler": token_doubler(card),
         "sac_outlet": sac_outlet_profile(card),
@@ -2557,8 +2682,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_grants_lifelink_to=None,
                   commander_animate=None,
                   commander_cast_token=None, interaction_names=frozenset(),
-                  attack_tutor=None):
-    """One goldfish iteration. Returns a per-iteration result dict."""
+                  attack_tutor=None, model_discard=False, partner=None,
+                  commander_event=None):
+    """One goldfish iteration. Returns a per-iteration result dict.
+
+    `partner` is the second commander of a Partner pair as
+    `{cmc, pips, combat, event, grants_lifelink_to}`; it is cast on its own
+    curve after the first and arrives through the same door."""
     deck = library[:]
     rng.shuffle(deck)
 
@@ -2664,6 +2794,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     draw_engines = []
     drawn_extra = 0
     drawn_extra_by_turn = []
+    # THE DISCARD CHANNEL. `discarded` counts cards that left hand by a wheel
+    # or a loot; `drawn_this_turn` counts EVERY draw this turn, the draw step
+    # included, for the per-draw and second-draw payoffs. Under model_discard
+    # only; a deck that does not opt in sees none of this.
+    discarded = 0
+    discarded_by_turn = []
+    drawn_this_turn = 0
+    event_payoff_permanents = []
+    event_damage_by_turn = []
+    counter_power = 0             # +1/+1 counters the payoffs put on their bodies
+    partner_turn = None
     arrival_draw_used = set()     # ids of `once each turn` engines, per turn
     etb_damage = 0                # noncombat damage dealt this turn by those
     etb_chain_hits = 0            # times the chain guard stopped a cascade
@@ -2800,10 +2941,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         deaths_gained = 0       # life from THEIRS dying, this turn
         etb_drained = 0         # one-shot and per-type drain, this turn
         etb_gained = 0
+        drawn_this_turn = 0
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
             seen.add(drawn["name"])
+            drawn_this_turn = 1
 
         land_index = next((i for i, c in enumerate(hand) if c["is_land"]), None)
         if land_index is not None:
@@ -2832,7 +2975,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """Take n off the top. The deck running out is a real outcome and
             is not an error: a goldfish that decks itself has answered the
             question about steam more loudly than any rate could."""
-            nonlocal drawn_extra
+            nonlocal drawn_extra, drawn_this_turn
             for _ in range(int(n)):
                 if not deck:
                     return
@@ -2840,6 +2983,31 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 hand.append(got)
                 seen.add(got["name"])
                 drawn_extra += 1
+                drawn_this_turn += 1
+
+        def discard_n(n, everything=False, shuffled=False):
+            """Put n cards from hand into the yard. AUTHORED POLICY, stated in
+            MODEL_ASSUMPTIONS: a wheel discards the whole hand, lands included;
+            a loot pitches lands beyond the next drop first, then the most
+            expensive nonland. A discarded card stays in `seen` -- assembly is
+            "drawn by", and it was."""
+            nonlocal discarded
+            if everything:
+                if not shuffled:
+                    discarded += len(hand)
+                hand.clear()
+                return
+            for _ in range(int(n)):
+                if not hand:
+                    return
+                lands = [c for c in hand if c["is_land"]]
+                if len(lands) > 1:
+                    hand.remove(lands[-1])
+                else:
+                    pick = max((c for c in hand if not c["is_land"]),
+                               key=lambda c: c["cmc"], default=hand[0])
+                    hand.remove(pick)
+                discarded += 1
 
         # Recurring draw engines already in play fire in the upkeep, BEFORE the
         # mana is spent, so a card drawn this way is castable this turn.
@@ -2978,6 +3146,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool = 0
             return True
 
+        def _commander_arrives(cprof, cevent):
+            """ONE DOOR FOR A COMMANDER'S ARRIVAL, used by both of a pair."""
+            nonlocal team_damage_multiplier, extra_combat_free
+            if model_combat and cprof and cprof["is_creature"]:
+                creature_entered(cprof["power"], turn, cprof["haste"],
+                                 2 if cprof["double_strike"] else 1,
+                                 is_legendary=True,
+                                 infect=cprof["infect"], toxic=cprof["toxic"])
+                if cprof["team_damage_multiplier"] > 1:
+                    team_damage_multiplier *= cprof["team_damage_multiplier"]
+                if any((cprof["attack_mana"], cprof["attack_damage"],
+                        cprof["attack_treasure"], cprof["attack_draw"],
+                        cprof["attack_token_bodies"],
+                        cprof["attack_ping_per_attacker"])):
+                    combat_engines.append(cprof)
+                if cprof["extra_combat_free"]:
+                    extra_combat_free += 1
+                if cprof["extra_combat_cost"] is not None:
+                    extra_combat_costs.append(cprof["extra_combat_cost"])
+            if model_discard and has_event_payoff(cevent):
+                event_payoff_permanents.append(cevent)
+
         # A REDUCER ON THE BATTLEFIELD DOES CUT THE COMMANDER'S COST. Eminence
         # says "OTHER Dragon spells", so it never pays for itself — but
         # Dragonlord's Servant takes {1} off The Ur-Dragon like any other Dragon
@@ -3009,26 +3199,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Commander tax, death and recasting stay out of scope and stay
             # named: it is cast once, it stays, which is the same generous
             # direction the rest of this model takes.
-            if model_combat and commander_combat and commander_combat["is_creature"]:
-                creature_entered(commander_combat["power"], turn,
-                                 commander_combat["haste"],
-                                 2 if commander_combat["double_strike"] else 1,
-                                 is_legendary=True,
-                                 infect=commander_combat["infect"],
-                                 toxic=commander_combat["toxic"])
-                if commander_combat["team_damage_multiplier"] > 1:
-                    team_damage_multiplier *= commander_combat["team_damage_multiplier"]
-                if any((commander_combat["attack_mana"],
-                        commander_combat["attack_damage"],
-                        commander_combat["attack_treasure"],
-                        commander_combat["attack_draw"],
-                        commander_combat["attack_token_bodies"],
-                        commander_combat["attack_ping_per_attacker"])):
-                    combat_engines.append(commander_combat)
-                if commander_combat["extra_combat_free"]:
-                    extra_combat_free += 1
-                if commander_combat["extra_combat_cost"] is not None:
-                    extra_combat_costs.append(commander_combat["extra_combat_cost"])
+            _commander_arrives(commander_combat, commander_event)
+
+        # THE PARTNER, cast on its own curve after the first commander and
+        # arriving through the same door. Brallin, Skyshark Rider was never
+        # cast, never on the battlefield and not in the library before this:
+        # `commanders[0]` was the only commander the model knew, so half of a
+        # Partner pair -- the discard half of sharknado -- scored zero however
+        # well its trigger parsed.
+        if partner and partner_turn is None and spend(
+                reduced_cost({"is_commander": True, "is_creature": True,
+                              "subtypes": partner.get("subtypes", frozenset()),
+                              "cmc": partner["cmc"], "pips": partner["pips"]},
+                             reductions, chosen_type),
+                partner["pips"]):
+            partner_turn = turn
+            battlefield_pips.append(partner["pips"] or [])
+            battlefield_types.append(partner.get("type_line") or "")
+            battlefield_mv.append(partner["cmc"])
+            battlefield_rooms.append(None)
+            if partner.get("grants_lifelink_to"):
+                lifelink_granted_types.add(partner["grants_lifelink_to"])
+            _commander_arrives(partner["combat"], partner.get("event"))
 
         # THE COMMANDER'S OWN ATTACK TUTOR — an APPROXIMATION, declared per deck.
         #
@@ -3264,12 +3456,35 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          c["draw"]["etb_draw"],
                                          c["draw"]["recurring_draw"],
                                          c["draw"]["arrival_draw"],
-                                         c["draw"]["cast_draw"]))),
+                                         c["draw"]["cast_draw"],
+                                         # A WHEEL IS A DRAW SPELL, and is in the
+                                         # predicate in the same commit as the
+                                         # channel -- cast under model_discard
+                                         # only, since a wheel that draws seven
+                                         # and discards nothing is the
+                                         # over-credit the flag exists to prevent.
+                                         model_discard and c["draw"]["wheel_draws"]))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                # THE LOOP WALKS A SNAPSHOT OF THE HAND, and a wheel cast two
+                # iterations ago emptied it: a card that has since been
+                # discarded is not here to cast.
+                if card not in hand:
+                    continue
+                if card["draw"]["wheel_draws"] and not (
+                        sum(1 for c in hand if not c["is_land"]) - 1 <= WHEEL_MIN_HAND
+                        or event_payoff_permanents):
+                    continue          # the hand is worth more than seven fresh cards
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 hand.remove(card)
+                if card["draw"]["wheel_draws"]:
+                    held = len(hand)
+                    discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
+                    draw_n(held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"])
+                    continue
                 draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+                if model_discard and card["draw"]["spell_discard"]:
+                    discard_n(card["draw"]["spell_discard"])
                 if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
                         or card["draw"]["cast_draw"]):
                     draw_engines.append(card["draw"])
@@ -3333,6 +3548,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # board up must be castable or it does nothing at all — the sixth
             # time this class has bitten.
             if model_combat and c["combat"]["mass_animate_threshold"]:
+                return True
+            # A DISCARD OR DRAW PAYOFF WITH NO BODY -- Improbable Alliance is
+            # an enchantment that draws nothing and makes no mana -- is an
+            # engine permanent, in the predicate in the same commit as the
+            # channel, the eighth time this class has bitten.
+            if model_discard and has_event_payoff(c.get("event")):
                 return True
             # A CAST-TOKEN ENGINE IS A BODY ENGINE. Sigil of the Empty Throne
             # has no body of its own, makes no mana and draws nothing, so
@@ -3406,6 +3627,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     for _eng in draw_engines:
                         if _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl:
                             draw_n(_eng["cast_draw"])
+                if model_discard and has_event_payoff(card.get("event")):
+                    event_payoff_permanents.append(card["event"])
                 if model_drain:
                     if any(card["drain"][k] for k in (
                             "payoff_equal", "payoff_fixed", "gain_recurring",
@@ -3567,6 +3790,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             "gain_per_enchantment", "gain_per_creature",
                             "drain_recurring", "drain_per_enchantment")):
                         drain_permanents.append(card["drain"])
+                    if model_discard and has_event_payoff(card.get("event")):
+                        event_payoff_permanents.append(card["event"])
                     if card["drain"]["lifelink"] and combat["is_creature"]:
                         lifelink_power += combat["power"]
                     if card["drain"]["grants_lifelink_to"]:
@@ -3735,6 +3960,41 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 hand.remove(_best)
                 draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
 
+        # THE DISCARD AND DRAW PAYOFFS, paid on the turn's events. Applied
+        # OUTSIDE the combat gate, the way drain is, so Brallin's ping counts
+        # under model_discard alone rather than dying silently inside
+        # `if model_combat:` -- and multiplied by the team damage multiplier
+        # explicitly, because it is damage. Counters accumulate as power the
+        # swing adds while the commander is out (an approximation, stated).
+        _evt_dmg = 0
+        if model_discard and event_payoff_permanents:
+            _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
+            for _e in event_payoff_permanents:
+                _evt_dmg += _e["per_discard_damage"] * _disc_t
+                _evt_dmg += _e["per_draw_damage"] * drawn_this_turn
+                counter_power += _e["per_discard_counter"] * _disc_t
+                counter_power += _e["per_draw_counter"] * drawn_this_turn
+                if drawn_this_turn >= 2:
+                    _evt_dmg += _e["second_draw_damage"]
+                    if _e["second_draw_token_power"]:
+                        creature_entered(_e["second_draw_token_power"], turn, False, 1, is_token=True)
+                        bodies_cum += 1
+                for _pw, _n in ((_e["per_discard_token_power"], _disc_t),
+                                (_e["per_draw_token_power"], drawn_this_turn)):
+                    for _ in range(_n if _pw else 0):
+                        creature_entered(_pw, turn, False, 1, is_token=True)
+                        bodies_cum += 1
+                if _e["per_discard_draw"] and _disc_t:
+                    draw_n(_e["per_discard_draw"] * _disc_t)
+            _evt_dmg *= team_damage_multiplier
+            if _evt_dmg:
+                opponent_life -= _evt_dmg
+                if kill_turn is None and opponent_life <= 0:
+                    kill_turn = turn
+                    kill_by = "life"
+        event_damage_by_turn.append(_evt_dmg)
+        discarded_by_turn.append(discarded)
+
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
         drawn_extra_by_turn.append(drawn_extra)
@@ -3764,6 +4024,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # no blockers is every attack. Double strike rides in `mult` for
             # both, as printed.
             swing = sum(d for d, pz in attackers if not pz[0])
+            if counter_power and attackers and commander_turn is not None and turn > commander_turn:
+                swing += counter_power
             swing_poison = (sum(d for d, pz in attackers if pz[0])
                             + sum(pz[1] for _d, pz in attackers))
             # The per-attacker ping is dealt BY the attacker, so an infect
@@ -4153,6 +4415,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "commander_turn": commander_turn,
         "bodies_by_turn": bodies_by_turn,
         "drawn_extra_by_turn": drawn_extra_by_turn,
+        "discarded_by_turn": discarded_by_turn,
+        "event_damage_by_turn": event_damage_by_turn,
+        "partner_turn": partner_turn,
         "sacrifices_by_turn": sacrifices_by_turn,
         "sac_cap_hits": sac_cap_hits,
         "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
@@ -4176,7 +4441,8 @@ def _round(x):
 
 def aggregate(results, targets, max_turn, model_treasures=False,
               model_combat=False, model_draw=False, model_sacrifice=False,
-              model_drain=False, attack_tutor_rate=None):
+              model_drain=False, attack_tutor_rate=None, model_discard=False,
+              partner=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -4307,6 +4573,28 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         **({"mean_extra_cards_drawn_by_turn": {
             str(t): _round(sum(r["drawn_extra_by_turn"][t - 1] for r in results) / n)
             for t in turns}} if model_draw else {}),
+        # THE DISCARD CHANNEL. Cumulative cards discarded, and the damage the
+        # discard/draw payoffs dealt, by turn. Absent when the deck did not opt
+        # in -- not zero.
+        **({"discard": {
+            "mean_cards_discarded_by_turn": {
+                str(t): _round(sum(r["discarded_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            "mean_event_damage_by_turn": {
+                str(t): _round(sum(r["event_damage_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            "mean_cumulative_event_damage_by_turn": {
+                str(t): _round(sum(sum(r["event_damage_by_turn"][:t]) for r in results) / n)
+                for t in turns},
+        }} if model_discard else {}),
+        # THE PARTNER, cast on its own curve. `commander` above stays the first
+        # commander's for every reader; this is the second's.
+        **({"partner": {
+            "cast_by_turn_6_rate": _round(sum(1 for r in results if r["partner_turn"] is not None
+                                               and r["partner_turn"] <= 6) / n),
+            "mean_cast_turn": _round(sum(r["partner_turn"] for r in results if r["partner_turn"] is not None)
+                                     / max(1, sum(1 for r in results if r["partner_turn"] is not None))),
+        }} if partner else {}),
         # HELD-UP INTERACTION, both halves. A low `castable` against a high
         # `in_hand` is a MANA problem and not a drawing problem, which is the
         # distinction the pilot's own diagnosis turned on.
@@ -4398,7 +4686,7 @@ BAND_ROWS = {
 
 def run(slug, iterations=None, seed=None, max_turn=None,
         model_treasures=None, model_combat=None, model_draw=None,
-        model_sacrifice=None, with_results=False, branch=None,
+        model_sacrifice=None, with_results=False, branch=None, model_discard=None,
         doc=None, quiet=False, targets_override=None, model_colors=None,
         _band=True, _targets_doc=None):
     """Run the goldfish simulation for a deck. Returns the metrics document.
@@ -4459,6 +4747,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # UnboundLocalError, and so did the band's floor run, which supplies the
     # declaration directly instead of reading it.
     declared_drain = False
+    declared_discard = False        # the same lesson, one flag later
     declared_deaths = None
     # Bound before the branch: a deck with no declaration still has colours,
     # and reading it only inside the `if` made every declaration-less deck
@@ -4493,6 +4782,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         declared_draw = bool(targets_doc.get("model_draw"))
         declared_sacrifice = bool(targets_doc.get("model_sacrifice"))
         declared_drain = bool(targets_doc.get("model_drain"))
+        declared_discard = bool(targets_doc.get("model_discard"))
         # THE RATE MUST NAME WHERE IT CAME FROM. A death rate somebody invented
         # driving a damage figure is the deleted engine lift; a rate read off a
         # Forge run on this deck is evidence. `source` is REQUIRED, and the
@@ -4569,6 +4859,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
                        else bool(model_sacrifice))
     model_drain = declared_drain
+    model_discard = declared_discard if model_discard is None else bool(model_discard)
     model_deaths = declared_deaths
     if model_deaths and not model_drain and not quiet:
         print("  WARNING model_deaths is set without model_drain: death triggers "
@@ -4605,6 +4896,19 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # without a grant contribute nothing.
     commander_grants_lifelink_to = (
         drain_profile(commanders[0])["grants_lifelink_to"] if commanders else None)
+    commander_event = event_payoffs(commanders[0]) if commanders else None
+    # THE SECOND COMMANDER OF A PARTNER PAIR, as its own bundle. Everything
+    # below this line that says `commanders[0]` is the first commander on
+    # purpose: `commander_mean_cast_turn` stays the first's for every reader.
+    partner = None
+    if len(commanders) > 1:
+        _p = commanders[1]
+        partner = {"name": _p["name"], "cmc": int(_p.get("cmc") or 0),
+                   "pips": cast_pips(front_field(_p, "mana_cost") or ""),
+                   "type_line": _p.get("type_line") or "",
+                   "subtypes": subtypes_of(_p.get("type_line") or "", _p.get("oracle_text") or ""),
+                   "combat": combat_profile(_p), "event": event_payoffs(_p),
+                   "grants_lifelink_to": drain_profile(_p)["grants_lifelink_to"]}
     # DECLARED, and required to name a cost and a scope. A commander ability
     # that only one card in the corpus has cannot be pattern-matched honestly;
     # it is the same contract `model_commander_attack_tutor` kept.
@@ -4761,12 +5065,15 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_deaths=model_deaths,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
-                              commander_pips=commander_pips))
+                              commander_pips=commander_pips,
+                              model_discard=model_discard, partner=partner,
+                              commander_event=commander_event))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,
                          model_combat, model_draw, model_sacrifice,
-                         model_drain, attack_tutor)
+                         model_drain, attack_tutor, model_discard=model_discard,
+                         partner=bool(partner))
     _band_doc = _ability_band(slug, branch, targets_doc, _metrics, iterations,
                               seed, max_turn, model_treasures, model_combat,
                               model_draw, model_sacrifice,
@@ -4782,9 +5089,11 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             "max_turn": max_turn,
             "commander": commanders[0]["name"],
             "commander_cmc": commander_cmc,
+            **({"partner": partner["name"]} if partner else {}),
             "model_assumptions": MODEL_ASSUMPTIONS + (
                 TREASURE_ASSUMPTIONS if model_treasures else []) + (
-                COMBAT_ASSUMPTIONS if model_combat else []),
+                COMBAT_ASSUMPTIONS if model_combat else []) + (
+                DISCARD_ASSUMPTIONS if model_discard else []),
             # RESTRICTED MANA IS COUNTED AS FREE, AND THE READER SHOULD KNOW.
             # `spend()` is a scalar, so it cannot represent "only to cast
             # Dragon spells". Delighted Halfling's legendary-only mana is very

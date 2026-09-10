@@ -1386,7 +1386,154 @@
       "has_cards": true
     }
   ],
-  "diagnostic": null,
+  "diagnostic": {
+    "harness": {
+      "version": 1,
+      "iterations": 10000,
+      "seed": 20260826,
+      "max_turn": 10
+    },
+    "engine": {
+      "available": false,
+      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+      "declared_targets": 5
+    },
+    "stall": {
+      "by_turn": {
+        "1": {
+          "rate": 0.6454,
+          "ci95": [
+            0.636,
+            0.6547
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.2623,
+          "ci95": [
+            0.2538,
+            0.271
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.0799,
+          "ci95": [
+            0.0747,
+            0.0854
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.0221,
+          "ci95": [
+            0.0194,
+            0.0252
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.0186,
+          "ci95": [
+            0.0161,
+            0.0214
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0324,
+          "ci95": [
+            0.0291,
+            0.0361
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0569,
+          "ci95": [
+            0.0525,
+            0.0616
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.0804,
+          "ci95": [
+            0.0752,
+            0.0859
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.0938,
+          "ci95": [
+            0.0882,
+            0.0997
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.0968,
+          "ci95": [
+            0.0912,
+            0.1028
+          ],
+          "n": 10000
+        }
+      },
+      "two_in_a_row": {
+        "rate": 0.1624,
+        "ci95": [
+          0.1553,
+          0.1698
+        ],
+        "n": 10000
+      },
+      "fleet": "worse than any tracked deck",
+      "from_turn": 2,
+      "cause": {
+        "stall_turns": 7432,
+        "hand_empty": 700,
+        "mana_short": 6732
+      },
+      "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
+    },
+    "mana": {
+      "missed_land_drop_by_five": {
+        "rate": 0.4097,
+        "ci95": [
+          0.4001,
+          0.4194
+        ],
+        "n": 10000
+      },
+      "missed_land_drop_rate": 0.1852,
+      "mulliganed": {
+        "rate": 0.1858,
+        "ci95": [
+          0.1783,
+          0.1935
+        ],
+        "n": 10000
+      },
+      "mean_mana_by_turn": {
+        "1": 1.0,
+        "2": 2.141,
+        "3": 3.155,
+        "4": 3.995,
+        "5": 4.728,
+        "6": 5.444,
+        "7": 6.272,
+        "8": 7.143,
+        "9": 8.015,
+        "10": 8.864
+      },
+      "fleet": "below the fleet median",
+      "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+      "mana_stdev_turn_five": 1.0115
+    },
+    "decklist_sha256": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34"
+  },
   "bracket": null,
   "paper": null,
   "record": {
@@ -1405,7 +1552,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 80,
+          "value": 81,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1414,7 +1561,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 9,
+          "value": 7,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -1423,7 +1570,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.389,
+          "value": 5.402,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1431,7 +1578,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 76,
+          "value": 83,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -1447,7 +1594,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:AN ANSWER drawn — interaction of any kind": {
-          "value": 54,
+          "value": 62,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'AN ANSWER drawn — interaction of any kind' by turn six",
@@ -1455,7 +1602,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn": {
-          "value": 14,
+          "value": 17,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn' by turn six",
@@ -1463,7 +1610,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FINISHER drawn — the cards that end games": {
-          "value": 70,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FINISHER drawn — the cards that end games' by turn six",
@@ -1498,7 +1645,8 @@
             "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
             "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
             "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
-            "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
+            "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives.",
+            "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam."
           ],
           "tier": "data",
           "weight": "detail",
@@ -1517,15 +1665,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 7.966,
-            "2": 2.143,
-            "3": 3.172,
-            "4": 4.034,
-            "5": 4.797,
-            "6": 5.46,
-            "7": 6.123,
-            "8": 6.728,
-            "9": 7.348
+            "10": 8.871,
+            "2": 2.142,
+            "3": 3.16,
+            "4": 4.004,
+            "5": 4.736,
+            "6": 5.445,
+            "7": 6.278,
+            "8": 7.144,
+            "9": 8.016
           },
           "tier": "data",
           "weight": "detail",
@@ -1536,15 +1684,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.572,
+            "10": 0.761,
             "2": 0.997,
-            "3": 0.921,
-            "4": 0.823,
-            "5": 0.728,
-            "6": 0.645,
-            "7": 0.604,
-            "8": 0.564,
-            "9": 0.576
+            "3": 0.91,
+            "4": 0.801,
+            "5": 0.713,
+            "6": 0.682,
+            "7": 0.748,
+            "8": 0.759,
+            "9": 0.768
           },
           "tier": "data",
           "weight": "detail",
@@ -1554,16 +1702,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.174,
-            "10": 6.337,
-            "2": 0.565,
-            "3": 1.212,
-            "4": 1.972,
-            "5": 2.368,
-            "6": 3.231,
-            "7": 4.056,
-            "8": 4.839,
-            "9": 5.595
+            "1": 0.173,
+            "10": 6.468,
+            "2": 0.504,
+            "3": 1.057,
+            "4": 1.267,
+            "5": 1.597,
+            "6": 2.352,
+            "7": 3.293,
+            "8": 4.311,
+            "9": 5.375
           },
           "tier": "data",
           "weight": "detail",
@@ -1589,12 +1737,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1705,
-            "5": 23,
-            "6": 441,
-            "7": 1113,
-            "8": 2233,
-            "9": 2812
+            "10": 319,
+            "5": 235,
+            "6": 1504,
+            "7": 3956,
+            "8": 2884,
+            "9": 856
           },
           "tier": "data",
           "weight": "detail",
@@ -1610,12 +1758,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.389,
-    "commander_cast_by_turn_6_pct": 80,
+    "commander_mean_cast_turn": 5.402,
+    "commander_cast_by_turn_6_pct": 81,
     "targets": [
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 76
+        "by_turn_6_pct": 83
       },
       {
         "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
@@ -1623,35 +1771,39 @@
       },
       {
         "label": "AN ANSWER drawn — interaction of any kind",
-        "by_turn_6_pct": 54
+        "by_turn_6_pct": 62
       },
       {
         "label": "A TUTOR drawn",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 17
       },
       {
         "label": "A FINISHER drawn — the cards that end games",
-        "by_turn_6_pct": 70
+        "by_turn_6_pct": 79
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.499,
-      "median_kill_turn": 9,
-      "kill_by_turn_6_pct": 5,
-      "kill_by_turn_8_pct": 38,
+      "mean_kill_turn": 7.367,
+      "median_kill_turn": 7,
+      "kill_by_turn_6_pct": 17,
+      "kill_by_turn_8_pct": 86,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 17,
+      "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 1705,
-        "5": 23,
-        "6": 441,
-        "7": 1113,
-        "8": 2233,
-        "9": 2812
+        "10": 319,
+        "5": 235,
+        "6": 1504,
+        "7": 3956,
+        "8": 2884,
+        "9": 856
       }
     }
   },
-  "engine_health": null,
+  "engine_health": {
+    "word": null,
+    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "basis": "diagnostic.json"
+  },
   "engine": null,
   "diagnosis": null,
   "audit": {

@@ -53,6 +53,7 @@ CHANNELS = {
     "sacrifice": "model_sacrifice",
     "drain": "model_drain",
     "attack_enabler": "model_commander_attack_tutor",
+    "discard": "model_discard",
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -117,8 +118,16 @@ def channels_for(profile):
             "infect", "toxic", "attack_ping_per_attacker")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
-            "etb_draw", "spell_draw", "recurring_draw", "arrival_draw")):
+            "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
+            # Pre-existing drift folded in: cast_draw and the X path were
+            # read by the loops and never listed here.
+            "cast_draw", "x_draw_multiplier")):
         found.add("draw")
+    # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
+    # or a draw. Named keys, never the dict's truthiness.
+    if _nonzero(profile.get("draw"), ("wheel_draws", "spell_discard")) \
+            or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled"):
+        found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
             "death_drain", "death_draw", "death_treasure")):
         found.add("sacrifice")
@@ -179,7 +188,14 @@ def never_cast(profile, flags):
                                          or profile["treasure_bonus"]):
         return False
     if flags.get("model_draw") and _nonzero(profile.get("draw"), (
-            "spell_draw", "etb_draw", "recurring_draw", "arrival_draw")):
+            "spell_draw", "etb_draw", "recurring_draw", "arrival_draw", "cast_draw",
+            "x_draw_multiplier")):
+        return False
+    # A wheel is selected by the draw loop under model_discard; a payoff
+    # permanent by the engine loop.
+    if flags.get("model_discard") and (
+            _nonzero(profile.get("draw"), ("wheel_draws",))
+            or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled")):
         return False
     if flags.get("model_drain") and (_nonzero(profile.get("drain"), (
             "payoff_equal", "payoff_fixed", "gain_recurring",

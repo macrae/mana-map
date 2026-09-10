@@ -957,8 +957,38 @@
   }
  },
  "forge": {
-  "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@fort-v1 --vs <pod>` puts it at a table and writes where this reads"
+  "available": true,
+  "branch": {
+   "games": 60,
+   "rate": 0.1333,
+   "wins": 8,
+   "won_by": {
+    "all opponents have lost": 8
+   }
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "games": 119,
+   "rate": 0.0924,
+   "wins": 11,
+   "won_by": {
+    "all opponents have lost": 11
+   }
+  },
+  "ci95": [
+   -0.0508,
+   0.1564
+  ],
+  "delta": 0.0409,
+  "engine_casts": {
+   "branch": {
+    "covered": true,
+    "never_cast": []
+   },
+   "champion": null
+  },
+  "excludes_zero": false,
+  "mde": 0.165
  },
  "harness": {
   "iterations": 10000,
@@ -1169,7 +1199,9 @@
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: +0.041 win rate, CI [-0.051, +0.156] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "stall, 2 in a row",
@@ -1209,9 +1241,9 @@
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@fort-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
