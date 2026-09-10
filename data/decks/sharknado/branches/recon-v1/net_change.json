@@ -242,17 +242,6 @@
    },
    {
     "free": false,
-    "name": "Curiosity",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Mystery Booster 2"
-     }
-    ]
-   },
-   {
-    "free": false,
     "name": "Cyclonic Rift",
     "state": "elsewhere",
     "where": [
@@ -435,6 +424,12 @@
    },
    {
     "free": false,
+    "name": "Magmakin Artillerist",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Magus of the Wheel",
     "state": "in_deck",
     "where": []
@@ -491,12 +486,6 @@
     "free": false,
     "name": "Ominous Seas",
     "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Ophidian Eye",
-    "state": "buy",
     "where": []
    },
    {
@@ -697,6 +686,12 @@
    },
    {
     "free": false,
+    "name": "Surly Badgersaur",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Swiftfoot Boots",
     "state": "in_deck",
     "where": []
@@ -752,12 +747,6 @@
       "name": "Zur Parts"
      }
     ]
-   },
-   {
-    "free": false,
-    "name": "Tandem Lookout",
-    "state": "buy",
-    "where": []
    },
    {
     "free": false,
@@ -866,14 +855,20 @@
    },
    {
     "free": false,
+    "name": "Whirlwind of Thought",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Windfall",
     "state": "in_deck",
     "where": []
    }
   ],
   "counts": {
-   "box": 5,
-   "buy": 17,
+   "box": 4,
+   "buy": 18,
    "elsewhere": 15,
    "in_deck": 63
   },
@@ -889,7 +884,6 @@
     "Cathartic Reunion",
     "Chaos Warp",
     "Counterspell",
-    "Curiosity",
     "Cyclonic Rift",
     "Desolate Lighthouse",
     "Dovin's Veto",
@@ -900,23 +894,24 @@
     "Irrigated Farmland",
     "Izzet Signet",
     "Lonely Sandbar",
+    "Magmakin Artillerist",
     "Marauding Mako",
     "Ojer Axonil, Deepest Might // Temple of Power",
-    "Ophidian Eye",
     "Path to Exile",
     "Prairie Stream",
     "Remote Isle",
     "Secluded Steppe",
     "Smoldering Crater",
+    "Surly Badgersaur",
     "Swords to Plowshares",
     "Talisman of Creativity",
     "Talisman of Progress",
-    "Tandem Lookout",
     "Teferi's Ageless Insight",
     "Teferi's Protection",
     "Thought Vessel",
     "Thrill of Possibility",
-    "Training Center"
+    "Training Center",
+    "Whirlwind of Thought"
    ],
    "base_names": 100,
    "base_size": 100,
@@ -985,21 +980,22 @@
    "Irrigated Farmland",
    "Izzet Signet",
    "Lonely Sandbar",
+   "Magmakin Artillerist",
    "Marauding Mako",
    "Ojer Axonil, Deepest Might // Temple of Power",
-   "Ophidian Eye",
    "Path to Exile",
    "Prairie Stream",
    "Remote Isle",
    "Secluded Steppe",
    "Smoldering Crater",
+   "Surly Badgersaur",
    "Swords to Plowshares",
    "Talisman of Creativity",
-   "Tandem Lookout",
    "Teferi's Ageless Insight",
    "Teferi's Protection",
    "Thrill of Possibility",
-   "Training Center"
+   "Training Center",
+   "Whirlwind of Thought"
   ]
  },
  "blind_spots": [],
@@ -1029,16 +1025,6 @@
      "pair": null,
      "state": "box",
      "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Curiosity",
-     "pair": null,
-     "state": "box",
-     "type_line": "Enchantment \u2014 Aura",
      "why": null
     },
     {
@@ -1215,20 +1201,10 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Ophidian Eye",
+     "name": "Magmakin Artillerist",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment \u2014 Aura",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Tandem Lookout",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Creature \u2014 Human Scout",
+     "type_line": "Creature \u2014 Elemental Pirate",
      "why": null
     },
     {
@@ -1255,10 +1231,30 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
+     "name": "Surly Badgersaur",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Badger Dinosaur",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
      "name": "Teferi's Ageless Insight",
      "pair": null,
      "state": "elsewhere",
      "type_line": "Legendary Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Whirlwind of Thought",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -1737,9 +1733,9 @@
   "lands": [],
   "opened": "2026-09-10",
   "spells": [],
-  "why": "THE RECON APPLIED, BRACKET 4 BY THE PILOT'S CALL (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The kill: Curiosity, Ophidian Eye and Tandem Lookout on Brallin, which with Niv-Mizzet Parun and Glint-Horn Buccaneer already in is three two-card infinites -- hence bracket 4. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite the consensus runs (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel, three two-mana rocks and Ojer Axonil. The builder's twelve coverage-chosen lands out for the cycling-land package; 35 lands. THE GOLDFISH READS THE SHARK HALF ONLY: Brallin's discard trigger has no channel, and a wheel that says 'draws that many' is not 'draw N', so the draw axis (0.632 extra cards by T8 on v0.1.0) is a proxy that sees the loots and the draw engines. Forge at standard-v3 is the verdict."
+  "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict."
  },
- "decklist_sha256": "5d190e45a1d17e8221b08a3b410bf6c73678bdfccaee253b1b8eb47a90807762",
+ "decklist_sha256": "bc16ddc7067e62d84a800edbde465b64665a21620762f455e68d97c6d7c954dc",
  "definitions": {
   "derived": [
    {
@@ -1978,24 +1974,24 @@
  "objective": {
   "axis": "extra_cards_8",
   "op": ">=",
-  "value": 1.5,
-  "why": "THE RECON APPLIED, BRACKET 4 BY THE PILOT'S CALL (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The kill: Curiosity, Ophidian Eye and Tandem Lookout on Brallin, which with Niv-Mizzet Parun and Glint-Horn Buccaneer already in is three two-card infinites -- hence bracket 4. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite the consensus runs (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel, three two-mana rocks and Ojer Axonil. The builder's twelve coverage-chosen lands out for the cycling-land package; 35 lands. THE GOLDFISH READS THE SHARK HALF ONLY: Brallin's discard trigger has no channel, and a wheel that says 'draws that many' is not 'draw N', so the draw axis (0.632 extra cards by T8 on v0.1.0) is a proxy that sees the loots and the draw engines. Forge at standard-v3 is the verdict."
+  "value": 1.2,
+  "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict."
  },
  "objective_grade": {
-  "reading": 1.2875,
-  "shortfall": 0.2125,
-  "state": "not met"
+  "reading": 1.2878,
+  "shortfall": null,
+  "state": "met"
  },
  "recommendation": {
-  "because": "The objective is not met. Stall, 2 in a row, extra cards by t8, interaction affordable @t6 and hand can act by t3 improved anyway, which is a different branch's case.",
+  "because": "You buy stall, 2 in a row, extra cards by T8 and interaction affordable @T6 and pay damage @T10, killed by T6, killed by T10, missed drop by T5 and mulliganed.",
   "bill": {
-   "box": 5,
-   "buy": 17,
+   "box": 4,
+   "buy": 18,
    "elsewhere": 15,
    "in_deck": 63
   },
   "cost": {
-   "buy": 17,
+   "buy": 18,
    "buy_cards": [
     "Captain Howler, Sea Scourge",
     "Cathartic Reunion",
@@ -2005,19 +2001,20 @@
     "Ghostly Pilferer",
     "Izzet Signet",
     "Lonely Sandbar",
+    "Magmakin Artillerist",
     "Marauding Mako",
     "Ojer Axonil, Deepest Might // Temple of Power",
-    "Ophidian Eye",
     "Remote Isle",
     "Secluded Steppe",
+    "Surly Badgersaur",
     "Talisman of Creativity",
-    "Tandem Lookout",
     "Thrill of Possibility",
-    "Training Center"
+    "Training Center",
+    "Whirlwind of Thought"
    ],
    "counts": {
-    "box": 5,
-    "buy": 17,
+    "box": 4,
+    "buy": 18,
     "elsewhere": 15,
     "in_deck": 63
    },
@@ -2126,8 +2123,8 @@
      "name": "Teferi's Protection"
     }
    ],
-   "owned": 83,
-   "reads_as": "17 to buy; 15 to pull out of a deck that is still together; 83 of 100 already owned",
+   "owned": 82,
+   "reads_as": "18 to buy; 15 to pull out of a deck that is still together; 82 of 100 already owned",
    "total": 100
   },
   "fell": [
@@ -2138,13 +2135,14 @@
    "mulliganed"
   ],
   "no_call": [
-   "board power @T6"
+   "board power @T6",
+   "hand can act by T3"
   ],
   "notes": [],
   "reward": [
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "7 games in 100 -> 2 in 100, a swing of 6 games per 100",
+    "reads_as": "7 games in 100 -> 2 in 100, a swing of 5 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
@@ -2154,18 +2152,13 @@
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "33 games in 100 -> 62 in 100, a swing of 29 games per 100",
+    "reads_as": "33 games in 100 -> 61 in 100, a swing of 28 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "measure": "hand can act by T3",
-    "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
-    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "16.70 -> 13.73, a change of -2.97 (-18%)",
+    "detail": "16.70 -> 14.07, a change of -2.63 (-16%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -2177,13 +2170,13 @@
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "83 games in 100 -> 76 in 100, a swing of 7 games per 100",
+    "detail": "83 games in 100 -> 78 in 100, a swing of 5 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "37 games in 100 -> 39 in 100, a swing of 3 games per 100",
+    "detail": "37 games in 100 -> 40 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "missed drop by T5",
     "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
@@ -2195,9 +2188,9 @@
     "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
    },
    {
-    "detail": "the largest is board power @T6 at -0.038 against an MDE of 0.169. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hand can act by T3 at +0.008 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "1 row(s) returned no call",
+    "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -2216,22 +2209,21 @@
   "rose": [
    "stall, 2 in a row",
    "extra cards by T8",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "interaction affordable @T6"
   ],
-  "state": "do not merge"
+  "state": "a trade"
  },
  "slug": "sharknado",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 13.731,
+   "branch": 14.0701,
    "champion": 16.6962,
-   "delta": -2.9652,
+   "delta": -2.6261,
    "mde": 0.3445,
    "measure": "damage @T10",
-   "reads_as": "16.70 -> 13.73, a change of -2.97 (-18%)",
+   "reads_as": "16.70 -> 14.07, a change of -2.63 (-16%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -2240,12 +2232,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.6163,
+   "branch": 8.7723,
    "champion": 8.6541,
-   "delta": -0.0378,
-   "mde": 0.1687,
+   "delta": 0.1182,
+   "mde": 0.1669,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.038 is smaller than the 0.169 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.118 is smaller than the 0.167 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -2254,9 +2246,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0269,
+   "branch": 0.0268,
    "champion": 0.0476,
-   "delta": -0.0207,
+   "delta": -0.0208,
    "mde": 0.0084,
    "measure": "killed by T6",
    "reads_as": "5 games in 100 -> 3 in 100, a swing of 2 games per 100",
@@ -2268,12 +2260,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.7638,
+   "branch": 0.7796,
    "champion": 0.8333,
-   "delta": -0.0695,
-   "mde": 0.0168,
+   "delta": -0.0537,
+   "mde": 0.0164,
    "measure": "killed by T10",
-   "reads_as": "83 games in 100 -> 76 in 100, a swing of 7 games per 100",
+   "reads_as": "83 games in 100 -> 78 in 100, a swing of 5 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -2282,12 +2274,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.016,
+   "branch": 0.0201,
    "champion": 0.0716,
-   "delta": -0.0556,
+   "delta": -0.0515,
    "mde": 0.0102,
    "measure": "stall, 2 in a row",
-   "reads_as": "7 games in 100 -> 2 in 100, a swing of 6 games per 100",
+   "reads_as": "7 games in 100 -> 2 in 100, a swing of 5 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -2296,12 +2288,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3941,
+   "branch": 0.4008,
    "champion": 0.3661,
-   "delta": 0.028,
+   "delta": 0.0347,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "37 games in 100 -> 39 in 100, a swing of 3 games per 100",
+   "reads_as": "37 games in 100 -> 40 in 100, a swing of 3 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -2310,10 +2302,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2162,
+   "branch": 0.2179,
    "champion": 0.1858,
-   "delta": 0.0304,
-   "mde": 0.0163,
+   "delta": 0.0321,
+   "mde": 0.0164,
    "measure": "mulliganed",
    "reads_as": "19 games in 100 -> 22 in 100, a swing of 3 games per 100",
    "scale": null,
@@ -2324,10 +2316,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.2875,
+   "branch": 1.2878,
    "champion": 0.6398,
-   "delta": 0.6477,
-   "mde": 0.0637,
+   "delta": 0.648,
+   "mde": 0.0651,
    "measure": "extra cards by T8",
    "reads_as": "0.64 -> 1.29, a change of +0.65 (+101%)",
    "scale": "against the 8 cards every deck draws for free by then",
@@ -2338,12 +2330,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6242,
+   "branch": 0.6096,
    "champion": 0.3345,
-   "delta": 0.2897,
+   "delta": 0.2751,
    "mde": 0.0246,
    "measure": "interaction affordable @T6",
-   "reads_as": "33 games in 100 -> 62 in 100, a swing of 29 games per 100",
+   "reads_as": "33 games in 100 -> 61 in 100, a swing of 28 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
@@ -2352,15 +2344,15 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.964,
+   "branch": 0.9575,
    "champion": 0.9498,
-   "delta": 0.0142,
+   "delta": 0.0077,
    "mde": 0.0087,
    "measure": "hand can act by T3",
-   "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.009 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }
