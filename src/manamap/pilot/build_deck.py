@@ -68,7 +68,7 @@ class BriefError(ValueError):
 
 
 def scaffold_brief(slug, commander, library=(), theme=None, bracket=None,
-                   pool_files=()):
+                   pool_files=(), partner=None):
     """Write `brief.json` for a new deck. PRD-v1 §7.4 — the start of a build-out.
 
     The library goes in as `must_include`: those are the cards the pilot
@@ -92,6 +92,12 @@ def scaffold_brief(slug, commander, library=(), theme=None, bracket=None,
     brief = {"slug": slug, "commander": commander,
              "bracket": bracket or BRACKET_DEFAULT,
              "must_include": list(library), "must_exclude": []}
+    if partner:
+        # A PARTNER PAIR. Two commanders, identity the union, a 98 rather than
+        # a 99. Stored as its own key so every reader that wants "the
+        # commander" still gets one name (deck-info, the goldfish's cast turn,
+        # the map's anchor) and the readers that want both can ask.
+        brief["partner"] = partner
     if theme:
         brief["theme"] = theme
     if pool_files:
@@ -190,6 +196,26 @@ def commander_identity(row):
     return parse_color_identity(row.get("color_identity", ""))
 
 
+def resolve_partner(df, brief, commander):
+    """The second commander of a Partner pair, as a frame row, or None.
+
+    Both must actually carry Partner: a second legendary without it is a deck
+    with two commanders and no rule that allows it. Kept out of `build` so the
+    refusal can be tested without a deck directory.
+    """
+    if not brief.get("partner"):
+        return None
+    pm = df[df["name"] == brief["partner"]]
+    if pm.empty:
+        raise BriefError(f"partner {brief['partner']!r} is not in cards.csv")
+    partner = pm.iloc[0].to_dict()
+    for row in (commander, partner):
+        if "partner" not in (row.get("oracle_text") or "").lower():
+            raise BriefError(f"{row['name']} has no Partner ability")
+    commander_identity(partner)          # legality: it must be able to command
+    return partner
+
+
 def role_group(roles):
     """Which budget line a card's roles satisfy, most specific first."""
     for group, members in DECK_ROLE_GROUPS.items():
@@ -203,6 +229,8 @@ def candidate_pool(df, identity, target_bracket, brief):
     mask = color_identity_mask(df, identity)
     mask &= (df["legal_commander"] == "legal").to_numpy()
     mask &= (df["name"] != brief["commander"]).to_numpy()
+    if brief.get("partner"):
+        mask &= (df["name"] != brief["partner"]).to_numpy()
     # Un-set sticker sheets carry legal_commander == "legal" in Scryfall's data
     # (48 rows), have real mechanical tags, and therefore score — the pool
     # surfaced Familiar Beeble Mascot as a wincon before this. They are not
@@ -739,6 +767,16 @@ def build(slug):
         raise BriefError(f"commander {brief['commander']!r} is not in cards.csv")
     commander = matches.iloc[0].to_dict()
     identity = commander_identity(commander)
+    # THE PARTNER PAIR (sharknado, 2026-09-10: Shabraz, the Skyshark with
+    # Brallin, Skyshark Rider). Built with one commander this produced an
+    # Azorius 99 with the discard half of the deck missing, because identity
+    # came from one name. Both must actually carry Partner: a second
+    # legendary without it is a deck with two commanders and no rule that
+    # allows it.
+    partner = resolve_partner(df, brief, commander)
+    if partner:
+        identity = set(identity) | set(commander_identity(partner))
+    commanders = {commander["name"]} | ({partner["name"]} if partner else set())
 
     embeddings = np.load(
         ABILITY_EMBEDDINGS_PATH if ABILITY_EMBEDDINGS_PATH.exists() else EMBEDDINGS_PATH
@@ -757,20 +795,36 @@ def build(slug):
 
     spell_pool = pool[pool["supertype"] != "Land"]
     deck_tags = parse_tag_set(commander.get("mechanical_tags", ""))
+    if partner:
+        deck_tags = set(deck_tags) | set(parse_tag_set(partner.get("mechanical_tags", "")))
     scored = score_candidates(
         spell_pool, embeddings, name_index, commander["name"],
         identity, deck_tags, combo_partners, target,
     )
 
     budget, grounding = role_budget_for(brief, roles)
+    if partner:
+        # The second commander takes a slot from the 99. It comes out of the
+        # most elastic line rather than a role line, so the ratios the budget
+        # cites are untouched.
+        budget = dict(budget)
+        elastic = "flex" if budget.get("flex") else max(
+            (g for g in budget if g != "lands"), key=lambda g: budget[g])
+        budget[elastic] -= 1
     cmcs = dict(zip(spell_pool["name"], spell_pool["cmc"]))
     keep, illegal = legal_must_includes(brief["must_include"], identity, df)
+    # A LAND IN THE LIBRARY IS A MANA-BASE DECISION, not a spell slot. Split
+    # here, once: the names go to `manabase.build` as its pre-chosen set and
+    # never through `fill_slots`, which counts against the nonland budget.
+    land_names = set(df[df["supertype"] == "Land"]["name"])
+    keep_lands = [n for n in keep if n in land_names]
+    keep = [n for n in keep if n not in land_names]
     slots, taken, effective_budget = fill_slots(
         scored, roles, budget, keep, cmcs=cmcs)
     slots, completed = complete_combos(
-        slots, scored, roles, details, {commander["name"]})
+        slots, scored, roles, details, commanders)
     slots, cut, report = enforce_bracket(
-        slots, scored, roles, flags, details, {commander["name"]}, target
+        slots, scored, roles, flags, details, commanders, target
     )
 
     # Mana base last: it needs the spells it has to cast.
@@ -792,13 +846,21 @@ def build(slug):
         for colour in identity
         if not df[df["name"] == BASIC_LANDS[colour]].empty
     }
+    kept_land_rows = (
+        df[df["name"].isin(keep_lands)]
+        .sort_values("legal_commander", key=lambda s: s != "legal")
+        .drop_duplicates("name")
+        .to_dict("records")
+    )
     lands, mana_diag = manabase.build(
-        spell_rows, land_pool.to_dict("records"), budget["lands"], basics
+        spell_rows, land_pool.to_dict("records"), budget["lands"], basics,
+        keep=kept_land_rows,
     )
 
     plan = {
         "slug": slug,
         "commander": commander["name"],
+        **({"partner": partner["name"]} if partner else {}),
         "color_identity": sorted(identity),
         "bracket": {
             "target": target,
@@ -825,7 +887,7 @@ def build(slug):
         # outside the collection is the one failure a paper pilot cannot use.
         # Only for the cards in this deck — the whole 764-entry map would bloat the
         # plan and say nothing about the build.
-        "printings": deck_printings(brief, [commander["name"]]
+        "printings": deck_printings(brief, sorted(commanders)
                                     + [s["name"] for s in slots]
                                     + list(_land_counts(lands))),
         "pool": (
@@ -892,6 +954,8 @@ def decklist_text(plan, layouts=None):
         return base + suffix
 
     lines = [f"1 {render(plan['commander'])} *CMDR*"]
+    if plan.get("partner"):
+        lines.append(f"1 {render(plan['partner'])} *CMDR*")
     for slot in sorted(plan["slots"], key=lambda s: s["name"]):
         lines.append(f"1 {render(slot['name'])}")
     for name, count in plan["land_counts"].items():

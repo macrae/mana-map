@@ -37,6 +37,8 @@ CRITIC_STATUSES = {
 def deck_card_names(plan):
     """Every card in the plan: commander, slots, and lands with quantities."""
     names = [plan.get("commander")] if plan.get("commander") else []
+    if plan.get("partner"):
+        names.append(plan["partner"])       # a Partner pair: two commanders, 98 others
     names += [s.get("name") for s in plan.get("slots", []) if s.get("name")]
     for name, count in (plan.get("land_counts") or {}).items():
         names += [name] * int(count)

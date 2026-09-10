@@ -58,7 +58,7 @@ STAGES = ("intent", "anchor", "build", "resolve", "measure", "land")
 #: these is a refusal rather than an overwrite: `scaffold_brief` refuses for the
 #: same reason, and a rebuild that silently ignored `--bracket 4` would be the
 #: worst of the three available behaviours.
-BRIEF_FLAGS = ("commander", "theme", "bracket", "library", "from_file", "brief")
+BRIEF_FLAGS = ("commander", "partner", "theme", "bracket", "library", "from_file", "brief")
 
 #: `bracket 3`, `b3`, `bracket-3` — the one number a description can carry
 #: unambiguously. Nothing else in free text is parsed; see `_read_brief`.
@@ -198,7 +198,8 @@ def _read_brief(args):
 
     path, brief = build_deck.scaffold_brief(
         slug, commander, library=library, theme=theme,
-        bracket=bracket or BRACKET_DEFAULT)
+        bracket=bracket or BRACKET_DEFAULT,
+        partner=getattr(args, "partner", None))
     if text:
         # Stored, not consumed. `notes` is the key `deck_info` already surfaces,
         # and it is what §5's stage 7 means by "the brief stored as the version

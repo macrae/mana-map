@@ -582,16 +582,28 @@ def count_sources(lands, colours):
     return counts
 
 
-def build(spells, pool, slots, basics=None):
+def build(spells, pool, slots, basics=None, keep=()):
     """Build a mana base. Returns (lands, diagnostics).
 
     `spells` are the non-land cards, `pool` the legal nonbasic lands, `basics`
-    a {colour: card} map for topping up.
+    a {colour: card} map for topping up. `keep` are lands the pilot named in
+    the brief: they are placed FIRST and the greedy closes what is left. Until
+    2026-09-10 a land in `must_include` fell into the SPELL slots (sharknado's
+    plan came to 118 cards) and this chooser never saw it — so a Jeskai deck
+    got Gond Gate and Rumble Arena over the Steam Vents the pilot had typed.
     """
     requirements = pip_requirements(spells)
     targets = source_targets(requirements)
 
-    chosen, _, tapped_used = select_lands(pool, targets, slots)
+    keep = [dict(card) for card in keep]
+    kept_names = {card["name"] for card in keep}
+    remaining = dict(targets)
+    for card in keep:
+        for colour in land_colors(card) & set(remaining):
+            remaining[colour] = max(0, remaining[colour] - 1)
+    pool = [card for card in pool if card["name"] not in kept_names]
+    picked, _, tapped_used = select_lands(pool, remaining, max(0, slots - len(keep)))
+    chosen = keep + picked
     sources = count_sources(chosen, targets)
     chosen = fill_with_basics(chosen, basics or {}, targets, slots, sources)
     sources = count_sources(chosen, targets)

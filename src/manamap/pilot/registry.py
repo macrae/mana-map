@@ -840,6 +840,9 @@ def add_pilot_parser(subparsers):
                              help="the commander's name. Omit it and three are "
                                   "proposed from --library/--from, then the "
                                   "build halts for you to pick one")
+            cmd.add_argument("--partner", default=None,
+                             help="the second commander of a Partner pair; identity is "
+                                  "the union and the 99 becomes 98")
             cmd.add_argument("--theme", default=None,
                              help="an EDHREC archetype slug, overriding whatever "
                                   "--brief would have matched "
