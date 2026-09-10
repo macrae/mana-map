@@ -1,0 +1,24 @@
+{
+  "name": "standard-v3",
+  "note": "THE TABLE THE ROUND ROBIN CHOSE, 2026-09-09. Ten tables of eight games among eight candidate opponents with NONE of our decks seated, every seat on Experimental, 74 decided games (six clock-outs excluded), so a seat's share is measured on a level field instead of inferred from tables it happened to sit at -- the confound `standard-v2` records. Shares against fair 0.25: giada-angels 0.528 [0.370, 0.680] 2.11x; nekusar-discard 0.436 1.74x; muldrotha-value 0.351 1.41x; sythis-enchantress 0.235 [0.124, 0.400] 0.94x; jarad-graveyard 0.189 [0.095, 0.342] 0.76x; abaddon 0.175 [0.087, 0.320] 0.70x; baylen-tokens 0.029 0.11x; talrand-spells 0.026 0.11x. So `standard` had a dominator AND a floor, and the floor fed the dominator. The three seats here are the three nearest fair that also satisfy the standard table's rule -- bracket-3 contents, ZERO contained combos -- which muldrotha-value does not: its floor is 4 (four Game Changers) and it carries Hermit Druid + Jace, Wielder of Mysteries, which is how it won five of eight at its last table. Every interval above is wide; eight games a table ranks, it does not measure. UNCALIBRATED WITH OUR DECKS SEATED until `pods standard-v3 --calibration` reads at least two subjects -- the v2 lesson is that a ranking is not a null.",
+  "seats": [
+    {
+      "slug": "sythis-enchantress",
+      "archetype": "enchantment value / control",
+      "bracket": 3,
+      "note": "0.94x fair on the level field, the nearest of the eight. Floor 3 (two Game Changers), no combos. Also the archetype zur-enchantress is built in, so a mirror is on the table."
+    },
+    {
+      "slug": "jarad-graveyard",
+      "archetype": "graveyard midrange + non-combat damage",
+      "bracket": 3,
+      "note": "0.76x fair. Floor 1 -- no Game Changers, no combos, no MLD -- the bracket is the EDHREC average deck's, not a computed one. The non-combat-damage axis PRD-v1 s14 says wins, without nekusar's symmetric drain that took 0.637 at standard-v2."
+    },
+    {
+      "slug": "abaddon",
+      "archetype": "grixis value / sacrifice",
+      "bracket": 3,
+      "note": "0.70x fair here, 0.87x over 290 decided games in `standard`. Kept across all three tables, so it is the seat every calibration shares."
+    }
+  ]
+}

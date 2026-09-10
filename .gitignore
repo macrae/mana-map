@@ -62,6 +62,10 @@ data/decks/*/.agent-out/
 # Forge simulation: the raw game logs are samples, large, and regenerable; the run
 # record beside them (data/decks/<slug>/sim/<run-id>.json) is tracked.
 data/decks/*/sim/logs/
+# An opponent seat can be the SUBJECT of a run since 2026-09-09 (the round robin),
+# and its logs are the same regenerable samples. 42 of them were tracked before this
+# line existed, while `simulate` printed "gitignored" beside every one of them.
+data/opponents/*/sim/logs/
 # THE SAME RULE, ONE LEVEL DOWN. The pattern above does not match
 # `data/decks/<slug>/branches/<name>/sim/logs/`, so a branch's logs were TRACKED
 # while the deck's own were ignored — 12 MB of them, committed the day branches
