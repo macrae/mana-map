@@ -22,12 +22,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 5,
+    "complete": 6,
     "of": 15,
     "stale": [],
-    "invalid": [
-      "brief"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "bracket",
@@ -100,7 +98,7 @@
     "design_rules": [],
     "win_conditions": null,
     "targets": {},
-    "notes": "SHARKNADO. Shabraz, the Skyshark with Brallin, Skyshark Rider as partner: every draw grows the shark and gains a life, every discard grows the rider and deals 1 to each opponent, so a wheel is seven counters on each and seven damage to the table. Wheels, cycling, Shark Typhoon and flying sharks. Non-combat damage on a trigger, over the top in the air. Bracket 3 target, ownership is not a constraint. BRACKET 4 from 2026-09-10 by the pilot's call: the pair's real kill is a Curiosity-class enchantment on Brallin, which with Niv-Mizzet Parun and Glint-Horn Buccaneer is three two-card infinites.",
+    "notes": "SHARKNADO. Shabraz, the Skyshark with Brallin, Skyshark Rider as partner: every draw grows the shark and gains a life, every discard grows the rider and deals 1 to each opponent, so a wheel is seven counters on each and seven damage to the table. Wheels, cycling, Shark Typhoon and flying sharks. Non-combat damage on a trigger, over the top in the air. Bracket 3 target, ownership is not a constraint. NO TWO-CARD INFINITES, by the pilot's call on 2026-09-10: the Curiosity-class enchantments the pair is usually built around are out. Bracket 4 by Game Changer count only (Rift, Rhystic Study, Smothering Tithe, Teferi's Protection).",
     "must_include": [
       "Wheel of Fortune",
       "Wheel of Misfortune",
@@ -177,7 +175,7 @@
     {
       "name": "recon-v1",
       "opened": "2026-09-10",
-      "why": "THE RECON APPLIED, BRACKET 4 BY THE PILOT'S CALL (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The kill: Curiosity, Ophidian Eye and Tandem Lookout on Brallin, which with Niv-Mizzet Parun and Glint-Horn Buccaneer already in is three two-card infinites -- hence bracket 4. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite the consensus runs (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel, three two-mana rocks and Ojer Axonil. The builder's twelve coverage-chosen lands out for the cycling-land package; 35 lands. THE GOLDFISH READS THE SHARK HALF ONLY: Brallin's discard trigger has no channel, and a wheel that says 'draws that many' is not 'draw N', so the draw axis (0.632 extra cards by T8 on v0.1.0) is a proxy that sees the loots and the draw engines. Forge at standard-v3 is the verdict.",
+      "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict.",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
       "proposal": null,
@@ -208,13 +206,13 @@
             "name": "Lonely Sandbar"
           },
           {
+            "name": "Magmakin Artillerist"
+          },
+          {
             "name": "Marauding Mako"
           },
           {
             "name": "Ojer Axonil, Deepest Might // Temple of Power"
-          },
-          {
-            "name": "Ophidian Eye"
           },
           {
             "name": "Remote Isle"
@@ -223,16 +221,19 @@
             "name": "Secluded Steppe"
           },
           {
-            "name": "Talisman of Creativity"
+            "name": "Surly Badgersaur"
           },
           {
-            "name": "Tandem Lookout"
+            "name": "Talisman of Creativity"
           },
           {
             "name": "Thrill of Possibility"
           },
           {
             "name": "Training Center"
+          },
+          {
+            "name": "Whirlwind of Thought"
           }
         ],
         "unsleeve": [
@@ -354,12 +355,6 @@
             ]
           },
           {
-            "name": "Curiosity",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
             "name": "Talisman of Progress",
             "where": [
               "Zur Parts"
@@ -373,7 +368,7 @@
             ]
           }
         ],
-        "blocking": 32,
+        "blocking": 33,
         "procurement": null
       },
       "base_version": 1,
@@ -382,9 +377,9 @@
       "out": 37,
       "counts": {
         "in_deck": 63,
-        "box": 5,
+        "box": 4,
         "elsewhere": 15,
-        "buy": 17
+        "buy": 18
       },
       "unsourced": [
         "Arcane Denial",
@@ -404,21 +399,22 @@
         "Irrigated Farmland",
         "Izzet Signet",
         "Lonely Sandbar",
+        "Magmakin Artillerist",
         "Marauding Mako",
         "Ojer Axonil, Deepest Might // Temple of Power",
-        "Ophidian Eye",
         "Path to Exile",
         "Prairie Stream",
         "Remote Isle",
         "Secluded Steppe",
         "Smoldering Crater",
+        "Surly Badgersaur",
         "Swords to Plowshares",
         "Talisman of Creativity",
-        "Tandem Lookout",
         "Teferi's Ageless Insight",
         "Teferi's Protection",
         "Thrill of Possibility",
-        "Training Center"
+        "Training Center",
+        "Whirlwind of Thought"
       ],
       "mergeable": false,
       "free": 0,
@@ -684,18 +680,6 @@
           "is_new": false
         },
         {
-          "name": "Curiosity",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Cyclonic Rift",
           "state": "elsewhere",
           "where": [
@@ -903,6 +887,13 @@
           "is_new": true
         },
         {
+          "name": "Magmakin Artillerist",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Magus of the Wheel",
           "state": "in_deck",
           "where": [],
@@ -971,13 +962,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Ophidian Eye",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Path to Exile",
@@ -1200,6 +1184,13 @@
           "is_new": false
         },
         {
+          "name": "Surly Badgersaur",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Swiftfoot Boots",
           "state": "in_deck",
           "where": [],
@@ -1258,13 +1249,6 @@
               "name": "Zur Parts"
             }
           ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Tandem Lookout",
-          "state": "buy",
-          "where": [],
           "free": false,
           "is_new": true
         },
@@ -1383,6 +1367,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Whirlwind of Thought",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -1684,10 +1675,9 @@
   "simulation": null,
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (brief) — `deck-status sharknado` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
-    "branch `recon-v1` needs 32 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
+    "branch `recon-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "no simulation runs — `simulate sharknado --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

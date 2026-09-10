@@ -579,7 +579,31 @@ def forge(slug, branch):
             "mde": m.get("minimum_detectable_difference"),
             "caveat": ("Forge's AI is a weak pilot; the comparison is fair only "
                        "because both seats were played at a comparable rate — see "
-                       "`sim/pilot_quality`.")}
+                       "`sim/pilot_quality`."),
+            # WHETHER EITHER ARM'S ENGINE WAS EVER CAST. A record made before
+            # 2026-09-10 carries no measurement and reads None here.
+            "engine_casts": _engine_casts_caveat(slug, branch)}
+
+
+def _engine_casts_caveat(slug, branch):
+    """The never-cast list on the latest record of each arm, or None."""
+    from manamap.sim import engine_casts as ec
+    out = {}
+    for arm, pattern, b in (("champion", f"data/decks/{slug}/sim/*.json", None),
+                            ("branch", f"data/decks/{slug}/branches/{branch}/sim/*.json", branch)):
+        paths = [p for p in sorted(glob.glob(pattern)) if "logs" not in p]
+        if not paths:
+            out[arm] = None
+            continue
+        rec = json.load(open(paths[-1]))
+        try:
+            names = ec.nonland_names(load_deck_cards(slug, b))
+        except Exception:
+            names = None
+        q = ec.from_record(rec, names, ec.engine_set(slug, b))
+        out[arm] = None if not q else {"covered": q["covered"],
+                                       "never_cast": [r["card"] for r in q["never_cast"]][:8]}
+    return out
 
 
 def deck_branch_seat(slug, branch):

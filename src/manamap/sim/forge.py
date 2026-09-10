@@ -54,7 +54,7 @@ from datetime import date
 from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_ARGS,
                             SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_DIR,
                             SIM_GAME_CLOCK_SECONDS, SIM_CLOCK_ID_BASELINE)
-from manamap.pilot.common import deck_dir, load_json
+from manamap.pilot.common import deck_dir, load_deck_cards, load_json
 from manamap.sim import parse as sim_parse
 from manamap.sim import pods as _pods
 
@@ -1159,8 +1159,17 @@ def main(args):
     # COMPUTED AT PRINT TIME, NEVER WRITTEN INTO THE RECORD — the same rule
     # `targeting` follows, so adding this moved no tracked run. It is derived
     # from the record, so it reads the same from a fresh checkout.
-    from manamap.sim import pilot_quality
+    from manamap.sim import pilot_quality, engine_casts as _ec
     for line in pilot_quality.render(pilot_quality.from_record(rec)):
+        print(line)
+    # THE OTHER HALF: were the deck's engine cards ever cast. Same rule —
+    # derived at print time from the measured block, never stored.
+    _base, _branch = split_seat(slug)
+    try:
+        _names = _ec.nonland_names(load_deck_cards(_base, _branch))
+    except Exception:
+        _names = None
+    for line in _ec.render(_ec.from_record(rec, _names, _ec.engine_set(_base, _branch))):
         print(line)
     if rec["nonzero_exit_jobs"]:
         print(f"  WARNING {rec['nonzero_exit_jobs']} JVM(s) exited non-zero — read the logs")

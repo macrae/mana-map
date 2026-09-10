@@ -99,3 +99,81 @@ def test_the_validator_accepts_an_absent_block_and_rejects_a_malformed_one():
     rec["engine_casts"]["games"] = 1
     rec["engine_casts"]["by_card"]["Windfall"]["discarded"] = -1
     assert any("malformed" in e for e in validate_sim.validate(rec, "sharky"))
+
+
+# ── the fleet ───────────────────────────────────────────────────────────────
+
+#: Runs KEPT although the AI never cast part of the deck's engine, each with
+#: the reason. A named set rather than a widened threshold, the same shape as
+#: `KNOWN_FLAGGED` in test_sim_pilot_quality: the record is evidence about the
+#: harness and a floor on the deck, and its win rate is not read as a result.
+KNOWN_UNCAST = {
+    # 2026-09-10, sharknado@recon-v1 at standard-v3, both AI profiles: Wheel of
+    # Fortune cast once, Windfall / Magus / Jace's Archivist / Faithless Looting
+    # never, across 80 games. Forge's AI will not discard its own hand. Kept as
+    # the record that made this block exist.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c1d1131f-s1251704607-podExperimental-c600.json",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-c1d1131f-s1251704607-meExperimental-podExperimental-c600.json",
+    # 2026-09-10, heliod at standard-v3, 40 games: Psychosis Crawler never cast
+    # (discarded once), one card of a 53-card engine set; the rest of the
+    # engine played at its expected rate. docs/gotchas-bench.md already records
+    # the Crawler at 0 casts in 20 games — "read correctly, never played" — so
+    # this is the same true positive measured again. The run's 0.278 is read
+    # as heliod's because the declared engine was otherwise played.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600.json",
+}
+
+
+def _tracked_records():
+    import glob, pathlib as _pl
+    root = _pl.Path(__file__).resolve().parent.parent
+    return sorted(p for p in glob.glob(str(root / "data/decks/*/sim/*.json"))
+                  + glob.glob(str(root / "data/decks/*/branches/*/sim/*.json")) if "/logs/" not in p)
+
+
+def test_every_record_made_after_the_block_existed_carries_it():
+    """Absent means not measured — and from 2026-09-10 on, nothing is unmeasured."""
+    paths = _tracked_records()
+    if len(paths) < 5:
+        pytest.skip("deck data not present")
+    checked, missing = 0, []
+    for p in paths:
+        rec = json.load(open(p))
+        if (rec.get("at") or "") < "2026-09-10":
+            continue
+        checked += 1
+        if "engine_casts" not in rec:
+            missing.append(p.split("/")[-1])
+    assert checked >= 1, "the loop iterated nothing — no record dated after the block"
+    assert not missing, f"records dated after 2026-09-10 with no engine_casts block: {missing}"
+
+
+def test_no_kept_record_has_an_uncast_engine_by_accident():
+    """A run whose declared engine went uncast is a floor, not a result. Every
+    such record is listed by name with its reason, or this fails."""
+    from manamap.sim import engine_casts as ec
+    from manamap.pilot.common import load_deck_cards
+    from manamap.sim.forge import split_seat
+    paths = _tracked_records()
+    if len(paths) < 5:
+        pytest.skip("deck data not present")
+    checked, bad = 0, []
+    for p in paths:
+        rec = json.load(open(p))
+        if "engine_casts" not in rec:
+            continue
+        slug = rec["slug"]
+        base, branch = split_seat(slug)
+        try:
+            names = ec.nonland_names(load_deck_cards(base, branch))
+        except FileNotFoundError:
+            continue
+        q = ec.from_record(rec, names, ec.engine_set(base, branch))
+        checked += 1
+        if q and q["covered"] is False and p.split("/")[-1] not in KNOWN_UNCAST:
+            bad.append((p.split("/")[-1], q["engine"]["never_cast"][:4]))
+    assert checked >= 1, "no record carried the block — the loop checked nothing"
+    assert not bad, (f"the AI never cast part of the engine in {bad}. Check it is a true "
+                     f"positive; if it is, add the record to KNOWN_UNCAST with its reason.")
+    for name in KNOWN_UNCAST:
+        assert any(p.endswith(name) for p in paths), f"{name} is in KNOWN_UNCAST but no longer tracked"

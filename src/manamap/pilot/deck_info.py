@@ -36,7 +36,7 @@ from manamap.pilot import deck_model as dm
 from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot import promote as promote_mod
-from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_json
+from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_deck_cards, load_json
 from manamap.pilot.deck_notes import annotations, causes, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
 from manamap.sim.experiment import list_all as experiments_of
@@ -578,10 +578,31 @@ def _simulation(slug):
             # was handled like the rest of the table. Every surface that shows one
             # shows this.
             "piloting": _piloting(r),
+            # AND WHETHER THE ENGINE WAS EVER CAST — the other half of the same
+            # caveat, and the one that made sharknado's 0.132 a floor.
+            "engine_casts": _engine_casts(r, slug),
             "eliminated_by": me.get("eliminated_by"),
             "mean_round": (r.get("summary") or {}).get("mean_round"),
             "token_damage_share": (tok.get("token_damage_share") or {}).get("mean"),
             "tokens_observed": (tok.get("tokens_observed") or {}).get("mean")}
+
+
+def _engine_casts(rec, slug):
+    """Did the AI ever cast the deck's engine? Derived, never stored; None on a
+    record made before the block existed (not measured, not zero)."""
+    try:
+        from manamap.sim import engine_casts as ec
+        from manamap.sim.forge import split_seat
+        base, branch = split_seat(slug)
+        names = ec.nonland_names(load_deck_cards(base, branch))
+        q = ec.from_record(rec, names, ec.engine_set(base, branch))
+        if not q:
+            return None
+        return {"covered": q["covered"],
+                "never_cast": [r["card"] for r in q["never_cast"]][:8],
+                "reading": q["reading"]}
+    except Exception:
+        return None
 
 
 def _piloting(rec):
@@ -906,6 +927,8 @@ def _print(info):
               f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']}"
               + ("" if (sm.get("piloting") or {}).get("comparable", True)
                  else " (AI PILOTED OUR SEAT WORSE THAN THE POD)")
+              + ("" if (sm.get("engine_casts") or {}).get("covered", True) is not False
+                 else " (THE AI NEVER CAST THE ENGINE)")
               + f" · mean round {sm['mean_round']} · "
               f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
     xp = info["experiments"]
