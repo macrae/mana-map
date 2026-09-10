@@ -183,8 +183,9 @@ model and the two leaders settled at 100k iterations — drain-v2 0.434, best-v1
 went 25 → 5 once the fleet's derived artifacts were regenerated and four tests
 were re-pointed at code that had moved): ur-dragon's 09-08 land swap (Shivan
 Reef / Stormcarved Coast → Sunbaked Canyon / Turbulent Springs) is not in
-`engine.json` or `poh_procedures.json`, which fails the engine validator, the
-procedures page and deck-info's gate — that is agent work (`/analyze-engine`,
+`engine.json` or `poh_procedures.json`, which fails the engine validator and the
+procedures page; deck-info's panel test reads heliod, whose engine critic has
+said `fail` since 09-09's re-read — both are agent work (`/analyze-engine`,
 `/poh-procedures`), not a rename; `model_colors` on ur-dragon RAISES the
 commander's cast-by-t6 (0.22 → 0.32), which is backwards; and edgar's sacrifice
 cap fires in 0.3% of games since cast-token bodies ride on `model_combat`.

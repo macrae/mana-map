@@ -164,8 +164,10 @@ def test_the_tool_list_offers_no_way_to_write():
 def test_deck_state_returns_structure_rather_than_a_rendered_table():
     """The point of the whole server: an agent should not parse a column to
     recover a number the Python had in a dict."""
-    payload = _payload(_call("deck_state", slug="zur-enchantress"))
-    assert payload["slug"] == "zur-enchantress"
+    # gishath, not zur-enchantress: zur was archived on 2026-09-10 and an
+    # archived deck has no stage — which is correct, and not what this asserts.
+    payload = _payload(_call("deck_state", slug="gishath"))
+    assert payload["slug"] == "gishath"
     assert payload["stage"] in ("dev", "bench", "sleeved")
     assert isinstance(payload["gates_met"], int)
     assert isinstance(payload["blockers"], list)
