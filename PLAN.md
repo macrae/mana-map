@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-09-03**. Everything below is committed and pushed to `main` except
+Last updated **2026-09-10**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -160,6 +160,42 @@ attacks about once in four eligible turns. **That gap is the pilot, and it is
 the largest single lever left.** No games have been logged.
 
 ## Open work
+
+### DONE — the round robin and `standard-v3` (2026-09-09 → 10)
+
+`standard` had giada at 2.15x and baylen at 0.32x for eight days. A ten-table round
+robin among eight candidate seats, none of ours sitting, ranked them on a level
+field; `standard-v3` (sythis / jarad / abaddon) is the three nearest fair that are
+bracket 3 with zero combos, and it was then CALIBRATED with five of our decks (185
+decided games): sythis 1.45x, subject null 0.292, jarad a 0.48x floor. Default from
+09-10. The lesson is in `docs/simulation.md` and the pod note: the ranking did not
+predict the calibration, because a seat's share depends on who sits opposite
+(sythis 0.25 against heliod, 0.66 against zur). The fleet against that table:
+edgar 0.413, ur-dragon 0.343, gishath 0.333, heliod 0.278, goblin-storm 0.031,
+zur 0.085 (untracked; killed at 59/60 by hand).
+
+Also done: `model_coverage`'s third mirror drift (mass animation read as invisible
+on the branch built around it); zur's six branches re-measured on the current
+model and the two leaders settled at 100k iterations — drain-v2 0.434, best-v1
+0.414 on kill_by_8, real at that N, and only what the goldfish can see.
+
+**Five red tests, all left by 09-09's commits and none by the batch** (the suite
+went 25 → 5 once the fleet's derived artifacts were regenerated and four tests
+were re-pointed at code that had moved): ur-dragon's 09-08 land swap (Shivan
+Reef / Stormcarved Coast → Sunbaked Canyon / Turbulent Springs) is not in
+`engine.json` or `poh_procedures.json`, which fails the engine validator, the
+procedures page and deck-info's gate — that is agent work (`/analyze-engine`,
+`/poh-procedures`), not a rename; `model_colors` on ur-dragon RAISES the
+commander's cast-by-t6 (0.22 → 0.32), which is backwards; and edgar's sacrifice
+cap fires in 0.3% of games since cast-token bodies ride on `model_combat`.
+`test_oversubscribing_the_machine_censors_games` is xfail(strict) with the
+numbers: censoring is a property of the table (0% / 8.5% / 15.9% at 4 jobs
+across three tables) before it is one of the machine.
+
+**Open from it:** zur-enchantress's own reading against v3 is the logs only;
+re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
+specifically. `sim-progress` reports RUNNING on a run whose record exists.
+
 
 ### IN FLIGHT — the PRD v2 build-out (2026-09-03)
 

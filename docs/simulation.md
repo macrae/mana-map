@@ -160,6 +160,61 @@ bracket-3 decks with zero combos between them, within one bracket of each other
 and of the fleet. Vito remains fetched and is a legitimate opponent to name
 deliberately; it is no longer the default table.
 
+### 2026-09-10: the round robin, and `standard-v3`
+
+That table lasted eight days. Over 549 decided games giada-angels took **0.537
+(2.15x fair)** and baylen-tokens **0.080**, so the subject null was 0.180 and no
+deck of ours could read well at it. `standard-v2` (nekusar / muldrotha / abaddon)
+was tried on 09-06 and was worse: nekusar 0.637. Both tables were chosen on
+POOLED SHARES from tables the seats happened to sit at, which the v2 note already
+said does not transfer.
+
+The measurement that had never been made was a **round robin among candidate
+opponents with none of our decks seated** — eight seats, ten tables of eight,
+every seat on Experimental, 74 decided games (`data/opponents/*/sim/`). It
+became expressible when `seat_home` let an opponent be the subject (09-09):
+
+| seat | share | x fair | note |
+|---|---|---|---|
+| giada-angels | 0.528 [0.370, 0.680] | 2.11x | genuinely too strong, not just fed by baylen |
+| nekusar-discard | 0.436 | 1.74x | |
+| muldrotha-value | 0.351 | 1.41x | floor 4, Hermit Druid + Jace — OUT by the zero-combo rule |
+| sythis-enchantress | 0.235 | 0.94x | |
+| jarad-graveyard | 0.189 | 0.76x | |
+| abaddon | 0.175 | 0.70x | |
+| baylen-tokens | 0.029 | 0.11x | a floor at every table |
+| talrand-spells | 0.026 | 0.11x | |
+
+**`standard-v3` is sythis-enchantress / jarad-graveyard / abaddon**, the three
+nearest fair that are bracket 3 with zero combos. Then the part v2 skipped: five
+of our decks sat at it, 185 decided games, default profiles.
+
+| subject | W/N | rate | ci95 | clocked out | sythis | abaddon | jarad |
+|---|---|---|---|---|---|---|---|
+| edgar-vampires | 19/46 | 0.413 | [0.283, 0.557] | 14 | 0.348 | 0.174 | 0.065 |
+| ur-dragon | 12/35 | 0.343 | [0.208, 0.508] | 5 | 0.314 | 0.200 | 0.114 |
+| gishath | 12/36 | 0.333 | [0.202, 0.497] | 4 | 0.361 | 0.167 | 0.111 |
+| heliod | 10/36 | 0.278 | [0.158, 0.440] | 4 | 0.250 | 0.278 | 0.167 |
+| goblin-storm | 1/32 | 0.031 | [0.006, 0.157] | 8 | 0.562 | 0.250 | 0.156 |
+| zur-enchantress † | 4/47 | 0.085 | [0.034, 0.199] | 12 | 0.660 | 0.191 | 0.064 |
+
+† killed at 59/60 by hand, no record; `sim-progress` reads the logs.
+
+Pooled (`pods standard-v3 --calibration`): **sythis 0.362 [0.296, 0.434] 1.45x,
+subject 0.292, abaddon 0.211, jarad 0.119 (floor)**. Not level, but the most even
+table measured, and the default from this date.
+
+**The ranking did not predict the calibration, and that is the finding.** Sythis
+was 0.94x on the level field and is 1.45x here — and the per-subject column is
+the reason: 0.25 against heliod, 0.31–0.36 against the three that attack with
+real bodies, 0.56 against goblin-storm, 0.66 against zur. Sphere of Safety
+behind forty enchantments stops a deck that has to CONNECT and barely slows one
+that swings every turn. **A pod's null is a property of the table with the
+subject in it.** Report every rate against this table beside that spread, and
+re-read the calibration after each new subject. The clock-out column matters
+too: edgar's 14 were mostly games it was ahead in at the 600s limit.
+
+
 **0.25 was never the null.** Two seats took 85% of decided games. Every run
 before this date was measured against a table where a perfectly average deck in
 the subject seat could not have scored 0.25.

@@ -394,12 +394,7 @@
     "draw": 0,
     "last_played": "2026-09-08",
     "first_played": "2026-08-22",
-    "undebriefed": [
-      "002",
-      "003",
-      "004",
-      "005"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "mana-drought",
       "002": "won",
@@ -879,51 +874,100 @@
       "from": "log:001",
       "question": "Which line, if any, is this deck's win line now? Three checker-passed stacks describe boards v1.0.0 can no longer make (003, 004, 006, all marked presentable: false) and the three that remain — 001 Dragon Tempest + Ancient Gold Dragon, 002 Miirym under Panharmonicon, 005 Sneak Attack — are not a proven kill.",
       "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:002",
+      "question": "The deck 'generates no value on the way down' against a pod that plays heavy creature removal and heavy board wipes — is that a real gap in the 99, and what would close it without costing dragon slots?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "Is 'three to five lands behind curve' still true on the current list? The claim was made on the raised-land-base version, before the mana density shifted toward dorks and rocks.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:003",
+      "question": "Which dragons grant haste to the board, and which haste enablers fit a five-colour dragon curve, so that a dragon swings the turn it lands rather than sitting through a rotation of removal?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:003",
+      "question": "What protection density can this deck carry — the pilot floats lock-down such as equipment granting indestructible — without spending dragon slots?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:003",
+      "question": "What does a table-politics layer for a deck that visibly presents the biggest board look like — threat management, alliance timing, and when to hold a swing back?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:004",
+      "question": "Steven 'flew under the radar with his tap/untap engine and won it' while the table spent its removal on the pilot — does this deck have any way to interact with an opponent who assembles quietly, or is its only answer to be faster than him?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "How often does a keepable opening hand for this deck contain no green source? The pilot proposes the mulligan rule 'no green source, consider shipping it' and it needs a rate before it becomes one.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:005",
+      "question": "Firespitter Whelp with Twinflame Tyrant and Panharmonicon alongside Terror of the Peaks: how much damage does one nontoken dragon arrival actually deal, and how does the doubling interact with the extra trigger?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:005",
+      "question": "The refactor removed every counterspell and the pilot reports 'zero responses'. What responses — dragons with ETB counters or flash, or protection on dragons or dragon enchantments — fit without slowing the deck down?",
+      "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:005",
+      "question": "Across 003, 004 and 005 the pilot presents a board the table can read before he can close. Is the gap between broadcasting a threat and presenting lethal a property of this list — ramp-heavy, protection-thin, no haste — or purely a deployment habit the handbook should fix?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
-    "runs": 3,
-    "latest": "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600",
-    "at": "2026-09-06",
-    "stale": true,
-    "ran_on_decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
-    "games": 60,
-    "wins": 8,
-    "decided": 60,
+    "runs": 4,
+    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-9def0ac6-s649688774-podExperimental-c600",
+    "at": "2026-09-10",
+    "stale": false,
+    "ran_on_decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
+    "games": 40,
+    "wins": 12,
+    "decided": 35,
     "vs": [
-      "abaddon",
-      "nekusar-discard",
-      "muldrotha-value"
+      "sythis-enchantress",
+      "jarad-graveyard",
+      "abaddon"
     ],
-    "win_rate": 0.133,
+    "win_rate": 0.353,
     "win_rate_ci95": [
-      0.069,
-      0.242
+      0.215,
+      0.521
     ],
     "piloting": {
       "comparable": true,
-      "lands_ratio": 0.931,
-      "casts_ratio": 0.915,
+      "lands_ratio": 0.872,
+      "casts_ratio": 0.871,
       "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "eliminated_by": {
-      "nekusar-discard": 13,
-      "muldrotha-value": 4,
-      "abaddon": 5
+      "abaddon": 8,
+      "sythis-enchantress": 7,
+      "jarad-graveyard": 4
     },
-    "mean_round": 16.9,
-    "token_damage_share": 0.03,
-    "tokens_observed": 1.08
+    "mean_round": 18.6,
+    "token_damage_share": 0.1,
+    "tokens_observed": 3.8
   },
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "not marked as built in paper — if it is sleeved, `deck-version ur-dragon paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "4 logged game(s) not yet debriefed (002, 003, 004, 005) — `/debrief ur-dragon`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
-    "open questions routed: diagnose ×1, goldfish ×7, research-strategy ×2, resolve-stack ×8",
+    "open questions routed: diagnose ×4, goldfish ×9, research-strategy ×6, resolve-stack ×9",
     "4 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

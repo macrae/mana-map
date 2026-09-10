@@ -54,9 +54,7 @@
     "draw": 0,
     "last_played": "2026-08-28",
     "first_played": "2026-08-28",
-    "undebriefed": [
-      "001"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "won"
     },
@@ -371,46 +369,51 @@
       "from": "diagnosis",
       "question": "Is there corpus guidance on the specific trade a reveal-trigger commander forces: cutting the expensive payoffs the commander cheats in, in order to cast the commander at all?",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:001",
+      "question": "Does the tracked 99 actually contain a pump effect that converts a Gishath connect into lethal commander damage, given that Enlarge — the card that finished this game — is not in the list this entry's decklist_sha256 points at?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
-    "runs": 1,
-    "latest": "giada-angels-vs-vito-vs-baylen-tokens-n20-dc51d18a-s1696349578",
-    "at": "2026-08-26",
+    "runs": 2,
+    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65-s1127197285-podExperimental-c600",
+    "at": "2026-09-10",
     "stale": false,
     "ran_on_decklist_sha256": "0480aaf7d19ef989e62c469d01a27eab471e80d6182dfefbefefd3a1579bd749",
-    "games": 20,
-    "wins": 6,
-    "decided": 18,
+    "games": 40,
+    "wins": 12,
+    "decided": 36,
     "vs": [
-      "giada-angels",
-      "vito",
-      "baylen-tokens"
+      "sythis-enchantress",
+      "jarad-graveyard",
+      "abaddon"
     ],
-    "win_rate": 0.333,
+    "win_rate": 0.343,
     "win_rate_ci95": [
-      0.163,
-      0.563
+      0.208,
+      0.508
     ],
     "piloting": {
       "comparable": true,
-      "lands_ratio": 1.146,
-      "casts_ratio": 1.115,
+      "lands_ratio": 0.931,
+      "casts_ratio": 0.741,
       "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "eliminated_by": {
-      "giada-angels": 6,
-      "vito": 1
+      "sythis-enchantress": 9,
+      "abaddon": 6,
+      "jarad-graveyard": 3
     },
-    "mean_round": 16.4,
-    "token_damage_share": 0.06,
-    "tokens_observed": 1.15
+    "mean_round": 20.4,
+    "token_damage_share": 0.1,
+    "tokens_observed": 0.65
   },
   "experiments": null,
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version gishath paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "1 logged game(s) not yet debriefed (001) — `/debrief gishath`",
-    "open questions routed: goldfish ×4, research-strategy ×2, resolve-stack ×3",
+    "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×3",
     "3 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

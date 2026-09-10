@@ -231,12 +231,18 @@ manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code>
                               # table can COUNT how games end; it lands in the sidecar
                               # log_causes.json because log.jsonl is append-only
 manamap pilot deck-notes <slug> cause <id> --cause <code>   # file one after the fact
-manamap pilot simulate <slug> --vs giada-angels --vs baylen-tokens --vs abaddon --games N
-                              # Forge, seeded, against THE STANDARD POD — three
-                              # bracket-3 decks with ZERO combos between them.
-                              # `vito` was the default until 2026-09-02 and is a
-                              # bracket-4 pile of 13 two-card infinites that won
-                              # 0.447; naming it is now a deliberate act.
+manamap pilot simulate <slug> --pod standard-v3 --games N
+                              # Forge, seeded, against THE STANDARD TABLE — three
+                              # bracket-3 decks with ZERO combos between them,
+                              # chosen by a ROUND ROBIN with none of our decks
+                              # seated, then CALIBRATED with five of them (185
+                              # decided games): sythis 1.45x, subject null 0.292,
+                              # jarad a 0.48x floor. `standard` (giada 2.15x) and
+                              # `vito` (13 two-card infinites, 0.447) are kept so
+                              # old records resolve; naming either is deliberate.
+                              # A POD'S NULL IS A PROPERTY OF THE TABLE WITH THE
+                              # SUBJECT IN IT: sythis reads 0.25 against heliod
+                              # and 0.66 against zur. Read `pods <name> --calibration`.
                               # A clock-out is `truncated`, has NO winner, and is
                               # excluded from the rate — it used to be awarded to
                               # the last seat, which our deck can never be.
