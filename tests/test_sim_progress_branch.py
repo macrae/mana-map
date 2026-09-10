@@ -24,33 +24,36 @@ from manamap.sim import forge, progress
 def test_a_branch_seat_resolves_to_the_branch_directory(tmp_path, monkeypatch):
     """Drives `progress.main`. With the old `DECKS_DIR / slug` it asks for
     `zur-enchantress@drain-v2` and this fails."""
+    # The reader hands the WHOLE seat token to `forge.seat_home` (2026-09-10);
+    # it no longer splits it itself, because the writer does not either.
     asked = []
 
-    def fake_deck_dir(base, branch=None):
-        asked.append((base, branch))
+    def fake_seat_home(slug):
+        asked.append(slug)
         return tmp_path
 
-    monkeypatch.setattr(progress, "deck_dir", fake_deck_dir)
+    monkeypatch.setattr(progress.forge, "seat_home", fake_seat_home)
     args = types.SimpleNamespace(slug="zur-enchantress@drain-v2", run=None, all=False)
     with pytest.raises(SystemExit):        # no logs in tmp_path; resolution is the point
         progress.main(args)
-    assert asked == [("zur-enchantress", "drain-v2")], asked
+    assert asked == ["zur-enchantress@drain-v2"], asked
+    assert forge.split_seat("zur-enchantress@drain-v2") == ("zur-enchantress", "drain-v2")
 
 
 def test_a_plain_slug_still_resolves_to_the_deck(tmp_path, monkeypatch):
     asked = []
-    monkeypatch.setattr(progress, "deck_dir",
-                        lambda base, branch=None: (asked.append((base, branch)), tmp_path)[1])
+    monkeypatch.setattr(progress.forge, "seat_home",
+                        lambda slug: (asked.append(slug), tmp_path)[1])
     args = types.SimpleNamespace(slug="heliod", run=None, all=False)
     with pytest.raises(SystemExit):
         progress.main(args)
-    assert asked == [("heliod", None)], asked
+    assert asked == ["heliod"], asked
 
 
 def test_it_looks_under_both_sim_and_experiments(tmp_path, monkeypatch):
     """`experiment` writes elsewhere than `simulate`; both were searched before
     and both must still be."""
-    monkeypatch.setattr(progress, "deck_dir", lambda base, branch=None: tmp_path)
+    monkeypatch.setattr(progress.forge, "seat_home", lambda slug: tmp_path)
     (tmp_path / "experiments" / "logs" / "a-run").mkdir(parents=True)
     (tmp_path / "experiments" / "logs" / "a-run" / "a-part-00.log").write_text("")
     args = types.SimpleNamespace(slug="heliod", run=None, all=False)
@@ -89,5 +92,10 @@ def test_reader_and_writer_agree_on_where_a_run_lives():
     """The property that broke: `forge._out_dir` decides where a run is WRITTEN
     and `progress.main` decides where it is READ. Two spellings of the same
     question is how they drifted."""
-    assert "split_seat" in _code_of(progress.main)
-    assert "split_seat" in _code_of(forge._out_dir)
+    # `seat_home` became the ONE resolution on 2026-09-09 (an opponent can be the
+    # subject, so the writer stopped calling `deck_dir` directly). The reader
+    # must call the same function, not the two calls it is built from.
+    assert "seat_home" in _code_of(progress.main)
+    assert "seat_home" in _code_of(forge._out_dir)
+    assert "deck_dir(" not in _code_of(progress.main), (
+        "the reader resolves through deck_dir and cannot see an opponent-subject run")

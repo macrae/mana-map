@@ -116,8 +116,19 @@ KNOWN_FLAGGED = {
     # ONLY run against that pod and the observations are worth having; its
     # win rate (0.173) is explicitly not read as a result, and the record says
     # so in its own verdict text.
-    "jarad-graveyard-vs-muldrotha-value-vs-sythis-enchantress-n60-d1c155a1"
-    "-s1519108513-podExperimental-c600.json",
+    # (that record was QUARANTINED on 2026-09-09 with the drain-v2 run it sat
+    # beside, so it is no longer tracked and no longer listed here.)
+    #
+    # 2026-09-10, goblin-storm against standard-v3, 40 games. Land drops 0.319
+    # per own turn against a pod mean of 0.411 (0.776), casts 0.77 — and the deck
+    # runs 36 lands, the same as every seat at that table, so the land-count
+    # confound does not explain it. The AI played the storm deck worse than the
+    # table, which is Forge's own caveat ("pretty bad for most combo decks")
+    # measured. The record is kept because it is the fleet's reading at the
+    # table that became the default that day; its 0.031 is a FLOOR on the deck,
+    # not a result, and the record's verdict text says so.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836"
+    "-s14467126-podExperimental-c600.json",
 }
 
 

@@ -213,12 +213,13 @@ def main(args):
     # that has never existed — and reported "no simulation logs" while the run
     # it was asked about was two hours into producing them.
     #
-    # `forge.split_seat` and `common.deck_dir` are the same two calls the writer
-    # already makes; reusing them is what stops the reader and the writer
-    # disagreeing about where a run lives.
-    base, branch = forge.split_seat(slug)
+    # `forge.seat_home` is THE resolution the writer uses (2026-09-09: an
+    # opponent can be the subject, so the writer stopped calling `deck_dir`
+    # itself). This used to make the same two calls the writer made, which was
+    # true for one day; the reader must call the same function, not rebuild
+    # it, or an opponent-subject run is written where this cannot look.
     try:
-        root = deck_dir(base, branch)
+        root = forge.seat_home(slug)
     except FileNotFoundError as exc:
         raise SystemExit(str(exc))
     roots = [root / SIM_DIR / "logs",

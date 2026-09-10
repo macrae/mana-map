@@ -343,7 +343,15 @@ def test_the_arrival_channel_does_not_secretly_require_the_combat_model():
     a = both["mean_extra_cards_drawn_by_turn"]["10"]
     b = only["mean_extra_cards_drawn_by_turn"]["10"]
     assert a > 0 and b > 0
-    assert b > a * 0.7, (
+    # RE-DERIVED 2026-09-10. The cast-token channel (9d2efd9) rides on
+    # `model_combat`, and on edgar that is eminence: a body on every other
+    # Vampire cast, each one a real arrival that fires the arrival draws. With it
+    # the combat-on figure is 2.671 against 1.325 draw-only at this N — the gap
+    # is the tokens, which is legitimate by the paragraph above, and 0.7 was set
+    # before the tokens existed. The property still asserted is the one that
+    # broke: the draw-only figure is a substantial fraction, not the quarter it
+    # read when the channel sat inside `if model_combat:`.
+    assert b > a * 0.4, (
         f"draw-only reads {b} against {a} with combat — the arrival channel is "
         f"leaking through a flag it should not depend on")
 
@@ -452,7 +460,11 @@ def test_the_commander_mints_a_token_on_cast_and_the_model_reads_it():
         "Eminence — Whenever you cast another Vampire spell, if Edgar is in "
         "the command zone or on the battlefield, create a 1/1 black Vampire "
         "creature token. First strike, haste"})
-    assert edgar == {"subtype": "Vampire", "bodies": 1, "power": 1}
+    # `gate_kind` and `scales` arrived with the cast-token channel (9d2efd9):
+    # a gate naming a CARD TYPE (Sigil: "enchantment spell") is not a creature
+    # subtype, and a token whose size is self-referential is floored, not read.
+    assert edgar == {"subtype": "Vampire", "gate_kind": "subtype", "bodies": 1,
+                     "power": 1, "scales": False}
 
 
 def test_a_cost_reducing_eminence_is_not_a_token_eminence():
