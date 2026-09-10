@@ -87,7 +87,12 @@ def observed(logs=None):
 #: cheap "second card each turn" card remains the weak one — by a ratio of
 #: exactly 4.0, down from 4.3, which is a drift in the magnitude and not in the
 #: finding.
-POD = {"casts_per_turn": 1.154, "second_spell_rate": 0.25, "n_seat_games": 4898}
+#: RE-DERIVED AGAIN 2026-09-10 from 82,844 logged opponent turns: the six fleet
+#: runs at `standard-v3` and the round robin added a table that casts more
+#: (sythis-enchantress, 0.98 casts a turn) and 1.154 fell outside the tolerance
+#: a second time. Same conclusion, same direction: 3.0 per-draw firings a round
+#: against 0.81 for a second-spell trigger, a ratio of 3.7.
+POD = {"casts_per_turn": 1.211, "second_spell_rate": 0.269, "n_seat_games": 4898}
 
 #: A second DRAW in a turn needs a draw spell, and Forge does not log draws. This
 #: is bounded rather than measured: it cannot exceed the rate of casting a second

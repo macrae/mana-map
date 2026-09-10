@@ -229,8 +229,12 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # named set makes adding the third an edit somebody has to justify, which is
     # the whole point of "retire this deliberately rather than letting it
     # quietly stop checking anything".
-    assert sorted(opted) == ["edgar-vampires", "heliod", "ur-dragon",
-                             "zur-enchantress"], (
+    # 2026-09-10: zur-enchantress ARCHIVED (a failed experiment, four lists at
+    # 0.09-0.18 against a fleet at 0.28-0.41) and no longer walked here;
+    # ingris-infect opted in on the day it was built, because a deck that wins
+    # on poison counters has nothing to measure without the combat model.
+    assert sorted(opted) == ["edgar-vampires", "heliod", "ingris-infect",
+                             "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
         "edgar-vampires with the drain refactor, which needed `model_combat` "
