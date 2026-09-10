@@ -192,6 +192,22 @@ cap fires in 0.3% of games since cast-token bodies ride on `model_combat`.
 numbers: censoring is a property of the table (0% / 8.5% / 15.9% at 4 jobs
 across three tables) before it is one of the machine.
 
+**The goldfish learned poison (2026-09-10)** for `ingris-infect`, a Rakdos infect deck
+under Ingris Stingerquill (Reality Fracture, not legal until 10-02, not in the
+corpus): infect turns a source's damage to a player into counters (702.90b), toxic
+adds N on connecting, ten counters end the game, and her "that creature deals 1
+damage to each opponent" is a per-attacker ping the attacker deals. Fleet impact:
+every other deck byte-identical beyond the stamp and the two new keys
+(`mean_poison_by_turn`, `kill_by_poison_rate`, both exactly zero where nothing makes
+counters), except ur-dragon's `combat_effects_not_modelled`, which now names Ignoble
+Hierarch — its exalted window used to run into "{T}: Add {B}, {R}, or {G}" and credit
+that as ATTACK MANA. The 220-character attack window now stops at the next activated
+ability. **OPEN, measured and not fixed:** `token_bodies` still reads the WHOLE text,
+so nine fleet cards credit an activation's token as a free body on cast (Bloodline
+Keeper, Huatli, Den of the Bugbear, Fountainport, Idol of Oblivion, Kher Keep, Pashalik
+Mons, Dawn of Hope, Urza's Saga, plus Ingris's own Cadet). Fixing it moves edgar,
+gishath, goblin-storm and zur; do it as its own commit with the sweep.
+
 **Open from it:** zur-enchantress's own reading against v3 is the logs only;
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.

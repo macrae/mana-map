@@ -1217,6 +1217,8 @@ GOLDFISH_MAX_MULLIGANS = 2
 # finish a seat", not "how fast does it win a four-player game" — summing three
 # opponents' life would invent a number the model cannot support.
 GOLDFISH_OPPONENT_LIFE = 40
+#: Ten poison counters lose the game (CR 704.5c); the goldfish's second clock.
+GOLDFISH_POISON_TO_LOSE = 10
 
 # ── Pilot: Strategy Knowledge Base ───────────────────────────────────────
 STRATEGY_DIR = DATA_DIR / "strategy"

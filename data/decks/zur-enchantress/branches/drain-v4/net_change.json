@@ -1061,8 +1061,8 @@
   "why": "OPALESCENCE, AND THE MODEL GAP THAT HID IT. The goldfish read mass animation from one pattern -- 'as long as you control five or more enchantments' -- and its comment asserted Starfield of Nyx was the only card in the corpus that did this. A sweep of all 34,890 oracle cards for the broad shape returns TWO. Opalescence says 'each other non-Aura enchantment is a creature ... base power and base toughness each equal to its mana value' with NO CONDITION AT ALL, and it returned mass_animate_threshold=0 -- the sentinel for a card that does not mass-animate. The strictly stronger of the two was worth exactly nothing to the model, and the casting predicate gates on the same field, so nothing would ever have cast it either. Fixed in this branch's commit with the sweep recorded and a test that fails when the branch is removed.\n\nWHY IT IS THE UNLOCK RATHER THAN A GOOD CARD. This deck runs 44 enchantments. Opalescence stands ALL of them up at once, permanently, for no mana and no activation -- which matters because simulate recorded a MEDIAN OF 0 activations across 60 games, so anything resting on the commander's {1}{W} is not a plan the pilot's own table has ever seen executed. Every body it makes is an ENCHANTMENT CREATURE, so every one takes deathtouch, lifelink and hexproof from the commander, and with True Conviction already in this line every one has double strike. A 6/6 double-striking deathtouch lifelink body gains 12 life a swing, and 12 life is 12 DRAIN with Sanguine Bond, Vito or Enduring Tenacity on the board.\n\nIT ALSO INVERTS THE CURVE PROBLEM. drain-v2 bought its result with a curve -- average mana value 2.667 -> 2.905 -- and drain-v3 tried to pay that back with cheap cards and measured WORSE on every axis. Under Opalescence an expensive enchantment is not a liability, it is a LARGER BODY: Wound Reflection stops being a six-drop that does nothing alone and becomes a 6/6.\n\nMESA ENCHANTRESS FIXES THE ONE COST drain-v2 ACTUALLY PAID. Extra cards by turn eight fell 2.43 -> 1.53. 'Whenever you cast an enchantment spell, you may draw a card' in a deck of 44 enchantments is the direct answer, and it is the ONLY enchantress in this colour identity -- Argothian, Verduran, Satyr and Sythis are all green and Enchantress's Presence is green. It is already in a box.\n\nTHE TWO CUTS ARE THE TOKEN-MAKERS WHOSE TOKENS TAKE NO GRANT. Gremlin Tamer makes 1/1 Gremlins and Ajani's Chosen makes 2/2 Cats; neither token is an enchantment, so neither gets deathtouch, lifelink or hexproof, and both cards are on the buy list. Cathars' Crusade is deliberately NOT cut -- drain-v3 cut it on the theory that counters do nothing for a lifegain plan and measured worse everywhere, because it was pumping the board, the board was dealing combat damage, and that damage was drawing cards off Enduring Curiosity.\n\nRISK, STATED. Opalescence animates every other non-Aura enchantment INCLUDING OPPONENTS', and it turns the pilot's own permanents into creatures that a board wipe kills. The goldfish has no opponents and no removal, so it can see NEITHER cost. Hexproof from the commander answers targeted removal and answers nothing else. This is a FORGE question the moment the goldfish says yes.\n\nSTILL NO TWO-CARD INFINITE and neither add is a Game Changer."
  },
  "objective_grade": {
-  "reading": 0.4115,
-  "shortfall": 0.1385,
+  "reading": 0.3998,
+  "shortfall": 0.1502,
   "state": "not met"
  },
  "recommendation": {
@@ -1127,19 +1127,19 @@
   ],
   "risk": [
    {
-    "detail": "20.49 -> 18.16, a change of -2.32 (-11%)",
+    "detail": "20.19 -> 17.94, a change of -2.25 (-11%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "7.09 -> 6.39, a change of -0.70 (-10%)",
+    "detail": "6.95 -> 6.26, a change of -0.68 (-10%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "2.43 -> 1.67, a change of -0.77 (-31%)",
+    "detail": "2.39 -> 1.65, a change of -0.74 (-31%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -1185,12 +1185,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 18.1631,
-   "champion": 20.4861,
-   "delta": -2.323,
-   "mde": 0.4985,
+   "branch": 17.9402,
+   "champion": 20.1936,
+   "delta": -2.2534,
+   "mde": 0.4917,
    "measure": "damage @T10",
-   "reads_as": "20.49 -> 18.16, a change of -2.32 (-11%)",
+   "reads_as": "20.19 -> 17.94, a change of -2.25 (-11%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1199,12 +1199,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 6.386,
-   "champion": 7.0899,
-   "delta": -0.7039,
-   "mde": 0.1626,
+   "branch": 6.2627,
+   "champion": 6.9455,
+   "delta": -0.6828,
+   "mde": 0.1624,
    "measure": "board power @T6",
-   "reads_as": "7.09 -> 6.39, a change of -0.70 (-10%)",
+   "reads_as": "6.95 -> 6.26, a change of -0.68 (-10%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1213,10 +1213,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0075,
-   "champion": 0.0081,
-   "delta": -0.0006,
-   "mde": 0.0036,
+   "branch": 0.0072,
+   "champion": 0.0077,
+   "delta": -0.0005,
+   "mde": 0.0035,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1227,10 +1227,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8755,
-   "champion": 0.8783,
-   "delta": -0.0028,
-   "mde": 0.0131,
+   "branch": 0.8692,
+   "champion": 0.8723,
+   "delta": -0.0031,
+   "mde": 0.0134,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.013 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1255,9 +1255,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4205,
+   "branch": 0.4206,
    "champion": 0.4052,
-   "delta": 0.0153,
+   "delta": 0.0154,
    "mde": 0.0196,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.015 is smaller than the 0.020 this run can resolve",
@@ -1283,12 +1283,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.6664,
-   "champion": 2.4326,
-   "delta": -0.7662,
-   "mde": 0.1441,
+   "branch": 1.6516,
+   "champion": 2.3942,
+   "delta": -0.7426,
+   "mde": 0.1414,
    "measure": "extra cards by T8",
-   "reads_as": "2.43 -> 1.67, a change of -0.77 (-31%)",
+   "reads_as": "2.39 -> 1.65, a change of -0.74 (-31%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1298,9 +1298,9 @@
   {
    "better_is": "higher",
    "branch": 0.5462,
-   "champion": 0.5774,
-   "delta": -0.0312,
-   "mde": 0.0239,
+   "champion": 0.5776,
+   "delta": -0.0314,
+   "mde": 0.024,
    "measure": "interaction affordable @T6",
    "reads_as": "58 games in 100 -> 55 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",

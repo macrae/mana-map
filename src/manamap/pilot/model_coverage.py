@@ -111,7 +111,10 @@ def channels_for(profile):
             # branch built around it, and the fleet test could not see it
             # because that test asks whether a modelled effect is applied,
             # not whether an applied effect is reported. Found on best-v1.
-            "mass_animate_threshold")):
+            "mass_animate_threshold",
+            # Poison, added with the fields (2026-09-10): infect and toxic are
+            # bodies too, so this only matters for the per-attacker ping.
+            "infect", "toxic", "attack_ping_per_attacker")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw")):
@@ -168,7 +171,7 @@ def never_cast(profile, flags):
                 # (`if model_combat and c["combat"]["mass_animate_threshold"]`);
                 # added here in the same edit as the channel, because the fleet
                 # test failed the moment the channel alone was taught.
-                cb.get("mass_animate_threshold"))):
+                cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False

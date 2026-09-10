@@ -34,6 +34,7 @@ from manamap.config import (
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     GOLDFISH_OPPONENT_LIFE,
+    GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
 )
 from manamap.pilot import manabase
@@ -937,6 +938,35 @@ _ATTACKS_RE = re.compile(
 _COMBAT_DMG_RE = re.compile(
     r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}) deals combat damage to a player",
     re.IGNORECASE)
+# POISON. Infect makes every point of damage a source deals to a player a poison
+# counter instead (CR 702.90b) — combat or not — and ten counters lose the game
+# (704.5c). Toxic N adds N counters when the creature deals COMBAT damage, on top
+# of the damage. The keyword sits at the start of a line, alone or after a
+# comma-separated keyword list ("Flying\nInfect (…)", "Deathtouch\nToxic 1");
+# a GRANT ("has infect", "gains infect until end of turn") is lower-case mid-
+# sentence and is deliberately not matched here — it is priced at nothing and
+# named in the commit that added this, the way Vector Asp and Grafted
+# Exoskeleton read. Corpus sweep 2026-09-10: 32 infect creatures, 32 toxic
+# cards, 9 grants, and the counts are locked by a test.
+# The keyword is CAPITALISED when it heads a line and lower-case after a comma
+# in a keyword list; a grant is lower-case after "has" / "gains" / "have". The
+# anchor accepts a space as well as a newline because `cards.csv` flattens
+# oracle newlines to spaces while `cards.json` keeps them, and the first
+# version of this pattern, anchored on the newline alone, missed Phyrexian
+# Crusader and Skithiryx in the corpus while reading them in a deck.
+_INFECT_KW_RE = re.compile(r"(?:(?:^|\n| )Infect\b|, infect\b)(?! until)")
+_TOXIC_KW_RE = re.compile(r"(?:(?:^|\n| )Toxic|, toxic) (\d+)\b")
+# A PING PER ATTACKER, dealt BY THE ATTACKER: "Whenever a creature you control
+# attacks, that creature deals 1 damage to each opponent" (Ingris Stingerquill,
+# Reality Fracture). Because the creature is the source, an infect attacker's
+# ping is a poison counter to every opponent, before blocks. Zero cards in the
+# 2026-08 corpus carry this shape; the first is a commander whose set is not
+# yet released, so this is parsed from the deck's own cards.json rather than
+# declared, and the sweep test asserts the corpus count so the day a second
+# one prints it is read on purpose.
+_ATTACK_PING_EACH_RE = re.compile(
+    r"whenever a creature you control attacks, (?:that creature|it) deals (\d+) damage to each opponent",
+    re.IGNORECASE)
 _EXTRA_COMBAT_RE = re.compile(r"additional combat phase", re.IGNORECASE)
 # An ACTIVATED extra combat (Aggravated Assault's {3}{R}{R}), as opposed to a
 # triggered one (Scourge of the Throne). The cost decides whether it is a free
@@ -950,6 +980,26 @@ _ACTIVATED_COMBAT_RE = re.compile(
     re.IGNORECASE | re.DOTALL)
 _DMG_EQUAL_TREASURE_RE = re.compile(
     r"deals damage equal to the number of Treasures", re.IGNORECASE)
+
+
+# "{T}:", "{3}{R}:", "{1}, Sacrifice a creature:" — a cost that opens an
+# activated ability. Bounded so a mana symbol inside an effect ("add {R}") is
+# not read as one.
+# A planeswalker's loyalty ability ("+1:", "−3:", "0:") is an activation too —
+# Huatli, Poet of Unity's Dinosaur was the fleet's one instance.
+_ACTIVATION_COST_RE = re.compile(r"(?:\{[^}]+\}[^:.\n]{0,60}|(?:^|\s)[+\-\u2212]?\d+):")
+
+
+def _inside_activation(text, pos):
+    """Is `pos` inside the effect of an activated ability?
+
+    The ability is the stretch from the last sentence end (or line start)
+    before `pos`; if it opens with a cost, the effect is bought, not triggered.
+    Works on `cards.json` (real newlines) and on `cards.csv` (flattened to
+    spaces) alike, because it bounds on the period rather than the line.
+    """
+    start = max(text.rfind(".", 0, pos), text.rfind("\n", 0, pos)) + 1
+    return bool(_ACTIVATION_COST_RE.search(text[start:pos]))
 
 
 def _mana_pips(cost_string):
@@ -1540,6 +1590,12 @@ def combat_profile(card):
         # x2 per source, multiplied together across everything in play.
         "team_damage_multiplier": 1,
         "double_strike": False,
+        # POISON, see the regexes above. `infect` turns this creature's damage
+        # into counters; `toxic` adds N counters per connect; the ping is a
+        # per-attacker trigger on some OTHER permanent, credited to the attacker.
+        "infect": False,
+        "toxic": 0,
+        "attack_ping_per_attacker": 0,
         # The enters-the-battlefield family. Read for every card, acted on only
         # under model_combat, so a deck that does not opt in is byte-identical.
         "etb_damage_self_power": False,
@@ -1608,18 +1664,46 @@ def combat_profile(card):
         profile["double_strike"] = True
 
     # Creature tokens this card makes, with their power.
+    # AN ACTIVATION IS NOT A CAST TRIGGER. This loop read the whole text, so a
+    # token behind "{T}:" (Bloodline Keeper), "{3}{R}:" (Den of the Bugbear) or
+    # "{4}:" (Ingris's Cadet) was credited as a free body the turn the card was
+    # cast — and cast again never, so the model paid once for a thing that
+    # costs every time and the Forge AI mostly never buys. Measured 2026-09-10:
+    # nine fleet cards across four decks. A token whose sentence sits inside an
+    # activated ability's effect is skipped here; what an activation is worth
+    # is a different model and it is not priced at zero by accident, it is
+    # priced at zero and named.
     for match in _TOKEN_PT_RE.finditer(text):
         tail = (match.group(4) or "").lower()
         if any(k in tail for k in _NONCREATURE_TOKENS):
+            continue
+        if _inside_activation(text, match.start()):
             continue
         word = match.group(1).lower()
         count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
         profile["token_bodies"] += count
         profile["token_power"] += count * _stat(match.group(2))
 
+    if is_creature:
+        profile["infect"] = bool(_INFECT_KW_RE.search(text))
+        _tox = _TOXIC_KW_RE.search(text)
+        profile["toxic"] = int(_tox.group(1)) if _tox else 0
+    _ping = _ATTACK_PING_EACH_RE.search(text)
+    if _ping:
+        profile["attack_ping_per_attacker"] = int(_ping.group(1))
     combat_trigger = _ATTACKS_RE.search(text) or _COMBAT_DMG_RE.search(text)
     if combat_trigger:
         window = text[combat_trigger.start():combat_trigger.start() + 220]
+        # THE WINDOW STOPS AT THE NEXT ACTIVATED ABILITY. 220 characters from
+        # the trigger ran into Ingris Stingerquill's "{4}: Create a 2/2 …
+        # Cadet", which then read as a free token on every attack — an
+        # activation the Forge AI prices at nothing, credited by this model
+        # as a trigger. Only a cost that starts a new ability AFTER the
+        # trigger cuts it, so Den of the Bugbear's trigger, which lives inside
+        # its activation's granted text, is unaffected. `token_bodies` below
+        # still reads the whole text and still credits nine fleet cards'
+        # activation tokens on cast; that is a separate, measured change.
+        window = re.split(r"(?:\n| )(?=\{[^}]+\}[^:\n]{0,60}:)", window, 1)[0]
         # `_TAP_ADD_RE` now captures the whole clause rather than a symbol run,
         # so route it through the one parser instead of counting pips here —
         # two readers of one pattern is the divergence this file has paid for.
@@ -1647,8 +1731,13 @@ def combat_profile(card):
         # is counted: the follow-on clauses ("and 3 damage to each of up to two
         # other targets") usually point at creatures, and this model has none to
         # point at, so crediting them to the opponent's face would invent reach.
+        # A PER-ATTACKER PING IS NOT A FLAT TRIGGER. `_ATTACKS_RE` matches
+        # "whenever a creature you control attacks" under IGNORECASE, and this
+        # line then read Ingris Stingerquill's "that creature deals 1 damage"
+        # as one damage per combat — on top of the per-attacker credit below —
+        # so her trigger was counted twice and the wrong half was life.
         fixed = re.search(r"deals (\d+) damage", window, re.IGNORECASE)
-        if fixed:
+        if fixed and not _ATTACK_PING_EACH_RE.search(window):
             profile["attack_damage"] = int(fixed.group(1))
         # Creature tokens made on attack (Utvara Hellkite). Counted ONCE per
         # combat even where the trigger is per-attacker, for the same reason.
@@ -1667,6 +1756,7 @@ def combat_profile(card):
                     # about what the figures leave out.
                     profile["team_damage_multiplier"] > 1,
                     profile["double_strike"],
+                    profile["attack_ping_per_attacker"],
                     # Checked against the FULL text, not the window: Scourge of
                     # the Throne's reminder clause pushes "additional combat
                     # phase" past 220 characters, and flagging a card whose
@@ -2631,6 +2721,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     extra_combat_costs = []       # Aggravated Assault-style, buy each time
     opponent_life = GOLDFISH_OPPONENT_LIFE
     kill_turn = None
+    # POISON is a second, independent clock on the same seat: ten counters and
+    # the game ends whatever the life total says. `kill_by` records which clock
+    # fired so a deck whose kills are poison is legible as one.
+    opponent_poison = 0
+    poison_by_turn = []
+    kill_by = None
     # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
@@ -2761,7 +2857,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         treasure_online_by_turn.append(bool(treasure_engines))
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
-                             is_token=False, is_legendary=False, type_line=""):
+                             is_token=False, is_legendary=False, type_line="",
+                             infect=False, toxic=0):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -2775,7 +2872,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             from one that never ran.
             """
             nonlocal etb_damage, etb_chain_hits
-            battlefield.append((power, arrived, haste, mult, is_token))
+            # The sixth field is the poison pair (infect, toxic). It rides IN
+            # the entry rather than in a parallel list, because the sacrifice
+            # site below rebuilds `battlefield` and a parallel list would not
+            # follow it — `creature_types` already does not.
+            battlefield.append((power, arrived, haste, mult, is_token, (infect, toxic)))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -2912,14 +3013,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 creature_entered(commander_combat["power"], turn,
                                  commander_combat["haste"],
                                  2 if commander_combat["double_strike"] else 1,
-                                 is_legendary=True)
+                                 is_legendary=True,
+                                 infect=commander_combat["infect"],
+                                 toxic=commander_combat["toxic"])
                 if commander_combat["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= commander_combat["team_damage_multiplier"]
                 if any((commander_combat["attack_mana"],
                         commander_combat["attack_damage"],
                         commander_combat["attack_treasure"],
                         commander_combat["attack_draw"],
-                        commander_combat["attack_token_bodies"])):
+                        commander_combat["attack_token_bodies"],
+                        commander_combat["attack_ping_per_attacker"])):
                     combat_engines.append(commander_combat)
                 if commander_combat["extra_combat_free"]:
                     extra_combat_free += 1
@@ -3314,8 +3418,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # total board power so two Auras cannot credit more life
                     # than the whole team can deal.
                     if card["drain"]["lifelink"] and battlefield:
-                        best = max(p for p, _, _, _, _ in battlefield)
-                        total = sum(p for p, _, _, _, _ in battlefield)
+                        best = max(p for p, *_ in battlefield)
+                        total = sum(p for p, *_ in battlefield)
                         lifelink_power = min(lifelink_power + best, total)
                 if model_sacrifice:
                     if is_death_engine(card["death"]):
@@ -3490,7 +3594,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             combat["power"], turn, combat["haste"],
                             2 if combat["double_strike"] else 1,
                             is_legendary="Legendary" in (card.get("type_line") or ""),
-                            type_line=card.get("type_line") or "")
+                            type_line=card.get("type_line") or "",
+                            infect=combat["infect"], toxic=combat["toxic"])
                         creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
@@ -3518,7 +3623,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         extra_combat_costs.append(combat["extra_combat_cost"])
                     if any((combat["attack_mana"], combat["attack_treasure"],
                             combat["attack_draw"], combat["damage_scales_with_treasure"],
-                            combat["attack_damage"], combat["attack_token_bodies"])):
+                            combat["attack_damage"], combat["attack_token_bodies"],
+                            combat["attack_ping_per_attacker"])):
                         combat_engines.append(combat)
                 if pending_draw_engine is not None:
                     draw_engines.append(pending_draw_engine)
@@ -3649,10 +3755,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # THE ANTHEM IS PER CREATURE AND IS PART OF ITS POWER, so it
             # rides inside the double-strike multiplier exactly as printed power
             # does. A +6/+6 team on a double-striker swings twelve extra.
-            attackers = [(p + team_anthem) * mult
-                         for p, arrived, haste, mult, _tok in battlefield
+            attackers = [((p + team_anthem) * mult, pz)
+                         for p, arrived, haste, mult, _tok, pz in battlefield
                          if haste or arrived < turn]
-            swing = sum(attackers)
+            # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
+            # (702.90b) and never touches the life total; a toxic attacker
+            # deals its damage AND adds N counters on connecting, which with
+            # no blockers is every attack. Double strike rides in `mult` for
+            # both, as printed.
+            swing = sum(d for d, pz in attackers if not pz[0])
+            swing_poison = (sum(d for d, pz in attackers if pz[0])
+                            + sum(pz[1] for _d, pz in attackers))
+            # The per-attacker ping is dealt BY the attacker, so an infect
+            # attacker's ping is a counter and a plain one's is damage.
+            ping = sum(e["attack_ping_per_attacker"] for e in combat_engines)
+            ping_poison = ping * sum(1 for _d, pz in attackers if pz[0])
+            ping_life = ping * sum(1 for _d, pz in attackers if not pz[0])
             phases = 1 + extra_combat_free
             # Buy as many extra combats as the leftover mana allows, cheapest
             # first. `pool` is what survived the main phase.
@@ -3667,12 +3785,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     break
 
             dealt = 0
+            poisoned = 0
             for _ in range(phases):
                 if not attackers:
                     break
                 bonus = treasures if any(
                     e["damage_scales_with_treasure"] for e in combat_engines) else 0
-                dealt += swing + bonus
+                dealt += swing + bonus + ping_life
+                poisoned += swing_poison + ping_poison
                 for engine in combat_engines:
                     pool += engine["attack_mana"]
                     dealt += engine["attack_damage"]
@@ -3725,6 +3845,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             dealt *= team_damage_multiplier
             opponent_life -= dealt
             damage_by_turn.append(dealt)
+            # A damage doubler doubles the damage a source deals, and infect
+            # converts what is dealt, so the multiplier applies to counters too.
+            poisoned *= team_damage_multiplier
+            opponent_poison += poisoned
+            poison_by_turn.append(poisoned)
             # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
             # creature, so the multiplier belongs to the damage series and
             # never to this one.
@@ -3755,10 +3880,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pending_gods[:] = still
 
             board_power_by_turn.append(
-                sum(p for p, _, _, _, _ in battlefield)
+                sum(p for p, *_ in battlefield)
                 + team_anthem * len(battlefield))
-            if kill_turn is None and opponent_life <= 0:
+            if kill_turn is None and (opponent_life <= 0
+                                      or opponent_poison >= GOLDFISH_POISON_TO_LOSE):
                 kill_turn = turn
+                kill_by = "life" if opponent_life <= 0 else "poison"
 
         # ── the commander animates an enchantment ───────────────────────────
         #
@@ -3970,7 +4097,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # garbage. The type line now rides WITH the creature.
             granted = 0
             if lifelink_granted_types:
-                for tl_, (pw_, _a, _h, _m, _tok) in zip(creature_types, battlefield):
+                for tl_, (pw_, _a, _h, _m, _tok, _pz) in zip(creature_types, battlefield):
                     if any(ty_ in tl_ for ty_ in lifelink_granted_types):
                         granted += pw_
             effective_lifelink = max(lifelink_power, granted)
@@ -3992,6 +4119,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 opponent_life -= drained
                 if kill_turn is None and opponent_life <= 0:
                     kill_turn = turn
+                    kill_by = "life"
 
         # Measured against the turn's FULL mana — lands, rocks and the
         # Treasure stockpile — because a Treasure you are holding is mana you
@@ -4036,6 +4164,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "damage_by_turn": damage_by_turn,
         "board_power_by_turn": board_power_by_turn,
         "kill_turn": kill_turn,
+        "poison_by_turn": poison_by_turn,
+        "kill_by": kill_by,
         "drain_by_turn": drain_by_turn,
     }
 
@@ -4226,6 +4356,16 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                 str(t): _round(sum(1 for k in kills if k <= t) / n) for t in turns
             },
             "no_kill_by_max_turn_rate": _round((n - len(kills)) / n),
+            # THE SECOND CLOCK. Counters given per turn and the share of games
+            # the poison clock ended rather than the life one; on a deck with
+            # no infect or toxic source both are exactly zero, which is a
+            # measurement — the sources were counted and there were none.
+            "mean_poison_by_turn": {
+                str(t): _round(sum(r["poison_by_turn"][t - 1] for r in results) / n)
+                for t in turns
+            },
+            "kill_by_poison_rate": _round(
+                sum(1 for r in results if r["kill_by"] == "poison") / n),
         })(sorted(r["kill_turn"] for r in results if r["kill_turn"] is not None))}),
         "targets": target_stats,
     }

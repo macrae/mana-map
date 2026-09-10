@@ -7,13 +7,12 @@
   "stage": "bench",
   "gates": {
     "to": "sleeved",
-    "met": 1,
+    "met": 2,
     "of": 6,
     "blocking": [
       "full sim batch",
       "mulligan + tutor guidance",
       "benchmark score",
-      "handbook",
       "ownership reconciled"
     ]
   },
@@ -128,7 +127,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 8,
+          "value": 7,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -269,15 +268,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.067,
-            "10": 11.034,
+            "10": 4.048,
             "2": 0.27,
             "3": 0.435,
-            "4": 1.567,
-            "5": 3.155,
-            "6": 4.771,
-            "7": 6.334,
-            "8": 7.879,
-            "9": 9.441
+            "4": 0.911,
+            "5": 1.648,
+            "6": 2.326,
+            "7": 2.87,
+            "8": 3.313,
+            "9": 3.698
           },
           "tier": "data",
           "weight": "detail",
@@ -303,12 +302,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 315,
-            "5": 14,
-            "6": 307,
-            "7": 3880,
-            "8": 4250,
-            "9": 968
+            "10": 449,
+            "4": 5,
+            "5": 295,
+            "6": 2102,
+            "7": 3320,
+            "8": 2331,
+            "9": 1083
           },
           "tier": "data",
           "weight": "detail",
@@ -349,19 +349,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.698,
-      "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 3,
-      "kill_by_turn_8_pct": 84,
+      "mean_kill_turn": 7.327,
+      "median_kill_turn": 7,
+      "kill_by_turn_6_pct": 24,
+      "kill_by_turn_8_pct": 80,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 3,
+      "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 315,
-        "5": 14,
-        "6": 307,
-        "7": 3880,
-        "8": 4250,
-        "9": 968
+        "10": 449,
+        "4": 5,
+        "5": 295,
+        "6": 2102,
+        "7": 3320,
+        "8": 2331,
+        "9": 1083
       }
     }
   },

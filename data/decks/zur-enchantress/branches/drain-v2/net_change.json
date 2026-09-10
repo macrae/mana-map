@@ -867,8 +867,31 @@
   }
  },
  "forge": {
-  "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@drain-v2 --vs <pod>` puts it at a table and writes where this reads"
+  "available": true,
+  "branch": {
+   "games": 60,
+   "rate": 0.1333,
+   "wins": 8,
+   "won_by": {
+    "all opponents have lost": 8
+   }
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "games": 119,
+   "rate": 0.0924,
+   "wins": 11,
+   "won_by": {
+    "all opponents have lost": 11
+   }
+  },
+  "ci95": [
+   -0.0508,
+   0.1564
+  ],
+  "delta": 0.0409,
+  "excludes_zero": false,
+  "mde": 0.165
  },
  "harness": {
   "iterations": 10000,
@@ -1013,13 +1036,13 @@
   "why": "DOUBLE THE LIFELINK, AND MAKE WHITE DEVOTION REAL. drain-v1 established the drain axis (+0.0424 on kill_by_8 against an MDE of 0.0195, the first branch in 25 to move anything). This tests the multiplier on it.\n\nTRUE CONVICTION is the single best card this deck can be handed. 'Creatures you control have double strike and lifelink' does four things at once here: it DOUBLES every lifelink trigger and therefore every drain trigger, since Sanguine Bond and Enduring Tenacity fire on the gain and not on the hit; it makes deathtouch lethal in the FIRST-STRIKE step, so a blocker dies before it deals damage and blocking becomes strictly bad; it is a non-Aura enchantment, so the commander or Starfield of Nyx animates it into a 6/6 that is never a dead card; and {W}{W}{W} is THREE WHITE PIPS, which is the devotion the pilot asked for.\n\nDEVOTION IS A TWO-COLOUR PROBLEM IN A THREE-COLOUR DECK. Across the whole 99 the deck has W 37, B 22, U 14. Heliod needs devotion to white of 5 and gets it; Athreos needs white AND black of 7 and gets it; Thassa needs BLUE of 5 against 14 pips in the entire list and essentially never becomes a creature. Thassa stays for the {1}{U} unblockable grant, which works whether or not she is a creature, but nothing else in the deck should be paying blue for devotion that will not arrive.\n\nTHE TWO CUTS ARE THE WEAKEST BLUE CARDS AND NOTHING ELSE. Muddle the Mixture counters instants and sorceries ONLY -- the narrowest interaction in the list -- and its transmute costs {1}{U}{U} to find a two-drop. Hypnotic Siren is a 1/1. Enduring Curiosity is NOT cut despite being {2}{U}{U}: 'whenever a creature you control deals combat damage to a player, draw a card' on a board of lifelink bodies is a draw engine, and it returns itself as an enchantment when it dies.\n\nVIRTUE OF PERSISTENCE IS THE CHEAT-IN LINE THE PILOT ASKED FOR, printed on one card. The {1}{B} Adventure half is early removal plus two life -- which is a LIFEGAIN TRIGGER for every drain payoff -- and the {5}{B}{B} enchantment half is an upkeep reanimation engine. The deck already runs both cheat-in routes for it: Academy Rector searches ANY enchantment onto the battlefield when it dies, and Starfield of Nyx returns an enchantment from the graveyard every upkeep.\n\nWHAT THIS BRANCH DELIBERATELY DOES NOT TEST. The pilot's evasion package -- Enter the Enigma, Pym Particles, Artful Dodge, Splash Portal -- is EXCLUDED because the goldfish has no blockers and reads 'can't be blocked' only in Aura and Equipment form. Evasion is worth exactly zero to this harness and can only measure as a loss, which is what sank reach-v1. That line is a FORGE question and must be tested with simulate, not here. Recorded rather than quietly dropped.\n\nSTILL NO TWO-CARD INFINITE. Neither add carries 'whenever an opponent loses life, you gain that much', and True Conviction is not a Game Changer, so the bracket floor holds."
  },
  "objective_grade": {
-  "reading": 0.4454,
-  "shortfall": 0.0046,
+  "reading": 0.4325,
+  "shortfall": 0.0175,
   "state": "not resolvable",
-  "why": "missed by 0.0046, which is under the 0.0197 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "why": "missed by 0.0175, which is under the 0.0196 this run could detect \u2014 evidence of nothing, not evidence of failure"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0046, which is under the 0.0197 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The miss is smaller than this run can see. missed by 0.0175, which is under the 0.0196 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 0,
    "buy": 6,
@@ -1069,7 +1092,9 @@
    "missed drop by T5",
    "mulliganed"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: +0.041 win rate, CI [-0.051, +0.156] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "stall, 2 in a row",
@@ -1079,19 +1104,19 @@
   ],
   "risk": [
    {
-    "detail": "20.49 -> 19.58, a change of -0.90 (-4%)",
+    "detail": "20.19 -> 19.36, a change of -0.83 (-4%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "7.09 -> 6.86, a change of -0.23 (-3%)",
+    "detail": "6.95 -> 6.73, a change of -0.21 (-3%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "2.43 -> 1.53, a change of -0.91 (-37%)",
+    "detail": "2.39 -> 1.51, a change of -0.88 (-37%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -1109,15 +1134,15 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is missed drop by T5 at +0.017 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at +0.011 against an MDE of 0.013. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate zur-enchantress@drain-v2 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
@@ -1131,12 +1156,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.5812,
-   "champion": 20.4861,
-   "delta": -0.9049,
-   "mde": 0.4985,
+   "branch": 19.3615,
+   "champion": 20.1936,
+   "delta": -0.8321,
+   "mde": 0.4917,
    "measure": "damage @T10",
-   "reads_as": "20.49 -> 19.58, a change of -0.90 (-4%)",
+   "reads_as": "20.19 -> 19.36, a change of -0.83 (-4%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1145,12 +1170,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 6.8576,
-   "champion": 7.0899,
-   "delta": -0.2323,
-   "mde": 0.1626,
+   "branch": 6.7338,
+   "champion": 6.9455,
+   "delta": -0.2117,
+   "mde": 0.1624,
    "measure": "board power @T6",
-   "reads_as": "7.09 -> 6.86, a change of -0.23 (-3%)",
+   "reads_as": "6.95 -> 6.73, a change of -0.21 (-3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1159,10 +1184,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0071,
-   "champion": 0.0081,
+   "branch": 0.0067,
+   "champion": 0.0077,
    "delta": -0.001,
-   "mde": 0.0036,
+   "mde": 0.0035,
    "measure": "killed by T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.004 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1173,12 +1198,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8886,
-   "champion": 0.8783,
-   "delta": 0.0103,
-   "mde": 0.013,
+   "branch": 0.8838,
+   "champion": 0.8723,
+   "delta": 0.0115,
+   "mde": 0.0132,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.013 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1187,9 +1212,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0347,
+   "branch": 0.0348,
    "champion": 0.043,
-   "delta": -0.0083,
+   "delta": -0.0082,
    "mde": 0.008,
    "measure": "stall, 2 in a row",
    "reads_as": "4 games in 100 -> 3 in 100, a swing of 1 games per 100",
@@ -1201,9 +1226,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.422,
+   "branch": 0.4221,
    "champion": 0.4052,
-   "delta": 0.0168,
+   "delta": 0.0169,
    "mde": 0.0196,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.017 is smaller than the 0.020 this run can resolve",
@@ -1229,12 +1254,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.5268,
-   "champion": 2.4326,
-   "delta": -0.9058,
-   "mde": 0.1441,
+   "branch": 1.5123,
+   "champion": 2.3942,
+   "delta": -0.8819,
+   "mde": 0.1414,
    "measure": "extra cards by T8",
-   "reads_as": "2.43 -> 1.53, a change of -0.91 (-37%)",
+   "reads_as": "2.39 -> 1.51, a change of -0.88 (-37%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1244,9 +1269,9 @@
   {
    "better_is": "higher",
    "branch": 0.5477,
-   "champion": 0.5774,
-   "delta": -0.0297,
-   "mde": 0.0239,
+   "champion": 0.5776,
+   "delta": -0.0299,
+   "mde": 0.024,
    "measure": "interaction affordable @T6",
    "reads_as": "58 games in 100 -> 55 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",

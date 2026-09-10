@@ -87,60 +87,60 @@
           "n": 10000
         },
         "6": {
-          "rate": 0.0277,
+          "rate": 0.0279,
           "ci95": [
-            0.0247,
-            0.0311
+            0.0248,
+            0.0313
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0345,
+          "rate": 0.0347,
           "ci95": [
-            0.0311,
-            0.0383
+            0.0313,
+            0.0385
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0388,
+          "rate": 0.0392,
           "ci95": [
-            0.0352,
-            0.0428
+            0.0356,
+            0.0432
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0362,
+          "rate": 0.0368,
           "ci95": [
-            0.0327,
-            0.04
+            0.0333,
+            0.0407
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0297,
+          "rate": 0.0304,
           "ci95": [
-            0.0265,
-            0.0332
+            0.0272,
+            0.0339
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1027,
+        "rate": 0.1032,
         "ci95": [
-          0.0969,
-          0.1088
+          0.0974,
+          0.1093
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5615,
-        "hand_empty": 990,
-        "mana_short": 4625
+        "stall_turns": 5636,
+        "hand_empty": 1007,
+        "mana_short": 4629
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
@@ -153,7 +153,7 @@
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2817,
+      "missed_land_drop_rate": 0.2827,
       "mulliganed": {
         "rate": 0.1954,
         "ci95": [
@@ -169,10 +169,10 @@
         "4": 4.19,
         "5": 4.943,
         "6": 5.601,
-        "7": 6.192,
-        "8": 6.808,
-        "9": 7.42,
-        "10": 8.06
+        "7": 6.191,
+        "8": 6.806,
+        "9": 7.413,
+        "10": 8.047
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
@@ -237,7 +237,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.327,
+          "value": 6.326,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -379,15 +379,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.045,
+            "10": 8.03,
             "2": 2.137,
             "3": 3.245,
             "4": 4.181,
             "5": 4.94,
             "6": 5.591,
             "7": 6.191,
-            "8": 6.796,
-            "9": 7.401
+            "8": 6.793,
+            "9": 7.394
           },
           "tier": "data",
           "weight": "detail",
@@ -398,15 +398,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.56,
+            "10": 0.554,
             "2": 0.997,
             "3": 0.917,
             "4": 0.81,
             "5": 0.698,
             "6": 0.598,
             "7": 0.549,
-            "8": 0.524,
-            "9": 0.533
+            "8": 0.522,
+            "9": 0.531
           },
           "tier": "data",
           "weight": "detail",
@@ -417,15 +417,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.55,
-            "10": 15.888,
+            "10": 15.769,
             "2": 1.443,
             "3": 2.853,
             "4": 4.622,
             "5": 6.181,
-            "6": 7.683,
-            "7": 9.562,
-            "8": 11.503,
-            "9": 13.588
+            "6": 7.682,
+            "7": 9.558,
+            "8": 11.486,
+            "9": 13.536
           },
           "tier": "data",
           "weight": "detail",
@@ -451,11 +451,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 577,
-            "6": 444,
-            "7": 2973,
-            "8": 3972,
-            "9": 1774
+            "10": 636,
+            "6": 410,
+            "7": 2826,
+            "8": 3952,
+            "9": 1882
           },
           "tier": "data",
           "weight": "detail",
@@ -471,7 +471,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.327,
+    "commander_mean_cast_turn": 6.326,
     "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
@@ -520,18 +520,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.904,
+      "mean_kill_turn": 7.949,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 74,
+      "kill_by_turn_8_pct": 72,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 3,
       "kill_turn_histogram": {
-        "10": 577,
-        "6": 444,
-        "7": 2973,
-        "8": 3972,
-        "9": 1774
+        "10": 636,
+        "6": 410,
+        "7": 2826,
+        "8": 3952,
+        "9": 1882
       }
     }
   },
