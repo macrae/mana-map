@@ -1,0 +1,464 @@
+{
+  "slug": "zur-enchantress",
+  "id": "8d44aef626d9",
+  "prompt": "Against the standard-v3 table (sythis-enchantress / jarad-graveyard / abaddon) zur wins 4 of 47 decided games while edgar-vampires, ur-dragon and gishath sit at 0.33-0.41 and heliod at 0.28. The logs say how: sythis-enchantress deals 88 combat damage a game to zur's 16, eliminated zur in 20 of its 34 deaths, and zur dies by damage on median global turn 37; sythis wins every one of its 31 games by 'all opponents have lost'. Edgar beats the same seat by killing it first (64 combat damage a game, sythis dead in 28 of 46 games by median global turn 35). Zur has six interaction and fort pieces in total (Swords, Path, Imprisoned in the Moon, Sphere of Safety, Vito, Enduring Tenacity) and deck-audit reads interaction-breadth under target. Ownership is NOT a constraint: the pilot wants the absolute best list. What changes get zur to the fleet's 0.30 at this table -- a clock that does not have to attack through a fort, answers to a voltron creature and to a board of enchantments, or defence -- and which of those does the evidence actually support?",
+  "as_of_decklist_sha256": "a17b0f4ac40f3eaca170240ad61890e81c8b67d82849b65016eba0374b1f3f4f",
+  "reading": "The premise is half wrong: deck-audit counts 10 interaction copies (at target, floor 8) and 11 answers in the engine's 'AN ANSWER' component, not six — what zur lacks is answers that work on THIS seat. The 59-game log names what kills zur (46 of 59 games, all 37 attributed deaths by damage, median global turn 37): Angel tokens from Sigil of the Empty Throne (293 combat damage over 70 hits), the aura'd Sythis (243), the aura'd and indestructible Heliod (236 over 25 hits) and Hallowed Haunting Spirits (140) — a wide flying token board plus two voltron bodies, and in the 21 of 59 games (36%) where Privileged Position resolved, every one of them is hexproof against the seven of zur's answers that target a permanent (three more are counters, which a hexproof grant does not stop); Sterling Grove (22 casts) shrouds only enchantments, so of the four killers it shields Heliod alone; the one untargeted answer to a permanent already on the battlefield, The Meathook Massacre, was cast twice in 59 games. Every fleet deck that clears 0.30 here kills with 54.8-71.0 combat damage a game against zur's 15.81, and zur's own four wins carried 40, 52, 76 and 228 — so the gap is a clock, and the clock the goldfish measured is a band, not a number: goldfish_metrics.json's commander_ability_band reads kill_by_8 ceiling 0.381 with Zur's animate firing whenever affordable and floor 0.219 with it switched off, 0.162 owed to the ability — and the Forge AI activated it 7 times in 59 games (the band's own note: fired in 5% of games), so Forge measured a list near the floor, which makes 4 of 47 (0.085, ci95 [0.034, 0.199]) a reading of the deck's triggered output with the activation half largely unpiloted. The evidence supports, in this order: untargeted answers to the creature board (Winds of Abandon, Aetherize), a TRIGGERED clock the AI can pilot (Sigil, Hallowed Haunting — the same two cards that kill zur from the other side), drain as reach rather than as the kill, and a cheaper fort than the 5-mana Sphere of Safety that landed in 7 of 59 games (Ghostly Prison, which no audit axis can count) (goldfish cumulative drain 16.774 by T10 against three 40-life opponents; drain-v2 is at 3 of 60 Forge games and says nothing yet); it does NOT support answers to a board of enchantments — zur runs 45 enchantment copies itself, so every enchantment sweep in the identity is symmetric and worse for zur, and the one one-sided mass answer in the identity I can name, Cyclonic Rift overloaded, is a Game Changer — as is Farewell, which is symmetric — so either takes a 3-GC deck to bracket 4 at a bracket-3 table. No single change is evidenced to close 0.085 to 0.30, and at n=60 the run's MDE is wider than the gap any one card can make; the honest expectation is that the ten below move combat damage dealt, damage taken and elimination turn, and only a 400-game run reads the rate.",
+  "axes_engaged": [
+    {
+      "axis": "interaction",
+      "verdict": "adequate",
+      "measured": {
+        "value": 10
+      },
+      "reading": "Ten copies is at target, and the engine's answer component is 11 wide — count is not the problem. Seven of them target a permanent or a card and three are counters, and the seat that kills zur resolved Privileged Position in 21 of 59 games, which makes every one of its permanents hexproof for a third of the games; Sterling Grove (22) shrouds enchantments only, which of the four killers is Heliod — its third-largest damage source, and indestructible besides. The audit's own note says read the cards before calling a class uncovered; read, the uncovered class is 'hexproof or indestructible creature and a wide token board', which no axis can express.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        }
+      ]
+    },
+    {
+      "axis": "sweepers",
+      "verdict": "adequate",
+      "measured": {
+        "value": 1
+      },
+      "reading": "One sweeper, The Meathook Massacre, is inside the corpus's cap and Forge cast it 2 times in 59 games. The count is adequate; the class is what matters here — against a seat that dealt 293 damage with 4/4 Angel tokens and 140 with Spirit tokens, an untargeted, one-sided answer to a wide board is the answer this table beats zur with, and the deck holds one that is symmetric and mana-hungry.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Under target by one class, and the missing class is land — not what kills zur. This axis is not the finding the question thought it was; do not spend a slot on it.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    },
+    {
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 5
+      },
+      "reading": "Five copies, at the floor, and four of them are the Gods' indestructibility plus the commander's hexproof grant — none is a fort. Sphere of Safety is not counted here (card_roles.json has no pattern for it) and at five mana it was cast in 7 of 59 games; zur took 35.71 combat damage a game and died at median global turn 37.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "5-7 protection slots"
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "weakness",
+      "measured": {
+        "value": 11
+      },
+      "reading": "Eleven finishers by role, but ten of them are drain triggers, six of them worth 1 life a trigger and the board kill is a band: kill_by_8 ceiling 0.381 with Zur's {1}{W} firing, floor 0.219 without it, and Forge activated it 7 times in 59 games. Fleet decks at 0.33-0.41 here deal 54.8-71.0 combat damage a game; zur deals 15.81. The finishers the AI can pilot are triggered ones.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "axis": "card-advantage",
+      "verdict": "adequate",
+      "measured": {
+        "value": 10
+      },
+      "reading": "At target on the champion, but every drain branch paid for its kill_by_8 gain here: extra cards by T8 fell 2.43 to 1.53 on drain-v2 because fewer enchantments land by turn eight and the cast-triggered draw fires less. Any add above mana value four needs a cast-triggered draw beside it.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "derive the counts from the deck's actual failure modes"
+        }
+      ]
+    }
+  ],
+  "log_entries_read": [],
+  "cut_candidates": [
+    {
+      "card": "Muddle the Mixture",
+      "why": "Counters instants and sorceries only, and the seat that kills zur wins with permanents: auras, tokens and enchantments. Forge cast it 3 times in 59 games. The slot becomes the deck's second untargeted answer.",
+      "cost_of_cutting": "Its transmute is one of the three cards in the audit's tutor component (Demonic Tutor, Enlightened Tutor, Muddle), a component already flagged thin; cutting it takes a mana-value-2 tutor out of a deck with 6 tutor copies, and the target set is not small: 20 nonland cards in this list sit at mana value 2 (cards.json), among them Demonic Tutor, The Meathook Massacre — the deck's one untargeted answer and the class this prescription is built around — Counterspell, No More Lies, Journey to Nowhere, Ossification, Reprobation and Sheltered by Ghosts, plus Bitterblossom, Sanctum of Stone Fangs, Underworld Coinsmith and Balemurk Leech. So the real price is a three-mana way to find the sweeper or the tutor on demand, in exchange for a card the AI cast 3 times in 59 games. The cut stands because Winds of Abandon is itself the second untargeted answer and needs no finding, and because a human pilot who values the transmute more than the fifth-best add below should take Hypnotic Siren's slot for Winds instead. It also answers Winds of Rath and Austere Command, which sythis cast 13 and 7 times in 59 games.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "Cathars' Crusade",
+      "why": "A five-mana pump that only pays when creatures ENTER, on a plan whose bodies mostly arrive as enchantments that are animated later; the slot goes to a five-mana enchantment that makes the bodies itself.",
+      "cost_of_cutting": "With Anointed Procession, Bitterblossom, Archon of Sun's Grace and Ajani's Chosen it is one of three team pumps — Felidar Retreat's counter mode and Southern Air Temple are the others — and the one that fires on every creature entering, and the 228-damage win in the log is the shape of game it enables. It is also a non-Aura enchantment, so it is an animate target and a constellation trigger. This is a real loss, taken because the replacement makes the board rather than growing one that Forge never built.",
+      "orphans_stack": [],
+      "difficulty": "painful"
+    },
+    {
+      "card": "Ajani's Chosen",
+      "why": "A 2/2 per enchantment ENTERING, replaced by a 4/4 flier per enchantment CAST that goes over the ground blockers the log shows stopping zur.",
+      "cost_of_cutting": "Chosen triggers off Zur the Enchanter's attack tutor, Academy Rector and Starfield of Nyx's recursion, all of which put enchantments onto the battlefield without casting; the Sigil does not. Its 2/2 Cats are draw fodder for Enduring Innocence and Tocasia's Welcome, and it attaches Auras to the token. Forge cast it 9 times in 59 games.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "Honden of Cleansing Fire",
+      "why": "The shrine package is five cards seen 0.86 times by turn ten (drain-v1's arithmetic), so each Shrine's X is 1; this one is a four-mana 2 life a turn.",
+      "cost_of_cutting": "Two life every upkeep is a lifegain trigger that ignores every fort — with Vito or Enduring Tenacity on the board it is 2 drain a turn, and it feeds Dawn of Hope and Heliod's counters. Forge cast it 11 times in 59 games, the most-cast Shrine. It is the Shrine to keep if only one stays.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "Hypnotic Siren",
+      "why": "A 1/1 flier for one, or a seven-mana steal that Forge never reached; cast 9 times in 59 games and never as an Aura in the log.",
+      "cost_of_cutting": "A one-mana enchantment creature that takes the commander's grant, a blue pip toward Thassa's devotion (the audit's thinnest component at size 1), and a body for Tocasia's Welcome. The cheapest cut in the list and the least missed.",
+      "orphans_stack": [],
+      "difficulty": "easy"
+    },
+    {
+      "card": "Gremlin Tamer",
+      "why": "1/1 Gremlins are not enchantments, take no grant, and do not connect through a fort; the slot goes to a cast-triggered draw.",
+      "cost_of_cutting": "Its tokens are the fodder for Caretaker's Talent and Enduring Innocence, and it is a two-mana Eerie body that makes one token per enchantment entering — 11 casts in 59 games, more than most of the deck. It is not in the audit's threat:tokens component (exactly Bitterblossom, Black Market Connections, Dawn of Hope), so that component is unchanged by the cut; the price is the draw fodder and the body.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "Northern Air Temple",
+      "why": "One-mana Shrine whose X is 1 on the shrine math above; a one-shot drain of 1 to each opponent.",
+      "cost_of_cutting": "A one-mana enchantment that Zur the Enchanter can tutor onto the battlefield, a constellation trigger for Grim Guardian and Underworld Coinsmith, and 1 drain to each opponent that ignores every fort. Cheap, on-plan, and only small.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "Southern Air Temple",
+      "why": "Four mana for X +1/+1 counters where X is 1; counters do nothing for a plan that wins on lifegain and triggers.",
+      "cost_of_cutting": "A non-Aura enchantment at mana value 4, so a 4/4 animate target; and one of the deck's eleven bodies in the board-kill component. Forge cast it 7 times in 59 games.",
+      "orphans_stack": [],
+      "difficulty": "easy"
+    },
+    {
+      "card": "Sanctum of Stone Fangs",
+      "why": "Two mana for a drain of 1 per turn cycle (X=1 on the shrine math); the slot goes to a drain that scales with what the opponent does.",
+      "cost_of_cutting": "The one Shrine that drains EVERY turn without attacking, gaining 1 and draining each opponent 1 in a deck where the gain also triggers Vito and Enduring Tenacity. It carries card-search's wincon:drain role, so threat-density goes 11 to 10; it is not a member of the audit's wincon:drain component (Bastion, Grim Guardian, Marauding Blight-Priest, Meathook, Underworld Coinsmith, Vito), which the cut leaves at 6. Forge cast it 6 times in 59 games.",
+      "orphans_stack": [],
+      "difficulty": "contested"
+    },
+    {
+      "card": "The Spirit Oasis",
+      "why": "Draws one card per Shrine on entry; with the Shrine count at zero or one after the cuts above it is a three-mana cantrip. Forge cast it 2 times in 59 games.",
+      "cost_of_cutting": "One of the nine cards in the audit's draw-engine component (size 9 to 8), and a blue enchantment for Thassa's devotion. If the Shrines stay, it stays.",
+      "orphans_stack": [],
+      "difficulty": "easy"
+    }
+  ],
+  "add_candidates": [
+    {
+      "card": "Winds of Abandon",
+      "closes": "interaction",
+      "source": "pool",
+      "why": "The one card class that answers what actually killed zur. Overloaded it exiles every creature zur does not control with no target, so Privileged Position (21 casts in 59 games) and Sterling Grove (22) do nothing, and exile removes the indestructible Heliod that dealt 236 damage over 25 hits. It is one-sided, so zur's 16 enchantment creatures and the animated board survive it — Farewell and Austere Command are not, and Toxic Deluge kills zur's own board. At {1}{W} it is also a seventh targeted exile beside Swords, Path, Journey, Ossification, Sheltered by Ghosts and Profane Procession for the games without a hexproof grant. card_roles.json files it as removal:spot, and Muddle the Mixture is one of the interaction axis's ten copies, so Winds in for Muddle out leaves interaction at 10 and sweepers at 1 — what changes is the mix, one counter out and one untargeted exile in; read the overload in the oracle text, not the axis. The overload's price: each controller of an exiled creature searches a basic per creature, and against a board of Angel and Spirit tokens that is a fistful of lands to a seat that already cast Overgrowth 20 times and Smothering Tithe 21 — it is bought anyway because the alternative is dying to that board at median global turn 37. Goldfish: invisible, no opponents. Forge: measurable in combat_damage_taken and eliminated_turn, IF the AI casts the overload — an open question below.",
+      "natural_cut": "Muddle the Mixture",
+      "evidence": {
+        "forge": "damage to zur by source over 59 games: Angel Token 293 (70 hits), Sythis 243 (45), Heliod 236 (25), Spirit Cleric Token 140 (24); The Meathook Massacre cast 2 times in 59 games",
+        "in_branches": []
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        }
+      ]
+    },
+    {
+      "card": "Sigil of the Empty Throne",
+      "closes": "KILL — drain: a payoff plus something to feed it — the threat:tokens component, size 3, the target's thinnest",
+      "source": "pool",
+      "why": "A 4/4 flying Angel per enchantment CAST is a clock the Forge AI can pilot, because it is a trigger and not an activation — and it is the single largest thing that killed zur in this run, from the other seat (293 damage over 70 hits). Zur's kill_by_8 in the goldfish is a band — ceiling 0.381 with the commander's {1}{W} firing, floor 0.219 without — and Forge activated it 7 times in 59 games, so a triggered body is the part Forge can see. Flying goes over the ground blockers; it does not beat the attack tax, which is why this ranks below the answer. card_roles.json files it as threat:tokens, not wincon:*, so the threat-density axis will not move; what moves is the drain target's thinnest component — Bitterblossom, Black Market Connections and Dawn of Hope are the fodder for Bastion of Remembrance, The Meathook Massacre and Caretaker's Talent, and this joins them. Already in best-v1 and drain-v5. Goldfish: measurable — under the champion's model (537640c22eab) best-v1's goldfish_metrics.json reads kill_by_8 0.429 (band 0.429 / 0.249) and drain-v5's 0.389 (0.389 / 0.197) against the champion's 0.381 (0.381 / 0.219), each with nine to fourteen other changes beside it, so neither is this card's number. Forge: measurable in combat_damage_dealt_to_players.",
+      "natural_cut": "Cathars' Crusade",
+      "evidence": {
+        "forge": "Zur, Eternal Schemer activated 7 times in 59 games; zur combat damage dealt 15.81 a game against 54.8-71.0 for the fleet's three winners",
+        "goldfish": "same-model kill_by_8 (goldfish_metrics.json, model 537640c22eab): champion 0.381 [band 0.381/0.219], best-v1 0.429 [0.429/0.249], drain-v5 0.389 [0.389/0.197]",
+        "in_branches": [
+          "best-v1",
+          "drain-v5"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the median runs three cheap ones and closes from any board"
+        }
+      ]
+    },
+    {
+      "card": "Hallowed Haunting",
+      "closes": "KILL — drain: a payoff plus something to feed it — the threat:tokens component, size 3, the target's thinnest",
+      "source": "pool",
+      "why": "At seven enchantments — the deck holds 45 copies — every creature zur controls has flying AND vigilance, so the same body attacks and blocks, which is the defence half of this question answered by the clock half. Each enchantment cast makes a Spirit whose power is the Spirit count; those Spirits dealt zur 140 damage over 24 hits from the sythis seat. Triggered, so the AI pilots it. Filed threat:tokens like the Sigil, so it joins the same thin component and moves no audit axis. Already in best-v1 only. Goldfish: measurable (best-v1 0.429 against the champion's 0.381, same model, same confound as above). Forge: measurable in both combat columns.",
+      "natural_cut": "Ajani's Chosen",
+      "evidence": {
+        "forge": "Spirit Cleric Token dealt 140 combat damage to zur over 24 hits; Hallowed Haunting cast by sythis 22 times in 59 games",
+        "deck": "45 enchantment copies in cards.json, 41 non-Aura",
+        "in_branches": [
+          "best-v1"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:combat-math",
+          "quote": "creatures are for combat (\"the value of your creatures plummets if you're unwilling to put them into combat\")"
+        }
+      ]
+    },
+    {
+      "card": "Aetherize",
+      "closes": "interaction",
+      "source": "pool",
+      "why": "The instant-speed, untargeted answer to the alpha strike: every attacking creature returns to hand, which for the Angel and Spirit tokens that dealt zur 433 damage means they cease to exist, and for the aura'd Sythis and Heliod means Rancor, Ancestral Mask and All That Glitters fall off. No target, so the hexproof grants are irrelevant; and it does not touch zur's board. Four mana held is the cost, and the AI's willingness to hold it is the open question — Counterspell was cast 3 times in 59 games.",
+      "natural_cut": "Northern Air Temple",
+      "evidence": {
+        "forge": "Ancestral Mask cast 26, All That Glitters 24, Rancor 43 times by sythis in 59 games; damage to zur from tokens 433 of the 1,087 attributed to the top six sources",
+        "in_branches": []
+      },
+      "citations": [
+        {
+          "rule": "strategy:threat-assessment.answer-economy",
+          "quote": "hold single-target removal until the threat is pointed at you"
+        }
+      ]
+    },
+    {
+      "card": "Sanguine Bond",
+      "closes": "KILL — drain: a payoff plus something to feed it",
+      "source": "pool",
+      "why": "The on-type Vito: an enchantment, so it animates into a 5/5 and is never a dead card, and it turns every lifegain the deck already produces without attacking — Underworld Coinsmith's constellation, Daxos, Bastion of Remembrance, The Meathook Massacre, and Archon of Sun's Grace's lifelink on a blocker — into life loss that no fort, no blocker and no shroud stops. The drain payoff component goes 6 to 7. Already in all six branches (drain-v1 through drain-v5 and best-v1), and drain-v2 is at this table in Forge now, 3 of 60 games in; do not double-count it, and do not read it until 60. Goldfish: measured on the champion's model — drain-v2's goldfish_metrics.json reads kill_by_8 0.428 (band 0.428 / 0.248) against the champion's 0.381 (0.381 / 0.219), +0.047 with six other changes beside it, paid for in extra cards by T8 (2.454 to 1.528, same files). Forge: pending.",
+      "natural_cut": "Sanctum of Stone Fangs",
+      "evidence": {
+        "goldfish": "same-model goldfish_metrics.json (537640c22eab): kill_by_8 champion 0.381 [0.381/0.219], drain-v2 0.428 [0.428/0.248]; mean_extra_cards_drawn_by_turn['8'] champion 2.454, drain-v2 1.528",
+        "forge": "zur eliminated 12 opponents in 59 games, 11 by damage and 1 by life loss; drain-v2 sim-progress 3 of 60",
+        "in_branches": [
+          "best-v1",
+          "drain-v1",
+          "drain-v2",
+          "drain-v3",
+          "drain-v4",
+          "drain-v5"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "card": "Ghostly Prison",
+      "closes": "defence — combat_damage_taken and eliminated_turn in Forge; no audit axis can see an attack tax",
+      "source": "pool",
+      "why": "Zur takes 35.71 combat damage a game and dies at median global turn 37, and its only fort is a five-drop that landed in 7 of 59 games. The same tax at three mana is castable two turns earlier, and the pod's own note records that Forge's AI respects the tax — Sphere of Safety is what stopped zur and goblin-storm from the other side. A non-Aura enchantment, so a 3/3 animate target and a constellation trigger. Ranked below the clock and the answers because it closes no measured axis: deck-facts records that card_roles.json has no pattern for Sphere of Safety, and card-search returns no role for this card either, so the protection axis stays at 5 and the only instrument is the Forge columns named above. Against a seat that cast Overgrowth 20 times and Smothering Tithe 21 in 59 games, a flat {2} is weaker than Sphere's X, so this is a second fort beside it, not a replacement. Goldfish: invisible.",
+      "natural_cut": "Honden of Cleansing Fire",
+      "evidence": {
+        "forge": "zur combat_damage_taken 35.71 a game; eliminated in 46 of 59 games, median global turn 37, min 20, max 54; Sphere of Safety cast 7 times, discarded once",
+        "pod": "data/pods/standard-v3.json: 'Sphere of Safety behind forty enchantments stops a deck that has to CONNECT'",
+        "in_branches": []
+      },
+      "citations": [
+        {
+          "rule": "strategy:life-as-resource",
+          "quote": "switching from spending to defending one turn before it matters, not one after"
+        }
+      ]
+    },
+    {
+      "card": "Authority of the Consuls",
+      "closes": "KILL — drain: a payoff plus something to feed it",
+      "source": "pool",
+      "why": "The seat that kills zur makes a token on every enchantment cast — Sigil 22, Hallowed Haunting 22, Archon 25 and Ajani's Chosen 21 casts in 59 games — and this gains 1 life for each, which with Vito, Enduring Tenacity or Sanguine Bond is 1 drain per opponent creature, scaling with the plan that beats zur. One mana, an enchantment (Zur the Enchanter tutors it onto the battlefield; constellation for Grim Guardian and Coinsmith). The enters-tapped clause is worth little against tokens that have summoning sickness anyway. Feeds the drain target's thin token component. Goldfish: invisible, no opponent creatures. Forge only.",
+      "natural_cut": "Hypnotic Siren",
+      "evidence": {
+        "forge": "sythis cast Sigil of the Empty Throne 22, Hallowed Haunting 22, Archon of Sun's Grace 25, Ajani's Chosen 21 times in 59 games",
+        "in_branches": []
+      },
+      "citations": [
+        {
+          "rule": "strategy:threat-assessment",
+          "quote": "a value engine is lethal against your control plan and irrelevant against your combo kill"
+        }
+      ]
+    },
+    {
+      "card": "Mesa Enchantress",
+      "closes": "card-advantage",
+      "source": "pool",
+      "why": "Every drain branch bought its kill_by_8 with the curve and paid in cards: on the champion's model, extra cards by T8 fall from 2.454 to 1.528 on drain-v2 because fewer enchantments land and the enter-triggered draw fires less. Mesa is already in best-v1, drain-v4 and drain-v5, and those lists read 1.738, 1.652 and 1.673 with it aboard and the cast-draw channel modelled — so the artifacts show it recovering at most about 0.2 of a 0.9-card loss, not paying it back; the loss is the curve, and a cheaper list is the real fix. It stays on the list because a draw per enchantment CAST is the one cast-triggered enchantment draw in this identity outside the 99 that card-search returns (Shoal Kraken loots on entry), and because every clock above it is cast-triggered too. It is a creature under Winds of Rath (13 casts) and Austere Command (7), which is the price. Goldfish: measurable (draw is modelled). Forge: measurable in casts.",
+      "natural_cut": "Gremlin Tamer",
+      "evidence": {
+        "goldfish": "same-model mean_extra_cards_drawn_by_turn['8'] (537640c22eab): champion 2.454; drain-v1 1.581, drain-v2 1.528, drain-v3 1.449, drain-v4 1.652, drain-v5 1.673, best-v1 1.738 — the last three carry Mesa Enchantress",
+        "in_branches": [
+          "best-v1",
+          "drain-v4",
+          "drain-v5"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Engine density — Nicol asks 7-8 enablers and 10-12 enhancers against ~25 standalone cards, and the enabler slots fail first"
+        }
+      ]
+    },
+    {
+      "card": "Blind Obedience",
+      "closes": "KILL — drain: a payoff plus something to feed it",
+      "source": "pool",
+      "why": "Extort is a drain of 1 to each opponent per spell cast, paid on cast, through any fort — and it is a two-mana enchantment, so it is a constellation trigger and a Zur the Enchanter target. Artifacts entering tapped slows Smothering Tithe's Treasures (21 casts by sythis). Already in all six branches, so the goldfish has already priced it alongside Sanguine Bond and cannot separate the two; whether Forge's AI pays extort is an open question. Ranked here rather than higher because each trigger is one life, and the fleet's winners kill with 55-71 combat damage.",
+      "natural_cut": "Southern Air Temple",
+      "evidence": {
+        "forge": "Smothering Tithe cast 21 times by sythis in 59 games",
+        "goldfish": "present in drain-v1 through drain-v5 and best-v1; no branch isolates it",
+        "in_branches": [
+          "best-v1",
+          "drain-v1",
+          "drain-v2",
+          "drain-v3",
+          "drain-v4",
+          "drain-v5"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:life-as-resource",
+          "quote": "Only the last point matters"
+        }
+      ]
+    },
+    {
+      "card": "Suture Priest",
+      "closes": "KILL — drain: a payoff plus something to feed it",
+      "source": "pool",
+      "why": "Each creature an opponent creates costs that player 1 life, no target, no combat, no fort — against a seat whose plan is a token per enchantment cast, this is a clock that grows with theirs, and 'whenever another creature you control enters, you may gain 1 life' turns zur's own Faeries, Cats and Pegasi into drain triggers. A two-mana creature that is not an enchantment, so it takes no grant and dies to the Winds of Rath sythis cast 13 times; last for that reason. Goldfish: invisible on the opponent half. Forge only.",
+      "natural_cut": "The Spirit Oasis",
+      "evidence": {
+        "forge": "tokens dealt zur 433 combat damage over 94 hits from the sythis seat alone",
+        "in_branches": []
+      },
+      "citations": [
+        {
+          "rule": "strategy:threat-assessment",
+          "quote": "an answer only counts when it matches a threat that actually beats you"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Does Forge's AI cast Winds of Abandon overloaded, hold Aetherize for the attack, and pay extort on Blind Obedience? The run recorded Counterspell cast 3 times, The Meathook Massacre 2 and Zur activated 7 in 59 games; a card the AI never plays measures as nothing, as the gotchas record for Ashnod's Altar and Viscera Seer.",
+      "settled_by": "goldfish",
+      "why_it_matters": "Three of the ten adds are answers only Forge can see. If the AI does not fire them, a 60-game run on the new list reads as no change and the pilot concludes the answers were wrong when the instrument was blind. The check is `activated <card>` and `cast <card>` against the log before the rate is read, and it is a Forge question wearing the goldfish enum."
+    },
+    {
+      "question": "Exquisite Blood with Sanguine Bond, Vito, Thorn of the Dusk Rose or Enduring Tenacity: each pair is a two-card loop, and this deck already holds two of the three halves. Does the loop resolve as written, and what does it do to the bracket floor?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It is the one card in the identity that makes drain a KILL rather than reach, and it is the cheapest route to 0.30 if the AI can pilot a trigger loop. But the standard-v3 seats were chosen for zero contained combos, and bracket-check reports 0 two-card infinites on the current list; adding one changes what table this deck belongs at. Needs a stack scenario before it is claimed, and the pilot's call on bracket before it is sleeved."
+    },
+    {
+      "question": "Cyclonic Rift overloaded is the one one-sided mass answer to a fort plus a token board in this identity I can name, Farewell the strongest symmetric one, and both are Game Changers; the deck holds three (Demonic Tutor, Enlightened Tutor, Rhystic Study), which is the bracket-3 ceiling. Which of the three existing Game Changers would the pilot give up for one?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "The pilot asked for the absolute best list; the table is bracket 3. A fourth Game Changer is a bracket-4 list at a bracket-3 table, and the pod note says a seat's share is a property of who sits opposite. This is a decision, not a measurement."
+    },
+    {
+      "question": "Is Forge's 0.085 [0.034, 0.199] a measurement of this deck, or of Forge's inability to pilot it? Zur, Eternal Schemer was activated 7 times in 59 games, the goldfish's commander_ability_band puts 0.162 of kill_by_8 on that activation (0.381 ceiling, 0.219 floor), and the targets file already records Zur the Enchanter attacking in 17-47% of games.",
+      "settled_by": "goldfish",
+      "why_it_matters": "Every ranking above prefers a trigger over an activation because of this. If the pilot's real table is human, the animate line is worth more than any Forge figure shows and the cuts that thin it (Cathars' Crusade, Southern Air Temple) cost more than priced. The instrument that separates the two is a human-piloted logged game, and the captain's log is empty."
+    }
+  ],
+  "gaps": [
+    "The captain's log is empty: zero paper games, so log_entries_read is empty and nothing here rests on a pilot's takeaway. Every finding is Forge or the goldfish.",
+    "Zur's own 59 games have no committed record (the run was killed one game short); the figures quoted are re-derived from the logs with manamap.sim.parse.analyze_logs, the same code the five fleet records were built with, and are not in any tracked artifact. A future record from a completed run may differ by the missing game.",
+    "The goldfish sees none of the mechanism this question is about — no blockers, no fort, no hexproof, no opponent creatures — so of the ten adds it can measure only Sigil of the Empty Throne, Hallowed Haunting, Sanguine Bond, Mesa Enchantress and Blind Obedience, and even those it measures against an opponent who never taxes an attack. Winds of Abandon, Aetherize, Ghostly Prison, Authority of the Consuls and Suture Priest are Forge-only.",
+    "No candidate_pool.json and no deck_recon.json exist for this deck; every add was verified against cards.csv with card-search (in identity, commander-legal, not in the 99) but none carries an inclusion rate. A recon pass would rank them against what Zur lists actually run.",
+    "The question asks what gets zur to 0.30. Nothing here is evidenced to move a win rate by 0.215; at n=60 the MDE against an 0.085 baseline is wider than any single card's effect, and the fleet's 0.33-0.41 comes with 55-71 combat damage a game that this list cannot produce while its kill is an activation the AI does not use. The measurable claim is narrower: these ten move combat_damage_dealt, combat_damage_taken and eliminated_turn, and a 400-game run reads the rate.",
+    "The interaction-breadth axis reads land uncovered; Field of Ruin answers a nonbasic land and the heuristic did not see it. Not a finding for this question either way.",
+    "drain-v2 is at 3 of 60 games at this table as of this reading; its result is the evidence for the drain route and was deliberately not read.",
+    "Goldfish figures are quoted only from goldfish_metrics.json files stamped with the champion's model (537640c22eab): champion kill_by_8 0.381, drain-v1 0.412, drain-v2 0.428, drain-v3 0.397, drain-v4 0.397, drain-v5 0.389, best-v1 0.429. The net_change.json objective_grade readings (0.4136 / 0.4454 / 0.4161 …) carry no model_version and predate the remodel, and the 100,000-iteration head-to-head the question quotes (working 0.376, drain-v1 0.410, drain-v2 0.434, best-v1 0.414) is in no tracked artifact; the ranking is the same under all three.",
+    "Five of the ten adds are already in a branch — Sigil (best-v1, drain-v5), Hallowed Haunting (best-v1), Mesa Enchantress (best-v1, drain-v4, drain-v5), Blind Obedience and Sanguine Bond (all six) — and every branch bundles them, so no artifact isolates one card's effect. The five that no branch carries (Winds of Abandon, Aetherize, Ghostly Prison, Authority of the Consuls, Suture Priest) are the ones the goldfish cannot measure at all."
+  ],
+  "skeptic": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "cut_candidates[0]",
+        "status": "miscounted",
+        "note": "The enumeration is now right: cards.json holds 20 nonland cards at mana value 2 besides Muddle, and all twelve named (Demonic Tutor, The Meathook Massacre, Counterspell, No More Lies, Journey to Nowhere, Ossification, Reprobation, Sheltered by Ghosts, Bitterblossom, Sanctum, Underworld Coinsmith, Balemurk Leech) are MV2; 3 casts in 59 reproduces from the logs, the audit's tutor component is exactly three, tutors axis 6, transmute is {1}{U}{U}, Winds of Rath 13 / Austere Command 7 reproduce. One pointer in the new alternative is wrong: 'take Hypnotic Siren's slot for Winds instead' displaces the add whose natural_cut is Hypnotic Siren, which is Authority of the Consuls at add_candidates[6] — the seventh-ranked add, not 'the fifth-best add below' (fifth is Sanguine Bond, sixth Ghostly Prison). A pilot weighing the transmute against the fifth add weighs it against the wrong card. One word to fix; the cut, its price and 'contested' otherwise stand."
+      },
+      {
+        "where": "reading",
+        "status": "supported",
+        "note": "The ability band is now stated as the artifact gives it: goldfish_metrics.json commander_ability_band kill_by_8 ceiling 0.381, floor 0.219, owed 0.162, and the band's own '5% of games' note is attributed to the band. Sterling Grove is re-scoped to enchantments only ('of the four killers it shields Heliod alone'), and Privileged Position's 21 of 59 is stated as 36%. Every log figure re-derived through parse_games/game_facts in the first pass still stands unchanged (4/47 = 0.085 [0.034, 0.199]; 15.81 / 35.71; wins 40, 52, 76, 228; 46 eliminated, 37 attributed all by damage, median 37; damage-by-source 293/70, 243/45, 236/25, 140/24; fleet 54.8–71.0). The prompt's 'kills it first' premise is still not adopted, correctly."
+      },
+      {
+        "where": "axes_engaged[1]",
+        "status": "supported",
+        "note": "Sweepers re-verdicted 'adequate' at value 1 (audit target 1–3). The citation is now 'Depth is a meta call: copy the answer your table beats you with.' — verbatim in strategy:deckbuilding.interaction-suite and the sentence that actually carries the argument. The reading no longer contradicts the section's 'one or two max' cap."
+      },
+      {
+        "where": "cut_candidates[5]",
+        "status": "supported",
+        "note": "Gremlin Tamer now states it is NOT in the audit's threat:tokens component (exactly Bitterblossom, Black Market Connections, Dawn of Hope) and that the component is unchanged by the cut; matches deck-audit. 11 casts reproduces."
+      },
+      {
+        "where": "cut_candidates[8]",
+        "status": "supported",
+        "note": "Sanctum now states it is not a member of the audit's wincon:drain component (Bastion, Grim Guardian, Marauding Blight-Priest, Meathook, Underworld Coinsmith, Vito), which stays at 6, and that threat-density goes 11 to 10 via its card-search wincon:drain role; both match the audit and card-search. 6 casts reproduces."
+      },
+      {
+        "where": "add_candidates[0]",
+        "status": "supported",
+        "note": "Winds of Abandon now says Muddle is one of the interaction axis's ten copies, so the swap leaves interaction at 10 and sweepers at 1 — matches the audit's card list and card-search's removal:spot. The overload's basic-land gift to each opponent is now priced against Overgrowth 20 / Smothering Tithe 21. Identity W, Commander-legal, not a Game Changer, in no branch (in_branches [] matches grep). Log figures reproduce."
+      },
+      {
+        "where": "add_candidates[1]",
+        "status": "supported",
+        "note": "Sigil now cites only goldfish_metrics.json figures under model 537640c22eab: champion 0.381 [0.381/0.219], best-v1 0.429 [0.429/0.249], drain-v5 0.389 [0.389/0.197] — all three re-read from the files and each branch's decklist sha matches its metrics stamp. 'Already in best-v1 and drain-v5' matches grep; 'nine to fourteen other changes' matches drain-v5's 10 in / 10 out and best-v1's 15 / 15. The stale 0.4161 no longer appears here."
+      },
+      {
+        "where": "add_candidates[4]",
+        "status": "supported",
+        "note": "Sanguine Bond now reads drain-v2's goldfish_metrics.json under the champion's model: kill_by_8 0.428 [0.428/0.248] against 0.381 [0.381/0.219], +0.047 (arithmetic checks), 'six other changes' matches drain-v2's 7 in / 7 out, extra cards by T8 2.454 → 1.528 matches mean_extra_cards_drawn_by_turn['8'] in both files. in_branches lists all six branches, matching grep. Honden is gone from the feeder list (Archon of Sun's Grace has lifelink; the replacement is correct). The citation is now strategy:deckbuilding.threat-density 'Value is not a win.' — verbatim, and the section's point (conversion is where decks differ) is the one a drain payoff answers to. The '+0.0742' appears nowhere in the artifact outside the previous skeptic block."
+      },
+      {
+        "where": "add_candidates[7]",
+        "status": "supported",
+        "note": "Mesa Enchantress now states it is already in best-v1, drain-v4 and drain-v5 (in_branches matches grep) and that those lists read 1.738, 1.652 and 1.673 extra cards by T8 against 2.454 — every one re-read from the branch goldfish_metrics.json files under 537640c22eab — with the honest conclusion that it recovers about 0.2 of a 0.9-card loss. The card-search claim (only cast-triggered enchantment draw in Esper outside the 99; Shoal Kraken loots on entry) reproduces."
+      },
+      {
+        "where": "gaps[7]",
+        "status": "supported",
+        "note": "The residual '0.4161' occurs in the prescription body only here, alongside 0.4136 and 0.4454, explicitly labelled as net_change.json objective_grade readings that carry no model_version and predate the remodel — which is what the files show (net_change has no model_version; its champion killed-by-T10 0.8783 ≠ goldfish_metrics 0.888). The same-model list (drain-v1 0.412, drain-v2 0.428, drain-v3 0.397, drain-v4 0.397, drain-v5 0.389, best-v1 0.429) matches every branch's goldfish_metrics.json. The other occurrences of 0.4161 / 0.4454 / 0.0742 in the merged file are in the previous skeptic block, not the doctor's text. One caveat: the '100,000-iteration head-to-head the question quotes' is not in the `prompt` field; the gap itself says it is in no tracked artifact, so nothing rests on it."
+      },
+      {
+        "where": "gaps[8]",
+        "status": "supported",
+        "note": "The five-in-a-branch / five-in-none split matches the membership grep exactly: Sigil (best-v1, drain-v5), Hallowed Haunting (best-v1), Mesa (best-v1, drain-v4, drain-v5), Blind Obedience and Sanguine Bond (all six); Winds, Aetherize, Ghostly Prison, Authority, Suture Priest in none. Every add_candidates[].evidence.in_branches agrees with it."
+      },
+      {
+        "where": "open_questions[1]",
+        "status": "supported",
+        "note": "Unchanged and still correct: Exquisite Blood is routed to resolve-stack, not added; bracket_report.json two_card_infinites [] and floor 3 on three Game Changers; none of the ten adds carries game_changer; the post-swap list contains no combo_details combo; all ten adds Commander-legal and within W/U/B."
+      }
+    ]
+  }
+}
