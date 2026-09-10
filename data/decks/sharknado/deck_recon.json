@@ -1,0 +1,519 @@
+{
+  "slug": "sharknado",
+  "commander": "Shabraz, the Skyshark",
+  "partner": "Brallin, Skyshark Rider",
+  "as_of": "2026-09-10",
+  "decklist_sha256_researched_against": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34",
+  "consensus": "The pair is built as a WHEEL/DISCARD deck with Brallin's ping as the clock and a Curiosity-class enchantment on Brallin as the kill: EDHREC's 3,924 decks tag Wheels 488, Discard 277, Cycling 147, +1/+1 Counters 134, Combo 93, Voltron 42, Humans 9. The consensus 99 is 35 lands with a cycling-land package, six to nine two-mana rocks, four to six big wheels, ten-plus one- and two-mana loot/rummage spells, five to seven discard/draw payoff creatures, nine interaction slots and the two boots; Curiosity (59%), Faithless Looting (73%), Windfall (72%), Frantic Search (67%) and Swords to Plowshares (63%) are the spine. 'Flying Humans' is not built by anyone at scale; the flying plan in practice is Shabraz plus Shark Typhoon plus the two Shark creatures. This list agrees with consensus on the wheel and draw-payoff core and disagrees on everything the builder filled: no Curiosity effect, two loots against fifteen wheels, four interaction pieces, zero cycling lands, Treasure ramp in place of Signets, and eighteen builder-chosen spells that appear in fewer than 13% of lists each.",
+  "findings": [
+    {
+      "claim": "THE KILL IS A CURIOSITY-CLASS ENCHANTMENT ON BRALLIN, AND THIS LIST RUNS NONE OF THE THREE. Curiosity is in 2317/3924 (59%) of pair decks, Ophidian Eye 1239/3924 (32%), Tandem Lookout 1122/3924 (29%); on the combo-tagged page Curiosity is 82/93 (88%). Commander Spellbook's Brallin + Curiosity page: prerequisites 'Curiosity attached to Brallin' and 'Hand size exceeds maximum'; steps 'During your cleanup step, discard to your maximum hand size' -> 'Brallin triggers for each card discarded' -> 'Curiosity triggers, causing you to draw a card for each damage dealt' -> 'Pass priority, moving to an additional cleanup step' -> repeat; labelled 'Spicy (Bracket 3-4+)', 5,089 decks. Tandem Lookout (1,995 decks) and Ophidian Eye (2,232) are the same loop. Short of the loop, the same enchantment turns every wheel's 7 pings into 7 draws and 7 Shabraz counters. BENCH NOTE: the deck already holds Niv-Mizzet, Parun and Glint-Horn Buccaneer, so any ONE of these three adds THREE two-card infinites that `combo_details.json` already indexes (ids 17/219/1050 for Curiosity, 47/550/2192 for Ophidian Eye, 58/513/2342 for Tandem Lookout) — `deck-facts` would go from 0 contained combos to 3, which is the standard-v3 pod's own exclusion rule. Whether that is acceptable for the SUBJECT at a bracket-3 table is the pilot's call, not recon's.",
+      "cards": [
+        "Curiosity",
+        "Ophidian Eye",
+        "Tandem Lookout"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/combo.json",
+        "https://commanderspellbook.com/combo/1089-4703/",
+        "https://commanderspellbook.com/combo/406-4703/",
+        "https://commanderspellbook.com/combo/2396-4703/",
+        "https://commanderspellbook.com/search/?q=Brallin%2C+Skyshark+Rider",
+        "https://mtgrocks.com/brallin-skyshark-rider-shabraz-the-skyshark-mtg/"
+      ]
+    },
+    {
+      "claim": "THE CONSENSUS RUNS CHEAP LOOT/RUMMAGE, NOT FIFTEEN WHEELS. The four cards above 65% inclusion are Faithless Looting 2864/3924 (73%), Windfall 2817/3924 (72%), Frantic Search 2632/3924 (67%) and Swords; Thrill of Possibility 1732/3924 (44%), Change of Fortune 1668/3924 (43%), Brainstorm 1653/3924 (42%), Faithful Mending 1581/3924 (40%), Heartwarming Redemption 1519/3924 (39%), Cathartic Reunion 1507/3924 (38%), Izzet Charm 1388/3924 (35%), Fateful Showdown 1078/3924 (27%), Careful Study 1063/3924 (27%), Decaying Time Loop 936/3924 (24%) all outrank the big wheels: Reforge the Soul 1014/3924 (26%), Wheel of Misfortune 947/3924 (24%), Wheel of Fortune 778/3924 (20%), Burning Inquiry 721/3924 (18%), Echo of Eons 115/488 (24%) of wheels-tagged decks, Winds of Change 84/488 (17%), Molten Psyche 37/488 (8%), Khorvath's Fury 27/488 (6%), Whirlpool Warrior 42/488 (9%), Commit // Memory 43/488 (9%); Time Reversal is below the listing cut on the 3,924-deck page. mtg-agents (2026-08-27): 'Six to nine wheels, ten to fourteen payoffs, and at least three ways to protect the payoff that matters' and 'The mistake I see most often is a deck with twelve wheels and four payoffs. That deck draws a lot of cards and loses.' The current core declares fifteen wheel effects and two loots (Faithless Looting, Tolarian Winds). The average deck's shape is 15 instants / 10 sorceries: one-mana instant-speed discard that triggers Brallin on the opponent's turn.",
+      "cards": [
+        "Frantic Search",
+        "Thrill of Possibility",
+        "Change of Fortune",
+        "Brainstorm",
+        "Faithful Mending",
+        "Heartwarming Redemption",
+        "Cathartic Reunion",
+        "Izzet Charm",
+        "Fateful Showdown",
+        "Careful Study",
+        "Decaying Time Loop"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://mtg-agents.com/blog/mtg-wheel-effects-commander",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider.json"
+      ]
+    },
+    {
+      "claim": "INTERACTION IS THE BIGGEST HOLE AGAINST THE AVERAGE LIST. The average deck carries Swords to Plowshares 2467/3924 (63%), Path to Exile 1904/3924 (49%), Counterspell 1779/3924 (45%), Dovin's Veto 1231/3924 (31%), Arcane Denial 1190/3924 (30%), Blasphemous Act 1136/3924 (29%), An Offer You Can't Refuse 942/3924 (24%), plus Negate / Generous Gift / Chaos Warp / Deflecting Swat in the wheels-tagged page (96-127 of 488 each) — roughly nine interaction slots. `deck-facts` counts this list at 2 counterspells, 1 spot removal and 1 sweeper (Elesh Norn). mtg-agents: opponents 'receive fresh cards through wheels', so run 'fast, cheap interaction'; commanderdeckmaker: 'Nekusar decks become immediate targets.' Swords and Path carry NEGATIVE synergy on every EDHREC page (they are generic), which is the point — they are there because the archetype needs answers, not because they wheel.",
+      "cards": [
+        "Swords to Plowshares",
+        "Path to Exile",
+        "Counterspell",
+        "Dovin's Veto",
+        "Arcane Denial",
+        "Blasphemous Act",
+        "Generous Gift",
+        "Chaos Warp",
+        "Deflecting Swat",
+        "Negate"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://mtg-agents.com/blog/mtg-wheel-effects-commander",
+        "https://commanderdeckmaker.com/learn/archetypes/wheels"
+      ]
+    },
+    {
+      "claim": "THE MANA BASE PEOPLE RUN IS 35 LANDS WITH A CYCLING-LAND PACKAGE AND SIX TO EIGHT TWO-MANA ROCKS, NOT 36 UNTAPPED DUALS WITH TREASURE ARTIFACTS. Average deck: 35 lands (23 nonbasic incl. Lonely Sandbar, Forgotten Cave, Secluded Steppe, Ash Barrens, Irrigated Farmland; 15 basics) and 11 artifacts, of which 9 are rocks. Cycling lands: Lonely Sandbar 1511/3924 (39%), Forgotten Cave 1486/3924 (38%), Secluded Steppe 1383/3924 (35%), Irrigated Farmland 1297/3924 (33%), Ash Barrens 1264/3924 (32%), Remote Isle 923/3924 (24%), Smoldering Crater 896/3924 (23%), Drifting Meadow 882/3924 (22%); on the cycling page they are the top-synergy cards outright (Forgotten Cave 0.686). Rocks: Talisman of Creativity 1889/3924 (48%), Izzet Signet 1862/3924 (47%), Azorius Signet 1737/3924 (44%), Talisman of Progress 1598/3924 (41%), Talisman of Conviction 1519/3924 (39%), Boros Signet 1510/3924 (38%), Fellwar Stone 1351/3924 (34%), Thought Vessel 1103/3924 (28%). Utility: Reliquary Tower 1746/3924 (44%) (in), Desolate Lighthouse 839/3924 (21%), Geier Reach Sanitarium 776/3924 (20%), Cephalid Coliseum 79/488 (16%). The builder's twelve land picks are all below EDHREC's listing cut on the 3,924-deck page (City of Brass and Mana Confluence sit at 65 and 61 of 488 wheels decks; Skycloud Expanse 67/488 and is the 25th-most-cut card from the precon). This list has zero cycling lands and two rocks; its ramp slots are Treasure pieces (Sticky Fingers, Generous Plunderer, Treasure Map, Currency Converter, Artist's Talent, Sorcerer Class) that appear in 0-12% of lists.",
+      "cards": [
+        "Lonely Sandbar",
+        "Forgotten Cave",
+        "Secluded Steppe",
+        "Irrigated Farmland",
+        "Ash Barrens",
+        "Remote Isle",
+        "Smoldering Crater",
+        "Drifting Meadow",
+        "Desolate Lighthouse",
+        "Geier Reach Sanitarium",
+        "Cephalid Coliseum",
+        "Training Center",
+        "Prairie Stream",
+        "Talisman of Creativity",
+        "Izzet Signet",
+        "Azorius Signet",
+        "Talisman of Progress",
+        "Talisman of Conviction",
+        "Boros Signet",
+        "Fellwar Stone",
+        "Thought Vessel",
+        "Raugrin Crystal"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/cycling.json",
+        "https://json.edhrec.com/pages/precon/timeless-wisdom/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://articles.starcitygames.com/magic-the-gathering/premium/commander-top-10-brallin-skyshark-rider-shabraz-the-skyshark/"
+      ]
+    },
+    {
+      "claim": "DISCARD-SIDE PAYOFFS BEYOND THE COMMANDER: the lists run five to seven, this one runs Glint-Horn Buccaneer and Containment Construct. Captain Howler, Sea Scourge 1781/3487 (51%), Marauding Mako 1679/3487 (48%) (both Sharks, both post-date many lists so potential is lower), Ghostly Pilferer 1568/3924 (40%), Magmakin Artillerist 1525/3444 (44%), Surly Badgersaur 1480/3924 (38%), Forgotten Creation 1370/3924 (35%), Tandem Lookout 1122/3924 (29%), Niv-Mizzet, the Firemind 1120/3924 (29%), Ledger Shredder 1107/3924 (28%), Esper Sentinel 1030/3924 (26%). Brallin's solo page puts Glint-Horn at 82/94 and Surly Badgersaur at 64/94. SCG (Bennie Smith, 2020-04-13) called Surly Badgersaur 'a cute red spin on Bone Miser'. The builder-chosen creatures — Jaxis, Marketback Walker, Mindless Automaton, Vanguard Suppressor, Silent Hallcreeper, Stromkirk Noble, Goblin Engineer, Elesh Norn — are all below the listing cut on the 3,924-deck page.",
+      "cards": [
+        "Captain Howler, Sea Scourge",
+        "Marauding Mako",
+        "Ghostly Pilferer",
+        "Magmakin Artillerist",
+        "Surly Badgersaur",
+        "Forgotten Creation",
+        "Niv-Mizzet, the Firemind",
+        "Ledger Shredder",
+        "Esper Sentinel"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/discard.json",
+        "https://articles.starcitygames.com/magic-the-gathering/premium/commander-top-10-brallin-skyshark-rider-shabraz-the-skyshark/",
+        "https://json.edhrec.com/pages/precon/timeless-wisdom/brallin-skyshark-rider-shabraz-the-skyshark.json"
+      ]
+    },
+    {
+      "claim": "DRAW-DOUBLERS AND HAND ENGINES THE LISTS RUN THAT THIS ONE DOES NOT: Teferi's Ageless Insight 1766/3924 (45%) (0.394 synergy; 142/262 of solo-Shabraz decks), Monument to Endurance 1317/3459 (38%), Bag of Holding 881/3924 (22%), Mystic Remora 873/3924 (22%), Whirlwind of Thought 845/3924 (22%), Tectonic Reformation 765/3924 (19%), Fluctuator 672/3924 (17%) (81/147 on the cycling page; SCG: 'a critical mana reducer for repeated cycling'), Alhammarret's Archive 639/3924 (16%), Wizard Class 638/3924 (16%). Of this list's engines, Psychosis Crawler 1729/3924 (44%), The Locust God 1726/3924 (44%), Ominous Seas 1847/3924 (47%), Shark Typhoon 1632/3924 (42%), Jace's Archivist 1400/3924 (36%), Niv-Mizzet, Parun 1361/3924 (35%), Chasm Skulker 1097/3924 (28%) agree with consensus; Mind's Eye, Kefnet the Mindful, Enduring Curiosity, Improbable Alliance, Irencrag Pyromancer, Arjun and Decree of Silence are all below the listing cut.",
+      "cards": [
+        "Teferi's Ageless Insight",
+        "Monument to Endurance",
+        "Bag of Holding",
+        "Mystic Remora",
+        "Whirlwind of Thought",
+        "Tectonic Reformation",
+        "Fluctuator",
+        "Alhammarret's Archive",
+        "Wizard Class"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/cycling.json",
+        "https://articles.starcitygames.com/magic-the-gathering/premium/commander-top-10-brallin-skyshark-rider-shabraz-the-skyshark/",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json"
+      ]
+    },
+    {
+      "claim": "PROTECTION FOR TWO COMMANDERS: the boots are consensus and already in (Swiftfoot Boots 1375/3924 (35%), Lightning Greaves 1091/3924 (28%)); beyond them the lists reach for free or instant-speed spells, not more equipment: Fierce Guardianship 886/3924 (23%) (a Game Changer), Deflecting Swat 127/488 (26%), Boros Charm 99/488 (20%), Teferi's Protection 74/488 (15%), Grand Abolisher 95/488 (19%), Silence 66/488 (14%). mtg-agents: 'A wheel deck that cannot keep a Psychosis Crawler alive for one rotation is just an expensive group hug deck.' The cEDH average (29 decks) runs Grand Abolisher, Silence, Deflecting Swat and Fierce Guardianship together.",
+      "cards": [
+        "Deflecting Swat",
+        "Boros Charm",
+        "Teferi's Protection",
+        "Grand Abolisher",
+        "Silence"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/cedh.json",
+        "https://mtg-agents.com/blog/mtg-wheel-effects-commander"
+      ]
+    },
+    {
+      "claim": "'FLYING HUMANS' IS A FOOTNOTE, NOT A PLAN. Nine of 3,924 pair decks carry the Humans tag, and the humans-theme page's own high-synergy cards are Sharks — Thunderhead Gunner, Captain Howler, Marauding Mako, Shark Typhoon, Loan Shark — i.e. even those nine are shark decks. Shabraz's solo page (262 decks) tags Wheels 26 / +1/+1 Counters 13 / Card Draw 11 / Flying 8 / Humans 1; the one Archidekt solo 'flying' list fetched (HapaKuya, 2025-11-01) is flying-tribal anthems (Kangee, Empyrean Eagle, Steel-Plume Marshal) with no Human package. Draftsim (2025-08-21) treats the activated abilities as 'combat utility'. What the flying plan actually looks like in practice is Shabraz plus Shark Typhoon's X/X flyers plus the two Shark creatures; no fetched list builds the Human side.",
+      "cards": [
+        "Captain Howler, Sea Scourge",
+        "Marauding Mako",
+        "Thunderhead Gunner",
+        "Loan Shark"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/humans.json",
+        "https://json.edhrec.com/pages/commanders/shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://archidekt.com/api/decks/9017167/",
+        "https://draftsim.com/mtg-wheel-commanders/"
+      ]
+    },
+    {
+      "claim": "SELF-DECKING LINES AND THE LAB-MAN QUESTION. Laboratory Maniac is in 613/3924 (16%) of pair decks (98/488 wheels-tagged; 100/262 solo-Shabraz), Jace, Wielder of Mysteries 312/3924 (8%); Thassa's Oracle and Drogskol Reaver are both below the listing cut on the pair page even though Drogskol Reaver is 94/262 in solo-Shabraz lists. Spellbook: Shabraz + Drogskol Reaver draws the deck (6,466 decks, 'Spicy (Bracket 3-4+)') and 'In response to the final Shabraz trigger, remove a combo piece or win the game to avoid losing by drawing from an empty library'; Shabraz + Marina Vendrell's Grimoire is 'Ruthless (Bracket 4+)' and 'will result in you eventually drawing from an empty library'. The cEDH average (29 decks) wins through Underworld Breach + Brain Freeze + Lion's Eye Diamond and Curiosity, with no Oracle at all. Reading: a Lab-Man line is a bracket-4 posture here, and the draw loops that feed it need instant-speed removal of their own piece.",
+      "cards": [
+        "Laboratory Maniac",
+        "Jace, Wielder of Mysteries",
+        "Drogskol Reaver"
+      ],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://json.edhrec.com/pages/commanders/shabraz-the-skyshark.json",
+        "https://commanderspellbook.com/combo/444-2275/",
+        "https://commanderspellbook.com/combo/2275-6033/",
+        "https://commanderspellbook.com/search/?q=Shabraz%2C+the+Skyshark",
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/cedh.json",
+        "https://mtgrocks.com/brallin-skyshark-rider-shabraz-the-skyshark-mtg/"
+      ]
+    },
+    {
+      "claim": "DAMAGE AMPLIFIERS FOR BRALLIN'S PINGS ARE A MINORITY PLAY; EXTRA COMBATS DO NOT APPEAR AT ALL. Ojer Axonil, Deepest Might 292/3924 (7%), Torbran, Thane of Red Fell 39/488 (8%); Solphim, Mayhem Dominus and Fiery Emancipation are below the listing cut on the pair page. MTGRocks (Nathan Ball, 2026-04-26) recommends 'damage doublers' and board wipes that 'leverage their scaling bodies' (Chandra's Ignition, Soul Immolation) and names Grafted Exoskeleton and Basilisk Collar. No extra-combat card appears in any card list extracted from the EDHREC pages fetched (the section extracts are top-N, so this bounds inclusion below roughly 250 of 3,924, not at zero). For a combo-free bracket-3 build the amplifier is the combo-free way to make the ping a clock: Ojer Axonil turns each 1-damage Brallin trigger into 4 without creating an indexed line.",
+      "cards": [
+        "Ojer Axonil, Deepest Might",
+        "Torbran, Thane of Red Fell",
+        "Chandra's Ignition",
+        "Solphim, Mayhem Dominus",
+        "Fiery Emancipation"
+      ],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://mtgrocks.com/brallin-skyshark-rider-shabraz-the-skyshark-mtg/"
+      ]
+    },
+    {
+      "claim": "HAND-SIZE TRICKS: THE LISTS KEEP THE TOWER AND VESSEL AND MOSTLY SKIP THE PUZZLE BOX. Reliquary Tower 1746/3924 (44%), Thought Vessel 1103/3924 (28%), Containment Construct 1055/3924 (27%), Sevinne's Reclamation 838/3924 (21%), Alhammarret's Archive 639/3924 (16%), Teferi's Puzzle Box 320/3924 (8%), Library of Leng 33/488 (7%) of wheels-tagged decks. The precon-upgrade page shows Reliquary Tower among the CUT cards (0.183 unpopularity) — a minority cuts it, consistent with the Spellbook prerequisite for the Curiosity loop, 'Hand size exceeds maximum'. This list runs Puzzle Box, Library of Leng, Containment Construct and Reliquary Tower together; whether the no-maximum-hand-size pieces and a cleanup-step discard kill can coexist is a stack question, not a recon one.",
+      "cards": [
+        "Thought Vessel",
+        "Sevinne's Reclamation"
+      ],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://json.edhrec.com/pages/precon/timeless-wisdom/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://commanderspellbook.com/combo/1089-4703/"
+      ]
+    },
+    {
+      "claim": "ASYMMETRIC WHEEL PIECES AND THE SOCIAL COST. Narset, Parter of Veils 875/3924 (22%) (Game Changer), Smothering Tithe 1161/3924 (30%) (in), Rhystic Study 1216/3924 (31%) (in), Alms Collector 38/488 (8%); Notion Thief is outside Jeskai. commanderdeckmaker: 'A wheel without Nekusar or damage effects on the board is just giving everyone new hands' and 'Nekusar decks become immediate targets'; mtg-agents: 'A wheel with no payoff on the battlefield is usually a mistake in a four-player game.' The two Game Changers already in the list set the bracket floor at 3; adding Narset keeps it at 3 by count (three GCs is the bracket-3 ceiling under the Oct-2025 rules as the bench encodes them) — run `bracket-check` before assuming.",
+      "cards": [
+        "Narset, Parter of Veils",
+        "Alms Collector"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+        "https://commanderdeckmaker.com/learn/archetypes/wheels",
+        "https://mtg-agents.com/blog/mtg-wheel-effects-commander"
+      ]
+    },
+    {
+      "claim": "THE CYCLING SUB-ARCHETYPE (147 decks) IS A DIFFERENT DECK FROM THE WHEELS ONE (488) AND THIS LIST STRADDLES THEM. Cycling-page top cards: Fluctuator 81/147, Curator of Mysteries 78/147, Drannith Stinger 75/147, Nimble Obstructionist 71/147, Astral Drift 60/147, New Perspectives 56/147, Valiant Rescuer 60/147, Drannith Healer 58/147, Flourishing Fox 56/147, Raugrin Crystal 94/147, Countervailing Winds 66/147, Neutralize 86/147, Forsake the Worldly 64/147, Boon of the Wish-Giver 60/147, Akroma's Vengeance 53/147, Zenith Flare 52/147. On the full pair page those same cards sit at Astral Drift 435/3924 (11%), Drake Haven 427/3924 (11%), Curator 728/3924 (19%), Nimble Obstructionist 681/3924 (17%), New Perspectives 333/3924 (8%). The precon-upgrade page's most-added cards are the cycling package (Drannith Stinger 38/82, Flourishing Fox 28/82, Drannith Healer 27/82). SCG (2020) read the pair as 'a cycling-focused Commander deck rather than traditional tribal'. If the pilot keeps Astral Drift / Drake Haven / Curator / Obstructionist, the cycling lands and Fluctuator are what make them fire; if not, those four are the cut.",
+      "cards": [
+        "Drannith Stinger",
+        "Flourishing Fox",
+        "Drannith Healer",
+        "Valiant Rescuer",
+        "Countervailing Winds",
+        "Neutralize",
+        "Forsake the Worldly",
+        "Boon of the Wish-Giver",
+        "Akroma's Vengeance",
+        "Zenith Flare",
+        "Raugrin Crystal",
+        "Fluctuator"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/cycling.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/precon/timeless-wisdom/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://articles.starcitygames.com/magic-the-gathering/premium/commander-top-10-brallin-skyshark-rider-shabraz-the-skyshark/"
+      ]
+    },
+    {
+      "claim": "WHAT THE cEDH AND 'EXPENSIVE' LISTS ADD, FOR THE BRACKET LINE THIS DECK MUST NOT CROSS. cEDH average (29 decks): 29 lands + 13 fast-mana artifacts, 24 instants, wins through Underworld Breach + Brain Freeze + LED and Curiosity/Ophidian Eye/Tandem Lookout; expensive-optimized (20 decks): 31 lands, Curiosity + Ophidian Eye + Tandem Lookout + Cool but Rude, Breach, Timetwister, Jeska's Will, Gamble, Mystical/Enlightened Tutor. Underworld Breach is in 606/3924 (15%) of all pair lists and would complete three indexed three-card lines with Smothering Tithe + Wheel of Fortune / Windfall / Reforge the Soul already in the 99 (combo ids 101, 483, 4777). These name the cards a bracket-3 build deliberately omits: Breach, Jeska's Will, Gamble, the tutors, Fierce Guardianship, Cyclonic Rift, The One Ring. Recorded so the diagnosis can say why they are absent rather than treat them as gaps.",
+      "cards": [
+        "Cool but Rude",
+        "Sevinne's Reclamation",
+        "Ghostly Pilferer"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/cedh.json",
+        "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/expensive.json",
+        "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+        "https://json.edhrec.com/pages/combos/brallin-skyshark-rider.json"
+      ]
+    }
+  ],
+  "known_failure_modes": [
+    "Wheeling with no payoff on the battlefield: 'A wheel without Nekusar or damage effects on the board is just giving everyone new hands' (commanderdeckmaker); 'A wheel with no payoff on the battlefield is usually a mistake in a four-player game' (mtg-agents, 2026-08-27).",
+    "Losing the payoff and becoming group hug: 'A wheel deck that cannot keep a Psychosis Crawler alive for one rotation is just an expensive group hug deck' (mtg-agents).",
+    "Becoming the table's target once the engine is visible: 'Nekusar decks become immediate targets' (commanderdeckmaker); opponents 'receive fresh cards through wheels' so cheap interaction matters (mtg-agents).",
+    "Over-wheeling relative to payoffs: 'a deck with twelve wheels and four payoffs ... draws a lot of cards and loses' (mtg-agents).",
+    "Self-decking on a draw loop: the Shabraz + Drogskol Reaver and Shabraz + Marina Vendrell's Grimoire lines end in 'drawing from an empty library' unless a piece is removed at instant speed (Commander Spellbook; MTGRocks 2026-04-26).",
+    "Kill line gated on hand size: the Brallin + Curiosity/Ophidian Eye/Tandem Lookout loops require 'Hand size exceeds maximum' at cleanup (Commander Spellbook), so no-maximum-hand-size permanents can remove the loop's trigger — unverified interaction, see gaps.",
+    "The precon's own shape is what people cut: the 82-deck precon-upgrade page's most-cut cards are the Impetus auras, Agitator Ant, Cryptic Trilobite, Ethereal Forager and Akim — the go-wide/goad half of Timeless Wisdom — and the most-added are the cycling package and Curiosity."
+  ],
+  "contested": [
+    "Big wheels versus cheap loots: the brief's fifteen-wheel core is a stronger commitment than any fetched list makes; EDHREC inclusion ranks Faithless Looting / Frantic Search / Thrill of Possibility above Reforge the Soul / Wheel of Misfortune / Wheel of Fortune, and mtg-agents caps wheels at six to nine. No source argues for fifteen.",
+    "No-maximum-hand-size pieces: Reliquary Tower (44%) and Thought Vessel (28%) are consensus, but the Curiosity-class kill's stated prerequisite is a hand above maximum at cleanup, and a minority of precon-upgraders cut the Tower. The sources do not resolve this; it needs a stack scenario.",
+    "Lab-Man/Oracle lines: 38% of solo-Shabraz lists run Laboratory Maniac, 16% of pair lists do, the cEDH average runs none (it wins through Breach + Brain Freeze and Curiosity). Bracket estimate from Spellbook is 3-4+ for the Reaver line and 4+ for the Grimoire line.",
+    "Damage amplifiers: MTGRocks recommends them; EDHREC inclusion is 7% (Ojer Axonil) and below the cut for Solphim / Fiery Emancipation. A bracket-3 combo-free build has more reason to want one than the average list does.",
+    "Cycling versus wheels: the two EDHREC sub-archetypes share Glint-Horn / Windfall / Faithless Looting but diverge on lands (cycling: Desert cycle, Irrigated Farmland, Ash Barrens, Fluctuator) and creatures (cycling: Drannith Stinger, Flourishing Fox, Drannith Healer). This list carries four cycling payoffs with no cycling lands.",
+    "Curiosity at a bracket-3 table: Spellbook labels the line 'Spicy (Bracket 3-4+)'; the bench's standard-v3 pod excludes seats with any contained two-card infinite. Adding one Curiosity-class card puts three such lines in `deck-facts`. Whether the subject is held to the pod's rule is a pilot decision."
+  ],
+  "sources": [
+    {
+      "title": "EDHREC average deck: Brallin, Skyshark Rider // Shabraz, the Skyshark",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark.json",
+      "contributed": "the 98-card average over 3,924 decks: 35 lands (23 nonbasic incl. 5 cycling lands), 19 creatures, 15 instants, 10 sorceries, 11 artifacts (9 rocks), 7 enchantments; theme counts"
+    },
+    {
+      "title": "EDHREC commander page: Brallin // Shabraz (3,924 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark.json",
+      "contributed": "per-card num_decks / potential_decks / synergy for every section; theme tag counts; targeted lookup of 95 named cards incl. every builder-chosen card in this list"
+    },
+    {
+      "title": "EDHREC commander page: Shabraz, the Skyshark (262 decks, solo/other partners)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/shabraz-the-skyshark.json",
+      "contributed": "solo-Shabraz theme counts (Wheels 26, Counters 13, Flying 8, Humans 1); Lab Man 100/262, Drogskol Reaver 94/262, Teferi's Ageless Insight 142/262"
+    },
+    {
+      "title": "EDHREC commander page: Brallin, Skyshark Rider (94 decks, solo)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider.json",
+      "contributed": "Glint-Horn 82/94, Surly Badgersaur 64/94, Magus of the Wheel 60/94; mono-red discard shape"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Wheels (488 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/wheels.json",
+      "contributed": "full per-card counts inside the wheels sub-archetype incl. the deck's marginal wheels (Molten Psyche 37, Khorvath's Fury 27, Library of Leng 33, Commit // Memory 43); 35 lands = 15 basic + 20 nonbasic"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Cycling (147 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/cycling.json",
+      "contributed": "the cycling sub-archetype's package: cycling lands as top synergy, Fluctuator 81/147, Raugrin Crystal 94/147, Drannith Stinger 75/147"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Humans (9 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/humans.json",
+      "contributed": "the 'flying Humans' question: 9 decks, and their high-synergy cards are Sharks"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Combo (93 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/combo.json",
+      "contributed": "Curiosity 82/93, Ophidian Eye 69/93, Tandem Lookout 56/93; listed combos Brallin+Curiosity, Glint-Horn+Curiosity, Brallin+Ophidian Eye"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Discard (277 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/discard.json",
+      "contributed": "discard sub-archetype counts; 35 lands; Marauding Mako 85/207"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — Voltron (42 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/voltron.json",
+      "contributed": "voltron-tagged lists are the same wheel deck (Windfall 32/42, Magus 26/42) with Greaves; no equipment/aura package emerges"
+    },
+    {
+      "title": "EDHREC theme page: Brallin // Shabraz — +1/+1 Counters (134 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/commanders/brallin-skyshark-rider-shabraz-the-skyshark/plus-1-plus-1-counters.json",
+      "contributed": "counters-tagged lists are also the wheel deck; no proliferate/counters package emerges"
+    },
+    {
+      "title": "EDHREC precon upgrade page: Timeless Wisdom -> Brallin // Shabraz (82 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/precon/timeless-wisdom/brallin-skyshark-rider-shabraz-the-skyshark.json",
+      "contributed": "most-added (cycling package, Curiosity, Magus, Shark Typhoon) and most-cut (Impetus auras, goad creatures, Skycloud Expanse, Reliquary Tower minority)"
+    },
+    {
+      "title": "EDHREC average deck: Brallin // Shabraz — cEDH optimized (29 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/cedh.json",
+      "contributed": "the cEDH 99: 29 lands + 13 fast mana, 24 instants, Breach/Brain Freeze/LED kill, Curiosity + Ophidian Eye + Tandem Lookout, no Thassa's Oracle"
+    },
+    {
+      "title": "EDHREC average deck: Brallin // Shabraz — expensive optimized (20 decks)",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/average-decks/brallin-skyshark-rider-shabraz-the-skyshark/optimized/expensive.json",
+      "contributed": "the high-budget non-cEDH 99: 31 lands, all three Curiosity effects + Cool but Rude, Breach, Timetwister, tutors"
+    },
+    {
+      "title": "EDHREC combos page: Brallin, Skyshark Rider",
+      "author": "EDHREC",
+      "url": "https://json.edhrec.com/pages/combos/brallin-skyshark-rider.json",
+      "contributed": "35 indexed lines with deck counts; Underworld Breach + Wheel of Fortune + Jeska's Will (88,514 decks) and + LED (87,824) are the format-wide red wheel lines"
+    },
+    {
+      "title": "Commander Spellbook: Brallin, Skyshark Rider + Curiosity",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/combo/1089-4703/",
+      "contributed": "prerequisites and steps verbatim; 'Spicy (Bracket 3-4+)'; 5,089 decks"
+    },
+    {
+      "title": "Commander Spellbook: Brallin, Skyshark Rider + Tandem Lookout",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/combo/406-4703/",
+      "contributed": "steps; extra prerequisite 'more cards in library than the sum of each opponent's life total'; 1,995 decks"
+    },
+    {
+      "title": "Commander Spellbook: Brallin, Skyshark Rider + Ophidian Eye",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/combo/2396-4703/",
+      "contributed": "steps; 'Spicy (Bracket 3-4+)'; 2,232 decks"
+    },
+    {
+      "title": "Commander Spellbook: Drogskol Reaver + Shabraz, the Skyshark",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/combo/444-2275/",
+      "contributed": "the draw-the-deck loop and its self-deck exit; 'Spicy (Bracket 3-4+)'; 6,466 decks"
+    },
+    {
+      "title": "Commander Spellbook: Marina Vendrell's Grimoire + Shabraz, the Skyshark",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/combo/2275-6033/",
+      "contributed": "'Ruthless (Bracket 4+)'; 'will result in you eventually drawing from an empty library'; 1,978 decks"
+    },
+    {
+      "title": "Commander Spellbook search: Shabraz, the Skyshark",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/search/?q=Shabraz%2C+the+Skyshark",
+      "contributed": "49 Shabraz lines; the only two-card ones in identity are Drogskol Reaver and Marina Vendrell's Grimoire"
+    },
+    {
+      "title": "Commander Spellbook search: Brallin, Skyshark Rider",
+      "author": "Commander Spellbook",
+      "url": "https://commanderspellbook.com/search/?q=Brallin%2C+Skyshark+Rider",
+      "contributed": "14 Brallin lines; Curiosity / Ophidian Eye / Tandem Lookout / Keen Sense (green, illegal here) are the two-card ones; Change of Fortune + Reverberate + Grafted Exoskeleton is 4 decks"
+    },
+    {
+      "title": "Underplayed MTG Partner Pair Enables Multiple Two-Card Combos",
+      "author": "Nathan Ball, MTGRocks (2026-04-26)",
+      "url": "https://mtgrocks.com/brallin-skyshark-rider-shabraz-the-skyshark-mtg/",
+      "contributed": "Curiosity/Ophidian Eye/Tandem Lookout on Brallin; Drogskol Reaver on Shabraz 'requires instant-speed removal to avoid decking out'; damage doublers, Chandra's Ignition / Soul Immolation as wipes; 3,659 decks at time of writing"
+    },
+    {
+      "title": "Commander Top 10: Brallin, Skyshark Rider + Shabraz, the Skyshark",
+      "author": "Bennie Smith, Star City Games (2020-04-13)",
+      "url": "https://articles.starcitygames.com/magic-the-gathering/premium/commander-top-10-brallin-skyshark-rider-shabraz-the-skyshark/",
+      "contributed": "the launch-era read: 'a cycling-focused Commander deck rather than traditional tribal'; Fluctuator 'a critical mana reducer'; Surly Badgersaur, Raugrin Crystal, Akroma's Vengeance"
+    },
+    {
+      "title": "The 17 Best Wheel Commanders in Magic Ranked",
+      "author": "Ignacio (Inaki), Draftsim (2025-08-21)",
+      "url": "https://draftsim.com/mtg-wheel-commanders/",
+      "contributed": "pair ranked #8; 'Each one takes advantage of one of the two steps in wheel cards'; the flying/trample grants read as 'combat utility'; general advice on payoffs and consistency"
+    },
+    {
+      "title": "Wheels archetype guide",
+      "author": "Commander Deck Maker (undated)",
+      "url": "https://commanderdeckmaker.com/learn/archetypes/wheels",
+      "contributed": "ratio table (8-12 wheels, 6-10 punishers, 10-12 ramp, 6-8 removal); 'A wheel without Nekusar or damage effects on the board is just giving everyone new hands'; 'Nekusar decks become immediate targets'"
+    },
+    {
+      "title": "Top 10 Commanders For A Magic: The Gathering 'Wheel' Deck",
+      "author": "Paul DiSalvo, TheGamer (2020-08-16)",
+      "url": "https://www.thegamer.com/top-commanders-magic-the-gathering-wheel-deck/",
+      "contributed": "pair ranked #2; description of the two-sided wheel payoff; no building advice"
+    },
+    {
+      "title": "Dungeon Learner's Guide - Brallin & Shabraz (Teferi's Veil): Commander's Guild Deck Tech/Gameplay",
+      "author": "EDHREC Community Spotlight, u/poynz13 (2022-12-23)",
+      "url": "https://edhrec.com/articles/dungeon-learners-guide-brallin-shabraz-teferis-veil-commanders-guild-deck-tech-gameplay",
+      "contributed": "an under-$100 Myriad + Teferi's Veil build — evidence the pair is also built off-archetype on a budget; not a wheels list"
+    },
+    {
+      "title": "Archidekt deck 4136284: Brallin Shabraz CEDH",
+      "author": "Besovti, Archidekt (updated 2023-03-09)",
+      "url": "https://archidekt.com/api/decks/4136284/",
+      "contributed": "a cEDH list: 34 lands with fetches + Ancient Tomb, Jeweled Lotus/LED-class fast mana, Curiosity + Underworld Breach + Gamble + wheels; Dockside; no description"
+    },
+    {
+      "title": "Archidekt deck 20480821: Brallin and Shabraz",
+      "author": "MrStayPuft41, Archidekt (updated 2026-05-26)",
+      "url": "https://archidekt.com/api/decks/20480821/",
+      "contributed": "a current casual list: 10 rocks (all six Signets/Talismans + Mind Stone + Bauble), 9 interaction incl. Swords/Path/Counterspell/Arcane Denial, Magmakin Artillerist, Neheb, Ox of Agonas, Path of the Pyromancer"
+    },
+    {
+      "title": "Archidekt deck 9017167: Shabraz, the Skyshark (Azorius, solo)",
+      "author": "HapaKuya, Archidekt (updated 2025-11-01)",
+      "url": "https://archidekt.com/api/decks/9017167/",
+      "contributed": "the one solo 'flying' list fetched is flying-tribal anthems (Kangee, Empyrean Eagle, Steel-Plume Marshal), not Humans"
+    },
+    {
+      "title": "edh.wiki: Brallin, Skyshark Rider",
+      "author": "edh.wiki (undated)",
+      "url": "https://edh.wiki/commanders/brallin-skyshark-rider/",
+      "contributed": "solo-Brallin playstyle split 'Discard 34% / Wheels 16% / Burn 13%'; Glint-Horn '+83% Synergy'"
+    },
+    {
+      "title": "MTG Wheel Effects in Commander",
+      "author": "Tamy, mtg-agents blog (2026-08-27)",
+      "url": "https://mtg-agents.com/blog/mtg-wheel-effects-commander",
+      "contributed": "'Six to nine wheels, ten to fourteen payoffs, and at least three ways to protect the payoff that matters'; the twelve-wheels/four-payoffs mistake; the Psychosis Crawler line; 'fast, cheap interaction'; the pair-specific paragraph"
+    }
+  ],
+  "gaps": [
+    "Moxfield: site, api.moxfield.com and api2.moxfield.com all returned HTTP 403 on 2026-09-10 (as on 2026-09-09). The four Moxfield cEDH primers that search surfaced ('Curious Wheels', 'The Last Shark Rider', 'Curiosity Kill', 'Bralin Combo') are unread; their search snippets describe 'Curiosity + Ghostly Pilferer' and 'LED + Brain Freeze + Underworld Breach' lines and one argues against no-maximum-hand-size slots because 'discarding to hand size every turn ... means extra damage' — recorded here as unverified, no URL cited.",
+    "TappedOut (fire-shark-tornado, brallin-and-shabraz-wheels, ?fmt=txt), MTGNexus ('The Shark and His Boy' thread), Aetherhub (brallin-wheels writeup), MTGGoldfish (deck pages and /download), mtgdecks.net: all HTTP 403. edh.fandom.com/wiki/Wheels: HTTP 402.",
+    "reddit.com is blocked for this agent's user agent on both fetch and search, so no r/EDH or r/CompetitiveEDH thread is cited; 'what people warn about' rests on two blogs and the Spellbook prerequisites rather than pilot testimony.",
+    "YouTube deck techs (e.g. the May-2020 '10 Min. DeckTech ... Wheels on the Bus are JESKAI') have no readable transcript here and are not cited.",
+    "No source is specific to a bracket-3, zero-combo table. EDHREC's bracket-3 filtered page was not fetched; Spellbook's bracket labels are its own estimates. The bracket-3 reading in findings is inference from the Spellbook labels plus the bench's pod definition, and the diagnosis should re-derive it with `bracket-check`.",
+    "No fetched primer states a wheel COUNT for this pair; the 'six to nine' figure is a generic wheel-deck ratio (mtg-agents) and the '8-12' figure (commanderdeckmaker) is Nekusar-shaped.",
+    "The interaction between no-maximum-hand-size permanents (Reliquary Tower, Thought Vessel, Library of Leng) and the Brallin + Curiosity cleanup loop is a rules question this recon does not settle — needs a stack scenario (`resolve-stack`).",
+    "EDHREC main-page cardlists are truncated top-N per section, so 'below the listing cut' means below roughly 250 of 3,924 decks, not zero; the wheels-theme page (488) gives exact counts for several of those cards and is cited where it does.",
+    "Ownership was not checked: the pilot stated it is not a constraint for this deck."
+  ]
+}
