@@ -52,14 +52,14 @@ from manamap.pilot.common import commander_rejection, deck_dir, report_errors
 #: `resolve_pool` + `role_budget_for`, and asserted against them by a test, so
 #: this list cannot quietly fall behind the code it describes.
 CONSUMED = frozenset({
-    "slug", "commander", "bracket", "must_include", "must_exclude",
+    "slug", "commander", "partner", "bracket", "must_include", "must_exclude",
     "pool", "pool_files", "theme", "format",
 })
 
 #: Keys that appear in real briefs and are read by nothing. Reported, never
 #: failed — see the module docstring. `format` is NOT here: `serve` reads it.
 INERT = frozenset({
-    "partner", "playstyle", "notes", "design_rules", "win_conditions",
+    "playstyle", "notes", "design_rules", "win_conditions",
     "commander_rationale", "mana", "targets",
 })
 
@@ -135,6 +135,21 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
             errors.append(f"commander {commander!r} cannot be a commander: {rejection}")
         identity = parse_color_identity(row.get("color_identity", ""))
 
+    # A PARTNER PAIR: the identity the deck may use is the UNION. Checked
+    # against one commander this refused every red land in sharknado's brief
+    # while the builder, reading both, accepted them — a gate disagreeing
+    # with the thing it gates.
+    partner = doc.get("partner")
+    if partner:
+        prow = rows.get(partner)
+        if prow is None:
+            errors.append(f"partner {partner!r} is not in the corpus")
+        elif "partner" not in (prow.get("oracle_text") or "").lower() \
+                or (row is not None and "partner" not in (row.get("oracle_text") or "").lower()):
+            errors.append(f"partner {partner!r}: both commanders must carry Partner")
+        else:
+            identity = set(identity) | set(parse_color_identity(prow.get("color_identity", "")))
+
     for key in ("must_include", "must_exclude"):
         for name in doc.get(key) or []:
             if name not in names:
@@ -150,7 +165,7 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
                     # before it.
                     errors.append(
                         f"must_include {name!r} is {''.join(sorted(outside))}, "
-                        f"outside {commander}'s "
+                        f"outside {commander}{' + ' + partner if partner else ''}'s "
                         f"{''.join(sorted(identity)) or 'colourless'} identity — "
                         f"the builder drops it")
 

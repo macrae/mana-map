@@ -52,6 +52,12 @@ RX = {
     # every log and in no measurement.
     "mulligan_down": re.compile(r"^Mulligan: " + _SEAT + r" has mulliganed down to (\d+) cards\."),
     "land":      re.compile(r"^Land: " + _SEAT + r" played " + _PERM),
+    # THE LINE THAT SAYS A CARD WAS IN HAND. Forge writes one of these per card
+    # discarded, and nothing read it until 2026-09-10 — when sharknado's seat
+    # discarded Windfall three times and Faithless Looting six across 60 games
+    # while casting neither, which is the direct observation that the card was
+    # held and not played. "Held" is otherwise invisible in a log.
+    "discard":   re.compile(r"^Discard: " + _SEAT + r" discards " + _PERM + r"\.?$"),
     "stack":     re.compile(r"^Add To Stack: " + _SEAT + r" (cast|triggered|activated) (.+?)(?: targeting \[(.*)\])?$"),
     "resolve":   re.compile(r"^Resolve Stack: (.*)$"),
     "attack":    re.compile(r"^Combat: " + _SEAT + r" assigned (.+) to attack " + _SEAT + r"\.?$"),
@@ -129,6 +135,12 @@ def _is_commander(source_name, names):
 
 def _new_game():
     return {"seats": [], "turn": 0, "active": None, "events": [], "owner": {},
+            # OWN TURNS PER SEAT. Forge's `Game Outcome: Turn N` is the global
+            # turn halved (1.97 fleet-wide, min 1.89, max 2.00 over 2,128
+            # games), not any seat's own count; a per-seat rate divided by it
+            # is off by the number of seats. This is the denominator "per own
+            # turn" actually needs.
+            "turns_by_seat": {},
             "mulligan": {}, "mulligans_taken": defaultdict(int), "started": None, "outcome": {"winner": None, "won_by": None, "round": None,
                                         "global_turn": None, "draw": False, "lost": {},
                                         "ms": None,
@@ -164,6 +176,7 @@ def parse_games(text):
         m = RX["turn"].match(line)
         if m:
             g["turn"] = int(m.group(1)); g["active"] = m.group(2); last_turn = g["turn"]
+            g["turns_by_seat"][m.group(2)] = g["turns_by_seat"].get(m.group(2), 0) + 1
             # WHO ACTUALLY WENT FIRST, which is a different fact from the `-d`
             # order the run record calls `seat_order`. Forge's
             # `determineFirstTurnPlayer` picks, from game 2 of a job onward, the
@@ -247,6 +260,9 @@ def _event(line, g):
     if m:
         return {"kind": m.group(2), "seat": m.group(1), "what": m.group(3),
                 "targets": m.group(4)}
+    m = RX["discard"].match(line)
+    if m:
+        return {"kind": "discard", "seat": m.group(1), "card": m.group(2), "id": m.group(3)}
     m = RX["resolve"].match(line)
     if m:
         text = m.group(1)
@@ -460,18 +476,33 @@ def game_facts(g, commanders=None):
     # all wrong. Whichever came later decides.
     last_cause = None                      # (seat, turn, kind)
     blockers_this_turn = {}          # token id -> (seat, turn) for chump detection
+    # PER-CARD COUNTS, kept beside `per_seat` rather than in it: `compact()`
+    # copies every per-seat key into the tracked record for all four seats, and
+    # ninety-nine names times four is a record a third larger for a figure only
+    # our seat needs. `engine_casts()` rolls these up for one seat.
+    by_card = {s: {"cast": {}, "activated": {}, "discarded": {}} for s in seats}
+
+    def _count(seat, kind, name):
+        name = _CARD_ID_TAIL.sub("", name).strip()
+        d = by_card[seat][kind]
+        d[name] = d.get(name, 0) + 1
+
     for ev in g["events"]:
         k = ev["kind"]
         if k == "land":
             per[ev["seat"]]["lands"] += 1
         elif k == "cast":
             per[ev["seat"]]["casts"] += 1
+            _count(ev["seat"], "cast", ev["what"])
             if _is_commander(ev["what"], commanders.get(ev["seat"])):
                 per[ev["seat"]]["commander_casts"] += 1
             _aim(per, owner, ev, seats)
         elif k == "activated":
             per[ev["seat"]]["activations"] += 1
+            _count(ev["seat"], "activated", ev["what"])
             _aim(per, owner, ev, seats)
+        elif k == "discard":
+            _count(ev["seat"], "discarded", ev["card"])
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
         elif k == "resolve":
@@ -618,6 +649,7 @@ def game_facts(g, commanders=None):
     for seat in seats:
         per[seat]["mulligans_taken"] = int(g["mulligans_taken"].get(seat, 0))
         per[seat]["mulligan_kept"] = g["mulligan"].get(seat)
+        per[seat]["turns"] = int(g.get("turns_by_seat", {}).get(seat, 0))
 
     o = g["outcome"]
     return {"seats": seats, "started": g.get("started"),
@@ -628,7 +660,46 @@ def game_facts(g, commanders=None):
             # set it correctly and nothing downstream ever saw it.
             "draw": bool(o.get("draw")),
             "global_turn": o["global_turn"], "ms": o["ms"], "lost": dict(o["lost"]),
-            "mulligan": dict(g["mulligan"]), "per_seat": per}
+            "mulligan": dict(g["mulligan"]), "per_seat": per, "by_card": by_card}
+
+
+#: "Windfall (123)" -> "Windfall". Cast lines carry no id; discard lines do.
+_CARD_ID_TAIL = re.compile(r" \(\d+\)$")
+
+
+def engine_casts(facts, label, ours):
+    """Per-card casts, activations and discards for OUR seat across a run.
+
+    A MEASUREMENT OF WHAT THE AI PLAYED, and nothing more: no engine set, no
+    verdict, no file read. Those belong to the reader at print time
+    (`sim/engine_casts.py`), the way the piloting gate is computed from the
+    record and never written into it -- because a set read from
+    `goldfish_targets.json` is an AUTHORED input, and a record must re-derive
+    from itself and its logs alone.
+
+    `label` maps Forge seat labels to slugs and `ours` is our slug; seats
+    rotate per job, so our seat is whichever labels map to `ours`. `turns` is
+    the seat's OWN turns summed over the run (see `turns_by_seat`), which is
+    what an expected-draws figure divides by; `kept_hand_mean` is the kept
+    opening-hand size, Forge's own accounting.
+    """
+    games = turns = 0
+    kept, by_card = [], {}
+    for fact in facts:
+        for seat_label, p in fact["per_seat"].items():
+            if label.get(seat_label, seat_label) != ours:
+                continue
+            games += 1
+            turns += int(p.get("turns") or 0)
+            if p.get("mulligan_kept") is not None:
+                kept.append(int(p["mulligan_kept"]))
+            for kind, counts in (fact.get("by_card") or {}).get(seat_label, {}).items():
+                for name, n in counts.items():
+                    row = by_card.setdefault(name, {"cast": 0, "activated": 0, "discarded": 0})
+                    row[kind] += n
+    return {"seat": ours, "games": games, "turns": turns,
+            "kept_hand_mean": round(sum(kept) / len(kept), 2) if kept else None,
+            "by_card": {k: by_card[k] for k in sorted(by_card)}}
 
 
 # ── Board wipes and what happens after one ──────────────────────────────────

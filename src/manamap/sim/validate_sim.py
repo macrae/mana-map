@@ -59,8 +59,12 @@ def validate(rec, slug, logs_text=None):
     if decided is not None and decided != n - trunc:
         errors.append(f"summary.decided {decided} != games_completed {n} - "
                       f"truncated {trunc}")
+    # `summary.wins` is keyed by slug (`zur-enchantress@drain-v2`) and
+    # `analysis.seats` by Forge's meta name (`zur-enchantress-drain-v2`), so a
+    # BRANCH record failed this comparison on the spelling of its own name.
+    from manamap.sim.forge import deck_meta_name
     a_wins = {k: v.get("wins") for k, v in (rec["analysis"].get("seats") or {}).items()}
-    if any(a_wins.get(k) != v for k, v in wins.items()):
+    if any(a_wins.get(deck_meta_name(k)) != v for k, v in wins.items()):
         errors.append(f"analysis per-seat wins {a_wins} disagree with summary.wins {wins}")
     for s, d in (rec["analysis"].get("seats") or {}).items():
         lo, hi = (d.get("win_rate_ci95") or [None, None])
@@ -73,13 +77,35 @@ def validate(rec, slug, logs_text=None):
                       f"{'carries seeds' if seeded else 'has no seeds'}")
     if seeded and len(rec["seeds"]) != rec.get("jobs"):
         errors.append(f"{len(rec['seeds'])} seeds for {rec.get('jobs')} jobs")
+    # ENGINE CASTS, checked only where PRESENT. A record written before the
+    # block existed is "not measured", not wrong -- the `record_commanders`
+    # precedent -- so an absent key is never an error here.
+    ec = rec.get("engine_casts")
+    if ec is not None:
+        if not isinstance(ec, dict) or set(ec) != {"seat", "games", "turns", "kept_hand_mean", "by_card"}:
+            errors.append("engine_casts: wrong shape")
+        else:
+            if ec["games"] != n:
+                errors.append(f"engine_casts.games {ec['games']} != games_completed {n}")
+            if n and not (isinstance(ec["turns"], int) and ec["turns"] > 0):
+                errors.append(f"engine_casts.turns {ec['turns']!r} is not a positive count")
+            bad = [k for k, v in ec["by_card"].items()
+                   if set(v) != {"cast", "activated", "discarded"}
+                   or any(not isinstance(x, int) or x < 0 for x in v.values())]
+            if bad:
+                errors.append(f"engine_casts.by_card: malformed rows for {bad[:3]}")
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
-        _, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec))
+        facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec))
         if derived != rec["analysis"]:
             keys = [k for k in set(derived) | set(rec["analysis"]) if derived.get(k) != rec["analysis"].get(k)]
             errors.append(f"analysis does not match what the logs derive (differs at {sorted(keys)}) — "
                           f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
+        if ec is not None:
+            from manamap.sim.forge import deck_meta_name
+            if sim_parse.engine_casts(facts, label, deck_meta_name(slug)) != ec:
+                errors.append(f"engine_casts does not match what the logs derive — "
+                              f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
     return errors
 
 

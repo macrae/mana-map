@@ -178,6 +178,21 @@ def _report(paths, label, target, started, ours_hint=None):
         print(f"      {name:<18}{v['wins']:>4}  {v['win_rate']:>6.3f}  "
               f"[{ci[0]:.2f}, {ci[1]:.2f}]{mark}")
 
+    # WHAT THE AI HAS CAST FROM OUR SEAT, live. sharknado's wheels went uncast
+    # for 60 games and the count was made by hand afterwards; here it is at
+    # game ten. `discarded` with zero casts is the direct sign of a card held
+    # and not played -- the log says so, no model needed.
+    ec = sim_parse.engine_casts(facts, lab, ours)
+    rows = sorted(ec["by_card"].items(), key=lambda kv: (-kv[1]["cast"], kv[0]))
+    top = [f"{n} x{v['cast']}" for n, v in rows[:6]]
+    uncast = sorted(((n, v["discarded"]) for n, v in ec["by_card"].items()
+                     if v["cast"] == 0 and v["discarded"]), key=lambda kv: (-kv[1], kv[0]))
+    print(f"    ENGINE CASTS ({ours}, {ec['games']} games, {ec['turns']} own turns)")
+    print(f"      most cast: {', '.join(top) or '—'}")
+    if uncast:
+        print(f"      held and never cast: "
+              + ", ".join(f"{n} (discarded x{d})" for n, d in uncast[:8]))
+
     # CONVERGENCE, over our seat only — the figure a branch is judged on.
     per_job = []
     for t in texts:

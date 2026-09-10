@@ -918,6 +918,13 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "pod": _pods.record_for(pod_name, opponents),
         "outcomes": outcomes,
         "analysis": analysis,
+        # WHAT THE AI ACTUALLY CAST, per card, our seat. Top-level and outside
+        # `analysis` on purpose: `validate-sim` proves `analysis` by exact
+        # equality against the logs, so a key added there reddens every record
+        # made before it; this block is validated only where PRESENT, and an
+        # old record reads "not measured". The reading -- was the deck's engine
+        # ever played -- is computed at print time from this, never stored.
+        "engine_casts": sim_parse.engine_casts(facts, label, deck_meta_name(slug)),
         "games": [sim_parse.compact(f, label) for f in facts],
         "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
                                        f"{frame.get('archetype')!r} — read the AI caveat "
@@ -970,6 +977,7 @@ def analyze(slug, run_id_or_path):
         [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
         record_commanders(rec))
     rec["analysis"] = analysis
+    rec["engine_casts"] = sim_parse.engine_casts(facts, label, deck_meta_name(slug))
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
     # THE POD, BACKFILLED — and marked `named: false`, because a record written
     # before pods existed faced a table nobody named and this is a reading of
