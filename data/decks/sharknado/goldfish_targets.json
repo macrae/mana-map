@@ -1,0 +1,108 @@
+{
+  "_note": "SCAFFOLD — not a declaration. `manamap pilot scaffold-targets` derived these groups from contained combo lines and role axes; every label is a PLACEHOLDER and every group is a starting point to edit, not a finding. A goldfish group is a deck-specific functional set (\"the metronome bodies\", \"the flash traps\"), which is a different thing from a role: `ROLE_PATTERNS` answers what job a card does in any 99. Nothing here names a WIN LINE, because a machine guessing at one manufactures the exact claim `validate-goldfish-targets` exists to demand. Rewrite the labels, regroup the members, add the line this deck actually wins with, then run `manamap pilot validate-goldfish-targets <slug>` and delete \"scaffolded\".",
+  "scaffolded": true,
+  "targets": [
+    {
+      "label": "RAMP drawn — an accelerant of any kind",
+      "_from": "role:ramp",
+      "need": [
+        {
+          "any_of": [
+            "Arcane Signet",
+            "Artist's Talent",
+            "Currency Converter",
+            "Generous Plunderer",
+            "Smothering Tithe",
+            "Sol Ring",
+            "Sorcerer Class",
+            "Sticky Fingers",
+            "Treasure Map // Treasure Cove"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
+      "_from": "role:draw",
+      "need": [
+        {
+          "any_of": [
+            "Artist's Talent",
+            "Astral Drift",
+            "Burning Inquiry",
+            "Chasm Skulker",
+            "Commit // Memory",
+            "Currency Converter",
+            "Echo of Eons",
+            "Enduring Curiosity",
+            "Faithless Looting",
+            "Jace's Archivist",
+            "Magus of the Wheel",
+            "Mind's Eye",
+            "Nezahal, Primal Tide",
+            "Niv-Mizzet, Parun",
+            "Ominous Seas",
+            "Psychosis Crawler",
+            "Reforge the Soul",
+            "Rhystic Study",
+            "Smothering Tithe",
+            "Sorcerer Class",
+            "The Locust God",
+            "Time Reversal",
+            "Vanguard Suppressor",
+            "Wheel of Fortune",
+            "Wheel of Misfortune",
+            "Windfall"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "AN ANSWER drawn — interaction of any kind",
+      "_from": "role:removal",
+      "need": [
+        {
+          "any_of": [
+            "Astral Drift",
+            "Elesh Norn // The Argent Etchings",
+            "Glint-Horn Buccaneer",
+            "Irencrag Pyromancer",
+            "Niv-Mizzet, Parun"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A TUTOR drawn",
+      "_from": "role:tutor",
+      "need": [
+        {
+          "any_of": [
+            "Goblin Engineer"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A FINISHER drawn — the cards that end games",
+      "_from": "role:wincon",
+      "need": [
+        {
+          "any_of": [
+            "Chasm Skulker",
+            "Elesh Norn // The Argent Etchings",
+            "Gossip's Talent",
+            "Psychosis Crawler",
+            "Silent Hallcreeper",
+            "Sticky Fingers",
+            "Stromkirk Noble",
+            "Waterbender Ascension"
+          ]
+        }
+      ]
+    }
+  ],
+  "model_draw": true,
+  "model_combat": true,
+  "note": "Draw and combat modelled from 2026-09-10: the deck's engines are draw triggers and a flying commander. Brallin's discard trigger has no channel and is DARK; the goldfish reads the shark half only."
+}
