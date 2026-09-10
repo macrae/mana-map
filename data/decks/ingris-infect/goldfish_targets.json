@@ -1,0 +1,118 @@
+{
+  "_note": "SCAFFOLD — not a declaration. `manamap pilot scaffold-targets` derived these groups from contained combo lines and role axes; every label is a PLACEHOLDER and every group is a starting point to edit, not a finding. A goldfish group is a deck-specific functional set (\"the metronome bodies\", \"the flash traps\"), which is a different thing from a role: `ROLE_PATTERNS` answers what job a card does in any 99. Nothing here names a WIN LINE, because a machine guessing at one manufactures the exact claim `validate-goldfish-targets` exists to demand. Rewrite the labels, regroup the members, add the line this deck actually wins with, then run `manamap pilot validate-goldfish-targets <slug>` and delete \"scaffolded\".",
+  "scaffolded": true,
+  "targets": [
+    {
+      "label": "RAMP drawn — an accelerant of any kind",
+      "_from": "role:ramp",
+      "need": [
+        {
+          "any_of": [
+            "Arcane Signet",
+            "Black Market Connections",
+            "Deadly Dispute",
+            "Fellwar Stone",
+            "Malakir Rebirth // Malakir Mire",
+            "Mind Stone",
+            "Phyrexian Atlas",
+            "Plague Myr",
+            "Rakdos Signet",
+            "Sol Ring",
+            "Staff of Compleation",
+            "Talisman of Indulgence"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
+      "_from": "role:draw",
+      "need": [
+        {
+          "any_of": [
+            "Deadly Dispute",
+            "Infectious Inquiry",
+            "Night's Whisper",
+            "Phyrexian Arena",
+            "Sign in Blood"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "AN ANSWER drawn — interaction of any kind",
+      "_from": "role:removal",
+      "need": [
+        {
+          "any_of": [
+            "Anoint with Affliction",
+            "Bedevil",
+            "Contagion Clasp",
+            "Contagion Engine",
+            "Dreadbore",
+            "Drown in Ichor",
+            "Feed the Swarm",
+            "Glistening Oil",
+            "Go for the Throat",
+            "Grim Affliction",
+            "Infernal Grasp",
+            "Necropede",
+            "Phyresis Outbreak",
+            "Rakdos Charm",
+            "Staff of Compleation",
+            "Terminate",
+            "Volt Charge"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A TUTOR drawn",
+      "_from": "role:tutor",
+      "need": [
+        {
+          "any_of": [
+            "Demonic Tutor"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A FINISHER drawn — the cards that end games",
+      "_from": "role:wincon",
+      "need": [
+        {
+          "any_of": [
+            "Contagious Nim",
+            "Core Prowler",
+            "Corpse Cur",
+            "Flensermite",
+            "Glistening Oil",
+            "Grafted Exoskeleton",
+            "Hand of the Praetors",
+            "Ichor Rats",
+            "Ichorclaw Myr",
+            "Necropede",
+            "Ogre Menial",
+            "Phyresis",
+            "Phyrexian Crusader",
+            "Phyrexian Digester",
+            "Phyrexian Vatmother",
+            "Plague Myr",
+            "Plague Stinger",
+            "Razor Swine",
+            "Reaper of Sheoldred",
+            "Septic Rats",
+            "Skithiryx, the Blight Dragon",
+            "Tainted Strike",
+            "Vector Asp",
+            "Whispering Specter"
+          ]
+        }
+      ]
+    }
+  ],
+  "model_combat": true,
+  "model_draw": true,
+  "note": "POISON IS NOT MODELLED: this deck wins on ten poison counters, and every infect source's damage to a player is poison (CR 702.90b), including the commander's attack trigger. The goldfish counts life, so its kill turn here is a 40-life clock on bodies that actually need 10 -- a floor with a stated direction, not a reading. Teaching the model infect is the next commit on this deck."
+}
