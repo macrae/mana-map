@@ -103,7 +103,15 @@ def channels_for(profile):
     if _nonzero(profile.get("combat"), (
             "etb_damage_self_power", "etb_damage_count", "etb_damage_fixed",
             "etb_life_loss_fixed", "token_created_life_loss", "etb_token_bodies",
-            "etb_copy", "attack_treasure", "power", "cast_token_bodies")):
+            "etb_copy", "attack_treasure", "power", "cast_token_bodies",
+            # THE THIRD DRIFT OF THIS MIRROR. Mass animation (Starfield of Nyx,
+            # Opalescence) is consumed under `model_combat` and had been since
+            # 2026-09-03; the key was never listed here, so the one card that
+            # makes forty enchantments into bodies read as INVISIBLE on the
+            # branch built around it, and the fleet test could not see it
+            # because that test asks whether a modelled effect is applied,
+            # not whether an applied effect is reported. Found on best-v1.
+            "mass_animate_threshold")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw")):
@@ -155,7 +163,12 @@ def never_cast(profile, flags):
     if flags.get("model_combat"):
         if any((cb.get("etb_damage_self_power"), cb.get("etb_damage_count"),
                 cb.get("etb_damage_fixed"), cb.get("etb_token_bodies"),
-                cb.get("etb_copy"), (cb.get("team_damage_multiplier") or 0) > 1)):
+                cb.get("etb_copy"), (cb.get("team_damage_multiplier") or 0) > 1,
+                # goldfish casts a mass animator on sight under model_combat
+                # (`if model_combat and c["combat"]["mass_animate_threshold"]`);
+                # added here in the same edit as the channel, because the fleet
+                # test failed the moment the channel alone was taught.
+                cb.get("mass_animate_threshold"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False

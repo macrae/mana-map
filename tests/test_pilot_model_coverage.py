@@ -283,3 +283,25 @@ def test_no_deck_computes_an_effect_it_never_gets_to_apply():
         "applies:\n" + "\n".join(
             f"  {s}: " + ", ".join(f"{n} ({'/'.join(ch)})" for n, ch in v)
             for s, v in offenders.items()))
+
+
+def test_a_mass_animator_feeds_the_combat_channel_and_is_castable():
+    """Opalescence and Starfield of Nyx were INVISIBLE to this report on the branch
+    built around them (zur-enchantress/best-v1, 2026-09-09) while `goldfish` had
+    consumed `mass_animate_threshold` under `model_combat` since 09-03 and cast
+    the card on sight. Two mirrors drifted at once — `channels_for` and
+    `never_cast` — and the fleet test could only see the second, because it asks
+    whether a modelled effect is applied, never whether an applied effect is
+    reported. Proven by reverting either edit: this fails on `state`, the fleet
+    test fails on `never_cast`.
+    """
+    report = _report("zur-enchantress", "drain-v4")
+    rows = {r["name"]: r for r in report["cards"]}
+    checked = 0
+    for name in ("Opalescence", "Starfield of Nyx"):
+        if name not in rows:
+            continue
+        checked += 1
+        assert "combat" in rows[name]["possible"], rows[name]
+        assert rows[name]["state"] != "invisible", rows[name]
+    assert checked >= 1, "neither mass animator is on the branch this test was written against"
