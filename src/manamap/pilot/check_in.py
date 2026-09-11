@@ -142,7 +142,11 @@ def analyze(slug, text):
         warnings.append("no card corpus on this machine, so names were not checked "
                         "against it — run `manamap extract` to enable that")
     else:
-        unknown = sorted(n for n in new if n not in known)
+        # A NAME THE DECK ALREADY HOLDS IS KNOWN. ingris-infect was built by
+        # hand around a commander the corpus will not carry until the set
+        # releases; every branch of it was refused on its own commander's
+        # name, which this list has carried since the deck existed.
+        unknown = sorted(n for n in new if n not in known and n not in old)
         if unknown:
             blocking.append(f"{len(unknown)} name(s) match no card in the corpus — a typo "
                             f"here becomes a card the deck does not have: "

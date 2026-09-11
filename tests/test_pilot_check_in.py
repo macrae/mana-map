@@ -175,3 +175,18 @@ def test_reformatting_alone_cannot_manufacture_a_version(sandbox, paper):
         return sorted((e["name"], e.get("quantity") or 1, bool(e.get("is_commander")))
                       for e in es)
     assert key(after) == key(entries)
+
+
+def test_a_name_the_deck_already_holds_is_known_even_outside_the_corpus(tmp_path, monkeypatch):
+    """ingris-infect's commander is not in the corpus until Reality Fracture
+    releases; a branch that keeps her must not be refused on her name."""
+    from manamap.pilot import check_in
+    monkeypatch.setattr(check_in, "corpus_names", lambda: {"Plains", "Sol Ring"})
+    deck = tmp_path / "ghost"
+    deck.mkdir()
+    (deck / "decklist.txt").write_text("1 Ghost Commander *CMDR*\n98 Plains\n1 Sol Ring\n")
+    monkeypatch.setattr(check_in, "deck_dir", lambda slug, branch=None: deck)
+    same = check_in.analyze("ghost", "1 Ghost Commander *CMDR*\n98 Plains\n1 Sol Ring\n")
+    assert not any("corpus" in b for b in same["blocking"]), same["blocking"]
+    typo = check_in.analyze("ghost", "1 Ghost Commander *CMDR*\n97 Plains\n1 Sol Ring\n1 Sol Rong\n")
+    assert any("Sol Rong" in b for b in typo["blocking"]), "a real typo is still refused"
