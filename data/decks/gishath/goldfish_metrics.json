@@ -2,12 +2,19 @@
   "meta": {
     "card_advantage": {
       "cards_that_draw": 8,
-      "modelled": 0,
-      "why": "one card per turn, always — see model_assumptions. The understatement is proportional to this count, so two decks with different counts are not directly comparable on any speed figure."
+      "draw_not_modelled": [
+        "Curious Altisaur",
+        "Hunter's Insight",
+        "Jetmir's Garden",
+        "Runic Armasaur",
+        "Selvala, Heart of the Wilds",
+        "Vaultborn Tyrant"
+      ],
+      "modelled": 2,
+      "why": "ETB, spell, upkeep and arrival draw are modelled; activated, X-based, death- and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
     },
     "combat_effects_not_modelled": [
       "Etali, Primal Storm",
-      "Ghalta and Mavren",
       "Hunter's Insight",
       "Pugnacious Hammerskull",
       "Sunfrill Imitator"
@@ -61,6 +68,9 @@
       "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
       "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
+      "AN ENTRY TRIGGER THAT NAMES A TYPE FIRES ON THAT TYPE (2026-09-11): Dragon Tempest no longer fires on a mana dork; Molten Echoes copies the chosen type. Tokens carry no type line here and pass the gate. A CAST fires what listens for a cast, at every door the commander included: draw on a spell of mana value N or more (Up the Beanstalk), draw for a paid mana on a creature cast (Lifecrafter's Bestiary, paid when the pool has it), damage on casting a creature of power N or more (Sarkhan's Unsealing, counted as noncombat damage to the one opponent). A spell that has a creature deal its power to each opponent (Chandra's Ignition) deals the biggest body's power once; the wipe half has nothing to hit. A tutor that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the smallest 4-power nontoken body and fetches the highest-power creature of the named type the library holds -- a policy, stated. Evasion for the commander (Majestic Heliopterus) is Forge's to read: this model has no blockers and the connect rate is declared.",
+      "A LAND-MANA BONUS (Mirari's Wake and three others) adds one mana per land from the turn after it lands; DRAW EQUAL TO THE GREATEST POWER resolves against the board at cast and is held while the board is empty; DRAW A CARD FOR EACH <type> ON ENTRY counts the board it joins; an attack token AS BIG AS THE BEST OTHER ATTACKER (Ghalta and Mavren) takes the second-largest swing. NOT modelled and named: Etali, Primal Storm (casting other players' cards is outside this model) and draw equal to combat damage dealt by one creature (Hunter's Insight).",
       "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you control have haste' lets every creature attack the turn it lands, from the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads the creature's type line; Dragon Tempest's grant reads keyword flying; riot is read as always choosing haste. TOKENS carry no type line and no flying here, so a typed or flying grant does not reach them. NOT read: a grant from the graveyard (Anger), an activated one (Crashing Drawbridge), one conditional on the board ('as long as'), and the lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model taps no particular land. Before this a granted creature waited a turn and its haste enabler was read as nothing.",
       "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
       "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
@@ -68,7 +78,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "628c60c7cb5d",
+    "model_version": "9ea49ecb247d",
     "seed": 42,
     "treasure_sources_not_modelled": []
   },
@@ -77,49 +87,49 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.889,
+        "10": 0.905,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
-        "5": 0.001,
-        "6": 0.032,
-        "7": 0.236,
-        "8": 0.562,
-        "9": 0.781
+        "5": 0.004,
+        "6": 0.058,
+        "7": 0.293,
+        "8": 0.617,
+        "9": 0.812
       },
       "kill_turn_histogram": {
-        "10": 1084,
-        "5": 11,
-        "6": 308,
-        "7": 2043,
-        "8": 3256,
-        "9": 2190
+        "10": 935,
+        "5": 37,
+        "6": 547,
+        "7": 2348,
+        "8": 3233,
+        "9": 1954
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 25.78,
-        "2": 0.194,
-        "3": 1.926,
-        "4": 4.375,
-        "5": 7.417,
-        "6": 10.971,
-        "7": 14.697,
-        "8": 18.543,
-        "9": 22.276
+        "10": 55.571,
+        "2": 0.199,
+        "3": 1.795,
+        "4": 4.391,
+        "5": 8.125,
+        "6": 14.046,
+        "7": 21.791,
+        "8": 31.555,
+        "9": 42.704
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 23.399,
-        "2": 0.064,
-        "3": 0.278,
-        "4": 2.148,
-        "5": 4.954,
-        "6": 8.552,
-        "7": 12.25,
-        "8": 16.132,
-        "9": 19.764
+        "10": 44.802,
+        "2": 0.066,
+        "3": 0.28,
+        "4": 2.076,
+        "5": 5.059,
+        "6": 9.492,
+        "7": 15.589,
+        "8": 23.581,
+        "9": 33.311
       },
-      "mean_kill_turn": 8.187,
+      "mean_kill_turn": 8.03,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -133,198 +143,222 @@
         "9": 0.0
       },
       "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.111
+      "no_kill_by_max_turn_rate": 0.095
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.201,
+      "cast_by_turn_6_rate": 0.255,
       "cast_turn_histogram": {
-        "10": 925,
+        "10": 934,
         "3": 6,
-        "4": 181,
-        "5": 547,
-        "6": 1277,
-        "7": 1364,
-        "8": 1509,
-        "9": 1134,
-        "not_by_max_turn": 3057
+        "4": 256,
+        "5": 682,
+        "6": 1604,
+        "7": 1537,
+        "8": 1621,
+        "9": 1061,
+        "not_by_max_turn": 2299
       },
-      "mean_cast_turn": 7.521,
-      "median_cast_turn": 8
+      "mean_cast_turn": 7.362,
+      "median_cast_turn": 7
+    },
+    "commander_reveal": {
+      "ceiling_note": "this model has no blockers; the rate is Forge's, not this model's",
+      "declared": true,
+      "games_it_fired": 7255,
+      "mean_bodies": 4.096,
+      "mean_fired": 1.953,
+      "rate": {
+        "connects_per_attack": 0.7,
+        "source": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65 (V3, 40 games): Gishath assigned to attack 60 times, the reveal trigger resolved 42 times = 0.70 per attack, read 2026-09-11 from the logs' `Combat: … assigned … to attack` and `Resolve Stack: Whenever Gishath` lines",
+        "type": "Dinosaur"
+      }
     },
     "interaction_castable_by_turn": {
-      "1": 0.126,
-      "10": 0.59,
-      "2": 0.223,
-      "3": 0.232,
-      "4": 0.308,
-      "5": 0.336,
-      "6": 0.363,
-      "7": 0.416,
-      "8": 0.461,
-      "9": 0.53
+      "1": 0.125,
+      "10": 0.612,
+      "2": 0.218,
+      "3": 0.214,
+      "4": 0.289,
+      "5": 0.315,
+      "6": 0.351,
+      "7": 0.402,
+      "8": 0.462,
+      "9": 0.546
     },
     "interaction_in_hand_by_turn": {
-      "1": 0.735,
-      "10": 0.885,
-      "2": 0.778,
-      "3": 0.808,
-      "4": 0.829,
-      "5": 0.839,
-      "6": 0.853,
-      "7": 0.862,
-      "8": 0.871,
-      "9": 0.877
+      "1": 0.743,
+      "10": 0.92,
+      "2": 0.789,
+      "3": 0.819,
+      "4": 0.835,
+      "5": 0.85,
+      "6": 0.866,
+      "7": 0.88,
+      "8": 0.895,
+      "9": 0.906
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.419,
+      "1": 0.998,
+      "10": 0.56,
       "2": 0.995,
-      "3": 0.893,
-      "4": 0.757,
+      "3": 0.894,
+      "4": 0.752,
       "5": 0.624,
-      "6": 0.532,
-      "7": 0.47,
-      "8": 0.442,
-      "9": 0.423
+      "6": 0.555,
+      "7": 0.516,
+      "8": 0.517,
+      "9": 0.536
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.679,
-      "2": 2.147,
-      "3": 3.37,
-      "4": 4.267,
-      "5": 4.988,
-      "6": 5.599,
-      "7": 6.146,
-      "8": 6.671,
-      "9": 7.176
+      "1": 0.998,
+      "10": 9.352,
+      "2": 2.143,
+      "3": 3.371,
+      "4": 4.294,
+      "5": 5.095,
+      "6": 5.96,
+      "7": 6.724,
+      "8": 7.527,
+      "9": 8.397
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 5.346,
-      "2": 0.103,
-      "3": 0.652,
-      "4": 1.346,
-      "5": 2.072,
-      "6": 2.735,
-      "7": 3.395,
-      "8": 4.044,
-      "9": 4.711
+      "10": 9.803,
+      "2": 0.108,
+      "3": 0.619,
+      "4": 1.292,
+      "5": 2.017,
+      "6": 2.825,
+      "7": 4.049,
+      "8": 5.575,
+      "9": 7.543
+    },
+    "mean_extra_cards_drawn_by_turn": {
+      "1": 0.0,
+      "10": 3.147,
+      "2": 0.0,
+      "3": 0.002,
+      "4": 0.042,
+      "5": 0.154,
+      "6": 0.405,
+      "7": 0.79,
+      "8": 1.353,
+      "9": 2.12
     },
     "opening_hand": {
       "first_seven_land_histogram": {
-        "0": 452,
-        "1": 1799,
-        "2": 3046,
-        "3": 2746,
-        "4": 1437,
-        "5": 436,
-        "6": 82,
-        "7": 2
+        "0": 398,
+        "1": 1721,
+        "2": 3055,
+        "3": 2888,
+        "4": 1436,
+        "5": 422,
+        "6": 77,
+        "7": 3
       },
-      "keep_can_act_by_t3_rate": 0.836,
-      "keep_first_seven_rate": 0.766,
+      "keep_can_act_by_t3_rate": 0.837,
+      "keep_first_seven_rate": 0.78,
       "kept_hand_land_histogram": {
-        "0": 18,
-        "1": 90,
-        "2": 3913,
-        "3": 3528,
-        "4": 1868,
-        "5": 579,
-        "6": 4
+        "0": 24,
+        "1": 102,
+        "2": 3894,
+        "3": 3627,
+        "4": 1828,
+        "5": 523,
+        "6": 2
       },
-      "mean_mulligans": 0.285
+      "mean_mulligans": 0.271
     },
     "targets": [
       {
-        "assembled_rate": 0.911,
-        "assembled_rate_assisted": 0.952,
-        "by_turn_6_rate": 0.832,
-        "by_turn_6_rate_assisted": 0.888,
+        "assembled_rate": 0.964,
+        "assembled_rate_assisted": 0.982,
+        "by_turn_6_rate": 0.864,
+        "by_turn_6_rate_assisted": 0.911,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 2.253,
-        "mean_turn_assisted": 2.171
+        "mean_turn": 2.335,
+        "mean_turn_assisted": 2.161
       },
       {
-        "assembled_rate": 0.683,
-        "assembled_rate_assisted": 0.819,
-        "by_turn_6_rate": 0.561,
-        "by_turn_6_rate_assisted": 0.698,
+        "assembled_rate": 0.81,
+        "assembled_rate_assisted": 0.897,
+        "by_turn_6_rate": 0.641,
+        "by_turn_6_rate_assisted": 0.752,
         "label": "Cost reducer or cheat-into-play drawn",
-        "mean_turn": 3.127,
-        "mean_turn_assisted": 3.135
+        "mean_turn": 3.334,
+        "mean_turn_assisted": 3.157
       },
       {
-        "assembled_rate": 0.67,
-        "assembled_rate_assisted": 0.81,
-        "by_turn_6_rate": 0.558,
-        "by_turn_6_rate_assisted": 0.695,
+        "assembled_rate": 0.849,
+        "assembled_rate_assisted": 0.92,
+        "by_turn_6_rate": 0.604,
+        "by_turn_6_rate_assisted": 0.725,
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "mean_turn": 2.994,
-        "mean_turn_assisted": 3.07
+        "mean_turn": 3.985,
+        "mean_turn_assisted": 3.607
       },
       {
-        "assembled_rate": 0.626,
-        "assembled_rate_assisted": 0.786,
-        "by_turn_6_rate": 0.505,
-        "by_turn_6_rate_assisted": 0.659,
+        "assembled_rate": 0.792,
+        "assembled_rate_assisted": 0.892,
+        "by_turn_6_rate": 0.603,
+        "by_turn_6_rate_assisted": 0.726,
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "mean_turn": 3.206,
-        "mean_turn_assisted": 3.27
+        "mean_turn": 3.543,
+        "mean_turn_assisted": 3.349
       },
       {
-        "assembled_rate": 0.319,
-        "assembled_rate_assisted": 0.597,
-        "by_turn_6_rate": 0.241,
-        "by_turn_6_rate_assisted": 0.463,
+        "assembled_rate": 0.567,
+        "assembled_rate_assisted": 0.76,
+        "by_turn_6_rate": 0.281,
+        "by_turn_6_rate_assisted": 0.488,
         "label": "Enrage engine drawn",
-        "mean_turn": 3.729,
-        "mean_turn_assisted": 4.119
+        "mean_turn": 5.705,
+        "mean_turn_assisted": 5.01
       },
       {
-        "assembled_rate": 0.638,
-        "assembled_rate_assisted": 0.79,
+        "assembled_rate": 0.7,
+        "assembled_rate_assisted": 0.835,
         "by_turn_6_rate": 0.511,
-        "by_turn_6_rate_assisted": 0.66,
+        "by_turn_6_rate_assisted": 0.655,
         "label": "Protection held for the board",
-        "mean_turn": 3.32,
-        "mean_turn_assisted": 3.345
+        "mean_turn": 3.846,
+        "mean_turn_assisted": 3.689
       },
       {
-        "assembled_rate": 0.029,
-        "assembled_rate_assisted": 0.19,
-        "by_turn_6_rate": 0.015,
-        "by_turn_6_rate_assisted": 0.097,
+        "assembled_rate": 0.081,
+        "assembled_rate_assisted": 0.299,
+        "by_turn_6_rate": 0.018,
+        "by_turn_6_rate_assisted": 0.106,
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
-        "mean_turn": 5.828,
-        "mean_turn_assisted": 6.294
+        "mean_turn": 7.708,
+        "mean_turn_assisted": 7.167
       }
     ],
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.122,
+        "10": 0.239,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.003,
-        "5": 0.012,
-        "6": 0.039,
-        "7": 0.062,
-        "8": 0.086,
-        "9": 0.106
+        "4": 0.002,
+        "5": 0.013,
+        "6": 0.04,
+        "7": 0.076,
+        "8": 0.119,
+        "9": 0.172
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 0.299,
+        "10": 0.526,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.003,
+        "4": 0.002,
         "5": 0.015,
-        "6": 0.047,
-        "7": 0.095,
-        "8": 0.146,
-        "9": 0.218
+        "6": 0.049,
+        "7": 0.108,
+        "8": 0.195,
+        "9": 0.329
       }
     }
   }

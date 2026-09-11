@@ -1017,7 +1017,6 @@
   ],
   "no_call": [
    "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -1025,30 +1024,36 @@
    "hand can act by T3"
   ],
   "notes": [],
-  "reward": [],
+  "reward": [
+   {
+    "measure": "killed by T10",
+    "reads_as": "87 games in 100 -> 89 in 100, a swing of 2 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   }
+  ],
   "risk": [
    {
-    "detail": "20.19 -> 17.19, a change of -3.00 (-15%)",
+    "detail": "19.86 -> 17.19, a change of -2.67 (-13%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "6.95 -> 6.73, a change of -0.21 (-3%)",
+    "detail": "6.91 -> 6.73, a change of -0.18 (-3%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "2.39 -> 1.56, a change of -0.83 (-35%)",
+    "detail": "2.17 -> 1.56, a change of -0.61 (-28%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is missed drop by T5 at +0.018 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is stall, 2 in a row at -0.006 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1064,7 +1069,9 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
+  "rose": [
+   "killed by T10"
+  ],
   "state": "inconclusive"
  },
  "slug": "zur-enchantress",
@@ -1073,11 +1080,11 @@
   {
    "better_is": "higher",
    "branch": 17.189,
-   "champion": 20.1936,
-   "delta": -3.0046,
-   "mde": 0.4917,
+   "champion": 19.8612,
+   "delta": -2.6722,
+   "mde": 0.4831,
    "measure": "damage @T10",
-   "reads_as": "20.19 -> 17.19, a change of -3.00 (-15%)",
+   "reads_as": "19.86 -> 17.19, a change of -2.67 (-13%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1087,11 +1094,11 @@
   {
    "better_is": "higher",
    "branch": 6.7323,
-   "champion": 6.9455,
-   "delta": -0.2132,
-   "mde": 0.1624,
+   "champion": 6.9142,
+   "delta": -0.1819,
+   "mde": 0.1619,
    "measure": "board power @T6",
-   "reads_as": "6.95 -> 6.73, a change of -0.21 (-3%)",
+   "reads_as": "6.91 -> 6.73, a change of -0.18 (-3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1115,23 +1122,23 @@
   {
    "better_is": "higher",
    "branch": 0.8851,
-   "champion": 0.8747,
-   "delta": 0.0104,
-   "mde": 0.0131,
+   "champion": 0.8696,
+   "delta": 0.0155,
+   "mde": 0.0133,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.013 this run can resolve",
+   "reads_as": "87 games in 100 -> 89 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0373,
-   "champion": 0.043,
-   "delta": -0.0057,
-   "mde": 0.008,
+   "champion": 0.0433,
+   "delta": -0.006,
+   "mde": 0.0081,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.008 this run can resolve",
    "scale": null,
@@ -1143,11 +1150,11 @@
   {
    "better_is": "lower",
    "branch": 0.4229,
-   "champion": 0.4052,
-   "delta": 0.0177,
+   "champion": 0.4119,
+   "delta": 0.011,
    "mde": 0.0196,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1171,11 +1178,11 @@
   {
    "better_is": "higher",
    "branch": 1.5626,
-   "champion": 2.3942,
-   "delta": -0.8316,
-   "mde": 0.1414,
+   "champion": 2.1698,
+   "delta": -0.6072,
+   "mde": 0.129,
    "measure": "extra cards by T8",
-   "reads_as": "2.39 -> 1.56, a change of -0.83 (-35%)",
+   "reads_as": "2.17 -> 1.56, a change of -0.61 (-28%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1185,11 +1192,11 @@
   {
    "better_is": "higher",
    "branch": 0.5936,
-   "champion": 0.5776,
-   "delta": 0.016,
+   "champion": 0.5842,
+   "delta": 0.0094,
    "mde": 0.024,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.016 is smaller than the 0.024 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.024 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

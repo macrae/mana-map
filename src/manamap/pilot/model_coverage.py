@@ -75,7 +75,7 @@ def _nonzero(profile, keys):
 def channels_for(profile):
     """Every channel this card's text would feed, flags ignored."""
     found = set()
-    if profile["is_land"] or profile["produces"] or profile["reduces"] \
+    if profile["is_land"] or profile["produces"] or profile.get("land_mana_bonus") or profile["reduces"] \
             or profile["scales_with_colors"]:
         found.add("mana")
     if profile["creature_bodies"] or profile["bodies"]:
@@ -117,13 +117,16 @@ def channels_for(profile):
             # bodies too, so this only matters for the per-attacker ping.
             "infect", "toxic", "attack_ping_per_attacker",
             # Team haste (2026-09-11), listed with the channel.
-            "team_haste")):
+            "team_haste", "attack_token_scales",
+            "spell_damage_greatest_power", "cast_damage")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
             # Pre-existing drift folded in: cast_draw and the X path were
             # read by the loops and never listed here.
-            "cast_draw", "x_draw_multiplier")):
+            "cast_draw", "x_draw_multiplier",
+            # 2026-09-11: draw for greatest power, draw per type on entry.
+            "spell_draw_greatest_power", "etb_draw_per_type")):
         found.add("draw")
     # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
     # or a draw. Named keys, never the dict's truthiness.
@@ -171,6 +174,7 @@ def never_cast(profile, flags):
     model understands it, was told to look, and never puts it on the table.
     """
     if profile["is_land"] or profile["bodies"] > 0 or profile["produces"] > 0 \
+            or profile.get("land_mana_bonus") \
             or profile["tutor"] or profile["reduces"]:
         return False
     cb = profile.get("combat") or {}
@@ -184,7 +188,8 @@ def never_cast(profile, flags):
                 # test failed the moment the channel alone was taught.
                 cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"),
                 # a haste enabler is cast by the combat-payoff loop
-                cb.get("team_haste"))):
+                cb.get("team_haste"), cb.get("cast_damage"),
+                cb.get("spell_damage_greatest_power"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False
@@ -193,7 +198,8 @@ def never_cast(profile, flags):
         return False
     if flags.get("model_draw") and _nonzero(profile.get("draw"), (
             "spell_draw", "etb_draw", "recurring_draw", "arrival_draw", "cast_draw",
-            "x_draw_multiplier")):
+            "x_draw_multiplier",
+            "spell_draw_greatest_power", "etb_draw_per_type")):
         return False
     # A wheel is selected by the draw loop under model_discard; a payoff
     # permanent by the engine loop.

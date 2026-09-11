@@ -76,7 +76,19 @@ def _a_branch(slug):
             return False
 
     live = [name for name in got if not merged(name)]
-    return (live or got)[0]
+
+    def staged(name):
+        doc = config.DECKS_DIR / slug / "branches" / name / "branch.json"
+        try:
+            import json
+            return len(json.loads(doc.read_text()).get("staged") or [])
+        except Exception:                       # noqa: BLE001
+            return 0
+
+    # THE BRANCH WITH THE MOST STAGED SWAPS. The first name alphabetically was
+    # final-v1 (2026-09-11), whose one staged swap puts a card BACK that the
+    # deck already runs, so the pairing tests had nothing to pair.
+    return max(live or got, key=staged)
 
 
 #: The deck the branch-shaped tests measure against, and any branch it has.

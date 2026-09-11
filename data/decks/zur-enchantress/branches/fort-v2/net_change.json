@@ -1310,7 +1310,7 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy damage @T10, killed by T10 and stall, 2 in a row and pay board power @T6, missed drop by T5, extra cards by T8, interaction affordable @T6 and hand can act by T3.",
+  "because": "You buy damage @T10, killed by T10 and stall, 2 in a row and pay extra cards by T8, interaction affordable @T6 and hand can act by T3.",
   "bill": {
    "box": 3,
    "buy": 13,
@@ -1367,26 +1367,26 @@
    "total": 91
   },
   "fell": [
-   "board power @T6",
-   "missed drop by T5",
    "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "no_call": [
+   "board power @T6",
    "killed by T6",
+   "missed drop by T5",
    "mulliganed"
   ],
   "notes": [],
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "20.19 -> 20.79, a change of +0.60 (+3%)",
+    "reads_as": "19.86 -> 20.79, a change of +0.93 (+5%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "killed by T10",
-    "reads_as": "87 games in 100 -> 90 in 100, a swing of 2 games per 100",
+    "reads_as": "87 games in 100 -> 90 in 100, a swing of 3 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
@@ -1397,25 +1397,13 @@
   ],
   "risk": [
    {
-    "detail": "6.95 -> 6.78, a change of -0.16 (-2%)",
-    "kind": "paid",
-    "what": "board power @T6",
-    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "detail": "41 games in 100 -> 43 in 100, a swing of 2 games per 100",
-    "kind": "paid",
-    "what": "missed drop by T5",
-    "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
-   },
-   {
-    "detail": "2.39 -> 1.44, a change of -0.96 (-40%)",
+    "detail": "2.17 -> 1.44, a change of -0.73 (-34%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "58 games in 100 -> 53 in 100, a swing of 5 games per 100",
+    "detail": "58 games in 100 -> 53 in 100, a swing of 6 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
@@ -1427,9 +1415,9 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is killed by T6 at +0.003 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.018 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "2 row(s) returned no call",
+    "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1458,11 +1446,11 @@
   {
    "better_is": "higher",
    "branch": 20.793,
-   "champion": 20.1936,
-   "delta": 0.5994,
-   "mde": 0.4917,
+   "champion": 19.8612,
+   "delta": 0.9318,
+   "mde": 0.4831,
    "measure": "damage @T10",
-   "reads_as": "20.19 -> 20.79, a change of +0.60 (+3%)",
+   "reads_as": "19.86 -> 20.79, a change of +0.93 (+5%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "better",
@@ -1472,14 +1460,14 @@
   {
    "better_is": "higher",
    "branch": 6.7809,
-   "champion": 6.9455,
-   "delta": -0.1646,
-   "mde": 0.1624,
+   "champion": 6.9142,
+   "delta": -0.1333,
+   "mde": 0.1619,
    "measure": "board power @T6",
-   "reads_as": "6.95 -> 6.78, a change of -0.16 (-2%)",
+   "reads_as": "no call \u2014 the gap of 0.133 is smaller than the 0.162 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
@@ -1500,11 +1488,11 @@
   {
    "better_is": "higher",
    "branch": 0.8951,
-   "champion": 0.8747,
-   "delta": 0.0204,
-   "mde": 0.0131,
+   "champion": 0.8696,
+   "delta": 0.0255,
+   "mde": 0.0133,
    "measure": "killed by T10",
-   "reads_as": "87 games in 100 -> 90 in 100, a swing of 2 games per 100",
+   "reads_as": "87 games in 100 -> 90 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1514,9 +1502,9 @@
   {
    "better_is": "lower",
    "branch": 0.0261,
-   "champion": 0.043,
-   "delta": -0.0169,
-   "mde": 0.008,
+   "champion": 0.0433,
+   "delta": -0.0172,
+   "mde": 0.0081,
    "measure": "stall, 2 in a row",
    "reads_as": "4 games in 100 -> 3 in 100, a swing of 2 games per 100",
    "scale": null,
@@ -1528,14 +1516,14 @@
   {
    "better_is": "lower",
    "branch": 0.4299,
-   "champion": 0.4052,
-   "delta": 0.0247,
+   "champion": 0.4119,
+   "delta": 0.018,
    "mde": 0.0196,
    "measure": "missed drop by T5",
-   "reads_as": "41 games in 100 -> 43 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
   },
@@ -1556,11 +1544,11 @@
   {
    "better_is": "higher",
    "branch": 1.4381,
-   "champion": 2.3942,
-   "delta": -0.9561,
-   "mde": 0.1414,
+   "champion": 2.1698,
+   "delta": -0.7317,
+   "mde": 0.129,
    "measure": "extra cards by T8",
-   "reads_as": "2.39 -> 1.44, a change of -0.96 (-40%)",
+   "reads_as": "2.17 -> 1.44, a change of -0.73 (-34%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -1570,11 +1558,11 @@
   {
    "better_is": "higher",
    "branch": 0.5292,
-   "champion": 0.5776,
-   "delta": -0.0484,
+   "champion": 0.5842,
+   "delta": -0.055,
    "mde": 0.024,
    "measure": "interaction affordable @T6",
-   "reads_as": "58 games in 100 -> 53 in 100, a swing of 5 games per 100",
+   "reads_as": "58 games in 100 -> 53 in 100, a swing of 6 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "worse",

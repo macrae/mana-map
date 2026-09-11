@@ -245,6 +245,30 @@ refactor Forge beat 31/400 vs 50/400).
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.
 
+**Gishath checked in as v1.1.0 and SLEEVED (2026-09-11), and the goldfish learned
+its engines.** Forge read the commander's reveal (42 triggers in 40 games, the AI
+took the Dinosaurs); the goldfish read a 7-power body and none of Mirari's Wake,
+Rishkar's Expertise, Dreadmaw's per-Dinosaur draw or Ghalta's scaling token, with
+33 cards DARK because `model_combat` was never declared. Taught: a declared
+combat-damage reveal (`model_commander_combat_reveal`, rate 0.70 per attack named
+from the V3 logs), land-mana bonus (4 cards), draw-for-greatest-power (3, one of
+them Ur-Dragon's Return of the Wildspeaker), draw-per-type on entry (10), the
+scaling attack token (1). Kill-by-T8 0.56 -> 0.62 on the sleeved list. Etali and
+Hunter's Insight named unmodelled. A second batch the same day from the pilot's
+cart: typed entry triggers (144 cards; Dragon Tempest no longer fires on a dork),
+Molten Echoes' chosen-type copy, cast-draw on mana value (Up the Beanstalk) and
+for a paid mana (Lifecrafter's Bestiary), power-gated cast damage (Sarkhan's
+Unsealing), damage-for-power (Chandra's Ignition), tutor-to-battlefield (Savage
+Order); the commander's own cast now fires cast triggers. Branch `cart-v1` (eight
+swaps incl. World War Hulk for Enlarge) staged for the measurement; the engine
+model rebuilt for v1.1.0 (critic in flight); deck_map stale against V3. Next: the
+Forge v1.1.0 baseline, cart-v1 on both instruments, World War Hulk's chapters as
+a third batch. Open from the agent chain: `merge-deck-map` cannot CLEAR a label (a
+null or omitted id keeps the old name, `merge_deck_map.py:60-63`); `engine.json`
+cites V3's city ids (its `map_disagreements` says so) and wants a re-run against
+today's map; `strategic_frame.json` is stamped V3 and needs the consult. →
+`docs/gotchas-bench.md`
+
 **The goldfish learned team haste (2026-09-11), for the Ur-Dragon improvement
 pass.** The pilot's log asked for haste by name and the model read `haste` per
 card, so Temur Ascendancy granted nothing and a creature that GIVES haste attacked

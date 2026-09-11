@@ -53,7 +53,9 @@ def test_dark_is_per_channel_not_per_card():
     gishath — a deck that opts into NOTHING — as 0 dark. A card is dark when
     ANYTHING about it is unread, whatever else is read.
     """
-    report = _report()
+    # gishath declared combat, treasure, draw and its reveal on 2026-09-11 and
+    # is all-seen now; goblin-storm opts into nothing and is the fixture.
+    report = _report("goblin-storm")
     assert report["counts"]["dark"] > 0, "a deck with no flags cannot be all-seen"
     dark = [r for r in report["cards"] if r["state"] == "dark"]
     # …and the proof it is per-channel: at least one dark card also has an

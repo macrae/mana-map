@@ -16,7 +16,8 @@
             "Hulking Raptor",
             "Topiary Stomper",
             "Selvala, Heart of the Wilds",
-            "Regal Behemoth"
+            "Regal Behemoth",
+            "Knight of the Stampede"
           ]
         }
       ]
@@ -31,7 +32,8 @@
             "Descendants' Path",
             "Belbe's Portal",
             "Monster Manual // Zoological Study",
-            "Huatli, Poet of Unity // Roar of the Fifth People"
+            "Huatli, Poet of Unity // Roar of the Fifth People",
+            "Knight of the Stampede"
           ]
         }
       ]
@@ -60,7 +62,8 @@
             "Otepec Huntmaster",
             "Rogue's Passage",
             "Kessig Wolf Run",
-            "Overwhelming Stampede"
+            "Overwhelming Stampede",
+            "Knight of the Stampede"
           ]
         }
       ]
@@ -108,5 +111,11 @@
   ],
   "model_combat": true,
   "model_treasures": true,
-  "_note_2026_09_11": "Paper list v1.1.0 checked in: departed cards dropped from every any_of group; Knight of the Stampede joins the cost-reducer group; model_combat and model_treasures declared ON for the tuning pass (33 combat cards and Bonehoard Dracosaur were DARK)."
+  "_note_2026_09_11": "Paper list v1.1.0 checked in: departed cards dropped from every any_of group; Knight of the Stampede joins the cost-reducer group; model_combat and model_treasures declared ON for the tuning pass (33 combat cards and Bonehoard Dracosaur were DARK).",
+  "model_draw": true,
+  "model_commander_combat_reveal": {
+    "type": "Dinosaur",
+    "connects_per_attack": 0.7,
+    "source": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65 (V3, 40 games): Gishath assigned to attack 60 times, the reveal trigger resolved 42 times = 0.70 per attack, read 2026-09-11 from the logs' `Combat: … assigned … to attack` and `Resolve Stack: Whenever Gishath` lines"
+  }
 }

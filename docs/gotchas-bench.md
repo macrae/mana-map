@@ -1624,3 +1624,80 @@ carried the split. One definition now, in `run()`, `analyze()` and
 the sum of `summary.wins`. The six records were re-derived from their own
 `games` block, which is enough because the block carries `draw`, `truncated`
 and `winner` per game.
+
+## Gishath: Forge saw the win condition and the goldfish saw a 7-power body
+
+**2026-09-11.** The pilot checked in the paper Gishath list and asked whether
+the bench could model the deck's win condition: Gishath connects for seven,
+reveals seven, and every Dinosaur among them enters free. The audit split
+cleanly by instrument.
+
+**Forge read it.** On the V3 record at standard-v3 the trigger resolved 42
+times in 40 games, Gishath was assigned to attack 60 times (0.70 connects per
+attack), and the log shows the AI taking the Dinosaurs: Vaultborn Tyrant,
+Regal Behemoth and Trumpeting Carnosaur entering off one trigger and their own
+triggers firing. Mirari's Wake's mana trigger resolved 55 times, Ghalta and
+Mavren's 52. Forge is a sound gate for this deck.
+
+**The goldfish read none of it.** Gishath was a 7-power body with the trigger
+flagged unreadable; Mirari's Wake produced nothing; Rishkar's Expertise (draw
+equal to the greatest power) drew nothing — and so did Return of the
+Wildspeaker in Ur-Dragon, which nobody had noticed; Earthshaker Dreadmaw drew
+ONE card instead of one per Dinosaur; Ghalta and Mavren was unreadable; and
+the deck had never declared `model_combat`, so 33 cards were DARK. Every
+goldfish figure on the deck was a resource curve with the plan missing.
+
+What was taught, each with a corpus sweep locked in
+`tests/test_pilot_goldfish_gishath.py`:
+
+- **The commander's combat-damage reveal, DECLARED per deck**
+  (`model_commander_combat_reveal`: type, connects-per-attack, source) the way
+  Zur's animate and the attack tutor are, because one card in the corpus has
+  it. The rate is REQUIRED with its source — this model has no blockers and
+  would connect every attack — and the record reports fires and bodies per
+  game beside the declared rate. A revealed creature enters through the one
+  door with every registration a cast body gets, minus what a cast is.
+- **A land-mana bonus** (4 cards): one extra mana per land from the turn after.
+- **Draw equal to the greatest power** (3 instants and sorceries): resolved
+  against the board at cast, held while the board is empty.
+- **Draw a card per type on entry** (10 cards): counted on the board it joins;
+  the one-card read is suppressed so it is not double-counted.
+- **An attack token as big as the best other attacker** (Ghalta alone): the
+  second-largest swing.
+
+Named and left: Etali, Primal Storm (casting other players' cards is outside
+this model) and Hunter's Insight (draw equal to one creature's combat damage).
+
+Gishath on the sleeved list, before and after, same seed: kill by turn 8 0.56 →
+0.62, mean kill turn 8.2 → 8.0, the reveal firing 1.95 times a game for 4.1
+free Dinosaurs. Forge's AI put the same trigger to work 1.05 times a game.
+
+### The second batch: an entry trigger fires on its type, and a cast fires what listens
+
+Same day, same deck, from the pilot's cart. Six more shapes, each swept and
+locked in `tests/test_pilot_goldfish_gishath.py`:
+
+- **A typed entry trigger fires on its type.** `_ETB_TRIGGER_RE` threw the
+  subject noun away, so Dragon Tempest fired on a Bird of Paradise and Lathliss
+  minted a Dragon for a mana dork — the `.*`-where-the-noun-lives trap from
+  `docs/gotchas-analysis.md`, one file over. 144 cards in the corpus name a type
+  in their entry trigger. Tokens carry no type line in this model and PASS the
+  gate, so Lathliss's Dragons still fire Tempest (stated). Molten Echoes is the
+  same gate keyed to the deck's chosen type, copying every nontoken entry.
+- **A cast fires what listens for a cast, at every door, the commander's
+  included.** Draw on a spell of mana value N or more (Up the Beanstalk, 3
+  cards), draw for a paid mana on a creature cast (Lifecrafter's Bestiary, paid
+  only when the pool has it), damage on casting a creature of power N or more
+  (Sarkhan's Unsealing). The commander's cast used to fire nothing at all.
+- **A spell that has a creature deal its power** (Chandra's Ignition) deals the
+  biggest body's power once; the wipe half has nothing to hit here.
+- **A tutor onto the battlefield** (Savage Order, Natural Order, 3 spells)
+  sacrifices the smallest 4-power nontoken body and fetches the highest-power
+  creature of the named type the library holds through the free-entry door.
+  `is_tutor` had refused Savage Order because its text opens with the
+  additional cost, not the search.
+
+The typed gate is the one that moves other decks: ur-dragon's damage falls
+where Tempest and Valkas had been paid for dorks entering. That is a
+correction, and every branch on the deck was measured under the same
+over-credit in both arms, so the comparisons stand.

@@ -255,7 +255,10 @@ def test_naming_a_deck_is_the_manual_trigger_and_works_on_any_deck():
         f"`regen --slug {slug}` reaches nothing — naming a deck must override "
         f"the sleeved-only default, or the flag silently does nothing")
     rows = regen.plan(only=["goldfish"], slug=slug)
-    assert rows and rows[0][3] == [(slug, None)], rows
+    # A named deck's BRANCHES ride along (ingris-infect carries three with
+    # metrics); the deck itself must be there and nothing from another deck.
+    assert rows and (slug, None) in rows[0][3], rows
+    assert all(s == slug for s, _b in rows[0][3]), rows
 
 
 def test_an_archived_deck_is_never_swept_or_named_into_a_rebuild():

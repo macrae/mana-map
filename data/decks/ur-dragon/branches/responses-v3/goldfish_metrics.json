@@ -64,6 +64,9 @@
       "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
       "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
+      "AN ENTRY TRIGGER THAT NAMES A TYPE FIRES ON THAT TYPE (2026-09-11): Dragon Tempest no longer fires on a mana dork; Molten Echoes copies the chosen type. Tokens carry no type line here and pass the gate. A CAST fires what listens for a cast, at every door the commander included: draw on a spell of mana value N or more (Up the Beanstalk), draw for a paid mana on a creature cast (Lifecrafter's Bestiary, paid when the pool has it), damage on casting a creature of power N or more (Sarkhan's Unsealing, counted as noncombat damage to the one opponent). A spell that has a creature deal its power to each opponent (Chandra's Ignition) deals the biggest body's power once; the wipe half has nothing to hit. A tutor that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the smallest 4-power nontoken body and fetches the highest-power creature of the named type the library holds -- a policy, stated. Evasion for the commander (Majestic Heliopterus) is Forge's to read: this model has no blockers and the connect rate is declared.",
+      "A LAND-MANA BONUS (Mirari's Wake and three others) adds one mana per land from the turn after it lands; DRAW EQUAL TO THE GREATEST POWER resolves against the board at cast and is held while the board is empty; DRAW A CARD FOR EACH <type> ON ENTRY counts the board it joins; an attack token AS BIG AS THE BEST OTHER ATTACKER (Ghalta and Mavren) takes the second-largest swing. NOT modelled and named: Etali, Primal Storm (casting other players' cards is outside this model) and draw equal to combat damage dealt by one creature (Hunter's Insight).",
       "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you control have haste' lets every creature attack the turn it lands, from the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads the creature's type line; Dragon Tempest's grant reads keyword flying; riot is read as always choosing haste. TOKENS carry no type line and no flying here, so a typed or flying grant does not reach them. NOT read: a grant from the graveyard (Anger), an activated one (Crashing Drawbridge), one conditional on the board ('as long as'), and the lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model taps no particular land. Before this a granted creature waited a turn and its haste enabler was read as nothing.",
       "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
       "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
@@ -71,7 +74,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "628c60c7cb5d",
+    "model_version": "9ea49ecb247d",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -86,50 +89,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.954,
+        "10": 0.953,
         "2": 0.0,
         "3": 0.0,
         "4": 0.002,
-        "5": 0.052,
-        "6": 0.271,
-        "7": 0.585,
-        "8": 0.794,
+        "5": 0.051,
+        "6": 0.27,
+        "7": 0.584,
+        "8": 0.793,
         "9": 0.901
       },
       "kill_turn_histogram": {
         "10": 523,
         "4": 19,
-        "5": 500,
-        "6": 2195,
-        "7": 3134,
-        "8": 2089,
-        "9": 1077
+        "5": 495,
+        "6": 2190,
+        "7": 3140,
+        "8": 2084,
+        "9": 1082
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 30.41,
+        "10": 30.264,
         "2": 0.217,
         "3": 1.374,
-        "4": 4.652,
-        "5": 9.247,
-        "6": 14.328,
-        "7": 19.109,
-        "8": 23.353,
-        "9": 27.107
+        "4": 4.651,
+        "5": 9.239,
+        "6": 14.305,
+        "7": 19.064,
+        "8": 23.275,
+        "9": 26.994
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 67.266,
-        "2": 0.014,
-        "3": 0.605,
-        "4": 2.981,
-        "5": 9.209,
-        "6": 18.518,
-        "7": 30.046,
-        "8": 41.919,
-        "9": 54.633
+        "10": 66.734,
+        "2": 0.013,
+        "3": 0.598,
+        "4": 2.963,
+        "5": 9.177,
+        "6": 18.418,
+        "7": 29.902,
+        "8": 41.636,
+        "9": 54.237
       },
-      "mean_kill_turn": 7.268,
+      "mean_kill_turn": 7.271,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -143,7 +146,7 @@
         "9": 0.0
       },
       "median_kill_turn": 7,
-      "no_kill_by_max_turn_rate": 0.046
+      "no_kill_by_max_turn_rate": 0.047
     },
     "commander": {
       "cast_by_turn_6_rate": 0.33,
@@ -212,15 +215,15 @@
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 5.241,
+      "10": 5.205,
       "2": 0.122,
       "3": 0.432,
-      "4": 1.066,
-      "5": 1.915,
-      "6": 2.732,
-      "7": 3.47,
-      "8": 4.107,
-      "9": 4.692
+      "4": 1.065,
+      "5": 1.913,
+      "6": 2.727,
+      "7": 3.46,
+      "8": 4.087,
+      "9": 4.664
     },
     "opening_hand": {
       "first_seven_land_histogram": {

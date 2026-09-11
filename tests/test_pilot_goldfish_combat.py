@@ -236,7 +236,9 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # sharknado opted in on 2026-09-10 with the discard channel: a wheel deck
     # whose clock is Shabraz growing on every draw measures nothing without
     # `model_combat`, and its wheels were invisible before `model_discard`.
-    assert sorted(opted) == ["edgar-vampires", "heliod", "ingris-infect",
+    # gishath opted in on 2026-09-11 with combat, Treasure, draw and the
+    # declared combat-damage reveal: 33 of its cards had been DARK.
+    assert sorted(opted) == ["edgar-vampires", "gishath", "heliod", "ingris-infect",
                              "sharknado", "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
@@ -263,7 +265,10 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     #
     # The real coverage assertion is the line above — every un-opted deck is
     # checked, whatever the count. This is only the floor under it.
-    assert checked >= 2, (
+    # One is the floor since 2026-09-11: gishath opted in, and the bench's other
+    # flagless lists (hapatra, radagast, sisay) are retired and excluded by
+    # design, which leaves goblin-storm to carry the invariant.
+    assert checked >= 1, (
         f"only {checked} un-opted deck(s) left with goldfish metrics — too few "
         f"to prove the invariant across decks")
 

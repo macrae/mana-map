@@ -229,6 +229,36 @@ COMBAT_ASSUMPTIONS = [
     "the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in "
     "a real four-player game you would keep blockers, which makes this an "
     "optimistic clock and a pessimistic board.",
+    "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK "
+    "(`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander "
+    "is on the battlefield and the deck attacks, with the declared connect rate "
+    "it reveals its damage's worth of cards, every creature of the named type "
+    "among them enters through the one door (ETB payoffs, engines, reductions "
+    "all register; nothing that needs a CAST fires), the rest go to the bottom. "
+    "The rate is Forge's, named in the record; this model has no blockers.",
+    "AN ENTRY TRIGGER THAT NAMES A TYPE FIRES ON THAT TYPE (2026-09-11): Dragon "
+    "Tempest no longer fires on a mana dork; Molten Echoes copies the chosen "
+    "type. Tokens carry no type line here and pass the gate. A CAST fires what "
+    "listens for a cast, at every door the commander included: draw on a "
+    "spell of mana value N or more (Up the Beanstalk), draw for a paid mana on "
+    "a creature cast (Lifecrafter's Bestiary, paid when the pool has it), "
+    "damage on casting a creature of power N or more (Sarkhan's Unsealing, "
+    "counted as noncombat damage to the one opponent). A spell that has a "
+    "creature deal its power to each opponent (Chandra's Ignition) deals the "
+    "biggest body's power once; the wipe half has nothing to hit. A tutor "
+    "that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the "
+    "smallest 4-power nontoken body and fetches the highest-power creature "
+    "of the named type the library holds -- a policy, stated. Evasion for "
+    "the commander (Majestic Heliopterus) is Forge's to read: this model "
+    "has no blockers and the connect rate is declared.",
+    "A LAND-MANA BONUS (Mirari's Wake and three others) adds one mana per land "
+    "from the turn after it lands; DRAW EQUAL TO THE GREATEST POWER resolves "
+    "against the board at cast and is held while the board is empty; DRAW A "
+    "CARD FOR EACH <type> ON ENTRY counts the board it joins; an attack token "
+    "AS BIG AS THE BEST OTHER ATTACKER (Ghalta and Mavren) takes the second-"
+    "largest swing. NOT modelled and named: Etali, Primal Storm (casting other "
+    "players' cards is outside this model) and draw equal to combat damage "
+    "dealt by one creature (Hunter's Insight).",
     "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you "
     "control have haste' lets every creature attack the turn it lands, from "
     "the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads "
@@ -359,6 +389,18 @@ _RECURRING_DRAW_RE = re.compile(
     r"(?:you )?draw (a|one|two|three) cards?", re.I)
 #: Anchored to a SENTENCE START and requiring "draw", never "draws" — otherwise
 #: "target player draws a card" and "each player draws" score as your own draw.
+# DRAW EQUAL TO THE GREATEST POWER (Rishkar's Expertise, Return of the
+# Wildspeaker): seven corpus cards, none of them read until 2026-09-11 because
+# `_DRAW_RE` wants a number word. Resolved at cast against the board.
+_DRAW_GREATEST_POWER_RE = re.compile(
+    r"draw cards equal to (?:the greatest power among (?:creatures|other creatures|"
+    r"non-Human creatures) you control|(?:the|that creature's|its) power"
+    r"(?: of target creature you control)?)", re.I)
+# DRAW A CARD FOR EACH <TYPE> ON ENTRY (Earthshaker Dreadmaw): ten corpus
+# cards. `_ETB_DRAW_RE` read the "draw a card" and priced it at ONE.
+_ETB_DRAW_PER_TYPE_RE = re.compile(
+    r"when (?:this creature|this artifact|this enchantment|[A-Z][\w' ,-]{2,30}) "
+    r"enters, draw a card for each (?:other )?([A-Z][a-z]+) you control", re.I)
 _SPELL_DRAW_RE = re.compile(
     r"(?:^|\.\s|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
 #: "Scry 2, then draw two cards" (Read the Bones) -- the draw is the second
@@ -819,9 +861,11 @@ def draw_profile(card):
     text = card.get("oracle_text", "") or ""
     type_line = card.get("type_line", "") or ""
     out = {"etb_draw": 0, "spell_draw": 0, "recurring_draw": 0,
+           "spell_draw_greatest_power": False, "etb_draw_per_type": None,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
            "cast_draw": 0, "cast_draw_gate": None,
+           "cast_draw_gate_mv": 0, "cast_draw_cost": 0,
            "x_draw_multiplier": 0, "x_draw_discard": 0,
            # A WHEEL: discard the hand, draw `wheel_draws` (-1 = as many as
            # were discarded). A LOOT: `spell_discard` cards leave hand after
@@ -866,7 +910,15 @@ def draw_profile(card):
 
     if _UPKEEP_REVEAL_RE.search(text):
         out["recurring_draw"] = 1
-    if not _DRAW_RE.search(text) and not out["wheel_draws"] and not out["recurring_draw"]:
+    if (("Instant" in type_line or "Sorcery" in type_line)
+            and _DRAW_GREATEST_POWER_RE.search(text)
+            and not _DRAW_ADDITIONAL_COST_RE.search(text)):
+        out["spell_draw_greatest_power"] = True
+    per_type = _ETB_DRAW_PER_TYPE_RE.search(text)
+    if per_type:
+        out["etb_draw_per_type"] = per_type.group(1)
+    if (not _DRAW_RE.search(text) and not out["wheel_draws"]
+            and not out["recurring_draw"] and not out["spell_draw_greatest_power"]):
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -884,9 +936,17 @@ def draw_profile(card):
         if gate:
             out["cast_draw"] = _DRAW_WORDS[cast.group(2).lower()]
             out["cast_draw_gate"] = gate
+    mv = _CAST_DRAW_MV_RE.search(text)
+    if mv:
+        out["cast_draw"] = 1
+        out["cast_draw_gate_mv"] = int(mv.group(1))
+    if _CAST_DRAW_PAY_RE.search(text):
+        out["cast_draw"] = 1
+        out["cast_draw_gate"] = "Creature"
+        out["cast_draw_cost"] = 1
 
     etb = _ETB_DRAW_RE.search(text)
-    if etb and not _DRAW_CONDITIONAL_RE.search(etb.group(0)):
+    if etb and not _DRAW_CONDITIONAL_RE.search(etb.group(0)) and not out["etb_draw_per_type"]:
         out["etb_draw"] = _DRAW_WORDS[etb.group(1).lower()]
     rec = _RECURRING_DRAW_RE.search(text)
     if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)):
@@ -901,7 +961,8 @@ def draw_profile(card):
 
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
                 out["arrival_draw"], out["cast_draw"],
-                out["x_draw_multiplier"], out["wheel_draws"])):
+                out["x_draw_multiplier"], out["wheel_draws"],
+                out["spell_draw_greatest_power"], out["etb_draw_per_type"])):
         out["unmodelled"] = card.get("name")
     return out
 
@@ -951,6 +1012,11 @@ def is_tutor(card):
     type_line = card.get("type_line") or ""
     if not ("Instant" in type_line or "Sorcery" in type_line):
         return False
+    # A creature searched ONTO THE BATTLEFIELD is a tutor (Savage Order,
+    # Natural Order); the typed pattern wants the search at the start of the
+    # text and Savage Order opens with its additional cost.
+    if _TUTOR_TO_BATTLEFIELD_RE.search(text):
+        return True
     got = _TYPED_TUTOR_RE.match(text)
     if not got:
         return False
@@ -1087,6 +1153,26 @@ def treasure_profile(card):
 _KEYWORD_NOT_GRANTED = (r"(?<!have )(?<!has )(?<!gain )(?<!gains )(?<!or )(?<!with )"
                         r"(?<!lose )(?<!loses )(?<!without )(?<!and )")
 _HASTE_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bhaste\b", re.IGNORECASE)
+# A LAND-MANA BONUS: "whenever you tap a land for mana, add one mana" (Mirari's
+# Wake, Zendikar Resurgent, Vorinclex, Nikya) -- four corpus cards, read as
+# nothing until 2026-09-11 on a big-mana Dinosaur deck whose whole plan is
+# eight mana on turn five.
+_LAND_MANA_BONUS_RE = re.compile(
+    r"whenever you tap a land for mana, add (?:an additional )?(one|two) "
+    r"(?:additional )?mana", re.I)
+# AN ATTACK TOKEN AS BIG AS YOUR BEST ATTACKER (Ghalta and Mavren): the one
+# corpus card. `_TOKEN_PT_RE` cannot read "a tapped and attacking X/X".
+def _land_mana_bonus(text):
+    """Extra mana per land tapped: 1 for "one", 2 for "two", else 0."""
+    m = _LAND_MANA_BONUS_RE.search(text or "")
+    if not m:
+        return 0
+    return 2 if m.group(1).lower() == "two" else 1
+
+
+_ATTACK_TOKEN_SCALES_RE = re.compile(
+    r"create an? (?:tapped and attacking )?X/X[^.]*?where X is the greatest power",
+    re.I)
 _FLYING_KW_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bflying\b", re.IGNORECASE)
 # TEAM HASTE, the grant the pilot's log asked for by name ("granting ur dragon
 # haste is nice"). Four shapes, one profile key `team_haste` whose value is
@@ -1298,6 +1384,39 @@ _ETB_TRIGGER_RE = re.compile(
     r"(?:nontoken\s+)?(?!lands?\b|mountains?\b|swamps?\b|plains\b|islands?\b"
     r"|forests?\b|gates?\b|caves?\b|deserts?\b|towns?\b|spheres?\b)"
     r"[\w ]{0,24}?you control enters",
+    re.IGNORECASE)
+# THE SUBJECT OF AN ENTRY TRIGGER. `_ETB_TRIGGER_RE` throws the noun away, so
+# Dragon Tempest ("whenever a Dragon you control enters") fired on a Bird of
+# Paradise and Lathliss made a token for a mana dork. 28 of 72 entry engines
+# in the corpus name a type (sweep 2026-09-11). The gate is read here and
+# checked at the one door; TOKENS carry no type line in this model and pass
+# the gate, which keeps Lathliss's Dragons firing Tempest (stated).
+_ETB_SUBJECT_RE = re.compile(
+    r"whenever (?:this creature or )?(?:another|a|an|one or more)\s+(?:nontoken\s+)?"
+    r"([A-Z][a-z]+)\s+(?:creature\s+)?(?:you control\s+)?enters", re.IGNORECASE)
+# MOLTEN ECHOES: a copy of every nontoken creature of the CHOSEN type entering.
+_ETB_CHOSEN_TYPE_COPY_RE = re.compile(
+    r"whenever a nontoken creature you control of the chosen type enters, "
+    r"create a token that's a copy", re.IGNORECASE)
+# CHANDRA'S IGNITION: a creature you control deals its power to each opponent.
+_SPELL_DAMAGE_POWER_RE = re.compile(
+    r"target creature you control deals damage equal to its power to each "
+    r"(?:other creature and each )?opponent", re.IGNORECASE)
+# SARKHAN'S UNSEALING: damage on casting a creature of at least this power.
+_CAST_DAMAGE_POWER_RE = re.compile(
+    r"whenever you cast a creature spell with power (\d)(?:, \d)*,? or \d, "
+    r"[^.]*?deals (\d+) damage", re.IGNORECASE)
+# UP THE BEANSTALK: draw on casting a spell of at least this mana value.
+_CAST_DRAW_MV_RE = re.compile(
+    r"whenever you cast a spell with mana value (\d) or greater, (?:you may )?draw a card",
+    re.IGNORECASE)
+# LIFECRAFTER'S BESTIARY: draw on a creature cast, for one mana.
+_CAST_DRAW_PAY_RE = re.compile(
+    r"whenever you cast a creature spell, you may pay \{[WUBRG]\}\. if you do, draw a card",
+    re.IGNORECASE)
+# SAVAGE ORDER, NATURAL ORDER: a creature searched straight onto the battlefield.
+_TUTOR_TO_BATTLEFIELD_RE = re.compile(
+    r"search your library for an? (?:([A-Z][a-z]+) )?creature card, put it onto the battlefield",
     re.IGNORECASE)
 #: Terror of the Peaks — damage equal to the ENTERING creature's power.
 _ETB_DMG_POWER_RE = re.compile(
@@ -1820,6 +1939,8 @@ def combat_profile(card):
         "attack_damage": 0,
         "attack_token_power": 0,
         "attack_token_bodies": 0,
+        # The token's power is the best OTHER attacker's (Ghalta and Mavren).
+        "attack_token_scales": False,
         "damage_scales_with_treasure": False,
         "extra_combat_free": False,
         "extra_combat_cost": None,
@@ -1845,6 +1966,13 @@ def combat_profile(card):
         "etb_token_power": 0,
         "etb_token_bodies": 0,
         "etb_copy": False,
+        # None, a creature type, or "chosen" (the deck's chosen type).
+        "etb_type_gate": None,
+        # A spell: the biggest body's power dealt to the opponent at cast.
+        "spell_damage_greatest_power": False,
+        # A permanent: N damage on casting a creature of at least this power.
+        "cast_damage": 0,
+        "cast_damage_power_min": 0,
         "etb_copy_cost": 0,
         "etb_copy_keeps_legendary": True,
         "etb_nontoken_only": False,
@@ -1858,9 +1986,22 @@ def combat_profile(card):
         if drained and not _ETB_THIS_TURN_RE.search(made):
             profile["token_created_life_loss"] = int(drained.group(1))
 
+    if _ETB_CHOSEN_TYPE_COPY_RE.search(text):
+        profile["etb_copy"] = True
+        profile["etb_nontoken_only"] = True
+        profile["etb_type_gate"] = "chosen"
+    if ("Instant" in type_line or "Sorcery" in type_line) and _SPELL_DAMAGE_POWER_RE.search(text):
+        profile["spell_damage_greatest_power"] = True
+    cd = _CAST_DAMAGE_POWER_RE.search(text)
+    if cd:
+        profile["cast_damage_power_min"] = int(cd.group(1))
+        profile["cast_damage"] = int(cd.group(2))
     etb = _ETB_TRIGGER_RE.search(text)
     if etb:
         win = text[etb.start():etb.start() + 220]
+        subj = _ETB_SUBJECT_RE.search(text)
+        if subj and subj.group(1) in _corpus_creature_types():
+            profile["etb_type_gate"] = subj.group(1)
         if _ETB_DMG_POWER_RE.search(win):
             profile["etb_damage_self_power"] = True
         if _ETB_DMG_COUNT_RE.search(win):
@@ -1984,6 +2125,9 @@ def combat_profile(card):
             count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
             profile["attack_token_bodies"] += count
             profile["attack_token_power"] += count * _stat(tok.group(2))
+        if _ATTACK_TOKEN_SCALES_RE.search(window):
+            profile["attack_token_bodies"] += 1
+            profile["attack_token_scales"] = True
         if not any((profile["attack_mana"], profile["attack_treasure"],
                     profile["attack_draw"], profile["damage_scales_with_treasure"],
                     profile["attack_damage"], profile["attack_token_bodies"],
@@ -2667,6 +2811,7 @@ def classify(card, pool=None):
         "produces": 0 if "Land" in type_line else (
             produced_mana(card.get("oracle_text"), type_line)
             or (1 if _SCALING_COLOR_MANA_RE.search(text) else 0)),
+        "land_mana_bonus": 0 if "Land" in type_line else _land_mana_bonus(text),
         "bodies": 0 if "Land" in type_line else body_count(card),
         # Creature-only body count and the combat profile ride along always;
         # they are READ only under `model_combat`, so a non-opted deck is
@@ -2693,6 +2838,11 @@ def classify(card, pool=None):
         # A top-of-library tutor delivers on the next draw step, not this turn.
         "tutor_delay": 1 if is_tutor_card and _TUTOR_TO_TOP_RE.search(text) else 0,
         "tutor_needs_body": bool(is_tutor_card and _TUTOR_SAC_RE.search(text)),
+        # The searched creature ENTERS rather than going to hand; the type it
+        # may be, or "" for any creature.
+        "tutor_to_battlefield": (
+            (_TUTOR_TO_BATTLEFIELD_RE.search(text).group(1) or "")
+            if is_tutor_card and _TUTOR_TO_BATTLEFIELD_RE.search(text) else None),
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
         "treasure_trigger": None if is_land else treasure_profile(card)[1],
         # Xorn makes no Treasure of its own; it adds one to every event.
@@ -2797,7 +2947,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_animate=None,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None, model_discard=False, partner=None,
-                  commander_event=None):
+                  commander_event=None, commander_reveal=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -2817,6 +2967,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     first_seven_lands = sum(1 for c in hand if c["is_land"])
 
     attack_tutor_fired = 0
+    cast_damage_engines = []       # Sarkhan's Unsealing: damage on a big creature cast
+    reveal_fired = 0               # the declared combat-damage reveal (Gishath)
+    reveal_bodies = 0
+    land_mana_bonus = 0            # extra mana per land tapped (Mirari's Wake)
     attack_tutor_debt = 0.0
     attack_enabler_out = False
     tutor_enabled_turns = 0
@@ -3134,7 +3288,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if eng["recurring_draw"]:
                     draw_n(eng["recurring_draw"])
 
-        pool = lands_in_play + rock_production
+        pool = lands_in_play * (1 + land_mana_bonus) + rock_production
         # Reported WITHOUT the stockpile, so this series keeps meaning exactly
         # what it has always meant: repeatable mana per turn. Treasures are a
         # one-shot reserve and get their own series.
@@ -3198,6 +3352,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # without bound.
                 if is_token and eng["etb_nontoken_only"]:
                     continue
+                # A TYPED TRIGGER FIRES ON ITS TYPE. Tokens carry no type line
+                # here and pass, so Lathliss's Dragons still fire Tempest.
+                gate = eng["etb_type_gate"]
+                if gate and not is_token:
+                    want = chosen_type if gate == "chosen" else gate
+                    if not want or want not in type_line:
+                        continue
                 if eng["etb_damage_self_power"]:
                     etb_damage += power
                 if eng["etb_damage_fixed"]:
@@ -3290,6 +3451,97 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_discard and has_event_payoff(cevent):
                 event_payoff_permanents.append(cevent)
 
+        def _cast_triggers(cmc, tl, power, is_creature):
+            """What fires on the CAST itself, whatever door the card goes
+            through: the mana-value and paid cast-draws (Up the Beanstalk,
+            Lifecrafter's Bestiary) and power-gated cast damage (Sarkhan's
+            Unsealing). Engines already in play only."""
+            nonlocal pool, etb_damage
+            if model_draw:
+                for _eng in draw_engines:
+                    if not _eng["cast_draw"]:
+                        continue
+                    hit = ((_eng["cast_draw_gate_mv"] and cmc >= _eng["cast_draw_gate_mv"])
+                           or (_eng["cast_draw_cost"] and _eng["cast_draw_gate"]
+                               and _eng["cast_draw_gate"] in tl))
+                    if not hit:
+                        continue
+                    if _eng["cast_draw_cost"]:
+                        if pool < _eng["cast_draw_cost"]:
+                            continue
+                        pool -= _eng["cast_draw_cost"]
+                    draw_n(_eng["cast_draw"])
+            if model_combat and is_creature:
+                for _eng in cast_damage_engines:
+                    if power >= _eng["cast_damage_power_min"]:
+                        etb_damage += _eng["cast_damage"]
+
+        def _free_creature_enters(card):
+            """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
+            declared reveal). The same door and the same registrations as a
+            cast body, minus what a cast is: no cast-triggered tokens, no
+            cast-draw, no spend. Devotion-gated gods are held like any other."""
+            nonlocal bodies_cum, team_damage_multiplier, extra_combat_free
+            nonlocal lifelink_power, token_multiplier, treasures
+            combat = card["combat"]
+            seen.add(card["name"])
+            bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+            if card["reduces"]:
+                reductions.append(card["reduces"])
+            tl = card.get("type_line") or ""
+            battlefield_pips.append(card["pips"])
+            battlefield_types.append(tl)
+            battlefield_mv.append(card["cmc"])
+            battlefield_rooms.append(None)
+            if model_draw:
+                draw_n(card["draw"]["etb_draw"])
+                if card["draw"]["etb_draw_per_type"]:
+                    draw_n(sum(1 for tl_ in battlefield_types[:-1]
+                               if card["draw"]["etb_draw_per_type"] in tl_))
+            if card["drain"]["lifelink"] and combat["is_creature"]:
+                lifelink_power += combat["power"]
+            if card["drain"]["grants_lifelink_to"]:
+                lifelink_granted_types.add(card["drain"]["grants_lifelink_to"])
+            if model_combat and is_etb_engine(combat):
+                etb_engines.append(combat)
+            if combat["is_creature"]:
+                if card["devotion_gate"]:
+                    pending_gods.append((card, combat))
+                else:
+                    creature_entered(combat["power"], turn, combat["haste"],
+                                     2 if combat["double_strike"] else 1,
+                                     is_legendary="Legendary" in tl, type_line=tl,
+                                     infect=combat["infect"], toxic=combat["toxic"],
+                                     flying=combat["flying"])
+            if combat["token_bodies"]:
+                each = combat["token_power"] // max(combat["token_bodies"], 1)
+                for _ in range(combat["token_bodies"] * token_multiplier):
+                    creature_entered(each, turn, False, 1, is_token=True)
+            if model_combat:
+                if combat["team_haste"]:
+                    haste_grants.append(combat["team_haste"])
+                if combat["team_damage_multiplier"] > 1:
+                    team_damage_multiplier *= combat["team_damage_multiplier"]
+                if combat["extra_combat_free"]:
+                    extra_combat_free += 1
+                if combat["extra_combat_cost"] is not None:
+                    extra_combat_costs.append(combat["extra_combat_cost"])
+                if any((combat["attack_mana"], combat["attack_treasure"],
+                        combat["attack_draw"], combat["damage_scales_with_treasure"],
+                        combat["attack_damage"], combat["attack_token_bodies"],
+                        combat["attack_ping_per_attacker"])):
+                    combat_engines.append(combat)
+            if model_draw and any(card["draw"][k] for k in
+                                  ("recurring_draw", "arrival_draw", "cast_draw")):
+                draw_engines.append(card["draw"])
+            if card["token_doubler"]:
+                token_multiplier *= 2
+            if model_treasures:
+                if card["treasure_trigger"] in ("upkeep", "landfall"):
+                    treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
+                elif card["treasure_trigger"] == "etb":
+                    treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
+
         # A REDUCER ON THE BATTLEFIELD DOES CUT THE COMMANDER'S COST. Eminence
         # says "OTHER Dragon spells", so it never pays for itself — but
         # Dragonlord's Servant takes {1} off The Ur-Dragon like any other Dragon
@@ -3310,6 +3562,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # profile already is.
             if commander_grants_lifelink_to:
                 lifelink_granted_types.add(commander_grants_lifelink_to)
+            _cast_triggers(commander_cmc, commander_card.get("type_line") or "",
+                           commander_combat["power"] if commander_combat else 0,
+                           bool(commander_combat and commander_combat["is_creature"]))
             # THE COMMANDER USED TO BE CAST AND THEN DROPPED. It set this flag,
             # spent the mana, and never joined the battlefield — so a 10/10
             # flier contributed no power, never attacked, and fired none of its
@@ -3478,22 +3733,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # A HASTE ENABLER IS AN ENGINE PERMANENT:
                                          # Fervor has no body, and without this
                                          # line it is read and never cast.
-                                         c["combat"]["team_haste"]))),
+                                         c["combat"]["team_haste"],
+                                         c["combat"]["cast_damage"],
+                                         # Chandra's Ignition needs a body to aim.
+                                         c["combat"]["spell_damage_greatest_power"] and battlefield))),
                                key=lambda c: c["cmc"]):
                 if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     if is_etb_engine(card["combat"]):
                         etb_engines.append(card["combat"])
                     if card["combat"]["team_haste"]:
                         haste_grants.append(card["combat"]["team_haste"])
+                    if card["combat"]["cast_damage"]:
+                        cast_damage_engines.append(card["combat"])
+                    if card["combat"]["spell_damage_greatest_power"]:
+                        # THE BIGGEST BODY'S POWER, once, to the one opponent;
+                        # the wipe half has nothing to hit here.
+                        etb_damage += max((p + team_anthem for p, *_ in battlefield), default=0)
                     if card["combat"]["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
                     hand.remove(card)
 
         # Cast rocks cheapest-first; they produce starting next turn.
-        for card in sorted((c for c in hand if c["produces"] > 0), key=lambda c: c["cmc"]):
+        for card in sorted((c for c in hand if c["produces"] > 0 or c["land_mana_bonus"]),
+                           key=lambda c: c["cmc"]):
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 if card["reduces"]:
                     reductions.append(card["reduces"])
+                # A LAND-MANA BONUS IS A ROCK THAT PAYS PER LAND, from next turn.
+                land_mana_bonus += card["land_mana_bonus"]
                 made, colors = card["produces"], card["colors"] or frozenset()
                 if card["scales_with_colors"]:
                     # SNAPSHOT AT CAST, and deliberately the conservative end of
@@ -3515,6 +3782,31 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # they were never cast at all and their mana silently went to creatures.
         for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
             if card["tutor_needs_body"] and bodies_cum < 1:
+                continue
+            if card["tutor_to_battlefield"] is not None and (model_combat or model_draw):
+                # SAVAGE ORDER: sacrifice a 4-power body, the best creature of
+                # the named type enters from the library. Held until a
+                # nontoken body of power 4+ is on the board, and until the
+                # library holds one to fetch.
+                _fodder = [i for i, (p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                           if not _tok and p >= 4]
+                if card["tutor_needs_body"] and not _fodder:
+                    continue
+                _want = card["tutor_to_battlefield"]
+                _pick = max((c for c in deck if "Creature" in (c.get("type_line") or "")
+                             and (not _want or _want in (c.get("type_line") or ""))),
+                            key=lambda c: c["combat"]["power"], default=None)
+                if _pick is None:
+                    continue
+                if not spend(card["tutor_cmc"], card["pips"]):
+                    continue
+                hand.remove(card)
+                if card["tutor_needs_body"]:
+                    _i = min(_fodder, key=lambda i: battlefield[i][0])
+                    battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
+                deck.remove(_pick)
+                _free_creature_enters(_pick)
+                tutor_ready_turns.append(turn)
                 continue
             if not spend(card["tutor_cmc"], card["pips"]):
                 continue
@@ -3585,6 +3877,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          c["draw"]["recurring_draw"],
                                          c["draw"]["arrival_draw"],
                                          c["draw"]["cast_draw"],
+                                         c["draw"]["spell_draw_greatest_power"],
                                          # A WHEEL IS A DRAW SPELL, and is in the
                                          # predicate in the same commit as the
                                          # channel -- cast under model_discard
@@ -3602,6 +3895,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         sum(1 for c in hand if not c["is_land"]) - 1 <= WHEEL_MIN_HAND
                         or event_payoff_permanents):
                     continue          # the hand is worth more than seven fresh cards
+                if card["draw"]["spell_draw_greatest_power"] and not battlefield:
+                    continue          # draws nothing with no creature; held
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 hand.remove(card)
@@ -3611,6 +3906,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     draw_n(held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"])
                     continue
                 draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+                if card["draw"]["spell_draw_greatest_power"]:
+                    # Resolved against the board at cast; the anthem rides on
+                    # every body the way it does at the attack step.
+                    draw_n(max((p + team_anthem for p, *_ in battlefield), default=0))
                 if model_discard and card["draw"]["spell_discard"]:
                     discard_n(card["draw"]["spell_discard"])
                 if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
@@ -3753,8 +4052,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if model_draw:
                     _tl = card.get("type_line") or ""
                     for _eng in draw_engines:
-                        if _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl:
+                        # gate first: a mana-value gate has no type gate
+                        if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
+                                and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
                             draw_n(_eng["cast_draw"])
+                _cast_triggers(card["cmc"], card.get("type_line") or "",
+                               card["combat"]["power"] if card["combat"]["is_creature"] else 0,
+                               card["combat"]["is_creature"])
                 if model_discard and has_event_payoff(card.get("event")):
                     event_payoff_permanents.append(card["event"])
                 if model_drain:
@@ -3857,6 +4161,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pending_draw_engine = None
                 if model_draw:
                     draw_n(card["draw"]["etb_draw"])
+                    if card["draw"]["etb_draw_per_type"]:
+                        # "for each OTHER Dinosaur": counted on the board it joins.
+                        draw_n(sum(1 for tl_ in battlefield_types
+                                   if card["draw"]["etb_draw_per_type"] in tl_))
                     if (card["draw"]["recurring_draw"]
                             or card["draw"]["arrival_draw"]
                             or card["draw"]["cast_draw"]):
@@ -3913,8 +4221,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if model_draw:
                         _tl = card.get("type_line") or ""
                         for _eng in draw_engines:
-                            if _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl:
+                            # gate first: a mana-value gate has no type gate
+                            if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
+                                    and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
                                 draw_n(_eng["cast_draw"])
+                    _cast_triggers(card["cmc"], card.get("type_line") or "",
+                                   combat["power"] if combat["is_creature"] else 0,
+                                   combat["is_creature"])
                     if any(card["drain"][k] for k in
                            ("payoff_equal", "payoff_fixed", "gain_recurring",
                             "gain_per_enchantment", "gain_per_creature",
@@ -4215,9 +4528,37 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if engine["attack_token_bodies"]:
                         each = (engine["attack_token_power"]
                                 // max(engine["attack_token_bodies"], 1))
+                        if engine["attack_token_scales"]:
+                            # As big as the best OTHER attacker (Ghalta and
+                            # Mavren): the second-largest swing on the board.
+                            _ranked = sorted((p for p, _pz in attackers), reverse=True)
+                            each = _ranked[1] if len(_ranked) > 1 else 0
                         for _ in range(engine["attack_token_bodies"]):
                             creature_entered(each, turn, False, 1, is_token=True)
                         bodies_cum += engine["attack_token_bodies"]
+                # THE DECLARED COMBAT-DAMAGE REVEAL (Gishath, Sun's Avatar): the
+                # commander connects for its damage, that many cards are
+                # revealed, every creature of the named type among them enters
+                # through the one door, the rest go to the bottom. The connect
+                # rate is MEASURED from a Forge run and named in the record;
+                # this model has no blockers, so its own rate would be 1.0.
+                if (commander_reveal and commander_turn is not None and attackers
+                        and commander_combat and commander_combat["is_creature"]
+                        and rng.random() < commander_reveal["connects_per_attack"]):
+                    _n_reveal = ((commander_combat["power"] + team_anthem)
+                                 * (2 if commander_combat["double_strike"] else 1))
+                    _top, _rest = deck[:_n_reveal], []
+                    del deck[:_n_reveal]
+                    for _c in _top:
+                        _tl = _c.get("type_line") or ""
+                        if commander_reveal["type"] in _tl and "Creature" in _tl:
+                            _free_creature_enters(_c)
+                            reveal_bodies += 1
+                        else:
+                            _rest.append(_c)
+                    rng.shuffle(_rest)
+                    deck.extend(_rest)
+                    reveal_fired += 1
             # THE REPLACEMENT EFFECT APPLIES LAST, to everything this deck
             # dealt — combat swings and the attack triggers alike, because
             # Twinflame Tyrant says "a source you control" and an attack
@@ -4547,7 +4888,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # Treasure stockpile — because a Treasure you are holding is mana you
         # could have spent. `pool` has already been drawn down by the main
         # phase, so this asks what was reachable at the START of it.
-        available = lands_in_play + rock_production + treasures
+        available = lands_in_play * (1 + land_mana_bonus) + rock_production + treasures
         stall_by_turn.append(not any(
             (not c["is_land"]) and c["cmc"] <= available for c in hand))
         hand_size_by_turn.append(len(hand))
@@ -4566,6 +4907,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "keep_can_act_by_t3": keep_can_act_by_t3,
         "mulligans": mulligans,
         "attack_tutor_fired": attack_tutor_fired,
+        "reveal_fired": reveal_fired,
+        "reveal_bodies": reveal_bodies,
         "tutor_enabled_turns": tutor_enabled_turns,
         "tutor_eligible_turns": tutor_eligible_turns,
         "land_hits": land_hits,
@@ -4602,7 +4945,7 @@ def _round(x):
 def aggregate(results, targets, max_turn, model_treasures=False,
               model_combat=False, model_draw=False, model_sacrifice=False,
               model_drain=False, attack_tutor_rate=None, model_discard=False,
-              partner=False):
+              partner=False, commander_reveal=None):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -4667,6 +5010,16 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         # all rather than one reading `declared: false` — the same rule the
         # commander-damage block keeps, and it also keeps every other deck's
         # artifact free of a key about a thing it does not have.
+        **({"commander_reveal": {
+            # THE DECLARED REVEAL, reported the way the tutor is: an output of
+            # the simulation, with the declared rate and its source beside it.
+            "declared": True,
+            "mean_fired": _round(sum(r["reveal_fired"] for r in results) / n),
+            "games_it_fired": sum(1 for r in results if r["reveal_fired"]),
+            "mean_bodies": _round(sum(r["reveal_bodies"] for r in results) / n),
+            "rate": commander_reveal,
+            "ceiling_note": "this model has no blockers; the rate is Forge's, not this model's",
+        }} if commander_reveal else {}),
         **({"attack_tutor": {
             # DERIVED from the rows rather than passed in: a result carries
             # `attack_tutor_fired`, and a deck that never declared one has the
@@ -5014,6 +5367,24 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                         "fires_per_turn_when_enabled": float(
                             attack_tutor["fires_per_turn_when_enabled"]),
                         "source": str(attack_tutor["source"])}
+    # THE COMMANDER'S COMBAT-DAMAGE REVEAL, declared per deck (Gishath, Sun's
+    # Avatar is the one card). Shape:
+    #     "model_commander_combat_reveal": {"type": "Dinosaur",
+    #         "connects_per_attack": 0.70, "source": "<run>: attacks vs triggers"}
+    # The rate is REQUIRED with its source, for the reason the attack tutor's
+    # is: this model has no blockers and would connect every time.
+    commander_reveal = targets_doc.get("model_commander_combat_reveal") or None
+    if commander_reveal:
+        missing = [k for k in ("type", "connects_per_attack", "source") if k not in commander_reveal]
+        if missing:
+            raise SystemExit(
+                f"model_commander_combat_reveal is missing {', '.join(missing)} — "
+                f"a connect rate without a source is an authored number driving "
+                f"every body the reveal puts onto the battlefield. Measure it from "
+                f"a sim run (attacks assigned vs triggers resolved) and name it.")
+        commander_reveal = {"type": str(commander_reveal["type"]),
+                            "connects_per_attack": float(commander_reveal["connects_per_attack"]),
+                            "source": str(commander_reveal["source"])}
     model_combat = declared_combat if model_combat is None else bool(model_combat)
     model_draw = declared_draw if model_draw is None else bool(model_draw)
     model_sacrifice = (declared_sacrifice if model_sacrifice is None
@@ -5217,6 +5588,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               commander_subtypes=commander_subtypes,
                               commander_cast_token=commander_cast_token,
                               attack_tutor=attack_tutor,
+                              commander_reveal=commander_reveal if model_combat else None,
                               model_treasures=model_treasures,
                               model_combat=model_combat,
                               model_draw=model_draw,
@@ -5233,7 +5605,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     _metrics = aggregate(results, targets, max_turn, model_treasures,
                          model_combat, model_draw, model_sacrifice,
                          model_drain, attack_tutor, model_discard=model_discard,
-                         partner=bool(partner))
+                         partner=bool(partner),
+                         commander_reveal=commander_reveal if model_combat else None)
     _band_doc = _ability_band(slug, branch, targets_doc, _metrics, iterations,
                               seed, max_turn, model_treasures, model_combat,
                               model_draw, model_sacrifice,
