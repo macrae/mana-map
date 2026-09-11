@@ -233,3 +233,45 @@ def test_every_tracked_record_row_carries_the_series():
                 missing.append(p.split("/")[-1]); break
     assert checked >= 100, "the loop iterated almost nothing"
     assert not missing, f"records whose rows lack the per-turn series: {missing[:6]}"
+
+
+# ── gate (b): the table's behaviour, per seat ───────────────────────────────
+
+COMBAT_LOG = """\
+Mulligan: Ai(1)-mm-sharky has kept a hand of 7 cards.
+Mulligan: Ai(2)-mm-rival has kept a hand of 7 cards.
+Turn: Turn 1 (Ai(1)-mm-sharky)
+Add To Stack: Ai(1)-mm-sharky cast Grizzly Bears
+Turn: Turn 2 (Ai(2)-mm-rival)
+Add To Stack: Ai(2)-mm-rival cast Wall of Omens
+Discard: Ai(2)-mm-rival discards Island (3).
+Turn: Turn 3 (Ai(1)-mm-sharky)
+Combat: Ai(1)-mm-sharky assigned Grizzly Bears (11), Runeclaw Bear (12) to attack Ai(2)-mm-rival.
+Combat: Ai(2)-mm-rival assigned Wall of Omens (21) to block Grizzly Bears (11).
+Ai(2)-mm-rival didn't block Runeclaw Bear (12)
+Damage: Runeclaw Bear (12) deals 2 combat damage to Ai(2)-mm-rival.
+Life: Life: Ai(2)-mm-rival 40 > 38
+Game Outcome: Turn 2
+Game Outcome: Ai(1)-mm-sharky has won because all opponents have lost
+Game Result: Game 1 ended in 1000 ms
+"""
+
+
+def test_the_table_s_behaviour_is_counted_per_seat():
+    games = parse.parse_games(COMBAT_LOG)
+    f = parse.game_facts(games[0])
+    me, them = f["per_seat"]["Ai(1)-mm-sharky"], f["per_seat"]["Ai(2)-mm-rival"]
+    assert me["attackers_declared"] == 2 and me["attackers_blocked"] == 1
+    assert them["blocks_declared"] == 1 and them["discards"] == 1
+    assert them["life_by_turn"] == {3: 38}
+    assert me["damage_to_players_by_turn"] == {3: 2}
+    _, agg = parse.analyze_logs([COMBAT_LOG], LABEL)
+    for name in ("sharky", "rival"):
+        seat = agg["seats"][name]
+        for key in ("turns", "discards", "blocks_declared", "attackers_declared", "attackers_blocked"):
+            assert key in seat, key
+        assert seat["cumulative_combat_damage_by_round"][0]["round"] == 1
+        assert seat["wipe_recovery"]["available"] is False, "no wipe in one small game"
+    assert agg["seats"]["rival"]["cumulative_combat_damage_by_round"][-1]["mean"] == 0.0
+    assert agg["seats"]["sharky"]["cumulative_combat_damage_by_round"][-1]["mean"] == 2.0
+    assert agg["our_cumulative_combat_damage_by_round"] == agg["seats"]["sharky"]["cumulative_combat_damage_by_round"]

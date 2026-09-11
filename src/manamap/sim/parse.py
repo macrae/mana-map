@@ -351,6 +351,13 @@ def game_facts(g, commanders=None):
     seats = list(g["seats"])
     commanders = commanders or {}
     per = {s: {"lands": 0, "casts": 0, "activations": 0, "triggers": 0,
+               # GATE (b) OF THE TABLE MODEL, 2026-09-10: what a seat DISCARDED,
+               # how many blockers it declared, and how many of its attackers
+               # were blocked -- the blocker process the goldfish lacks starts
+               # as these four counts. Non-token blocks were parsed and never
+               # counted before this.
+               "discards": 0, "blocks_declared": 0,
+               "attackers_declared": 0, "attackers_blocked": 0,
                "combat_damage_dealt_to_players": 0, "combat_damage_taken": 0,
                "noncombat_damage_dealt_to_players": 0,
                "token_resolutions": 0, "tokens_observed": set(), "token_attackers": set(),
@@ -502,6 +509,7 @@ def game_facts(g, commanders=None):
             _count(ev["seat"], "activated", ev["what"])
             _aim(per, owner, ev, seats)
         elif k == "discard":
+            per[ev["seat"]]["discards"] += 1
             _count(ev["seat"], "discarded", ev["card"])
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
@@ -559,11 +567,17 @@ def game_facts(g, commanders=None):
             p = per[ev["seat"]]
             if p["first_attack_turn"] is None:
                 p["first_attack_turn"] = ev["turn"]
+            p["attackers_declared"] += len(ev["attackers"])
             for name, pid in ev["attackers"]:
                 if _is_token(name):
                     p["tokens_observed"].add(pid); p["token_attackers"].add(pid)
         elif k == "block":
             p = per[ev["seat"]]
+            p["blocks_declared"] += len(ev["blockers"])
+            # The attacker that got blocked belongs to whoever assigned it.
+            _atk_seat = owner.get(ev["blocked"][1])
+            if _atk_seat in per:
+                per[_atk_seat]["attackers_blocked"] += 1
             for name, pid in ev["blockers"]:
                 if _is_token(name):
                     p["tokens_observed"].add(pid); p["token_blockers"].add(pid)
@@ -773,11 +787,17 @@ def wipes(fact, seat):
 
 
 def wipe_recovery(facts, seat):
-    """Aggregate `wipes` over a run. Absent, never zero, when none were seen."""
-    per_game = [wipes(f, seat) for f in facts]
+    """Aggregate `wipes` over a run. Absent, never zero, when none were seen.
+
+    `seat` is one Forge label, or the LIST of labels a deck sat at across the
+    run's rotating jobs -- gate (b) of the table model computes this for every
+    seat, and a deck has several labels (see `aggregate`'s `by_name`)."""
+    labels = [seat] if isinstance(seat, str) else list(seat)
+    per_game = [[w for lab in labels if lab in f["per_seat"] for w in wipes(f, lab)]
+                for f in facts]
+    n = sum(1 for f in facts if any(lab in f["per_seat"] for lab in labels))
     seen = [w for g in per_game for w in g]
     full = [w for w in seen if not w["truncated"]]
-    n = len(facts)
     if not seen:
         return {"available": False,
                 "why": (f"no turn in {n} game(s) lost {WIPE_MIN_PERMANENTS}+ "
@@ -965,6 +985,21 @@ def _life_delta(per_seat, sign):
     return total
 
 
+def _cumulative_by_round(facts, labels, nseats):
+    """Mean cumulative combat damage to players by round for a deck's labels."""
+    curve = []
+    for r in range(1, 17):
+        vals = []
+        for f in facts:
+            p = next((f["per_seat"][lab] for lab in labels if lab in f["per_seat"]), None)
+            if not p:
+                continue
+            vals.append(sum(v for t, v in p["damage_to_players_by_turn"].items()
+                            if int(t) <= r * nseats))
+        curve.append({"round": r, **mean_ci(vals)})
+    return curve
+
+
 def aggregate(facts, slug_label, label, commanders=None):
     """`facts` is a list of game_facts; `slug_label` the Forge seat label of OUR deck;
     `label` maps Forge seat labels to slugs; `commanders` seat label -> commander name(s)."""
@@ -1070,6 +1105,15 @@ def aggregate(facts, slug_label, label, commanders=None):
             "interaction_received": mean_ci([p["interaction_received"] for p in ps]),
             "activations": mean_ci([p["activations"] for p in ps]),
             "triggers": mean_ci([p["triggers"] for p in ps]),
+            # GATE (b): own turns, discards, and the two halves of a blocker
+            # process -- blockers this seat declared, and how many of its own
+            # attackers got blocked. Per seat, because the table's behaviour is
+            # what a goldfish with a table is fitted from.
+            "turns": mean_ci([p.get("turns", 0) for p in ps]),
+            "discards": mean_ci([p.get("discards", 0) for p in ps]),
+            "blocks_declared": mean_ci([p.get("blocks_declared", 0) for p in ps]),
+            "attackers_declared": mean_ci([p.get("attackers_declared", 0) for p in ps]),
+            "attackers_blocked": mean_ci([p.get("attackers_blocked", 0) for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),
             "tokens": {
                 "token_resolutions": mean_ci([p["token_resolutions"] for p in ps]),
@@ -1141,19 +1185,17 @@ def aggregate(facts, slug_label, label, commanders=None):
             }
     # Our seat's clock: mean CUMULATIVE combat damage to players by ROUND (global turn
     # divided by the seat count), rounds 1..16. The shape of the kill, not one number.
+    # Computed for EVERY seat too (gate (b)): the same curve on an opponent is
+    # the pressure series a table model is fitted from.
+    if facts:
+        nseats = max(len(f["seats"]) for f in facts) or 1
+        for name, raw in by_name.items():
+            out["seats"][name]["cumulative_combat_damage_by_round"] = \
+                _cumulative_by_round(facts, raw, nseats)
+            out["seats"][name]["wipe_recovery"] = wipe_recovery(facts, raw)
     if slug_label and facts:
         nseats = max(len(f["seats"]) for f in facts) or 1
-        curve = []
-        for r in range(1, 17):
-            vals = []
-            for f in facts:
-                p = f["per_seat"].get(slug_label)
-                if not p:
-                    continue
-                vals.append(sum(v for t, v in p["damage_to_players_by_turn"].items()
-                                if t <= r * nseats))
-            curve.append({"round": r, **mean_ci(vals)})
-        out["our_cumulative_combat_damage_by_round"] = curve
+        out["our_cumulative_combat_damage_by_round"] = _cumulative_by_round(facts, [slug_label], nseats)
     out["round"] = mean_ci([f["round"] for f in facts])
     out["global_turn"] = mean_ci([f["global_turn"] for f in facts])
     out["won_by"] = dict(Counter(f["won_by"] for f in facts if f["won_by"]))
