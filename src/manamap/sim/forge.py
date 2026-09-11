@@ -878,7 +878,14 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # useful fact is "the clock stopped it", because that is a property of the
     # HARNESS (the `-c` setting) rather than of the game.
     truncated = sum(1 for o in outcomes if o.get("truncated"))
-    decided = [o for o in outcomes if not o.get("truncated")]
+    # A DRAW IS NOT A DECIDED GAME EITHER. `decided` was games minus clock-outs,
+    # so a simultaneous loss (every seat at 0 on one turn, `draw` without
+    # `truncated`) sat in the denominator here and NOT in `analysis.seats`,
+    # which counts games with a winner: one record read 0.343 on 35 and 0.353
+    # on 34 at once, and the doctor quoted one while the skeptic checked the
+    # other. Six records carried it. One definition now: a decided game has
+    # a winner.
+    decided = [o for o in outcomes if not o.get("truncated") and not o.get("draw")]
     draws = sum(1 for o in outcomes if o["draw"] and not o.get("truncated"))
     wins = tally_wins(decided, seats)
     # THE BASE deck's frame, not the branch's — a branch has no frame of its own.
@@ -1011,7 +1018,8 @@ def analyze(slug, run_id_or_path):
     outcomes = [g for g in rec["games"] if g.get("winner") or g.get("draw")
                 or g.get("truncated")]
     truncated = sum(1 for g in outcomes if g.get("truncated"))
-    decided = [g for g in outcomes if not g.get("truncated")]
+    # Same definition as `run()`: a decided game has a winner (see there).
+    decided = [g for g in outcomes if not g.get("truncated") and not g.get("draw")]
     wins = tally_wins(decided, seats)
     n = len(decided) or None
     rec["summary"] = dict(rec.get("summary") or {}, wins=wins,

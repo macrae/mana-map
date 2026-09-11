@@ -56,9 +56,13 @@ def validate(rec, slug, logs_text=None):
             f"summary.wins {wins} + draws {rec['summary'].get('draws')} + "
             f"truncated {trunc} != {n}")
     decided = rec["summary"].get("decided")
-    if decided is not None and decided != n - trunc:
+    draws = rec["summary"].get("draws", 0)
+    # A decided game has a WINNER: neither a clock-out nor a draw. The check
+    # used to accept draws in the count, which is how `summary` and
+    # `analysis.seats` disagreed on one denominator for six records.
+    if decided is not None and decided != n - trunc - draws:
         errors.append(f"summary.decided {decided} != games_completed {n} - "
-                      f"truncated {trunc}")
+                      f"truncated {trunc} - draws {draws}")
     # `summary.wins` is keyed by slug (`zur-enchantress@drain-v2`) and
     # `analysis.seats` by Forge's meta name (`zur-enchantress-drain-v2`), so a
     # BRANCH record failed this comparison on the spelling of its own name.

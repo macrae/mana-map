@@ -129,7 +129,12 @@ def test_every_tracked_run_accounts_for_all_its_games():
         checked += 1
         n = rec["games_completed"]
         assert sum(s["wins"].values()) + s.get("draws", 0) + s["truncated"] == n, path.name
-        assert s["decided"] == n - s["truncated"], path.name
+        # A DECIDED GAME HAS A WINNER. `decided` was games minus clock-outs, so
+        # a simultaneous loss (`draw` without `truncated`) sat in this
+        # denominator and not in `analysis.seats`', and one record read 0.343
+        # on 35 and 0.353 on 34 at once (ur-dragon at standard-v3, 2026-09-11).
+        assert s["decided"] == n - s["truncated"] - s.get("draws", 0), path.name
+        assert s["decided"] == sum(s["wins"].values()), path.name
     assert checked >= 10, "the tracked runs have not been re-derived"
 
 

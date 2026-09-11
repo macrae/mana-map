@@ -1611,3 +1611,16 @@ grants by type is finally credited to the right bodies. The lesson is the one
 the file already states at the door: a parallel list is a liability at every
 site that mutates the list it parallels, and there were two such sites the
 comment did not know about.
+
+### A record with two definitions of "decided"
+
+Found by the skeptic on the same prescription: the ur-dragon standard-v3 record
+said 0.353 on 34 decided in `analysis.seats` and 0.343 on 35 in `summary`. The
+35th game was a simultaneous loss — every seat at 0 on one turn, `draw: true`
+without `truncated` — which `summary` counted as decided (games minus
+clock-outs) and the seat block did not (games with a winner). Six records
+carried the split. One definition now, in `run()`, `analyze()` and
+`validate_sim`: **a decided game has a winner**, and `summary.decided` equals
+the sum of `summary.wins`. The six records were re-derived from their own
+`games` block, which is enough because the block carries `draw`, `truncated`
+and `winner` per game.
