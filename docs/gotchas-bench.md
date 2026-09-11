@@ -1559,3 +1559,55 @@ verdict; this is the same failure through a different door — an axis whose val
 depends on an ability one instrument fires and the other does not.
 
 **Do not open a 25th zur branch graded on `kill_by_8`.**
+
+## Haste was read per card, so the enabler the pilot asked for was worth nothing
+
+**2026-09-11.** The Ur-Dragon captain's log asked for haste by name — a Dragon
+that swings the turn it lands — and the doctor's first-ranked add was Rhythm of
+the Wild. The goldfish could not measure the ask. `combat_profile` read
+`\bhaste\b` anywhere in the oracle text and stamped it on the card itself, so:
+
+- **Temur Ascendancy and Dragon Tempest, both in the 99, granted nothing.** An
+  enchantment with `haste: True` is not a creature; the flag was never read.
+- **A creature that GIVES haste attacked on arrival.** Regisaur Alpha ("Other
+  Dinosaurs you control have haste"), Ogre Battledriver, and every creature
+  whose ETB reads "it gains haste" (Hellkite Courser, Puppeteer Clique). The
+  corpus count of "hasty" creatures was 1,250; the keyword count is **705**.
+- **Riot's reminder text made Spider-Punk hasty**, and "has haste as long as"
+  (Markov Crusader) was unconditional.
+
+Now one profile key, `team_haste`, says WHO a card grants haste to — `"all"`,
+`"nontoken"` (riot, read as always choosing haste), `"flying"` (Dragon
+Tempest) or a creature type (Karrthus: Dragon) — and it is read at the attack
+step against the type line and keyword flying that ride beside each body.
+Sweep: **49 grants** in the corpus, 29 team-wide, 18 typed across 14 types.
+Three class grants ("artifact creatures", "multicolored creatures", "equipped
+creatures") are left unread and named rather than widened to the team; so
+are Anger (from the graveyard), Crashing Drawbridge (an activation), and the
+two lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory),
+because this model taps no particular land. A haste enabler is in the
+combat-payoff casting predicate in the same commit, as the rule requires.
+
+**What it is worth on an unopposed table: about 1.5 points.** ur-dragon's two
+grants, blinded and restored on the same seed: kill-by-T8 0.779 → 0.795,
+kill-by-T6 0.259 → 0.276. The clock is set by mana, not summoning sickness,
+which is the reading a haste branch has to be measured against before it is
+sold on the pilot's instinct. The fleet drift: ur-dragon up (the grants),
+ingris-infect and sharknado down a point (Skithiryx and Ingris buy haste with
+an activation the model does not price; the Locust God's haste belongs to its
+tokens, which carry no keywords here), zur-enchantress up on **drain** —
+which is the second finding.
+
+### The parallel lists did not follow a sacrifice or a death
+
+`creature_types` is index-aligned with `battlefield` at the one door, and two
+sites rebuilt or popped the battlefield without touching it: the sacrifice
+site (`battlefield[:] = kept`) and the deaths channel (`sort` then `pop(0)`).
+After either, `zip(creature_types, battlefield)` paired a creature's power
+with another creature's type line, so the typed lifelink grant — and, had it
+shipped on top, the typed haste grant — read garbage. Both sites now carry the
+parallel lists with them; zur's drain figure moved because the lifelink it
+grants by type is finally credited to the right bodies. The lesson is the one
+the file already states at the door: a parallel list is a liability at every
+site that mutates the list it parallels, and there were two such sites the
+comment did not know about.

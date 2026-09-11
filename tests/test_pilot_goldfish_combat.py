@@ -546,3 +546,167 @@ def test_the_commander_is_on_the_battlefield_and_swings():
                             )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
     assert with_cmd > without, (
         f"the commander contributes nothing to damage ({with_cmd} vs {without})")
+
+
+# ── 9. Team haste: a grant reaches the creature that arrived this turn ────────
+#
+# The pilot's log on ur-dragon asked for haste by name, and the model could not
+# measure the ask: `haste` was read per card from `\bhaste\b` anywhere in the
+# text, so Temur Ascendancy read as a hasty enchantment and granted nothing,
+# while a creature that merely GAVE haste attacked on arrival. Four shapes now
+# feed one key, `team_haste`, read at the attack step against the type line and
+# flying that ride beside each body.
+
+@pytest.mark.parametrize("name,text,type_line,expect", [
+    ("Fervor", "Creatures you control have haste.", "Enchantment", "all"),
+    ("Temur Ascendancy", "Creatures you control have haste.\nWhenever a creature "
+     "you control with power 4 or greater enters, you may draw a card.",
+     "Enchantment", "all"),
+    ("Dragonlord Kolaghan", "Flying, haste\nOther creatures you control have haste.",
+     "Legendary Creature — Elder Dragon", "all"),
+    ("Concordant Crossroads", "All creatures have haste.", "World Enchantment", "all"),
+    ("Ogre Battledriver", "Whenever another creature you control enters, that "
+     "creature gets +2/+0 and gains haste until end of turn.",
+     "Creature — Ogre Warrior", "all"),
+    ("Karrthus, Tyrant of Jund", "Flying, haste\nWhen Karrthus enters, gain control "
+     "of all Dragons, then untap all Dragons.\nOther Dragon creatures you control "
+     "have haste.", "Legendary Creature — Dragon", "Dragon"),
+    ("Goblin Chieftain", "Haste (This creature can attack and {T} as soon as it comes "
+     "under your control.)\nOther Goblin creatures you control get +1/+1 and have "
+     "haste.", "Creature — Goblin", "Goblin"),
+    ("Regisaur Alpha", "Other Dinosaurs you control have haste.\nWhen this creature "
+     "enters, create a 3/3 green Dinosaur creature token with trample.",
+     "Creature — Dinosaur", "Dinosaur"),
+    ("Dragon Tempest", "Whenever a creature you control with flying enters, it gains "
+     "haste until end of turn.\nWhenever a Dragon you control enters, it deals X "
+     "damage to any target, where X is the number of Dragons you control.",
+     "Enchantment", "flying"),
+    ("Rhythm of the Wild", "Creature spells you control can't be countered.\nNontoken "
+     "creatures you control have riot. (They enter with your choice of a +1/+1 "
+     "counter or haste.)", "Enchantment", "nontoken"),
+    # NOT a standing grant: from the graveyard, an activation, a condition, a
+    # class the board has no key for, and a land whose mana carries it.
+    ("Anger", "Haste\nAs long as this card is in your graveyard and you control a "
+     "Mountain, creatures you control have haste.", "Creature — Incarnation", None),
+    ("Crashing Drawbridge", "Defender\n{T}: Creatures you control gain haste until "
+     "end of turn.", "Artifact Creature — Wall", None),
+    ("Alibou, Ancient Witness", "Other artifact creatures you control have haste.",
+     "Legendary Artifact Creature — Golem", None),
+    ("Vihaan, Goldwaker", "Other outlaws you control have vigilance and haste.",
+     "Legendary Creature — Dwarf Warlock", None),
+    ("Hall of the Bandit Lord", "Hall of the Bandit Lord enters tapped.\n{T}, Pay 3 "
+     "life: Add {C}. If that mana is spent on a creature spell, it gains haste.",
+     "Legendary Land", None),
+])
+def test_the_four_grant_shapes_and_what_is_not_one(name, text, type_line, expect):
+    got = goldfish.combat_profile(_card(name, text, type_line=type_line))
+    assert got["team_haste"] == expect, (name, got["team_haste"])
+
+
+@pytest.mark.parametrize("text,own", [
+    ("Haste", True),
+    ("Flying, haste\nOther creatures you control have haste.", True),
+    ("Trample, haste\nWhen this creature attacks, ...", True),
+    # A grant to OTHERS is not own haste, and neither is riot's reminder text.
+    ("Other Dinosaurs you control have haste.", False),
+    ("Riot (This creature enters with your choice of a +1/+1 counter or haste.)", False),
+    ("When this creature enters, target creature gains haste until end of turn.", False),
+    ("Lifelink\nThis creature has haste as long as you control another Vampire.", False),
+])
+def test_own_haste_is_the_keyword_not_a_mention(text, own):
+    assert goldfish.combat_profile(_card("X", text))["haste"] is own
+
+
+@requires_data
+def test_the_team_haste_sweep_is_locked():
+    """Every card the four shapes match, by who is granted; re-derived from the
+    shipped patterns so a widening shows up here as a changed count."""
+    import collections
+    from manamap.pilot import card_pool
+    by = collections.Counter()
+    own = 0
+    for _, row in card_pool.load_frame().iterrows():
+        text = row.get("oracle_text") or ""
+        if not isinstance(text, str) or "haste" not in text.lower():
+            continue
+        grant = goldfish.team_haste_grant(text)
+        if grant:
+            by[grant] += 1
+        if "Creature" in str(row["type_line"]) and goldfish._HASTE_RE.search(text):
+            own += 1
+    assert dict(by) == {
+        "all": 29, "nontoken": 2, "flying": 1,
+        "Dinosaur": 2, "Goblin": 2, "Sliver": 2, "Dalek": 1, "Dragon": 1,
+        "Villain": 1, "Rigger": 1, "Fish": 1, "Thopter": 1, "Spirit": 1,
+        "Skeleton": 1, "Horse": 1, "Minotaur": 1, "Demon": 1,
+    }, dict(by)
+    assert sum(by.values()) == 49
+    # Creatures with keyword haste; the old `\bhaste\b` read gave 1,250.
+    assert own == 705
+
+
+def _haste_deck(grant_text):
+    return {"cards": [
+        {"name": "Cmd", "type_line": "Legendary Creature — Dragon", "cmc": 9,
+         "oracle_text": "", "quantity": 1, "is_commander": True,
+         "power": "10", "toughness": "10"},
+        {"name": "Mountain", "type_line": "Basic Land — Mountain", "cmc": 0,
+         "oracle_text": "", "quantity": 36, "power": None, "toughness": None},
+        dict(_card("Enabler", grant_text, cmc=2, type_line="Enchantment",
+                   power=None, toughness=None), quantity=14),
+        dict(_card("Beater", "", cmc=3, power="4", toughness="4"), quantity=49),
+    ]}
+
+
+def _haste_run(grant_text, iterations=200):
+    library, _ = goldfish.build_library(_haste_deck(grant_text))
+    rng = random.Random(5)
+    results = [goldfish.simulate_once(rng, library, 9, [], 10, model_combat=True)
+               for _ in range(iterations)]
+    return goldfish.aggregate(results, [], 10, False, True)["combat"]
+
+
+def test_a_granted_creature_swings_the_turn_it_lands():
+    """Driven through the simulator with the enabler's text as the only
+    difference: the same enchantment that says nothing leaves every 4/4 waiting
+    a turn, and the damage series moves EARLIER, not merely up."""
+    # THE CONTROL IS CAST THE SAME WAY: a grant to a type the beaters are not
+    # goes through the same loop for the same mana on the same turn, and
+    # leaves every Dragon summoning-sick. An enchantment that says nothing
+    # would never be cast at all, and the difference would be the mana.
+    with_grant = _haste_run("Creatures you control have haste.")
+    typed = _haste_run("Other Goblin creatures you control have haste.")
+    dmg_a = with_grant["mean_damage_by_turn"]
+    dmg_b = typed["mean_damage_by_turn"]
+    assert dmg_a["4"] > dmg_b["4"], (dmg_a["4"], dmg_b["4"])
+    assert with_grant["mean_kill_turn"] < typed["mean_kill_turn"]
+    # And the typed grant reaches its type: the same 4/4s, typed Goblin.
+    library, _ = goldfish.build_library(_haste_deck("Other Goblin creatures you control have haste."))
+    for card in library:
+        if card["name"] == "Beater":
+            card["type_line"] = "Creature — Goblin"
+    rng = random.Random(5)
+    goblins = goldfish.aggregate(
+        [goldfish.simulate_once(rng, library, 9, [], 10, model_combat=True) for _ in range(200)],
+        [], 10, False, True)["combat"]
+    assert goblins["mean_damage_by_turn"]["4"] == dmg_a["4"], (goblins["mean_damage_by_turn"]["4"], dmg_a["4"])
+
+
+@requires_deck
+def test_ur_dragon_reads_its_two_grants_and_they_are_worth_something():
+    """Prove by re-introducing the gap: blind `team_haste` and the two grants
+    the deck runs (Dragon Tempest, Temur Ascendancy) are read as nothing again.
+    Same seed, same draws, so the difference is the grants alone."""
+    real = goldfish.combat_profile
+    try:
+        goldfish.combat_profile = lambda c: dict(real(c), team_haste=None)
+        blind = goldfish.run("ur-dragon", quiet=True, iterations=3000, seed=7
+                             )["metrics"]["combat"]["kill_by_turn_rate"]
+    finally:
+        goldfish.combat_profile = real
+    seen = goldfish.run("ur-dragon", quiet=True, iterations=3000, seed=7
+                        )["metrics"]["combat"]["kill_by_turn_rate"]
+    assert seen["8"] > blind["8"], (seen["8"], blind["8"])
+    # And it is a SMALL number on an unopposed table: the deck's clock is set
+    # by mana, not summoning sickness. Stated so a haste branch is not oversold.
+    assert seen["8"] - blind["8"] < 0.05

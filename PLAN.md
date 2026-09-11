@@ -4,7 +4,7 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-09-10**. Everything below is committed and pushed to `main` except
+Last updated **2026-09-11**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
@@ -244,6 +244,21 @@ refactor Forge beat 31/400 vs 50/400).
 **Open from it:** zur-enchantress's own reading against v3 is the logs only;
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.
+
+**The goldfish learned team haste (2026-09-11), for the Ur-Dragon improvement
+pass.** The pilot's log asked for haste by name and the model read `haste` per
+card, so Temur Ascendancy granted nothing and a creature that GIVES haste attacked
+on arrival. One key, `team_haste` (all / nontoken / flying / a type), 49 corpus
+grants, keyword-only own haste (1,250 -> 705 creatures), the enabler in the casting
+predicate, and the two board-mutating sites now carry the parallel lists (zur's
+typed lifelink was mispaired after a death). Worth about 1.5 points of kill-by-T8
+on ur-dragon's two grants: the unopposed clock is set by mana, not summoning
+sickness, and a haste branch is measured against that. The prescription
+0241fb6a70f1 (the pilot's four asks) failed its first skeptic pass — the reading
+over-claimed the log's causes and two adds were miscounted — and goes back to the
+doctor with the new instrument. Not read, named: token haste, the haste lands, and
+activated haste (Skithiryx, Ingris), which is why ingris-infect and sharknado
+moved down a point. → `docs/gotchas-bench.md`
 
 
 ### IN FLIGHT — the PRD v2 build-out (2026-09-03)

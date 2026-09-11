@@ -17,14 +17,14 @@
         "owed_to_the_ability": 5.689
       },
       "kill_by_10": {
-        "ceiling": 0.868,
-        "floor": 0.708,
-        "owed_to_the_ability": 0.16
+        "ceiling": 0.873,
+        "floor": 0.716,
+        "owed_to_the_ability": 0.157
       },
       "kill_by_8": {
-        "ceiling": 0.377,
-        "floor": 0.19,
-        "owed_to_the_ability": 0.187
+        "ceiling": 0.395,
+        "floor": 0.206,
+        "owed_to_the_ability": 0.189
       }
     },
     "why": "Forge's AI fired zur's animate in 5% of games. Neither end is the truth; read the pair. A branch graded on one end is graded on an assumption."
@@ -101,13 +101,14 @@
       "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
       "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you control have haste' lets every creature attack the turn it lands, from the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads the creature's type line; Dragon Tempest's grant reads keyword flying; riot is read as always choosing haste. TOKENS carry no type line and no flying here, so a typed or flying grant does not reach them. NOT read: a grant from the graveyard (Anger), an activated one (Crashing Drawbridge), one conditional on the board ('as long as'), and the lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model taps no particular land. Before this a granted creature waited a turn and its haste enabler was read as nothing.",
       "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
       "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
       "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "b3c4a915eb9d",
+    "model_version": "628c60c7cb5d",
     "seed": 42
   },
   "metrics": {
@@ -115,23 +116,23 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.868,
+        "10": 0.873,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.008,
-        "7": 0.087,
-        "8": 0.377,
-        "9": 0.702
+        "7": 0.096,
+        "8": 0.395,
+        "9": 0.713
       },
       "kill_turn_histogram": {
-        "10": 1663,
+        "10": 1596,
         "5": 1,
         "6": 82,
-        "7": 791,
-        "8": 2896,
-        "9": 3247
+        "7": 874,
+        "8": 2991,
+        "9": 3184
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
@@ -157,7 +158,7 @@
         "8": 10.543,
         "9": 14.438
       },
-      "mean_kill_turn": 8.647,
+      "mean_kill_turn": 8.611,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -171,7 +172,7 @@
         "9": 0.0
       },
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.132
+      "no_kill_by_max_turn_rate": 0.127
     },
     "commander": {
       "cast_by_turn_6_rate": 0.94,
@@ -192,29 +193,29 @@
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 21.617,
+        "10": 25.316,
         "2": 0.039,
         "3": 0.113,
         "4": 0.436,
         "5": 1.212,
         "6": 2.708,
-        "7": 5.268,
-        "8": 8.925,
-        "9": 14.22
+        "7": 5.661,
+        "8": 10.004,
+        "9": 16.374
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 7.397,
+        "10": 8.942,
         "2": 0.039,
         "3": 0.074,
         "4": 0.323,
         "5": 0.775,
         "6": 1.496,
-        "7": 2.56,
-        "8": 3.658,
-        "9": 5.295
+        "7": 2.954,
+        "8": 4.343,
+        "9": 6.37
       },
-      "share_of_games_draining_by_turn_10": 0.863
+      "share_of_games_draining_by_turn_10": 0.864
     },
     "interaction_castable_by_turn": {
       "1": 0.13,

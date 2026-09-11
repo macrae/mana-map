@@ -115,7 +115,9 @@ def channels_for(profile):
             "mass_animate_threshold",
             # Poison, added with the fields (2026-09-10): infect and toxic are
             # bodies too, so this only matters for the per-attacker ping.
-            "infect", "toxic", "attack_ping_per_attacker")):
+            "infect", "toxic", "attack_ping_per_attacker",
+            # Team haste (2026-09-11), listed with the channel.
+            "team_haste")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -180,7 +182,9 @@ def never_cast(profile, flags):
                 # (`if model_combat and c["combat"]["mass_animate_threshold"]`);
                 # added here in the same edit as the channel, because the fleet
                 # test failed the moment the channel alone was taught.
-                cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"))):
+                cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"),
+                # a haste enabler is cast by the combat-payoff loop
+                cb.get("team_haste"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False

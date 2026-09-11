@@ -229,6 +229,17 @@ COMBAT_ASSUMPTIONS = [
     "the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in "
     "a real four-player game you would keep blockers, which makes this an "
     "optimistic clock and a pessimistic board.",
+    "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you "
+    "control have haste' lets every creature attack the turn it lands, from "
+    "the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads "
+    "the creature's type line; Dragon Tempest's grant reads keyword flying; "
+    "riot is read as always choosing haste. TOKENS carry no type line and no "
+    "flying here, so a typed or flying grant does not reach them. NOT read: a "
+    "grant from the graveyard (Anger), an activated one (Crashing Drawbridge), "
+    "one conditional on the board ('as long as'), and the lands whose mana "
+    "carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model "
+    "taps no particular land. Before this a granted creature waited a turn "
+    "and its haste enabler was read as nothing.",
     "Attack triggers, combat-damage triggers and additional combat phases are "
     "modelled, which is what makes Treasure sources gated on combat produce here "
     "when they produce nothing without this flag. Effects the parser cannot read "
@@ -1066,7 +1077,90 @@ def treasure_profile(card):
 # On ur-dragon that was nine of fourteen sources and both halves of the deck's
 # only verified win line.
 
-_HASTE_RE = re.compile(r"\bhaste\b", re.IGNORECASE)
+# OWN haste is a KEYWORD -- "Haste", "Flying, haste" -- and not a mention. This
+# read `\bhaste\b` anywhere in the text until 2026-09-11, so a creature that
+# GRANTS haste without having it (Regisaur Alpha, Ogre Battledriver) or whose
+# riot reminder text merely names it (Spider-Punk) attacked the turn it landed.
+# A conditional own haste ("has haste as long as", Markov Crusader) is now read
+# as none, which is the honest floor. Sweep locked in
+# tests/test_pilot_goldfish_combat.py.
+_KEYWORD_NOT_GRANTED = (r"(?<!have )(?<!has )(?<!gain )(?<!gains )(?<!or )(?<!with )"
+                        r"(?<!lose )(?<!loses )(?<!without )(?<!and )")
+_HASTE_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bhaste\b", re.IGNORECASE)
+_FLYING_KW_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bflying\b", re.IGNORECASE)
+# TEAM HASTE, the grant the pilot's log asked for by name ("granting ur dragon
+# haste is nice"). Four shapes, one profile key `team_haste` whose value is
+# WHO gets it: "all" (Fervor, Temur Ascendancy, Urabrask, Concordant
+# Crossroads), "nontoken" (Rhythm of the Wild's riot, read as always choosing
+# haste -- the pilot's choice, stated), "flying" (Dragon Tempest's enters
+# trigger) or a creature TYPE (Karrthus: Dragon; Goblin Chieftain: Goblin;
+# Regisaur Alpha: Dinosaur). Not read, and named in COMBAT_ASSUMPTIONS: a
+# grant from the graveyard (Anger), an activated grant (Crashing Drawbridge),
+# a grant conditional on the board ("as long as"), a lowercase class
+# ("outlaws"), and the two lands whose mana carries haste (Hall of the Bandit
+# Lord, Arena of Glory) -- the goldfish taps no particular land.
+_TEAM_HASTE_RE = re.compile(
+    # "artifact creatures", "multicolored creatures", "equipped creatures": a
+    # class this board has no key for, so the grant is left unread and NAMED
+    # in the sweep rather than widened to the team.
+    r"(?:all creatures|(?:[Oo]ther )?(?<!artifact )(?<!multicolored )(?<!equipped )"
+    r"(?<!legendary )(?<!face-down )(?<!tapped )(?<!attacking )(?<!enchanted )"
+    r"creatures you control) have "
+    r"(?:[a-z]+(?:, [a-z]+)* and )?haste\b", re.IGNORECASE)
+_TYPED_HASTE_RE = re.compile(
+    r"(?:^|[.)]\s|haste\s)(?:[Oo]ther )?(nontoken |flying )?([A-Z][a-z]+?)s? (?:creatures? )?you control "
+    r"(?:get \+\d/\+\d and )?have (?:[a-z]+(?:, [a-z]+)* and )?haste\b")
+_ENTERS_HASTE_RE = re.compile(
+    r"whenever (?:a|another) (?:nontoken )?creature you control( with flying)? enters, "
+    r"(?:that creature|it) (?:gets \+\d/\+\d and )?gains haste", re.IGNORECASE)
+_RIOT_TEAM_RE = re.compile(r"(?:nontoken )?creatures you control have riot", re.IGNORECASE)
+_GRANT_CONDITIONAL_RE = re.compile(r"as long as|\bif\b|during (?:your|each)", re.IGNORECASE)
+
+
+def _sentence_around(text, pos):
+    """The sentence holding `pos`; a newline ends one as a period does, since
+    cards.json keeps oracle newlines and cards.csv flattens them to spaces."""
+    start = max(text.rfind(". ", 0, pos), text.rfind("\n", 0, pos))
+    start = 0 if start < 0 else start + 1
+    end = min((i for i in (text.find(".", pos), text.find("\n", pos)) if i >= 0), default=-1)
+    return text[start:] if end < 0 else text[start:end]
+
+
+def _static_grant(text, m):
+    """Unconditional and not the effect of an activation or a loyalty ability
+    (Barbarian Class's level 3, Ellywick's emblem) -- what a permanent does by
+    being in play."""
+    return (not _GRANT_CONDITIONAL_RE.search(_sentence_around(text, m.start()))
+            and not _inside_activation(text, m.start()))
+
+
+def team_haste_grant(text):
+    """Who a card gives haste to: None, "all", "nontoken", "flying" or a type."""
+    # TYPED FIRST: "Other Dragon creatures you control have haste" contains
+    # "creatures you control have haste", so the team pattern alone read
+    # Karrthus as a grant to everything.
+    m = _TYPED_HASTE_RE.search(text)
+    if m and _static_grant(text, m):
+        if m.group(1):
+            return m.group(1).strip().lower()
+        word = m.group(2)
+        if word == "Flying":
+            return "flying"
+        if word == "Nontoken":
+            return "nontoken"
+        if word in _corpus_creature_types():
+            return word
+        if word not in ("Other", "Creature", "All"):
+            return None       # "Legendary creatures you control": a class this model has no key for
+    m = _TEAM_HASTE_RE.search(text)
+    if m and _static_grant(text, m):
+        return "all"
+    if _RIOT_TEAM_RE.search(text):
+        return "nontoken"
+    m = _ENTERS_HASTE_RE.search(text)
+    if m:
+        return "flying" if m.group(1) else "all"
+    return None
 # "create a 1/1 red Dragon creature token", "create two 2/2 ... tokens"
 _TOKEN_PT_RE = re.compile(r"create (\w+) ([\dX]+)/([\dX]+)([^.]*?)tokens?", re.IGNORECASE)
 _ATTACKS_RE = re.compile(
@@ -1702,6 +1796,11 @@ def combat_profile(card):
         "is_creature": is_creature,
         "power": _stat(card.get("power")) if is_creature else 0,
         "haste": bool(_HASTE_RE.search(text)),
+        # Read for the flying-gated grant (Dragon Tempest) only.
+        "flying": is_creature and bool(_FLYING_KW_RE.search(text)),
+        "type_line": type_line,
+        # Who this card gives haste to; see _TEAM_HASTE_RE.
+        "team_haste": team_haste_grant(text),
         "token_power": 0,
         "token_bodies": 0,
         # A TOKEN PER ENCHANTMENT ENTERING, which in a Zur deck is a token per
@@ -2900,6 +2999,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Temple: one more counter on everything each time another Shrine lands.
     team_anthem = 0
     team_anthem_on_type = []
+    # Who has been granted haste by permanents in play: "all", "nontoken",
+    # "flying" or a creature type. Read at the attack step only.
+    haste_grants = []
     drain_permanents = []
     # Permanents that pay when another of a named type lands ("whenever another
     # Shrine you control enters"). A one-shot ETB and a per-type trigger are
@@ -2939,6 +3041,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     animated_idx = set()
     # Type line of each battlefield creature, index-aligned with `battlefield`.
     creature_types = []
+    creature_flying = []          # index-aligned with `battlefield`, like the types
     mass_animate_threshold = 0
     damage_by_turn = []
     board_power_by_turn = []
@@ -3041,7 +3144,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
                              is_token=False, is_legendary=False, type_line="",
-                             infect=False, toxic=0):
+                             infect=False, toxic=0, flying=False):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -3063,6 +3166,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
+            creature_flying.append(flying)
             # BODIES INTO CARDS, on the same door the damage payoffs use.
             # The power condition is honoured in both directions: Welcoming
             # Vampire ("power 2 or less") draws off a 1/1 token, Garruk's
@@ -3164,10 +3268,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         def _commander_arrives(cprof, cevent):
             """ONE DOOR FOR A COMMANDER'S ARRIVAL, used by both of a pair."""
             nonlocal team_damage_multiplier, extra_combat_free
+            if model_combat and cprof and cprof["team_haste"]:
+                haste_grants.append(cprof["team_haste"])
             if model_combat and cprof and cprof["is_creature"]:
                 creature_entered(cprof["power"], turn, cprof["haste"],
                                  2 if cprof["double_strike"] else 1,
-                                 is_legendary=True,
+                                 is_legendary=True, type_line=cprof["type_line"],
+                                 flying=cprof["flying"],
                                  infect=cprof["infect"], toxic=cprof["toxic"])
                 if cprof["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= cprof["team_damage_multiplier"]
@@ -3367,11 +3474,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # Violence and Dictate of the Twin Gods
                                          # are enchantments, read correctly and
                                          # never cast.
-                                         c["combat"]["team_damage_multiplier"] > 1))),
+                                         c["combat"]["team_damage_multiplier"] > 1,
+                                         # A HASTE ENABLER IS AN ENGINE PERMANENT:
+                                         # Fervor has no body, and without this
+                                         # line it is read and never cast.
+                                         c["combat"]["team_haste"]))),
                                key=lambda c: c["cmc"]):
                 if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     if is_etb_engine(card["combat"]):
                         etb_engines.append(card["combat"])
+                    if card["combat"]["team_haste"]:
+                        haste_grants.append(card["combat"]["team_haste"])
                     if card["combat"]["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
                     hand.remove(card)
@@ -3704,6 +3817,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if d_["per_type"]:
                         per_type_watchers.append(d_)
                 cb_ = card["combat"]
+                if model_combat and cb_["team_haste"]:
+                    haste_grants.append(cb_["team_haste"])
                 if cb_["team_counters_etb"]:
                     n_ = cb_["team_counters_etb"]
                     if n_ < 0:            # X = the count of its own named type
@@ -3835,7 +3950,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             2 if combat["double_strike"] else 1,
                             is_legendary="Legendary" in (card.get("type_line") or ""),
                             type_line=card.get("type_line") or "",
-                            infect=combat["infect"], toxic=combat["toxic"])
+                            infect=combat["infect"], toxic=combat["toxic"],
+                            flying=combat["flying"])
                         creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
@@ -3915,6 +4031,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if d_["per_type"]:
                         per_type_watchers.append(d_)
                 cb_ = card["combat"]
+                if model_combat and cb_["team_haste"]:
+                    haste_grants.append(cb_["team_haste"])
                 if cb_["team_counters_etb"]:
                     n_ = cb_["team_counters_etb"]
                     if n_ < 0:            # X = the count of its own named type
@@ -4030,9 +4148,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # THE ANTHEM IS PER CREATURE AND IS PART OF ITS POWER, so it
             # rides inside the double-strike multiplier exactly as printed power
             # does. A +6/+6 team on a double-striker swings twelve extra.
+            # A GRANT REACHES A CREATURE THAT ARRIVED THIS TURN. `haste` on
+            # the entry is the creature's own keyword; the grants are read
+            # here, against the type line and flying that ride beside it.
+            def _granted(tl_, fl_, tok_):
+                for g_ in haste_grants:
+                    if (g_ == "all" or (g_ == "nontoken" and not tok_)
+                            or (g_ == "flying" and fl_)
+                            or (g_ not in ("all", "nontoken", "flying") and g_ in tl_)):
+                        return True
+                return False
             attackers = [((p + team_anthem) * mult, pz)
-                         for p, arrived, haste, mult, _tok, pz in battlefield
-                         if haste or arrived < turn]
+                         for (p, arrived, haste, mult, _tok, pz), tl_, fl_
+                         in zip(battlefield, creature_types, creature_flying)
+                         if haste or arrived < turn
+                         or (haste_grants and _granted(tl_, fl_, _tok))]
             # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
             # (702.90b) and never touches the life total; a toxic attacker
             # deals its damage AND adds N counters on connecting, which with
@@ -4100,11 +4230,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # above, so a token converted here has already attacked — this is a
             # conversion, not a trade against this turn's combat.
             if model_sacrifice and free_sac_outlet and death_engines:
-                kept, n_sac = [], 0
-                for entry in battlefield:
+                kept, kept_idx, n_sac = [], [], 0
+                for idx_, entry in enumerate(battlefield):
                     is_tok = entry[4]
                     if not is_tok or n_sac >= SAC_LIMIT_PER_TURN:
                         kept.append(entry)
+                        kept_idx.append(idx_)
                         continue
                     n_sac += 1
                     for eng in death_engines:
@@ -4117,6 +4248,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if n_sac >= SAC_LIMIT_PER_TURN:
                     sac_cap_hits += 1
                 battlefield[:] = kept
+                # THE PARALLEL LISTS FOLLOW THE REBUILD. They did not until
+                # 2026-09-11, so after a sacrifice the typed lifelink grant
+                # read another creature's type line, and the haste grants
+                # below would have done the same.
+                creature_types[:] = [creature_types[i] for i in kept_idx]
+                creature_flying[:] = [creature_flying[i] for i in kept_idx]
                 sacrifices += n_sac
             dealt += etb_damage
             dealt *= team_damage_multiplier
@@ -4151,7 +4288,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         creature_entered(
                             combat["power"], turn, combat["haste"],
                             2 if combat["double_strike"] else 1, is_legendary=True,
-                            type_line=card.get("type_line") or "")
+                            type_line=card.get("type_line") or "",
+                            flying=combat["flying"])
+                        if model_combat and combat["team_haste"]:
+                            haste_grants.append(combat["team_haste"])
                     else:
                         still.append((card, combat))
                 pending_gods[:] = still
@@ -4302,8 +4442,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _ in range(n_own):
                 if not battlefield:
                     break
-                battlefield.sort(key=lambda row: row[0])
-                battlefield.pop(0)
+                # The weakest body dies -- the first of the lowest power, which
+                # is what the stable sort-then-pop this replaces removed -- and
+                # the parallel lists lose the same index.
+                weakest = min(range(len(battlefield)), key=lambda k: battlefield[k][0])
+                battlefield.pop(weakest)
+                creature_types.pop(weakest)
+                creature_flying.pop(weakest)
                 bodies_cum = max(0, bodies_cum - 1)
                 for prof in death_drains:
                     deaths_drained += prof["death_drain"]
