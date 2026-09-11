@@ -961,8 +961,43 @@
   }
  },
  "forge": {
-  "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate gishath@cart-v1 --vs <pod>` puts it at a table and writes where this reads"
+  "available": true,
+  "branch": {
+   "games": 40,
+   "rate": 0.325,
+   "wins": 13,
+   "won_by": {
+    "all opponents have lost": 13
+   }
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "games": 100,
+   "rate": 0.33,
+   "wins": 33,
+   "won_by": {
+    "all opponents have lost": 33
+   }
+  },
+  "ci95": [
+   -0.1625,
+   0.1713
+  ],
+  "delta": -0.005,
+  "engine_casts": {
+   "branch": {
+    "covered": true,
+    "never_cast": [
+     "World War Hulk"
+    ]
+   },
+   "champion": {
+    "covered": true,
+    "never_cast": []
+   }
+  },
+  "excludes_zero": false,
+  "mde": 0.26
  },
  "harness": {
   "iterations": 10000,
@@ -1162,7 +1197,9 @@
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: -0.005 win rate, CI [-0.163, +0.171] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "damage @T10",
@@ -1246,9 +1283,9 @@
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate gishath@cart-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],

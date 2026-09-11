@@ -14,21 +14,25 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 14,
+    "complete": 13,
     "of": 15,
     "stale": [],
-    "invalid": [
-      "considering.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
-      "brief"
+      "brief",
+      "issue"
     ],
     "todo": [
       {
         "stage": "brief",
         "what": "the written intent a build starts from",
         "how": "manamap pilot brew gishath --commander \"<name>\" --theme <style>"
+      },
+      {
+        "stage": "issue",
+        "what": "authored identity: name, commander, status (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/gishath/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
       }
     ]
   },
@@ -1214,9 +1218,9 @@
     "verified_lines": 3
   },
   "diagnosis": {
-    "verdict": "The deck functions early and interacts unusually well for a linear typal list: 89.4% turn-3 land drop, ramp assembled 93.9% at mean turn 2.044, 11 removal pieces inside an 18-card interactive suite, all five permanent classes covered. What limits it is the top end. Six of 65 nonland entries sit at mana value 8+ against a corpus average of ~1.5, the commander is one of them, and the deck's own goldfish puts mean available mana at 7.621 on turn 10. Two of the six discount themselves off a board — Blasphemous Act and Ghalta — so it is four of them, the commander among them, that compete for the one big-mana cast a seven-to-ten-turn game pays for. Colour compounds it: white and red sit at 22 sources each against a 36 target, 63.9% on curve with rocks and dorks counted. The enrage web is the healthier plan and is not commander-gated.",
-    "skeptic": null,
-    "stale": true
+    "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.1.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.1.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
+    "skeptic": "fail",
+    "stale": false
   },
   "audit": {
     "archetype": null,
@@ -1264,27 +1268,37 @@
     },
     {
       "from": "diagnosis",
-      "question": "Declare a goldfish target pairing an enrage converter with a damage source you control, and measure the conjunction. The present 'Enrage engine drawn' group measures only that a converter was drawn.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Re-run the goldfish with two more command-zone-reaching cost reducers in the 99 and read the commander's mean cast turn off it. The model NOW applies static typed cost reduction from a permanent on the battlefield — generic only, floored at the coloured pip count — which it did not when this prescription was first sized.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Does Forerunner of the Empire plus Wrathful Raptors plus Temple Altisaur produce a repeatable one-sided board wipe with no Blasphemous Act, and where does it stop?",
+      "question": "Sunfrill Imitator attacks beside Gishath and becomes a copy of him: does the copy carry the combat-damage reveal this combat, is it a 7/6 with vigilance, trample and haste, and does the legend rule stay off given the names differ?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "With a maindeck sacrifice outlet on the battlefield, is Marauding Raptor safe to run alongside Polyraptor?",
+      "question": "Roaming Throne naming Dinosaur: does Gishath's reveal trigger twice off one connection, and does Pantlaza's once-per-turn discover survive the doubling?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Is there corpus guidance on the specific trade a reveal-trigger commander forces: cutting the expensive payoffs the commander cheats in, in order to cast the commander at all?",
+      "question": "Blasphemous Act through Temple Altisaur with Trapjaw Tyrant AND Wrathful Raptors on a board this 99 can produce: how many exiles, how much redirected damage, and in what order against the state-based sweep?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Marauding Raptor's entry ping into a reveal of four Dinosaurs including Trapjaw Tyrant and Wrathful Raptors: four separate triggers, four exiles, and does the redirected damage go anywhere useful?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Chandra's Ignition on a 7-power Gishath with Temple Altisaur down: one-sided, and what does Wrathful Raptors do with the 1 each Dinosaur takes?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Split 'Cost reducer or cheat-into-play drawn' into a three-card 'Command-zone discount drawn' group (Otepec Huntmaster, Urza's Incubator, Knight of the Stampede) and add Vaultborn Tyrant and Earthshaker Dreadmaw to the payoff group, then re-run.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Is there a construction school for commander-RELIANT decks — mulligan discipline, protection sizing and pivot timing when the commander is the only engine — and for typal lands whose mana pays spells but not abilities?",
       "settled_by": "research-strategy"
     },
     {
@@ -1334,11 +1348,9 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (considering.json) — `deck-status gishath` names them; fix before anything else reads them",
     "branch `cart-v1` needs 8 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
-    "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "engine.json's critic verdict is None — `/analyze-engine gishath`",
-    "open questions routed: diagnose ×1, goldfish ×3, research-strategy ×1, resolve-stack ×6",
+    "open questions routed: diagnose ×1, goldfish ×2, research-strategy ×1, resolve-stack ×9",
     "4 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
