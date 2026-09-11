@@ -1,0 +1,44 @@
+{
+ "slug": "ur-dragon",
+ "branch": "responses-v1",
+ "v": 2,
+ "opened": "2026-09-11",
+ "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL \u2014 the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline.",
+ "objective": {
+  "axis": "kill_by_8",
+  "op": ">=",
+  "value": 0.78,
+  "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL \u2014 the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline."
+ },
+ "commits": [
+  {
+   "at": "2026-09-11",
+   "decklist_sha256": "bdaf3e00c6d49a085d9a692ea9c90e1140c0824033c61889f3fa6218cd16fd85",
+   "message": "Prescription 0241fb6a70f1, the responses half: adds 2, 3, 5 with their natural cuts"
+  }
+ ],
+ "base_version": 4,
+ "staged": [
+  {
+   "at": "2026-09-11",
+   "out": "Hellkite Courser",
+   "in": "Whirlwing Stormbrood // Dynamic Soar",
+   "strength": null,
+   "why": "add 2: flash for every Dragon, the anti-telegraph mechanism the log names three times; Courser was cast 0 times in 40 Forge games"
+  },
+  {
+   "at": "2026-09-11",
+   "out": "Rishkar's Expertise",
+   "in": "Stubborn Denial",
+   "strength": null,
+   "why": "add 3: one blue mana held open, Ferocious on for 18 of 22 Dragons; Expertise is the slowest non-Dragon spell in the list"
+  },
+  {
+   "at": "2026-09-11",
+   "out": "Utvara Hellkite",
+   "in": "Transcendent Dragon",
+   "strength": null,
+   "why": "add 5: the only Dragon in the identity whose ETB counters a spell; Utvara was cast 8 of 40 Forge games"
+  }
+ ]
+}
