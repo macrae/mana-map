@@ -245,7 +245,7 @@ refactor Forge beat 31/400 vs 50/400).
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.
 
-**Gishath checked in as v1.1.0 and SLEEVED (2026-09-11), and the goldfish learned
+**Gishath checked in as v1.0.0 and SLEEVED (2026-09-11), and the goldfish learned
 its engines.** Forge read the commander's reveal (42 triggers in 40 games, the AI
 took the Dinosaurs); the goldfish read a 7-power body and none of Mirari's Wake,
 Rishkar's Expertise, Dreadmaw's per-Dinosaur draw or Ghalta's scaling token, with
@@ -260,9 +260,12 @@ Molten Echoes' chosen-type copy, cast-draw on mana value (Up the Beanstalk) and
 for a paid mana (Lifecrafter's Bestiary), power-gated cast damage (Sarkhan's
 Unsealing), damage-for-power (Chandra's Ignition), tutor-to-battlefield (Savage
 Order); the commander's own cast now fires cast triggers. Branch `cart-v1` (eight
-swaps incl. World War Hulk for Enlarge) staged for the measurement; the engine
+swaps incl. World War Hulk for Enlarge) staged and measured on both instruments,
+NOT proposed — the pilot has not green-lit the purchase; it is reserved the name
+v1.1.0 for when the cards land (the sleeved list is v1.0.0, the old bench list
+v0.9.0, retagged 2026-09-11 on the pilot's rule); the engine
 model rebuilt for v1.1.0 (critic in flight); deck_map stale against V3. Next: the
-Forge v1.1.0 baseline, cart-v1 on both instruments, World War Hulk's chapters as
+Forge v1.0.0 baseline, cart-v1 on both instruments, World War Hulk's chapters as
 a third batch. Open from the agent chain: `merge-deck-map` cannot CLEAR a label (a
 null or omitted id keeps the old name, `merge_deck_map.py:60-63`); `engine.json`
 cites V3's city ids (its `map_disagreements` says so) and wants a re-run against

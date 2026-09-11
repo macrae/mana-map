@@ -41,7 +41,7 @@
     {
       "name": "cart-v1",
       "opened": "2026-09-11",
-      "why": "The pilot's cart, reviewed 2026-09-11 against v1.1.0 on the instrument that now reads Gishath's reveal. Seven adds for the audit's ramp surplus (15 vs 10-12) and its weakest interaction: Bloom Tender, Hunting Velociraptor, Savage Order, Up the Beanstalk, Savage Stomp, Molten Echoes, Chandra's Ignition. The goldfish sees Bloom Tender and Beanstalk's entry draw and nothing of prowl, the tutor-to-battlefield, the copies or the one-sided wipe, so its objective is a CONTROL on the clock (0.617 today): the four ramp cuts may not cost more than about two points. Forge at standard-v3 reads all seven and is the gate.",
+      "why": "The pilot's cart, reviewed 2026-09-11 against v1.0.0 on the instrument that now reads Gishath's reveal. Seven adds for the audit's ramp surplus (15 vs 10-12) and its weakest interaction: Bloom Tender, Hunting Velociraptor, Savage Order, Up the Beanstalk, Savage Stomp, Molten Echoes, Chandra's Ignition. The goldfish sees Bloom Tender and Beanstalk's entry draw and nothing of prowl, the tutor-to-battlefield, the copies or the one-sided wipe, so its objective is a CONTROL on the clock (0.617 today): the four ramp cuts may not cost more than about two points. Forge at standard-v3 reads all seven and is the gate.",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
       "proposal": null,
@@ -908,7 +908,7 @@
     "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
     "built_at": "2026-09-11",
     "note": "sleeved: the pilot's Gishath v1 paper list, checked in 2026-09-11",
-    "release": "v1.1.0"
+    "release": "v1.0.0"
   },
   "record": {
     "games": 1,
@@ -1218,8 +1218,8 @@
     "verified_lines": 3
   },
   "diagnosis": {
-    "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.1.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.1.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
-    "skeptic": "fail",
+    "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.0.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.0.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
+    "skeptic": "pass",
     "stale": false
   },
   "audit": {

@@ -2,7 +2,7 @@
   "slug": "gishath",
   "as_of_decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
   "archetype": "Commander-reliant Naya Dinosaur battlecruiser: one engine (Gishath's combat-damage reveal, verified in stack 001), three command-zone cost reducers as its ignition, a per-Dinosaur-entry draw layer that pays the reveal back, and a two-card enrage residue that survives as the payoff side of one verified one-sided sweep (stack 004). strategic_frame.json and engine.json both say RELIANT, not built around, and the audit applies base targets with no archetype override, so every count is a starting point.",
-  "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.1.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.1.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
+  "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.0.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.0.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
   "axes": [
     {
       "axis": "mana-base",
@@ -46,7 +46,7 @@
       "measured": {
         "value": 7
       },
-      "reading": "Seven always-tapped is under the eight the corpus allows a slow deck, and this deck is slow: its first Forge attack lands at mean global turn 20.97 (v1.1.0 record). Not a slot worth spending.",
+      "reading": "Seven always-tapped is under the eight the corpus allows a slow deck, and this deck is slow: its first Forge attack lands at mean global turn 20.97 (v1.0.0 record). Not a slot worth spending.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -96,7 +96,7 @@
       "measured": {
         "value": 5
       },
-      "reading": "Five by role, but the audit's own probe names five more (Earthshaker Dreadmaw, Jetmir's Garden, Rishkar's Expertise, Runic Armasaur, Vaultborn Tyrant) and Hunter's Insight, Pantlaza's discover, Trumpeting Carnosaur's discover and Regal Behemoth's monarch draw by oracle text as well. Almost all of it is gated on a board or a connection, which is the shape of a commander-reliant list; the goldfish models 2 of 8 draw cards and reads 1.353 extra cards by turn 8. Forge v1.1.0 never cast Hunter's Insight in 40 games and cast Rishkar's Expertise twice — a floor on the AI, not the card.",
+      "reading": "Five by role, but the audit's own probe names five more (Earthshaker Dreadmaw, Jetmir's Garden, Rishkar's Expertise, Runic Armasaur, Vaultborn Tyrant) and Hunter's Insight, Pantlaza's discover, Trumpeting Carnosaur's discover and Regal Behemoth's monarch draw by oracle text as well. Almost all of it is gated on a board or a connection, which is the shape of a commander-reliant list; the goldfish models 2 of 8 draw cards and reads 1.353 extra cards by turn 8. Forge v1.0.0 never cast Hunter's Insight in 40 games and cast Rishkar's Expertise twice — a floor on the AI, not the card.",
       "citations": [
         {
           "rule": "strategy:card-advantage",
@@ -114,7 +114,7 @@
       "measured": {
         "value": 9
       },
-      "reading": "Nine removal copies inside a 16-card interactive suite is Walser's floor. Forge v1.1.0 cast 0.62 interaction a game (ci95 [0.21, 1.04]) and never cast Beast Within in 40 games — a floor on how much of it lands at an AI-piloted table.",
+      "reading": "Nine removal copies inside a 16-card interactive suite is Walser's floor. Forge v1.0.0 cast 0.62 interaction a game (ci95 [0.21, 1.04]) and never cast Beast Within in 40 games — a floor on how much of it lands at an AI-piloted table.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -160,7 +160,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "Three by role at Zupke's floor, but the real finisher is the commander plus the reveal, and no checker-passed stack resolves a lethal swing (engine.json open question). Forge v1.1.0: commander damage reached 21 on one defender in 3 of 40 games; the seat's wins came from the board the reveal built (combat damage to players mean 75.0, median 17.5, max 777).",
+      "reading": "Three by role at Zupke's floor, but the real finisher is the commander plus the reveal, and no checker-passed stack resolves a lethal swing (engine.json open question). Forge v1.0.0: commander damage reached 21 on one defender in 3 of 40 games; the seat's wins came from the board the reveal built (combat damage to players mean 75.0, median 17.5, max 777).",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -252,7 +252,7 @@
       "measured": {
         "value": 8
       },
-      "reading": "Eight, all aimed at the ignition or the reveal: Enlightened Tutor (cast 12 times in Forge v1.1.0) finds Urza's Incubator, Worldly Tutor finds a reducer, Congregation at Dawn stacks three Dinosaurs for the reveal. A tutor is the fourth copy of a three-card reducer class.",
+      "reading": "Eight, all aimed at the ignition or the reveal: Enlightened Tutor (cast 12 times in Forge v1.0.0) finds Urza's Incubator, Worldly Tutor finds a reducer, Congregation at Dawn stacks three Dinosaurs for the reveal. A tutor is the fourth copy of a three-card reducer class.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
@@ -272,7 +272,7 @@
         "count": 1,
         "thinnest": false,
         "measured_rate": 0.255,
-        "reading": "Always available and never cheap: cast by turn 6 in 25.5% of goldfish games, median 7, mean 7.362, never by turn 10 in 2,299 of 10,000. Forge v1.1.0 resolved him in 32 of 40 games (0.80, ci95 [0.652, 0.895]), first at mean global turn 31.47 (median 29, min 18) — round 8 — and the seat was eliminated at mean global turn 35.75 (n 24, ci95 [31.94, 39.56]). Paired game by game, the 16 games with both his resolution and the seat's elimination show a median gap of 5.5 global turns between them (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he resolved."
+        "reading": "Always available and never cheap: cast by turn 6 in 25.5% of goldfish games, median 7, mean 7.362, never by turn 10 in 2,299 of 10,000. Forge v1.0.0 resolved him in 32 of 40 games (0.80, ci95 [0.652, 0.895]), first at mean global turn 31.47 (median 29, min 18) — round 8 — and the seat was eliminated at mean global turn 35.75 (n 24, ci95 [31.94, 39.56]). Paired game by game, the 16 games with both his resolution and the seat's elimination show a median gap of 5.5 global turns between them (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he resolved."
       },
       {
         "role": "ignition",
@@ -317,7 +317,7 @@
         ],
         "count": 4,
         "thinnest": false,
-        "reading": "The cheat-into-play half of the declared seven-card group: they put a Dinosaur onto the battlefield from hand or library and cannot touch the commander. Forge v1.1.0 used them — Belbe's Portal cast 12 / activated 14, Monster Manual cast 7 / activated 12, Descendants' Path cast 6."
+        "reading": "The cheat-into-play half of the declared seven-card group: they put a Dinosaur onto the battlefield from hand or library and cannot touch the commander. Forge v1.0.0 used them — Belbe's Portal cast 12 / activated 14, Monster Manual cast 7 / activated 12, Descendants' Path cast 6."
       },
       {
         "role": "payoff",
@@ -332,7 +332,7 @@
         "count": 6,
         "thinnest": false,
         "measured_rate": 0.849,
-        "reading": "'Dinosaur payoff drawn' 84.9% assembled, 60.4% by turn 6. Vaultborn Tyrant and Earthshaker Dreadmaw are per-Dinosaur-entry draws by oracle text and are not in the group, so the true class is eight."
+        "reading": "'Dinosaur payoff drawn' 84.9% assembled, 60.4% by turn 6. Vaultborn Tyrant (a draw whenever it or another creature with power 4 or greater enters) and Earthshaker Dreadmaw (a single draw on its own entry, one card for each other Dinosaur already on the board) are Dinosaur draw payoffs by oracle text and are not in the group, so the true class is eight."
       },
       {
         "role": "piece",
@@ -347,7 +347,7 @@
         "count": 6,
         "thinnest": false,
         "measured_rate": 0.792,
-        "reading": "'The Gishath connection kit' 79.2% assembled, but Gishath's own text is 'Vigilance, trample, haste', so the two haste grants in the group do nothing for him; the real kit is Rogue's Passage (activated 16 times in Forge v1.1.0), Kessig Wolf Run, Enlarge and Overwhelming Stampede — and Enlarge is in no target."
+        "reading": "'The Gishath connection kit' 79.2% assembled, but Gishath's own text is 'Vigilance, trample, haste', so the two haste grants in the group do nothing for him; the real kit is Rogue's Passage (activated 16 times in Forge v1.0.0), Kessig Wolf Run, Enlarge and Overwhelming Stampede — and Enlarge is in no target."
       },
       {
         "role": "payoff",
@@ -389,7 +389,7 @@
     "single_points_of_failure": [
       {
         "component": "Gishath, Sun's Avatar — the cast turn, not the card",
-        "why": "The deck's ENGINE waits on him: the reveal (stack 001) is what goldfish_targets.json and engine.json declare the deck around, and the verified lines and the RELIANT framing run through it. The conversion layer does not. By oracle text (cards.json) the repeatable entry triggers in the 99 are Pantlaza (any Dinosaur, once each turn), Garruk's Uprising and Vaultborn Tyrant (any creature with power 4 or greater, which 22 of the deck's 30 Dinosaur creatures are) and Selvala (an entrant whose power beats every other creature's, for whoever controls it); Earthshaker Dreadmaw scales with the Dinosaurs already there but triggers only on its own entry, Regisaur Alpha only on its own, Descendants' Path is an upkeep trigger off a Dinosaur already on the board, and Curious Altisaur draws off combat damage, not entry. None of those waits on Gishath, which is how the goldfish reaches kill by turn 8 0.617 while he is cast by turn 8 in 57.1% of games, and in Forge v1.1.0 commander damage dealt is 9.22 mean against 75.0 mean combat damage to players. He is never missing, only late — median turn 7 in the goldfish; in Forge v1.1.0 he resolved in 32 of 40 games, and paired per game the median gap from his resolution to the seat's elimination is 5.5 global turns (16 games with both; 8 eliminations came before he resolved). Before that turn the deck's measured output is 13.8 mean / 7.5 median cumulative combat damage by round 8 (v1.1.0), and every return trip costs {2} more.",
+        "why": "The deck's ENGINE waits on him: the reveal (stack 001) is what goldfish_targets.json and engine.json declare the deck around, and the verified lines and the RELIANT framing run through it. The conversion layer does not. By oracle text (cards.json) the repeatable entry triggers in the 99 are Pantlaza (any Dinosaur, once each turn), Garruk's Uprising and Vaultborn Tyrant (any creature with power 4 or greater, which 22 of the deck's 30 Dinosaur creatures are) and Selvala (an entrant whose power beats every other creature's, for whoever controls it); Earthshaker Dreadmaw scales with the Dinosaurs already there but triggers only on its own entry, Regisaur Alpha only on its own, Descendants' Path is an upkeep trigger off a Dinosaur already on the board, and Curious Altisaur draws off combat damage, not entry. None of those waits on Gishath, which is how the goldfish reaches kill by turn 8 0.617 while he is cast by turn 8 in 57.1% of games, and in Forge v1.0.0 commander damage dealt is 9.22 mean against 75.0 mean combat damage to players. He is never missing, only late — median turn 7 in the goldfish; in Forge v1.0.0 he resolved in 32 of 40 games, and paired per game the median gap from his resolution to the seat's elimination is 5.5 global turns (16 games with both; 8 eliminations came before he resolved). Before that turn the deck's measured output is 13.8 mean / 7.5 median cumulative combat damage by round 8 (v1.0.0), and every return trip costs {2} more.",
         "closers": [
           "Herald's Horn",
           "Marauding Raptor",
@@ -448,7 +448,7 @@
     },
     {
       "what": "The tutors are the ignition's fourth and fifth copies — Enlightened Tutor for Urza's Incubator, Worldly Tutor for a reducer.",
-      "why": "Forge v1.1.0 cast Enlightened Tutor 12 times and Worldly Tutor 8 in 40 games; a three-card class plus two tutors behaves like five copies, which the corpus prices at 31% of openers.",
+      "why": "Forge v1.0.0 cast Enlightened Tutor 12 times and Worldly Tutor 8 in 40 games; a three-card class plus two tutors behaves like five copies, which the corpus prices at 31% of openers.",
       "evidence": {
         "forge": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-7a29734e-s49536846-podExperimental-c600 engine_casts: Enlightened Tutor cast 12, Worldly Tutor cast 8, Congregation at Dawn cast 1"
       },
@@ -485,7 +485,7 @@
     },
     {
       "what": "Hold the protection for the turn Gishath attacks, not the turn he is cast.",
-      "why": "Six protection copies at target, 70.0% held; Flawless Maneuver costs nothing with the commander out. The pivot is one card and one instant, and Forge's sythis seat is the one that kills this deck (10 of 19 attributed eliminations in v1.1.0).",
+      "why": "Six protection copies at target, 70.0% held; Flawless Maneuver costs nothing with the commander out. The pivot is one card and one instant, and Forge's sythis seat is the one that kills this deck (10 of 19 attributed eliminations in v1.0.0).",
       "evidence": {
         "goldfish": "'Protection held for the board' assembled 0.700, by_turn_6 0.511",
         "forge": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-7a29734e-s49536846-podExperimental-c600 eliminated_by sythis-enchantress 10, abaddon 7, jarad-graveyard 2"
@@ -505,7 +505,7 @@
   "cut_candidates": [
     {
       "card": "Wakening Sun's Avatar",
-      "why": "The third 8+ drop that does not discount itself, competing with Gishath for the one big-mana cast a seven-to-ten-turn game pays for. Off the reveal it is a vanilla 7/7 — 'if you cast it from your hand' is the wipe's gate. Forge v1.1.0 cast it 3 times in 40 games.",
+      "why": "The third 8+ drop that does not discount itself, competing with Gishath for the one big-mana cast a seven-to-ten-turn game pays for. Off the reveal it is a vanilla 7/7 — 'if you cast it from your hand' is the wipe's gate. Forge v1.0.0 cast it 3 times in 40 games.",
       "cost_of_cutting": "The deck's only wipe that is one-sided by creature type from hand: Blasphemous Act is one-sided only through Temple Altisaur, Austere Command only by mana value. Sweepers go 2 to 1, still inside the 1–3 target, and the reveal loses one Dinosaur body of 30.",
       "orphans_stack": [],
       "difficulty": "painful",
@@ -522,7 +522,7 @@
     },
     {
       "card": "Pugnacious Hammerskull",
-      "why": "A 6/6 for three whose drawback reads 'Whenever this creature attacks while you don't control another Dinosaur, put a stun counter on it' — off on any board holding a second Dinosaur, attacking or not, which in a 30-Dinosaur list is most of them, and on only when it is the lone Dinosaur; off the reveal it is only a body. Forge v1.1.0 cast it 10 times, so the AI likes it; the log's one game says mid-tier bodies soaked the table's wraths, which is one anecdote.",
+      "why": "A 6/6 for three whose drawback reads 'Whenever this creature attacks while you don't control another Dinosaur, put a stun counter on it' — off on any board holding a second Dinosaur, attacking or not, which in a 30-Dinosaur list is most of them, and on only when it is the lone Dinosaur; off the reveal it is only a body. Forge v1.0.0 cast it 10 times, so the AI likes it; the log's one game says mid-tier bodies soaked the table's wraths, which is one anecdote.",
       "cost_of_cutting": "The cheapest big body and the best early blocker in a deck whose first Forge attack lands around round five, and one Dinosaur fewer in the library for the reveal (29 of 33 becomes 28 of 32).",
       "orphans_stack": [],
       "difficulty": "contested",
@@ -535,7 +535,7 @@
     },
     {
       "card": "Ghalta, Primal Hunger",
-      "why": "Cast once and discarded 5 times in Forge v1.1.0; V3 cast it 10 and discarded 4, so the AI's read is unstable and this is a floor. {G}{G} only off a board the reveal already built — the same gate as everything else.",
+      "why": "Cast once and discarded 5 times in Forge v1.0.0; V3 cast it 10 and discarded 4, so the AI's read is unstable and this is a floor. {G}{G} only off a board the reveal already built — the same gate as everything else.",
       "cost_of_cutting": "The cheapest 12/12 the deck has once a board exists — {G}{G} flat at ten total power, one Dinosaur past the reveal. Not its only one: power 9 or more enumerates from cards.json to three cards, Ghalta, Primal Hunger 12/12, Ghalta and Mavren a printed 12/12 for {3}{G}{G}{W}{W}, and Zacama 9/9; Ghalta and Mavren's attacking token copies the greatest power among other attackers and so reaches 12 beside its parent, Ghalta cut or not. What the cut costs is the price, not the size: the remaining 12/12 is seven mana flat where Ghalta was two off a board, so the post-reveal turn that cast Ghalta and held up protection now does one or the other; the other twelve-power swing left is Enlarge (+7/+7) on any 5-power Dinosaur.",
       "orphans_stack": [],
       "difficulty": "contested",
@@ -561,7 +561,7 @@
     },
     {
       "card": "Boros Signet",
-      "why": "{1} to make {R}{W}; cast 3 times in Forge v1.1.0 and 0 in V3 (2 discards).",
+      "why": "{1} to make {R}{W}; cast 3 times in Forge v1.0.0 and 0 in V3 (2 discards).",
       "cost_of_cutting": "One of three nonland R sources mana_analysis credits (Arcane Signet, Boros Signet, Huatli); Selvala, Regal Behemoth and a Bonehoard Treasure can make red by oracle text and are not counted. One of five accelerants at two mana or less. Cutting it reads R 21 to 20 on colour-sources unless the replacement fetches a Mountain.",
       "orphans_stack": [],
       "difficulty": "contested",
@@ -574,7 +574,7 @@
     },
     {
       "card": "Unclaimed Territory",
-      "why": "Its coloured mode is 'Spend this mana only to cast a creature spell of the chosen type': a three-colour source for Gishath and the 29 Dinosaur creature spells in the 99, and a colourless land for the other 29 nonland entries that carry a coloured pip (enumerated from cards.json: 29 of the 35 non-Dinosaur nonland entries — the instants, sorceries and enchantments, the four non-Dinosaur creatures and both tutors; the other six are colourless artifacts). Its plain '{T}: Add {C}' pays Rogue's Passage ({4}, activated 16 times in Forge v1.1.0) and Belbe's Portal ({3}, 14) in full and the generic part of Zacama, Monster Manual and Kessig Wolf Run; what no mode of it pays is a coloured activation — Zacama's {R}, {G} or {W}, Monster Manual's {G}, Kessig's {R}{G} — or the {R} of Blasphemous Act. Secluded Courtyard's clause adds 'or activate an ability of a creature source of the chosen type', so its coloured mana also pays Zacama's three abilities and still none of the non-creature ones; the two typal lands differ by that one clause, and Courtyard is the one to keep.",
+      "why": "Its coloured mode is 'Spend this mana only to cast a creature spell of the chosen type': a three-colour source for Gishath and the 29 Dinosaur creature spells in the 99, and a colourless land for the other 29 nonland entries that carry a coloured pip (enumerated from cards.json: 29 of the 35 non-Dinosaur nonland entries — the instants, sorceries and enchantments, the four non-Dinosaur creatures and both tutors; the other six are colourless artifacts). Its plain '{T}: Add {C}' pays Rogue's Passage ({4}, activated 16 times in Forge v1.0.0) and Belbe's Portal ({3}, 14) in full and the generic part of Zacama, Monster Manual and Kessig Wolf Run; what no mode of it pays is a coloured activation — Zacama's {R}, {G} or {W}, Monster Manual's {G}, Kessig's {R}{G} — or the {R} of Blasphemous Act. Secluded Courtyard's clause adds 'or activate an ability of a creature source of the chosen type', so its coloured mana also pays Zacama's three abilities and still none of the non-creature ones; the two typal lands differ by that one clause, and Courtyard is the one to keep.",
       "cost_of_cutting": "An any-colour source for the commander cast, credited in all three colours by mana_analysis; replacing it with a two-colour land leaves the worst-colour gap where it is and only helps if the land is untapped and fetchable.",
       "orphans_stack": [],
       "difficulty": "contested",
@@ -692,7 +692,7 @@
       "card": "Heritage Reclamation",
       "closes": "interaction-breadth (graveyard: 4 classes to 5), and a fifth enchantment answer against the seat that kills this deck",
       "source": "pool",
-      "why": "{1}{G} instant: artifact, enchantment or a graveyard card, and it draws a card, so it is never a dead one-for-one. Sythis-enchantress accounts for 10 of the 19 attributed eliminations of this seat in Forge v1.1.0 (24 in all); the graveyard seat for two. One slot covers the uncovered class and deepens the one that matters.",
+      "why": "{1}{G} instant: artifact, enchantment or a graveyard card, and it draws a card, so it is never a dead one-for-one. Sythis-enchantress accounts for 10 of the 19 attributed eliminations of this seat in Forge v1.0.0 (24 in all); the graveyard seat for two. One slot covers the uncovered class and deepens the one that matters.",
       "evidence": {
         "corpus": "card-search --deck gishath: roles hate:graveyard, removal:spot",
         "forge": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-7a29734e-s49536846-podExperimental-c600 eliminated_by sythis-enchantress 10"
@@ -790,76 +790,36 @@
   ],
   "gaps": [
     "No deck_recon.json exists (audit freshness.recon present: false), so no inclusion-rate evidence supports any add; every candidate here is corpus-sourced through card-search. MODE recon would settle which of them strong Gishath lists actually run.",
-    "Forge N is 40 games per record. The v1.1.0 rate 15/36 = 0.417 [0.271, 0.578] against a table null of 0.317; the minimum detectable difference from a 0.343 base is 0.305 at N=40 per arm (stats.mde_proportion: rate_b 0.648, power 0.808) and 0.32 at the decided 36 and 35 (rate_b 0.663, power 0.801), and the V3-to-v1.1.0 change of +0.0738 (12/35 to 15/36) has a Newcombe interval of [-0.1465, 0.2839] (stats.diff_proportions) — the six check-in swaps produced no measurable change. The cart branch has no Forge run at all.",
+    "Forge N is 40 games per record. The v1.0.0 rate 15/36 = 0.417 [0.271, 0.578] against a table null of 0.317; the minimum detectable difference from a 0.343 base is 0.305 at N=40 per arm (stats.mde_proportion: rate_b 0.648, power 0.808) and 0.32 at the decided 36 and 35 (rate_b 0.663, power 0.801), and the V3-to-v1.0.0 change of +0.0738 (12/35 to 15/36) has a Newcombe interval of [-0.1465, 0.2839] (stats.diff_proportions) — the six check-in swaps produced no measurable change. The cart branch has no Forge run at all.",
     "Card advantage is mostly invisible to the goldfish: 2 of 8 draw cards modelled, six named in draw_not_modelled (Curious Altisaur, Hunter's Insight, Jetmir's Garden, Runic Armasaur, Selvala, Vaultborn Tyrant). The 1.353 extra cards by turn 8 is a floor.",
     "The Forge AI held Hunter's Insight (80 games) and Beast Within (40) all game; their value at a human-piloted table is unmeasured, and both cuts above are priced as floors for that reason.",
-    "The captain's log is one game on the V3 list. Its open question — Enlarge finished a game the tracked 99 could not hold — is closed by the check-in (Enlarge is in v1.1.0); nothing else in it is yet a pattern.",
+    "The captain's log is one game on the V3 list. Its open question — Enlarge finished a game the tracked 99 could not hold — is closed by the check-in (Enlarge is in v1.0.0); nothing else in it is yet a pattern.",
     "The ramp axis counts Blasphemous Act as ramp:cost-reduction and files Skyshroud Claim under tutors; the 'over' verdict is right by coincidence and should not be read as slack to cut without enumerating.",
-    "No V3-versus-v1.1.0 engine-cast comparison is meaningful at this N: Knight of the Stampede (cast 8), Enlarge (8), Sunfrill Imitator (8, activated 2), Kinjalli's Sunwing (5), Earthshaker Dreadmaw (5) and Runic Armasaur (4) were all cast, so none of the six new cards was held — which is all the record can say about them."
+    "No V3-versus-v1.0.0 engine-cast comparison is meaningful at this N: Knight of the Stampede (cast 8), Enlarge (8), Sunfrill Imitator (8, activated 2), Kinjalli's Sunwing (5), Earthshaker Dreadmaw (5) and Runic Armasaur (4) were all cast, so none of the six new cards was held — which is all the record can say about them."
   ],
-  "iteration": 3,
+  "iteration": 4,
   "skeptic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
       {
-        "where": "engine.single_points_of_failure[0]",
-        "status": "supported",
-        "note": "Repair (1) verified against cards.json oracle text. A sweep of every nonland entry whose text contains 'enters' finds exactly four repeatable entry triggers: Pantlaza ('Whenever Pantlaza or another Dinosaur you control enters ... Do this only once each turn'), Garruk's Uprising ('Whenever a creature you control with power 4 or greater enters, draw a card'), Vaultborn Tyrant ('Whenever this creature or another creature you control with power 4 or greater enters'), Selvala ('Whenever another creature enters, its controller may draw a card if its power is greater than each other creature's power'). Every other 'enters' is the card's own entry (Dreadmaw, Regisaur Alpha, Bronzebeak Foragers, Regal Behemoth, Topiary Stomper, Trumpeting Carnosaur, Wakening Sun's Avatar, Zacama, Itzquinth, Huatli) or an 'as this enters' choice (Belbe's Portal, Urza's Incubator). Earthshaker Dreadmaw is 'When this creature enters, draw a card for each other Dinosaur you control' — scaled by the board, fired once on its own entry, as the doctor now says. Descendants' Path ('At the beginning of your upkeep ... shares a creature type with a creature you control') and Curious Altisaur ('deals combat damage to a player') are stated for what they are. '22 of the deck's 30 Dinosaur creatures' enumerates: 30 Dinosaur creature entries including the commander, 22 at printed power >= 4, the eight under it Bronzebeak Foragers, Curious Altisaur, Itzquinth, Kinjalli's Sunwing, Runic Armasaur, Sunfrill Imitator, Temple Altisaur, Thrashing Brontodon. The figures carried over reproduce from the 7a29734e record: commander_damage.dealt_total.mean 9.22, combat_damage_dealt_to_players.mean 75.0, resolved 32/40, 16 paired games median 5.5, 8 pre-resolution eliminations. All three quotes are verbatim in lookup-strategy and used in the section's own sense ('built around your commander is not reliant on it' / 'hands three opponents one target' sit in one sentence of archetype-selection; the {2} tax line is commander-insurance's recast-tax pricing)."
-      },
-      {
-        "where": "engine.components[0].reading",
-        "status": "supported",
-        "note": "Repair (2) verified. Recomputed from games[].per_seat.gishath of sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-7a29734e (commander_resolved_turn vs eliminated_turn): 16 games carry both, gaps [2,3,3,3,3,3,5,5,6,10,12,13,15,15,16,26], median 5.5, mean 8.75, min 2, max 26; 24 eliminations, 8 with no resolved turn; 32 resolved; 15 wins. 'About a round and a half' is 5.5 global turns at four seats. The unpaired 'one round before the table kills it' inference is gone and the surrounding figures (31.47 / 29 / 18; 35.75 n 24 ci95 [31.94, 39.56]; 0.80 [0.652, 0.895]; 0.255 / 7 / 7.362 / 2,299) are the same text I verified in iteration 2."
-      },
-      {
-        "where": "cut_candidates[2]",
-        "status": "supported",
-        "note": "Repair (3) verified. cards.json power >= 9 is exactly Ghalta, Primal Hunger 12/12 ({10}{G}{G}, 'costs {X} less ... total power of creatures you control'), Ghalta and Mavren 12/12 ({3}{G}{G}{W}{W} = seven), Zacama 9/9; Gishath is 7. The token clause is quoted to sense ('X is the greatest power among other attacking creatures'), so beside its parent it is 12 with Ghalta cut or not. {G}{G} at ten total power is the printed reduction; Gishath 7 plus one Dinosaur of power 3 reaches it, as 'one Dinosaur past the reveal' says. Enlarge is in the 99 ('+7/+7 and gains trample'), 5 + 7 = 12. engine_casts.by_card: v1.1.0 Ghalta cast 1 / discarded 5, V3 (432faa65) cast 10 / discarded 4. 'only ~1.5 cards at mana value 8+' is verbatim in strategy:deckbuilding.curve's MtGDS paragraph. The cut is now priced as the {G}{G} tempo rather than as a body the deck would lose, which is the cost."
-      },
-      {
         "where": "engine.components[4].reading",
-        "status": "contradicts-artifact",
-        "note": "The residual the doctor flagged, judged by the same oracle text: 'Vaultborn Tyrant and Earthshaker Dreadmaw are per-Dinosaur-entry draws by oracle text'. cards.json: Earthshaker Dreadmaw is 'When this creature enters, draw a card for each other Dinosaur you control' — one trigger on its own entry, scaled by the Dinosaurs already there, not a draw per Dinosaur entering; Vaultborn Tyrant triggers on 'another creature you control with power 4 or greater', which is 22 of the 30 Dinosaurs and not the other eight. The sentence now contradicts the artifact's own single_points_of_failure[0], which states Dreadmaw 'triggers only on its own entry'. The count survives: the audit's card-advantage probe lists both cards as drawing without a draw:* role, so 'the true class is eight' stands as a payoff class; only the mechanism clause is wrong. One-sentence fix, in a field the doctor was not scoped to touch — the orchestrator widens scope. I marked this field supported in iteration 2 and was wrong then for the same reason as finding 3 of that pass."
-      },
-      {
-        "where": "verdict",
         "status": "supported",
-        "note": "Differs from the reconstructed iteration-2 text in one clause outside the three declared repairs: 'the only lever on that turn is three named reducers' became 'The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers'. deck-audit ramp axis value 15 copies (rock / dork / ritual / land / cost-reduction / treasure), so the figure is the audit's and the superlative is re-scoped rather than added. Every other figure in the verdict is the iteration-2 text I verified then (0.894, 0.964, 1.953, 4.096, 0.617, 15/36 0.417 [0.271, 0.578], null 0.317, 25.5% / 7 / 23.0%, 31.47, 5.5 / 8.75 / 2 / 26, 8 of 24, 13.8 / 7.5, 0.481 / 0.515, +0.0738 [-0.1465, 0.2839], MDE 0.32)."
-      },
-      {
-        "where": "add_candidates[3].why",
-        "status": "supported",
-        "note": "Also differs from the reconstruction: 'eliminated 10 of 24 times' became 'accounts for 10 of the 19 attributed eliminations of this seat in Forge v1.1.0 (24 in all); the graveyard seat for two'. Record 7a29734e per_seat.gishath.eliminated_by: 24 eliminations, 5 unattributed, sythis-enchantress seats 4 + 3 + 2 + 1 = 10, jarad-graveyard 1 + 1 = 2, abaddon 2 + 3 + 2 = 7. lean_into[3].why carries the same '10 of 19 attributed' and verifies identically."
-      },
-      {
-        "where": "cut_candidates[4].cost_of_cutting",
-        "status": "supported",
-        "note": "Differs from the reconstruction in naming what mana_analysis does not count. mana_analysis.sources.producers with R: Arcane Signet, Boros Signet, Huatli — three, and sources.nonland.R = 3. Selvala ('Add X mana in any combination of colors'), Regal Behemoth ('add an additional one mana of any color' while monarch) and Bonehoard Dracosaur ('create a Treasure token') are in cards.json, can make R, and are absent from producers; the audit's mana-sources note says 'rituals and Treasure makers are one-shot and are not counted'. R 21 -> 20 follows."
-      },
-      {
-        "where": "cut_candidates[6].cost_of_cutting",
-        "status": "supported",
-        "note": "Differs from the reconstruction: 'The only ramp piece that puts a land in hand' became 'One of two ... (Huatli's entry is the other)'. Oracle sweep for library-search-to-hand of a land: Huatli ('search your library for a basic land card, reveal it, put it into your hand') and Kodama's Reach ('put one onto the battlefield tapped and the other into your hand') — exactly two. goldfish_metrics land_drop_hit_rate_by_turn 5 = 0.624, 6 = 0.555; 'Ramp or fixing drawn' assembled_rate 0.964."
-      },
-      {
-        "where": "cut_candidates[0].cost_of_cutting",
-        "status": "supported",
-        "note": "Differs from the reconstruction in how the superlative is scoped: 'The deck's only wipe that is one-sided by creature type from hand'. Oracle sweep for destroy-all / damage-to-each-creature / exile-all in the 99: Austere Command (by mana value / permanent type), Blasphemous Act (13 to each creature; one-sided only through Temple Altisaur's 'prevent all but 1' on other Dinosaurs), Wakening Sun's Avatar ('destroy all non-Dinosaur creatures' if cast from hand) — three, and the claim is true of the set. 'Sweepers go 2 to 1, still inside the 1–3 target' is the audit's sweepers axis (value 2: Austere Command, Wakening Sun's Avatar; target 1–3)."
-      },
-      {
-        "where": "add_candidates[4].why",
-        "status": "supported",
-        "note": "Differs from the reconstruction: 'The one engine in this list's reach that needs no board and no connection' became 'keys on casting, not on a creature board or a connection — which every other draw effect in the 99 except Jetmir's Garden's cycling requires'. Oracle sweep of 'draw' in the 99: Curious Altisaur and Hunter's Insight need a connection; Garruk's Uprising, Rishkar's Expertise, Selvala, Vaultborn Tyrant, Earthshaker Dreadmaw need a creature (of power) on the board or entering; Runic Armasaur must itself be on the board and needs an opponent's activation; Jetmir's Garden cycles from hand. The re-scoped claim holds."
-      },
-      {
-        "where": "add_candidates[0].why",
-        "status": "supported",
-        "note": "Differs from the reconstruction by one figure: 30 -> '29 Dinosaur creature entries in the 99'. cards.json: 30 Dinosaur creature entries including the commander, 29 in the 99. lean_into[0].why's added '29 of 33 with the commander out of the library' is the same enumeration (34 creature entries, 30 Dinosaurs)."
+        "note": "The one scoped repair, judged against cards.json oracle text. Vaultborn Tyrant: 'Whenever this creature or another creature you control with power 4 or greater enters, you gain 3 life and draw a card' — a repeatable entry trigger on itself or any power-4+ creature, as the parenthetical now says. Earthshaker Dreadmaw: 'When this creature enters, draw a card for each other Dinosaur you control' — one trigger on its own entry, scaled by the Dinosaurs already on the board, as the parenthetical now says. The sentence no longer contradicts single_points_of_failure[0], which reads 'Earthshaker Dreadmaw scales with the Dinosaurs already there but triggers only on its own entry'. 'Dinosaur draw payoffs' is correct for both (both are Dinosaurs, both draw). 'The true class is eight' is unchanged and enumerates: the component's six `have` (Pantlaza, Descendants' Path, Garruk's Uprising, Curious Altisaur, Regisaur Alpha, Quartzwood Crasher) plus the two, and deck-audit's card-advantage probe note still lists both as drawing without a draw:* role."
       },
       {
         "where": "unchanged text",
         "status": "supported",
-        "note": "validate-diagnosis passes at zero errors (16 axes, 3 weak, 7 cut / 6 add, 7 open questions). deck-audit re-run into the scratchpad matches every measured.value; goldfish_metrics and mana_analysis carry the v1.1.0 sha. Tracked diagnosis.json minus its skeptic block equals .agent-out/deck-doctor.json minus its skeptic block, so the merge did not hand-edit. Byte-identity against iteration 2 cannot be proven by diff: no iteration-2 pre-image survives (the doctor's 13:23 write overwrote it and git HEAD holds the pre-re-diagnosis artifact). Reconstructing iteration 2 by replaying revise_gishath.py against the 13:00 iter1 snapshot in a scratch sandbox yields 14 differing fields besides `iteration`: the three declared repairs; cut_candidates[5].why (29 / six) and cut_candidates[1].cost_of_cutting (28 of 32), both of which I verified in their current form in iteration 2, proving the snapshot predates a post-script pass; and nine more (verdict, add_candidates[0]/[3]/[4].why, cut_candidates[0]/[4]/[6].cost_of_cutting, lean_into[0]/[3].why), each an enumeration re-scope or a figure correction, each verified on substance above. Every text my iteration-2 supported notes quoted still reads as quoted, and engine.components[4].reading is byte-identical to the reconstruction."
+        "note": "Byte-identity proven by diff, not reconstruction: git HEAD (1e4d602e, 'three iterations, one sentence still open') holds the iteration-3 pre-image. A recursive field diff of HEAD against the tracked iteration-4 artifact, after mapping v1.1.0 -> v1.0.0 and v1.0.0 -> v0.9.0 in the old text, differs in exactly two places outside the skeptic block: `iteration` (3 -> 4) and `engine.components[4].reading`. The rename touched 28 occurrences (old: 28 x v1.1.0, 0 x v1.0.0; new: 0 x v1.1.0, 28 x v1.0.0; no v0.9.0 in either, so the second leg had nothing to rename in this file). deck_versions.json confirms the mapping: `paper` is version 4 / decklist sha b394917f (the diagnosis's as_of_decklist_sha256) and the `v0.9.0` tag is the pre-check-in bench list with note 'Was v1.0.0 until 2026-09-11'. The doctor's programmatic byte-identity assertion holds."
+      },
+      {
+        "where": "axes",
+        "status": "supported",
+        "note": "validate-diagnosis: OK, 16 axes (3 weak), 7 cut / 6 add, 7 open questions, zero errors. deck-audit re-run into the scratchpad (--out dir) matches every axes[].measured.value, 16 of 16. Freshness: goldfish_metrics.json, mana_analysis.json and the diagnosis all carry b394917f…, which is sha256 of decklist.txt today, so no figure in the artifact is sourced from a stale list."
+      },
+      {
+        "where": "iteration",
+        "status": "supported",
+        "note": "Merge integrity: .agent-out/deck-doctor.json (13:52) minus its absent skeptic block equals tracked diagnosis.json (13:53) minus its skeptic block in every field except `iteration` (3 in the scratch file, 4 tracked), which the merge stamps. No hand edit between the doctor's write and the tracked artifact. The eleven findings of pass three (single_points_of_failure[0], components[0].reading, cut_candidates[0]/[2]/[4]/[6], add_candidates[0]/[3]/[4], verdict) sit in fields the diff shows byte-identical and stand as verified there; per the spawning scope no new line of attack was opened."
       }
     ]
   }
