@@ -122,12 +122,6 @@
    },
    {
     "free": false,
-    "name": "Cinder Glade",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "City of Brass",
     "state": "in_deck",
     "where": []
@@ -177,12 +171,6 @@
    {
     "free": false,
     "name": "Dragonlord's Servant",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Dragonskull Summit",
     "state": "in_deck",
     "where": []
    },
@@ -248,6 +236,12 @@
    },
    {
     "free": false,
+    "name": "Forest",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Ganax, Astral Hunter",
     "state": "in_deck",
     "where": []
@@ -297,6 +291,12 @@
    {
     "free": false,
     "name": "Ignoble Hierarch",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Island",
     "state": "in_deck",
     "where": []
    },
@@ -410,6 +410,12 @@
    {
     "free": false,
     "name": "Path of Ancestry",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Plains",
     "state": "in_deck",
     "where": []
    },
@@ -605,12 +611,6 @@
    },
    {
     "free": false,
-    "name": "Turbulent Springs",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Twinflame Tyrant",
     "state": "in_deck",
     "where": []
@@ -684,16 +684,16 @@
    "names": 98,
    "out": [
     "Battlefield Forge",
-    "Forest",
+    "Cinder Glade",
+    "Dragonskull Summit",
     "Gadrak, the Crown-Scourge",
     "Hellkite Courser",
-    "Island",
-    "Plains",
     "Radiant Destiny",
     "Return of the Wildspeaker",
     "Rishkar's Expertise",
     "Sarkhan, Fireblood",
     "Sunbaked Canyon",
+    "Turbulent Springs",
     "Utvara Hellkite"
    ],
    "size": 100
@@ -721,15 +721,15 @@
     "Arid Mesa",
     "Battlefield Forge",
     "Bloodstained Mire",
-    "Forest",
-    "Island",
+    "Cinder Glade",
+    "Dragonskull Summit",
     "Marsh Flats",
     "Misty Rainforest",
     "Mountain",
-    "Plains",
     "Polluted Delta",
     "Scalding Tarn",
-    "Sunbaked Canyon"
+    "Sunbaked Canyon",
+    "Turbulent Springs"
    ],
    "class": "land",
    "headline": "6 land swap(s)",
@@ -743,6 +743,14 @@
    "base_names": 96,
    "base_size": 100,
    "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 2,
+     "kind": "land",
+     "name": "Forest",
+     "to": 1
+    },
     {
      "cmc": 0,
      "delta": -1,
@@ -841,7 +849,7 @@
      "pair": "Sunbaked Canyon",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "a two-colour painland for a fetch; Canyon's cycling is the only thing lost"
+     "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged; the cycling is the only thing lost"
     },
     {
      "cmc": 0,
@@ -851,37 +859,37 @@
      "pair": "Mountain",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "one of four Mountains; Mire finds every red shock plus Blood Crypt and Overgrown Tomb for black"
+     "why": "one of four Mountains, three stay for the battle lands and Blood Moon; alone: W+1 U+1 B+1 G+1, R unchanged"
     },
     {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
      "name": "Marsh Flats",
-     "pair": "Plains",
+     "pair": "Dragonskull Summit",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "white is one short; Flats finds Sacred Foundry for white or a Swamp-typed shock for the black the deck lacks"
+     "why": "a B/R checkland; alone: W+1 U+1 G+1, B and R unchanged (the fetch finds Blood Crypt, Overgrown Tomb, Smoldering Marsh), one fewer tapped land"
     },
     {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
      "name": "Misty Rainforest",
-     "pair": "Forest",
+     "pair": "Turbulent Springs",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "the only green-only land; G is the one colour over target"
+     "why": "a U/R land that enters tapped until opponents hold eight lands; alone: W+1 B+1 G+1, U and R unchanged, one fewer tapped land"
     },
     {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
      "name": "Polluted Delta",
-     "pair": "Island",
+     "pair": "Cinder Glade",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "a single-colour blue source for one that finds Steam Vents, Breeding Pool, Blood Crypt, Overgrown Tomb or Smoldering Marsh"
+     "why": "an R/G battle land; alone: W+1 U+1 B+1, R and G unchanged, one fewer tapped land; G is the colour over target"
     },
     {
      "cmc": 0,
@@ -891,7 +899,7 @@
      "pair": "Battlefield Forge",
      "state": "elsewhere",
      "type_line": "Land",
-     "why": "a two-colour painland for a fetch that reaches all five through the shocks; W is kept via Sacred Foundry"
+     "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged via Sacred Foundry and Steam Vents"
     },
     {
      "cmc": 0,
@@ -976,34 +984,25 @@
      "name": "Battlefield Forge",
      "pair": "Scalding Tarn",
      "type_line": "Land",
-     "why": "a two-colour painland for a fetch that reaches all five through the shocks; W is kept via Sacred Foundry"
-    },
-    {
-     "cmc": 0,
-     "copies": 2,
-     "kind": "land",
-     "name": "Forest",
-     "pair": "Misty Rainforest",
-     "type_line": "Basic Land \u2014 Forest",
-     "why": "the only green-only land; G is the one colour over target"
+     "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged via Sacred Foundry and Steam Vents"
     },
     {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Island",
+     "name": "Cinder Glade",
      "pair": "Polluted Delta",
-     "type_line": "Basic Land \u2014 Island",
-     "why": "a single-colour blue source for one that finds Steam Vents, Breeding Pool, Blood Crypt, Overgrown Tomb or Smoldering Marsh"
+     "type_line": "Land \u2014 Mountain Forest",
+     "why": "an R/G battle land; alone: W+1 U+1 B+1, R and G unchanged, one fewer tapped land; G is the colour over target"
     },
     {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Plains",
+     "name": "Dragonskull Summit",
      "pair": "Marsh Flats",
-     "type_line": "Basic Land \u2014 Plains",
-     "why": "white is one short; Flats finds Sacred Foundry for white or a Swamp-typed shock for the black the deck lacks"
+     "type_line": "Land",
+     "why": "a B/R checkland; alone: W+1 U+1 G+1, B and R unchanged (the fetch finds Blood Crypt, Overgrown Tomb, Smoldering Marsh), one fewer tapped land"
     },
     {
      "cmc": 0,
@@ -1012,7 +1011,16 @@
      "name": "Sunbaked Canyon",
      "pair": "Arid Mesa",
      "type_line": "Land",
-     "why": "a two-colour painland for a fetch; Canyon's cycling is the only thing lost"
+     "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged; the cycling is the only thing lost"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Turbulent Springs",
+     "pair": "Misty Rainforest",
+     "type_line": "Land \u2014 Island Mountain",
+     "why": "a U/R land that enters tapped until opponents hold eight lands; alone: W+1 B+1 G+1, U and R unchanged, one fewer tapped land"
     }
    ],
    "size": 100,
@@ -1025,45 +1033,45 @@
    {
     "at": "2026-09-11",
     "in": "Misty Rainforest",
-    "out": "Forest",
-    "why": "the only green-only land; G is the one colour over target"
+    "out": "Turbulent Springs",
+    "why": "a U/R land that enters tapped until opponents hold eight lands; alone: W+1 B+1 G+1, U and R unchanged, one fewer tapped land"
    },
    {
     "at": "2026-09-11",
     "in": "Polluted Delta",
-    "out": "Island",
-    "why": "a single-colour blue source for one that finds Steam Vents, Breeding Pool, Blood Crypt, Overgrown Tomb or Smoldering Marsh"
+    "out": "Cinder Glade",
+    "why": "an R/G battle land; alone: W+1 U+1 B+1, R and G unchanged, one fewer tapped land; G is the colour over target"
    },
    {
     "at": "2026-09-11",
     "in": "Marsh Flats",
-    "out": "Plains",
-    "why": "white is one short; Flats finds Sacred Foundry for white or a Swamp-typed shock for the black the deck lacks"
+    "out": "Dragonskull Summit",
+    "why": "a B/R checkland; alone: W+1 U+1 G+1, B and R unchanged (the fetch finds Blood Crypt, Overgrown Tomb, Smoldering Marsh), one fewer tapped land"
    },
    {
     "at": "2026-09-11",
     "in": "Bloodstained Mire",
     "out": "Mountain",
-    "why": "one of four Mountains; Mire finds every red shock plus Blood Crypt and Overgrown Tomb for black"
+    "why": "one of four Mountains, three stay for the battle lands and Blood Moon; alone: W+1 U+1 B+1 G+1, R unchanged"
    },
    {
     "at": "2026-09-11",
     "in": "Scalding Tarn",
     "out": "Battlefield Forge",
-    "why": "a two-colour painland for a fetch that reaches all five through the shocks; W is kept via Sacred Foundry"
+    "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged via Sacred Foundry and Steam Vents"
    },
    {
     "at": "2026-09-11",
     "in": "Arid Mesa",
     "out": "Sunbaked Canyon",
-    "why": "a two-colour painland for a fetch; Canyon's cycling is the only thing lost"
+    "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged; the cycling is the only thing lost"
    }
   ],
   "opened": "2026-09-11",
   "spells": [],
-  "why": "Mana pass on responses-v3 (2026-09-11): blue is 16 short and black 11 short of Karsten targets driven by two double-pip cards (Marang River Regent UU, Crux of Fate BB), with two logged losses to colours. Six mono- or two-colour lands out for six fetchlands: with seven shocks and three battle lands in the list every fetch is an untapped five-colour source, so blue and black rise without red falling. Three basic Mountains stay for Canopy Vista / Cinder Glade / Smoldering Marsh and Blood Moon. The goldfish cannot rank two lands that make the same colours; mana-analysis on-curve rates are the evidence, and this objective (two dead turns in a row, 0.078 today) is the one goldfish row a colour screw shows in."
+  "why": "Mana pass on responses-v3 (2026-09-11): blue 16 and black 11 short of Karsten targets (Marang UU, Crux BB), two logged losses to colours. Six lands whose ablation on mana-analysis is neutral or better in EVERY colour out, six fetchlands in: with seven shocks and three battle lands each fetch is an untapped five-colour source. The basics stay, because Prismatic Vista and Fabled Passage fetch basics only and cutting the last Island cost them blue (measured: Island -> Delta read U -2). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.078) is the one goldfish row a colour screw shows in."
  },
- "decklist_sha256": "08f47872c73867ba2e643cc044a8389b154b7892abe60dcdf93c8f83e4df811b",
+ "decklist_sha256": "58400bed790d2583784d9dc551fdf7b8c12767ba3cb390347c3ef8a5b61f1651",
  "definitions": {
   "derived": [
    {
@@ -1178,14 +1186,14 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 1,
+    "delta": 4,
     "gap": [
      -2,
-     -1
+     2
     ],
     "have": [
      20,
-     21
+     24
     ],
     "target": [
      22,
@@ -1194,14 +1202,14 @@
    },
    {
     "colour": "U",
-    "delta": -11,
+    "delta": -9,
     "gap": [
      -3,
-     -14
+     -12
     ],
     "have": [
      19,
-     22
+     24
     ],
     "target": [
      22,
@@ -1210,14 +1218,14 @@
    },
    {
     "colour": "B",
-    "delta": 7,
+    "delta": 6,
     "gap": [
      -12,
-     -5
+     -6
     ],
     "have": [
      18,
-     25
+     24
     ],
     "target": [
      30,
@@ -1226,14 +1234,14 @@
    },
    {
     "colour": "R",
-    "delta": 4,
+    "delta": 1,
     "gap": [
      -6,
-     -2
+     -5
     ],
     "have": [
      30,
-     34
+     31
     ],
     "target": [
      36,
@@ -1242,14 +1250,14 @@
    },
    {
     "colour": "G",
-    "delta": 3,
+    "delta": 5,
     "gap": [
      1,
-     4
+     6
     ],
     "have": [
      23,
-     26
+     28
     ],
     "target": [
      22,
@@ -1279,23 +1287,23 @@
   "on_curve": {
    "B": [
     0.636,
-    0.824
+    0.803
    ],
    "G": [
     0.918,
-    0.944
+    0.957
    ],
    "R": [
     0.822,
-    0.882
+    0.839
    ],
    "U": [
     0.866,
-    0.639
+    0.694
    ],
    "W": [
     0.881,
-    0.895
+    0.927
    ]
   }
  },
@@ -1303,11 +1311,11 @@
   "axis": "stall",
   "op": "<=",
   "value": 0.06,
-  "why": "Mana pass on responses-v3 (2026-09-11): blue is 16 short and black 11 short of Karsten targets driven by two double-pip cards (Marang River Regent UU, Crux of Fate BB), with two logged losses to colours. Six mono- or two-colour lands out for six fetchlands: with seven shocks and three battle lands in the list every fetch is an untapped five-colour source, so blue and black rise without red falling. Three basic Mountains stay for Canopy Vista / Cinder Glade / Smoldering Marsh and Blood Moon. The goldfish cannot rank two lands that make the same colours; mana-analysis on-curve rates are the evidence, and this objective (two dead turns in a row, 0.078 today) is the one goldfish row a colour screw shows in."
+  "why": "Mana pass on responses-v3 (2026-09-11): blue 16 and black 11 short of Karsten targets (Marang UU, Crux BB), two logged losses to colours. Six lands whose ablation on mana-analysis is neutral or better in EVERY colour out, six fetchlands in: with seven shocks and three battle lands each fetch is an untapped five-colour source. The basics stay, because Prismatic Vista and Fabled Passage fetch basics only and cutting the last Island cost them blue (measured: Island -> Delta read U -2). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.078) is the one goldfish row a colour screw shows in."
  },
  "objective_grade": {
-  "reading": 0.0861,
-  "shortfall": 0.0261,
+  "reading": 0.0829,
+  "shortfall": 0.0229,
   "state": "not met"
  },
  "recommendation": {
@@ -1399,13 +1407,13 @@
   "reward": [],
   "risk": [
    {
-    "detail": "73.33 -> 68.90, a change of -4.42 (-6%)",
+    "detail": "73.33 -> 68.92, a change of -4.41 (-6%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "the largest is killed by T10 at +0.008 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at +0.007 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1415,15 +1423,15 @@
      "Arid Mesa",
      "Battlefield Forge",
      "Bloodstained Mire",
-     "Forest",
-     "Island",
+     "Cinder Glade",
+     "Dragonskull Summit",
      "Marsh Flats",
      "Misty Rainforest",
      "Mountain",
-     "Plains",
      "Polluted Delta",
      "Scalding Tarn",
-     "Sunbaked Canyon"
+     "Sunbaked Canyon",
+     "Turbulent Springs"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
@@ -1431,7 +1439,7 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "U gap -3 -> -14",
+    "detail": "U gap -3 -> -12",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1451,12 +1459,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 2.0598,
+   "branch": 2.085,
    "champion": 2.056,
-   "delta": 0.0038,
-   "mde": 0.1403,
+   "delta": 0.029,
+   "mde": 0.1428,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.140 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.029 is smaller than the 0.143 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1465,12 +1473,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.462,
+   "branch": 0.4548,
    "champion": 0.4417,
-   "delta": 0.0203,
-   "mde": 0.0435,
+   "delta": 0.0131,
+   "mde": 0.043,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.020 is smaller than the 0.043 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.043 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1479,12 +1487,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 68.9036,
+   "branch": 68.9201,
    "champion": 73.3269,
-   "delta": -4.4233,
+   "delta": -4.4068,
    "mde": 2.8454,
    "measure": "damage @T10",
-   "reads_as": "73.33 -> 68.90, a change of -4.42 (-6%)",
+   "reads_as": "73.33 -> 68.92, a change of -4.41 (-6%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -1493,12 +1501,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 15.0229,
+   "branch": 14.7721,
    "champion": 14.7138,
-   "delta": 0.3091,
+   "delta": 0.0583,
    "mde": 0.407,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.309 is smaller than the 0.407 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.058 is smaller than the 0.407 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1507,12 +1515,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2942,
+   "branch": 0.2858,
    "champion": 0.2864,
-   "delta": 0.0078,
-   "mde": 0.0181,
+   "delta": -0.0006,
+   "mde": 0.0179,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.018 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.018 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1521,12 +1529,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9619,
+   "branch": 0.9609,
    "champion": 0.954,
-   "delta": 0.0079,
+   "delta": 0.0069,
    "mde": 0.0083,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.008 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1535,12 +1543,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0861,
+   "branch": 0.0829,
    "champion": 0.0816,
-   "delta": 0.0045,
-   "mde": 0.0111,
+   "delta": 0.0013,
+   "mde": 0.0109,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1549,12 +1557,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4398,
+   "branch": 0.4544,
    "champion": 0.4543,
-   "delta": -0.0145,
+   "delta": 0.0001,
    "mde": 0.0197,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.015 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1563,12 +1571,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2102,
+   "branch": 0.2124,
    "champion": 0.2133,
-   "delta": -0.0031,
+   "delta": -0.0009,
    "mde": 0.0162,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1577,12 +1585,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5684,
+   "branch": 0.5851,
    "champion": 0.5706,
-   "delta": -0.0022,
+   "delta": 0.0145,
    "mde": 0.0218,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.015 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1591,12 +1599,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8808,
+   "branch": 0.8837,
    "champion": 0.8777,
-   "delta": 0.0031,
+   "delta": 0.006,
    "mde": 0.013,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.013 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

@@ -3,63 +3,63 @@
  "branch": "mana-v1",
  "v": 2,
  "opened": "2026-09-11",
- "why": "Mana pass on responses-v3 (2026-09-11): blue is 16 short and black 11 short of Karsten targets driven by two double-pip cards (Marang River Regent UU, Crux of Fate BB), with two logged losses to colours. Six mono- or two-colour lands out for six fetchlands: with seven shocks and three battle lands in the list every fetch is an untapped five-colour source, so blue and black rise without red falling. Three basic Mountains stay for Canopy Vista / Cinder Glade / Smoldering Marsh and Blood Moon. The goldfish cannot rank two lands that make the same colours; mana-analysis on-curve rates are the evidence, and this objective (two dead turns in a row, 0.078 today) is the one goldfish row a colour screw shows in.",
+ "why": "Mana pass on responses-v3 (2026-09-11): blue 16 and black 11 short of Karsten targets (Marang UU, Crux BB), two logged losses to colours. Six lands whose ablation on mana-analysis is neutral or better in EVERY colour out, six fetchlands in: with seven shocks and three battle lands each fetch is an untapped five-colour source. The basics stay, because Prismatic Vista and Fabled Passage fetch basics only and cutting the last Island cost them blue (measured: Island -> Delta read U -2). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.078) is the one goldfish row a colour screw shows in.",
  "objective": {
   "axis": "stall",
   "op": "<=",
   "value": 0.06,
-  "why": "Mana pass on responses-v3 (2026-09-11): blue is 16 short and black 11 short of Karsten targets driven by two double-pip cards (Marang River Regent UU, Crux of Fate BB), with two logged losses to colours. Six mono- or two-colour lands out for six fetchlands: with seven shocks and three battle lands in the list every fetch is an untapped five-colour source, so blue and black rise without red falling. Three basic Mountains stay for Canopy Vista / Cinder Glade / Smoldering Marsh and Blood Moon. The goldfish cannot rank two lands that make the same colours; mana-analysis on-curve rates are the evidence, and this objective (two dead turns in a row, 0.078 today) is the one goldfish row a colour screw shows in."
+  "why": "Mana pass on responses-v3 (2026-09-11): blue 16 and black 11 short of Karsten targets (Marang UU, Crux BB), two logged losses to colours. Six lands whose ablation on mana-analysis is neutral or better in EVERY colour out, six fetchlands in: with seven shocks and three battle lands each fetch is an untapped five-colour source. The basics stay, because Prismatic Vista and Fabled Passage fetch basics only and cutting the last Island cost them blue (measured: Island -> Delta read U -2). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.078) is the one goldfish row a colour screw shows in."
  },
  "commits": [
   {
    "at": "2026-09-11",
-   "decklist_sha256": "08f47872c73867ba2e643cc044a8389b154b7892abe60dcdf93c8f83e4df811b",
-   "message": "Six fetches for six one- and two-colour lands, on top of responses-v3"
+   "decklist_sha256": "58400bed790d2583784d9dc551fdf7b8c12767ba3cb390347c3ef8a5b61f1651",
+   "message": "Six fetches for six lands whose ablation is neutral or better in every colour, basics kept"
   }
  ],
  "base_version": 4,
  "staged": [
   {
    "at": "2026-09-11",
-   "out": "Forest",
+   "out": "Turbulent Springs",
    "in": "Misty Rainforest",
    "strength": null,
-   "why": "the only green-only land; G is the one colour over target"
+   "why": "a U/R land that enters tapped until opponents hold eight lands; alone: W+1 B+1 G+1, U and R unchanged, one fewer tapped land"
   },
   {
    "at": "2026-09-11",
-   "out": "Island",
+   "out": "Cinder Glade",
    "in": "Polluted Delta",
    "strength": null,
-   "why": "a single-colour blue source for one that finds Steam Vents, Breeding Pool, Blood Crypt, Overgrown Tomb or Smoldering Marsh"
+   "why": "an R/G battle land; alone: W+1 U+1 B+1, R and G unchanged, one fewer tapped land; G is the colour over target"
   },
   {
    "at": "2026-09-11",
-   "out": "Plains",
+   "out": "Dragonskull Summit",
    "in": "Marsh Flats",
    "strength": null,
-   "why": "white is one short; Flats finds Sacred Foundry for white or a Swamp-typed shock for the black the deck lacks"
+   "why": "a B/R checkland; alone: W+1 U+1 G+1, B and R unchanged (the fetch finds Blood Crypt, Overgrown Tomb, Smoldering Marsh), one fewer tapped land"
   },
   {
    "at": "2026-09-11",
    "out": "Mountain",
    "in": "Bloodstained Mire",
    "strength": null,
-   "why": "one of four Mountains; Mire finds every red shock plus Blood Crypt and Overgrown Tomb for black"
+   "why": "one of four Mountains, three stay for the battle lands and Blood Moon; alone: W+1 U+1 B+1 G+1, R unchanged"
   },
   {
    "at": "2026-09-11",
    "out": "Battlefield Forge",
    "in": "Scalding Tarn",
    "strength": null,
-   "why": "a two-colour painland for a fetch that reaches all five through the shocks; W is kept via Sacred Foundry"
+   "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged via Sacred Foundry and Steam Vents"
   },
   {
    "at": "2026-09-11",
    "out": "Sunbaked Canyon",
    "in": "Arid Mesa",
    "strength": null,
-   "why": "a two-colour painland for a fetch; Canyon's cycling is the only thing lost"
+   "why": "an R/W painland; alone: U+1 B+1 G+1, R and W unchanged; the cycling is the only thing lost"
   }
  ]
 }
