@@ -226,10 +226,20 @@ commanders cast on their own curves (Brallin had never been in the library). Eve
 non-opted deck byte-identical beyond the stamp; sharknado's extra cards by T8 went
 0.63 -> 7.5 and both commanders cast. Coverage: 91 of 100 seen.
 
-**Piece 3, the table for the goldfish, is scoped in the plan file with four gates and
-NOT started:** (a) `compact()` keeps the two per-turn series; (b) own turns, discards
-and non-token blocks in `analysis` plus wipes and the by-round curve for all seats,
-with a fleet re-analyse in the same commit; (c) `threat.py` fleet-wide; (d) done.
+**Piece 3's four gates closed the same evening (2026-09-10):** (a) `compact()` keeps
+`life_by_turn` and `damage_to_players_by_turn` for every seat (+23% on the games
+block, the fleet's records 14.3 -> 17 MB); (b) per-seat discards, blockers declared,
+attackers declared / blocked and own turns in `analysis.seats`, with `wipe_recovery`
+and the cumulative-damage curve under EVERY seat (34 records re-analysed, validate-sim
+green); (c) `targeting.json` for the five live decks, gated (the AI attacks the seat
+that has dealt the most damage, 0.66-0.69 against a null near 0.5, fleet-wide);
+(d) pieces 1 and 2. **The table model itself is the next plan**: three seats, a
+pressure series fitted from the opponents' curves in `pod_behaviour.observed()`'s
+shape (logs -> dated frozen constant with N -> drift test), a removal process from
+`wipe_recovery` and `interaction_received`, a blocker process from the new counts, a
+target policy from `targeting.json`, and `deck_notes.CAUSES` as its output
+vocabulary. Acceptance: it must reproduce `gotchas-bench.md:305` (the go-wide Edgar
+refactor Forge beat 31/400 vs 50/400).
 
 **Open from it:** zur-enchantress's own reading against v3 is the logs only;
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
