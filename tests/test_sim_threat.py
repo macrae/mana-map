@@ -218,3 +218,35 @@ def test_it_runs_on_real_logs_when_they_are_here():
     assert doc["decisions"] > 50
     assert set(doc["forge_ai_targeting_policy"]) == set(threat.HYPOTHESES)
     assert doc["limits"] and doc["when_the_hypotheses_disagree"]["decisions"] > 0
+
+
+# ── the tracked artifacts ───────────────────────────────────────────────────
+
+def test_every_tracked_targeting_artifact_is_well_formed_and_names_real_runs():
+    """Gate (c) of the table model ran `targeting` fleet-wide on 2026-09-10.
+    A tracked artifact needs a gate in the same commit: the shape, a sample
+    that can carry a verdict, and every run it pooled still on disk."""
+    import glob, json, pathlib as _pl
+    root = _pl.Path(__file__).resolve().parent.parent
+    paths = sorted(glob.glob(str(root / "data/decks/*/threat/targeting.json")))
+    if not paths:
+        pytest.skip("no targeting artifacts on this checkout")
+    checked = 0
+    for p in paths:
+        doc = json.loads(_pl.Path(p).read_text(encoding="utf-8"))
+        slug = p.split("/")[-3]
+        assert doc["slug"] == slug and doc.get("at")
+        assert {"runs", "games", "decisions", "seed", "forge_ai_targeting_policy",
+                "when_the_hypotheses_disagree", "limits"} <= set(doc)
+        assert doc["games"] >= 8, f"{slug}: {doc['games']} games cannot carry a targeting verdict"
+        for h in ("most_damage_dealt", "lowest_life", "highest_life"):
+            row = doc["forge_ai_targeting_policy"][h]
+            assert 0 <= row["rate"] <= 1 and row["ci95"][0] <= row["rate"] <= row["ci95"][1]
+        sim_dir = root / "data/decks" / slug / "sim"
+        for run in doc["runs"]:
+            rid = run if isinstance(run, str) else run.get("run_id") or run.get("id")
+            assert rid and ((sim_dir / f"{rid}.json").exists()
+                            or any((root / "data/decks" / slug / "experiments").glob(f"{rid}*"))), \
+                f"{slug}: pooled run {rid} is not on disk"
+        checked += 1
+    assert checked >= 2, "the guard iterated almost nothing"

@@ -1,117 +1,112 @@
 {
-  "slug": "edgar-vampires",
+  "slug": "ur-dragon",
   "at": "2026-09-10",
   "runs": [
-    "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-3e064845-s1040599109-podExperimental-c600",
-    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-42dc6d00-s1121742080-podExperimental-c600",
-    "giada-angels-vs-vito-vs-baylen-tokens-n100-717196e1-s1903269601",
-    "giada-angels-vs-vito-vs-baylen-tokens-n20-4d56c78c-s1297532812",
-    "giada-angels-vs-vito-vs-baylen-tokens-n20-717196e1-s1903269601",
-    "giada-angels-vs-vito-vs-baylen-tokens-n400-717196e1-s1903269601",
-    "krenko-tokens-vs-purphoros-pingers-vs-nekusar-discard-vs-neyith-fight-n40-9839cc96-s553924758-podExperimental-c600",
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600",
-    "v5-vs-v6-x-giada-angels-vito-baylen-tokens-n20-7708bee6-s861962526"
+    "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600",
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-45f502ef-s1173684975-podExperimental-c600",
+    "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-9def0ac6-s649688774-podExperimental-c600"
   ],
-  "games": 840,
-  "decisions": 7949,
+  "games": 300,
+  "decisions": 2766,
   "seed": 0,
   "permutation_iterations": 10000,
   "forge_ai_targeting_policy": {
     "most_damage_dealt": {
       "hypothesis": "attacks the seat that has dealt the most combat damage",
-      "decisions": 7949,
-      "hits": 5504,
-      "rate": 0.6924,
+      "decisions": 2766,
+      "hits": 1829,
+      "rate": 0.6612,
       "ci95": [
-        0.682,
-        0.702
+        0.643,
+        0.679
       ],
-      "uniform_expected_rate": 0.5071,
+      "uniform_expected_rate": 0.5061,
       "permutation_p": 0.0001,
       "per_game_rate": {
-        "mean": 0.72,
-        "median": 0.73,
-        "min": 0.12,
+        "mean": 0.68,
+        "median": 0.69,
+        "min": 0.08,
         "max": 1.0,
-        "n": 839,
+        "n": 300,
         "ci95": [
-          0.7,
-          0.73
+          0.65,
+          0.7
         ]
       }
     },
     "lowest_life": {
       "hypothesis": "attacks the lowest-life seat",
-      "decisions": 7949,
-      "hits": 4462,
-      "rate": 0.5613,
+      "decisions": 2766,
+      "hits": 1606,
+      "rate": 0.5806,
       "ci95": [
-        0.55,
-        0.572
+        0.562,
+        0.599
       ],
-      "uniform_expected_rate": 0.4279,
+      "uniform_expected_rate": 0.438,
       "permutation_p": 0.0001,
       "per_game_rate": {
         "mean": 0.57,
         "median": 0.57,
         "min": 0.0,
         "max": 1.0,
-        "n": 839,
+        "n": 300,
         "ci95": [
           0.55,
-          0.58
+          0.6
         ]
       }
     },
     "highest_life": {
       "hypothesis": "attacks the highest-life seat",
-      "decisions": 7949,
-      "hits": 2671,
-      "rate": 0.336,
+      "decisions": 2766,
+      "hits": 983,
+      "rate": 0.3554,
       "ci95": [
-        0.326,
-        0.346
+        0.338,
+        0.373
       ],
-      "uniform_expected_rate": 0.449,
+      "uniform_expected_rate": 0.4616,
       "permutation_p": 1.0,
       "per_game_rate": {
-        "mean": 0.35,
+        "mean": 0.37,
         "median": 0.33,
         "min": 0.0,
         "max": 1.0,
-        "n": 839,
+        "n": 300,
         "ci95": [
-          0.33,
-          0.36
+          0.35,
+          0.39
         ]
       }
     }
   },
   "when_the_hypotheses_disagree": {
-    "decisions": 3846,
+    "decisions": 1256,
     "note": "only the decisions where the two hypotheses name different seats. The three outcomes are mutually exclusive shares of one multinomial, so the intervals below are marginal and comparing two of them needs an interval on the difference of CORRELATED proportions — not offered here, and not to be eyeballed from the overlap.",
     "most_damage_dealt": {
-      "hits": 1995,
-      "rate": 0.5187,
+      "hits": 578,
+      "rate": 0.4602,
       "ci95": [
-        0.503,
-        0.534
+        0.433,
+        0.488
       ]
     },
     "lowest_life": {
-      "hits": 1483,
-      "rate": 0.3856,
+      "hits": 549,
+      "rate": 0.4371,
       "ci95": [
-        0.37,
-        0.401
+        0.41,
+        0.465
       ]
     },
     "neither": {
-      "hits": 368,
-      "rate": 0.0957,
+      "hits": 129,
+      "rate": 0.1027,
       "ci95": [
         0.087,
-        0.105
+        0.121
       ]
     }
   },
@@ -122,7 +117,7 @@
     "Strength is REVEALED cumulative combat damage dealt to players. Printed board power is only partly recoverable from a Forge log — counters, anthems, auras, equipment and token counts are invisible — so a board-power ranking would be biased against token, counter and anthem decks, which is most of this pod.",
     "The unit is one declare-attackers step with at least two living opponents, not one attacker: five creatures almost always go at the same player. A one-on-one run contributes zero decisions by construction.",
     "Decisions cluster within games, so the pooled Wilson interval is optimistic; the game-clustered mean is reported beside it.",
-    "Pooled over 9 run(s), 840 game(s), 7949 decision(s).",
+    "Pooled over 4 run(s), 300 game(s), 2766 decision(s).",
     "SEEDED FIXES THE SHUFFLE, NOT THE GAMES. Every JVM job ran `-s <seed>` (seeds recorded per job) and the same seed deals the same cards — but one configuration replayed twice on 2026-09-02 gave four different games and a different winner in one of them. Forge budgets its AI's evaluation in WALL TIME and abandons the search when it overruns (`AI eval thread at timeout`, 12 times in those 4 games), so how well a seat is piloted depends on machine load. The STORED LOGS are the receipt, not the seed — `validate-sim` re-derives every figure from them. N games against a pod is a sample either way, and the interval is the claim."
   ]
 }
