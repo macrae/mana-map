@@ -106,25 +106,106 @@
       "agent": "captains-log",
       "agent_prompt_sha256": "b313281ed7dbaf230eda7d5c5c60ba0229fae22a1605cc14068ac46aada4efba",
       "artifact": "data/decks/ur-dragon/captains_log.json",
-      "artifact_sha256": "07a647af368881f7c5aa7b48b55bac3447e4e951a7b63a43074b5eabafa6441d",
+      "artifact_sha256": "84492372b23172fbb26362d7c555b3d8efa0be1769d4f7d29d80100c3a8e8ff1",
       "extra": {},
-      "fingerprint": "e5fde67ff2f26ff910cf386da05bec55665f3410542c229a2e477219ad149450",
+      "fingerprint": "93d1f9af1f37c553c6def6e09e8c379689dbf7437481c36472a6cd799e29792e",
       "inputs": [
         {
           "path": "data/decks/ur-dragon/log.jsonl",
-          "sha256": "07fbb8d231df5f448269a1f014061c25de405690dd08dca91d8a505735576585"
+          "sha256": "4898c39bdababfc273e6d28bc9436ea686ae5e1b6eacda8484c41ebbf886e4e5"
         },
         {
           "path": "data/decks/ur-dragon/log_annotations.json",
-          "sha256": "fb4a4b2115b9f702215a83dac0ffea878ffca2d5f8b6ed6d25604c9c523fb805"
+          "sha256": "7db8b15e97c5b27206e7f60920be304e12a0e457e6036dc841f2631068cf0115"
         },
         {
           "path": "data/decks/ur-dragon/log_causes.json",
-          "sha256": "772f15fc36d939f0f051f3c5844762663109d4421cc0c94d85ab6c7748e36311"
+          "sha256": "278e2163839238842816a9aebb532d1c6d5627fdaddf9e774d5b6b527bb98578"
         },
         {
           "path": "src/manamap/pilot/captains_log.py",
           "sha256": "bb4af9b7b11d1c4d6ba2f41b3c836ceabbc8b22cb5e43d531f0883cac7a02092"
+        }
+      ]
+    },
+    "debrief": {
+      "agent": "debrief",
+      "agent_prompt_sha256": "dd7c8e9486ea3ef01c88668058aba99dc0e303c34702c18f5e879b85eba61e33",
+      "artifact": "data/decks/ur-dragon/log_annotations.json",
+      "artifact_sha256": "658b3860b3e883ecbc29b2c3db0ca167f485459d894811053c270f9e6f9c24fc",
+      "card_refs": [
+        "Ancient Gold Dragon",
+        "Arcane Signet",
+        "Birds of Paradise",
+        "Bloom Tender",
+        "Delighted Halfling",
+        "Dragon Tempest",
+        "Dragon's Hoard",
+        "Enlightened Tutor",
+        "Farseek",
+        "Firespitter Whelp",
+        "Forbidden Orchard",
+        "Forest",
+        "Gadrak, the Crown-Scourge",
+        "Island",
+        "Lathliss, Dragon Queen",
+        "Miirym, Sentinel Wyrm",
+        "Mountain",
+        "Nature's Lore",
+        "Panharmonicon",
+        "Plains",
+        "Return of the Wildspeaker",
+        "Skyshroud Claim",
+        "Smaug the Magnificent",
+        "Sneak Attack",
+        "Sol Ring",
+        "Stomping Ground",
+        "Terror of the Peaks",
+        "The Ur-Dragon",
+        "Thrakkus the Butcher",
+        "Twinflame Tyrant"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "2b8050a1c7aebc7603bdc5c19163d5aa45192904b796675a4cf15b41b588d793"
+      },
+      "fingerprint": "607729df4ffa8993916f6fa788b9e482a7ef4dcb6398a2cae11f86f387e82db1",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/engine.json",
+          "sha256": "01dfbb4cb8008fa35d8517546e562527e3c3c5278e65b481dac6d25fe35840aa"
+        },
+        {
+          "path": "data/decks/ur-dragon/log.jsonl",
+          "sha256": "4898c39bdababfc273e6d28bc9436ea686ae5e1b6eacda8484c41ebbf886e4e5"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "0af946b95e021827d69fa7bb9863f1e87e8c68b414b2e42d9a56340c6a80c1f3"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "383cb0afb41f1a53a0e93547e1949cf49090d6c0f7074163000e93b952e6aece"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json",
+          "sha256": "d3dfbb3bb079a3e661b544459997de81a4310bfd229ebcd9a7c9a40770082f7e"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json",
+          "sha256": "70a87d9d80e9301e326b3ad12cee649d884cac3a7458ca98049a0aaff20784ac"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json",
+          "sha256": "034b9a6910a2157258b7370d7a03a899e67fd5767d4e2bfe2fc2cb82ef4081aa"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/007-cascade-without-panharmonicon.json",
+          "sha256": "e276e91828911d13d72fa39f3210cec326fed5c4998a87a8872aef248a50dccf"
         }
       ]
     },

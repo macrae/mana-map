@@ -409,6 +409,116 @@
           "why_it_matters": "the two answers cost completely different things: one is a piloting rule the pilot has already written himself, the other is slots in the 99. Three consecutive losses name the same mechanism and nothing has decided which it is"
         }
       ]
+    },
+    "006": {
+      "summary": "Three-player at the pilot's house on 10 September, played on the current list (the entry's sha 7095f2d8… matches decklist.txt exactly, so every card it names is in the 99 as it stands). The pilot's verdict is that 'Ur-Dragon squeaked out the win by not being too loud': he kept three lands, Arcane Signet, Smaug the Magnificent and Thrakkus the Butcher, never found the land to cast either Dragon on time, and does not stand by the keep. When The Ur-Dragon landed and Stephen targeted it, Bloom Tender was untapped with all five colours on the board and Return of the Wildspeaker was in hand — a draw-ten the pilot did not cast because he 'did not pause to respond', and the removal resolved. Stephen then killed Stuart, had the pilot at five, and swung with everything; wide open at five life with no blockers, he died to the dorks plus two Spirit tokens on the untap. Return of the Wildspeaker was still in hand at the end. ONE READING FLAG: the note credits 'the two colourless Spirit tokens Forbidden Orchard had given me', while engine.json's mana stage describes the deck's own Forbidden Orchard as handing an OPPONENT a 1/1 each tap — the note does not say whose Orchard was tapped, and this annotation does not guess.",
+      "opponents": [
+        {
+          "seat": "Stephen",
+          "archetype": "five-colour legendary tutor / control",
+          "commander": "Sisay, Weatherlight Captain",
+          "evidence": "Stephen on Sisay, Weatherlight Captain (five-colour fixing and ramp to land the commander, then Sisay as a tutor on a stick for any legendary piece"
+        },
+        {
+          "seat": "Stuart",
+          "archetype": "zombie tokens with decayed chump blockers, board wipes",
+          "commander": null,
+          "evidence": "Stuart on a new Rot-Cleaver zombie deck that makes zombies and gives them decayed, so he always has echoes of chump blockers"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Smaug the Magnificent",
+          "read": "under",
+          "why": "kept as the 'clear turn-three play' and never cast on time: 'I never found the land to bring out Smaug or Thrakkus on time'"
+        },
+        {
+          "card": "Thrakkus the Butcher",
+          "read": "under",
+          "why": "the other half of the same keep, same fate: the land to cast it never arrived"
+        },
+        {
+          "card": "Arcane Signet",
+          "read": "as-expected",
+          "why": "part of the kept seven; the note does not fault it — the keep failed on lands, not on the rock"
+        },
+        {
+          "card": "The Ur-Dragon",
+          "read": "under",
+          "why": "landed, was targeted by Stephen, and 'let the removal resolve' with a response available — the note faults the pilot's passivity, not the card"
+        },
+        {
+          "card": "Bloom Tender",
+          "read": "under",
+          "why": "untapped with all five colours on the board when the commander came down — 'that is five mana, not two or three' — and 'I did not tap Tender'"
+        },
+        {
+          "card": "Return of the Wildspeaker",
+          "read": "under",
+          "why": "in hand when the removal targeted the dragon: 'draw equal to the greatest power, ten cards off the dragon. I did not tap Tender, did not cast it' — and 'still in my hand for the draw-ten' at the end"
+        },
+        {
+          "card": "Delighted Halfling",
+          "read": "as-expected",
+          "why": "named as one of the untapped sources available for the missed response — 'Delighted Halfling and the other sources were sitting there too' — and the closing swing was 'with the dorks'"
+        },
+        {
+          "card": "Forbidden Orchard",
+          "read": "over",
+          "why": "the note credits it with the two Spirit tokens that, with the dorks, delivered the last five points: 'swung with the dorks plus the two colourless Spirit tokens Forbidden Orchard had given me, and it was over'. See the summary's flag on whose Orchard was tapped"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the opening seven: three lands, Arcane Signet, Smaug the Magnificent and Thrakkus the Butcher — keep on the clear turn-three play, or ship a hand whose plan needs a land it does not have",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "The Ur-Dragon has just landed and Stephen's removal targets it; Bloom Tender is untapped with five colours on the board and Return of the Wildspeaker is in hand — respond for ten cards off the dragon's power, or let the removal resolve",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The pilot's verdict on the keep, in his words: 'I do not stand by the keep. The system I built saved me this time, but that was a hand to ship.' The rule he is reaching for is a keep whose turn-three play depends on a land it has not yet drawn; that needs a rate before it becomes a mulligan rule.",
+        "Lesson (1), verbatim: 'Dorks first: stay quiet, telegraph less.' This is the telegraph mechanism named in 002 through 005, and 006 is the first note where the pilot reports winning BY NOT telegraphing — 'squeaked out the win by not being too loud'.",
+        "Lesson (2), a handbook procedure: 'The Bloom Tender five-mana unlock, the moment the commander lands.' With all five colours among the pilot's permanents, Tender is five mana, and the note says it was read as two or three.",
+        "Lesson (3), a handbook procedure the pilot calls 'the advanced layer': 'Pause before resolution: when removal is coming in or the commander is under threat, stop, scan instant-speed responses, dorks that can tap, cards in hand, before the stack closes.' The cost of not doing it this game was a ten-card draw and, in the pilot's words, 'a completely different game'.",
+        "The win is credited to the opponent's combat decision, not to the deck: 'Stephen's combat decision is where he lost it: the aggro play when the defensive one held.' That is the second logged win (with 002) the pilot describes as closing from off the radar after the table did the work.",
+        "The pilot's read of the table: Stephen brought 'Good responses, counters and targeted removal', Stuart 'board wipes' — the same removal-dense environment 002 and 003 describe, and Stephen's Sisay is 'getting bonkers, and he is finally sequencing it right'."
+      ],
+      "engine_stages": [
+        "mana",
+        "output",
+        "protection"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "The Ur-Dragon",
+            "Bloom Tender",
+            "Return of the Wildspeaker"
+          ],
+          "status": "needs a stack scenario",
+          "note": "the pilot's arithmetic — Bloom Tender for five with all five colours on the board, Return of the Wildspeaker in response to targeted removal for 'ten cards off the dragon' — is unproven: none of the seven passing stacks names Bloom Tender or Return of the Wildspeaker."
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "How often does a keep of three lands plus Arcane Signet, with two Dragons behind it, find its fourth land by turn four and its fifth by turn five — and, across all keepable sevens, how often does a hand with exactly three lands and one rock stall before its first Dragon is castable? The pilot proposes shipping such a hand.",
+          "settled_by": "goldfish",
+          "why_it_matters": "the pilot says 'that was a hand to ship' and 'I do not stand by the keep'; whether the rule costs more than the stall it prevents is a rate the seeded goldfish can measure on the current list, and 005 already has a sister mulligan question (no green source) waiting on the same loop"
+        },
+        {
+          "question": "With targeted removal on The Ur-Dragon on the stack, Bloom Tender untapped and permanents of all five colours under the pilot's control, and Return of the Wildspeaker in hand: does Bloom Tender produce five mana, and does Return resolve for cards equal to the dragon's power before the removal resolves?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "this is the exact board the pilot's headline lesson rests on — 'Ten new cards, potential dragons, a completely different game' — and a checker-passed stack would let the handbook's pause-before-resolution procedure cite a verified line instead of the pilot's recollection"
+        },
+        {
+          "question": "Both logged wins (002, 006) are ones the pilot describes as closing from off the radar after the table ground itself down or an opponent misplayed, and 006's first lesson is 'Dorks first: stay quiet, telegraph less.' Is a quiet-then-close plan something the current 99 supports — a board that can present lethal from a low profile — or is the deck only winning when an opponent hands it the game?",
+          "settled_by": "diagnose",
+          "why_it_matters": "005's open question asks whether the telegraph is a property of the list or a deployment habit; 006 adds the first win on the quiet line, so the doctor now has both outcomes to read against the same mechanism"
+        }
+      ]
     }
   }
 }

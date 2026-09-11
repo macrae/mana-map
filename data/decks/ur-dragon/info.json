@@ -5094,9 +5094,7 @@
     "draw": 0,
     "last_played": "2026-09-10",
     "first_played": "2026-08-22",
-    "undebriefed": [
-      "006"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "mana-drought",
       "002": "won",
@@ -5632,6 +5630,21 @@
       "from": "log:005",
       "question": "Across 003, 004 and 005 the pilot presents a board the table can read before he can close. Is the gap between broadcasting a threat and presenting lethal a property of this list — ramp-heavy, protection-thin, no haste — or purely a deployment habit the handbook should fix?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:006",
+      "question": "How often does a keep of three lands plus Arcane Signet, with two Dragons behind it, find its fourth land by turn four and its fifth by turn five — and, across all keepable sevens, how often does a hand with exactly three lands and one rock stall before its first Dragon is castable? The pilot proposes shipping such a hand.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:006",
+      "question": "With targeted removal on The Ur-Dragon on the stack, Bloom Tender untapped and permanents of all five colours under the pilot's control, and Return of the Wildspeaker in hand: does Bloom Tender produce five mana, and does Return resolve for cards equal to the dragon's power before the removal resolves?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:006",
+      "question": "Both logged wins (002, 006) are ones the pilot describes as closing from off the radar after the table ground itself down or an opponent misplayed, and 006's first lesson is 'Dorks first: stay quiet, telegraph less.' Is a quiet-then-close plan something the current 99 supports — a board that can present lethal from a low profile — or is the deck only winning when an opponent hands it the game?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -5678,7 +5691,6 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "not marked as built in paper — if it is sleeved, `deck-version ur-dragon paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "1 logged game(s) not yet debriefed (006) — `/debrief ur-dragon`",
     "`final-v1` is PROPOSED as v1.3.0 and waiting on cardboard — 9 card(s) (7 to buy, 2 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v1` has the pull list",
     "branch `haste-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
@@ -5687,7 +5699,7 @@
     "branch `responses-v3` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
-    "open questions routed: diagnose ×4, goldfish ×9, research-strategy ×6, resolve-stack ×9",
+    "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×10",
     "4 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
