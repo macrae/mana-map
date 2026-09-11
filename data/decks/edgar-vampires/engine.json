@@ -1,7 +1,7 @@
 {
   "slug": "edgar-vampires",
-  "note": "Rebuilt 2026-09-02 against v1.0.1 (decklist_sha256 7ce22fd6...) after the bloodline branch merged 12 swaps. The previous model was written against v1.0.0 and named 12 cards that are no longer in the 99. Every card name here was checked against deck-facts; every figure is quoted from `engine-facts`/`deck-audit` rather than computed.",
-  "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight - but v1.0.1 stopped asking those bodies to connect and started asking them to DIE: nine cards convert them into cards, counters and life loss at every seat, and the two checker-passed kill routes are a doubled attack drain and a two-card lifegain loop, neither of which needs combat damage to land.",
+  "note": "Rebuilt 2026-09-02 against v1.1.0 (decklist_sha256 7ce22fd6...) after the bloodline branch merged 12 swaps. The previous model was written against v1.0.0 and named 12 cards that are no longer in the 99. Every card name here was checked against deck-facts; every figure is quoted from `engine-facts`/`deck-audit` rather than computed.",
+  "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight - but v1.1.0 stopped asking those bodies to connect and started asking them to DIE: nine cards convert them into cards, counters and life loss at every seat, and the two checker-passed kill routes are a doubled attack drain and a two-card lifegain loop, neither of which needs combat damage to land.",
   "stages": [
     {
       "stage": "mana",
@@ -134,7 +134,7 @@
     },
     {
       "stage": "fuel",
-      "label": "THE THING v1.0.1 WAS BUILT TO FIX",
+      "label": "THE THING v1.1.0 WAS BUILT TO FIX",
       "what_it_does": "Four logged games say the same thing: the deck ran out of steam on card draw. This stage is the answer bloodline bought. Ten of the eleven are draw; the declared component is nine cards and reads 84.1% assembled, mean turn 2.68, second only to the castable-Vampire leg among the eleven declared components - and yet deck-audit still reads card-advantage UNDER at 7 copies against a 10 target, because the taxonomy cannot see Bloodtracker, Champion of Dusk, Preacher of the Schism, Castle Locthwain, Minas Tirith or Midgar's Adventure half, among others it names. Five of these turn a body LEAVING THE BATTLEFIELD into cards rather than reading off casts - Crossway Troublemakers (2 life per Vampire death), Liliana (every creature death), Skullclamp (two cards per equipped body), Bloodtracker (a card per counter when it leaves), and High-Society Hunter, whose clause is 'another NONTOKEN creature' and therefore never sees an eminence token. That is the shape the pilot's 2026-09-01 game demonstrated: an opponent's Goblin Sharpshooter pinging the token board fed the draw rather than emptying it. Vampiric Tutor is the eleventh, and it is not card advantage - it is the reason a 4.2% component reads 9.6% assisted and a 7.6% one reads 14.6%.",
       "cards": [
         "Bloodtracker",
@@ -474,7 +474,7 @@
       "cities": [
         "city-5 'Insurance' (7 of 7)"
       ],
-      "why": "Five of the thirteen scatter rows are fully coherent and this is the largest of them - seven cards, one city - yet the name the map gives that city is wrong for what these cards do here. The seven outlets cluster because Yahenni, Immersturm Predator and Mondrak all read as self-protection tricks - sacrifice to gain indestructible - so the map calls the region Insurance. In v1.0.1 they are the CONVERSION layer, and the card that makes them pay, Cordial Vampire, is filed two cities away in 'Finishers'. Agreement on membership, disagreement on job."
+      "why": "Five of the thirteen scatter rows are fully coherent and this is the largest of them - seven cards, one city - yet the name the map gives that city is wrong for what these cards do here. The seven outlets cluster because Yahenni, Immersturm Predator and Mondrak all read as self-protection tricks - sacrifice to gain indestructible - so the map calls the region Insurance. In v1.1.0 they are the CONVERSION layer, and the card that makes them pay, Cordial Vampire, is filed two cities away in 'Finishers'. Agreement on membership, disagreement on job."
     },
     {
       "component": "A token multiplier or extra token-maker drawn",
@@ -495,7 +495,7 @@
     {
       "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar), Crossway Troublemakers AND High-Society Hunter on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost, and does High-Society Hunter see ANY of them given its 'another nontoken creature' clause? Also: is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "This is the v1.0.1 engine in one board - the loop the pilot's 2026-09-01 game actually ran - and it is the only major stage-to-stage arrow in this model with no passing stack behind it. If High-Society Hunter is blind to tokens, the fuel stage is a card thinner than the declaration reads."
+      "why_it_matters": "This is the v1.1.0 engine in one board - the loop the pilot's 2026-09-01 game actually ran - and it is the only major stage-to-stage arrow in this model with no passing stack behind it. If High-Society Hunter is blind to tokens, the fuel stage is a card thinner than the declaration reads."
     },
     {
       "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter (an opponent had lost life earlier that turn); stack 011 records them entering WITHOUT it, because the only life loss that turn came from a trigger that had not yet resolved. What is the practical sequencing rule - does the pilot cast the Vampire before or after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast?",
@@ -505,7 +505,7 @@
     {
       "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 77.6% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
       "settled_by": "goldfish",
-      "why_it_matters": "The conversion stage is the whole of what v1.0.1 bought, and right now every figure attached to it measures a card being DRAWN. A stage nobody can measure is a stage the deck page will render as green."
+      "why_it_matters": "The conversion stage is the whole of what v1.1.0 bought, and right now every figure attached to it measures a card being DRAWN. A stage nobody can measure is a stage the deck page will render as green."
     },
     {
       "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.2% assembled, Bloodthirsty Conqueror 7.6%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
@@ -517,7 +517,7 @@
     {
       "target": "A draw engine drawn",
       "change": "Add High-Society Hunter to the component (currently 9 cards: Bloodtracker, Caretaker's Talent, Champion of Dusk, Crossway Troublemakers, Liliana Dreadhorde General, Night's Whisper, Preacher of the Schism, Skullclamp, Welcoming Vampire).",
-      "why": "Its oracle text is 'Whenever another nontoken creature dies, draw a card' and card_roles.json already tags it draw:engine - it is the only card carrying that role that the component omits. The deck holds ten draw engines and the declaration measures nine, which understates the axis the pilot's four logged games identified as the deck's failure and which v1.0.1 was built to fix."
+      "why": "Its oracle text is 'Whenever another nontoken creature dies, draw a card' and card_roles.json already tags it draw:engine - it is the only card carrying that role that the component omits. The deck holds ten draw engines and the declaration measures nine, which understates the axis the pilot's four logged games identified as the deck's failure and which v1.1.0 was built to fix."
     },
     {
       "target": "(new) A conversion pair online - an outlet AND a death payoff",
