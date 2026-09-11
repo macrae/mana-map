@@ -53,9 +53,35 @@
       "name": "final-v1",
       "opened": "2026-09-11",
       "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
+      "state": "PROPOSED · BLOCKED",
+      "state_why": "9 card(s) still to find",
+      "proposal": {
+        "at": "2026-09-11",
+        "as_version": "v1.3.0",
+        "why": "",
+        "base_version": 4,
+        "decklist_sha256": "1d095e809d8137067077a46359e6200da2d9c59340dd055216e27227418fc10c",
+        "accepted_on": {
+          "decklist_sha256": "1d095e809d8137067077a46359e6200da2d9c59340dd055216e27227418fc10c",
+          "state": "a trade",
+          "objective": {
+            "axis": "kill_by_8",
+            "op": ">=",
+            "value": 0.78,
+            "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers."
+          },
+          "grade": "met",
+          "reading": 0.8334,
+          "harness": {
+            "iterations": 10000,
+            "seed": 20260826
+          }
+        },
+        "procurement": {
+          "at": "2026-09-11",
+          "note": "seven to buy; two fetches sleeved in Edgar, four listed under the sisay pile"
+        }
+      },
       "pull_list": {
         "buy": [
           {
@@ -131,7 +157,10 @@
           }
         ],
         "blocking": 9,
-        "procurement": null
+        "procurement": {
+          "at": "2026-09-11",
+          "note": "seven to buy; two fetches sleeved in Edgar, four listed under the sisay pile"
+        }
       },
       "base_version": 4,
       "size": 100,
@@ -5059,24 +5088,27 @@
   },
   "paper": null,
   "record": {
-    "games": 5,
-    "win": 1,
+    "games": 6,
+    "win": 2,
     "loss": 4,
     "draw": 0,
-    "last_played": "2026-09-08",
+    "last_played": "2026-09-10",
     "first_played": "2026-08-22",
-    "undebriefed": [],
+    "undebriefed": [
+      "006"
+    ],
     "causes": {
       "001": "mana-drought",
       "002": "won",
       "003": "politics",
       "004": "politics",
-      "005": "mana-drought"
+      "005": "mana-drought",
+      "006": "won"
     },
     "cause_counts": {
       "mana-drought": 2,
       "politics": 2,
-      "won": 1
+      "won": 2
     }
   },
   "model": {
@@ -5646,7 +5678,8 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "not marked as built in paper — if it is sleeved, `deck-version ur-dragon paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "branch `final-v1` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
+    "1 logged game(s) not yet debriefed (006) — `/debrief ur-dragon`",
+    "`final-v1` is PROPOSED as v1.3.0 and waiting on cardboard — 9 card(s) (7 to buy, 2 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v1` has the pull list",
     "branch `haste-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
     "branch `responses-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
