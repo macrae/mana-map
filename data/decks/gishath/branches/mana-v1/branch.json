@@ -1,7 +1,7 @@
 {
  "slug": "gishath",
  "branch": "mana-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-09-11",
  "why": "Mana pass on the proposed v1.1.0 list (cart-v1), 2026-09-11: 35 lands with seven that always enter tapped, one fetch and no shocks, red 16 and green 11 sources short of Karsten targets on double-pip Dinosaurs, lands-only on-curve R 52% G 64%. Three taplands out for three shocks (tempo: always-tapped 7 -> 4; a dual is a dual to the source count) and three basics out for three fetches that reach every shock (colour: R 52 -> 58%, G 64 -> 69%, W 83 -> 87% on the mana tool). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.132 on cart-v1) is the one goldfish row a colour screw shows in.",
  "objective": {
@@ -61,5 +61,33 @@
    "strength": null,
    "why": "one of four Mountains for a Swamp/Mountain fetch that finds Sacred Foundry or Stomping Ground; alone: W+1 G+1, on-curve W+2 G+3"
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-09-11",
+  "as_version": "v1.1.0",
+  "why": "",
+  "base_version": 4,
+  "decklist_sha256": "3792ff550a0508848f8773e1b59b93cb3f47063ad7604af91288e2442e304698",
+  "accepted_on": {
+   "decklist_sha256": "3792ff550a0508848f8773e1b59b93cb3f47063ad7604af91288e2442e304698",
+   "state": "do not merge",
+   "objective": {
+    "axis": "stall",
+    "op": "<=",
+    "value": 0.11,
+    "why": "Mana pass on the proposed v1.1.0 list (cart-v1), 2026-09-11: 35 lands with seven that always enter tapped, one fetch and no shocks, red 16 and green 11 sources short of Karsten targets on double-pip Dinosaurs, lands-only on-curve R 52% G 64%. Three taplands out for three shocks (tempo: always-tapped 7 -> 4; a dual is a dual to the source count) and three basics out for three fetches that reach every shock (colour: R 52 -> 58%, G 64 -> 69%, W 83 -> 87% on the mana tool). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.132 on cart-v1) is the one goldfish row a colour screw shows in."
+   },
+   "grade": "not met",
+   "reading": 0.1369,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "procurement": {
+   "at": "2026-09-11",
+   "note": "green-lit 2026-09-11 as one list: the eight cart cards plus six lands; all fourteen to buy, Bloom Tender's second copy from the cart"
+  },
+  "forced_reason": "the stall objective is the one goldfish row a land pass can touch and the goldfish plays the first land in hand; mana-analysis is the evidence for the six lands (always-tapped 7 -> 4, on-curve R 52 -> 58%, G 64 -> 69%) and the pilot green-lit the whole list"
+ }
 }
