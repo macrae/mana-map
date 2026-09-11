@@ -3,7 +3,7 @@
   "id": "0241fb6a70f1",
   "prompt": "The pilot's log (5 games, 1W 4L, all debriefed) reads: mana was the loss twice (Blood Moon, closed by the pilot's decision; no green source, a mulligan rule), and the TELEGRAPH was the loss three times -- 'I ramped fast enough to broadcast the win before I could present lethal', 'the treasure pile plus fireballing every ETB made me the obvious problem', 'I pour it into the board too early and telegraph'. His verdict: 'speed without protection or politics makes me the obvious kill target before I can close', and after the refactor 'I now have zero responses' (no counterspells; protection is Swat, Teferi's, Heroic Intervention, Boros Charm, Greaves). His four research asks, verbatim: (a) dragons that grant haste to the board -- 'the problem is speed, not size'; (b) haste enablers generally -- 'Terror has to swing the turn it lands, not sit'; (c) protection density -- 'some lock-down (equipment indestructible?) that does not cost me dragon slots'; (d) dragons with ETB counters or flash, and protection on dragons or dragon enchantments, without slowing the deck down. Measured: Forge at standard-v3 0.353 [0.215, 0.521] over 40 games, engine played, piloting comparable, killed by combat damage at mean global turn 35, the commander resolved in 57% of games at global turn 27; the goldfish reads kill_by_8 0.79 and the commander cast by t6 only 33% (mean t6.9), 4 of 22 Dragons have haste; the audit reads card-advantage 4 (target 10), colour-sources -12 on the worst colour, interaction-breadth 4 of 5, ramp 22 (over), protection 8 (over by count but not by the pilot's read). What changes make this deck close faster than the table can converge on it -- haste so the dragons swing the turn they land, protection that does not cost dragon slots, responses -- and which of those does the evidence support, with every add named against the axis it closes and every cut priced? Ownership is not a constraint. No two-card infinites.",
   "as_of_decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
-  "reading": "The pilot asks what lets this deck close before the table converges — haste so a Dragon swings the turn it lands, protection that costs no Dragon slot, and responses — and the evidence says the deck is already fast enough to be seen: ramp reads 22 against a 10–12 target, the goldfish kills by turn 8 in 0.792 of games, and the log names the telegraph as the loss in 003, 004 and 005 in the pilot's own words ('I ramped fast enough to broadcast the win before I could actually present lethal'). The 'four hasty Dragons' premise undercounts — Dragon Tempest and Temur Ascendancy already grant haste board-wide — but a two-card group is in 0.137 of opening sevens by the audit's own hypergeometric, so the haste ask is a redundancy problem, not an absence; and the pilot's 'zero responses' is exact where the audit's 'protection 8, over' is not, because all eight are protection effects and none of the nine interaction copies is a counterspell. Forge at standard-v3 agrees on the mechanism: 0.353 [0.215, 0.521] over 40 games, all 19 eliminations by damage at mean global turn 35.0 (ci95 [32.53, 37.47]), the commander first resolving at mean global turn 27.17 in the 0.575 of games it resolved at all, interaction cast 0.17 a game against 0.35 received — the deck presents, is converged on, and loses a damage race it started. So the ranking below trades ramp and slow top-end for flash, haste and counters — 'fast to build' into 'fast to close' — and the piloting half (hold the tempo, sequence the tell last, point the table at the quiet assembler) is routed to the handbook as an open question, not to a card.",
+  "reading": "The pilot asks what lets this deck close before the table converges — haste, protection that costs no Dragon slot, responses — and the log as filed in log_causes.json splits the four losses two ways: 001 and 005 are mana-drought (Blood Moon, closed by the pilot's own decision; 'No green source all game', on the colour the audit reads at 23 sources against a 22 target), 003 and 004 are politics, and the telegraph is a recurring takeaway in 002, 003, 004 and 005 rather than a filed cause. So mana is not closed: the count half is fine (goldfish turn-3 land drop 0.901, keep rate 0.792, mean available mana 5.919 on turn five) and the colour half is the deck's worst axis (black 18 sources of 30, on curve 0.636 with rocks and dorks in mana_analysis), which is why this revision keeps Skyshroud Claim — it fetches two Forest cards untapped, and of the deck's seven Forest-typed land copies (Breeding Pool, Canopy Vista, Cinder Glade, two basic Forests, Overgrown Tomb, Stomping Ground) exactly one, Overgrown Tomb, makes black; Nature's Lore reaches that same one, Farseek reaches three (Blood Crypt, Overgrown Tomb, Smoldering Marsh) and Chromatic Lantern all 36 lands, so Claim is green ramp that can add a black source, not a black fixer — cuts Rishkar's Expertise in its place, and marks the two black-pip adds as the ones mana-fit must clear before a branch runs games. Forge at standard-v3 (sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-9def0ac6…, 40 games, 34 decided by analysis.seats): win 0.353 [0.215, 0.521]; the commander resolved in 0.575 [0.422, 0.715] of games, first at mean global turn 27.17 [24.97, 29.38] (n=23); our seat eliminated at mean global turn 35.0 [32.53, 37.47] (n=23), 19 of those 23 with a recorded cause and all 19 damage; interaction cast 0.17 [0.06, 0.29] a game against 0.35 [0.17, 0.53] received — the deck presents, is converged on, and loses a damage race it started. The goldfish now reads the deck's two team-haste grants (goldfish_metrics.json: kill by turn 8 0.802, by turn 6 0.289, mean kill turn 7.21) and blinding both moved kill-by-T8 by 1.6 points (0.779 → 0.795, commit 191357f7), so a third grant is worth under a point on that instrument — which has no opponents and cannot see the anti-telegraph claim at all; the ranking below is priced on the log and on Forge, whose gate is `--pod standard-v3`; against this deck's own 0.353 baseline, `manamap.sim.stats.mde_proportion(0.353, n)` gives a minimum detectable difference of 0.305 at 40 games a side, 0.195 at 100 and 0.100 at 400 (achieved power about 0.81).",
   "axes_engaged": [
     {
       "axis": "ramp",
@@ -75,8 +75,13 @@
       "measured": {
         "value": -12
       },
-      "reading": "Black is 12 sources short of its Karsten target (18 of 30) and reads 0.636 on curve with rocks and dorks in mana_analysis; two adds below carry a black pip and are priced against it.",
-      "citations": []
+      "reading": "Black is 12 sources short of its Karsten target (18 of 30) and reads 0.636 on curve with rocks and dorks in mana_analysis — the deck's worst axis, and one no logged loss has yet been filed against (001 was Blood Moon, 005 was green). Two adds below carry a black pip; Skyshroud Claim, which fetches Overgrown Tomb untapped, is no longer a cut.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        }
+      ]
     },
     {
       "axis": "card-advantage",
@@ -105,6 +110,20 @@
           "quote": "Separate ceiling from median: the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board."
         }
       ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "adequate",
+      "measured": {
+        "value": 0.901
+      },
+      "reading": "The turn-3 land drop lands in 0.901 of goldfish games against a 0.74 floor, with 0.792 of first sevens kept — the count half of the mana question is not what lost 005; the colour half is, and the goldfish's mulligan is colour-blind.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
     }
   ],
   "log_entries_read": [
@@ -118,7 +137,7 @@
     {
       "card": "Radiant Destiny",
       "why": "A 3-mana enchantment that makes the board bigger (+1/+1 to Dragons, vigilance at ten permanents) when the pilot's words are 'the problem is speed, not size' (003). Forge cast it 11 of 40 games — a card the deck reaches, spending a slot on the axis the pilot does not need.",
-      "cost_of_cutting": "+1/+1 across up to 22 Dragons and vigilance with the city's blessing — the deck's only anthem; Terror of the Peaks and Scourge of Valkas triggers each lose a point of damage per Dragon entering.",
+      "cost_of_cutting": "+1/+1 across up to 22 Dragons and vigilance with the city's blessing — the deck's only anthem. Terror of the Peaks deals damage equal to the entering creature's power, so each Dragon entering under Destiny fires Terror for one less without it. Scourge of Valkas and Dragon Tempest are count-based ('X is the number of Dragons you control') and lose nothing.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
@@ -137,15 +156,15 @@
       "citations": []
     },
     {
-      "card": "Skyshroud Claim",
-      "why": "Ramp is 22 against 10–12 and the pilot's own read after the refactor is 'The mana worked' (003); Claim is the 4-mana sorcery-speed piece of that surplus, and it is green-gated — in 005 'no green source all game' it would have sat in hand with Farseek.",
-      "cost_of_cutting": "Two Forest-typed lands untapped for four — the deck's largest single ramp burst and its only ramp that fetches two fixers at once (Overgrown Tomb for the worst colour, Breeding Pool, Canopy Vista, Cinder Glade, Stomping Ground). The ramp axis by role does not move (Claim carries tutor:narrow); the colour-sources axis is not recomputed by the validator, so the fixing loss is a stated cost, not a measured one.",
+      "card": "Rishkar's Expertise",
+      "why": "Six mana at sorcery speed for cards — cards.json puts six spells above it (The Ur-Dragon 9, Utvara Hellkite 8, Ancient Gold Dragon, Atarka, Drakuseth and Old Gnawbone at 7) and four Dragons beside it at 6 (Hellkite Courser, Lathliss, Miirym, Scourge of the Throne), so it is the slowest non-Dragon spell in the list and the only 6-drop that is not a body — and it needs a big creature already on the battlefield, which is the board the log says gets erased (002: 'board established, board erased, repeat'). Forge neither cast nor discarded it in 40 games (absent from engine_casts.by_card). The pilot's own read in 001: card draw is 'solid'. It replaces Skyshroud Claim in this slot because Claim fetches Overgrown Tomb untapped and black is the axis the two black-pip adds strain.",
+      "cost_of_cutting": "The deck's largest single refill — cards equal to the greatest power among your creatures (a Dragon on board reads four to seven) plus a free spell of mana value 5 or less, which is most of the Dragon suite. card-advantage is under (4 of 10) and Rishkar's is on the audit's uncounted probe list, so the measured axis does not move but the function does; Return of the Wildspeaker keeps the instant-speed version.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
         }
       ]
     },
@@ -178,7 +197,7 @@
     {
       "card": "Sarkhan, Fireblood",
       "why": "Three mana whose mana is Dragon-restricted — deck-facts: it cannot pay an activated ability — and one-shot per turn; it is a ramp piece in a deck at 22, and the 'Dragon-restricted mana drawn' target assembles in only 0.3 of goldfish games. Forge cast it 7 and activated 9, so it does work when it lands.",
-      "cost_of_cutting": "Two coloured mana a turn toward any Dragon including the commander, a rummage, and a −7 that makes four 5/5 flying Dragons.",
+      "cost_of_cutting": "Two coloured mana a turn toward any Dragon — restricted to Dragon spells (deck-facts: it cannot pay an activated ability) but able to pay a Dragon's black pip, so with Dragonlord Kolaghan in the list it is a Dragon-only black fixer the colour-sources count does not credit; a rummage; and a −7 that makes four 5/5 flying Dragons.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
@@ -190,8 +209,8 @@
     },
     {
       "card": "Faeburrow Elder",
-      "why": "Ramp over target, and the elder is the fuel of the 003 speed trap — it scales with colours among permanents and reads 3–5 mana from a 3-drop, which is what 'ramped fast enough to broadcast the win' looks like. In 005 it was one of the green sources that never arrived.",
-      "cost_of_cutting": "The deck's biggest dork — up to five mana of five colours from one card — and a persistent producer in the mana-sources count (50 against a 45 target becomes 49). This is a real speed cut on a deck the pilot still wants fast; it is recommended because the slot buys haste, which is speed of a different kind.",
+      "why": "Ramp over target, and the Elder is the shape of the 003 speed trap — a 3-drop that taps for every colour among your permanents, three to five mana by the midgame, which is what 'ramped fast enough to broadcast the win' looks like. It costs {1}{G}{W}: in 005 it was stranded in hand with Farseek behind a missing green source, not a source that failed to show.",
+      "cost_of_cutting": "The deck's biggest dork — up to five mana of five colours from one card — and a persistent producer in the mana-sources count (50 against a 45 target becomes 49). mana_analysis credits it `produces: []`, so the colour-sources axis does not move when it goes and the real fixing it does is a cost this artifact cannot measure. This is a real speed cut on a deck the pilot still wants fast; it is recommended because the slot buys haste, which is speed of a different kind.",
       "orphans_stack": [],
       "difficulty": "painful",
       "citations": [
@@ -238,18 +257,18 @@
   "add_candidates": [
     {
       "card": "Rhythm of the Wild",
-      "closes": "engine component: conversion — riot puts haste on every nontoken creature as it enters (the 'Terror has to swing the turn it lands' ask) and 'Creature spells you control can't be countered' is the counter-proofing half of ask (d); the board-wide haste group goes 2 → 3",
+      "closes": "engine component: conversion — riot puts haste on every nontoken creature as it enters (ask b: 'Terror has to swing the turn it lands, not sit'); the board-wide haste group goes 2 → 3",
       "source": "pool",
       "natural_cut": "Radiant Destiny",
       "bracket_delta": {
         "before": 3,
         "after": 3
       },
-      "why": "Three mana in the deck's two deepest colours (R 30 sources, G 23) that does the two things the pilot asked for in one slot, and does the second one — uncounterable Dragons — for a table that ran three counterspells' worth of answers out of this deck in the refactor. Ranked first because it is the cheapest card that changes the turn a Dragon lands into the turn it swings, and because every other haste add below is a mana or a pip more expensive.",
+      "why": "Three mana in the deck's two deepest colours (R 30 sources, G 23) — the cheapest card that turns the turn a Dragon lands into the turn it swings, and it stays on the board through a wipe. Priced on riot alone: 'Creature spells you control can't be countered' is on the card, but no log entry (001–005) records an opponent countering anything the pilot cast, so it is a bonus and not a reason. Sizing: the two grants already in the 99 are worth 1.6 points of kill-by-T8 together (0.779 → 0.795, blinded and restored on one seed, commit 191357f7); a third raises the odds a grant is seen by turn six from 0.229 to 0.324, so its own share is under a point — real on that instrument, and not why to buy it. The goldfish has no opponents and cannot measure the anti-telegraph claim; Forge at standard-v3 is the gate; against this deck's 0.353 baseline, `manamap.sim.stats.mde_proportion(0.353, n)` gives a minimum detectable difference of 0.305 at 40 games a side, 0.195 at 100 and 0.100 at 400.",
       "evidence": {
         "haste_group": "Board-wide haste sources in the 99 now: Dragon Tempest (haste to each flyer as it enters — 21 of the 22 Dragons fly; Thrakkus does not) and Temur Ascendancy; Sneak Attack and Lightning Greaves reach one body each. Priced with deck_audit.hypergeometric_at_least over 99 cards: a 2-card group is in 0.137 of opening sevens and seen by turn six (12 cards) in 0.229; 3 cards 0.199 / 0.324; 4 cards 0.258 / 0.409; 5 cards 0.312 / 0.483.",
-        "measurable_by": "GOLDFISH: not measured. goldfish.combat_profile reads haste from a creature's OWN text (`_HASTE_RE`), and no code applies a board-wide grant, so this card is a do-nothing enchantment to the model; kill_by_8 will not move. FORGE: measured — Forge implements the keyword; read `engine_casts.by_card` for whether the AI cast it and `cumulative_combat_damage_by_round` for whether the clock moved.",
-        "log": "003: 'Terror has to swing the turn it lands, not sit'; 005: 'I now have zero responses'"
+        "measurable_by": "GOLDFISH: measured since commit 191357f7 — riot is read as `team_haste: nontoken` and always choosing haste; expect under a point on kill_by_8 (the two existing grants are worth 1.6 together). FORGE: measured — Forge implements riot; read `engine_casts.by_card` for whether the AI cast it and `cumulative_combat_damage_by_round` for whether the clock moved.",
+        "log": "003: 'Terror has to swing the turn it lands, not sit'"
       },
       "citations": [
         {
@@ -293,14 +312,14 @@
     },
     {
       "card": "Stubborn Denial",
-      "closes": "interaction — the counter class: 0 of the 9 interaction copies are counterspells, and with any Dragon on the battlefield (all 22 have power 4 or more) Ferocious makes it a one-mana hard counter for the wipe or the removal spell",
+      "closes": "interaction — the counter class: 0 of the 9 interaction copies are counterspells; Ferocious needs a creature with power 4 or greater — 18 of the 22 Dragons (not Firespitter Whelp 2/2, Ganax 3/4, Thrakkus 3/4, Twinflame Tyrant 3/5) and Solphim 5/4 — and without one it is a one-mana {1} tax",
       "source": "log",
-      "natural_cut": "Skyshroud Claim",
+      "natural_cut": "Rishkar's Expertise",
       "bracket_delta": {
         "before": 3,
         "after": 3
       },
-      "why": "'The refactor yanked all the counterspells and I now have zero responses' (005). One blue mana held open is the cheapest possible response in a deck whose blue is 19 sources against a 22 target, and it counters exactly the two spell classes that end the pilot's games — the wipe (002) and the targeted removal (003, 005) — while never being dead against creatures the Dragons out-race anyway. It cannot counter a creature spell; that is the price of one mana.",
+      "why": "'The refactor yanked all the counterspells and I now have zero responses' (005). One blue mana held open is the cheapest possible response in a deck whose blue is 19 sources against a 22 target, and it counters the two spell classes that end the pilot's games — the wipe (002) and targeted removal (003, 005) — while never being dead against creatures the Dragons out-race anyway. Its price: it is a hard counter only with a 4-power creature out (18 of 22 Dragons and Solphim qualify; a Whelp-only board leaves a {1} tax), and it cannot counter a creature spell.",
       "evidence": {
         "measurable_by": "GOLDFISH: not measured — interaction is correctly invisible to a resource model. FORGE: measured only if the AI casts it (`interaction_cast`, 0.17 a game on the current list); a Forge rate on a held counter is a floor.",
         "forge": "interaction cast 0.17 a game, received 0.35; every one of 19 eliminations by damage"
@@ -325,10 +344,10 @@
         "before": 3,
         "after": 3
       },
-      "why": "Enumerated from the identity-wide search for 'you control have haste': the Dragons that grant haste to other creatures are Dragonlord Kolaghan and Karrthus, Tyrant of Jund ({4}{B}{R}{G}, a mana more and a pip more in the same colours). Kolaghan is the cheaper one and it is a payoff-sized body. Its price is the pip: black is the deck's worst colour (18 sources of 30, 0.636 on curve with rocks and dorks), so a branch carrying it should run mana-fit before it runs games.",
+      "why": "Enumerated from the identity-wide search for 'you control have haste': the Dragons that grant haste to other creatures are Dragonlord Kolaghan and Karrthus, Tyrant of Jund ({4}{B}{R}{G}, a mana more and a pip more in the same colours). Kolaghan is the cheaper one and it is a payoff-sized body. Its price is the pip: black is the deck's worst colour (18 sources of 30, 0.636 on curve with rocks and dorks; mana_analysis pips B: 3 across 2 cards today), so this is one of the two adds mana-fit must clear before a branch carrying it runs games. Goldfish sizing as for Rhythm: under a point of kill-by-T8 for the grant; its own hasty 6-power body is the part the model already priced.",
       "evidence": {
         "haste_group": "Board-wide haste sources in the 99 now: Dragon Tempest (haste to each flyer as it enters — 21 of the 22 Dragons fly; Thrakkus does not) and Temur Ascendancy; Sneak Attack and Lightning Greaves reach one body each. Priced with deck_audit.hypergeometric_at_least over 99 cards: a 2-card group is in 0.137 of opening sevens and seen by turn six (12 cards) in 0.229; 3 cards 0.199 / 0.324; 4 cards 0.258 / 0.409; 5 cards 0.312 / 0.483.",
-        "measurable_by": "GOLDFISH: Kolaghan's OWN haste is read (combat_profile.haste) and its 6-power body attacks the turn it lands in the model; the grant to other creatures is not applied. FORGE: measured.",
+        "measurable_by": "GOLDFISH: measured since commit 191357f7 — Kolaghan reads `team_haste: all` and its own haste and 6-power body attack the turn it lands. FORGE: measured.",
         "mana": "mana_analysis on_curve_probability.with_rocks_and_dorks B 0.636 — lowest of five"
       },
       "citations": [
@@ -401,10 +420,10 @@
         "before": 3,
         "after": 3
       },
-      "why": "The plain redundancy piece: Fervor's text with a legendary bonus, in the colour the deck can always make. Ranked below Rhythm and Kolaghan because it does only the one job, and it is here because a haste plan on two cards is a haste plan the pilot sees in a quarter of games. The cut is the painful one in this list — a dork for an enchantment — and it is the trade the log argues for: ramp is what broadcast the win, haste is what would have presented it.",
+      "why": "The plain redundancy piece: Fervor's text with a legendary bonus, in the colour the deck can always make. Ranked below Rhythm and Kolaghan because it does only the one job, and it is here because a haste plan on two cards is a haste plan the pilot sees in a quarter of games. Goldfish sizing: under a point of kill-by-T8 (the two existing grants are worth 1.6 together). The cut is the painful one in this list — a dork for an enchantment — and it is the trade the log argues for: ramp is what broadcast the win, haste is what would have presented it.",
       "evidence": {
         "haste_group": "Board-wide haste sources in the 99 now: Dragon Tempest (haste to each flyer as it enters — 21 of the 22 Dragons fly; Thrakkus does not) and Temur Ascendancy; Sneak Attack and Lightning Greaves reach one body each. Priced with deck_audit.hypergeometric_at_least over 99 cards: a 2-card group is in 0.137 of opening sevens and seen by turn six (12 cards) in 0.229; 3 cards 0.199 / 0.324; 4 cards 0.258 / 0.409; 5 cards 0.312 / 0.483.",
-        "measurable_by": "GOLDFISH: not measured. goldfish.combat_profile reads haste from a creature's OWN text (`_HASTE_RE`), and no code applies a board-wide grant, so this card is a do-nothing enchantment to the model; kill_by_8 will not move. FORGE: measured — Forge implements the keyword; read `engine_casts.by_card` for whether the AI cast it and `cumulative_combat_damage_by_round` for whether the clock moved."
+        "measurable_by": "GOLDFISH: measured since commit 191357f7 — reads `team_haste: all`; expect under a point on kill_by_8. FORGE: measured — Forge implements the keyword; read `engine_casts.by_card` for whether the AI cast it and `cumulative_combat_damage_by_round` for whether the clock moved."
       },
       "citations": [
         {
@@ -450,7 +469,7 @@
         "before": 3,
         "after": 3
       },
-      "why": "The Dragon-specific answer to a destroy or damage wipe, which is the class of answer the pilot's five protection instants cover only while mana is held. The price is {W}{U}{B}{R}{G}: it is the second add here with a black pip (0.636 on curve), and it is the one add whose cost the colour-sources axis directly punishes. It does nothing against exile, bounce or sacrifice.",
+      "why": "The Dragon-specific answer to a destroy or damage wipe, which is the class of answer the pilot's five protection instants cover only while mana is held. The price is {W}{U}{B}{R}{G}: it is the second add here with a black pip (B 18 sources of 30, 0.636 on curve), and the one add whose cost the colour-sources axis directly punishes — with Kolaghan it takes the deck's black-pip cards from 2 to 4, and it is ranked here, not higher, until mana-fit on the branch says the colour can carry it. It does nothing against exile, bounce or sacrifice.",
       "evidence": {
         "measurable_by": "GOLDFISH: not measured. FORGE: the harness never cast Teferi's Protection or Deflecting Swat in 40 games (absent from `engine_casts.by_card`), so a Forge reading on a protection add is a floor at best; Lightning Greaves was cast 5 and equipped 5, so an equipment that attaches itself is at least visible.",
         "mana": "mana_analysis on_curve_probability.with_rocks_and_dorks: W 0.881, U 0.866, B 0.636, R 0.822, G 0.918"
@@ -468,7 +487,7 @@
     },
     {
       "card": "Fierce Guardianship",
-      "closes": "interaction — a free counter for a noncreature spell on any turn The Ur-Dragon is on the battlefield, which is the pivot turn the table answers (Forge: the commander resolved in 0.575 of games, first at mean global turn 27.17; goldfish: cast by turn six in 0.33, mean turn 6.92); a 3-mana Negate otherwise",
+      "closes": "interaction — a free counter for a noncreature spell on any turn The Ur-Dragon is on the battlefield, which is the pivot turn the table answers (Forge: the commander resolved in 0.575 [0.422, 0.715] of games, first at mean global turn 27.17 [24.97, 29.38], n=23; goldfish: cast by turn six 0.327, mean turn 6.939); a 3-mana Negate otherwise",
       "source": "pool",
       "natural_cut": "Worldly Tutor",
       "bracket_delta": {
@@ -478,7 +497,7 @@
       "why": "Ranked last of the three counters because its free mode is on in barely half of Forge games and, by the goldfish, not before turn seven in most; for the first six turns it is a three-mana Negate in a colour with 19 sources. It is a Game Changer, so the paired cut is the other Game Changer the deck can spare — Worldly Tutor — which keeps the floor at 3; without that pairing the floor is 4, which the pilot has said is acceptable.",
       "evidence": {
         "measurable_by": "GOLDFISH: not measured — interaction is correctly invisible to a resource model. FORGE: measured only if the AI casts it (`interaction_cast`, 0.17 a game on the current list); a Forge rate on a held counter is a floor.",
-        "forge": "commander_access: casts mean 0.95 a game, resolved_rate 0.575 [0.422, 0.715]"
+        "forge": "commander_access: casts mean 0.95 [0.64, 1.26] a game, resolved_rate 0.575 [0.422, 0.715], first_resolved_global_turn 27.17 [24.97, 29.38] (n=23)"
       },
       "citations": [
         {
@@ -496,12 +515,12 @@
     {
       "question": "A table-politics layer for the handbook (the pilot's ask (d) in 003): how a deck that visibly presents the biggest board manages its perceived threat — hold the tempo a turn ('drop the tempo a turn or two and hold Twin Flame until the dragons are actually there', 005), sequence the tell last, keep instant-speed mana open, and point the table at the quiet assembler (004). This is a procedures page for poh-procedures, not a card; the strategy corpus already holds the frame (multiplayer.threat-deflection, multiplayer.pivot-window, multiplayer.pod-management) and needs applying to this deck's tells: Terror of the Peaks, the Treasure pile, Gadrak, the commander.",
       "settled_by": "research-strategy",
-      "why_it_matters": "Three of five logged losses are filed as 'politics' or telegraph by the pilot himself; no card in this list changes that, and a prescription that only buys cards for a piloting loss would be misrouting the finding."
+      "why_it_matters": "Two of the four logged losses are filed as politics (003, 004) and the telegraph is a takeaway in four entries (002–005); no card in this list changes that, and a prescription that only buys cards for a piloting loss would be misrouting the finding."
     },
     {
-      "question": "Declare a 'Board-wide haste source drawn' any_of group in goldfish_targets.json (Dragon Tempest, Temur Ascendancy, plus any haste add a branch takes) so the assembly rate is measured rather than priced here by hypergeometric; and model the board-wide haste grant in goldfish.combat_profile, which today reads haste only from a creature's own text, so that kill_by_8 can move when a grant is added.",
+      "question": "Declare a 'Board-wide haste source drawn' any_of group in goldfish_targets.json (Dragon Tempest, Temur Ascendancy, plus any haste add a branch takes) so the assembly rate is measured rather than priced here by hypergeometric (2 cards: 0.137 of opening sevens, 0.229 by turn six; 3 cards: 0.199 / 0.324).",
       "settled_by": "goldfish",
-      "why_it_matters": "Eight of the ten adds are invisible to the goldfish as written; a branch aimed at kill_by_8 with a haste objective will read 'not met' whatever it does until the model applies the grant. Until then Forge is the only measure, and its 40-game interval [0.215, 0.521] cannot resolve a swap."
+      "why_it_matters": "The goldfish reads the grants since commit 191357f7 (the two existing ones are worth 1.6 points of kill-by-T8 together), so a haste branch can be aimed at kill_by_8 — but on an unopposed table that objective will move by under a point per grant, and the clock the pilot wants to beat is the table's, not the model's. Forge at standard-v3 is the gate; its 40-game interval [0.215, 0.521] cannot resolve a swap — `manamap.sim.stats.mde_proportion(0.353, n)` gives a minimum detectable difference of 0.305 at 40 games a side, 0.195 at 100 and 0.100 at 400."
     },
     {
       "question": "Transcendent Dragon cast with flash under Miirym and Panharmonicon in response to a wipe: does the Miirym token copy also counter a spell? Its ETB reads 'if you cast it', and the copy is not cast — and Panharmonicon doubles the original's trigger. A stack scenario is needed before any handbook line claims two counters.",
@@ -517,145 +536,115 @@
       "question": "How often does a keepable seven for this list contain no green source? The pilot's proposed mulligan rule in 005 — 'no green source, consider shipping it' — needs a rate before it becomes a rule; the goldfish keeps 0.792 of first sevens but its mulligan is colour-blind.",
       "settled_by": "goldfish",
       "why_it_matters": "Two of five logged losses are mana (001 Blood Moon, closed; 005 no green). The rule is the pilot's, and a rate is what turns it from a hunch into a handbook line."
+    },
+    {
+      "question": "Run mana-fit on the branch that adds Dragonlord Kolaghan and Call the Spirit Dragons: black goes from 2 pip-carrying cards to 4 against 18 sources of a 30 target, and the goldfish cannot rank lands — does the colour carry both, and which land swap (an Overgrown Tomb-class fetch target, a basic Swamp for a Mountain) closes the gap without costing green?",
+      "settled_by": "goldfish",
+      "why_it_matters": "The log's two mana losses were Blood Moon and a missing green source, not black — but the audit's worst axis is black at −12 and this prescription adds to the pip count on it. A branch that buys haste and loses castability has traded the 005 loss for a new one."
     }
   ],
   "gaps": [
     "No deck_recon.json exists for ur-dragon (audit freshness: recon.present false), so no per-commander inclusion rates were consulted; every add here is mined from the corpus by oracle text and identity. A recon pass would rank these against what Ur-Dragon lists actually run.",
     "Forge never cast Teferi's Protection or Deflecting Swat in 40 games (both absent from engine_casts.by_card), so the harness has no measurement of the protection class on this list and a Forge run cannot validate a protection add; the goldfish cannot see protection at all.",
-    "The goldfish reads two things in this list — Kolaghan's own haste and the Dragon bodies. Riot, flash, board-wide haste grants, counters and protection are all outside the model. Forge is the gate for eight of the ten, and the standard-v3 record is 40 games with an interval of 0.306 width; the swap effect it would need to see is smaller than that.",
+    "Since commit 191357f7 the goldfish reads team-haste grants (Rhythm's riot as `nontoken`, Kolaghan and Rising of the Day as `all`, Dragon Tempest as `flying`); it still cannot see flash, counters or protection, so six of the ten adds are outside the model. Two figures exist for what the existing grants are worth: the commit message's blind-and-restore on one seed (kill-by-T8 0.779 → 0.795, kill-by-T6 0.259 → 0.276) and the committed artifact's current reading (0.802 / 0.289, model_version 628c60c7cb5d); both say about 1.5 points on an unopposed table where the clock is set by mana. Forge is the gate for the anti-telegraph claim: the standard-v3 record is 40 games with an interval 0.306 wide, and against its 0.353 baseline `manamap.sim.stats.mde_proportion(0.353, n)` gives a minimum detectable difference of 0.305 at 40 games a side, 0.195 at 100 and 0.100 at 400 (achieved power about 0.81).",
     "Both goldfish kill targets are labelled UNVERIFIED and no checker-passed stack proves a kill on this list; three passing stacks (003, 004, 006) describe boards the deck can no longer make. 'Close faster' is being prescribed for a kill nobody has proven.",
     "Black colour-sources are 12 short of target; two adds (Dragonlord Kolaghan, Call the Spirit Dragons) add a black pip. mana-fit on the branch is the check, and the goldfish cannot rank lands.",
-    "The validator recomputes ramp, protection and interaction by role for the paired swaps; colour-sources, mana-sources and the haste group are not recomputed, so the Skyshroud Claim and Faeburrow Elder costs are stated, not measured."
+    "The validator recomputes ramp, protection and interaction by role for the paired swaps; colour-sources, mana-sources and the haste group are not recomputed, so the Faeburrow Elder and Sarkhan fixing costs are stated, not measured — mana_analysis credits Elder `produces: []` and Sarkhan's mana is Dragon-restricted, so neither cut moves the measured colour-sources figure even though both do fix in play.",
+    "The standard-v3 record's summary and analysis.seats used to disagree (0.343 on 35 against 0.353 on 34, over one game recorded `draw: true`); commit 7548b622 re-derived the record under one definition — a decided game has a winner, and the drawn game is counted under `draws` — so `summary` now reads 0.353 on 34 decided, the same as analysis.seats, with `draws: 1` and `truncated: 5` carried beside it. Every figure above is that one.",
+    "eliminated_turn for our seat has n=23 but eliminated_how records a cause for 19 (all damage); four eliminations have no cause the parser could attribute, so 'every elimination by damage' is a claim about 19 of 23, not 23 of 23."
   ],
   "skeptic": {
-    "verdict": "fail",
-    "prescription_id": "0241fb6a70f1",
-    "slug": "ur-dragon",
+    "verdict": "pass",
     "findings": [
       {
         "where": "reading",
-        "status": "over-claimed",
-        "note": "'the log names the telegraph as the loss in 003, 004 and 005' and open_questions[0].why_it_matters 'Three of five logged losses are filed as politics or telegraph' — log_causes.json files 003 and 004 as politics and 001 AND 005 as mana-drought; 005's own headline is 'THE MANA. No green source all game' and the telegraph paragraph there is a pattern note, not the cause. The deck's own sidecar says half the losses are mana, on a deck whose worst audit axis is colour-sources -12, and this ranking cuts three colour-fixers (Faeburrow Elder, Skyshroud Claim, Sarkhan) and adds two black pips. The gaps block admits the fixing loss is 'stated, not measured'; the reading should not also claim the log has closed mana as a cause."
+        "status": "supported",
+        "note": "Formerly open (log causes): the revision now states the causes as log_causes.json files them — 001 and 005 mana-drought, 003 and 004 politics — and calls the telegraph a takeaway in 002–005, which is what the entries say. open_questions[0].why_it_matters likewise reads 'Two of the four logged losses are filed as politics (003, 004)'. Closed."
       },
       {
         "where": "reading",
-        "status": "over-claimed",
-        "note": "Sim figures quoted without their intervals: first_resolved_global_turn 27.17 (record ci95 [24.97, 29.38], n=23), resolved_rate 0.575 ([0.422, 0.715]), interaction_cast 0.17 ([0.06, 0.29]) and interaction_received 0.35 ([0.17, 0.53]); only the win rate and elimination turn carry theirs. 'all 19 eliminations by damage at mean global turn 35.0' — the seat block's eliminated_turn has n=23 (mean 35.0 is over 23); eliminated_how records a cause for 19 and all 19 are damage, so 4 eliminations have no cause recorded. Win rate 0.353 [0.215, 0.521] IS the record's analysis.seats figure (12/34); note for the orchestrator that the same record's summary block says 0.343 on 35 decided (one draw counted as decided) and `simulate --list` prints 0.343 — a record-internal disagreement, not the doctor's error."
+        "status": "supported",
+        "note": "Formerly open (sim intervals): every figure now matches the record's analysis.seats block for ur-dragon with its ci95 and n — win 0.353 [0.215, 0.521] (12/34), resolved_rate 0.575 [0.422, 0.715], first_resolved_global_turn 27.17 [24.97, 29.38] n=23, eliminated_turn 35.0 [32.53, 37.47] n=23, eliminated_how {damage: 19} stated as '19 of those 23', interaction_cast 0.17 [0.06, 0.29], interaction_received 0.35 [0.17, 0.53]; Re-read on this pass: summary now also reads win_rate 0.353, decided 34, draws 1, truncated 5 after commit 7548b622, so the two blocks agree and gaps[6] states that. Closed."
+      },
+      {
+        "where": "reading",
+        "status": "supported",
+        "note": "Formerly over-claimed (Skyshroud Claim 'the deck's best black fixer'): the superlative is gone and the sentence now enumerates. cards.json: Forest-typed land copies are Breeding Pool, Canopy Vista, Cinder Glade, Forest x2, Overgrown Tomb, Stomping Ground = 7 copies, and Overgrown Tomb (Swamp Forest, produced B/G) is the only one making black — matches 'seven Forest-typed land copies … exactly one, Overgrown Tomb'. Nature's Lore ('Search your library for a Forest card') reaches that same one; Farseek ('Plains, Island, Swamp, or Mountain card') reaches the three Swamp-typed black lands Blood Crypt, Overgrown Tomb, Smoldering Marsh and there is no basic Swamp; Chromatic Lantern grants every land, and deck-audit mana-base reads 36 land copies. 'Green ramp that can add a black source, not a black fixer' is what the enumeration supports. Closed."
+      },
+      {
+        "where": "reading",
+        "status": "supported",
+        "note": "Formerly miscounted (MDE '17 points at 100 a side'): re-ran manamap.sim.stats.mde_proportion(0.353, n) — n=40 minimum_detectable_difference 0.305 (power 0.8083), n=100 0.195 (0.808), n=400 0.100 (0.8211); the 0.18-baseline figure 0.175 no longer appears anywhere in the artifact. All four places (reading, add_candidates[0].why, open_questions[1].why_it_matters, gaps[2]) carry 0.305 / 0.195 / 0.100 and 'achieved power about 0.81' matches. Closed."
       },
       {
         "where": "add_candidates[0]",
-        "status": "over-claimed",
-        "note": "Rhythm of the Wild's riot half is supported (oracle: 'Nontoken creatures you control have riot'; Dragon Tempest and Temur Ascendancy confirmed as the two existing board-wide grants). The uncounterable half is sold as 'the counter-proofing half of ask (d)' — 005's ask (d) is 'dragons with ETB counters or flash, and protection on dragons or dragon enchantments', i.e. the pilot HOLDING counters; no log entry (001–005) records an opponent countering anything the pilot cast. The why's 'a table that ran three counterspells' worth of answers out of this deck in the refactor' is not in the log — 005 says the refactor removed the pilot's OWN counterspells. The card is a fine haste add; the second job answers nothing in the evidence."
+        "status": "supported",
+        "note": "Formerly open (uncounterable half): Rhythm of the Wild is now priced on riot alone, 'Creature spells you control can't be countered' is named as a bonus, and the log claim is correct — no entry 001–005 records an opponent countering anything the pilot cast (005 says the refactor removed the pilot's OWN counterspells). Oracle 'Nontoken creatures you control have riot' confirmed; the two existing board-wide grants (Dragon Tempest, Temur Ascendancy) confirmed in cards.json; Sneak Attack and Greaves reach one body each. Closed."
+      },
+      {
+        "where": "add_candidates[0]",
+        "status": "supported",
+        "note": "Haste sizing: '0.779 → 0.795, blinded and restored on one seed, commit 191357f7' is the commit message's figure verbatim ('Worth about 1.5 points on an unopposed table'); gaps[2]'s 'kill-by-T6 0.259 → 0.276' is in that commit's diff (the docs page it added). Hypergeometric rows recomputed over 99 cards: 2-card 0.137/0.229, 3 0.199/0.324, 4 0.258/0.409, 5 0.312/0.483 — all match. 'A third grant is worth under a point on that instrument' is stated as a goldfish reading with the instrument and commit named; it is an extrapolation from the two-grant blind, not a measurement, and open_questions[1] correctly routes the direct measurement to a branch goldfish. model-coverage ur-dragon: seen 84, DARK 2 (Garruk's Uprising is the named DARK card; neither grant is listed)."
       },
       {
         "where": "add_candidates[2]",
-        "status": "miscounted",
-        "note": "'with any Dragon on the battlefield (all 22 have power 4 or more) Ferocious makes it a one-mana hard counter' — cards.json: Firespitter Whelp 2/2, Thrakkus the Butcher 3/4, Ganax, Astral Hunter 3/4, Twinflame Tyrant 3/5. 18 of the 22 Dragons (counting the commander) have power ≥ 4; with only a Whelp or Gadrak-less early board Stubborn Denial is a one-mana tax, not a hard counter. The 0-of-9-counterspell claim is supported: no card in the 99 carries 'counter target' text."
-      },
-      {
-        "where": "cut_candidates[0]",
-        "status": "contradicts-artifact",
-        "note": "cost_of_cutting: 'Terror of the Peaks and Scourge of Valkas triggers each lose a point of damage per Dragon entering' — cards.json oracle for Scourge of Valkas: 'deals X damage to any target, where X is the number of Dragons you control'. It is count-based; losing the +1/+1 anthem costs Valkas nothing. Only Terror (damage equal to the entering creature's power) loses a point. Forge cast 11 of 40 matches engine_casts.by_card."
-      },
-      {
-        "where": "cut_candidates[6]",
-        "status": "over-claimed",
-        "note": "Faeburrow Elder is priced honestly (painful; mana-sources 50 → 49 matches the audit; Forge cast 6; up to five colours from one card is the oracle). But 'In 005 it was one of the green sources that never arrived' is backwards: it costs {1}{G}{W}, so in a hand with no green source it is stranded like Farseek, not a source that failed to show; mana_analysis credits it with produces [] in any case. The threat-assessment and threat-deflection quotes are verbatim and in context."
-      },
-      {
-        "where": "cut_candidates[1]",
         "status": "supported",
-        "note": "Hellkite Courser: engine_casts.by_card cast 0 / discarded 2 in 40 games — exact. Not in stack 005's scenario board, but 005's checker-passed resolution ends 'Hellkite Courser is the card that actually does what the frame claimed' (the deck's only commander-cheat); orphans_stack [] holds strictly, and cost_of_cutting does price that exact function. The orchestrator should know the stack's closing sentence goes stale if the cut lands."
-      },
-      {
-        "where": "cut_candidates[2]",
-        "status": "supported",
-        "note": "Skyshroud Claim carries tutor:narrow only (card_roles.json) and is absent from the audit's 22-card ramp list, so 'the ramp axis by role does not move' holds. Forest-typed lands in the 99: Breeding Pool, Canopy Vista, Cinder Glade, Overgrown Tomb, Stomping Ground, 2× Forest — as named. 'untapped' is conditional (shocks cost 2 life; Vista/Glade need two basics). Forge cast 6 of 40, not quoted."
-      },
-      {
-        "where": "cut_candidates[3]",
-        "status": "supported",
-        "note": "Thrakkus is the only one of 22 Dragons without flying (cards.json), so Dragon Tempest's grant never reaches it; Forge cast 3. 'an attack step it cannot take the turn it lands' overlooks Temur Ascendancy, Greaves and Sneak Attack, which do reach it — a caveat, not a refutation. Painful is the honest difficulty."
-      },
-      {
-        "where": "cut_candidates[4]",
-        "status": "supported",
-        "note": "Utvara Hellkite at MV 8 is the only 8+ in the 99 (The Ur-Dragon is the commander at 9); Forge cast 8, discarded 1. Token/nontoken split against Miirym and Lathliss is oracle-exact."
-      },
-      {
-        "where": "cut_candidates[5]",
-        "status": "supported",
-        "note": "Sarkhan, Fireblood: deck-facts names it among the six restricted-mana cards; 'Dragon-restricted mana drawn' assembled_rate 0.300 in goldfish_metrics; Forge cast 7 / activated 9 — all exact. By role it is threat:tokens (audit lists it as possible_uncounted for ramp), so cutting it does not move the 22."
-      },
-      {
-        "where": "cut_candidates[7]",
-        "status": "supported",
-        "note": "Gadrak: 003 quote verbatim; the 99 holds exactly 8 artifacts (cards.json); Forge cast 10; ramp:treasure role so the ramp axis drops by one and Dragons 22 → 21 as stated."
-      },
-      {
-        "where": "cut_candidates[8]",
-        "status": "supported",
-        "note": "Worldly Tutor is one of the three Game Changers in bracket_report (Enlightened Tutor, Teferi's Protection, Worldly Tutor); Fierce Guardianship is game_changer=True in the corpus, so the pairing keeps the count at 3. 'Dragon payoff drawn' 0.731 / 0.85 assisted matches goldfish targets; Forge cast 4."
-      },
-      {
-        "where": "cut_candidates[9]",
-        "status": "supported",
-        "note": "Scourge of the Throne carries the only 'additional combat' text in the 99 (Aggravated Assault in the audit's closer list is a stale goldfish_targets name, not a card in the deck); Forge cast 8. Painful is honest."
-      },
-      {
-        "where": "add_candidates[1]",
-        "status": "supported",
-        "note": "Whirlwing Stormbrood: oracle grants flash to sorcery and Dragon spells; 4/3 (Scryfall), GU identity, Commander-legal; Renari, Merchant of Marvels 2/4 legal as the named redundancy. Flash-grant enumeration over Dragons in identity reproduced (Whirlwing, Renari; Hypersonic Dragon grants sorceries only)."
+        "note": "Formerly open (Ferocious count): now '18 of the 22 Dragons (not Firespitter Whelp 2/2, Ganax 3/4, Thrakkus 3/4, Twinflame Tyrant 3/5) and Solphim 5/4' — cards.json confirms all five P/Ts and 22 Dragon creatures including the commander. Stubborn Denial oracle confirmed ({U}, Ferocious power 4 or greater, noncreature only); 0-of-9 counterspells confirmed. Closed."
       },
       {
         "where": "add_candidates[3]",
         "status": "supported",
-        "note": "Enumeration reproduced: card-search --deck ur-dragon --type Dragon on 'you control have haste' returns exactly Dragonlord Kolaghan and Karrthus, Tyrant of Jund. Kolaghan 6/5, legal; black 18 of 30 sources and on_curve with_rocks_and_dorks B 0.636 match mana_analysis."
-      },
-      {
-        "where": "add_candidates[4]",
-        "status": "supported",
-        "note": "Enumeration reproduced: Dragons in identity with 'counter target' are Sapphire Dragon and Emerald Dragon (adventure sides), Runescale Stormbrood (omen, MV ≤ 2) and Transcendent Dragon — the only ETB counter. 4/3 (Scryfall), legal; blue 19 of 22 matches the audit. The Miirym-copy question is correctly routed to resolve-stack rather than asserted."
-      },
-      {
-        "where": "add_candidates[5]",
-        "status": "supported",
-        "note": "Mithril Coat oracle exact (flash, indestructible, attaches to a legendary creature on entry). Legendary creatures: 11 in the 99 plus the commander = 12 (the 13 legendary permanents include Sarkhan, a planeswalker) — '12 in the 99, The Ur-Dragon among them' is loose by the commander but the count the card cares about is 12. Greaves cast 5 / activated 5, Teferi's Protection and Deflecting Swat absent from by_card — exact."
+        "note": "Text changed (re-sized): card-search --deck ur-dragon --oracle 'you control have haste' returns exactly two Dragons, Dragonlord Kolaghan ({4}{B}{R}) and Karrthus, Tyrant of Jund ({4}{B}{R}{G}), so the enumeration holds. mana_analysis: B total 18 of target 30, on_curve with_rocks_and_dorks B 0.636 (lowest), pips B total 3 across 2 cards — all as quoted. Kolaghan oracle 'Flying, haste. Other creatures you control have haste' confirmed; team_haste is a real goldfish.py profile key (line 1137)."
       },
       {
         "where": "add_candidates[6]",
         "status": "supported",
-        "note": "Rising of the Day oracle exact; hypergeometric reproduced with the audit's helper (2/3/4/5 cards: 0.137/0.199/0.258/0.312 in seven; 0.229/0.324/0.409/0.483 in twelve). Label caveat: under the goldfish's draw-on-turn-one convention turn six is 13 cards (0.247/0.348/0.436/0.513); the artifact states '12 cards' so a reader can recompute."
-      },
-      {
-        "where": "add_candidates[7]",
-        "status": "supported",
-        "note": "Asceticism oracle exact (hexproof answers fight and targeted removal, regenerate answers destroy). GG against G 23 of 22 sources is the deck's deepest colour by target."
-      },
-      {
-        "where": "add_candidates[8]",
-        "status": "supported",
-        "note": "Call the Spirit Dragons oracle exact; the WUBRG cost and the B 0.636 pricing match mana_analysis (W 0.881, U 0.866, B 0.636, R 0.822, G 0.918). Legal."
-      },
-      {
-        "where": "add_candidates[9]",
-        "status": "supported",
-        "note": "Fierce Guardianship game_changer=True; commander_access casts 0.95 [0.64, 1.26], resolved_rate 0.575 [0.422, 0.715], first resolve 27.17 — exact; goldfish cast_by_turn_6_rate 0.33 and mean_cast_turn 6.92 — exact. resolved_rate is 'resolved at least once', a ceiling on 'commander on the battlefield when the counter is needed'."
+        "note": "Text changed (sizing): Rising of the Day oracle confirmed ({2}{R}, 'Creatures you control have haste. Legendary creatures you control get +1/+0'); 12 legendary creatures in the 99 confirmed by enumeration; R 30 sources per mana_analysis; the 5-card haste group's 0.312 / 0.483 recomputed and match."
       },
       {
         "where": "axes_engaged",
         "status": "supported",
-        "note": "All six measured.value equal today's deck-audit (ramp 22, protection 8, interaction 9, interaction-breadth 4, colour-sources -12, card-advantage 4). The ratios citation pairs the template with the section's own 'derive the counts from the deck's actual failure modes'; card-advantage engages the audit's five-card probe list by name; the five removal:damage Dragons match card_roles.json; the eight protection cards match the audit's list. threat-density reading says 'two of the Dragon-for-Dragon swaps' — there are three (Courser, Thrakkus, Utvara), harmless."
+        "note": "Re-run of deck-audit today: ramp 22, protection 8, interaction 9, interaction-breadth 4 (graveyard uncovered), colour-sources -12 (B 18/30, G 23/22, R 30/36, U 19/22, W 20/22), card-advantage 4 with the five-card probe list as quoted, threat-density 4, consistency 0.901 with keep 0.792 — every measured.value and every reading's figure matches. The changed colour-sources reading ('001 was Blood Moon, 005 was green') matches the log and the cause sidecar."
       },
       {
-        "where": "citations",
+        "where": "cut_candidates[0]",
         "status": "supported",
-        "note": "All twelve strategy sections fetched with lookup-strategy; every quote is verbatim and none is used against its section's whole sense."
+        "note": "Formerly open (Valkas): cost_of_cutting now names Terror of the Peaks alone as the card that loses a point per entering Dragon and states that Scourge of Valkas and Dragon Tempest are count-based — matches both oracle texts in cards.json. Forge cast 11 of 40 matches engine_casts.by_card. Closed."
+      },
+      {
+        "where": "cut_candidates[2]",
+        "status": "supported",
+        "note": "Formerly miscounted ('after the commander and Utvara Hellkite the slowest spell'): the entry now enumerates from cards.json and the enumeration matches — above it The Ur-Dragon 9, Utvara Hellkite 8, Ancient Gold Dragon / Atarka / Drakuseth / Old Gnawbone 7 (six spells); beside it at 6 Hellkite Courser, Lathliss, Miirym, Scourge of the Throne (four, all Dragons), so 'the slowest non-Dragon spell' and 'the only 6-drop that is not a body' both hold. New citation strategy:deckbuilding.threat-density 'Value is not a win.' is verbatim (lookup-strategy) and the section is about conversion over value, which is what the cut argues. Oracle ('greatest power among creatures you control'), absence from engine_casts.by_card, 001 'solid', probe list membership (possible_uncounted in deck-audit card-advantage) all re-confirmed; difficulty 'contested', orphans_stack []. Closed."
+      },
+      {
+        "where": "cut_candidates[5]",
+        "status": "supported",
+        "note": "Sarkhan re-priced: 'Dragon-restricted mana drawn' target assembled_rate 0.3 (by-t6 0.232) in goldfish_metrics; Forge cast 7 / activated 9 in engine_casts.by_card; deck-facts' restricted-mana note names Sarkhan, Fireblood; oracle 'Add two mana in any combination of colors. Spend this mana only to cast Dragon spells' supports both the restriction and the Dragon-only black-pip claim. The ratios quote is verbatim and the section's closing sentence."
+      },
+      {
+        "where": "cut_candidates[6]",
+        "status": "supported",
+        "note": "Formerly open (005 backwards): now 'It costs {1}{G}{W}: in 005 it was stranded in hand with Farseek behind a missing green source, not a source that failed to show' — matches the oracle cost and the 005 entry; mana_analysis credits produces []; mana-sources 50→49 matches the audit. Closed."
+      },
+      {
+        "where": "log_entries_read",
+        "status": "supported",
+        "note": "Every quote in the revised text read against log.jsonl: 001 'card draw ... solid', 002 'board established, board erased, repeat' and 'repeated creature wipes', 003 'Terror has to swing the turn it lands, not sit' / 'Tom removed all three artifacts so Gadrak could not activate (needs four)' / 'the problem is speed, not size', 004 'call out the quiet assembler before he is unanswerable', 005 'No green source all game' / 'The refactor yanked all the counterspells and I now have zero responses' / 'drop the tempo a turn or two and hold Twin Flame until the dragons are actually there' / 'removed immediately'. All verbatim and each annotation says what the reading says it says."
+      },
+      {
+        "where": "open_questions[5]",
+        "status": "supported",
+        "note": "New mana-fit question: black pip-carrying nonland cards today are The Ur-Dragon and Crux of Fate (2), so Kolaghan and Call the Spirit Dragons take it to 4 against 18 sources of a 30 target — matches cards.json and mana_analysis. Note for the orchestrator: settled_by is 'goldfish' because the closed vocabulary has no mana-fit value, and the question itself says the goldfish cannot rank lands; run `mana-fit` on the branch directly rather than dispatching a goldfish."
+      },
+      {
+        "where": "gaps",
+        "status": "supported",
+        "note": "gaps[2] (both haste figures and model_version 628c60c7cb5d) and gaps[7] (eliminated n=23, cause recorded for 19) verified against the commit and the record; gaps[0] recon.present false and goldfish/mana_analysis current=true confirmed by the audit's freshness block. gaps[6] restated this pass: `git show --stat 7548b622` ('A decided game has a winner: one definition for summary and analysis.seats') touches sim/…n40-9def0ac6… and the record on disk now carries summary {wins ur-dragon 12, draws 1, truncated 5, decided 34, win_rate 0.353}, identical to analysis.seats.ur-dragon (win_rate 0.353, wins 12). The restatement is what the file says."
       },
       {
         "where": "as_of_decklist_sha256",
         "status": "supported",
-        "note": "Prescription, goldfish_metrics.json, mana_analysis.json and the standard-v3 Forge seat all carry 7095f2d8…; no stale figure is quoted. validate-prescription passes."
+        "note": "7095f2d8… matches goldfish_metrics.json, mana_analysis.json, and log entries 004 and 005; the audit's freshness block reads both artifacts current. No figure quoted from either is stale."
       }
     ]
   }
