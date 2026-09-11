@@ -1362,10 +1362,16 @@
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
           "creatures_lost": 0,
+          "life_by_turn": {
+            "10": 38,
+            "14": 31,
+            "18": 31
+          },
           "eliminated_turn": null,
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 5,
+          "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {},
           "counter_events": 0,
           "mass_counter_events": 0,
@@ -1380,7 +1386,8 @@
           "commander_damage_lethal": false,
           "token_damage_share": null,
           "mulligans_taken": 0,
-          "mulligan_kept": 7
+          "mulligan_kept": 7,
+          "turns": 5
         },
         "giada-angels": {
           "lands": 13,
@@ -1397,10 +1404,34 @@
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
           "creatures_lost": 3,
+          "life_by_turn": {
+            "18": 59,
+            "21": 91,
+            "29": 88,
+            "30": 85,
+            "31": 84,
+            "32": 85,
+            "33": 80,
+            "34": 79,
+            "35": 9
+          },
           "eliminated_turn": null,
           "eliminated_by": null,
           "eliminated_how": null,
           "first_attack_turn": 10,
+          "damage_to_players_by_turn": {
+            "10": 2,
+            "14": 7,
+            "18": 15,
+            "21": 26,
+            "24": 7,
+            "26": 15,
+            "28": 15,
+            "30": 5,
+            "32": 5,
+            "34": 5,
+            "36": 15
+          },
           "permanents_lost_by_turn": {
             "23": 1,
             "28": 1,
@@ -1423,7 +1454,8 @@
           "commander_damage_lethal": false,
           "token_damage_share": 0.0,
           "mulligans_taken": 0,
-          "mulligan_kept": 7
+          "mulligan_kept": 7,
+          "turns": 13
         },
         "vito": {
           "lands": 8,
@@ -1440,10 +1472,26 @@
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
           "creatures_lost": 0,
+          "life_by_turn": {
+            "21": 43,
+            "23": 46,
+            "25": 42,
+            "26": 27,
+            "28": 12,
+            "29": 15,
+            "30": 12,
+            "31": 13,
+            "32": 9,
+            "33": 10,
+            "34": 6,
+            "35": 6,
+            "36": -9
+          },
           "eliminated_turn": 36,
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {},
           "counter_events": 0,
           "mass_counter_events": 0,
@@ -1458,7 +1506,8 @@
           "commander_damage_lethal": false,
           "token_damage_share": null,
           "mulligans_taken": 0,
-          "mulligan_kept": 7
+          "mulligan_kept": 7,
+          "turns": 12
         },
         "baylen-tokens": {
           "lands": 4,
@@ -1475,10 +1524,18 @@
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
           "creatures_lost": 1,
+          "life_by_turn": {
+            "12": 38,
+            "16": 37,
+            "21": 8,
+            "23": 5,
+            "24": -2
+          },
           "eliminated_turn": 24,
           "eliminated_by": "Ai(2)-mm-giada-angels",
           "eliminated_how": "damage",
           "first_attack_turn": null,
+          "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {
             "16": 1
           },
@@ -1495,7 +1552,8 @@
           "commander_damage_lethal": false,
           "token_damage_share": null,
           "mulligans_taken": 0,
-          "mulligan_kept": 7
+          "mulligan_kept": 7,
+          "turns": 6
         }
       }
     }
@@ -1523,5 +1581,38 @@
       3,
       4
     ]
+  },
+  "engine_casts": {
+    "seat": "radagast",
+    "games": 1,
+    "turns": 5,
+    "kept_hand_mean": 7.0,
+    "by_card": {
+      "Birds of Paradise": {
+        "cast": 1,
+        "activated": 0,
+        "discarded": 0
+      },
+      "Elvish Reclaimer": {
+        "cast": 1,
+        "activated": 0,
+        "discarded": 0
+      },
+      "Indrik Stomphowler": {
+        "cast": 1,
+        "activated": 0,
+        "discarded": 0
+      },
+      "Morph": {
+        "cast": 1,
+        "activated": 0,
+        "discarded": 0
+      },
+      "Radagast of Rhosgobel": {
+        "cast": 1,
+        "activated": 0,
+        "discarded": 0
+      }
+    }
   }
 }

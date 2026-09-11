@@ -108,12 +108,41 @@ def test_the_validator_accepts_an_absent_block_and_rejects_a_malformed_one():
 #: `KNOWN_FLAGGED` in test_sim_pilot_quality: the record is evidence about the
 #: harness and a floor on the deck, and its win rate is not read as a result.
 KNOWN_UNCAST = {
-    # 2026-09-10, sharknado@recon-v1 at standard-v3, both AI profiles: Wheel of
-    # Fortune cast once, Windfall / Magus / Jace's Archivist / Faithless Looting
-    # never, across 80 games. Forge's AI will not discard its own hand. Kept as
-    # the record that made this block exist.
+    # 2026-09-10, sharknado@recon-v1 at standard-v3: Wheel of Fortune cast once,
+    # Windfall / Magus / Jace's Archivist / Faithless Looting never, in 60
+    # games. Forge's AI will not discard its own hand. Kept as the record that
+    # made this block exist. (Its 20-game Experimental sibling shows the same
+    # casts but is under the per-card lines at that N and does not flag.)
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c1d1131f-s1251704607-podExperimental-c600.json",
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-c1d1131f-s1251704607-meExperimental-podExperimental-c600.json",
+    # THE SACRIFICE CLASS, edgar-vampires, every run since 2026-08-24: Viscera
+    # Seer, Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Vish Kal
+    # never cast. docs/gotchas-bench.md "The Forge AI will not press a sacrifice
+    # button" measured it on 08-30; these are the same fact on every table the
+    # deck sat at, and the block now says so per record instead of per essay.
+    "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-3e064845-s1040599109-podExperimental-c600.json",
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-42dc6d00-s1121742080-podExperimental-c600.json",
+    "giada-angels-vs-vito-vs-baylen-tokens-n100-717196e1-s1903269601.json",
+    "giada-angels-vs-vito-vs-baylen-tokens-n400-717196e1-s1903269601.json",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600.json",
+    # goblin-storm, 2026-09-02, both tables: Goblin Bombardment and Past in
+    # Flames never cast -- an activation outlet and a graveyard storm turn,
+    # the two things Forge's AI is documented not to do ("pretty bad for most
+    # combo decks", its own words in every record).
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-62a56c7d-s1655008381-podExperimental-c600.json",
+    "giada-angels-vs-vito-vs-baylen-tokens-n100-a209c8f5-s718550261-podExperimental.json",
+    # heliod, 2026-09-07 and 09-09: Psychosis Crawler (0 casts, the gotcha's own
+    # example) with Long-Term Plans and a handful of defensive bodies. The rest
+    # of a 45-card engine played; the deck's rates are read with this beside them.
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600.json",
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600.json",
+    # ur-dragon, 2026-08-24, the first tracked record, vito era, before seats
+    # rotated: six Dragons never cast in 100 games. Every later ur-dragon run
+    # reads ENGINE PLAYED, so this is the harness of that day, kept as history.
+    "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892.json",
+    # zur-enchantress (archived 09-10), 2026-09-06: one card of 26 in each --
+    # The Meathook Massacre at one table, Eidolon of Astral Winds at the other.
+    "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-91ac828c-s444001932-podExperimental-c600.json",
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n60-07b69243-s129405507-podExperimental-c600.json",
     # 2026-09-10, heliod at standard-v3, 40 games: Psychosis Crawler never cast
     # (discarded once), one card of a 53-card engine set; the rest of the
     # engine played at its expected rate. docs/gotchas-bench.md already records
@@ -177,3 +206,30 @@ def test_no_kept_record_has_an_uncast_engine_by_accident():
                      f"positive; if it is, add the record to KNOWN_UNCAST with its reason.")
     for name in KNOWN_UNCAST:
         assert any(p.endswith(name) for p in paths), f"{name} is in KNOWN_UNCAST but no longer tracked"
+
+
+def test_compact_carries_the_per_turn_series():
+    """`life_by_turn` and `damage_to_players_by_turn` used to be dropped here;
+    a table model is calibrated from them, so they ride, for every seat."""
+    facts = _facts()
+    row = parse.compact(facts[0], LABEL)
+    for seat in ("sharky", "rival"):
+        assert "life_by_turn" in row["per_seat"][seat]
+        assert isinstance(row["per_seat"][seat]["damage_to_players_by_turn"], dict)
+
+
+def test_every_tracked_record_row_carries_the_series():
+    """Re-derived on 2026-09-10 for every record whose logs exist; a record made
+    by `run` carries them from the start."""
+    paths = _tracked_records()
+    if len(paths) < 5:
+        pytest.skip("deck data not present")
+    checked, missing = 0, []
+    for p in paths:
+        rec = json.load(open(p))
+        for g in rec.get("games") or []:
+            checked += 1
+            if any("life_by_turn" not in v for v in g["per_seat"].values()):
+                missing.append(p.split("/")[-1]); break
+    assert checked >= 100, "the loop iterated almost nothing"
+    assert not missing, f"records whose rows lack the per-turn series: {missing[:6]}"

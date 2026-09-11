@@ -43,8 +43,12 @@ NEVER_CAST_DISCARDS = 3
 #: this is one the seat almost certainly saw and never played. Stated, not
 #: fitted: at 60 games and ~16 cards seen a game a singleton expects ~10.
 NEVER_CAST_EXPECTED = 8.0
-#: Target labels that are the MANA half of a declaration, not the engine.
-_MANA_LABELS = ("ramp", "mana", "land")
+#: Target labels that are not the ENGINE: the mana half, and the ANSWERS and
+#: TUTORS -- an instant the AI holds until it has a target is correct play,
+#: and a Teferi's Protection never cast in sixty games is a fact about held
+#: interaction, not about whether the deck's plan was ever run. The first
+#: version counted them and flagged every fleet record on them.
+_MANA_LABELS = ("ramp", "mana", "land", "answer", "interaction", "tutor", "protection")
 _ENGINE_STAGES_EXCLUDED = ("mana", "protection")
 
 

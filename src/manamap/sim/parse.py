@@ -1228,9 +1228,18 @@ def compact(fact, label):
             # same turn) is precisely that game. One run's accounting came to 59
             # of 60 and nothing but the balance test said so.
             "draw": bool(fact.get("draw")),
-            "per_seat": {label.get(s, s): {k: v for k, v in p.items()
-                                           if k not in ("life_by_turn", "damage_to_players_by_turn")}
-                         for s, p in fact["per_seat"].items()}}
+            # THE TWO PER-TURN SERIES RIDE INTO THE RECORD NOW. `compact()` dropped
+            # `life_by_turn` and `damage_to_players_by_turn` for size, which
+            # left the committed corpus holding a removal process and a clock
+            # but no PRESSURE process: what each seat took, by turn, existed
+            # only in gitignored logs. A table model for the goldfish is
+            # calibrated from exactly these. Cost, measured on the largest
+            # record (edgar, 400 games): the games block 2.02 -> 2.49 MB, +23%,
+            # about 3 MB across the fleet's 14 MB of records. Keys are turns.
+            "per_seat": {label.get(s, s): {
+                k: (dict(v) if k == "damage_to_players_by_turn" else v)
+                for k, v in p.items()}
+                for s, p in fact["per_seat"].items()}}
 
 
 def analyze_logs(log_texts, label, commanders=None):
