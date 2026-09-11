@@ -82,7 +82,7 @@ def test_the_corpus_sweep_is_locked():
 
 # Filled in by the sweep the day the channel shipped; a widened pattern moves
 # these on purpose.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (25, 39, 15, 29, 20)
+WHEELS, LOOTS, DISC, DRAW, SECOND = (25, 40, 15, 29, 20)
 
 
 @requires_data
@@ -118,3 +118,30 @@ def test_a_deck_that_did_not_opt_in_is_byte_identical_beyond_the_stamp():
     fresh = goldfish.run("ur-dragon", quiet=True)
     a, b = dict(on_disk["metrics"]), dict(fresh["metrics"])
     assert a == b, "ur-dragon moved without opting into model_discard"
+
+
+def test_scry_then_draw_and_upkeep_reveal_are_draw():
+    """Found on ingris-infect/draw-v1: Read the Bones and Dark Confidant went in
+    as card advantage and the draw axis did not move, because neither says
+    'draw' where the parser looks."""
+    d = goldfish.draw_profile({"name": "Read the Bones", "type_line": "Sorcery",
+                               "oracle_text": "Scry 2, then draw two cards. You lose 2 life."})
+    assert d["spell_draw"] == 2 and d["unmodelled"] is None
+    d = goldfish.draw_profile({"name": "Dark Confidant", "type_line": "Creature — Human Wizard",
+                               "oracle_text": "At the beginning of your upkeep, reveal the top card of "
+                                              "your library and put that card into your hand. You lose "
+                                              "life equal to its mana value."})
+    assert d["recurring_draw"] == 1
+
+
+@requires_data
+def test_the_two_draw_shapes_are_locked_to_the_corpus():
+    scry = reveal = 0
+    with open(OUTPUT_CSV_PATH, encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            t = row["oracle_text"] or ""
+            if goldfish._SCRY_THEN_DRAW_RE.search(t) and ("Instant" in row["type_line"] or "Sorcery" in row["type_line"]):
+                scry += 1
+            if goldfish._UPKEEP_REVEAL_RE.search(t):
+                reveal += 1
+    assert (scry, reveal) == (34, 3), (scry, reveal)

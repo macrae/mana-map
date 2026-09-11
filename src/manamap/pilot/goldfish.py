@@ -350,6 +350,19 @@ _RECURRING_DRAW_RE = re.compile(
 #: "target player draws a card" and "each player draws" score as your own draw.
 _SPELL_DRAW_RE = re.compile(
     r"(?:^|\.\s|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
+#: "Scry 2, then draw two cards" (Read the Bones) -- the draw is the second
+#: clause of its sentence and the sentence-anchored pattern above never saw
+#: it. Corpus sweep 2026-09-10: 34 instants and sorceries, ONE of which was
+#: read; a card-advantage branch on ingris-infect added Read the Bones and
+#: the draw axis did not move. Locked by test.
+_SCRY_THEN_DRAW_RE = re.compile(
+    r"(?:scry|surveil) \d+, then draw (a|one|two|three) cards?", re.I)
+#: "At the beginning of your upkeep, reveal the top card of your library and
+#: put that card into your hand" -- Dark Confidant, Dark Tutelage, Darkstar
+#: Augur: a recurring draw that never says "draw". Three cards; locked.
+_UPKEEP_REVEAL_RE = re.compile(
+    r"at the beginning of your upkeep, reveal the top card of your library"
+    r"(?: and)? (?:and )?put (?:that card|it) into your hand", re.I)
 #: THE BODIES-INTO-CARDS FAMILY. 33 cards, and the qualifier between "you
 #: control" and "enters" is load-bearing in BOTH directions: Welcoming Vampire
 #: draws off a 1/1 token ("power 2 or less") and Garruk's Uprising must not
@@ -840,7 +853,9 @@ def draw_profile(card):
         out["x_draw_multiplier"] = _mc.count("{X}")
         out["x_draw_discard"] = 1 if _X_DRAW_DISCARD_ONE_RE.search(text) else 0
 
-    if not _DRAW_RE.search(text) and not out["wheel_draws"]:
+    if _UPKEEP_REVEAL_RE.search(text):
+        out["recurring_draw"] = 1
+    if not _DRAW_RE.search(text) and not out["wheel_draws"] and not out["recurring_draw"]:
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -866,7 +881,7 @@ def draw_profile(card):
     if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)):
         out["recurring_draw"] = _DRAW_WORDS[rec.group(1).lower()]
     if ("Instant" in type_line or "Sorcery" in type_line) and not out["etb_draw"]:
-        sp = _SPELL_DRAW_RE.search(text)
+        sp = _SPELL_DRAW_RE.search(text) or _SCRY_THEN_DRAW_RE.search(text)
         if sp and not _DRAW_ADDITIONAL_COST_RE.search(text):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
             td = _DRAW_THEN_DISCARD_RE.search(text)
