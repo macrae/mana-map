@@ -3,59 +3,63 @@
   "slug": "swing-or-hold-gishath",
   "deck": "gishath",
   "kind": "decision",
-  "title": "Turn 8, Gishath resolving, two blue seats passed: swing now on one free trick, or untap into the covered line?",
+  "title": "Turn 7, Gishath resolves with Knight of the Stampede down and two mana open: swing at the tapped-out Jarad seat now, or hold him for Enlarge?",
   "scenario": {
     "board": {
-      "you": "Turn 8, precombat main. Battlefield: eight lands including Rogue's Passage and Secluded Courtyard (naming Dinosaur), Boros Signet, Drover of the Mighty, Pantlaza, Sun-Favored. Nine mana was available; Gishath, Sun's Avatar was cast from the command zone for eight (first cast — no tax) and is on the stack with one mana still open. Rogue's Passage's {4} activation is NOT affordable this turn.",
+      "you": "Turn 7, precombat main. Battlefield: seven lands (Command Tower, Jetmir's Garden, Rootbound Crag, Forest, Plains, Secluded Courtyard naming Dinosaur, Rogue's Passage), Arcane Signet, Knight of the Stampede (2/4), Pantlaza, Sun-Favored (4/4, its once-per-turn discover unused this turn), Garruk's Uprising. Gishath, Sun's Avatar was cast from the command zone for {3}{R}{G}{W} — Knight pays two of his generic; first cast, no tax — and is on the stack. Arcane Signet and Rogue's Passage are untapped: two mana, which pays for nothing in hand this turn. Passage's {4} is out of reach until you untap.",
       "opponents": [
         {
-          "seat": "A — Azorius flash control",
-          "life": 35,
-          "board": "four untapped lands (two produce blue), a 2/4 wall, drew two extra cards last turn. Stated archetypal assumption: holds a sorcery-speed wrath and one counterspell."
+          "seat": "the Jarad seat — Golgari graveyard (standard-v3)",
+          "life": 27,
+          "board": "Jarad, Golgari Lich Lord and Stitcher's Supplier, both tapped from last turn's attack on the Abaddon seat; no untapped land; two cards in hand. Nothing here can block."
         },
         {
-          "seat": "B — Simic tempo",
-          "life": 29,
-          "board": "two Islands open, two 3/3 fliers. Passed on Gishath."
+          "seat": "the Sythis seat — Selesnya enchantress (standard-v3)",
+          "life": 34,
+          "board": "Sythis, Harvest's Hand, Argothian Enchantress, Courser of Kruphix (2/4), four other enchantments; two lands untapped, one a Plains; drew three extra cards last rotation. Stated assumption: holds Austere Command or Winds of Rath for a sorcery-speed turn, and the open Plains is Swords to Plowshares or Path to Exile — all four are in the pod list."
         },
         {
-          "seat": "C — Gruul midrange",
-          "life": 21,
-          "board": "empty — swept by Seat A last turn; fully tapped out."
+          "seat": "the Abaddon seat — Grixis sacrifice (standard-v3)",
+          "life": 31,
+          "board": "Abaddon the Despoiler wearing Lightning Greaves, Neheb, the Eternal; four lands untapped including Steam Vents; five cards in hand. Stated assumption: Blasphemous Act is in the list and in hand, held for a turn it clears more of yours than theirs; Chaos Warp is the instant-speed answer. Enumerated from the three pod lists, no seat runs a counterspell."
         }
       ]
     },
     "hand": [
       "Flawless Maneuver",
-      "Cultivate",
-      "Ripjaw Raptor"
+      "Enlarge",
+      "Earthshaker Dreadmaw"
     ],
-    "mana_available": "{G} (Drover) after paying for Gishath; Flawless Maneuver is castable for free once Gishath resolves (you control a commander)",
+    "mana_available": "{2} after Gishath — Arcane Signet and Rogue's Passage. Flawless Maneuver costs nothing while you control a commander; Enlarge is five and waits for next turn.",
     "stack": [
       {
         "pos": 0,
-        "object": "Gishath, Sun's Avatar (cast from the command zone)",
+        "object": "Gishath, Sun's Avatar (cast from the command zone for {3}{R}{G}{W} under Knight of the Stampede)",
         "controller": "you",
-        "note": "Both blue seats have passed priority — the counterspell window on the commander itself is closing. Gishath will resolve with haste, vigilance, trample. The table has not seen Flawless Maneuver; nobody knows whether you hold protection."
+        "note": "Every seat has passed; he resolves with vigilance, trample and haste. No seat at this table runs a counterspell, so the spell was never the risk. The attack is."
       }
     ],
     "extras": {
-      "context": "The table read: your mana has been visible all game — goldfish mean cast turn is 7.969, median 8, so every experienced opponent expected the commander THIS turn and Seat A's held wrath is priced for it. Your protection is unknown information: the deck holds a board trick by turn 6 in only 48.5% of goldfish games, so the table cannot assume you have one.",
-      "assumption": "Seat A wraths at sorcery speed on their own turn when it maximizes value; the held counterspell is now earmarked for a protection spell or a follow-up threat, not the already-resolving commander."
+      "context": "This is the deck's median turn: the goldfish casts Gishath at median turn 7, mean 7.362, by turn 6 in 25.5% of games, so the table has been counting to it. What he does after he lands is the whole game. In the v1.1.0 Forge record he resolved in 32 of 40 games and dealt commander damage in 19 of them; in the 16 games where he resolved and the seat was still eliminated, the median gap between the two was 5.5 global turns — about a round and a half — and 8 of the 24 eliminations came before he resolved at all. You do not get many rotations with him on the table.",
+      "assumption": "Sweepers in the pod lists: Austere Command and Winds of Rath (Sythis), Blasphemous Act (Abaddon), Toxic Deluge (Jarad). Flawless Maneuver's indestructible stops the first three and not the fourth, and stops none of Swords to Plowshares, Path to Exile or Chaos Warp."
     },
-    "question": "Gishath resolves. Do you attack Seat C's empty board immediately with Flawless Maneuver as your only cover, hold Gishath home and untap into a covered Rogue's Passage swing, or attack Seat A to pressure the wrath-holder?"
+    "question": "Gishath resolves. Do you attack the tapped-out Jarad seat now with Flawless Maneuver as your only cover, hold him home and untap into Enlarge for a fourteen-card reveal, or point him at the Sythis seat, the one the record says kills you?"
   },
   "branches": [
     {
-      "choice": "Swing at Seat C now — Flawless Maneuver is the cover",
-      "line": "Declare Gishath attacking Seat C and don't look back. The lane is wide open — no blockers, no untapped mana — and haste makes the cast-turn attack legal. Seven damage connects, seven cards flip, and the payoff banks before anyone untaps. Then hold the free Flawless Maneuver through the entire next rotation: it costs zero mana while your commander is on the battlefield, so Seat A's wrath turn walks straight into indestructible.",
-      "signals": "Casting AND connecting in one turn makes you archenemy on the spot. Accept the promotion — the trigger's payoff (bodies, draws, a discover) is banked before anyone gets a wrath window. Your lone floating {G} and the no-protection-open look practically beg for the wrath. Let them believe it; that read is exactly wrong, and Maneuver is how you cash their mistake.",
-      "coalition_risk": "Real, and priced in. Hitting the seat that just got swept reads as bullying the weak player, and Seats A and B start coordinating next rotation. Fine by you — one attack just converted into a board plus cards. Resources banked now survive whatever the coalition brings.",
-      "coaching": "This is the pivot window, and closers take it the turn it opens. The counter window on Gishath shut when both blue seats passed. The open lane exists RIGHT NOW and closes when Seat C untaps and redeploys. Your cover is free.\n\nRun the recast math and the answer only gets clearer. Selvala, Heart of the Wilds and Regal Behemoth make a 10-mana recast genuinely reachable — Selvala taps for X equal to your greatest power, and Gishath himself makes that 7, while Behemoth doubles your land taps under the crown. But 'reachable' still burns the tempo turn and re-arms every held answer. Cover is strictly cheaper than recasting; that is the whole ballgame.\n\nKnow Maneuver's limits — it beats destruction, not exile or bounce — and destruction is precisely what the stated assumption says Seat A is holding. Swing, bank the trigger, and start your reign as archenemy with the resources to enjoy it.",
+      "choice": "Swing at the Jarad seat now — Flawless Maneuver is the cover",
+      "line": "Declare Gishath attacking the Jarad seat. Both of their creatures are tapped and no land is open, so seven connects and the trigger reveals seven; Pantlaza and Garruk's Uprising are already down to convert it. Keep the two open mana and the free Maneuver through the whole next rotation: it costs nothing while Gishath stands, and Austere Command, Winds of Rath and Blasphemous Act all destroy. Next turn, Enlarge on the same Gishath into the same seat: fourteen more, a fourteen-card reveal, and 21 commander damage on one defender.",
+      "signals": "Casting and connecting in one turn makes you the table's problem on the spot. The Sythis seat's open Plains is the thing to watch: Swords or Path in the declare-blockers step is the one answer Maneuver does not touch, and it is the reason to attack the seat with no open mana rather than the seat with the wrath. Two open mana on your side reads as nothing. Let it.",
+      "coalition_risk": "Real and priced in. You just hit the seat with the smallest board, and the Sythis and Abaddon seats will talk. The reveal's bodies and the Uprising draws are banked before either untaps. The log's one paper game (entry 001) ran exactly this sequence — seven, then Enlarge for fourteen — and the table's wraths had already been spent on the mid-tier Dinosaurs.",
+      "coaching": "The connection is the engine; the cast is only the ticket. The goldfish's modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, and Forge connects him 0.70 times per attack — against a seat with nothing untapped, the missing 0.30 is gone. Every rotation you wait is one of the few you have: paired game by game in v1.1.0, the median gap from his resolving to your elimination was 5.5 global turns.\n\nHolding Enlarge does not lose it. The log's win went seven this turn and fourteen the next; a hold gives you the fourteen and throws away the seven. Read Maneuver's edge exactly: it makes creatures indestructible, so it beats the three destroy sweepers in the pod lists and nothing else. Against Swords, Toxic Deluge or Chaos Warp you pay the recast — {2} more and the tempo turn — whether you swung or not. That is the whole argument: the answers you cannot stop cost the same either way, and the ones you can stop are covered for free.",
       "citations": [
         {
           "rule": "702.10b",
           "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+        },
+        {
+          "rule": "702.12b",
+          "quote": "A permanent with indestructible can’t be destroyed. Such permanents aren’t destroyed by lethal damage, and they ignore the state-based action that checks for lethal damage"
         },
         {
           "rule": "903.8",
@@ -64,24 +68,28 @@
       ]
     },
     {
-      "choice": "Hold Gishath home — untap into Rogue's Passage plus open protection",
-      "line": "Resolve Gishath, attack with nobody, and pass with vigilant blockers up. Next turn, on ten mana, activate Rogue's Passage in the declare attackers step — before blocks, because evasion gained after a legal block is declared does not undo the block. That guarantees a full 7-card reveal with Maneuver still free behind it.",
-      "signals": "A resolved 7/6 commander standing still is still the loudest object on the battlefield. You inherit the full archenemy signal and bank exactly nothing for it. Seat A now schedules the wrath at their leisure, into a board that gained zero.",
-      "coalition_risk": "Highest of the three, wearing a disguise. 'Patience' hands the wrath-holder a free rotation to answer you at maximum value, and it gives Seats B and C a turn to redeploy blockers and countermagic. It reads as safety. It functions as a gift.",
-      "coaching": "I respect discipline — so let's audit what this discipline actually buys. Passage's guarantee is insurance against blockers, and Seat C has NO blockers this turn. You'd be paying a full rotation to insure a risk that does not exist, while the risk that does exist — the sorcery-speed wrath — compounds.\n\nThe pivot-window rule says every held answer arrives the moment the 8-drop is on the table. That clock started when Gishath hit the stack, not when you decide to swing.\n\nAnd here's the kicker: Maneuver is only free WHILE you control your commander. If Seat A answers Gishath on your off-turn, your free trick becomes a 3-mana spell protecting nothing. Don't let Selvala and Regal Behemoth talk you into patience either — a richer untap turn cannot buy back a lane that closed or a trigger that never banked. Save this line for the board where every lane is blocked, and look up: that is not this board.",
+      "choice": "Hold Gishath home — untap into Enlarge for a fourteen-card reveal",
+      "line": "Attack with nobody. Pass with Gishath as a vigilant 7/6 blocker and Maneuver free behind him. Next turn, with a land drop, cast Enlarge on him precombat — a 14/13 trampler that must be blocked if able — and attack the seat with the fewest untapped creatures for a fourteen-card reveal in one hit.",
+      "signals": "A 7/6 commander standing still is still the loudest object on the table and banks nothing. Three seats untap before you do: the Sythis seat into a sorcery-speed wrath window, the Abaddon seat with four open and Blasphemous Act, the Jarad seat with Toxic Deluge, which Maneuver cannot stop. Watch whether the Jarad seat's creatures untap. They will.",
+      "coalition_risk": "Highest of the three. You inherit the table's attention for a full rotation and give it nothing to spend answers on but him. If he leaves before your turn, Enlarge has no target, Maneuver costs {2}{W} again, and the recast is ten.",
+      "coaching": "What the hold buys is the difference between a seven-card reveal and a fourteen-card one. What it costs is the seven-card reveal itself, plus a rotation. The two are not exclusive: swing now and Enlarge next turn and you get both — that is the log's only win, entry 001.\n\nEnlarge also changes the lane. 'Must be blocked this turn if able' is a requirement the defender has to obey, so a 14/13 into the Sythis seat eats Courser of Kruphix and tramples ten through; into a seat with no untapped creatures it is fourteen clean. Either way it is the second swing's job. The first swing is free, and the record says the window after he lands is short: 8 of the 24 v1.1.0 eliminations came before he resolved and the rest a median 5.5 global turns after. Hold only when nothing can connect — every seat has an untapped blocker and you cannot afford Passage. That is not this board.",
       "citations": [
         {
-          "rule": "509.1b",
-          "quote": "If an attacking creature gains or loses an evasion ability after a legal block has been declared, it doesn’t affect that block."
+          "rule": "509.1c",
+          "quote": "The defending player checks each creature they control to see whether it’s affected by any requirements (effects that say a creature must block, or that it must block if some condition is met)."
+        },
+        {
+          "rule": "903.8",
+          "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
         }
       ]
     },
     {
-      "choice": "Swing at Seat A — pressure the wrath-holder",
-      "line": "Declare Gishath attacking Seat A, on the theory that the player holding the wrath is the real threat and 7 damage plus the reveal punishes them directly.",
-      "signals": "Attacking the control seat announces that you've identified the problem — and control seats answer that announcement with mana, not life total. Worse, it tells Seats B and C you'll do their fighting for free. They will happily let you.",
-      "coalition_risk": "Low social cost, high strategic cost. Your best turn goes into the one seat equipped to make it worthless, while the actually-open lane closes behind you.",
-      "coaching": "Here's the trap, and I'm naming it before you walk into it: the trigger scales with damage DEALT to a player. Seat A's 2/4 wall chump-blocks. Trample forces you to assign 4 lethal to the wall first, so only 3 cross — your reveal shrinks from 7 cards to 3.\n\nThat's the difference between a board and a body. Stack 001's verified cascade — five bodies, three draws, a discover at X=6 — came off a full 7.\n\n'Attack the problem player' is the right instinct pointed at the wrong resource. Their life total doesn't beat you; their wrath does, and this line hands that wrath a smaller board to punish. You'll pressure Seat A soon enough — after the trigger banks somewhere it counts.",
+      "choice": "Swing at the Sythis seat — the seat that kills you",
+      "line": "Declare Gishath attacking the Sythis seat, on the reading that the seat which eliminated you 10 times in 24 in the v1.1.0 record is the one to pressure, and seven plus a reveal is pressure.",
+      "signals": "Courser of Kruphix is untapped and the Sythis seat has a Plains open. A chump costs the reveal four of its seven; Swords costs the turn and the commander. The seat that eliminates you most is also the one with the most instant-speed answers to an attacker — Swords, Path and Heroic Intervention are all in its list.",
+      "coalition_risk": "Low social cost, high game cost. The Jarad and Abaddon seats let you spend your best turn on the control seat and untap behind it.",
+      "coaching": "The trigger reads combat damage dealt to a player, not damage assigned. Trample makes you assign lethal to Courser first — four of the seven — so three cross and the reveal is three cards, not seven; stack 001's four bodies, three draws and a discover at X=6 came off a full seven. And that is the good outcome: with a Plains open, Swords in the declare-blockers step exiles him with no trigger at all.\n\nThe record does say the Sythis seat kills you — 10 of 24 — but it did so at a mean global turn of 35.75, with a board of enchantments, not by life total. Their life is not the resource that beats you; their wrath is, and they cast it whether you hit them for three or for nothing. Bank the seven where it lands, and let the Command and the Act come — Maneuver is free against both.",
       "citations": [
         {
           "rule": "702.19b",
@@ -91,7 +99,7 @@
     }
   ],
   "recommendation": {
-    "choice": "Swing at Seat C now — Flawless Maneuver is the cover",
-    "rationale": "All three conditions of the pivot window are met, and all three are temporary: the counter window on the commander has closed, the unblocked lane exists this turn only, and your protection costs zero. Holding trades a guaranteed 7-card reveal for insurance against a blocker that does not exist, while the wrath you actually fear gets a free turn. Attacking the wrath-holder shrinks the reveal to 3 through a chump block.\n\nThe table has been counting to exactly this turn — goldfish mean cast 7.969, median 8 — and Seat A's wrath is priced for it. Selvala, Heart of the Wilds and Regal Behemoth soften the recast tax without repealing it: an answered commander still costs the tempo turn that cover would have saved.\n\nThe only surprise you have left is Maneuver. This turn is its maximum leverage. Spend it, bank the trigger, and take the throne on your own terms."
+    "choice": "Swing at the Jarad seat now — Flawless Maneuver is the cover",
+    "rationale": "The lane is open this turn only: both of the Jarad seat's creatures are tapped and it has no mana, so seven connects and the reveal is seven. Holding trades that certain reveal for a fourteen-card one a rotation later, and the record prices rotations after he lands at a median of 5.5 global turns before you are eliminated. Attacking the Sythis seat shrinks the reveal to three through Courser and walks into the one open Plains. Maneuver is free while he stands and stops every destroy sweeper in the pod lists; the answers it cannot stop — Swords, Path, Deluge, Chaos Warp — cost you the same recast whether you swung or not. Swing, bank the bodies and the draws, and Enlarge next turn: that is the sequence the log's only win ran."
   }
 }

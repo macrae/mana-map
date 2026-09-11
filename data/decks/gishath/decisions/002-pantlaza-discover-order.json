@@ -3,46 +3,53 @@
   "slug": "pantlaza-discover-order",
   "deck": "gishath",
   "kind": "decision",
-  "title": "Nine triggers, one discover: ordering the Gishath cascade so the once-per-turn lands at X=6",
+  "title": "Eight triggers, one discover: ordering the reveal so Pantlaza lands at X=6 — and whether to save it for Zacama",
   "scenario": {
     "board": {
-      "you": "Combat damage step. Gishath, Sun's Avatar (7/6, vigilance, trample, haste) attacked the open seat unblocked and dealt 7. Also on the battlefield: Pantlaza, Sun-Favored (4/4 — its once-per-turn discover has NOT been used this turn), Garruk's Uprising, eight lands (two untapped).",
+      "you": "Combat damage step, your turn. Gishath, Sun's Avatar (7/6, vigilance, trample, haste) attacked the Jarad seat unblocked and dealt 7. Also on the battlefield: Pantlaza, Sun-Favored (4/4; its once-per-turn discover has NOT been used this turn), Garruk's Uprising, Belbe's Portal (naming Dinosaur), nine lands, three of them untapped.",
       "opponents": [
         {
-          "seat": "1 — just took the hit",
-          "life": 26,
-          "board": "empty"
+          "seat": "the Jarad seat — Golgari graveyard (standard-v3)",
+          "life": 20,
+          "board": "Jarad, Golgari Lich Lord and Stitcher's Supplier, both tapped; no untapped land."
         },
         {
-          "seat": "2",
-          "life": 40,
-          "board": "a 4/4 creature"
+          "seat": "the Sythis seat — Selesnya enchantress (standard-v3)",
+          "life": 34,
+          "board": "Sythis, Harvest's Hand, Courser of Kruphix (2/4), five enchantments; two lands untapped."
+        },
+        {
+          "seat": "the Abaddon seat — Grixis sacrifice (standard-v3)",
+          "life": 31,
+          "board": "Abaddon the Despoiler, Neheb, the Eternal; four lands untapped."
         }
       ]
     },
-    "hand": [],
-    "mana_available": "two untapped lands",
+    "hand": [
+      "Zacama, Primal Calamity"
+    ],
+    "mana_available": "three untapped lands — enough for Belbe's Portal's {3} in your second main phase",
     "stack": [
       {
         "pos": 0,
         "object": "Gishath's combat damage trigger",
         "controller": "you",
-        "note": "Resolving now. Revealed seven: Regisaur Alpha (4/4 Dino), Ripjaw Raptor (4/5 Dino), Carnage Tyrant (7/6 Dino), Ravenous Sailback (3/4 Dino), Cultivate, Mountain, Path to Exile. You put all four Dinosaur creature cards onto the battlefield — one event, simultaneous entry; the three non-Dinosaurs go to the bottom in random order."
+        "note": "Resolving now. Revealed seven: Regisaur Alpha (4/4 Dinosaur), Carnage Tyrant (7/6 Dinosaur), Trapjaw Tyrant (5/5 Dinosaur), Kinjalli's Sunwing (2/3 Dinosaur), Nature's Lore, Plains, Swords to Plowshares. You put all four Dinosaur creature cards onto the battlefield as one event; the three non-Dinosaurs go to the bottom in a random order."
       }
     ],
     "extras": {
-      "context": "The simultaneous entry produces NINE triggered abilities you control, all placed on the stack in any order you choose: four Pantlaza discover triggers (X = each enterer's toughness: 4 for Regisaur Alpha, 5 for Ripjaw Raptor, 6 for Carnage Tyrant, 4 for Ravenous Sailback), three Garruk's Uprising draws (Regisaur, Ripjaw, and Carnage Tyrant have power 4+; the 3-power Sailback does not), Regisaur Alpha's create-a-3/3-token trigger, and Ravenous Sailback's modal ETB. Regisaur Alpha's haste grant is a static ability — every Dinosaur you control has haste regardless of what order anything resolves. This is the exact scenario of verified stack 001.",
-      "constraint": "Pantlaza's rider is once each TURN, not once each combat or once each event — whichever discover you take here is the only one until your next turn."
+      "context": "The simultaneous entry produces EIGHT triggered abilities you control, placed on the stack in any order you choose: four Pantlaza discover triggers (X is the enterer's toughness — 4 for Regisaur Alpha, 6 for Carnage Tyrant, 5 for Trapjaw Tyrant, 3 for Kinjalli's Sunwing), three Garruk's Uprising draws (Regisaur Alpha, Carnage Tyrant and Trapjaw Tyrant have power 4 or more; Sunwing's 2 does not), and Regisaur Alpha's create-a-3/3-token trigger. Trapjaw's enrage has nothing to fire on; Sunwing's enter-tapped effect and Regisaur's haste grant are static. Stack 001 (checker pass) resolves this exact rules shape on an earlier list's reveal — four entries as one event, the once-per-turn rider restricting triggering, the token ordered last — and the rules facts do not depend on which Dinosaurs were revealed.",
+      "constraint": "Pantlaza's rider is once each TURN. Whichever discover you take here is the only one until your next turn — including the one Zacama's entry through Belbe's Portal would offer in your second main phase, at X=9."
     },
-    "question": "You choose the order for all nine triggers. Which Pantlaza trigger do you actually take, and where in the stack does Regisaur Alpha's token trigger go?"
+    "question": "You order all eight triggers. Which Pantlaza trigger do you take — 6 now off Carnage Tyrant, or none now and 9 off Zacama through the Portal after combat — and where does Regisaur Alpha's token trigger go?"
   },
   "branches": [
     {
       "choice": "Carnage Tyrant's discover on top, Regisaur's token trigger on the bottom — take X=6, decline the rest",
-      "line": "Stack them like a professional. Token trigger first (bottom), then Sailback's modal trigger, then the spare Pantlaza triggers (X=4, X=5, X=4), then the three Uprising draws, and Carnage Tyrant's Pantlaza trigger LAST — last on means first off. Discover 6; decline the spare discovers as they resolve. The token enters dead last, after the once-per-turn is already spent, so its arrival cannot generate a live Pantlaza trigger.",
-      "signals": "To the table this is one flurry of value. But a pilot who visibly sequences the discover ahead of the token just told everyone they know this deck cold. Expect Pantlaza to move up the removal queue. Wear it as a compliment.",
-      "coalition_risk": "Nothing beyond what the connection already bought. The table responds to the cascade, not to your bookkeeping.",
-      "coaching": "This is verified stack 001's exact line — five new bodies, three draws, and the discover at X=6 off one connection. It's yours for the price of ordering triggers like you mean it. The stack is last-in-first-out and you control all nine placements, so taking less than the maximum X is leaving money on the table.\n\nDiscover 6 stops on the first nonland at mana value 6 or less and casts it free, and this deck's density of 5- and 6-drops makes that ceiling worth guarding. It gets better: a free-cast Dinosaur is also a Dinosaur ENTERING, and with Forerunner of the Empire on the battlefield every entry can arm the verified ping web (stack 005). Max-X is engine fuel, not just a body.\n\nBurying the token trigger is the discipline that seals it: it resolves after the discover is spent, so the 3/3 enters triggering nothing. And the haste question is already answered — Regisaur's grant is a static ability, so entering last costs the token nothing. Ceiling secured, zero leaks. That's the play.",
+      "line": "Token trigger first (bottom), then the three spare Pantlaza triggers (X=4, X=5, X=3), then the three Uprising draws, and the Carnage Tyrant Pantlaza trigger last (top). Last on is first off: discover 6, decline the spare discovers as each resolves, draw three. The token enters last, after the once-per-turn action is spent, so its arrival triggers nothing — Uprising misses a 3-power body and Pantlaza does not trigger at all.",
+      "signals": "To the table it is one flurry. A pilot who visibly sequences the discover ahead of the token has told everyone they know the deck, and Pantlaza moves up the removal queue. The Jarad seat's next rebuild — Living Death is in its list — now enters tapped under Kinjalli's Sunwing.",
+      "coalition_risk": "Nothing beyond what the connection already bought. The table answers the five bodies, not the bookkeeping.",
+      "coaching": "This is stack 001's verified line on cards the 99 owns today: four Dinosaurs enter as one event, Uprising triggers once per qualifying enterer, Pantlaza triggers four times and discovers once, and you choose the order. Take the largest X the entries offer. Discover 6 stops on the first nonland at mana value 6 or less and casts it free; enumerated from cards.json, only Vaultborn Tyrant, Ghalta and Mavren, Wakening Sun's Avatar, Blasphemous Act and Ghalta, Primal Hunger sit above 6 in the library, so X=6 already reaches almost every nonland the deck runs.\n\nBurying the token trigger is what seals it. Resolved before the discover, the 3/3's entry would trigger Pantlaza a fifth time at X=3; resolved after, the rider's condition fails and it does not trigger. Regisaur's haste is static, so the token loses nothing by arriving last. Five bodies, three cards, one discover at the ceiling, no leak.",
       "citations": [
         {
           "rule": "603.3b",
@@ -50,20 +57,24 @@
         },
         {
           "rule": "405.2",
-          "quote": "The stack keeps track of the order that spells and/or abilities were added to it. Each time an object is put on the stack, it’s put on top of all objects already there."
+          "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
         },
         {
-          "rule": "603.2c",
-          "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          "rule": "603.2h",
+          "quote": "This ability triggers only if its source’s controller has not yet taken the indicated action that turn."
+        },
+        {
+          "rule": "701.57a",
+          "quote": "Exile cards from the top of your library until you exile a nonland card with mana value N or less. You may cast that card without paying its mana cost if the resulting spell’s mana value is less than or equal to N."
         }
       ]
     },
     {
-      "choice": "Token trigger on top — 'get the body online first'",
-      "line": "Place Regisaur Alpha's token trigger last so it resolves first, making the 3/3 immediately, then work through the draws and discovers.",
-      "signals": "Looks proactive — a body online against removal, an extra attacker for a second combat. Both reads are mirages. The token has haste from Regisaur's static ability whenever it enters this turn, and nothing on this stack threatens it.",
-      "coalition_risk": "None directly. But a cascade that whiffs its discover puts a visibly smaller board on the table, and the wrath math across from you gets easier every time your burst underdelivers.",
-      "coaching": "Here's the leak stack 001 exists to teach, and I want you to see it coming from a mile away. The token enters while your four Pantlaza triggers still sit UNRESOLVED beneath it. And because you haven't taken the discover yet this turn, the once-per-turn rider doesn't stop the token from triggering Pantlaza AGAIN — a fifth trigger at X=3 that lands on TOP of the stack and resolves before your X=6.\n\nNow you're threading a needle you strung yourself. Decline the X=3 and every spare perfectly, or say yes one trigger early and burn the once-per-turn at the floor — a discover capped at mana value 3 in a deck whose payoffs start at 5.\n\nAnd the prize for taking on that risk? Nothing. The haste is static; the body was never in danger. Resolve the discover BEFORE the token trigger, always — great pilots make zero-upside risks simply disappear.",
+      "choice": "Token trigger on top — get the body online first",
+      "line": "Place Regisaur Alpha's token trigger last so it resolves first, make the 3/3, then work through the draws and the discovers.",
+      "signals": "Reads as proactive. It is not: the token has haste from Regisaur's static ability whenever it enters this turn, and nothing on this stack threatens it.",
+      "coalition_risk": "None directly. A cascade that spends its discover at X=3 puts a smaller board on the table, and the wrath math across from you gets easier.",
+      "coaching": "The token enters while four Pantlaza triggers still sit unresolved beneath it, and you have not taken the discover yet this turn — so the rider does not stop Pantlaza from triggering again. A fifth trigger at X=3 goes on TOP of the stack and resolves before your X=6. Now you must decline it, then decline the X=4, X=5 and X=3 spares in turn, or say yes one trigger early and spend the once-per-turn at mana value 3 in a deck whose curve has 19 three-drops and every payoff above them.\n\nThe upside you bought for that: none. Haste is static, the body was never in danger, and stack 001 records the same trap on the earlier list. Resolve the discover before the token trigger, every time.",
       "citations": [
         {
           "rule": "603.2h",
@@ -72,25 +83,33 @@
         {
           "rule": "405.2",
           "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+        },
+        {
+          "rule": "glossary:enters-the-battlefield",
+          "quote": "A token enters the battlefield as it’s created."
         }
       ]
     },
     {
-      "choice": "Take the first spare discover at X=4 — 'a cheaper X digs deeper for cheap spells'",
-      "line": "Order the triggers casually and say yes to the Regisaur Alpha discover (X=4), reasoning that a lower X skips your expensive cards and digs toward cheap interaction or ramp.",
-      "signals": "Invisible from across the table — which is exactly why this mistake survives in playgroups for years. Nobody corrects the leak nobody sees.",
-      "coalition_risk": "None. The bill is paid entirely out of your own expected value.",
-      "coaching": "Credit where it's due — the digging logic is real. Discover X skips nonlands above X, so X=4 digs past a 5-drop that X=6 would stop on. But it's optimizing the wrong turn.\n\nYou just put five bodies onto the battlefield. You don't need the Cultivate a deep dig finds; you need the biggest free spell in the library. X=6 is the widest net — it stops on everything X=4 stops on, plus everything a 5- or 6-drop IS. On the turn your board quintuples, ceiling beats depth, every time.\n\nTake X=6 off Carnage Tyrant and decline the rest. If what you genuinely need is land, remember discover is a 'may' — declining all four is legal and keeps the library intact. The one play that is never right: spending your once-per-turn at X=4 while an X=6 sits one trigger away on a stack whose order YOU control.",
+      "choice": "Decline every discover now — put Zacama in through Belbe's Portal in main two and discover 9",
+      "line": "Order the eight however you like, decline all four Pantlaza triggers as they resolve, draw three, make the token. In your second main phase, pay {3} and tap Belbe's Portal: Zacama enters, Pantlaza triggers with X=9 — Zacama's toughness — and the once-per-turn is still unspent.",
+      "signals": "The one nobody sees. It is legal: a 'may' trigger is decided on resolution, and declining is not taking the action. It also hands every seat priority between the reveal and the Portal, and the Sythis seat has two lands open.",
+      "coalition_risk": "You show a bigger board and keep three mana visibly open through combat; the Abaddon seat with four up reads that as a trick. Nobody can stop the Portal's activation, but anyone can answer Pantlaza in response to it.",
+      "coaching": "Count what X=9 reaches that X=6 does not. From cards.json the library's nonlands above mana value 6 are Vaultborn Tyrant (7), Ghalta and Mavren (7), Wakening Sun's Avatar (8), Blasphemous Act (9) and Ghalta, Primal Hunger (12); Zacama is in your hand. X=9 adds four cards, two of which you would put into hand rather than cast: Wakening's wipe needs a cast from hand, and the Act at 13 to each creature kills the five bodies you just made. Two live hits out of 65 nonland cards in the 100 is the whole gain.\n\nAgainst it: the X=6 discover is certain now, and the X=9 needs Pantlaza, the Portal, Zacama and {3} all to survive to main two with three seats holding priority in between. Zacama through the Portal does not untap your lands either — that text says 'if you cast it'. Take the six. Put Zacama in afterwards anyway; the 9/9 is the point, not its discover.",
       "citations": [
         {
-          "rule": "603.3b",
-          "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          "rule": "603.5",
+          "quote": "These abilities go on the stack when they trigger, regardless of whether their controller intends to exercise the ability’s option or not. The choice is made when the ability resolves."
+        },
+        {
+          "rule": "603.2h",
+          "quote": "This ability triggers only if its source’s controller has not yet taken the indicated action that turn."
         }
       ]
     }
   ],
   "recommendation": {
     "choice": "Carnage Tyrant's discover on top, Regisaur's token trigger on the bottom — take X=6, decline the rest",
-    "rationale": "Verified stack 001 establishes the payoff and the trap in one artifact. Ordered correctly, the cascade yields five bodies, three draws, and a discover at X=6. Ordered token-first, it leaks a fifth Pantlaza trigger at X=3 that sits on top of your best one and dares you to spend the once-per-turn at the floor.\n\nThe order is entirely yours (CR 603.3b). The token loses nothing by entering last, because Regisaur's haste grant is static. And X=6 is the widest free-cast net in a deck built out of 5- and 6-drops — with Forerunner of the Empire in the 99, the free-cast Dinosaur's entry is also fuel for the verified ping web (stack 005).\n\nDiscover before the token, ceiling over depth, every time. That's how a champion runs nine triggers."
+    "rationale": "Stack 001 establishes the payoff and the trap on the earlier list, and both carry over unchanged: ordered correctly, the reveal yields five bodies, three draws and a discover at X=6; ordered token-first, it leaks a fifth Pantlaza trigger at X=3 above your best one. The order is yours (603.3b). The token loses nothing by entering last because Regisaur's haste is static. Saving the discover for Zacama at X=9 buys two live hits out of 65 nonlands and costs a certain discover now plus a round of priority for three seats. Discover before the token, six now over nine maybe."
   }
 }

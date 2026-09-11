@@ -1,0 +1,261 @@
+{
+  "emergency": [
+    {
+      "condition": "wipe",
+      "condition_text": "a sweeper is coming, or has landed, and the board it takes is the mana as much as the bodies",
+      "indications": [
+        "A seat passes with four to six mana open on its own turn, white or black among it, and cast nothing in its main phase.",
+        "Your board is three or more Dinosaurs and nobody else's is. In the one logged game the table aimed its wraths at exactly that board (001).",
+        "Your mana on the table is creatures: Hulking Raptor, Selvala, Regal Behemoth, Huatli. The land-drop rate is 56% by turn 6 and the deck rides those bodies after it.",
+        "Forge v1.1.0 saw a wipe-shaped turn in 27.5% of games; this seat lost a mean 1.2 permanents to each."
+      ],
+      "immediate": [
+        "Stop casting Dinosaurs. Every Dinosaur in hand stays there until the wipe has resolved or the seat holding it has tapped out.",
+        "Count the mana that survives a creature wipe: lands, Sol Ring, Arcane Signet, Boros Signet, Talisman of Unity, Mirari's Wake, Urza's Incubator. Otepec Huntmaster, Knight of the Stampede, Hulking Raptor, Selvala, Regal Behemoth and Huatli die with the board. If the survivors do not reach Gishath's cost, spend this turn on a rock or a land-ramp spell and nothing else.",
+        "If Gishath is on the board and Flawless Maneuver is in hand, pass with zero mana open: it costs nothing while you control him. Heroic Intervention needs {1}{G} open, Boros Charm {R}{W}, Akroma's Will {3}{W}. Hold the mana for the one you have.",
+        "If Eerie Interlude is in hand and {2}{W} is open, cast it with the wipe on the stack, targeting every creature you want back. They return at the next end step and their entry triggers fire again.",
+        "If the wipe resolves and your board is empty, count the creatures left on the table. Blasphemous Act costs {1} less for each one; at nine it is {R}, and with none of yours on the battlefield it is one-sided (001)."
+      ],
+      "subsequent": [
+        "Rebuild with the commander, not the hand. Recast Gishath at eight plus {2} for each earlier command-zone cast, less {1} for Otepec, {2} for Knight, {2} for Incubator on the battlefield. The reveal is the rebuild.",
+        "Put Urza's Incubator down before a second creature reducer: it survives the next creature wipe, they do not.",
+        "Redeploy one Dinosaur behind him, not three. A second wipe takes what you put in front of him.",
+        "Cast Garruk's Uprising before the next body: it is an enchantment, it survives a creature wipe, and it draws off every power-4 arrival the reveal makes."
+      ],
+      "notes": "Temple Altisaur's prevention is verified against your own Blasphemous Act (stack 004) and against nothing else. It does not shield itself, it does not stop Austere Command, and it does not stop an exile or a bounce.",
+      "grounded_in": [
+        "001"
+      ]
+    },
+    {
+      "condition": "removal",
+      "condition_text": "a spot removal spell is pointed at Gishath, or at the reducer that makes his recast affordable",
+      "indications": [
+        "A seat passed with {W} or {1}{W} open after you cast Gishath: the Swords to Plowshares and Path to Exile shape.",
+        "Blue mana open while Gishath is on the stack. He can be countered; Carnage Tyrant cannot.",
+        "The removal went at Otepec Huntmaster, Knight of the Stampede or Urza's Incubator rather than at a body. That seat has read the deck.",
+        "Forge v1.1.0 aimed 0.5 interaction spells a game at this seat and Gishath resolved in 32 of 40 games."
+      ],
+      "immediate": [
+        "Read the spell before you answer it. Destroy: Flawless Maneuver (free with Gishath out), Heroic Intervention, Boros Charm and Akroma's Will each stop it. Exile or bounce: only Heroic Intervention's hexproof and Akroma's Will's protection from each colour stop a targeted one; indestructible does nothing against Path or Swords.",
+        "If the answer in hand does not match the spell and Eerie Interlude is in hand with {2}{W} open, exile Gishath yourself in response. He returns at the next end step. When he goes to exile, leave him there; do not move him to the command zone.",
+        "If there is no answer, let it resolve and write down the recast: eight, plus {2} per earlier command-zone cast, less the reducers on the battlefield. All three reducers leave {R}{G}{W} plus the tax.",
+        "If the target is a reducer and the shield is not free, let the reducer go. The shield is for the commander.",
+        "Spend the next turn on the recast's mana, not on a body: a Signet, Nature's Lore, Kodama's Reach, or Selvala if a power-4 Dinosaur is on the table."
+      ],
+      "subsequent": [
+        "Recast him on a turn he can also attack: he has haste, and the cast turn is the attack turn.",
+        "Recast into open blue mana only with Flawless Maneuver or Heroic Intervention in hand; otherwise land a reducer first and recast a turn later for less.",
+        "Worldly Tutor at an opponent's end step finds Knight of the Stampede to the top; Enlightened Tutor finds Urza's Incubator. Draw it, cast it, recast him the turn after."
+      ],
+      "notes": "Every shield in the 99 is one card: Akroma's Will, Heroic Intervention, Flawless Maneuver, Boros Charm, Eerie Interlude. The goldfish holds one of them in 51% of games by turn 6. A recast at ten is the deck's answer in the other half.",
+      "grounded_in": []
+    },
+    {
+      "condition": "combo",
+      "condition_text": "somebody at the table is going off, and the deck has no counterspell",
+      "indications": [
+        "A seat tutored twice in one turn, or drew five cards off one spell.",
+        "A sacrifice outlet and a recursion piece on one board: the abaddon shape, which eliminated this seat 7 times in 40 Forge games.",
+        "An enchantment count climbing past four on one board: the sythis shape, 10 of 24 Forge eliminations.",
+        "A player counting aloud: storm, life, or the cards in a graveyard."
+      ],
+      "immediate": [
+        "Name the piece already on the battlefield that is a creature, artifact or enchantment. That is the target.",
+        "Answer it on their turn, before the last piece lands: Beast Within ({2}{G}) destroys any permanent; Swords to Plowshares ({W}) and Path to Exile ({W}) take a creature; Thrashing Brontodon's {1} and a sacrifice takes an artifact or enchantment; Zacama's {2}{G} takes an artifact or enchantment and his {2}{R} deals 3 to a creature.",
+        "If the outlet is a creature with toughness 3 or less and Trumpeting Carnosaur is in hand, discard it for {2}{R}: 3 damage to that creature.",
+        "If the win is a life total rather than a loop, Boros Charm is 4 damage to a player at instant speed. Count it against their life before you spend it on anything else.",
+        "With nothing left to answer it, attack that seat with everything, every turn, and point the next Gishath connection at them."
+      ],
+      "subsequent": [
+        "From turn three on, leave {2}{G} open on that seat's turn while Beast Within is in hand. Forge never cast it in 40 games; that is a floor on the AI, not permission to hold it.",
+        "Next game against that seat, keep the hand with a reducer and ramp and ship the hand of payoffs. The race is Gishath by turn six, which the goldfish reaches in 26% of games.",
+        "Bronzebeak Foragers' entry exiles one nonland permanent per opponent until it leaves. Put it on the combo seat's engine piece, not on the biggest body."
+      ],
+      "notes": "There is no counterspell in the 99. Every answer here is to a permanent. A storm turn or an instant-speed kill from hand has no answer in the deck, and the Forge pod has no combo seat, so this page is doctrine, not measurement.",
+      "grounded_in": []
+    },
+    {
+      "condition": "mana-drought",
+      "condition_text": "the mana has stopped short of the commander, in count or in colour",
+      "indications": [
+        "Three lands on the battlefield on turn five. The goldfish hits its land drop on turn 5 in 62% of games and turn 6 in 56%; mean mana is 5.1 on turn 5.",
+        "Gishath in the command zone at seven mana with no reducer on the table.",
+        "Eight mana and no {W} or no {R} among it. From lands alone the deck is on curve in white 48% of the time and in red 52%.",
+        "Two Dinosaurs in hand and nothing under five mana."
+      ],
+      "immediate": [
+        "Count lands in hand and on the battlefield. Under four on the battlefield at turn four, cast the land ramp before anything else: Nature's Lore ({1}{G}: any Forest card, so Canopy Vista, Cinder Glade or Jetmir's Garden), Kodama's Reach (one down, one to hand), Skyshroud Claim (two Forest cards, untapped), Topiary Stomper (a basic on entry).",
+        "Crack Krosan Verge, Myriad Landscape or Windswept Heath at the end of an opponent's turn when you are passing with the mana up: Verge fetches a Forest card and a Plains card, so it finds Canopy Vista and Jetmir's Garden.",
+        "If a Dinosaur with power 4 or more is on the battlefield, cast Selvala: {G} and a tap makes X mana in any colours, X your greatest power. With Gishath out that is seven.",
+        "If the shortfall is colour, name Dinosaur on Unclaimed Territory and Secluded Courtyard as they enter and use them for the {R}{G}{W} in his cost. Territory's coloured mana pays no ability, so keep it off Rogue's Passage and Kessig Wolf Run.",
+        "If the shortfall is one or two mana, cast a reducer instead of a body: Otepec Huntmaster is {1}{R} for {1} off, Knight of the Stampede {3}{G} for {2} off, Urza's Incubator {3} for {2} off. Otepec plus Knight makes him five; all three make him {R}{G}{W}."
+      ],
+      "subsequent": [
+        "Play Sol Ring, the Signets and Talisman of Unity before a creature: they survive the wipe the drought is walking you into.",
+        "Enlightened Tutor at an opponent's end step for Urza's Incubator when no reducer is in hand; Worldly Tutor for Knight of the Stampede. Each puts the card on top, so the draw step is spent.",
+        "Wayward Swordtooth's extra land drop pays only with a land in hand: cast it after Kodama's Reach or Huatli, not before.",
+        "Hold Rishkar's Expertise for a board with power 5 or more: it draws that many and casts a five-drop for free."
+      ],
+      "notes": "Mean mana in the goldfish is 5.1 on turn 5 and 6.0 on turn 6 with every land entering untapped, which twelve of the thirty-five do not. Five mana on turn six is the deck's normal, not a drought; the drought is three lands and no rock.",
+      "grounded_in": []
+    },
+    {
+      "condition": "stalled",
+      "condition_text": "Gishath has not resolved, and another seat's engine is running",
+      "indications": [
+        "Turn seven, Gishath in the command zone, no reducer on the battlefield. The goldfish casts him by turn 6 in 26% of games; the median is turn 7 and 23% of games never cast him by turn 10.",
+        "Another seat's engine is visibly running: four enchantments on one board, a sacrifice loop, a graveyard past ten cards.",
+        "Your board is three mid-tier Dinosaurs and the table has stopped answering them.",
+        "Forge v1.1.0: 8 of this seat's 24 eliminations came before he ever resolved, and his first resolution was mean global turn 31 (round eight)."
+      ],
+      "immediate": [
+        "Count the cast: mana on the battlefield plus rocks, less {1} for Otepec Huntmaster, {2} for Knight of the Stampede, {2} for Urza's Incubator on the battlefield. If it is at or below what you have, cast him this turn and attack the seat with no blocker. He has haste.",
+        "If it is one or two short, spend the turn on a reducer, not a body. Each one lowers every cast after it.",
+        "If no reducer is in hand or on the battlefield, Worldly Tutor at an opponent's end step finds Knight of the Stampede to the top; Enlightened Tutor finds Urza's Incubator. Draw it, cast it.",
+        "With Dinosaurs in hand and no reducer, put them down through Belbe's Portal ({3}, tap, naming Dinosaur) or Monster Manual ({1}{G}, tap) and keep the lands for the commander. Neither touches his cost.",
+        "Keep the mid-tier Dinosaurs home as blockers until he lands. Attack only when the damage is lethal or the defender's board is empty: before him the seat's Forge output is 7.5 median combat damage by round eight."
+      ],
+      "subsequent": [
+        "The turn he lands, attack. The paired Forge record gives a median 5.5 global turns from his resolution to this seat's elimination in the games it loses; the first connection has to be that turn or the next.",
+        "Rogue's Passage needs {4} on top of his cost: hold it for the second attack, not the first.",
+        "If he cannot land by turn nine, cast Zacama from hand: he untaps every land on entry when cast, and Forge activated him 70 times in 40 games against 3 casts. {2}{R} for 3 to a creature, {2}{G} for an artifact or enchantment. That is the sink while you wait."
+      ],
+      "notes": "Each reducer is 7.1% of an opening seven and no artifact measures the three as a class. A kept hand with one is the shape the 26%-by-turn-6 games take.",
+      "grounded_in": []
+    },
+    {
+      "condition": "politics",
+      "condition_text": "you have become the table's problem, which happens the turn the reveal puts four bodies down",
+      "indications": [
+        "Gishath connected once and the reveal put four or more Dinosaurs onto the battlefield.",
+        "Two seats attacked you in one rotation.",
+        "The removal is going at Gishath and the reducers, not at the bodies.",
+        "A seat passes with mana up on your turn and on nobody else's."
+      ],
+      "immediate": [
+        "Count the shields in hand and leave that mana open on every opponent's turn from now on: Flawless Maneuver costs nothing with Gishath out, Heroic Intervention {1}{G}, Boros Charm {R}{W}, Akroma's Will {3}{W}, Eerie Interlude {2}{W}.",
+        "Keep two blockers home. Gishath has vigilance and blocks after attacking; Curious Altisaur and Runic Armasaur are 2/5s, Temple Altisaur a 3/4.",
+        "Attack only the seat that attacked you. Leave the other two untouched this rotation: attacking the low seat while a third is untouched adds an enemy.",
+        "Spend a shield on Gishath or on the whole board, never on one 4/4. Take the hit to a body.",
+        "If Blasphemous Act is in hand and your board is bigger than theirs, hold it. It is one-sided through Temple Altisaur or off an empty board of your own, and in no other case (001, stack 004)."
+      ],
+      "subsequent": [
+        "From here every turn does one of two things: Gishath connects, or Gishath is recast. Spend the turn on nothing else.",
+        "When a seat's board is bigger than yours, say so with the numbers: total power on each side, cards drawn this rotation.",
+        "Once the table's wipe has landed on you, cast Blasphemous Act into their rebuilt boards (001)."
+      ],
+      "notes": "Forge's AI attacked the seat that had dealt the most combat damage in 68% of its attack decisions, and this seat's damage arrives in one connection. The table at Alex's did the same by hand once it saw the trigger (001). One connect makes you the target; plan the shields for that turn, not the cast turn.",
+      "grounded_in": [
+        "001"
+      ]
+    },
+    {
+      "condition": "raced",
+      "condition_text": "somebody is faster than the commander and you cannot answer on board",
+      "indications": [
+        "Under 20 life on turn six with Gishath still in the command zone.",
+        "The clock is non-combat: abaddon's seat dealt 22.8 mean non-combat damage a game in Forge v1.1.0 and eliminated this seat 7 times. Blockers do nothing against it.",
+        "The aggro seat's first attack landed on you by round four; this deck's first attack in Forge came at mean global turn 21.",
+        "Their board doubled in one turn and yours did not."
+      ],
+      "immediate": [
+        "Count your turns to Gishath: mana next turn plus reducers. If he is two turns away, block with everything that is not a reducer, and chump with the bodies before the reducers.",
+        "Cast Kinjalli's Sunwing ({2}{W}) first: their creatures enter tapped, which strips haste attackers and slows every rebuild. A revealed Dinosaur doing that is what kept the board from stabilising in game 001.",
+        "Count the creatures on the whole table for Blasphemous Act: at nine it is {R}. Cast it when your board is the smaller one or empty.",
+        "If Gishath is out and Akroma's Will is in hand, cast it after attackers and before blockers with him attacking: you control a commander, so take both modes, and the board has flying, double strike, lifelink and indestructible. Fourteen from him and fourteen life back.",
+        "Point Gishath at the seat racing you, not at the lowest life total."
+      ],
+      "subsequent": [
+        "Zacama's {2}{W} is 3 life per activation and Forge's sink of choice: 70 activations in 40 games.",
+        "Vaultborn Tyrant gains 3 per power-4 arrival, so a reveal with it on the battlefield is life as well as bodies.",
+        "Against a non-combat clock, Temple Altisaur prevents nothing and the shields do nothing. The answer is the clock, and the clock is Gishath: recast, connect, repeat."
+      ],
+      "notes": "The goldfish's kill by turn 8 is 0.617 against one opponent with no blockers, and no checker-passed stack resolves a lethal swing. Read it as tempo, not as a race you are winning.",
+      "grounded_in": []
+    }
+  ],
+  "normal": {
+    "preflight": {
+      "keep": [
+        "Two to four lands, one of them making green: 39 of the 65 nonland cards carry a green pip.",
+        "One mana piece castable by turn three (Sol Ring, Arcane Signet, Boros Signet, Talisman of Unity, Nature's Lore, Kodama's Reach) or one reducer (Otepec Huntmaster, Knight of the Stampede, Urza's Incubator).",
+        "A play on turn two and a play on turn three.",
+        "A hand with a reducer and ramp over a hand with a payoff and ramp."
+      ],
+      "ship": [
+        "Seven cards with no green source.",
+        "Five or more lands with neither a mana piece nor a reducer.",
+        "Payoffs with no mana: Pantlaza, Garruk's Uprising, Trapjaw Tyrant, Wrathful Raptors in a hand whose cheapest play is turn four.",
+        "A hand whose action starts at six mana."
+      ],
+      "note": "Each reducer is 7.1% of a seven-card hand and the class is unmeasured. A kept reducer plus ramp is what a turn-five or turn-six Gishath looks like, and the goldfish reaches turn six in 26% of games."
+    },
+    "startup": {
+      "steps": [
+        "Turn one: a land that enters tapped if you hold one, then Sol Ring if you hold it.",
+        "Name Dinosaur on Unclaimed Territory, Secluded Courtyard, Urza's Incubator and Belbe's Portal as each enters. Every time.",
+        "Turn two: Otepec Huntmaster if he is in hand; otherwise a Signet or Talisman of Unity.",
+        "Turn three: Nature's Lore for Jetmir's Garden, Canopy Vista or Cinder Glade, or Kodama's Reach, or Urza's Incubator. A body waits.",
+        "Attack with nothing before turn four. Spend Swords to Plowshares or Path to Exile in the first three turns on one thing only: a creature that kills Gishath on sight, or an engine that wins alone."
+      ]
+    },
+    "assembly": {
+      "steps": [
+        "Mana to five: lands plus one rock or dork by turn four. The goldfish mean is 4.3 on turn 4 and 5.1 on turn 5.",
+        "Reducers before payoffs. Otepec, Knight and Incubator lower every cast after them; Pantlaza and Garruk's Uprising pay nothing until a Dinosaur enters.",
+        "One payoff before the commander, not three: Garruk's Uprising first, since it is an enchantment and survives a creature wipe; Pantlaza second. The reveal pays them back; a board of five bodies before Gishath is what the wipe takes (001).",
+        "Set the top on the turn he attacks, not before. Congregation at Dawn ({G}{G}{W}, instant) after your draw and before combat puts three Dinosaurs on top in your order, and all three are in the seven-card reveal. Worldly Tutor after your draw puts one.",
+        "Cast Gishath on a turn he can attack a seat with no blocker bigger than a chump. He has haste and vigilance; the cast turn is the attack turn. Flawless Maneuver in hand makes the tap-out safe: it is free with him on the battlefield."
+      ]
+    },
+    "cruise": {
+      "steps": [
+        "Upkeep: Descendants' Path reveals the top card; cast a Dinosaur free. Bonehoard Dracosaur exiles two; play the land from among them. Then draw.",
+        "Main one: land, then a reducer, then mana, then one body. Leave the shield mana open: {1}{G} for Heroic Intervention, {R}{W} for Boros Charm. Flawless Maneuver needs none.",
+        "Combat: Gishath attacks the seat with no blocker that survives him. Rogue's Passage ({4}) when every seat has one; Kessig Wolf Run ({X}{R}{G}) for the extra trample damage.",
+        "On the connection, order the triggers: the Pantlaza trigger with the largest toughness on top, the Regisaur Alpha token trigger on the bottom, the Garruk's Uprising draws between (stack 001, decision 002). Discover once; decline the rest.",
+        "The rest of the board attacks only into an empty board or for lethal. The mid-tier Dinosaurs are blockers and wipe-bait (001).",
+        "Main two: cast what the reveal drew. Ghalta, Primal Hunger is {G}{G} off ten power on the battlefield; Rishkar's Expertise draws seven off Gishath. Hold one Dinosaur in hand behind the next wipe.",
+        "An opponent's end step: Worldly Tutor or Enlightened Tutor only for a card you want in hand next turn. For the reveal, tutor in your own main phase."
+      ]
+    },
+    "closing": {
+      "steps": [
+        "Count commander damage per seat out loud. Twenty-one from Gishath ends a player; in game 001 it was 7 and then 14.",
+        "Enlarge ({3}{G}{G}) on Gishath: +7/+7, trample, and it must be blocked if able. Subtract the blocker's toughness from fourteen; what is left is commander damage.",
+        "Overwhelming Stampede ({3}{G}{G}): +X/+X and trample to every creature, X your greatest power, seven with Gishath. Add X per attacker to the board's power and compare it with the life of the seat with the fewest blockers.",
+        "Boros Charm's double strike on Gishath: fourteen commander damage over two damage steps. Whether the second step is a second reveal is unverified; count the damage, not the cards.",
+        "Akroma's Will with Gishath out, after attackers and before blockers, both modes: flying, double strike, lifelink and indestructible on the whole board. That is the alpha strike.",
+        "Wait a turn when the shield is not in hand and a seat holds four open with blue or white. Do not wait when Flawless Maneuver is in hand: the paired Forge gap from his resolution to this seat's elimination is a median 5.5 global turns."
+      ]
+    }
+  },
+  "handling": {
+    "optics": [
+      "Through turn six the table sees a ramp deck with a 4/4 and a 2/5. Forge's first attack from this seat landed at mean global turn 21, and its cumulative combat damage was 7.5 median by round eight.",
+      "The eight-drop is visible from the command zone. An experienced seat counts your mana every turn and prices its wrath for the turn he is castable (decision 001).",
+      "In game 001 the table read the mid-tier Dinosaurs as the threat, spent its wraths on them, and held nothing for Gishath. That is one game and one table.",
+      "After the connection the seat's damage is front-loaded. Forge's AI turned on the seat that had dealt the most combat damage in 68% of its attack decisions."
+    ],
+    "reveal": [
+      "Cast the reducers the turn they are castable. They are the tell and they are the plan; a turn of hiding Otepec is a turn of discount lost.",
+      "Hold Congregation at Dawn and Worldly Tutor for the turn of the swing.",
+      "Show nothing about the shield. Flawless Maneuver costs nothing, so pass with zero mana open and let the table read no protection (decision 001).",
+      "Blasphemous Act stays in hand until your board is smaller than theirs or empty (001)."
+    ],
+    "alliances": [
+      "The seat that killed this deck in Forge is the enchantment-control one: 10 of 24 eliminations. Against that seat the graveyard deck (2 wins in 40) is the ally that costs nothing to keep.",
+      "Offer removal, not attacks. A Path or Swords on the table's shared problem buys a rotation of not being attacked, and this deck holds its answers anyway: Forge cast 0.62 a game.",
+      "No alliance survives the first connection. Four bodies off one trigger make you the board.",
+      "A tax seat is the one to break early. Three reducers keep Gishath at {R}{G}{W} plus the tax; nobody else's eight-drop is castable under it."
+    ],
+    "targets": [
+      "The first connection goes at the seat with no untapped blocker. The reveal pays the same at any life total, and seven damage is not a kill.",
+      "After that, the seat racing you.",
+      "Given a choice, the enchantment-control seat: 10 of this seat's 24 Forge eliminations.",
+      "Commander damage stacks on one player. The seat that has taken 7 takes the next 14: count toward 21 (001).",
+      "Never the lowest life total for its own sake. Attacking the seat just swept reads as bullying and buys a coalition (decision 001)."
+    ]
+  }
+}
