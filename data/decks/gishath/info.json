@@ -4,15 +4,8 @@
     "Gishath, Sun's Avatar"
   ],
   "lifecycle": null,
-  "stage": "bench",
-  "gates": {
-    "to": "sleeved",
-    "met": 5,
-    "of": 6,
-    "blocking": [
-      "ownership reconciled"
-    ]
-  },
+  "stage": "sleeved",
+  "gates": null,
   "colour_identity": [
     "W",
     "R",
@@ -21,10 +14,17 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 14,
+    "complete": 10,
     "of": 15,
-    "stale": [],
-    "invalid": [],
+    "stale": [
+      "frame",
+      "map"
+    ],
+    "invalid": [
+      "engine",
+      "tutors",
+      "considering.json"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -39,14 +39,168 @@
   },
   "brief": null,
   "branches": [],
-  "diagnostic": null,
+  "diagnostic": {
+    "harness": {
+      "version": 1,
+      "iterations": 10000,
+      "seed": 20260826,
+      "max_turn": 10
+    },
+    "engine": {
+      "available": false,
+      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+      "declared_targets": 7
+    },
+    "stall": {
+      "by_turn": {
+        "1": {
+          "rate": 0.6837,
+          "ci95": [
+            0.6745,
+            0.6927
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.3628,
+          "ci95": [
+            0.3534,
+            0.3723
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.0982,
+          "ci95": [
+            0.0925,
+            0.1042
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.0583,
+          "ci95": [
+            0.0539,
+            0.0631
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.0268,
+          "ci95": [
+            0.0238,
+            0.0302
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0154,
+          "ci95": [
+            0.0132,
+            0.018
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0113,
+          "ci95": [
+            0.0094,
+            0.0136
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.0087,
+          "ci95": [
+            0.0071,
+            0.0107
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.0059,
+          "ci95": [
+            0.0046,
+            0.0076
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.0044,
+          "ci95": [
+            0.0033,
+            0.0059
+          ],
+          "n": 10000
+        }
+      },
+      "two_in_a_row": {
+        "rate": 0.1049,
+        "ci95": [
+          0.099,
+          0.1111
+        ],
+        "n": 10000
+      },
+      "fleet": "worse than any tracked deck",
+      "from_turn": 2,
+      "cause": {
+        "stall_turns": 5918,
+        "hand_empty": 83,
+        "mana_short": 5835
+      },
+      "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
+    },
+    "mana": {
+      "missed_land_drop_by_five": {
+        "rate": 0.4868,
+        "ci95": [
+          0.477,
+          0.4966
+        ],
+        "n": 10000
+      },
+      "missed_land_drop_rate": 0.3482,
+      "mulliganed": {
+        "rate": 0.2374,
+        "ci95": [
+          0.2292,
+          0.2458
+        ],
+        "n": 10000
+      },
+      "mean_mana_by_turn": {
+        "1": 0.999,
+        "2": 2.141,
+        "3": 3.361,
+        "4": 4.248,
+        "5": 4.962,
+        "6": 5.576,
+        "7": 6.124,
+        "8": 6.647,
+        "9": 7.149,
+        "10": 7.635
+      },
+      "fleet": "above the fleet median",
+      "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
+      "mana_stdev_turn_five": 1.2649
+    },
+    "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92"
+  },
   "bracket": {
     "floor": 4,
     "floor_name": "Optimized",
     "target": 4,
     "within_target": true
   },
-  "paper": null,
+  "paper": {
+    "version": 4,
+    "sha": "83ea64417ea2",
+    "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
+    "built_at": "2026-09-11",
+    "note": "sleeved: the pilot's Gishath v1 paper list, checked in 2026-09-11",
+    "release": "v1.1.0"
+  },
   "record": {
     "games": 1,
     "win": 1,
@@ -67,7 +221,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 17,
+          "value": 20,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -76,11 +230,16 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "absent_because": "combat is opt-in and this deck has not been re-baselined for it (`model_combat` in goldfish.py)",
-          "weight": "body"
+          "value": 8,
+          "tier": "data",
+          "weight": "headline",
+          "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
+          "unit": "turn",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 7.567,
+          "value": 7.521,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -88,7 +247,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 87,
+          "value": 83,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -104,7 +263,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Dinosaur payoff drawn (per-dino trigger engine)": {
-          "value": 62,
+          "value": 56,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Dinosaur payoff drawn (per-dino trigger engine)' by turn six",
@@ -112,7 +271,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:The Gishath connection kit (haste or evasion for the 7/6)": {
-          "value": 51,
+          "value": 50,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'The Gishath connection kit (haste or evasion for the 7/6)' by turn six",
@@ -120,7 +279,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Enrage engine drawn": {
-          "value": 51,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Enrage engine drawn' by turn six",
@@ -128,7 +287,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the board": {
-          "value": 48,
+          "value": 51,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the board' by turn six",
@@ -136,7 +295,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur": {
-          "value": 1,
+          "value": 2,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur' by turn six",
@@ -164,7 +323,17 @@
             "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
             "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
             "Rituals are not modeled (conservative).",
-            "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite."
+            "Extra card draw is NOT modeled: one card per turn, always. That understates every deck, but by an amount proportional to how much draw it runs — so it is conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list this hides. Card advantage is measured nowhere in this suite.",
+            "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+            "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+            "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+            "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+            "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you control have haste' lets every creature attack the turn it lands, from the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads the creature's type line; Dragon Tempest's grant reads keyword flying; riot is read as always choosing haste. TOKENS carry no type line and no flying here, so a typed or flying grant does not reach them. NOT read: a grant from the graveyard (Anger), an activated one (Crashing Drawbridge), one conditional on the board ('as long as'), and the lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model taps no particular land. Before this a granted creature waited a turn and its haste enabler was read as nothing.",
+            "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+            "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
+            "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
+            "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
+            "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
           ],
           "tier": "data",
           "weight": "detail",
@@ -183,15 +352,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.621,
-            "2": 2.138,
-            "3": 3.422,
-            "4": 4.351,
-            "5": 5.08,
-            "6": 5.697,
-            "7": 6.225,
-            "8": 6.716,
-            "9": 7.171
+            "10": 7.679,
+            "2": 2.147,
+            "3": 3.37,
+            "4": 4.267,
+            "5": 4.988,
+            "6": 5.599,
+            "7": 6.146,
+            "8": 6.671,
+            "9": 7.176
           },
           "tier": "data",
           "weight": "detail",
@@ -202,15 +371,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.362,
-            "2": 0.994,
-            "3": 0.894,
-            "4": 0.76,
-            "5": 0.622,
-            "6": 0.526,
-            "7": 0.447,
-            "8": 0.405,
-            "9": 0.374
+            "10": 0.419,
+            "2": 0.995,
+            "3": 0.893,
+            "4": 0.757,
+            "5": 0.624,
+            "6": 0.532,
+            "7": 0.47,
+            "8": 0.442,
+            "9": 0.423
           },
           "tier": "data",
           "weight": "detail",
@@ -221,15 +390,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 5.335,
-            "2": 0.1,
-            "3": 0.625,
-            "4": 1.335,
+            "10": 5.346,
+            "2": 0.103,
+            "3": 0.652,
+            "4": 1.346,
             "5": 2.072,
-            "6": 2.771,
-            "7": 3.459,
-            "8": 4.096,
-            "9": 4.728
+            "6": 2.735,
+            "7": 3.395,
+            "8": 4.044,
+            "9": 4.711
           },
           "tier": "data",
           "weight": "detail",
@@ -239,18 +408,32 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 422,
-            "1": 1793,
-            "2": 2996,
-            "3": 2798,
-            "4": 1482,
-            "5": 431,
-            "6": 72,
-            "7": 6
+            "0": 452,
+            "1": 1799,
+            "2": 3046,
+            "3": 2746,
+            "4": 1437,
+            "5": 436,
+            "6": 82,
+            "7": 2
           },
           "tier": "data",
           "weight": "detail",
           "definition": "lands in the opening seven, over every seeded hand",
+          "source": "goldfish_metrics.json"
+        },
+        "kill_distribution": {
+          "value": {
+            "10": 1084,
+            "5": 11,
+            "6": 308,
+            "7": 2043,
+            "8": 3256,
+            "9": 2190
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "how many of the seeded games killed on each turn",
           "source": "goldfish_metrics.json"
         }
       },
@@ -262,12 +445,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.567,
-    "commander_cast_by_turn_6_pct": 17,
+    "commander_mean_cast_turn": 7.521,
+    "commander_cast_by_turn_6_pct": 20,
     "targets": [
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 87
+        "by_turn_6_pct": 83
       },
       {
         "label": "Cost reducer or cheat-into-play drawn",
@@ -275,27 +458,47 @@
       },
       {
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 56
       },
       {
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 50
       },
       {
         "label": "Enrage engine drawn",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 24
       },
       {
         "label": "Protection held for the board",
-        "by_turn_6_pct": 48
+        "by_turn_6_pct": 51
       },
       {
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
-        "by_turn_6_pct": 1
+        "by_turn_6_pct": 2
       }
-    ]
+    ],
+    "combat": {
+      "mean_kill_turn": 8.187,
+      "median_kill_turn": 8,
+      "kill_by_turn_6_pct": 3,
+      "kill_by_turn_8_pct": 56,
+      "max_turn": 10,
+      "no_kill_by_max_turn_pct": 11,
+      "kill_turn_histogram": {
+        "10": 1084,
+        "5": 11,
+        "6": 308,
+        "7": 2043,
+        "8": 3256,
+        "9": 2190
+      }
+    }
   },
-  "engine_health": null,
+  "engine_health": {
+    "word": null,
+    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "basis": "diagnostic.json"
+  },
   "engine": {
     "thesis": "This is a big-mana Dinosaur deck with two engines that share a board: an eight-mana commander who converts combat damage into free Dinosaurs off the top of the library, and a four-mana Human who converts a Dinosaur entering into one damage to everything, which four enrage bodies plus Wrathful Raptors then turn into cards, tokens, lands and exile — and the second engine is the one that is actually online, because goldfish never casts the first one by turn 10 in 55% of games.",
     "critic": "pass",
@@ -305,14 +508,15 @@
   "diagnosis": {
     "verdict": "The deck functions early and interacts unusually well for a linear typal list: 89.4% turn-3 land drop, ramp assembled 93.9% at mean turn 2.044, 11 removal pieces inside an 18-card interactive suite, all five permanent classes covered. What limits it is the top end. Six of 65 nonland entries sit at mana value 8+ against a corpus average of ~1.5, the commander is one of them, and the deck's own goldfish puts mean available mana at 7.621 on turn 10. Two of the six discount themselves off a board — Blasphemous Act and Ghalta — so it is four of them, the commander among them, that compete for the one big-mana cast a seven-to-ten-turn game pays for. Colour compounds it: white and red sit at 22 sources each against a 36 target, 63.9% on curve with rocks and dorks counted. The enrage web is the healthier plan and is not commander-gated.",
     "skeptic": null,
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": null,
     "under": [
       "mana-base",
       "colour-sources",
-      "card-advantage"
+      "card-advantage",
+      "interaction-breadth"
     ],
     "over": [
       "ramp"
@@ -380,11 +584,11 @@
     "runs": 2,
     "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65-s1127197285-podExperimental-c600",
     "at": "2026-09-10",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "0480aaf7d19ef989e62c469d01a27eab471e80d6182dfefbefefd3a1579bd749",
     "games": 40,
     "wins": 12,
-    "decided": 36,
+    "decided": 35,
     "vs": [
       "sythis-enchantress",
       "jarad-graveyard",
@@ -417,9 +621,11 @@
   },
   "experiments": null,
   "next": [
-    "not marked as built in paper — if it is sleeved, `deck-version gishath paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "3 artifact(s) fail their own gate (engine, tutors, considering.json) — `deck-status gishath` names them; fix before anything else reads them",
+    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
+    "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×3",
-    "3 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "4 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
