@@ -1,6 +1,6 @@
 # Vision — a workbench for Magic deck builds
 
-*The one page every other document is written against. Last revised 2026-08-22. If a
+*The one page every other document is written against. Last revised 2026-09-12. If a
 doc, a docstring or a charter disagrees with this page, this page wins and the other
 is stale.*
 
@@ -89,7 +89,8 @@ calls nothing, and your machine runs the same code.
 
 ## The frontend
 
-Two surfaces over one data layer.
+Five pages over one data layer: the card atlas, the workbench landing page, the deck
+page, the branch workbench and the embedding-space appendix.
 
 **The card atlas** (`viz/index.html`) — 34,890 oracle cards embedded by two small neural
 nets. It opens on **one card**; click a relation and its neighbours join a graph you grow.
@@ -120,13 +121,13 @@ owns each figure.
 (`build-poh` → `manuals/p/`).
 
 **Legacy, frozen** — the magazine renderer (`build_manual`, `issue_spec`, `design`,
-`validate_issue`, STYLEv3) and the artifacts only it reads, plus `build_page` —
-the compact page the handbook superseded on 2026-09-02. It shared the handbook's
-path and clobbered it from two callers, so it has no default output any more:
-`--out` or nothing. It still renders nine pages;
-nothing regenerates its inputs; it has been **replaced** by the compact Pilot's Manual
-(`build-page`, `docs/manual-v5-spec.md`) and is no longer linked from any live surface.
-Marked LEGACY and left accurate rather than rewritten.
+`validate_issue`, STYLEv3) and the artifacts only it reads, plus `build_page`. Both were
+superseded by the **Pilot's Operating Handbook** (`poh.py`) on 2026-09-02, which renders
+the same `manuals/p/<slug>.html`. `build_page` shared that path and clobbered the handbook
+from two callers, so it has no default output any more: `--out` or nothing. The magazine
+still renders nine pages, nothing regenerates its inputs, and no live surface links to it.
+Marked LEGACY and left accurate rather than rewritten; its deletion is Phase 5 of
+`docs/paydown-plan.md`, where the dependency map is one edge.
 
 **Honest about three things.**
 
@@ -136,13 +137,14 @@ A control deck's win rate is a **lower bound on the pilot**; a combo deck's is n
 measurement at all. What a run is genuinely good at: the clock the table sets, who kills
 you and how, and whether the kill the goldfish measured actually lands.
 
-*Two games. Not two hundred.* Edgar and Ur-Dragon each have one real table logged and
-debriefed, and each fed a prescription — which is enough to have proved the loop works
-end to end, and nowhere near enough to conclude anything about either deck. The gap no
-amount of implementation closes is still open; it is just narrower than it was.
+*Fifteen games. Not two hundred.* Five decks now carry a captain's log and every entry
+has been debriefed, and two of them fed a prescription — enough to have proved the loop
+works end to end, and nowhere near enough to conclude anything about any one deck. The gap
+no amount of implementation closes is still open; it is just narrower than it was.
 
 *Most decks are not marked as built in paper.* Whether a deck exists as cardboard is an
-assertion only the pilot can make, and five of eleven have not been asserted either way.
+assertion only the pilot can make, and seven of twelve have not been asserted either
+way — though four of those seven are broken down for parts and one is retired.
 An unlocked deck now SAYS it is unlocked rather than being quietly assumed playable —
 the third state, after LOCKED and dead.
 

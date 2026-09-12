@@ -69,7 +69,7 @@ python -m http.server 8000
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~1,780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (~810 lines). Shared by `deck.html`, `workbench.html` AND `branch.html` |
+| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
 | `viz/js/deck-view.js` | The dossier (~1,580 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
 | `viz/js/workbench.js` | The landing page (~520 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
@@ -1060,7 +1060,7 @@ was right and the bytes were old.
 
 ## Cache busting
 
-Manual `?v=N` query strings, per page: `index.html` on all **nine** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all nine script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
+Manual `?v=N` query strings, per page: `index.html` on all **eleven** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all eleven script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
 
 For contrast, `manuals/magazine.css` (the legacy page's stylesheet) is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
@@ -1068,7 +1068,7 @@ For contrast, `manuals/magazine.css` (the legacy page's stylesheet) is **content
 
 **Two registries, one per page** — the map's and the dossier's, deliberately disjoint:
 
-- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all nine card-map artifacts. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
+- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all seventeen card-map entries. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
 - **Dossier** (`deck-view.js`): `BASE = '../data/decks/'` plus a `FILES` map of per-deck artifact names. It fetches `data/decks/index.json` first — the manifest written by `manamap pilot build-index`, carrying the deck list and each deck's **passing** stack filenames, because a browser can list neither the deck directory nor `stacks/`. Never hardcode a deck list; add a deck and re-run `build-index`.
 
 ## window.MM API surface
@@ -1400,10 +1400,6 @@ scrolled into view as it appears.
 - Mana base generator: greedy set cover (colors covered ×10 + basic-subtype bonus + EDHREC ×3 − ETB-tapped penalty); Command Tower auto-add
 - Obsolescence warnings (amber) in recommendations + deck list via `MM.obsolescence`
 - LocalStorage persistence (`manamap-deck` key); text export, commander first
-
-## Known Plotly gotcha
-
-`Plotly.relayout` triggers `plotly_relayout` events — use a guard flag to avoid infinite loops (see `_labelUpdateInFlight` in mana-map.js).
 
 ## Future options (deliberately not done)
 

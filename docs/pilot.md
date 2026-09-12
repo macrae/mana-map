@@ -585,8 +585,9 @@ version of itself, which is the same distinction `UNPLAYABLE_STATUSES` draws.
 **`deck-delete` is the only destructive fleet verb**, and it refuses a deck that was
 **ever sleeved, ever played or ever published** — those are records, and the honest
 move on a record is to archive it. The rule is deliberately not keyed on `published`
-alone: that means *the frozen renderer ran*, and `docs/manual-v5-spec.md` retires the
-renderer, so a gate keyed only on it would silently invert. What it is for is the
+alone: that means *the frozen renderer ran*, and the Pilot's Operating Handbook
+(`poh.py`) retired that renderer on 2026-09-02, so a gate keyed only on it would
+silently invert. What it is for is the
 never-built baseline: `kianne`, `kinnan` and `blar` were deterministic whole-format
 builds that were counted as HOLDERS of cards they never physically had, so Edgar's
 `bloodline-v4` was blocked on *"unsleeve The Ozolith from kianne"* — a deck that has
@@ -1502,7 +1503,7 @@ A number restated in two places is a number that will disagree with itself.
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
 `requires_roles` markers from `tests/conftest.py`.
 
-## LEGACY — the magazine renderer (frozen; replaced by `docs/manual-v5-spec.md`)
+## LEGACY — the magazine renderer (frozen; replaced by `poh.py` on 2026-09-02)
 
 Until 2026-08-19 each deck was published as an **issue** of a magazine, *Pilot's Manual*.
 The renderer (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`) still

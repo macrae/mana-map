@@ -25,13 +25,8 @@
   // shape would show an empty bench and be quietly wrong about your work.
   // Bump this when the manifest's shape changes again.
   //
-  // 2 -> 3: the manifest grew `version`, the latest release tag, carried for
-  // EVERY deck rather than only the sleeved ones. A browser holding the old
-  // shape stamps no version on any unsleeved deck's art — and the stamp is how
-  // this page now says which list a deck is, so the old bytes are quietly wrong
-  // about the thing the page exists to tell you.
-  var MANIFEST_VERSION = 3;
-  var MANIFEST = '../data/decks/index.json?v=' + MANIFEST_VERSION;
+  // The bust and its history live in `api.js`, which every page loads.
+  var MANIFEST = window.MANIFEST_URL;
   var BASE = '../data/decks/';
 
   function esc(v) {

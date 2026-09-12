@@ -1,7 +1,7 @@
 """The terminal is a surface, and this is the only module that draws on it.
 
-The bench is used from the command line far more than from a browser: 66 pilot
-subcommands, 18 top-level ones, and that is where the analysis, the searching
+The bench is used from the command line far more than from a browser: 107 pilot
+subcommands, 28 top-level ones, and that is where the analysis, the searching
 and the prototyping happen. It was also silent while it worked. Measured before
 this module existed: **two of eighteen long-running operations reported any
 progress at all**. `simulate` runs 45–62 minutes across seven JVMs and printed

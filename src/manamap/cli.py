@@ -195,7 +195,7 @@ def build_parser():
                      help="cap the number of decks fetched when refreshing")
 
     ask_parser = subparsers.add_parser(
-        "ask", help="Ask Sven — the one front door over the 102 commands")
+        "ask", help="Ask Sven — the one front door over every pilot subcommand")
     ask_parser.add_argument("question", nargs="*", help="what you want to know")
     ask_parser.add_argument(
         "--no-cache", action="store_true",

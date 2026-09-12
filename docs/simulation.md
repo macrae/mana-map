@@ -2,7 +2,7 @@
 
 *What this subsystem is for, what was measured before building it, the verdict, and how it
 grew. The `game_state` v2 schema it consumes is in `docs/pilot.md`. Last revised
-2026-08-22.*
+2026-09-12.*
 
 **This is the thing the rest of the bench serves.** A claim about a deck is worth what the
 experiment behind it is worth, and this is where experiments run: `simulate` for a deck

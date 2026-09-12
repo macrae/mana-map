@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-all test-browser test-fresh serve manuals clean check demo
+.PHONY: help setup test test-all test-browser test-fresh serve manuals clean check demo docs-sizes
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -153,6 +153,9 @@ demo:  ## Rebuild everything the demo shows, then serve it. Run before presentin
 	else \
 	  python3 -m http.server $(PORT); \
 	fi
+
+docs-sizes:  ## Re-derive the size column in docs/README.md (run after editing a doc)
+	@$(PY) tools/docs_index_sizes.py
 
 clean:  ## Drop caches and bytecode. Never touches data/ or manuals/.
 	rm -rf .pytest_cache

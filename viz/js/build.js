@@ -44,7 +44,8 @@
   const DECK_BASE = '../data/decks/';
   // `?v=` for the same reason `workbench.js` carries one: the manifest's
   // SHAPE changes, and a cached older shape is a confidently wrong answer.
-  const MANIFEST_URL = DECK_BASE + 'index.json?v=2';
+  // `api.js` owns the bust — this read `?v=2` while the workbench read `?v=3`.
+  const MANIFEST_URL = window.MANIFEST_URL || (DECK_BASE + 'index.json');
   const ROLES_URL = '../data/card_roles.json';
 
   // The scenario DOES have a card list now: `build_index.py:line_cards` derives it from the

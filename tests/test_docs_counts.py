@@ -49,6 +49,13 @@ SURFACES = [
     *sorted((ROOT / ".claude").rglob("*.md")),
     *[p for p in sorted((ROOT / "docs").glob("*.md"))
       if p.name not in DESIGN_RECORDS],
+    # THE COUNTS ALSO LIVE IN SOURCE, and three of them were wrong.
+    # `console.py`, `serve.py` and `cli.py` each stated the pilot subcommand
+    # count in a module docstring or a `--help` string — 66, 69 and 102 against
+    # a real 107 — and this file guarded only Markdown, so all three drifted
+    # unnoticed while CLAUDE.md was caught the same afternoon. A count a USER
+    # reads out of `--help` is a documentation surface whatever file it lives in.
+    *sorted((ROOT / "src" / "manamap").glob("*.py")),
 ]
 
 _WORDS = {

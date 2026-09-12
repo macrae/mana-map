@@ -71,13 +71,13 @@ paid for and each constrains a task below.
 | P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | TODO | |
 | P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | DONE | |
 | P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | DONE | |
-| P1-09 | 1 | `CLAUDE.md` corrections | M | TODO | |
-| P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | TODO | |
+| P1-09 | 1 | `CLAUDE.md` corrections | M | DONE | |
+| P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | DONE | |
 | P1-11 | 1 | Prune `PLAN.md` to open work | M | TODO | |
 | P1-12 | 1 | `testing.md`: one runtime figure, real counts, every marker | S | TODO | |
 | P1-13 | 1 | New drift gates, each measured first | M | DONE | |
-| P1-14 | 1 | The four-way pilot-subcommand count disagreement in code | S | TODO | |
-| P1-15 | 1 | Align the frontend cache busts and gate them | S | TODO | |
+| P1-14 | 1 | The four-way pilot-subcommand count disagreement in code | S | DONE | |
+| P1-15 | 1 | Align the frontend cache busts and gate them | S | DONE | |
 | P2-01 | 2 | #48.2 — guard the cache accessor | S | TODO | |
 | P2-02 | 2 | #28 — key the freshness cache on a derived import closure | M | TODO | |
 | P2-03 | 2 | #31 — one home for the deck root; complete `clear_memo` | M | TODO | |

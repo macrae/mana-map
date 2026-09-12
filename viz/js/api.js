@@ -22,6 +22,27 @@
  * server to run a named command, exactly as a terminal would; the server's
  * allow-list decides what a name means. Nothing in this file is a model client.
  */
+/* ── The deck manifest's cache bust — ONE constant, four readers ──────────────
+ *
+ * `data/decks/index.json` was fetched with `?v=3` (workbench.js), `?v=2`
+ * (build.js), `?v=` + MM.DATA_VERSION (discovery.js) and `cache: 'no-cache'`
+ * (branch-view.js): four schemes for one file, so a manifest shape change
+ * reached some readers and not others. Two of them were already wrong.
+ *
+ * It is NOT `MM.DATA_VERSION`, which is deliberately separate: that one means
+ * "a consumer would draw a different conclusion from the card-map bytes" and
+ * moves on a retrain. The manifest moves when its SHAPE changes. Sharing one
+ * number would bust 60 MB of embeddings because a deck gained a key.
+ *
+ * Bump when a key is added, removed or given a new meaning.
+ *   2 -> 3: the manifest grew `version`, the latest release tag, for EVERY deck
+ *           rather than only the sleeved ones. A browser holding the old shape
+ *           stamps no version on any unsleeved deck's art — and the stamp is
+ *           how the workbench says which list a deck is.
+ */
+window.MANIFEST_VERSION = 3;
+window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
+
 window.Api = (function () {
   'use strict';
 

@@ -1046,7 +1046,8 @@ window.Discovery = (function () {
 
   function loadManifest() {
     if (manifest) return Promise.resolve(manifest);
-    return fetch(urls.deckIndex + '?v=' + ((window.MM && MM.DATA_VERSION) || 0))
+    // The MANIFEST's bust, not the card map's — see `api.js`.
+    return fetch(urls.deckIndex + '?v=' + (window.MANIFEST_VERSION || 0))
       .then(r => (r.ok ? r.json() : { decks: [] }))
       .then(doc => { manifest = doc.decks || []; return manifest; })
       .catch(() => { manifest = []; return manifest; });
