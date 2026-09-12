@@ -390,3 +390,34 @@ def test_the_style_checks_that_cannot_be_proved_harmless_only_report(fake_deck):
     assert "shouty caps" in joined and "superlative" in joined
     assert "exclamation mark" in joined
     assert "jargon" not in joined, "the jargon list should be gone"
+
+
+@requires_deck
+def test_the_printer_runs_on_a_real_log():
+    """NOTHING EXERCISED `main`, so a rename broke the command in silence.
+
+    The starship register was retired and `skeleton()` renamed its key to
+    `commander` (`captains_log.py:282`). One reader was missed, and
+    `manamap pilot captains-log <slug>` raised `KeyError: 'ship'` on EVERY deck
+    that has a log — five of them — from the rename until 2026-09-12. The
+    validator, the merger and the renderer were all tested; the thing a person
+    types was not.
+
+    Re-introducing the bug: put `doc['ship']` back at :297 and this reds.
+    """
+    import argparse
+    import contextlib
+    import io
+
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import captains_log
+
+    checked = 0
+    for path in sorted(DECKS_DIR.glob("*/log.jsonl")):
+        slug = path.parent.name
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            captains_log.main(argparse.Namespace(slug=slug, as_json=False))
+        assert "CAPTAIN'S LOG" in buf.getvalue(), slug
+        checked += 1
+    assert checked >= 3, f"only {checked} decks have a log — did the fixture move?"

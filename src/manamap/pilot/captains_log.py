@@ -294,7 +294,12 @@ def main(args):
               f'`manamap pilot deck-notes {slug} add "…"` first')
         return 0
     rendered = read(slug).get("nights") or {}
-    print(f"CAPTAIN'S LOG — {slug} ({doc['ship'] or 'ship unknown'})")
+    # `commander`, NOT `ship`. The starship register was retired and `skeleton()`
+    # renamed the key (:282) — this reader was missed, so `captains-log <slug>`
+    # raised `KeyError: 'ship'` on EVERY deck that has a log. Nothing caught it
+    # because nothing exercised the printer; `test_the_printer_runs_on_a_real_log`
+    # does now.
+    print(f"CAPTAIN'S LOG — {slug} ({doc['commander'] or 'commander unknown'})")
     for key, night in doc["nights"].items():
         pos = night["position_in_evening"] or {}
         where = (f"  game {pos['n']} of {pos['of']} that night"

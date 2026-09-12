@@ -67,7 +67,7 @@ paid for and each constrains a task below.
 | P1-02 | 1 | Fix the `serve_cli` fails-open test | S | DONE | |
 | P1-03 | 1 | Decide the Edgar run the piloting gate flags | S | DONE | |
 | P1-04 | 1 | Edgar `info.json` staleness on a branch write | S | DONE | |
-| P1-05 | 1 | File the new findings as issues; close #27, #43 | S | TODO | |
+| P1-05 | 1 | File the new findings as issues; close #27, #43 | S | DONE | |
 | P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | TODO | |
 | P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | TODO | |
 | P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | TODO | |
