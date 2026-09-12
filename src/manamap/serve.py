@@ -934,6 +934,27 @@ CLI_READONLY = frozenset({
 #: `--write` flag later and nobody will remember this file.
 _CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway")
 
+#: A WRITE THE FLAG CHECK CANNOT SEE, because the verb is a POSITIONAL.
+#:
+#: `_CLI_WRITE_ATTRS` catches a command that writes when you pass `--write`.
+#: It cannot catch one that writes because of the word after the slug, and on
+#: 2026-09-12 `deck-version ur-dragon paper` went through `/api/cli`, called
+#: `set_paper`, and rewrote `deck_versions.json` — an authored, tracked file —
+#: while `CLAUDE.md` said of this server "It CANNOT write; the gate is
+#: `serve._cli`, imported rather than restated." It could, and it did. Four of
+#: the six actions write (`tag`, `restore`, `paper`, `baseline`); the request
+#: also erased the pilot's own note on the lock, because re-asserting without
+#: `--note` overwrites it.
+#:
+#: So an allowlist, not a denylist: a command listed here may only run the
+#: actions named. A new action added to one of these commands is refused until
+#: somebody puts it in the set, which is a decision rather than an oversight.
+#: `tests/test_serve_cli.py` pins the full action list of every gated command,
+#: so growing one fails loudly here rather than opening a hole quietly.
+CLI_READONLY_ACTIONS = {
+    "deck-version": frozenset({None, "list", "show"}),
+}
+
 
 #: `_cli` captures output by swapping `sys.stdout`, which is PROCESS-GLOBAL while
 #: this server is one thread per request. Two overlapping calls interleave as
@@ -1041,6 +1062,14 @@ def _cli(argv=None):
     for attr in _CLI_WRITE_ATTRS:
         if getattr(ns, attr, False):
             raise ValueError(f"cli: --{attr} is not available over the API")
+    allowed = CLI_READONLY_ACTIONS.get(argv[0])
+    if allowed is not None:
+        action = getattr(ns, "action", None)
+        if action not in allowed:
+            raise ValueError(
+                f"cli: `{argv[0]} {action}` writes, so it is not available over "
+                f"the API. Read-only actions: "
+                + ", ".join(sorted(a for a in allowed if a)))
 
     buf = _io.StringIO()
     code = 0

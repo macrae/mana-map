@@ -129,6 +129,27 @@ KNOWN_FLAGGED = {
     # not a result, and the record's verdict text says so.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836"
     "-s14467126-podExperimental-c600.json",
+    #
+    # 2026-09-12, edgar-vampires against standard-v3, 40 games. Lands 0.826,
+    # casts 0.705. UNLIKE the two entries above, this one is NOISE AT n=40 and
+    # the evidence is a same-pod control: the 60-game run at the SAME
+    # composition (`c600`, hash `cdaddf26`) reads lands 0.933 / casts 0.855 and
+    # comparable=True, and Edgar's eight other tracked runs read 0.949–1.067 on
+    # lands. The deck runs 36 lands against three 100-card seats, so there is no
+    # construction confound, and our seat took 8 of 40 in this very run (0.296,
+    # second-highest at the table) — not a seat that was handled worse than the
+    # pod in any sense a reader would recognise.
+    #
+    # It is kept rather than deleted because it is the 40-game predecessor of a
+    # run the fleet still cites, and the flag is kept rather than silenced
+    # because THE GATE IS RIGHT TO HAVE NO OPINION HERE: it compares two
+    # per-turn rates with NO INTERVAL ON THE DIFFERENCE, which this repo's own
+    # doctrine forbids everywhere else, so at n=40 it cannot separate 0.826 from
+    # 1.0. That is a defect in the gate, filed separately; widening the
+    # threshold would hide the goblin-storm entry above, which is a true
+    # positive at the same n.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26"
+    "-s341395706-podExperimental-c600.json",
 }
 
 

@@ -605,6 +605,55 @@ def _print_list(doc):
         print(f"\n  note: {n}")
 
 
+def _refresh_dossiers_the_lock_changed(slug):
+    """A PAPER LOCK IS A CROSS-DECK INPUT, and until 2026-09-12 nothing acted on it.
+
+    `deck_branch.source()` records, for every card a branch wants, which other
+    decks hold it and whether each of those decks is LOCKED (`deck_branch.py:219`)
+    — and `deck_info` embeds that per-card verdict in the branch block of the
+    DECK'S OWN `info.json`. So locking one deck rewrites a field inside every
+    other deck's tracked dossier.
+
+    Measured: ur-dragon was locked on 2026-09-11 (adfad9e5) and Bloom Tender's
+    entry in gishath's `cart-v1` block still read `locked: false` a day later.
+    Three decks' `info.json` were stale — gishath, ingris-infect and sharknado —
+    and the reason nobody noticed is worse than the reason it happened: the
+    regenerate-and-compare cache keys gishath's freshness case on
+    `DECKS_DIR/gishath` and the source tree, and ur-dragon's `deck_versions.json`
+    is in NEITHER, so the cache served a passing result for inputs that had
+    moved. Filed; it is the motivating case for narrowing that key correctly.
+
+    `regen`'s automatic pass is the refresher and its scope is SLEEVED decks, so
+    that is what this refreshes. A deck on the bench is malleable and is not kept
+    current automatically — but its `info.json` is tracked and freshness-gated
+    all the same, which is a disagreement between the gate and the refresher
+    rather than something this function can fix. So the bench decks the lock
+    also touched are NAMED, with the command, instead of being left to redden a
+    test hours later.
+    """
+    from manamap.pilot import regen
+
+    try:
+        regen.run(only="deck-info", jobs=None, echo=lambda *a, **k: None)
+    except Exception as exc:                     # pragma: no cover - env
+        print(f"  could not refresh the sleeved dossiers: {exc}")
+        return
+    print("  refreshed every SLEEVED deck's info.json — the lock shows in their "
+          "branch sourcing")
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.common import deck_is_apart
+
+    bench = [d.name for d in sorted(DECKS_DIR.iterdir())
+             if d.is_dir() and (d / "info.json").exists()
+             and (d / "branches").is_dir() and any((d / "branches").iterdir())
+             and not paper(d.name) and not deck_is_apart(d.name)]
+    if bench:
+        print(f"  ON THE BENCH and not refreshed automatically ({len(bench)}) — "
+              f"their branch sourcing now reads {slug} as locked:")
+        for other in bench:
+            print(f"    manamap pilot deck-info {other} --write")
+
+
 def main(args):
     slug = args.slug
     action = getattr(args, "action", "list") or "list"
@@ -643,6 +692,7 @@ def main(args):
         if getattr(args, "clear", False):
             set_paper(slug, clear=True)
             print(f"{slug}: lock withdrawn — no longer marked as built in paper")
+            _refresh_dossiers_the_lock_changed(slug)
             return
         v = set_paper(slug, ref=getattr(args, "at", None) or getattr(args, "ref", None),
                       built_at=getattr(args, "built_at", None),
@@ -660,6 +710,7 @@ def main(args):
                 print(f"    - {n}")
             for n in d["add"]:
                 print(f"    + {n}")
+        _refresh_dossiers_the_lock_changed(slug)
         return
     if action == "tag":
         if not args.ref:

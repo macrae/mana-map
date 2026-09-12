@@ -1291,7 +1291,7 @@ def _print_pull_list(pl, slug, branch, as_version):
             print(f"      {r['name'][:36]:38} {where}")
 
 
-def main(args):
+def _dispatch(args):
     slug, action = args.slug, args.action
     branch = getattr(args, "name", None)
     if action == "list":
@@ -1527,3 +1527,56 @@ def main(args):
         print("  captain's log stamps games against, so it stays yours:")
         print(f"      git add data/decks/{slug} && \\")
         print(f"        git commit -m \"{slug}: merge branch {branch}\"")
+
+
+#: Verbs that change what the DECK's `info.json` says about its branches.
+#: `merge` is absent on purpose — it already runs `regen.run(slug=…)`, which
+#: includes the `deck-info` stage.
+MUTATES_THE_DOSSIER = frozenset(
+    {"new", "stage", "unstage", "commit", "propose", "withdraw", "delete"})
+
+
+def _refresh_dossier(slug):
+    """Rewrite `info.json` after a branch write, on a SLEEVED deck only.
+
+    A branch is a directory, and `deck_info.compose` reads every one of them:
+    the `branches` block and the derived `next` line both move when a branch is
+    opened, staged, committed, proposed or deleted. So a branch write makes the
+    DECK's tracked dossier stale without touching the deck's own list — and on
+    2026-09-12 that is exactly what happened: `elenda-v1` was opened on
+    edgar-vampires and `test_info_json_matches_a_fresh_run[edgar-vampires]` went
+    red with the champion's 99 unchanged, two keys out of date.
+
+    `merge` already learned this lesson and its own comment states it — "a merge
+    left `diagnostic.json`, `benchmark.json` and `info.json` describing the
+    PREVIOUS 99, and the way anyone found out was a failing test hours later."
+    The cheap verbs never learned it.
+
+    ONLY THE DOSSIER, NOT `regen.run`. Nothing a branch write does moves the
+    deck's own measurements, so re-running the goldfish would cost seconds to
+    reproduce identical bytes. `deck_info.compose` is 2.4s cold and 0.8s warm,
+    measured, which is the whole added cost.
+
+    AND ONLY ON A PINNED DECK, via `regen.is_pinned` rather than a second
+    predicate. A paper-locked deck is one the pilot plays and its chain is kept
+    complete without being asked; a bench deck is malleable and is allowed to be
+    incomplete, so refreshing there would put a freshness gate on work in
+    progress. Same split, same reason, as `regen.BOOTSTRAP`.
+    """
+    import argparse
+
+    from manamap.pilot import deck_info, regen
+
+    if not regen.is_pinned(slug):
+        return
+    if not (deck_dir(slug) / "cards.json").exists():
+        return
+    deck_info.main(argparse.Namespace(slug=slug, write=True, as_json=False,
+                                      verify=False, branch=None))
+    print(f"  rewrote data/decks/{slug}/info.json (the branch set changed)")
+
+
+def main(args):
+    _dispatch(args)
+    if getattr(args, "action", None) in MUTATES_THE_DOSSIER:
+        _refresh_dossier(args.slug)

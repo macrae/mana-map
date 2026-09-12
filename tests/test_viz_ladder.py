@@ -42,13 +42,28 @@ def test_every_dossier_agrees_with_the_ladder_about_its_rung():
 @requires_deck
 def test_the_gate_count_matches_what_promote_would_print():
     """A deck two requirements from the table must read the same on both
-    surfaces, or the rack is quietly optimistic about work still to do."""
+    surfaces, or the rack is quietly optimistic about work still to do.
+
+    THE GUARD IS THE MID-LADDER SET, NOT A NUMBER. It was `checked >= 3` and it
+    went red on 2026-09-12 without anything disagreeing: only two decks were
+    left between the rungs, because five had been paper-locked to the top and
+    five archived off the ladder entirely (`stage is None`). A count tied to
+    fleet SHAPE fails on a promotion, which is the one event that should never
+    red this file — the same class as the three tests that name one deck as an
+    example of a property. So the set is computed first, asserted non-empty,
+    and then every member of it must have been checked: that cannot drift as
+    decks move, and it still catches a loop that silently skips one.
+    """
+    order = list(promote.LADDER)
+    # A deck is ON the ladder and below the top — the only place a gate count
+    # means anything. `None` is off the ladder (archived, retired, in a pile).
+    climbing = [slug for slug in _decks_with_info()
+                if (promote.stage(slug) or order[-1]) != order[-1]]
     checked = 0
     for slug in _decks_with_info():
         info = json.loads((DECKS_DIR / slug / "info.json").read_text())
         gates = info.get("gates")
         stage = promote.stage(slug)
-        order = list(promote.LADDER)
         if stage is None or stage == order[-1]:
             assert gates is None, f"{slug}: at the top rung but carries a gate count"
             continue
@@ -58,7 +73,11 @@ def test_the_gate_count_matches_what_promote_would_print():
         assert gates["met"] == len(rows) - len(promote.blockers(rows))
         assert gates["blocking"] == [r["label"] for r in promote.blockers(rows)]
         checked += 1
-    assert checked >= 3
+    assert climbing, ("no deck is between the rungs, so this test proved "
+                      "nothing — build one, or the ladder has no middle")
+    assert checked == len(climbing), (
+        f"checked {checked} of {len(climbing)} decks between the rungs: "
+        f"{climbing}")
 
 
 def test_the_rack_reads_the_stage_rather_than_inventing_one():

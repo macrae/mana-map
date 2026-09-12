@@ -63,10 +63,10 @@ paid for and each constrains a task below.
 
 | id | phase | task | size | status | landed |
 |---|---|---|---|---|---|
-| P1-01 | 1 | Diagnose `viz_ladder` before closing #42 | S | TODO | |
-| P1-02 | 1 | Fix the `serve_cli` fails-open test | S | TODO | |
-| P1-03 | 1 | Decide the Edgar run the piloting gate flags | S | TODO | |
-| P1-04 | 1 | Edgar `info.json` staleness on a branch write | S | TODO | |
+| P1-01 | 1 | Diagnose `viz_ladder` before closing #42 | S | DONE | |
+| P1-02 | 1 | Fix the `serve_cli` fails-open test | S | DONE | |
+| P1-03 | 1 | Decide the Edgar run the piloting gate flags | S | DONE | |
+| P1-04 | 1 | Edgar `info.json` staleness on a branch write | S | DONE | |
 | P1-05 | 1 | File the new findings as issues; close #27, #43 | S | TODO | |
 | P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | TODO | |
 | P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | TODO | |

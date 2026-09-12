@@ -82,13 +82,57 @@ def test_cli_accepts_the_pilot_prefix_because_argv_carries_it():
     assert a["stdout"] == b["stdout"]
 
 
-def test_the_client_fails_open_when_no_server_is_listening():
+def test_the_client_fails_open_when_no_server_is_listening(monkeypatch):
     """FAILING OPEN IS THE WHOLE DESIGN. A dead port, a wrong port, a server
     that refuses the command — every one of them returns None so the command
-    runs locally exactly as it did before."""
+    runs locally exactly as it did before.
+
+    THE PORT IS SET, NOT ASSUMED. This said `# nothing on :1` for a fortnight
+    and never set `MANAMAP_DAEMON`, so it dialled the default 127.0.0.1:8000
+    and got a real answer from the pilot's own `manamap serve` — which
+    `CLAUDE.md` tells you to keep running, because it is what makes every
+    read-only command warm. So the test failed for anyone following the
+    project's own workflow and passed in CI, where nothing is listening. A
+    fail-open test that depends on nothing listening is not testing fail-open.
+    """
     from manamap import cli
 
-    assert cli._daemon_run(["deck-facts", "ur-dragon"]) is None  # nothing on :1
+    monkeypatch.setenv("MANAMAP_DAEMON", "127.0.0.1:1")
+    assert cli._daemon_run(["deck-facts", "ur-dragon"]) is None
+
+
+def test_the_client_fails_open_on_a_stranger_answering_the_right_port(monkeypatch):
+    """THE CONTROL THE OTHER TEST CANNOT BE. A closed socket proves only that
+    a connection refusal is handled; the dangerous case is something that
+    ANSWERS. `python -m http.server 8000` from the repo root is in CLAUDE.md
+    one line below `manamap serve`, and a pilot who starts the static server
+    instead has a live listener on the daemon's default port that knows
+    nothing about `/api/cli`.
+
+    It replies 501 to a POST, so `cli._daemon_run`'s status check covers it —
+    but nothing pinned that, and the whole fail-open contract rests on it.
+    """
+    import http.server
+    import threading
+
+    from manamap import cli
+
+    class Static(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):                       # noqa: N802 — stdlib's name
+            self.send_error(501, "Unsupported method ('POST')")
+
+        def log_message(self, *args):
+            pass                                 # keep the suite's output clean
+
+    server = http.server.HTTPServer(("127.0.0.1", 0), Static)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        host, port = server.server_address[0], server.server_address[1]
+        monkeypatch.setenv("MANAMAP_DAEMON", f"{host}:{port}")
+        assert cli._daemon_run(["deck-facts", "ur-dragon"]) is None
+    finally:
+        server.shutdown()
+        server.server_close()
 
 
 def test_the_client_can_be_switched_off(monkeypatch):
@@ -96,3 +140,78 @@ def test_the_client_can_be_switched_off(monkeypatch):
 
     monkeypatch.setenv("MANAMAP_NO_DAEMON", "1")
     assert cli._daemon_run(["deck-facts", "ur-dragon"]) is None
+
+
+def _positional_choices(command):
+    """Every positional-with-choices on one pilot subcommand, from the parser."""
+    import argparse
+
+    from manamap.pilot.registry import add_pilot_parser
+
+    parser = argparse.ArgumentParser(prog="manamap")
+    add_pilot_parser(parser.add_subparsers(dest="command"))
+    top = [a for a in parser._actions
+           if isinstance(a, argparse._SubParsersAction)][0]
+    pilot = [a for a in top.choices["pilot"]._actions
+             if isinstance(a, argparse._SubParsersAction)][0]
+    cmd = pilot.choices[command]
+    return {a.dest: list(a.choices) for a in cmd._actions
+            if not a.option_strings and a.choices}
+
+
+def test_a_positional_write_cannot_reach_the_api():
+    """THE GATE READ FLAGS AND THE WRITE WAS A WORD.
+
+    `_CLI_WRITE_ATTRS` refuses `--write`, `--force`, `--apply`, `--record` and
+    `--anyway`. It has nothing to say about a command whose verb is the
+    positional after the slug — and on 2026-09-12 `deck-version ur-dragon paper`
+    was POSTed to `/api/cli`, ran `set_paper`, and rewrote the tracked
+    `deck_versions.json`, wiping the note on the lock as it went. `CLAUDE.md`
+    said of this server, at the time: "It CANNOT write."
+
+    Four of `deck-version`'s six actions write. This asserts the three that do
+    are refused and the two that do not are served.
+    """
+    for action in ("paper", "tag", "restore", "baseline"):
+        with pytest.raises(ValueError) as caught:
+            serve._cli(["deck-version", "ur-dragon", action])
+        assert "writes" in str(caught.value), action
+
+    assert serve._cli(["deck-version", "ur-dragon", "list"])["exit"] == 0
+    # `show` is PERMITTED but needs a `ref`, and the gate is about permission,
+    # not about whether the command then succeeds. Asserting only that the
+    # refusal is not the gate's: `show` without a ref raises its own.
+    try:
+        serve._cli(["deck-version", "ur-dragon", "show"])
+    except ValueError as exc:
+        assert "writes" not in str(exc)
+
+
+def test_every_gated_command_with_a_positional_verb_is_covered():
+    """A NEW ACTION MUST FAIL HERE RATHER THAN OPEN A HOLE QUIETLY.
+
+    `CLI_READONLY_ACTIONS` is an allowlist, so a new *write* action on
+    `deck-version` is refused by construction. The danger is the other
+    direction: a command joining `CLI_READONLY` that has a positional verb
+    nobody classified. This pins the full action list of every gated command —
+    so adding one, or adding a command that has one, is a decision somebody
+    takes rather than an oversight that ships.
+    """
+    checked = 0
+    for command in sorted(serve.CLI_READONLY):
+        for dest, choices in _positional_choices(command).items():
+            checked += 1
+            assert command in serve.CLI_READONLY_ACTIONS, (
+                f"`{command}` is read-only over the API and takes a positional "
+                f"{dest!r} out of {choices} — classify its actions in "
+                f"serve.CLI_READONLY_ACTIONS, or drop it from CLI_READONLY")
+            unknown = set(choices) - set(serve.CLI_READONLY_ACTIONS[command])
+            # Everything not on the allowlist is refused, which is the safe
+            # direction — this only asserts the allowlist names real actions.
+            assert set(serve.CLI_READONLY_ACTIONS[command]) - {None} <= set(choices), (
+                f"{command}: CLI_READONLY_ACTIONS names actions the parser does "
+                f"not have: {set(serve.CLI_READONLY_ACTIONS[command]) - {None} - set(choices)}")
+            assert unknown, (
+                f"{command}: every action is allowed, so the gate does nothing — "
+                f"either it has no writers (drop the entry) or one is missing")
+    assert checked >= 1, "no gated command has a positional verb — has the gate moved?"
