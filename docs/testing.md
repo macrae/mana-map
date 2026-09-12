@@ -33,7 +33,11 @@ instead. To print the current numbers rather than trust a snapshot:
 | | |
 |---|---:|
 | `make test` — warm cache | **319 s** (3,371 passed, 327 skipped, 6 xfailed, **13 failed**; 318 served from the cache) |
-| `make test-fresh` — nothing cached | **566 s** (3,699 passed, 9 skipped, 6 xfailed, **14 failed**) |
+| `make test-fresh` — nothing cached | **557 s** (3,705 passed, 9 skipped, 6 xfailed, **9 failed**) |
+
+The fresh run above is the one that counts. An earlier fresh run the same
+afternoon read **14 failed**; five of those were stale artifacts, not broken
+code, and regenerating them closed the gap without a line of source changing.
 
 **Run `make test-fresh` before believing a red count.** The two runs above are
 the same commit an hour apart and they disagree by one failure in each

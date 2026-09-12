@@ -9,9 +9,16 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-12**, 14 failing / 3,699
-passing / 9 skipped, 566 s. The nine remaining after that run's regenerations
-are listed below.
+Last verified against **`make test-fresh`**: **2026-09-12**, **9 failing /
+3,705 passing** / 9 skipped / 6 xfailed, 557 s. All nine are listed below and
+each has an owner.
+
+Nine is where the day started and where it ended, by a different route. Four of
+the morning's nine were fixed (`viz_ladder`'s guard was tied to fleet shape,
+`serve_cli` named a port it never set, the piloting gate fired on n=40 noise,
+and a branch write left the champion's dossier stale); five more appeared when
+the suite was finally run UNCACHED, and were stale artifacts rather than broken
+code. Regenerating them is what closed the gap.
 
 **VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
 board. Run warm an hour apart on the same commit, `make test` reported 13 and
