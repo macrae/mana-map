@@ -78,10 +78,10 @@ paid for and each constrains a task below.
 | P1-13 | 1 | New drift gates, each measured first | M | DONE | |
 | P1-14 | 1 | The four-way pilot-subcommand count disagreement in code | S | DONE | |
 | P1-15 | 1 | Align the frontend cache busts and gate them | S | DONE | |
-| P2-01 | 2 | #48.2 — guard the cache accessor | S | TODO | |
-| P2-02 | 2 | #28 — key the freshness cache on a derived import closure | M | TODO | |
-| P2-03 | 2 | #31 — one home for the deck root; complete `clear_memo` | M | TODO | |
-| P2-04 | 2 | Re-measure and state ONE runtime figure | S | TODO | |
+| P2-01 | 2 | #48.2 — guard the cache accessor | S | DONE | |
+| P2-02 | 2 | #28 — key the freshness cache on a derived import closure | M | DONE | |
+| P2-03 | 2 | #31 — one home for the deck root; complete `clear_memo` | M | DONE | |
+| P2-04 | 2 | Re-measure and state ONE runtime figure | S | DONE | |
 | P3-01 | 3 | #45 — a branched measurement carries the branch's own sha | M | TODO | |
 | P3-02 | 3 | #46.1 — `stage`/`commit` warn on a PROPOSED branch | S | TODO | |
 | P3-03 | 3 | #46.2 — `propose` amends instead of requiring withdraw | M | TODO | |

@@ -35,6 +35,38 @@ instead. To print the current numbers rather than trust a snapshot:
 | `make test` — warm cache | **319 s** (3,371 passed, 327 skipped, 6 xfailed, **13 failed**; 318 served from the cache) |
 | `make test-fresh` — nothing cached | **557 s** (3,705 passed, 9 skipped, 6 xfailed, **9 failed**) |
 
+### The cache key, after Phase 2 (2026-09-12)
+
+| | |
+|---|---:|
+| `make test` — fully warm | **240 s** (450 skipped, of which most are cache hits) |
+| `make test` — after editing `sven/llm.py` | **205 s** — *unchanged*, because no producer imports it |
+| `make test` — after editing `pilot/goldfish.py` | the freshness cases re-run, as they must |
+
+**The key is DERIVED now, not the whole tree.** `conftest.module_closure` walks
+each producer's syntax tree transitively — counting imports at any depth,
+because this package imports lazily almost everywhere — and the three files that
+used to name `SRC` name their producers instead. Measured: 60 of 182 source
+files for the freshness tests, 49 for the manual renderer, 59 for the twelve
+validators.
+
+What that buys, per file edited:
+
+| edit | freshness (105) | manuals (9) | validators (165) |
+|---|---|---|---|
+| `pilot/goldfish.py`, `pilot/common.py`, `config.py` | re-run | re-run | re-run |
+| `sim/forge.py` | re-run | — | — |
+| `pilot/build_manual.py` | — | re-run | — |
+| `sven/`, `training/`, `export/`, `cli.py`, the eval harnesses | — | — | — |
+
+Before, every one of those re-ran all 279 cases.
+
+**And the DATA half went the other way.** `info.json` and `net_change.json` both
+embed, per card, which other decks hold it and whether each of those is locked,
+so they key on the whole deck tree rather than one deck (#49). Narrowing the
+code half without widening this one would have been worse than doing nothing:
+over-invalidation on source was the only thing that ever flushed those.
+
 The fresh run above is the one that counts. An earlier fresh run the same
 afternoon read **14 failed**; five of those were stale artifacts, not broken
 code, and regenerating them closed the gap without a line of source changing.

@@ -19,6 +19,8 @@ only reason the scopes are not uniform. Those asymmetries are what these tests
 hold, because they are the part a later refactor would tidy away.
 """
 
+import json
+
 import pytest
 
 from manamap.pilot import goldfish
@@ -562,14 +564,47 @@ def test_the_sacrifice_engine_is_opt_in_and_fires_when_it_is_on():
 @requires_deck
 def test_the_runaway_guard_holds():
     """A death payoff that makes a token is a loop, and a loop that terminates
-    silently cannot be told from one that never ran."""
-    doc = goldfish.run("edgar-vampires", branch=None, iterations=1500, quiet=True,
-                       model_sacrifice=True)
-    m = doc["metrics"]
-    assert m["mean_sacrifices_by_turn"]["10"] < goldfish.SAC_LIMIT_PER_TURN * 10
-    assert m["sac_cap_hit_rate"] == 0.0, (
+    silently cannot be told from one that never ran.
+
+    `== 0.0` IS THE RIGHT THRESHOLD AND MUST NOT BE RAISED. The cap is a
+    tripwire, not a policy: a game that hits it has had its figures truncated at
+    an arbitrary point, so its numbers are whatever the cap left behind. Edgar
+    reads 0.001 at n=1500 — one or two games in fifteen hundred — and the
+    temptation to call that noise is exactly the mistake. Find the seeded game
+    and read the board.
+
+    WIDENED 2026-09-12 from edgar alone to every deck that declares
+    `model_sacrifice`. It was example-based on the one deck that happened to
+    trip it, so a second deck growing a loop would not have shown up here at
+    all — the same shape as the three tests that name one deck as an example of
+    a property (#35).
+    """
+    from manamap.config import DECKS_DIR
+
+    declared = []
+    for path in sorted(DECKS_DIR.iterdir()):
+        targets = path / "goldfish_targets.json"
+        if not targets.is_file():
+            continue
+        if json.loads(targets.read_text()).get("model_sacrifice"):
+            declared.append(path.name)
+    assert declared, "no deck declares model_sacrifice — has the flag moved?"
+
+    tripped = []
+    for slug in declared:
+        doc = goldfish.run(slug, branch=None, iterations=1500, quiet=True,
+                           model_sacrifice=True)
+        m = doc["metrics"]
+        assert m["mean_sacrifices_by_turn"]["10"] < goldfish.SAC_LIMIT_PER_TURN * 10, (
+            f"{slug}: mean sacrifices by turn 10 is above what ten turns of the "
+            f"cap could produce")
+        if m["sac_cap_hit_rate"] != 0.0:
+            tripped.append(f"{slug} at {m['sac_cap_hit_rate']}")
+    assert not tripped, (
         "the cap fired on a real deck — either a loop exists or the policy is "
-        "eating more than a board can hold")
+        "eating more than a board can hold: " + ", ".join(tripped)
+        + ". Do NOT raise SAC_LIMIT_PER_TURN; the capped games' figures are "
+        "truncated, not merely large.")
 
 
 # ── 7. Token doublers, for the tokens that fight ──────────────────────────

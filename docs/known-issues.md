@@ -9,9 +9,18 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-12**, **9 failing /
-3,705 passing** / 9 skipped / 6 xfailed, 557 s. All nine are listed below and
-each has an owner.
+Last verified against **`make test-fresh`**: **2026-09-12**, **6 failing /
+3,718 passing** / 9 skipped / 7 xfailed, 531 s.
+
+**SIX REDS, FOUR ROOT CAUSES** — the count has always been the less useful
+number:
+
+| cause | reds | what it needs |
+|---|---|---|
+| ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
+| heliod's champion targets declare a branch-only card (#47) | 1 | a branch-scoped overlay, Phase 3 |
+| `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is in the issue |
+| the sacrifice cap fires 1-in-1500 on edgar (#34) | 1 | find the seeded game and read the board |
 
 Nine is where the day started and where it ended, by a different route. Four of
 the morning's nine were fixed (`viz_ladder`'s guard was tied to fleet shape,
@@ -32,14 +41,21 @@ until it is fixed, a warm run cannot establish this page.
 
 ---
 
-## 1. ur-dragon: five artifacts describe a deck that is not on disk — BLOCKED, deliberately
+## 1. ur-dragon: THREE artifacts describe a deck that is not on disk — BLOCKED, deliberately
+
+*Corrected 2026-09-12. This grouped FIVE tests and was wrong about two of them.
+`versions_json_matches_a_fresh_run` and `poh::a_rebuild_is_byte_identical` had
+nothing to do with the phantom cards: the version file was missing the paper
+block and the handbook's revision line read `UNBOUND — no version tag` instead
+of `Applies to the sleeved list, v1.2.1`. Both were `adfad9e5` setting the lock
+without regenerating what derives from it, both were cleared by `make manuals`,
+and neither needed a check-in or an agent. Grouping them here made the check-in
+look like it would fix five things when it fixes three.*
 
 | test | measuring |
 |---|---|
 | `test_pilot_tracked_artifacts_validate[ur-dragon/engine.json]` | every card the engine model names is in the 99 |
-| `test_pilot_artifact_freshness::test_versions_json_matches_a_fresh_run[ur-dragon]` | the tracked version history matches one derived from git |
-| `test_pilot_manual_freshness::test_tracked_manual_matches_a_fresh_render[ur-dragon]` | the manual is a pure function of the artifacts |
-| `test_pilot_poh::test_a_rebuild_is_byte_identical` | the handbook re-renders to the same bytes |
+| `test_pilot_agent_stamps::test_no_agent_artifact_names_a_card_the_deck_does_not_run` | the same claim, swept across every sleeved deck |
 | `test_pilot_poh::test_a_procedure_page_names_only_cards_the_deck_runs` | the procedures name only cards in the 99 |
 
 **Cause.** `validate-engine ur-dragon` reports it exactly:
