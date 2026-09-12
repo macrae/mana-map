@@ -69,13 +69,13 @@ paid for and each constrains a task below.
 | P1-04 | 1 | Edgar `info.json` staleness on a branch write | S | DONE | |
 | P1-05 | 1 | File the new findings as issues; close #27, #43 | S | DONE | |
 | P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | TODO | |
-| P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | TODO | |
-| P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | TODO | |
+| P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | DONE | |
+| P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | DONE | |
 | P1-09 | 1 | `CLAUDE.md` corrections | M | TODO | |
 | P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | TODO | |
 | P1-11 | 1 | Prune `PLAN.md` to open work | M | TODO | |
 | P1-12 | 1 | `testing.md`: one runtime figure, real counts, every marker | S | TODO | |
-| P1-13 | 1 | New drift gates, each measured first | M | TODO | |
+| P1-13 | 1 | New drift gates, each measured first | M | DONE | |
 | P1-14 | 1 | The four-way pilot-subcommand count disagreement in code | S | TODO | |
 | P1-15 | 1 | Align the frontend cache busts and gate them | S | TODO | |
 | P2-01 | 2 | #48.2 — guard the cache accessor | S | TODO | |
@@ -272,6 +272,17 @@ archiving is also how a dated document stops being a drift source:
 **`prd-2026-08.md` stays put** — ~27 `PRD-v1 §N` citations resolve against it,
 and `test_docs_counts.DESIGN_RECORDS` already exempts it.
 
+**MEASURED 2026-09-12, and two of the six are deferred.** Counting referrers
+before moving anything changed the answer:
+
+| file | referrers | call |
+|---|---|---|
+| the four 08-26 memos | 2, both written by this audit | **moved** |
+| `manual-v5-spec.md` | **35**, including ten legacy modules and thirteen test files | **defer to P5-08** — most of them are deleted by Phase 5, so moving it now means editing paths twice |
+| `agent-audit-2026-08-19.md` | 11, including `config.py` and `deck_status.py` comments | **defer to P5-08** — same reason, smaller |
+
+Archiving a document that thirty-five files cite is churn, not housekeeping.
+
 Careful: `test_docs_section_count.SURFACES` and `test_docs_counts.SURFACES`
 glob `docs/*.md` and skip anything with `history` in its parts, so archiving
 silently removes those files from both gates. That is correct for a dated
@@ -422,6 +433,15 @@ on six correct charters.
    `--collect-only`, not by running them). It cannot assert they fail without
    running them, but it can catch a row naming a test that no longer exists,
    which is half the drift.
+**Measured 2026-09-12 and two were reshaped.** Gate 1 (a bare `N subcommands`
+must be qualified) hit five places and only one was wrong — the rest were this
+audit quoting the defect and the magazine's own correct count of a subset. Gate
+2 (the page count) hit sixteen and eleven were correct prose about a subset. Both
+were rewritten to check something mechanical: the sentence beside `manamap
+--help`, and the LIST of pages rather than a number. The shipped three each
+measured one true hit and zero false, and each is proved by re-introducing its
+defect. The three below are not yet written.
+
 6. **Runtime figures live in one file.** Fail if a number followed by
    `s`/`sec`/`seconds`/`min` appears next to `make test` outside
    `docs/testing.md`. Measure this one especially carefully; it will hit

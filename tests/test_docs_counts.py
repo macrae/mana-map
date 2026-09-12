@@ -213,3 +213,115 @@ def test_no_surface_names_a_deleted_module():
                 offenders.append(f"{path.relative_to(ROOT)} names {name}")
     assert not offenders, (
         "docs reference modules that do not exist:\n  " + "\n  ".join(offenders))
+
+
+# ── Three gates added 2026-09-12, each MEASURED before it was committed ──────
+#
+# The audit found twelve wrong counts in prose that this file already guards the
+# shape of, so the first drafts of these were blunter and were narrowed on the
+# evidence — which is the rule they are written under: a check that fires on
+# correct data is worse than no check.
+#
+# Measured, first draft against final, on the repo as it stood:
+#
+#   "a bare `N subcommands` must be qualified"   5 hits, 1 true  → REWRITTEN as
+#       an ANCHORED check on the `manamap --help` sentence: 1 hit, 1 true. The
+#       four false ones were the audit and the plan QUOTING the defect, and the
+#       magazine's own "eight subcommands", which is a correct count of a subset.
+#       An unqualified count is ambiguous, but it is not always wrong, and a gate
+#       cannot tell the difference from the phrase alone.
+#
+#   "the page count must equal len(viz/*.html)"  16 hits, 5 true → REPLACED by
+#       `test_every_page_is_named_where_the_pages_are_listed`, which checks the
+#       LIST rather than the number. Eleven of the sixteen were prose about a
+#       SUBSET ("the two pages that share tokens.css") or the audit quoting the
+#       defect. Naming is mechanical; counting prose is not.
+
+
+def test_the_subcommand_count_beside_manamap_help_is_the_real_one():
+    """CLAUDE.md said "see `manamap --help` for all 18 subcommands" and the
+    parser had 28.
+
+    `TRUTHS["top-level-subcommands"]` would have caught it, and did not, because
+    that pattern requires the words "top-level" and this sentence does not have
+    them. The docstring above already calls an unqualified count "a
+    documentation bug in its own right" — nothing failed on one.
+
+    So this is ANCHORED on the sentence rather than on the noun: a number
+    introduced by `manamap --help` is a claim about the top-level parser
+    whatever adjective it uses. Measured: one hit, the true one.
+    """
+    truth = _top_level_count()
+    pattern = re.compile(r"manamap --help`?[^\n]{0,60}?(\d{1,4})\s+"
+                         r"(?:top-level\s+)?subcommands?\b", re.IGNORECASE)
+    wrong = []
+    for path in SURFACES:
+        if "history" in path.parts:
+            continue
+        for match in pattern.finditer(path.read_text(encoding="utf-8")):
+            if int(match.group(1)) != truth:
+                wrong.append(f"{path.relative_to(ROOT)}: {match.group().strip()!r}")
+    assert not wrong, (
+        f"`manamap --help` lists {truth} subcommands:\n  " + "\n  ".join(wrong))
+
+
+#: Where the pages are ENUMERATED, and must stay enumerated. Not every doc that
+#: mentions a page — only the two that hold the list a reader navigates by.
+_PAGE_INDEXES = ("CLAUDE.md", "docs/viz.md")
+
+
+def test_every_page_is_named_where_the_pages_are_listed():
+    """`viz/spaces.html` shipped 2026-09-01, was documented in `docs/viz.md`,
+    tested by `tests/test_viz_spaces_page.py`, linked from `shell.js`'s SURFACES
+    nav — and absent from CLAUDE.md, which went on saying FOUR pages for eleven
+    days.
+
+    Checking the LIST rather than the count is what makes this measurable. A
+    stated number is ambiguous — most prose that says "two pages" is talking
+    about a subset and is correct — but a page that exists and is named nowhere
+    is a fact.
+    """
+    pages = sorted(p.name for p in (ROOT / "viz").glob("*.html"))
+    assert len(pages) >= 4, f"only {len(pages)} pages found — has viz/ moved?"
+    missing = []
+    for doc in _PAGE_INDEXES:
+        text = (ROOT / doc).read_text(encoding="utf-8")
+        missing += [f"{doc} does not name {name}" for name in pages
+                    if name not in text]
+    assert not missing, (
+        "a page exists that the page list does not mention:\n  "
+        + "\n  ".join(missing))
+
+
+def test_the_docs_index_is_complete_and_its_sizes_are_real():
+    """`docs/README.md`'s size column was stale on seventeen of its rows and
+    mixed two units — the gotchas rows quoted BULLET counts (99 for a file of
+    1,731 lines) while every other row quoted lines. Four files were in `docs/`
+    and indexed nowhere.
+
+    Both halves are mechanical, so neither should ever have drifted. The index
+    is how a reader finds a doc; a row that is absent hides one, and a size that
+    is wrong by 17x misrepresents what it costs to read.
+    """
+    index = (ROOT / "docs" / "README.md").read_text(encoding="utf-8")
+    live = sorted(p.name for p in (ROOT / "docs").glob("*.md")
+                  if p.name != "README.md")
+    unindexed = [n for n in live if f"({n})" not in index]
+    assert not unindexed, (
+        "docs/ files missing from the index — add a row, or move the file to "
+        f"docs/history/:\n  {unindexed}")
+
+    wrong, checked = [], 0
+    for match in re.finditer(r"\[([a-z0-9\-.]+\.md)\]\(\1\)\*{0,2} \| ([\d,]+) \|",
+                             index):
+        name, stated = match.group(1), int(match.group(2).replace(",", ""))
+        target = ROOT / "docs" / name
+        if not target.exists():                  # history rows carry a prefix
+            continue
+        checked += 1
+        real = len(target.read_text(encoding="utf-8").splitlines())
+        if real != stated:
+            wrong.append(f"{name}: index says {stated}, file is {real} lines")
+    assert checked >= 15, f"only {checked} index rows had a size to check"
+    assert not wrong, ("stale sizes in docs/README.md — the column is LINES, "
+                       "one unit:\n  " + "\n  ".join(wrong))

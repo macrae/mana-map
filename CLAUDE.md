@@ -13,12 +13,13 @@ citations (`/resolve-stack`). Around that: a deterministic builder, `deck-audit`
 axes, `card-search` over the corpus, dated `deck-recon`, versions from git, a captain's log,
 and agents that turn a question into a priced, checked answer.
 
-**Four pages over one data layer**: the landing page (`viz/workbench.html`), the card
-atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`) and the branch
-workbench (`viz/branch.html`) — all rendering committed artifacts, with sim figures that
-carry their intervals. The magazine that used to be the product is a
-**frozen legacy renderer** until the compact deck page (`docs/manual-v5-spec.md`) replaces
-it. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
+**Five pages over one data layer**: the landing page (`viz/workbench.html`), the card
+atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`), the branch
+workbench (`viz/branch.html`) and the embedding-space appendix (`viz/spaces.html`) — all
+rendering committed artifacts, with sim figures that carry their intervals. The magazine
+that used to be the product is a **frozen legacy renderer**; the Pilot's Operating
+Handbook (`src/manamap/pilot/poh.py`) replaced it on 2026-09-02 and renders the same
+`manuals/p/<slug>.html`. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
 calls**; two deliberate, opt-in exceptions do — `serve.py`'s `ask` bridge, which
 shells out to `claude -p` as a polled job, and `mm ask` (Sven Botstrom), whose
 SDK is an optional extra the core install does not pull.
@@ -146,7 +147,7 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   collection/         # a PHYSICAL card collection (COLLECTION_DIR); the only
                       #   ownership question left, and it is about cardboard.
                       #   MANAMAP_COLLECTION_DIR overrides it
-viz/                  # static frontend. FOUR pages, one data layer:
+viz/                  # static frontend. FIVE pages, one data layer:
                       #   workbench.html  THE LANDING PAGE — every deck, racked by
                       #                   SLEEVED / waiting on cardboard / on the bench /
                       #                   history, or one fleet table sorted by played /
@@ -165,6 +166,9 @@ viz/                  # static frontend. FOUR pages, one data layer:
                       #                   the measured table with each row's definition,
                       #                   reward/risk/cost, the bill
                       #   index.html      the atlas + the graph
+                      #   spaces.html     the embedding-space appendix — what each
+                      #                   space is for and how they differ. Linked
+                      #                   from `shell.js`'s SURFACES nav
                       # THREE modes on index.html: discover (the FRONT DOOR — one random
                       # card OR cards you name, click a relation, grow a graph) / explore
                       # (the 34K atlas, live-lit with what you hold) / build (a deck or
@@ -202,7 +206,7 @@ docs/                 # reference docs; docs/README.md indexes and sorts them
 ```bash
 manamap run                   # full 15-step pipeline (steps 1 & 7 need internet)
 manamap run --from STEP       # resume from a step
-manamap <step>                # single step; see `manamap --help` for all 18 subcommands
+manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # the bench (107 pilot subcommands); `manamap pilot --help`

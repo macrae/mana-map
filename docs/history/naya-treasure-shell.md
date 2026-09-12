@@ -5,7 +5,7 @@
 
 ---
 
-## 0. A correction to `docs/ur-dragon-fork.md`
+## 0. A correction to `docs/history/ur-dragon-fork.md`
 
 **That document conflated the commander's colour identity with the mana base's requirement.
 They are different things.** Colour identity is a *deckbuilding permission*; it imposes no
