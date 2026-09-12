@@ -12,7 +12,7 @@ import pytest
 from conftest import A_BRANCH, requires_branch
 
 from manamap.pilot import assess as A
-from manamap.pilot.common import DECKS_DIR
+from manamap.config import DECKS_DIR
 
 SLUG, BRANCH = "ur-dragon", A_BRANCH
 # THE DECK IS THE SUBJECT, NOT A BRANCH. These assert what `assess` DOES, and

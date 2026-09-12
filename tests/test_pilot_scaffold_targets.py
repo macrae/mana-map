@@ -26,7 +26,7 @@ def _deck(tmp_path, monkeypatch, slug="t", cards=None, commander="Cmd"):
     doc = {"cards": ([{"name": commander, "is_commander": True}]
                      + [{"name": n} for n in (cards or [])])}
     (base / "cards.json").write_text(json.dumps(doc))
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path, raising=False)
     monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
     return base
 
@@ -105,7 +105,7 @@ def test_the_draft_marks_itself_and_names_each_group_s_source(tmp_path, monkeypa
     base = tmp_path / "t"
     base.mkdir(parents=True)
     (base / "cards.json").write_text(src.read_text())
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path, raising=False)
     monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
 
     st.scaffold("t")
@@ -131,7 +131,7 @@ def test_a_combo_line_becomes_one_leg_per_card(tmp_path, monkeypatch):
     base = tmp_path / "t"
     base.mkdir(parents=True)
     (base / "cards.json").write_text(src.read_text())
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path, raising=False)
     monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
 
     got = st.derive("t")
@@ -154,7 +154,7 @@ def test_the_commander_is_never_a_target(tmp_path, monkeypatch):
     base = tmp_path / "t"
     base.mkdir(parents=True)
     (base / "cards.json").write_text(src.read_text())
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path, raising=False)
     monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
 
     commander = next(c["name"] for c in json.loads(src.read_text())["cards"]
@@ -179,7 +179,7 @@ def test_a_scaffold_declares_no_win_line(tmp_path, monkeypatch):
     base = tmp_path / "t"
     base.mkdir(parents=True)
     (base / "cards.json").write_text(src.read_text())
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path, raising=False)
     monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
 
     got = st.derive("t")

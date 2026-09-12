@@ -14,10 +14,10 @@ import sys
 # this module, and so every `manamap` invocation — `--help` included, every
 # pipeline step included — paid 0.116s of a 0.208s floor to import numpy for two
 # functions almost nothing calls (`load_rules_db`, `load_strategy_db`).
+from manamap import config
 from manamap.config import (
     CARD_ROLES_PATH,
     COMBO_DETAILS_PATH,
-    DECKS_DIR,
     RULES_EMBEDDINGS_PATH,
     RULES_INDEX_PATH,
     STRATEGY_DOC_PATH,
@@ -106,15 +106,42 @@ def mtime_memo(path, key, build, absent=None):
 
 
 def clear_memo():
-    """Drop all memoized parses (test teardown; mirrors _SHA_MEMO.clear())."""
+    """Drop EVERY process-global cache in the package. Test teardown, and atexit.
+
+    It said it "mirrors `_SHA_MEMO.clear()`" and did not clear `_SHA_MEMO`.
+    Three caches outlived it, and the way that showed up is three test files
+    reaching into `agent_cache` to clear it by hand
+    (`test_pilot_prescribe.py:47,132,140`) — a workaround for a function whose
+    whole job was to make the workaround unnecessary.
+
+    A cache this misses survives a `monkeypatch` teardown holding values
+    computed under the patch, which is #31's shape: quiet, order-dependent, and
+    it answers a later test with an earlier test's tree. Anything memoized at
+    module scope belongs here, and `test_every_process_cache_is_cleared` fails
+    when a new one is added and not listed.
+    """
     _JSON_MEMO.clear()
     _MTIME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
     _RULES_DB_MEMO.clear()
     # Imported here rather than at module scope: `collection` imports `expand_faces`
-    # from this module, so a top-level import would be a cycle.
+    # from this module, so a top-level import would be a cycle. The rest are
+    # local for the same reason plus a second one — `goldfish` is 5,800 lines and
+    # nothing should import it to clear a dict.
     from manamap.pilot.collection import _COLLECTION_MEMO
     _COLLECTION_MEMO.clear()
+
+    from manamap.pilot.agent_cache import _SHA_MEMO
+    _SHA_MEMO.clear()
+
+    from manamap.pilot import card_refs
+    card_refs.ambiguous_tokens.cache_clear()
+
+    # A sentinel rather than a dict: `_UNSET` means "not looked up yet", which
+    # is what a cleared state has to be — `None` is a real answer here (no
+    # corpus), and setting it would pin the fallback for the rest of the run.
+    from manamap.pilot import goldfish
+    goldfish._CREATURE_TYPES_CACHE = goldfish._UNSET
 
 
 # Freeing tens of MB of parsed JSON via refcounting is nearly free; letting it
@@ -516,7 +543,7 @@ def deck_lifecycle(slug):
     status and `validate-issue` now REPORTS a leftover `issue.json` status
     rather than honouring it. A stale hand edit is loud instead of obeyed.
     """
-    doc = load_json(DECKS_DIR / slug / LIFECYCLE_FILE, {})
+    doc = load_json(decks_root() / slug / LIFECYCLE_FILE, {})
     return deck_status_of(doc.get(LIFECYCLE_KEY) or {})
 
 
@@ -542,6 +569,31 @@ def deck_is_apart(slug):
     return bool(life and life[0] in UNPLAYABLE_STATUSES)
 
 
+def decks_root():
+    """THE deck tree, read from `config` AT CALL TIME — one home, one patch point.
+
+    `common.py` used to hold `from manamap.config import DECKS_DIR`, and so did
+    twenty-one other modules. A by-value import is a COPY: patching
+    `config.DECKS_DIR` reached none of them, so a test had to patch every module
+    that had taken its own copy, and WHICH modules those are depends on import
+    order. `test_serve.py` patches three by hand; the two it does not patch are
+    why several of its cases had to be moved into `test_serve_cli.py` with the
+    reason written in that file's docstring (#31).
+
+    The failure is quiet and order-dependent, which is the worst combination: a
+    partially-patched package resolves some reads under the temporary tree and
+    some under the real one, and under `-n auto` the ordering differs from
+    `-n0`, so the same suite can pass and fail on the same commit.
+
+    `deck_branch.py:199` had already worked this out for its own walk and says
+    so in a comment. This is that comment made into a function.
+
+    Patch `manamap.config.DECKS_DIR` — one place, and `MANAMAP_DATA_DIR` keeps
+    working because `config` is the thing that reads the environment.
+    """
+    return config.DECKS_DIR
+
+
 BRANCHES_DIR = "branches"
 
 
@@ -561,7 +613,7 @@ def deck_dir(slug, branch=None):
     up: a command that took `--branch` for reading and wrote through an
     un-branched path would corrupt the real artifact with plausible numbers.
     """
-    path = DECKS_DIR / slug
+    path = decks_root() / slug
     if not path.is_dir():
         raise FileNotFoundError(
             f"No deck directory for '{slug}'. Create {path}/decklist.txt first "

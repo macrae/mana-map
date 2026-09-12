@@ -25,7 +25,7 @@ def test_a_branch_seat_resolves_to_its_own_directory():
 def test_a_branch_run_is_filed_beside_the_list_it_measured():
     """A branch's win rate under the champion's name is the silent-overwrite
     class this repo keeps finding."""
-    from manamap.pilot.common import DECKS_DIR
+    from manamap.config import DECKS_DIR
     if A_BRANCH is None:
         pytest.skip("no branch on ur-dragon")
     out = forge._out_dir(f"ur-dragon@{A_BRANCH}")

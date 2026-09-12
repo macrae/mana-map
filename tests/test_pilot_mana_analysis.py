@@ -59,7 +59,7 @@ def _deck(tmp_path, monkeypatch, cards):
     decks = tmp_path / "decks"
     base = decks / "test-deck"
     base.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     (base / "cards.json").write_text(json.dumps(
         {"deck": "test-deck", "decklist_sha256": "abc", "cards": cards}))
     return base

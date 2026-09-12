@@ -35,7 +35,7 @@ def deck(tmp_path, monkeypatch):
     base = decks / SLUG
     (base / ".agent-out").mkdir(parents=True)
     (base / "stacks").mkdir()
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     (base / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Craterhoof Behemoth\n1 Forest\n")
     (base / "cards.json").write_text(json.dumps({
         "deck": SLUG, "decklist_sha256": "stale-stamp",

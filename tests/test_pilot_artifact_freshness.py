@@ -26,28 +26,46 @@ from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
 from manamap.pilot import (
     bracket, deck_info, diagnostic, goldfish, mana_analysis, net_change)
 
-from conftest import SRC, requires_deck, requires_data
+from conftest import module_closure, requires_deck, requires_data
 
-# What each producer can possibly read: the whole pilot source tree, `config.py`,
-# and the deck's own directory. Naming a producer's exact imports by hand would
-# invalidate less often and could be WRONG — a missed transitive edge does not
-# fail here, it serves a stale pass. See `conftest._digest`.
+# ── The code half of the key: DERIVED, never hand-traced ────────────────────
 #
-# This is the WHOLE package, and it is deliberately not a hand-traced list. The
-# previous version named `pilot/` + `config.py` and asserted in this comment that
-# they were "a COMPLETE closure … checked rather than assumed: no module under
-# `src/manamap/pilot/` imports from anywhere in `manamap` except `manamap.pilot`
-# and `manamap.config`". That was false when written or became false after, in
-# NINE modules across three subpackages: `deck_info` imports `manamap.sim`,
-# `manabase`/`card_pool`/`deck_facts`/`pool_facts`/`build_deck`/`validate_build`
-# import `manamap.analysis.common`, and `fetch_deck`/`deck_facts` plus the three
-# DB builders import `manamap.ingest`. So a change to `sim/`, `analysis/` or
-# `ingest/` left these tests served from a stale cache — silently passing, which
-# is the exact failure the paragraph above warns about.
+# This was `(SRC,)` — the whole source tree — so an edit anywhere under
+# `src/manamap/` re-ran 279 freshness cases, most of them 10,000-game goldfish
+# runs. That was the right answer to the wrong question, and the comment it
+# replaced is the reason it was chosen: the version BEFORE it named the inputs
+# by hand and asserted the closure was "checked rather than assumed". It was
+# wrong in NINE modules across three subpackages (`deck_info` imports
+# `manamap.sim`; six modules import `manamap.analysis.common`; five import
+# `manamap.ingest`), and a missed edge here does not go red — it serves a
+# stale PASS.
 #
-# Naming the package costs some cache hits and cannot be wrong. A missed edge does
-# not fail here, it serves a stale pass, so conservative is the only safe side.
-CODE = (SRC,)
+# So: neither the whole tree nor a list somebody types. `module_closure` walks
+# the SYNTAX TREE of each producer, transitively, counting imports at any depth
+# because this package imports lazily almost everywhere. Two controls in
+# `tests/test_conftest_cache.py` hold it to reality — one asserts it covers
+# every `manamap.*` module a real producer run actually imports, one
+# re-introduces the bug by touching a transitive dependency.
+#
+# Measured 2026-09-12: 60 of 182 files, so `sven/`, `training/`, `export/`,
+# `cli.py`, the eval harnesses and the frozen magazine renderer no longer
+# invalidate a goldfish run.
+CODE = module_closure(bracket, deck_info, diagnostic, goldfish,
+                      mana_analysis, net_change)
+
+# ── The data half: WIDER for the two artifacts that read OTHER DECKS ─────────
+#
+# #49. `info.json` and `net_change.json` both embed, per card, which other decks
+# hold it and whether each of THOSE is locked (`deck_branch.source()`). So a
+# paper lock on ur-dragon rewrites a field inside gishath's dossier and inside
+# four branch bills — and every one of those cases named only its own deck's
+# directory, so the key did not move and the cache served a passing result for
+# inputs that had changed. Found on 2026-09-12 when an unrelated source edit
+# forced a real run; five artifacts were stale, one of them for a day.
+#
+# Narrowing the code half without widening this one would have made it worse:
+# over-invalidation on source was the only thing that ever flushed these.
+CROSS_DECK = (DECKS_DIR,)
 
 
 def _is_retired(deck_dir):
@@ -218,7 +236,7 @@ def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
     it was already acted on."""
     slug, branch = target
     root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
-    unchanged(*CODE, root, DECKS_DIR / slug)
+    unchanged(*CODE, *CROSS_DECK, root)
 
     def rerun():
         net_change.main(type("Args", (), {
@@ -275,7 +293,7 @@ def test_info_json_matches_a_fresh_run(target, tmp_path, unchanged):
     """
     slug, branch = target
     root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
-    unchanged(*CODE, root, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
+    unchanged(*CODE, *CROSS_DECK, root, OUTPUT_CSV_PATH, CARD_ROLES_PATH,
               COMBO_DETAILS_PATH)
 
     def rerun():

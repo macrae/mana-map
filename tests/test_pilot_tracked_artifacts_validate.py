@@ -41,14 +41,27 @@ from manamap.pilot import (
     validate_tutor_guide,
 )
 
-from conftest import SRC, requires_branch, requires_deck
+from conftest import module_closure, requires_branch, requires_deck
 
-# Everything a validator in GATED can read. The pilot tree is a verified closure
-# of the code (nothing under it imports outside `manamap.pilot` / `manamap.config`);
-# the rest is the tracked global artifacts the deck validators reach for — role
+# Everything a validator in GATED can read. The CODE half is DERIVED from the
+# validators themselves — `module_closure` walks their syntax trees, so a change
+# to a module none of them reaches no longer re-runs 165 cases. It replaced
+# `(SRC,)`, and before that a hand-traced list that was wrong in nine modules;
+# `tests/test_conftest_cache.py` holds the derivation to reality.
+#
+# The rest is the tracked global artifacts the deck validators reach for — role
 # tags, the two graphs, the combo records, the corpus and the strategy doc. Listed
 # rather than digesting `data/`, which is 326 MB and mostly irrelevant.
-INPUTS = (SRC, CARD_ROLES_PATH, COMBO_DETAILS_PATH,
+#: The twelve validators this file drives, as MODULES — the closure's roots.
+#: `GATED` below maps artifact -> module by importing from `deck_status.VALIDATED`,
+#: which is the registry; these are the same modules, named here because the key
+#: has to be computable before the first test runs.
+_VALIDATORS = (validate_build, validate_considering, validate_deck,
+               validate_deck_map, validate_diagnosis, validate_engine,
+               validate_goldfish_targets, validate_issue, validate_prescription,
+               validate_stack, validate_strategic_frame, validate_tutor_guide)
+
+INPUTS = (*module_closure(*_VALIDATORS), CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
           SYNERGY_GRAPH_PATH,
           # `validate_recon` falsifies a recon's `ownership` claims against the

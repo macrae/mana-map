@@ -34,7 +34,7 @@ def seats(tmp_path, monkeypatch):
     (data / "opponents" / "rival").mkdir(parents=True)
     (data / "opponents" / "rival" / "decklist.txt").write_text("1 Yawgmoth, Thran Physician *CMDR*\n1 Swamp\n")
     monkeypatch.setattr(forge, "DECKS_DIR", data / "decks")
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", data / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", data / "decks")
     return data
 
 
@@ -168,7 +168,7 @@ def test_one_real_two_seat_game_records_a_run(tmp_path, monkeypatch):
         (data / "decks" / s).mkdir()
         shutil.copy(config.DECKS_DIR / s / "decklist.txt", data / "decks" / s / "decklist.txt")
     monkeypatch.setattr(forge, "DECKS_DIR", data / "decks")
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", data / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", data / "decks")
     path, rec = forge.run("radagast", ["edgar-vampires"], games=1, jobs=1, clock=120)
     assert rec["games_completed"] == 1 and path.exists()
     o = rec["outcomes"][0]

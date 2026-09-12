@@ -36,7 +36,7 @@ def repo(tmp_path, monkeypatch):
     root = tmp_path
     deck = root / "data" / "decks" / SLUG
     deck.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", root / "data" / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", root)
     _git(root, "init", "-q")
     (deck / "decklist.txt").write_text(V1)
@@ -117,7 +117,7 @@ def test_no_git_history_is_an_empty_list_not_an_error(tmp_path, monkeypatch):
     deck = tmp_path / "data" / "decks" / SLUG
     deck.mkdir(parents=True)
     (deck / "decklist.txt").write_text(V1)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path / "data" / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", tmp_path)
     doc = dv.report(SLUG)
     assert doc["versions"] == [] and doc["current_version"] is None

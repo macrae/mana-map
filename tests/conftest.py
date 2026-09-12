@@ -183,7 +183,19 @@ def _file_digest(path):
 
 
 def _tree_digest(directory):
-    """A key over every file under `directory`, memoised per run."""
+    """A key over every file under `directory`, memoised per run.
+
+    THE MEMO HAS NO SIGNATURE CHECK, unlike `_file_digest`'s `(mtime_ns, size)`,
+    and that is an assumption rather than an oversight: **a tree named as an
+    input must not change during a run.** It holds today because the only tests
+    that rewrite tracked artifacts (`test_pilot_artifact_freshness._roundtrip`)
+    restore them from a backup before the next case reads them, and because
+    `unchanged()` takes its key at the START of a test, before any rewrite.
+
+    If a test ever leaves a named tree changed, every later digest of that tree
+    in the same process is stale and the cache records a key for a state that no
+    longer exists. Clear `_TREE_MEMO` if you write such a test.
+    """
     hit = _TREE_MEMO.get(directory)
     if hit is not None:
         return hit
@@ -198,6 +210,89 @@ def _tree_digest(directory):
     digest = sha.hexdigest()
     _TREE_MEMO[directory] = digest
     return digest
+
+
+def _module_file(dotted):
+    """`manamap.pilot.goldfish` -> its file, or None if it is not ours."""
+    if not (dotted == "manamap" or dotted.startswith("manamap.")):
+        return None
+    rel = dotted.split(".")[1:]
+    base = SRC.joinpath(*rel) if rel else SRC
+    for candidate in (base.with_suffix(".py"), base / "__init__.py"):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _imports_in(path, package):
+    """Every `manamap.*` module this FILE imports, at any depth.
+
+    `ast.walk`, not a scan of the module body: this package imports lazily
+    almost everywhere — `pipeline.STEPS`, `registry`'s dispatch, and ~40
+    function-local `from manamap.config import …` — and a closure that only saw
+    top-level imports would miss most of the graph, which is the failure mode
+    this whole mechanism has to avoid.
+    """
+    import ast
+
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError):              # pragma: no cover - defensive
+        return set()
+    out = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            out.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            if node.level:                      # `from . import x`, `from .x import y`
+                parts = package.split(".")
+                base = ".".join(parts[:len(parts) - node.level + 1])
+                dotted = f"{base}.{node.module}" if node.module else base
+            else:
+                dotted = node.module or ""
+            out.add(dotted)
+            out.update(f"{dotted}.{alias.name}" for alias in node.names)
+    return {d for d in out if d == "manamap" or d.startswith("manamap.")}
+
+
+def module_closure(*modules):
+    """Every file under `src/manamap/` that these modules can reach, transitively.
+
+    WHY THIS EXISTS. Three test files keyed the regenerate-and-compare cache on
+    `SRC` — the whole source tree — so an edit anywhere under `src/manamap/`
+    re-ran 279 heavy freshness cases, most of them 10,000-game goldfish runs.
+
+    WHY IT IS DERIVED AND NOT A LIST. The version before `SRC` DID name the
+    inputs by hand, and its comment asserted the closure was "checked rather
+    than assumed". It was wrong in NINE modules across three subpackages, and
+    the failure of a missed edge is not a red test — it is a stale PASS. So the
+    closure is computed from the syntax tree, and two controls in
+    `tests/test_conftest_cache.py` hold it to reality: one asserts it covers
+    every `manamap.*` module a real producer run actually imports, and one
+    re-introduces the bug by touching a transitive dependency.
+
+    `config.py` is always included: it is the one module every producer reads
+    and the one whose constants change behaviour without an import edge moving.
+    """
+    seen, queue = set(), []
+    for module in modules:
+        path = Path(getattr(module, "__file__", "") or "")
+        if path.is_file():
+            queue.append((path, getattr(module, "__name__", "manamap")))
+    always = _module_file("manamap.config")
+    if always:
+        queue.append((always, "manamap.config"))
+
+    while queue:
+        path, package = queue.pop()
+        if path in seen:
+            continue
+        seen.add(path)
+        for dotted in _imports_in(path, package):
+            found = _module_file(dotted)
+            if found and found not in seen:
+                queue.append((found, dotted))
+    return tuple(sorted(seen))
 
 
 def _digest(paths):
@@ -226,6 +321,22 @@ def _cache_key(nodeid):
     return f"{_CACHE_PREFIX}/{nodeid.replace('/', '__').replace('::', '--')}"
 
 
+def _cache_of(config):
+    """pytest's cache, or None when the cacheprovider plugin is not loaded.
+
+    `getattr`, not `config.cache` plus a `None` check — the check WAS there and
+    it was one line too late. With `-p no:cacheprovider` the attribute does not
+    exist at all, so reading it raised `AttributeError: 'Config' object has no
+    attribute 'cache'` before anything could look at the value, and every one of
+    the ~500 `unchanged` cases died on collection-clean, run-broken. Running
+    without the plugin is a normal thing to want (a fresh, no-side-effects run),
+    and `make test-fresh` should not be the only way to get it.
+
+    No cache means no hit and no record, which is exactly `--no-test-cache`.
+    """
+    return getattr(config, "cache", None)
+
+
 @pytest.fixture
 def unchanged(request):
     """Skip when every named input is byte-identical to the last passing run.
@@ -244,7 +355,7 @@ def unchanged(request):
         key = _digest(paths)
         if request.config.getoption("--no-test-cache"):
             return
-        cache = request.config.cache
+        cache = _cache_of(request.config)
         if cache is not None and cache.get(_cache_key(request.node.nodeid), None) == key:
             pytest.skip(CACHED_SKIP)
         _UNCHANGED_KEYS[request.node.nodeid] = key
@@ -261,7 +372,7 @@ def pytest_runtest_makereport(item, call):
     key = _UNCHANGED_KEYS.pop(item.nodeid, None)
     if key is None or not report.passed:
         return
-    cache = item.config.cache
+    cache = _cache_of(item.config)
     if cache is not None:
         cache.set(_cache_key(item.nodeid), key)
 

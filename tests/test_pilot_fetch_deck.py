@@ -201,7 +201,7 @@ def test_misspelled_card_fails_loudly(monkeypatch, tmp_path):
     deck = tmp_path / "decks" / "test-deck"
     deck.mkdir(parents=True)
     (deck / "decklist.txt").write_text("1 Gobiln Matron\n")
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path / "decks")
     monkeypatch.setattr(fetch_deck.SESSION, "post",
                         mock_post([], not_found=[{"name": "Gobiln Matron"}]))
 
@@ -266,7 +266,7 @@ def test_unchanged_decklist_skips_scryfall(monkeypatch, tmp_path, capsys):
     cards_path.write_text(json.dumps({"deck": "d", "decklist_sha256": sha, "cards": []}))
     before = cards_path.read_bytes()
 
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
 
     def explode(*a, **k):
         raise AssertionError("Scryfall must not be called for an unchanged decklist")
@@ -290,7 +290,7 @@ def test_force_refetches_even_when_unchanged(monkeypatch, tmp_path):
     (base / "cards.json").write_text(
         json.dumps({"deck": "d", "decklist_sha256": sha, "cards": []}))
 
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     called = {"n": 0}
 
     def fake_fetch(names):
@@ -311,7 +311,7 @@ def test_changed_decklist_refetches(monkeypatch, tmp_path):
     (base / "cards.json").write_text(
         json.dumps({"deck": "d", "decklist_sha256": "stale", "cards": []}))
 
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     called = {"n": 0}
 
     def fake_fetch(names):

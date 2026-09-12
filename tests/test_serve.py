@@ -456,7 +456,7 @@ def test_measuring_refreshes_the_dossier_it_will_be_read_from(tmp_path, monkeypa
     (deck / "info.json").write_text(json.dumps(stale))
 
     monkeypatch.setattr("manamap.config.DECKS_DIR", dest)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", dest, raising=False)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", dest, raising=False)
 
     result = serve.call("deck/measure",
                         {"slug": "zur-enchantress", "stage": "bracket"})

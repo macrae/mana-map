@@ -32,7 +32,7 @@ def deck(tmp_path, monkeypatch):
     base = decks / SLUG
     (base / ".agent-out").mkdir(parents=True)
     (base / "stacks").mkdir()
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     (base / "decklist.txt").write_text(DECKLIST)
     sha = hashlib.sha256(DECKLIST.encode()).hexdigest()
     (base / "cards.json").write_text(json.dumps({

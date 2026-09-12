@@ -16,8 +16,9 @@ import pytest
 from conftest import A_BRANCH, requires_branch, requires_deck
 
 from manamap.pilot import deck_branch
+from manamap.config import DECKS_DIR
 from manamap.pilot.common import (
-    DECKS_DIR, deck_dir, deck_file, load_deck_cards)
+    deck_dir, deck_file, load_deck_cards)
 
 SLUG = "ur-dragon"
 BRANCH = A_BRANCH

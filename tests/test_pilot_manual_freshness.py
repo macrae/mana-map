@@ -27,15 +27,14 @@ import pytest
 from manamap.config import DECKS_DIR, MANUALS_DIR, SYNERGY_GRAPH_PATH
 from manamap.pilot import build_index, build_manual
 
-from conftest import SRC, requires_deck
+from conftest import module_closure, requires_deck
 
-# The renderer's whole world: the pilot source tree (a verified closure — nothing
-# under it imports outside `manamap.pilot` and `manamap.config`), the deck's
-# artifacts, the published page, and the one global graph it reads.
-# The whole package: `pilot/` alone is NOT a closure — nine modules import
-# from `manamap.sim`, `manamap.analysis` and `manamap.ingest`. See
-# tests/test_pilot_artifact_freshness.py for the full accounting.
-CODE = (SRC,)
+# The renderer's whole world, DERIVED from the two producers rather than named:
+# `module_closure` walks their syntax trees transitively. It replaced `(SRC,)`,
+# which re-ran both cases on any source edit, and before that a hand-traced list
+# that was wrong in nine modules — see `test_pilot_artifact_freshness.py` for
+# the full accounting and `tests/test_conftest_cache.py` for the controls.
+CODE = module_closure(build_index, build_manual)
 
 
 def _deck_slugs():

@@ -9,7 +9,7 @@ rather than the deck. All three produce ordinary-looking numbers.
 import pytest
 
 from manamap.pilot import candidates, diagnostic
-from manamap.pilot.common import DECKS_DIR
+from manamap.config import DECKS_DIR
 from conftest import A_BRANCH, ROOT, requires_branch
 
 SLUG = "ur-dragon"

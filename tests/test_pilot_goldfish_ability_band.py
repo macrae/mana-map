@@ -37,7 +37,7 @@ BAND = "commander_ability_band"
 def _declaring_decks():
     """Every deck whose targets file declares an ability the band covers."""
     out = []
-    for d in sorted(common.DECKS_DIR.glob("*/goldfish_targets.json")):
+    for d in sorted(common.decks_root().glob("*/goldfish_targets.json")):
         try:
             doc = json.loads(d.read_text())
         except (OSError, ValueError):
@@ -84,7 +84,7 @@ def test_a_deck_declaring_nothing_has_no_band_at_all():
     on every other deck's page."""
     declaring = set(_declaring_decks())
     checked = 0
-    for d in sorted(common.DECKS_DIR.glob("*/goldfish_targets.json")):
+    for d in sorted(common.decks_root().glob("*/goldfish_targets.json")):
         slug = d.parent.name
         if slug in declaring:
             continue
@@ -112,10 +112,10 @@ def test_supplying_the_decks_own_declaration_changes_nothing():
     this fails on `model_combat` alone.
     """
     slugs = _declaring_decks() or [d.parent.name for d in
-                                   sorted(common.DECKS_DIR.glob("*/goldfish_targets.json"))[:1]]
+                                   sorted(common.decks_root().glob("*/goldfish_targets.json"))[:1]]
     checked = 0
     for slug in slugs:
-        own = json.loads((common.DECKS_DIR / slug / "goldfish_targets.json").read_text())
+        own = json.loads((common.decks_root() / slug / "goldfish_targets.json").read_text())
         a = goldfish.run(slug, iterations=200, quiet=True, _band=False)
         b = goldfish.run(slug, iterations=200, quiet=True, _band=False, _targets_doc=own)
         assert a["metrics"] == b["metrics"], (
@@ -156,7 +156,7 @@ def test_stripping_the_ability_moves_the_deck_and_only_downwards():
 def test_a_declaration_less_document_does_not_raise():
     """Bug 3. Four `declared_*` names were bound before the branch and two were
     not, so any path that skipped the file read died on the two."""
-    slug = sorted(common.DECKS_DIR.glob("*/goldfish_targets.json"))[0].parent.name
+    slug = sorted(common.decks_root().glob("*/goldfish_targets.json"))[0].parent.name
     doc = goldfish.run(slug, iterations=100, quiet=True, _band=False, _targets_doc={})
     assert doc["metrics"], "an empty declaration is a valid deck, not a crash"
 

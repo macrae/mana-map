@@ -37,7 +37,7 @@ def repo(tmp_path, monkeypatch):
     opp = root / "data" / "opponents" / "rival"
     opp.mkdir(parents=True)
     opp.joinpath("decklist.txt").write_text("1 Edgar Markov *CMDR*\n1 Swamp\n")
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", root / "data" / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr("manamap.sim.forge.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", root)
     _git(root, "init", "-q")

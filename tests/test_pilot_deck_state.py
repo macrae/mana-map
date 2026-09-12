@@ -222,7 +222,7 @@ def test_locking_an_archived_deck_is_refused(tmp_path, monkeypatch):
         "slug": "scratch", "tags": {},
         "lifecycle": {"status": "broken-down", "at": "2026-09-01", "reason": ""}}))
     monkeypatch.setattr(deck_versions, "deck_dir", lambda slug, branch=None: base)
-    monkeypatch.setattr(deck_versions.common, "DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(deck_versions.common.config, "DECKS_DIR", tmp_path / "decks")
     with pytest.raises(SystemExit, match="cards are in a pile"):
         deck_versions.set_paper("scratch")
 

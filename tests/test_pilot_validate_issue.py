@@ -318,7 +318,7 @@ def _deck_with_mana(tmp_path, monkeypatch, prose, entries=18, total=33):
     decks = tmp_path / "decks"
     base = decks / "test-deck"
     base.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     (base / "mana_analysis.json").write_text(_json.dumps(
         {"lands": {"total": total, "entries": entries, "enters_tapped": 5}}))
     (base / "manual_prose.json").write_text(_json.dumps(prose))

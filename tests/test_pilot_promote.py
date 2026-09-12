@@ -25,7 +25,7 @@ def deck(tmp_path, monkeypatch):
     """A deck directory with nothing in it but a `deck_versions.json`."""
     root = tmp_path / "decks"
     (root / "x").mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", root)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root)
     monkeypatch.setattr("manamap.pilot.deck_versions.DECKS_DIR", root,
                         raising=False)
     return root / "x"
@@ -317,29 +317,37 @@ def test_every_tracked_versions_file_still_passes_its_gate():
 def test_deck_holders_reads_the_deck_root_at_call_time(tmp_path, monkeypatch):
     """A `from`-import copy captured under a patch outlives the patch.
 
-    `deck_branch` bound `DECKS_DIR` at import. Any test that patched
-    `common.DECKS_DIR` and caused the first import of `deck_branch` left that
-    copy pointing at a torn-down tmp directory FOR THE REST OF THE SESSION —
-    monkeypatch restores the name it was given and knows nothing about a copy
-    someone else took.
+    `deck_branch` bound `DECKS_DIR` at import. Any test that patched the root
+    and caused the first import of `deck_branch` left that copy pointing at a
+    torn-down tmp directory FOR THE REST OF THE SESSION — monkeypatch restores
+    the name it was given and knows nothing about a copy someone else took.
+
+    Widened 2026-09-12 (#31): `common` held a copy too, so patching
+    `config.DECKS_DIR` — the documented home, and the thing `MANAMAP_DATA_DIR`
+    moves — reached neither. `common.decks_root()` is the one reader now, and
+    this asserts that NEITHER module has taken a copy back.
 
     The symptom is silent and total: `_deck_holders` iterates an empty
     directory, so every card reports zero holders and `source`, `pull_list` and
     `merge`'s refusal all under-report while looking exactly right. Found when a
     real ownership assertion passed alone and failed after `test_pilot_deck_info`.
     """
+    from manamap import config
     from manamap.pilot import common, deck_branch
 
-    real = common.DECKS_DIR
+    real = config.DECKS_DIR
     empty = tmp_path / "decks"
     empty.mkdir()
 
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", empty)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", empty)
     assert deck_branch._deck_holders("Sol Ring", skip=None) == [], \
         "the patched root must be the one that is read"
     monkeypatch.undo()
 
-    assert common.DECKS_DIR == real
-    # And the module must follow it back. Before the fix this stayed empty.
-    assert not hasattr(deck_branch, "DECKS_DIR"), \
-        "a module-level copy is the defect; read it from `common` at call time"
+    assert config.DECKS_DIR == real
+    assert common.decks_root() == real, "the reader must follow the patch back"
+    # And no module may hold a copy. Before the fix these stayed empty.
+    for module in (deck_branch, common):
+        assert not hasattr(module, "DECKS_DIR"), (
+            f"{module.__name__} has taken a module-level copy of the deck root "
+            f"again — read it through `common.decks_root()` at call time")

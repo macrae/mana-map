@@ -22,7 +22,7 @@ def deck(tmp_path, monkeypatch):
     decks = tmp_path / "decks"
     base = decks / SLUG
     base.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     write_json(base / "cards.json", {"deck": SLUG, "decklist_sha256": "abc", "cards": [
         {"name": "Loop Piece", "oracle_text": "Untap everything."},
         {"name": "Plain Land", "oracle_text": "T: Add W."},

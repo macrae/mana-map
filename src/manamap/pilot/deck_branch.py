@@ -196,15 +196,18 @@ def _deck_holders(name, skip):
     from manamap.pilot import common as _common
     from manamap.pilot import deck_versions
 
-    # `_common.DECKS_DIR` AT CALL TIME, not a `from`-import binding. This module
-    # took its own copy at import, and a copy captured while a test had patched
-    # `common.DECKS_DIR` survives that test's teardown forever — monkeypatch
-    # restores the name it was given and knows nothing about the copy. The
-    # symptom is silent and total: every card reports ZERO holders, so
-    # `source`, `pull_list` and `merge`'s refusal all under-report while looking
-    # exactly right. Same class as the resolved-path memo PLAN.md records.
+    # `decks_root()` AT CALL TIME, not a `from`-import binding. This module took
+    # its own copy at import, and a copy captured while a test had patched the
+    # root survives that test's teardown forever — monkeypatch restores the name
+    # it was given and knows nothing about the copy. The symptom is silent and
+    # total: every card reports ZERO holders, so `source`, `pull_list` and
+    # `merge`'s refusal all under-report while looking exactly right.
+    #
+    # This comment used to say `_common.DECKS_DIR`, which was the same bug one
+    # module along: `common` had taken a copy too, so patching `config` — the
+    # documented home — reached neither. One reader now (#31).
     out = []
-    for d in sorted(_common.DECKS_DIR.iterdir()):
+    for d in sorted(_common.decks_root().iterdir()):
         if not d.is_dir() or d.name == skip:
             continue
         doc = load_json(d / "cards.json")

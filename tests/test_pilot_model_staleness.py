@@ -13,7 +13,7 @@ import pytest
 
 from conftest import requires_deck
 from manamap.pilot import goldfish, model_staleness
-from manamap.pilot.common import DECKS_DIR
+from manamap.config import DECKS_DIR
 
 
 def test_the_stamp_is_derived_not_hand_kept():

@@ -51,7 +51,7 @@ def unlocked(tmp_path, monkeypatch):
     root = tmp_path
     deck = root / "data" / "decks" / SLUG
     deck.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", root / "data" / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", root)
     monkeypatch.setattr(dv, "deck_dir", lambda slug: deck)
     _git(root, "init", "-q")

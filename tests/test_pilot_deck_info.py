@@ -37,7 +37,7 @@ def bare_deck(tmp_path, monkeypatch):
     decks = tmp_path / "decks"
     base = decks / SLUG
     base.mkdir(parents=True)
-    monkeypatch.setattr("manamap.pilot.common.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     (base / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Forest\n")
     (base / "cards.json").write_text(json.dumps({
         "deck": SLUG, "decklist_sha256": "x",
