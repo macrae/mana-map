@@ -530,50 +530,88 @@ def deck_file_or_none(slug, branch):
 
 
 def forge(slug, branch):
-    """The real table, if it has been played. Pooled within one pod only."""
+    """The real table, if it has been played. POOLED WITHIN ONE POD ONLY, over
+    DECIDED games only.
+
+    Two things this used to get wrong, found 2026-09-11 on edgar-vampires/fear-v1:
+    the champion arm pooled EVERY record under `sim/` — 840 games across five
+    tables (vito-era, standard, standard-v2, playgroup, standard-v3) — against a
+    branch played at standard-v3 alone, while the docstring said "within one pod
+    only"; and both arms divided by `analysis.games`, so thirteen clock-outs
+    counted as losses and the block's 0.20 disagreed with the record's own 0.296.
+    A pod's null is a property of the table with the subject in it (CLAUDE.md), so
+    a champion rate from another table is not this branch's control. The pod is
+    named in the block so a reader can see which table decided it.
+    """
     def rows_for(pattern, want):
-        wins = games = 0
-        by_route = {}
+        by_pod = {}
         for path in sorted(glob.glob(pattern)):
             if "logs" in path:
                 continue
             doc = json.load(open(path))
             a = doc.get("analysis") or {}
-            n = a.get("games") or 0
-            for seat, v in (a.get("seats") or {}).items():
-                if seat != want or v.get("wins") is None:
-                    continue
-                wins += v["wins"]
-                games += n
+            pod = doc.get("pod")
+            pod = (pod.get("name") if isinstance(pod, dict) else pod) or "unnamed"
+            seat = (a.get("seats") or {}).get(want) or {}
+            if seat.get("wins") is None:
+                continue
+            row = by_pod.setdefault(pod, {"wins": 0, "decided": 0, "games": 0,
+                                          "runs": 0, "by_route": {}})
+            row["wins"] += seat["wins"]
+            # A clock-out has NO winner and is excluded from the rate — the same
+            # definition the record's own `win_rate` uses.
+            row["decided"] += a.get("decided", a.get("games") or 0)
+            row["games"] += a.get("games") or 0
+            row["runs"] += 1
             for g in (doc.get("games") or []):
                 if g.get("winner") and want.split("@")[0] in str(g["winner"]):
-                    by_route[g.get("won_by") or "unstated"] = \
-                        by_route.get(g.get("won_by") or "unstated", 0) + 1
-        return wins, games, by_route
+                    k = g.get("won_by") or "unstated"
+                    row["by_route"][k] = row["by_route"].get(k, 0) + 1
+        return by_pod
 
-    a_w, a_n, a_r = rows_for(f"data/decks/{slug}/sim/*.json", slug)
-    b_w, b_n, b_r = rows_for(
-        f"data/decks/{slug}/branches/{branch}/sim/*.json",
-        deck_branch_seat(slug, branch))
-    if not (a_n and b_n):
+    champ = rows_for(f"data/decks/{slug}/sim/*.json", slug)
+    br = rows_for(f"data/decks/{slug}/branches/{branch}/sim/*.json",
+                  deck_branch_seat(slug, branch))
+    if not (champ and br):
         # A BRANCH CAN BE PUT AT A REAL TABLE, and the seat grammar is how.
         # `simulate` takes no `--branch` FLAG, which is what made this look
         # unreachable — but `sim/forge.py` splits a seat on `@`, so
         # `simulate edgar-vampires@drain-engine --vs …` resolves the branch's
         # own decklist and files the run under `branches/<name>/sim/`, which is
         # exactly the path this function reads.
-        where = f"{slug}@{branch}" if (branch and a_n) else slug
+        where = f"{slug}@{branch}" if (branch and champ) else slug
         return {"available": False,
-                "why": (f"no Forge run on {'the branch' if a_n else 'the deck'}"
+                "why": (f"no Forge run on {'the branch' if champ else 'the deck'}"
                         f" — `manamap pilot simulate {where} --vs <pod>` puts "
                         f"it at a table and writes where this reads")}
+    common = [pod for pod in br if pod in champ and champ[pod]["decided"]
+              and br[pod]["decided"]]
+    if not common:
+        return {"available": False,
+                "why": (f"the branch sat at {sorted(br)} and the champion at "
+                        f"{sorted(champ)} — no table in common, and a rate from "
+                        f"another table is not this branch's control. Run "
+                        f"`manamap pilot simulate {slug} --pod {sorted(br)[0]}`")}
+    # The table with the most branch games decides; the others are named.
+    pod = max(common, key=lambda k: br[k]["decided"])
+    a, b = champ[pod], br[pod]
+    a_w, a_n, b_w, b_n = a["wins"], a["decided"], b["wins"], b["decided"]
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)
     m = stats.mde_proportion(a_w / a_n, a_n, b_n) or {}
     return {"available": True,
-            "champion": {"wins": a_w, "games": a_n, "rate": round(a_w / a_n, 4),
-                         "won_by": a_r},
-            "branch": {"wins": b_w, "games": b_n, "rate": round(b_w / b_n, 4),
-                       "won_by": b_r},
+            "pod": pod,
+            "basis": ("wins over DECIDED games (clock-outs have no winner and are "
+                      "excluded), each arm pooled across every run of it at this "
+                      "one table"),
+            "other_tables": {k: {"champion_runs": champ.get(k, {}).get("runs", 0),
+                                 "branch_runs": br.get(k, {}).get("runs", 0)}
+                             for k in sorted(set(champ) | set(br)) if k != pod},
+            "champion": {"wins": a_w, "games": a_n, "all_games": a["games"],
+                         "runs": a["runs"], "rate": round(a_w / a_n, 4),
+                         "won_by": a["by_route"]},
+            "branch": {"wins": b_w, "games": b_n, "all_games": b["games"],
+                       "runs": b["runs"], "rate": round(b_w / b_n, 4),
+                       "won_by": b["by_route"]},
             "delta": round(b_w / b_n - a_w / a_n, 4),
             "ci95": d["ci95"], "excludes_zero": d.get("excludes_zero"),
             "mde": m.get("minimum_detectable_difference"),
@@ -1130,10 +1168,17 @@ def _print(doc):
     if not f.get("available"):
         print(f"    {f['why']}")
     else:
+        print(f"    at {f.get('pod', '?')} — {f.get('basis', '')}")
         print(f"    champion {f['champion']['wins']}/{f['champion']['games']} "
               f"({f['champion']['rate']:.3f})   "
               f"branch {f['branch']['wins']}/{f['branch']['games']} "
               f"({f['branch']['rate']:.3f})")
+        other = {k: v for k, v in (f.get("other_tables") or {}).items()
+                 if v.get("champion_runs") or v.get("branch_runs")}
+        if other:
+            print("    not pooled (another table): " + ", ".join(
+                f"{k} ({v['champion_runs']} champion / {v['branch_runs']} branch run(s))"
+                for k, v in other.items()))
         print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
               f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
         if f["mde"] and abs(f["delta"]) < f["mde"]:

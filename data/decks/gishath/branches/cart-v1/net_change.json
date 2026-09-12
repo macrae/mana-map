@@ -962,9 +962,12 @@
  },
  "forge": {
   "available": true,
+  "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
   "branch": {
-   "games": 40,
-   "rate": 0.325,
+   "all_games": 40,
+   "games": 36,
+   "rate": 0.3611,
+   "runs": 1,
    "wins": 13,
    "won_by": {
     "all opponents have lost": 13
@@ -972,18 +975,20 @@
   },
   "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
   "champion": {
-   "games": 100,
-   "rate": 0.33,
-   "wins": 33,
+   "all_games": 80,
+   "games": 71,
+   "rate": 0.3803,
+   "runs": 2,
+   "wins": 27,
    "won_by": {
-    "all opponents have lost": 33
+    "all opponents have lost": 27
    }
   },
   "ci95": [
-   -0.1625,
-   0.1713
+   -0.1984,
+   0.1743
   ],
-  "delta": -0.005,
+  "delta": -0.0192,
   "engine_casts": {
    "branch": {
     "covered": true,
@@ -997,7 +1002,14 @@
    }
   },
   "excludes_zero": false,
-  "mde": 0.26
+  "mde": 0.28,
+  "other_tables": {
+   "vito-era": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   }
+  },
+  "pod": "standard-v3"
  },
  "harness": {
   "iterations": 10000,
@@ -1198,7 +1210,7 @@
    "hand can act by T3"
   ],
   "notes": [
-   "Forge, against a real pod: -0.005 win rate, CI [-0.163, +0.171] \u2014 this run cannot separate the two lists."
+   "Forge, against a real pod: -0.019 win rate, CI [-0.198, +0.174] \u2014 this run cannot separate the two lists."
   ],
   "reward": [
    {

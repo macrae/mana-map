@@ -206,6 +206,8 @@
     }
     var under = f.mde != null && Math.abs(f.delta) < f.mde;
     return '<section class="panel"><h2>The real table</h2>' +
+      (f.pod ? '<p class="ev">at <b>' + esc(f.pod) + '</b> — ' + esc(f.basis || '') +
+        '</p>' : '') +
       '<div class="forge"><div><div class="who">The deck</div><div class="big">' +
       f.champion.wins + '/' + f.champion.games + '</div>' + routes(f.champion) +
       '</div><div><div class="who">The branch</div><div class="big">' +

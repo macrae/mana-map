@@ -810,3 +810,48 @@ def test_card_diff_survives_a_cut_DFC(monkeypatch):
 
     assert [r["name"] for r in d["out"]] == [JOINED], "the cut DFC must survive the diff"
     assert d["counts"]["out_copies"] == 1, "and it must be counted as a real copy"
+
+
+# ── the real table: one pod, decided games ───────────────────────────────
+
+def _record(root, rel, pod, seat, wins, decided, games):
+    p = root / rel
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({
+        "pod": {"name": pod},
+        "analysis": {"games": games, "decided": decided,
+                     "seats": {seat: {"wins": wins}}},
+        "games": []}))
+
+
+def test_the_real_table_pools_within_one_pod_over_decided_games(tmp_path, monkeypatch):
+    """RE-INTRODUCING THE BUG (2026-09-11, edgar-vampires/fear-v1): the champion
+    arm pooled 840 games across five tables against a branch played at one, and
+    both arms divided by every game so thirteen clock-outs counted as losses.
+    Either regression makes this fixture read 58/355 or 8/40 instead of 8/27."""
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(net_change, "_engine_casts_caveat", lambda s, b: None)
+    seat = net_change.deck_branch_seat("x", "b")
+    _record(tmp_path, "data/decks/x/sim/a.json", "standard-v3", "x", 8, 27, 40)
+    _record(tmp_path, "data/decks/x/sim/b.json", "vito-era", "x", 50, 328, 400)
+    _record(tmp_path, "data/decks/x/branches/b/sim/c.json", "standard-v3", seat, 9, 33, 40)
+    f = net_change.forge("x", "b")
+    assert f["available"] and f["pod"] == "standard-v3"
+    assert (f["champion"]["wins"], f["champion"]["games"]) == (8, 27), f["champion"]
+    assert (f["branch"]["wins"], f["branch"]["games"]) == (9, 33), f["branch"]
+    assert f["champion"]["all_games"] == 40
+    assert f["other_tables"] == {"vito-era": {"champion_runs": 1, "branch_runs": 0}}
+    assert f["delta"] == round(9 / 33 - 8 / 27, 4)
+
+
+def test_the_real_table_with_no_pod_in_common_is_absent_with_a_reason(tmp_path, monkeypatch):
+    """A rate from another table is not this branch's control (CLAUDE.md: a pod's
+    null is a property of the table with the subject in it)."""
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(net_change, "_engine_casts_caveat", lambda s, b: None)
+    seat = net_change.deck_branch_seat("x", "b")
+    _record(tmp_path, "data/decks/x/sim/a.json", "vito-era", "x", 50, 328, 400)
+    _record(tmp_path, "data/decks/x/branches/b/sim/c.json", "standard-v3", seat, 9, 33, 40)
+    f = net_change.forge("x", "b")
+    assert f["available"] is False
+    assert "no table in common" in f["why"] and "standard-v3" in f["why"]

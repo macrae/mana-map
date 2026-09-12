@@ -1701,3 +1701,31 @@ The typed gate is the one that moves other decks: ur-dragon's damage falls
 where Tempest and Valkas had been paid for dorks entering. That is a
 correction, and every branch on the deck was measured under the same
 over-credit in both arms, so the comparisons stand.
+
+
+## 2026-09-11 — The real table pooled five tables, and counted clock-outs as losses
+
+`net_change.forge` said "pooled within one pod only" in its docstring and globbed
+every record under `sim/`. On edgar-vampires the champion arm was **136/840 across
+vito-era, standard, standard-v2, playgroup and standard-v3** against a fear-v1 arm
+played at standard-v3 alone, and the block reported the branch **+0.063** on that.
+It also divided both arms by `analysis.games`, so thirteen clock-outs — which have
+NO winner and are excluded from the record's own `win_rate` — counted as losses:
+the block read the champion at 0.20 while the record beside it said 0.296.
+
+Restricted to the one table both arms sat at, over decided games, the same branch
+reads **champion 27/73 (0.370), branch 9/33 (0.273), delta −0.097, CI [−0.265,
++0.101]**. The sign flipped. Both readings are underpowered (MDE 0.29), so nothing
+was decided on the wrong one, but a reader of the branch page had a control from
+tables the branch never sat at, with no name on it.
+
+The block now carries `pod`, `basis`, `all_games` beside `games`, and
+`other_tables` naming what was NOT pooled; the print and the branch page show the
+table. No common table is `available: false` with the reason, not a pool across
+two nulls. `tests/test_pilot_net_change.py` re-introduces both defects on a fixture
+that reads 58/355 or 8/40 under either regression. Six of the seven branch reports
+with a Forge record changed bytes on regeneration (sharknado's has no champion run);
+zur-enchantress's two now read UNAVAILABLE, because the champion has never sat at
+standard-v3 and the pooled block had been comparing against `standard` and
+`standard-v2` without saying so. None of the seven had a decision resting on the
+Forge line.
