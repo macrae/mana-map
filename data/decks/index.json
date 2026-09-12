@@ -348,8 +348,17 @@
         "page": true
       },
       "image": "https://cards.scryfall.io/art_crop/front/1/0/10d42b35-844f-4a64-9981-c6118d45e826.jpg",
-      "paper": null,
-      "locked": false,
+      "paper": {
+        "version": 4,
+        "release": "v1.2.1",
+        "built_at": "2026-09-11",
+        "note": "SLEEVED at v1.2.1 (V4). The pilot stated 2026-09-11 that ur-dragon is an existing sleeved deck with final-v1 pending paper cards; the v1.2.1 note already records the sleeves reconciled 2026-09-08. Locked so the bench racks it as SLEEVED rather than as a build plan.",
+        "locked": true,
+        "in_sync": true,
+        "versions_behind": 0,
+        "drift": null
+      },
+      "locked": true,
       "version": {
         "release": "v1.2.1",
         "version": 4
@@ -357,7 +366,8 @@
       "deletable": false,
       "undeletable_because": [
         "it went to press — `manuals/ur-dragon.html` is a published record; archive it instead (`deck-state ur-dragon retire`)",
-        "6 logged game(s) — the captain's log is the one thing here that cannot be re-derived; archive it instead"
+        "6 logged game(s) — the captain's log is the one thing here that cannot be re-derived; archive it instead",
+        "it is SLEEVED — withdraw the lock and archive it, so `deck_is_apart` can tell the branches its cards are free"
       ]
     },
     {
