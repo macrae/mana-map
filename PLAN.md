@@ -241,6 +241,16 @@ target policy from `targeting.json`, and `deck_notes.CAUSES` as its output
 vocabulary. Acceptance: it must reproduce `gotchas-bench.md:305` (the go-wide Edgar
 refactor Forge beat 31/400 vs 50/400).
 
+**Coverage over-claims "seen" through `bodies` (found 2026-09-11 on the six
+single-card patches).** Blight Mound, March of the Canonized and Gleaming Splendor
+read `seen` because their text makes a token, while the mechanism that makes them
+worth a slot (a Pest per nontoken death; the devotion-seven upkeep 4/3; a Treasure
+per opponent's second draw) is unread. A card should read `seen` only when every
+channel its text feeds is on, and a token clause on an unread trigger is not a
+channel. Same class as the treasure "seen if anything is active" bug of
+2026-09-04. Fix in `model_coverage.channels_for`: name the trigger shapes that
+gate a token and treat the token as DARK/invisible under them.
+
 **Open from it:** zur-enchantress's own reading against v3 is the logs only;
 re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
 specifically. `sim-progress` reports RUNNING on a run whose record exists.

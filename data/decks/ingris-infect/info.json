@@ -98,31 +98,9 @@
       "name": "draw-v1",
       "opened": "2026-09-10",
       "why": "CARD ADVANTAGE, ON TOP OF lands-v1 (this list carries its two fetches and the Swamp). deck-audit reads five draw copies against a target of ten. Skullclamp in: fifteen of the deck's infect bodies have one toughness, so every equip draws two, and it is the one activation docs/gotchas-bench.md shows Forge's AI actually uses (1.25 activations per cast, against 0.00 for Ashnod's Altar) -- the goldfish cannot read it and the record will. Read the Bones and Dark Confidant in as draw the goldfish CAN read. Out: Combat Celebrant and Staff of Compleation, the two cards the 55-card leave-one-out sweep ranked least needed among the non-interaction, both of whose real value is in an activation or an extra combat the model does not price; and Ogre Menial, a four-mana 3/3 the sweep found worth 0.001 of kill_by_8. Objective on the draw axis the goldfish sees; Skullclamp's share is Forge's to measure.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "2 card(s) still to find",
-      "proposal": {
-        "at": "2026-09-10",
-        "as_version": "v0.2.0",
-        "why": "",
-        "base_version": 1,
-        "decklist_sha256": "21d4a72836c3cb1d58da8811c20fc25a87c721277df4fd178a621e4e61132814",
-        "accepted_on": {
-          "decklist_sha256": "21d4a72836c3cb1d58da8811c20fc25a87c721277df4fd178a621e4e61132814",
-          "state": "merge",
-          "objective": {
-            "axis": "extra_cards_8",
-            "op": ">=",
-            "value": 1.5,
-            "why": "CARD ADVANTAGE, ON TOP OF lands-v1 (this list carries its two fetches and the Swamp). deck-audit reads five draw copies against a target of ten. Skullclamp in: fifteen of the deck's infect bodies have one toughness, so every equip draws two, and it is the one activation docs/gotchas-bench.md shows Forge's AI actually uses (1.25 activations per cast, against 0.00 for Ashnod's Altar) -- the goldfish cannot read it and the record will. Read the Bones and Dark Confidant in as draw the goldfish CAN read. Out: Combat Celebrant and Staff of Compleation, the two cards the 55-card leave-one-out sweep ranked least needed among the non-interaction, both of whose real value is in an activation or an extra combat the model does not price; and Ogre Menial, a four-mana 3/3 the sweep found worth 0.001 of kill_by_8. Objective on the draw axis the goldfish sees; Skullclamp's share is Forge's to measure."
-          },
-          "grade": "met",
-          "reading": 2.0399,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        }
-      },
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
       "pull_list": {
         "buy": [
           {
@@ -2607,7 +2585,7 @@
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version ingris-infect paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes ingris-infect add \"…\" --result win|loss --opponents N`",
-    "`draw-v1` is PROPOSED as v0.2.0 and waiting on cardboard — 2 card(s) (2 to buy) — `manamap pilot deck-branch ingris-infect show draw-v1` has the pull list",
+    "branch `draw-v1` needs 2 card(s) sourced — `manamap pilot deck-branch ingris-infect source draw-v1`",
     "branch `lands-v1` is fully sourced (+2 -2) — `manamap pilot deck-branch ingris-infect merge lands-v1 --write`",
     "branch `prot-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ingris-infect source prot-v1`",
     "no simulation runs — `simulate ingris-infect --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
