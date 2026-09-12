@@ -161,6 +161,40 @@ the largest single lever left.** No games have been logged.
 
 ## Open work
 
+### OPEN — the swap game (2026-09-12): three staged, four assessed, five Edgar patches undecided
+
+The pilot proposed cards one at a time and the bench answered additive / subtractive /
+wash, with the cut named. Nothing here is measurable: nothing dies in the goldfish, it
+is never targeted, and the Forge AI will not sacrifice or hold protection in response,
+so every verdict rests on the log and on theory, and says so.
+
+- **heliod/splendor-v1** now carries two swaps, re-proposed as v1.2.2: Gleaming Splendor
+  for Alhammarret's Archive, and **Greater Auramancy for Lightning Greaves** — Heliod is
+  an enchantment creature, so the shroud covers him as Greaves did and every other
+  enchantment besides (game 001 was lost to a Swords redirected onto him). Two to buy.
+  **Open from it:** Karametra's Blessing can no longer target Heliod once Auramancy
+  resolves; its slot wants a wipe answer that does not target. The pilot is still
+  iterating — stage and commit only, no regen, until they say the list is done.
+- **edgar-vampires/elenda-v1** OPEN: Elenda, the Dusk Rose for Gifted Aetherborn and
+  Blade of the Bloodchief for Unbounded Potential. Both owned, both feed the nine
+  sacrifice outlets. Inevitable Defeat (subtractive: fourth colour pip at four mana,
+  interaction already 12 against 5–6) and Duty Beyond Death (a wash: indestructible
+  on a wipe turn undoes the drain package's best play) were declined.
+- **ur-dragon**: Balefire Dragon and Ancient Silver Dragon assessed against final-v1
+  and **not staged**. Silver is double blue at eight in the deck's worst colour
+  (69% on curve against 93% white). Balefire is a late-game card in a deck whose
+  median kill is turn seven; revisit after v1.3.0 is sleeved and has played, cut
+  Scourge of the Throne if it goes in. Dragon curve on final-v1: 24 Dragons,
+  mean MV 5.46, median 5.
+- **Edgar's five single-card patch branches** (fear-v1, march-v1, mound-v1,
+  newblood-v1, sergeant-v1, all opened 2026-09-11) are still OPEN. Three were
+  measured at 40 games and read as noise; newblood and march were cancelled before
+  they ran. Decide or delete — a Forge batch at 40 games cannot resolve a single
+  card, so the honest options are theory (as above) or 400 games per arm.
+- Filed from the session: #45 (net-change stamps a stale sha), #46 (staging on a
+  PROPOSED branch, no amend path), #47 (goldfish_targets shared across branches),
+  #48 (`propose --reason` writes an empty why; conftest needs the cache plugin).
+
 ### DONE — the round robin and `standard-v3` (2026-09-09 → 10)
 
 `standard` had giada at 2.15x and baylen at 0.32x for eight days. A ten-table round
