@@ -15,6 +15,11 @@
    "at": "2026-09-11",
    "decklist_sha256": "badd46c92ff01627d2b5c6308a7b5850721c73f04db4f41b2bbe2fb4b4e93261",
    "message": "single-card patch: Gleaming Splendor for Alhammarret's Archive"
+  },
+  {
+   "at": "2026-09-12",
+   "decklist_sha256": "034afa608b87e9efc1dedf9d1acdfb98170acfa9b82c746d34b0fb28c8c7479b",
+   "message": "Greater Auramancy for Lightning Greaves: shroud on Heliod (an enchantment creature) and on every other enchantment, same two mana; work in progress on the proposed v1.2.2 list"
   }
  ],
  "base_version": 10,
@@ -25,16 +30,23 @@
    "in": "Gleaming Splendor",
    "strength": null,
    "why": "a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here"
+  },
+  {
+   "at": "2026-09-12",
+   "out": "Lightning Greaves",
+   "in": "Greater Auramancy",
+   "strength": null,
+   "why": "Heliod is an enchantment creature, so Auramancy's shroud covers him the way Greaves did and also covers Smothering Tithe, Rhystic Study, Mystic Remora, Gleaming Splendor and the pillowfort; Greaves' haste is unused. Game 001 was lost to a Swords redirected onto Heliod. Blind to wipes and counter wars; Karametra's Blessing can no longer target Heliod once it resolves."
   }
  ],
  "proposal": {
-  "at": "2026-09-11",
+  "at": "2026-09-12",
   "as_version": "v1.2.2",
-  "why": "Pilot's call 2026-09-11: Gleaming Splendor for Alhammarret's Archive. The instrument cannot see it \u2014 Forge at 40 games (MDE 0.34, delta -0.028, CI [-0.23, +0.19]) and a goldfish that does not read the second-draw Treasure trigger \u2014 so the decision is on theory: a Treasure per opponent per turn in a deck that makes every opponent draw every turn, and it stacks with Smothering Tithe. The Archive's lifegain half was off-plan. One to buy.",
+  "why": "Pilot's call 2026-09-11: Gleaming Splendor for Alhammarret's Archive. The instrument cannot see it \u2014 Forge at 40 games (MDE 0.34, delta -0.028, CI [-0.23, +0.19]) and a goldfish that does not read the second-draw Treasure trigger \u2014 so the decision is on theory: a Treasure per opponent per turn in a deck that makes every opponent draw every turn, and it stacks with Smothering Tithe. The Archive's lifegain half was off-plan. Pilot's call 2026-09-12: Greater Auramancy for Lightning Greaves. Heliod is an enchantment creature, so the shroud covers him as Greaves did, and it also covers Tithe, Rhystic Study, Remora, Splendor and the pillowfort; the haste was unused. Game 001 was lost to a Swords redirected onto Heliod. Blind to wipes and counter wars, and Karametra's Blessing can no longer target Heliod once it resolves. Nothing on the bench measures protection. Two to buy.",
   "base_version": 10,
-  "decklist_sha256": "badd46c92ff01627d2b5c6308a7b5850721c73f04db4f41b2bbe2fb4b4e93261",
+  "decklist_sha256": "034afa608b87e9efc1dedf9d1acdfb98170acfa9b82c746d34b0fb28c8c7479b",
   "accepted_on": {
-   "decklist_sha256": "badd46c92ff01627d2b5c6308a7b5850721c73f04db4f41b2bbe2fb4b4e93261",
+   "decklist_sha256": "034afa608b87e9efc1dedf9d1acdfb98170acfa9b82c746d34b0fb28c8c7479b",
    "state": "merge",
    "objective": {
     "axis": "extra_cards_8",
@@ -43,7 +55,7 @@
     "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it."
    },
    "grade": "met",
-   "reading": 2.2881,
+   "reading": 2.2958,
    "harness": {
     "iterations": 10000,
     "seed": 20260826
