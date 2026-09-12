@@ -556,3 +556,200 @@ empty latent), validation loss (identical across configs, and anti-correlated
 with quality once it does move). **A sweep must score the downstream task.** The
 cached encoder makes that affordable — 8 to 73 seconds per configuration, eval
 included — which is the only reason any of this was findable in an afternoon.
+
+
+## The CardBERT detour, 2026-08-31 → 09-01 — a third space, kept as a toggle
+
+*Moved verbatim out of `PLAN.md` on 2026-09-12. The VAE sections above are the
+fuller account of that half of the same fortnight; this is the record of the
+FIELD-typed encoder and the VICReg objective that followed it, and it is the
+only one there is.*
+
+### The record, as it stood in PLAN.md
+
+Replacing a contrastive objective whose positives are mined from the repo's own
+regexes. **The approach changed twice, and both changes were forced by a
+measurement rather than an argument.**
+
+#### Phase 1 (the eval) — DONE, and it moved the target
+
+The eval measured one relation against one candidate pool and reported bare
+differences. It now measures three relations, a geometry, and carries an interval
+on every gap. Two findings from building it: **the `-0.012` that named issue #12
+is a TIE** (interval [−0.088, +0.060], never computed), and **the
+commander-search contradiction is settled** — text's advantage is entirely
+thematic (0.470 against the function space's **0.005** on tribal commanders),
+because `train_ability` mines positives from roles and tags and "Vampire" is
+neither.
+
+#### The VAE was built, measured, and abandoned — by its own control
+
+`card_serialize` + `model_vae` + `train_vae` shipped and trained. The control is
+the whole finding:
+
+    frozen MiniLM 384d          function 0.629   theme 0.523   effdim 51.39
+    PCA 128d of it              function 0.648   theme 0.494   effdim 42.62
+    RANDOM 128d projection      function 0.602   theme 0.444   effdim 37.69
+    the TRAINED VAE             function 0.618   theme 0.387   effdim 34.19
+
+**A random projection beat the trained model on theme and PCA beat it on
+everything.** Training bought less than a matrix multiply with random numbers,
+because there was nothing to learn that was not already MiniLM. The artifact is
+kept as a scored baseline; nothing depends on it.
+
+#### The redirect: this is TABULAR data with some text columns
+
+Set by the pilot, 2026-08-31: *"we went too literal and too far down the path of
+language modeling… an input could just be CMC (int) or color identity (one-hot
+array)… we are treating this like a language problem instead of a tabular data
+problem (with some language inputs)."*
+
+The serialiser flattened every card into one string and pushed it through a
+sentence encoder, so CMC never existed as a number and colour identity never
+existed as a set. Rebuilt as typed fields:
+
+| module | what it is |
+|---|---|
+| `training/card_source.py` | the corpus as the MODEL sees it — `cards.csv` plus the two things the CSV threw away: oracle newlines (the ability boundary) and `produced_mana` |
+| `training/card_fields.py` | **73 typed fields, 623 columns**, three states (PRESENT / ABSENT / MASKED). Numeric, Binary, Categorical, SetOf |
+| `training/span_encoder.py` | **6 maskable text slots** over a frozen-MiniLM cache of 75,178 distinct spans |
+| `training/masking.py` | correlated-group masking; `GROUPS` + `COMPANION` |
+| `training/model_cardbert.py` | BERT where the tokens are FIELDS |
+| `training/loss_cardbert.py` | one loss per field kind; InfoNCE for spans; VICReg |
+| `analysis/recoverability.py` | which fields a lookup table already solves |
+| `analysis/project_spaces.py` | every space projected side by side, to LOOK at |
+
+**Absent is not zero, and it earned its keep on a case nobody predicted.**
+Scryfall OMITS `produced_mana` for the 32,190 cards that make no mana rather than
+writing an empty list, so a field reading a missing key as False would report the
+whole corpus as making no mana — plausibly and silently. Command Tower went from
+5 populated fields to 38 once `produces_*` existed.
+
+**The name comes out of the rules text.** 4,401 cards (12.6%) say their own name
+in their own abilities, so the `name` slot and an ability slot shared a literal
+string. Split on commas and ` // `, never on spaces (a card named `Food Fight`
+must not redact *Food* from "create a Food token"); possessives keep their `'s`.
+
+#### The recoverability audit gates the objective
+
+`manamap recoverability` fits a ridge probe per field from every other field,
+held out by TEXT hash. **19 of 73 are solved by a linear probe** — `cmc` is the
+pips added up (R² 0.96), `supertype` is the type flags (0.998), `color_identity`
+is the coloured pips (0.956). Meanwhile `kw_deathtouch`, `kw_lifelink` and
+`kw_trample` score NEGATIVE lift: the probe does worse than always guessing
+false, so those are the informative targets.
+
+**So masking one field is arithmetic, not a task.** `masking.GROUPS` hides
+correlated blocks, and `COMPANION` hides the keyword TEXT alongside the keyword
+flags because 99% of keywords appear verbatim in oracle text.
+
+#### CardBERT, and the bug the eval caught
+
+A card is 79 positions (73 fields + 6 spans) plus `[CLS]`; masking hides fields;
+bidirectional attention predicts them; `[CLS]` is the product.
+
+**The embedding was never trained.** `to_latent.weight.grad` came back **None**
+after a full backward pass — every head reads its own field's position and
+nothing reads `[CLS]`, so what shipped was a random projection of an untrained
+state and scored like one (r@10 0.093, effdim 5.53). This is the textbook BERT
+result reached from first principles: a raw `[CLS]` is a poor sentence embedding,
+which is why SBERT exists. BERT survives it because it is always fine-tuned
+downstream; here the embedding IS the product.
+
+Fixed by making **masking the augmentation** — two independent maskings of one
+card are two views, NT-Xent between their latents. 40 epochs, never early-stopped:
+
+    space                              dim  effdim  spread   r@10   r@50  medRank
+    layout (color+type)                128    3.89  0.0061  0.086  0.139     1148
+    cardbert (masked fields)           128   16.72  0.1347  0.103  0.262      323
+    vae (masked imputation)            128    5.71  0.0454  0.167  0.247      374
+    function (ability)                 128   27.31  0.0323  0.232  0.464       76
+    text baseline (frozen MiniLM)      384   51.39  0.1341  0.244  0.414      126
+
+#### The result is a SPLIT, not a win — and the split is legible
+
+Against the space it would replace, 95% CI on the DIFFERENCE:
+
+    FUNCTION (28 groups)          THEME (55 groups, EDHREC tribes)
+     100  0.759 vs 0.964  -0.205    100  0.537 vs 0.443  +0.094  excludes 0
+     500  0.519 vs 0.794  -0.275    500  0.303 vs 0.152  +0.151  excludes 0
+    2000  0.317 vs 0.562  -0.245   2000  0.127 vs 0.053  +0.074  excludes 0
+
+It LOSES function at every size and WINS theme at every size. Not surprising once
+stated: the function space mines positives from role and tag regexes, so function
+is what it was built for; CardBERT reads types, subtypes, keywords and ability
+spans, so tribe is legible to it in a way it never was to a role regex. **At pool
+500 it doubles the baseline on tribe** — and theme was the function space's known
+weakness, recorded when the commander-search contradiction was settled.
+
+Two diagnostics agree. Hard-negative separation on the fastland/slowland cycle —
+the canonical "should NOT look alike" failure — is **0.0377 against 0.0133**,
+2.8x. Centroid headroom is **0.976 against 0.019**, the metric that explains why
+centroid queries have nothing to rank on today.
+
+**Commander search** (a centroid operation, 79 candidates): CardBERT is the best
+TRAINED space and the only one with a perfect top20 — but the top1 ranges overlap
+so that difference is the draw, and frozen text still wins outright.
+
+    function (ability)     top1 0.410   top5 0.811   top20 0.967   MRR 0.587
+    cardbert               top1 0.458   top5 0.908   top20 1.000   MRR 0.642
+    text baseline          top1 0.584   top5 0.962   top20 0.996   MRR 0.746
+
+**Nothing is cut over.** It is complementary, and strongest exactly where the
+incumbent is weakest.
+
+#### RULE — visual inspection is part of evaluation
+
+Set by the pilot, 2026-09-01. `eval-embeddings` asks one question — are the k
+nearest cards right — and its numbers do not describe a MAP. The VAE retrieves
+better than CardBERT (0.167 against 0.103) with a third the spread and a tenth
+the headroom: **a space can win recall@10 by CONCENTRATING and lose everything
+that makes an atlas navigable.** `manamap project-spaces` projects every space
+side by side, coloured by facts none of them optimised directly (colour identity,
+card type, EDHREC tribe), so the question is "did this structure emerge" rather
+than "was it supplied".
+
+`--components 3` emits 3D. The pilot's framing: the Atlas as a UNIVERSAL map —
+galaxies, solar systems, planets and satellites — which is a third scale on top
+of the two `cluster_regions` already runs (HDBSCAN L0 at 800, L1 at 100). The
+coordinates are a one-line change; **the cost is entirely the frontend**, since
+`viz/render/canvas.js` is 2D through hit-testing, labels and the force graph. A
+rotatable 3D→2D camera is the cheap path and gives most of the exploration feel.
+
+#### RUNNING — the `VIEW_WEIGHT` ablation, and what comes after
+
+Testing whether the function gap is the contrastive WEIGHT or the NEGATIVES.
+`vw025` finished 40 epochs; `vw050` is mid-run; `vw100` is preserved.
+
+**The early read is that the weight is not the lever.** A 4x change moved view
+agreement 0.953 → 0.922 and left imputation untouched (`kw_flying` 0.956 →
+0.954), with the two trajectories almost superimposed. Instance discrimination
+is easy — telling one card from another needs few bits — so the model solves it
+early at any weight.
+
+If that holds, the objective is next, not the weight: **VICReg is built, tested
+and ready** (`--objective vicreg`). InfoNCE makes every other card in the batch a
+negative, so two cards that ramp the same way are pushed apart however the term
+is weighted; VICReg has no negatives at all — invariance, variance (which does
+the anti-collapse job), covariance. Applied to the SHIPPED latent rather than to
+a discarded expander as the paper does, because decorrelating dimensions is
+exactly what this space is worst at (16.72 of 128 against text's 51.39 of 384).
+
+**Two traps NOT taken, both of which would have invalidated the measurement:**
+using `ROLE_PATTERNS`/`MECHANICAL_TAGS` as a similarity label is the bootstrapped
+supervision this rebuild exists to escape, arriving through the denominator
+instead of the positives; and **EDHREC co-occurrence is what
+`eval_embeddings.theme_groups` builds the theme eval FROM**, so training on it
+would turn the +0.151 theme win into "the model learned its test set".
+
+#### Artifacts and their gates
+
+`data/span_vectors.npy` (gitignored, 115 MB), `data/embeddings_cardbert*.npy`,
+`data/eval/recoverability.json`, `data/eval/space_projections.json`.
+`--tag` keeps a sweep's runs apart: every artifact path was a fixed constant, so
+two configurations run back to back would silently overwrite each other — the
+`--out is slug-scoped` lesson in a new place, proved with a 1-epoch smoke run
+before spending hours on the assumption. All three artifacts are written together
+on each improving epoch and stamped with it, so an interrupted run is usable
+rather than a trap.
+

@@ -55,18 +55,22 @@ was not granted; a figure travels with its interval, its N and its limits.
 `deck-info <slug>` per deck for the live picture; `deck-status --all` for the fleet. As of
 this writing (derived from the stack, bracket, engine, sim and log artifacts):
 
-| deck | stacks ✓/total | bracket floor/target | engine | sim runs | logged | status |
+| deck | stacks ✓/total | sim runs | logged | record | branches | status |
 |---|---|---|---|---|---|---|
-| `goblin-storm` | 5/5 | 4/4 | pass | 0 | **1** | v1.0.0 ◆ SLEEVED; 0W 1L |
-| `hapatra` | 1/1 | 4/4 | pass | 0 | 0 | `broken-down` (cards live in yawgmoth) |
-| `sisay` | 1/3 | 4/4 | pass | 0 | 0 | `retired` — **not the pilot's deck** |
-| `heliod` | 6/6 | 4/4 | pass | 0 | **1** | v1.0.0 PLACEHOLDER, not paper-locked; 0W 1L; needs PROTECTION |
-| `ur-dragon` | 6/6 | 4/4 | pass | 1 | **2** | **v1.0.1 ◆ SLEEVED** (what is being played); v1.0.2 paper on the way; 1W 1L |
-| `edgar-vampires` | 11/11 (9 presentable) | 4/4 | pass | 1 | **3** | v1.0.0 ◆ SLEEVED; 0W 3L; **direction changed 08-28** |
-| `gishath` | 5/5 | 4/4 | pass | 0 | **1** | v1.0.0 PLACEHOLDER, not paper-locked; **1W 0L** — the fleet's first win |
-| `yawgmoth-swarm` | 14/14 (11 presentable) | 4/4 | pass | 0 | 0 | **`broken-down` (2026-09-01)** — parts to fund `zur-enchantress`; the V5 lock was withdrawn with it |
-| `radagast` | 8/8 | 1/3 | pass | **2** | 0 | `broken-down` (2026-08-21) |
-| `zur-enchantress` | 0/0 | 3/— | — | 0 | 0 | on the bench; funded by the yawgmoth breakdown |
+| `edgar-vampires` | 11/11 | 9 | **4** | 0W 4L | 6 | ◆ **SLEEVED V2**; direction changed 08-28 |
+| `ur-dragon` | 7/7 | 4 | **6** | 2W 4L | 6 | ◆ **SLEEVED V4** (v1.2.1); `final-v1` PROPOSED as v1.3.0 |
+| `heliod` | 1/1 | 4 | **2** | 0W 2L | 2 | ◆ **SLEEVED V10** (v1.2.1); `splendor-v1` PROPOSED as v1.2.2 |
+| `gishath` | 5/5 | 3 | **1** | 1W 0L | 2 | ◆ **SLEEVED V4** (v1.0.0); `mana-v1` PROPOSED as v1.1.0 |
+| `goblin-storm` | 5/5 | 4 | **2** | 0W 2L | 0 | ◆ **SLEEVED V1**; 0.031 at standard-v3 |
+| `sharknado` | 0/0 | 0 | 0 | — | 1 | on the bench; proposals withdrawn 09-11 |
+| `ingris-infect` | 0/0 | 0 | 0 | — | 3 | on the bench; the commander is legal 2026-10-02 |
+| `zur-enchantress` | 0/0 | 2 | 0 | — | 8 | **`broken-down` 2026-09-10** — a failed experiment, called by the pilot |
+| `yawgmoth-swarm` | 14/14 | 1 | 0 | — | 0 | `broken-down` |
+| `hapatra` | 1/1 | 1 | 0 | — | 0 | `broken-down` (cards live in yawgmoth) |
+| `radagast` | 8/8 | 3 | 0 | — | 0 | `broken-down` (2026-08-21) |
+| `sisay` | 1/3 | 1 | 0 | — | 0 | `retired` — **not the pilot's deck** |
+
+*Derived from the artifacts 2026-09-12. `deck-info <slug>` for the live picture.*
 
 **Deleted 2026-09-01 — `kianne`, `kinnan`, `blar`.** All three were deterministic
 whole-format baselines: never sleeved, never played, never published, and
@@ -82,32 +86,30 @@ deck does not unmake it. `kinnan`'s build plan is now `tests/fixtures/`, owned b
 two regression tests that assert it rather than borrowed from a live deck.
 Recoverable: `git show <the deletion commit>~1:data/decks/kianne/decklist.txt`.
 
-**Eight Forge runs and six experiments exist**, across four decks — edgar (3 runs, 2
-experiments), kianne (2, 2), radagast (2, 2), ur-dragon (1). The other seven have not been
-simulated at all.
+**32 Forge runs exist across nine decks** — edgar (9), heliod (4), goblin-storm (4),
+ur-dragon (4), gishath (3), radagast (3), zur (2), hapatra (1), sisay (1), yawgmoth (1).
+The two bench decks have not been simulated at all.
 
-**Five decks now have a real table logged — eight games, 2W 6L.** edgar (3), ur-dragon
-(2), goblin-storm (1), heliod (1), gishath (1). **Six of the eight are NOT yet
-debriefed**, deliberately: the pilot's order is modelling first, `/debrief` after.
+**Five decks have a real table logged — fifteen games, 3W 12L.** ur-dragon (6),
+edgar (4), goblin-storm (2), heliod (2), gishath (1). **Every one is debriefed**; the
+`log_annotations.json` files were written 2026-09-11.
 
 The night of **2026-08-28** at Alex's (Moraga Way, Orinda; three-player pod with Alex and
 Stuart) put four of those on the board in one sitting — goblin-storm, edgar, heliod and
 gishath, in that order, **1W 3L with the Dinosaurs taking it**. Three of those decks had
 never been logged at all.
 
-**One deck is not marked as built in paper** (zur-enchantress). That is a third state,
-distinct from the four that no longer exist as cardboard: nobody has said either way, and
-`deck-info` says so instead of assuming.
+**Two decks are not marked as built in paper** (`sharknado`, `ingris-infect`). That is a
+third state, distinct from the five that no longer exist as cardboard: nobody has said
+either way, and `deck-info` says so instead of assuming.
 
-**heliod and gishath came off that list by being PLAYED**, which is a stronger fact than
-the lock records. Both are tagged **v1.0.0 as a PLACEHOLDER** and deliberately NOT
-paper-locked: the lock asserts that the exact committed list is what is sleeved, and that
-is precisely what a check-in establishes. The pilot will supply both lists and will not
-change either deck before then, so the committed lists are stable in the meantime and the
-log entries' decklist stamps hold.
+**heliod and gishath were paper-locked on 09-07 and 09-11**, which closed the
+PLACEHOLDER state this section used to describe: both had been played before anyone had
+asserted what was sleeved, and a check-in is what settles that. All five played decks now
+carry a lock.
 
-Four decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`,
-`yawgmoth-swarm`). Their artifacts stay exactly as published; `deck-info` states the
+Five decks no longer exist as cardboard (`hapatra`, `sisay`, `radagast`,
+`yawgmoth-swarm`, `zur-enchantress`). Their artifacts stay exactly as published; `deck-info` states the
 status and withholds the suggestions that would need a deck to shuffle.
 
 ## Where it stands (2026-08-25)
@@ -195,142 +197,12 @@ so every verdict rests on the log and on theory, and says so.
   PROPOSED branch, no amend path), #47 (goldfish_targets shared across branches),
   #48 (`propose --reason` writes an empty why; conftest needs the cache plugin).
 
-### DONE — the round robin and `standard-v3` (2026-09-09 → 10)
+### The round robin and `standard-v3` (2026-09-09 → 10) — DONE
 
-`standard` had giada at 2.15x and baylen at 0.32x for eight days. A ten-table round
-robin among eight candidate seats, none of ours sitting, ranked them on a level
-field; `standard-v3` (sythis / jarad / abaddon) is the three nearest fair that are
-bracket 3 with zero combos, and it was then CALIBRATED with five of our decks (185
-decided games): sythis 1.45x, subject null 0.292, jarad a 0.48x floor. Default from
-09-10. The lesson is in `docs/simulation.md` and the pod note: the ranking did not
-predict the calibration, because a seat's share depends on who sits opposite
-(sythis 0.25 against heliod, 0.66 against zur). The fleet against that table:
-edgar 0.413, ur-dragon 0.343, gishath 0.333, heliod 0.278, goblin-storm 0.031,
-zur 0.085 (untracked; killed at 59/60 by hand).
-
-Also done: `model_coverage`'s third mirror drift (mass animation read as invisible
-on the branch built around it); zur's six branches re-measured on the current
-model and the two leaders settled at 100k iterations — drain-v2 0.434, best-v1
-0.414 on kill_by_8, real at that N, and only what the goldfish can see.
-
-**Five red tests, all left by 09-09's commits and none by the batch** (the suite
-went 25 → 5 once the fleet's derived artifacts were regenerated and four tests
-were re-pointed at code that had moved): ur-dragon's 09-08 land swap (Shivan
-Reef / Stormcarved Coast → Sunbaked Canyon / Turbulent Springs) is not in
-`engine.json` or `poh_procedures.json`, which fails the engine validator and the
-procedures page; deck-info's panel test reads heliod, whose engine critic has
-said `fail` since 09-09's re-read — both are agent work (`/analyze-engine`,
-`/poh-procedures`), not a rename; `model_colors` on ur-dragon RAISES the
-commander's cast-by-t6 (0.22 → 0.32), which is backwards; and edgar's sacrifice
-cap fires in 0.3% of games since cast-token bodies ride on `model_combat`.
-`test_oversubscribing_the_machine_censors_games` is xfail(strict) with the
-numbers: censoring is a property of the table (0% / 8.5% / 15.9% at 4 jobs
-across three tables) before it is one of the machine.
-
-**The goldfish learned poison (2026-09-10)** for `ingris-infect`, a Rakdos infect deck
-under Ingris Stingerquill (Reality Fracture, not legal until 10-02, not in the
-corpus): infect turns a source's damage to a player into counters (702.90b), toxic
-adds N on connecting, ten counters end the game, and her "that creature deals 1
-damage to each opponent" is a per-attacker ping the attacker deals. Fleet impact:
-every other deck byte-identical beyond the stamp and the two new keys
-(`mean_poison_by_turn`, `kill_by_poison_rate`, both exactly zero where nothing makes
-counters), except ur-dragon's `combat_effects_not_modelled`, which now names Ignoble
-Hierarch — its exalted window used to run into "{T}: Add {B}, {R}, or {G}" and credit
-that as ATTACK MANA. The 220-character attack window now stops at the next activated
-ability. **OPEN, measured and not fixed:** `token_bodies` still reads the WHOLE text,
-so nine fleet cards credit an activation's token as a free body on cast (Bloodline
-Keeper, Huatli, Den of the Bugbear, Fountainport, Idol of Oblivion, Kher Keep, Pashalik
-Mons, Dawn of Hope, Urza's Saga, plus Ingris's own Cadet). Fixing it moves edgar,
-gishath, goblin-storm and zur; do it as its own commit with the sweep.
-
-**THE NORTH-STAR PLAN, pieces 1 and 2 landed 2026-09-10 (plan file:
-`~/.claude/plans/effervescent-churning-wadler.md`).** Forge failed three ways in one
-day -- resolution, a null that moves with the subject, and an AI that will not pay a
-cost (sharknado's seat cast Wheel of Fortune once and Windfall never in 80 games on
-BOTH profiles while discarding them) -- so the rule became: optimise on the
-highest-resolution instrument that PROVABLY covers the deck's plan, checked before the
-run. (1) `record["engine_casts"]`: per-card cast / activated / DISCARDED for our seat
-and own turns, measured, top-level, validated where present; `sim/engine_casts.py`
-reads it at print time against the declaration and prints "held and never cast" at
-the `simulate` tail, in `deck-info` and live in `sim-progress`; `KNOWN_UNCAST` names
-sharknado's two runs and heliod's Crawler. (2) `model_discard` in the goldfish: wheels
-(25 in the corpus, shuffle wheels without discard triggers, no free suspend), loots
-netted, discard/draw/second-draw payoffs paid outside the combat gate, PARTNER
-commanders cast on their own curves (Brallin had never been in the library). Every
-non-opted deck byte-identical beyond the stamp; sharknado's extra cards by T8 went
-0.63 -> 7.5 and both commanders cast. Coverage: 91 of 100 seen.
-
-**Piece 3's four gates closed the same evening (2026-09-10):** (a) `compact()` keeps
-`life_by_turn` and `damage_to_players_by_turn` for every seat (+23% on the games
-block, the fleet's records 14.3 -> 17 MB); (b) per-seat discards, blockers declared,
-attackers declared / blocked and own turns in `analysis.seats`, with `wipe_recovery`
-and the cumulative-damage curve under EVERY seat (34 records re-analysed, validate-sim
-green); (c) `targeting.json` for the five live decks, gated (the AI attacks the seat
-that has dealt the most damage, 0.66-0.69 against a null near 0.5, fleet-wide);
-(d) pieces 1 and 2. **The table model itself is the next plan**: three seats, a
-pressure series fitted from the opponents' curves in `pod_behaviour.observed()`'s
-shape (logs -> dated frozen constant with N -> drift test), a removal process from
-`wipe_recovery` and `interaction_received`, a blocker process from the new counts, a
-target policy from `targeting.json`, and `deck_notes.CAUSES` as its output
-vocabulary. Acceptance: it must reproduce `gotchas-bench.md:305` (the go-wide Edgar
-refactor Forge beat 31/400 vs 50/400).
-
-**Coverage over-claims "seen" through `bodies` (found 2026-09-11 on the six
-single-card patches).** Blight Mound, March of the Canonized and Gleaming Splendor
-read `seen` because their text makes a token, while the mechanism that makes them
-worth a slot (a Pest per nontoken death; the devotion-seven upkeep 4/3; a Treasure
-per opponent's second draw) is unread. A card should read `seen` only when every
-channel its text feeds is on, and a token clause on an unread trigger is not a
-channel. Same class as the treasure "seen if anything is active" bug of
-2026-09-04. Fix in `model_coverage.channels_for`: name the trigger shapes that
-gate a token and treat the token as DARK/invisible under them.
-
-**Open from it:** zur-enchantress's own reading against v3 is the logs only;
-re-run it when the deck is worth 60 games again. The 600s clock is shaving edgar
-specifically. `sim-progress` reports RUNNING on a run whose record exists.
-
-**Gishath checked in as v1.0.0 and SLEEVED (2026-09-11), and the goldfish learned
-its engines.** Forge read the commander's reveal (42 triggers in 40 games, the AI
-took the Dinosaurs); the goldfish read a 7-power body and none of Mirari's Wake,
-Rishkar's Expertise, Dreadmaw's per-Dinosaur draw or Ghalta's scaling token, with
-33 cards DARK because `model_combat` was never declared. Taught: a declared
-combat-damage reveal (`model_commander_combat_reveal`, rate 0.70 per attack named
-from the V3 logs), land-mana bonus (4 cards), draw-for-greatest-power (3, one of
-them Ur-Dragon's Return of the Wildspeaker), draw-per-type on entry (10), the
-scaling attack token (1). Kill-by-T8 0.56 -> 0.62 on the sleeved list. Etali and
-Hunter's Insight named unmodelled. A second batch the same day from the pilot's
-cart: typed entry triggers (144 cards; Dragon Tempest no longer fires on a dork),
-Molten Echoes' chosen-type copy, cast-draw on mana value (Up the Beanstalk) and
-for a paid mana (Lifecrafter's Bestiary), power-gated cast damage (Sarkhan's
-Unsealing), damage-for-power (Chandra's Ignition), tutor-to-battlefield (Savage
-Order); the commander's own cast now fires cast triggers. Branch `cart-v1` (eight
-swaps incl. World War Hulk for Enlarge) staged and measured on both instruments,
-NOT proposed — the pilot has not green-lit the purchase; it is reserved the name
-v1.1.0 for when the cards land (the sleeved list is v1.0.0, the old bench list
-v0.9.0, retagged 2026-09-11 on the pilot's rule); the engine
-model rebuilt for v1.1.0 (critic in flight); deck_map stale against V3. Next: the
-Forge v1.0.0 baseline, cart-v1 on both instruments, World War Hulk's chapters as
-a third batch. Open from the agent chain: `merge-deck-map` cannot CLEAR a label (a
-null or omitted id keeps the old name, `merge_deck_map.py:60-63`); `engine.json`
-cites V3's city ids (its `map_disagreements` says so) and wants a re-run against
-today's map; `strategic_frame.json` is stamped V3 and needs the consult. →
-`docs/gotchas-bench.md`
-
-**The goldfish learned team haste (2026-09-11), for the Ur-Dragon improvement
-pass.** The pilot's log asked for haste by name and the model read `haste` per
-card, so Temur Ascendancy granted nothing and a creature that GIVES haste attacked
-on arrival. One key, `team_haste` (all / nontoken / flying / a type), 49 corpus
-grants, keyword-only own haste (1,250 -> 705 creatures), the enabler in the casting
-predicate, and the two board-mutating sites now carry the parallel lists (zur's
-typed lifelink was mispaired after a death). Worth about 1.5 points of kill-by-T8
-on ur-dragon's two grants: the unopposed clock is set by mana, not summoning
-sickness, and a haste branch is measured against that. The prescription
-0241fb6a70f1 (the pilot's four asks) failed its first skeptic pass — the reading
-over-claimed the log's causes and two adds were miscounted — and goes back to the
-doctor with the new instrument. Not read, named: token haste, the haste lands, and
-activated haste (Skithiryx, Ingris), which is why ingris-infect and sharknado
-moved down a point. → `docs/gotchas-bench.md`
-
+The full record, with the round-robin table, the calibration and the reason
+`standard` and `standard-v2` were both wrong, is **`docs/simulation.md`,
+"2026-09-10: the round robin, and `standard-v3`"**. It was duplicated here and
+there for two days; the simulation doc is the home.
 
 ### IN FLIGHT — the PRD v2 build-out (2026-09-03)
 
@@ -517,258 +389,20 @@ against the pod is the instrument that can see all three pillars.
    the Atlas seeded, and the library is persisted and cross-surface.
 
 
-### DONE — the speed sprint (2026-08-30/31)
+### The speed sprint (2026-08-30/31) — DONE
 
-**The complaint was that iteration had become heavy: questions slow, fleet
-regeneration manual, and fidelity surprises discovered after the run.** Three
-audits (tests, simulation, interactive path) said the Python simulation was
-never the bottleneck — the fan-out around it was. The whole fleet regenerates in
-**78 seconds of CPU**; the same regeneration used to cost **6-9 MILLION agent
-tokens**, and that ratio was the entire problem.
+Moved to **`docs/gotchas-bench.md`, "The speed sprint"** on 2026-09-12 — the
+measurements (the warm worker's 43x on `query-rules`, `regen`'s 72 targets in
+109s at `--jobs 8`) belong with the other measurements, not in a status file.
 
-**The single most expensive line in the repo was a provenance stamp.**
-`goldfish.model_version()` is a sha over the whole of `goldfish.py`, and ten
-`AGENT_ROUTINES` declarations hashed the file it is stamped into. A COMMENT edit
-moved the digest on every deck and hard-MISSed strategic-frame, pilot-notes,
-tutor-guide, deck-diagnosis, every decision and every prescription. Measured over
-four real goldfish commits: **45 artifacts stamped stale, 31 with figures that
-actually moved — 31% of the spend bought nothing**, and `deb711e` changed one
-docstring line and invalidated the fleet. Excluded from the fingerprint; the
-stamp stays in the artifact and `model_staleness` still reports it. The next
-commit proved the point — a 30% goldfish speedup that moved no figure at all and
-cost nothing.
+### The embedding architecture (2026-08-31 → 09-01) — PARKED
 
-| | before | after |
-|---|---|---|
-| `query-rules` / `query-strategy` | 6.93s | **0.16s** (43x) |
-| `deck-facts` | 1.44s | **0.14s** |
-| `deck-audit` | 2.26s | **0.59s** |
-| `deck-info` | 7.8s | **1.25s** |
-| `mde_proportion(0.25, 200)` | 2.17s | **0.21s** |
-| goldfish (edgar) | 5.70s | **3.96s** |
-| whole-fleet regen | a hand-written shell loop | **78s** |
-| `make test` (warm) | ~101s | **~74s** |
-
-**`manamap serve` is a warm worker.** Every CLI invocation was a cold process and
-every memo is per-process — including the frozen MiniLM behind `query-rules`,
-~8s to build and thrown away each time, while `rules-lookup` tells the agent to
-"try several phrasings". `/api/cli` runs read-only pilot commands in the warm
-process behind an allow-list; the terminal routes to it when one is listening and
-**fails open** on any error. It holds the modules it started with, so restart it
-after a code change.
-
-**`manamap pilot regen`** rebuilds the fleet in dependency order, parallel across
-targets — 72 targets, 78s, **bit-identical** (`git status data/` empty after).
-Parallel across DECKS, never across games: one `random.Random(seed)` is threaded
-through all 10,000 games, so splitting them would re-base every figure.
-
-**`manamap pilot model-coverage`** answers the fidelity question in the other
-direction — not "what did the channel miss" but "what would this deck need, and
-is it switched on". **236 DARK cards across the fleet**; gishath is a Dinosaur
-deck with 33 cards whose combat the model was told not to look at. `goldfish` and
-`net-change` print it as a PREFLIGHT, so it arrives before the games.
-
-**Forge's `-c` clock ends a game's accounting, not its AI thread.** Two tracked
-20-game runs took **3.7 and 4.2 hours** with 95% of the wall claimed by no game.
-Jobs are capped now; checked against all 18 tracked runs, the two pathological
-ones die and **all sixteen others survive** — **7.1 hours** on that set.
-
-**Three statements that were false, now corrected in place:** `forge.ASSUMPTIONS`
-claimed a clock-hit game is recorded as a draw (it carries a winner — 75 of
-edgar's 400 games, 19%, with zero recorded draws); `SEEDED_NOTE` claims
-byte-for-byte replay (it diverges at game 1 on the 400-game run); and
-`docs/agent-cost.md` claimed no Python spawns a subprocess (`serve.py`'s `ask`
-shells out to `claude -p`).
-
-Full record: `docs/gotchas-bench.md`.
-
-### IN FLIGHT — the embedding architecture (2026-08-31 → 09-01)
-
-Replacing a contrastive objective whose positives are mined from the repo's own
-regexes. **The approach changed twice, and both changes were forced by a
-measurement rather than an argument.**
-
-#### Phase 1 (the eval) — DONE, and it moved the target
-
-The eval measured one relation against one candidate pool and reported bare
-differences. It now measures three relations, a geometry, and carries an interval
-on every gap. Two findings from building it: **the `-0.012` that named issue #12
-is a TIE** (interval [−0.088, +0.060], never computed), and **the
-commander-search contradiction is settled** — text's advantage is entirely
-thematic (0.470 against the function space's **0.005** on tribal commanders),
-because `train_ability` mines positives from roles and tags and "Vampire" is
-neither.
-
-#### The VAE was built, measured, and abandoned — by its own control
-
-`card_serialize` + `model_vae` + `train_vae` shipped and trained. The control is
-the whole finding:
-
-    frozen MiniLM 384d          function 0.629   theme 0.523   effdim 51.39
-    PCA 128d of it              function 0.648   theme 0.494   effdim 42.62
-    RANDOM 128d projection      function 0.602   theme 0.444   effdim 37.69
-    the TRAINED VAE             function 0.618   theme 0.387   effdim 34.19
-
-**A random projection beat the trained model on theme and PCA beat it on
-everything.** Training bought less than a matrix multiply with random numbers,
-because there was nothing to learn that was not already MiniLM. The artifact is
-kept as a scored baseline; nothing depends on it.
-
-#### The redirect: this is TABULAR data with some text columns
-
-Set by the pilot, 2026-08-31: *"we went too literal and too far down the path of
-language modeling… an input could just be CMC (int) or color identity (one-hot
-array)… we are treating this like a language problem instead of a tabular data
-problem (with some language inputs)."*
-
-The serialiser flattened every card into one string and pushed it through a
-sentence encoder, so CMC never existed as a number and colour identity never
-existed as a set. Rebuilt as typed fields:
-
-| module | what it is |
-|---|---|
-| `training/card_source.py` | the corpus as the MODEL sees it — `cards.csv` plus the two things the CSV threw away: oracle newlines (the ability boundary) and `produced_mana` |
-| `training/card_fields.py` | **73 typed fields, 623 columns**, three states (PRESENT / ABSENT / MASKED). Numeric, Binary, Categorical, SetOf |
-| `training/span_encoder.py` | **6 maskable text slots** over a frozen-MiniLM cache of 75,178 distinct spans |
-| `training/masking.py` | correlated-group masking; `GROUPS` + `COMPANION` |
-| `training/model_cardbert.py` | BERT where the tokens are FIELDS |
-| `training/loss_cardbert.py` | one loss per field kind; InfoNCE for spans; VICReg |
-| `analysis/recoverability.py` | which fields a lookup table already solves |
-| `analysis/project_spaces.py` | every space projected side by side, to LOOK at |
-
-**Absent is not zero, and it earned its keep on a case nobody predicted.**
-Scryfall OMITS `produced_mana` for the 32,190 cards that make no mana rather than
-writing an empty list, so a field reading a missing key as False would report the
-whole corpus as making no mana — plausibly and silently. Command Tower went from
-5 populated fields to 38 once `produces_*` existed.
-
-**The name comes out of the rules text.** 4,401 cards (12.6%) say their own name
-in their own abilities, so the `name` slot and an ability slot shared a literal
-string. Split on commas and ` // `, never on spaces (a card named `Food Fight`
-must not redact *Food* from "create a Food token"); possessives keep their `'s`.
-
-#### The recoverability audit gates the objective
-
-`manamap recoverability` fits a ridge probe per field from every other field,
-held out by TEXT hash. **19 of 73 are solved by a linear probe** — `cmc` is the
-pips added up (R² 0.96), `supertype` is the type flags (0.998), `color_identity`
-is the coloured pips (0.956). Meanwhile `kw_deathtouch`, `kw_lifelink` and
-`kw_trample` score NEGATIVE lift: the probe does worse than always guessing
-false, so those are the informative targets.
-
-**So masking one field is arithmetic, not a task.** `masking.GROUPS` hides
-correlated blocks, and `COMPANION` hides the keyword TEXT alongside the keyword
-flags because 99% of keywords appear verbatim in oracle text.
-
-#### CardBERT, and the bug the eval caught
-
-A card is 79 positions (73 fields + 6 spans) plus `[CLS]`; masking hides fields;
-bidirectional attention predicts them; `[CLS]` is the product.
-
-**The embedding was never trained.** `to_latent.weight.grad` came back **None**
-after a full backward pass — every head reads its own field's position and
-nothing reads `[CLS]`, so what shipped was a random projection of an untrained
-state and scored like one (r@10 0.093, effdim 5.53). This is the textbook BERT
-result reached from first principles: a raw `[CLS]` is a poor sentence embedding,
-which is why SBERT exists. BERT survives it because it is always fine-tuned
-downstream; here the embedding IS the product.
-
-Fixed by making **masking the augmentation** — two independent maskings of one
-card are two views, NT-Xent between their latents. 40 epochs, never early-stopped:
-
-    space                              dim  effdim  spread   r@10   r@50  medRank
-    layout (color+type)                128    3.89  0.0061  0.086  0.139     1148
-    cardbert (masked fields)           128   16.72  0.1347  0.103  0.262      323
-    vae (masked imputation)            128    5.71  0.0454  0.167  0.247      374
-    function (ability)                 128   27.31  0.0323  0.232  0.464       76
-    text baseline (frozen MiniLM)      384   51.39  0.1341  0.244  0.414      126
-
-#### The result is a SPLIT, not a win — and the split is legible
-
-Against the space it would replace, 95% CI on the DIFFERENCE:
-
-    FUNCTION (28 groups)          THEME (55 groups, EDHREC tribes)
-     100  0.759 vs 0.964  -0.205    100  0.537 vs 0.443  +0.094  excludes 0
-     500  0.519 vs 0.794  -0.275    500  0.303 vs 0.152  +0.151  excludes 0
-    2000  0.317 vs 0.562  -0.245   2000  0.127 vs 0.053  +0.074  excludes 0
-
-It LOSES function at every size and WINS theme at every size. Not surprising once
-stated: the function space mines positives from role and tag regexes, so function
-is what it was built for; CardBERT reads types, subtypes, keywords and ability
-spans, so tribe is legible to it in a way it never was to a role regex. **At pool
-500 it doubles the baseline on tribe** — and theme was the function space's known
-weakness, recorded when the commander-search contradiction was settled.
-
-Two diagnostics agree. Hard-negative separation on the fastland/slowland cycle —
-the canonical "should NOT look alike" failure — is **0.0377 against 0.0133**,
-2.8x. Centroid headroom is **0.976 against 0.019**, the metric that explains why
-centroid queries have nothing to rank on today.
-
-**Commander search** (a centroid operation, 79 candidates): CardBERT is the best
-TRAINED space and the only one with a perfect top20 — but the top1 ranges overlap
-so that difference is the draw, and frozen text still wins outright.
-
-    function (ability)     top1 0.410   top5 0.811   top20 0.967   MRR 0.587
-    cardbert               top1 0.458   top5 0.908   top20 1.000   MRR 0.642
-    text baseline          top1 0.584   top5 0.962   top20 0.996   MRR 0.746
-
-**Nothing is cut over.** It is complementary, and strongest exactly where the
-incumbent is weakest.
-
-#### RULE — visual inspection is part of evaluation
-
-Set by the pilot, 2026-09-01. `eval-embeddings` asks one question — are the k
-nearest cards right — and its numbers do not describe a MAP. The VAE retrieves
-better than CardBERT (0.167 against 0.103) with a third the spread and a tenth
-the headroom: **a space can win recall@10 by CONCENTRATING and lose everything
-that makes an atlas navigable.** `manamap project-spaces` projects every space
-side by side, coloured by facts none of them optimised directly (colour identity,
-card type, EDHREC tribe), so the question is "did this structure emerge" rather
-than "was it supplied".
-
-`--components 3` emits 3D. The pilot's framing: the Atlas as a UNIVERSAL map —
-galaxies, solar systems, planets and satellites — which is a third scale on top
-of the two `cluster_regions` already runs (HDBSCAN L0 at 800, L1 at 100). The
-coordinates are a one-line change; **the cost is entirely the frontend**, since
-`viz/render/canvas.js` is 2D through hit-testing, labels and the force graph. A
-rotatable 3D→2D camera is the cheap path and gives most of the exploration feel.
-
-#### RUNNING — the `VIEW_WEIGHT` ablation, and what comes after
-
-Testing whether the function gap is the contrastive WEIGHT or the NEGATIVES.
-`vw025` finished 40 epochs; `vw050` is mid-run; `vw100` is preserved.
-
-**The early read is that the weight is not the lever.** A 4x change moved view
-agreement 0.953 → 0.922 and left imputation untouched (`kw_flying` 0.956 →
-0.954), with the two trajectories almost superimposed. Instance discrimination
-is easy — telling one card from another needs few bits — so the model solves it
-early at any weight.
-
-If that holds, the objective is next, not the weight: **VICReg is built, tested
-and ready** (`--objective vicreg`). InfoNCE makes every other card in the batch a
-negative, so two cards that ramp the same way are pushed apart however the term
-is weighted; VICReg has no negatives at all — invariance, variance (which does
-the anti-collapse job), covariance. Applied to the SHIPPED latent rather than to
-a discarded expander as the paper does, because decorrelating dimensions is
-exactly what this space is worst at (16.72 of 128 against text's 51.39 of 384).
-
-**Two traps NOT taken, both of which would have invalidated the measurement:**
-using `ROLE_PATTERNS`/`MECHANICAL_TAGS` as a similarity label is the bootstrapped
-supervision this rebuild exists to escape, arriving through the denominator
-instead of the positives; and **EDHREC co-occurrence is what
-`eval_embeddings.theme_groups` builds the theme eval FROM**, so training on it
-would turn the +0.151 theme win into "the model learned its test set".
-
-#### Artifacts and their gates
-
-`data/span_vectors.npy` (gitignored, 115 MB), `data/embeddings_cardbert*.npy`,
-`data/eval/recoverability.json`, `data/eval/space_projections.json`.
-`--tag` keeps a sweep's runs apart: every artifact path was a fixed constant, so
-two configurations run back to back would silently overwrite each other — the
-`--out is slug-scoped` lesson in a new place, proved with a 1-epoch smoke run
-before spending hours on the assumption. All three artifacts are written together
-on each improving epoch and stamped with it, so an interrupted run is usable
-rather than a trap.
+Moved to **`docs/architecture.md`** on 2026-09-12: the VAE half was already
+there, and the CardBERT and VICReg record now sits beside it. Nothing cut over;
+CardBERT survives as a toggle on the atlas. What is still open is filed —
+**#12** (the eval measures a task the product never performs), **#40** (VICReg
+is built, tested and unrun), **#38** (the CardBERT regions carry raw mechanical
+labels while both other maps are named), strictly in that order.
 
 ### OPEN — what the speed sprint deliberately did not do
 
@@ -827,49 +461,15 @@ Ur-Dragon's objective moved from `engine_online_5 >= 0.22` (met **4.4x over**
 while the lift spanned zero) to **`damage_8 >= 40.0`** — the opponent's starting
 life, a number with meaning outside this branch. v1.0.1 reads 30.81 and misses.
 
-### DONE — the merge request: `propose`
+### The merge request: `propose` — DONE
 
-**2026-08-28.** A branch is now `OPEN` / `PROPOSED · BLOCKED` / `READY` / `STALE`
-/ `OUTRUN` / `MERGED`, all derived and none stored, so a proposal un-blocks
-itself as cards land in a box. `deck-branch <slug> propose <name> --as v1.0.2`
-freezes the decision (which list, which report, which grade) and hands over a
-**pull list** split by what each bucket costs. `validate-branch` gates it —
-`branch.json` was the last tracked pilot artifact without one.
+Documented in **`docs/pilot.md`**. What is still open about it is filed: **#46**
+(staging on a PROPOSED branch silently makes it STALE, and there is no amend
+path) and **#48** (`propose --reason` writes an empty `why`).
 
-Ur-Dragon's `eminence-v3` is proposed as **v1.0.2**, blocked on **6 cards**
-(down from 12: four sat in decks that do not physically exist, and five more the
-pilot had already agreed to proxy). Full record: `docs/gotchas-bench.md`.
+### A granted mana ability belongs to whoever received it (2026-08-31) — DONE
 
-### DONE — a granted mana ability belongs to whoever received it (2026-08-31)
-
-**Found by the mana sweep for the encoder's `mana_repeatable` field, which is the
-cross-pollination working: a change in `training/` audited a function in
-`pilot/`.** `goldfish.produced_mana` counted every quoted ability as the card's
-own — **145 corpus cards, 8 of them sleeved across five decks, five in kinnan**.
-Leyline Immersion, an Aura, read as a five-mana rock.
-
-**THE OBVIOUS FIX IS WRONG AND THE SWEEP IS WHAT SAYS SO.** Stripping quoted text
-zeroes fifteen cards that are correct: Citanul Hierophants grants `{T}: Add {G}`
-to "creatures you control" and IS a creature, as are Gemhide Sliver, Enduring
-Vitality, Inga and Esika, Katilda, Sachi and seven more; Dryad Arbor, Jasconian
-Isle and Gobland carry theirs in reminder text about themselves. The question is
-not "is it quoted" but **is this card a member of the class it grants to** —
-`produced_mana` takes `type_line` to answer it and defaults to reading every
-grant as foreign, because overcounting tells the model it can cast things it
-cannot.
-
-Two bugs found while fixing it, both by the sweep: the backward window **crossed
-a clause** (Sachi opens "OTHER Snake creatures…" then grants to "Shamans you
-control", which she is), and `it has` was **too loose** (in Jiang Yanggu the "it"
-is the recipient; in Llanowar Mentor and The Bus Runner it is a token created a
-sentence earlier). **And one guard deleted**: a second, wider window written for
-those four cards changed ZERO readings across all 34,890 — a bug probe caught
-that it could not fail, and a guard that guards nothing is worse than none.
-
-Sweep: 133 readings changed, 15 quoted grants kept as the card's own (each read
-individually), 34,742 untouched. Corpus nonzero 1,975 → 1,848. Fleet regenerated
-(72 targets, 92.7s); **gishath's commander cast-by-turn-6 drops 0.189 → 0.170**,
-the honest direction once phantom mana stops counting.
+Moved to **`docs/gotchas-bench.md`** on 2026-09-12.
 
 ### OPEN — five diagnoses are stale and need the doctor, not a patch
 
@@ -914,119 +514,23 @@ touches a main `decklist.txt` — measurements of the existing list are not
 optimisations, and regenerating them after a model change is required, but the
 list itself moves only through `deck-branch merge`.
 
-### ISSUE — `land_colors` credits mana it cannot actually make
+### `land_colors` credits mana it cannot actually make — **#17**, partly fixed
 
-**Opened 2026-08-27. Found by the `yawgmoth-swarm` doctor mid-run, which is the
-loop working: an agent re-derived a figure and disbelieved it.**
+The reminder-text and colour-identity halves are fixed; quoted token abilities
+are untouched. The measurements are in **`docs/gotchas-bench.md`** (the fetchland
+family, Archway Commons, the gated lands). Read the issue for what remains.
 
-Two stacked defects, both the class the reminder-text fix already closed once —
-**text describing ANOTHER object's ability read as this card's own.**
+### Unit tests must not depend on an experimental deck — **#18, CLOSED**
 
-1. **A quoted token ability counts as a mana source.** `Pawn of Ulamog` creates
-   an Eldrazi Spawn with `"Sacrifice this token: Add {C}."` —
-   `nonland_producer_kind` matches the quoted clause and calls it `ramp:dork`.
-   It is also one-shot and self-sacrificing, which is the Jeweled Lotus rule
-   `goldfish._CONSUMING_COST` already enforces and `manabase` does not.
-2. **The colour then comes from COLOUR IDENTITY, not from the ability.**
-   `land_colors` ends `if not produced and not restricted: produced.update(
-   color_identity)`. `{C}` is not a coloured symbol, so nothing parses and the
-   fallback credits Pawn of Ulamog with **B — because it is a black card.**
+Closed 2026-08-31: the branch-state tests were rebuilt on `tmp_path` fixtures.
+The live successor is **#35** — three tests still name one deck as an example of
+a property — sequenced as part of Phase 2 of `docs/paydown-plan.md`.
 
-**AND THE FALLBACK IS THE BIG ONE — it is systematically wrong for LANDS.**
-Measured across the corpus: **60 land entries** get their colours only from that
-fallback, and the pattern is always the same — the land taps for `{C}` and its
-colour identity comes from an ACTIVATION COST it has nothing to do with
-producing. `Goblin Burrows` is `{T}: Add {C}` plus `{1}{R}, {T}: pump a Goblin`,
-and reads as a **red source**. So does `Kher Keep`. `Kor Haven` reads white off
-`{1}{W}, {T}: prevent damage`; `Blighted Woodland` reads green off a `{3}{G}`
-sacrifice. None of them makes a single coloured mana. Two doctors found this
-independently on two different decks in the same batch, which is the corroboration
-— goblin-storm's true repeatable red land count is **31, not 33**.
+### The red tests, and the issue each one lives in
 
-Whether the fallback has any legitimate case is the open question: it exists for
-a land whose production text does not parse, and nobody has enumerated those. The
-fix must not be "delete the fallback" until that set is known, which is the same
-discipline that kept the quoted-text class from being a blanket strip.
-
-**Scope, measured:** 8 further cards read mana colours only from text inside
-quotation marks. They are NOT uniformly wrong — `Worldknit` and `Paradise
-Mantle` grant `{T}: Add one mana of any color` to permanents you control, which
-is real fixing. The wrong ones are token abilities. So the fix is not "strip
-quotes"; it is to separate *granting an ability to something you control* from
-*describing a token you may create*.
-
-**Not fixed on discovery, on purpose.** Six `deck-doctor` runs were in flight
-against the current model. Changing `land_colors` mid-batch would have made
-every one of them stale on arrival and wasted the spend. A model change and a
-regeneration of the artifacts that depend on it belong in one commit — which is
-the same rule that made this batch necessary in the first place.
-
-### ISSUE — unit tests must not depend on an experimental deck
-
-**Opened 2026-08-27, by the pilot, and it is a rule rather than a chore.**
-
-> *"we shouldn't be writing tests for decks that are experimental/feature
-> branches — we can have tests to assert the functions that support that work,
-> but we don't need to test the actual deck via unit tests. Stats, math, etc. is
-> what we will apply to those decks. Not until they are merged and pinned do
-> they get tests."*
-
-**What happened.** Twenty tests across nine files hardcoded
-`ur-dragon/treasure-v2` as a data fixture — `close`'s component search, `assess`'s
-triage, the diagnostic's magnitude series, the branch-scoping controls, the
-net-change report. The treasure refactor was measured, found worse, and deleted,
-which is the tool working exactly as designed. All twenty failed. Deleting a
-branch is a first-class pilot action and the suite punished it.
-
-**The rule.** A branch is a candidate 99 that is *supposed* to change and
-*supposed* to be thrown away. Only a **merged and pinned** deck is stable enough
-to assert against. What a test may assert about branch machinery is the
-FUNCTION — that a branched write lands in the branch directory, that reads fall
-back and writes never do, that a swap is one-for-one — and those need a
-**synthetic branch in a `tmp_path` sandbox**, which
-`tests/test_pilot_branch_lifecycle.py::sandbox` already demonstrates.
-
-**What is done and what is not.** `conftest.requires_branch` / `A_BRANCH` now
-take *whichever* branch exists rather than one name, so the suite no longer
-names a specific experiment — that is a stopgap, not the fix. The fix is to
-rebuild these tests on synthetic fixtures and delete the assertions that were
-only ever about the treasure deck's contents (the `MULTIPLIER` component, the
-treasure cards `assess` was triaging). Until then they are gated and some of
-them will skip.
-
-**Related invariant** (below): a tracked artifact needs a gate in the same
-commit. That is still true — but the gate belongs on the artifact's SHAPE and
-its producing function, never on one experimental deck's numbers.
-
-### THE THIRTEEN RED TESTS, and the issue each one lives in
-
-`make test` is 13 red and every one is tracked. None is a mystery and none is
-hand-patchable:
-
-| what | n | issue |
-|---|---|---|
-| agent artifacts naming cut cards (`engine`, `tutor_guide` x2 each) | 4 | #36, and #15 / #13 for the deck-specific halves |
-| stale `diagnosis.json` (gishath, goblin-storm, heliod, yawgmoth) | 4 | #20 |
-| `deck_info` panel, downstream of heliod's diagnosis | 1 | #20 |
-| a test naming one deck as an example of a property the merge changed | 3 | #35 |
-| Edgar's goldfish runaway guard — a REAL finding on a sleeved deck | 1 | #34 |
-
-Also filed: #37 (a producer and its validator disagree about what an unavailable
-block may carry), #38 (CardBERT's regions are unnamed), #39 (six un-debriefed
-games and Edgar's recorded direction change), #40 (VICReg, built and unrun, with
-the ablation that justifies it), #41 (the copy-editor blurb, designed and
-deferred), #42 (`deck_info` counted gate rows in its stage denominator — FIXED
-2026-09-01, filed for the record).
-
-**#24 is closed**: `deck_versions.json` — the last tracked pilot artifact with no
-gate, and the one holding the most load-bearing authored claim in the repo — has
-`validate-deck-versions`, registered in `deck_status.VALIDATED`.
-
-**Two counts moved with the workbench pass and are not regressions**: the row
-naming one deck as an example of a property now includes `net-change`'s
-`assert checked >= 10` against a branch that adds six cards, and the stale
-`diagnosis.json` row lost yawgmoth-swarm's (it is archived, so `regen` no longer
-refreshes it). Re-derive this table from a real run rather than quoting it.
+**`docs/known-issues.md` is the board.** It is verified against a real run and
+dated; this file carried a second copy that said THIRTEEN while the board said
+nine, which is the reason it is now one place and not two.
 
 ### THE ORDER OF TASKS — set by the pilot, 2026-09-01
 

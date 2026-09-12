@@ -342,3 +342,42 @@ def test_a_nickname_does_not_count_as_a_release(repo):
     dv.tag(SLUG, "the-lock", ref="V1")
     assert dv.release_suggestion(SLUG, dv.versions(SLUG)[0]), (
         "a nickname suppressed the release proposal")
+
+
+def test_re_asserting_a_lock_keeps_the_note_and_the_build_date(tmp_path, monkeypatch):
+    """THE LOCK'S NOTE IS AUTHORED, AND A RE-ASSERT USED TO ERASE IT.
+
+    `deck-version <slug> paper` with no `--note` rebuilt the whole block from
+    its arguments, so re-running it — which the pilot does after a list change,
+    and which `deck-version paper` invites because it reads like a report —
+    replaced a 47-word note with `""` and stamped today over the real build
+    date. It cost ur-dragon's note twice in one hour on 2026-09-12.
+
+    Re-introducing the bug: go back to `"note": note or ""` and this reds.
+    """
+    import json
+
+    from manamap.pilot import deck_versions as dv
+
+    deck = tmp_path / "goblin-storm"
+    deck.mkdir()
+    (deck / "decklist.txt").write_text("1 Sol Ring\n", encoding="utf-8")
+    monkeypatch.setattr(dv.common, "DECKS_DIR", tmp_path, raising=False)
+    monkeypatch.setattr(dv, "deck_dir", lambda slug, branch=None: deck)
+    monkeypatch.setattr(dv, "versions", lambda slug: [
+        {"version": 4, "sha": "abc123", "decklist_sha256": "d" * 64,
+         "decklist_sha256s": ["d" * 64]}])
+    monkeypatch.setattr(dv, "working_sha", lambda slug: "d" * 64)
+    monkeypatch.setattr(dv.common, "deck_lifecycle", lambda slug: None)
+
+    dv.set_paper("goblin-storm", note="the pilot's own words", built_at="2026-09-11")
+    dv.set_paper("goblin-storm")                       # the accidental re-assert
+
+    paper = json.loads((deck / dv.TAGS_FILE).read_text())[dv.PAPER_KEY]
+    assert paper["note"] == "the pilot's own words", "the re-assert erased the note"
+    assert paper["built_at"] == "2026-09-11", "the re-assert moved the build date"
+
+    # An explicit note still wins, and a lock that MOVES starts clean.
+    dv.set_paper("goblin-storm", note="a new reason")
+    paper = json.loads((deck / dv.TAGS_FILE).read_text())[dv.PAPER_KEY]
+    assert paper["note"] == "a new reason"

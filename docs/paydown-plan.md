@@ -68,13 +68,13 @@ paid for and each constrains a task below.
 | P1-03 | 1 | Decide the Edgar run the piloting gate flags | S | DONE | |
 | P1-04 | 1 | Edgar `info.json` staleness on a branch write | S | DONE | |
 | P1-05 | 1 | File the new findings as issues; close #27, #43 | S | DONE | |
-| P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | TODO | |
+| P1-06 | 1 | Rewrite `known-issues.md` against the measured board | M | DONE | |
 | P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | DONE | |
 | P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | DONE | |
 | P1-09 | 1 | `CLAUDE.md` corrections | M | DONE | |
 | P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | DONE | |
-| P1-11 | 1 | Prune `PLAN.md` to open work | M | TODO | |
-| P1-12 | 1 | `testing.md`: one runtime figure, real counts, every marker | S | TODO | |
+| P1-11 | 1 | Prune `PLAN.md` to open work | M | DONE | |
+| P1-12 | 1 | `testing.md`: one runtime figure, real counts, every marker | S | DONE | |
 | P1-13 | 1 | New drift gates, each measured first | M | DONE | |
 | P1-14 | 1 | The four-way pilot-subcommand count disagreement in code | S | DONE | |
 | P1-15 | 1 | Align the frontend cache busts and gate them | S | DONE | |

@@ -9,10 +9,19 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against `make test`: **2026-09-08**, 9 failing / 3217 passing /
-208 skipped. Two of the eleven failures on that run were fixed in the same
-commit that created this file (`sim-progress` was undocumented and the pilot
-subcommand count read 101 in four surfaces); they are not listed below.
+Last verified against **`make test-fresh`**: **2026-09-12**, 14 failing / 3,699
+passing / 9 skipped, 566 s. The nine remaining after that run's regenerations
+are listed below.
+
+**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
+board. Run warm an hour apart on the same commit, `make test` reported 13 and
+`make test-fresh` 14, in both directions — because the regenerate-and-compare
+cache keys a deck's freshness case on ITS OWN directory plus the source tree,
+and a paper lock on one deck flips a `locked` flag inside every other deck's
+branch sourcing. Four `net_change.json` files and one dossier were served a
+passing result for inputs that had moved, which is the one thing
+`conftest._digest`'s docstring says this cache must never do. Filed as **#49**;
+until it is fixed, a warm run cannot establish this page.
 
 ---
 
@@ -182,7 +191,11 @@ by a sweep rather than by reasoning about the code.
 
 ---
 
-## 4. The parser drops 88% of all noncombat damage — CONFIRMED, unfixed
+## 4. The parser drops 88% of all noncombat damage — **the owner map is FIXED; the naming split is not**
+
+*Header corrected 2026-09-12: it said "unfixed" while this section's own update
+at the end recorded the owner map landing in `parse.py:257-285`. What remains is
+the naming split, and it is filed.*
 
 Found 2026-09-08 by following up a finding from heliod's engine critic, which
 claimed 1,002 noncombat damage from three cards against a record reporting 202.
@@ -278,6 +291,11 @@ Taken 2026-09-08 by sweeping `deck-status` across the live fleet, the strict-
 xfail registries, the engine models' `open_questions`, the branch states, and
 the captain's logs.
 
+*Dated table, not re-swept. **`zur-enchantress` was broken down on 2026-09-10**
+as a failed experiment, so its row describes a deck that is now a pile — the
+same status as radagast and sisay below. `sharknado` and `ingris-infect`, the
+two decks on the bench, were never in this sweep.*
+
 ## 5. Fleet artifact state
 
 | deck | OK | STALE | FAIL | gated | unstamped |
@@ -339,19 +357,24 @@ The `resolve-stack` thirty are the cheapest real evidence available: the fleet's
 verified-line counts are as thin as 1-of-11 (heliod), and each of those thirty
 is a scenario waiting to be written.
 
-## 9. Eleven games logged, zero debriefed
+## 9. Eleven games logged, zero debriefed — **RESOLVED 2026-09-11**
 
-| deck | logged | debriefed |
+| deck | logged | annotated |
 |---|---:|---:|
-| edgar-vampires | 4 | 0 |
-| ur-dragon | 3 | 0 |
-| goblin-storm | 2 | 0 |
-| gishath | 1 | 0 |
-| heliod | 1 | 0 |
+| ur-dragon | 6 | 6 |
+| edgar-vampires | 4 | 4 |
+| goblin-storm | 2 | 2 |
+| heliod | 2 | 2 |
+| gishath | 1 | 1 |
 
-No log entry on any deck carries a `debrief` key. The captain's log is the only
-artifact in the bench sourced from a real table rather than a simulation, and
-none of it has been read back. `/debrief` is the cheapest agent in the set.
+**Fifteen games, every one annotated.** The `log_annotations.json` files were
+written 2026-09-11. Kept as a row rather than deleted because the argument
+survives the fix: the captain's log is still the only artifact in the bench
+sourced from a real table rather than a simulation, so it is the one that
+silently stops being read.
+
+What is still open is the other half of **#39** — Edgar's direction change is
+recorded in the log and has not been built.
 
 ## 10. Branch hygiene
 
@@ -403,7 +426,9 @@ A/B carries whatever seat-1 bias the table has, and the two commands are still
 not measuring under the same conditions — a narrower version of the pod-profile
 bug that was fixed.
 
-## 13. Every Forge figure for heliod describes a deck that was replaced
+## 13. Every Forge figure for heliod describes a deck that was replaced — **RESOLVED**
+
+*Runs against v1.2.1 exist; §4's own update quotes one. Kept for the lesson.*
 
 The 120-game standard-pod run is dated 2026-09-07. `skies-v1` and
 `archangel-v1` both merged on **2026-09-08**. The run's own record says which

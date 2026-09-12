@@ -252,10 +252,31 @@ def set_paper(slug, ref=None, built_at=None, note=None, clear=False):
         if target is None:
             raise SystemExit(f"{slug}: decklist.txt is uncommitted — commit it, or "
                              f"name the version you sleeved with --at")
-    doc[PAPER_KEY] = {"version": target["version"], "sha": target["sha"],
-                      "decklist_sha256": target["decklist_sha256"],
-                      "built_at": built_at or date.today().isoformat(),
-                      "note": note or ""}
+    # RE-ASSERTING A LOCK MUST NOT ERASE WHAT THE PILOT WROTE ON IT.
+    #
+    # `built_at` and `note` are AUTHORED — the date the cardboard was actually
+    # built, and the pilot's own record of why this list is the sleeved one.
+    # This block was rebuilt from the arguments every time, so
+    # `deck-version ur-dragon paper` with no `--note` replaced a 47-word note
+    # with `""` and stamped today over 2026-09-11. It happened twice in one
+    # hour on 2026-09-12 — once through `/api/cli` and once from a terminal —
+    # and both times the only reason nothing was lost is that the file was
+    # committed. Same family as `propose --reason` writing an empty `why`: the
+    # tool accepted the command and did something other than what was asked.
+    #
+    # Carried forward only when the lock is not MOVING. A note about V4 is not
+    # a note about V7, so a lock on a different version starts clean, and an
+    # explicit `--note` always wins.
+    held = doc.get(PAPER_KEY) or {}
+    same_version = held.get("version") == target["version"]
+    doc[PAPER_KEY] = {
+        "version": target["version"], "sha": target["sha"],
+        "decklist_sha256": target["decklist_sha256"],
+        "built_at": (built_at
+                     or (held.get("built_at") if same_version else None)
+                     or date.today().isoformat()),
+        "note": (note or (held.get("note") if same_version else None) or ""),
+    }
     _write_tags(path, doc)
     return target
 
@@ -633,13 +654,19 @@ def _refresh_dossiers_the_lock_changed(slug):
     """
     from manamap.pilot import regen
 
+    # BOTH ARTIFACTS THAT CARRY THE SOURCING, not just the dossier. The first
+    # version of this refreshed `info.json` alone and the uncached suite found
+    # four `net_change.json` files stale the same afternoon — the branch BILL
+    # embeds the identical per-card `where[].locked` verdict, so a lock moves it
+    # too. `regen.STAGES` runs them in dependency order.
     try:
-        regen.run(only="deck-info", jobs=None, echo=lambda *a, **k: None)
+        for stage in ("net-change", "deck-info"):
+            regen.run(only=stage, jobs=None, echo=lambda *a, **k: None)
     except Exception as exc:                     # pragma: no cover - env
         print(f"  could not refresh the sleeved dossiers: {exc}")
         return
-    print("  refreshed every SLEEVED deck's info.json — the lock shows in their "
-          "branch sourcing")
+    print("  refreshed every SLEEVED deck's net_change.json and info.json — "
+          "the lock shows in their branch sourcing")
     from manamap.config import DECKS_DIR
     from manamap.pilot.common import deck_is_apart
 

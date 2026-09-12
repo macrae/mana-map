@@ -17,10 +17,10 @@ written against it.**
 | **[simulation.md](simulation.md)** | 629 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
 | **[pipeline.md](pipeline.md)** | 43 | The 15 card-pipeline steps: command, inputs, outputs, runtime, when to re-run what. |
 | **[data-artifacts.md](data-artifacts.md)** | 87 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
-| **[known-issues.md](known-issues.md)** | 753 | **THE INVENTORY OF WHAT IS BROKEN.** The first four entries are the nine red tests and the parser bug that drops 88% of noncombat damage; the rest are gaps NO TEST FAILS ON — undecidable staleness on 19 artifacts, 50 undispatched open questions, 11 logged games and 0 debriefs, two uncriticised engine models. §12 lists what is already FIXED so it is not re-investigated, and a closing part tracks DEBT and OPPORTUNITIES — things that are not red but are wrong, wasteful or half-built. |
+| **[known-issues.md](known-issues.md)** | 778 | **THE INVENTORY OF WHAT IS BROKEN.** The first four entries are the nine red tests and the parser bug that drops 88% of noncombat damage; the rest are gaps NO TEST FAILS ON — undecidable staleness on 19 artifacts, 50 undispatched open questions, 11 logged games and 0 debriefs, two uncriticised engine models. §12 lists what is already FIXED so it is not re-investigated, and a closing part tracks DEBT and OPPORTUNITIES — things that are not red but are wrong, wasteful or half-built. |
 | **[audit-2026-09-12.md](audit-2026-09-12.md)** | 482 | **THE INVENTORY BEFORE GROOMING.** A read-only audit at `bccca716`: the project by the numbers against what the docs claim, the twelve-deck fleet with its lifecycle and branches, the MEASURED red board (13 failing, five of them on no board), all 42 open issues triaged into nine themes with the one that unblocks each, and the debt by area — the magazine's single remaining dependency edge, `goldfish.simulate_once` at 1,999 lines, six definitions of the decklist sha, five artifact registries. Ends with a recommended grooming order. Archive once acted on. |
 | **[paydown-plan.md](paydown-plan.md)** | 1403 | **THE PAYDOWN PLAN AND ITS TRACKER.** Six phases in order — housekeeping and doc corrections, the daily-loop test cost (#28/#48/#31), the branch-lifecycle cluster (#45-#48, #25), the three predicates, the magazine delete (#4), the goldfish decomposition. Every task has an id, a gate, a proof and a status; the tracker table at the top is updated in the same commit as the work. Opens with the eight ground rules from the gotchas pages that constrain it, and closes with a risk register and what is deliberately out of scope. |
-| **[testing.md](testing.md)** | 599 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
+| **[testing.md](testing.md)** | 613 | How the suite is organised, the markers (incl. `forge`), the cache, and the lessons. **The only place that states test counts.** |
 
 ## The gotchas — every measurement this project has paid for
 
@@ -34,7 +34,7 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 | | | |
 |---|---:|---|
 | [gotchas-viz.md](gotchas-viz.md) | 83 | The canvas renderer, the force graph, the three modes, the library and its piles, the shell, the atlas drift. Read before touching `viz/`. |
-| [gotchas-bench.md](gotchas-bench.md) | 1731 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
+| [gotchas-bench.md](gotchas-bench.md) | 1839 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
 | [gotchas-analysis.md](gotchas-analysis.md) | 26 | Synergy, the obsolescence index and its audit, card roles, region clustering. Read before touching `src/manamap/analysis/`. |
 | [gotchas-evidence.md](gotchas-evidence.md) | 50 | Stacks, citations, `engine.json`, the deck map, and every validator's reasoning — **including the checks prototyped and REJECTED for firing on correct data**. Read before adding a validator or a claim. |
 | [gotchas-magazine-legacy.md](gotchas-magazine-legacy.md) | 23 | The frozen renderer. Its code is not extended; the layout and prose lessons outlive it. |
@@ -43,7 +43,7 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 
 | | | |
 |---|---:|---|
-| [architecture.md](architecture.md) | 558 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
+| [architecture.md](architecture.md) | 755 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
 | [viz.md](viz.md) | 1491 | The frontend: the four PAGES (workbench, atlas, dossier, branch), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 304 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [agent-inventory.md](agent-inventory.md) | 122 | **The harness as it stands** — every agent and skill with its path, what it owns, which skill spawns it and how a five-specialist consolidation would re-home it, plus the front-end surfaces that depend on each. PRD §8 D-1 asks for this as a CHECKED-IN artifact rather than a report. Read before touching a charter. |

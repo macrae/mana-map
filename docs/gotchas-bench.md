@@ -1729,3 +1729,111 @@ zur-enchantress's two now read UNAVAILABLE, because the champion has never sat a
 standard-v3 and the pooled block had been comparing against `standard` and
 `standard-v2` without saying so. None of the seven had a decision resting on the
 Forge line.
+
+
+## The speed sprint, 2026-08-30/31
+
+*Moved verbatim out of `PLAN.md` on 2026-09-12 — measurements with no other home.*
+
+### What was measured
+
+**The complaint was that iteration had become heavy: questions slow, fleet
+regeneration manual, and fidelity surprises discovered after the run.** Three
+audits (tests, simulation, interactive path) said the Python simulation was
+never the bottleneck — the fan-out around it was. The whole fleet regenerates in
+**78 seconds of CPU**; the same regeneration used to cost **6-9 MILLION agent
+tokens**, and that ratio was the entire problem.
+
+**The single most expensive line in the repo was a provenance stamp.**
+`goldfish.model_version()` is a sha over the whole of `goldfish.py`, and ten
+`AGENT_ROUTINES` declarations hashed the file it is stamped into. A COMMENT edit
+moved the digest on every deck and hard-MISSed strategic-frame, pilot-notes,
+tutor-guide, deck-diagnosis, every decision and every prescription. Measured over
+four real goldfish commits: **45 artifacts stamped stale, 31 with figures that
+actually moved — 31% of the spend bought nothing**, and `deb711e` changed one
+docstring line and invalidated the fleet. Excluded from the fingerprint; the
+stamp stays in the artifact and `model_staleness` still reports it. The next
+commit proved the point — a 30% goldfish speedup that moved no figure at all and
+cost nothing.
+
+| | before | after |
+|---|---|---|
+| `query-rules` / `query-strategy` | 6.93s | **0.16s** (43x) |
+| `deck-facts` | 1.44s | **0.14s** |
+| `deck-audit` | 2.26s | **0.59s** |
+| `deck-info` | 7.8s | **1.25s** |
+| `mde_proportion(0.25, 200)` | 2.17s | **0.21s** |
+| goldfish (edgar) | 5.70s | **3.96s** |
+| whole-fleet regen | a hand-written shell loop | **78s** |
+| `make test` (warm) | ~101s | **~74s** |
+
+**`manamap serve` is a warm worker.** Every CLI invocation was a cold process and
+every memo is per-process — including the frozen MiniLM behind `query-rules`,
+~8s to build and thrown away each time, while `rules-lookup` tells the agent to
+"try several phrasings". `/api/cli` runs read-only pilot commands in the warm
+process behind an allow-list; the terminal routes to it when one is listening and
+**fails open** on any error. It holds the modules it started with, so restart it
+after a code change.
+
+**`manamap pilot regen`** rebuilds the fleet in dependency order, parallel across
+targets — 72 targets, 78s, **bit-identical** (`git status data/` empty after).
+Parallel across DECKS, never across games: one `random.Random(seed)` is threaded
+through all 10,000 games, so splitting them would re-base every figure.
+
+**`manamap pilot model-coverage`** answers the fidelity question in the other
+direction — not "what did the channel miss" but "what would this deck need, and
+is it switched on". **236 DARK cards across the fleet**; gishath is a Dinosaur
+deck with 33 cards whose combat the model was told not to look at. `goldfish` and
+`net-change` print it as a PREFLIGHT, so it arrives before the games.
+
+**Forge's `-c` clock ends a game's accounting, not its AI thread.** Two tracked
+20-game runs took **3.7 and 4.2 hours** with 95% of the wall claimed by no game.
+Jobs are capped now; checked against all 18 tracked runs, the two pathological
+ones die and **all sixteen others survive** — **7.1 hours** on that set.
+
+**Three statements that were false, now corrected in place:** `forge.ASSUMPTIONS`
+claimed a clock-hit game is recorded as a draw (it carries a winner — 75 of
+edgar's 400 games, 19%, with zero recorded draws); `SEEDED_NOTE` claims
+byte-for-byte replay (it diverges at game 1 on the 400-game run); and
+`docs/agent-cost.md` claimed no Python spawns a subprocess (`serve.py`'s `ask`
+shells out to `claude -p`).
+
+Full record: `docs/gotchas-bench.md`.
+
+
+
+## A granted mana ability belongs to whoever received it (2026-08-31)
+
+*Moved verbatim out of `PLAN.md` on 2026-09-12.*
+
+### What was measured
+
+**Found by the mana sweep for the encoder's `mana_repeatable` field, which is the
+cross-pollination working: a change in `training/` audited a function in
+`pilot/`.** `goldfish.produced_mana` counted every quoted ability as the card's
+own — **145 corpus cards, 8 of them sleeved across five decks, five in kinnan**.
+Leyline Immersion, an Aura, read as a five-mana rock.
+
+**THE OBVIOUS FIX IS WRONG AND THE SWEEP IS WHAT SAYS SO.** Stripping quoted text
+zeroes fifteen cards that are correct: Citanul Hierophants grants `{T}: Add {G}`
+to "creatures you control" and IS a creature, as are Gemhide Sliver, Enduring
+Vitality, Inga and Esika, Katilda, Sachi and seven more; Dryad Arbor, Jasconian
+Isle and Gobland carry theirs in reminder text about themselves. The question is
+not "is it quoted" but **is this card a member of the class it grants to** —
+`produced_mana` takes `type_line` to answer it and defaults to reading every
+grant as foreign, because overcounting tells the model it can cast things it
+cannot.
+
+Two bugs found while fixing it, both by the sweep: the backward window **crossed
+a clause** (Sachi opens "OTHER Snake creatures…" then grants to "Shamans you
+control", which she is), and `it has` was **too loose** (in Jiang Yanggu the "it"
+is the recipient; in Llanowar Mentor and The Bus Runner it is a token created a
+sentence earlier). **And one guard deleted**: a second, wider window written for
+those four cards changed ZERO readings across all 34,890 — a bug probe caught
+that it could not fail, and a guard that guards nothing is worse than none.
+
+Sweep: 133 readings changed, 15 quoted grants kept as the card's own (each read
+individually), 34,742 untouched. Corpus nonzero 1,975 → 1,848. Fleet regenerated
+(72 targets, 92.7s); **gishath's commander cast-by-turn-6 drops 0.189 → 0.170**,
+the honest direction once phantom mana stops counting.
+

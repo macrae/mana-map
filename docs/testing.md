@@ -1,9 +1,9 @@
 # Testing
 
 ```bash
-make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~2.5 min
+make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~5 min
 pytest -m forge      # ONE real Forge game (~10 s; needs ~/.mana-map/forge)
-make test-fresh      # same, nothing served from the cache            ~2.3 min
+make test-fresh      # same, nothing served from the cache            ~9.5 min
 make test-browser    # playwright, -n 4, plus the one serial_only test ~7 min
 make test-all        # test-fresh + test-browser
 pytest -n0 -k NAME   # a single test; worker startup outweighs the split
@@ -28,16 +28,29 @@ instead. To print the current numbers rather than trust a snapshot:
 .venv/bin/python -m pytest -m "not browser" --collect-only -q | tail -1
 ```
 
-### Measured 2026-09-08, idle 8-core machine
+### Measured 2026-09-12, idle 8-core machine
 
 | | |
 |---|---:|
-| `make test` — warm cache | **735 s** (3,291 passed, 217 skipped, 5 xfailed, **9 failed**; 173 served from the cache) |
+| `make test` — warm cache | **319 s** (3,371 passed, 327 skipped, 6 xfailed, **13 failed**; 318 served from the cache) |
+| `make test-fresh` — nothing cached | **566 s** (3,699 passed, 9 skipped, 6 xfailed, **14 failed**) |
 
-Nine, down from eleven earlier the same day: the two docs-count failures were
-fixed, and the Sven work added none. The remaining nine are the same nine, which
-is the number worth watching — a suite that is permanently red only stays
-readable if the red is a known set rather than a vibe.
+**Run `make test-fresh` before believing a red count.** The two runs above are
+the same commit an hour apart and they disagree by one failure in each
+direction, because the cache's key is one deck deep: a deck's freshness case
+names its own directory and the source tree, so a change in ANOTHER deck — a
+paper lock, which flips a `locked` flag inside every other deck's branch
+sourcing — moves the artifact without moving the key. Four `net_change.json`
+files and one dossier were being served a passing result for inputs that had
+changed. That is **#49**, and it is the one outcome `conftest._digest`'s own
+docstring says this cache must never have.
+
+Thirteen warm, fourteen fresh, against nine on 2026-09-08. Four of the nine were
+fixed on 09-12 (`viz_ladder`, `serve_cli`, `sim_pilot_quality`, edgar's
+dossier); the arrivals are the stale artifacts the fresh run exposed. The set is
+what matters rather than the number — a suite that is permanently red only stays
+readable if the red is a known set rather than a vibe, and `docs/known-issues.md`
+is that set.
 
 **This is the only page that states a runtime.** `CLAUDE.md` carried ~22s/~29s
 for weeks — off by more than an order of magnitude — because the figure was
@@ -54,7 +67,7 @@ and three are real goldfish fidelity bugs.
 | | |
 |---|---:|
 | `make test` — warm cache | **207 s** (2,851 collected; 2,845 pass/served, 3 xfailed) |
-| `make test-browser` (`-n 4`) | **400 s** (223 passed) |
+| `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
 audit figures moved — heliod's colour-sources axis reads −18 against the audit's
@@ -73,7 +86,7 @@ had two readers and only one was covered.
 |---|---:|
 | `make test` — warm cache | **149 s** (2,462 collected; 2,316 passed, 136 skipped) |
 | `make test-fresh` — nothing cached | **136 s** |
-| `make test-browser` (`-n 4`) | **400 s** (223 passed) |
+| `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
 **The suite got slower because it got bigger, not because it regressed.** These
 numbers were 22 s and 234 s on 2026-08-15; the fast suite has roughly doubled
@@ -98,13 +111,14 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-08-31: **2,882 tests** across 119 files — 2,650 fast, 227 browser, 1 `forge`
-(a real Forge game, opt-in) and 4 `fleet`. One is a deliberately unmet `xfail(strict=True)` ship gate in
+As of 2026-09-12: **3,971 tests** across 180 files — 3,717 in the `make test`
+selection, 249 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
+`serial_only`. Six are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
-Why the count cannot be checked mechanically: **699 of those cases do not exist in the
-source** — there are 2,183 `def test_` functions and 2,882 collected cases, the difference
+Why the count cannot be checked mechanically: **about a thousand of those cases do not
+exist in the source** — there are 2,959 top-level `def test_` functions and 3,971 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -164,7 +178,7 @@ matched literal indentation and broke the moment the key handler was rewritten t
 gate — while the invariant it cared about was untouched. It now asserts the delegation
 (`cycleSelection` is called; the handler does not recompute an index) rather than the text.
 
-### Browser tests (225) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
+### Browser tests (249) — `tests/test_viz_behaviour.py` + `test_decklist_parity.py`
 
 The session fixtures `browser` and `viz_server` live in `tests/conftest.py` — see the
 section below for why they cannot live anywhere else. `conftest_viz.py` still holds the
