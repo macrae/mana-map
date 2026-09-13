@@ -155,7 +155,12 @@ def channels_for(profile):
         found.add("draw")
     # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
     # or a draw. Named keys, never the dict's truthiness.
-    if _nonzero(profile.get("draw"), ("wheel_draws", "spell_discard")) \
+    if _nonzero(profile.get("draw"), ("wheel_draws", "spell_discard",
+                                      # The wheel a PERMANENT carries, added
+                                      # with the channel (2026-09-13) rather
+                                      # than in the session that notices the
+                                      # mirror has drifted for a third time.
+                                      "activated_wheel")) \
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled"):
         found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
@@ -229,7 +234,7 @@ def never_cast(profile, flags):
     # A wheel is selected by the draw loop under model_discard; a payoff
     # permanent by the engine loop.
     if flags.get("model_discard") and (
-            _nonzero(profile.get("draw"), ("wheel_draws",))
+            _nonzero(profile.get("draw"), ("wheel_draws", "activated_wheel"))
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled")):
         return False
     if flags.get("model_drain") and (_nonzero(profile.get("drain"), (

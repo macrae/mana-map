@@ -1837,3 +1837,111 @@ individually), 34,742 untouched. Corpus nonzero 1,975 → 1,848. Fleet regenerat
 (72 targets, 92.7s); **gishath's commander cast-by-turn-6 drops 0.189 → 0.170**,
 the honest direction once phantom mana stops counting.
 
+
+## A wheel on a permanent is an ACTIVATED ability, and the model read three of them as vanilla bodies (2026-09-13)
+
+`draw_profile` credits `wheel_draws` on an **Instant or a Sorcery only**, and
+that gate is right — a permanent carrying *"each player discards their hand,
+then draws…"* carries it as the effect of an **activated ability**, paid for on
+every use, not as a spell you cast once. But nothing else read that sentence, so
+a permanent carrying it read as a body with no text on it.
+
+Found on **sharknado** (Shabraz / Brallin), the deck whose entire plan is
+wheeling. Twelve cards in the 99 are wheel-shaped; the model saw nine:
+
+| card | what the model saw before |
+|---|---|
+| Jace's Archivist | a 2/2 Vedalken Wizard |
+| Magus of the Wheel | a 3/3 Human Wizard |
+| Whirlpool Warrior | `draw: {unmodelled: 'Whirlpool Warrior'}` |
+
+Jace's Archivist is the one that mattered: `{U}, {T}` wheels **every turn,
+forever, for one blue mana**, and the pilot's instruction was to model it as
+exactly that.
+
+### The sweep, and the split that is the whole design
+
+34,814 cards. **43** say a player empties their hand; **8** do it from an
+activated ability; **7** are modelled and **1** is refused:
+
+```
+REPEATABLE   Jace's Archivist          {U}, {T}
+             Queen Kayla bin-Kroog     {4}, {T}
+ONE-SHOT     Magus of the Wheel        {1}{R}, {T}, Sacrifice this creature
+             Whirlpool Warrior         {R}, Sacrifice this creature
+             Vindictive Flamestoker    {6}{R}, Sacrifice this creature
+             Jack of Hearts            Power-up — {4}{R}{R}  ("only once")
+             Immortus                  Power-up — {5}{U}{U}  ("only once")
+REFUSED      Runehorn Hellkite         {5}{R}, Exile this card from your GRAVEYARD
+```
+
+Runehorn is refused because the zone is one this model does not have. Firing it
+off the battlefield would be a seven-card refill the card cannot give, and it is
+**named** in `meta.draw_not_modelled` rather than returned as an all-zero
+profile — that being the one state that means "nothing to see here". Before this
+commit it was in exactly that state, silently.
+
+The two Jar effects (Magus of the Jar, Memory Jar) **exile** a hand rather than
+discard it, so `_WHEEL_RE` never matches them and no discard payoff is credited.
+That falls out of the pattern; it is not special-cased.
+
+### The anchor was the bug the sweep would have baked in
+
+The first draft anchored the cost segment to a line break or a sentence end.
+Scryfall separates abilities with newlines, **`cards.json` keeps them and
+`cards.csv` does not** — so Runehorn read one way inside a deck and the other
+way inside a corpus sweep, which is precisely the disagreement a sweep exists to
+prevent. The anchor is gone; the token set (mana symbols, `Sacrifice this …`,
+`Exile this card from your graveyard`, commas) does the work, and a word is not
+in it, so a sentence that merely contains a colon cannot be read as a cost.
+
+### Three positions doing three jobs
+
+The fire site sits **before the draw spells** (what a wheel finds is castable
+this turn), **after `pool` is set** (unlike an upkeep trigger this one costs
+mana and competes for it) and **before every casting loop** — which gives a
+`{T}` ability its summoning sickness for free, since a permanent joins
+`wheel_engines` inside this turn's loops and is first seen next turn. No tapped
+state is tracked and none is needed.
+
+A cost that says "Sacrifice this creature" fires once and **takes the body off
+the board**. Leaving a 3/3 standing after it has been sacrificed is the same
+over-credit the sacrifice channel already learned to avoid, and it is invisible
+in the draw figures — which is why the test asserts it on board power instead.
+
+### Measured
+
+sharknado, 4,000 games, seed 3, `model_draw` + `model_combat` + `model_discard`.
+Mean cumulative EXTRA cards drawn, and mean cards discarded:
+
+| turn | drawn before | drawn after | discarded before | discarded after |
+|---|---|---|---|---|
+| 4 | 1.190 | 1.194 | 0.625 | 0.627 |
+| 6 | 4.187 | 4.826 | 1.992 | 2.432 |
+| 8 | 7.506 | 9.940 | 3.409 | 5.043 |
+| 10 | 10.317 | **14.780** | 4.456 | **7.580** |
+
+Turn four is flat because none of the three is on the table yet; the whole
+delta is the back half, which is the shape a repeatable engine has.
+
+Attributed by blinding one card at a time, at turn ten: **Archivist +2.09
+drawn** (+2.11 discarded), **Magus +1.55** (+1.07, and board power 17.79 → 17.42
+as the sacrificed body leaves), **Whirlpool +0.92** (+0.03 — it *shuffles*, so
+no discard trigger fires, which is `wheel_shuffles` doing its job).
+
+**The control**: blinding `activated_wheel` returns every figure to the
+pre-change value **exactly**, so the delta is these three cards and nothing else,
+and every deck in the fleet without an activated wheel is byte-identical.
+
+### THE FIGURE IS A FLOOR, AND THE FLOOR IS LOW
+
+Jace's Archivist draws *"cards equal to the greatest number of cards a player
+discarded this way"*. In a real game that number is usually an **opponent's**
+hand, which is the entire reason the card is good — you dump two and draw seven.
+This model has no opponents holding cards, so it draws what **our** hand held,
+and the hand-size gate only lets it fire when our hand is thin. The correction
+is not made, because the correction would be an authored opponent hand size
+driving a headline — the `engine_online_*` failure one channel over. Read it as
+a lower bound and settle the question in Forge, where sharknado's seat has its
+own problem: it **cast Wheel of Fortune once and Windfall never in 60 games**
+while discarding them.

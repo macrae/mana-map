@@ -10,6 +10,7 @@ scored zero however well his trigger parsed.
 """
 
 import csv
+import re
 
 import pytest
 
@@ -145,3 +146,261 @@ def test_the_two_draw_shapes_are_locked_to_the_corpus():
             if goldfish._UPKEEP_REVEAL_RE.search(t):
                 reveal += 1
     assert (scry, reveal) == (34, 3), (scry, reveal)
+
+
+# ── the wheel that is a PERMANENT ─────────────────────────────────────────
+#
+# `wheel_draws` is credited on an Instant or a Sorcery only, and that is right:
+# a permanent carrying the same sentence carries it as an ACTIVATED ABILITY,
+# paid for on every use. Three such cards sat in sharknado — a deck whose whole
+# plan is wheeling — and all three read as vanilla bodies. Jace's Archivist is
+# the one that matters: `{U}, {T}` wheels the table EVERY TURN, forever.
+
+def _perm(name, type_line="Creature — Wizard", text=None, mana_cost="{1}{U}{U}"):
+    from manamap.pilot import card_pool
+    text = text if text is not None else card_pool.corpus_oracle().get(name)
+    assert text, f"{name} is not in the corpus"
+    return goldfish.draw_profile({"name": name, "oracle_text": text,
+                                  "type_line": type_line, "mana_cost": mana_cost})
+
+
+@requires_data
+def test_the_repeatable_wheel_is_read_as_repeatable():
+    """THE CARD THE CHANNEL EXISTS FOR. Re-introduce the bug by deleting the
+    `activated_wheel` branch in `draw_profile` and the Archivist goes back to
+    being a 2/2 Vedalken Wizard with no text on it."""
+    got = _perm("Jace's Archivist")
+    assert got["activated_wheel"] == -1, "draws what was discarded"
+    assert got["activated_wheel_cost"] == 1
+    assert [set(p) for p in got["activated_wheel_pips"]] == [{"U"}]
+    assert got["activated_wheel_once"] is False, "{U}, {T} is payable every turn"
+    assert got["activated_wheel_sacs_self"] is False
+    assert got["unmodelled"] is None
+    # The spell path is untouched: a creature has no `wheel_draws`.
+    assert got["wheel_draws"] == 0
+
+
+@requires_data
+def test_a_cost_that_eats_its_own_source_is_one_shot():
+    """Magus of the Wheel is `{1}{R}, {T}, Sacrifice this creature` and Whirlpool
+    Warrior `{R}, Sacrifice this creature`. Reading either as repeatable would
+    wheel the table seven cards a turn off a card that is in the graveyard."""
+    magus = _perm("Magus of the Wheel", mana_cost="{2}{R}")
+    assert magus["activated_wheel"] == 7
+    assert magus["activated_wheel_cost"] == 2, "{1}{R}; the tap is not mana"
+    assert magus["activated_wheel_once"] is True
+    assert magus["activated_wheel_sacs_self"] is True
+
+    whirl = _perm("Whirlpool Warrior", mana_cost="{2}{R}")
+    assert whirl["activated_wheel"] == -1
+    assert whirl["activated_wheel_shuffles"] is True, "no discard trigger fires"
+    assert whirl["activated_wheel_once"] is True
+    assert whirl["activated_wheel_sacs_self"] is True
+
+
+@requires_data
+def test_an_ability_activated_from_a_zone_this_model_lacks_is_refused():
+    """Runehorn Hellkite's wheel costs `{5}{R}, Exile this card from your
+    GRAVEYARD`. This model has no graveyard, so firing it off the battlefield
+    would be a seven-card refill the card cannot give. Refused, and it stays in
+    `meta.draw_not_modelled`, which is the honest place for it — the same call
+    `_CAST_DRAW_GATES` makes about a gate it cannot evaluate."""
+    got = _perm("Runehorn Hellkite", type_line="Creature — Dragon", mana_cost="{5}{R}")
+    assert got["activated_wheel"] == 0
+    assert got["unmodelled"] == "Runehorn Hellkite"
+
+
+@requires_data
+@pytest.mark.parametrize("name,type_line", [
+    # THE JARS EXILE A HAND, they do not discard it, so `_WHEEL_RE` never
+    # matches and no discard payoff is credited. This falls out of the pattern
+    # rather than being special-cased, and this test is what says so.
+    ("Magus of the Jar", "Creature — Human Wizard"),
+    ("Memory Jar", "Artifact"),
+    # A TRIGGER IS NOT AN ACTIVATION. Dragon Mage wheels on combat damage and
+    # Sensation Gorger on a kinship check; neither has a cost to pay, and both
+    # would be free seven-card refills if the colon anchor slipped.
+    ("Dragon Mage", "Creature — Dragon Wizard"),
+    ("Sensation Gorger", "Creature — Goblin Shaman"),
+])
+def test_the_lookalikes_are_not_swept_in(name, type_line):
+    assert _perm(name, type_line=type_line)["activated_wheel"] == 0
+
+
+def test_a_spell_wheel_is_not_also_an_activated_one():
+    """The two paths are disjoint by construction — a Sorcery cannot carry an
+    activated ability — rather than by an `elif` somebody can break."""
+    spell = _spell("Each player discards their hand, then draws seven cards.")
+    assert spell["wheel_draws"] == 7 and spell["activated_wheel"] == 0
+
+
+@requires_data
+def test_the_activated_corpus_sweep_is_locked():
+    """WIDENING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT. 34,814 cards
+    on 2026-09-13: 43 say a player empties their hand, 7 do it from an activated
+    ability on the battlefield, and the repeatable/one-shot split is the whole
+    design. A new set moves these on purpose."""
+    from manamap.pilot import card_pool
+    from manamap.pilot.goldfish_profiles import activated_wheel
+
+    pool, oracle = card_pool.load_pool(), card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    repeatable, one_shot, checked = set(), set(), 0
+    for name, text in oracle.items():
+        checked += 1
+        if not activated_wheel(text or ""):
+            continue
+        got = goldfish.draw_profile(dict(pool.get(name) or {}, name=name,
+                                         oracle_text=text))
+        if not got["activated_wheel"]:
+            continue
+        (one_shot if got["activated_wheel_once"] else repeatable).add(name)
+    assert checked > 30000
+    assert repeatable == {"Jace's Archivist", "Queen Kayla bin-Kroog"}, repeatable
+    assert one_shot == {"Immortus, Master of Eternity", "Magus of the Wheel",
+                        "Jack of Hearts, Volatile Hero", "Vindictive Flamestoker",
+                        "Whirlpool Warrior"}, one_shot
+
+
+# ── the channel is reachable, and it is reachable from every door ─────────
+
+def test_the_activated_wheel_is_in_the_casting_predicate():
+    """A CARD CAN BE READ CORRECTLY AND NEVER PLAYED — seven recorded instances.
+    Every card in this family today is a creature and is cast by the bodies
+    loop, so the line is doing nothing yet; it ships with the channel because
+    the next Memory Jar will have no body."""
+    from conftest import simulator_source
+
+    assert 'c["draw"]["activated_wheel"]' in simulator_source(), (
+        "activated_wheel is not in the casting predicate — a bodyless one "
+        "would sit in hand for ten turns")
+
+
+def test_every_door_onto_the_battlefield_registers_the_wheel():
+    """Three loops put a permanent into play, and a channel wired to two of them
+    undercounts silently on whichever loop caught the card. `_register_wheel` is
+    one door precisely so this can be counted."""
+    from conftest import simulator_source
+
+    src = simulator_source()
+    doors = re.findall(r"(?<!def )_register_wheel\(card\)", src)
+    assert len(doors) == 3, (
+        "a registration site was added or lost — count the loops that append "
+        f"to draw_engines and match them; found {len(doors)}")
+
+
+def test_the_wheel_fires_before_anything_joins_the_battlefield():
+    """SUMMONING SICKNESS, WITHOUT TRACKING A TAPPED STATE. Every activated
+    wheel in the corpus but one pays `{T}`, so it cannot fire on the turn it
+    lands. The fire site sits ABOVE every casting loop, so a permanent that
+    joins `wheel_engines` this turn is first seen next turn — and if the block
+    ever moves below a registration site, an Archivist wheels the turn she
+    resolves and this fails."""
+    from conftest import simulator_source
+
+    src = simulator_source()
+    fires = src.index("if model_draw and model_discard and wheel_engines:")
+    draw_loop = src.index("# A DRAW SPELL IS NEITHER A ROCK")
+    bodies_loop = src.index("pending_draw_engine = None")
+    assert fires < draw_loop < bodies_loop, (
+        "the fire site has moved below a casting loop — a wheel now fires on "
+        "the turn it lands, which is a tap ability with no summoning sickness")
+    # The third door, `_free_creature_enters`, is a helper for the declared
+    # reveal and runs in combat, later still; its position in the file says
+    # nothing about when it is called, so it is not asserted on here.
+
+
+@requires_data
+@requires_deck
+def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
+    """DRIVEN THROUGH THE SIMULATOR, and proved by RE-INTRODUCING THE BUG.
+
+    sharknado at 4,000 games, seed 3, read 10.317 extra cards by turn ten with
+    the three activated wheels invisible. Blinding the channel must return
+    exactly that number: anything else means the delta is coming from somewhere
+    other than the cards this commit taught the model to see.
+    """
+    import copy
+
+    from manamap.pilot.common import load_deck_cards
+
+    doc = load_deck_cards("sharknado")
+
+    def t10(d):
+        m = goldfish.run("sharknado", doc=d, iterations=4000, seed=3,
+                         quiet=True, _band=False)["metrics"]
+        return m["mean_extra_cards_drawn_by_turn"]["10"]
+
+    with_wheels = t10(copy.deepcopy(doc))
+
+    blind = copy.deepcopy(doc)
+    checked = 0
+    for card in blind["cards"]:
+        if goldfish.draw_profile(card)["activated_wheel"]:
+            card["oracle_text"] = "Flying"      # the bug, re-introduced
+            checked += 1
+    assert checked == 3, f"sharknado should hold three activated wheels, not {checked}"
+    assert t10(blind) == 10.317, "the pre-change figure is not being recovered"
+    assert with_wheels > 14, (
+        f"the activated wheels are worth ~4.5 cards by turn ten; got {with_wheels}")
+
+
+@requires_data
+@requires_deck
+def test_a_repeatable_wheel_beats_the_same_card_made_one_shot():
+    """THE DIRECTIVE, ASSERTED. Rewriting only the COST — adding "Sacrifice this
+    creature" to the Archivist's — must lower the draw figure, and nothing else
+    about the card changes. If `activated_wheel_once` were ignored the two arms
+    would be identical."""
+    import copy
+
+    from manamap.pilot.common import load_deck_cards
+
+    doc = load_deck_cards("sharknado")
+
+    def t10(d):
+        return goldfish.run("sharknado", doc=d, iterations=2000, seed=11,
+                            quiet=True, _band=False)["metrics"
+                            ]["mean_extra_cards_drawn_by_turn"]["10"]
+
+    once = copy.deepcopy(doc)
+    patched = 0
+    for card in once["cards"]:
+        if card["name"] == "Jace's Archivist":
+            card["oracle_text"] = card["oracle_text"].replace(
+                "{U}, {T}:", "{U}, {T}, Sacrifice this creature:")
+            patched += 1
+    assert patched == 1
+    assert goldfish.draw_profile(
+        [c for c in once["cards"] if c["name"] == "Jace's Archivist"][0]
+    )["activated_wheel_once"] is True, "the rewrite did not take"
+    assert t10(copy.deepcopy(doc)) > t10(once), (
+        "a wheel that can be activated every turn must out-draw the same wheel "
+        "that can be activated once")
+
+
+@requires_data
+@requires_deck
+def test_a_one_shot_that_sacrifices_itself_takes_the_body_with_it():
+    """The cost says "Sacrifice this creature" and the board must show it.
+    Leaving a 3/3 standing after it has been sacrificed is the over-credit the
+    sacrifice channel already learned to avoid — and it is invisible in the draw
+    figures, which is why it is asserted on BOARD POWER instead."""
+    import copy
+
+    from manamap.pilot.common import load_deck_cards
+
+    doc = load_deck_cards("sharknado")
+
+    def power10(d):
+        return goldfish.run("sharknado", doc=d, iterations=4000, seed=3,
+                            quiet=True, _band=False)["metrics"][
+                                "combat"]["mean_board_power_by_turn"]["10"]
+
+    kept = copy.deepcopy(doc)
+    for card in kept["cards"]:
+        if card["name"] == "Magus of the Wheel":
+            card["oracle_text"] = card["oracle_text"].replace(
+                ", Sacrifice this creature:", ":")
+    assert power10(copy.deepcopy(doc)) < power10(kept), (
+        "the sacrificed body is still on the board")

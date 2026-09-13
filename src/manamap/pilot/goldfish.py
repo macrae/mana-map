@@ -491,6 +491,21 @@ DISCARD_ASSUMPTIONS = [
     "+1/+1 counters they put on their own body are added to the swing while the "
     "commander is out, an approximation. Payoffs that DRAW on a draw are not "
     "read: an uncapped loop would draw the library and call it steam.",
+    "DISCARD: a wheel a PERMANENT carries is activated from the battlefield "
+    "under the same hand-size gate as a wheel that is cast, paying its mana "
+    "cost every time. It fires at the earliest on the turn AFTER the permanent "
+    "lands, which is the summoning sickness of the tap in its cost, and a cost "
+    "that sacrifices its own source fires once and takes the body off the "
+    "board. An ability activated from the graveyard (Runehorn Hellkite) is a "
+    "zone this model does not have and is refused rather than fired.",
+    "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER "
+    "DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no "
+    "opponents holding cards, so Jace's Archivist and Windfall draw what OUR "
+    "hand held -- and the gate only lets them fire when our hand is thin, "
+    "which is exactly the board on which a real table pays them seven. The "
+    "figure is not corrected, because the correction would be an authored "
+    "opponent hand size driving a headline; read it as a lower bound and "
+    "settle the question in Forge.",
 ]
 
 COMBAT_ASSUMPTIONS = [

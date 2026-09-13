@@ -178,6 +178,29 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     sacrifices_by_turn = []
     sac_cap_hits = 0
     draw_engines = []
+    # THE WHEELS THAT ARE ALREADY ON THE TABLE. Held apart from `draw_engines`
+    # because this one needs the BODY as well as the profile: a cost that says
+    # "Sacrifice this creature" takes the body with it, and a draw profile has
+    # no way to point at the battlefield entry it belongs to. One dict per
+    # permanent: {"draw", "power", "is_creature"}.
+    wheel_engines = []
+
+    def _register_wheel(card):
+        """ONE DOOR FOR A WHEEL ARRIVING ON THE BATTLEFIELD.
+
+        Called from every loop that puts a permanent into play, for the same
+        reason `_commander_arrives` exists: three separate registration sites
+        for `draw_engines` is already one too many, and a fourth channel added
+        at two of the three is how a card comes to work on some turns.
+        """
+        if not (model_draw and model_discard):
+            return
+        if not card["draw"]["activated_wheel"]:
+            return
+        wheel_engines.append({
+            "draw": card["draw"],
+            "power": card["combat"]["power"],
+            "is_creature": card["combat"]["is_creature"]})
     drawn_extra = 0
     drawn_extra_by_turn = []
     # THE DISCARD CHANNEL. `discarded` counts cards that left hand by a wheel
@@ -655,6 +678,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_draw and any(card["draw"][k] for k in
                                   ("recurring_draw", "arrival_draw", "cast_draw")):
                 draw_engines.append(card["draw"])
+            _register_wheel(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
             if model_treasures:
@@ -990,6 +1014,69 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["treasure_bonus"]:
                     treasure_bonus += 1
 
+        # THE WHEEL THAT IS ALREADY ON THE TABLE, AND WHEELS AGAIN NEXT TURN.
+        #
+        # Jace's Archivist reads `{U}, {T}: Each player discards their hand,
+        # then draws cards equal to the greatest number a player discarded` —
+        # every turn, forever, for one blue mana. The model saw a 2/2 Vedalken
+        # Wizard with no text, because `wheel_draws` is credited on an Instant
+        # or a Sorcery only and a permanent's copy of that sentence is an
+        # ACTIVATED ability. Three of sharknado's twelve wheel-shaped cards were
+        # invisible this way on a deck whose whole plan is wheeling.
+        #
+        # FIRED HERE, and the position is doing three jobs:
+        #
+        #   * BEFORE the draw spells, so what a wheel finds is castable on the
+        #     turn it is found. Wheel, then spend, is the line a pilot takes.
+        #   * AFTER `pool` is set, because unlike an upkeep trigger this one
+        #     costs mana and has to compete for it like everything else.
+        #   * BEFORE the loops that put permanents into play, which is what
+        #     gives a `{T}` ability its summoning sickness for free: a wheel
+        #     joins `wheel_engines` inside this turn's casting loops, which run
+        #     below, so the earliest it can fire is the turn after it lands. No
+        #     tapped state is tracked and none is needed.
+        #
+        # THE AUTHORED GATE IS THE SPELL'S, minus its off-by-one. `WHEEL_MIN_HAND`
+        # counts the nonlands that would be thrown away; the spell subtracts
+        # itself from that count because it is in the hand being emptied, and
+        # this one is on the battlefield. Without the gate the Archivist wheels
+        # away a good hand every turn from turn four, forever, and reports it
+        # as card advantage.
+        if model_draw and model_discard and wheel_engines:
+            for _we in list(wheel_engines):
+                _wp = _we["draw"]
+                if not (sum(1 for c in hand if not c["is_land"]) <= WHEEL_MIN_HAND
+                        or event_payoff_permanents):
+                    continue
+                if not spend(_wp["activated_wheel_cost"],
+                             _wp["activated_wheel_pips"]):
+                    continue
+                _held = len(hand)
+                discard_n(0, everything=True,
+                          shuffled=_wp["activated_wheel_shuffles"])
+                draw_n(_held if _wp["activated_wheel"] < 0
+                       else _wp["activated_wheel"])
+                if not _wp["activated_wheel_once"]:
+                    continue
+                wheel_engines.remove(_we)
+                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT.
+                # Magus of the Wheel and Whirlpool Warrior both say "Sacrifice
+                # this creature", and leaving a 3/3 on the board after it has
+                # been sacrificed is the over-credit that the sacrifice channel
+                # already learned to avoid. Matched on power against a
+                # NON-TOKEN entry — the same shape `tutor_needs_body` uses two
+                # loops up, and the closest a profile can get to pointing at
+                # its own battlefield row.
+                if not (_wp["activated_wheel_sacs_self"] and _we["is_creature"]):
+                    continue
+                _own = [i for i, (_p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                        if _p == _we["power"] and not _tok]
+                if _own:
+                    _i = _own[0]
+                    battlefield.pop(_i)
+                    creature_types.pop(_i)
+                    creature_flying.pop(_i)
+
         # A DRAW SPELL IS NEITHER A ROCK, A TUTOR, A BODY NOR AN ETB PAYOFF —
         # the fifth card to fall through every loop here, after Aggravated
         # Assault, Primal Vigor, the cost reducers and Dragon Tempest. Night's
@@ -1020,7 +1107,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # only, since a wheel that draws seven
                                          # and discards nothing is the
                                          # over-credit the flag exists to prevent.
-                                         model_discard and c["draw"]["wheel_draws"]))),
+                                         model_discard and c["draw"]["wheel_draws"],
+                                         # AND THE WHEEL THAT IS A PERMANENT.
+                                         # Every card in that family so far is
+                                         # a creature and is cast by the bodies
+                                         # loop below, so this line is doing
+                                         # nothing today -- it is here because
+                                         # the next Memory Jar will have no
+                                         # body, and the rule is that the
+                                         # casting predicate ships in the same
+                                         # commit as the channel rather than in
+                                         # the session that notices.
+                                         model_discard and c["draw"]["activated_wheel"]))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 # THE LOOP WALKS A SNAPSHOT OF THE HAND, and a wheel cast two
                 # iterations ago emptied it: a card that has since been
@@ -1051,6 +1149,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
                         or card["draw"]["cast_draw"]):
                     draw_engines.append(card["draw"])
+                _register_wheel(card)
 
         # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
         #
@@ -1433,6 +1532,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat_engines.append(combat)
                 if pending_draw_engine is not None:
                     draw_engines.append(pending_draw_engine)
+                _register_wheel(card)
                 if card["token_doubler"]:
                     token_multiplier *= 2
                 if model_sacrifice:

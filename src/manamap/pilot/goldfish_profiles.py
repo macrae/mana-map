@@ -274,6 +274,107 @@ _WHEEL_EXCLUDED = frozenset({"Wheel of Misfortune"})
 #: cheapest first, wheels away six good cards on turn three.
 WHEEL_MIN_HAND = 3
 
+#: THE WHEEL THAT IS NOT A SPELL, AND IS NOT CAST AGAIN TO BE USED AGAIN.
+#:
+#: `draw_profile` credits `wheel_draws` on an Instant or a Sorcery only, which
+#: is right: a permanent carrying the same sentence carries it as the effect of
+#: an ACTIVATED ABILITY, paid for every time. Three such cards sat in sharknado
+#: -- a deck whose plan is wheeling -- and all three read as vanilla bodies.
+#: Jace's Archivist is the one that matters: `{U}, {T}` wheels the table EVERY
+#: TURN, forever, and a model that cannot see it is reading a 2/2 Vedalken
+#: Wizard with no text on the card the deck is built around.
+#:
+#: CORPUS SWEEP 2026-09-13, 34,814 cards. 43 say a player empties their hand;
+#: 8 of those do it from an ACTIVATED ability, 7 are read and 1 is refused. The
+#: repeatable/one-shot split is the whole design:
+#:
+#:   REPEATABLE  Jace's Archivist        {U}, {T}
+#:               Queen Kayla bin-Kroog   {4}, {T}
+#:   ONE-SHOT    Magus of the Wheel      {1}{R}, {T}, Sacrifice this creature
+#:               Whirlpool Warrior       {R}, Sacrifice this creature
+#:               Vindictive Flamestoker  {6}{R}, Sacrifice this creature
+#:               Jack of Hearts          Power-up -- {4}{R}{R}   ("only once")
+#:               Immortus                Power-up -- {5}{U}{U}   ("only once")
+#:   REFUSED     Runehorn Hellkite       {5}{R}, Exile this card from your GRAVEYARD
+#:
+#: Runehorn's ability is activated from the GRAVEYARD, a zone this model does
+#: not have. Reading it and firing it off the battlefield would be a free
+#: seven-card refill the card cannot actually give, so the cost is inspected
+#: and the card refused -- it is NAMED in `draw_not_modelled`, which is the
+#: honest place for it, rather than returned as the all-zero profile it used to
+#: be. The two Jar effects (Magus of the Jar, Memory Jar) EXILE a hand rather
+#: than discard it, so `_WHEEL_RE` never matches them and no discard trigger is
+#: credited; and Dragon Mage and Sensation Gorger wheel off a TRIGGER, which
+#: has no cost to pay and no colon in front of it. All four fall out of the
+#: pattern rather than being special-cased.
+#:
+#: The cost segment is the longest run before the colon that is made ONLY of
+#: mana symbols and the additional costs this family uses. A sentence that
+#: merely contains a colon cannot be read as an activation cost, because a
+#: word is not in the token set.
+#:
+#: IT IS DELIBERATELY NOT ANCHORED TO A LINE BREAK, and that is not a detail.
+#: Scryfall separates a card's abilities with newlines, `cards.json` keeps them
+#: and `cards.csv` does not -- so an anchored pattern read Runehorn Hellkite one
+#: way in a deck and the other way in a corpus sweep, which is the one thing a
+#: sweep exists to prevent. The token set does the work the anchor was doing.
+_ACTIVATED_COST_RE = re.compile(
+    r"((?:\{[^}]{1,5}\}|Sacrifice this [a-z]+|Exile this card from your graveyard"
+    r"|Discard your hand|, |\s)+): ", re.I)
+#: A cost that consumes its own source cannot be paid twice.
+_ACTIVATED_ONE_SHOT_RE = re.compile(r"sacrifice this|exile this", re.I)
+_ACTIVATED_SAC_SELF_RE = re.compile(r"sacrifice this", re.I)
+#: Immortus's reminder text. One card, and it is cheaper to read the sentence
+#: than to pretend a seven-mana power-up recurs.
+_ACTIVATE_ONLY_ONCE_RE = re.compile(r"activate each power-up ability only once", re.I)
+#: The zone the ability is activated FROM, when it is not the battlefield.
+_ACTIVATED_ELSEWHERE_RE = re.compile(r"from your (graveyard|library|exile)", re.I)
+
+
+def _activation_mana(cost):
+    """Total mana in an activation cost.
+
+    `{T}` and `{Q}` are not mana; `{X}` is zero, which is the same reading
+    Scryfall's `cmc` takes and the same one `draw_profile`'s X path corrects
+    for separately. Everything else is one mana unless it is a number.
+    """
+    total = 0
+    for symbol in re.findall(r"\{([^}]+)\}", cost or ""):
+        inner = symbol.upper()
+        if inner.isdigit():
+            total += int(inner)
+        elif inner in ("T", "Q", "E", "X", "S"):
+            continue
+        else:
+            total += 1
+    return total
+
+
+def activated_wheel(text):
+    """The cost and the effect of a wheel that is an ACTIVATED ABILITY.
+
+    Returns `(cost_text, wheel_match, refused)` or None. The effect must begin
+    at the colon -- a later sentence that happens to contain a wheel is a
+    TRIGGER, not this ability, and Dragon Mage and Sensation Gorger are exactly
+    that.
+
+    `refused` names the zone when the ability is activated from somewhere this
+    model does not have. It is returned rather than swallowed because the
+    caller has to NAME the card: a refusal that reads as an all-zero profile is
+    indistinguishable from a card with no draw on it, which is the silent zero
+    this whole function exists to stop producing.
+    """
+    for m in _ACTIVATED_COST_RE.finditer(text or ""):
+        cost = m.group(1)
+        if "{" not in cost:
+            continue
+        wheel = _WHEEL_RE.match(text[m.end():])
+        if not wheel:
+            continue
+        elsewhere = _ACTIVATED_ELSEWHERE_RE.search(cost)
+        return cost, wheel, (elsewhere.group(1).lower() if elsewhere else None)
+    return None
+
 
 def event_payoffs(card):
     """What this card pays on a discard or a draw, and the shape of each.
@@ -617,6 +718,14 @@ def draw_profile(card):
            # were discarded). A LOOT: `spell_discard` cards leave hand after
            # the spell's own draw. Both are ACTED ON only under model_discard.
            "wheel_draws": 0, "wheel_shuffles": False, "spell_discard": 0,
+           # THE SAME EFFECT, PAID FOR REPEATEDLY. `activated_wheel` is the
+           # wheel a PERMANENT carries: it costs `activated_wheel_cost` mana
+           # and `activated_wheel_pips` colours every use, and unless
+           # `activated_wheel_once` it fires again next turn. See
+           # `_ACTIVATED_COST_RE` for the sweep and the four exclusions.
+           "activated_wheel": 0, "activated_wheel_shuffles": False,
+           "activated_wheel_cost": 0, "activated_wheel_pips": [],
+           "activated_wheel_once": False, "activated_wheel_sacs_self": False,
            "unmodelled": None}
     _w = _WHEEL_RE.search(text)
     # A wheel with NO MANA COST (Wheel of Fate, suspend only) would be cast
@@ -629,6 +738,29 @@ def draw_profile(card):
         # A SHUFFLE WHEEL (Echo of Eons, Time Reversal, Molten Psyche) empties
         # the hand without a discard: no discard trigger fires.
         out["wheel_shuffles"] = _w.group(1).lower().startswith("shuffle")
+    # THE PERMANENT'S COPY OF THE SAME SENTENCE. Deliberately NOT gated on the
+    # type line: a Sorcery cannot carry an activated ability, so the two paths
+    # are disjoint by construction rather than by an `elif` somebody can break.
+    _aw = activated_wheel(text)
+    if _aw and _aw[2]:
+        # REFUSED, AND NAMED. Runehorn Hellkite's wheel is activated from the
+        # graveyard; firing it off the battlefield would be a seven-card refill
+        # the card cannot give, and returning zero without saying so would put
+        # it in the one state that means "nothing to see here".
+        out["unmodelled"] = card.get("name")
+    elif _aw and card.get("name") not in _WHEEL_EXCLUDED:
+        _cost, _wm, _ = _aw
+        _word = _wm.group(2).lower()
+        out["activated_wheel"] = (
+            -1 if _word.startswith("cards equal") or _word in ("x", "that many")
+            else _DRAW_WORDS.get(_word, {"seven": 7, "six": 6}.get(_word, 7)))
+        out["activated_wheel_shuffles"] = _wm.group(1).lower().startswith("shuffle")
+        out["activated_wheel_cost"] = _activation_mana(_cost)
+        out["activated_wheel_pips"] = cast_pips(_cost)
+        out["activated_wheel_once"] = bool(
+            _ACTIVATED_ONE_SHOT_RE.search(_cost)
+            or _ACTIVATE_ONLY_ONCE_RE.search(text))
+        out["activated_wheel_sacs_self"] = bool(_ACTIVATED_SAC_SELF_RE.search(_cost))
     # BEFORE the `_DRAW_RE` guard, which wants a WRITTEN-OUT quantity ("draw
     # two cards") and does not recognise "draws X cards" — so every card in
     # this family returned here with an all-zero profile and, worse, with
@@ -664,6 +796,7 @@ def draw_profile(card):
     if per_type:
         out["etb_draw_per_type"] = per_type.group(1)
     if (not _DRAW_RE.search(text) and not out["wheel_draws"]
+            and not out["activated_wheel"]
             and not out["recurring_draw"] and not out["spell_draw_greatest_power"]):
         return out
 
@@ -708,6 +841,7 @@ def draw_profile(card):
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
                 out["arrival_draw"], out["cast_draw"],
                 out["x_draw_multiplier"], out["wheel_draws"],
+                out["activated_wheel"],
                 out["spell_draw_greatest_power"], out["etb_draw_per_type"])):
         out["unmodelled"] = card.get("name")
     return out

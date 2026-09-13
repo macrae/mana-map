@@ -1428,76 +1428,76 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.0221,
+          "rate": 0.0224,
           "ci95": [
-            0.0194,
-            0.0252
+            0.0197,
+            0.0255
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0186,
+          "rate": 0.0195,
           "ci95": [
-            0.0161,
-            0.0214
+            0.017,
+            0.0224
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0324,
+          "rate": 0.0352,
           "ci95": [
-            0.0291,
-            0.0361
+            0.0318,
+            0.039
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0569,
+          "rate": 0.0672,
           "ci95": [
-            0.0525,
-            0.0616
+            0.0625,
+            0.0723
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0804,
+          "rate": 0.0973,
           "ci95": [
-            0.0752,
-            0.0859
+            0.0916,
+            0.1033
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0938,
+          "rate": 0.1277,
           "ci95": [
-            0.0882,
-            0.0997
+            0.1213,
+            0.1344
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0968,
+          "rate": 0.1409,
           "ci95": [
-            0.0912,
-            0.1028
+            0.1342,
+            0.1479
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1624,
+        "rate": 0.1841,
         "ci95": [
-          0.1553,
-          0.1698
+          0.1766,
+          0.1918
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7432,
-        "hand_empty": 700,
-        "mana_short": 6732
+        "stall_turns": 8524,
+        "hand_empty": 851,
+        "mana_short": 7673
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
@@ -1510,7 +1510,7 @@
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1852,
+      "missed_land_drop_rate": 0.166,
       "mulliganed": {
         "rate": 0.1858,
         "ci95": [
@@ -1524,16 +1524,16 @@
         "2": 2.141,
         "3": 3.155,
         "4": 3.995,
-        "5": 4.728,
-        "6": 5.444,
-        "7": 6.272,
-        "8": 7.143,
-        "9": 8.015,
-        "10": 8.864
+        "5": 4.729,
+        "6": 5.455,
+        "7": 6.309,
+        "8": 7.245,
+        "9": 8.184,
+        "10": 9.111
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0115
+      "mana_stdev_turn_five": 1.0111
     },
     "decklist_sha256": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34"
   },
@@ -1560,7 +1560,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 81,
+          "value": 82,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1578,7 +1578,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.402,
+          "value": 5.391,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1586,7 +1586,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 83,
+          "value": 84,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -1602,7 +1602,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:AN ANSWER drawn — interaction of any kind": {
-          "value": 62,
+          "value": 64,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'AN ANSWER drawn — interaction of any kind' by turn six",
@@ -1610,7 +1610,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn": {
-          "value": 17,
+          "value": 18,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn' by turn six",
@@ -1618,7 +1618,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FINISHER drawn — the cards that end games": {
-          "value": 79,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FINISHER drawn — the cards that end games' by turn six",
@@ -1658,7 +1658,9 @@
             "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
             "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
             "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives.",
-            "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam."
+            "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
+            "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+            "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
           ],
           "tier": "data",
           "weight": "detail",
@@ -1677,15 +1679,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 8.871,
+            "10": 9.103,
             "2": 2.142,
             "3": 3.16,
             "4": 4.004,
             "5": 4.736,
-            "6": 5.445,
-            "7": 6.278,
-            "8": 7.144,
-            "9": 8.016
+            "6": 5.455,
+            "7": 6.315,
+            "8": 7.238,
+            "9": 8.178
           },
           "tier": "data",
           "weight": "detail",
@@ -1696,15 +1698,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.761,
+            "10": 0.812,
             "2": 0.997,
             "3": 0.91,
             "4": 0.801,
-            "5": 0.713,
-            "6": 0.682,
-            "7": 0.748,
-            "8": 0.759,
-            "9": 0.768
+            "5": 0.714,
+            "6": 0.692,
+            "7": 0.775,
+            "8": 0.804,
+            "9": 0.817
           },
           "tier": "data",
           "weight": "detail",
@@ -1715,15 +1717,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.173,
-            "10": 6.468,
+            "10": 6.697,
             "2": 0.504,
             "3": 1.057,
             "4": 1.267,
-            "5": 1.597,
-            "6": 2.352,
-            "7": 3.293,
-            "8": 4.311,
-            "9": 5.375
+            "5": 1.595,
+            "6": 2.342,
+            "7": 3.282,
+            "8": 4.345,
+            "9": 5.484
           },
           "tier": "data",
           "weight": "detail",
@@ -1749,12 +1751,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 320,
-            "5": 234,
-            "6": 1496,
-            "7": 3937,
-            "8": 2880,
-            "9": 886
+            "10": 294,
+            "5": 262,
+            "6": 1745,
+            "7": 4077,
+            "8": 2595,
+            "9": 786
           },
           "tier": "data",
           "weight": "detail",
@@ -1770,12 +1772,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.402,
-    "commander_cast_by_turn_6_pct": 81,
+    "commander_mean_cast_turn": 5.391,
+    "commander_cast_by_turn_6_pct": 82,
     "targets": [
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 83
+        "by_turn_6_pct": 84
       },
       {
         "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
@@ -1783,31 +1785,31 @@
       },
       {
         "label": "AN ANSWER drawn — interaction of any kind",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 64
       },
       {
         "label": "A TUTOR drawn",
-        "by_turn_6_pct": 17
+        "by_turn_6_pct": 18
       },
       {
         "label": "A FINISHER drawn — the cards that end games",
-        "by_turn_6_pct": 79
+        "by_turn_6_pct": 80
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.374,
+      "mean_kill_turn": 7.285,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 17,
-      "kill_by_turn_8_pct": 86,
+      "kill_by_turn_6_pct": 20,
+      "kill_by_turn_8_pct": 87,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 320,
-        "5": 234,
-        "6": 1496,
-        "7": 3937,
-        "8": 2880,
-        "9": 886
+        "10": 294,
+        "5": 262,
+        "6": 1745,
+        "7": 4077,
+        "8": 2595,
+        "9": 786
       }
     }
   },
