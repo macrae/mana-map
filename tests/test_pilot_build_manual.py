@@ -9,6 +9,7 @@ does.
 
 import copy
 
+from manamap import config
 from manamap.pilot.build_manual import render_issue
 from manamap.pilot.design import esc
 from manamap.pilot.issue_spec import (
@@ -479,7 +480,7 @@ def test_newsstand_survives_a_deck_without_a_commander_metric(tmp_path, monkeypa
     manuals.mkdir()
     (manuals / "d.html").write_text("<html></html>")
 
-    monkeypatch.setattr(build_index, "DECKS_DIR", decks)
+    monkeypatch.setattr(config, "DECKS_DIR", decks)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
     entries = build_index.gather_entries()
     assert len(entries) == 1 and entries[0]["mean_cast"] is None

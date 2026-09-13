@@ -30,7 +30,8 @@ import importlib
 import io
 import time
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.pilot.common import deck_lifecycle
 
 
@@ -134,11 +135,11 @@ def targets(artifact, slug=None):
     A `BOOTSTRAP` artifact is also returned where it is MISSING but its
     precondition is present, so the stage creates it rather than skipping it.
     """
-    if not DECKS_DIR.is_dir():
+    if not config.DECKS_DIR.is_dir():
         return []
     needs = BOOTSTRAP.get(artifact)
     out = []
-    for deck in sorted(DECKS_DIR.iterdir()):
+    for deck in sorted(config.DECKS_DIR.iterdir()):
         if not deck.is_dir() or is_retired(deck.name):
             continue
         # NAMED = manual, and it means THIS DECK ONLY. Unnamed = the automatic

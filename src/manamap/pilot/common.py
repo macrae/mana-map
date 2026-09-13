@@ -364,6 +364,26 @@ def expand_copies(cards):
     return out
 
 
+def count_copies(cards):
+    """How many PHYSICAL cards these entries are — the sum, not the length.
+
+    `expand_copies` answers the same question by building the list; this answers
+    it when the caller wants a number, which fourteen call sites did by hand.
+    They agreed on the arithmetic and disagreed on ONE THING: the default.
+
+    `validate_deck` summed `c.get("quantity", 0)` and every other site used 1,
+    so an entry written without the key would make a 100-card deck read as 99
+    and FAIL THE SIZE INVARIANT — the one check that file exists for. Latent
+    today (all 1,066 tracked entries carry the key, checked), and latent is not
+    fixed: `fetch_deck` is the only writer now, and a second one is a normal
+    thing to add.
+
+    ONE IS THE RIGHT DEFAULT. An entry that names a card is at least one copy;
+    zero would mean the entry is not there.
+    """
+    return sum(int(card.get("quantity") or 1) for card in cards)
+
+
 def is_land(card):
     """Land by front-face type line — the face that comes down on the battlefield."""
     return "Land" in front_face(card.get("type_line", ""))
@@ -567,6 +587,73 @@ def deck_is_apart(slug):
     """
     life = deck_lifecycle(slug)
     return bool(life and life[0] in UNPLAYABLE_STATUSES)
+
+
+#: ── The decklist sha: ONE algorithm, TWO named meanings ────────────────────
+#:
+#: "The current decklist sha" meant two different things and had SIX definitions
+#: (audited 2026-09-12). One is the hash of `decklist.txt` as it stands; the
+#: other is the stamp recording what `cards.json` was last built from. They are
+#: equal when the deck is in sync and that is exactly when the difference stops
+#: mattering — so every caller that conflated them was right until it was not.
+#:
+#: The six also disagreed about HOW. `deck_notes` and `check_in` used
+#: `read_bytes`; `deck_versions`, `deck_branch` and `fetch_deck` used
+#: `read_text().encode("utf-8")`. Those differ on a CRLF file, so the same list
+#: re-saved by an editor that writes Windows line endings hashed as a DIFFERENT
+#: deck in two modules and the same deck in three. No such file exists today —
+#: all 40 decklists were checked before this landed — which is what makes the
+#: consolidation a no-op on tracked data rather than a migration.
+#:
+#: `read_text` WINS, deliberately. It translates newlines, so the sha is a
+#: property of the LIST rather than of the file's encoding, and a CRLF re-save
+#: is the same deck instead of a phantom version.
+
+
+def list_sha256(text):
+    """THE algorithm. One definition, so the six cannot drift again."""
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def decklist_sha256(slug, branch=None):
+    """The list as it stands on disk, or None if there is no `decklist.txt`.
+
+    THE LIST, not the measurement. Use this to ask "has the deck changed"; use
+    `measured_sha` to ask "what was `cards.json` built from". A caller that
+    wants "are these the same" wants `sha_matches`.
+    """
+    path = deck_dir(slug, branch) / "decklist.txt"
+    if not path.exists():
+        return None
+    return list_sha256(path.read_text(encoding="utf-8"))
+
+
+def measured_sha(slug, branch=None):
+    """What `cards.json` was last built from — the MEASUREMENT's list.
+
+    A DIFFERENT QUESTION WITH A DIFFERENT NAME, which is the point: three call
+    sites read this and three read `decklist_sha256`, and from the code alone
+    nothing said which of the two a reader was looking at. When they differ, the
+    deck has moved and nothing has re-fetched — the #45 state.
+    """
+    return (load_json(deck_dir(slug, branch) / "cards.json") or {}).get(
+        "decklist_sha256")
+
+
+def sha_matches(a, b):
+    """One comparison, tolerant of a TRUNCATED sha on either side.
+
+    Three decks store twelve characters where everything else stores
+    sixty-four, so `deck_status._stamp_is_stale` was written prefix-tolerant and
+    `validate_diagnosis.is_stale` compared exactly — and the second is the bug
+    the first was written to fix, living on in another module. Both call this.
+
+    A missing sha on either side is NOT a match: absent means absent.
+    """
+    if not a or not b:
+        return False
+    n = min(len(a), len(b))
+    return n >= 8 and a[:n] == b[:n]
 
 
 def decks_root():

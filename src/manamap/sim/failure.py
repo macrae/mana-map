@@ -28,7 +28,8 @@ confident percentage points.
 import glob
 import re
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.sim.parse import wilson
 
 #: Three or more permanents leaving on one turn is a wipe. Two can be a trade in
@@ -43,8 +44,8 @@ _COMBAT = re.compile(r"deals \d+ combat damage to ")
 
 def _logs(slug):
     out = []
-    for root in (DECKS_DIR / slug / "sim" / "logs",
-                 DECKS_DIR / slug / "experiments" / "logs"):
+    for root in (config.DECKS_DIR / slug / "sim" / "logs",
+                 config.DECKS_DIR / slug / "experiments" / "logs"):
         # `Path / "*/"` normalises the trailing separator away, so the glob
         # returned directories without one and the join below produced
         # `.../rundirpart-*.log`. Zero logs, silently.

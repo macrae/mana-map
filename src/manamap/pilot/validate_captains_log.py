@@ -20,7 +20,8 @@ positions, and this compares. None of it reads the prose for meaning.
 import re
 import sys
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.pilot import captains_log as cl
 from manamap.pilot.deck_notes import read_log
 
@@ -206,7 +207,7 @@ def validate(doc, slug):
 
 def main(args):
     slug = args.slug
-    path = DECKS_DIR / slug / cl.ARTIFACT
+    path = config.DECKS_DIR / slug / cl.ARTIFACT
     if not path.exists():
         # ABSENT IS LEGAL. A deck whose nights have not been rendered yet is a
         # normal state, and the cache is what says so — not a red gate.

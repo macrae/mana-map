@@ -33,6 +33,7 @@ import json
 
 import pytest
 
+from manamap import config
 from manamap.config import AGENT_ROUTINES, DECKS_DIR
 from manamap.pilot import install_agent
 from manamap.pilot.deck_status import STAGES
@@ -82,7 +83,7 @@ def test_install_refuses_to_stamp_a_deck_it_cannot_date(tmp_path, monkeypatch):
     (deck / ".agent-out").mkdir(parents=True)
     (deck / ".agent-out" / "deck-engineer.json").write_text('{"slug": "nodate"}')
     (deck / "cards.json").write_text('{"cards": []}')      # no decklist_sha256
-    monkeypatch.setattr(install_agent, "DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "decks")
 
     with pytest.raises(SystemExit) as e:
         install_agent.install("nodate", "deck-engine")
@@ -111,7 +112,7 @@ def test_install_stamps_and_keeps_the_previous_copy(tmp_path, monkeypatch):
     (deck / ".agent-out" / "deck-engineer.json").write_text('{"thesis": "new"}')
     (deck / "cards.json").write_text('{"decklist_sha256": "' + "a" * 64 + '"}')
     (deck / "engine.json").write_text('{"thesis": "old"}')
-    monkeypatch.setattr(install_agent, "DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "decks")
 
     dst, sha = install_agent.install("d", "deck-engine")
     doc = json.loads(dst.read_text())

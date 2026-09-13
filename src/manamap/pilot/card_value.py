@@ -88,6 +88,7 @@ def _swap_one_copy(cards, name, blank):
     for card in cards:
         if card["name"] == name and not swapped:
             swapped = True
+            # PER ENTRY, on purpose: the list with ONE copy removed.
             remaining = card.get("quantity", 1) - 1
             if remaining > 0:
                 out.append(dict(card, quantity=remaining))

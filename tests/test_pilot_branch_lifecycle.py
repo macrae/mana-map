@@ -12,6 +12,7 @@ import json
 import pytest
 
 from conftest import requires_deck
+from manamap import config
 from manamap.pilot import candidates, deck_branch
 
 SLUG = "ur-dragon"
@@ -83,9 +84,12 @@ def sandbox(tmp_path, monkeypatch):
     decks = tmp_path / "decks"
     shutil.copytree(real, decks / SLUG,
                     ignore=shutil.ignore_patterns("branches", "sim"))
-    for mod in (config, common, deck_branch, deck_versions):
-        if hasattr(mod, "DECKS_DIR"):
-            monkeypatch.setattr(mod, "DECKS_DIR", decks)
+    # ONE PATCH POINT. This looped over four modules patching whichever had
+    # taken a copy of the deck root, which is the workaround #31 describes —
+    # and which module has a copy depends on import order. `config` is the home
+    # and `common.decks_root()` is the reader; nothing else holds one, asserted
+    # by `test_no_module_holds_a_module_level_copy_of_the_deck_root`.
+    monkeypatch.setattr(config, "DECKS_DIR", decks)
     # Versions are a git walk over the REAL repo path; in a sandbox there is no
     # history, so the branch records `base_version: None` and that is honest.
     monkeypatch.setattr(deck_versions, "report", lambda slug: {"current_version": None})

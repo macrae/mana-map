@@ -45,8 +45,9 @@ import subprocess
 import time
 from types import SimpleNamespace
 
+from manamap import config
 from manamap import console
-from manamap.config import BRACKET_DEFAULT, BRACKET_MAX, DECKS_DIR
+from manamap.config import BRACKET_DEFAULT, BRACKET_MAX
 from manamap.pilot import build_deck
 from manamap.pilot.common import deck_dir
 
@@ -161,7 +162,7 @@ def _read_brief(args):
     that works.
     """
     slug = args.slug
-    path = DECKS_DIR / slug / "brief.json"
+    path = config.DECKS_DIR / slug / "brief.json"
 
     if path.exists():
         passed = [f for f in BRIEF_FLAGS if getattr(args, f, None)]
@@ -390,7 +391,7 @@ def build(args, quiet=False):
     # stage: rebuilding a deck the pilot has moved to the bench must not put it
     # back in dev.
     new_deck_existed = (deck_dir(slug) / "deck_versions.json").exists() \
-        if (DECKS_DIR / slug).is_dir() else False
+        if (config.DECKS_DIR / slug).is_dir() else False
 
     with console.task(f"Building {slug}", total=len(STAGES), unit="stages") as bar:
         bar.state(STAGES[0])

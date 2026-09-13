@@ -11,6 +11,8 @@ answers the only empirical part of "is this card worth a slot".
 
 import pytest
 
+from manamap import config
+
 from manamap.sim import failure
 
 
@@ -83,12 +85,12 @@ def test_mass_is_detected_by_coincidence_not_by_a_list_of_sweeper_names():
         d.mkdir(parents=True)
         (d / "part-00.log").write_text(log)
         import manamap.sim.failure as f
-        old = f.DECKS_DIR
-        f.DECKS_DIR = pathlib.Path(tmp) / "decks"
+        old = config.DECKS_DIR
+        config.DECKS_DIR = pathlib.Path(tmp) / "decks"
         try:
             got = f.commander_departures("x", "C")
         finally:
-            f.DECKS_DIR = old
+            config.DECKS_DIR = old
     assert got["departures"] == 1
     assert got["causes"]["mass"]["n"] == 1, (
         "four permanents left on one turn — that is a wipe whether or not the "
@@ -194,12 +196,12 @@ def test_events_and_games_are_reported_as_two_different_numbers():
         d = pathlib.Path(tmp) / "decks" / "x" / "sim" / "logs" / "run"
         d.mkdir(parents=True)
         (d / "part-00.log").write_text(log)
-        old = failure.DECKS_DIR
-        failure.DECKS_DIR = pathlib.Path(tmp) / "decks"
+        old = config.DECKS_DIR
+        config.DECKS_DIR = pathlib.Path(tmp) / "decks"
         try:
             got = failure.commander_departures("x", "C")
         finally:
-            failure.DECKS_DIR = old
+            config.DECKS_DIR = old
 
     assert got["resolutions"] == 3 and got["departures"] == 2
     # EVENTS: two departures over three resolutions

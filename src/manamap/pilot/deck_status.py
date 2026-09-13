@@ -85,6 +85,25 @@ STAGES = [
      '{{"deck_name": "…", "commander": "…"}} plus "status" once the deck stops '
      'being sleeved (broken-down | superseded | retired). The cover/volume '
      'fields are the frozen magazine renderer\'s and no live surface reads them.'),
+    # ── ADDED 2026-09-13: two artifacts the GATE refused on and this board
+    # could not see ──────────────────────────────────────────────────────────
+    #
+    # `promote.GATES[SLEEVED]` requires both, and `regen.STAGES` regenerates
+    # both automatically on a pinned deck — so a pilot reading `deck-status`
+    # saw a complete board while `promote` refused the rung, naming two files
+    # this command had never mentioned.
+    #
+    # That is the failure `VALIDATED`'s own docstring records: "a dashboard that
+    # is green while the gate is red is worse than no dashboard, because people
+    # stop checking the gate." It was measured once on `validate-issue` and
+    # fixed there; these two are the same shape, found by comparing the
+    # registries against each other rather than by anything going red.
+    ("sim",        "sim/",                   None,  False, "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
+     "manamap pilot simulate {slug} --pod standard-v3 --games 100"),
+    ("benchmark",  "benchmark.json",         "decklist_sha256", False, "four measures under one FROZEN harness, so decks compare — `benchmark`",
+     "manamap pilot benchmark {slug}"),
+    ("dossier",    "info.json",              None,  False, "the composed view the deck page fetches — `deck-info --write`",
+     "manamap pilot deck-info {slug} --write"),
 ]
 
 # Stages this development cycle added. Named explicitly so a deck built before
@@ -165,10 +184,14 @@ def _stamp_is_stale(stamped, truth):
     the full sha. An exact test would have called gishath and heliod stale
     while they were current — a validator that fires on correct data, which
     this repo rejects checks for. Compare over the shorter of the two.
+
+    `common.sha_matches` is that comparison, and it is shared now:
+    `validate_diagnosis.is_stale` had the exact-`!=` version, which is the bug
+    this docstring describes living on in another module.
     """
-    a, b = str(stamped), str(truth)
-    n = min(len(a), len(b))
-    return n == 0 or a[:n] != b[:n]
+    from manamap.pilot import common
+
+    return not common.sha_matches(str(stamped), str(truth))
 
 
 def status(slug, validate=True):
@@ -189,6 +212,21 @@ def status(slug, validate=True):
         path = base / name
         if name.endswith("/"):
             files = sorted(path.glob("*.json")) if path.is_dir() else []
+            # A STACK IS PASSING OR IT IS NOTHING; A RUN IS JUST A RUN.
+            #
+            # `presentable` asks whether a scenario's checker returned `pass`,
+            # which is the right question for `stacks/` and meaningless for
+            # `sim/` — a Forge run has no verdict to pass. Counting them the
+            # same way printed "0 passing of 4" on a deck with four real runs,
+            # and a reader would take that for four FAILURES.
+            if key == "sim":
+                rows.append({"stage": key, "artifact": name, "what": what,
+                             "how": how.format(slug=slug),
+                             "state": "present" if files else "missing",
+                             "detail": f"{len(files)} run(s)",
+                             "required": required,
+                             "new": key in ADDED_2026_08})
+                continue
             passing = [f for f in files
                        if presentable(json.loads(f.read_text()))]
             rows.append({"stage": key, "artifact": name, "what": what,

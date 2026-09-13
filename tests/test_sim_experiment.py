@@ -13,6 +13,7 @@ import subprocess
 
 import pytest
 
+from manamap import config
 from manamap.pilot import deck_history as dh
 from manamap.sim import experiment as ex
 from manamap.sim import forge
@@ -38,7 +39,7 @@ def repo(tmp_path, monkeypatch):
     opp.mkdir(parents=True)
     opp.joinpath("decklist.txt").write_text("1 Edgar Markov *CMDR*\n1 Swamp\n")
     monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
-    monkeypatch.setattr("manamap.sim.forge.DECKS_DIR", root / "data" / "decks")
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", root)
     _git(root, "init", "-q")
     (deck / "decklist.txt").write_text(V1)

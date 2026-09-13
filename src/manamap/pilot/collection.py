@@ -37,7 +37,8 @@ Memoized on a signature over every file AND the directory listing, following
 
 import json
 
-from manamap.config import COLLECTION_DIR, DECKS_DIR
+from manamap import config
+from manamap.config import COLLECTION_DIR
 from manamap.pilot.common import expand_faces
 
 # {key: (signature, value)} — see the module docstring for why not `mtime_memo`.
@@ -105,9 +106,9 @@ def owned_index():
 
 def _build_deck_names():
     names = set()
-    if not DECKS_DIR.is_dir():
+    if not config.DECKS_DIR.is_dir():
         return names
-    for path in sorted(DECKS_DIR.glob("*/cards.json")):
+    for path in sorted(config.DECKS_DIR.glob("*/cards.json")):
         try:
             doc = json.loads(path.read_text())
         except (OSError, ValueError):

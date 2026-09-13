@@ -28,6 +28,7 @@ from manamap.config import (
     USER_AGENT,
 )
 from manamap.ingest.extract import get_colors
+from manamap.pilot import common as _common
 from manamap.pilot.common import (
     COMMANDER_SECTION_MARKERS,
     MAIN_SECTION_MARKERS,
@@ -400,7 +401,7 @@ def main(args):
             f"commander under a 'Commander:' header or marked *CMDR*)."
         )
     text = path.read_text()
-    decklist_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    decklist_sha256 = _common.list_sha256(text)
     out = deck_dir(args.slug, branch) / "cards.json"
     if not getattr(args, "force", False) and is_up_to_date(out, decklist_sha256):
         print(f"  Already up to date — skipping Scryfall fetch ({out}).")

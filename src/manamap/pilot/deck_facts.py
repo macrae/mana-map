@@ -33,6 +33,7 @@ from manamap.analysis.common import parse_tag_set
 from manamap.config import CARD_ROLES_PATH, SYNERGY_GRAPH_PATH
 from manamap.ingest.extract import get_colors
 from manamap.pilot.bracket import combos_in_deck, is_infinite
+from manamap.pilot import common
 from manamap.pilot.common import (
     resolve_out_path,
     expand_copies,
@@ -346,7 +347,7 @@ def analyze(slug, branch=None):
             # in this block is per entry, the same convention Featured Artist uses, so
             # `entries` will not equal 100 for a deck with duplicate basics.
             "entries": len(cards),
-            "copies": sum(int(c.get("quantity") or 1) for c in cards),
+            "copies": common.count_copies(cards),
             "lands": sum(1 for c in cards if _is_land(c)),
             # The real land count (copies). `lands` above is entries, per this
             # block's convention; agents reading for a mana base want this one.

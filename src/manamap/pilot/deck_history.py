@@ -25,13 +25,14 @@ second hand-kept file that would disagree with this one.
 import json
 import subprocess
 
-from manamap.config import COLLECTION_DIR, DECKS_DIR
+from manamap import config
+from manamap.config import COLLECTION_DIR
 from manamap.pilot.common import deck_dir, expand_faces, resolve_out_path
 
 # The git root is a sibling of `data/`, not of `data/decks/`. Named once because
-# `DECKS_DIR.parent.parent` read as an accident at both call sites, and a wrong
+# `config.DECKS_DIR.parent.parent` read as an accident at both call sites, and a wrong
 # number of `.parent`s fails silently as "no history".
-_REPO_ROOT = DECKS_DIR.parent.parent
+_REPO_ROOT = config.DECKS_DIR.parent.parent
 
 
 def _git(*args):

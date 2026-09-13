@@ -22,8 +22,8 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 6,
-    "of": 15,
+    "complete": 8,
+    "of": 18,
     "stale": [],
     "invalid": [],
     "verified": true,
@@ -36,7 +36,8 @@
       "tutors",
       "prose",
       "log",
-      "issue"
+      "issue",
+      "sim"
     ],
     "todo": [
       {
@@ -83,6 +84,11 @@
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
         "how": "AUTHORED: data/decks/sharknado/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
+      },
+      {
+        "stage": "sim",
+        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
+        "how": "manamap pilot simulate sharknado --pod standard-v3 --games 100"
       },
       {
         "stage": "sim",

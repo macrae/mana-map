@@ -13,6 +13,7 @@ import json
 
 import pytest
 
+from manamap import config
 from manamap import serve
 
 
@@ -504,7 +505,7 @@ def decks(tmp_path, monkeypatch):
     (d / "zur").mkdir(parents=True)
     for mod in (config, common, deck_branch):
         if hasattr(mod, "DECKS_DIR"):
-            monkeypatch.setattr(mod, "DECKS_DIR", d)
+            monkeypatch.setattr(config, "DECKS_DIR", d)
     return d
 
 

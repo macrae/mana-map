@@ -18,10 +18,16 @@ import re
 import urllib.request
 from datetime import date
 
-from manamap.config import DECKS_DIR
+from manamap import config
 
 EDHREC_AVERAGE = "https://json.edhrec.com/pages/average-decks/{slug}.json"
-OPPONENTS_DIR = DECKS_DIR.parent / "opponents"
+
+
+def opponents_dir():
+    """THE POD, read at call time. It was `DECKS_DIR.parent / "opponents"`
+    computed at import, so a patched deck root reached it only if this module
+    had not been imported yet — which depends on test ORDER (#31)."""
+    return config.DECKS_DIR.parent / "opponents"
 
 
 def edhrec_slug(commander):
@@ -52,7 +58,7 @@ def decklist_text(avg):
 
 
 def write_opponent(slug, avg, note=None):
-    base = OPPONENTS_DIR / slug
+    base = opponents_dir() / slug
     base.mkdir(parents=True, exist_ok=True)
     (base / "decklist.txt").write_text(decklist_text(avg), encoding="utf-8")
     total = sum(q for _, q in avg["cards"]) + len(avg["commanders"])
@@ -66,11 +72,11 @@ def write_opponent(slug, avg, note=None):
 
 def main(args):
     if getattr(args, "list", False) or not getattr(args, "commander", None):
-        if not OPPONENTS_DIR.is_dir() or not any(OPPONENTS_DIR.iterdir()):
+        if not opponents_dir().is_dir() or not any(opponents_dir().iterdir()):
             print("no opponents under data/opponents/ — "
                   "`manamap pilot fetch-opponent \"Giada, Font of Hope\" --as giada-angels`")
             return
-        for d in sorted(OPPONENTS_DIR.iterdir()):
+        for d in sorted(opponents_dir().iterdir()):
             src = d / "source.json"
             meta = json.loads(src.read_text()) if src.exists() else {}
             print(f"{d.name:<18} {', '.join(meta.get('commander') or ['?']):<34} "
@@ -80,7 +86,7 @@ def main(args):
     slug = getattr(args, "as_slug", None) or edhrec_slug(avg["commanders"][0])
     base, total = write_opponent(slug, avg, note=getattr(args, "note", None))
     print(f"opponent {slug}: {', '.join(avg['commanders'])} — {total} cards from {avg['url']}")
-    print(f"  → {base.relative_to(DECKS_DIR.parent.parent)}/decklist.txt (+ source.json)")
+    print(f"  → {base.relative_to(config.DECKS_DIR.parent.parent)}/decklist.txt (+ source.json)")
     print(f"  next: `manamap pilot simulate <your-deck> --vs {slug} …`")
 
 

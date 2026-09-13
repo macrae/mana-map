@@ -20,7 +20,8 @@ moment it can still change the decision.
 
 import json
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.sim import stats
 
 #: Observed on this machine at 4 jobs, across the heliod runs: ~0.7 games/min.
@@ -35,7 +36,7 @@ def baseline_rate(slug, opponents):
     Absent rather than guessed: a preflight computed from a default rate would
     be a number about nothing. Returns (rate, run_id) or (None, None).
     """
-    d = DECKS_DIR / slug / "sim"
+    d = config.DECKS_DIR / slug / "sim"
     if not d.is_dir():
         return None, None
     want = sorted(opponents)

@@ -14,6 +14,7 @@ from pathlib import Path
 
 import pytest
 
+from manamap import config
 from manamap.pilot import game_state, scenario_facts, validate_stack
 from manamap.sim import bridge, parse
 
@@ -138,7 +139,7 @@ def test_lift_writes_a_v2_scenario_that_needs_only_a_question(tmp_path, monkeypa
         "outcomes": [{"winner": "radagast", "round": 9, "global_turn": 18, "log": "part-00.log",
                       "seed": 42, "game_in_job": 1}]}))
     monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
-    monkeypatch.setattr("manamap.sim.forge.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
     out, doc = bridge.lift("radagast", "run-x", 1, 14, "declare blockers")
     assert out.parent.name == "scenarios" and out.exists()
     sc = doc["scenario"]

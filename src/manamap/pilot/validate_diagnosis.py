@@ -567,10 +567,22 @@ def validate(doc, deck_doc, deck_path=None, measured_axes=None, rules=None,
 
 
 def is_stale(doc, deck_doc):
-    """Does this diagnosis describe a decklist the deck no longer has?"""
+    """Does this diagnosis describe a decklist the deck no longer has?
+
+    `common.sha_matches`, NOT `!=`. This compared exactly while
+    `deck_status._stamp_is_stale` compared over the shorter of the two — and
+    the second was written BECAUSE three decks store twelve characters rather
+    than the full sha, so an exact test calls a current deck stale. The same
+    bug, surviving in a second module because the comparison had two homes
+    (audited 2026-09-12).
+    """
+    from manamap.pilot import common
+
     stamped = doc.get("as_of_decklist_sha256")
     current = deck_doc.get("decklist_sha256")
-    return bool(stamped and current and stamped != current)
+    if not (stamped and current):
+        return False
+    return not common.sha_matches(stamped, current)
 
 
 def main(args):

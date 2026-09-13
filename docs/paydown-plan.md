@@ -89,10 +89,10 @@ paid for and each constrains a task below.
 | P3-05 | 3 | #47 — branch-scoped goldfish targets | M | DONE | |
 | P3-06 | 3 | #25.1 — `elsewhere` stops counting free cardboard | S | DONE | |
 | P3-07 | 3 | #25.2 — `log` shows staged swaps | S | DONE | |
-| P4-01 | 4 | One decklist sha, two named meanings | M | TODO | |
-| P4-02 | 4 | Copies: three questions, three names, one default | M | TODO | |
-| P4-03 | 4 | Six artifact registries become one | L | TODO | |
-| P4-04 | 4 | Config paths are read at call time, never `from`-imported | M | TODO | |
+| P4-01 | 4 | One decklist sha, two named meanings | M | DONE | |
+| P4-02 | 4 | Copies: three questions, three names, one default | M | DONE | |
+| P4-03 | 4 | Six artifact registries become one | L | DONE | |
+| P4-04 | 4 | Config paths are read at call time, never `from`-imported | M | DONE | |
 | P5-01 | 5 | Sever the live edge: `build_index` splits in two | M | TODO | |
 | P5-02 | 5 | Strip magazine fields from the manifest and `build.js` | S | TODO | |
 | P5-03 | 5 | Retarget `make manuals` and the CI determinism gate | S | TODO | |
@@ -917,6 +917,21 @@ purpose — otherwise a later sweep "fixes" them.
 `quantity` key counts as one, which fails today against `validate_deck`.
 
 ### P4-03 · Six artifact registries become one
+
+> **MEASURED 2026-09-13, AND THE PREMISE WAS WRONG.** There are FOUR registries,
+> not six, and they are four genuinely different views rather than four copies:
+> `deck_status.STAGES` is a sequence with staleness keys, `deck_status.VALIDATED`
+> maps artifact to validator, `regen.STAGES` is what rebuilds automatically in
+> dependency order, `promote.GATES` is what a rung requires. `assess._GATES` is
+> not an artifact registry at all — it is a set of regexes for classifying card
+> TEXT — and `deck_info._gates` is already a projection of `promote`.
+>
+> Merging four views into one table would need a column per consumer and would
+> make each projection less clear, not more. What they owe each other is
+> CONSISTENCY, and comparing them found a real defect that nothing was red
+> about: `promote` refused the SLEEVED rung on `benchmark.json`, `info.json` and
+> a Forge run, and `deck-status` had never mentioned any of the three. Fixed by
+> adding the three stages and asserting the invariant, not by merging.
 
 **The finding.** "What artifacts does a deck have, need, or get gated on" is
 declared six times: `deck_status.STAGES:43` and `VALIDATED:318`,

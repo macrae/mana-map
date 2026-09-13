@@ -28,7 +28,8 @@ Saturday's log wrong. Hence: no `deck_status.STAGES` row, no freshness stamp, an
 import json
 from datetime import datetime, timedelta
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.pilot.common import load_json
 from manamap.pilot.deck_notes import causes, read_log
 
@@ -137,7 +138,7 @@ def stardate(at):
 
 def _ship(slug):
     """The deck's commander — the ship's name. Absent rather than guessed."""
-    cards = load_json(DECKS_DIR / slug / "cards.json") or {}
+    cards = load_json(config.DECKS_DIR / slug / "cards.json") or {}
     for c in cards.get("cards", []):
         if c.get("is_commander"):
             return c.get("name")
@@ -151,7 +152,7 @@ def _version_of(slug, sha):
     version string is a fact about the night, and an agent quoting one from
     memory is how prose comes to coach about a card that left the 99.
     """
-    doc = load_json(DECKS_DIR / slug / "deck_versions.json") or {}
+    doc = load_json(config.DECKS_DIR / slug / "deck_versions.json") or {}
     for name, tag in sorted((doc.get("tags") or {}).items()):
         if tag.get("decklist_sha256") == sha or tag.get("sha") == sha:
             return name
@@ -171,7 +172,7 @@ def evening(at_date):
     though it were the only game played.
     """
     out = []
-    for deck in sorted(DECKS_DIR.iterdir()):
+    for deck in sorted(config.DECKS_DIR.iterdir()):
         if not deck.is_dir() or not (deck / "log.jsonl").exists():
             continue
         for e in read_log(deck.name):
@@ -232,7 +233,7 @@ def nights(slug):
 
 
 def read(slug):
-    return load_json(DECKS_DIR / slug / ARTIFACT) or {}
+    return load_json(config.DECKS_DIR / slug / ARTIFACT) or {}
 
 
 def read_meta(slug):

@@ -577,6 +577,7 @@ def ablate(doc, slug, names, axis_block, axis_key, axis_turn, branch=None,
     pool = [c["name"] for c in doc["cards"]
             if not c.get("is_commander")
             and "Land" not in (c.get("type_line") or "")
+            # PER ENTRY, on purpose: "is this a singleton".
             and c["name"] not in declared and (c.get("quantity") or 1) == 1]
     band = []
     if len(pool) >= len(names):

@@ -386,8 +386,8 @@ def _write_tags(path, doc):
 
 
 def working_sha(slug):
-    path = deck_dir(slug) / "decklist.txt"
-    return _sha(path.read_text(encoding="utf-8")) if path.exists() else None
+    """The list on disk. `common.decklist_sha256` is the one definition."""
+    return common.decklist_sha256(slug)
 
 
 def resolve(slug, ref, vers=None):

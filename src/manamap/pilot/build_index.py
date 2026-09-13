@@ -16,9 +16,10 @@ A deck without an `issue.json` sorts last under a sentinel volume of 999.
 import json
 import re
 
+from manamap import config
 from manamap.pilot.common import (
     deck_lifecycle, load_json, presentable, withheld)
-from manamap.config import DECKS_DIR, MANUALS_DIR
+from manamap.config import MANUALS_DIR
 from manamap.pilot.design import stylesheet_link, write_stylesheet
 from manamap.pilot.design import FONT_LINK, badge, barcode, esc
 from manamap.pilot.issue_spec import (
@@ -228,9 +229,9 @@ def gather_entries():
     not. Ordered by volume then slug.
     """
     entries = []
-    if not DECKS_DIR.is_dir():
+    if not config.DECKS_DIR.is_dir():
         return entries
-    for deck_path in sorted(DECKS_DIR.iterdir()):
+    for deck_path in sorted(config.DECKS_DIR.iterdir()):
         if not deck_path.is_dir():
             continue
         slug = deck_path.name
@@ -510,7 +511,7 @@ def write_manifest(entries):
             for e in entries if not e.get("draft")
         ]
     }
-    out = DECKS_DIR / "index.json"
+    out = config.DECKS_DIR / "index.json"
     out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
                    encoding="utf-8")
     return out

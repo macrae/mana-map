@@ -30,7 +30,8 @@ better page than seven identical finished ones.
 import json
 from datetime import date
 
-from manamap.config import DECKS_DIR, MANUALS_DIR as MANUALS_DIR_PATH
+from manamap import config
+from manamap.config import MANUALS_DIR as MANUALS_DIR_PATH
 from manamap.pilot import build_manual as bm
 from manamap.pilot import design as dz
 from manamap.pilot import scenario_facts as sf

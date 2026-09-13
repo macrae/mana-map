@@ -35,9 +35,10 @@ with the dossier.
 import html
 import json
 
-from manamap.config import DECKS_DIR, MANUALS_DIR
+from manamap import config
+from manamap.config import MANUALS_DIR
 from manamap.pilot import poh_spec as spec
-from manamap.pilot.common import expand_copies, load_json
+from manamap.pilot.common import count_copies, expand_copies, load_json
 
 ARTIFACT_DIR = "p"
 
@@ -48,7 +49,7 @@ def esc(v):
 
 def load(slug):
     """Every tracked artifact the handbook reads. Nothing is computed."""
-    base = DECKS_DIR / slug
+    base = config.DECKS_DIR / slug
     return {
         "slug": slug,
         "base": base,
@@ -111,7 +112,7 @@ def absent(what, why, how=None):
 def render_front_matter(d):
     cards = d["cards"].get("cards") or []
     commander = next((c["name"] for c in cards if c.get("is_commander")), None)
-    total = sum(int(c.get("quantity") or 1) for c in cards)
+    total = count_copies(cards)
     paper = (d["deck_versions"].get("paper") or {})
     revs = d["revisions"].get("revisions") or []
     cur = revs[-1] if revs else None

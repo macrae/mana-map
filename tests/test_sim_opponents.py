@@ -22,8 +22,10 @@ def test_decklist_text_is_the_repo_format(tmp_path, monkeypatch):
     text = opponents.decklist_text(avg)
     assert text.splitlines()[0] == "1 Giada, Font of Hope *CMDR*"
     assert "30 Plains" in text and text.strip().endswith("30 Plains"), "basics last, one line"
-    monkeypatch.setattr(opponents, "OPPONENTS_DIR", tmp_path / "opponents")
-    monkeypatch.setattr("manamap.sim.forge.DECKS_DIR", tmp_path / "decks")
+    # ONE PATCH POINT. The pod directory derives from the deck root, and both
+    # are read at call time now — this used to need two patches and a guess
+    # about which modules had already taken a copy (#31).
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path / "decks")
     base, total = opponents.write_opponent("giada-angels", avg, note="the Orinda pod")
     assert total == 33 and (base / "decklist.txt").exists()
     src = json.loads((base / "source.json").read_text())

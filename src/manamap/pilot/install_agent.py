@@ -39,7 +39,8 @@ through this command or it stays unstamped and reads as unknown.
 import json
 import shutil
 
-from manamap.config import AGENT_ROUTINES, DECKS_DIR
+from manamap import config
+from manamap.config import AGENT_ROUTINES
 from manamap.pilot.common import load_json
 
 #: Where each routine's agent leaves its handoff, when the filename is not just
@@ -77,7 +78,7 @@ def agent_file(routine):
 
 def decklist_sha(slug):
     """The sha `cards.json` was built from — the same one `merge_prose` uses."""
-    return (load_json(DECKS_DIR / slug / "cards.json") or {}).get("decklist_sha256")
+    return (load_json(config.DECKS_DIR / slug / "cards.json") or {}).get("decklist_sha256")
 
 
 def install(slug, routine, force=False):
@@ -87,7 +88,7 @@ def install(slug, routine, force=False):
             f"whole-file copy would drop what is already there. Use:\n"
             f"    {MERGED_ELSEWHERE[routine]}")
     spec = AGENT_ROUTINES[routine]
-    base = DECKS_DIR / slug
+    base = config.DECKS_DIR / slug
     src = base / ".agent-out" / agent_file(routine)
     dst = base / spec["artifact"]
     if not src.exists():

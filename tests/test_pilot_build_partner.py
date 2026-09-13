@@ -11,12 +11,13 @@ import json
 
 import pytest
 
+from manamap import config
 from manamap.pilot import build_deck, validate_build
 from conftest import requires_data, requires_deck
 
 
 def test_the_brief_carries_the_partner(tmp_path, monkeypatch):
-    monkeypatch.setattr(build_deck, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     path, doc = build_deck.scaffold_brief("zz", "Shabraz, the Skyshark",
                                           partner="Brallin, Skyshark Rider")
     assert doc["partner"] == "Brallin, Skyshark Rider"
@@ -51,7 +52,7 @@ def test_a_partner_without_the_ability_is_refused():
 
 @requires_deck
 def test_sharknado_is_a_jeskai_98_plus_two():
-    plan = json.load(open(build_deck.DECKS_DIR / "sharknado" / "build_plan.json"))
+    plan = json.load(open(config.DECKS_DIR / "sharknado" / "build_plan.json"))
     assert plan["partner"] == "Brallin, Skyshark Rider"
     assert plan["color_identity"] == ["R", "U", "W"]
     names = validate_build.deck_card_names(plan)

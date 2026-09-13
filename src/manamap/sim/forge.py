@@ -51,9 +51,17 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 
-from manamap.config import (DECKS_DIR, FORGE_DECKS_DIR, FORGE_HOME, FORGE_JVM_ARGS,
-                            SIM_DECK_PREFIX, SIM_DEFAULT_GAMES, SIM_DIR,
-                            SIM_GAME_CLOCK_SECONDS, SIM_CLOCK_ID_BASELINE)
+from manamap import config
+from manamap.config import (
+    FORGE_DECKS_DIR,
+    FORGE_HOME,
+    FORGE_JVM_ARGS,
+    SIM_DECK_PREFIX,
+    SIM_DEFAULT_GAMES,
+    SIM_DIR,
+    SIM_GAME_CLOCK_SECONDS,
+    SIM_CLOCK_ID_BASELINE,
+)
 from manamap.pilot.common import deck_dir, load_deck_cards, load_json
 from manamap.sim import parse as sim_parse
 from manamap.sim import pods as _pods
@@ -138,7 +146,7 @@ def seat_dir(slug):
             return p
         raise SystemExit(f"no decklist.txt for branch {branch!r} of {base!r}")
     for root in _OPPONENT_ROOTS:
-        p = DECKS_DIR.parent / root / slug
+        p = config.DECKS_DIR.parent / root / slug
         if (p / "decklist.txt").exists():
             return p
     raise SystemExit(f"no decklist.txt for seat {slug!r} under data/opponents/ or data/decks/")
@@ -161,7 +169,7 @@ def seat_home(slug):
         return deck_dir(base, branch)
     except FileNotFoundError:
         if branch is None:
-            opp = DECKS_DIR.parent / "opponents" / base
+            opp = config.DECKS_DIR.parent / "opponents" / base
             if (opp / "decklist.txt").exists():
                 return opp
         raise

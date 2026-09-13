@@ -6,6 +6,7 @@ and the only copy of those numbers that no shared constant could reach.
 """
 
 from manamap.pilot import formats
+from manamap.pilot.common import count_copies
 from manamap.pilot.common import load_deck_cards, report_errors
 
 
@@ -18,7 +19,11 @@ def validate(doc, spec=None):
     spec = spec or formats.DEFAULT
     errors = []
     cards = doc.get("cards", [])
-    total = sum(c.get("quantity", 0) for c in cards)
+    # `count_copies`, and note the DEFAULT: this summed with a default
+    # of 0 while every other site used 1, so an entry written without
+    # the key would make a 100-card deck read as 99 and fail the size
+    # invariant this file exists to check.
+    total = count_copies(cards)
     size_problem = spec.size_error(total)
     if size_problem:
         errors.append(size_problem)
@@ -38,6 +43,8 @@ def validate(doc, spec=None):
     if spec.singleton:
         for c in cards:
             is_basic = spec.basics_exempt and "Basic" in c.get("type_line", "")
+            # PER ENTRY, on purpose: the singleton rule is about one
+            # entry's copies, not the deck's total.
             if c.get("quantity", 0) > spec.max_copies and not is_basic:
                 errors.append(f"Singleton violation: {c['name']} x{c['quantity']}")
 

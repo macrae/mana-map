@@ -24,6 +24,7 @@ import math
 
 import numpy as np
 
+from manamap import config
 from manamap.analysis.common import (
     build_name_index,
     color_identity_mask,
@@ -43,7 +44,6 @@ from manamap.config import (
     DECK_CURVE_SWEET_SPOT,
     DECK_CURVE_TOLERANCE,
     DECK_ROLE_BUDGET,
-    DECKS_DIR,
     DECK_ROLE_GROUPS,
     EMBEDDINGS_PATH,
     SYNERGY_GRAPH_PATH,
@@ -80,10 +80,10 @@ def scaffold_brief(slug, commander, library=(), theme=None, bracket=None,
     v0.1.0, and 0.x is the version of a list that exists only digitally;
     reaching 1.0.0 is the act of sleeving it, which only the pilot can do.
     """
-    # `DECKS_DIR / slug`, not `deck_dir(slug)`: that helper is a READER and
+    # `config.DECKS_DIR / slug`, not `deck_dir(slug)`: that helper is a READER and
     # refuses a directory that does not exist yet, which is correct for every
     # other caller and exactly wrong for the one creating a deck.
-    base = DECKS_DIR / slug
+    base = config.DECKS_DIR / slug
     path = base / "brief.json"
     if path.exists():
         raise SystemExit(f"{path} already exists — edit it, or pick another slug")

@@ -16,6 +16,7 @@ import json
 
 import pytest
 
+from manamap import config
 from manamap.sim import power
 
 
@@ -66,7 +67,7 @@ def test_the_baseline_comes_from_a_run_against_THIS_table(tmp_path, monkeypatch)
     (sim / "wrong.json").write_text(json.dumps(rec(["vito", "x", "y"], 0.90, 400, "wrong")))
     (sim / "right.json").write_text(json.dumps(rec(["a", "b", "c"], 0.25, 120, "right")))
     (sim / "right-small.json").write_text(json.dumps(rec(["a", "b", "c"], 0.10, 20, "small")))
-    monkeypatch.setattr(power, "DECKS_DIR", decks)
+    monkeypatch.setattr(config, "DECKS_DIR", decks)
 
     rate, rid = power.baseline_rate("heliod", ["c", "b", "a"])
     assert rid == "right", "it took a run against another table"

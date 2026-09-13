@@ -16,9 +16,9 @@ no second citation implementation to drift.
 import json
 
 
+from manamap import config
 from manamap.config import (
     BRACKETS,
-    DECKS_DIR,
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
@@ -141,7 +141,7 @@ def _validate_pool(plan, cards):
     # acquisition is the build's premise, like a just-released commander).
     # Read it from the BRIEF, the authored input, never from the plan being
     # validated.
-    brief_path = DECKS_DIR / plan.get("slug", "") / "brief.json"
+    brief_path = config.DECKS_DIR / plan.get("slug", "") / "brief.json"
     if brief_path.exists():
         with open(brief_path) as f:
             owned.update(json.load(f).get("pool") or [])

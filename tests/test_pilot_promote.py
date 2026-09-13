@@ -16,6 +16,7 @@ import pytest
 
 from conftest import requires_deck
 
+from manamap import config
 from manamap.pilot import deck_versions, promote
 from manamap.pilot.promote import BENCH, DEV, GATES, LADDER, SLEEVED
 
@@ -26,7 +27,7 @@ def deck(tmp_path, monkeypatch):
     root = tmp_path / "decks"
     (root / "x").mkdir(parents=True)
     monkeypatch.setattr("manamap.config.DECKS_DIR", root)
-    monkeypatch.setattr("manamap.pilot.deck_versions.DECKS_DIR", root,
+    monkeypatch.setattr("manamap.config.DECKS_DIR", root,
                         raising=False)
     return root / "x"
 

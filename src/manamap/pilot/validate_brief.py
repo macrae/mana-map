@@ -45,7 +45,8 @@ reddens correct artifacts teaches its reader to ignore the gate.
 import json
 import pathlib
 
-from manamap.config import BRACKET_MAX, DECKS_DIR
+from manamap import config
+from manamap.config import BRACKET_MAX
 from manamap.pilot.common import commander_rejection, deck_dir, report_errors
 
 #: Keys the BUILDER actually reads. Derived from `build_deck.load_brief` +
@@ -112,7 +113,7 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
     for key in ("pool_files",):
         for raw in doc.get(key) or []:
             path = pathlib.Path(raw)
-            if not path.exists() and not (DECKS_DIR / slug / raw).exists():
+            if not path.exists() and not (config.DECKS_DIR / slug / raw).exists():
                 errors.append(f"{key} names {raw!r}, which is not on disk — "
                               f"`resolve_pool` raises on it at build time")
 

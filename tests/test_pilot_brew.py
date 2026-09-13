@@ -5,6 +5,7 @@ import json
 import pytest
 
 from conftest import requires_data
+from manamap import config
 from manamap.config import DECK_ROLE_BUDGET
 from manamap.pilot import brew, build_deck
 
@@ -12,7 +13,7 @@ from manamap.pilot import brew, build_deck
 def test_the_library_becomes_must_include(tmp_path, monkeypatch):
     """`must_include` is the promise that these cards are in the 99, and the
     library is exactly the set the pilot deliberately kept."""
-    monkeypatch.setattr(build_deck, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     path, doc = build_deck.scaffold_brief(
         "zz", "Zur the Enchanter", library=["Ethereal Armor"], theme="voltron")
     assert doc["must_include"] == ["Ethereal Armor"]
@@ -25,14 +26,14 @@ def test_a_new_deck_is_not_sleeved(tmp_path, monkeypatch):
     only digitally; reaching 1.0.0 is the act of sleeving it, which only the
     pilot can do. Writing a `paper` block here would claim cardboard that does
     not exist — the exact defect the rehearsal locks were withdrawn for."""
-    monkeypatch.setattr(build_deck, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     path, doc = build_deck.scaffold_brief("zz", "Zur the Enchanter")
     assert "paper" not in doc
     assert not (path.parent / "deck_versions.json").exists()
 
 
 def test_it_refuses_to_overwrite_an_existing_brief(tmp_path, monkeypatch):
-    monkeypatch.setattr(build_deck, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     build_deck.scaffold_brief("zz", "Zur the Enchanter")
     with pytest.raises(SystemExit):
         build_deck.scaffold_brief("zz", "Someone Else")

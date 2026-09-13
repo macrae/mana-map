@@ -11,6 +11,7 @@ import json
 
 import pytest
 
+from manamap import config
 from manamap.config import DECKS_DIR
 from manamap.pilot import captains_log as cl
 from manamap.pilot.deck_notes import read_log
@@ -197,11 +198,11 @@ def fake_deck(tmp_path, monkeypatch):
             ("001", "2026-09-01T19:00:00", "loss", "first game"),
             ("002", "2026-09-01T21:00:00", "win", "second game"),
         ]), encoding="utf-8")
-    monkeypatch.setattr(cl, "DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "decks")
     import manamap.pilot.deck_notes as dn
     monkeypatch.setattr(dn, "deck_dir", lambda s: tmp_path / "decks" / s)
     import manamap.pilot.merge_captains_log as mcl
-    monkeypatch.setattr(mcl, "DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "decks")
     return deck
 
 

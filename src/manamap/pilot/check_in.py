@@ -38,6 +38,7 @@ from types import SimpleNamespace
 
 from manamap.pilot.card_pool import corpus_names
 from manamap.pilot import formats
+from manamap.pilot import common as _common
 from manamap.pilot.common import deck_dir
 from manamap.pilot.fetch_deck import parse_decklist
 
@@ -174,8 +175,11 @@ def analyze(slug, text):
         "unchanged": sum(min(old.get(n, 0), k) for n, k in new.items()),
         "blocking": blocking,
         "warnings": warnings,
-        "decklist_sha256_before": (hashlib.sha256(path.read_bytes()).hexdigest()
-                                   if path.exists() else None),
+        # ONE DEFINITION. This was the second `read_bytes` caller, so a CRLF
+        # decklist would have made the "before" sha disagree with every version
+        # number derived from the same file.
+        "decklist_sha256_before": (_common.list_sha256(
+            path.read_text(encoding="utf-8")) if path.exists() else None),
     }
 
 

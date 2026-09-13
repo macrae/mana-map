@@ -91,11 +91,12 @@ def decklist_sha256(slug):
     the pilot was HOLDING, and the text file is the thing that changes when a
     card is swapped, whether or not fetch-deck has run since.
     """
-    base = deck_dir(slug)
-    text_path = base / "decklist.txt"
-    if text_path.exists():
-        return hashlib.sha256(text_path.read_bytes()).hexdigest()
-    return (load_json(base / "cards.json") or {}).get("decklist_sha256")
+    from manamap.pilot import common
+
+    # ONE DEFINITION (`common.decklist_sha256`). This hashed `read_bytes` while
+    # `deck_versions` hashed `read_text().encode()`, so a CRLF decklist would
+    # have joined a log entry to no version at all.
+    return common.decklist_sha256(slug) or common.measured_sha(slug)
 
 
 def next_id(entries):

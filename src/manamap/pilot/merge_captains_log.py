@@ -14,7 +14,8 @@ never lands at all.
 
 import json
 
-from manamap.config import DECKS_DIR
+
+from manamap import config
 from manamap.pilot import captains_log as cl
 from manamap.pilot.common import load_json
 
@@ -27,7 +28,7 @@ def _sections(incoming):
 
 
 def merge(slug, kind="pilot"):
-    base = DECKS_DIR / slug
+    base = config.DECKS_DIR / slug
     handoff = load_json(base / ".agent-out" / AGENT_FILE)
     if handoff is None:
         raise SystemExit(

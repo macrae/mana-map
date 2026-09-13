@@ -7,6 +7,7 @@ the semantics that settles it and the memo that stops it being re-parsed per cal
 
 import json
 
+from manamap import config
 from manamap.pilot import collection as coll
 from manamap.pilot.common import clear_memo
 
@@ -24,7 +25,7 @@ def _box(tmp_path, monkeypatch, files, decks=None):
         (ddir / slug).mkdir()
         (ddir / slug / "cards.json").write_text(json.dumps(
             {"deck": slug, "cards": [{"name": n} for n in names]}))
-    monkeypatch.setattr(coll, "DECKS_DIR", ddir)
+    monkeypatch.setattr(config, "DECKS_DIR", ddir)
     clear_memo()
     return cdir, ddir
 
@@ -67,7 +68,7 @@ def test_an_absent_collection_is_not_an_error(tmp_path, monkeypatch):
     """No collection means no ownership claim — the contract COLLECTION_DIR is
     declared under. A fresh clone must not raise."""
     monkeypatch.setattr(coll, "COLLECTION_DIR", tmp_path / "nope")
-    monkeypatch.setattr(coll, "DECKS_DIR", tmp_path / "also-nope")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "also-nope")
     clear_memo()
     assert coll.owned_index() == {} and coll.owned_names() == set()
     assert coll.owns("Sol Ring") is False

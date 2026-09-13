@@ -73,6 +73,7 @@ import re
 import shutil
 
 from manamap.pilot import check_in, collection
+from manamap.pilot import common as _common
 from manamap.pilot.common import (
     BRANCHES_DIR,
     deck_dir,
@@ -196,7 +197,6 @@ def _deck_holders(name, skip):
     can see the trade-off, and it carries the holder's lifecycle because a
     finished deck is not a donor — and a BROKEN-DOWN one is not a deck.
     """
-    from manamap.pilot import common as _common
     from manamap.pilot import deck_versions
 
     # `decks_root()` AT CALL TIME, not a `from`-import binding. This module took
@@ -570,7 +570,7 @@ def new(slug, branch, text, why=None, at=None, objective=None):
            "base_version": deck_versions.report(slug).get("current_version")}
     (path / BRANCH_FILE).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
     return {"path": str(path), "warnings": checked["warnings"],
-            "size": sum(e.get("quantity") or 1 for e in checked["entries"])}
+            "size": _common.count_copies(checked["entries"])}
 
 
 def _write_meta(slug, branch, doc):
@@ -671,6 +671,7 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
         if e is out_e:
             # Basics carry a quantity; a singleton does not. Decrement rather
             # than delete, or swapping one Mountain would cut all of them.
+            # PER ENTRY, on purpose: removing ONE copy. Not `count_copies`.
             left = int(e.get("quantity") or 1) - 1
             if left > 0:
                 staged_entries.append(dict(e, quantity=left))
@@ -729,6 +730,7 @@ def unstage(slug, branch, out_name=None, in_name=None):
     rebuilt = []
     for e in entries:
         if e is in_e:
+            # PER ENTRY, on purpose: removing ONE copy. Not `count_copies`.
             left = int(e.get("quantity") or 1) - 1
             if left > 0:
                 rebuilt.append(dict(e, quantity=left))
@@ -927,10 +929,17 @@ def branch_state(slug, branch, doc=None, src=None):
 
 
 def _sha_of_list(slug, branch):
-    """The branch's list as it stands. One definition, used by commit and propose."""
-    return hashlib.sha256(
-        (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8")
-        .encode("utf-8")).hexdigest()
+    """The branch's list as it stands.
+
+    `common.list_sha256` is THE algorithm — one definition, so the six that
+    existed cannot drift again. The PATH still resolves through this module's
+    own `deck_dir`, which is `common.deck_dir` imported: routing the path
+    through `common.decklist_sha256` too would move the patch point that every
+    branch test uses, and the consolidation is about the algorithm and the two
+    meanings, not about which function object resolves a directory.
+    """
+    return _common.list_sha256(
+        (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8"))
 
 
 def pull_list(slug, branch, doc=None, src=None):

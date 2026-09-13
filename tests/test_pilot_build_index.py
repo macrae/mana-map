@@ -14,6 +14,7 @@ guessed from prose — the cards each verified line is actually made of.
 import json
 
 from conftest import requires_deck
+from manamap import config
 from manamap.pilot import build_index
 
 # ── The cards a verified line is made of ────────────────────────────────
@@ -157,7 +158,7 @@ def test_a_deck_without_a_manual_is_still_in_the_manifest(tmp_path, monkeypatch)
     manuals = tmp_path / "manuals"; manuals.mkdir()
     _deck(tmp_path, "published-deck", True, manuals)
     _deck(tmp_path, "unpublished-deck", False, manuals)
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
 
     entries = build_index.gather_entries()
@@ -169,7 +170,7 @@ def test_the_rack_shows_only_published_issues(tmp_path, monkeypatch):
     manuals = tmp_path / "manuals"; manuals.mkdir()
     _deck(tmp_path, "published-deck", True, manuals)
     _deck(tmp_path, "unpublished-deck", False, manuals)
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
 
     html = build_index.render_index(build_index.gather_entries())
@@ -181,7 +182,7 @@ def test_the_manifest_carries_the_published_flag(tmp_path, monkeypatch):
     """The browser needs to tell a loadable deck from one that went to press."""
     manuals = tmp_path / "manuals"; manuals.mkdir()
     _deck(tmp_path, "unpublished-deck", False, manuals)
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
 
     entries = build_index.gather_entries()
@@ -194,7 +195,7 @@ def test_a_stray_file_in_decks_dir_is_ignored(tmp_path, monkeypatch):
     manuals = tmp_path / "manuals"; manuals.mkdir()
     _deck(tmp_path, "a-deck", False, manuals)
     (tmp_path / "index.json").write_text("{}")
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     monkeypatch.setattr(build_index, "MANUALS_DIR", manuals)
     assert [e["slug"] for e in build_index.gather_entries()] == ["a-deck"]
 
@@ -305,7 +306,7 @@ def test_a_brief_only_deck_is_a_draft_not_a_deck(tmp_path, monkeypatch):
 
     from manamap.pilot import build_index
 
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     (tmp_path / "zz-draft").mkdir()
     (tmp_path / "zz-draft" / "brief.json").write_text(json.dumps(
         {"slug": "zz-draft", "commander": "Zur the Enchanter",
@@ -326,7 +327,7 @@ def test_a_brief_with_no_commander_is_not_a_draft_either(tmp_path, monkeypatch):
 
     from manamap.pilot import build_index
 
-    monkeypatch.setattr(build_index, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
     (tmp_path / "zz-empty").mkdir()
     (tmp_path / "zz-empty" / "brief.json").write_text(json.dumps({"slug": "zz-empty"}))
     assert [e for e in build_index.gather_entries() if e.get("draft")] == []
