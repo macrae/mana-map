@@ -554,21 +554,35 @@ def test_the_sacrifice_engine_is_opt_in_and_fires_when_it_is_on():
 @requires_data
 @requires_deck
 def test_the_runaway_guard_holds():
-    """A death payoff that makes a token is a loop, and a loop that terminates
+    """A death payoff that makes a token is a LOOP, and a loop that terminates
     silently cannot be told from one that never ran.
 
-    `== 0.0` IS THE RIGHT THRESHOLD AND MUST NOT BE RAISED. The cap is a
-    tripwire, not a policy: a game that hits it has had its figures truncated at
-    an arbitrary point, so its numbers are whatever the cap left behind. Edgar
-    reads 0.001 at n=1500 — one or two games in fifteen hundred — and the
-    temptation to call that noise is exactly the mistake. Find the seeded game
-    and read the board.
+    IT USED TO GUARD BOARD WIDTH AND CALL THAT A LOOP. The check was
+    `n_sac >= SAC_LIMIT_PER_TURN` with the limit at twenty, so a turn that
+    converted more than twenty tokens was TRUNCATED and the truncation counted
+    as a runaway. Edgar reaches that under eminence with Anointed Procession and
+    Mondrak — measured, a busy game converts THIRTY-ONE on turn ten — so the
+    guard fired at 0.007 on a board that was simply wide.
 
-    WIDENED 2026-09-12 from edgar alone to every deck that declares
-    `model_sacrifice`. It was example-based on the one deck that happened to
-    trip it, so a second deck growing a loop would not have shown up here at
-    all — the same shape as the three tests that name one deck as an example of
-    a property (#35).
+    Two things were wrong and each hid the other:
+
+      * the sweep iterates a SNAPSHOT of a list it never appends to, and no
+        death payoff creates a battlefield entry (they drain, draw and make
+        Treasure), so it terminates structurally and the cap guarded nothing;
+
+      * `sacrifices_by_turn` was recorded BEFORE the combat step that does the
+        sacrificing, so the series was shifted one turn and the last turn's
+        sacrifices were never recorded. That is how a game reported
+        `sac_cap_hits: 1` beside `sacrifices_by_turn: [0,0,0,0,0,0,0,0,0,0]` —
+        the only field that could have shown the wide board had already been
+        written.
+
+    The guard asserts the battlefield does not GROW during the sweep, which is
+    the loop stated as itself. Re-introducing the bug: make a death payoff call
+    `_free_creature_enters` and this reds.
+
+    SWEPT ACROSS THE FLEET, not one deck: it was example-based on edgar, the one
+    deck that happened to trip it.
     """
     from manamap.config import DECKS_DIR
 
@@ -581,21 +595,21 @@ def test_the_runaway_guard_holds():
             declared.append(path.name)
     assert declared, "no deck declares model_sacrifice — has the flag moved?"
 
-    tripped = []
+    tripped, seen_any = [], False
     for slug in declared:
-        doc = goldfish.run(slug, branch=None, iterations=1500, quiet=True,
-                           model_sacrifice=True)
-        m = doc["metrics"]
-        assert m["mean_sacrifices_by_turn"]["10"] < goldfish.SAC_LIMIT_PER_TURN * 10, (
-            f"{slug}: mean sacrifices by turn 10 is above what ten turns of the "
-            f"cap could produce")
+        m = goldfish.run(slug, branch=None, iterations=1500, quiet=True,
+                         model_sacrifice=True)["metrics"]
+        if m["mean_sacrifices_by_turn"]["10"] > 0:
+            seen_any = True
         if m["sac_cap_hit_rate"] != 0.0:
             tripped.append(f"{slug} at {m['sac_cap_hit_rate']}")
+    assert seen_any, (
+        "no deck sacrificed anything in 1,500 games — the channel is off and "
+        "this test proves nothing")
     assert not tripped, (
-        "the cap fired on a real deck — either a loop exists or the policy is "
-        "eating more than a board can hold: " + ", ".join(tripped)
-        + ". Do NOT raise SAC_LIMIT_PER_TURN; the capped games' figures are "
-        "truncated, not merely large.")
+        "a death payoff put a creature onto the battlefield while the sweep was "
+        "running — that is the loop this guard is named for: "
+        + ", ".join(tripped))
 
 
 # ── 7. Token doublers, for the tokens that fight ──────────────────────────

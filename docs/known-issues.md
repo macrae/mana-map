@@ -9,18 +9,32 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-13**, **5 failing /
-3,504 passing** / 9 skipped / 3 xfailed, 436 s.
+Last verified against **`make test-fresh`**: **2026-09-13**, **3 failing /
+3,506 passing** / 9 skipped / 3 xfailed, 459 s.
 
-*The passing count fell because the magazine renderer and its nine test files
-were deleted on 2026-09-13, not because anything regressed. Four of the xfails
-went with it.*
+**THREE REDS, ONE ROOT CAUSE, AND IT NEEDS A HUMAN.** ur-dragon's engine model
+and handbook procedures name Shivan Reef and Stormcarved Coast, cards the deck
+no longer runs after the 09-08 land swap. Nothing automatic fixes this: it needs
+the pilot's paper list (`check-in`), then `/analyze-engine` and the POH
+procedures re-run.
 
-**FIVE REDS, THREE ROOT CAUSES** — the count has always been the less useful
-number:
+| test | what it measures |
+|---|---|
+| `tracked_artifacts_validate[ur-dragon/engine.json]` | every card the engine model names is in the 99 |
+| `agent_stamps::no_agent_artifact_names_a_card_the_deck_does_not_run` | the same claim, swept across every sleeved deck |
+| `poh::a_procedure_page_names_only_cards_the_deck_runs` | the procedures name only cards in the 99 |
 
-| cause | reds | what it needs |
-|---|---|---|
+Cleared 2026-09-13: `model_colors` (#35 — the flag added a penalty and unlocked
+a bonus at once) and the sacrifice runaway guard (#34 — it guarded board width
+and called it a loop, while a second defect hid the first).
+
+**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
+board, because the regenerate-and-compare cache keys a deck's freshness case on
+its own directory and a paper lock on ANOTHER deck flips a `locked` flag inside
+its branch sourcing. Narrowed and widened in Phase 2, but #49 is not closed: the
+data half is conservative rather than correct.
+
+---|---|---|
 | ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
 | `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is on the issue |
 | the sacrifice cap fires 1-in-1500 on edgar (#34) | 1 | find the seeded game and read the board |
@@ -180,22 +194,53 @@ These are model bugs, not stale artifacts. Every one of them was found by a test
 written for a *different* defect, which is the only reason they are known at all.
 None is fixed by regeneration.
 
-### 3a. The runaway guard fires on a real deck
+### 3a. The runaway guard fires on a real deck — **FIXED 2026-09-13**
+
+The guard asserted zero and read 0.001–0.007 on edgar-vampires. The advice at
+the time was right — "do not raise the cap; find which games hit it and what the
+board looked like" — and the board turned out to be the answer.
+
+**IT WAS GUARDING BOARD WIDTH AND CALLING THAT A LOOP.** The check was
+`n_sac >= SAC_LIMIT_PER_TURN` with the limit at twenty, so a turn converting
+more than twenty tokens was TRUNCATED and the truncation counted as a runaway.
+Edgar reaches that under eminence with Anointed Procession and Mondrak: measured,
+a busy game converts **thirty-one on turn ten**.
+
+There was no loop to guard. The sweep iterates a SNAPSHOT of a list it never
+appends to, and no death payoff creates a battlefield entry — they drain, draw
+and make Treasure. Lifting the cap entirely took the hit rate to zero with the
+per-turn series unchanged, which is what proved the cap was guarding nothing.
+
+**A SECOND DEFECT HID THE FIRST.** `sacrifices_by_turn` was appended BEFORE the
+combat step that does the sacrificing, so the series was shifted one turn and
+the final turn's sacrifices were never recorded at all. That is how a game could
+report
 
 ```
-test_pilot_goldfish_drain_and_draw::test_the_runaway_guard_holds
-  the cap fired on a real deck — either a loop exists or the policy is
-  eating more than a board can hold
-  assert 0.003 == 0.0
+sac_cap_hits: 1   beside   sacrifices_by_turn: [0,0,0,0,0,0,0,0,0,0]
 ```
 
-Three games in a thousand on edgar-vampires hit the iteration cap. The test
-asserts **zero**, correctly: a cap that ever fires means either the sacrifice
-policy has a cycle, or it is consuming more permanents than a board can hold.
-0.3% is small enough to have been ignored and large enough that the figures for
-those games are whatever the cap left behind rather than a played-out result.
+— the board went wide and converted on turn ten, and the only field that could
+have shown it had already been written. Anyone looking at the series would have
+concluded the sacrifice channel was not firing at all.
 
-**Do not raise the cap.** Find which games hit it and what the board looked like.
+**The fix.** `SAC_LIMIT_PER_TURN` is retired. The guard now asserts the
+battlefield does not GROW during the sweep, which is the loop stated as itself:
+if a death payoff ever starts creating a creature, that is caught by what it
+actually is rather than by a number somebody tuned. The series is recorded at
+the end of the turn.
+
+**What moved, and only on edgar** — the one deck that declares `model_sacrifice`:
+
+| figure | was | now |
+|---|---:|---:|
+| `mean_sacrifices_by_turn["10"]` | 1.996 | 2.966 |
+| `sac_cap_hit_rate` | 0.001 | 0.0 |
+| `combat.mean_board_power_by_turn["10"]` | 21.469 | 21.467 |
+
+The sacrifice figure was understating by half because the busiest turn was both
+truncated and unrecorded. The test is fleet-scoped now rather than named on the
+one deck that happened to trip it.
 
 ### 3b. The arrival channel depends on a flag it should not
 

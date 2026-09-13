@@ -44,7 +44,6 @@ from manamap.pilot.goldfish_profiles import (
     GOLDFISH_MAX_MULLIGANS,
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_POISON_TO_LOSE,
-    SAC_LIMIT_PER_TURN,
     WHEEL_MIN_HAND,
     can_pay,
     devotion_of,
@@ -1581,7 +1580,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
         drawn_extra_by_turn.append(drawn_extra)
-        sacrifices_by_turn.append(sacrifices)
         held = [c for c in hand if c["name"] in interaction_names]
         interaction_in_hand_by_turn.append(bool(held))
         interaction_castable_by_turn.append(
@@ -1708,10 +1706,30 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # above, so a token converted here has already attacked — this is a
             # conversion, not a trade against this turn's combat.
             if model_sacrifice and free_sac_outlet and death_engines:
+                # THE GUARD IS ABOUT RE-ENTRANCY, NOT BOARD WIDTH (#34,
+                # 2026-09-13). It was `n_sac >= SAC_LIMIT_PER_TURN`, which
+                # STOPPED CONVERTING at twenty tokens — and twenty tokens is a
+                # board Edgar genuinely reaches on turn ten under eminence with
+                # Anointed Procession and Mondrak. Measured: lift the cap and
+                # the hit rate goes 0.007 -> 0, with the per-turn series
+                # unchanged, because nothing was ever runaway. The guard was
+                # truncating a real board and calling it a loop.
+                #
+                # What its docstring names — "a death payoff that makes a token
+                # is a loop" — is a genuine hazard and none of today's payoffs
+                # do it: they drain, draw and make Treasure, none of which is a
+                # battlefield entry. So the sweep iterates a SNAPSHOT of a list
+                # it never appends to, and terminates structurally.
+                #
+                # `board_before` is the assertion that keeps it that way: if a
+                # death payoff ever starts creating a creature, the battlefield
+                # grows during the sweep and THAT is the runaway, caught by the
+                # thing it actually is rather than by a number somebody tuned.
+                board_before = len(battlefield)
                 kept, kept_idx, n_sac = [], [], 0
                 for idx_, entry in enumerate(battlefield):
                     is_tok = entry[4]
-                    if not is_tok or n_sac >= SAC_LIMIT_PER_TURN:
+                    if not is_tok:
                         kept.append(entry)
                         kept_idx.append(idx_)
                         continue
@@ -1723,7 +1741,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         draw_n(eng["death_draw"])
                         if model_treasures:
                             treasures += eng["death_treasure"]
-                if n_sac >= SAC_LIMIT_PER_TURN:
+                if len(battlefield) > board_before:
+                    # A death payoff put something onto the battlefield while we
+                    # were sacrificing. That is the loop the guard is named for.
                     sac_cap_hits += 1
                 battlefield[:] = kept
                 # THE PARALLEL LISTS FOLLOW THE REBUILD. They did not until
@@ -2029,6 +2049,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         stall_by_turn.append(not any(
             (not c["is_land"]) and c["cmc"] <= available for c in hand))
         hand_size_by_turn.append(len(hand))
+        # AT THE END OF THE TURN, because the sacrifice step runs inside combat.
+        # This was recorded BEFORE the combat step, so every entry held the
+        # total as it stood at the START of its turn — the series was shifted by
+        # one and the LAST turn's sacrifices were never recorded at all. That is
+        # how a game could report `sac_cap_hits: 1` beside
+        # `sacrifices_by_turn: [0,0,0,0,0,0,0,0,0,0]`: the board went wide and
+        # converted on turn ten, and the only field that could have shown it had
+        # already been written (#34).
+        sacrifices_by_turn.append(sacrifices)
 
         tutors = sum(1 for t in tutor_ready_turns if t <= turn)
         for i, target in enumerate(targets):

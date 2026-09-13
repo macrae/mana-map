@@ -59,7 +59,6 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
-    SAC_LIMIT_PER_TURN,
     TOKEN_DOUBLER_RE,
     TREASURE_BONUS_RE,
     WHEEL_MIN_HAND,

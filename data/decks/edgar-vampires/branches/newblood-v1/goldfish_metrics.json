@@ -83,7 +83,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "1f52aa4e079e",
+    "model_version": "36371658df33",
     "seed": 42
   },
   "metrics": {
@@ -111,7 +111,7 @@
       },
       "mean_board_power_by_turn": {
         "1": 0.55,
-        "10": 21.359,
+        "10": 21.358,
         "2": 1.504,
         "3": 3.168,
         "4": 5.56,
@@ -123,7 +123,7 @@
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 19.894,
+        "10": 19.895,
         "2": 0.56,
         "3": 1.657,
         "4": 3.647,
@@ -131,7 +131,7 @@
         "6": 9.78,
         "7": 12.088,
         "8": 14.842,
-        "9": 17.425
+        "9": 17.426
       },
       "mean_kill_turn": 7.958,
       "mean_poison_by_turn": {
@@ -216,7 +216,7 @@
     },
     "mean_bodies_by_turn": {
       "1": 0.55,
-      "10": 15.72,
+      "10": 15.721,
       "2": 1.43,
       "3": 2.835,
       "4": 4.607,
@@ -240,15 +240,15 @@
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
-      "10": 1.966,
-      "2": 0.0,
-      "3": 0.007,
-      "4": 0.055,
-      "5": 0.158,
-      "6": 0.291,
-      "7": 0.453,
-      "8": 0.773,
-      "9": 1.252
+      "10": 2.967,
+      "2": 0.007,
+      "3": 0.055,
+      "4": 0.158,
+      "5": 0.291,
+      "6": 0.453,
+      "7": 0.773,
+      "8": 1.252,
+      "9": 1.966
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -274,16 +274,16 @@
       },
       "mean_mulligans": 0.236
     },
-    "sac_cap_hit_rate": 0.001,
+    "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.381,
+        "assembled_rate": 0.382,
         "assembled_rate_assisted": 0.491,
         "by_turn_6_rate": 0.256,
         "by_turn_6_rate_assisted": 0.344,
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "mean_turn": 4.369,
-        "mean_turn_assisted": 4.283
+        "mean_turn": 4.371,
+        "mean_turn_assisted": 4.284
       },
       {
         "assembled_rate": 0.689,
@@ -309,8 +309,8 @@
         "by_turn_6_rate": 0.029,
         "by_turn_6_rate_assisted": 0.062,
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
-        "mean_turn": 6.693,
-        "mean_turn_assisted": 6.517
+        "mean_turn": 6.698,
+        "mean_turn_assisted": 6.519
       },
       {
         "assembled_rate": 0.683,

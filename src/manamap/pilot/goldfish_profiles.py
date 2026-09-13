@@ -371,10 +371,21 @@ _DEATH_DRAIN_RE = re.compile(
     re.IGNORECASE)
 _DEATH_DRAW_RE = re.compile(r"(?:you )?draw (a|one|two) cards?", re.IGNORECASE)
 _DEATH_TREASURE_RE = re.compile(r"create a treasure token", re.IGNORECASE)
-#: A runaway guard, the same shape as `ETB_CHAIN_LIMIT`. A death payoff that
-#: makes a token is a loop, and a loop that terminates silently cannot be told
-#: from one that never ran.
-SAC_LIMIT_PER_TURN = 20
+#: RETIRED 2026-09-13 (#34). It was `SAC_LIMIT_PER_TURN = 20`, a cap on how many
+#: tokens one turn could sacrifice, described as "a runaway guard, the same shape
+#: as `ETB_CHAIN_LIMIT`".
+#:
+#: The hazard it named is real — a death payoff that makes a token is a loop —
+#: and no payoff in the model does it: they drain, draw and make Treasure, none
+#: of which is a battlefield entry. The sweep iterates a SNAPSHOT of a list it
+#: never appends to, so it terminates structurally and the number was guarding
+#: nothing.
+#:
+#: What it DID was truncate. Edgar reaches twenty tokens on turn ten under
+#: eminence with Anointed Procession and Mondrak; measured, a busy game converts
+#: THIRTY-ONE, and the cap stopped it at twenty while reporting the truncation
+#: as a runaway. `goldfish_turn` now asserts the battlefield does not GROW
+#: during the sweep, which is the loop stated as itself.
 
 
 #: EMINENCE THAT MINTS A BODY, and the reason this file existed for a year

@@ -83,7 +83,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "1f52aa4e079e",
+    "model_version": "36371658df33",
     "seed": 42
   },
   "metrics": {
@@ -111,7 +111,7 @@
       },
       "mean_board_power_by_turn": {
         "1": 0.55,
-        "10": 21.726,
+        "10": 21.719,
         "2": 1.562,
         "3": 3.273,
         "4": 5.753,
@@ -119,7 +119,7 @@
         "6": 11.61,
         "7": 14.427,
         "8": 17.035,
-        "9": 19.439
+        "9": 19.437
       },
       "mean_damage_by_turn": {
         "1": 0.0,
@@ -228,7 +228,7 @@
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 2.51,
+      "10": 2.511,
       "2": 0.131,
       "3": 0.173,
       "4": 0.237,
@@ -240,15 +240,15 @@
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
-      "10": 2.038,
-      "2": 0.0,
-      "3": 0.005,
-      "4": 0.047,
-      "5": 0.152,
-      "6": 0.296,
-      "7": 0.48,
-      "8": 0.818,
-      "9": 1.313
+      "10": 3.041,
+      "2": 0.005,
+      "3": 0.047,
+      "4": 0.152,
+      "5": 0.296,
+      "6": 0.48,
+      "7": 0.818,
+      "8": 1.313,
+      "9": 2.039
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -274,7 +274,7 @@
       },
       "mean_mulligans": 0.23
     },
-    "sac_cap_hit_rate": 0.002,
+    "sac_cap_hit_rate": 0.0,
     "targets": [
       {
         "assembled_rate": 0.385,
@@ -282,8 +282,8 @@
         "by_turn_6_rate": 0.263,
         "by_turn_6_rate_assisted": 0.354,
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "mean_turn": 4.285,
-        "mean_turn_assisted": 4.18
+        "mean_turn": 4.288,
+        "mean_turn_assisted": 4.183
       },
       {
         "assembled_rate": 0.674,
@@ -309,8 +309,8 @@
         "by_turn_6_rate": 0.029,
         "by_turn_6_rate_assisted": 0.066,
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
-        "mean_turn": 6.733,
-        "mean_turn_assisted": 6.433
+        "mean_turn": 6.737,
+        "mean_turn_assisted": 6.436
       },
       {
         "assembled_rate": 0.678,
@@ -340,13 +340,13 @@
         "mean_turn_assisted": 3.706
       },
       {
-        "assembled_rate": 0.502,
+        "assembled_rate": 0.503,
         "assembled_rate_assisted": 0.594,
         "by_turn_6_rate": 0.353,
         "by_turn_6_rate_assisted": 0.436,
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "mean_turn": 4.106,
-        "mean_turn_assisted": 3.987
+        "mean_turn": 4.107,
+        "mean_turn_assisted": 3.988
       },
       {
         "assembled_rate": 0.043,
