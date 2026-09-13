@@ -5,13 +5,15 @@
     "Brallin, Skyshark Rider"
   ],
   "lifecycle": null,
-  "stage": "dev",
+  "stage": "bench",
   "gates": {
-    "to": "bench",
-    "met": 5,
+    "to": "sleeved",
+    "met": 3,
     "of": 6,
     "blocking": [
-      "combo audit"
+      "full sim batch",
+      "mulligan + tutor guidance",
+      "ownership reconciled"
     ]
   },
   "colour_identity": [
@@ -22,13 +24,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 8,
+    "complete": 9,
     "of": 18,
     "stale": [],
     "invalid": [],
     "verified": true,
     "missing": [
-      "bracket",
       "frame",
       "map",
       "engine",
@@ -40,11 +41,6 @@
       "sim"
     ],
     "todo": [
-      {
-        "stage": "bracket",
-        "what": "computed power floor — `bracket-check`",
-        "how": "manamap pilot bracket-check sharknado"
-      },
       {
         "stage": "frame",
         "what": "the strategist's read — `research-strategy` consult",
@@ -1541,7 +1537,12 @@
     },
     "decklist_sha256": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34"
   },
-  "bracket": null,
+  "bracket": {
+    "floor": 3,
+    "floor_name": "Upgraded",
+    "target": null,
+    "within_target": null
+  },
   "paper": null,
   "record": {
     "games": 0,
