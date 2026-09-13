@@ -185,7 +185,17 @@ def classify(card, pool=None):
         # Xorn makes no Treasure of its own; it adds one to every event.
         # WHAT IT PRODUCES and WHAT IT COSTS, in colours. Both ride along
         # always and are READ only under `model_colors`, so the colourless path
-        # stays byte-identical — the `creature_bodies` rule. `land_colors` is
+        # stays byte-identical — the `creature_bodies` rule.
+        #
+        # THE TURN LOOP BROKE THAT RULE AND THIS COMMENT WAS THE TELL (#35,
+        # fixed 2026-09-13). `sources` — the colours on the battlefield — was
+        # APPENDED to only under the flag, and `scales_with_colors` producers
+        # read it in BOTH arms to size their own output. So with the flag off
+        # they found an empty list and made one mana instead of up to five: the
+        # flag added a castability penalty and unlocked a production bonus at
+        # once, and on a five-colour deck the bonus won. `sources` is tracked
+        # unconditionally now and read only under the flag, which is what this
+        # paragraph always claimed. `land_colors` is
         # `manabase`'s and is deliberately restriction-aware: Haven of the
         # Spirit Dragon taps for {C} in a Vampire deck, and counting it as five
         # sources is how a mana base comes out looking fine and cannot cast its

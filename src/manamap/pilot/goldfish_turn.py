@@ -343,8 +343,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if land_index is not None:
             played = hand.pop(land_index)
             lands_in_play += 1
-            if model_colors:
-                sources.append(played["colors"])
+            # TRACKED UNCONDITIONALLY. `sources` was maintained only under
+            # `model_colors`, and a colour-scaling producer READS it to size its
+            # own output — so the flag was not a constraint at all. See the note
+            # at the `scales_with_colors` branch below.
+            sources.append(played["colors"])
             land_hits.append(True)
         else:
             land_hits.append(False)
@@ -888,12 +891,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # colours and living to see five is UNDERSTATED. Understating
                     # is recoverable; overstating is how a mana base comes out
                     # looking fine and cannot cast its spells.
+                    #
+                    # AND IT READS `sources`, WHICH IS WHY THEY ARE NOW TRACKED
+                    # UNCONDITIONALLY (#35, 2026-09-13). `sources` used to be
+                    # appended to only under `model_colors`, so with the flag OFF
+                    # this branch found an EMPTY list and every colour-scaling
+                    # producer fell to `max(1, 0)` = one mana. Bloom Tender and
+                    # Faeburrow Elder made 1 blind and up to 5 under the flag.
+                    #
+                    # So `model_colors` added a castability PENALTY and unlocked
+                    # a production BONUS at the same time, and on a five-colour
+                    # deck the bonus won: turning on a CONSTRAINT made ur-dragon
+                    # read BETTER — `[0.219, 0.319]`, a move of +0.100 against an
+                    # SE of 0.022. `test_a_mono_colour_deck_is_barely_affected_
+                    # and_a_five_colour_one_is` caught it because a
+                    # constraint-only flag cannot raise a cast rate.
                     colors = frozenset().union(*sources) if sources else frozenset()
                     made = max(1, min(len(colors), 5))
                 rock_production += made
-                if model_colors:
-                    # A rock adds as many sources as it makes mana.
-                    sources.extend([colors] * made)
+                # A rock adds as many sources as it makes mana — tracked always,
+                # for the same reason the land above is.
+                sources.extend([colors] * made)
                 hand.remove(card)
 
         # Cast tutors before bodies: a tutor is a setup spell, and it competes

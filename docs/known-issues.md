@@ -214,23 +214,56 @@ decks measured under different flags are not comparable on board at all.
 This is the `model_combat` sibling of the class `model_coverage.never_cast` was
 built for: an effect the model computes and then does not apply.
 
-### 3c. Colour screw does not bite a five-colour deck
-
-```
-test_pilot_goldfish_colors::test_a_mono_colour_deck_is_barely_affected_and_a_five_colour_one_is
-  five-colour deck did not move: [0.22, 0.323]
-  assert 0.323 < 0.22
-```
+### 3c. Colour screw does not bite a five-colour deck — **FIXED 2026-09-13**
 
 `model_colors` is supposed to make a five-colour manabase *worse* than a
-colour-blind one. On ur-dragon it makes it **better** — 0.323 against 0.220.
-A mono-colour deck is correctly indifferent, so the flag is doing something; it
-is doing the wrong thing at five colours, which is the only place it matters.
+colour-blind one. On ur-dragon it made it **better** — 0.319 against 0.219, a
+move of +0.100 against an SE of 0.022, so z ≈ 4.5 and not noise. A mono-colour
+deck was correctly indifferent.
 
-The land-colour reader is the first suspect: `land_colors` has been wrong twice
-before in a way that flattered a greedy manabase (fetchlands reading as
-colourless, gated any-colour lands counted at full value), and both were found
-by a sweep rather than by reasoning about the code.
+**THE FLAG WAS NOT A CONSTRAINT. It added a penalty and unlocked a bonus at the
+same time.** `sources` — the colours on the battlefield — was appended to only
+under the flag:
+
+```python
+if model_colors:
+    sources.append(played["colors"])     # playing a land
+```
+
+and colour-scaling producers READ it, in both arms, to size their own output:
+
+```python
+if card["scales_with_colors"]:
+    colors = frozenset().union(*sources) if sources else frozenset()
+    made = max(1, min(len(colors), 5))
+```
+
+So with the flag off `sources` was empty, and every `scales_with_colors`
+producer fell to `max(1, 0)` — **one mana instead of up to five**. Bloom Tender
+and Faeburrow Elder are both in ur-dragon. On a mono deck the bonus is worth
+nothing and the constraint is nearly free, which is why only the five-colour
+half of the test failed.
+
+`sources` is tracked unconditionally now and read only under the flag — which
+is what `goldfish_library.classify`'s own comment had claimed all along:
+"both ride along always and are READ only under `model_colors`". The turn loop
+broke that rule and the comment was the tell.
+
+**Measured after, on the same seed:**
+
+| deck | flag on | flag off | delta |
+|---|---:|---:|---:|
+| goblin-storm (mono-ish) | 0.904 | 0.905 | −0.001 |
+| heliod (two colours) | 0.892 | 0.931 | −0.039 |
+| ur-dragon (five colours) | 0.324 | 0.357 | −0.033 |
+
+A constraint on all three, and indifferent on mono.
+
+**NO PUBLISHED FIGURE WAS EVER WRONG.** `model_colors` defaults to TRUE and no
+deck declares it false, so the defect lived entirely in the CONTROL arm — the
+one the test and any blind-arm sweep uses. The fleet re-measured byte-identical
+apart from `meta.model_version`. The land-colour reader, this section's first
+suspect, was not involved.
 
 ---
 
