@@ -670,3 +670,194 @@ def test_the_stale_rows_merge_reports_are_shaped_the_way_it_reads_them():
         assert "stage" in r and "state" in r, r
         checked += 1
     assert checked >= 10
+
+
+# ── #46 / #48: revising a proposal, and the option that went nowhere ────────
+
+def _proposed_branch(tmp_path, monkeypatch):
+    """A branch with a measured report and an accepted proposal, on tmp."""
+    import hashlib
+
+    from manamap import config
+    from manamap.pilot import deck_branch, deck_versions
+
+    root = tmp_path / "decks"
+    branch = root / "slug" / "branches" / "b1"
+    branch.mkdir(parents=True)
+    (root / "slug" / "decklist.txt").write_text("1 Sol Ring\n", encoding="utf-8")
+    (branch / "decklist.txt").write_text("1 Sol Ring\n1 Mox Diamond\n",
+                                         encoding="utf-8")
+    live = hashlib.sha256((branch / "decklist.txt").read_bytes()).hexdigest()
+    (branch / "net_change.json").write_text(json.dumps({
+        "decklist_sha256": live, "recommendation": {"state": "merge"},
+        "objective": None, "objective_grade": {}, "harness": {}}), encoding="utf-8")
+    (branch / "branch.json").write_text(json.dumps({
+        "slug": "slug", "branch": "b1", "opened": "2026-09-01",
+        "base_version": 1, "staged": []}), encoding="utf-8")
+    monkeypatch.setattr(config, "DECKS_DIR", root)
+    # `propose` imports `deck_versions` lazily, so the module is the patch
+    # point rather than an attribute of `deck_branch`.
+    monkeypatch.setattr(deck_versions, "report", lambda slug: {"current_version": 1})
+    monkeypatch.setattr(deck_versions, "tags", lambda slug: {})
+    return branch
+
+
+def test_proposing_the_same_version_again_amends_instead_of_refusing(tmp_path,
+                                                                     monkeypatch):
+    """ONE `stage` AND ONE `commit` WERE ENOUGH TO NEED THIS.
+
+    Staging on a proposed branch makes the proposal read `PROPOSED · STALE` —
+    the proposal freezes `decklist_sha256` and `branch_state` compares it. The
+    only way back was `withdraw` plus a `propose` carrying the whole original
+    reason retyped, because `withdraw` DISCARDS `accepted_on`: the objective,
+    its grade, and its reading at the moment the pilot said yes (#46).
+
+    Amending keeps the version, appends the new reason to the old, and pushes
+    the acceptance it replaces onto `history`, so a revised decision still has
+    evidence behind it.
+    """
+    from manamap.pilot import deck_branch
+
+    branch = _proposed_branch(tmp_path, monkeypatch)
+    deck_branch.propose("slug", "b1", "v1.0.1", why="the first reason")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="and the second")
+
+    prop = json.loads((branch / "branch.json").read_text())["proposal"]
+    assert prop["as_version"] == "v1.0.1", "the amend moved the version"
+    assert "the first reason" in prop["why"] and "and the second" in prop["why"], (
+        "the amend replaced the original reason instead of appending to it")
+    assert len(prop["history"]) == 1, "the previous acceptance was not kept"
+    assert prop["history"][0]["why"] == "the first reason"
+    assert "history" not in prop["history"][0], "the record must be flat, not a chain"
+
+
+def test_an_amend_with_no_new_reason_keeps_the_old_one(tmp_path, monkeypatch):
+    """The `set_paper` lesson (#51), one command along: a re-assert that takes
+    no new words must not blank the words already there."""
+    from manamap.pilot import deck_branch
+
+    branch = _proposed_branch(tmp_path, monkeypatch)
+    deck_branch.propose("slug", "b1", "v1.0.1", why="the only reason")
+    deck_branch.propose("slug", "b1", "v1.0.1")
+
+    prop = json.loads((branch / "branch.json").read_text())["proposal"]
+    assert prop["why"] == "the only reason", "an amend with no --why blanked it"
+
+
+def test_proposing_a_different_version_still_needs_a_withdraw(tmp_path, monkeypatch):
+    """A different `--as` is a change of mind about what this list BECOMES, not
+    a revision of the same decision — so it keeps the old refusal."""
+    from manamap.pilot import deck_branch
+
+    _proposed_branch(tmp_path, monkeypatch)
+    deck_branch.propose("slug", "b1", "v1.0.1", why="first")
+    with pytest.raises(SystemExit) as caught:
+        deck_branch.propose("slug", "b1", "v1.0.2", why="second")
+    assert "withdraw" in str(caught.value)
+
+
+def test_propose_refuses_reason_without_anyway(tmp_path, monkeypatch):
+    """`--reason` and `--why` are both on the shared `deck-branch` parser, so
+    `propose … --reason "…"` PARSED, proposed, and wrote `proposal.why: ""`.
+    The pilot's sentence went nowhere and was found by reading branch.json
+    (#48).
+
+    Refused rather than quietly mapped to `--why`: the two words mean different
+    things on this same parser.
+    """
+    from manamap.pilot import deck_branch
+
+    _proposed_branch(tmp_path, monkeypatch)
+    with pytest.raises(SystemExit) as caught:
+        deck_branch.propose("slug", "b1", "v1.0.1", reason="my actual reason")
+    assert "--why" in str(caught.value), "the refusal does not name the right option"
+
+
+def test_staging_on_a_proposed_branch_says_what_it_will_do(tmp_path, monkeypatch,
+                                                           capsys):
+    """It succeeded with the ordinary "2 swap(s) staged" line and said nothing.
+    The pilot found out from `deck-branch list`, after the fact."""
+    from manamap.pilot import deck_branch
+
+    _proposed_branch(tmp_path, monkeypatch)
+    deck_branch.propose("slug", "b1", "v1.0.1", why="first")
+    capsys.readouterr()
+
+    deck_branch.warn_if_proposed("slug", "b1", "commit")
+    out = capsys.readouterr().out
+    assert "PROPOSED as v1.0.1" in out and "STALE" in out, (
+        "editing a proposed branch says nothing about what it costs")
+    assert "AMENDS" in out, "the way back is not named"
+
+
+# ── #25: what the bill counts, and what `log` shows ─────────────────────────
+
+def test_a_card_held_only_by_a_broken_down_deck_is_free_not_contested():
+    """`elsewhere` MEANT "in some other deck" AND WAS RENDERED AS A COST.
+
+    `source()` classifies a card whose only holders are broken down or retired
+    as `free` — loose cardboard, nothing to unsleeve, nothing to buy — and the
+    `unsourced` set already excluded it. `counts["elsewhere"]` still counted it,
+    so the dossier rendered "sleeved in another deck: 6" when five were
+    contested and the sixth was in `sisay`, which is retired and in a pile.
+
+    The pull list had already chosen BUY / UNSLEEVE / PROXY / FREE, because each
+    costs a different thing; the counts now agree with it.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import deck_branch
+
+    checked = 0
+    for path in sorted(DECKS_DIR.glob("*/branches/*/branch.json")):
+        slug = path.relative_to(DECKS_DIR).parts[0]
+        branch = path.parent.name
+        bill = deck_branch.source(slug, branch)
+        counts, rows = bill["counts"], bill["cards"]
+        checked += 1
+
+        contested = [r for r in rows if r["state"] == deck_branch.ELSEWHERE
+                     and not r["free"]]
+        free = [r for r in rows if r["free"]]
+        assert counts[deck_branch.ELSEWHERE] == len(contested), (
+            f"{slug}/{branch}: elsewhere counts free cardboard as contested")
+        assert counts[deck_branch.FREE] == len(free)
+        assert bill["owned_but_elsewhere"] == counts[deck_branch.ELSEWHERE]
+        # The buckets stay disjoint and exhaustive, or the bill stops adding up.
+        assert sum(counts.values()) == len(rows), (
+            f"{slug}/{branch}: the bill's buckets do not cover every card once")
+        # And every free card is excluded from the blocker, which is the
+        # disagreement this fixes.
+        for row in free:
+            assert row["name"] not in bill["unsourced"], (
+                f"{slug}/{branch}: {row['name']} is free and still blocking")
+    assert checked >= 10, f"only {checked} branches checked"
+
+
+def test_log_shows_the_staged_swaps_unstage_points_at():
+    """`unstage` refuses with "No staged swap matches that — `log` lists them".
+
+    It never did. `log` read `objective`, `why`, `opened`, `base_version`,
+    `commits` and `merged`, and nothing in the repo had ever read `staged`, so a
+    pilot following the refusal got a commit trail and no swaps. The 21 staged
+    swaps on `eminence-v3` were reachable only through `net-change` or by
+    opening `branch.json` (#25).
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import deck_branch
+
+    with_staged = []
+    for path in sorted(DECKS_DIR.glob("*/branches/*/branch.json")):
+        slug = path.relative_to(DECKS_DIR).parts[0]
+        branch = path.parent.name
+        if (json.loads(path.read_text()).get("staged") or []):
+            with_staged.append((slug, branch))
+    if not with_staged:
+        pytest.skip("no branch has staged swaps on this checkout")
+
+    for slug, branch in with_staged:
+        got = deck_branch.log(slug, branch)
+        assert "staged" in got, f"{slug}/{branch}: log still does not read staged"
+        assert got["staged"], f"{slug}/{branch}: log returned an empty staged list"
+        for swap in got["staged"]:
+            assert swap.get("out") and swap.get("in"), (
+                f"{slug}/{branch}: a staged swap names only one side")

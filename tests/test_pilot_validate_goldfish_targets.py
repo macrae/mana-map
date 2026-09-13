@@ -411,3 +411,72 @@ def test_a_deck_that_loads_still_reports_OK():
     with open(base / "goldfish_targets.json") as f:
         vgt.validate(json.load(f), "zur-enchantress", base, None, notes=notes)
     assert notes == [], f"a deck with real cards should skip nothing: {notes}"
+
+
+# ── #47: a declaration shared by a deck and its open branches ───────────────
+
+def test_a_card_in_an_open_branch_is_not_a_stranded_name(tmp_path, monkeypatch):
+    """THE DECLARATION IS SHARED AND THE LISTS ARE NOT.
+
+    A branch reads the deck's `goldfish_targets.json` — `common.deck_file`
+    falls back to it — so a group naming a card the branch swaps OUT reads
+    short on the branch, and adding the replacement makes the CHAMPION report a
+    stranded name. There is no edit that is correct for both lists.
+
+    Measured on heliod/splendor-v1: the protection group read 45% on the branch
+    against the champion's 68%, not because the branch is less protected but
+    because the authored group could not see Greater Auramancy. With both names
+    present it reads 53%, the honest figure for a five-card group. The file was
+    then correct for neither list and warned on each, and
+    `test_tracked_artifact_passes_its_validator[heliod/goldfish_targets.json]`
+    went red on a SLEEVED deck (#47).
+
+    A name in SOME list the pilot is working on is not stranded. A name in NO
+    list is, and still fails.
+    """
+    from manamap import config
+    from manamap.pilot import validate_goldfish_targets as vgt
+
+    root = tmp_path / "decks"
+    branch = root / "slug" / "branches" / "open-v1"
+    branch.mkdir(parents=True)
+    monkeypatch.setattr(config, "DECKS_DIR", root)
+    (root / "slug" / "decklist.txt").write_text("1 Heliod\n", encoding="utf-8")
+    (branch / "decklist.txt").write_text("1 Heliod\n", encoding="utf-8")
+    (branch / "branch.json").write_text(json.dumps({"slug": "slug",
+                                                    "branch": "open-v1"}),
+                                        encoding="utf-8")
+    (branch / "cards.json").write_text(
+        json.dumps({"cards": [{"name": "Greater Auramancy"}]}), encoding="utf-8")
+
+    # The real shape is `targets[].need[].any_of[]`. The first draft of this
+    # test used `targets[].any_of[]`, so `_declared_names` returned nothing and
+    # the "no errors" assertion passed VACUOUSLY — caught only because the
+    # second half then found no error either.
+    doc = {"targets": [{"label": "protection",
+                        "need": [{"any_of": ["Lightning Greaves",
+                                             "Greater Auramancy"]}]}]}
+    main_names = {"Lightning Greaves"}
+    assert vgt._declared_names(doc) == {"Lightning Greaves", "Greater Auramancy"}, (
+        "the fixture does not match the declaration's real shape")
+
+    errors = vgt._validate_membership(doc, main_names, set(),
+                                      slug="slug", branch=None)
+    assert not errors, (
+        f"a card in an OPEN branch was reported as stranded: {errors}")
+
+    # The real strand still fails: a name in no list at all.
+    doc["targets"][0]["need"][0]["any_of"].append("A Card Nobody Runs")
+    errors = vgt._validate_membership(doc, main_names, set(),
+                                      slug="slug", branch=None)
+    assert len(errors) == 1 and "A Card Nobody Runs" in errors[0], (
+        f"a genuinely stranded name was not caught: {errors}")
+
+    # And a MERGED branch is history, not a list in flight.
+    (branch / "branch.json").write_text(
+        json.dumps({"slug": "slug", "branch": "open-v1",
+                    "merged": {"at": "2026-09-01"}}), encoding="utf-8")
+    errors = vgt._validate_membership(doc, main_names, set(),
+                                      slug="slug", branch=None)
+    assert any("Greater Auramancy" in e for e in errors), (
+        "a merged branch's cards must not excuse a stranded name")

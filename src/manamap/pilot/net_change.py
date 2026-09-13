@@ -47,6 +47,7 @@ percentage, a hoard read as mana. All three have happened here.
 """
 
 import glob
+import hashlib
 import json
 
 from manamap.pilot import deck_branch
@@ -649,10 +650,55 @@ def deck_branch_seat(slug, branch):
     return deck_meta_name(f"{slug}@{branch}")
 
 
+def measured_list_is_current(slug, branch):
+    """`(ok, stamp, live)` — is `cards.json` built from the list on disk?
+
+    THE REPORT MEASURES `cards.json`; THE LIST OF RECORD IS `decklist.txt`.
+    `diagnostic.run` hands the goldfish `load_deck_cards(slug, branch)`, so a
+    swap staged and committed into `decklist.txt` without a `fetch-deck
+    --branch` is invisible: the arms are measured on the PREVIOUS list, the
+    report is written, and its `decklist_sha256` is the previous list's.
+
+    That happened on `heliod/splendor-v1` on 2026-09-12 (#45). Nothing refused
+    it — `validate-net-change` passed the file, and the only thing that noticed
+    was `deck-branch propose`, whose message said to re-run `net-change`, which
+    reproduces the same stale file. The sequence that actually repairs it is
+    three commands, and this is the one place that can say so.
+
+    This is the "a branched write needs a branched read" class one level up: the
+    write is correctly branched, and its INPUTS are older than the list.
+    """
+    from manamap.pilot.common import deck_dir, load_json
+
+    root = deck_dir(slug, branch)
+    live = hashlib.sha256((root / "decklist.txt").read_bytes()).hexdigest()
+    stamp = (load_json(root / "cards.json") or {}).get("decklist_sha256")
+    return (stamp == live), stamp, live
+
+
+def _refuse_a_stale_measurement(slug, branch):
+    """Refuse before measuring, naming all three commands in order."""
+    ok, stamp, live = measured_list_is_current(slug, branch)
+    if ok:
+        return
+    where = f"{slug} --branch {branch}"
+    raise SystemExit(
+        f"{slug}/{branch}: cards.json was built from a different list than "
+        f"decklist.txt.\n"
+        f"  cards.json   {(stamp or 'absent')[:12]}\n"
+        f"  decklist.txt {live[:12]}\n"
+        f"Measuring now would report figures for the PREVIOUS list and stamp "
+        f"them with its sha. Re-derive first, in this order:\n"
+        f"  manamap pilot fetch-deck {where}\n"
+        f"  manamap pilot goldfish {where}\n"
+        f"  manamap pilot net-change {where} --write")
+
+
 def build(slug, branch, iterations=None, seed=None):
     from manamap import console
     from manamap.pilot import candidates, diagnostic
 
+    _refuse_a_stale_measurement(slug, branch)
     it = iterations or diagnostic.HARNESS["iterations"]
     sd = seed if seed is not None else diagnostic.HARNESS["seed"]
     # TWO 10,000-GAME RUNS, ~15 s, and until now it printed nothing at all until

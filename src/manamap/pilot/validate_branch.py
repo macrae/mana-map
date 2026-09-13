@@ -140,6 +140,41 @@ def validate(doc, slug=None, branch=None):
             errors.append(
                 "proposal: the net change said DO NOT MERGE and no 'forced_reason' "
                 "says why it was accepted anyway")
+        # ── the revision record (#46) ────────────────────────────────────
+        #
+        # `propose` with the SAME `--as` amends rather than refusing, and pushes
+        # the acceptance it replaces onto `history`. Before that the only way
+        # back from `PROPOSED · STALE` was `withdraw` + re-propose, which
+        # DISCARDED `accepted_on` — the objective, its grade and its reading at
+        # the moment the pilot said yes — so a revised decision had no evidence
+        # behind it at all.
+        #
+        # Every entry must still be a proposal-shaped record, or the history is
+        # a place to put anything.
+        history = prop.get("history")
+        if history is not None:
+            if not isinstance(history, list):
+                errors.append("proposal.history must be a list of previous "
+                              "acceptances, oldest first")
+            else:
+                for i, past in enumerate(history):
+                    if not isinstance(past, dict):
+                        errors.append(f"proposal.history[{i}] is not an object")
+                        continue
+                    if "history" in past:
+                        errors.append(
+                            f"proposal.history[{i}] contains its own history — "
+                            f"the record is a flat list, not a chain")
+                    for key in ("at", "as_version", "decklist_sha256"):
+                        if not past.get(key):
+                            errors.append(f"proposal.history[{i}]: no {key!r}")
+                    if past.get("as_version") and as_v and past["as_version"] != as_v:
+                        errors.append(
+                            f"proposal.history[{i}]: as_version "
+                            f"{past['as_version']!r} is not {as_v!r} — an amend "
+                            f"keeps the version, so a different one in the "
+                            f"history means two decisions were merged into one")
+
         proxy = prop.get("proxy")
         if proxy is not None and not isinstance(proxy, list):
             errors.append("proposal.proxy must be a list of card NAMES, never a "

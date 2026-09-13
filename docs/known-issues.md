@@ -9,14 +9,30 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-12**, **6 failing /
-3,718 passing** / 9 skipped / 7 xfailed, 531 s.
+Last verified against **`make test-fresh`**: **2026-09-12**, **5 failing /
+3,729 passing** / 9 skipped / 7 xfailed, 522 s.
 
-**SIX REDS, FOUR ROOT CAUSES** — the count has always been the less useful
+**FIVE REDS, THREE ROOT CAUSES** — the count has always been the less useful
 number:
 
 | cause | reds | what it needs |
 |---|---|---|
+| ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
+| `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is on the issue |
+| the sacrifice cap fires 1-in-1500 on edgar (#34) | 1 | find the seeded game and read the board |
+
+Cleared 2026-09-12: heliod's `goldfish_targets.json` (#47 — the validator now
+knows that a card in an OPEN branch is not a stranded name), the two artifacts
+the paper lock left behind, and the composition test that was asserting a
+content verdict.
+
+**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
+board, because the regenerate-and-compare cache keys a deck's freshness case on
+its own directory and a paper lock on ANOTHER deck flips a `locked` flag inside
+its branch sourcing. Narrowed and widened in Phase 2, but #49 is not closed:
+the data half is conservative rather than correct.
+
+---|---|---|
 | ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
 | heliod's champion targets declare a branch-only card (#47) | 1 | a branch-scoped overlay, Phase 3 |
 | `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is in the issue |

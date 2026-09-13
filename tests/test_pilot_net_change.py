@@ -855,3 +855,85 @@ def test_the_real_table_with_no_pod_in_common_is_absent_with_a_reason(tmp_path, 
     f = net_change.forge("x", "b")
     assert f["available"] is False
     assert "no table in common" in f["why"] and "standard-v3" in f["why"]
+
+
+# ── #45: the report must measure the list on disk ───────────────────────────
+
+def test_net_change_refuses_to_measure_a_list_it_has_not_fetched(tmp_path, monkeypatch):
+    """THE REPORT MEASURES `cards.json`; THE LIST OF RECORD IS `decklist.txt`.
+
+    `diagnostic.run` hands the goldfish `load_deck_cards(slug, branch)`, so a
+    swap staged and committed into `decklist.txt` without a `fetch-deck
+    --branch` is invisible: both arms are measured on the PREVIOUS list, the
+    report is written, and its `decklist_sha256` is the previous list's sha.
+
+    That is what happened on `heliod/splendor-v1` (#45). `validate-net-change`
+    passed the file. The only thing that refused was `deck-branch propose`, one
+    step too late, with advice — "re-run net-change" — that reproduces it
+    exactly, because re-running net-change re-measures the same stale
+    `cards.json`.
+
+    Re-introducing the bug: delete the `_refuse_a_stale_measurement` call at the
+    top of `build` and this goes green while writing a report about a 99 that is
+    not there.
+    """
+    import hashlib
+
+    from manamap import config
+    from manamap.pilot import net_change
+
+    root = tmp_path / "decks" / "slug" / "branches" / "b1"
+    root.mkdir(parents=True)
+    (tmp_path / "decks" / "slug" / "decklist.txt").write_text("1 Sol Ring\n",
+                                                             encoding="utf-8")
+    (root / "decklist.txt").write_text("1 Sol Ring\n1 Mox Diamond\n", encoding="utf-8")
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path / "decks")
+
+    # `cards.json` built from the PREVIOUS list — the state a staged-but-unfetched
+    # branch is in.
+    stale = hashlib.sha256(b"1 Sol Ring\n").hexdigest()
+    (root / "cards.json").write_text(
+        json.dumps({"decklist_sha256": stale, "cards": []}), encoding="utf-8")
+
+    ok, stamp, live = net_change.measured_list_is_current("slug", "b1")
+    assert not ok and stamp == stale and stamp != live
+
+    with pytest.raises(SystemExit) as caught:
+        net_change.build("slug", "b1")
+    message = str(caught.value)
+    # The refusal must name ALL THREE commands, in order. Naming only
+    # `net-change` is what made the original bug self-reproducing.
+    assert "fetch-deck" in message, "the refusal does not name the command that fixes it"
+    assert message.index("fetch-deck") < message.index("goldfish") < message.index("net-change")
+
+    # And once the fetch has happened, it measures.
+    (root / "cards.json").write_text(
+        json.dumps({"decklist_sha256": live, "cards": []}), encoding="utf-8")
+    ok, _stamp, _live = net_change.measured_list_is_current("slug", "b1")
+    assert ok, "a freshly fetched branch must not be refused"
+
+
+def test_the_validator_refuses_a_report_about_a_list_that_moved():
+    """The gate `validate-net-change` did not have, and the reason a stale
+    report survived long enough to be proposed on.
+
+    Swept across all 28 branches before landing: zero trips.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import validate_net_change
+
+    live = None
+    for path in sorted(DECKS_DIR.glob("*/branches/*/net_change.json")):
+        doc = json.loads(path.read_text())
+        assert not validate_net_change.validate(doc), (
+            f"{path} does not validate — the sweep said every tracked report "
+            f"was clean")
+        live = doc
+        break
+    if live is None:
+        pytest.skip("no tracked net_change.json on this checkout")
+
+    moved = dict(live, decklist_sha256="f" * 64)
+    errors = validate_net_change.validate(moved)
+    assert any("not the list on disk" in e for e in errors), (
+        f"a report stamped with a list that is not on disk was accepted: {errors}")

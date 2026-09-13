@@ -167,7 +167,9 @@ def test_the_sourcing_report_separates_a_box_from_another_deck():
     that changes a decision: a card sleeved in a finished deck is not a card you
     can use, and it is not a purchase either."""
     s = deck_branch.source(SLUG, BRANCH)
-    assert set(s["counts"]) == {"in_deck", "box", "elsewhere", "buy"}
+    # `free` joined the buckets 2026-09-12 (#25): a card whose only holders
+    # are broken down is loose cardboard, not a contested sleeve.
+    assert set(s["counts"]) == {"in_deck", "box", "elsewhere", "free", "buy"}
     # Counts are DISTINCT NAMES, not copies: 36 basics are one thing to source.
     assert sum(s["counts"].values()) == s["diff"]["names"]
     assert s["diff"]["names"] <= s["diff"]["size"]
@@ -233,7 +235,7 @@ def test_the_branch_reaches_info_json_and_the_next_line():
     rows = info.get("branches") or []
     assert any(b["name"] == BRANCH for b in rows), "the branch is absent from info.json"
     b = next(x for x in rows if x["name"] == BRANCH)
-    assert set(b["counts"]) == {"in_deck", "box", "elsewhere", "buy"}
+    assert set(b["counts"]) == {"in_deck", "box", "elsewhere", "free", "buy"}
     assert b["state"] in deck_branch.BRANCH_STATES
     joined = " ".join(info["next"])
     assert BRANCH in joined, f"`next` never mentions the branch: {info['next']}"
@@ -286,13 +288,13 @@ def test_a_card_in_another_deck_is_owned_not_bought():
     """
     plain = deck_branch.source(SLUG, BRANCH)
     proxied = deck_branch.source(SLUG, BRANCH, proxy=True)
-    n_else = plain["counts"]["elsewhere"]
-    if not n_else:
-        pytest.skip("nothing sleeved elsewhere on this branch")
-    # A `free` card was NEVER unsourced — every deck holding it is broken down
-    # or retired, so there is nothing to proxy and nothing to unsleeve. Counting
-    # it here is what made this arithmetic wrong the moment that landed.
-    contested = n_else - plain["free"]
+    # `counts["elsewhere"]` IS the contested count since 2026-09-12 — `free` is
+    # its own bucket (#25) — so this no longer subtracts. A `free` card was
+    # never unsourced anyway: every deck holding it is broken down or retired,
+    # so there is nothing to proxy and nothing to unsleeve.
+    contested = plain["counts"]["elsewhere"]
+    if not contested:
+        pytest.skip("nothing contested on this branch")
     assert len(proxied["unsourced"]) == len(plain["unsourced"]) - contested, (
         "--proxy did not clear exactly the cards sleeved in decks that are "
         "still together")
@@ -300,7 +302,9 @@ def test_a_card_in_another_deck_is_owned_not_bought():
     buys = {r["name"] for r in plain["cards"] if r["state"] == "buy"}
     assert buys <= set(proxied["unsourced"]), (
         "--proxy cleared a card that nobody owns")
-    assert proxied["owned_but_elsewhere"] == n_else
+    #  is a decision about SOURCING, not about where a card lives, so
+    # the contested count is unchanged by it.
+    assert proxied["owned_but_elsewhere"] == contested
 
 
 # --------------------------------------------------------------------------

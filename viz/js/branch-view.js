@@ -222,13 +222,21 @@
       '<p class="ev">' + esc(f.caveat || '') + '</p></section>';
   }
 
-  /* THE BILL, and the four states are not four kinds of purchase. `elsewhere` is
-   * a card sleeved in another deck — a trade-off, not money — and folding it into
-   * `buy` reads as "spend on something already in the house". */
+  /* THE BILL, and the five states are not five kinds of purchase. `elsewhere`
+   * is a card sleeved in another deck — a trade-off, not money — and folding it
+   * into `buy` reads as "spend on something already in the house".
+   *
+   * `free` was carved out of `elsewhere` on 2026-09-12 (#25). A card whose only
+   * holders are broken down or retired costs NOTHING: there is no deck to
+   * unsleeve and nothing to buy, and `source()`'s blocker already excluded it
+   * while this tile still counted it. Measured on ur-dragon/eminence-v3:
+   * elsewhere 6, of which 1 was in `sisay`, retired and in a pile — so the page
+   * said "sleeved in another deck: 6" when five were contested. */
   var STATE_COPY = {
     in_deck: 'already in the deck',
     box: 'in a box — you own these',
-    elsewhere: 'sleeved in another deck — a trade-off, not a purchase',
+    elsewhere: 'sleeved in a deck that is still together',
+    free: 'loose — its deck is broken down',
     buy: 'to buy'
   };
 
@@ -236,14 +244,17 @@
     var bill = nc && nc.bill;
     if (!bill) return '';
     var c = bill.counts || {};
-    var owned = (c.in_deck || 0) + (c.box || 0) + (c.elsewhere || 0);
+    var owned = (c.in_deck || 0) + (c.box || 0) + (c.elsewhere || 0) +
+                (c.free || 0);
     var total = Object.keys(c).reduce(function (a, k) { return a + c[k]; }, 0);
     var tiles = Object.keys(STATE_COPY).map(function (k) {
       return '<div class="tile s-' + k + '"><div class="k">' + (c[k] || 0) +
              '</div><div class="t">' + esc(STATE_COPY[k]) + '</div></div>';
     }).join('');
     var buy = (bill.cards || []).filter(function (r) { return r.state === 'buy'; });
-    var elsewhere = (bill.cards || []).filter(function (r) { return r.state === 'elsewhere'; });
+    var elsewhere = (bill.cards || []).filter(function (r) {
+      return r.state === 'elsewhere' && !r.free;
+    });
     return '<section class="panel"><h2>The bill</h2>' +
       '<div class="tiles">' + tiles + '</div>' +
       '<p class="lede">You already own <b>' + owned + ' of ' + total + '</b>.</p>' +

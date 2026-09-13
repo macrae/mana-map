@@ -340,7 +340,10 @@
         ['size', String(b.size)],
         ['already in the deck', String(c.in_deck || 0)],
         ['in a box', String(c.box || 0)],
-        ['sleeved in another deck', String(c.elsewhere || 0)],
+        // CONTESTED only — `free` is cardboard in a pile and costs
+        // nothing to take (#25).
+        ['sleeved in a deck that is still together', String(c.elsewhere || 0)],
+        ['loose — its deck is broken down', String(c.free || 0)],
         ['to buy', String(c.buy || 0)],
       ]);
       if (b.proposal && b.pull_list) {

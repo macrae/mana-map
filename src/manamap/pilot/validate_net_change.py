@@ -31,6 +31,7 @@ held to fixtures in `tests/test_pilot_net_change.py`; what a GATE can add is tha
 the summary does not name a measure the table never carried.
 """
 
+import hashlib
 import json
 
 from manamap.pilot.common import deck_dir, report_errors
@@ -51,6 +52,32 @@ def validate(doc):
     for key in ("slug", "branch", "harness", "table", "limits"):
         if key not in doc:
             errors.append(f"missing top-level key {key!r}")
+
+    # THE REPORT MUST NAME THE LIST IT MEASURED, and that list must be the one
+    # on disk. `net-change` refuses to measure a stale `cards.json` now, but a
+    # report written before that guard — or one whose branch moved afterwards —
+    # is still a table of figures for a 99 that no longer exists, and this file
+    # passed every one of them. On 2026-09-12 the only thing that refused a
+    # stale report was `deck-branch propose`, one step too late and with advice
+    # that reproduced it (#45).
+    #
+    # Swept across all 28 branches before this landed: zero trips.
+    slug, branch = doc.get("slug"), doc.get("branch")
+    if slug and branch and "decklist_sha256" in doc:
+        from manamap.pilot.common import deck_dir
+
+        try:
+            listed = deck_dir(slug, branch) / "decklist.txt"
+            live = hashlib.sha256(listed.read_bytes()).hexdigest()
+        except (FileNotFoundError, OSError):
+            live = None                 # a deleted branch is not this gate's business
+        stamped = doc.get("decklist_sha256")
+        if live and stamped and stamped != live:
+            errors.append(
+                f"decklist_sha256 {stamped[:12]} is not the list on disk "
+                f"({live[:12]}) — this report describes a 99 that is no longer "
+                f"there. Re-derive: fetch-deck --branch, goldfish --branch, "
+                f"net-change --write")
 
     table = doc.get("table") or []
     if not table:

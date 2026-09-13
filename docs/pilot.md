@@ -191,6 +191,22 @@ manamap pilot deck-branch <slug> propose <name> --as v1.0.2 [--why "…"]
                                         #   touching the branch. Refuses an unmeasured
                                         #   branch, a report that measured a different
                                         #   list, and a taken version tag.
+                                        #   SAME `--as` AMENDS (2026-09-12, #46): it keeps
+                                        #   the version, appends the new `--why` to the old
+                                        #   and pushes the acceptance it replaces onto
+                                        #   `proposal.history`. A DIFFERENT `--as` still
+                                        #   refuses — that is a change of mind about what
+                                        #   the list becomes — and goes through `withdraw`.
+                                        #   Before this, one `stage` and one `commit` made
+                                        #   a proposal STALE and the only way back was
+                                        #   `withdraw` + retyping the whole reason, which
+                                        #   DISCARDED `accepted_on` — the objective, its
+                                        #   grade and its reading at the moment you said
+                                        #   yes. `stage` and `commit` now print one line
+                                        #   saying the branch is proposed and what the edit
+                                        #   costs. `--reason` without `--anyway` is
+                                        #   REFUSED: it parsed, proposed, and wrote an
+                                        #   empty `why` (#48).
                                         #   `--proxy` records WHICH cards you will move
                                         #   across your own decks (it was a bare flag and
                                         #   was never persisted, so every surface showed

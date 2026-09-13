@@ -226,15 +226,59 @@ def _validate_shared_leg(doc):
     return errors
 
 
-def _validate_membership(doc, main_names, commander_names):
-    """Every declared card must still be in the 99."""
+def _open_branch_names(slug, branch):
+    """Every card in every OPEN branch of this deck, as one set.
+
+    THE DECLARATION IS SHARED AND THE LISTS ARE NOT. A branch reads the deck's
+    `goldfish_targets.json` (`common.deck_file` falls back to it), so a group
+    that names a card the branch swaps OUT reads short on the branch, and adding
+    the replacement makes the CHAMPION read a stranded name. Measured on
+    heliod/splendor-v1: the protection group read 45% on the branch against the
+    champion's 68% — not because the branch is less protected, but because the
+    authored group could not see Greater Auramancy. With both names present it
+    reads 53%, which is the honest figure for a five-card group (#47).
+
+    So during iteration the one file is correct for neither list and warns on
+    each. A name that is in SOME list the pilot is working on is not stranded;
+    a name that is in NO list is. Only the second is an error.
+
+    A MERGED branch is not consulted: its cards are either in the 99 now or were
+    cut, and a merged branch's list is history.
+    """
+    from manamap.pilot.common import load_json
+
+    names = set()
+    root = deck_dir(slug) / "branches"
+    if not root.is_dir():
+        return names
+    for path in sorted(root.iterdir()):
+        if not path.is_dir() or (branch and path.name == branch):
+            continue
+        doc = load_json(path / "branch.json") or {}
+        if doc.get("merged"):
+            continue
+        cards = (load_json(path / "cards.json") or {}).get("cards") or []
+        names.update(c["name"] for c in cards if c.get("name"))
+    return names
+
+
+def _validate_membership(doc, main_names, commander_names, slug=None, branch=None):
+    """Every declared card must still be in the 99 — or in an OPEN branch."""
     errors = []
     known = main_names | commander_names
+    elsewhere = _open_branch_names(slug, branch) if slug else set()
     for name in sorted(_declared_names(doc)):
-        if name not in known:
-            errors.append(
-                f"'{name}' is declared in a target but is not in the deck — a swap "
-                f"stranded the name, so this group's size overstates its redundancy")
+        if name in known:
+            continue
+        if name in elsewhere:
+            # Declared for a list the pilot is actively working on. Not an
+            # error, and deliberately not a warning either: warning on every
+            # in-flight branch card is how a gate teaches its reader to skim.
+            continue
+        errors.append(
+            f"'{name}' is declared in a target but is in neither the 99 nor any "
+            f"open branch — a swap stranded the name, so this group's size "
+            f"overstates its redundancy")
     return errors
 
 
@@ -315,7 +359,8 @@ def validate(doc, slug, base, branch=None, notes=None):
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
     errors += _validate_shared_leg(doc)
-    errors += _validate_membership(doc, main_names, commander_names)
+    errors += _validate_membership(doc, main_names, commander_names,
+                                   slug=slug, branch=branch)
     errors += _validate_win_line_coverage(doc, slug, main_names,
                                           commander_names, base, branch)
     return errors

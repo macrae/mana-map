@@ -92,6 +92,9 @@ NAME_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,48}$")
 #: nothing in the repo computed before, and it is the one that changes a
 #: decision: a card sleeved in a LOCKED deck is not available at all.
 IN_DECK, BOX, ELSEWHERE, BUY = "in_deck", "box", "elsewhere", "buy"
+#: Not a  — a card is ELSEWHERE and also free. It is a COUNT key, so the
+#: bill can say "5 contested, 1 loose" instead of "6 elsewhere" (#25).
+FREE = "free"
 
 #: What counts as "you can put this in the deck tonight".
 #:
@@ -267,6 +270,22 @@ def source(slug, branch, proxy=False):
         rows.append({"name": name, "state": BUY, "where": [], "free": False})
     counts = {s: sum(1 for r in rows if r["state"] == s)
               for s in (IN_DECK, BOX, ELSEWHERE, BUY)}
+    # `elsewhere` MEANS CONTESTED — in a deck that is still together.
+    #
+    # It counted every card held by another deck, including those whose only
+    # holders are broken down or retired. `unsourced` already excluded those
+    # (they are `free`: loose cardboard, nothing to unsleeve and nothing to
+    # buy), so the count and the blocker disagreed. Measured on
+    # ur-dragon/eminence-v3: elsewhere 6, free 1, actually contested 5 — and the
+    # dossier rendered "sleeved in another deck: 6" when the sixth was in
+    # `sisay`, which is retired and in a pile (#25).
+    #
+    # The pull list had already made this choice — BUY / UNSLEEVE / PROXY / FREE,
+    # because each costs a different thing — so this makes the counts agree with
+    # it rather than carrying an older, coarser split beside it.
+    counts[FREE] = sum(1 for r in rows if r["free"])
+    counts[ELSEWHERE] -= sum(1 for r in rows
+                             if r["state"] == ELSEWHERE and r["free"])
     # `proxy` IS EITHER "ALL OF THEM" OR A NAMED FEW. It shipped as a bare flag,
     # which is the only shape a per-invocation option can have; a PROPOSAL records
     # which specific cards the pilot agreed to move across their own decks, and
@@ -286,8 +305,10 @@ def source(slug, branch, proxy=False):
     return {"slug": slug, "branch": branch, "cards": rows, "counts": counts,
             "unsourced": unsourced, "diff": d, "counts_are": "distinct names",
             "proxy": sorted(named) if named is not None else bool(proxy),
+            # Kept as the name the frontends already read; it is now the
+            # CONTESTED count, which is what both of them meant by it.
             "owned_but_elsewhere": counts[ELSEWHERE],
-            "free": sum(1 for r in rows if r["free"]),
+            "free": counts[FREE],
             "mergeable": not unsourced}
 
 
@@ -586,6 +607,32 @@ def _resolve_in_list(entries, name):
     return None
 
 
+def warn_if_proposed(slug, branch, verb, doc=None):
+    """Say what editing a PROPOSED branch will do, before it does it.
+
+    `stage` and `commit` on a branch in `PROPOSED · BLOCKED` succeeded with the
+    ordinary "2 swap(s) staged" line. Nothing said the branch was proposed, or
+    that committing would make it read `PROPOSED · STALE` — the proposal freezes
+    `decklist_sha256` and `branch_state` compares it. The pilot found out from
+    `deck-branch list`, after the fact (#46).
+
+    A LINE, NOT A REFUSAL. Iterating on a proposed list is exactly the case the
+    bench is supposed to support: a proposal is a decision about a version, not
+    a lock on the files. `stage` already calls `meta()`, so the state costs
+    nothing to read.
+    """
+    doc = meta(slug, branch) if doc is None else doc
+    prop = (doc or {}).get("proposal")
+    if not prop:
+        return
+    version = prop.get("as_version")
+    print(f"  NOTE: {slug}/{branch} is PROPOSED as {version}. This {verb} makes "
+          f"the proposal STALE — the list will no longer be the one accepted.")
+    print(f"  Re-propose when the list settles: `net-change {slug} --branch "
+          f"{branch} --write`, then `deck-branch {slug} propose {branch} "
+          f"--as {version} --why \"…\"` (which AMENDS rather than refusing).")
+
+
 def stage(slug, branch, out_name, in_name, strength=None, why=None):
     """One card out, one card in — the staging area, and its provenance.
 
@@ -749,10 +796,24 @@ def commit(slug, branch, message):
 
 
 def log(slug, branch):
+    """The branch's record — and, since 2026-09-12, its STAGED swaps.
+
+    `unstage`'s refusal has always read "No staged swap matches that — `log`
+    lists them". It never did: this returned `objective`, `why`, `opened`,
+    `base_version`, `commits` and `merged`, and nothing else has ever read
+    `staged`. A pilot following the refusal got a commit trail and no swaps, and
+    the 21 staged swaps on `eminence-v3` were visible only through `net-change`
+    or by opening `branch.json` (#25).
+
+    `log` is the right home rather than re-pointing the refusal: it is the only
+    read command that costs nothing, and `unstage` is the thing that needs the
+    list.
+    """
     doc = meta(slug, branch) or {}
     return {"slug": slug, "branch": branch,
             "objective": doc.get("objective"), "why": doc.get("why"),
             "opened": doc.get("opened"), "base_version": doc.get("base_version"),
+            "staged": doc.get("staged") or [],
             "commits": doc.get("commits") or [], "merged": doc.get("merged")}
 
 
@@ -944,11 +1005,30 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
         raise SystemExit(
             f"{slug}/{branch} is already merged ({doc['merged'].get('at')}). "
             f"There is nothing left to propose.")
+    # SAME VERSION AMENDS; A DIFFERENT ONE STILL REFUSES.
+    #
+    # This refused any second proposal, so the way back from `PROPOSED · STALE`
+    # — which one `stage` and one `commit` are enough to cause — was `withdraw`
+    # plus a `propose` carrying the WHOLE original reason retyped, because
+    # `withdraw` discards `accepted_on`: the objective, its grade and its
+    # reading at the moment the pilot said yes (#46).
+    #
+    # Amending keeps the version and appends the new reason to the old, so the
+    # record reads as what it is: one decision, revised. A DIFFERENT `--as` is
+    # a change of mind about what this list is meant to become, and that still
+    # goes through `withdraw`.
+    amending = False
     if doc.get("proposal"):
-        p = doc["proposal"]
-        raise SystemExit(
-            f"{slug}/{branch} is already proposed as {p.get('as_version')} "
-            f"({p.get('at')}). `deck-branch {slug} withdraw {branch}` first.")
+        held = doc["proposal"]
+        if held.get("as_version") != as_version:
+            raise SystemExit(
+                f"{slug}/{branch} is already proposed as "
+                f"{held.get('as_version')} ({held.get('at')}), and you asked for "
+                f"{as_version}. Proposing a DIFFERENT version is a change of "
+                f"mind about what this list becomes — "
+                f"`deck-branch {slug} withdraw {branch}` first.\n"
+                f"To revise the same proposal, pass --as {held.get('as_version')}.")
+        amending = True
 
     # THE TAG IS `deck_versions`' VOCABULARY, NOT A SECOND ONE. Its regexes
     # already refuse `v1.2` and `1.2.3.4`, and a second copy here would drift.
@@ -974,8 +1054,12 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
     live = _sha_of_list(slug, branch)
     if nc.get("decklist_sha256") and nc["decklist_sha256"] != live:
         raise SystemExit(
-            f"net_change.json measured a different list than the one on disk. "
-            f"Re-run it before accepting:\n"
+            f"net_change.json measured a different list than the one on disk.\n"
+            f"RE-RUNNING `net-change` ALONE REPRODUCES IT — it measures "
+            f"cards.json, and cards.json is what is behind. Three commands, in "
+            f"this order:\n"
+            f"  manamap pilot fetch-deck {slug} --branch {branch}\n"
+            f"  manamap pilot goldfish {slug} --branch {branch}\n"
             f"  manamap pilot net-change {slug} --branch {branch} --write")
     rec = nc.get("recommendation") or {}
     if rec.get("state") == "do not merge" and not anyway:
@@ -985,12 +1069,37 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
     if anyway and not reason:
         raise SystemExit("--anyway needs --reason: overriding the report should "
                          "say what it is assuming.")
+    # `--reason` WITHOUT `--anyway` IS ALMOST CERTAINLY A TYPO FOR `--why`.
+    #
+    # Both options live on the shared `deck-branch` parser — `--reason` is
+    # merge's sourcing override and propose's `--anyway` justification, `--why`
+    # is new's and stage's. So `propose … --as v1.2.2 --reason "…"` PARSED,
+    # proposed, and wrote `proposal.why: ""`. The pilot's sentence went nowhere
+    # and was found by reading branch.json (#48).
+    #
+    # Refused rather than silently mapped to `--why`: the two words mean
+    # different things on this same parser, and quietly reinterpreting one as
+    # the other is how this class of bug starts rather than ends.
+    if reason and not anyway:
+        raise SystemExit(
+            f"--reason is for overriding the report (`--anyway --reason \"…\"`) "
+            f"and for merge's sourcing gate. Did you mean --why?\n"
+            f"  manamap pilot deck-branch {slug} propose {branch} "
+            f"--as {as_version} --why \"{reason[:60]}\"")
 
     grade = nc.get("objective_grade") or {}
+    held = doc.get("proposal") or {}
+    # THE PREVIOUS ACCEPTANCE IS KEPT, not overwritten. `accepted_on` is the
+    # only record of what the report said at the moment the pilot said yes, and
+    # a revision that discards it leaves a decision with no evidence behind it.
+    history = list(held.get("history") or [])
+    if amending:
+        history.append({k: v for k, v in held.items() if k != "history"})
+    reasons = [r for r in (held.get("why") if amending else None, why) if r]
     prop = {
         "at": (at or datetime.date.today().isoformat()),
         "as_version": as_version,
-        "why": why or "",
+        "why": "\n".join(reasons),
         "base_version": deck_versions.report(slug).get("current_version"),
         "decklist_sha256": live,
         "accepted_on": {
@@ -1002,6 +1111,14 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
             "harness": nc.get("harness"),
         },
     }
+    if history:
+        # Oldest first. `branch_state` reads only the LIVE acceptance; this is
+        # the record, and `validate_branch` checks its shape.
+        prop["history"] = history
+    if amending and not why:
+        # Amending with no new reason keeps the old one rather than blanking it —
+        # the same rule `set_paper` learned the hard way (#51).
+        prop["why"] = held.get("why") or ""
     if proxy:
         # NAMED CARDS, NOT A BOOLEAN. `--proxy` has been a per-invocation flag
         # since branches shipped and was never persisted, so `list`, `deck-info`
@@ -1375,6 +1492,7 @@ def _dispatch(args):
               f"`manamap pilot net-change {slug} --branch {branch}`")
         for w in got.get("warnings") or []:
             print(f"  warning: {w}")
+        warn_if_proposed(slug, branch, "edit")
         return
     if action == "commit":
         got = commit(slug, branch, getattr(args, "message", None))
@@ -1384,6 +1502,7 @@ def _dispatch(args):
         print("  " + ("mergeable" if got["mergeable"] else
                       f"{got['unsourced']} card(s) still to source — a commit is a "
                       f"decision, a merge needs the cardboard"))
+        warn_if_proposed(slug, branch, "commit")
         return
     if action == "log":
         got = log(slug, branch)
@@ -1398,6 +1517,19 @@ def _dispatch(args):
         else:
             print("  objective: NONE — this branch predates the requirement and "
                   "cannot be graded")
+        # STAGED SWAPS, which `unstage`'s refusal has always claimed this
+        # command lists and which it never did (#25). Uncommitted work is the
+        # thing a pilot is most likely to be asking about.
+        staged = got.get("staged") or []
+        if staged:
+            print(f"\n  STAGED, not yet committed ({len(staged)}):")
+            for s in staged:
+                line = f"    - {s.get('out')}  + {s.get('in')}"
+                if s.get("strength") is not None:
+                    line += f"   [strength {s['strength']}]"
+                print(line)
+                if s.get("why"):
+                    print(f"        {s['why']}")
         if not got["commits"]:
             print("\n  no commits yet — `deck-branch "
                   f"{slug} commit {branch} -m \"…\"`")

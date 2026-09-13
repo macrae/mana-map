@@ -82,13 +82,13 @@ paid for and each constrains a task below.
 | P2-02 | 2 | #28 — key the freshness cache on a derived import closure | M | DONE | |
 | P2-03 | 2 | #31 — one home for the deck root; complete `clear_memo` | M | DONE | |
 | P2-04 | 2 | Re-measure and state ONE runtime figure | S | DONE | |
-| P3-01 | 3 | #45 — a branched measurement carries the branch's own sha | M | TODO | |
-| P3-02 | 3 | #46.1 — `stage`/`commit` warn on a PROPOSED branch | S | TODO | |
-| P3-03 | 3 | #46.2 — `propose` amends instead of requiring withdraw | M | TODO | |
-| P3-04 | 3 | #48.1 — `propose --reason` refuses or maps to `--why` | S | TODO | |
-| P3-05 | 3 | #47 — branch-scoped goldfish targets | M | TODO | |
-| P3-06 | 3 | #25.1 — `elsewhere` stops counting free cardboard | S | TODO | |
-| P3-07 | 3 | #25.2 — `log` shows staged swaps | S | TODO | |
+| P3-01 | 3 | #45 — a branched measurement carries the branch's own sha | M | DONE | |
+| P3-02 | 3 | #46.1 — `stage`/`commit` warn on a PROPOSED branch | S | DONE | |
+| P3-03 | 3 | #46.2 — `propose` amends instead of requiring withdraw | M | DONE | |
+| P3-04 | 3 | #48.1 — `propose --reason` refuses or maps to `--why` | S | DONE | |
+| P3-05 | 3 | #47 — branch-scoped goldfish targets | M | DONE | |
+| P3-06 | 3 | #25.1 — `elsewhere` stops counting free cardboard | S | DONE | |
+| P3-07 | 3 | #25.2 — `log` shows staged swaps | S | DONE | |
 | P4-01 | 4 | One decklist sha, two named meanings | M | TODO | |
 | P4-02 | 4 | Copies: three questions, three names, one default | M | TODO | |
 | P4-03 | 4 | Six artifact registries become one | L | TODO | |

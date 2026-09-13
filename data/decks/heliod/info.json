@@ -13,11 +13,10 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 12,
+    "complete": 13,
     "of": 15,
     "stale": [],
     "invalid": [
-      "targets",
       "considering.json"
     ],
     "verified": true,
@@ -58,7 +57,8 @@
         "in_deck": 85,
         "box": 0,
         "elsewhere": 0,
-        "buy": 0
+        "buy": 0,
+        "free": 0
       },
       "unsourced": [],
       "mergeable": true,
@@ -715,7 +715,8 @@
         "in_deck": 83,
         "box": 0,
         "elsewhere": 0,
-        "buy": 2
+        "buy": 2,
+        "free": 0
       },
       "unsourced": [
         "Gleaming Splendor",
@@ -1983,7 +1984,7 @@
   },
   "experiments": null,
   "next": [
-    "2 artifact(s) fail their own gate (targets, considering.json) — `deck-status heliod` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (considering.json) — `deck-status heliod` names them; fix before anything else reads them",
     "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
     "`splendor-v1` is PROPOSED as v1.2.2 and waiting on cardboard — 2 card(s) (2 to buy) — `manamap pilot deck-branch heliod show splendor-v1` has the pull list",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
