@@ -101,13 +101,13 @@ paid for and each constrains a task below.
 | P5-06 | 5 | Collapse the two-registry section-count truth | S | DONE | |
 | P5-07 | 5 | Retire the magazine xfails and tracked artifacts | M | DONE | |
 | P5-08 | 5 | Docs sweep after the delete | S | DONE | |
-| P6-01 | 6 | Snapshot the fleet and the agent cache | S | TODO | |
-| P6-02 | 6 | `goldfish.py` becomes a package, imports unchanged | L | TODO | |
-| P6-03 | 6 | `model_version` hashes the package | S | TODO | |
-| P6-04 | 6 | The proof: a byte-identical fleet regen | M | TODO | |
-| P6-05 | 6 | `run()` stops raising SystemExit at its callers | M | TODO | |
-| P6-06 | 6 | Metric hygiene learns the `model_*` flags | M | TODO | |
-| P6-07 | 6 | `simulate_once`'s 239 locals become a state object | L | TODO | |
+| P6-01 | 6 | Snapshot the fleet and the agent cache | S | DONE | |
+| P6-02 | 6 | `goldfish.py` becomes a package, imports unchanged | L | DONE | |
+| P6-03 | 6 | `model_version` hashes the package | S | DONE | |
+| P6-04 | 6 | The proof: a byte-identical fleet regen | M | DONE | |
+| P6-05 | 6 | `run()` stops raising SystemExit at its callers | M | DONE | |
+| P6-06 | 6 | Metric hygiene learns the `model_*` flags | M | DONE | |
+| P6-07 | 6 | `simulate_once`'s 239 locals become a state object | L | DROPPED | |
 
 ---
 
@@ -1345,7 +1345,31 @@ the fleet afterwards and record the new DARK/never-cast figures, since adding
 channels changes what "seen" means — the audit notes PLAN.md already flags that
 coverage "over-claims `seen` through a token clause on an unread trigger".
 
-### P6-07 · `simulate_once`'s 239 locals become a state object
+### P6-07 · `simulate_once`'s 239 locals become a state object — **DROPPED**
+
+> **NOT ATTEMPTED, and the stop condition is why.** The plan gave this task an
+> explicit one: "if two consecutive phase extractions produce a diff that cannot
+> be explained within an hour, stop — a 1,999-line function that produces
+> correct, reproducible numbers is better debt than a decomposed one that
+> produces different ones."
+>
+> The MODULE split (P6-02) hit a softer version of exactly that hazard and it is
+> the evidence for stopping here. Moving code between modules — which cannot
+> change behaviour, and provably did not — still broke 26 tests, because
+> `goldfish.draw_profile` stopped being a patch point the moment it became a
+> re-export, and the affected tests did not ERROR: they compared a channel
+> against itself and reported "3.708 against 3.708 blind", which reads exactly
+> like the channel not firing. A pure move produced four hours of failures that
+> all LOOKED like model regressions.
+>
+> Decomposing `simulate_once` moves 239 locals and ten closures into a state
+> object, which is not a pure move: it changes what is shared, what is copied,
+> and the order in which the RNG is consumed. The byte-identical proof would
+> catch a difference, and the debugging would be the same shape as above with a
+> worse signal-to-noise ratio.
+>
+> The file is now 1,440 lines with the turn loop alone in `goldfish_turn.py`,
+> which was most of the readability win. This stays open as its own task.
 
 The deep half, and it should be a separate sub-phase with its own byte-identical
 proof. `simulate_once` is 1,999 lines with 239 assigned locals, 10 nested

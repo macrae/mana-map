@@ -957,9 +957,23 @@ def add_pilot_parser(subparsers):
 
 
 def run_pilot_step(args):
-    """Dispatch a parsed pilot command to its module's main(args)."""
+    """Dispatch a parsed pilot command to its module's main(args).
+
+    A MALFORMED DECLARATION IS A REFUSAL, NOT A CRASH, and it is converted HERE
+    so every command gets the same treatment. `goldfish.run` used to raise
+    `SystemExit` for this — which is correct at a terminal and wrong in a
+    library, because four commands call `run` IN PROCESS and one deck's bad
+    `goldfish_targets.json` ended whatever sweep was running. It raises
+    `DeclarationError` now; this puts the terminal behaviour back without
+    putting the decision back into the library.
+    """
+    from manamap.pilot.goldfish import DeclarationError
+
     for name, module_path, _ in PILOT_STEPS:
         if name == args.pilot_command:
-            importlib.import_module(module_path).main(args)
+            try:
+                importlib.import_module(module_path).main(args)
+            except DeclarationError as bad:
+                raise SystemExit(str(bad))
             return
     raise ValueError(f"Unknown pilot command: {args.pilot_command!r}")

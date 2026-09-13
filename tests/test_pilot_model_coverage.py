@@ -19,6 +19,8 @@ had already been hit the expensive way and the flags turned on.
 
 import pytest
 
+from conftest import simulator_source
+
 from manamap.pilot import model_coverage as mc
 
 SLUG = "gishath"
@@ -37,7 +39,7 @@ def test_every_channel_names_a_real_flag_or_is_always_on():
     from manamap.pilot import goldfish
     import inspect
 
-    source = inspect.getsource(goldfish)
+    source = simulator_source()
     checked = 0
     for channel, flag in mc.CHANNELS.items():
         if flag is None:
@@ -217,8 +219,7 @@ def test_the_modelled_trigger_set_matches_what_goldfish_branches_on():
 
     from manamap.pilot.model_coverage import _MODELLED_TREASURE_TRIGGERS
 
-    src = (Path(__file__).resolve().parent.parent
-           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    src = simulator_source()
     branched = set()
     for m in re.finditer(r'card\["treasure_trigger"\]\s+in\s+\(([^)]*)\)', src):
         branched |= set(re.findall(r'"([a-z_]+)"', m.group(1)))

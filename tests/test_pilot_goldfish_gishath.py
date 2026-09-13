@@ -149,7 +149,11 @@ def test_a_declaration_without_a_rate_or_source_is_refused():
     doc = json.load(open("data/decks/gishath/goldfish_targets.json"))
     bad = copy.deepcopy(doc)
     bad["model_commander_combat_reveal"] = {"type": "Dinosaur"}
-    with pytest.raises(SystemExit, match="connects_per_attack"):
+    # `DeclarationError`, not `SystemExit`: `run` is called IN PROCESS by four
+    # commands, so a malformed declaration must not end the process. `main`
+    # converts it, and `registry.run_pilot_step` converts it for every other
+    # command — the terminal behaviour is unchanged.
+    with pytest.raises(goldfish.DeclarationError, match="connects_per_attack"):
         goldfish.run("gishath", quiet=True, iterations=10, _targets_doc=bad)
 
 

@@ -25,7 +25,7 @@ import pytest
 
 from manamap.pilot import goldfish
 
-from conftest import requires_data, requires_deck
+from conftest import simulator_source, patch_model, requires_data, requires_deck
 from manamap.config import DATA_DIR
 
 
@@ -177,7 +177,7 @@ def test_a_qualifier_the_model_cannot_evaluate_is_not_guessed_at():
 
 @requires_data
 @requires_deck
-def test_the_drain_channels_move_the_clock():
+def test_the_drain_channels_move_the_clock(monkeypatch):
     """A FLAG THE MODEL SETS IS A CLAIM THE MODEL MUST ACT ON. `treasure_doubler`
     shipped set-and-unread and fifteen candidates returned byte-identical
     -0.026. Byte-identical is the tell; this asserts against it."""
@@ -190,11 +190,8 @@ def test_the_drain_channels_move_the_clock():
         return p
 
     on = goldfish.run("edgar-vampires", iterations=1200, quiet=True)
-    goldfish.combat_profile = blind
-    try:
-        off = goldfish.run("edgar-vampires", iterations=1200, quiet=True)
-    finally:
-        goldfish.combat_profile = real
+    patch_model(monkeypatch, "combat_profile", blind)
+    off = goldfish.run("edgar-vampires", iterations=1200, quiet=True)
     a = on["metrics"]["mean_bodies_by_turn"]
     b = off["metrics"]["mean_bodies_by_turn"]
     # Bodies are untouched by a drain channel — the control that proves the two
@@ -289,7 +286,7 @@ def test_the_stricter_keep_threshold_is_reported_beside_the_loose_one():
 
 @requires_data
 @requires_deck
-def test_an_arrival_draw_engine_does_not_see_its_own_arrival():
+def test_an_arrival_draw_engine_does_not_see_its_own_arrival(monkeypatch):
     """RE-INTRODUCING THE CONDITION, on the card that carried the bug.
 
     Welcoming Vampire is a 2/3 that draws "whenever one or more OTHER creatures
@@ -312,12 +309,9 @@ def test_an_arrival_draw_engine_does_not_see_its_own_arrival():
 
     fixed = goldfish.run("edgar-vampires", iterations=2000, quiet=True,
                          model_draw=True)["metrics"]
-    goldfish.draw_profile = eager
-    try:
-        loosened = goldfish.run("edgar-vampires", iterations=2000, quiet=True,
-                                model_draw=True)["metrics"]
-    finally:
-        goldfish.draw_profile = real
+    patch_model(monkeypatch, "draw_profile", eager)
+    loosened = goldfish.run("edgar-vampires", iterations=2000, quiet=True,
+                            model_draw=True)["metrics"]
     a = fixed["mean_extra_cards_drawn_by_turn"]["10"]
     b = loosened["mean_extra_cards_drawn_by_turn"]["10"]
     assert b > a, (
@@ -487,16 +481,13 @@ def test_an_untyped_cast_trigger_is_left_unmodelled_rather_than_fired_on_all():
 
 @requires_data
 @requires_deck
-def test_eminence_tokens_actually_reach_the_battlefield():
+def test_eminence_tokens_actually_reach_the_battlefield(monkeypatch):
     """A FLAG THE MODEL SETS IS A CLAIM THE MODEL MUST ACT ON. Driven by
     suppressing the profile: with the engine blind, the bodies must fall."""
     real = goldfish.cast_token_profile
     on = goldfish.run("edgar-vampires", iterations=1500, quiet=True)
-    goldfish.cast_token_profile = lambda card: None
-    try:
-        off = goldfish.run("edgar-vampires", iterations=1500, quiet=True)
-    finally:
-        goldfish.cast_token_profile = real
+    patch_model(monkeypatch, "cast_token_profile", lambda card: None)
+    off = goldfish.run("edgar-vampires", iterations=1500, quiet=True)
     a = on["metrics"]["mean_bodies_by_turn"]["10"]
     b = off["metrics"]["mean_bodies_by_turn"]["10"]
     assert a > b * 1.15, (
@@ -639,7 +630,7 @@ def test_a_token_doubler_is_permanent_and_is_exactly_twice(name, text, expect):
 
 @requires_data
 @requires_deck
-def test_the_doublers_actually_double_the_tokens_that_fight():
+def test_the_doublers_actually_double_the_tokens_that_fight(monkeypatch):
     """`treasure_doubler` shipped with the Treasure model and its own comment
     calls the shape "Procession-style xN" — but it only ever multiplied
     Treasures. Anointed Procession, Elspeth and Mondrak doubled nothing that
@@ -650,11 +641,8 @@ def test_the_doublers_actually_double_the_tokens_that_fight():
     """
     real = goldfish.token_doubler
     on = goldfish.run("edgar-vampires", branch=None, iterations=2000, quiet=True)
-    goldfish.token_doubler = lambda c: False
-    try:
-        off = goldfish.run("edgar-vampires", branch=None, iterations=2000, quiet=True)
-    finally:
-        goldfish.token_doubler = real
+    patch_model(monkeypatch, "token_doubler", lambda c: False)
+    off = goldfish.run("edgar-vampires", branch=None, iterations=2000, quiet=True)
     a = on["metrics"]["mean_bodies_by_turn"]["10"]
     b = off["metrics"]["mean_bodies_by_turn"]["10"]
     assert a > b, f"doublers changed nothing: {a} vs {b} — the flag is unread"
@@ -663,6 +651,6 @@ def test_the_doublers_actually_double_the_tokens_that_fight():
 def test_two_doublers_are_four_times_and_not_three():
     """Each replaces the other's output, which is why this compounds rather than
     sums — the same arithmetic `treasure_multiplier` already documents."""
-    src = __import__("inspect").getsource(goldfish)
+    src = simulator_source()
     assert "token_multiplier *= 2" in src, (
         "the doubler must multiply; adding would make two doublers x3")

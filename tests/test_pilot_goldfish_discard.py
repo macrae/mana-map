@@ -15,7 +15,7 @@ import pytest
 
 from manamap.config import OUTPUT_CSV_PATH
 from manamap.pilot import goldfish
-from conftest import requires_data, requires_deck
+from conftest import patch_model, requires_data, requires_deck
 
 
 def _spell(text, type_line="Sorcery", name="a spell", mana_cost="{2}{R}"):
@@ -103,7 +103,7 @@ def test_sharknado_wheels_and_the_partner_is_cast(monkeypatch):
     real = goldfish.draw_profile
     def blind(card):
         d = real(card); d["wheel_draws"] = 0; return d
-    monkeypatch.setattr(goldfish, "draw_profile", blind)
+    patch_model(monkeypatch, "draw_profile", blind)
     blinded = goldfish.run("sharknado", branch="recon-v1", iterations=1200, quiet=True, model_discard=True)["metrics"]
     assert blinded["mean_extra_cards_drawn_by_turn"]["8"] < on["mean_extra_cards_drawn_by_turn"]["8"] * 0.6
 

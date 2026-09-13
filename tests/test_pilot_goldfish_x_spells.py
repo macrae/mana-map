@@ -26,7 +26,7 @@ import pytest
 
 from manamap.pilot import goldfish
 
-from conftest import requires_data, requires_deck
+from conftest import patch_model, requires_data, requires_deck
 
 
 def _spell(name, text, mana_cost, cmc, type_line="Sorcery"):
@@ -155,7 +155,7 @@ def test_the_whole_family_is_read_and_every_skip_is_deliberate():
 
 @requires_data
 @requires_deck
-def test_the_channel_carries_a_deck_that_is_built_out_of_it():
+def test_the_channel_carries_a_deck_that_is_built_out_of_it(monkeypatch):
     """Driven by BLINDING THE PROFILE rather than by re-deriving the rule: zero
     the multiplier and heliod must report far fewer cards. Measured at the time:
     3.44 extra cards by turn ten against 0.72 blind — a 4.8x figure on a deck
@@ -168,11 +168,8 @@ def test_the_channel_carries_a_deck_that_is_built_out_of_it():
         return p
 
     on = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    goldfish.draw_profile = blind
-    try:
-        off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    finally:
-        goldfish.draw_profile = real
+    patch_model(monkeypatch, "draw_profile", blind)
+    off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     a = on["mean_extra_cards_drawn_by_turn"]["10"]
     b = off["mean_extra_cards_drawn_by_turn"]["10"]
     assert a > 3 * b, (
@@ -182,7 +179,7 @@ def test_the_channel_carries_a_deck_that_is_built_out_of_it():
 
 @requires_data
 @requires_deck
-def test_casting_last_does_not_starve_the_board():
+def test_casting_last_does_not_starve_the_board(monkeypatch):
     """THE CONSERVATIVE CLAIM, and the reason the loop sits after every other
     one. An X spell here can only ever spend mana nothing else wanted, so
     switching the channel on must not cost the deck its board — a loop placed
@@ -197,31 +194,27 @@ def test_casting_last_does_not_starve_the_board():
         return p
 
     on = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    goldfish.draw_profile = blind
-    try:
-        off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    finally:
-        goldfish.draw_profile = real
+    patch_model(monkeypatch, "draw_profile", blind)
+    off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     assert (on["combat"]["mean_board_power_by_turn"]["6"]
             >= off["combat"]["mean_board_power_by_turn"]["6"])
 
 
 @requires_data
 @requires_deck
-def test_the_floor_stops_the_model_burning_the_card_for_nothing():
+def test_the_floor_stops_the_model_burning_the_card_for_nothing(monkeypatch):
     """`X_DRAW_MIN` is the one authored number in this channel, so it gets the
     test that shows it earns its place. Drop it to zero and the model casts
     Stroke of Genius the turn its three fixed mana are affordable, draws
     nothing, and no longer has the card for the turn it could have drawn five.
     Measured: 3.44 extra cards by turn ten at the floor against 3.03 without it.
     """
-    old = goldfish.X_DRAW_MIN
     at_floor = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    goldfish.X_DRAW_MIN = 0
-    try:
-        no_floor = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
-    finally:
-        goldfish.X_DRAW_MIN = old
+    # `patch_model`, not `goldfish.X_DRAW_MIN = 0` — the constant is read inside
+    # `goldfish_turn`, and a re-export is not a patch point. monkeypatch undoes
+    # it, so the old save/restore pair is gone.
+    patch_model(monkeypatch, "X_DRAW_MIN", 0)
+    no_floor = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     assert (at_floor["mean_extra_cards_drawn_by_turn"]["10"]
             > no_floor["mean_extra_cards_drawn_by_turn"]["10"]), (
         "casting X spells for nothing should draw FEWER cards over the game — "

@@ -9,8 +9,12 @@ is measuring, why it fails, and **who or what unblocks it**. A row leaves this
 page when the test is green, never because the test was changed to suit the
 artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-12**, **5 failing /
-3,729 passing** / 9 skipped / 7 xfailed, 522 s.
+Last verified against **`make test-fresh`**: **2026-09-13**, **5 failing /
+3,504 passing** / 9 skipped / 3 xfailed, 436 s.
+
+*The passing count fell because the magazine renderer and its nine test files
+were deleted on 2026-09-13, not because anything regressed. Four of the xfails
+went with it.*
 
 **FIVE REDS, THREE ROOT CAUSES** — the count has always been the less useful
 number:

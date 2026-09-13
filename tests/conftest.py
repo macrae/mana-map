@@ -321,6 +321,64 @@ def _cache_key(nodeid):
     return f"{_CACHE_PREFIX}/{nodeid.replace('/', '__').replace('::', '--')}"
 
 
+def simulator_source():
+    """The goldfish's source, ALL FOUR FILES, concatenated.
+
+    Several tests assert on the simulator's source TEXT — that a channel is
+    reachable from a casting loop, that a trigger set matches what the turn loop
+    branches on. That is a deliberate pattern here: it is how a test proves a
+    flag is acted on rather than merely set, which is a class of bug this repo
+    has shipped five times.
+
+    They read `pilot/goldfish.py`. The 2026-09-13 split moved the card readers
+    and the turn loop into their own modules, so those greps found nothing and
+    every one of them went green-by-absence — an assertion looking for an idiom
+    in a file that no longer contains any idioms at all.
+
+    One reader, derived from `goldfish._MODEL_FILES`, so a fifth module joins
+    automatically.
+    """
+    from manamap.pilot import goldfish
+
+    here = Path(goldfish.__file__).parent
+    return "\n".join((here / name).read_text(encoding="utf-8")
+                      for name in sorted(goldfish._MODEL_FILES))
+
+
+def patch_model(monkeypatch, name, value):
+    """Patch a simulator name EVERYWHERE it is bound, and assert it landed.
+
+    THE SPLIT MADE A RE-EXPORT NOT A PATCH POINT. `goldfish.py` re-exports the
+    card readers so every caller that reads `goldfish.draw_profile` keeps
+    working — but `classify` resolves `draw_profile` in `goldfish_library`'s
+    OWN namespace, so `goldfish.draw_profile = blind` changed a name nothing
+    called. The affected tests did not error; they compared a channel against
+    itself and reported "3.708 against 3.708 blind", which reads exactly like
+    the channel not firing.
+
+    Same defect as the deck root in #31, one layer in: a `from`-import is a
+    COPY, and which modules hold a copy is an implementation detail a test
+    should not have to track. This sets the name on every simulator module that
+    has it and FAILS if that is none — so a rename cannot make a patch quietly
+    do nothing.
+    """
+    import importlib
+
+    from manamap.pilot import goldfish
+
+    landed = []
+    for file_name in goldfish._MODEL_FILES:
+        module = importlib.import_module(
+            "manamap.pilot." + file_name[:-len(".py")])
+        if hasattr(module, name):
+            monkeypatch.setattr(module, name, value)
+            landed.append(module.__name__.rsplit(".", 1)[-1])
+    assert landed, (
+        f"{name!r} is bound in no simulator module — the patch would have done "
+        f"nothing, which is how a channel comes to be compared against itself")
+    return landed
+
+
 def _cache_of(config):
     """pytest's cache, or None when the cacheprovider plugin is not loaded.
 

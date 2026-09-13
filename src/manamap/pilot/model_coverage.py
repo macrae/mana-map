@@ -60,6 +60,31 @@ CHANNELS = {
 #: is not a channel in the same sense — a deck cannot forget to turn it on.
 DEFAULT_ON = ("model_colors",)
 
+#: FLAGS THAT ARE NOT A CASTING CHANNEL, each with the reason it is not.
+#:
+#: A card is DARK when it feeds a channel whose flag is off. These three gate
+#: something other than a channel, so a card cannot be dark on them — but they
+#: were in no channel and in no exemption either, which made them invisible to
+#: the command whose entire job is naming what the model cannot see.
+#:
+#: `test_every_model_flag_is_visible_to_model_coverage` derives the flag list
+#: from `run()`, so a new one fails until it is classified here or above. That
+#: matters because the two worst measurement errors this project has had were
+#: both a commander ability the model did not read: eminence absent entirely,
+#: and the attack tutor firing 5.70 times a game against Forge's 1.22.
+NOT_A_CHANNEL = {
+    # A TRIGGER, not a cast. `model_deaths` decides whether creatures die at
+    # all; the cards that PAY OFF a death are already covered by `sacrifice`
+    # and `drain`, and a death payoff with no outlet is dark on those.
+    "model_deaths": "gates a game event, not a casting channel",
+    # ONE CARD IN THE CORPUS EACH. Declared per deck rather than parsed,
+    # because a commander ability only one card has is not a pattern — see
+    # zur-enchantress, where modelling both of Zur's abilities took kill-by-t8
+    # from 0.153 to 0.327 on an unchanged 99.
+    "model_commander_animate": "a per-deck commander declaration, not a channel",
+    "model_commander_combat_reveal": "a per-deck commander declaration, not a channel",
+}
+
 
 #: The trigger values `goldfish`'s turn loop actually branches on. Anything
 #: else — the "unmodelled" sentinel above all — produces no Treasure whatever

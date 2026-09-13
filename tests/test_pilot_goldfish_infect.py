@@ -20,7 +20,7 @@ import pytest
 
 from manamap.config import OUTPUT_CSV_PATH
 from manamap.pilot import goldfish
-from conftest import requires_data, requires_deck
+from conftest import patch_model, requires_data, requires_deck
 
 INGRIS = {
     "name": "Ingris Stingerquill",
@@ -80,7 +80,7 @@ def test_an_infect_deck_wins_on_poison_and_a_plain_deck_never_does(monkeypatch):
     assert c["mean_poison_by_turn"]["8"] > c["mean_poison_by_turn"]["4"] > 0
     # PROVEN BY REMOVING THE CLOCK: with the threshold out of reach every kill
     # is a life kill and it comes later, so the figure above is the poison.
-    monkeypatch.setattr(goldfish, "GOLDFISH_POISON_TO_LOSE", 10 ** 9)
+    patch_model(monkeypatch, "GOLDFISH_POISON_TO_LOSE", 10 ** 9)
     off = goldfish.run("ingris-infect", iterations=1500, quiet=True)["metrics"]["combat"]
     assert off["kill_by_poison_rate"] == 0.0
     assert off["mean_kill_turn"] > c["mean_kill_turn"]

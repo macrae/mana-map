@@ -16,7 +16,7 @@ the mana model was colourless.
 
 import pytest
 
-from conftest import requires_data, requires_deck
+from conftest import patch_model, requires_data, requires_deck
 from manamap.pilot import goldfish
 
 
@@ -190,7 +190,7 @@ def test_the_commander_zone_reducer_is_read_from_the_commander():
 
 @requires_data
 @requires_deck
-def test_pricing_a_deck_correctly_moves_what_it_casts_and_not_what_it_draws():
+def test_pricing_a_deck_correctly_moves_what_it_casts_and_not_what_it_draws(monkeypatch):
     """THE INTERNAL CONSISTENCY CHECK, and it is the one that says the change is
     real rather than a bug. A goldfish target asks whether a card was DRAWN, and
     drawing does not care what anything costs — so every assembly rate must be
@@ -200,11 +200,8 @@ def test_pricing_a_deck_correctly_moves_what_it_casts_and_not_what_it_draws():
     # Re-run with every reduction stripped: same seed, same shuffle, and the
     # ONLY difference is what things cost.
     real = goldfish.cost_reduction
-    try:
-        goldfish.cost_reduction = lambda *a, **k: None
-        without = goldfish.run("ur-dragon", iterations=400, seed=7, quiet=True)
-    finally:
-        goldfish.cost_reduction = real
+    patch_model(monkeypatch, "cost_reduction", lambda *a, **k: None)
+    without = goldfish.run("ur-dragon", iterations=400, seed=7, quiet=True)
 
     a = {t["label"]: t["assembled_rate"] for t in without["metrics"]["targets"]}
     b = {t["label"]: t["assembled_rate"] for t in with_red["metrics"]["targets"]}

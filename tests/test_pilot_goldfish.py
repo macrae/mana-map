@@ -14,7 +14,7 @@ from manamap.pilot.goldfish import (
     simulate_once,
 )
 
-from conftest import requires_deck
+from conftest import simulator_source, requires_deck
 
 
 def card(name, type_line="Creature — Goblin", cmc=2, oracle="", quantity=1,
@@ -569,8 +569,7 @@ def test_a_death_rate_without_a_source_is_refused():
     """
     import pathlib as _pl
 
-    src = (_pl.Path(__file__).resolve().parent.parent
-           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    src = simulator_source()
     assert '"own_per_turn", "opponent_per_turn", "source"' in src, (
         "the required-key list moved; the source requirement is the point")
     assert "engine lift" in src or "engine_online" in src, (
@@ -704,8 +703,7 @@ def test_a_permanent_worth_only_its_type_is_still_castable():
     """
     from manamap.pilot import goldfish
 
-    src = (__import__("pathlib").Path(__file__).resolve().parent.parent
-           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    src = simulator_source()
     assert "scaled_types" in src
     assert "scales_with" in src and "team_counters_scale_type" in src, (
         "the set must be built from BOTH scaling sources, or a Shrine that only "
@@ -812,8 +810,7 @@ def test_the_animation_is_declared_because_one_card_in_the_corpus_has_it():
     """
     import pathlib as _pl
 
-    src = (_pl.Path(__file__).resolve().parent.parent
-           / "src/manamap/pilot/goldfish.py").read_text(encoding="utf-8")
+    src = simulator_source()
     assert "model_commander_animate" in src
     assert '"cost", "scope"' in src, "both must be required, as for the tutor"
     # An animated permanent has been under your control since the turn began, so

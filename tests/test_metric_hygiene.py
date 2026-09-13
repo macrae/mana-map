@@ -103,11 +103,20 @@ def test_every_signal_the_model_sets_is_read_by_something():
     whitelisted BY NAME, because a silent whitelist is how this check would
     rot into the thing it replaced.
     """
-    src = (ROOT / "src/manamap/pilot/goldfish.py").read_text()
-    tree = ast.parse(src)
+    # THE SIMULATOR IS FOUR FILES since 2026-09-13. `classify` lives in
+    # `goldfish_library` and the turn loop that reads its keys in
+    # `goldfish_turn`, so a sweep over `goldfish.py` alone would find the
+    # emitter in neither and every reader in none — and would then report every
+    # flag as dead, or (worse, if it found `classify`) report every flag as
+    # unread. Parsing all four is what keeps the question the same one.
+    from manamap.pilot import goldfish
+
+    here = ROOT / "src/manamap/pilot"
+    trees = [ast.parse((here / name).read_text())
+             for name in sorted(goldfish._MODEL_FILES)]
 
     def _fn(name):
-        return next(n for n in ast.walk(tree)
+        return next(n for tree in trees for n in ast.walk(tree)
                     if isinstance(n, ast.FunctionDef) and n.name == name)
 
     emitted = {k.value for d in ast.walk(_fn("classify"))
@@ -117,7 +126,7 @@ def test_every_signal_the_model_sets_is_read_by_something():
     inside = {n.slice.value for n in ast.walk(_fn("classify"))
               if isinstance(n, ast.Subscript) and isinstance(n.slice, ast.Constant)
               and isinstance(n.slice.value, str)}
-    read = {n.slice.value for n in ast.walk(tree)
+    read = {n.slice.value for tree in trees for n in ast.walk(tree)
             if isinstance(n, ast.Subscript) and isinstance(n.slice, ast.Constant)
             and isinstance(n.slice.value, str)} - inside
 
@@ -164,3 +173,158 @@ def test_the_axis_registry_and_its_flag_map_agree():
             assert axis in candidates.AXIS_NEEDS, axis
     for axis in candidates.AXIS_NEEDS:
         assert axis in candidates.AXES, axis
+
+
+# ── The model's version, after the 2026-09-13 split ─────────────────────────
+
+def test_the_model_version_covers_every_file_the_simulator_is_made_of():
+    """A STAMP OVER ONE FILE OF FOUR IS A STAMP THAT LIES.
+
+    `model_version` hashed `__file__`, which was right while the simulator was
+    one 5,830-line file. The split moved the card readers and the turn loop into
+    their own modules — so a changed regex or a changed casting rule would no
+    longer have moved the version, and every artifact deriving from it would
+    have read as CURRENT while the model underneath changed.
+
+    That is the precise failure this stamp exists to prevent, and the
+    refactoring would have created it.
+
+    Re-introducing the bug: hash `__file__` alone and this reds, because editing
+    a profile stops moving the version.
+    """
+    import hashlib
+    from pathlib import Path
+
+    from manamap.pilot import goldfish
+
+    here = Path(goldfish.__file__).parent
+    assert len(goldfish._MODEL_FILES) >= 4, (
+        "the simulator is fewer files than the split produced — did one merge "
+        "back, or did the list go stale?")
+    for name in goldfish._MODEL_FILES:
+        assert (here / name).is_file(), f"{name} is stamped and does not exist"
+
+    before = goldfish.model_version()
+    assert len(before) == 12
+
+    # Every stamped file must MOVE the version. This is the assertion, not the
+    # file list: a module added to the simulator and left out of `_MODEL_FILES`
+    # fails here rather than silently freezing the stamp.
+    for name in goldfish._MODEL_FILES:
+        path = here / name
+        original = path.read_bytes()
+        try:
+            path.write_bytes(original + b"\n# touched by a test\n")
+            assert goldfish.model_version() != before, (
+                f"editing {name} does not move the model version — every "
+                f"artifact derived from it would read as current")
+        finally:
+            path.write_bytes(original)
+    assert goldfish.model_version() == before, "a probe did not restore its file"
+
+
+def test_every_simulator_module_is_stamped():
+    """DERIVED, so a fifth module cannot be added and forgotten."""
+    from pathlib import Path
+
+    from manamap.pilot import goldfish
+
+    here = Path(goldfish.__file__).parent
+    on_disk = {p.name for p in here.glob("goldfish*.py")}
+    stamped = set(goldfish._MODEL_FILES)
+    missing = sorted(on_disk - stamped)
+    assert not missing, (
+        "a simulator module exists and is not in the version stamp:\n  "
+        + "\n  ".join(missing)
+        + "\n(add it to goldfish._MODEL_FILES, or it changes the model silently)")
+
+
+def test_every_model_flag_is_visible_to_model_coverage():
+    """A FLAG THE MODEL READS AND `model-coverage` CANNOT SEE IS A BLIND SPOT IN
+    THE COMMAND WHOSE ONLY JOB IS NAMING BLIND SPOTS.
+
+    `model_coverage.CHANNELS` maps a casting channel to the flag that gates it,
+    and `model-coverage` reports a card as DARK when it feeds a channel whose
+    flag is off. Three flags `run()` reads were in no channel and in no
+    exemption — `model_deaths`, `model_commander_animate` and
+    `model_commander_combat_reveal` — so a deck could declare one, the simulator
+    could act on it, and the command that says "what can the model not see"
+    would not mention it.
+
+    That matters because the two worst measurement errors this project has had
+    were both a commander ability the model did not read: eminence absent
+    entirely (bodies at turn ten understated by 50%) and the attack tutor firing
+    5.70 times a game against Forge's 1.22, which took kill-by-t8 from 0.501 to
+    0.173.
+
+    DERIVED from `run()`'s source, so a new flag fails here until somebody
+    classifies it.
+    """
+    import re
+    from pathlib import Path
+
+    from manamap.pilot import goldfish, model_coverage
+
+    src = Path(goldfish.__file__).read_text()
+    run_src = src[src.index("\ndef run("):]
+    declared = {f for f in re.findall(r"\bmodel_[a-z_]+\b", run_src)}
+    # Not model FLAGS: the version stamp, the assumptions text, and the
+    # coverage preflight's own name.
+    declared -= {"model_version", "model_assumptions", "model_coverage"}
+    assert len(declared) >= 8, f"only {len(declared)} flags found in run(): {declared}"
+
+    known = ({f for f in model_coverage.CHANNELS.values() if f}
+             | set(model_coverage.DEFAULT_ON)
+             | set(model_coverage.NOT_A_CHANNEL))
+    invisible = sorted(declared - known)
+    assert not invisible, (
+        "`run()` reads model flags that `model-coverage` cannot see:\n  "
+        + "\n  ".join(invisible)
+        + "\n(give each a channel in CHANNELS, or list it in NOT_A_CHANNEL with "
+          "a reason — a flag nobody classified is a blind spot in the blind-spot "
+          "detector)")
+
+
+def test_a_malformed_declaration_does_not_kill_the_calling_command():
+    """`run()` RAISED `SystemExit`, AND FOUR COMMANDS CALL IT IN PROCESS.
+
+    `benchmark`, `diagnostic`, `calibrate` and `deck_branch` all call
+    `goldfish.run` directly, so one deck's malformed `goldfish_targets.json`
+    ended whatever command was running — mid-sweep, that is a fleet
+    regeneration abandoned at deck three with a message about a file nobody
+    asked about. A library does not get to decide that the process should end.
+
+    It raises `DeclarationError` now, and `registry.run_pilot_step` converts it
+    back to `SystemExit` so the terminal behaves exactly as before.
+
+    Re-introducing the bug: change `DeclarationError` back to `SystemExit` in
+    `run()` and the first assertion fails — the caller can no longer catch it
+    without catching a process exit.
+    """
+    from manamap.pilot.goldfish import DeclarationError
+
+    assert issubclass(DeclarationError, ValueError), (
+        "a caller must be able to catch this without catching SystemExit")
+    assert not issubclass(DeclarationError, SystemExit)
+
+    # And the declaration refusals inside `run` use it.
+    import re
+    from pathlib import Path
+
+    from manamap.pilot import goldfish
+
+    # SLICE `run` PRECISELY. A naive slice to end-of-file swept in `main`'s
+    # own conversion and the `__main__` guard — both of which SHOULD exit.
+    import ast
+
+    src = Path(goldfish.__file__).read_text()
+    tree = ast.parse(src)
+    fn = next(n for n in tree.body
+              if isinstance(n, ast.FunctionDef) and n.name == "run")
+    run_src = "\n".join(src.splitlines()[fn.lineno - 1:fn.end_lineno])
+    exits = len(re.findall(r"raise SystemExit", run_src))
+    typed = len(re.findall(r"raise DeclarationError", run_src))
+    assert typed >= 4, f"only {typed} declaration refusals are typed"
+    assert exits == 0, (
+        f"`run()` still raises SystemExit {exits} time(s) — it is called in "
+        f"process by four commands")

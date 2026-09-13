@@ -29,7 +29,7 @@ import pytest
 
 from manamap.pilot import goldfish
 
-from conftest import requires_data, requires_deck
+from conftest import patch_model, requires_data, requires_deck
 
 
 def _card(name, text, cmc=3, type_line="Creature — Dragon", power="4",
@@ -530,7 +530,7 @@ def test_the_payoffs_move_the_damage_they_are_played_for():
 
 
 @requires_deck
-def test_the_commander_is_on_the_battlefield_and_swings():
+def test_the_commander_is_on_the_battlefield_and_swings(monkeypatch):
     """It used to be cast and dropped — a flag and a mana sink. A 10/10 flier
     that never attacked, which is an entire stated win condition measured as
     zero."""
@@ -538,15 +538,18 @@ def test_the_commander_is_on_the_battlefield_and_swings():
     from manamap.pilot.common import load_deck_cards
     doc = load_deck_cards("ur-dragon")
     real = goldfish.combat_profile
-    try:
-        # Re-introduce the bug: a commander with no combat profile cannot join
-        # the battlefield, which is exactly the old behaviour.
-        goldfish.combat_profile = lambda c: dict(real(c), is_creature=False)
+    # Re-introduce the bug: a commander with no combat profile cannot join
+    # the battlefield, which is exactly the old behaviour.
+    # SCOPED, not test-lifetime. The patched arm is the one measured WITHOUT the
+    # commander; the comparison arm below must run unpatched, and a patch that
+    # outlives its arm makes both arms the same measurement — which reads
+    # exactly like the commander contributing nothing.
+    with monkeypatch.context() as scoped:
+        patch_model(scoped, "combat_profile",
+                    lambda c: dict(real(c), is_creature=False))
         without = goldfish.run("ur-dragon", doc=copy.deepcopy(doc), quiet=True,
                                iterations=1200, seed=11
                                )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
-    finally:
-        goldfish.combat_profile = real
     with_cmd = goldfish.run("ur-dragon", quiet=True, iterations=1200, seed=11
                             )["metrics"]["combat"]["mean_damage_by_turn"]["10"]
     assert with_cmd > without, (
@@ -698,17 +701,18 @@ def test_a_granted_creature_swings_the_turn_it_lands():
 
 
 @requires_deck
-def test_ur_dragon_reads_its_two_grants_and_they_are_worth_something():
+def test_ur_dragon_reads_its_two_grants_and_they_are_worth_something(monkeypatch):
     """Prove by re-introducing the gap: blind `team_haste` and the two grants
     the deck runs (Dragon Tempest, Temur Ascendancy) are read as nothing again.
     Same seed, same draws, so the difference is the grants alone."""
     real = goldfish.combat_profile
-    try:
-        goldfish.combat_profile = lambda c: dict(real(c), team_haste=None)
+    # SCOPED to the blind arm. `seen` must run unpatched or both arms are the
+    # same measurement and the assertion compares a number with itself.
+    with monkeypatch.context() as scoped:
+        patch_model(scoped, "combat_profile",
+                    lambda c: dict(real(c), team_haste=None))
         blind = goldfish.run("ur-dragon", quiet=True, iterations=3000, seed=7
                              )["metrics"]["combat"]["kill_by_turn_rate"]
-    finally:
-        goldfish.combat_profile = real
     seen = goldfish.run("ur-dragon", quiet=True, iterations=3000, seed=7
                         )["metrics"]["combat"]["kill_by_turn_rate"]
     assert seen["8"] > blind["8"], (seen["8"], blind["8"])

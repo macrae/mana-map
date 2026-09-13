@@ -15,6 +15,8 @@ an enchantment.
 
 import pytest
 
+from conftest import simulator_source
+
 from manamap.pilot import card_pool, goldfish
 
 
@@ -97,7 +99,7 @@ def test_a_cast_draw_card_is_actually_castable():
     profile says exactly what she would have drawn."""
     import inspect
 
-    src = inspect.getsource(goldfish)
+    src = simulator_source()
     assert 'c["draw"]["cast_draw"]' in src, (
         "cast_draw is not in the casting predicate — the channel is unreachable")
 
@@ -107,7 +109,7 @@ def test_the_engine_fires_and_registers_at_both_doors():
     one of them undercounts silently."""
     import inspect
 
-    src = inspect.getsource(goldfish)
+    src = simulator_source()
     assert src.count('_eng["cast_draw"] and _eng["cast_draw_gate"] in _tl') == 2
     assert src.count('or card["draw"]["cast_draw"]') == 2
 

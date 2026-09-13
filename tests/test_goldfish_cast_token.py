@@ -14,6 +14,8 @@ are different events.
 
 import pytest
 
+from conftest import simulator_source
+
 from manamap.pilot import card_pool, goldfish
 
 
@@ -67,14 +69,14 @@ def test_a_cast_token_engine_is_castable():
     class. Sigil has no body, makes no mana and draws nothing."""
     import inspect
 
-    assert 'c["cast_token"]' in inspect.getsource(goldfish), (
+    assert 'c["cast_token"]' in simulator_source(), (
         "cast_token is not in the casting predicate")
 
 
 def test_it_fires_at_both_doors_and_registers_at_both():
     import inspect
 
-    src = inspect.getsource(goldfish)
+    src = simulator_source()
     assert src.count("for _eng in cast_token_engines:") == 2, "one door only"
     assert src.count('cast_token_engines.append(card["cast_token"])') == 2
 
@@ -83,7 +85,7 @@ def test_a_type_gate_is_matched_against_the_type_line_not_the_subtypes():
     """The exact confusion that hid the channel."""
     import inspect
 
-    src = inspect.getsource(goldfish)
+    src = simulator_source()
     assert '_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"' in src
 
 

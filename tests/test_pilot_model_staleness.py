@@ -28,18 +28,29 @@ def test_the_stamp_moves_when_the_simulator_moves(tmp_path, monkeypatch):
     'model-facing' lines. The curated version is the judgement call that goes
     wrong silently; the cost of the coarse one is a regeneration nobody needed
     after a comment edit, which is the cheaper mistake."""
-    import hashlib
     import pathlib
-    original = pathlib.Path(goldfish.__file__).read_bytes()
+
+    # THE SIMULATOR IS FOUR FILES since 2026-09-13, so a fake tree needs all
+    # four. This copied `goldfish.py` alone into tmp and pointed `__file__` at
+    # it; after the split that directory is missing three siblings and the stamp
+    # cannot be computed at all.
+    here = pathlib.Path(goldfish.__file__).parent
+    fake_dir = tmp_path / "sim"
+    fake_dir.mkdir()
+    for name in goldfish._MODEL_FILES:
+        (fake_dir / name).write_bytes((here / name).read_bytes())
+
     before = goldfish.model_version()
-    fake = tmp_path / "goldfish.py"
-    fake.write_bytes(original + b"\n# a comment\n")
-    monkeypatch.setattr(goldfish, "__file__", str(fake))
+    monkeypatch.setattr(goldfish, "__file__", str(fake_dir / "goldfish.py"))
+    assert goldfish.model_version() == before, (
+        "a byte-identical copy of the simulator must stamp identically")
+
+    (fake_dir / "goldfish_profiles.py").write_bytes(
+        (here / "goldfish_profiles.py").read_bytes() + b"\n# a comment\n")
     assert goldfish.model_version() != before, (
-        "editing the simulator did not move its version — the stamp is not "
-        "derived from what it claims to describe")
-    assert goldfish.model_version() == hashlib.sha256(
-        fake.read_bytes()).hexdigest()[:12]
+        "editing a CARD READER did not move the version — the stamp is not "
+        "derived from what it claims to describe, and after the split that is "
+        "two thirds of the simulator")
 
 
 def test_an_unknown_deck_is_not_a_staleness_verdict():

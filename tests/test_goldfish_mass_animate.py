@@ -15,6 +15,8 @@ import re
 
 import pytest
 
+from conftest import simulator_source
+
 from manamap.pilot import card_pool, goldfish
 
 
@@ -92,7 +94,7 @@ def test_two_animators_take_the_easiest_threshold_not_the_last_one():
 
     from manamap.pilot import goldfish
 
-    src = inspect.getsource(goldfish)
+    src = simulator_source()
     assert src.count("min(mass_animate_threshold, _mat)") == 2, (
         "both accumulation sites must take the minimum")
     assert "mass_animate_threshold = card[\"combat\"][\"mass_animate_threshold\"]" \
