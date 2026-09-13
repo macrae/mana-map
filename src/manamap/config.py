@@ -1391,7 +1391,7 @@ AGENT_ROUTINES = {
         "inputs": ["cards:semantic", "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
                    "stacks:passing", "strategy:doc"],
     },
-    # One writer since 2026-08-19 (docs/agent-audit-2026-08-19.md): pilot-notes
+    # One writer since 2026-08-19 (docs/history/agent-audit-2026-08-19.md): pilot-notes
     # replaced manual-writer (six keys) + pilot-coach (two) and owns FIVE. The
     # three it does not own — card_roles, mana_base, upgrades — were retired with
     # the magazine and survive on the published decks as frozen legacy copy that

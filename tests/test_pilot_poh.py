@@ -393,35 +393,13 @@ def test_a_procedure_page_is_measured_to_its_own_end():
     assert any("steps on one page" in n for n in notes), notes
 
 
-# ── one path, one writer ────────────────────────────────────────────────────
-
-def test_only_the_handbook_writes_manuals_p(tmp_path, monkeypatch):
-    """`build-page` and `build-poh` both rendered `manuals/p/<slug>.html`.
-
-    `docs/manual-v5-spec.md` declared the compact page SUPERSEDED by the
-    handbook on 2026-09-02 and both kept writing the same file, so:
-
-      * `deck-branch merge` called `build-page` in its rebuild chain and
-        replaced the merged deck's handbook with a page from a frozen renderer;
-      * `make demo` rendered every handbook via `make manuals` and then
-        overwrote all ten in the next loop;
-      * `validate_poh` reads that path and validated whichever had won;
-      * `build_index`'s `has["page"]` reported a handbook as a page.
-
-    The renderer's own guard was pointed at `manuals/<slug>.html` — the
-    magazine's path, which it does not write — so it protected the wrong file
-    the whole time. It has no default output now.
-    """
-    from types import SimpleNamespace
-
-    from manamap.pilot import build_page
-
-    with pytest.raises(SystemExit) as exc:
-        build_page.main(SimpleNamespace(slug="zur-enchantress", out=None))
-    assert "build-poh" in str(exc.value)
-    assert "manuals/p/" in str(exc.value)
 
 
+# `test_only_the_handbook_writes_manuals_p` was deleted on 2026-09-13 with its
+# subject. It asserted that `build_page` — the compact renderer that shared the
+# handbook's output path and clobbered it from two callers — could no longer
+# write into `manuals/p/`. `build_page` is gone, so the handbook is the only
+# writer by construction rather than by assertion.
 def test_no_live_caller_renders_the_compact_page_over_the_handbook():
     """The two callers that clobbered it, asserted gone from their own sources.
 

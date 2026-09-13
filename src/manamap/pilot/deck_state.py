@@ -93,10 +93,10 @@ def _refresh(slug):
     """`info.json` then the manifest, in that order — the manifest reads neither
     but the deck page reads both, and a half-refreshed pair is the staleness this
     command exists to end."""
-    from manamap.pilot import build_index, deck_info
+    from manamap.pilot import deck_info, deck_manifest
 
     if (deck_dir(slug) / "cards.json").exists():
         deck_info.main(argparse.Namespace(slug=slug, write=True, as_json=False,
                                           verify=False, branch=None))
         print(f"  rewrote data/decks/{slug}/info.json")
-    build_index.main(argparse.Namespace())
+    deck_manifest.main(argparse.Namespace())

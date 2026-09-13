@@ -1,16 +1,17 @@
-"""Pilot: render manuals/index.html — the newsstand.
+"""Pilot: write `data/decks/index.json` — the manifest the whole frontend fetches.
 
-LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
-artifacts nothing regenerates any more (issue_plan.json, the panel keys,
-card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
-page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
-does.
+LIVE, and the reason this file used to be called `build_index`: one scan
+answered two questions, "which decks have a published magazine issue" and
+"which decks can the browser load". The first is gone with the renderer; the
+second is the whole job now.
 
-Issues on a rack, not links in a list (STYLEv3 §12/R5). Deterministic.
+A browser can list neither `data/decks/` nor `stacks/`, so the manifest names
+what is there. Add a deck, run `build-index`, and every page picks it up.
 
-**Run after `build-manual`**: the rack lists decks whose rendered HTML already
-exists, so building the index first silently omits the issue you just made.
-A deck without an `issue.json` sorts last under a sentinel volume of 999.
+`line_cards` lives here too, and is imported by `engine_facts`, `deck_map` and
+`validate_engine`. It has nothing to do with a manifest; it was here because
+the newsstand needed it, and moving it again would be a second migration for
+no reader's benefit.
 """
 
 import json
@@ -19,39 +20,6 @@ import re
 from manamap import config
 from manamap.pilot.common import (
     deck_lifecycle, load_json, presentable, withheld)
-from manamap.config import MANUALS_DIR
-from manamap.pilot.design import stylesheet_link, write_stylesheet
-from manamap.pilot.design import FONT_LINK, badge, barcode, esc
-from manamap.pilot.issue_spec import (
-    MASTHEAD, SERIES_SLUG, STANDING_TAGLINE)
-
-EXTRA_CSS = """
-.newsstand { padding:40px 34px 60px; }
-.stand-head { text-align:center; border-bottom:5px solid var(--ink); padding-bottom:20px;
-              margin-bottom:34px; }
-.rack { display:grid; gap:30px; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); }
-a.issue { display:block; text-decoration:none; color:inherit; background:#fff;
-          border:4px solid var(--ink); box-shadow:9px 9px 0 rgba(0,0,0,.28);
-          transition:transform .12s ease, box-shadow .12s ease; position:relative; }
-a.issue:hover { transform:translate(-3px,-3px); box-shadow:13px 13px 0 rgba(0,0,0,.32); }
-a.issue .vol { background:var(--ink); color:var(--paper); font-family:var(--condensed);
-               text-transform:uppercase; letter-spacing:.2em; font-size:11px;
-               padding:6px 11px; display:flex; justify-content:space-between; }
-a.issue img { width:100%; border-bottom:3px solid var(--ink); }
-a.issue .meta { padding:13px 14px 16px; }
-a.issue h2 { font-family:var(--display); text-transform:uppercase; font-size:1.22em;
-             margin:0 0 5px; line-height:1; }
-a.issue .tag { color:var(--ink-soft); font-size:.9em; margin-bottom:10px; }
-a.issue .stats { display:flex; flex-wrap:wrap; gap:5px; }
-/* Retired issues stay on the rack, muted rather than removed — the record is
-   published and stays readable; only the claim that it is CURRENT is withdrawn. */
-a.issue.is-retired { opacity:.72; }
-a.issue .retired { display:inline-block; font-weight:700; text-transform:uppercase;
-             letter-spacing:.07em; font-size:.72em; border:2px solid currentColor;
-             padding:1px 6px; margin:0 0 7px; }
-.stand-foot { text-align:center; margin-top:44px; font-size:.86em; color:var(--ink-soft); }
-"""
-
 
 
 # A stack scenario names its cards in STRUCTURED fields — the ordered stack, the hand, the
@@ -218,15 +186,17 @@ def _draft_started(deck_path):
 def gather_entries():
     """One scan, two questions — and they are not the same question.
 
-    The newsstand asks "which decks have a published issue?"; the viz asks
-    "which decks can the browser load?". Both used to be answered by the same
-    gate (does `manuals/<slug>.html` exist), which meant a deck could be fully
-    built, validated and rules-verified and still be invisible in the frontend
-    until someone spent an agent budget on magazine prose for it.
+    Every deck with a `cards.json` is admitted; a deck with a brief and no 99
+    yet is a DRAFT and gets its own list, because every consumer of `decks`
+    assumes keys a draft does not have.
 
-    So the scan now admits every deck with a `cards.json` and records
-    `published` per entry. `render_index` filters on it; `write_manifest` does
-    not. Ordered by volume then slug.
+    `published` MEANS THE HANDBOOK EXISTS. It used to mean `manuals/<slug>.html`
+    — that the frozen magazine renderer had run — so a deck could be fully
+    built, validated and rules-verified and still read as unpublished until
+    somebody spent an agent budget on magazine prose for it. The Pilot's
+    Operating Handbook replaced that renderer on 2026-09-02 and is what a reader
+    actually opens, so it is what the word points at now: 8 decks had an issue,
+    12 have a handbook.
     """
     entries = []
     if not config.DECKS_DIR.is_dir():
@@ -256,18 +226,15 @@ def gather_entries():
                     "bracket": brief.get("bracket"),
                     "kept": len(brief.get("must_include") or []),
                     "started": _draft_started(deck_path),
-                    "volume": 999, "published": False,
+                    "published": False,
                 })
             continue
-        published = (MANUALS_DIR / f"{slug}.html").exists()
+        published = (config.MANUALS_DIR / "p" / f"{slug}.html").exists()
         doc = load_json(cards_path)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
 
         issue = load_json(deck_path / "issue.json", {})
-
-        plan = load_json(deck_path / "issue_plan.json", {})
-        coverline = (plan.get("cover") or {}).get("dominant_coverline", "")
 
         verified = sum(
             1 for stack_path in sorted((deck_path / "stacks").glob("*.json"))
@@ -330,7 +297,7 @@ def gather_entries():
         # call sites read; what it means is "a page is rendered for this deck",
         # which is all any of them do with it. The browser cannot list a
         # directory, so presence rides here.
-        has["page"] = (MANUALS_DIR / "p" / f"{slug}.html").exists()
+        has["page"] = (config.MANUALS_DIR / "p" / f"{slug}.html").exists()
 
         # IS THIS DECK BUILT IN PAPER? The workbench's front door filters on it,
         # and no other field answers it — `status` marks only the dead decks, so
@@ -387,12 +354,12 @@ def gather_entries():
             # them; it does not compute them.
             "deletable": not blocked,
             "undeletable_because": blocked,
-            "volume": issue.get("volume", 999),   # sentinel: un-numbered issues sort last
-            "issue_date": issue.get("issue_date", ""),
+            # `volume`, `issue_date` and `coverline` went with the magazine
+            # (2026-09-13). `deck_name` STAYS: it is the deck's authored
+            # display name, and `issue.json` is still where the pilot writes it.
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
             "commander": commander.get("name", slug),
             "image": commander.get("art_crop") or commander.get("image"),
-            "coverline": coverline or issue.get("cover_tagline", ""),
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
@@ -411,69 +378,10 @@ def gather_entries():
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
-    return sorted(entries, key=lambda e: (e["volume"], e["slug"]))
-
-
-def render_index(entries):
-    # The rack shows what actually went to press.
-    issues = []
-    for e in [x for x in entries if x["published"]]:
-        image = (f'<img src="{esc(e["image"])}" alt="{esc(e["commander"])}" loading="lazy">'
-                 if e["image"] else "")
-        stats = [f'{badge("verified")}' if e["verified"] else ""]
-        if e["decisions"]:
-            stats.append(badge("coach"))
-        if e["mean_cast"] is not None:
-            stats.append(badge("data"))
-        # A retired issue stays on the rack and stays clickable — it is a
-        # published record. It just says so on the card, so nobody picks it up
-        # believing the deck is still assembled.
-        retired = f'<div class="retired">{esc(e["status"][1])}</div>' if e.get("status") else ""
-        issues.append(f"""
-  <a class="issue{' is-retired' if e.get("status") else ''}" href="{esc(e["slug"])}.html">
-    <div class="vol"><span>Vol. {e["volume"]:03d}</span><span>{esc(e["issue_date"])}</span></div>
-    {image}
-    <div class="meta">
-      <h2>{esc(e["deck_name"])}</h2>
-      {retired}
-      <div class="tag">{esc(e["coverline"])}</div>
-      <div class="tag" style="font-size:.82em">{esc(e["commander"])} ·
-        {e["verified"]} verified line(s) · {e["decisions"]} decision spread(s)</div>
-      <div class="stats">{"".join(stats)}</div>
-    </div>
-  </a>""")
-    body = "".join(issues) or '<p class="dek">No issues on the rack yet.</p>'
-    # The rack's social preview: the current lead issue's cover art (entries
-    # arrive volume-sorted, so this is Vol. 001's commander crop).
-    lead_art = next((e["image"] for e in entries if e.get("image")), "")
-    og_image_tag = f'<meta property="og:image" content="{esc(lead_art)}">' if lead_art else ""
-    return f"""<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(SERIES_SLUG)} — {esc(MASTHEAD)}</title>
-<meta name="description" content="Commander deck magazines: every combo line cites the Comprehensive Rules, every number is reproducible, and coaching says when it's coaching.">
-<meta property="og:title" content="{esc(SERIES_SLUG)} — {esc(MASTHEAD)}">
-<meta property="og:description" content="Commander deck magazines with a three-tier evidence contract.">
-<meta property="og:type" content="website">
-{og_image_tag}
-{FONT_LINK}
-{stylesheet_link()}
-<style>{EXTRA_CSS}</style></head>
-<body><div class="trim"><div class="newsstand">
-  <div class="stand-head">
-    <h1 class="masthead">{esc(MASTHEAD)}</h1>
-    <div class="series-slug">{esc(SERIES_SLUG)}</div>
-    <p class="dek" style="margin:16px auto 0">{esc(STANDING_TAGLINE)} — one deck per issue.
-      Every combo line machine-checked against the Comprehensive Rules, every number
-      reproducible, and coaching labeled as coaching.</p>
-    {barcode("newsstand")}
-  </div>
-  <div class="rack">{body}</div>
-  <p class="stand-foot">Built by the Mana Map pilot subsystem ·
-    <a href="../viz/index.html">explore the card map</a><br>
-    Unofficial fan content permitted under the Wizards of the Coast Fan Content Policy.</p>
-</div></div></body></html>
-"""
+    # Sorted by SLUG. It was  — the magazine's issue number,
+    # with 999 as the sentinel for a deck that never had one — so the frontend's
+    # deck order was decided by a field no live surface reads.
+    return sorted(entries, key=lambda e: e["slug"])
 
 
 def write_manifest(entries):
@@ -499,8 +407,8 @@ def write_manifest(entries):
             for e in entries if e.get("draft")
         ],
         "decks": [
-            {k: e[k] for k in ("slug", "volume", "deck_name", "commander",
-                               "coverline", "verified", "decisions", "stack_files",
+            {k: e[k] for k in ("slug", "deck_name", "commander",
+                               "verified", "decisions", "stack_files",
                                "stack_cards", "published", "status",
                                "sim_runs", "experiments", "prescriptions",
                                "decision_files", "has",
@@ -518,15 +426,8 @@ def write_manifest(entries):
 
 
 def main(args=None):
-    entries = gather_entries()
-    MANUALS_DIR.mkdir(exist_ok=True)
-    write_stylesheet(MANUALS_DIR)
-    out = MANUALS_DIR / "index.html"
-    out.write_text(render_index(entries), encoding="utf-8")
-    manifest = write_manifest(entries)
-    published = [e for e in entries if e["published"]]
-    print(f"Wrote {out} ({len(published)} issue(s) on the rack)")
-    print(f"Wrote {manifest} (deck manifest for viz/deck.html)")
+    manifest = write_manifest(gather_entries())
+    print(f"Wrote {manifest} (deck manifest for the frontend)")
 
 
 if __name__ == "__main__":

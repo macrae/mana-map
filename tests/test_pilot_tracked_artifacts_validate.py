@@ -28,13 +28,11 @@ from manamap.config import (CARD_ROLES_PATH, COLLECTION_DIR, COMBO_DETAILS_PATH,
 from manamap.pilot.deck_status import VALIDATED
 from manamap.pilot import (
     validate_build,
-    validate_considering,
     validate_deck,
     validate_deck_map,
     validate_diagnosis,
     validate_engine,
     validate_goldfish_targets,
-    validate_issue,
     validate_prescription,
     validate_stack,
     validate_strategic_frame,
@@ -56,9 +54,9 @@ from conftest import module_closure, requires_branch, requires_deck
 #: `GATED` below maps artifact -> module by importing from `deck_status.VALIDATED`,
 #: which is the registry; these are the same modules, named here because the key
 #: has to be computable before the first test runs.
-_VALIDATORS = (validate_build, validate_considering, validate_deck,
+_VALIDATORS = (validate_build, validate_deck,
                validate_deck_map, validate_diagnosis, validate_engine,
-               validate_goldfish_targets, validate_issue, validate_prescription,
+               validate_goldfish_targets, validate_prescription,
                validate_stack, validate_strategic_frame, validate_tutor_guide)
 
 INPUTS = (*module_closure(*_VALIDATORS), CARD_ROLES_PATH, COMBO_DETAILS_PATH,
@@ -178,7 +176,7 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 
 
 #: `<slug>/<artifact>` -> why it fails today. STRICT xfail, the same contract
-#: `ISSUE_XFAIL` uses below: if one starts passing, this table is wrong and the
+#: uses below: if one starts passing, this table is wrong and the
 #: test says so rather than going quiet.
 #:
 #: THIS IS FOR AN ARTIFACT AN AGENT MUST REWRITE, NEVER FOR ONE A COMMAND CAN
@@ -198,12 +196,15 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 #: is wrong and the test says so rather than going quiet" is for. A non-strict
 #: xfail would have swallowed both and left two rebuilt artifacts ungated.
 STALE_XFAIL = {
-    "heliod/considering.json":
-        "the paper check-in of 2026-09-07 replaced fifteen cards, and this one "
-        "is LEGACY besides — the Short List belongs to the frozen magazine "
-        "renderer, whose editor was retired 2026-08-19. Its natural cuts name "
-        "Jace Beleren and Teferi, Time Raveler, both of which the paper list "
-        "already cut, and there is no author left to re-run.",
+    # EMPTY, and that is the point. Its one entry was
+    # `heliod/considering.json` — the retired Short List, an artifact of
+    # the frozen magazine renderer with no author left to re-run it. The
+    # renderer and its validator were deleted on 2026-09-13, so the
+    # artifact is no longer gated and an xfail has nothing to attach to.
+    #
+    # It also resolves #59: `considering.json` was strict-xfailed HERE and
+    # counted invalid by `deck_info.status`, two gates disagreeing about
+    # one file, so an assertion on `status.invalid` could never go green.
 }
 
 
@@ -329,75 +330,6 @@ def test_every_tracked_simulation_run_passes_its_validator(slug, capsys, unchang
 
 
 # ── The two validators that were wired into nothing ──────────────────────
-#
-# THIRD INSTANCE of a defect class this file's own header documents twice.
-# `validate_issue` gates 9 `issue.json` + 9 `issue_plan.json` and reaches into
-# `manual_prose.json` and `tutor_guide.json`; `validate_strategy` gates
-# `strategy.md` and `CHANGELOG.md`, both tracked. Neither was ever run by a
-# test. `deck_status.py` even carries a comment recording `validate-issue`
-# failing live on ur-dragon while `deck-status` reported the deck green.
-#
-# Like `validate_stack`, `validate_issue` takes a SLUG and walks several files,
-# so it cannot ride the filename-keyed map — which is exactly why it was skipped.
-
-#: Decks whose issue fails today, with the reason. STRICT xfail: if one starts
-#: passing, this list is wrong and the test says so rather than going quiet.
-#:
-#: NOT hand-patched. Both are agent-authored prose, and `magazine-editor` was
-#: retired in the 2026-08 pivot — there is no agent left to re-spawn, so the
-#: honest options are to mark them or to delete the artifacts. Marking keeps the
-#: gate live for the other seven and blocks a tenth from joining them.
-ISSUE_XFAIL = {
-    "edgar-vampires":
-        "prose predates THE LOCK's 12 swaps — captions and the roster name "
-        "Sacred Foundry, Diabolic Intent, Demonic Tutor and Cavern of Souls, "
-        "all cut. Fixing it means re-writing copy a retired agent authored.",
-    "ur-dragon":
-        "quotes '31 lands' in three places — the DISTINCT-CARD count, where "
-        "the deck runs 36 copies. The copies-vs-entries defect this repo "
-        "documents, live in tracked prose.",
-    "heliod":
-        "prose predates the paper check-in of 2026-09-07, whose fifteen swaps "
-        "took out the entire kill the issue is written around — the-kill names "
-        "Aetherflux Reservoir and Grand Abolisher, at-the-table names Drannith "
-        "Magistrate, sources-say names Ancient Tomb. THIRD deck to land here for "
-        "the same reason and by the same route: the magazine renderer is frozen "
-        "and magazine-editor was retired 2026-08-19, so a deck that changes after "
-        "its issue shipped has no author left to re-run. That is what makes the "
-        "compact deck page (docs/manual-v5-spec.md) the replacement rather than a "
-        "preference.",
-}
-
-
-def _issue_slugs():
-    if not DECKS_DIR.is_dir():
-        return []
-    return sorted(d.name for d in DECKS_DIR.iterdir()
-                  if d.is_dir() and (d / "issue.json").exists())
-
-
-@requires_deck
-@pytest.mark.parametrize("slug", _issue_slugs())
-def test_every_tracked_issue_passes_validate_issue(slug, capsys, unchanged, request):
-    if slug in ISSUE_XFAIL:
-        request.node.add_marker(
-            pytest.mark.xfail(strict=True, reason=ISSUE_XFAIL[slug]))
-    unchanged(*INPUTS, DECKS_DIR / slug)
-    from manamap.pilot import validate_issue
-    try:
-        validate_issue.main(type("Args", (), {"slug": slug, "strict": False})())
-    except SystemExit as exit_:
-        if exit_.code:
-            pytest.fail(f"{slug} fails validate-issue:\n{capsys.readouterr().out}")
-
-
-def test_the_issue_gate_actually_has_cases():
-    """NON-EMPTY GUARD. Nine issues are tracked; a parametrize that yields zero
-    would pass forever while gating nothing — which is the state this test was
-    added to end."""
-    assert len(_issue_slugs()) >= 5, _issue_slugs()
-
-
 def test_the_strategy_doc_passes_its_validator(capsys):
     """`strategy.md` and `CHANGELOG.md` are tracked, and every `strategy:<id>`
     citation in the fleet resolves against them. Ungated until now."""

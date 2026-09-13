@@ -226,7 +226,21 @@ def test_a_stale_prescription_is_form_checked_only(deck):
 
 
 def test_the_short_list_stages_are_retired_from_deck_status():
+    """The Short List is gone from both registries now.
+
+    It asserted `considering.json` was STILL in `VALIDATED` — "the frozen legacy
+    files are still gated, just not a lifecycle stage" — which was the right
+    shape while the magazine existed: retired from the sequence, kept under a
+    gate. Its validator was deleted with the renderer on 2026-09-13, so there is
+    nothing left to gate it WITH, and a registry entry pointing at a module that
+    is not there is worse than no entry.
+
+    This also settles #59: `considering.json` was strict-xfailed in
+    `test_pilot_tracked_artifacts_validate` and simultaneously counted invalid
+    by `deck_info.status`, so an assertion on `status.invalid` could never go
+    green whatever anyone fixed.
+    """
     stages = {s[0] for s in deck_status.STAGES}
     assert "shortlist" not in stages and "shortlist-art" not in stages
-    assert "considering.json" in deck_status.VALIDATED, (
-        "the frozen legacy files are still gated, just not a lifecycle stage")
+    assert "considering.json" not in deck_status.VALIDATED, (
+        "considering.json is gated by a validator that no longer exists")

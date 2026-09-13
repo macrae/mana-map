@@ -1290,14 +1290,14 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
                     # and leaves the naming pass to be reported below, which is
                     # the right split: measure automatically, name deliberately.
                     ("deck-map", "manamap.pilot.deck_map", {"slug": slug}),
-                    # `build-poh`, NOT `build-page`. `docs/manual-v5-spec.md`
+                    # `build-poh`, NOT `build-page`. `docs/history/manual-v5-spec.md`
                     # declared the compact page SUPERSEDED by the Pilot's
                     # Operating Handbook on 2026-09-02, and both write
                     # `manuals/p/<slug>.html` — so every merge silently replaced
                     # the deck's handbook with a page from a frozen renderer, and
                     # `validate_poh` then validated whichever had won the race.
                     ("build-poh", "manamap.pilot.poh", {"slug": slug}),
-                    ("build-index", "manamap.pilot.build_index", {})):
+                    ("build-index", "manamap.pilot.deck_manifest", {})):
                 try:
                     import importlib
                     with contextlib.redirect_stdout(io.StringIO()):

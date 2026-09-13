@@ -16,7 +16,7 @@ written against it.**
 | **[pilot.md](pilot.md)** | 1781 | The bench reference: the evidence and citation contracts, every `manamap pilot` command, the per-deck artifacts, then each piece — status, `deck-info`, versions (incl. **the paper lock's three states and what a version bump means**), the captain's log and debrief, prescriptions, simulation, goldfish, scenarios and game state v2, the resolve loop, the rules and strategy DBs, facts, audit, diagnosis, engine, constellation — and a LEGACY block on the magazine renderer last. |
 | **[simulation.md](simulation.md)** | 629 | Forge is the engine: the spike and its three criteria, the verdict, S1–S5 (harness, parser, the pod, the v2 bridge, the doctor reading the table), the tiers under seeding, the first runs and what they say, and the chain run once for real. |
 | **[pipeline.md](pipeline.md)** | 43 | The 15 card-pipeline steps: command, inputs, outputs, runtime, when to re-run what. |
-| **[data-artifacts.md](data-artifacts.md)** | 87 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
+| **[data-artifacts.md](data-artifacts.md)** | 86 | Every file in `data/`: producer, size, tracked or not, who reads it — including the per-deck bench artifacts, the pod, and what is frozen legacy. Read before touching anything under `data/`. |
 | **[known-issues.md](known-issues.md)** | 817 | **THE INVENTORY OF WHAT IS BROKEN.** The first four entries are the nine red tests and the parser bug that drops 88% of noncombat damage; the rest are gaps NO TEST FAILS ON — undecidable staleness on 19 artifacts, 50 undispatched open questions, 11 logged games and 0 debriefs, two uncriticised engine models. §12 lists what is already FIXED so it is not re-investigated, and a closing part tracks DEBT and OPPORTUNITIES — things that are not red but are wrong, wasteful or half-built. |
 | **[audit-2026-09-12.md](audit-2026-09-12.md)** | 482 | **THE INVENTORY BEFORE GROOMING.** A read-only audit at `bccca716`: the project by the numbers against what the docs claim, the twelve-deck fleet with its lifecycle and branches, the MEASURED red board (13 failing, five of them on no board), all 42 open issues triaged into nine themes with the one that unblocks each, and the debt by area — the magazine's single remaining dependency edge, `goldfish.simulate_once` at 1,999 lines, six definitions of the decklist sha, five artifact registries. Ends with a recommended grooming order. Archive once acted on. |
 | **[paydown-plan.md](paydown-plan.md)** | 1418 | **THE PAYDOWN PLAN AND ITS TRACKER.** Six phases in order — housekeeping and doc corrections, the daily-loop test cost (#28/#48/#31), the branch-lifecycle cluster (#45-#48, #25), the three predicates, the magazine delete (#4), the goldfish decomposition. Every task has an id, a gate, a proof and a status; the tracker table at the top is updated in the same commit as the work. Opens with the eight ground rules from the gotchas pages that constrain it, and closes with a risk register and what is deliberately out of scope. |
@@ -37,7 +37,7 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 | [gotchas-bench.md](gotchas-bench.md) | 1839 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
 | [gotchas-analysis.md](gotchas-analysis.md) | 26 | Synergy, the obsolescence index and its audit, card roles, region clustering. Read before touching `src/manamap/analysis/`. |
 | [gotchas-evidence.md](gotchas-evidence.md) | 50 | Stacks, citations, `engine.json`, the deck map, and every validator's reasoning — **including the checks prototyped and REJECTED for firing on correct data**. Read before adding a validator or a claim. |
-| [gotchas-magazine-legacy.md](gotchas-magazine-legacy.md) | 23 | The frozen renderer. Its code is not extended; the layout and prose lessons outlive it. |
+| [gotchas-magazine-legacy.md](gotchas-magazine-legacy.md) | 30 | The frozen renderer. Its code is not extended; the layout and prose lessons outlive it. |
 
 ## Reference, by subsystem
 
@@ -47,8 +47,8 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 | [viz.md](viz.md) | 1491 | The frontend: the four PAGES (workbench, atlas, dossier, branch), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 304 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [agent-inventory.md](agent-inventory.md) | 122 | **The harness as it stands** — every agent and skill with its path, what it owns, which skill spawns it and how a five-specialist consolidation would re-home it, plus the front-end surfaces that depend on each. PRD §8 D-1 asks for this as a CHECKED-IN artifact rather than a report. Read before touching a charter. |
-| [agent-audit-2026-08-19.md](agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 17 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |
-| [manual-v5-spec.md](manual-v5-spec.md) | 139 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
+| [agent-audit-2026-08-19.md](history/agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 17 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |
+| [manual-v5-spec.md](history/manual-v5-spec.md) | 139 | DRAFT: the compact deck page that replaces the magazine — what survives section by section, the section order, what the renderer and its gates lose, the phases. Waiting on the pilot's strikes. |
 
 The LEGACY magazine renderer's constitution, `STYLEv3.md`, was **deleted 2026-08-25**
 (`git show 23e8cec:STYLEv3.md`). It governed `build_manual.py`, `design.py`, `issue_spec.py`
@@ -80,10 +80,9 @@ its editorial theory in the tree made a frozen renderer look like a live subsyst
 anyone reading the docs.
 
 Nothing is lost — git holds all of it. `git show 23e8cec:STYLEv3.md` reads the
-constitution, and `git show 23e8cec:docs/history/<file>` any of the rest. **The `STYLEv3
-§N` citations in `issue_spec.py`, `design.py`, `validate_issue.py` and `build_index.py`
-were deliberately left in place**: they say which clause a piece of frozen code implements,
-which is still true, and they now resolve through git rather than through the tree.
+constitution, and `git show 23e8cec:docs/history/<file>` any of the rest. **The code that
+carried `STYLEv3 §N` citations was itself deleted on 2026-09-13** with the rest of the
+magazine renderer; the citations went with it, and both halves now read out of git.
 
 ## The files at the root that are not obviously docs
 

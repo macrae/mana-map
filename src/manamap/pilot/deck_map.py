@@ -52,7 +52,7 @@ import math
 import numpy as np
 
 from manamap.config import ABILITY_EMBEDDINGS_PATH
-from manamap.pilot.build_index import line_cards
+from manamap.pilot.deck_manifest import line_cards
 from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     deck_dir,
@@ -327,7 +327,7 @@ def near_edges(distance, k=2):
 def verified_cards(slug, deck_names, branch=None):
     """Cards a checker-passed stack's scenario actually names.
 
-    Reuses `build_index.line_cards`, which already encodes the hard-won rule for
+    Reuses `deck_manifest.line_cards`, which already encodes the hard-won rule for
     when a `board` entry is a line piece and when it is furniture. Re-deriving
     that here would be a second answer to a question this repo has settled once.
     """

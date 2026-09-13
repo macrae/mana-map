@@ -237,7 +237,7 @@ def _scenario(**over):
 def test_preflight_errors_on_prose_in_hand_for_an_unresolved_scenario():
     """The exact bug that shipped: a placeholder sentence written into `hand`.
 
-    `build_index.line_cards` read it as a card name and put it in the deck
+    `deck_manifest.line_cards` read it as a card name and put it in the deck
     manifest. Caught here for free, before a ~35k-token resolver spawn.
     """
     errors, _ = vs.validate_preflight(

@@ -86,15 +86,17 @@ test-all: test-fresh test-browser  ## Everything, uncached. What CI would run if
 
 check: test  ## Alias for `make test` — what to run before opening a PR
 
-serve:  ## Serve the map and the manuals (PORT=8000 by default)
+serve:  ## Serve the map, the deck pages and the handbooks (PORT=8000 by default)
 	@echo "  map      http://localhost:$(PORT)/viz/index.html"
 	@echo "  issues   http://localhost:$(PORT)/manuals/index.html"
 	python3 -m http.server $(PORT)
 
-manuals:  ## Re-render every published issue + the version lists (deterministic; should be a no-op)
-	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
-	  if test -f data/decks/$$slug/issue.json; then $(MANAMAP) pilot build-manual $$slug; fi; \
-	done
+manuals:  ## Re-render every handbook + the version lists (deterministic; should be a no-op)
+# THE MAGAZINE LOOP IS GONE (2026-09-13). It rendered `manuals/<slug>.html` for
+# any deck with an `issue.json`, which meant CI's determinism gate exercised the
+# FROZEN renderer and not the live one — the handbook loop below was added
+# precisely because of that. The gate is unchanged and now covers only pages
+# something still writes.
 # THE VERSION LISTS, here rather than in `demo`. `demo` ends in an http.server,
 # so it can never be a gate; this target is the one CI invokes and the one whose
 # output the byte-diff gate covers. `versions.json` is a git walk and is TRACKED

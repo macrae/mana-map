@@ -3,7 +3,7 @@
 LEGACY (2026-08-19): the magazine renderer. It still renders the nine frozen issues from
 artifacts nothing regenerates any more (issue_plan.json, the panel keys,
 card_roles/mana_base/upgrades, considering.json), and it is replaced by the compact deck
-page in docs/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
+page in docs/history/manual-v5-spec.md. Do not extend it; internals below are accurate for what it
 does.
 
 A browser can list neither the deck directory nor `stacks/`, so `build-index`
@@ -19,7 +19,7 @@ import pytest
 from conftest import requires_deck
 
 from manamap.config import DECKS_DIR
-from manamap.pilot import build_index
+from manamap.pilot import deck_manifest
 from manamap.pilot.common import checker_passed, load_json
 
 
@@ -27,7 +27,8 @@ from manamap.pilot.common import checker_passed, load_json
 # because `getJSON` swallows every failure to null and an absent key reads the
 # same as an absent artifact.
 MANIFEST_KEYS = {
-    "slug", "volume", "deck_name", "commander", "coverline", "verified",
+    # `volume` and `coverline` went with the magazine (2026-09-13).
+    "slug", "deck_name", "commander", "verified",
     "decisions", "stack_files", "stack_cards", "published", "status",
     "sim_runs", "experiments", "prescriptions", "decision_files", "has",
     # The workbench landing (viz/workbench.html): `image` is the rack's art and
@@ -107,8 +108,8 @@ def test_presence_flags_match_the_files_on_disk():
 def test_the_manifest_is_byte_deterministic():
     """CI's last step is `make manuals && git diff --exit-code -- … index.json`, so a
     manifest that reorders between runs turns main red for no reason."""
-    a = build_index.gather_entries()
-    b = build_index.gather_entries()
+    a = deck_manifest.gather_entries()
+    b = deck_manifest.gather_entries()
     assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
 
 
@@ -124,7 +125,7 @@ def test_tracked_manifest_matches_the_artifacts_on_disk():
     # `decks` assumes a `cards.json` that a draft does not have. Comparing the
     # whole scan against `decks` reported a stale manifest the moment a draft
     # existed — this test was the consumer the split forgot.
-    entries = build_index.gather_entries()
+    entries = deck_manifest.gather_entries()
     fresh = {e["slug"]: e for e in entries if not e.get("draft")}
     listed = {d["slug"]: d for d in manifest["decks"]}
     assert set(listed) == set(fresh), (

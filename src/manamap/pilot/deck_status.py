@@ -111,7 +111,7 @@ STAGES = [
 # exact way a new capability fails to propagate.
 ADDED_2026_08 = {"map", "engine", "log"}
 
-# RETIRED 2026-08-19 with the workbench pivot (docs/agent-audit-2026-08-19.md):
+# RETIRED 2026-08-19 with the workbench pivot (docs/history/agent-audit-2026-08-19.md):
 # `map-names` (the cartographer is optional now — the deterministic fallback
 # names are honest, and a gate on wit is a gate nobody should have to pass),
 # `panel` (the Editor's Letter and Pilot's Log — pilot-panel is deleted) and
@@ -361,7 +361,6 @@ VALIDATED = {
     # built to the wrong shape, and says so only in `role_budget_grounding`.
     "brief.json": "manamap.pilot.validate_brief",
     "cards.json": "manamap.pilot.validate_deck",
-    "considering.json": "manamap.pilot.validate_considering",
     "deck_map.json": "manamap.pilot.validate_deck_map",
     "deck_recon.json": "manamap.pilot.validate_recon",
     "diagnosis.json": "manamap.pilot.validate_diagnosis",

@@ -6,7 +6,7 @@ description: Write a deck's pilot notes (the five prose keys, via pilot-notes) a
 # Write the pilot notes and render the deck page
 
 Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. The HTML step is the **legacy
-magazine renderer** (frozen; replaced by the compact deck page in `docs/manual-v5-spec.md`)
+magazine renderer** (frozen; replaced by the compact deck page in `docs/history/manual-v5-spec.md`)
 — it still renders from the same artifacts, byte-identically. Evidence tiers: ✓
 rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`, `docs/vision.md`).
 
@@ -45,12 +45,12 @@ rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`, `docs/visio
    `manamap pilot merge-prose <slug> pilot-notes` — the merge touches ONLY the five
    owned keys, so the frozen legacy keys on a published deck (`card_roles`,
    `mana_base`, `upgrades`, `editors_letter`, `pilots_log`) survive — then
-   `validate-issue <slug>` (the legacy page gate: budgets, taxonomy leaks, the voice bans) and
+   `validate-poh <slug>` (the legacy page gate: budgets, taxonomy leaks, the voice bans) and
    `cache-record <slug> --routine pilot-notes`. Zero-guessing rule throughout;
    surface "needs a stack scenario" flags to the user. Decision spreads and the tutor
    guide are the same agent under their own routines — `decision:<NNN>` (the
    author-decision skill) and `tutor-guide`.
-6. **Build** (legacy renderer): `.venv/bin/manamap pilot build-manual <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO]. This is the magazine renderer kept frozen until manual-v5; do not extend it.
+6. **Build** (legacy renderer): `.venv/bin/`manamap pilot build-poh <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO]. This is the magazine renderer kept frozen until manual-v5; do not extend it.
 7. **Review**: open `manuals/<slug>.html` (legacy output); the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
 
 `manual_prose.json` is tracked and human-editable — tune the wording directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it.

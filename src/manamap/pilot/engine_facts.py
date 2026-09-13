@@ -30,7 +30,7 @@ decklist moves.
 import json
 from itertools import combinations
 
-from manamap.pilot.build_index import line_cards
+from manamap.pilot.deck_manifest import line_cards
 from manamap.pilot.common import (
     deck_dir,
     load_card_roles,

@@ -93,14 +93,14 @@ paid for and each constrains a task below.
 | P4-02 | 4 | Copies: three questions, three names, one default | M | DONE | |
 | P4-03 | 4 | Six artifact registries become one | L | DONE | |
 | P4-04 | 4 | Config paths are read at call time, never `from`-imported | M | DONE | |
-| P5-01 | 5 | Sever the live edge: `build_index` splits in two | M | TODO | |
-| P5-02 | 5 | Strip magazine fields from the manifest and `build.js` | S | TODO | |
-| P5-03 | 5 | Retarget `make manuals` and the CI determinism gate | S | TODO | |
-| P5-04 | 5 | Update the skills and the charter that call magazine commands | S | TODO | |
-| P5-05 | 5 | Delete the renderer, its subcommands, its output, its tests | L | TODO | |
-| P5-06 | 5 | Collapse the two-registry section-count truth | S | TODO | |
-| P5-07 | 5 | Retire the magazine xfails and tracked artifacts | M | TODO | |
-| P5-08 | 5 | Docs sweep after the delete | S | TODO | |
+| P5-01 | 5 | Sever the live edge: `build_index` splits in two | M | DONE | |
+| P5-02 | 5 | Strip magazine fields from the manifest and `build.js` | S | DONE | |
+| P5-03 | 5 | Retarget `make manuals` and the CI determinism gate | S | DONE | |
+| P5-04 | 5 | Update the skills and the charter that call magazine commands | S | DONE | |
+| P5-05 | 5 | Delete the renderer, its subcommands, its output, its tests | L | DONE | |
+| P5-06 | 5 | Collapse the two-registry section-count truth | S | DONE | |
+| P5-07 | 5 | Retire the magazine xfails and tracked artifacts | M | DONE | |
+| P5-08 | 5 | Docs sweep after the delete | S | DONE | |
 | P6-01 | 6 | Snapshot the fleet and the agent cache | S | TODO | |
 | P6-02 | 6 | `goldfish.py` becomes a package, imports unchanged | L | TODO | |
 | P6-03 | 6 | `model_version` hashes the package | S | TODO | |

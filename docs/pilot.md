@@ -724,7 +724,7 @@ all. Then `deck-version <slug> paper` marks it as sleeved.
 `manamap pilot build-page <slug>` renders the compact deck page from
 `pilot/page_spec.py:SECTIONS` — the plan, the roster, the mulligan, the lines, the table
 read, the debrief, the numbers, the proof. It is the replacement for the magazine
-(`docs/manual-v5-spec.md`), built alongside the frozen `build_manual.py` rather than over
+(`docs/history/manual-v5-spec.md`), built alongside the frozen the magazine renderer (deleted 2026-09-13) rather than over
 it, and it writes to the same `manuals/<slug>.html` path.
 
 **Measured, not estimated.** Radagast 71.3 screens → **15.5**; yawgmoth-swarm 88.4 →
@@ -1522,13 +1522,13 @@ Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
 ## LEGACY — the magazine renderer (frozen; replaced by `poh.py` on 2026-09-02)
 
 Until 2026-08-19 each deck was published as an **issue** of a magazine, *Pilot's Manual*.
-The renderer (`build_manual.py`, `issue_spec.py`, `design.py`, `validate_issue.py`) still
+The renderer (the magazine renderer (deleted 2026-09-13), `issue_spec.py`, `design.py`, `validate_issue.py`) still
 runs and still renders the nine decks from the artifacts it reads — its constitution,
 `STYLEv3.md`, was deleted on 2026-08-25 and lives in git (`git show 23e8cec:STYLEv3.md`), and those artifacts — `issue_plan.json`, the panel keys and `card_roles` /
 `mana_base` / `upgrades` in `manual_prose.json`, `considering.json` + its art sidecar —
 are **frozen**: no agent regenerates them (`magazine-editor`, `pilot-panel`,
 `manual-writer`, `pilot-coach` and `short-list-analyst` are retired), the cache has no
-routine for them, and the compact deck page in `docs/manual-v5-spec.md` replaces the whole
+routine for them, and the compact deck page in `docs/history/manual-v5-spec.md` replaces the whole
 layer. Everything below is kept because it is an accurate account of that code and of the
 lessons it cost to learn — the length measurements, the theatre, the voice lint — not
 because any of it is the product.
@@ -1551,7 +1551,7 @@ own comments still say which clause each piece implements; they simply resolve t
 now, which is the right place for the constitution of something nobody is allowed to
 extend.
 
-- **`src/manamap/pilot/issue_spec.py`** — the canonical department system: ids, order,
+- **the magazine's section registry (deleted)** — the canonical department system: ids, order,
   promises, evidence tiers, rhythm tags, component library. Changing it changes every
   issue; treat it like `config.py`.
 - **`issue.json`** (tracked, **authored by a human**) — volume, issue_date, cover_price,
@@ -1729,7 +1729,7 @@ selection rule: a card is on the list because it is worth knowing about, or it i
 the list. **Analysis-only** — `cards.json` is never
 rewritten by this routine.
 
-`validate_considering.py` enforces the count and every claim: no pick may already be in
+its validator (deleted) enforces the count and every claim: no pick may already be in
 the deck, no duplicate picks or duplicate `natural_cut`s, a cut
 that is a real maindeck card and never the commander, combo-line status vocabulary
 (`needs a stack scenario` unless a checker-passed artifact is named), obsolescence claims

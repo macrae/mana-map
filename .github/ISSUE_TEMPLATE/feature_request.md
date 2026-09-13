@@ -21,7 +21,7 @@ labels: enhancement
 ## Which half
 
 - [ ] The card map / deck dossier (`viz/`)
-- [ ] The deck page (`manuals/`, the legacy renderer — see docs/manual-v5-spec.md)
+- [ ] The deck page (`manuals/`, the legacy renderer — see docs/history/manual-v5-spec.md)
 - [ ] The pipeline or the models
 - [ ] The pilot subsystem (decks, stacks, validators)
 - [ ] Developer experience — setup, tests, docs

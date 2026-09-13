@@ -488,7 +488,7 @@ def report_errors(fail_label, errors, ok_line=None):
 # The vocabulary lives HERE rather than in `issue_spec` — where it started —
 # because the workbench has to read it and `issue_spec` is the frozen magazine
 # renderer, deleted in one commit when the compact page lands
-# (`docs/manual-v5-spec.md` §"What gets unfrozen"). A live command importing a
+# (`docs/history/manual-v5-spec.md` §"What gets unfrozen"). A live command importing a
 # module scheduled for deletion is a break with a date on it. `issue_spec`
 # re-exports these two names, so the legacy banner keeps rendering unchanged.
 #

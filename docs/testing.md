@@ -534,19 +534,19 @@ every commit, and that promise is not kept. Run `--collect-only -q` for live num
 | `test_pilot_validate_stack.py` | The citation contract, decision form, strategy dispatch, golden artifacts |
 | `test_pilot_goldfish.py` | Seeded determinism, mulligan rule, target assembly |
 | `test_pilot_mana_analysis.py` | Land classes, sources, producer kinds |
-| `test_pilot_build_manual.py` | LEGACY renderer: section completeness, contract integrity, furniture, determinism, escaping |
-| `test_pilot_build_index.py` | The manifest the browser reads instead of listing a directory |
-| `test_pilot_validate_issue.py` | LEGACY gate: issue identity, section order, tier-costume integrity, card-name accuracy |
-| `test_pilot_artist_credits.py` | Standout detection, per-entry counting, drop runs |
+| a magazine test file (deleted 2026-09-13) | LEGACY renderer: section completeness, contract integrity, furniture, determinism, escaping |
+| a magazine test file (deleted 2026-09-13) | The manifest the browser reads instead of listing a directory |
+| a magazine test file (deleted 2026-09-13) | LEGACY gate: issue identity, section order, tier-costume integrity, card-name accuracy |
+| the magazine's test files (deleted 2026-09-13) | Standout detection, per-entry counting, drop runs |
 | `test_pilot_merge_prose.py` | One agent (`pilot-notes`) writing a file that also holds frozen legacy keys; every legacy key survives a merge |
-| `test_pilot_validate_considering.py` | LEGACY gate on the frozen `considering.json`: exactly ten, none in the deck, claims verified |
+| a magazine test file (deleted 2026-09-13) | LEGACY gate on the frozen `considering.json`: exactly ten, none in the deck, claims verified |
 | `test_pilot_validate_tutor_guide.py` | One wish per tutor, real fetches, legal targets |
 | `test_pilot_validate_strategic_frame.py` | Frame form, engine `strategy_refs`, candidate-line status |
 | `test_pilot_deck_map.py` | The constellation's balance bound — and its refusal to assert the linkage |
-| `test_pilot_issue_length.py` | Words vs visible words; `<summary>` counts, collapsed bodies do not |
-| `test_pilot_voice_lint.py` | **Cross-deck.** Who is supposed to be speaking, and whether nine decks sound alike |
+| a magazine test file (deleted 2026-09-13) | Words vs visible words; `<summary>` counts, collapsed bodies do not |
+| a magazine test file (deleted 2026-09-13) | **Cross-deck.** Who is supposed to be speaking, and whether nine decks sound alike |
 
-`test_pilot_voice_lint.py` is the only pilot test that reads the whole fleet, and that is
+a magazine test file (deleted 2026-09-13) is the only pilot test that reads the whole fleet, and that is
 structural rather than stylistic: `validate-issue` takes one slug and can never see a
 pattern that exists only across decks. A formula is invisible in a single issue and
 obvious in three — eight decks wrote a hot take and five opened *"Here is the thing…"*,
@@ -588,7 +588,7 @@ which no per-issue check could have caught.
 | `test_pilot_out_path_guard.py` | `--out` is slug-scoped, and every per-deck command uses the guard |
 | `test_pilot_imports.py` | Every pilot module can *run*, not merely import |
 | `test_pilot_artifact_freshness.py` | Every deterministic artifact equals a fresh recomputation |
-| `test_pilot_manual_freshness.py` | Every tracked manual equals a fresh render |
+| a magazine test file (deleted 2026-09-13) | Every tracked manual equals a fresh render |
 | `test_pilot_tracked_artifacts_validate.py` | Every tracked agent artifact passes its own validator |
 | `test_pilot_deck_manifest.py` | The contract between pilot artifacts and `viz/deck.html` |
 

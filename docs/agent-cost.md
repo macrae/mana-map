@@ -96,7 +96,7 @@ routines still leaves you a legal, bracket-compliant 99.
 ### Legacy measurements — the magazine (retired 2026-08-19)
 
 Kept as the record of what the magazine cost; none of these routines or agents exist now
-(`docs/agent-audit-2026-08-19.md`). `issue-plan` (magazine-editor) and `panel-prose`
+(`docs/history/agent-audit-2026-08-19.md`). `issue-plan` (magazine-editor) and `panel-prose`
 (pilot-panel) were deleted; `coach-prose` (pilot-coach) and `writer-prose`
 (manual-writer) folded into `pilot-notes`; `the-ten` (short-list-analyst) folded into
 `prescribe`.

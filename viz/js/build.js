@@ -1090,7 +1090,7 @@
 
     const picker = manifest ? manifest.decks.map(d =>
       '<option value="' + esc(d.slug) + '"' + (active && active.slug === d.slug ? ' selected' : '') + '>' +
-      'Vol. ' + String(d.volume).padStart(3, '0') + ' — ' + esc(d.deck_name) + '</option>').join('') : '';
+      esc(d.deck_name) + '</option>').join('') : '';
 
     let html =
       '<div class="deck-header">' +
@@ -1128,7 +1128,6 @@
       '<div class="deck-section">' +
         '<div class="lens-title">' + esc(e.deck_name) + '</div>' +
         '<div class="lens-sub">' + esc(e.commander) + '</div>' +
-        '<div class="lens-coverline">“' + esc(e.coverline) + '”</div>' +
         // The magazine is not a product any more, so nothing invites a pilot
         // into it. This link survived the removal on the other three surfaces
         // because it lives in a panel that only renders with a deck loaded —

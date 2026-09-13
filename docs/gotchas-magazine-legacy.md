@@ -1,5 +1,12 @@
 # The magazine renderer (frozen)
 
+> **THE CODE THIS PAGE DESCRIBES WAS DELETED ON 2026-09-13** — eleven modules,
+> seven subcommands, nine rendered pages and nine test files, about 7,000 lines.
+> The page stays because the MEASUREMENTS do: every lesson below was paid for,
+> and several of them are about classes of bug that outlived the renderer.
+> Read it as history. `git show 1720479c:src/manamap/pilot/build_manual.py` and
+> its siblings read the code.
+
 The renderer is frozen and its code is not extended. These lessons were measured and are kept for the layout and prose work that outlives it.
 
 Extracted verbatim from `CLAUDE.md` — every measurement here was in that file and none was reworded. `CLAUDE.md` loads into every session; this does not, so the rules that bite regardless of what you are touching stayed there and the full record moved here.

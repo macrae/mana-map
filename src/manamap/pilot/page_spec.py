@@ -2,7 +2,7 @@
 
 WHY THIS IS A SEPARATE MODULE. `issue_spec.py` is the magazine's spec — seventeen
 departments, five acts, rhythm tags, bylines, columnists, packaging copy — and it
-is frozen, with a deletion scheduled (`docs/manual-v5-spec.md` phase 4). A live
+is frozen, with a deletion scheduled (`docs/history/manual-v5-spec.md` phase 4). A live
 registry inside a file waiting to be deleted is a merge conflict with a date on
 it. This module survives that deletion; that one does not.
 

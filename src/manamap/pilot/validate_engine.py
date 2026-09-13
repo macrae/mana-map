@@ -83,7 +83,7 @@ WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting:
 
 import json
 
-from manamap.pilot.build_index import line_cards
+from manamap.pilot.deck_manifest import line_cards
 from manamap.pilot.common import (
     deck_dir,
     load_deck_cards,

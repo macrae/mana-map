@@ -185,68 +185,12 @@ def _map_doc(points, cities, hoods, names=None, verified=()):
     }
 
 
-def test_a_diffuse_lobe_is_drawn_without_a_territory():
-    """The measured rule: a hull around a lobe that is everywhere claims ground.
-
-    Radagast's largest lobe has an RMS spread of 0.761 against a 0.153 median —
-    5x — and hulling it drew a continent down the middle of the frame containing
-    three other cities. The threshold is relative to the deck's OWN median,
-    because absolute spreads differ 3x across the nine decks while the ratio
-    separates cleanly on all of them.
-    """
-    from manamap.pilot import design
-
-    tight_a = [(0.0 + 0.01 * i, 0.0) for i in range(6)]
-    tight_b = [(0.5 + 0.01 * i, 0.5) for i in range(6)]
-    scattered = [(-0.9, -0.9), (0.9, -0.9), (-0.9, 0.9), (0.9, 0.9),
-                 (0.0, -0.95), (0.95, 0.0)]
-    points = tight_a + tight_b + scattered
-    doc = _map_doc(points, [0] * 6 + [1] * 6 + [2] * 6, [0] * 18)
-
-    svg, notes = design.deck_constellation(doc)
-    assert notes["diffuse"] == 1, "the scattered lobe should lose its territory"
-    assert notes["diffuse_cards"] == 6
-    # Two territories drawn, not three — the outline stroke is the tell.
-    assert svg.count('stroke-opacity="0.42"') == 2
-
-
-def test_every_lobe_keeps_its_territory_when_they_are_all_compact():
-    """A validator that fires on correct data is worse than no validator.
-
-    Three equally-tight lobes have a ratio near 1 and none may be suppressed —
-    otherwise the rule would strip a territory from every deck's loosest cluster
-    regardless of whether it is actually diffuse.
-    """
-    from manamap.pilot import design
-
-    points = ([(0.0 + 0.02 * i, 0.0) for i in range(6)]
-              + [(0.5 + 0.02 * i, 0.5) for i in range(6)]
-              + [(-0.5 + 0.02 * i, 0.4) for i in range(6)])
-    doc = _map_doc(points, [0] * 6 + [1] * 6 + [2] * 6, [0] * 18)
-    svg, notes = design.deck_constellation(doc)
-    assert notes["diffuse"] == 0
-    assert svg.count('stroke-opacity="0.42"') == 3
-
-
-def test_load_bearing_cards_are_labelled_and_the_rest_are_named_in_a_note():
-    """A map whose points cannot be identified is decoration.
-
-    In print there is no hover, so the commander and every card named in a
-    checker-passed stack get a label — and anything that loses its collision has
-    to be named anyway, because the key promises verified cards are marked.
-    """
-    from manamap.pilot import design
-
-    # Five verified cards stacked almost on top of each other: placement cannot
-    # possibly fit all five, which is the case the note exists for.
-    points = [(0.0, 0.0), (0.005, 0.0), (0.01, 0.0), (0.015, 0.0), (0.02, 0.0)]
-    names = {i: n for i, n in enumerate(
-        ["Alpha Card", "Beta Card", "Gamma Card", "Delta Card", "Epsilon Card"])}
-    doc = _map_doc(points, [0] * 5, [0] * 5, names, verified=set(names.values()))
-    svg, notes = design.deck_constellation(doc)
-
-    labelled = {n for n in names.values() if n in svg}
-    assert labelled, "no verified card got a label at all"
-    assert labelled | set(notes["unplaced"]) == set(names.values()), (
-        "a verified card is neither on the map nor in the note — the key would "
-        "be claiming it is marked when it is not")
+# ── The SVG constellation went with the magazine (2026-09-13) ───────────────
+#
+# Three tests lived here driving `design.deck_constellation` — the hull
+# thresholds, the diffuse-lobe rule Radagast's 5x RMS spread taught, and the
+# load-bearing label pass. They tested the RENDERER, not the map: `deck_map.json`
+# is the artifact, and the constellation a reader actually sees is drawn in
+# `deck-view.js` from those positions.
+#
+# The measurements are in `docs/gotchas-magazine-legacy.md`; the code is in git.

@@ -10,7 +10,7 @@ read off the tree rather than remembered.*
 
 PRD §2 says the sub-agent layer "carries editorial voice definitions, writer
 teams, editor and coach roles, and department structures". **That layer was
-retired on 2026-08-19** (`docs/agent-audit-2026-08-19.md`). `git log
+retired on 2026-08-19** (`docs/history/agent-audit-2026-08-19.md`). `git log
 --diff-filter=D -- .claude/agents` shows six charters already deleted:
 `magazine-editor`, `manual-writer`, `pilot-coach`, `pilot-panel`,
 `short-list-analyst`, `upgrade-scout`, plus the `design-issue` and `short-list`
@@ -50,7 +50,7 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 ### The two "orphans" are invocable, so they are not deletable
 
 `pipeline-runner` and `viz-dev` are referenced only by their own files,
-`agents-common.md`'s exemption list, `docs/agent-audit-2026-08-19.md` and
+`agents-common.md`'s exemption list, `docs/history/agent-audit-2026-08-19.md` and
 PLAN.md's counts. No skill spawns them and no code names them.
 
 **That is not the same as dead.** Both are registered agent types and can be
@@ -111,7 +111,7 @@ to `claude -p`, deliberately, so the local Build page can ask for an agent.
 
 **Two magazine couplings block a clean retirement**, both in skills rather than
 agents: `write-manual`'s build half and `author-decision`'s step 5 both call
-`build-manual`. And `validate_issue.py` is the **only** validator that touches
+`build-manual`. And `validate_poh.py` is the **only** validator that touches
 `manual_prose.json`, so retiring it leaves the router's prose output ungated.
 
 ## Cost, per routine

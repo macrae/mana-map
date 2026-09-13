@@ -9,7 +9,6 @@ import importlib
 # (name, dotted module, description)
 PILOT_STEPS = [
     ("check-in", "manamap.pilot.check_in", "a paper decklist -> decklist.txt (diff, refuse, apply, re-derive)"),
-    ("build-page", "manamap.pilot.build_page", "the compact deck page (the Pilot's Manual)"),
     ("targeting", "manamap.sim.threat", "who the pod attacks, measured from sim logs (opponent modelling)"),
     ("fetch-deck", "manamap.pilot.fetch_deck", "decklist.txt -> cards.json via Scryfall"),
     ("validate-deck", "manamap.pilot.validate_deck", "Check 100-card/commander/singleton invariants"),
@@ -150,7 +149,6 @@ PILOT_STEPS = [
     ("validate-brief", "manamap.pilot.validate_brief",
      "Form-check brief.json: the commander real and legal, every named card in the corpus and in identity, the pools on disk"),
     ("validate-build", "manamap.pilot.validate_build", "Form-check a build plan against the contract"),
-    ("validate-considering", "manamap.pilot.validate_considering", "Form-check a legacy considering.json (the retired Short List; frozen on published decks)"),
     ("validate-pending", "manamap.pilot.validate_pending",
      "The queue of changes decided but not applied; closure is DERIVED from the deck"),
     ("validate-diagnosis", "manamap.pilot.validate_diagnosis", "Form-check a deck diagnosis (axes re-derived, cuts checked against verified stacks)"),
@@ -158,12 +156,7 @@ PILOT_STEPS = [
     ("diagnosis-report", "manamap.pilot.diagnosis_report", "Render a deck diagnosis as readable markdown"),
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the tutor guide (one wish per tutor)"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
-    ("artist-credits", "manamap.pilot.artist_credits", "Standout artists and art themes in a deck"),
-    ("short-list-art", "manamap.pilot.short_list_art", "LEGACY: resolve a frozen considering.json's ten to card art (Scryfall; tracked sidecar)"),
-    ("build-manual", "manamap.pilot.build_manual", "LEGACY: render a deck's page with the frozen magazine renderer (replaced by manual-v5)"),
-    ("build-index", "manamap.pilot.build_index", "Render manuals/index.html and data/decks/index.json (the deck list + manifest)"),
-    ("issue-length", "manamap.pilot.issue_length", "LEGACY: how long is this page, and where did the length go?"),
-    ("validate-issue", "manamap.pilot.validate_issue", "Form-check issue.json + the LEGACY issue_plan.json on published decks"),
+    ("build-index", "manamap.pilot.deck_manifest", "Write data/decks/index.json — the deck list + manifest the frontend fetches"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
@@ -188,18 +181,18 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "check-in", "targeting", "build-page", "fetch-deck", "validate-deck", "validate-stack", "goldfish", "build-manual",
-    "validate-issue", "cache-status", "cache-record", "cache-clear", "cache-rebless",
+    "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
+    "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
     "model-coverage",
     "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame", "scaffold-targets",
-    "validate-considering", "validate-diagnosis", "validate-goldfish-targets",
+    "validate-diagnosis", "validate-goldfish-targets",
     "validate-recon",
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
-    "short-list-art", "issue-length", "card-value", "validate-pending",
+    "card-value", "validate-pending",
     "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "captains-log", "merge-captains-log", "validate-captains-log",
     "install-agent", "build-poh", "validate-poh",
@@ -289,8 +282,6 @@ def add_pilot_parser(subparsers):
         if name == "lookup-doc":
             cmd.add_argument("chunk_id", help="Exact chunk id, e.g. docs/vision.md#the-bench")
             cmd.add_argument("--json", action="store_true", dest="as_json")
-        if name == "artist-credits":
-            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "install-agent":
             cmd.add_argument("--routine", required=True,
                              help="which routine's handoff to install (deck-engine, "
@@ -306,13 +297,6 @@ def add_pilot_parser(subparsers):
         if name == "merge-captains-log":
             cmd.add_argument("--kind", default="pilot",
                              help="which log to merge into (ship; personal is reserved)")
-        if name == "validate-issue":
-            cmd.add_argument("--strict", action="store_true",
-                             help="Fail on the length budget, not just report it")
-        if name == "issue-length":
-            cmd.add_argument("--json", action="store_true", dest="as_json")
-            cmd.add_argument("--rendered", action="store_true",
-                             help="True scroll height via playwright (slower)")
         if name == "benchmark":
             cmd.add_argument("slug", nargs="?", default=None,
                              help="One deck; omit (or --all) for the whole bench")
@@ -380,9 +364,6 @@ def add_pilot_parser(subparsers):
         if name == "cache-clear":
             cmd.add_argument("--routine", default=None,
                              help="Routine id; omit to clear the whole deck")
-        if name == "build-page":
-            cmd.add_argument("--out", default=None,
-                             help="write elsewhere (a directory, or a path naming the slug)")
         if name == "targeting":
             cmd.add_argument("--run", action="append",
                              help="limit to one run id (repeatable); default pools every run")

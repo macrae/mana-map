@@ -13,7 +13,7 @@ directory and, between the families, nothing else:
 - **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
   the measured table with each row's definition, reward/risk/cost, the bill.
 
-The last three share `css/tokens.css` (ported from `pilot/design.py`, the legacy page's
+The last three share `css/tokens.css` (ported from the magazine renderer's palette, the legacy page's
 stylesheet) plus Google Fonts, load no `mana-map.js`, and export no globals except test
 hooks. **They compute nothing**: every figure is composed by the Python and read out of a
 committed artifact, which is what lets them work on a static host.
@@ -69,7 +69,7 @@ python -m http.server 8000
 | `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~1,780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
-| `viz/css/tokens.css` | The design tokens (from `pilot/design.py`) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
+| `viz/css/tokens.css` | The design tokens (ported from the magazine renderer before it was deleted) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
 | `viz/js/deck-view.js` | The dossier (~1,580 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
 | `viz/js/workbench.js` | The landing page (~520 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
@@ -1062,7 +1062,7 @@ was right and the bytes were old.
 
 Manual `?v=N` query strings, per page: `index.html` on all **eleven** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all eleven script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
 
-For contrast, `manuals/magazine.css` (the legacy page's stylesheet) is **content-addressed** (`?v=<sha8>` from the CSS text, in `pilot/design.py`), so a stylesheet change there obligates rebuilding every manual page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
+For contrast, the handbook's stylesheet is **content-addressed** (`?v=<sha8>` from the CSS text), so a stylesheet change there obligates rebuilding every handbook page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
 ## Data paths
 
@@ -1241,7 +1241,7 @@ Density is one soft disc per neighbourhood rather than the printed page's convex
 size it reads the same, and a hull the page also has to hit-test through is code bought for
 nothing.
 
-**`CITY_INK` in `deck-view.js` is a TRANSCRIPTION of `pilot/design.py`'s list, and that is a
+**`CITY_INK` in `deck-view.js` was a TRANSCRIPTION of the magazine renderer's list, and that is a
 standing drift hazard.** There is no shared module: the printed page must render with no JS
 and this page with no Python. If the two lists diverge, the printed map and the site disagree
 about which territory is which **while both look perfectly correct**. Noted at both sites;
@@ -1313,7 +1313,7 @@ that made Plotly's own hover cost 37 ms a render; it reads `MM.allData[i]` on de
 `pointer-events: none` on the popup is essential — it sits under the cursor by construction,
 so without it the card steals the hover from the point that summoned it and flickers.
 
-The legacy page has a card preview too (`design.py` `.card-pop`), but it is pure CSS anchored
+The legacy page had a card preview too (a `.card-pop` rule in the deleted renderer), but it was pure CSS anchored
 to a static inline element. A point in a WebGL scatter is not an element, so only the look
 transfers, not the mechanism.
 

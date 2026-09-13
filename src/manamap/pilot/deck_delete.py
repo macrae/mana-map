@@ -16,13 +16,18 @@ same hazard from the other side: counting kinnan's whole-format baseline made 99
 unowned cards read as owned. A phantom deck is not neutral; it is a confident,
 wrong instruction about cardboard.
 
-WHY THE REFUSAL LIST IS NOT KEYED ON "PUBLISHED". `build_index` computes
-`published` as *the frozen magazine renderer ran on this deck*, and
-`docs/manual-v5-spec.md` retires that renderer and gives every deck a
-`manuals/p/` page. A destructive gate keyed on a predicate whose meaning is
-scheduled to change is a gate that silently inverts. `blockers()` asks the three
-questions that will still mean the same thing afterwards: was it ever sleeved,
-was it ever played, did it ever go to press.
+WHY THE REFUSAL LIST IS NOT KEYED ON THE MANIFEST'S "PUBLISHED". That field
+meant *the frozen magazine renderer ran on this deck*, and its meaning was
+SCHEDULED TO CHANGE — a destructive gate keyed on such a predicate is a gate
+that silently inverts. It did change on 2026-09-13, when the renderer was
+deleted and `published` became *the deck has a handbook*.
+
+The inversion happened anyway, one level down: this asked whether
+`manuals/<slug>.html` existed, and deleting those nine pages made every
+published deck instantly deletable. `test_delete_refuses_every_deck_that_is_a_record`
+caught it in the same run — "yawgmoth-swarm would be deleted with no objection".
+The question is *did this deck ever go to press*, and the page that answers it
+now is the handbook.
 
 IT DOES NOT COMMIT. `git rm -r` stages the removal so it shows up in
 `git status` as a deliberate act rather than as a pile of missing files, and
@@ -56,9 +61,12 @@ def blockers(slug, base=None):
     """
     base = base if base is not None else deck_dir(slug)
     out = []
-    if (MANUALS / f"{slug}.html").exists():
-        out.append("it went to press — `manuals/{}.html` is a published record; "
-                   "archive it instead (`deck-state {} retire`)".format(slug, slug))
+    # The HANDBOOK, not the deleted magazine page. Both are "went to press";
+    # only one still exists.
+    if (MANUALS / "p" / f"{slug}.html").exists():
+        out.append("it went to press — `manuals/p/{}.html` is a published "
+                   "record; archive it instead (`deck-state {} retire`)"
+                   .format(slug, slug))
     # The log is read from `base`, not by slug, for the same reason. An
     # unreadable or absent log is not a game we played.
     log = base / "log.jsonl"
@@ -145,5 +153,5 @@ def delete(slug, force=False):
 
 def main(args):
     delete(args.slug, force=getattr(args, "force", False))
-    from manamap.pilot import build_index
-    build_index.main()
+    from manamap.pilot import deck_manifest
+    deck_manifest.main()

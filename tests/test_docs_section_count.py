@@ -10,7 +10,6 @@ goes stale the moment a section is added; this test makes that a failure.
 import re
 from pathlib import Path
 
-from manamap.pilot.issue_spec import DEPARTMENT_IDS
 from manamap.pilot.page_spec import SECTION_IDS
 # One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
 # per reference. `tests/repo_tree.py` records what that cost.
@@ -25,6 +24,12 @@ ROOT = Path(__file__).resolve().parent.parent
 # inline departure marks where reality moved. Rewriting them would destroy the
 # record; the whole point of a design doc is that it dates.
 DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
+
+#: Live documents whose SUBJECT is something that no longer exists, so naming
+#: its files is the whole job. `gotchas-magazine-legacy.md` holds every
+#: measurement the magazine renderer cost and outlived it by design;
+#: `paydown-plan.md` schedules deletions and has to name what it deletes.
+_RECORDS_OF_DELETED_THINGS = {"gotchas-magazine-legacy.md", "paydown-plan.md"}
 SURFACES = [
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",
@@ -37,7 +42,7 @@ SURFACES = [
 
 # Spelled-out counts, and the small ones matter now. The map used to start at
 # "fifteen", so a doc saying "eight sections" or "nine sections" was invisible to
-# this check — which is exactly how `docs/manual-v5-spec.md` passed while saying
+# this check — which is exactly how `docs/history/manual-v5-spec.md` passed while saying
 # "eight blocks" and how `page_spec.py`'s own docstring passed saying "nine
 # sections". The gate was blind below fifteen, not tolerant.
 _WORDS = {"eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
@@ -54,14 +59,13 @@ _COUNT_RE = re.compile(
 
 
 def test_no_surface_states_a_wrong_section_count():
-    """TWO registries during the migration, so two acceptable counts.
+    """ONE registry. The magazine was deleted on 2026-09-13 and this collapsed
+    with it, which the previous docstring asked for by name: "this collapses
+    back to a single truth the moment `build_manual.py` is deleted — if you are
+    reading this after that, take the set apart."
 
-    `issue_spec.DEPARTMENTS` is the frozen magazine's seventeen; `page_spec.
-    SECTIONS` is the compact page's nine. A stated number is wrong only if it
-    matches NEITHER. This collapses back to a single truth the moment
-    `build_manual.py` is deleted — if you are reading this after that, take the
-    set apart."""
-    truth = {len(DEPARTMENT_IDS), len(SECTION_IDS)}
+    `page_spec.SECTIONS` is the dossier's, and it is the only one now."""
+    truth = {len(SECTION_IDS)}
     wrong = []
     for path in SURFACES:
         if "history" in path.parts:
@@ -83,12 +87,12 @@ def test_no_surface_hardcodes_the_department_id_list():
     the v3.4 resequence would have turned it into a sentinel that matches
     nothing and silently protects nothing, which is worse than no test.
     """
-    probes = [", ".join(DEPARTMENT_IDS[:3]), ", ".join(SECTION_IDS[:3])]
+    probes = [", ".join(SECTION_IDS[:3])]
     offenders = [p.relative_to(ROOT) for p in SURFACES
                  if "history" not in p.parts
                  and any(probe in p.read_text(encoding="utf-8") for probe in probes)]
     assert not offenders, (
-        f"{offenders} enumerate section ids; read issue_spec.DEPARTMENT_IDS instead")
+        f"{offenders} enumerate section ids; read page_spec.SECTION_IDS instead")
 
 
 def test_every_step_module_agrees_with_the_registry_about_its_number():
@@ -255,9 +259,14 @@ def test_live_docs_do_not_name_source_files_that_do_not_exist():
     # A mention inside a sentence about the file's removal is a record, not a claim.
     gone = re.compile(r"retired|deleted|removed|no longer|is gone|was gone|never built|"
                       r"used to|formerly|superseded|historical", re.IGNORECASE)
+    # A DATED AUDIT IS A RECORD, exempt for the same reason a design record is:
+    # `audit-2026-09-12.md` describes the tree as it stood that day, and half
+    # the files it names were deleted BY the work it planned. Rewriting it to
+    # keep a check green would destroy the thing it is kept for.
     live = [ROOT / "CLAUDE.md", ROOT / "README.md", ROOT / "PLAN.md",
             *[p for p in sorted((ROOT / "docs").glob("*.md"))
-              if p.name not in DESIGN_RECORDS]]
+              if p.name not in DESIGN_RECORDS | _RECORDS_OF_DELETED_THINGS
+              and not re.match(r"audit-\d{4}-\d{2}-\d{2}\.md$", p.name)]]
     missing = []
     for doc in live:
         text = doc.read_text(encoding="utf-8")

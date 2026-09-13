@@ -87,17 +87,15 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   poh.py / poh_spec.py / poh_design.py / validate_poh.py
                       #                    THE PILOT'S OPERATING HANDBOOK — LIVE.
                       #                    Owns manuals/p/<slug>.html
-                      #   build_index.py   LIVE, and NOT legacy however it reads:
-                      #                    it writes data/decks/index.json, the
-                      #                    manifest the whole frontend fetches,
-                      #                    and six modules import `line_cards`
-                      #   LEGACY, frozen (docs/manual-v5-spec.md): issue_spec.py /
-                      #   design.py / build_manual.py / validate_issue.py /
-                      #   validate_considering.py / issue_length.py /
-                      #   artist_credits.py / short_list_art.py, plus build_page.py
-                      #   — superseded by the handbook, and it has no default
-                      #   output because it used to clobber one.
-                      #   design.py and issue_length.py are imported by LIVE code
+                      #   deck_manifest.py writes data/decks/index.json, the
+                      #                    manifest the whole frontend fetches;
+                      #                    six modules import its `line_cards`.
+                      #                    Was `build_index.py`, whose other half
+                      #                    rendered the magazine rack
+                      #   THE MAGAZINE RENDERER IS DELETED (2026-09-13): eleven
+                      #   modules, seven subcommands, nine pages and nine test
+                      #   files. Its record is docs/gotchas-magazine-legacy.md
+                      #   and git; the handbook replaced it 2026-09-02.
                       # ---- DIAGNOSE — a finished deck -> what limits it ----
                       #   deck_status.py   IS THIS DECK FINISHED? lifecycle +
                       #                    staleness; STAGES is the sequence
@@ -209,7 +207,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (107 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (100 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -439,8 +437,8 @@ engine-health word were absent on decks that are played.
 - `PLAN.md` — current state and what's next (read second when resuming work)
 - **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate; `manamap pilot deck-info <slug>` is the workbench view and the thing to run first on any deck
 - `docs/pilot.md` — the bench's commands and artifacts: evidence contract, citation contract, rules + strategy DBs, log/debrief/prescribe/versions, game_state v2, the resolve loop, the build loop (the magazine layer is a LEGACY section at the end)
-- `docs/manual-v5-spec.md` — the compact deck page that replaces the magazine (spec, awaiting strikes)
-- `docs/agent-audit-2026-08-19.md` — the audit of the agents behind the pivot
+- `docs/history/manual-v5-spec.md` — the compact deck page that replaces the magazine (spec, awaiting strikes)
+- `docs/history/agent-audit-2026-08-19.md` — the audit of the agents behind the pivot
 - `docs/agent-cost.md` — where LLM spend lives, per-routine token sizing, the invocation cache
 - `docs/architecture.md` — models, training mining, mechanical tags, deckbuilding roles, synergy rules, power-creep criteria, region clustering
 - `docs/pipeline.md` — all 15 steps: commands, inputs/outputs, runtimes, when to re-run what

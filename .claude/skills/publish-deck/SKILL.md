@@ -12,7 +12,7 @@ built the following month silently inherits the old pipeline. The vision this se
 is `docs/vision.md`: a lab bench for one pilot's paper decks — version it, measure it,
 prove its lines, play it, log it, ask it questions. The page it renders today is the
 **legacy magazine renderer**, frozen until the compact deck page
-(`docs/manual-v5-spec.md`) replaces it; nothing in this runbook depends on which.
+(`docs/history/manual-v5-spec.md`) replaces it; nothing in this runbook depends on which.
 
 ## Start here, always
 
@@ -82,9 +82,9 @@ merged by key ownership via `merge-prose` so the frozen legacy keys on a publish
 deck survive untouched.
 
 **9 — Render the page** (legacy). Author `issue.json` (identity: deck name,
-commander, status) → `build-manual` → `build-index`. This is the magazine renderer,
+commander, status) → `build-poh` → `build-index`. This is the magazine renderer,
 kept frozen until manual-v5; without an `issue_plan.json` it renders with defaults,
-which is what a new deck gets. `validate-issue` gates the legacy plans on the
+which is what a new deck gets. `validate-poh` gates the legacy plans on the
 already-published decks.
 
 **10 — Simulate it.** `fetch-opponent "<commander>" --as <slug>` for each seat at
@@ -146,7 +146,7 @@ manamap pilot validate-prescription <slug>    # every question the doctor answer
 manamap pilot validate-branch <slug> --branch N  # the objective is falsifiable; a
                                               #   proposal freezes what it accepted
 manamap pilot validate-considering <slug>     # LEGACY: frozen Short Lists on published decks
-manamap pilot validate-issue <slug>           # LEGACY: the magazine plan on published decks
+`manamap pilot validate-poh <slug>`
 .venv/bin/python -m pytest -m "not browser and not forge" -n auto
 ```
 
@@ -167,11 +167,11 @@ the gates above, not in anyone's memory.
   citations pointing at stacks that showed the opposite.
 - **The legacy renderer's lints** — internal taxonomy ids in reader copy (68
   occurrences across eight pages) and deks that open with a question (14) — still
-  run under `validate-issue` on the frozen pages; the taxonomy-id rule carries over to
+  run under `validate-poh` on the frozen pages; the taxonomy-id rule carries over to
   the pilot notes.
 - **The workbench pivot (2026-08-19)** — the log, versions, prescriptions, the
   simulation harness and the bridge; the magazine agents retired (see
-  `docs/agent-audit-2026-08-19.md`).
+  `docs/history/agent-audit-2026-08-19.md`).
 
 **Four rules these cycles earned, in the order they will bite again:**
 

@@ -50,7 +50,7 @@ and may not assert. That rule reaches the prose, not just the picture.
   `synergy_graph.json` is a global shortlist, not a fit score.
 - **The strategy companion** — ground a framework claim with `query-strategy` then
   `lookup-strategy`; then say it in English. **A `strategy:` id never reaches reader
-  copy** — it is an address, not a word, and `validate-issue` (the legacy page gate) fails on it. It belongs
+  copy** — it is an address, not a word, and `validate-poh` (the legacy page gate) fails on it. It belongs
   only in a citation's `rule` field.
 - **Rules claims inside a decision branch** carry `{"rule", "quote"}` citations from
   `lookup-rule`, verbatim — the validator checks the quote.
@@ -69,7 +69,7 @@ and may not assert. That rule reaches the prose, not just the picture.
 
 Budgets live in `issue_spec.PROSE_BUDGET` / `ENTRY_BUDGET` (the legacy renderer's
 spec, still the gate until the compact deck page lands) — read them there; the numbers
-above are a courtesy. `manamap pilot validate-issue <slug>` reports every breach in
+above are a courtesy. `manamap pilot validate-poh <slug>` reports every breach in
 characters. Over is over; cut, do not compress.
 
 **Three keys are not yours and are not anyone's**: `card_roles`, `mana_base` and

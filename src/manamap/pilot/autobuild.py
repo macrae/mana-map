@@ -441,7 +441,7 @@ def build(args, quiet=False):
         bar.advance(1, state=STAGES[5])
 
         with contextlib.redirect_stdout(said):
-            _run("manamap.pilot.build_index")
+            _run("manamap.pilot.deck_manifest")
             # A NEW DECK LANDS IN DEV. PRD §3: "most decks here will be thrown
             # away — the environment is optimised for throughput, not rigour."
             # Only a build says this; nothing infers `dev` for the ten decks

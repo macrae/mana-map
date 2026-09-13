@@ -37,7 +37,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 107 pilot subcommands answer in JSON, instantly, for free.
+  design: 100 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -425,7 +425,7 @@ def _build_finish(slug=None, commit=False, message=None):
     import subprocess
 
     from manamap.config import DECKS_DIR
-    from manamap.pilot import build_index, fetch_deck
+    from manamap.pilot import deck_manifest, fetch_deck
 
     if not slug:
         raise ValueError("finish needs a slug")
@@ -434,7 +434,7 @@ def _build_finish(slug=None, commit=False, message=None):
         raise ValueError(f"{slug} has no decklist yet — build it first")
 
     fetch_deck.main(type("A", (), {"slug": slug, "force": False})())
-    build_index.main()
+    deck_manifest.main()
 
     out = {"slug": slug,
            "written": [p.name for p in sorted(base.iterdir())],
@@ -1114,7 +1114,7 @@ def _deck_state(slug=None, action=None, reason=None):
 
 
 def _deck_delete(slug=None, confirm=None, force=False):
-    from manamap.pilot import build_index, deck_delete
+    from manamap.pilot import deck_delete, deck_manifest
 
     if not slug:
         raise ValueError("deck/delete: no slug")
@@ -1127,7 +1127,7 @@ def _deck_delete(slug=None, confirm=None, force=False):
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         claims = deck_delete.delete(slug, force=bool(force))
-        build_index.main()
+        deck_manifest.main()
     return {"slug": slug, "deleted": True, "stdout": buf.getvalue(),
             "holders": [{"deck": d, "branch": b, "cards": c} for d, b, c in claims]}
 

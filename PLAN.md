@@ -24,7 +24,7 @@ supported. The magazine that used to be the product is a frozen legacy renderer 
 compact deck page replaces it. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 107 pilot subcommands,
+Scale (derived; `tests/test_docs_counts.py` polices these): 100 pilot subcommands,
 28 top-level subcommands, 17 agents, 21 skills, 10 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
@@ -117,7 +117,7 @@ status and withholds the suggestions that would need a deck to shuffle.
 | | | where |
 |---|---|---|
 | **The workbench gets verbs** | the lifecycle leaves `issue.json` for `deck_versions.json`; `deck-state` and `deck-delete`; `validate-deck-versions` (closes #24); the archive rack folds; the version stamps on the art; the fleet controls, absent without a local server | `docs/pilot.md` |
-| Agent audit + Sprint 0 | 18 → 17 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/agent-audit-2026-08-19.md` |
+| Agent audit + Sprint 0 | 18 → 17 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/history/agent-audit-2026-08-19.md` |
 | MVP Sprints 1–3 | `deck-version`, `deck-notes` + `/debrief`, `prescribe`, `deck-info` | `docs/pilot.md` |
 | Simulation S0–S5 | Forge spike + verdict; seeded harness; parser with CIs; `validate-sim`; the pod; the bridge `sim-scenario` → `game_state` v2; the doctor reads the table | `docs/simulation.md` |
 | The chain, once for real | stack 008 — a board lifted from a simulated game, resolved + checker-passed in 3 iterations; matched Forge's log line for line | `docs/simulation.md` |
@@ -129,7 +129,7 @@ status and withholds the suggestions that would need a deck to shuffle.
 | `validate-recon` | the gate `deck_recon.json` never had; its first catch was a data gap, not an agent error | `pilot/validate_recon.py` |
 | Builder curve + combos | role quota crossed with a **cited** mana-value target; `complete_combos` finishes a line the deck half-holds | `pilot/build_deck.py` |
 | **The deck page** | `viz/deck.html` — nine workbench panels over `info.json`, sim figures with intervals, lifecycle flag | `docs/viz.md` |
-| **The Pilot's Manual** | `manuals/p/<slug>.html` from `build-page` — the compact technical page, no `<script>`, rebuilds byte-identically. The magazine is unlinked from every live surface | `docs/manual-v5-spec.md` |
+| **The Pilot's Manual** | `manuals/p/<slug>.html` from `build-page` — the compact technical page, no `<script>`, rebuilds byte-identically. The magazine is unlinked from every live surface | `docs/history/manual-v5-spec.md` |
 | **The first real games** | edgar v1.0.0 and ur-dragon v1.0.0, one logged game each, both debriefed, both feeding a prescription | `data/decks/*/log.jsonl` |
 | **The workbench landing page** | `viz/workbench.html` — racks by whether a deck is SLEEVED, plus a fleet table sorted four ways over every `info.json`. Three labelled links per deck | `docs/viz.md` |
 | **The fusion** | an open verified line prints its prose (50 of 50 covered); engine arrows on the 5 of 196 edges whose direction is a fact; a curve bar is a control | `docs/viz.md` |
@@ -384,7 +384,8 @@ against the pod is the instrument that can see all three pillars.
    D-2 forbids deleting a capability before it has a new home. **Two magazine
    couplings block a clean retirement**, both in skills — `write-manual`'s build
    half and `author-decision`'s step 5 each call `build-manual` — and
-   `validate_issue.py` is the only validator touching `manual_prose.json`.
+   Nothing validates `manual_prose.json` any more — its only gate was the
+   magazine's `validate_issue`, deleted 2026-09-13 with the renderer.
 5. **Epic E**: mostly link wiring — `?cards=`, `?deck=` and `?ref=` already open
    the Atlas seeded, and the library is persisted and cross-surface.
 
@@ -589,7 +590,7 @@ changes.
    **evidence, never intent**, since `deck_history` is explicit that *why* a card moved is
    not knowable from a commit.
 5. **Content-addressed cache busting for `deck.html`** — it went from nine artifact
-   fetches to fifteen, and `manuals/magazine.css`'s `?v=<sha8>` is the pattern to copy.
+   fetches to fifteen, and the handbook stylesheet's `?v=<sha8>` is the pattern to copy.
 
 **Done since the last revision:** the Pilot's Manual (`build-page`) and the magazine
 unlinked from every live surface; edgar and ur-dragon pinned at v1.0.0 with a real game
@@ -741,7 +742,7 @@ the last adversary has finished is unreviewed by construction.
 The magazine renderer (`build_manual`, `issue_spec`, `design`, `validate_issue`, STYLEv3)
 still renders the nine pages from artifacts nothing regenerates (`issue_plan.json`, the
 panel keys, `card_roles`/`mana_base`/`upgrades`, `considering.json`). They are edited by
-nobody and deleted in one commit when the compact page lands (`docs/manual-v5-spec.md`
+nobody and deleted in one commit when the compact page lands (`docs/history/manual-v5-spec.md`
 §"What gets unfrozen"). Code and docs about it carry a LEGACY banner and are otherwise
 left accurate.
 

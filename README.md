@@ -315,7 +315,7 @@ Surface     artifacts → deck-info --write → info.json ─┐
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (107 pilot subcommands). All constants live in
+`manamap pilot <cmd>` drives the rest (100 pilot subcommands). All constants live in
 `src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
 
 ## Simulation — the centre of the bench
@@ -593,7 +593,7 @@ Two standing rules around this harness:
 | A figure the sim reports | `game_facts` + `aggregate` in `sim/parse.py`, then re-derive every run with `--analyze` — the record is compared against the logs, so an added key must be backfilled |
 | A panel on the deck page | a `*Panel(d)` function in `viz/js/deck-view.js` returning `''` when its artifact is absent, plus the artifact's filename in `build_index.gather_entries` if a browser cannot list it |
 | A field the deck page reads | `deck_info.compose`, then `deck-info <slug> --write` for every deck — `info.json` is committed and staleness-gated |
-| A section of the (legacy) deck page | **don't** — the magazine renderer (`issue_spec.DEPARTMENTS`, `design.py`) is frozen; the compact page is `docs/manual-v5-spec.md` |
+| A section of the (legacy) deck page | **don't** — the magazine renderer (`issue_spec.DEPARTMENTS`, the handbook renderer) is frozen; the compact page is `docs/history/manual-v5-spec.md` |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
 | A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
@@ -712,8 +712,8 @@ every panel there does when its artifact is absent.
 | `PLAN.md` | Current state and what's next |
 | `/publish-deck` | The deck lifecycle: every phase in order, with its gate |
 | `docs/simulation.md` | The Forge engine: the spike, the harness, the parser, the pod, the bridge |
-| `docs/manual-v5-spec.md` | The compact deck page that replaces the magazine (spec) |
-| `docs/agent-audit-2026-08-19.md` | The agent audit behind the pivot |
+| `docs/history/manual-v5-spec.md` | The compact deck page that replaces the magazine (spec) |
+| `docs/history/agent-audit-2026-08-19.md` | The agent audit behind the pivot |
 | ~~`STYLEv3.md`~~ | The legacy magazine's constitution, **deleted 2026-08-25** with the rest of the magazine era. `git show 23e8cec:STYLEv3.md` |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
 | `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |
