@@ -2100,3 +2100,49 @@ free to add and should not be expected to land the commanders sooner.
 
 That is the bench doing the job it exists for: the cheapest available change was
 measured and found not to matter, before anything was bought or unsleeved.
+
+## Two branches on one deck, measured on one harness, and the cheap one won (2026-09-14)
+
+sharknado carries two open branches. Neither was ever proposed, so neither was
+ever formally on the table — `OPEN` in `branch_state` means "no proposal — this
+is an experiment, not a decision", which is the honest description of both. This
+records which one the evidence favours, so the comparison is not re-derived.
+
+| | `recon-v1` | `tax-v1` |
+|---|---|---|
+| opened | 2026-09-10 | 2026-09-14 |
+| size | +37 −37 | +3 −3 |
+| **to buy** | **18** | **2** |
+| sleeved in other decks | 15, across four LOCKED decks | 1 (heliod, LOCKED) |
+| damage @T10 | **−5.27 (−11%)** | **+5.88 (+12%)** |
+| extra cards by T8 | **−1.75 (−17%)** | **+0.85 (+8%)** |
+| board power @T6 | noise | +0.49 |
+| killed by T6 | +0.048 | +0.043 |
+| stall, two in a row | −0.123 | −0.035 |
+| interaction affordable @T6 | **+0.265** | noise |
+| objective | `extra_cards_8 >= 1.2`, **cannot fail** | `damage_8 >= 31.5`, **met at 32.40** |
+| verdict | A TRADE | **MERGE** |
+
+Same harness, same seed, 10,000 games each.
+
+**`recon-v1` is not a bad branch and this is not a reason to delete it.** It buys
+a real thing — interaction affordable at turn six goes from 17 games per 100 to
+44, and the double stall falls by 12 per 100 — and it made one call that today's
+measurement independently confirms: of the four wheels it cuts, all four are
+SHUFFLE wheels, which pay Brallin nothing. It was written before the model could
+see this deck's engine at all, and its own `why` text says so in terms that are
+now false.
+
+What decides it is the price. **18 purchases plus unsleeving 15 cards out of four
+working decks, for a measured loss on the deck's own axis — against two
+purchases for a gain on every row that clears its MDE.**
+
+Its objective also cannot fail (recorded above, "An axis with no population…"),
+so it has no live grade and the reading has to come off the measured table. That
+stands as written; a pre-registration rewritten once it is inconvenient is not
+one.
+
+**Kept, not deleted.** `deck_branch.delete`'s own docstring is the argument: a
+branch holds measurements that cost real time, and removing an unmerged one
+throws away the evidence for a decision nobody recorded. This page is that
+record.
