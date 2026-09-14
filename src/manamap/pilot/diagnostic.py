@@ -129,6 +129,40 @@ def _rate(k, n):
     return {"rate": round(k / n, 4), "ci95": [round(lo, 4), round(hi, 4)], "n": n}
 
 
+def commanders(rows):
+    """When is the WHOLE command zone on the battlefield.
+
+    A PARTNER DECK'S IGNITION IS THE JOINT, NOT TWO MARGINALS. `goldfish`
+    reports each commander's own cast turn and the engine needs both: on
+    sharknado Brallin taxes the DISCARD half of a wheel and Shabraz the DRAW
+    half, so a game that lands Brallin on turn 3 and Shabraz on turn 9 reads
+    well on both rows and has nothing running until turn 9.
+
+    ABSENT FOR A DECK WITH ONE COMMANDER, deliberately. `partner_turn` is None
+    for every game there, and reporting "both online = the commander's turn"
+    would put a figure on a question that deck does not have — the same reading
+    as a real joint, and not one.
+    """
+    if not rows or "partner_turn" not in rows[0]:
+        return None
+    if all(r["partner_turn"] is None for r in rows):
+        return None
+    n = len(rows)
+    turns = len(rows[0]["stall_by_turn"]) if "stall_by_turn" in rows[0] else 10
+    both = [max(r["commander_turn"], r["partner_turn"]) for r in rows
+            if r["commander_turn"] is not None and r["partner_turn"] is not None]
+    out = {
+        "both_online_by_turn": {
+            str(t + 1): _rate(sum(1 for b in both if b <= t + 1), n)
+            for t in range(turns)},
+        "never_both_online": _rate(n - len(both), n),
+    }
+    if both:
+        out["mean_both_online_turn"] = round(sum(both) / len(both), 3)
+        out["median_both_online_turn"] = sorted(both)[len(both) // 2]
+    return out
+
+
 def stall(rows):
     """P(no legal play), per turn and as a run of two.
 
@@ -507,6 +541,10 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
                         seed=seed if seed is not None else HARNESS["seed"]),
         "decklist_sha256": (got.get("meta") or {}).get("decklist_sha256"),
         "stall": stall(rows),
+        # ABSENT unless the deck has a partner — `commanders` returns None and
+        # the key is dropped rather than carrying a null, so a reader cannot
+        # mistake "this deck has one commander" for "nobody measured it".
+        **({"commanders": _c} if (_c := commanders(rows)) else {}),
         "engine": engine(rows, targets, missing),
         "mana": mana(rows),
         "steam": steam(rows, got),

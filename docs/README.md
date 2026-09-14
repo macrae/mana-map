@@ -34,7 +34,7 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 | | | |
 |---|---:|---|
 | [gotchas-viz.md](gotchas-viz.md) | 83 | The canvas renderer, the force graph, the three modes, the library and its piles, the shell, the atlas drift. Read before touching `viz/`. |
-| [gotchas-bench.md](gotchas-bench.md) | 2040 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
+| [gotchas-bench.md](gotchas-bench.md) | 2102 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
 | [gotchas-analysis.md](gotchas-analysis.md) | 26 | Synergy, the obsolescence index and its audit, card roles, region clustering. Read before touching `src/manamap/analysis/`. |
 | [gotchas-evidence.md](gotchas-evidence.md) | 50 | Stacks, citations, `engine.json`, the deck map, and every validator's reasoning — **including the checks prototyped and REJECTED for firing on correct data**. Read before adding a validator or a claim. |
 | [gotchas-magazine-legacy.md](gotchas-magazine-legacy.md) | 30 | The frozen renderer. Its code is not extended; the layout and prose lessons outlive it. |

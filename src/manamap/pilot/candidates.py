@@ -91,6 +91,41 @@ AXES = {
     # rather than fixed silently; see docs/gotchas-bench.md.
     "interaction_6": ("steam", "castable_given_in_hand_by_turn", "6"),
     "keep_t3": ("steam", "keep_can_act_by_t3", None),
+    # BOTH COMMANDERS ONLINE, added 2026-09-14.
+    #
+    # THE FLEET CORRELATION THIS BLOCK DEMANDS CANNOT BE RUN, and saying so is
+    # the honest version. `diagnostic.commanders` exists only for a deck with a
+    # PARTNER, and sharknado is the only one in the fleet, so there is no
+    # population to correlate against: n = 1. The first draft of this comment
+    # carried five invented r values, which is precisely the failure the page
+    # beside it exists to prevent.
+    #
+    # SO THE AXIS WAS PROVED BY SENSITIVITY INSTEAD — can it see the thing it
+    # was built for? sharknado, 4,000 games, seed 7, every white-producing land
+    # replaced by a Mountain:
+    #
+    #                        both@6   mean joint   Shabraz   Brallin
+    #     as printed          0.820       5.464      5.391     4.254
+    #     no white at all     0.553       6.223      6.203     4.195
+    #
+    # -0.267 on the rate, far outside any MDE, and it moves the RIGHT
+    # commander: Shabraz is {3}{W}{U} and slips 0.81 turns, Brallin is {3}{R}
+    # and does not move. The axis reads colour access to the second commander,
+    # which is what it claims to.
+    #
+    # AND THE FIRST SWEEP RETURNED A TRUE NULL, which is worth more than the
+    # axis. Nine accelerants at 3,000 games each, MDE 0.0279, with Mind Stone
+    # planted as a control because it is ramp that makes only {C}: every card
+    # landed between +0.019 and +0.027 and Mind Stone (+0.021) was
+    # indistinguishable from Azorius Signet (+0.027), whose pips are Shabraz's
+    # exactly. ONE two-mana rock does not measurably move this deck's ignition
+    # turn. `mana-fit`'s "six white sources short" is a Karsten 90%-on-curve
+    # target and not a cliff — the 21 sources already there are doing the work.
+    #
+    # It earns its place over `land_drop` because that axis stops at turn five
+    # and cannot see a five-drop needing TWO specific colours, which is the
+    # whole of sharknado's problem: Brallin lands at 4.25, the joint at 5.46.
+    "both_online_6": ("commanders", "both_online_by_turn", "6"),
 }
 #: Which axes need a deck to have opted into a model, and the flag to name when
 #: it has not. A bare "no reading" would send the pilot looking for a bug.
@@ -363,10 +398,27 @@ def _load_cards(slug, branch):
 
 
 def _resolve(name):
-    """A corpus row shaped like a cards.json entry — enough for the goldfish."""
+    """A corpus row shaped like a cards.json entry — enough for the goldfish.
+
+    THE FRONT FACE IS HOW A PERSON WRITES A DOUBLE-FACED CARD, and an exact
+    match on `cards.csv`'s name column cannot find one. 888 of the corpus's
+    cards are keyed `A // B` and exactly 3 of those also appear under their
+    front face alone, so a pool line reading "Brass's Tunnel-Grinder" resolved
+    to nothing and the sweep reported `not in the corpus` — a confident answer
+    that is false, and one that sent this session off to schedule a two-hour
+    corpus refresh for a card that was already there.
+
+    `viz/js/discovery.js:347` has carried this fallback for months, with the
+    reason written out: "Decklists often carry only the front face of a
+    double-faced card. cards.csv keys the full 'A // B' form, so fall back to a
+    front-face match before giving up." Two resolvers, one question, and only
+    one of them knew.
+    """
     from manamap.pilot import card_pool
     frame = card_pool.load_frame()
     hit = frame[frame["name"] == name]
+    if not len(hit):
+        hit = frame[frame["name"].str.startswith(name + " // ", na=False)]
     if not len(hit):
         return None
     r = hit.iloc[0]

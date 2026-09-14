@@ -405,3 +405,80 @@ def test_a_source_is_blind_only_if_every_channel_is_blind():
             "with no combat model an attack trigger produces nothing and must "
             "be named, or a low hoard figure is illegible")
     assert len(blind_off) > len(blind)
+
+
+# ── the partner deck's ignition ──────────────────────────────────────────
+#
+# `goldfish` reports each commander's own cast turn. A PARTNER DECK NEEDS THE
+# JOINT: sharknado's Brallin taxes the discard half of a wheel and Shabraz the
+# draw half, so a game that lands Brallin on turn 3 and Shabraz on turn 9 reads
+# well on both marginals and has the engine off until turn 9. The module
+# docstring above already names "a joint probability composed from marginals"
+# as one of the three things this file guards; this is a fourth.
+
+def _cmd_rows(commander, partner, turns=10):
+    """Per-iteration rows shaped like `simulate_once`'s, for the two fields
+    this block reads. Driving the production function, not re-deriving it.
+
+    NOT `_rows` — this module already has one, for the engine block, and
+    shadowing it at import time broke a test three hundred lines above with a
+    TypeError that named neither.
+    """
+    return [{"commander_turn": c, "partner_turn": p,
+             "stall_by_turn": [False] * turns}
+            for c, p in zip(commander, partner)]
+
+
+def test_both_online_is_the_later_of_the_two_and_not_either_marginal():
+    """THE WHOLE POINT. Both commanders arrive early on their own and late
+    together. A block that reported a marginal would read 2.0; the joint is
+    6.0. Re-introduce the bug by taking `min` instead of `max` and this fails."""
+    got = diagnostic.commanders(_cmd_rows([2, 2, 2, 2], [6, 6, 6, 6]))
+    assert got["mean_both_online_turn"] == 6.0
+    assert got["median_both_online_turn"] == 6
+    assert got["both_online_by_turn"]["5"]["rate"] == 0.0
+    assert got["both_online_by_turn"]["6"]["rate"] == 1.0
+
+
+def test_a_game_that_never_lands_both_is_carried_as_a_rate_not_a_number():
+    """ABSENT RATHER THAN ZERO. A mean that quietly scored a never-cast game as
+    turn 10 would make a deck assembling half the time look like one that
+    assembles late — two very different decks, one figure."""
+    got = diagnostic.commanders(_cmd_rows([3, 3, 3, None], [4, 4, 4, 4]))
+    assert got["never_both_online"]["rate"] == 0.25
+    assert got["mean_both_online_turn"] == 4.0, "the never-cast game must not be averaged in"
+    assert got["both_online_by_turn"]["10"]["rate"] == 0.75
+
+
+def test_a_deck_with_one_commander_gets_no_block_at_all():
+    """Reporting `both online = the commander's turn` would put a real-looking
+    figure on a question the deck does not have."""
+    assert diagnostic.commanders(_cmd_rows([3, 4, 5], [None, None, None])) is None
+    assert diagnostic.commanders([]) is None
+
+
+def test_the_axis_reads_the_block_the_diagnostic_writes():
+    """An axis naming a key nothing writes fails open: the sweep reports `no
+    reading` forever and nobody is told why."""
+    block, key, sub = candidates.AXES["both_online_6"]
+    assert (block, key, sub) == ("commanders", "both_online_by_turn", "6")
+    got = diagnostic.commanders(_cmd_rows([2, 2], [6, 6]))
+    assert sub in got[key], f"the axis wants {key}[{sub}] and the block has {list(got)}"
+    assert "rate" in got[key][sub]
+
+
+def test_the_axis_comment_carries_no_unmeasured_correlations():
+    """THIS AXIS CANNOT HAVE THE FLEET CORRELATION THE REGISTRY ASKS FOR —
+    sharknado is the only partner deck, so n = 1 — and the first draft of its
+    comment invented five r values rather than say so. A number in that block
+    has to be one somebody ran."""
+    import inspect
+    import re
+
+    src = inspect.getsource(candidates)
+    start = src.index("# BOTH COMMANDERS ONLINE")
+    block = src[start:src.index('"both_online_6"', start)]
+    assert "cannot be run" in block.lower(), "the n = 1 limitation must be stated"
+    assert not re.search(r"\br\s*=\s*[-+]?\d", block), (
+        "this axis has no population to correlate against — an r value here is "
+        "invented. It is proved by a SENSITIVITY test, which the block records.")

@@ -2038,3 +2038,65 @@ hoping the profile will fix it.** No record was written for run 2; only the
 - **The arbiter is the table.** The deck has zero games in the captain's log. For
   a deck whose plan is a symmetrical draw spell, the missing evidence is a person
   choosing to cast it.
+
+## An axis with no population to check it against, and the null it found (2026-09-14)
+
+`candidates.AXES` carries a standing rule: a new axis ships with an independence
+check across the fleet, because three combat axes once shipped that were one
+axis at r = 0.92–0.98. `both_online_6` — the turn BOTH commanders of a partner
+pair are on the battlefield — **cannot have that check.** It reads
+`diagnostic.commanders`, which exists only for a deck with a partner, and
+sharknado is the only one in the fleet. n = 1.
+
+**The first draft of its comment invented five r values rather than say so.**
+That is the failure this page is about, committed inside the commit adding the
+guard against it. A test now greps the block for `r = <number>` and fails, and
+the block states the limitation instead.
+
+### Proved by sensitivity instead
+
+The question an independence check answers is "does this axis see something the
+others do not". With no population, ask instead whether it sees the thing it was
+built for. sharknado, 4,000 games, seed 7, every white-producing land replaced
+with a Mountain:
+
+| | both @6 | mean joint | Shabraz | Brallin |
+|---|---:|---:|---:|---:|
+| as printed | 0.820 | 5.464 | 5.391 | 4.254 |
+| no white at all | **0.553** | 6.223 | 6.203 | 4.195 |
+
+−0.267 on the rate, far outside any MDE, **and it moves the right commander**:
+Shabraz is `{3}{W}{U}` and slips 0.81 turns; Brallin is `{3}{R}` and does not
+move at all. The axis reads colour access to the second commander, which is what
+it claims to. `land_drop` cannot do this — it stops at turn five and has no
+notion of a five-drop needing two specific colours.
+
+**One test of this shape was designed backwards first and is worth recording.**
+The obvious experiment — swap six non-white lands for Plains, matching
+`mana-fit`'s "six white sources short" — made the deck **worse** (0.820 → 0.794).
+The six lands cut were duals feeding U and R, which the same two commanders also
+need. `mana-fit` says this outright in its own tail: *"No land is safe to cut on
+colour grounds: every one feeds a colour this list is still short of."* A colour
+experiment that adds one colour by removing another measures the trade, not the
+colour.
+
+### The null, which is worth more than the axis
+
+The first sweep: nine accelerants, 3,000 games each, MDE 0.0279, with **Mind
+Stone planted as a control** — it is ramp, and it makes only `{C}`, so an axis
+that measures "can I cast a `{3}{W}{U}` five-drop" must rank it below the
+`{W}{U}` fixers or it is measuring mana count.
+
+Every card landed between +0.019 and +0.027. Mind Stone (+0.021) was
+indistinguishable from Azorius Signet (+0.027), whose pips are Shabraz's
+exactly. Nothing cleared the MDE.
+
+**ONE TWO-MANA ROCK DOES NOT MOVE THIS DECK'S IGNITION TURN**, and the
+sensitivity test says that is a true null rather than a blind axis. `mana-fit`'s
+six-source shortfall is a Karsten 90%-on-curve target, not a cliff: the 21 white
+sources already in the list are doing the work. The three fixers sitting in the
+Zur Parts box — Azorius Signet, Talisman of Progress, Commander's Sphere — are
+free to add and should not be expected to land the commanders sooner.
+
+That is the bench doing the job it exists for: the cheapest available change was
+measured and found not to matter, before anything was bought or unsleeved.
