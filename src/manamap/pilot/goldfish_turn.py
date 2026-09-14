@@ -365,6 +365,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         etb_drained = 0         # one-shot and per-type drain, this turn
         etb_gained = 0
         drawn_this_turn = 0
+        # THE OPPONENT'S DRAWS, so the tax on them has an event to fire on.
+        # ONE SEAT, the same convention the damage pillar already uses: Brallin
+        # says "1 damage to EACH opponent" and this model counts it once
+        # against a single 40-life opponent. So one draw step a turn, and a
+        # wheel refills that one seat. A real table has three, which makes
+        # every figure downstream of this a FLOOR and is stated as one.
+        opponent_draws_this_turn = 1
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -1065,8 +1072,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _held = len(hand)
                 discard_n(0, everything=True,
                           shuffled=_wp["activated_wheel_shuffles"])
-                draw_n(_held if _wp["activated_wheel"] < 0
-                       else _wp["activated_wheel"])
+                _an = _held if _wp["activated_wheel"] < 0 else _wp["activated_wheel"]
+                draw_n(_an)
+                opponent_draws_this_turn += _an   # symmetrical, as above
                 if not _wp["activated_wheel_once"]:
                     continue
                 wheel_engines.remove(_we)
@@ -1148,7 +1156,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["draw"]["wheel_draws"]:
                     held = len(hand)
                     discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
-                    draw_n(held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"])
+                    _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
+                    draw_n(_n)
+                    # A WHEEL IS SYMMETRICAL AND THIS IS THE HALF THE MODEL
+                    # NEVER SAW. "Each player draws seven" refills the opponent
+                    # too, which is the cost of every wheel in this deck and
+                    # the reason the tax cards exist. A "that many" wheel draws
+                    # each player their OWN discard count and this model does
+                    # not track the opponent's hand, so ours stands in for it.
+                    opponent_draws_this_turn += _n
                     continue
                 draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
                 if card["draw"]["spell_draw_greatest_power"]:
@@ -1665,6 +1681,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _e in event_payoff_permanents:
                 _evt_dmg += _e["per_discard_damage"] * _disc_t
                 _evt_dmg += _e["per_draw_damage"] * drawn_this_turn
+                # THE TAX ON THEIR HALF. Their draws are the event; our draw
+                # off it is safe where the same field on our own draws is
+                # refused as a Curiosity loop, because our draws do not cause
+                # theirs.
+                _evt_dmg += _e["per_opponent_draw_damage"] * opponent_draws_this_turn
+                if _e["per_opponent_draw_our_draw"] and opponent_draws_this_turn:
+                    draw_n(_e["per_opponent_draw_our_draw"] * opponent_draws_this_turn)
+                if opponent_draws_this_turn >= 2:
+                    _evt_dmg += _e["opponent_second_draw_damage"]
+                    if _e["opponent_second_draw_our_draw"]:
+                        draw_n(_e["opponent_second_draw_our_draw"])
                 _ctr = (_e["per_discard_counter"] * _disc_t
                         + _e["per_draw_counter"] * drawn_this_turn)
                 counter_power += _ctr

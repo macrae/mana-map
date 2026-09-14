@@ -255,8 +255,35 @@ _DRAW_THEN_DISCARD_RE = re.compile(
 #: turn". Parsed, not declared: well past the "one card, no pattern" line that
 #: makes an ability a per-deck declaration.
 _EVENT_TRIGGER_RE = re.compile(
-    r"whenever you (discard a card|discard one or more cards|draw a card|"
-    r"draw your second card each turn)\b,?([^.\n]*(?:\.[^.\n]*)?)", re.I)
+    r"whenever (?:you (?P<you>discard a card|discard one or more cards|"
+    r"draw a card|draw your second card each turn)"
+    r"|(?:an opponent|a player) (?P<opp>draws a card|"
+    r"draws their second card each turn))"
+    r"\b,?(?P<effect>[^.\n]*(?:\.[^.\n]*)?)", re.I)
+#: THE OTHER HALF OF A WHEEL. Every trigger above keyed on what WE do, so a
+#: card that taxes an OPPONENT's draw returned an all-zero profile with
+#: `unmodelled` unset -- the silent zero this file exists to stop producing.
+#: On sharknado that was Rhystic Study, Mind's Eye and Smothering Tithe, three
+#: cards in a 99 whose plan is refilling the whole table, plus every candidate
+#: the search turned up for the job. Corpus sweep 2026-09-14: 18 cards say
+#: "whenever an opponent draws a card", 5 "their second card each turn", 3
+#: "whenever a player draws" -- 31 in all, well past the line where an ability
+#: is declared per deck rather than parsed.
+#:
+#: THE DAMAGE IS WORDED AT THE DRAWER, not at the table, so `_EVENT_DAMAGE_RE`
+#: cannot see it: Razorkin Needlehead "deals 1 damage to them", Scrawling
+#: Crawler "that player loses 1 life".
+#: AN EFFECT YOU HAVE TO PAY FOR IS NOT A RATE. Mind's Eye reads "whenever an
+#: opponent draws a card, you may pay {1}. If you do, draw a card" -- and a
+#: wheel hands the opponent seven draws, so an unguarded read gives this deck
+#: seven free cards off one artifact it never paid for. The same refusal the
+#: X-draw path makes for an additional cost, and the same one `land_colors`
+#: makes for a coloured mode that costs extra mana. Refused whole and NAMED,
+#: never half-read.
+_EVENT_PAID_RE = re.compile(r"\bpay \{", re.I)
+_EVENT_OPP_DAMAGE_RE = re.compile(
+    r"deals (\d+) damage to (?:them|that player|that opponent)"
+    r"|that (?:player|opponent) loses (\d+) life", re.I)
 #: "deals N damage to each opponent" (Brallin), "deals N damage to any target"
 #: (Niv-Mizzet, Irencrag -- one opponent, which is all this model tracks) and
 #: "each opponent loses N life" (Psychosis Crawler -- life loss is damage
@@ -390,11 +417,31 @@ def event_payoffs(card):
            "per_draw_damage": 0, "per_draw_counter": 0,
            "per_draw_token_power": 0,
            "second_draw_damage": 0, "second_draw_token_power": 0,
+           # THE TAX ON THE OTHER HALF OF A WHEEL: what an OPPONENT drawing
+           # pays us. `_our_draw` is safe where the same field on our own draws
+           # is refused as a Curiosity loop -- our draws do not cause theirs,
+           # so it terminates by construction.
+           "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
+           "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
            "unmodelled": None}
     hit = False
     for m in _EVENT_TRIGGER_RE.finditer(text):
         hit = True
-        kind, effect = m.group(1).lower(), m.group(2) or ""
+        effect = m.group("effect") or ""
+        if m.group("opp"):
+            kind = m.group("opp").lower()
+            prefix = ("opponent_second_draw" if "second" in kind
+                      else "per_opponent_draw")
+            if _EVENT_PAID_RE.search(effect):
+                continue        # gated on mana; falls through to `unmodelled`
+            odmg = _EVENT_OPP_DAMAGE_RE.search(effect)
+            if odmg:
+                out[prefix + "_damage"] += int(odmg.group(1) or odmg.group(2))
+            odrw = _EVENT_DRAW_RE.search(effect)
+            if odrw:
+                out[prefix + "_our_draw"] += _DRAW_WORDS[odrw.group(1).lower()]
+            continue
+        kind = m.group("you").lower()
         prefix = ("per_discard" if kind.startswith("discard")
                   else "second_draw" if "second" in kind else "per_draw")
         dmg = _EVENT_DAMAGE_RE.search(effect)

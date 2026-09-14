@@ -404,3 +404,146 @@ def test_a_one_shot_that_sacrifices_itself_takes_the_body_with_it():
                 ", Sacrifice this creature:", ":")
     assert power10(copy.deepcopy(doc)) < power10(kept), (
         "the sacrificed body is still on the board")
+
+
+# ── the OTHER half of a wheel: what an opponent drawing pays us ──────────
+#
+# Every trigger in `event_payoffs` keyed on what WE do, so a card taxing an
+# OPPONENT's draw returned an all-zero profile with `unmodelled` UNSET — the
+# silent zero, on the half of a symmetrical wheel that had never been counted.
+
+def _ev(text, name="a card"):
+    return goldfish.event_payoffs({"name": name, "oracle_text": text})
+
+
+def test_a_tax_on_an_opponents_draw_is_read():
+    """Razorkin Needlehead and Scrawling Crawler word the damage AT THE DRAWER
+    — "to them", "that player loses" — which `_EVENT_DAMAGE_RE` cannot see; it
+    wants "each opponent". Re-introduce the bug by deleting the `opp` arm of
+    `_EVENT_TRIGGER_RE` and both of these go to zero."""
+    assert _ev("Whenever an opponent draws a card, this creature deals 1 "
+               "damage to them.")["per_opponent_draw_damage"] == 1
+    assert _ev("At the beginning of your upkeep, each player draws a card. "
+               "Whenever an opponent draws a card, that player loses 1 life."
+               )["per_opponent_draw_damage"] == 1
+    assert _ev("Flying Whenever an opponent draws a card, you may draw two "
+               "cards.")["per_opponent_draw_our_draw"] == 2
+    assert _ev("Whenever an opponent draws their second card each turn, you "
+               "draw a card.")["opponent_second_draw_our_draw"] == 1
+
+
+def test_an_effect_gated_on_MANA_is_refused_and_named():
+    """AN EFFECT YOU PAY FOR IS NOT A RATE, and a wheel hands the opponent
+    seven draws — so reading Mind's Eye would give this deck seven free cards
+    off an artifact it never paid for. Same refusal the X-draw path makes for
+    an additional cost. Drop `_EVENT_PAID_RE` and this fails."""
+    got = _ev("Whenever an opponent draws a card, you may pay {1}. If you do, "
+              "draw a card.", name="Mind's Eye")
+    assert got["per_opponent_draw_our_draw"] == 0
+    assert got["unmodelled"] == "Mind's Eye", "refused must mean NAMED, not zero"
+
+
+def test_our_own_trigger_is_unchanged_by_the_new_arm():
+    """The opponent arm must not disturb the four triggers that already
+    worked. Brallin is the one every figure in this deck rests on."""
+    brallin = _ev("Whenever you discard a card, put a +1/+1 counter on Brallin "
+                  "and it deals 1 damage to each opponent.")
+    assert brallin["per_discard_damage"] == 1 and brallin["per_discard_counter"] == 1
+    assert brallin["per_opponent_draw_damage"] == 0
+    assert _ev("Whenever you draw a card, each opponent loses 1 life."
+               )["per_draw_damage"] == 1
+
+
+def test_a_trigger_on_an_opponent_CASTING_stays_unread():
+    """Rhystic Study is a different family — it keys on a SPELL, not a draw —
+    and reading it here would be the parser claiming a card it cannot price."""
+    got = _ev("Whenever an opponent casts a spell, you may draw a card unless "
+              "that player pays {1}.", name="Rhystic Study")
+    assert got["per_opponent_draw_our_draw"] == 0
+    assert got["per_opponent_draw_damage"] == 0
+
+
+@requires_data
+def test_the_opponent_draw_sweep_is_locked():
+    """WIDENING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT. 34,814 cards
+    on 2026-09-14: 16 newly read, and 12 more that matched the trigger but
+    whose effect this model refuses now carry their NAME instead of an all-zero
+    profile. A set moves these on purpose."""
+    from manamap.pilot import card_pool
+
+    pool, oracle = card_pool.load_pool(), card_pool.corpus_oracle()
+    read, named, checked = set(), 0, 0
+    for name, text in oracle.items():
+        checked += 1
+        got = goldfish.event_payoffs(dict(pool.get(name) or {}, name=name,
+                                          oracle_text=text))
+        if any(got[k] for k in got if k.startswith(("per_opponent_draw",
+                                                    "opponent_second_draw"))):
+            read.add(name)
+    assert checked > 30000
+    assert 12 <= len(read) <= 24, f"{len(read)} cards read — re-read the sweep"
+    for must in ("Razorkin Needlehead", "Scrawling Crawler", "Underworld Dreams",
+                 "Nekusar, the Mindrazer", "Consecrated Sphinx"):
+        assert must in read, must
+    for must_not in ("Mind's Eye", "Smothering Tithe", "Rhystic Study"):
+        assert must_not not in read, f"{must_not} is gated or a cast trigger"
+
+
+@requires_data
+@requires_deck
+def test_a_wheel_refills_the_opponent_and_that_is_part_of_the_tax():
+    """THE HALF THE MODEL NEVER SAW, ISOLATED.
+
+    A per-opponent-draw tax gains from TWO sources: their draw step, one a
+    turn, and every card a wheel deals them. Only the second is new, so a test
+    that just checks "the tax fired" proves nothing — the first draft asserted
+    a gain over 1.0 and PASSED with the wheel half deleted, because the draw
+    steps alone clear it.
+
+    Measured on sharknado at 3,000 games, seed 5. Razorkin Needlehead's gain in
+    cumulative ping damage by turn ten:
+
+        deck as printed (17 wheels)   9.89 -> 12.34   +2.45
+        every wheel blinded           2.28 ->  3.77   +1.50
+        the wheel's share                             +0.96
+
+    So the wheels are 39% of what the tax is worth, and deleting
+    `opponent_draws_this_turn += _n` at either wheel site collapses the two
+    arms together.
+    """
+    import copy
+
+    from manamap.pilot import candidates
+    from manamap.pilot.common import load_deck_cards
+
+    def ping(d):
+        return goldfish.run("sharknado", doc=d, iterations=1500, seed=5,
+                            quiet=True, _band=False)["metrics"]["discard"][
+                                "mean_cumulative_event_damage_by_turn"]["10"]
+
+    def plus_tax(d):
+        d = copy.deepcopy(d)
+        victim = max((c for c in d["cards"] if not c.get("is_commander")
+                      and "Land" not in (c.get("type_line") or "")),
+                     key=lambda c: float(c.get("cmc") or 0))
+        d["cards"] = [c for c in d["cards"] if c["name"] != victim["name"]]
+        d["cards"].append(candidates._resolve("Razorkin Needlehead"))
+        return d
+
+    doc = load_deck_cards("sharknado")
+    with_wheels = ping(plus_tax(doc)) - ping(doc)
+
+    blind = copy.deepcopy(doc)
+    blinded = 0
+    for c in blind["cards"]:
+        t = c.get("oracle_text") or ""
+        if ("discards their hand" in t or "discard your hand" in t
+                or "shuffles their hand" in t):
+            c["oracle_text"] = "Flying"
+            blinded += 1
+    assert blinded >= 9, f"only {blinded} wheels blinded — the control is weak"
+    without_wheels = ping(plus_tax(blind)) - ping(blind)
+
+    assert with_wheels > without_wheels + 0.4, (
+        f"the tax gains {with_wheels:.2f} with wheels and {without_wheels:.2f} "
+        f"without — the opponent's share of a wheel is not being counted")
