@@ -1,7 +1,7 @@
 {
   "_note": "AUTHORED 2026-09-13, replacing the machine scaffold. Every group below is this deck's own functional set, not a role axis: the scaffold filed Glint-Horn Buccaneer and Irencrag Pyromancer under 'AN ANSWER — interaction of any kind' and Sticky Fingers under 'A FINISHER', which is what a `role:` derivation produces and why it was marked `scaffolded`. Names are the cards.json ' // ' form.",
   "note": "THE MACHINE. Both commanders are free (command zone), and between them they tax every card that moves: Brallin turns each DISCARD into 1 damage to EACH opponent and a +1/+1 counter; Shabraz turns each DRAW into a +1/+1 counter and 1 life. A wheel is therefore two payments, and the deck is the pile of cards that gets paid twice. Arithmetic, from the oracle text: one Wheel of Fortune with Brallin out is 7 to each opponent on the discard half; add Glint-Horn Buccaneer and it is 14; add Psychosis Crawler on the redraw and it is 21. Two wheels close a 40-life table. That is the declared win line and it is the reason `model_discard` is on.",
-  "_shuffle_note": "THE HALF THE DECK GIVES AWAY, measured 2026-09-13. Of the 14 hand-refill effects this model reads, only SIX discard. Six SHUFFLE the hand into the library (Echo of Eons, Time Reversal, Commit // Memory, Winds of Change, Molten Psyche, Whirlpool Warrior) and two put it on the BOTTOM (Arjun, Teferi's Puzzle Box). None of those eight is a discard, so none of them triggers Brallin, Glint-Horn Buccaneer, Drake Haven, Containment Construct, Currency Converter or Rielle — the entire discard half of the deck. Priced at 4,000 games, seed 3: rewriting only those six to discard instead of shuffle leaves card draw IDENTICAL at 14.78 extra cards by turn ten and moves cards discarded 7.58 -> 12.22 and cumulative per-opponent ping damage 9.61 -> 14.53. They refill exactly as well and pay half as much. This is a RANKING INPUT, not a cut list: shuffling the graveyard back is a real benefit these cards are bought for.",
+  "_shuffle_note": "THE HALF THE DECK GIVES AWAY, measured 2026-09-13. The 99 holds 17 hand-refill effects. NINE discard and therefore pay Brallin, Glint-Horn Buccaneer, Drake Haven, Containment Construct, Currency Converter and Rielle. SIX shuffle the hand into the library (Echo of Eons, Time Reversal, Commit // Memory, Winds of Change, Molten Psyche, Whirlpool Warrior) and TWO put it on the bottom (Arjun, Teferi's Puzzle Box); none of those eight is a discard and none of them pays any of those six cards. Priced at 4,000 games, seed 3: rewriting only the six shufflers to discard instead leaves card draw IDENTICAL at 14.78 extra cards by turn ten and moves cards discarded 7.58 -> 12.22 and cumulative per-opponent ping damage 9.61 -> 14.53. They refill exactly as well and pay half as much. A RANKING INPUT, not a cut list: shuffling the graveyard back is a real benefit these cards are bought for. THE GROUPS NAME THE DECK, NOT THE MODEL: three of the nine discard wheels (Burning Inquiry, Khorvath's Fury, Wheel of Misfortune) discard by oracle text and the SIMULATOR does not read any of them — Wheel of Misfortune is in `_WHEEL_EXCLUDED` as conditional, the other two match no wheel pattern. They are in the group because a target is a claim about the 99 and the scaffold's whole failure was deriving groups from what a tool could see. `model-coverage` and `meta.draw_not_modelled` are where the model's own blind spots are reported.",
   "_flags_note": "model_treasures is deliberately OFF. Five cards in the 99 make Treasure but only Generous Plunderer has a trigger this model reads (upkeep); the other four are `unmodelled` triggers, so the flag would restate every figure in the deck to model one card. `model-coverage` names it as DARK, which is the honest place for it. model_sacrifice is off for the same reason: two DARK cards, neither a sacrifice engine.",
   "model_draw": true,
   "model_combat": true,
@@ -36,15 +36,18 @@
       "required": true
     },
     {
-      "label": "A DISCARD wheel drawn — the half that pays Brallin (the other eight shuffle or bottom)",
+      "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
       "need": [
         {
           "any_of": [
+            "Burning Inquiry",
             "Jace's Archivist",
+            "Khorvath's Fury",
             "Magus of the Wheel",
             "Reforge the Soul",
             "Tolarian Winds",
             "Wheel of Fortune",
+            "Wheel of Misfortune",
             "Windfall"
           ]
         }
@@ -108,11 +111,14 @@
       "need": [
         {
           "any_of": [
+            "Burning Inquiry",
             "Jace's Archivist",
+            "Khorvath's Fury",
             "Magus of the Wheel",
             "Reforge the Soul",
             "Tolarian Winds",
             "Wheel of Fortune",
+            "Wheel of Misfortune",
             "Windfall"
           ]
         },
@@ -163,7 +169,7 @@
       "route": "air"
     },
     {
-      "label": "Ramp drawn — an accelerant of any kind",
+      "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
       "need": [
         {
           "any_of": [
@@ -203,13 +209,13 @@
       ]
     },
     {
-      "label": "Hand-size relief drawn — the deck routinely holds more than seven",
+      "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
       "need": [
         {
           "any_of": [
-            "Kefnet the Mindful",
             "Library of Leng",
-            "Nezahal, Primal Tide"
+            "Nezahal, Primal Tide",
+            "Reliquary Tower"
           ]
         }
       ]
