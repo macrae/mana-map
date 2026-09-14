@@ -36,21 +36,28 @@ def _spell(name, oracle="", cmc=3, type_line="Creature — Dragon", power="4"):
 
 # ── The visibility predicate ──────────────────────────────────────────────
 
+#: The flags a deck declares. Visibility is asked UNDER these — a card that
+#: feeds a channel switched off is not a card the model cannot see, it is a
+#: card the pilot told it not to look at, and those are different findings.
+FLAGS = {"model_combat": True, "model_draw": True, "model_discard": True,
+         "model_treasures": True, "model_sacrifice": True, "model_drain": True}
+
+
 def test_a_land_is_visible():
     """`classify` zeroes `produces` for lands, so a predicate built from the
     spell fields alone files every land in the deck as invisible — which is the
     exact bug this test was written after finding."""
     land = goldfish.classify(_spell("Mountain", type_line="Basic Land — Mountain",
                                     cmc=0, power=None))
-    assert card_value._is_visible(land)
+    assert card_value._is_visible(land, FLAGS)
 
 
 def test_a_creature_is_visible_and_a_counterspell_is_not():
-    assert card_value._is_visible(goldfish.classify(_spell("Dragon")))
+    assert card_value._is_visible(goldfish.classify(_spell("Dragon")), FLAGS)
     counter = goldfish.classify(_spell(
         "Counterspell", "Counter target spell.", cmc=2,
         type_line="Instant", power=None))
-    assert not card_value._is_visible(counter)
+    assert not card_value._is_visible(counter, FLAGS)
 
 
 def test_an_extra_combat_permanent_is_visible():
@@ -61,7 +68,41 @@ def test_an_extra_combat_permanent_is_visible():
         "{3}{R}{R}: Untap all creatures you control. After this main phase, "
         "there is an additional combat phase followed by an additional main phase.",
         cmc=3, type_line="Enchantment", power=None))
-    assert card_value._is_visible(assault)
+    assert card_value._is_visible(assault, FLAGS)
+
+
+def test_a_wheel_is_visible_under_the_discard_flag_and_not_without_it():
+    """THE BUG THIS PREDICATE WAS REWRITTEN FOR (2026-09-13).
+
+    `_is_visible` was a hand-rolled list of channels — lands, mana, bodies,
+    tutors, Treasure, combat — WITH NO DRAW CHANNEL IN IT. So on sharknado,
+    whose whole plan is wheeling, every wheel spell was filed under "invisible
+    to this model" and the report gave, as its reason, that the simulation has
+    no opponents. It reads and casts them.
+
+    Re-introduce the bug by dropping the draw and discard arms of
+    `model_coverage.never_cast` and the first assertion goes red. The second is
+    the half that keeps this honest: a channel switched OFF really is invisible,
+    and the two cases must not collapse into one answer.
+    """
+    wheel = goldfish.classify(dict(_spell(
+        "Wheel of Fortune", "Each player discards their hand, then draws seven "
+        "cards.", cmc=3, type_line="Sorcery", power=None), mana_cost="{2}{R}"))
+    assert wheel["draw"]["wheel_draws"] == 7, "the profile is not the thing under test"
+    assert card_value._is_visible(wheel, FLAGS)
+    assert not card_value._is_visible(wheel, {"model_combat": True})
+
+
+def test_a_counterspell_that_makes_the_opponent_treasure_is_not_visible():
+    """"An Offer You Can't Refuse" counters a spell and hands the OPPONENT two
+    Treasure. The old predicate ranked it because `treasure_trigger` was set,
+    which is the right field read for the wrong player: there are no opponents
+    here, so neither half of the card does anything."""
+    offer = goldfish.classify(_spell(
+        "An Offer You Can't Refuse",
+        "Counter target noncreature spell. Its controller creates two Treasure "
+        "tokens.", cmc=1, type_line="Instant", power=None))
+    assert not card_value._is_visible(offer, FLAGS)
 
 
 # ── The report ────────────────────────────────────────────────────────────
@@ -140,9 +181,9 @@ def test_every_variant_keeps_the_deck_at_full_size(monkeypatch):
     sizes = []
     real = card_value._measure
 
-    def spy(cards, *a, **kw):
+    def spy(slug, doc, targets_doc, cards, *a, **kw):
         sizes.append(sum(c.get("quantity", 1) for c in cards))
-        return real(cards, *a, **kw)
+        return real(slug, doc, targets_doc, cards, *a, **kw)
 
     monkeypatch.setattr(card_value, "_measure", spy)
     monkeypatch.setattr(card_value, "load_deck_cards", lambda slug: _deck())

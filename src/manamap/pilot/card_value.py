@@ -42,35 +42,42 @@ mostly noise about a model that is not looking.
 """
 
 import json
-import random
 
 from manamap.config import GOLDFISH_MAX_TURN, GOLDFISH_SEED
-from manamap.pilot import goldfish
+from manamap.pilot import goldfish, model_coverage
 from manamap.pilot.common import deck_dir, load_deck_cards, resolve_out_path
 
 DEFAULT_ITERATIONS = 3000
 
-# A card with none of these does nothing the simulator can observe: it is never
-# cast (the casting loop only reaches rocks, tutors, bodies and extra-combat
-# permanents) or it is cast and changes no series. Structural, not score-based —
-# a card can score badly for real reasons, and that is a finding; a card the
-# model cannot see is not a finding at all.
-def _is_visible(card):
-    combat = card.get("combat") or {}
-    return bool(
-        # A land is the most consequential card in the deck to this simulation —
-        # it decides the land drop, which decides everything downstream. It has
-        # `produces == 0` because `classify` zeroes that for lands, so a
-        # predicate built from the spell fields alone files all 36 as invisible.
-        card["is_land"]
-        or card["produces"] or card["bodies"] or card["tutor"]
-        or card["treasure_trigger"] or card["treasure_bonus"]
-        or combat.get("is_creature") or combat.get("attack_mana")
-        or combat.get("attack_treasure") or combat.get("attack_draw")
-        or combat.get("attack_damage") or combat.get("attack_token_bodies")
-        or combat.get("extra_combat_free")
-        or combat.get("extra_combat_cost") is not None
-    )
+#: ONE PREDICATE, ONE HOME. "Would any casting loop ever select this card, under
+#: THIS deck's flags" is `model_coverage.never_cast`, it is fleet-tested, and it
+#: is the mirror the goldfish's own loops are checked against. This module used
+#: to carry a second, hand-rolled answer to the same question — lands, mana,
+#: bodies, tutors, Treasure and combat — WITH NO DRAW CHANNEL IN IT AT ALL, and
+#: no drain, discard, sacrifice or death channel either.
+#:
+#: On a deck built on any of those it filed the engine under "invisible to this
+#: model" and printed, as its reason, "the simulation has no opponents, so these
+#: score zero by construction. This is a fact about the model, not about the
+#: cards." That sentence was false about every one of them.
+#:
+#: FLEET SWEEP 2026-09-13, before the change: 286 cards invisible across twelve
+#: decks, 250 after — 39 newly ranked on seven decks, and they are the decks'
+#: engines. edgar-vampires gets Ashnod's Altar and Altar of Dementia (its
+#: sacrifice outlets) and Night's Whisper (its only unconditional draw);
+#: zur-enchantress gets the three Shrines that `CLAUDE.md` already records as
+#: having measured "exactly nothing"; ur-dragon and gishath get Dragon Tempest,
+#: Temur Ascendancy and Garruk's Uprising, the per-dragon payoffs the deck is
+#: built to trigger; sharknado gets eleven, every wheel spell among them.
+#:
+#: THREE CARDS MOVE THE OTHER WAY and both directions are corrections. "An
+#: Offer You Can't Refuse" (sisay, heliod) was ranked because it sets
+#: `treasure_trigger` — it is a counterspell that hands the OPPONENT two
+#: Treasure, and there are no opponents. Waterbender Ascension (sharknado) is
+#: combat-gated draw this model does not read, and it was being ranked at
+#: exactly +0.000.
+def _is_visible(card, flags):
+    return not model_coverage.never_cast(card, flags)
 
 
 def _swap_one_copy(cards, name, blank):
@@ -111,18 +118,41 @@ METRICS = {
 }
 
 
-def _measure(cards, commander_cmc, metric, iterations, seed, max_turn,
-             model_treasures, model_combat):
-    """One deck configuration, one number. Seeded per call so it is comparable."""
-    library, _ = goldfish.build_library({"cards": cards})
-    rng = random.Random(seed)
-    results = [
-        goldfish.simulate_once(rng, library, commander_cmc, [], max_turn,
-                               model_treasures=model_treasures,
-                               model_combat=model_combat)
-        for _ in range(iterations)
-    ]
-    return METRICS[metric][1](results, iterations)
+def _measure(slug, doc, targets_doc, cards, metric, iterations, seed, max_turn):
+    """One deck configuration, one number. Seeded per call so it is comparable.
+
+    THROUGH `goldfish.run`, AND THAT IS THE WHOLE POINT. This used to call
+    `simulate_once` itself, forwarding exactly two flags — `model_treasures` and
+    `model_combat` — and no commander profile at all. Everything else the
+    declaration says was silently off, so on a deck whose plan is a channel this
+    function did not forward, it ranked the cards of a deck that does not exist.
+
+    MEASURED on sharknado, 2026-09-13: the tracked goldfish kills by turn eight
+    in 87 games per 100 and this function's baseline read **0.228**, because
+    `model_draw` and `model_discard` were off and NEITHER COMMANDER WAS CAST —
+    so Brallin's damage-per-discard, Shabraz's counter-per-draw and every wheel
+    in the deck contributed nothing. The wheels then landed in the invisible
+    bucket, which was the honest report of a dishonest run: given how it was
+    being simulated they really were doing nothing.
+
+    `goldfish.run` already assembles the flags, both commanders, the partner,
+    the attack tutor, the reveal and the interaction names. One door. It takes
+    `doc=` for exactly this kind of caller and `with_results=True` hands back the
+    per-iteration records the metric reductions below are written against, so
+    the reductions are untouched.
+
+    `_targets_doc` HANDS THE DECLARATION OVER rather than letting `run` read the
+    same file a second time, so the flags this function's visibility predicate
+    was asked about and the flags the simulation ran under cannot drift apart.
+    Its `targets` are emptied on the way through: a card ranking does not need
+    assembly rates, and computing twelve of them per card is the only thing this
+    indirection would otherwise add.
+    """
+    out = goldfish.run(slug, doc=dict(doc, cards=cards), iterations=iterations,
+                       seed=seed, max_turn=max_turn, quiet=True, _band=False,
+                       with_results=True,
+                       _targets_doc=dict(targets_doc, targets=[]))
+    return METRICS[metric][1](out["_results"], iterations)
 
 
 def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
@@ -134,12 +164,17 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
 
     doc = load_deck_cards(slug)
     targets_path = deck_dir(slug) / "goldfish_targets.json"
-    model_treasures = model_combat = False
+    # EVERY FLAG THE DECLARATION SETS, because the visibility predicate is
+    # asked "under THIS deck's flags" and `goldfish.run` reads the same file to
+    # decide what it simulates. Reading two of them here and all of them there
+    # is how the report came to describe a different deck than it measured.
+    targets_doc, flags = {}, {}
     if targets_path.exists():
         with open(targets_path) as f:
             targets_doc = json.load(f)
-        model_treasures = bool(targets_doc.get("model_treasures"))
-        model_combat = bool(targets_doc.get("model_combat"))
+        flags = {k: bool(v) for k, v in targets_doc.items()
+                 if k.startswith("model_") and isinstance(v, bool)}
+    model_combat = bool(flags.get("model_combat"))
     if not model_combat:
         raise SystemExit(
             f"{slug} has not opted into the combat model, so every attack trigger, "
@@ -151,11 +186,10 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
     commanders = [c for c in cards if c.get("is_commander")]
     if not commanders:
         raise SystemExit(f"No commander flagged in {slug}/cards.json")
-    commander_cmc = int(commanders[0].get("cmc") or 0)
 
     def run(subset):
-        return _measure(subset, commander_cmc, metric, iterations, seed,
-                        max_turn, model_treasures, model_combat)
+        return _measure(slug, doc, targets_doc, subset, metric, iterations,
+                        seed, max_turn)
 
     baseline = run(cards)
 
@@ -177,9 +211,8 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
     # what the sampling alone is worth, and a `value` smaller than it means
     # nothing. Stating a resolution the sample cannot support is how a ranking
     # becomes a horoscope.
-    noise = abs(baseline - _measure(cards, commander_cmc, metric, iterations,
-                                    seed + 1, max_turn, model_treasures,
-                                    model_combat))
+    noise = abs(baseline - _measure(slug, doc, targets_doc, cards, metric,
+                                    iterations, seed + 1, max_turn))
 
     # `pool=` OR EVERY FETCHLAND IS INVISIBLE. `classify`'s own docstring says
     # the pool exists for exactly one card class and that "without it every
@@ -197,18 +230,24 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
         if card.get("is_commander"):
             continue
         name = card["name"]
-        if not _is_visible(classified[name]):
+        if not _is_visible(classified[name], flags):
             invisible.append(name)
             continue
         blank = inert_land if classified[name]["is_land"] else inert
         swapped = run(_swap_one_copy(cards, name, blank))
         # Positive = the deck is WORSE with this card replaced by a blank, i.e.
         # the card was carrying that much.
+        # ROUNDED ON BOTH SIDES, so the flag is one a reader can reproduce from
+        # the two numbers printed beside it. Computing it from the full-precision
+        # difference against the full-precision floor let a row print
+        # `value 0.0133`, `noise floor 0.0133` and `above_noise true`, which is a
+        # report contradicting itself in the space of one line.
+        value = round(baseline - swapped, 4)
         ranked.append({
             "card": name,
             "metric_without": round(swapped, 4),
-            "value": round(baseline - swapped, 4),
-            "above_noise": bool(abs(baseline - swapped) > noise),
+            "value": value,
+            "above_noise": bool(abs(value) > round(noise, 4)),
         })
     ranked.sort(key=lambda r: -r["value"])
 
@@ -228,10 +267,17 @@ def build(slug, metric="kill-by-8", iterations=DEFAULT_ITERATIONS, seed=None,
             "every card look good to cut. The deck is 100 cards in every variant.",
             f"The noise floor is {noise:.3f} — the same deck on a different seed. "
             "A `value` smaller than that is sampling, not signal (`above_noise`).",
-            "Cards the simulation cannot observe are EXCLUDED from the ranking, "
-            "not ranked last. This model has no opponents, so removal, "
-            "counterspells and protection score zero by construction, and cost "
-            "reducers are excluded by MODEL_ASSUMPTIONS. This is not a cut list.",
+            "Cards no casting loop would ever select under this deck's declared "
+            "flags are EXCLUDED from the ranking, not ranked last — the "
+            "predicate is `model_coverage.never_cast`, the same mirror the "
+            "goldfish's own loops are checked against. A card lands here for "
+            "one of three reasons and they are NOT the same reason: the model "
+            "has no opponents (removal, counterspells, protection, an "
+            "opponent-draw tax); the effect is real but unparsed, and "
+            "`meta.draw_not_modelled` and `model-coverage` name those; or the "
+            "channel it feeds is switched OFF in goldfish_targets.json, which "
+            "is a decision, not a property of the card. Check which before "
+            "reading anything into a name here. This is not a cut list.",
             f"Sampled at {iterations:,} games per card, not the full "
             f"{goldfish.GOLDFISH_ITERATIONS:,} the tracked metrics use — "
             "differences smaller than about a point are noise.",
@@ -266,9 +312,12 @@ def main(args):
     print("   · = inside the noise floor")
 
     if doc["invisible_to_this_model"]:
-        print(f"\n  NOT RANKED — invisible to this model ({len(doc['invisible_to_this_model'])}). "
-              "The simulation has no\n  opponents, so these score zero by construction. "
-              "This is a fact about the\n  model, not about the cards, and it is NOT a cut list.")
+        print(f"\n  NOT RANKED — no casting loop selects these under this deck's "
+              f"flags ({len(doc['invisible_to_this_model'])}).\n  Three different "
+              "reasons land a card here: no opponents to aim at, an effect the "
+              "parser\n  does not read, or a channel switched off in the "
+              "declaration. A fact about the\n  model, not about the cards, and "
+              "it is NOT a cut list.")
         for name in doc["invisible_to_this_model"]:
             print(f"    {name}")
     for note in doc["notes"]:

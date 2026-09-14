@@ -896,7 +896,12 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # nobody authors a second targets file to try a candidate list, and measuring
     # a branch against no declaration would report a different deck rather than a
     # different list.
-    targets_path = deck_file(slug, "goldfish_targets.json", branch)
+    # RESOLVED ONLY WHEN IT IS GOING TO BE READ. `_targets_doc` exists so a
+    # caller can supply the declaration instead of a file, and `doc` so it can
+    # supply the list — but this line ran regardless, so a caller supplying both
+    # still needed a deck directory on disk to exist. `card-value` supplies both
+    # and its unit tests supply neither, which is how that surfaced.
+    targets_path = None
     targets = []
     # OPT-IN, and for the same reason `OPTIONAL_DEPARTMENTS` existed: a model
     # that changes every deck's numbers at once cannot be landed on one deck
@@ -934,9 +939,11 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # commander ability off — which is the one thing the band run needs.
     if _targets_doc is not None:
         targets_doc = _targets_doc
-    elif targets_path.exists():
-        with open(targets_path) as f:
-            targets_doc = json.load(f)
+    else:
+        targets_path = deck_file(slug, "goldfish_targets.json", branch)
+        if targets_path.exists():
+            with open(targets_path) as f:
+                targets_doc = json.load(f)
 
     # UNCONDITIONAL ON THE DOCUMENT, NOT ON WHERE IT CAME FROM. The first cut of
     # the band put this body inside the `elif`, so a caller supplying the
@@ -1200,7 +1207,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             if not c.get("is_commander")
             and treasure_profile(c)[1] in ("upkeep", "landfall", "cast", "etb")
         })
-        if visible:
+        # `quiet` GATES IT, because a programmatic caller runs this function
+        # once per card. `card-value` measures a 100-card deck by re-running
+        # the whole simulation with each card blanked in turn, so an ungated
+        # warning here printed 101 identical lines and buried the ranking it
+        # was called to produce. The warning still fires on every run a person
+        # asked for, which is every run that is not `quiet`.
+        if visible and not quiet:
             print(f"  WARNING {slug} has {len(visible)} Treasure source(s) this model "
                   f"CAN simulate and `model_treasures` is not set in "
                   f"goldfish_targets.json, so they are ignored: {', '.join(visible)}")
