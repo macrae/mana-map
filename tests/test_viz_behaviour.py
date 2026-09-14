@@ -3487,10 +3487,14 @@ def test_no_live_surface_links_into_the_magazine(browser, viz_server):
 
     These two surfaces used to carry an Archive link each — the dossier's
     `#issueLink` to `../manuals/<slug>.html` and the workbench's to the
-    newsstand. The magazine renderer is NOT deleted and the issues stay on
-    disk: they are the record of what was published, and `issue.json` still
-    carries the deck's `status`, which `deck_lifecycle` reads. What went is the
-    invitation.
+    newsstand. The invitation went first; `443cf6b7` then deleted the renderer
+    and every page it had written, so those hrefs would now 404 as well as
+    mislead. The assertion is unchanged and still the right one — it is about
+    what a live surface OFFERS, which is why it kept passing across the deletion
+    while six tests that FETCHED those pages went red and nobody noticed.
+
+    `manuals/p/` is excluded deliberately: the Pilot's Operating Handbook lives
+    there, it is live, and the dossier links to it on purpose.
 
     Asserted in a browser rather than by grepping the HTML, because the
     dossier's link was built by `deck-view.js` at render time — a source
@@ -4557,175 +4561,33 @@ def test_box_select_catches_what_is_drawn_inside_the_marquee(page):
     assert page.js_errors == []
 
 
-# ── The stack theatre (the magazine's one interactive component) ─────────
+# ── The stack theatre: DELETED WITH THE SURFACE IT TESTED ────────────────
 #
-# Everything else in a manual is static HTML, so this is the only place in the
-# magazine where a source-assertion test would be actively misleading: the markup
-# can be perfectly correct while the CSS selects the wrong element. It already
-# was — the rail's "RESOLVE" label sat inside the tab list, so every generated
-# `:nth-child(I)` rule landed one tab early and step 4 rendered with tab 3 lit.
-# The markup was right; the mechanism was off by one. These read computed style.
-
-
-def _theatre(browser, viz_server, slug="radagast"):
-    page = browser.new_page()
-    page.goto(f"{viz_server}/manuals/{slug}.html")
-    page.wait_for_selector(".theatre", timeout=15000)
-    return page
-
-
-def test_the_theatre_step_and_its_tab_and_plate_agree(browser, viz_server):
-    """Clicking step N lights tab N, shows note N, and brings plate N forward."""
-    page = _theatre(browser, viz_server)
-    try:
-        tabs = page.query_selector_all("#th-003 .th-tab")
-        assert len(tabs) >= 6, "radagast 003 has eight steps"
-        for n in (1, 4, 6):
-            page.click(f"#th-003 .th-tab:nth-of-type({n})")
-            page.wait_for_timeout(500)
-            notes = page.eval_on_selector_all(
-                "#th-003 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
-            shown = [i for i, d in enumerate(notes) if d != "none"]
-            assert shown == [n - 1], f"step {n} shows note(s) {shown}"
-            lit = page.eval_on_selector_all(
-                "#th-003 .th-tab",
-                "e=>e.map(x=>getComputedStyle(x).backgroundColor)")
-            # The active tab is the burst yellow; every other one is the muted
-            # translucent fill. Comparing against its OWN siblings rather than a
-            # literal colour keeps this alive through a palette change.
-            assert lit.count(lit[n - 1]) == 1, f"tab {n} is not uniquely lit"
-            # The front plate is the only one at full opacity.
-            op = page.eval_on_selector_all(
-                "#th-003 .th-plate", "e=>e.map(x=>+getComputedStyle(x).opacity)")
-            assert op[n - 1] == max(op) and op[n - 1] > 0.9
-            assert sum(1 for v in op if v > 0.9) == 1, op
-    finally:
-        page.close()
-
-
-def test_the_theatre_opens_on_a_valid_view_with_no_script(browser, viz_server):
-    """Step 1 is `checked` in the markup, so the page is never a blank stage —
-    and the manual carries no script to make it one either."""
-    page = _theatre(browser, viz_server)
-    try:
-        assert page.eval_on_selector_all("script", "e=>e.length") == 0
-        notes = page.eval_on_selector_all(
-            "#th-001 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
-        assert [i for i, d in enumerate(notes) if d != "none"] == [0]
-    finally:
-        page.close()
-
-
-def test_the_theatre_prints_every_step(browser, viz_server):
-    """A printed page showing step 1 and hiding seven is a page missing the
-    proof. In print the stage becomes an illustration and the record prints."""
-    page = _theatre(browser, viz_server)
-    try:
-        page.emulate_media(media="print")
-        page.wait_for_timeout(300)
-        notes = page.eval_on_selector_all(
-            "#th-003 .th-note", "e=>e.map(x=>getComputedStyle(x).display)")
-        assert all(d != "none" for d in notes), notes
-        assert page.eval_on_selector(
-            "#th-003 .th-railwrap", "e=>getComputedStyle(e).display") == "none"
-    finally:
-        page.close()
-
-
-def test_hovering_a_plate_lifts_it(browser, viz_server):
-    """The one interaction that needs no click, and the reason the stack reads
-    as an object rather than a diagram.
-
-    The point is found rather than assumed. Playwright hovers an element's
-    CENTRE, and the centre of every back plate is under the front one — the first
-    version of this test hovered a covered pixel, got no `:hover`, and reported
-    that the lift was broken when it was not. Probing for a pixel where the plate
-    is genuinely the topmost element also checks the thing that makes the fan a
-    fan: if no back plate has an exposed pixel, the stack is just one card.
-    """
-    page = _theatre(browser, viz_server)
-    try:
-        plate = "#th-003 .th-plate:nth-of-type(8)"
-        page.eval_on_selector(plate, "e=>e.scrollIntoView({block:'center'})")
-        page.wait_for_timeout(400)
-        spot = page.eval_on_selector(plate, """el => {
-          const r = el.getBoundingClientRect();
-          for (let fy = 0.06; fy < 0.95; fy += 0.08)
-            for (let fx = 0.06; fx < 0.95; fx += 0.08) {
-              const x = r.left + r.width * fx, y = r.top + r.height * fy;
-              const hit = document.elementFromPoint(x, y);
-              if (hit && el.contains(hit)) return {x, y};
-            }
-          return null;
-        }""")
-        assert spot, "no pixel of the last plate is reachable — the fan is flat"
-        before = page.eval_on_selector(plate, "e=>e.getBoundingClientRect().width")
-        page.mouse.move(spot["x"], spot["y"])
-        page.wait_for_timeout(700)
-        after = page.eval_on_selector(plate, "e=>e.getBoundingClientRect().width")
-        # Lifting is a translateZ under perspective, so it reads as growth.
-        assert after > before * 1.05, (before, after)
-    finally:
-        page.close()
-
-
-def test_the_case_index_scans_closed_and_holds_the_record_open(browser, viz_server):
-    """Judge's Desk is a list you run your eye down and open ONE of.
-
-    "Shrinks to verdicts" and "may not truncate a citation" are both binding, and
-    they only look contradictory if "shrinks" means "holds less". What shrinks is
-    the footprint: one row per case closed, the complete verbatim record inside.
-    """
-    page = browser.new_page()
-    page.goto(f"{viz_server}/manuals/radagast.html")
-    page.wait_for_selector(".dossier", timeout=15000)
-    try:
-        rows = page.query_selector_all("#judges-desk .case-row")
-        assert len(rows) >= 5, "radagast publishes seven cases"
-        # Closed by default, and cheap: a case row is one line, not a header block.
-        assert page.eval_on_selector_all(
-            "#judges-desk details.dossier", "e=>e.filter(d=>d.open).length") == 0
-        heights = page.eval_on_selector_all(
-            "#judges-desk .case-row", "e=>e.map(r=>r.getBoundingClientRect().height)")
-        assert max(heights) < 90, f"case rows are not one-liners: {heights}"
-
-        # The record is there, in full, the moment one is opened.
-        before = page.eval_on_selector(
-            "#judges-desk", "e=>e.getBoundingClientRect().height")
-        page.eval_on_selector("#judges-desk details.dossier", "d=>{d.open=true}")
-        page.wait_for_timeout(300)
-        after = page.eval_on_selector(
-            "#judges-desk", "e=>e.getBoundingClientRect().height")
-        assert after > before * 2, (before, after)
-        opened = page.eval_on_selector(
-            "#judges-desk details.dossier[open]", "d=>d.innerText")
-        assert "CR " in opened, "an opened case shows no citations"
-    finally:
-        page.close()
-
-
-def test_the_kill_points_at_the_proof_instead_of_reprinting_it(browser, viz_server):
-    """The theatre shipped printing every citation inline, which put the identical
-    120 quotes into both departments. The walkthrough keeps action and effect; the
-    rules live in one place and The Kill links to them."""
-    page = browser.new_page()
-    page.goto(f"{viz_server}/manuals/radagast.html")
-    page.wait_for_selector(".theatre", timeout=15000)
-    try:
-        # A prose MENTION of a rule is legitimate and is what the renderer's
-        # evidence links exist for (STYLEv3 8.4) — a caption may say "CR 302.6"
-        # and become a link to the case. What may not appear here is a citation
-        # BLOCK: the rule number set beside its verbatim quote, which is the
-        # appendix's job and was being printed in both places.
-        assert page.query_selector_all("#the-kill .cite") == []
-        assert page.query_selector_all("#judges-desk .cite") != []
-        # `innerText` reflects text-transform, and this label is set in caps.
-        kill = page.eval_on_selector("#the-kill", "e=>e.innerText").lower()
-        assert "citations on the record" in kill
-        assert page.query_selector("#the-kill a.dossier-pointer") is not None
-    finally:
-        page.close()
-
+# Six tests lived here and drove `manuals/radagast.html` — the magazine's one
+# interactive component, plus Judge's Desk and The Kill. `443cf6b7` deleted the
+# magazine renderer (11 modules, 7 subcommands, ~13,100 lines) and every page it
+# had ever written, `manuals/radagast.html` among them. The tests were not
+# deleted with it, so all six have spent fifteen seconds each waiting for a
+# `.theatre` on a 404 ever since.
+#
+# NOBODY SAW IT, AND THAT IS THE PART WORTH KEEPING. The browser suite is
+# deliberately excluded from CI (`CLAUDE.md`: a chromium download, four minutes,
+# real rendering under contention) and is a LOCAL pre-push gate instead. A local
+# gate carrying six permanent reds is a gate a pilot learns to read past — which
+# is how three genuine contention flakes in the same run nearly got filed as
+# "the usual ones" instead of being re-run serially, which is what showed they
+# were flakes and these six were not.
+#
+# Nothing is lost by deleting rather than porting: the theatre does not exist.
+# `poh.py` renders no `.theatre`, no `#judges-desk` and no `.dossier`, and
+# `manuals/p/<slug>.html` is a printable page carrying no JS at all. What these
+# tests knew — that the markup can be right while the CSS selects the wrong
+# element, the rail's "RESOLVE" label sitting inside the tab list and landing
+# every generated `:nth-child(I)` rule one tab early — is in git and in
+# `docs/gotchas-magazine-legacy.md`.
+#
+# `test_no_live_surface_links_into_the_magazine` above STAYS. It asserts the
+# opposite thing — that no live surface invites a pilot in — and it passes.
 
 # ── The Workbench landing ────────────────────────────────────────────────
 #
