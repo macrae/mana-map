@@ -1201,6 +1201,47 @@ earlier in the session, and never from before a model change. `net_change` is
 the harness that grades it, so it is the only harness whose baseline means
 anything.
 
+### The third instance, and the first where the objective cannot fail (2026-09-13)
+
+**sharknado / `recon-v1`.** Same failure, opposite direction, worse consequence.
+The branch was opened 2026-09-10 with `extra_cards_8 >= 1.2` against a champion
+that read **0.632** that morning (`c46a3952`) — a pre-registration of roughly
+double the measured figure, which is a defensible line to draw.
+
+Then the model moved twice, both times correctly:
+
+| when | what landed | champion `extra_cards_8` |
+|---|---|---|
+| 2026-09-10 | the discard channel — wheels became visible at all | 0.632 → **7.509** |
+| 2026-09-13 | the activated wheel — Jace's Archivist and two others | 7.509 → **10.087** |
+
+The line did not move, so it now reads **MET at 8.334** — and would read MET at
+any value the branch could plausibly produce. The first two instances were
+objectives that became unfairly hard. This one became one that **cannot fail**,
+which is the same defect wearing the answer the pilot wanted to hear.
+
+It stands as written, by the rule above. What it costs is that `recon-v1` has no
+live grade: the row that was supposed to be able to say no says yes by
+construction, and the honest reading has to be taken off the measured table
+instead, where the branch is **−1.75 extra cards by T8 (−17%)** and **−5.27
+damage @T10 (−11%)** against **+26 games per 100 interaction-affordable @T6**
+and **−12 per 100 on the double stall**. That is a trade, and it is the pilot's
+call, not the objective's.
+
+**The branch's `why` text is now false in its own terms as well**, and this is
+the part worth carrying forward: it reads *"THE GOLDFISH READS THE SHARK HALF:
+Brallin's discard trigger has no channel and a wheel's 'draws that many' is not
+'draw N', so the draw axis is a proxy."* Both halves of that sentence were true
+when written and neither is true now. **A branch note describes the model that
+existed when it was opened.** Re-read it against `meta.model_version` before
+trusting a word of it.
+
+One thing the branch got right without being able to measure it: of the four
+wheels `recon-v1` cuts, **all four are SHUFFLE wheels** (Molten Psyche, Time
+Reversal, Whirlpool Warrior, Winds of Change) and it keeps every DISCARD wheel.
+The pilot's recon call and the measurement that only became possible three days
+later agree exactly.
+
 And the deeper point, which is why this cost nothing real here: on this deck the
 goldfish objective can only ever be a RISK check. It has no opponent that
 attacks, so a taxer and a sweeper are invisible; it reads the draw payoffs on
