@@ -1,6 +1,6 @@
 # Visualization
 
-Static frontend in `viz/` — no build tooling. **Four pages in two families**, sharing a
+Static frontend in `viz/` — no build tooling. **Six pages in two families**, sharing a
 directory and, between the families, nothing else:
 
 - **`index.html` — the card map.** One renderer: `<canvas>` + d3 v7 throughout, the atlas
@@ -12,12 +12,108 @@ directory and, between the families, nothing else:
 - **`deck.html` — the deck dossier.** One deck, one screen.
 - **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
   the measured table with each row's definition, reward/risk/cost, the bill.
+- **`library.html` — Curate.** The library across every pile at a size you can read, with
+  sort, colour/type/role filters, multi-select and bulk move/remove. See its own section
+  below.
 
-The last three share `css/tokens.css` (ported from the magazine renderer's palette, the legacy page's
+The last four share `css/tokens.css` (ported from the magazine renderer's palette, the legacy page's
 stylesheet) plus Google Fonts, load no `mana-map.js`, and export no globals except test
 hooks. **They compute nothing**: every figure is composed by the Python and read out of a
 committed artifact, which is what lets them work on a static host.
 
+
+## `library.html` — Curate
+
+**The drawer keeps a card; this page cuts forty.** `shell.js`'s drawer shows ONE pile at a
+time behind tabs, at 112-132px, and its hover is already spent on the remove ✕ and the
+move dropdown. That is the right shape for "I just found something" and no shape at all
+for "190 cards in five piles and I need to read them to decide". So the drawer is
+untouched and this is the other half.
+
+- **The rail is a LOCAL filter, never `Session.library.setActive`.** "All cards" is the
+  cross-pile view the drawer cannot do. Driving `setActive` would be tidier and would mean
+  every click here silently retargets where the Atlas files your next keep, and broadcasts
+  it to every other open tab. The cost of the choice is that the drawer's "Consider for a
+  deck…" and "Treat a deck…" still export the ACTIVE pile, which need not be the one on
+  screen.
+- **The selection is a Set of NAMES, never indices.** `session.js`'s `storage` handler
+  rebuilds `entries` grouped by zone — a different order from the insertion order the grid
+  renders — so an index-based range points at different cards the moment another tab keeps
+  one. On every `library` emit the selection is intersected with the live names and the
+  pruning is REPORTED, not absorbed.
+- **Bulk goes through `removeMany` / `moveMany`.** `remove` and `move` each end in
+  `commit()`, which is a full re-serialisation plus a shell rebuild plus every listener.
+  Forty of those is forty localStorage writes and a storm in every other tab.
+- **The art is paced by `Shell.queueArt`**, moved out of `branch-view.js` so both callers
+  share one implementation. `branch-view` measured the alternative: seventy promoted at
+  once, Scryfall answered thirty-five, and the rest were stripped to empty boxes
+  permanently — an `<img>` error carries no status, so a 429 is indistinguishable from a
+  404. `ART_GAP` is 110ms here, not 70: 190 cards at 70 is thirteen seconds of sustained
+  over-rate against Scryfall's published ~10/s.
+- **It cannot ADD a card.** Keeping is a gesture made at the Atlas. Nothing calls
+  `Session.useCards` — that assigns every entry a `row` into the projection, which the map
+  and the graph need and this page has neither of — so every entry stays `row: -1`, and the
+  drawer's "not in this corpus" flag is deliberately not copied: `useCards` is what sets
+  the rows that flag reads, so with none assigned it would libel every card.
+- **Sort and filter, over `viz_index.json` — fetched AFTER the first render.** The first
+  cut of the page declined to load the index at all, on the grounds that it is 3.5 MB. That
+  is the file on disk; `discovery.js` had already measured what crosses the wire and says so
+  at the top of the file — **0.56 MB gzipped**, which is why the atlas boots on it. Sorting
+  190 cards by mana value and filtering them by colour, type and role is most of what
+  curating IS, and none of it is answerable from a name and a pile.
+
+  The ordering is the contract: the grid renders from localStorage first and the fetch is an
+  upgrade that arrives, so a slow or failed index degrades to exactly the page that shipped
+  without one — piles, name search and the three factless sorts (`Order kept`, `Name A-Z`,
+  `Pile`) all still work, and the sorts that need facts are shown DISABLED rather than
+  hidden, because a control that appears when a fetch returns is a control nobody finds.
+  `cache: 'no-cache'` and no `?v=`, the idiom `workbench.js`, `branch-view.js` and
+  `deck-view.js` all use: `DATA_VERSION` lives in `mana-map.js`, which is the atlas's and
+  is not loaded here, and a second copy of that constant is a constant that drifts.
+
+  Within a facet group the chips are an **OR** (two colours means either); across groups
+  they are an **AND**. Counts are taken over everything except the group being counted, so
+  the number beside a chip is the number you get if you click it. The chips are built from
+  YOUR library, not from the corpus — the corpus has 53 roles and nine supertypes, and
+  offering all of them against 190 cards is a wall of zeroes to read past.
+- **A card the index cannot resolve gets a BUCKET, not a hole.** ABSENT MEANS ABSENT applies
+  here as much as to a measured figure. Under `Mana value` it sorts LAST rather than as 0,
+  which would file it among the Sol Rings where a reader cannot tell "costs nothing" from
+  "we do not know"; under a colour or type filter it lands in a `not in corpus` chip with a
+  count, rather than silently vanishing with no way to find it again. It is NOT the corpus's
+  own `Unknown` supertype, which 398 real cards carry — that one keeps its own name. The
+  index is keyed by full name AND front face, because the corpus keys a DFC `A // B` while a
+  library entry may hold either form; `candidates._resolve` missed 888 cards to exactly this
+  and nearly bought a two-hour corpus refresh for a card that was already there.
+- **The grid MOVES its tiles, it never rebuilds them.** `paintSelection`'s lesson one step
+  further, and sorting is what forced it: `innerHTML` destroys every `<img>` the paced queue
+  has filled and re-queues them, so the first cut of sorting blanked all 190 tiles and took
+  twenty-one seconds to refill cards already on screen. The HTTP cache would have answered
+  instantly, but the queue paces by the clock and cannot know that. `appendChild` moves a
+  node that is already in the document, so a re-sort touches no image at all, and a filter
+  that hides a card parks its element with its art intact.
+
+  MEASURED on a 14-card library, counting requests to `api.scryfall.com` (two per card:
+  the named lookup and the redirect it answers with):
+
+  | action | new image requests |
+  |---|---|
+  | initial render, 14 cards | 28 |
+  | sort by name / by mana value | **0** |
+  | filter to one colour, then clear it | **0** |
+  | switch pile, and back | **0** |
+  | remove two cards | **0** |
+  | **add one card** | **2** — exactly the one new card |
+
+  The cache is keyed by NAME and pruned on every render against the live library, so a card
+  removed cannot keep an element alive and a card added builds exactly one tile. Both halves
+  are asserted: a cache that never fetched anything would pass the first seven rows and be
+  useless, so the last row is part of the same test.
+
+Classes are prefixed `.cur-`, never `.lib-`: `tests/test_viz_shell.py` asserts the `.lib-*`
+block is byte-identical between `mana-map.css` and `tokens.css` and does NOT scan
+`css/library.css`, so a `.lib-` rule here would pass that test and still restyle the live
+drawer, which `Shell.mount` injects on this page too.
 
 ## `spaces.html` — the embedding-space reference
 

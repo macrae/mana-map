@@ -466,6 +466,48 @@ window.Session = (function () {
     return true;
   }
 
+  /* BULK, AND THAT IS THE WHOLE POINT: ONE COMMIT.
+   *
+   * `removeFromLibrary` and `moveCard` each end in `commit()`, which is
+   * `save()` — a full re-serialisation of every zone and every name — plus
+   * `emit('library')`, which rebuilds the shell and fires every listener. Fine
+   * for the one card a Keep button touches. Ruinous for the forty a curation
+   * page selects: forty localStorage writes, forty shell rebuilds, forty full
+   * grid rebuilds, and up to forty `storage` events in every other open tab.
+   *
+   * `clearZone` below is already this shape and was the model for it: splice in
+   * a loop, commit once.
+   *
+   * THEY RETURN A COUNT, NOT A BOOLEAN, because "40 selected, 38 removed" is a
+   * real outcome — another tab can remove a card between the selection and the
+   * click, and a caller that cannot tell the difference reports a lie. */
+  function removeMany(names) {
+    let n = 0;
+    for (const name of (names || [])) {
+      const at = indexOfName(name);
+      if (at === -1) continue;
+      entries.splice(at, 1);
+      n += 1;
+    }
+    if (n) commit();
+    return n;
+  }
+
+  function moveMany(names, zone) {
+    // VALIDATED ONCE, not per card: the pile can be deleted in another tab, and
+    // finding that out forty times is forty chances to half-apply a move.
+    if (zones.indexOf(zone) === -1) return 0;
+    let n = 0;
+    for (const name of (names || [])) {
+      const at = indexOfName(name);
+      if (at === -1 || entries[at].zone === zone) continue;
+      entries[at].zone = zone;
+      n += 1;
+    }
+    if (n) commit();
+    return n;
+  }
+
   function clearZone(name) {
     const target = zones.indexOf(name) !== -1 ? name : activeZone;
     for (let i = entries.length - 1; i >= 0; i--) {
@@ -538,6 +580,8 @@ window.Session = (function () {
       renameZone: renameZone,
       removeZone: removeZone,
       move: moveCard,
+      removeMany: removeMany,
+      moveMany: moveMany,
       clearZone: clearZone,
       get list() {
         return entries.filter(function (e) { return e.row >= 0; })

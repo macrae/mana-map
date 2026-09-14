@@ -64,6 +64,12 @@ window.Shell = (function () {
     // Marked `appendix` so it renders after a divider and in a quieter weight —
     // giving a reference page the same visual rank as the two surfaces you
     // actually work on would misdescribe what the nav is for.
+    // CURATE, NOT "LIBRARY". The strip's right-hand button already owns that
+    // noun — it opens the drawer — and two controls saying the same word on
+    // every page is how a reader learns the word means nothing. This names the
+    // verb: the place you read the pile you are about to cut.
+    { id: 'curate', href: 'library.html', label: 'Curate',
+      hint: 'read the library across piles, and prune it' },
     { id: 'spaces', href: 'spaces.html', label: 'Spaces', appendix: true,
       hint: 'reference: where each embedding space comes from, what its metrics '
           + 'mean, and which one to ask' },
@@ -236,18 +242,40 @@ window.Shell = (function () {
    * dossier's `.rost-row` both do — the roster's previews were added to this
    * path rather than growing a second copy of the fallback, because two
    * implementations is how one stops matching the corpus. */
-  var ART_HOST = '.lib-tile, .rost-row';
+  var ART_HOST = '.lib-tile, .rost-row, .cur-tile';
+
+  /* WHICH SIZE FAILED. `cardImageUrl` defaults to `small`, so a retry written
+   * as `cardImageUrl(front)` silently downgrades a `normal` image to a sixth of
+   * its area — invisible in a 132px tile and obvious in a 340px pane. The
+   * version is read back off the failing URL instead of assumed. */
+  function versionOf(src) {
+    return /[?&]version=normal\b/.test(String(src || '')) ? 'normal' : 'small';
+  }
 
   function onImageError(ev) {
     var img = ev.target;
     if (!img || img.tagName !== 'IMG' || !img.closest(ART_HOST)) return;
     var name = img.getAttribute('alt') || '';
+    var version = versionOf(img.getAttribute('src'));
     // A double-faced card 404s on its own full `A // B` name — the corpus keys
     // that form because it is the graph key — while resolving on the front face
     // alone. Measured on `Disciple of Freyalise // Garden of Freyalise`.
     if (!img.dataset.retried && name.indexOf(' // ') > 0) {
       img.dataset.retried = '1';
-      img.src = cardImageUrl(name.split(' // ')[0]);
+      img.src = cardImageUrl(name.split(' // ')[0], version);
+      return;
+    }
+    /* A 429 IS INDISTINGUISHABLE FROM A 404 HERE. An `<img>` error event
+     * carries no status, so a card throttled during a burst was given up on
+     * permanently and stayed a grey box until reload — `branch-view.js`
+     * measured that exact outcome at 70 concurrent requests, 35 answered. One
+     * delayed retry for a name that is NOT a DFC costs one request on a
+     * genuinely unknown card and rescues every throttled one. */
+    if (!img.dataset.retried && name && name.indexOf(' // ') === -1) {
+      img.dataset.retried = '1';
+      setTimeout(function () {
+        if (img.isConnected) img.src = cardImageUrl(name, version);
+      }, 900);
       return;
     }
     // Out of retries: leave the reserved box and the name, which is the whole
@@ -255,6 +283,61 @@ window.Shell = (function () {
     var tile = img.closest(ART_HOST);
     if (tile) tile.classList.add('lib-tile-noart');
     img.remove();
+  }
+
+  /* ── the paced art queue ────────────────────────────────────────────────
+   *
+   * THE THIRD COPY OF THIS WOULD HAVE BEEN THE ONE THAT DRIFTED. `branch-view`
+   * grew it first and its comment carries the measurement: promoting seventy
+   * images at once DID load them and Scryfall answered THIRTY-FIVE — the rest
+   * errored and were stripped to empty boxes. A curation page showing 190 cards
+   * is squarely in that regime, so the queue moves here and both callers share
+   * one implementation, for the same reason `onImageError` was shared rather
+   * than copied: two implementations is how one stops matching the corpus.
+   *
+   * An IntersectionObserver is the textbook answer and is deliberately NOT used.
+   * Its callback never fired in the harness this was verified in, not even on a
+   * freshly constructed observer over a laid-out visible element, because IO
+   * rides the rendering lifecycle. A mechanism that cannot be tested here is one
+   * nobody is testing.
+   *
+   * 110ms, NOT branch-view's 70. Scryfall asks for 50-100ms between requests;
+   * 70 is ~14/s, and 190 cards at 70ms is thirteen seconds of sustained
+   * over-rate. At 110 a full library lands in about twenty-one seconds without
+   * ever exceeding the published guidance, and a single pile — the view anyone
+   * actually curates in — is four.
+   */
+  var ART_GAP = 110;
+  var artQueue = [], artRunning = false;
+
+  function pumpArt() {
+    if (artRunning) return;
+    artRunning = true;
+    (function next() {
+      var im = artQueue.shift();
+      if (!im) { artRunning = false; return; }
+      /* A RE-RENDER DETACHES EVERYTHING IT QUEUED, and the queue is FIFO. A
+       * curation page switching from 190 cards to a 46-card pile left 190 dead
+       * <img> nodes ahead of the live ones, and the new grid sat blank for
+       * twenty-one seconds waiting for a backlog of images nobody would ever
+       * see. Dropped without spending the gap: there is no request to pace. */
+      if (!im.isConnected) { next(); return; }
+      var src = im.getAttribute('data-src');
+      if (!src) { next(); return; }
+      im.removeAttribute('data-src');
+      im.src = src;
+      setTimeout(next, ART_GAP);
+    })();
+  }
+
+  /* Idempotent: the attribute is consumed as it is queued, so re-rendering a
+   * container adds nothing for what is already in flight. */
+  function queueArt(root) {
+    if (!root) return 0;
+    var pending = Array.prototype.slice.call(root.querySelectorAll('img[data-src]'));
+    Array.prototype.push.apply(artQueue, pending);
+    pumpArt();
+    return pending.length;
   }
 
   /* ── the drawer ─────────────────────────────────────────────────────────
@@ -412,6 +495,7 @@ window.Shell = (function () {
     if (file === 'workbench.html') return 'bench';
     if (file === 'deck.html') return 'deck';
     if (file === 'spaces.html') return 'spaces';
+    if (file === 'library.html') return 'curate';
     return 'atlas';
   }
 
@@ -799,6 +883,8 @@ window.Shell = (function () {
     libraryNames: libraryNames,
     cardImageUrl: cardImageUrl,
     wireCardArt: wireCardArt,
+    queueArt: queueArt,
+    __artGap: ART_GAP,
     mount: mount,
     toggle: toggleDrawer,
     drop: drop,

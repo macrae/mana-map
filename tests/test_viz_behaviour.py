@@ -5634,6 +5634,10 @@ def _shell_page(browser, viz_server, path):
 @pytest.mark.parametrize("path,here", [
     ("/viz/workbench.html", "Workbench"),
     ("/viz/index.html", "Atlas"),
+    # The sixth surface. Without its own `currentSurface` branch this page falls
+    # through to 'atlas', which reads as Atlas being current AND renders Curate
+    # as a link back to itself — both of which this assertion catches.
+    ("/viz/library.html", "Curate"),
 ])
 def test_the_shell_marks_where_you_are(browser, viz_server, path, here):
     """The surface you are on is not a link.
@@ -8131,3 +8135,527 @@ def test_the_drawers_navigation_stays_put_while_it_scrolls(discover_page):
     assert r["drawerTop"] <= r["closeTop"] and r["closeBottom"] <= r["drawerBottom"], (
         "Close is outside the drawer's own box after scrolling — a full drawer "
         "cannot be shut from inside itself")
+
+
+# ── Curate (`viz/library.html`) ───────────────────────────────────────────
+#
+# The drawer keeps a card; this page cuts forty. Three behaviours are the whole
+# reason it exists and none of them can be asserted from source: that "All"
+# really mixes piles, that a bulk move relocates every selected card, and that a
+# bulk remove survives a reload. The fourth test below is for the trap that
+# would quietly delete the wrong cards.
+#
+# SEEDED, NEVER THE PILOT'S OWN LIBRARY. Writing the store and reloading is what
+# a pilot arriving from the Atlas does, and it keeps the fixture readable — four
+# named cards across two piles beats 190 across five. (Learned the hard way
+# while building this: the first end-to-end check of the bulk move was run
+# against the real library and moved 37 cards between piles.)
+
+CURATE_STORE = {
+    "v": 2, "corpus": None, "active": "Keep",
+    "zones": [
+        {"name": "Keep", "cards": ["Sol Ring", "Rhystic Study"]},
+        {"name": "Cuts", "cards": ["Command Tower", "Cyclonic Rift"]},
+    ],
+}
+
+# A store for the SORT AND FILTER tests, whose cards are chosen so that every
+# facet under test separates them and no two share a sort key:
+#
+#   Sol Ring        Artifact     Colorless  MV 1   ramp:rock, utility:activated
+#   Lightning Bolt  Instant      R          MV 1   removal:damage
+#   Rhystic Study   Enchantment  U          MV 3   draw:engine
+#   Llanowar Elves  Creature     G          MV 1   ramp:dork, threat:body, …
+#   Command Tower   Land         Colorless  MV 0   land:fixing, …
+#   Nicol Bolas     — NOT A REAL CARD, and deliberately so: it is the card the
+#                     corpus cannot resolve, which is the bucket that must stay
+#                     visible rather than silently vanishing from a filter.
+#
+# `Order kept` is the insertion order below, which is NOT alphabetical and not
+# sorted by any facet — so a sort test that passes is testing the sort.
+CURATE_FACETS = {
+    "v": 2, "corpus": None, "active": "Keep",
+    "zones": [
+        {"name": "Keep", "cards": [
+            "Sol Ring", "Lightning Bolt", "Rhystic Study",
+            "Nicol Bolas, the Card That Is Not"]},
+        {"name": "Cuts", "cards": ["Llanowar Elves", "Command Tower"]},
+    ],
+}
+
+
+def _curate(browser, viz_server, store=None):
+    """The page, loaded against a seeded library."""
+    import json as _json
+
+    page = browser.new_page(viewport={"width": 1400, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.goto(f"{viz_server}/viz/library.html")
+    page.evaluate(
+        "doc => { localStorage.setItem('manamap-library', JSON.stringify(doc));"
+        "         location.reload(); }",
+        store or CURATE_STORE)
+    page.wait_for_function("() => window.Curate && document.querySelector('.cur-zone')",
+                           timeout=BOOT_TIMEOUT_MS)
+    page.js_errors = errors
+    return page
+
+
+def _store(page):
+    return page.evaluate(
+        "() => JSON.parse(localStorage.getItem('manamap-library'))")
+
+
+def test_curate_shows_every_pile_at_once_which_the_drawer_cannot(browser, viz_server):
+    """THE REASON THE PAGE EXISTS. `shell.js:350` filters the drawer to the
+    active zone — `shown = all.filter(e => e.zone === active)` — so the drawer
+    can never show two piles, and reading across piles was the request. Each
+    tile carries its own pile's badge, because a mixed grid with no badge is
+    four cards from nowhere."""
+    page = _curate(browser, viz_server)
+    try:
+        assert page.evaluate("() => Curate.rail") == "all"
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Command Tower", "Cyclonic Rift", "Rhystic Study", "Sol Ring"]
+        # VISIBLE badges, not badge ELEMENTS. Every tile carries a badge node at
+        # all times because the tile survives a re-sort and the node is what
+        # gets relabelled; whether it SHOWS is the actual claim, and asserting
+        # on `offsetParent` also catches a badge that is present and displayed
+        # where an element count would not.
+        badges = page.eval_on_selector_all(
+            ".cur-badge", "els => els.filter(e => e.offsetParent)"
+                          "            .map(e => e.textContent)")
+        assert sorted(set(badges)) == ["Cuts", "Keep"], (
+            f"the All view must badge each card with its pile; got {badges}")
+
+        # And filtering to one pile really narrows it.
+        page.evaluate("() => Curate.setRail('Cuts')")
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Command Tower", "Cyclonic Rift"]
+        assert page.eval_on_selector_all(
+            ".cur-badge", "els => els.filter(e => e.offsetParent).length") == 0, (
+            "a single-pile view badges nothing — every card is in that pile")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_bulk_move_relocates_every_selected_card_and_persists(browser, viz_server):
+    """Driven through the real button and the real select, and asserted against
+    `localStorage` rather than the page's own state — the page can believe
+    anything; the store is what survives a reload."""
+    page = _curate(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('Keep')")
+        page.click('[data-act="all"]')
+        assert page.evaluate("() => Curate.picked.length") == 2
+        page.select_option("#cur-move", "Cuts")
+
+        zones = {z["name"]: z["cards"] for z in _store(page)["zones"]}
+        assert zones["Keep"] == [], f"Keep still holds {zones['Keep']}"
+        assert sorted(zones["Cuts"]) == [
+            "Command Tower", "Cyclonic Rift", "Rhystic Study", "Sol Ring"]
+        assert page.evaluate("() => Curate.picked.length") == 0, (
+            "a completed bulk action leaves nothing selected")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_bulk_remove_drops_them_and_survives_a_reload(browser, viz_server):
+    """The point of the page is cutting cards, so the assertion that matters is
+    that they are still gone after a reload."""
+    page = _curate(browser, viz_server)
+    try:
+        page.on("dialog", lambda d: d.accept())
+        page.evaluate("() => Curate.setRail('Cuts')")
+        page.click('[data-act="all"]')
+        page.click('[data-act="remove"]')
+        page.wait_for_function("() => Curate.picked.length === 0",
+                               timeout=BOOT_TIMEOUT_MS)
+
+        names = [n for z in _store(page)["zones"] for n in z["cards"]]
+        assert sorted(names) == ["Rhystic Study", "Sol Ring"]
+        page.reload()
+        page.wait_for_function("() => window.Curate", timeout=BOOT_TIMEOUT_MS)
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Rhystic Study", "Sol Ring"], "the removal did not survive a reload"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_write_in_another_tab_cannot_make_the_selection_name_other_cards(
+        browser, viz_server):
+    """THE TRAP THAT WOULD DELETE THE WRONG CARDS.
+
+    `session.js`'s `storage` handler rebuilds `entries` GROUPED BY ZONE, which
+    is a different order from the insertion order the grid renders. Hold the
+    selection as INDICES and the moment another tab keeps a card every index
+    points somewhere else — select a range, have the Atlas write, press Remove,
+    and you have cut cards you never looked at.
+
+    A `storage` event is dispatched here rather than opening a second tab: the
+    handler is what is under test, and the event is the whole of what a second
+    tab delivers. Re-introduce the bug by holding indices in `picked` and this
+    fails on the names.
+    """
+    page = _curate(browser, viz_server)
+    try:
+        page.evaluate("() => { Curate.setRail('all'); Curate.pick('Cyclonic Rift'); }")
+        assert page.evaluate("() => Curate.picked") == ["Cyclonic Rift"]
+
+        # Another tab reorders the store and adds a card ahead of the selection.
+        page.evaluate("""() => {
+            const doc = { v: 2, corpus: null, active: 'Keep', zones: [
+                { name: 'Keep', cards: ['Arcane Signet', 'Sol Ring', 'Rhystic Study'] },
+                { name: 'Cuts', cards: ['Command Tower', 'Cyclonic Rift'] },
+            ] };
+            localStorage.setItem('manamap-library', JSON.stringify(doc));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'manamap-library', newValue: JSON.stringify(doc) }));
+        }""")
+        page.wait_for_function("() => Curate.shown.length === 5",
+                               timeout=BOOT_TIMEOUT_MS)
+        assert page.evaluate("() => Curate.picked") == ["Cyclonic Rift"], (
+            "the selection moved to a different card when the store reordered")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_selection_removed_elsewhere_is_pruned_and_said_out_loud(browser, viz_server):
+    """Shrinking a selection silently is how "40 selected" removes 38 and nobody
+    finds out. The count is re-validated on every emit and the loss is
+    reported."""
+    page = _curate(browser, viz_server)
+    try:
+        page.evaluate("() => { Curate.setRail('all'); Curate.pick('Cyclonic Rift'); }")
+        assert page.evaluate("() => Curate.picked") == ["Cyclonic Rift"], (
+            "the fixture never selected the card the prune is about")
+        page.evaluate("""() => {
+            const doc = { v: 2, corpus: null, active: 'Keep', zones: [
+                { name: 'Keep', cards: ['Sol Ring', 'Rhystic Study'] },
+                { name: 'Cuts', cards: ['Command Tower'] },
+            ] };
+            localStorage.setItem('manamap-library', JSON.stringify(doc));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'manamap-library', newValue: JSON.stringify(doc) }));
+        }""")
+        page.wait_for_function("() => Curate.picked.length === 0",
+                               timeout=BOOT_TIMEOUT_MS)
+        note = page.eval_on_selector_all(".cur-note", "els => els.map(e => e.textContent)")
+        assert any("removed elsewhere" in t for t in note), (
+            f"the pruning was absorbed silently; notes were {note}")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def _facets(browser, viz_server):
+    """The page against the facet store, waited on until the card index lands."""
+    page = _curate(browser, viz_server, CURATE_FACETS)
+    page.wait_for_function("() => Curate.facts === 'ready'", timeout=BOOT_TIMEOUT_MS)
+    return page
+
+
+def test_curate_sorts_without_refetching_a_single_image(browser, viz_server):
+    """THE REASON THE GRID REUSES ITS ELEMENTS.
+
+    Setting `innerHTML` to reorder destroys every <img> the paced queue has
+    filled and re-queues them at `ART_GAP` — 110ms apart, which for a 190-card
+    library is twenty-one seconds of grey boxes to reorder cards already on
+    screen. The HTTP cache would answer instantly but the QUEUE cannot know
+    that: it paces by the clock.
+
+    So this asserts the mechanism, not the appearance. The SAME element objects
+    must survive a re-sort in a new order, which is what `appendChild` moving an
+    already-attached node buys. Re-introduce the bug by rebuilding the grid with
+    `innerHTML` in `renderGrid` and the identity check fails.
+    """
+    page = _facets(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        # Stamp each element so identity survives across an evaluate boundary.
+        page.evaluate("""() => {
+            document.querySelectorAll('.cur-tile').forEach((t, i) => {
+                t.dataset.stamp = 'S' + i;
+            });
+        }""")
+        kept = page.evaluate("() => Curate.shown")
+        assert kept[0] == "Sol Ring", f"the default sort is not insertion order: {kept}"
+
+        page.evaluate("() => Curate.setSort('name')")
+        by_name = page.evaluate("() => Curate.shown")
+        assert by_name == sorted(by_name), by_name
+        assert by_name != kept, "sorting by name changed nothing — check the fixture"
+
+        stamped = page.evaluate("""() => {
+            const out = {};
+            document.querySelectorAll('.cur-tile').forEach(t => {
+                out[t.dataset.name] = t.dataset.stamp || null;
+            });
+            return out;
+        }""")
+        assert all(v is not None for v in stamped.values()), (
+            f"the grid rebuilt its tiles instead of moving them: {stamped}")
+        # And the DOM really is in the new order, not merely intact.
+        assert page.evaluate(
+            "() => [...document.querySelectorAll('.cur-tile')].map(t => t.dataset.name)"
+        ) == by_name
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_sorting_and_filtering_re_request_no_card_art_at_all(browser, viz_server):
+    """THE MEASUREMENT, NOT THE MECHANISM.
+
+    `test_curate_sorts_without_refetching_a_single_image` checks the elements
+    are the same objects, which is the *how*. This counts the requests, which is
+    the thing a pilot actually feels: at `ART_GAP` = 110ms, re-pulling a 190-card
+    library is twenty-one seconds of grey boxes for a reorder of cards that were
+    already on screen.
+
+    Measured on a 14-card library, every count below is what this asserts:
+
+        initial render              28   (2 per card — Scryfall's named lookup
+                                          redirects, and both legs are requests)
+        sort by name                 0
+        sort by mana value           0
+        filter to blue               0
+        clear the filter             0
+        switch pile, and back        0
+        remove two cards             0
+        add one card                 2   (exactly the one new card)
+
+    Scryfall is ROUTED rather than reached: the assertion is about how many
+    requests the page makes, which needs no real image behind them, and a
+    browser test that depends on a public API is a browser test that fails for
+    reasons unrelated to the code.
+    """
+    seen: list[str] = []
+    page = browser.new_page(viewport={"width": 1400, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.route("**/api.scryfall.com/**",
+               lambda route: (seen.append(route.request.url),
+                              route.fulfill(status=200, content_type="image/png",
+                                            body=_ONE_PIXEL_PNG)))
+    page.goto(f"{viz_server}/viz/library.html")
+    page.evaluate(
+        "doc => { localStorage.setItem('manamap-library', JSON.stringify(doc));"
+        "         location.reload(); }",
+        CURATE_FACETS)
+    try:
+        page.wait_for_function("() => window.Curate && document.querySelector('.cur-zone')",
+                               timeout=BOOT_TIMEOUT_MS)
+        page.wait_for_function("() => Curate.facts === 'ready'", timeout=BOOT_TIMEOUT_MS)
+        page.evaluate("() => Curate.setRail('all')")
+
+        # Let the paced queue drain: six cards at ART_GAP, plus slack.
+        page.wait_for_function("() => document.querySelectorAll('.cur-tile img[data-src]')"
+                               "        .length === 0", timeout=BOOT_TIMEOUT_MS)
+        drained = len(seen)
+        assert drained >= 6, f"the queue never ran: {drained} requests for 6 cards"
+
+        def unchanged(label, script):
+            before = len(seen)
+            page.evaluate(script)
+            page.wait_for_timeout(600)
+            assert len(seen) == before, (
+                f"{label} re-requested {len(seen) - before} image(s) — the grid "
+                f"rebuilt its tiles instead of moving them")
+
+        unchanged("sorting by name", "() => Curate.setSort('name')")
+        unchanged("sorting by mana value", "() => Curate.setSort('mv')")
+        unchanged("filtering to one colour", "() => Curate.setFilter('c', ['U'])")
+        unchanged("clearing the filter", "() => Curate.setFilter('c', [])")
+        unchanged("switching pile", "() => Curate.setRail('Cuts')")
+        unchanged("returning to all cards", "() => Curate.setRail('all')")
+        unchanged("removing two cards",
+                  "() => Session.library.removeMany(['Sol Ring', 'Command Tower'])")
+
+        # AND THE OTHER HALF OF THE CONTRACT: a card that is genuinely new is
+        # fetched. A cache that never fetches anything would pass every
+        # assertion above and be useless.
+        before = len(seen)
+        page.evaluate("() => Session.library.add('Mana Crypt')")
+        page.wait_for_function("() => document.querySelectorAll('.cur-tile img[data-src]')"
+                               "        .length === 0", timeout=BOOT_TIMEOUT_MS)
+        added = len(seen) - before
+        assert added >= 1, "a newly kept card was never fetched"
+        assert "Mana+Crypt" in seen[-1] or "Mana%20Crypt" in seen[-1], seen[-1]
+        assert errors == []
+    finally:
+        page.close()
+
+
+def test_mana_value_sort_files_an_unresolvable_card_last_not_at_zero(
+        browser, viz_server):
+    """ABSENT IS NOT ZERO, AND A SORT IS WHERE THAT BECOMES VISIBLE.
+
+    A card the corpus cannot resolve has no mana value. Defaulting it to 0 files
+    it in among the Sol Rings and the Command Towers, where it reads as a
+    measurement — the reader has no way to tell "costs nothing" from "we do not
+    know". It sorts LAST instead, which is a position that means nothing.
+    """
+    page = _facets(browser, viz_server)
+    try:
+        page.evaluate("() => { Curate.setRail('all'); Curate.setSort('mv'); }")
+        shown = page.evaluate("() => Curate.shown")
+        assert shown[0] == "Command Tower", f"MV 0 should lead: {shown}"
+        assert shown[-1].startswith("Nicol Bolas"), (
+            f"the unresolvable card must sort last, not as zero: {shown}")
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_colour_filter_keeps_an_unresolvable_card_countable(browser, viz_server):
+    """THE CARD THE INDEX CANNOT ANSWER FOR GETS A CHIP, NOT A HOLE.
+
+    Filtering by a colour must not make a card the corpus has never heard of
+    quietly disappear with no way to find it again — that is the same failure as
+    a zero standing in for a measurement nobody took. It lands in its own facet
+    bucket, which has a count and can be selected like any other.
+    """
+    page = _facets(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        page.evaluate("() => Curate.setFilter('c', ['U'])")
+        assert page.evaluate("() => Curate.shown") == ["Rhystic Study"]
+
+        nofacts = page.evaluate("() => Curate.NOFACTS")
+        page.evaluate("v => Curate.setFilter('c', [v])", nofacts)
+        assert page.evaluate("() => Curate.shown") == [
+            "Nicol Bolas, the Card That Is Not"]
+
+        # And it is reachable from the rail, with a count, rather than only
+        # through the API this test drove.
+        labels = page.evaluate(
+            "() => [...document.querySelectorAll('.cur-chip')]"
+            "        .map(b => b.textContent)")
+        assert any("not in corpus" in t for t in labels), labels
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_filters_are_or_within_a_group_and_and_across_groups(browser, viz_server):
+    """Two colours means EITHER — a reader ticking W and U is widening. A colour
+    and a type means BOTH, which is narrowing. Getting either backwards makes
+    the rail do the opposite of what it looks like it does."""
+    page = _facets(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        page.evaluate("() => Curate.setFilter('c', ['R', 'G'])")
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Lightning Bolt", "Llanowar Elves"]
+
+        page.evaluate("() => Curate.setFilter('s', ['Instant'])")
+        assert page.evaluate("() => Curate.shown") == ["Lightning Bolt"], (
+            "colour and type must intersect, not union")
+
+        page.evaluate("() => { Curate.setFilter('c', []); Curate.setFilter('s', []); }")
+        page.evaluate("() => Curate.setFilter('g', ['ramp:rock', 'ramp:dork'])")
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Llanowar Elves", "Sol Ring"], "a role filter must match any of them"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_facet_count_is_what_you_get_if_you_click_it(browser, viz_server):
+    """A count that ignores the OTHER groups is a lie you find out about by
+    clicking. With Instant already selected, the Green chip must read 0 — or not
+    be offered — rather than still claiming the one Green card it would exclude.
+    """
+    page = _facets(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        page.evaluate("() => Curate.setFilter('s', ['Instant'])")
+        counts = page.evaluate("""() => {
+            const out = {};
+            document.querySelectorAll('.cur-chip[data-facet="c"]').forEach(b => {
+                out[b.dataset.value] = Number(b.querySelector('.cur-n').textContent);
+            });
+            return out;
+        }""")
+        assert counts.get("R") == 1, counts
+        assert "G" not in counts, (
+            f"Green is offered under a filter that excludes it: {counts}")
+        # Its own group is counted as if unfiltered, which is what makes the
+        # other Instant-compatible colours still reachable.
+        assert page.evaluate(
+            "() => document.querySelectorAll('.cur-chip[data-facet=\"s\"]').length") > 1
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_page_is_usable_before_the_card_index_lands(browser, viz_server):
+    """THE FETCH IS AN UPGRADE, NOT A GATE — and this is the assertion that
+    keeps it one. With `viz_index.json` failing outright, the grid, the piles,
+    the name box and the three factless sorts all still work; only the facet
+    controls go, and they say why rather than vanishing.
+    """
+    import json as _json
+
+    page = browser.new_page(viewport={"width": 1400, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.route("**/viz_index.json*", lambda route: route.abort())
+    page.goto(f"{viz_server}/viz/library.html")
+    page.evaluate(
+        "doc => { localStorage.setItem('manamap-library', JSON.stringify(doc));"
+        "         location.reload(); }",
+        CURATE_FACETS)
+    try:
+        page.wait_for_function("() => window.Curate && document.querySelector('.cur-zone')",
+                               timeout=BOOT_TIMEOUT_MS)
+        page.wait_for_function("() => Curate.facts === 'failed'", timeout=BOOT_TIMEOUT_MS)
+
+        page.evaluate("() => Curate.setRail('all')")
+        assert len(page.evaluate("() => Curate.shown")) == 6
+        page.evaluate("() => Curate.setSort('name')")
+        shown = page.evaluate("() => Curate.shown")
+        assert shown == sorted(shown), shown
+
+        # The sorts that need facts are DISABLED AND PRESENT, not missing: a
+        # control that appears when a fetch returns is a control nobody finds.
+        opts = page.evaluate("""() => [...document.querySelectorAll('#cur-sort option')]
+            .map(o => [o.value, o.disabled])""")
+        assert dict(opts)["mv"] is True, opts
+        assert dict(opts)["name"] is False, opts
+
+        rail = page.eval_on_selector("#cur-rail", "e => e.innerText")
+        assert "unavailable" in rail.lower(), rail
+        assert page.query_selector(".cur-chip") is None
+        assert errors == []
+    finally:
+        page.close()
+
+
+def test_curate_defers_its_art_rather_than_asking_for_all_of_it_at_once(
+        browser, viz_server):
+    """`branch-view` measured the alternative: seventy promoted at once and
+    Scryfall answered thirty-five, the rest stripped to empty boxes permanently
+    because an `<img>` error carries no status. Tiles therefore ship with
+    `data-src` and are promoted one at a time by `Shell.queueArt`.
+
+    Asserted on the DEFERRAL, not on loaded art: this suite must not depend on
+    Scryfall answering."""
+    many = {"v": 2, "corpus": None, "active": "Keep", "zones": [
+        {"name": "Keep", "cards": ["Card %02d" % i for i in range(40)]}]}
+    page = _curate(browser, viz_server, many)
+    try:
+        assert page.evaluate("() => Curate.shown.length") == 40
+        deferred = page.eval_on_selector_all(
+            ".cur-tile img[data-src]", "els => els.length")
+        assert deferred > 10, (
+            f"only {deferred} of 40 tiles deferred — the grid is bursting")
+        assert page.js_errors == []
+    finally:
+        page.close()

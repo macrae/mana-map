@@ -44,7 +44,7 @@ digest of the rules that bite whatever you are touching; these hold the evidence
 | | | |
 |---|---:|---|
 | [architecture.md](architecture.md) | 755 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
-| [viz.md](viz.md) | 1491 | The frontend: the four PAGES (workbench, atlas, dossier, branch), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
+| [viz.md](viz.md) | 1587 | The frontend: the six PAGES (workbench, atlas, dossier, branch, Curate, spaces), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 304 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [agent-inventory.md](agent-inventory.md) | 122 | **The harness as it stands** — every agent and skill with its path, what it owns, which skill spawns it and how a five-specialist consolidation would re-home it, plus the front-end surfaces that depend on each. PRD §8 D-1 asks for this as a CHECKED-IN artifact rather than a report. Read before touching a charter. |
 | [agent-audit-2026-08-19.md](history/agent-audit-2026-08-19.md) | 400 | The pivot's audit of the agents (18 then; 17 now): four fates, per-agent strengths and enrichment, the Sprint 0 order of work — all since executed. Read before touching a charter. |

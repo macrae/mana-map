@@ -540,7 +540,7 @@
        * for 4s; removing the `loading` attribute and re-assigning the identical
        * URL loaded it at 146x204 immediately.
        *
-       * So the deferral is explicit instead. `hydrate()` promotes `data-src` the
+       * So the deferral is explicit instead. `Shell.queueArt` promotes `data-src` the
        * first time the gallery is opened, which is the property that actually
        * mattered — a page whose job is a table of numbers fetches no card art
        * until someone asks to see cards. What is lost is progressive loading
@@ -742,49 +742,30 @@
   /* WHAT `loading="lazy"` WAS SUPPOSED TO DO, done by hand — and PACED, because
    * the first version that worked got throttled.
    *
-   * Two measured failures are behind this shape. `loading="lazy"` never fires at
-   * all: these tiles are parsed into a `display:none` container (the list view is
-   * the default), an image that is never laid out never intersects anything, and
-   * revealing the container does not re-arm it — 36 tiles in the viewport with
-   * `src` set, 0 requested, held for 4s. Then promoting all seventy at once DID
-   * load them and Scryfall answered thirty-five: the rest errored and
+   * Two measured failures are behind this shape, and both are why the queue that
+   * answers them now lives in `shell.js` rather than here. `loading="lazy"` never
+   * fires at all: these tiles are parsed into a `display:none` container (the
+   * list view is the default), an image that is never laid out never intersects
+   * anything, and revealing the container does not re-arm it — 36 tiles in the
+   * viewport with `src` set, 0 requested, held for 4s. Then promoting all seventy
+   * at once DID load them and Scryfall answered thirty-five: the rest errored and
    * `onImageError` stripped them to empty boxes. Seventy parallel requests at a
    * public API is exactly what the drawer's `lazy` was quietly preventing.
    *
-   * An IntersectionObserver is the textbook answer and is deliberately NOT used:
-   * its callback never fired in the harness this was verified in — not even a
-   * freshly constructed one on a laid-out, visible element — because IO rides
-   * the rendering lifecycle. A mechanism that cannot be tested here is one
-   * nobody is testing, which this repo has paid for before.
+   * THE QUEUE MOVED TO `shell.js` WHEN THE SECOND CALLER ARRIVED. Curate shows
+   * 190 tiles, squarely in the throttled regime this measured, and a second copy
+   * of a paced fetch is how one copy stops matching the API — the same argument
+   * that kept `onImageError` shared. `Shell.queueArt` IS this function: promote
+   * in document order, one every `ART_GAP` ms, the `data-src` consumed as it is
+   * queued so re-opening the gallery adds nothing and a part-loaded grid is never
+   * restarted. It gained one thing in the move — a detached <img> is dropped
+   * without spending the gap — and the gap itself went 70ms to 110ms, inside
+   * Scryfall's published 50-100ms guidance where 70 (~14/s) was not. Seventy
+   * cards now land in about eight seconds instead of five.
    *
-   * So the queue is the whole of it: promote in document order, one every
-   * `ART_GAP` ms. Deferred until the gallery is opened (the property that
-   * mattered — a page of numbers fetches no art until asked), never bursty, and
-   * observable from a test. Seventy cards land in about five seconds. */
-  var ART_GAP = 70;
-  var artQueue = [], artRunning = false;
-
-  function pump() {
-    if (artRunning) return;
-    artRunning = true;
-    (function next() {
-      var im = artQueue.shift();
-      if (!im) { artRunning = false; return; }
-      var src = im.getAttribute('data-src');
-      if (!src) { next(); return; }
-      im.removeAttribute('data-src');
-      im.src = src;
-      setTimeout(next, ART_GAP);
-    })();
-  }
-
-  /* Idempotent: the attribute is consumed as it is queued, so re-opening the
-   * gallery adds nothing and a part-loaded grid is never restarted. */
-  function hydrate(sec) {
-    Array.prototype.push.apply(
-      artQueue, Array.prototype.slice.call(sec.querySelectorAll('img[data-src]')));
-    pump();
-  }
+   * What stays HERE is the property that actually mattered: the deferral is the
+   * CALL SITE, not the queue. A page of numbers fetches no art until the gallery
+   * is asked for. */
 
   function wireViewToggle() {
     var panels = document.getElementById('panels');
@@ -799,7 +780,7 @@
       if (!sec) return;
       var view = b.getAttribute('data-view');
       sec.setAttribute('data-view', view);
-      if (view === 'gallery') hydrate(sec);
+      if (view === 'gallery' && window.Shell) Shell.queueArt(sec);
       Array.prototype.forEach.call(sec.querySelectorAll('button.vt'), function (o) {
         o.classList.toggle('is-on', o === b);
       });

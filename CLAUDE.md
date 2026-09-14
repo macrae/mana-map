@@ -13,10 +13,10 @@ citations (`/resolve-stack`). Around that: a deterministic builder, `deck-audit`
 axes, `card-search` over the corpus, dated `deck-recon`, versions from git, a captain's log,
 and agents that turn a question into a priced, checked answer.
 
-**Five pages over one data layer**: the landing page (`viz/workbench.html`), the card
+**Six pages over one data layer**: the landing page (`viz/workbench.html`), the card
 atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`), the branch
-workbench (`viz/branch.html`) and the embedding-space appendix (`viz/spaces.html`) — all
-rendering committed artifacts, with sim figures that carry their intervals. The magazine
+workbench (`viz/branch.html`), **Curate** (`viz/library.html`) and the embedding-space
+appendix (`viz/spaces.html`) — all rendering committed artifacts, with sim figures that carry their intervals. The magazine
 that used to be the product is a **frozen legacy renderer**; the Pilot's Operating
 Handbook (`src/manamap/pilot/poh.py`) replaced it on 2026-09-02 and renders the same
 `manuals/p/<slug>.html`. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
@@ -145,7 +145,7 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   collection/         # a PHYSICAL card collection (COLLECTION_DIR); the only
                       #   ownership question left, and it is about cardboard.
                       #   MANAMAP_COLLECTION_DIR overrides it
-viz/                  # static frontend. FIVE pages, one data layer:
+viz/                  # static frontend. SIX pages, one data layer:
                       #   workbench.html  THE LANDING PAGE — every deck, racked by
                       #                   SLEEVED / waiting on cardboard / on the bench /
                       #                   history, or one fleet table sorted by played /
@@ -163,6 +163,23 @@ viz/                  # static frontend. FIVE pages, one data layer:
                       #   branch.html     one candidate 99: the PROPOSAL, the verdict,
                       #                   the measured table with each row's definition,
                       #                   reward/risk/cost, the bill
+                      #   library.html    CURATE — the library across piles, at a
+                      #                   size you can read. The drawer keeps a
+                      #                   card; this cuts forty. Pile rail (a
+                      #                   LOCAL filter, never `setActive`), a grid
+                      #                   with multi-select and bulk move/remove,
+                      #                   and a pinned pane at `normal` size.
+                      #                   Sort + colour/type/role filters over
+                      #                   `viz_index.json` (0.56 MB gz), fetched
+                      #                   AFTER the first render so a failed
+                      #                   fetch degrades to the piles, the name
+                      #                   box and the three factless sorts. A
+                      #                   card the index cannot resolve gets its
+                      #                   own chip and sorts LAST, never as 0.
+                      #                   The grid MOVES its tiles rather than
+                      #                   rebuilding them, or a re-sort would
+                      #                   re-queue 190 images. It cannot ADD a
+                      #                   card: keeping stays the Atlas's gesture
                       #   index.html      the atlas + the graph
                       #   spaces.html     the embedding-space appendix — what each
                       #                   space is for and how they differ. Linked

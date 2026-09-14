@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Always revalidate the HTML; its versioned assets may cache forever. Same note
+     as index.html and workbench.html — a cached page pins the script ?v=, which
+     pins every data fetch, and the page silently goes stale. -->
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>Curate — Mana Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css?v=223">
+<link rel="stylesheet" href="css/library.css?v=223">
+</head><body>
+<div class="cur-page" id="cur-page">
+  <!-- No head-links: `shell.js` puts the strip on every surface and this page is
+       in it. A second nav two lines below the first is one of them being
+       ignored. -->
+  <aside class="cur-rail" id="cur-rail"></aside>
+  <main class="cur-main">
+    <div class="cur-bar" id="cur-bar"></div>
+    <div class="cur-grid" id="cur-grid"></div>
+  </main>
+  <aside class="cur-pane" id="cur-pane"></aside>
+</div>
+<script src="js/api.js?v=223"></script>
+<!-- session.js before shell.js: the strip reads the library through Session,
+     and this page writes to it. -->
+<script src="js/session.js?v=223"></script>
+<script src="js/shell.js?v=223"></script>
+<script src="js/library-view.js?v=223"></script>
+</body></html>

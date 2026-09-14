@@ -41,7 +41,7 @@ whether the intervals overlap. Same seeds are **not** paired games (a changed li
 every shuffle), so seeds buy per-arm replayability and the control is N. An A/A is refused
 with the reason.
 
-## Four pages over one data layer
+## Six pages over one data layer
 
 **The workbench** (`viz/workbench.html`) — **the landing page**: every deck you own, in
 racks by whether it is sleeved, **waiting on cardboard**, on the bench or history; or as

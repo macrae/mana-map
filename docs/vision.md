@@ -89,7 +89,7 @@ calls nothing, and your machine runs the same code.
 
 ## The frontend
 
-Five pages over one data layer: the card atlas, the workbench landing page, the deck
+Six pages over one data layer: the card atlas, the workbench landing page, the deck
 page, the branch workbench and the embedding-space appendix.
 
 **The card atlas** (`viz/index.html`) — 34,890 oracle cards embedded by two small neural

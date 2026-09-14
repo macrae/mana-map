@@ -1,0 +1,185 @@
+/* Curate — the library page.
+ *
+ * EVERY CLASS IS `.cur-`, AND THAT IS LOAD-BEARING TWICE OVER.
+ *
+ * `tests/test_viz_shell.py` extracts every rule whose selector contains `.lib-`
+ * or `.shell-lib` from BOTH `mana-map.css` and `tokens.css` and asserts the two
+ * blocks are byte-identical — the drawer ships to five surfaces out of two
+ * stylesheets and they must not drift. This file is not scanned, which is
+ * exactly why a `.lib-` rule in here would be dangerous rather than harmless:
+ * it would pass the test and still restyle the live drawer, which `Shell.mount`
+ * injects on this page too. The prefix keeps the two apart by construction.
+ *
+ * One exception is deliberate: `.cur-tile.lib-tile-noart` below. That class is
+ * added by `shell.js`'s shared `onImageError` and is not ours to rename; the
+ * rule that reserves the box for it lives in `tokens.css` keyed to `.lib-open`,
+ * which this page has no element for. Without this, a card whose art 404s
+ * collapses to zero height and the grid reflows around a hole.
+ */
+
+.cur-page {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr) 20rem;
+  gap: 1.25rem;
+  max-width: 96rem;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 4rem;
+  align-items: start;
+}
+
+/* ── the rail ───────────────────────────────────────────────────────────── */
+
+.cur-rail { position: sticky; top: 1rem; display: flex; flex-direction: column; gap: 2px; }
+.cur-zone, .cur-act {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  width: 100%; padding: .4rem .6rem; border: 0; border-radius: 5px;
+  background: transparent; color: var(--ink); cursor: pointer;
+  font: inherit; font-size: .85rem; text-align: left;
+}
+.cur-zone:hover, .cur-act:hover { background: rgba(255, 255, 255, .06); }
+.cur-zone.is-on { background: var(--accent, #d8a657); color: #16161a; font-weight: 600; }
+.cur-n { font-variant-numeric: tabular-nums; opacity: .7; font-size: .78rem; }
+.cur-zone.is-on .cur-n { opacity: .85; }
+.cur-act { opacity: .75; font-size: .8rem; }
+.cur-rule { height: 1px; background: rgba(255, 255, 255, .12); margin: .45rem 0; }
+
+/* ── the facets ─────────────────────────────────────────────────────────── */
+
+.cur-group {
+  font-size: .68rem; letter-spacing: .09em; text-transform: uppercase;
+  opacity: .55; margin: .5rem 0 .3rem .1rem;
+}
+.cur-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.cur-chip {
+  display: inline-flex; align-items: baseline; gap: .3rem;
+  padding: .2rem .45rem; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: .76rem; color: var(--ink);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .13);
+}
+.cur-chip:hover { background: rgba(255, 255, 255, .11); }
+.cur-chip.is-on {
+  background: var(--accent, #d8a657); border-color: var(--accent, #d8a657);
+  color: #16161a; font-weight: 600;
+}
+.cur-chip.is-on .cur-n { opacity: .8; }
+/* The three <select>s share one look with `.cur-find`, and that is worth a
+   line: left alone, a select renders in the platform's own chrome — a white
+   box on a dark page — and the rail's role picker is full-width, so it becomes
+   the loudest thing on a screen whose subject is card art. `color-scheme: dark`
+   is what makes the OPTION LIST dark too; styling the closed control alone
+   leaves an opening menu that flashes white. */
+.cur-role, .cur-sort, .cur-move {
+  font: inherit; font-size: .78rem; padding: .28rem .4rem; border-radius: 5px;
+  max-width: 100%; color: var(--ink); color-scheme: dark;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+}
+.cur-sort { flex: 0 0 auto; }
+.cur-role { width: 100%; }
+/* A sort waiting on the card index is shown greyed rather than hidden — a
+   control that appears when a fetch returns is a control nobody finds. */
+.cur-sort option:disabled { opacity: .45; }
+
+/* ── the bar ────────────────────────────────────────────────────────────── */
+
+.cur-bar {
+  position: sticky; top: 0; z-index: 3;
+  display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+  padding: .55rem 0 .7rem;
+  background: var(--bg, #10131a);
+}
+.cur-find {
+  flex: 0 1 15rem; padding: .35rem .55rem; font: inherit; font-size: .85rem;
+  color: var(--ink); background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14); border-radius: 5px;
+}
+.cur-count, .cur-sel { font-size: .8rem; opacity: .75; font-variant-numeric: tabular-nums; }
+.cur-sel { opacity: 1; font-weight: 600; }
+.cur-sel em { font-style: normal; opacity: .7; font-weight: 400; }
+/* `.cur-move` is styled with the other two selects above. */
+.cur-danger {
+  padding: .35rem .7rem; font: inherit; font-size: .8rem; cursor: pointer;
+  border: 1px solid rgba(220, 90, 90, .55); border-radius: 5px;
+  background: rgba(220, 90, 90, .14); color: #ffb9b9;
+}
+.cur-danger:hover { background: rgba(220, 90, 90, .26); }
+.cur-note { font-size: .8rem; opacity: .85; font-style: italic; }
+
+/* ── the grid ───────────────────────────────────────────────────────────── */
+
+.cur-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+}
+.cur-tile { position: relative; cursor: pointer; }
+.cur-tile img {
+  width: 100%; display: block; border-radius: 4.75% / 3.5%;
+  /* Reserves the box before the art lands, so a paced queue filling top-down
+     does not reflow the grid under the cursor. */
+  aspect-ratio: 488 / 680;
+  background: rgba(255, 255, 255, .04);
+  outline: 2px solid transparent; outline-offset: 1px;
+}
+.cur-tile:hover img { outline-color: rgba(255, 255, 255, .35); }
+.cur-tile.is-on img { outline-color: var(--accent, #d8a657); }
+.cur-name {
+  display: block; font-size: .7rem; line-height: 1.25; margin-top: .3rem;
+  opacity: .8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cur-badge {
+  position: absolute; left: 4px; bottom: 1.55rem;
+  padding: 1px 5px; border-radius: 3px; font-size: .62rem;
+  background: rgba(0, 0, 0, .72); color: #e8e8ea;
+  max-width: calc(100% - 8px); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; pointer-events: none;
+}
+.cur-check {
+  position: absolute; top: 5px; right: 5px; width: 16px; height: 16px;
+  border-radius: 4px; border: 1.5px solid rgba(255, 255, 255, .5);
+  background: rgba(0, 0, 0, .5);
+}
+.cur-tile.is-on .cur-check {
+  background: var(--accent, #d8a657); border-color: var(--accent, #d8a657);
+}
+.cur-tile.is-on .cur-check::after {
+  content: "✓"; position: absolute; inset: 0; color: #16161a;
+  font-size: .72rem; line-height: 13px; text-align: center; font-weight: 700;
+}
+/* See the header note: `lib-tile-noart` is shell.js's, and the rule that
+   reserves its box keys off `.lib-open`, which this page has no element for. */
+.cur-tile.lib-tile-noart::before {
+  content: ""; display: block; aspect-ratio: 488 / 680; border-radius: 4.75% / 3.5%;
+  background: rgba(255, 255, 255, .05);
+}
+/* `hidden` on the badge is how the cross-pile view is turned off for a REUSED
+   tile — the element survives a re-sort so the attribute has to do the work the
+   old conditional markup did. The UA sheet's `[hidden]{display:none}` carries
+   it; this is here so a later `display` on `.cur-badge` cannot quietly win. */
+.cur-badge[hidden] { display: none; }
+.cur-empty { opacity: .75; font-size: .9rem; max-width: 34rem; }
+.cur-empty a { color: var(--accent, #d8a657); }
+
+/* ── the pane ───────────────────────────────────────────────────────────── */
+
+.cur-pane { position: sticky; top: 1rem; }
+.cur-big img {
+  width: 100%; display: block; border-radius: 4.75% / 3.5%;
+  aspect-ratio: 488 / 680; background: rgba(255, 255, 255, .04);
+}
+.cur-meta { margin-top: .5rem; display: flex; flex-direction: column; gap: .15rem; }
+.cur-meta b { font-size: .92rem; }
+.cur-meta span { font-size: .78rem; opacity: .7; }
+.cur-hint { font-size: .82rem; opacity: .6; }
+
+/* Below three columns the pane is the first thing to go: the grid is what you
+   are working in, and a 20rem pane on a narrow window is most of the screen. */
+@media (max-width: 78rem) {
+  .cur-page { grid-template-columns: 11rem minmax(0, 1fr); }
+  .cur-pane { display: none; }
+}
+@media (max-width: 46rem) {
+  .cur-page { grid-template-columns: minmax(0, 1fr); }
+  .cur-rail { position: static; flex-direction: row; flex-wrap: wrap; }
+  .cur-zone, .cur-act { width: auto; }
+}
