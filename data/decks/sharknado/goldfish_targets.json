@@ -1,20 +1,177 @@
 {
-  "_note": "SCAFFOLD — not a declaration. `manamap pilot scaffold-targets` derived these groups from contained combo lines and role axes; every label is a PLACEHOLDER and every group is a starting point to edit, not a finding. A goldfish group is a deck-specific functional set (\"the metronome bodies\", \"the flash traps\"), which is a different thing from a role: `ROLE_PATTERNS` answers what job a card does in any 99. Nothing here names a WIN LINE, because a machine guessing at one manufactures the exact claim `validate-goldfish-targets` exists to demand. Rewrite the labels, regroup the members, add the line this deck actually wins with, then run `manamap pilot validate-goldfish-targets <slug>` and delete \"scaffolded\".",
-  "scaffolded": true,
+  "_note": "AUTHORED 2026-09-13, replacing the machine scaffold. Every group below is this deck's own functional set, not a role axis: the scaffold filed Glint-Horn Buccaneer and Irencrag Pyromancer under 'AN ANSWER — interaction of any kind' and Sticky Fingers under 'A FINISHER', which is what a `role:` derivation produces and why it was marked `scaffolded`. Names are the cards.json ' // ' form.",
+  "note": "THE MACHINE. Both commanders are free (command zone), and between them they tax every card that moves: Brallin turns each DISCARD into 1 damage to EACH opponent and a +1/+1 counter; Shabraz turns each DRAW into a +1/+1 counter and 1 life. A wheel is therefore two payments, and the deck is the pile of cards that gets paid twice. Arithmetic, from the oracle text: one Wheel of Fortune with Brallin out is 7 to each opponent on the discard half; add Glint-Horn Buccaneer and it is 14; add Psychosis Crawler on the redraw and it is 21. Two wheels close a 40-life table. That is the declared win line and it is the reason `model_discard` is on.",
+  "_shuffle_note": "THE HALF THE DECK GIVES AWAY, measured 2026-09-13. Of the 14 hand-refill effects this model reads, only SIX discard. Six SHUFFLE the hand into the library (Echo of Eons, Time Reversal, Commit // Memory, Winds of Change, Molten Psyche, Whirlpool Warrior) and two put it on the BOTTOM (Arjun, Teferi's Puzzle Box). None of those eight is a discard, so none of them triggers Brallin, Glint-Horn Buccaneer, Drake Haven, Containment Construct, Currency Converter or Rielle — the entire discard half of the deck. Priced at 4,000 games, seed 3: rewriting only those six to discard instead of shuffle leaves card draw IDENTICAL at 14.78 extra cards by turn ten and moves cards discarded 7.58 -> 12.22 and cumulative per-opponent ping damage 9.61 -> 14.53. They refill exactly as well and pay half as much. This is a RANKING INPUT, not a cut list: shuffling the graveyard back is a real benefit these cards are bought for.",
+  "_flags_note": "model_treasures is deliberately OFF. Five cards in the 99 make Treasure but only Generous Plunderer has a trigger this model reads (upkeep); the other four are `unmodelled` triggers, so the flag would restate every figure in the deck to model one card. `model-coverage` names it as DARK, which is the honest place for it. model_sacrifice is off for the same reason: two DARK cards, neither a sacrifice engine.",
+  "model_draw": true,
+  "model_combat": true,
+  "model_discard": true,
+  "_required_note": "`required` marks what this deck cannot function without, and exactly ONE group carries it: a wheel. Every payoff here is a tax collector with nothing to tax until a hand empties and refills. `route` marks the two ways this deck closes, counted as a UNION rather than multiplied.",
   "targets": [
     {
-      "label": "RAMP drawn — an accelerant of any kind",
-      "_from": "role:ramp",
+      "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+      "need": [
+        {
+          "any_of": [
+            "Arjun, the Shifting Flame",
+            "Burning Inquiry",
+            "Commit // Memory",
+            "Echo of Eons",
+            "Jace's Archivist",
+            "Khorvath's Fury",
+            "Magus of the Wheel",
+            "Molten Psyche",
+            "Reforge the Soul",
+            "Teferi's Puzzle Box",
+            "Time Reversal",
+            "Tolarian Winds",
+            "Wheel of Fortune",
+            "Wheel of Misfortune",
+            "Whirlpool Warrior",
+            "Windfall",
+            "Winds of Change"
+          ]
+        }
+      ],
+      "required": true
+    },
+    {
+      "label": "A DISCARD wheel drawn — the half that pays Brallin (the other eight shuffle or bottom)",
+      "need": [
+        {
+          "any_of": [
+            "Jace's Archivist",
+            "Magus of the Wheel",
+            "Reforge the Soul",
+            "Tolarian Winds",
+            "Wheel of Fortune",
+            "Windfall"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
+      "need": [
+        {
+          "any_of": [
+            "Glint-Horn Buccaneer"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
+      "need": [
+        {
+          "any_of": [
+            "Irencrag Pyromancer",
+            "Niv-Mizzet, Parun",
+            "Psychosis Crawler"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A discard converted to board or cards (the non-damage half of the tax)",
+      "need": [
+        {
+          "any_of": [
+            "Ceremonial Knife",
+            "Containment Construct",
+            "Currency Converter",
+            "Drake Haven",
+            "Jaxis, the Troublemaker",
+            "Mindless Automaton",
+            "Rielle, the Everwise"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+      "need": [
+        {
+          "any_of": [
+            "Chasm Skulker",
+            "Improbable Alliance",
+            "Ominous Seas",
+            "Shark Typhoon",
+            "The Locust God",
+            "Vanguard Suppressor"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
+      "need": [
+        {
+          "any_of": [
+            "Jace's Archivist",
+            "Magus of the Wheel",
+            "Reforge the Soul",
+            "Tolarian Winds",
+            "Wheel of Fortune",
+            "Windfall"
+          ]
+        },
+        {
+          "any_of": [
+            "Glint-Horn Buccaneer",
+            "Irencrag Pyromancer",
+            "Niv-Mizzet, Parun",
+            "Psychosis Crawler"
+          ]
+        }
+      ],
+      "route": "wheel-burn"
+    },
+    {
+      "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
+      "need": [
+        {
+          "any_of": [
+            "Arjun, the Shifting Flame",
+            "Burning Inquiry",
+            "Commit // Memory",
+            "Echo of Eons",
+            "Jace's Archivist",
+            "Khorvath's Fury",
+            "Magus of the Wheel",
+            "Molten Psyche",
+            "Reforge the Soul",
+            "Teferi's Puzzle Box",
+            "Time Reversal",
+            "Tolarian Winds",
+            "Wheel of Fortune",
+            "Wheel of Misfortune",
+            "Whirlpool Warrior",
+            "Windfall",
+            "Winds of Change"
+          ]
+        },
+        {
+          "any_of": [
+            "Chasm Skulker",
+            "Shark Typhoon",
+            "The Locust God",
+            "Vanguard Suppressor"
+          ]
+        }
+      ],
+      "route": "air"
+    },
+    {
+      "label": "Ramp drawn — an accelerant of any kind",
       "need": [
         {
           "any_of": [
             "Arcane Signet",
-            "Artist's Talent",
             "Currency Converter",
             "Generous Plunderer",
             "Smothering Tithe",
             "Sol Ring",
-            "Sorcerer Class",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -22,88 +179,40 @@
       ]
     },
     {
-      "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
-      "_from": "role:draw",
+      "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
       "need": [
         {
           "any_of": [
-            "Artist's Talent",
-            "Astral Drift",
-            "Burning Inquiry",
-            "Chasm Skulker",
+            "Lightning Greaves",
+            "Swiftfoot Boots"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A real answer drawn — a counter, a sweeper or a tax",
+      "need": [
+        {
+          "any_of": [
             "Commit // Memory",
-            "Currency Converter",
-            "Echo of Eons",
-            "Enduring Curiosity",
-            "Faithless Looting",
-            "Jace's Archivist",
-            "Magus of the Wheel",
-            "Mind's Eye",
-            "Nezahal, Primal Tide",
-            "Niv-Mizzet, Parun",
-            "Ominous Seas",
-            "Psychosis Crawler",
-            "Reforge the Soul",
-            "Rhystic Study",
-            "Smothering Tithe",
-            "Sorcerer Class",
-            "The Locust God",
-            "Time Reversal",
-            "Vanguard Suppressor",
-            "Wheel of Fortune",
-            "Wheel of Misfortune",
-            "Windfall"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "AN ANSWER drawn — interaction of any kind",
-      "_from": "role:removal",
-      "need": [
-        {
-          "any_of": [
-            "Astral Drift",
+            "Decree of Silence",
             "Elesh Norn // The Argent Etchings",
-            "Glint-Horn Buccaneer",
-            "Irencrag Pyromancer",
-            "Niv-Mizzet, Parun"
+            "Nimble Obstructionist"
           ]
         }
       ]
     },
     {
-      "label": "A TUTOR drawn",
-      "_from": "role:tutor",
+      "label": "Hand-size relief drawn — the deck routinely holds more than seven",
       "need": [
         {
           "any_of": [
-            "Goblin Engineer"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A FINISHER drawn — the cards that end games",
-      "_from": "role:wincon",
-      "need": [
-        {
-          "any_of": [
-            "Chasm Skulker",
-            "Elesh Norn // The Argent Etchings",
-            "Gossip's Talent",
-            "Psychosis Crawler",
-            "Silent Hallcreeper",
-            "Sticky Fingers",
-            "Stromkirk Noble",
-            "Waterbender Ascension"
+            "Kefnet the Mindful",
+            "Library of Leng",
+            "Nezahal, Primal Tide"
           ]
         }
       ]
     }
-  ],
-  "model_draw": true,
-  "model_combat": true,
-  "note": "Draw and combat modelled from 2026-09-10: the deck's engines are draw triggers and a flying commander. model_discard from 2026-09-10: wheels, loots and the discard/draw payoffs are read; Brallin is cast as the partner.",
-  "model_discard": true
+  ]
 }

@@ -1397,9 +1397,190 @@
       "max_turn": 10
     },
     "engine": {
-      "available": false,
-      "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
-      "declared_targets": 5
+      "available": true,
+      "required": [
+        "A WHEEL drawn — the ignition; nothing else in the deck starts itself"
+      ],
+      "routes": [
+        "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
+        "THE AIR KILL — a wheel plus a flying body that grows on every card"
+      ],
+      "online_by_turn": {
+        "1": {
+          "rate": 0.787,
+          "ci95": [
+            0.7789,
+            0.7949
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.8324,
+          "ci95": [
+            0.825,
+            0.8396
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.8674,
+          "ci95": [
+            0.8606,
+            0.8739
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.8979,
+          "ci95": [
+            0.8918,
+            0.9037
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.9208,
+          "ci95": [
+            0.9153,
+            0.9259
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.9407,
+          "ci95": [
+            0.9359,
+            0.9452
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.9566,
+          "ci95": [
+            0.9524,
+            0.9604
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.9687,
+          "ci95": [
+            0.9651,
+            0.9719
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.9784,
+          "ci95": [
+            0.9754,
+            0.9811
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.9834,
+          "ci95": [
+            0.9807,
+            0.9857
+          ],
+          "n": 10000
+        }
+      },
+      "any_route_by_turn": {
+        "1": {
+          "rate": 0.288,
+          "ci95": [
+            0.2792,
+            0.297
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.3579,
+          "ci95": [
+            0.3486,
+            0.3673
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.4315,
+          "ci95": [
+            0.4218,
+            0.4412
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.4937,
+          "ci95": [
+            0.4839,
+            0.5035
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.5719,
+          "ci95": [
+            0.5622,
+            0.5816
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.6934,
+          "ci95": [
+            0.6843,
+            0.7024
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.7713,
+          "ci95": [
+            0.763,
+            0.7794
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.8312,
+          "ci95": [
+            0.8237,
+            0.8384
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.8713,
+          "ci95": [
+            0.8646,
+            0.8777
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.9004,
+          "ci95": [
+            0.8944,
+            0.9061
+          ],
+          "n": 10000
+        }
+      },
+      "bottleneck": {
+        "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+        "by_turn_three": {
+          "rate": 0.8674,
+          "ci95": [
+            0.8606,
+            0.8739
+          ],
+          "n": 10000
+        }
+      },
+      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
     },
     "stall": {
       "by_turn": {
@@ -1585,43 +1766,99 @@
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:RAMP drawn — an accelerant of any kind": {
-          "value": 84,
+        "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
+          "value": 94,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
+          "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:CARD ADVANTAGE drawn — a draw engine or a refill": {
-          "value": 99,
+        "target:A DISCARD wheel drawn — the half that pays Brallin (the other eight shuffle or bottom)": {
+          "value": 67,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'CARD ADVANTAGE drawn — a draw engine or a refill' by turn six",
+          "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (the other eight shuffle or bottom)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:AN ANSWER drawn — interaction of any kind": {
-          "value": 64,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'AN ANSWER drawn — interaction of any kind' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A TUTOR drawn": {
+        "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
           "value": 18,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A TUTOR drawn' by turn six",
+          "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A FINISHER drawn — the cards that end games": {
-          "value": 80,
+        "target:A per-draw DAMAGE source drawn (taxes the refill half)": {
+          "value": 45,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A FINISHER drawn — the cards that end games' by turn six",
+          "definition": "share of games assembling 'A per-draw DAMAGE source drawn (taxes the refill half)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A discard converted to board or cards (the non-damage half of the tax)": {
+          "value": 77,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
+          "value": 71,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
+          "value": 38,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE AIR KILL — a wheel plus a flying body that grows on every card": {
+          "value": 53,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'THE AIR KILL — a wheel plus a flying body that grows on every card' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Ramp drawn — an accelerant of any kind": {
+          "value": 76,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Commander protection drawn — the whole engine is one 4-drop that dies to everything": {
+          "value": 35,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Commander protection drawn — the whole engine is one 4-drop that dies to everything' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A real answer drawn — a counter, a sweeper or a tax": {
+          "value": 56,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Hand-size relief drawn — the deck routinely holds more than seven": {
+          "value": 46,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Hand-size relief drawn — the deck routinely holds more than seven' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -1776,24 +2013,52 @@
     "commander_cast_by_turn_6_pct": 82,
     "targets": [
       {
-        "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 84
+        "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+        "by_turn_6_pct": 94
       },
       {
-        "label": "CARD ADVANTAGE drawn — a draw engine or a refill",
-        "by_turn_6_pct": 99
+        "label": "A DISCARD wheel drawn — the half that pays Brallin (the other eight shuffle or bottom)",
+        "by_turn_6_pct": 67
       },
       {
-        "label": "AN ANSWER drawn — interaction of any kind",
-        "by_turn_6_pct": 64
-      },
-      {
-        "label": "A TUTOR drawn",
+        "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
         "by_turn_6_pct": 18
       },
       {
-        "label": "A FINISHER drawn — the cards that end games",
-        "by_turn_6_pct": 80
+        "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
+        "by_turn_6_pct": 45
+      },
+      {
+        "label": "A discard converted to board or cards (the non-damage half of the tax)",
+        "by_turn_6_pct": 77
+      },
+      {
+        "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+        "by_turn_6_pct": 71
+      },
+      {
+        "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
+        "by_turn_6_pct": 38
+      },
+      {
+        "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
+        "by_turn_6_pct": 53
+      },
+      {
+        "label": "Ramp drawn — an accelerant of any kind",
+        "by_turn_6_pct": 76
+      },
+      {
+        "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
+        "by_turn_6_pct": 35
+      },
+      {
+        "label": "A real answer drawn — a counter, a sweeper or a tax",
+        "by_turn_6_pct": 56
+      },
+      {
+        "label": "Hand-size relief drawn — the deck routinely holds more than seven",
+        "by_turn_6_pct": 46
       }
     ],
     "combat": {
@@ -1814,8 +2079,33 @@
     }
   },
   "engine_health": {
-    "word": null,
-    "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
+    "word": "EXCEPTIONAL",
+    "rate": 0.9208,
+    "ci95": [
+      0.9153,
+      0.9259
+    ],
+    "n": 10000,
+    "turn": 5,
+    "bands": [
+      [
+        0.6,
+        "EXCEPTIONAL"
+      ],
+      [
+        0.4,
+        "HEALTHY"
+      ],
+      [
+        0.2,
+        "BRITTLE"
+      ],
+      [
+        0.0,
+        "WEAK"
+      ]
+    ],
+    "why": "the engine is online by turn 5 in 92% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": null,
