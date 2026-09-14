@@ -8,10 +8,9 @@
   "stage": "bench",
   "gates": {
     "to": "sleeved",
-    "met": 3,
+    "met": 4,
     "of": 6,
     "blocking": [
-      "full sim batch",
       "mulligan + tutor guidance",
       "ownership reconciled"
     ]
@@ -24,7 +23,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [],
     "invalid": [],
@@ -35,8 +34,7 @@
       "tutors",
       "prose",
       "log",
-      "issue",
-      "sim"
+      "issue"
     ],
     "todo": [
       {
@@ -68,16 +66,6 @@
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
         "how": "AUTHORED: data/decks/sharknado/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
-      },
-      {
-        "stage": "sim",
-        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
-        "how": "manamap pilot simulate sharknado --pod standard-v3 --games 100"
-      },
-      {
-        "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate sharknado --vs <opponent> --games 12"
       }
     ]
   },
@@ -2167,15 +2155,61 @@
       "settled_by": "goldfish"
     }
   ],
-  "simulation": null,
+  "simulation": {
+    "runs": 1,
+    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n120-ebff4d05-s1959377157-podExperimental-c600",
+    "at": "2026-09-13",
+    "stale": false,
+    "ran_on_decklist_sha256": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34",
+    "games": 120,
+    "wins": 13,
+    "decided": 105,
+    "vs": [
+      "sythis-enchantress",
+      "jarad-graveyard",
+      "abaddon"
+    ],
+    "win_rate": 0.124,
+    "win_rate_ci95": [
+      0.074,
+      0.2
+    ],
+    "piloting": {
+      "comparable": true,
+      "lands_ratio": 0.897,
+      "casts_ratio": 0.605,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
+    },
+    "engine_casts": {
+      "covered": false,
+      "never_cast": [
+        "Improbable Alliance",
+        "Winds of Change",
+        "Faithless Looting",
+        "Jace's Archivist",
+        "Magus of the Wheel",
+        "Molten Psyche",
+        "Reforge the Soul",
+        "Windfall"
+      ],
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Improbable Alliance, Winds of Change, Faithless Looting, Jace's Archivist, Magus of the Wheel, Molten Psyche …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+    },
+    "eliminated_by": {
+      "jarad-graveyard": 12,
+      "sythis-enchantress": 45,
+      "abaddon": 18
+    },
+    "mean_round": 20.0,
+    "token_damage_share": 0.05,
+    "tokens_observed": 0.93
+  },
   "experiments": null,
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `recon-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "engine.json's critic verdict is None — `/analyze-engine sharknado`",
-    "open questions routed: goldfish ×3, resolve-stack ×6",
-    "no simulation runs — `simulate sharknado --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "open questions routed: goldfish ×3, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

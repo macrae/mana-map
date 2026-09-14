@@ -1833,8 +1833,66 @@
   }
  },
  "forge": {
-  "available": false,
-  "why": "no Forge run on the deck \u2014 `manamap pilot simulate sharknado --vs <pod>` puts it at a table and writes where this reads"
+  "available": true,
+  "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
+  "branch": {
+   "all_games": 80,
+   "games": 68,
+   "rate": 0.1471,
+   "runs": 2,
+   "wins": 10,
+   "won_by": {
+    "all opponents have lost": 10
+   }
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "all_games": 120,
+   "games": 105,
+   "rate": 0.1238,
+   "runs": 1,
+   "wins": 13,
+   "won_by": {
+    "all opponents have lost": 13
+   }
+  },
+  "ci95": [
+   -0.0773,
+   0.1377
+  ],
+  "delta": 0.0232,
+  "engine_casts": {
+   "branch": {
+    "covered": false,
+    "never_cast": [
+     "Faithless Looting",
+     "Improbable Alliance",
+     "Teferi's Protection",
+     "Tolarian Winds",
+     "Windfall",
+     "Izzet Signet",
+     "Jace's Archivist",
+     "Magus of the Wheel"
+    ]
+   },
+   "champion": {
+    "covered": false,
+    "never_cast": [
+     "Improbable Alliance",
+     "Winds of Change",
+     "Faithless Looting",
+     "Jace's Archivist",
+     "Magus of the Wheel",
+     "Molten Psyche",
+     "Reforge the Soul",
+     "Windfall"
+    ]
+   }
+  },
+  "excludes_zero": false,
+  "mde": 0.175,
+  "other_tables": {},
+  "pod": "standard-v3"
  },
  "harness": {
   "iterations": 10000,
@@ -2141,7 +2199,9 @@
    "killed by T10",
    "hand can act by T3"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: +0.023 win rate, CI [-0.077, +0.138] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "killed by T6",
@@ -2197,9 +2257,9 @@
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
-    "detail": "no Forge run on the deck \u2014 `manamap pilot simulate sharknado --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],

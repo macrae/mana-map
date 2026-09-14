@@ -114,6 +114,17 @@ KNOWN_UNCAST = {
     # made this block exist. (Its 20-game Experimental sibling shows the same
     # casts but is under the per-card lines at that N and does not flag.)
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c1d1131f-s1251704607-podExperimental-c600.json",
+    # 2026-09-13, sharknado (the DECK, not the branch) at standard-v3, 120
+    # games: Jace's Archivist, Winds of Change, Faithless Looting and
+    # Improbable Alliance never cast. The seat cast 95 wheels and DISCARDED
+    # 105, and nine of seventeen were never cast once -- Wheel of Fortune got
+    # one cast in 120 games. The escape hatch was checked and closed the next
+    # day: `--profile Experimental`, same pod and seeds, was abandoned at 37
+    # games with Jace's Archivist still at zero activations and the rate no
+    # better, so the refusal is a limit of the evaluator rather than a setting.
+    # docs/gotchas-bench.md "sharknado is a deck Forge cannot pilot". The
+    # record is kept because `engine_casts` is the evidence FOR that claim.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n120-ebff4d05-s1959377157-podExperimental-c600.json",
     # THE SACRIFICE CLASS, edgar-vampires, every run since 2026-08-24: Viscera
     # Seer, Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Vish Kal
     # never cast. docs/gotchas-bench.md "The Forge AI will not press a sacrifice

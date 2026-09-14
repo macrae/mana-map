@@ -34,14 +34,28 @@ def _decks_with_runs():
                   if any(p.glob("*.json")))
 
 
-def _declared_commander(slug):
+def _declared_commanders(slug):
+    """EVERY commander, because a PARTNER DECK HAS TWO.
+
+    This returned the FIRST `is_commander` card and the caller compared it to
+    the FIRST name in the run's seat. On a single-commander deck those are the
+    same card. On sharknado — Shabraz / Brallin, the fleet's first partner deck
+    to get a Forge run — `cards.json` lists Shabraz first and the run reports
+    Brallin first, so a run in which BOTH partners were cast (Shabraz 52 times,
+    Brallin 41, across 120 games) read as "piloted by the wrong commander" and
+    the fix on offer was to quarantine it.
+
+    Comparing sets keeps what this test is for — zur's six runs really were
+    piloted by a card the deck is not built on — and stops it firing on a deck
+    that is built on two.
+    """
     path = DECKS_DIR / slug / "cards.json"
     if not path.exists():
-        return None
-    for card in json.loads(path.read_text()).get("cards", []):
-        if card.get("is_commander"):
-            return card.get("name")
-    return None
+        return frozenset()
+    return frozenset(
+        _front(card.get("name"))
+        for card in json.loads(path.read_text()).get("cards", [])
+        if card.get("is_commander") and card.get("name"))
 
 
 def _front(name):
@@ -55,16 +69,20 @@ def test_no_live_run_used_the_wrong_commander():
 
     offenders, checked = [], 0
     for slug in _decks_with_runs():
-        declared = _declared_commander(slug)
+        declared = _declared_commanders(slug)
         if not declared:
             continue
         for doc in forge.list_runs(slug) or []:
-            played = ((doc.get("seats") or [{}])[0].get("commander") or [None])[0]
+            played = (doc.get("seats") or [{}])[0].get("commander") or []
             checked += 1
-            if played and _front(played) != _front(declared):
+            # EVERY name the seat played must be one the deck is built on. A
+            # partner pair supplies two and either order is correct; a foreign
+            # name is the defect, whichever slot it sits in.
+            stray = [n for n in played if n and _front(n) not in declared]
+            if stray:
                 offenders.append(
-                    f"{slug}: {doc.get('run_id', '?')[:44]} played {played!r}, "
-                    f"deck is built on {declared!r}")
+                    f"{slug}: {doc.get('run_id', '?')[:44]} played {stray!r}, "
+                    f"deck is built on {sorted(declared)!r}")
     assert checked >= 10, f"only {checked} runs checked — the walk is broken"
     assert not offenders, (
         "runs piloted by the wrong commander are live and quotable:\n  "

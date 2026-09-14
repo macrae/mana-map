@@ -427,3 +427,137 @@ def test_every_rendered_page_on_disk_is_a_handbook():
     for page in pages:
         head = page.read_text(encoding="utf-8", errors="replace")[:4096]
         assert "Pilot&#x27;s Operating Handbook" in head, page.name
+
+
+# ── the card name: a preview on hover, a link into the atlas ─────────────
+#
+# The page this handbook replaced carried a hover preview and it was deleted:
+# 176-308 hidden full-card images per page, one per card mention, most of a
+# 275 KB file, hidden on mobile AND on paper. `poh.margin_figure`'s docstring
+# and `test_the_handbook_is_far_smaller_than_the_page_it_replaces` both record
+# it. The preview is back, and these hold it to the three things that got the
+# old one deleted: no image elements, nothing fetched before the cursor lands,
+# and nothing at all on paper or on touch.
+
+@requires_deck
+def test_the_preview_carries_a_committed_url_and_adds_no_image_element():
+    """THE WHOLE DESIGN IN ONE ASSERTION.
+
+    Every card name with an image gets the URL as a CSS custom property, and the
+    `<img>` count does not move. Re-introduce the bug by dropping the `style`
+    from `poh.card_ref` and the first assertion goes red; re-introduce the OLD
+    bug by emitting an `<img>` per mention and the last one does.
+    """
+    html = _rendered()
+    pops = re.findall(r"--poh-card-img:url\('([^']+)'\)", html)
+    assert len(pops) >= 80, f"only {len(pops)} card names carry a preview URL"
+    assert html.count('class="cardref pop"') == len(pops)
+    for url in pops:
+        assert url.startswith("https://cards.scryfall.io/"), url
+
+    # The count that got the predecessor deleted. One thumbnail per §6
+    # subsection, and NOT one image per card mention.
+    assert html.count("<img") == html.count('<figure class="poh-fig">')
+    assert html.count("<img") < 20, "the preview must not add image elements"
+
+
+@requires_deck
+def test_every_card_name_links_into_the_atlas_seeded_with_itself():
+    """THE NAME IS THE DOOR. `?cards=` and not `?card=`: the singular form falls
+    back to a RANDOM card when a name does not resolve, and one card in the
+    fleet is newer than the corpus dump. Reporting `no match` beats showing the
+    wrong card confidently."""
+    html = _rendered()
+    hrefs = re.findall(r'href="([^"]*viz/index\.html\?cards=[^"]*)"', html)
+    assert len(hrefs) >= 80, f"only {len(hrefs)} atlas links"
+    assert html.count("cardref") >= len(hrefs)
+    for href in hrefs:
+        assert href.startswith("../../viz/index.html?cards="), href
+        assert href.rsplit("=", 1)[1], f"empty seed: {href}"
+    assert "?card=" not in html, "the singular form shows a random card on a miss"
+
+
+@requires_deck
+def test_every_name_the_handbook_links_round_trips_through_the_parser():
+    """A LINK THAT RESOLVES TO A DIFFERENT CARD IS WORSE THAN NO LINK. The atlas
+    hands `?cards=` to the same reader the textarea uses, so a name carrying a
+    comma or a ` // ` must survive encode, decode and parse unchanged. All 100
+    sharknado names do; this is what says so after a rename or a re-fetch."""
+    import json
+    import urllib.parse
+
+    from manamap.pilot.fetch_deck import parse_decklist
+
+    checked = 0
+    for path in sorted(DECKS_DIR.glob("*/cards.json")):
+        for card in json.loads(path.read_text(encoding="utf-8"))["cards"]:
+            name = card["name"]
+            decoded = urllib.parse.unquote_plus(urllib.parse.quote_plus(name))
+            entries = parse_decklist(decoded)
+            assert len(entries) == 1, f"{name!r} parsed to {len(entries)} entries"
+            assert entries[0]["name"] == name, f"{name!r} -> {entries[0]['name']!r}"
+            checked += 1
+    assert checked > 500, f"only {checked} names checked"
+
+
+@requires_deck
+def test_a_card_the_deck_does_not_carry_still_links_but_gets_no_preview():
+    """TWO BEHAVIOURS, DELIBERATELY INDEPENDENT — and a missing artifact renders
+    as an absence, never as an empty shell.
+
+    ur-dragon's engine.json names Shivan Reef and Stormcarved Coast, which its
+    decklist no longer runs, so there is no image. An ungated rule would pin an
+    empty bordered box to the corner of the screen, indistinguishable from a
+    broken image. The atlas link still works: the corpus knows the card even
+    though this deck does not run it. Drop the `if url` arm of `poh.card_ref`
+    and this fails.
+    """
+    html = _rendered()
+    bare = re.findall(r'<a class="cardref" href="([^"]+)"[^>]*>([^<]+)</a>', html)
+    assert bare, "expected at least one card with no image to prove the gate"
+    for href, name in bare:
+        assert "viz/index.html?cards=" in href, name
+        assert f'class="cardref pop"' not in href
+    assert "pop" not in poh.card_ref("Shivan Reef", {})
+    assert "viz/index.html?cards=Shivan+Reef" in poh.card_ref("Shivan Reef", {})
+    assert "pop" in poh.card_ref("X", {"image": "https://cards.scryfall.io/x.jpg"})
+
+
+@requires_deck
+def test_every_committed_image_url_is_safe_inside_a_css_url():
+    """The URL goes into a stylesheet value inside an HTML attribute, so a
+    character needing escaping in either language breaks it silently rather than
+    loudly. True of all twelve decks today because `fetch_deck.stable_image_url`
+    strips Scryfall's query string; asserted so a refetch that changes it fails
+    here instead of in a browser."""
+    import json
+
+    checked = 0
+    for path in sorted(DECKS_DIR.glob("*/cards.json")):
+        for card in json.loads(path.read_text(encoding="utf-8"))["cards"]:
+            url = card.get("image") or ""
+            if not url:
+                continue
+            checked += 1
+            assert not set(url) & set("\"'&<> "), f"{path.parent.name}: {url}"
+    assert checked > 500, f"only {checked} URLs checked"
+
+
+def test_the_preview_is_screen_only_pointer_only_and_wide_only():
+    """PAPER AND TOUCH ARE THE TWO SURFACES THE OLD ONE WAS DEAD ON, and the
+    third condition is what stops it covering the text: the trim is 46rem
+    centred, so a 246px panel inset 1.5rem only clears the column from 1276px
+    up. The LINK is not inside the guard — a link works everywhere."""
+    from manamap.pilot import poh_design as pd
+
+    css = pd.POH_CSS
+    i = css.index("a.cardref.pop:hover::after")
+    guard = css.rindex("@media", 0, i)
+    header = css[guard:css.index("{", guard)]
+    assert "screen" in header and "hover: hover" in header and "80rem" in header, header
+    block = css[i:css.index("}", css.index("pointer-events", i))]
+    assert "background-image: var(--poh-card-img, none)" in block
+    assert "position: fixed" in block, "it would be clipped by .poh-scroll"
+    assert "\n    background:" not in block, "use longhands, not the shorthand"
+    # The link's own styling must sit OUTSIDE the media query.
+    assert css.index("a.cardref {") < guard

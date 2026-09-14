@@ -33,6 +33,7 @@ with the dossier.
 """
 
 import html
+import urllib.parse
 import json
 
 from manamap import config
@@ -426,7 +427,61 @@ def margin_figure(card, seen):
         return ""
     seen.add(name)
     return (f'<figure class="poh-fig"><img src="{esc(url)}" alt="" loading="lazy">'
-            f'<figcaption class="card">{esc(name)}</figcaption></figure>')
+            f'<figcaption class="card">{card_ref(name, card)}'
+            f'</figcaption></figure>')
+
+
+#: THE ATLAS, FROM THE HANDBOOK. `viz/index.html` and `manuals/p/` are siblings
+#: under the repo root on disk and on the deployed site, so this is the same
+#: relative hop in both places. Both surfaces have to be SERVED (the atlas
+#: fetches `../data/`), which is how CLAUDE.md documents opening it anyway.
+ATLAS_HREF = "../../viz/index.html?cards="
+
+
+def card_ref(name, card):
+    """A card NAME: a link into the atlas, carrying its own preview.
+
+    TWO BEHAVIOURS, DELIBERATELY INDEPENDENT. The hover preview needs an image
+    and is gated on one; the link needs only a name the corpus knows, so a card
+    the deck no longer carries still opens in the atlas. ur-dragon's engine.json
+    names two lands its decklist dropped: they get no preview and a working link,
+    which is the honest split.
+
+    THE PREVIEW, AND THE DELETION IT ANSWERS FOR. The magazine page this
+    handbook replaced carried 176-308 hidden full-card images, one per card
+    mention, revealed on hover — most of a 275 KB file, and
+    `test_the_handbook_is_far_smaller_than_the_page_it_replaces` exists to stop
+    them coming back. So this emits NO IMAGE ELEMENT. It hands the committed
+    `cards.json` URL to CSS as a custom property and `poh_design.POH_CSS` paints
+    it into a `:hover::after` box. A pseudo-element whose rule does not match
+    generates no box, and a `url()` sitting unused in a custom property is an
+    unresolved token rather than an image reference, so nothing is fetched until
+    the cursor lands. The document pays bytes, never images.
+
+    `?cards=` AND NOT `?card=`. Both land in Discover, but the singular form
+    falls back to a RANDOM card when the name does not resolve
+    (`discovery.js:660`) and the plural reports `no match for <name>`. Every
+    name here comes from a committed artifact, and one card in the fleet
+    (ingris-infect's Ingris Stingerquill) is newer than the corpus dump — a
+    silent random card is exactly the confident-and-wrong failure this project
+    is built to avoid. Verified: all 100 sharknado names round-trip through
+    `parse_decklist` unchanged, commas and ` // ` included, so a single name
+    needs no numbering.
+
+    NEW TAB, because reading the handbook and walking the atlas are two
+    activities and losing your place in a 65 KB page to glance at one card is
+    the worse failure.
+    """
+    # `quote_plus`, not `quote`: a query string spells a space `+`, which
+    # `URLSearchParams` decodes back, and it is one byte where `%20` is three.
+    # Across the fleet that is the difference between comfortable and tight
+    # against the 120 KB budget.
+    href = ATLAS_HREF + urllib.parse.quote_plus(name)
+    url = (card or {}).get("image") or ""
+    style = f' style="--poh-card-img:url(\'{esc(url)}\')"' if url else ""
+    cls = "cardref pop" if url else "cardref"
+    return (f'<a class="{cls}" href="{esc(href)}" target="_blank" '
+            f'rel="noopener"{style}>{esc(name)}</a>')
 
 
 # ── 6. systems ───────────────────────────────────────────────────────────
@@ -443,7 +498,7 @@ def render_systems(d):
         rows = ""
         for name in (st.get("cards") or []):
             c = cards.get(name) or {}
-            rows += (f'<tr><td class="card">{esc(name)}</td>'
+            rows += (f'<tr><td class="card">{card_ref(name, c)}</td>'
                      f'<td>{esc(c.get("mana_cost") or "")}</td>'
                      f'<td class="ev">{esc(c.get("type_line") or "")}</td></tr>')
         table = ('<div class="poh-scroll"><table class="poh">'
@@ -654,6 +709,14 @@ def render(slug):
             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
             f"<title>{esc(title)}</title>"
             f'<link rel="stylesheet" href="poh.css?v={pd.stylesheet_version()}">'
+            # THE ONE LEVER ON FIRST-HOVER LATENCY. The preview fetches nothing
+            # until the cursor lands, which is the whole point — and the price
+            # is that the first hover of a card pays DNS + TCP + TLS before a
+            # single byte of it arrives. There is no loading state available
+            # without a script, so the delay can only be removed, not covered
+            # up. Scryfall serves these with a one-year max-age, so it is the
+            # first hover of a session that this is for.
+            '<link rel="preconnect" href="https://cards.scryfall.io" crossorigin>'
             f'</head><body class="poh"><div class="poh-trim">{head}{front}'
             + "".join(bodies) + "</div></body></html>\n")
 
