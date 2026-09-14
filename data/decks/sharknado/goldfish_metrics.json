@@ -97,7 +97,7 @@
       "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "466f80ba6b23",
+    "model_version": "4f65c1bcb607",
     "partner": "Brallin, Skyshark Rider",
     "seed": 42
   },
@@ -192,6 +192,18 @@
         "7": 3.85,
         "8": 5.189,
         "9": 6.479
+      },
+      "mean_commander_counters_by_turn": {
+        "1": 0.0,
+        "10": 25.305,
+        "2": 0.0,
+        "3": 0.083,
+        "4": 0.524,
+        "5": 2.117,
+        "6": 6.707,
+        "7": 11.249,
+        "8": 15.949,
+        "9": 20.577
       },
       "mean_cumulative_event_damage_by_turn": {
         "1": 0.0,
@@ -317,8 +329,24 @@
       "mean_mulligans": 0.226
     },
     "partner": {
+      "both_online_by_turn": {
+        "1": 0.0,
+        "10": 0.979,
+        "2": 0.0,
+        "3": 0.052,
+        "4": 0.135,
+        "5": 0.647,
+        "6": 0.811,
+        "7": 0.89,
+        "8": 0.937,
+        "9": 0.962
+      },
+      "both_online_by_turn_6_rate": 0.811,
       "cast_by_turn_6_rate": 0.924,
-      "mean_cast_turn": 4.276
+      "mean_both_online_turn": 5.468,
+      "mean_cast_turn": 4.276,
+      "median_both_online_turn": 5,
+      "never_both_online_rate": 0.021
     },
     "targets": [
       {

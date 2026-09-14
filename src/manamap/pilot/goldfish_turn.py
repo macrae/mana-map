@@ -213,6 +213,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     event_payoff_permanents = []
     event_damage_by_turn = []
     counter_power = 0             # +1/+1 counters the payoffs put on their bodies
+    # THE COMMANDERS' OWN SHARE OF THAT, tracked apart because it is the
+    # question this deck is built to ask. Brallin takes a counter per DISCARD
+    # and Shabraz one per DRAW, so a wheel pays them twice and the pair is a
+    # clock the goldfish was computing and throwing away: `counter_power` was
+    # folded into the swing at the attack step and never reported, so "how big
+    # are they by turn six" had no answer. Identity, not equality — Chasm
+    # Skulker's profile is byte-identical to Shabraz's and is not a commander.
+    commander_counters = 0
+    commander_counters_by_turn = []
+    commander_event_objs = []
     partner_turn = None
     arrival_draw_used = set()     # ids of `once each turn` engines, per turn
     etb_damage = 0                # noncombat damage dealt this turn by those
@@ -594,6 +604,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     extra_combat_costs.append(cprof["extra_combat_cost"])
             if model_discard and has_event_payoff(cevent):
                 event_payoff_permanents.append(cevent)
+                commander_event_objs.append(cevent)
 
         def _cast_triggers(cmc, tl, power, is_creature):
             """What fires on the CAST itself, whatever door the card goes
@@ -1654,8 +1665,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _e in event_payoff_permanents:
                 _evt_dmg += _e["per_discard_damage"] * _disc_t
                 _evt_dmg += _e["per_draw_damage"] * drawn_this_turn
-                counter_power += _e["per_discard_counter"] * _disc_t
-                counter_power += _e["per_draw_counter"] * drawn_this_turn
+                _ctr = (_e["per_discard_counter"] * _disc_t
+                        + _e["per_draw_counter"] * drawn_this_turn)
+                counter_power += _ctr
+                if any(_e is _c for _c in commander_event_objs):
+                    commander_counters += _ctr
                 if drawn_this_turn >= 2:
                     _evt_dmg += _e["second_draw_damage"]
                     if _e["second_draw_token_power"]:
@@ -1676,6 +1690,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     kill_by = "life"
         event_damage_by_turn.append(_evt_dmg)
         discarded_by_turn.append(discarded)
+        # CUMULATIVE, like `discarded_by_turn` beside it: the size the pair has
+        # reached, not what they gained this turn.
+        commander_counters_by_turn.append(commander_counters)
 
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
@@ -2182,6 +2199,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "hand_size_by_turn": hand_size_by_turn,
         "mana_by_turn": mana_by_turn,
         "commander_turn": commander_turn,
+        "commander_counters_by_turn": commander_counters_by_turn,
         "bodies_by_turn": bodies_by_turn,
         "drawn_extra_by_turn": drawn_extra_by_turn,
         "discarded_by_turn": discarded_by_turn,

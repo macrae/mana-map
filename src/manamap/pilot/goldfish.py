@@ -600,6 +600,30 @@ COMBAT_ASSUMPTIONS = [
 
 
 
+def _both_online(results, turns, n):
+    """When are BOTH commanders on the battlefield — the partner deck's ignition.
+
+    ABSENT RATHER THAN ZERO for a game that never gets there: `mean_turn` is
+    computed over the games that DID, and `never_rate` carries the rest. A mean
+    that quietly counts a never-cast game as turn 10 would make a deck that
+    assembles half the time look like one that assembles late.
+    """
+    both = [max(r["commander_turn"], r["partner_turn"])
+            for r in results
+            if r["commander_turn"] is not None and r["partner_turn"] is not None]
+    got = len(both)
+    out = {
+        "both_online_by_turn": {
+            str(t): _round(sum(1 for b in both if b <= t) / n) for t in turns},
+        "both_online_by_turn_6_rate": _round(sum(1 for b in both if b <= 6) / n),
+        "never_both_online_rate": _round((n - got) / n),
+    }
+    if got:
+        out["mean_both_online_turn"] = _round(sum(both) / got)
+        out["median_both_online_turn"] = sorted(both)[got // 2]
+    return out
+
+
 def _round(x):
     return round(x, 3)
 
@@ -761,15 +785,35 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "mean_cumulative_event_damage_by_turn": {
                 str(t): _round(sum(sum(r["event_damage_by_turn"][:t]) for r in results) / n)
                 for t in turns},
+            # HOW BIG THE PAIR HAS GOT. The commanders' own +1/+1 counters,
+            # cumulative — Brallin one per discard, Shabraz one per draw, so a
+            # seven-card wheel is fourteen counters between them. The
+            # simulation was already computing this and folding it into the
+            # attack step; it was never a figure anybody could read. Their
+            # OWN counters only: every other per-event counter payoff in the
+            # deck (Chasm Skulker is the loud one) is in the swing and not
+            # here, because the question is how large the commanders are.
+            "mean_commander_counters_by_turn": {
+                str(t): _round(sum(r["commander_counters_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
         }} if model_discard else {}),
         # THE PARTNER, cast on its own curve. `commander` above stays the first
         # commander's for every reader; this is the second's.
-        **({"partner": {
+        #
+        # AND THE JOINT, WHICH IS THE ONE THAT MATTERS ON A PARTNER DECK. Two
+        # marginal means do not give it: a game that lands Brallin on turn 3
+        # and Shabraz on turn 9 reads well on both rows above and has the
+        # engine off until turn 9. On sharknado each commander taxes a
+        # different half of a wheel — Brallin the discard, Shabraz the draw —
+        # so the deck does not start when one is cast, it starts when the
+        # second is. `both_online_by_turn` is that curve; the rest of this
+        # block describes it.
+        **({"partner": dict({
             "cast_by_turn_6_rate": _round(sum(1 for r in results if r["partner_turn"] is not None
                                                and r["partner_turn"] <= 6) / n),
             "mean_cast_turn": _round(sum(r["partner_turn"] for r in results if r["partner_turn"] is not None)
                                      / max(1, sum(1 for r in results if r["partner_turn"] is not None))),
-        }} if partner else {}),
+        }, **_both_online(results, turns, n))} if partner else {}),
         # HELD-UP INTERACTION, both halves. A low `castable` against a high
         # `in_hand` is a MANA problem and not a drawing problem, which is the
         # distinction the pilot's own diagnosis turned on.
