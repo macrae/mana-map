@@ -1363,6 +1363,766 @@
         }
       ],
       "has_cards": true
+    },
+    {
+      "name": "tax-v1",
+      "opened": "2026-09-14",
+      "why": "THE TAX ON THE OTHER HALF OF A WHEEL. Both commanders charge for a wheel's own half — Brallin a counter and a ping per DISCARD, Shabraz a counter per DRAW — and nothing in the 99 charged for the half that refills the OPPONENTS. The model could not see that half either until 2026-09-14, when event_payoffs learned the opponent-draw trigger and the wheel started refilling the opponent seat. IN: Razorkin Needlehead (1 damage to them per draw), Scrawling Crawler (1 life per draw, and it makes them draw), Anje's Ravager (a repeatable DISCARD wheel on a body, attacking every combat). OUT: the three cards engine.json places in no stage — Marketback Walker pays only when it dies, Stromkirk Noble grows only on its own combat damage, Waterbender Ascension needs a fourth quest counter before it draws anything and card-value measured it at +0.000. Priced at 4,000 games seed 5 against a 9.87 ping baseline with 0.12 seed noise: Razorkin +2.46 ping, Scrawling Crawler +1.97, Anje's Ravager +1.84 ping AND +1.81 cards AND +4.30 combat damage. Brass's Tunnel-Grinder was searched, priced at -0.25 and DELIBERATELY EXCLUDED — its enter-and-discard is unparsed, so the model cannot see it and a number from it would be about its mana value. EVERY PING FIGURE IS AGAINST ONE SEAT: the model has a single 40-life opponent, so a four-player table pays roughly three times this and these are floors. Objective pinned to the champion's own damage@8 of 30.1335 [29.81, 30.45] read from diagnostic.json at the harness net-change grades on (10,000 games, seed 20260826), immediately before opening.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Razorkin Needlehead"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Scrawling Crawler",
+            "where": [
+              "heliod"
+            ]
+          }
+        ],
+        "proxy": [],
+        "free": [],
+        "box": [],
+        "blocking": 3,
+        "procurement": null
+      },
+      "base_version": 1,
+      "size": 100,
+      "add": 3,
+      "out": 3,
+      "counts": {
+        "in_deck": 97,
+        "box": 0,
+        "elsewhere": 1,
+        "buy": 2,
+        "free": 0
+      },
+      "unsourced": [
+        "Anje's Ravager",
+        "Razorkin Needlehead",
+        "Scrawling Crawler"
+      ],
+      "mergeable": false,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Adarkar Wastes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Anje's Ravager",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arjun, the Shifting Flame",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Artist's Talent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Astral Drift",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Battlefield Forge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Brallin, Skyshark Rider",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Burning Inquiry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Calciform Pools",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cascade Bluffs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ceremonial Knife",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Chasm Skulker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "City of Brass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Clifftop Retreat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Commit // Memory",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Containment Construct",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Curator of Mysteries",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Currency Converter",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Decree of Silence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Drake Haven",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Echo of Eons",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Elesh Norn // The Argent Etchings",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enduring Curiosity",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Faithless Looting",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Floodfarm Verge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gemstone Caverns",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Generous Plunderer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glacial Fortress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gleaming Bastion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glint-Horn Buccaneer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Engineer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gossip's Talent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hallowed Fountain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hengegate Pathway // Mistgate Pathway",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Improbable Alliance",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Inspiring Vantage",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Irencrag Pyromancer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Jace's Archivist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Jaxis, the Troublemaker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Kefnet the Mindful",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Khorvath's Fury",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Library of Leng",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Lightning Greaves",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mind's Eye",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mindless Automaton",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Molten Psyche",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystic Gate",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mystic Monastery",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nezahal, Primal Tide",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nimble Obstructionist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nimbus Maze",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Niv-Mizzet, Parun",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ominous Seas",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Opal Palace",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plateau",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Psychosis Crawler",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Raugrin Triome",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Razorkin Needlehead",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Reforge the Soul",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reliquary Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rhystic Study",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rielle, the Everwise",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rugged Prairie",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sacred Foundry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scrawling Crawler",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Sea of Clouds",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Seachrome Coast",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Shabraz, the Skyshark",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Shark Typhoon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Shivan Reef",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Silent Hallcreeper",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skycloud Expanse",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smothering Tithe",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sorcerer Class",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spire of Industry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spirebluff Canal",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Steam Vents",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sticky Fingers",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sulfur Falls",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swiftfoot Boots",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talon Gates of Madara",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Puzzle Box",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Locust God",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Time Reversal",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tolarian Winds",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Treasure Map // Treasure Cove",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tundra",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vanguard Suppressor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Volcanic Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Wheel of Fortune",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Wheel of Misfortune",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Whirlpool Warrior",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Windfall",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Winds of Change",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true
     }
   ],
   "diagnostic": {
@@ -2209,6 +2969,7 @@
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `recon-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
+    "branch `tax-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
     "engine.json's critic verdict is None — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, resolve-stack ×6"
   ],
