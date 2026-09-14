@@ -1986,3 +1986,55 @@ driving a headline — the `engine_online_*` failure one channel over. Read it a
 a lower bound and settle the question in Forge, where sharknado's seat has its
 own problem: it **cast Wheel of Fortune once and Windfall never in 60 games**
 while discarding them.
+
+## sharknado is a deck Forge cannot pilot, and the AI profile does not fix it (2026-09-14)
+
+`CLAUDE.md` already says a Forge result on a deck whose engine the AI never cast
+is a floor, and names sharknado as the case. Two runs now put numbers on it and
+**close the obvious escape hatch.**
+
+**Run 1 — 120 games, our seat on `Default`.** 13 wins, 0.124 [0.074, 0.200]
+against a table null of 0.257. Over 1,141 own turns the seat cast 95 wheels and
+**discarded 105**, and nine of the seventeen were never cast once. The split is
+not random:
+
+| the AI casts | the AI refuses |
+|---|---|
+| Wheel of Misfortune 23, Khorvath's Fury 20 — damage on resolution | Wheel of Fortune 1, Windfall 0, Reforge the Soul 0 — symmetrical draw |
+| Burning Inquiry 14 — one mana | Jace's Archivist 0, Magus of the Wheel 0 — activated |
+| Arjun 17, Teferi's Puzzle Box 14 — permanents it wants for the body | Molten Psyche 0, Winds of Change 0, Whirlpool Warrior 0 |
+
+**Run 2 — `--profile Experimental` on our seat, same pod, same seeds.** The
+hypothesis was the sacrifice-outlet one: the repo records Indulgent Aristocrat
+activating 0.41/cast under Experimental against 0.07 under Default, so a
+symmetrical draw spell looked like the same shape of problem — an effect the
+evaluator cannot price.
+
+**It is not.** Abandoned at 37 games because the answer was already in:
+**Jace's Archivist was drawn and discarded three times and activated zero
+times**, Wheel of Misfortune was cast 10 times exactly as before, and the rate
+was 0.062 [0.02, 0.20] — no better, and the games ran markedly slower.
+
+So the refusal is a limit of the evaluator, not a setting. **Do not re-run this
+hoping the profile will fix it.** No record was written for run 2; only the
+120-game Default run is tracked.
+
+### What this means for how the deck is judged
+
+- **The win rate is out.** Not "wide", out. The engine is off for most of it.
+- **`experiment` still works where the misplay is SYMMETRIC** — a land change, a
+  protection package, an interaction suite. The refusal is a constant on both
+  arms and cancels.
+- **`experiment` does NOT work on any change that touches the wheels**, because
+  the refusal is card-by-card, not uniform. `recon-v1` cuts four wheels and
+  cannot be graded in Forge: it would measure which wheels the AI likes.
+- **`engine_casts` is the thing Forge is still good for here.** It is the only
+  measurement in the bench that looks at real rules against a real pod, and it
+  is what diagnosed this.
+- **The goldfish is the output metric of record for this deck** — extra cards
+  drawn, cards discarded, per-opponent ping damage — read as a floor, with
+  `_shuffle_note`'s caveat that a "greatest number discarded" wheel draws only
+  what OUR hand held because this model has no opponents holding cards.
+- **The arbiter is the table.** The deck has zero games in the captain's log. For
+  a deck whose plan is a symmetrical draw spell, the missing evidence is a person
+  choosing to cast it.
