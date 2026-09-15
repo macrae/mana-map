@@ -180,7 +180,7 @@
     "Psychosis Crawler"
    ],
    "single_point_of_failure": null,
-   "what_it_does": "Brallin is the discard half and the deck's declared clock: one damage to EACH opponent per card discarded, plus a counter, so a seven-card wheel is seven to three seats. The second per-discard source is a two-card component (Glint-Horn Buccaneer, Magmakin Artillerist) drawn in 0.660 of games and 0.347 by turn six — the lowest by-turn-six rate of any payoff group in the declaration, and the second-lowest of the twelve groups outright. The two are not the same card: Glint-Horn bills PER CARD (seven triggers off a seven-card wheel) and Magmakin bills PER EVENT ('whenever you discard one or more cards, that much damage'), one trigger of seven. Identical totals, and the difference decides a line no stack has settled: Artist's Talent's level 3 adds 2 to each noncombat damage EVENT, and IF that applies per trigger (open_questions[1], unverified) a seven-card wheel would read 21 a seat off Brallin and 9 off Magmakin. On the draw half, Psychosis Crawler and Niv-Mizzet bill every card that arrives, while Irencrag Pyromancer bills the SECOND draw each turn, which is once a turn and not once a card. READ THE FIGURE WITH ITS DEFINITION: cumulative event damage against one seat is 6.918 at T8 and 15.818 at T10, and that is the whole ping pillar — it does not close a 40-life seat on its own. It IS inside the kill rate, though: goldfish_turn.py 1899-1904 takes event damage off the same opponent_life the combat step reads and can set kill_turn, so the pings are the minor share of kill_by_turn (6.918 cumulative at T8 against 33.615 of combat on turn eight alone). Damage @T10 of 61.671 is what is dealt ON turn ten, not a running total, and it is the combat-and-arrival pillar: the discard- and draw-triggered pings are kept in the event series and are not inside it.",
+   "what_it_does": "Brallin is the discard half and the deck's declared clock: one damage to EACH opponent per card discarded, plus a counter, so a seven-card wheel is seven to three seats. The second per-discard source is a two-card component (Glint-Horn Buccaneer, Magmakin Artillerist) drawn in 0.660 of games and 0.347 by turn six — the lowest by-turn-six rate of any payoff group in the declaration, and the second-lowest of the twelve groups outright. The two are not the same card: Glint-Horn bills PER CARD (seven triggers off a seven-card wheel) and Magmakin bills PER EVENT ('whenever you discard one or more cards, that much damage'), one trigger of seven. Identical totals, and the difference decides a line no stack has settled: Artist's Talent's level 3 adds 2 to each noncombat damage EVENT, and IF that applies per trigger (open_questions[0], unverified) a seven-card wheel would read 21 a seat off Brallin and 9 off Magmakin. On the draw half, Psychosis Crawler and Niv-Mizzet bill every card that arrives, while Irencrag Pyromancer bills the SECOND draw each turn, which is once a turn and not once a card. READ THE FIGURE WITH ITS DEFINITION: cumulative event damage against one seat is 6.918 at T8 and 15.818 at T10, and that is the whole ping pillar — it does not close a 40-life seat on its own. It IS inside the kill rate, though: goldfish_turn.py 1899-1904 takes event damage off the same opponent_life the combat step reads and can set kill_turn, so the pings are the minor share of kill_by_turn (6.918 cumulative at T8 against 33.615 of combat on turn eight alone). Damage @T10 of 61.671 is what is dealt ON turn ten, not a running total, and it is the combat-and-arrival pillar: the discard- and draw-triggered pings are kept in the event series and are not inside it.",
    "evidence": [
     {
      "kind": "city",
@@ -278,7 +278,7 @@
     "Magmakin Artillerist"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The same seven discards bill twice, but in two shapes: Brallin seven times at 1, Magmakin once at 7. The second per-discard source is the declaration's thinnest payoff component at 0.660 assembled / 0.347 by turn six, and Magmakin was added this round on judgement rather than a number — branches/budget-v1/branch.json records it 'MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY', bought as insurance against the first source eating a removal spell, which a goldfish with no removal cannot price."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. The same seven discards bill twice, but in two shapes: Brallin seven times at 1, Magmakin once at 7. The second per-discard source is the declaration's thinnest payoff component at 0.660 assembled / 0.347 by turn six, and Magmakin was added this round on judgement rather than a number — branches/budget-v1/branch.json records it 'MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY', bought as insurance against the first source eating a removal spell, which a goldfish with no removal cannot price."
   },
   {
    "from": "ignition",
@@ -289,7 +289,7 @@
     "Shabraz, the Skyshark"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. Rielle reads 'whenever you discard one or more cards for the first time each turn, draw that many' — one trigger sized to the whole wheel, so a seven-card discard draws seven MORE, and those seven pay Shabraz a second time on the same wheel. Cadence is the whole point: Rielle scales with a wheel, Mindless Automaton in the same stage does not."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. Rielle reads 'whenever you discard one or more cards for the first time each turn, draw that many' — one trigger sized to the whole wheel, so a seven-card discard draws seven MORE, and those seven pay Shabraz a second time on the same wheel. Cadence is the whole point: Rielle scales with a wheel, Mindless Automaton in the same stage does not."
   },
   {
    "from": "fuel",
@@ -299,7 +299,7 @@
     "Brallin, Skyshark Rider"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The round's direction in one arrow: Ravager discards your hand and draws three every time it attacks, refilling nobody else, so it is a Brallin payment every combat that costs neither a card nor a mana. Recorded at +1.739 on damage@T8 against a stated MDE of 0.695 in branches/budget-v1/branch.json — an uncommitted slot sweep, not the committed run, and not a measurement of this pair."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. The round's direction in one arrow: Ravager discards your hand and draws three every time it attacks, refilling nobody else, so it is a Brallin payment every combat that costs neither a card nor a mana. Recorded at +1.739 on damage@T8 against a stated MDE of 0.695 in branches/budget-v1/branch.json — an uncommitted slot sweep, not the committed run, and not a measurement of this pair."
   },
   {
    "from": "fuel",
@@ -310,7 +310,7 @@
     "Rielle, the Everwise"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. Kayla discards the whole hand for {4} and a tap, paying Brallin for every card, then returns an artifact or creature card of mana value 1, 2 and 3 from among what she just discarded — Currency Converter at 1 and Rielle at 3 are both legal targets, so the same activation can rebuild the tollbooths it just pitched. Activate only as a sorcery, and she needs a turn to untap first, which is why she is fuel and not ignition."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. Kayla discards the whole hand for {4} and a tap, paying Brallin for every card, then returns an artifact or creature card of mana value 1, 2 and 3 from among what she just discarded — Currency Converter at 1 and Rielle at 3 are both legal targets, so the same activation can rebuild the tollbooths it just pitched. Activate only as a sorcery, and she needs a turn to untap first, which is why she is fuel and not ignition."
   },
   {
    "from": "fuel",
@@ -320,7 +320,7 @@
     "Shabraz, the Skyshark"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The doubler applies to every draw except the first in each draw step, so a wheel's seven arrives as fourteen and Shabraz takes fourteen counters plus fourteen life. The draw-multiplier channel is live this round and Teferi's Ageless Insight is no longer in meta.draw_not_modelled, so its effect is inside EXTRA cards drawn @T10 (beyond the draw step) of 23.017 and commander counters @T10 of 38.714 — neither figure is this card's share."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. The doubler applies to every draw except the first in each draw step, so a wheel's seven arrives as fourteen and Shabraz takes fourteen counters plus fourteen life. The draw-multiplier channel is live this round and Teferi's Ageless Insight is no longer in meta.draw_not_modelled, so its effect is inside EXTRA cards drawn @T10 (beyond the draw step) of 23.017 and commander counters @T10 of 38.714 — neither figure is this card's share."
   },
   {
    "from": "fuel",
@@ -330,7 +330,7 @@
     "Brallin, Skyshark Rider"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. Level 3 reads 'if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2 instead', and Brallin's ping is noncombat damage to each opponent. If it applies per trigger, a seven-card wheel reads 21 a seat instead of 7. It is neither cheap nor fast — {1}{R}, then {2}{R} and {2}{R} at sorcery speed — and Artist's Talent's own loot is in meta.draw_not_modelled, so none of this is priced."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. Level 3 reads 'if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2 instead', and Brallin's ping is noncombat damage to each opponent. If it applies per trigger, a seven-card wheel reads 21 a seat instead of 7. It is neither cheap nor fast — {1}{R}, then {2}{R} and {2}{R} at sorcery speed — and Artist's Talent's own loot is in meta.draw_not_modelled, so none of this is priced."
   },
   {
    "from": "fuel",
@@ -339,8 +339,8 @@
     "Library of Leng",
     "Brallin, Skyshark Rider"
    ],
-   "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The line most worth proving. Library of Leng changes WHERE a discarded card goes, not whether it was discarded; if that reading holds, a wheel under it pays Brallin its full count and leaves the cards on top of your library — where the same wheel's draw pulls them straight back, which is why the card is a fuel arrow and not an output one. Note the scope either way: 'if an EFFECT causes you to discard' does not reach a discard paid as a COST, so it applies to the wheels and not to cycling, a Blood crack or Jaxis."
+   "verified_by": "002",
+   "note": "PROVED by stack 002 (checker pass, round 1, 18 citations): Windfall resolved under Library of Leng with Brallin on the battlefield and a four-card hand. Leng's 'instead' is a replacement effect (614.1a) on an EFFECT's discard, and a card put into a hidden zone instead of the graveyard is still discarded (701.9c, 614.6), so all four discards count — Brallin triggers four times, 4 damage per seat, 12 pod-wide, every seat 40 -> 36, four +1/+1 counters; the four cards go on top of your library as the discard happens, in the order you choose and unrevealed (401.4), and Windfall's draw for five (opponent 2 discarded the most) draws those four straight back plus one more card from beneath them. That is why the card is a fuel arrow and not an output one: the wheel's draw pulls the cards straight back. Stack 003 (pass, round 1, 22 citations) proves the scope this note claimed — cycling Raugrin Triome under the same board, a cost paid at activation (601.2h) is not an effect (609.1), so Leng does NOT reach a cost discard — cycling is the case 003 tested, and the Triome is in the graveyard. A Blood crack and Jaxis follow by that class rule plus their oracle text, not by a stack that tested them: each one's discard sits before the colon (602.1), so it is a cost and not an effect. Brallin still triggers on the cost discard, stacks above the cycling ability and resolves first (603.3, 405.5) — 1 per seat, 3 pod-wide — before the cycle draws."
   },
   {
    "from": "conversion",
@@ -350,7 +350,7 @@
     "Brallin, Skyshark Rider"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. One Blood token is a discard AND a draw off one activation: a Brallin ping and counter, an Ivora counter, a Shabraz counter and a life. The Blood channel is live this round, and its stated assumptions bound it hard — Blood made by CONNECTING in combat is read and not credited (no blockers in the model), and at most ONE token is cracked per turn, which the module itself calls an authored floor. Ivora is the deck's only Blood source."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. One Blood token is a discard AND a draw off one activation: a Brallin ping and counter, an Ivora counter, a Shabraz counter and a life. The Blood channel is live this round, and its stated assumptions bound it hard — Blood made by CONNECTING in combat is read and not credited (no blockers in the model), and at most ONE token is cracked per turn, which the module itself calls an authored floor. Ivora is the deck's only Blood source."
   },
   {
    "from": "output",
@@ -360,7 +360,7 @@
     "Shabraz, the Skyshark"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The partners hand each other the keyword they lack: Shabraz's '{W/U}: Target Human gains flying' and Brallin is a Human Shaman; Brallin's '{R}: Target Shark gains trample' and Shabraz is a Shark Bird. 38.714 counters by turn ten sit on two 3/3s that can each make the other connect. Both online by turn six in 0.831 of games, mean turn 5.412, never both online in 0.013."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. The partners hand each other the keyword they lack: Shabraz's '{W/U}: Target Human gains flying' and Brallin is a Human Shaman; Brallin's '{R}: Target Shark gains trample' and Shabraz is a Shark Bird. 38.714 counters by turn ten sit on two 3/3s that can each make the other connect. Both online by turn six in 0.831 of games, mean turn 5.412, never both online in 0.013."
   },
   {
    "from": "ignition",
@@ -370,7 +370,7 @@
     "Smothering Tithe"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. One of the two arguments for a symmetric wheel this deck can bank — Mind's Eye is the other: three opponents drawing seven each is 21 Smothering Tithe triggers, each a Treasure unless that player pays {2}. Entirely unpriced — model_treasures is OFF by declaration, and the flags note says so deliberately."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. One of the two arguments for a symmetric wheel this deck can bank — Mind's Eye is the other: three opponents drawing seven each is 21 Smothering Tithe triggers, each a Treasure unless that player pays {2}. Entirely unpriced — model_treasures is OFF by declaration, and the flags note says so deliberately."
   },
   {
    "from": "conversion",
@@ -380,7 +380,7 @@
     "The Locust God"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. The air kill's bodies are drawn, not cast: every card that arrives is a 1/1 flier with haste off The Locust God AND a counter on Shabraz, so one wheel is a board and a bigger commander at the same time. Declared AIR KILL: 0.848 assembled, 0.537 by turn six, mean turn 4.975."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. The air kill's bodies are drawn, not cast: every card that arrives is a 1/1 flier with haste off The Locust God AND a counter on Shabraz, so one wheel is a board and a bigger commander at the same time. Declared AIR KILL: 0.848 assembled, 0.537 by turn six, mean turn 4.975."
   },
   {
    "from": "ignition",
@@ -390,7 +390,7 @@
     "Kefnet the Mindful"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. Kefnet cannot attack or block unless you have seven or more cards in hand, and a wheel is what puts seven there — an indestructible 5/5 flier that the refill itself switches on. It is the clearest case of the deck's shape: the wheel is not just fuel, it is a condition several cards read."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. Kefnet cannot attack or block unless you have seven or more cards in hand, and a wheel is what puts seven there — an indestructible 5/5 flier that the refill itself switches on. It is the clearest case of the deck's shape: the wheel is not just fuel, it is a condition several cards read."
   },
   {
    "from": "wincon",
@@ -400,7 +400,7 @@
     "Shabraz, the Skyshark"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. Every creature that connects draws a card, and every card drawn is another Shabraz counter and another life — the air force pays the draw tollbooth back. Unpriced: Enduring Curiosity is in meta.draw_not_modelled (attack- and death-triggered draw are not modelled), so board power 9.874 at T6 does not include any cards it would have drawn."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. Every creature that connects draws a card, and every card drawn is another Shabraz counter and another life — the air force pays the draw tollbooth back. Unpriced: Enduring Curiosity is in meta.draw_not_modelled (attack- and death-triggered draw are not modelled), so board power 9.874 at T6 does not include any cards it would have drawn."
   },
   {
    "from": "mana",
@@ -410,7 +410,7 @@
     "Queen Kayla bin-Kroog"
    ],
    "verified_by": null,
-   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) is proved; this arrow is the analyst's reading. A repeatable wheel is only repeatable if the mana is there every turn: Kayla asks {4} on top of whatever you cast, Jace's Archivist {U}, and Arjun asks that you cast a spell at all. Mean available mana is 5.524 at T6 and 9.392 at T10, so the second activation is affordable from about turn six and not before."
+   "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001) and the Library of Leng line (stacks 002, 003) are proved; this arrow is the analyst's reading. A repeatable wheel is only repeatable if the mana is there every turn: Kayla asks {4} on top of whatever you cast, Jace's Archivist {U}, and Arjun asks that you cast a spell at all. Mean available mana is 5.524 at T6 and 9.392 at T10, so the second activation is affordable from about turn six and not before."
   }
  ],
  "map_disagreements": [
@@ -460,11 +460,6 @@
  "unassigned": [],
  "open_questions": [
   {
-   "question": "Does Library of Leng's replacement — a discarded card goes on top of your library instead of into the graveyard — still count as a discard for Brallin, Ivora, Rielle, Glint-Horn Buccaneer and Magmakin Artillerist? And confirm its scope: 'if an EFFECT causes you to discard' does not reach a discard paid as a COST (cycling, a Blood crack, Jaxis).",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Second most load-bearing. If it holds, one {1} artifact turns every wheel into full damage with the cards kept on top of the library, which would change how every wheel in the deck is sequenced. If it does not, Library of Leng is a hand-size card and belongs with Reliquary Tower."
-  },
-  {
    "question": "Does Artist's Talent level 3 ('if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2 instead') apply to EACH Brallin trigger, so a seven-card wheel reads 21 to a seat rather than 7 — and does it apply once to Magmakin Artillerist's single 'that much damage' trigger?",
    "settled_by": "resolve-stack",
    "why_it_matters": "Third. Swept across the 99's oracle text on 'double' and 'plus', it is the one card that MULTIPLIES the ping route rather than adding a source to it — Sorcerer Class's level 3 adds a damage source and does not touch Brallin, and the answer also settles whether per-CARD sources (Brallin, Glint-Horn) are strictly better than per-EVENT ones (Magmakin) in this deck — which is a build rule, not one card."
@@ -480,7 +475,7 @@
    "why_it_matters": "38.714 commander counters by turn ten sit on two bodies that can each give the other the keyword it lacks; it is the difference between a big blocker and a kill. Cheap to settle and it underwrites the output-to-conversion line."
   },
   {
-   "question": "Is a cycling cost's discard a Brallin trigger and its draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
+   "question": "Stack 003 settled the Brallin half: a cycling cost's discard triggers Brallin and his trigger resolves before the cycle draws. Still open: is the cycle's draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
    "settled_by": "resolve-stack",
    "why_it_matters": "Ten cards in the 99 cycle, three of them lands added this round, and the goldfish models none of it. If cycling pays both commanders, the deck has an instant-speed second engine that no figure in this model counts."
   },
@@ -544,73 +539,81 @@
   "Finding 0 (supported) — added open_questions[8], settled_by goldfish, naming the mana_analysis.json / land_colors defect on the four gated blue sources. No artifact other than this output was edited.",
   "Finding 5 (supported) — added the consequence sentence to lines[7] (the Library of Leng line; the critic's finding 5 cites it as lines[6], which is the Artist's Talent line): under a wheel Leng puts the discards on top and the same wheel's draw pulls them back, which is why the card is a fuel arrow.",
   "Round 3 revision — three one-clause withdrawals, nothing else touched. Finding 0 (round 2): WITHDRAWN 'until one of the seven typed lands is down' as applied to Nimbus Maze; its blue mode reads 'Activate only if you control a Plains' (cards.json), and only five of the seven typed lands carry Plains — Steam Vents and Thundering Falls are Island Mountain. The Verge halves stand: all seven satisfy 'a Plains or an Island' and 'an Island or a Mountain'. Finding 1 (round 2): WITHDRAWN the label 'cards drawn @T10' on lines[5]; the figure 23.017 is metrics.mean_extra_cards_drawn_by_turn['10'], draws beyond the draw step, and is now labelled so. Finding 2 (round 2): WITHDRAWN 'the seven basic land types' in map_disagreements[4]; there are five basic land types and the deck's typed lands carry three — seven counts LANDS. Restated as the seven lands carrying a basic land type, with Gleaming Bastion separated out as the one reader of the Basic supertype, which none of the seven has.",
-  "Scoped revision after stack 001 (the deck's first checker-passed stack; 2 rounds, 25 citations) — open_questions[0], the Windfall base line, REMOVED as settled. Stack 001 confirmed the model's reading in every part: seven separate Brallin triggers, one per card YOU discard (109.5; opponents' discards do not count), 1 damage to EACH opponent per trigger (7 a seat, 21 pod-wide, 40 -> 33), seven +1/+1 counters; discard and draw are one resolution (608.2c), so none of the fourteen triggers is put on the stack until Windfall has finished resolving (603.3), Brallin a 3/3 with no counters while the seven are drawn, then the controller orders all fourteen (603.3b). Indices shift by one: Library of Leng is now open_questions[0] and Artist's Talent [1]; stages[4]'s cross-reference moved from [2] to [1]. Every other line's note now says only the base line is proved. No card moved, no figure changed, critic block carried unchanged."
+  "Scoped revision after stack 001 (the deck's first checker-passed stack; 2 rounds, 25 citations) — open_questions[0], the Windfall base line, REMOVED as settled. Stack 001 confirmed the model's reading in every part: seven separate Brallin triggers, one per card YOU discard (109.5; opponents' discards do not count), 1 damage to EACH opponent per trigger (7 a seat, 21 pod-wide, 40 -> 33), seven +1/+1 counters; discard and draw are one resolution (608.2c), so none of the fourteen triggers is put on the stack until Windfall has finished resolving (603.3), Brallin a 3/3 with no counters while the seven are drawn, then the controller orders all fourteen (603.3b). Indices shift by one: Library of Leng is now open_questions[0] and Artist's Talent [1]; stages[4]'s cross-reference moved from [2] to [1]. Every other line's note now says only the base line is proved. No card moved, no figure changed, critic block carried unchanged.",
+  "Scoped revision after stacks 002 and 003 (both checker pass, round 1; 18 and 22 citations) — open_questions[0], the Library of Leng question, REMOVED as settled — with the caveat that 002 tested one of the five discard listeners it named (Brallin); Ivora, Rielle, Glint-Horn Buccaneer and Magmakin Artillerist follow by the same rule (614.6: a modified event may trigger abilities) and no stack tested them. Stack 002: Leng's 'instead' is a replacement effect (614.1a) on an EFFECT's discard and a card put into a hidden zone instead of the graveyard is still discarded (701.9c, 614.6), so all four Windfall discards under Leng pay Brallin — four triggers, 4 per seat, 12 pod-wide, 40 -> 36 — the four go on top of the library in the order you choose as the discard happens (401.4), and Windfall's draw for five draws them straight back plus one more. Stack 003: a cost (601.2h) is not an effect (609.1), so Leng does NOT apply to cycling Raugrin Triome (the Triome is in the graveyard), while Brallin still triggers on the cost discard, stacks above the cycling ability and resolves first (603.3, 405.5) — 1 per seat, 3 pod-wide — before the cycle draws. Fields changed: lines[7].verified_by null -> '002' and lines[7].note rewritten as PROVED; the second clause of lines[1..6, 8..14].note now says the base line (001) and the Library of Leng line (002, 003) are proved; open_questions shifted by one (Artist's Talent is now [0]); stages[4]'s cross-reference moved from [1] to [0]. No stage prose hedged on Leng's redirect or on the cost/effect scope, so none was rewritten. No card moved, no figure changed, critic block carried unchanged."
  ],
  "critic": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "lines[0].verified_by",
-    "claim": "Stack 001 establishes that Windfall (ignition) feeds Brallin's damage (output) — an ignition -> output flow, not mere co-presence.",
+    "where": "lines[7].verified_by",
+    "claim": "Stack 002 establishes a fuel -> output flow via Library of Leng + Brallin: a wheel under Leng pays Brallin its full count AND the discarded cards come back, which is the reason the card sits in fuel rather than output.",
     "status": "supported",
     "severity": "none",
-    "note": "This is the inference the validator cannot make, so it was read step by step. The stack's causation is explicit: step 2 has Windfall's first action (discard) contain seven occurrences of Brallin's trigger event (603.2c, example: one land-sweep triggering once per land); step 7 resolves each trigger as 1 damage to each opponent and one counter; final_state has every seat 40 -> 33 and Brallin 10/10 with seven counters. Windfall's oracle text in cards.json is 'Each player discards their hand, then draws...' and Brallin's is 'Whenever you discard a card, put a +1/+1 counter on Brallin and it deals 1 damage to each opponent' — the stack's arithmetic is the oracle's, not an authored number. Unlike the radagast Garenbrig case, the cited board is not left contradicting the claim: the three lands tapped in final_state are the ones that paid Windfall's {2}{U}, and the untapped Sol Ring / Sulfur Falls / Mana Confluence are stated as unspent because the scenario stipulates no responses, which the line does not lean on."
+    "note": "This is the inference the gate cannot make, so both halves were read step by step. It is not co-presence: Leng's replacement modifies the very event Brallin triggers on. Step 2 applies Leng to all four discards (the scenario stipulates you choose it every time); step 3 has the MODIFIED event trigger Brallin four times (614.6, 603.2c); step 4 has Windfall's five draws take the four placed cards first (121.1, 121.2); final_state.hand lists the same four names plus one unknown, Brallin 7/7 with four counters, every seat 36, brallin_triggers 4 / damage_per_opponent 4 / damage_pod_total 12. The stack's positives are read as positives — the discard happened and was paid — not as an absence. The board is not left contradicting the claim (the radagast Garenbrig shape): Windfall's {2}{U} is accounted for by the three lands the scenario's mana_available leaves out (Command Tower, Steam Vents, Hallowed Fountain), and the line leans on none of the mana. Windfall is an ignition card, not in via, but the arrow is about what Leng does to a wheel's discard, and the wheel is the stimulus, not the claim."
    },
    {
-    "where": "lines[0].note",
-    "claim": "Seven separate Brallin triggers, one per card YOU discard (109.5); 1 to EACH opponent per trigger, 7 a seat, 21 pod-wide, 40 -> 33; seven counters; discard and draw one resolution (608.2c); no trigger stacked until Windfall finishes (603.3); Brallin a 3/3 while the seven are drawn; controller orders all fourteen (603.3b); checker pass, 2 rounds, 25 citations.",
+    "where": "lines[7].note (the stack-002 clauses)",
+    "claim": "Replacement effect (614.1a) on an EFFECT's discard; still discarded (701.9c, 614.6); four triggers, 4 per seat, 12 pod-wide, 40 -> 36, four counters; on top as the discard happens, order chosen, unrevealed (401.4); draw for five because opponent 2 discarded the most, four back plus one more; checker pass, round 1, 18 citations; four-card hand.",
     "status": "supported",
     "severity": "none",
-    "note": "Each clause maps to a step: seven triggers = step 2 (603.2c, with 109.5 restricting 'you' so the opponents' 4+6+2 = 12 discards do not count — the note attaches 109.5 to exactly that restriction, which is the right rule for it); 7 per seat / 21 pod-wide / 40 -> 33 = step 7 and final_state.opponents (three seats, life 33, damage_taken 7 each); one resolution = step 1 (608.2c, 608.2e); no stacking until resolved = steps 3, 4, 5 (603.3, 117.2a) and Brallin '3/3 with no counters' stated at both the discard (step 3) and the draw (step 4); ordering = step 6 (603.3b, all fourteen under one controller). The stack's negatives — triggers NOT stacked during resolution — are read by the note as negatives, not as a flow happening; this is the opposite of the radagast three-negatives failure. Bookkeeping re-derived: checker.iterations = 2; citations summed over steps = 25; checker findings = 25, all 'supported'. The carried figure 15.818 = goldfish_metrics.json metrics/discard/mean_cumulative_event_damage_by_turn['10'] (and 6.918 at '8' for stages[4])."
+    "note": "Every clause maps to a step or to final_state: 614.1a and 701.9c = step 2; 614.6 = step 3; four triggers / 4 / 12 / 36 / 7/7 = step 6 and final_state (brallin_triggers 4, damage_per_opponent 4, damage_pod_total 12, three seats at 36); 401.4 with both the ordering and the non-reveal = step 2's quote; 'as the discard happens' = final_state.summary 'at the moment of the discard'; five draws because opponent 2 held five = step 4 and scenario.board (holding 2, 5, 3); four-card hand = scenario.hand (four names, Windfall already cast). Bookkeeping re-derived: checker.iterations 1, citations summed over steps 18, checker findings 18, all 'supported'. No figure is authored."
    },
    {
-    "where": "lines[1..14].note",
-    "claim": "Second clause changed from 'this deck has zero checker-passed stacks' to 'only the Windfall + Brallin base line (stack 001) is proved'; nothing else in those notes moved.",
+    "where": "lines[7].note (the stack-003 rule clauses)",
+    "claim": "A cost paid at activation (601.2h) is not an effect (609.1), so Leng does NOT reach a cycling discard; Raugrin Triome is in the graveyard; Brallin still triggers on the cost discard, stacks above the cycling ability and resolves first (603.3, 405.5), 1 per seat, 3 pod-wide, before the cycle draws; pass, round 1, 22 citations; same board as 002.",
     "status": "supported",
     "severity": "none",
-    "note": "Checked programmatically against HEAD: for every i in 1..14 the old clause occurs exactly once in the old note and old.replace(old_clause, new_clause) == new note; every other key of each line (from, to, via, verified_by = null) is byte-identical. Every one of the fourteen still opens 'CLAIM, no passing stack', so no dashed line is phrased as fact. This equality check is mechanically expressible and would make a good scoped-revision guard: assert that every unscoped line equals HEAD after the one announced substitution."
+    "note": "Steps 1-2 carry the cost/effect split (702.29a, 602.2, 601.2h, 609.1, 118.1); final_state.graveyard is ['Raugrin Triome'] and library_top says it was never placed there; steps 3-5 carry the trigger (603.2, 117.2a), placement above the ability (603.3, 704.3, 117.3c) and first resolution (405.5); drain_arithmetic per_opponent 1 / pod_total 3; step 6 is the draw after. checker.iterations 1, 22 citations, 22 findings all 'supported'. scenario.board.you is the same seven permanents as 002. The checker's 701.9a caution (step 1 states the graveyard placement before step 2 tests Leng) does not reach the note, which states the placement as the conclusion of both steps."
+   },
+   {
+    "where": "lines[7].note (the extension 'not a Blood crack, not Jaxis') and notes[-1] ('REMOVED as settled in full')",
+    "claim": "'Stack 003 ... proves the scope this note claimed ... so Leng does NOT reach a cost discard: not cycling, not a Blood crack, not Jaxis.' And the removed open question listed five listeners (Brallin, Ivora, Rielle, Glint-Horn, Magmakin), with the revision log calling it settled in full.",
+    "status": "over-claimed",
+    "severity": "low",
+    "note": "The RULE is carried by the stack: 003's step 2 and the checker's 609.1 finding are written about the class ('a cost paid at 601.2h is neither', and the Leng ruling quoted there says 'costs aren't effects' generally), and Blood's '{1}, {T}, Discard a card, Sacrifice this token: Draw a card' and Jaxis's '{R}, {T}, Discard a card: Create a token...' both put the discard before the colon, i.e. in the cost (602.1) — read from cards.json. What is NOT carried is the attribution: 003 resolved one cost (cycling) on one board, and 002 resolved one listener (Brallin); neither a Blood token nor Jaxis nor Ivora/Rielle/Glint-Horn/Magmakin was on either board or in either final_state. The note's grammar ('Stack 003 proves ... not a Blood crack, not Jaxis') reads as if those were tested. The claims are true by rule plus oracle text, so this is not a fail condition — no flow is asserted that the stack does not establish, and open_questions[1] (Blood) still stands as open. The fix is a phrase, not a retraction: 'by the same rule, a Blood crack and Jaxis — whose discards are likewise costs, before the colon (602.1) — are out of Leng's reach, though neither was resolved.' Expected rebuttal: the rule is class-level and the oracle text supplies the only extra premise; I would accept that rebuttal if the note says so in those words. Mechanically checkable in principle — a PROVED line's note naming a 99-card (Jaxis) absent from every cited stack's scenario — but it needs a fleet measurement first: notes routinely name neighbours for context and the check would likely fire on correct data."
+   },
+   {
+    "where": "lines[1..6, 8..14].note",
+    "claim": "One clause changed from 'only the Windfall + Brallin base line (stack 001) is proved' to '... (stack 001) and the Library of Leng line (stacks 002, 003) are proved'; nothing else in those notes moved.",
+    "status": "supported",
+    "severity": "none",
+    "note": "Checked programmatically against HEAD: for each of the thirteen, the old clause occurs exactly once in the old note and old.replace(old_clause, new_clause) == new note; from / to / via / verified_by (null) are byte-identical. All thirteen still open 'CLAIM, no passing stack', so no dashed line is phrased as fact. lines[0] is untouched (from/to/via equal, verified_by '001' -> '001'). Same equality guard as last round; it remains a good mechanical check for scoped revisions."
    },
    {
     "where": "open_questions",
-    "claim": "open_questions[0] (the base line) removed as settled; the remaining 8 are unchanged and shifted by one.",
+    "claim": "The Library of Leng question removed; the remaining 7 are unchanged and shifted by one.",
     "status": "supported",
     "severity": "none",
-    "note": "old.open_questions[1:] == new.open_questions, length 8. The removed question asked exactly what stack 001 answered (separate triggers, each-opponent damage, priority-free resolution, counters not on Brallin during the draw, controller ordering), so removal rather than rewording is correct — nothing in it is left open."
+    "note": "old.open_questions[1:] == new.open_questions, length 7. The removed question had two halves: does the redirect still count as a discard (002, event-level: 614.6 / 701.9c), and does Leng reach a cost discard (003, 609.1 / 601.2h). Both are answered at the level the question was asked, so removal rather than rewording is right; the listener-level extension to the four other named cards is the attribution point in the finding above and is not asserted anywhere as proved (lines[1] and lines[2] remain CLAIM)."
    },
    {
     "where": "stages[4].what_it_does",
-    "claim": "Cross-reference renumbered open_questions[2] -> open_questions[1] and still points at the Artist's Talent question.",
+    "claim": "Cross-reference renumbered open_questions[1] -> open_questions[0] and still points at the Artist's Talent question.",
     "status": "supported",
     "severity": "none",
-    "note": "new.open_questions[1] opens 'Does Artist's Talent level 3 ...'; the sentence around the pointer is about Artist's Talent's level 3 adding 2 per noncombat damage event. A scan of every stage, line, map_disagreement and open_question for the pattern open_questions[N] finds this as the ONLY live cross-reference in the model; lines[6] (the Artist's Talent line) and lines[7] (Library of Leng) describe their questions without indexing them, so nothing else could dangle. Length 1775 of 1800 — no headroom, but the prose is structured (per-card / per-event / read-the-figure-with-its-definition) rather than muddled, so no revision is asked for; a future round that needs to add to it will have to cut first."
+    "note": "new.open_questions[0] opens 'Does Artist's Talent level 3 ...' and the sentence around the pointer is about Artist's Talent's level 3. The substitution is the ONLY change to any stage: old.what_it_does.replace('open_questions[1]', 'open_questions[0]') == new, one occurrence. A scan of every key outside notes[] and critic for open_questions[N] / lines[N] / stages[N] / map_disagreements[N] finds this the only live positional reference, so nothing else can dangle. Length 1775 of 1800, unchanged from last round; structured, not muddled; no revision asked for, but the next round that must add to it will have to cut first. Stage 2's prose already states Leng's redirect as fact ('puts what a wheel discards on top of your library instead of into the graveyard'), which 002 now backs — the engineer's claim that no stage hedged is correct."
    },
    {
-    "where": "notes[]",
-    "claim": "Earlier revision notes cite open_questions[0], [2] and [8] by their pre-shift indices.",
+    "where": "stacks/003 step 2 and final_state.summary (not in the model)",
+    "claim": "'The engine model's reading (engine.json open_questions[0], second half) is CONFIRMED.'",
     "status": "supported",
     "severity": "low",
-    "note": "Informational, not a defect: notes[] is a dated log of what each round changed, the indices were correct when written, and the appended last entry states the shift ('Library of Leng is now open_questions[0] and Artist's Talent [1]'). A reader resolving an old note has the key. Not a claim about the deck; nothing downstream reads notes[] as fact."
+    "note": "For the orchestrator, not the engineer: correct when written (Leng was [0]), now landing on the Artist's Talent question after this very revision. Same class as the 001 pointer flagged last round; a checker-passed artifact is regenerated, never patched, and lines[7] resolves correctly, so it is a stale pointer, not a wrong claim. Stack 002 carries no positional pointer. The class is mechanically checkable — 'open_questions[' inside stacks/*.json — and will always go stale because the queue shrinks when a stack lands."
    },
    {
-    "where": "stacks/001 final_state.summary (not in the model)",
-    "claim": "The stack's summary says 'The engine model's reading (engine.json open_questions[0] / lines[0]) is CONFIRMED'.",
-    "status": "supported",
-    "severity": "low",
-    "note": "For the orchestrator, not the engineer: open_questions[0] is now the Library of Leng question, so the checker-passed stack's pointer now lands on a question it did not settle. It cannot be patched (a passed artifact is regenerated, never edited) and lines[0] still resolves correctly, so this is a stale pointer, not a wrong claim. Mechanically checkable class: a stack that indexes engine.json's open_questions by POSITION will always go stale, because open_questions is a queue that shrinks when a stack lands. The resolver charter could forbid positional references into engine.json, or a validator could flag 'open_questions[' inside stacks/*.json."
-   },
-   {
-    "where": "thesis, stages[0..3,5,6], map_disagreements, unassigned, proposed_goldfish_edits, critic",
+    "where": "thesis, stages[0..3,5,6], lines[0], map_disagreements, unassigned, proposed_goldfish_edits, critic, notes[:-1]",
     "claim": "No card placement, figure, thesis or supported claim moved beyond the stated scope.",
     "status": "supported",
     "severity": "none",
-    "note": "Byte-identical to HEAD, checked by equality on each top-level key. validate-engine: 7 stages, 100 placed, 0 unassigned, 1/15 verified."
+    "note": "Byte-identical to HEAD by equality on each top-level key; notes is HEAD's list plus one appended entry; critic block carried unchanged. validate-engine: 7 stages, 100 placed, 0 unassigned, 2/15 verified. notes[-1]'s bookkeeping (18 and 22 citations, both round 1) re-derived from the stacks and correct."
    },
    {
-    "where": "validate_engine._passing_stacks (orchestrator's change, not the engineer's)",
-    "claim": "A card of the 99 on YOUR board counts as named by the scenario.",
+    "where": "open_questions[3] (cycling) and open_questions[1] (Blood) — the engineer's unedited flag",
+    "claim": "Stack 003 bears on the Brallin halves of both remaining cost-discard questions.",
     "status": "supported",
-    "severity": "none",
-    "note": "Comment only. The widening is permissive and necessary here — Brallin is a permanent whose triggered ability IS the line and can only be named on the board. Note what it costs: a stack whose board merely CARRIES a permanent (Shabraz sitting on the board of a stack about something else) now 'names' it too, so the gap this critic closes — named versus supported — gets wider, not narrower. That is the correct trade, provided the naming check is never read as evidence that the stack is about the card; on this deck it is not."
+    "severity": "low",
+    "note": "Recommendation, not a fault. open_questions[3] SHOULD be narrowed: its first clause ('Is a cycling cost's discard a Brallin trigger') is exactly what 003 resolved on the same board (step 3, 603.2 / 117.2a; step 5, resolves first) and can be struck, leaving the Shabraz draw half (Shabraz was off the battlefield in 003) and Drake Haven's once-or-twice, which no stack has touched. open_questions[1] should be KEPT as written: the Blood token was on neither board, its cost bundles a sacrifice with the discard, and Ivora's and Shabraz's triggers are the question's other two thirds — narrowing its Brallin clause on 003 alone would be the same by-rule extension as the finding on the note, and the stack that settles the other two thirds will settle the Brallin third for free."
    }
   ],
   "iterations": 1

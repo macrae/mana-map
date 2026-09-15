@@ -4526,7 +4526,7 @@
     "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
     "critic": "pass",
     "lines": 15,
-    "verified_lines": 1
+    "verified_lines": 2
   },
   "diagnosis": null,
   "audit": {
@@ -4549,11 +4549,6 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Library of Leng's replacement — a discarded card goes on top of your library instead of into the graveyard — still count as a discard for Brallin, Ivora, Rielle, Glint-Horn Buccaneer and Magmakin Artillerist? And confirm its scope: 'if an EFFECT causes you to discard' does not reach a discard paid as a COST (cycling, a Blood crack, Jaxis).",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
       "question": "Does Artist's Talent level 3 ('if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2 instead') apply to EACH Brallin trigger, so a seven-card wheel reads 21 to a seat rather than 7 — and does it apply once to Magmakin Artillerist's single 'that much damage' trigger?",
       "settled_by": "resolve-stack"
     },
@@ -4569,7 +4564,7 @@
     },
     {
       "from": "engine",
-      "question": "Is a cycling cost's discard a Brallin trigger and its draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
+      "question": "Stack 003 settled the Brallin half: a cycling cost's discard triggers Brallin and his trigger resolves before the cycle draws. Still open: is the cycle's draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
       "settled_by": "resolve-stack"
     },
     {
@@ -4645,7 +4640,7 @@
     "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
     "branch `recon-v1` needs 38 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
-    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×5",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×4",
     "3 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
