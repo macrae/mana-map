@@ -1,0 +1,587 @@
+{
+  "id": "004",
+  "slug": "artists-talent-level-3-pings",
+  "deck": "sharknado",
+  "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3, no counters yet)",
+        "Magmakin Artillerist (1/4)",
+        "Artist's Talent — at level 3, all three class abilities active",
+        "Command Tower",
+        "Steam Vents",
+        "Hallowed Fountain",
+        "Sulfur Falls",
+        "Sacred Foundry",
+        "Sol Ring"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x3"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Smothering Tithe",
+      "Sticky Fingers",
+      "Arcane Signet",
+      "Treasure Map // Treasure Cove",
+      "Rhystic Study",
+      "Swiftfoot Boots",
+      "Lightning Greaves"
+    ],
+    "graveyard": [
+      "Windfall"
+    ],
+    "mana_available": "{C}{C} from Sol Ring and {R} or {W} from Sacred Foundry — untapped and unspent; nothing floating",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Magmakin Artillerist's triggered ability — 'whenever you discard one or more cards, this creature deals that much damage to each opponent', seven cards discarded",
+        "controller": "you",
+        "note": "put on the stack first, so it resolves last"
+      },
+      {
+        "pos": 1,
+        "object": "Brallin, Skyshark Rider's triggered ability (1 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 2,
+        "object": "Brallin, Skyshark Rider's triggered ability (2 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 3,
+        "object": "Brallin, Skyshark Rider's triggered ability (3 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 4,
+        "object": "Brallin, Skyshark Rider's triggered ability (4 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 5,
+        "object": "Brallin, Skyshark Rider's triggered ability (5 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 6,
+        "object": "Brallin, Skyshark Rider's triggered ability (6 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 7,
+        "object": "Brallin, Skyshark Rider's triggered ability (7 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, main phase 1. Windfall has just finished resolving: you discarded seven cards and drew the seven now in hand. As you received priority, you put eight triggered abilities on the stack in the order you chose — Magmakin Artillerist's single trigger first (bottom), then Brallin's seven, one per card discarded. Every player has now passed priority with those eight abilities on the stack. Artist's Talent is at level 3, so its third class ability — 'If a source you control would deal noncombat damage to an opponent or a permanent an opponent controls, it deals that much damage plus 2 instead' — is active. Shabraz is NOT on the battlefield. No other card on any board modifies damage, triggers or counters.",
+      "assumptions": [
+        "Artist's Talent reached level 3 on an earlier turn and its level abilities are not on the stack",
+        "the eight triggers are already on the stack in the order stated; how they got there is not the question (Brallin's seven per-card triggers and their timing are stack 001's subject; Magmakin's single 'one or more cards' trigger is one event)",
+        "no prevention or other damage-modifying effect exists on any board",
+        "no opponent responds at any point"
+      ]
+    },
+    "question": "Resolve the eight abilities top-down. Does Artist's Talent's level-3 replacement apply separately to each of Brallin's seven triggers, so that each deals 3 rather than 1 to each opponent, and once to Magmakin Artillerist's single trigger, so that it deals 9 rather than 7 — state the total damage each opponent takes and each opponent's life afterward, how many +1/+1 counters Brallin ends with, and which permanent is the source of the extra 2 on each event."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Starting state. Eight triggered abilities are on the stack — Magmakin Artillerist's single 'that much damage' trigger at pos 0 (bottom), Brallin, Skyshark Rider's seven triggers at pos 1–7 — and every player has passed priority in succession. Artist's Talent is at level 3, so its third class ability, 'If a source you control would deal noncombat damage to an opponent or a permanent an opponent controls, it deals that much damage plus 2 instead', is a replacement effect that is active before any of these abilities resolves. The damage each ability deals is dealt as an effect of a triggered ability, not during the combat damage step, so it is noncombat damage.",
+        "effect": "The top object (Brallin's trigger 7 of 7, pos 7) resolves first. Artist's Talent's level-3 ability uses the word 'instead' and is therefore a replacement effect; it is not locked in ahead of time but watches each damage event as it happens, so it will be evaluated separately for every damage event the eight abilities produce. Because the damage is dealt by a triggered ability rather than by attacking or blocking creatures in the combat damage step, every damage event below is noncombat damage and falls within the replacement's condition.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "614.1",
+            "quote": "replacement effects apply continuously as events happen—they aren’t locked in ahead of time. Such effects watch for a particular event that would happen and completely or partially replace that event with a different event."
+          },
+          {
+            "rule": "120.2b",
+            "quote": "Damage may be dealt as an effect of a spell or ability. The spell or ability will specify which object deals that damage."
+          },
+          {
+            "rule": "glossary:combat-damage",
+            "quote": "Damage dealt during the combat damage step by attacking creatures and blocking creatures as a consequence of combat."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Brallin's trigger 7 of 7 (top of the stack) resolves: 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'. Its controller follows the instructions in the order written. First, one +1/+1 counter is put on Brallin — the text names a single counter, and the counter is placed once per resolution regardless of how many opponents are then dealt damage (Brallin's official ruling agrees). Second, Brallin would deal 1 noncombat damage to each of the three opponents. Brallin is a source you control, each recipient is an opponent, and the damage is noncombat, so Artist's Talent's replacement applies to the damage event: the damage is dealt as modified by the replacement effect, and Brallin deals 1 + 2 = 3 damage to each opponent instead of 1.",
+        "effect": "Brallin gets one +1/+1 counter (3/3 → 4/4). The original 1-damage event never happens; the modified event — Brallin deals 3 damage to each opponent — occurs instead. The source of all 3 damage to each opponent is Brallin: the source of damage is the object that dealt it, and the replacement changes the amount, not the object the ability specified as dealing it (Artist's Talent's text says 'it deals that much damage plus 2', 'it' being the source; the official ruling that the additional 2 is dealt by the same source agrees). Artist's Talent deals no damage. Each opponent, dealt 3 damage by a source without infect, loses 3 life: opponent_1 40 → 37, opponent_2 40 → 37, opponent_3 40 → 37. The replacement effect gets exactly one opportunity per event, so the +2 is added once per damage event, not repeatedly.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+          },
+          {
+            "rule": "122.1",
+            "quote": "A counter is a marker placed on an object or player that modifies its characteristics and/or interacts with a rule, ability, or effect."
+          },
+          {
+            "rule": "120.4b",
+            "quote": "Second, damage is dealt, as modified by replacement and prevention effects that interact with damage."
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "120.7",
+            "quote": "The source of damage is the object that dealt it."
+          },
+          {
+            "rule": "120.1",
+            "quote": "An object that deals damage is the source of that damage."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "After trigger 7 of 7 resolves, the active player (you) receives priority. Before you receive it, state-based actions are checked: no opponent is at 0 or less life (all three are at 37), no creature has lethal damage marked, and no triggered abilities are waiting (nothing on any board triggers on damage, counters or life loss under the scenario's assumptions). All players pass in succession again, and the next object on top of the stack — Brallin's trigger 6 of 7 — resolves.",
+        "effect": "Nothing changes on this check. Each of the remaining Brallin triggers resolves through exactly the same priority round: resolve, active player gets priority, state-based actions checked, all pass, top object resolves.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Brallin's triggers 6 of 7 through 1 of 7 (pos 6 down to pos 1) resolve one at a time, each followed by the priority round in step 3. Each is a separate resolution producing a separate damage event, and Artist's Talent's replacement effect — which applies as events happen rather than once for the batch — is evaluated afresh for each one. Every resolution is identical to step 2: one +1/+1 counter on Brallin, then Brallin would deal 1 noncombat damage to each opponent, replaced by 3.",
+        "effect": "Six more resolutions × 1 counter = six more counters; with step 2 that is seven +1/+1 counters on Brallin (3/3 → 10/10). Six more resolutions × 3 damage per opponent = 18 more per seat; with step 2, Brallin's seven triggers deal 3 × 7 = 21 damage to each opponent (per seat), 63 across the three seats — all of it dealt by Brallin, none by Artist's Talent. Each opponent loses 21 life in total from the seven triggers: opponent_1 40 → 19, opponent_2 40 → 19, opponent_3 40 → 19. The replacement applies separately to each trigger because each trigger's resolution is its own event; it does not apply only once across the seven, and 614.5's one-opportunity limit is per event, so it never stacks within one event either. No state-based action fires on any of the six checks (lowest life reached is 19).",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "614.1",
+            "quote": "replacement effects apply continuously as events happen—they aren’t locked in ahead of time."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+          },
+          {
+            "rule": "120.4b",
+            "quote": "Second, damage is dealt, as modified by replacement and prevention effects that interact with damage."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Magmakin Artillerist's trigger (pos 0, now the only object on the stack) resolves after all players pass: 'Whenever you discard one or more cards, this creature deals that much damage to each opponent.' Seven cards were discarded to Windfall (the scenario's stated fact), so 'that much damage' is 7. There is exactly one Magmakin trigger, not seven: an ability triggers only once each time its trigger event occurs, and Windfall's 'each player discards their hand' is a single discard event that satisfies the 'one or more cards' condition once — unlike Brallin's 'whenever you discard a card', for which that one event contains seven occurrences. The scenario's own assumption also fixes the eight triggers on the stack as given. Magmakin Artillerist is a source you control dealing noncombat damage to each opponent, so Artist's Talent's replacement applies to this damage event exactly once: Magmakin deals 7 + 2 = 9 damage to each opponent instead of 7.",
+        "effect": "The 7-damage event is replaced by a 9-damage event to each opponent. The source of all 9 damage is Magmakin Artillerist — the object the ability specifies as dealing it — not Artist's Talent. Each opponent loses 9 life: opponent_1 19 → 10, opponent_2 19 → 10, opponent_3 19 → 10. Because this is one triggered ability and one damage event per opponent, the +2 is added once here, not seven times; the per-CARD engine (Brallin, one trigger per card) collects the +2 seven times while the per-EVENT engine (Magmakin, one trigger per discard event) collects it once.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "120.2b",
+            "quote": "Damage may be dealt as an effect of a spell or ability. The spell or ability will specify which object deals that damage."
+          },
+          {
+            "rule": "120.4b",
+            "quote": "Second, damage is dealt, as modified by replacement and prevention effects that interact with damage."
+          },
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "120.7",
+            "quote": "The source of damage is the object that dealt it."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "The stack is empty. You, the active player, receive priority; state-based actions are checked first. No opponent is at 0 or less life (all three are at 10), so nobody loses the game. No triggered abilities are waiting. You hold priority in your first main phase with {C}{C} from Sol Ring and {R} or {W} from Sacred Foundry still available and the seven cards Windfall drew in hand.",
+        "effect": "Final state. Each opponent took 21 (Brallin, seven events of 3) + 9 (Magmakin, one event of 9) = 30 damage this sequence — per seat, 90 across the three-seat pod — and sits at 10 life. Brallin has seven +1/+1 counters and is 10/10; Magmakin Artillerist is 1/4 and unchanged. Artist's Talent dealt no damage; every point was dealt by Brallin or by Magmakin Artillerist. On this same board without Artist's Talent, each seat would have taken 7 (Brallin, seven events of 1) + 7 (Magmakin, one event of 7) = 14; the level-3 replacement added 2 on each of the eight damage events, 2 × 8 = 16 per seat, so the engine model's reading (21 per seat from Brallin, 9 from Magmakin, 30 in total, 40 → 10) is confirmed on every part.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "CONFIRMED on every part. Artist's Talent's level-3 replacement effect (614.1a) applies to each damage event as it happens (614.1, 120.4b): separately to each of Brallin's seven triggers (1 + 2 = 3 to each opponent per trigger, 21 per seat across the seven) and once to Magmakin Artillerist's single trigger (7 + 2 = 9 per seat). Each opponent takes 30 damage — 90 across the pod — and goes 40 → 10; no state-based action fires (704.5a). Brallin ends with seven +1/+1 counters, one per resolution (608.2c), unaffected by the damage change, and is 10/10. The extra 2 on every event is dealt by the same source as the original damage — Brallin or Magmakin Artillerist (120.7, 614.6) — never by Artist's Talent. The stack is empty and you hold priority in main phase 1 (117.3b).",
+      "you": {
+        "life": "unchanged (not stated by the scenario; no effect touched it)",
+        "board": [
+          "Brallin, Skyshark Rider (10/10 — seven +1/+1 counters)",
+          "Magmakin Artillerist (1/4)",
+          "Artist's Talent — level 3",
+          "Command Tower",
+          "Steam Vents",
+          "Hallowed Fountain",
+          "Sulfur Falls",
+          "Sacred Foundry",
+          "Sol Ring"
+        ],
+        "hand": [
+          "Smothering Tithe",
+          "Sticky Fingers",
+          "Arcane Signet",
+          "Treasure Map // Treasure Cove",
+          "Rhystic Study",
+          "Swiftfoot Boots",
+          "Lightning Greaves"
+        ],
+        "graveyard": [
+          "Windfall"
+        ],
+        "mana_available": "{C}{C} from Sol Ring and {R} or {W} from Sacred Foundry — untapped and unspent; nothing floating",
+        "stack": [],
+        "priority": "you, main phase 1"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 10,
+          "damage_taken": 30,
+          "damage_by_source": {
+            "Brallin, Skyshark Rider": 21,
+            "Magmakin Artillerist": 9,
+            "Artist's Talent": 0
+          },
+          "board": [
+            "untapped lands x4"
+          ]
+        },
+        {
+          "seat": "opponent_2",
+          "life": 10,
+          "damage_taken": 30,
+          "damage_by_source": {
+            "Brallin, Skyshark Rider": 21,
+            "Magmakin Artillerist": 9,
+            "Artist's Talent": 0
+          },
+          "board": [
+            "untapped lands x5"
+          ]
+        },
+        {
+          "seat": "opponent_3",
+          "life": 10,
+          "damage_taken": 30,
+          "damage_by_source": {
+            "Brallin, Skyshark Rider": 21,
+            "Magmakin Artillerist": 9,
+            "Artist's Talent": 0
+          },
+          "board": [
+            "untapped lands x3"
+          ]
+        }
+      ],
+      "pod_total_damage": 90,
+      "per_seat_damage": 30
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top (last-added) object resolves once all pass; pos 7 (Brallin 7 of 7) is correctly named first."
+      },
+      {
+        "step": 1,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Artist's Talent level 3 reads 'instead'; replacement effect."
+      },
+      {
+        "step": 1,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "Full rule: applies continuously as events happen, not locked in; establishes per-event evaluation."
+      },
+      {
+        "step": 1,
+        "rule": "120.2b",
+        "status": "supported",
+        "note": "Ability damage; the ability names the object ('it' = Brallin, 'this creature' = Magmakin). This is what makes a triggered ability's damage come from 'a source you control'."
+      },
+      {
+        "step": 1,
+        "rule": "glossary:combat-damage",
+        "status": "supported",
+        "note": "Combat damage is defined as combat-damage-step damage by attackers/blockers; ability damage in main phase 1 is by definition noncombat. The CR has no 'noncombat damage' glossary entry, so the negation is the correct route."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Instructions in order written (counter, then damage); replacement effects may modify. Full rule's 'read the whole text' caveat does not change anything here."
+      },
+      {
+        "step": 2,
+        "rule": "122.1",
+        "status": "supported",
+        "note": "Definitional only: establishes that the +1/+1 counter modifies characteristics (3/3 -> 4/4). The 'one counter per resolution' count comes from Brallin's text + 608.2c, and agrees with the 2020-04-17 ruling 'only one +1/+1 counter each time it resolves, no matter how many opponents are dealt damage'."
+      },
+      {
+        "step": 2,
+        "rule": "120.4b",
+        "status": "supported",
+        "note": "Damage dealt as modified by replacement effects; 1 -> 3 per opponent."
+      },
+      {
+        "step": 2,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "Original 1-damage event never happens; 3-damage event occurs instead."
+      },
+      {
+        "step": 2,
+        "rule": "120.7",
+        "status": "supported",
+        "note": "Source is the object that dealt it; 'it deals that much damage plus 2' keeps Brallin as the dealer. Agrees with the 2024-07-26 ruling 'The additional 2 damage is dealt by the same source as the original source of damage.'"
+      },
+      {
+        "step": 2,
+        "rule": "120.1",
+        "status": "supported",
+        "note": "Object that deals damage is its source; Artist's Talent deals none."
+      },
+      {
+        "step": 2,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "No infect on Brallin (cards.json oracle); 3 damage = 3 life lost; 40 -> 37 x3 correct."
+      },
+      {
+        "step": 2,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "One opportunity per event; the +2 cannot re-apply to the modified 3-damage event. Correct use."
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player receives priority after an ability resolves."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBAs checked before priority; full rule also re-checks after triggers are stacked, and the step correctly notes none are waiting."
+      },
+      {
+        "step": 3,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "All seats at 37; no loss."
+      },
+      {
+        "step": 3,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "All pass in succession -> top object resolves."
+      },
+      {
+        "step": 4,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Each pass-around resolves the top object; six more resolutions."
+      },
+      {
+        "step": 4,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "Per-event application across seven separate resolutions; not once per batch."
+      },
+      {
+        "step": 4,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Same order each resolution."
+      },
+      {
+        "step": 4,
+        "rule": "120.4b",
+        "status": "supported",
+        "note": "Each event modified 1 -> 3."
+      },
+      {
+        "step": 4,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Arithmetic verified: 6x3 = 18, +3 = 21 per seat; 40 -> 19; seven counters, 10/10."
+      },
+      {
+        "step": 4,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Lowest life 19; no SBA fires."
+      },
+      {
+        "step": 5,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Round 2. Full rule: 'triggers only once each time its trigger event occurs... can trigger repeatedly if one event contains multiple occurrences', with the destroy-all-lands example (a per-land condition fires once per land). Windfall's 'each player discards their hand' is one discard event; Magmakin's condition is 'one or more cards' (one occurrence), Brallin's is 'a card' (seven occurrences). The rule establishes exactly the one-Magmakin / seven-Brallin split the step now claims, and the stack-001 attribution is gone from steps and final_state (surviving mention only in extras.assumptions[1], non-normative). Magmakin's 2025-02-07 rulings concern cycling-order and are not contradicted."
+      },
+      {
+        "step": 5,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Magmakin's trigger (pos 0) resolves last."
+      },
+      {
+        "step": 5,
+        "rule": "120.2b",
+        "status": "supported",
+        "note": "'This creature deals that much damage' names Magmakin as the object."
+      },
+      {
+        "step": 5,
+        "rule": "120.4b",
+        "status": "supported",
+        "note": "7 -> 9 per opponent."
+      },
+      {
+        "step": 5,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "7-damage event replaced by 9-damage event."
+      },
+      {
+        "step": 5,
+        "rule": "120.7",
+        "status": "supported",
+        "note": "Source of all 9 is Magmakin; agrees with the Artist's Talent ruling on source."
+      },
+      {
+        "step": 5,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "+2 once on this single event; 9 not 21. Correct."
+      },
+      {
+        "step": 5,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "19 -> 10 x3 correct. Per-seat 30, pod 90 stated separately, matches scenario-facts drain_arithmetic (3 opponents, 120 total)."
+      },
+      {
+        "step": 6,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Priority to active player after the last resolution."
+      },
+      {
+        "step": 6,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Different fragment of the same rule; accurate and in context."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "All seats at 10; no loss."
+      },
+      {
+        "step": null,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Round 2. Step 6's counterfactual is now this board without Artist's Talent: 7 + 7 = 14 per seat, +2 x 8 events = 16 per seat, 30 total. No sibling is quoted; per-seat 30 and pod 90 are stated separately and agree with scenario-facts drain_arithmetic (3 opponents, 120 opposing life). Round-1 sibling finding closed."
+      },
+      {
+        "step": 6,
+        "rule": "208.1",
+        "status": "supported",
+        "note": "Round 3. Closed: scenario.board.you, step 6 effect and final_state.you.board now all read 'Magmakin Artillerist (1/4)'; no '2/2' survives in scenario or resolution. cards.json: Creature — Elemental Pirate, power 1, toughness 4. 208.1 full text: printed P/T 'can be modified or set to particular values by effects', and the scenario names none (note_for_the_resolver: no other card modifies damage, triggers or counters; the seven +1/+1 counters go on Brallin per its own text). 'Unchanged' is therefore established. Step 6's three CR citations (117.3b, 704.3, 704.5a) re-read in full after the edit and still hold. rulings.cards present: Artist's Talent 2024-07-26 'The additional 2 damage is dealt by the same source as the original source of damage' agrees with steps 2 and 5; Magmakin's 2025-02-07 rulings concern cycling and are not contradicted. No sibling figure is quoted anywhere in the resolution."
+      }
+    ],
+    "iterations": 3
+  }
+}
