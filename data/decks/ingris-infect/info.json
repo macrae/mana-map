@@ -3,19 +3,13 @@
   "commander": [
     "Ingris Stingerquill"
   ],
-  "lifecycle": null,
-  "stage": "bench",
-  "gates": {
-    "to": "sleeved",
-    "met": 2,
-    "of": 6,
-    "blocking": [
-      "full sim batch",
-      "mulligan + tutor guidance",
-      "benchmark score",
-      "ownership reconciled"
-    ]
+  "lifecycle": {
+    "status": "broken-down",
+    "headline": "BROKEN DOWN FOR PARTS",
+    "body": "This deck no longer exists physically — its cards were pulled and sleeved into another list. Everything below was true when it shipped and is kept as published; the decklist is no longer maintained."
   },
+  "stage": null,
+  "gates": null,
   "colour_identity": [
     "B",
     "R"
@@ -23,8 +17,8 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 7,
-    "of": 18,
+    "complete": 6,
+    "of": 15,
     "stale": [],
     "invalid": [],
     "verified": true,
@@ -37,9 +31,7 @@
       "tutors",
       "prose",
       "log",
-      "issue",
-      "sim",
-      "benchmark"
+      "issue"
     ],
     "todo": [
       {
@@ -86,21 +78,6 @@
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
         "how": "AUTHORED: data/decks/ingris-infect/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
-      },
-      {
-        "stage": "sim",
-        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
-        "how": "manamap pilot simulate ingris-infect --pod standard-v3 --games 100"
-      },
-      {
-        "stage": "benchmark",
-        "what": "four measures under one FROZEN harness, so decks compare — `benchmark`",
-        "how": "manamap pilot benchmark ingris-infect"
-      },
-      {
-        "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate ingris-infect --vs <opponent> --games 12"
       }
     ]
   },
@@ -157,8 +134,7 @@
         "in_deck": 87,
         "box": 3,
         "elsewhere": 0,
-        "buy": 2,
-        "free": 0
+        "buy": 2
       },
       "unsourced": [
         "Dark Confidant",
@@ -871,8 +847,7 @@
         "in_deck": 90,
         "box": 2,
         "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "buy": 0
       },
       "unsourced": [],
       "mergeable": true,
@@ -1604,8 +1579,7 @@
         "in_deck": 84,
         "box": 3,
         "elsewhere": 1,
-        "buy": 4,
-        "free": 0
+        "buy": 4
       },
       "unsourced": [
         "Dark Confidant",
@@ -2598,12 +2572,10 @@
   "simulation": null,
   "experiments": null,
   "next": [
-    "not marked as built in paper — if it is sleeved, `deck-version ingris-infect paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "nothing in the captain's log — play it, then `deck-notes ingris-infect add \"…\" --result win|loss --opponents N`",
+    "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
     "branch `draw-v1` needs 2 card(s) sourced — `manamap pilot deck-branch ingris-infect source draw-v1`",
     "branch `lands-v1` is fully sourced (+2 -2) — `manamap pilot deck-branch ingris-infect merge lands-v1 --write`",
-    "branch `prot-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ingris-infect source prot-v1`",
-    "no simulation runs — `simulate ingris-infect --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "branch `prot-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ingris-infect source prot-v1`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
