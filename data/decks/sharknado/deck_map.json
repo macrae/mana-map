@@ -8,7 +8,19 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 100,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "THE LANDBASE SPLIT SURVIVED THE RE-CLUSTER, on the same line, and the arithmetic of today's swaps explains it exactly. Old COLOUR ON CURVE (22) -> city-1 (20); old THE FIXERS (14) -> city-6 (16). Out of city-1: Tundra, Plateau, Volcanic Island, Clifftop Retreat, Inspiring Vantage; in: Thundering Falls, Riverpyre Verge, Ferrous Lake. Out of city-6: Battlefield Forge; in: Fiery Islet, Irrigated Farmland, Glittering Massif. The two typed CYCLING duals crossed the line because they carry a non-mana ability, which is the engineer's stated rule (recurring-per-tap cost or non-mana text -> fixers; one-off on entry -> colour on curve). I RENAMED both cities rather than restore the old labels: 'COLOUR ON CURVE' is no longer true of its own membership - Mystic Monastery always enters tapped, and Ferrous Lake and Skycloud Expanse charge {1} on every activation. city-1 is now named for what is actually common to all twenty (a fixed colour pair, no non-mana text), city-6 for what is common to all sixteen (any colour, colourless, or text).",
+      "THE ASYMMETRY AXIS IS VISIBLE, BUT ONLY INSIDE city-5, AND NOT AS THE BRIEF FRAMES IT. city-5-hood-0 is eleven table-wide refills (Burning Inquiry, Echo of Eons, Jace's Archivist, Khorvath's Fury, Magus of the Wheel, Molten Psyche, Reforge the Soul, Teferi's Puzzle Box, Time Reversal, Windfall, Winds of Change); city-5-hood-1 is four self-only refills plus Commit // Memory, whose Memory half is table-wide. Khorvath's Fury is the one member of hood-0 you can AIM (choose each opponent 'foe' and only you refill), so ten of eleven are unconditionally symmetric. But every ASYMMETRIC REPEATABLE wheel is outside city-5 entirely - Arjun and Queen Kayla bin-Kroog in city-0, Anje's Ravager in city-2, Whirlpool Warrior in city-0 - because the map clusters them on their other text, not on who refills. The deck's most valuable group therefore has no home on this map and cannot be named without changing membership, which I have not done.",
+      "THE HALF THAT PAYS BRALLIN NOTHING IS SCATTERED AND UNNAMEABLE HERE. goldfish_targets.json's _shuffle_note (authored 2026-09-13) counts seventeen hand-refill effects: nine discard, six shuffle, two bottom. I read every one of the eight non-discard effects in cards.json and confirm the count. They sit in three different cities (Echo of Eons, Time Reversal, Molten Psyche, Winds of Change and Teferi's Puzzle Box in city-5-hood-0; Commit // Memory in city-5-hood-1; Arjun and Whirlpool Warrior in city-0-hood-0), so no cluster corresponds to them. The split the map DOES draw inside city-5 is symmetric-vs-self, which is a different cut.",
+      "THE BEST THING THE RE-CLUSTER FOUND is city-6-hood-1: Glittering Massif, Irrigated Farmland, Raugrin Triome. They are the only three lands in the 99 that pay BOTH commanders - cycling is a discard (Brallin: a counter and 1 damage to each opponent) and a draw (Shabraz: a counter and 1 life) - and they are also three of the seven lands carrying a basic type. Two of the three arrived today as the budget replacements for Tundra and Plateau, so the money pass accidentally improved the engine's land count. Worth its own line wherever the engine is described.",
+      "BASIC-TYPE SUPPLY AND DEMAND SIT IN DIFFERENT CITIES. All seven typed lands: Hallowed Fountain, Sacred Foundry, Steam Vents and Thundering Falls in city-1; Irrigated Farmland, Glittering Massif and Raugrin Triome in city-6. Every land that DEPENDS on a type is in city-1 (Glacial Fortress, Sulfur Falls, Floodfarm Verge, Nimbus Maze, Riverpyre Verge). One case the brief does not list: Gleaming Bastion's coloured mode reads 'only if this land entered this turn or if you control a basic land' - the deck runs zero basics, so from the turn after it lands it is a colourless source until something changes. That is a deck finding, not a naming one; I have not renamed around it.",
+      "LONE AND ODD MEMBERS. city-1-hood-2 is one card, Hengegate Pathway // Mistgate Pathway: unusual rather than misplaced, since it is the only land in the deck that commits to a single colour. Marketback Walker is the odd member of city-3-hood-0 - it grows on mana ({4}: put a counter), not on card movement like the other four. Chasm Skulker is the odd member of city-3-hood-1 - it is the only one that does not need combat damage, and it is the reason I did not name that hood for evasion. Reliquary Tower and Calciform Pools are the two members of city-6-hood-0 that neither make any colour nor charge life; Reliquary Tower is the deck's most unusual land, since 'no maximum hand size' is engine text in a deck that draws seven at a time.",
+      "city-4 has a SINGLE neighbourhood containing all eight of its cards. I declined to name it: any label would be a synonym for THE TREASURY. The split is not arbitrary, it is absent.",
+      "verified_count is 0 on all seven cities. There are no stacks for this deck, so no city holds a rules-verified line and none of these names should be read as carrying the engine on the record.",
+      "TWO STALENESS FLAGS FOR THE ORCHESTRATOR, not disagreements about membership. (1) engine.json was written at 19:51 and deck_map.json at 23:03; its map_disagreements address cities by the OLD ids and names - 'THE WHEELS (city-2)' is now city-5, and city-2 is now the draw-payoff city - so every citation of it must be re-pointed before it is published beside these names. (2) goldfish_targets.json's wheel group still lists Wheel of Fortune and Wheel of Misfortune, both cut today, and does not list Queen Kayla bin-Kroog or Anje's Ravager, both wheels now in the 99."
+    ]
   },
   "cards": [
     {
@@ -1289,7 +1301,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "PAID TO PITCH",
       "fallback": "Bodies",
       "cx": -0.28308,
       "cy": 0.0536,
@@ -1314,13 +1326,14 @@
         "Swiftfoot Boots",
         "Whirlpool Warrior"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Throwing a card away is the payment here: damage, drakes, sharks, a card back, creatures returned."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "TRIGGERS ON THE CHURN",
       "fallback": "Bodies",
       "cx": -0.25497,
       "cy": 0.08457,
@@ -1341,13 +1354,14 @@
         "Shark Typhoon",
         "Whirlpool Warrior"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Permanents that fire on the movement itself - a discard, a cycle, a draw - so one wheel pays many times."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "HASTE AND A SHIELD",
       "fallback": "Insurance II",
       "cx": -0.59965,
       "cy": 0.86578,
@@ -1356,13 +1370,14 @@
         "Lightning Greaves",
         "Swiftfoot Boots"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "A tap-to-wheel body goes off the turn it lands, and survives the removal aimed at it."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "CYCLE TO COUNTER",
       "fallback": "Bodies II",
       "cx": -0.16333,
       "cy": -0.97535,
@@ -1371,12 +1386,13 @@
         "Decree of Silence",
         "Nimble Obstructionist"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Cycle either one and something gets countered - interaction that still pays both commanders."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE PAIRS",
       "fallback": "Mana",
       "cx": 0.76885,
       "cy": 0.09489,
@@ -1403,13 +1419,14 @@
         "Sulfur Falls",
         "Thundering Falls"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Fixed colour pairs and nothing else: the deck's coloured mana lives here, and so does every type dependency."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "CONDITIONS APPLY",
       "fallback": "Mana III",
       "cx": 0.68201,
       "cy": 0.08863,
@@ -1425,13 +1442,14 @@
         "Rugged Prairie",
         "Skycloud Expanse"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Nine lands whose second colour wants something first: a coloured mana, an extra one, or a land type."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TAPPED OR NOT",
       "fallback": "Mana II",
       "cx": 0.85005,
       "cy": 0.07184,
@@ -1448,13 +1466,14 @@
         "Sulfur Falls",
         "Thundering Falls"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Ten plain duals; the only question each one asks is whether it enters untapped."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "PICK ONE COLOUR",
       "fallback": "Mana IIIII",
       "cx": 0.73843,
       "cy": 0.38176,
@@ -1462,12 +1481,13 @@
       "cards": [
         "Hengegate Pathway // Mistgate Pathway"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The deck's only modal land - you choose a side on the way down and live with it."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE DRAW TAX",
       "fallback": "Finishers",
       "cx": -0.6724,
       "cy": -0.09347,
@@ -1486,13 +1506,14 @@
         "The Locust God",
         "Vanguard Suppressor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Every extra card you draw, and everything that bills the table when you do: damage, insects, faeries."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE WHEEL'S DIVIDEND",
       "fallback": "Finishers",
       "cx": -0.64981,
       "cy": -0.05589,
@@ -1508,13 +1529,14 @@
         "The Locust God",
         "Vanguard Suppressor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "What a resolved wheel collects: damage, insects, faeries, and more cards off the table's own draws."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE FILTERS",
       "fallback": "Insurance",
       "cx": -0.74015,
       "cy": -0.2062,
@@ -1524,12 +1546,13 @@
         "Curator of Mysteries",
         "Kefnet the Mindful"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Trade a card for a better one - and a 5/5 that only fights while your hand stays full."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE THINGS THAT GROW",
       "fallback": "Payoffs",
       "cx": -0.67504,
       "cy": 0.46735,
@@ -1546,13 +1569,14 @@
         "Stromkirk Noble",
         "Waterbender Ascension"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Every draw, discard and connection leaves a +1/+1 counter here; the churn made visible, and eventually lethal."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "GROWN BY THE WHEEL",
       "fallback": "Payoffs",
       "cx": -0.61965,
       "cy": 0.47587,
@@ -1564,13 +1588,14 @@
         "Mindless Automaton",
         "Shabraz, the Skyshark"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Both commanders and the cards that imitate them: a counter for every card you discard or draw."
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THEY HAVE TO CONNECT",
       "fallback": "Value",
       "cx": -0.73044,
       "cy": 0.45883,
@@ -1582,12 +1607,13 @@
         "Stromkirk Noble",
         "Waterbender Ascension"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Nothing here pays until a creature gets through, which is why most of them carry their own evasion."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE TREASURY",
       "fallback": "Ramp",
       "cx": -0.03287,
       "cy": 0.42652,
@@ -1602,7 +1628,8 @@
         "Sticky Fingers",
         "Treasure Map // Treasure Cove"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Mana for the next wheel, mostly in Treasure, including one enchantment that bills the table every time they refill."
     },
     {
       "id": "city-4-hood-0",
@@ -1628,7 +1655,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE WHEELS",
       "fallback": "Card Flow",
       "cx": -0.40208,
       "cy": -0.46626,
@@ -1651,13 +1678,14 @@
         "Windfall",
         "Winds of Change"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Empty a hand, draw a new one: the ignition. Nothing else in this deck starts itself."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "EVERYONE REFILLS",
       "fallback": "Card Flow",
       "cx": -0.35393,
       "cy": -0.46687,
@@ -1675,13 +1703,14 @@
         "Windfall",
         "Winds of Change"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Refills that restock three opponents too; your commanders get paid either way, the table just gets company."
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "YOUR HAND ONLY",
       "fallback": "Card Flow II",
       "cx": -0.50802,
       "cy": -0.46493,
@@ -1693,12 +1722,13 @@
         "Teferi's Ageless Insight",
         "Tolarian Winds"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The refills that leave the table where it stands - plus one modal card whose back half does not."
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "MORE THAN MANA",
       "fallback": "Mana II",
       "cx": 0.70212,
       "cy": -0.14791,
@@ -1721,13 +1751,14 @@
         "Spire of Industry",
         "Talon Gates of Madara"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Any colour, colourless, or a non-mana ability: six charge life per tap, three can be cycled away."
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
-      "label": null,
+      "label": "ANY COLOUR, PAY LIFE",
       "fallback": "Mana",
       "cx": 0.70623,
       "cy": -0.13605,
@@ -1747,13 +1778,14 @@
         "Spire of Industry",
         "Talon Gates of Madara"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Where a missing colour comes from, usually for a point of life; none of these carries a basic type."
     },
     {
       "id": "city-6-hood-1",
       "level": 1,
       "parent": "city-6",
-      "label": null,
+      "label": "THEY PAY BOTH COMMANDERS",
       "fallback": "Mana IIII",
       "cx": 0.6843,
       "cy": -0.19931,
@@ -1763,7 +1795,8 @@
         "Irrigated Farmland",
         "Raugrin Triome"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Cycle one and both halves fire - a discard and a draw - for a counter, a ping and a life."
     }
   ],
   "edges": [

@@ -203,23 +203,190 @@
   "median_both_online_turn": 5
  },
  "engine": {
-  "available": false,
-  "why": "the declaration does not describe this list \u2014 3 load-bearing target(s) name cards it does not run (e.g. 'A WHEEL drawn \u2014 the ignition; nothing else in th' wants Wheel of Fortune, Wheel of Misfortune). A branch inherits the deck's declaration, which is right for a swap and wrong for a rebuild: write the branch its own `goldfish_targets.json`.",
-  "declaration_mismatch": {
-   "A WHEEL drawn \u2014 the ignition; nothing else in the deck starts itself": [
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
-   ],
-   "THE WHEEL KILL \u2014 a DISCARD wheel plus a stacked per-card damage source": [
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
-   ],
-   "THE AIR KILL \u2014 a wheel plus a flying body that grows on every card": [
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
-   ]
+  "available": true,
+  "required": [
+   "A WHEEL drawn \u2014 the ignition; nothing else in the deck starts itself"
+  ],
+  "routes": [
+   "THE WHEEL KILL \u2014 a DISCARD wheel plus a stacked per-card damage source",
+   "THE AIR KILL \u2014 a wheel plus a flying body that grows on every card"
+  ],
+  "online_by_turn": {
+   "1": {
+    "rate": 0.7852,
+    "ci95": [
+     0.777,
+     0.7931
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.8317,
+    "ci95": [
+     0.8242,
+     0.8389
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.8739,
+    "ci95": [
+     0.8672,
+     0.8803
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.9032,
+    "ci95": [
+     0.8972,
+     0.9088
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.925,
+    "ci95": [
+     0.9197,
+     0.93
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.9465,
+    "ci95": [
+     0.9419,
+     0.9507
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.9624,
+    "ci95": [
+     0.9585,
+     0.966
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.9736,
+    "ci95": [
+     0.9703,
+     0.9766
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.9832,
+    "ci95": [
+     0.9805,
+     0.9855
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.9889,
+    "ci95": [
+     0.9867,
+     0.9908
+    ],
+    "n": 10000
+   }
   },
-  "declared_targets": 12
+  "any_route_by_turn": {
+   "1": {
+    "rate": 0.342,
+    "ci95": [
+     0.3328,
+     0.3514
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.4177,
+    "ci95": [
+     0.4081,
+     0.4274
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.5033,
+    "ci95": [
+     0.4935,
+     0.5131
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.5744,
+    "ci95": [
+     0.5647,
+     0.5841
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.6549,
+    "ci95": [
+     0.6455,
+     0.6642
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.7714,
+    "ci95": [
+     0.7631,
+     0.7795
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.8476,
+    "ci95": [
+     0.8404,
+     0.8545
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.9012,
+    "ci95": [
+     0.8952,
+     0.9069
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.9348,
+    "ci95": [
+     0.9298,
+     0.9395
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.957,
+    "ci95": [
+     0.9528,
+     0.9608
+    ],
+    "n": 10000
+   }
+  },
+  "bottleneck": {
+   "label": "A WHEEL drawn \u2014 the ignition; nothing else in the deck starts itself",
+   "by_turn_three": {
+    "rate": 0.8739,
+    "ci95": [
+     0.8672,
+     0.8803
+    ],
+    "n": 10000
+   }
+  },
+  "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
  },
  "mana": {
   "missed_land_drop_by_five": {
