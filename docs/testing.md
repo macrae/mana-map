@@ -147,14 +147,14 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-14: **3,846 tests** across 178 files — 3,588 in the `make test`
+As of 2026-09-14: **3,847 tests** across 178 files — 3,589 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
 `serial_only`. Six are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
 Why the count cannot be checked mechanically: **about a thousand of those cases do not
-exist in the source** — there are 2,846 top-level `def test_` functions and 3,846 collected cases, the difference
+exist in the source** — there are 2,868 top-level `def test_` functions and 3,847 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a

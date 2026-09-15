@@ -2146,3 +2146,110 @@ one.
 branch holds measurements that cost real time, and removing an unmerged one
 throws away the evidence for a decision nobody recorded. This page is that
 record.
+
+## A doubler that was never there, and four cards the model could not read (2026-09-14)
+
+**THE MOST EXPENSIVE HOUR OF THE SESSION WAS THE ONE SPENT TRUSTING A NULL.**
+Four cards in a row — Mind Stone, Jaws Relentless Predator, Bard King of Dale,
+Teferi's Ageless Insight — measured as "no effect" in a `candidates` sweep that
+had never priced any of them. Each null was reported beside a confidence
+interval, which is what made it dangerous: a card the model cannot read looks
+exactly like a card that does not help.
+
+The pilot caught it twice by refusing the answer. That is the only reason it
+came out.
+
+### The phantom
+
+Cutting Elesh Norn // The Argent Etchings from sharknado measured **−2.2 damage
+at turn eight**, far past the 0.66 MDE, and would have been reported as a reason
+to keep a card that does nothing. It carried `team_damage_multiplier: 2` — the
+model believed it doubled all damage, permanently — off **chapter II of its Saga
+BACK FACE**: "creatures you control get +1/+1 and gain double strike until end
+of turn". One turn, on a face reachable only by paying {2}{W} and sacrificing
+three other creatures.
+
+`_TEAM_DOUBLE_STRIKE_RE` matched the clause anywhere in the oracle. The token
+doubler eight lines away had scoped this correctly for a year —
+`token_doubler` takes a window around the match and refuses it if the window
+says "until end of turn" — and the damage multiplier simply never had.
+
+**THE FIRST FIX WAS WRONG IN THE OTHER DIRECTION, and an existing test is what
+said so.** Testing only for "until end of turn" also dropped Atarka, World
+Render and Thrakkus the Butcher, and `test_three_wordings_one_effect` went red.
+Those two are real: *"whenever a Dragon you control attacks, it gains double
+strike until end of turn"* wears off every turn and is PUT BACK every turn, so
+to a model that attacks every turn it is permanent. The distinction is not
+temporary-versus-permanent, it is **one-shot versus re-applied** — an instant, a
+sorcery or a Saga chapter fires once; a trigger the permanent carries does not.
+
+The sweep, which is the whole reason the rule exists:
+
+| | cards reading as a permanent damage multiplier |
+|---|---|
+| before | 75 |
+| after the blunt fix | 37 — dropped Atarka and Thrakkus, which are real |
+| after the right fix | **53 — 22 were phantom** |
+
+The 22: four Saga chapters, seven instants and sorceries (Cleaver Riot, Savage
+Beating, Double Trouble), and ETB one-shots like God-Eternal Rhonas and Terror
+of Mount Velus. **sharknado's own damage@8 fell 31.45 → 29.47** when the phantom
+went, which means every figure quoted off that deck before this date was two
+points high.
+
+### The four channels
+
+None of these existed, and all four returned a confident zero instead:
+
+| channel | what it reads | corpus |
+|---|---|---|
+| `activated_draw` | "{1}, {T}, Sacrifice this artifact: Draw a card" | **405 cards carried a sacrifice-gated draw and `draw_profile` read zero for 400 of them — 99%** |
+| `blood` | a Blood token, which is that ability with a discard in the cost | 44, every one read by hand |
+| `artifact_sac` | a payoff when an artifact leaves the battlefield | 48, in three phrasings |
+| `draw_multiplier` | "if you would draw a card … draw two instead" | 8, five of them Jeskai |
+
+**A CHANNEL PLACED WHERE IT CANNOT FIRE IS NOT A CHANNEL.** The Blood crack was
+put last, on leftover mana, by analogy with the X spells — and a goldfish spends
+its whole pool casting, so `spend(1)` failed almost every turn: **49 of 300
+games had Blood standing on the board uncracked at end of turn**. A resource the
+model can never spend is a resource it cannot price, and the reading was a
+confident zero either way. Moved before the casting loops, one crack per turn,
+stated in `MODEL_ASSUMPTIONS` as the authored floor it is.
+
+### The blind-spot list was lying, in the dangerous direction
+
+`net_change.BLIND["draw"]` read *"extra card draw is not modelled — one card per
+turn, always"* and keyed off the card's ROLE, which only says that the card
+draws. It named Teferi's Ageless Insight as unmeasured **in the same report that
+measured it at +0.89 extra cards**. The sentence predates the entire `model_draw`
+channel.
+
+A wrong entry on that list is worse than a missing one: a missing entry hides a
+limit, a wrong one tells the pilot that a measured gain was never measured and
+invites cutting a card the figures already credited. It asks `draw_profile` now,
+which has always known — that function sets `unmodelled` to the card's own name
+when the draw is through a channel there is no event for.
+
+### What the ceiling run is for
+
+The pilot's objection to Jaws was mechanically correct: connect for five, make
+five Blood, crack them for five discards and five draws, and both commanders
+charge for every one while Jaws pings the table for each artifact sacrificed.
+The model said −0.43, and the model was blind to the whole line.
+
+So the blinkers came off as a **labelled sensitivity**, never committed: combat
+Blood credited, the one-per-turn cap lifted, tokens granted on ARRIVAL rather
+than on connecting — more generous than the card. Even then, *as if he connects
+for five*, damage@8 moved **+0.09**. Floor −0.43, ceiling +0.09.
+
+The answer did not change, and that is the point: **the card is bracketed rather
+than blind**, and the argument is settled instead of being a standing doubt about
+the instrument. The volume is what kills it — the deck makes ~1 Blood and cracks
+**0.463 artifact sacrifices per game**, against an engine already dealing 30 by
+turn eight.
+
+The first attempt at that ceiling measured nothing at all and said so loudly:
+all three arms returned byte-identical numbers, because the Blood count pattern
+took number-words only to "four" and no digits, so "create 3", "create 5" and
+"create 1 Blood token" all failed to match and fell into the same bucket. **Three
+identical arms is the shape of a sensitivity that measured nothing.**
