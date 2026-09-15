@@ -79,6 +79,21 @@ WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting:
   independent reason: `carries` is free prose the engineer writes, so renaming a
   line evades the check silently, which is the rephrase failure this docstring
   already warns about one paragraph up.
+
+  **What a stack NAMES includes your own board (2026-09-15).** `line_cards`
+  answers a rendering question — what the LINE is made of, where a board is
+  furniture once the stack and hand name cards — and the first cut of this
+  check reused it as the answer to a different question: is this stack ABOUT
+  these cards. sharknado's stack 001 resolves Windfall with Brallin on the
+  battlefield; the line it proves is `via: [Windfall, Brallin]`, and the check
+  refused it because Brallin is a permanent, named on the board and nowhere
+  else, and the hand named seven cards so the board was skipped. A permanent
+  whose triggered ability IS the line is what the scenario is about. So the
+  set here is `line_cards` UNION the cards of the 99 on YOUR board (tokens and
+  opponents' boards excluded). Measured across the fleet before the change:
+  every verified line on nine decks still verifies, none newly does — the
+  widening is permissive only, which is the direction a false-green check must
+  never move in and the direction this one safely can.
 """
 
 import json
@@ -134,7 +149,22 @@ def _passing_stacks(slug, deck_names):
         if not presentable(doc):
             continue
         sid = doc.get("id") or path.stem[:3]
-        out[sid] = set(line_cards(doc.get("scenario") or {}, deck_names))
+        scenario = doc.get("scenario") or {}
+        out[sid] = set(line_cards(scenario, deck_names)) | _your_board_cards(scenario, deck_names)
+    return out
+
+
+def _your_board_cards(scenario, deck_names):
+    """The cards of the 99 on YOUR board in a scenario — the permanents whose
+    abilities a line may run through. See the module docstring's last paragraph."""
+    from manamap.pilot import game_state, scenario_facts
+    out = set()
+    for entry in scenario_facts.your_board(scenario) or []:
+        if game_state.entry_is_token(entry):
+            continue
+        name = scenario_facts._card_name(entry)
+        if name in deck_names:
+            out.add(name)
     return out
 
 
