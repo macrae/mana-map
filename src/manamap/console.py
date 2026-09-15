@@ -1,6 +1,6 @@
 """The terminal is a surface, and this is the only module that draws on it.
 
-The bench is used from the command line far more than from a browser: 100 pilot
+The bench is used from the command line far more than from a browser: 101 pilot
 subcommands, 28 top-level ones, and that is where the analysis, the searching
 and the prototyping happen. It was also silent while it worked. Measured before
 this module existed: **two of eighteen long-running operations reported any

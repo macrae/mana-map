@@ -27,6 +27,10 @@ a second run.
   `data/.download-meta.json` still matches Scryfall's `updated_at`
   (`src/manamap/ingest/download.py:33-38`). Check the catalog date against the
   sidecar; if you must force, delete the sidecar.
+- **Refresh the rulings alongside the corpus**: `.venv/bin/manamap pilot
+  download-rulings` (5 MB, seconds). Idempotent on CONTENT — Scryfall re-cuts
+  the file daily, so a moved `updated_at` alone rewrites nothing and MISSes no
+  stack; only a ruling that actually changed on a card a scenario names does.
 - Save the current eval baseline for before/after:
   `.venv/bin/manamap eval-embeddings` → keep the **test-split** numbers.
   (Never tune on them; a fresh dump also confounds before/after comparison —

@@ -831,6 +831,18 @@ RULES_EMBEDDINGS_PATH = RULES_DIR / "rules_embeddings.npy"
 RULES_DB_META_PATH = RULES_DIR / ".rules-db-meta.json"
 RULES_QUERY_TOP_K = 8
 
+# ── Pilot: Scryfall card rulings — INPUT to the resolve loop, never a citation ──
+# The official (WotC / Gatherer) rulings for every card, from Scryfall's bulk
+# `rulings` file: gzipped JSONL keyed by `oracle_id`. Same shape as `data/rules/`:
+# gitignored, re-downloadable in seconds. A ruling tells an agent which CR rule
+# to look for; `citations[].rule` stays a CR id. The sidecar records Scryfall's
+# `updated_at` (which moves DAILY whether or not a ruling changed) AND a sha over
+# the decompressed content, which is what decides whether the file is rewritten.
+RULINGS_DIR = DATA_DIR / "rulings"
+RULINGS_PATH = RULINGS_DIR / "rulings.jsonl.gz"
+RULINGS_META_PATH = RULINGS_DIR / ".rulings-meta.json"
+BULK_RULINGS_TYPE = "rulings"
+
 # ── Pilot: Decks & Manuals ───────────────────────────────────────────────
 DECKS_DIR = DATA_DIR / "decks"
 MANUALS_DIR = _REPO_ROOT / "manuals"

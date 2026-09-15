@@ -49,6 +49,7 @@ manamap pilot download-rules            # CR txt (idempotent; sha256 sidecar)
 manamap pilot build-rules-db            # ~3.9K chunks → embeddings + index
 manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery path)
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
+manamap pilot download-rulings          # Scryfall's card-rulings dump (5 MB; idempotent on content)
 manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had: commander real and

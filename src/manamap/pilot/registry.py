@@ -16,6 +16,8 @@ PILOT_STEPS = [
     ("build-rules-db", "manamap.pilot.build_rules_db", "Chunk + embed the CR into the rules DB"),
     ("query-rules", "manamap.pilot.query_rules", "Semantic top-k rules search"),
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
+    ("download-rulings", "manamap.pilot.download_rulings",
+     "Download Scryfall's card-rulings dump (INPUT to the resolve loop; never a citation)"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("benchmark", "manamap.pilot.benchmark",
@@ -261,6 +263,10 @@ def add_pilot_parser(subparsers):
         if name == "lookup-rule":
             cmd.add_argument("rule_id", help="Exact rule number, e.g. 702.40a")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "download-rulings":
+            cmd.add_argument("--force", action="store_true",
+                             help="Re-download and rewrite even when the catalog stamp "
+                                  "and the content sha both match")
         if name == "validate-stack":
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
             cmd.add_argument("--scenario-only", action="store_true", dest="scenario_only",

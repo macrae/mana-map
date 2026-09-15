@@ -64,6 +64,7 @@ only home of the `game_changer` column (WotC's Game Changers list, via Scryfall)
 | Path | Producer | Git | Notes |
 |------|----------|-----|-------|
 | `data/rules/*` | `pilot download-rules` + `build-rules-db` | ignored | CR text, 3,888-chunk index + embeddings, sha/meta sidecars — fully regenerable |
+| `data/rulings/*` | `pilot download-rulings` | ignored | Scryfall's card-rulings dump (`rulings.jsonl.gz`, 5.4 MB: ~79k official WotC rulings on ~20k `oracle_id`s) + `.rulings-meta.json` (Scryfall's daily `updated_at`, the sha over the decompressed content that decides a rewrite, the count). INPUT to the resolve loop — a ruling says which CR rule to look for — never a citation. Regenerable in seconds |
 | `data/strategy/strategy.md`, `CHANGELOG.md` | authored / `strategy-researcher` agent | **tracked** | The strategy companion — curated source of truth; founder-reviewed via diffs |
 | `data/strategy/strategy_index.json`, `strategy_embeddings.npy`, `.strategy-db-meta.json` | `pilot build-strategy-db` | ignored | Derived RAG DB; index records the doc's sha256 (staleness handshake) |
 | `data/opponents/<slug>/` | `fetch-opponent` (EDHREC average deck) or authored | **tracked** | The pod: an opponent seat for `simulate --vs <slug>` — `decklist.txt` in the repo's format (commander `*CMDR*`, basics as one quantity line) and `source.json` (commander, URL, fetch date, card count, note). A representative list, not a specific one; paste the real list over it when you know it. Resolved by the harness BEFORE `data/decks/` for the same name. |
