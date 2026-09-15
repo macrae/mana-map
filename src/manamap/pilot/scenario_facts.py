@@ -308,7 +308,92 @@ def comparable_siblings(this_id, all_scenarios, creatures=None):
     return out
 
 
-def analyze(slug, stack_id=None):
+_COPIES = re.compile(r"\s*[x×]\s*\d+\s*$", re.I)
+# What names a card inside a v2 stack object or action, beyond the board.
+_ACTION_NAME_KEYS = ("object", "card", "name", "source", "attacker", "blocker")
+
+
+def _card_name(entry):
+    """A board/stack/hand entry -> the card it names ("Island x5" -> Island)."""
+    from manamap.pilot import game_state
+    if isinstance(entry, dict):
+        return game_state.entry_name(entry)
+    return _COPIES.sub("", _strip_annotation(entry))
+
+
+def _names_in(obj):
+    """Every card a v2 stack object or action names, walking nested dicts/lists."""
+    out = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k in _ACTION_NAME_KEYS and isinstance(v, str) and v.strip():
+                out.append(_card_name(v))
+            elif isinstance(v, (dict, list)):
+                out += _names_in(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            out += _names_in(v)
+    elif isinstance(obj, str) and obj.strip():
+        out.append(_strip_annotation(obj))
+    return out
+
+
+def scenario_named_cards(scenario, creatures=None):
+    """Every card a scenario names, in order, once — the rulings lookup's input.
+
+    Your board (bodies, other permanents, the spent one; NOT lands), your hand,
+    graveyard and exile where listed, every stack object, every v2 action, and
+    the opponents' boards. Tokens are excluded because a token has no rulings.
+    Lands are excluded from YOUR board only because they are the part of a board
+    written as prose ("five lands, all untapped"); an opponent's entries go
+    through as written, and prose there lands in `not_in_corpus`, where a line
+    beats a silent drop.
+
+    THIS IS A CACHE FINGERPRINT INPUT (`rulings:scenario` digests the rulings of
+    exactly these names), so a change to what it collects moves every stack
+    digest in the fleet — the same class of change as `cards_semantic_digest`.
+    """
+    from manamap.pilot import game_state
+    names = []
+    if game_state.is_v2(scenario):
+        names += game_state.our_named_cards(scenario)
+        for s in game_state.opponent_seats(scenario):
+            names += [game_state.entry_name(e) for e in s.get("board") or []
+                      if not game_state.entry_is_token(e)]
+        names += _names_in(scenario.get("stack") or [])
+        names += _names_in(scenario.get("actions") or [])
+    else:
+        raw = your_board(scenario) or []
+        lands = set(board_bodies(raw, creatures)["lands"])
+        for e in raw:
+            if _strip_annotation(e) in lands:
+                continue
+            names.append(_card_name(e))
+        for zone in ("hand", "graveyard", "exile"):
+            z = scenario.get(zone)
+            if isinstance(z, list):
+                names += [_card_name(h) for h in z]
+        for obj in scenario.get("stack") or []:
+            names += _names_in(obj) if isinstance(obj, dict) else [_card_name(obj)]
+        for opp in opponents_of(scenario):
+            names += [_card_name(e) for e in (opp.get("board") or [])
+                      if not game_state.entry_is_token(e)]
+    seen, out = set(), []
+    for n in names:
+        # Tokens have no rulings, whichever zone or action named them.
+        if n and n not in seen and not game_state.entry_is_token(n):
+            seen.add(n)
+            out.append(n)
+    return out
+
+
+def analyze(slug, stack_id=None, with_rulings=None):
+    """The facts. `with_rulings` defaults to "one stack was asked for" — that is
+    how both stack agents call this, and the whole-deck view stays the size it
+    was so the fleet test, Sven and `--out` views are unchanged."""
+    from manamap.pilot import rulings
+    if with_rulings is None:
+        with_rulings = stack_id is not None
     base = deck_dir(slug)
     doc = load_deck_cards(slug)
     deck_names = {c["name"] for c in doc["cards"]}
@@ -340,6 +425,10 @@ def analyze(slug, stack_id=None):
             "hand": (sc.get("hand") if not sc.get("version") == 2
                      else (game_state_our(sc) or {}).get("hand")),
             "comparable_siblings": comparable_siblings(sid, scenarios, creatures),
+            # The named cards' official rulings — INPUT to the resolver and the
+            # checker, never a citation. See docs/pilot.md → Rulings.
+            "rulings": (rulings.section(scenario_named_cards(sc, creatures)) if with_rulings
+                        else {"omitted": "per-scenario; run with --stack NNN"}),
         }
     out["notes"] = _notes(out)
     return out
@@ -374,6 +463,14 @@ def _notes(facts):
             + "; ".join(f"{k} vs {', '.join(v)}" for k, v in sorted(incomparable.items()))
             + ". Their totals answer a different question and must never be quoted "
               "against each other without saying what differs.")
+    absent_rulings = [sid for sid, s in facts["stacks"].items()
+                      if "absent" in (s.get("rulings") or {})]
+    if absent_rulings:
+        notes.append(
+            "No card rulings on disk — `manamap pilot download-rulings` (5 MB, "
+            "seconds) puts every named card's official WotC rulings under "
+            "`rulings.cards`. Nothing here fails without them; the resolver just "
+            "starts from the CR alone.")
     notes.append(
         "Every figure here is derived from the scenario blocks on disk. Prefer it "
         "to recall: the five brief errors this command exists to prevent were all "

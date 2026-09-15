@@ -6,7 +6,9 @@ the Vol. 008 session and was refused by the agent rather than written down.
 
 
 
-from conftest import requires_deck
+import pytest
+
+from conftest import requires_deck, requires_rulings
 from manamap.pilot import scenario_facts as sf
 
 
@@ -146,6 +148,7 @@ def test_runs_on_every_committed_deck_with_stacks():
         assert facts["slug"] == deck.name
         for sid, s in facts["stacks"].items():
             assert "drain_arithmetic" in s and "card_membership" in s
+            assert s["rulings"] == {"omitted": "per-scenario; run with --stack NNN"}
         ran += 1
     assert ran >= 1
 
@@ -222,3 +225,93 @@ def test_the_fleet_no_longer_miscounts_its_boards():
         oracle = next(c.get("oracle_text", "") for c in cards if c["name"] == name)
         assert "isn't a creature" in oracle.lower() or "is not a creature" in oracle.lower(), (
             f"{slug}: {name} is a creature by type line and is not filed as a body")
+
+
+# ── The named cards' rulings ─────────────────────────────────────────────────
+#
+# Rulings are INPUT to the resolver and the checker, never a citation. The
+# section is per-scenario (it rides `--stack NNN`, which is how both agents call
+# this), and absent is never zero: no dump, a name the corpus lacks, and a card
+# WotC never ruled on are three different shapes (`pilot/rulings.py`).
+
+def test_scenario_named_cards_reads_a_v1_board_hand_stack_and_opponents():
+    sc = {
+        "board": {"you": ["Howling Mine", "Island x5", "Plains x3", "Ancient Tomb",
+                          "Fume Spitter (1/1) — already sacrificed to pay the cost",
+                          "Human Soldier token (1/1)", "Purphoros, God of the Forge"],
+                  "opponents": [{"life": 25, "board": ["untapped lands x2", "Rhystic Study"]},
+                                {"life": 31, "board": []}]},
+        "hand": ["Approach of the Second Sun", "Swan Song"],
+        "graveyard": ["Mystical Tutor"],
+        "stack": [{"pos": 0, "object": "Gifted Aetherborn (Vampire creature spell)",
+                   "controller": "you"}],
+        "extras": {"game_history": "Sol Ring was cast on turn one"},
+    }
+    names = sf.scenario_named_cards(sc)
+    assert names == ["Howling Mine", "Ancient Tomb", "Fume Spitter", "Purphoros, God of the Forge",
+                     "Approach of the Second Sun", "Swan Song", "Mystical Tutor",
+                     "Gifted Aetherborn", "untapped lands", "Rhystic Study"]
+    assert "Sol Ring" not in names, "extras is prose, not board membership"
+    assert "Human Soldier token" not in " ".join(names), "a token has no rulings"
+    assert not any(n.startswith("Island") or n.startswith("Plains") for n in names)
+
+
+def test_scenario_named_cards_reads_a_v2_game_state():
+    sc = {
+        "version": 2,
+        "seats": [
+            {"seat": "you", "board": [{"name": "Fauna Shaman", "pt": "2/2", "token": False},
+                                      {"name": "Beast", "pt": "3/3", "token": True}],
+             "hand": {"known": ["Craterhoof Behemoth"]}},
+            {"seat": "seat-2", "board": [{"name": "Arcane Signet", "token": False},
+                                         {"name": "Warleader's Call", "token": False}]},
+        ],
+        "stack": [{"object": "Heroic Intervention", "controller": "seat-2"}],
+        "actions": [{"seat": "you", "kind": "attack",
+                     "attackers": [{"attacker": "Fauna Shaman", "defending": "seat-2"}]}],
+    }
+    names = sf.scenario_named_cards(sc)
+    assert names == ["Fauna Shaman", "Craterhoof Behemoth", "Arcane Signet",
+                     "Warleader's Call", "Heroic Intervention"]
+    assert "seat-2" not in names and "Beast" not in names
+
+
+def test_the_whole_deck_view_omits_rulings_and_the_stack_view_carries_them(monkeypatch, tmp_path):
+    """No dump on disk: the per-stack section says so and names the command,
+    nothing raises, and the notes carry one line. The all-stacks view never
+    looks — that is the view the fleet test, Sven and `--out` see."""
+    from manamap.config import DECKS_DIR
+    pytest.importorskip("pandas")
+    if not (DECKS_DIR / "heliod" / "stacks").is_dir():
+        pytest.skip("needs heliod's stacks")
+    monkeypatch.setattr("manamap.config.RULINGS_PATH", tmp_path / "absent.jsonl.gz")
+    monkeypatch.setattr("manamap.config.RULINGS_META_PATH", tmp_path / "absent-meta.json")
+    everything = sf.analyze("heliod")
+    assert all("omitted" in s["rulings"] for s in everything["stacks"].values())
+    assert not any("download-rulings" in n for n in everything["notes"])
+    one = sf.analyze("heliod", "002")
+    section = one["stacks"]["002"]["rulings"]
+    assert set(section) == {"absent", "run"} and "download-rulings" in section["run"]
+    assert sum("download-rulings" in n for n in one["notes"]) == 1
+
+
+@requires_rulings
+@requires_deck
+def test_the_stack_view_carries_the_named_cards_official_rulings():
+    from manamap.config import DECKS_DIR
+    checked = 0
+    if (DECKS_DIR / "heliod" / "stacks").is_dir():
+        section = sf.analyze("heliod", "002")["stacks"]["002"]["rulings"]
+        assert section["policy"].startswith("official WotC rulings only")
+        approach = section["cards"]["Approach of the Second Sun"]
+        assert len(approach["rulings"]) >= 1 and "note" not in approach
+        assert all(r["date"] and r["text"] for r in approach["rulings"])
+        assert "Howling Mine" in section["cards"] and "Swan Song" in section["cards"]
+        checked += 1
+    if (DECKS_DIR / "edgar-vampires" / "stacks").is_dir():
+        section = sf.analyze("edgar-vampires", "011")["stacks"]["011"]["rulings"]
+        bats = section["cards"]["Mirkwood Bats"]
+        assert bats["rulings"] == [] and bats["note"] == "no official rulings"
+        assert "Gifted Aetherborn" in section["cards"], "the stack object's annotation is stripped"
+        checked += 1
+    assert checked >= 1
