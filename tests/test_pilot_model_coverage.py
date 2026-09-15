@@ -308,3 +308,71 @@ def test_a_mass_animator_feeds_the_combat_channel_and_is_castable():
         assert "combat" in rows[name]["possible"], rows[name]
         assert rows[name]["state"] != "invisible", rows[name]
     assert checked >= 1, "neither mass animator is on the branch this test was written against"
+
+
+def test_a_channel_the_model_reads_is_reported_as_read():
+    """THE FOURTH DRIFT OF THIS MIRROR, and the file predicted it.
+
+    `channels_for` answers "does the model read this card at all"; `never_cast`
+    answers "would any loop play it". They are different questions and they
+    drift apart one channel at a time. `combat` records the third instance in a
+    comment — mass animation was consumed for eight days while reporting as
+    INVISIBLE on the branch built around it.
+
+    2026-09-14 made it four. `activated_draw`, `draw_multiplier`, `blood` and
+    `artifact_sac` were taught to `never_cast` in the commit that added them,
+    and not to this mirror. So Teferi's Ageless Insight reported as "no channel
+    reads it; only its mana cost is known" while the same model measured it at
+    **+2.95 extra cards by turn ten** on the deck built around it. Both figures
+    came off one run; they could not both be true.
+
+    THE FLEET TEST CANNOT CATCH THIS, which is why it needs its own. That test
+    asks whether a modelled effect is APPLIED — it walks the loops. This asks
+    whether an applied effect is REPORTED. A card can be read, cast, and acted
+    on while the coverage page calls it invisible, and the coverage page is what
+    a pilot reads before trusting a run.
+
+    Re-introduce the bug by dropping any of the four keys from `channels_for`.
+    """
+    from manamap.pilot.goldfish_profiles import blood_profile, draw_profile
+    from manamap.pilot.model_coverage import channels_for
+
+    def probe(**over):
+        base = {"is_land": False, "produces": 0, "reduces": 0,
+                "scales_with_colors": 0, "land_mana_bonus": 0,
+                "creature_bodies": 0, "bodies": 0, "tutor": False,
+                "treasure_trigger": None, "treasure_bonus": 0,
+                "treasure_doubler": False, "token_doubler": False,
+                "sac_outlet": None, "attack_enabler": None,
+                "combat": {}, "death": {}, "drain": {}, "event": {},
+                "blood": (0, None), "artifact_sac": {},
+                "draw": draw_profile({"name": "x", "oracle_text": "",
+                                      "type_line": "", "cmc": 0})}
+        base.update(over)
+        return channels_for(base)
+
+    def draw_of(text, type_line="Enchantment"):
+        return draw_profile({"name": "x", "oracle_text": text,
+                             "type_line": type_line, "cmc": 4})
+
+    # A DRAW DOUBLER IS READ — this is the card that exposed it.
+    assert "draw" in probe(draw=draw_of(
+        "If you would draw a card except the first one you draw in each of your "
+        "draw steps, draw two cards instead.")), (
+        "a draw doubler reports as invisible while the model doubles its draws")
+
+    # A DRAW YOU BUY IS READ.
+    assert "draw" in probe(draw=draw_of(
+        "{1}, {T}, Sacrifice this artifact: Draw a card.", "Artifact"))
+
+    # A BLOOD TOKEN IS A DISCARD ENGINE: its cost pitches and its effect draws.
+    assert "discard" in probe(blood=blood_profile(
+        {"name": "x", "type_line": "Creature",
+         "oracle_text": "When this creature enters, create a Blood token."}))
+
+    # AND A PAYOFF ON AN ARTIFACT SACRIFICE.
+    assert "discard" in probe(
+        artifact_sac={"per_artifact_sac_damage": 1, "unmodelled": None})
+
+    # The control: a vanilla rock still reads as mana and nothing else.
+    assert probe(produces=2) == {"mana"}

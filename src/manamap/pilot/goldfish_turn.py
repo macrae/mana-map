@@ -1244,11 +1244,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # Statuette and Mind Stone have no body
                                          # at all, so without this they are
                                          # read perfectly and never played.
-                                         model_discard and model_draw
+                                         # A DRAW YOU BUY AND A DRAW DOUBLER ARE
+                                         # DRAW CARDS, gated on `model_draw`
+                                         # ALONE. Requiring `model_discard` too
+                                         # was wrong and the fleet guard said so
+                                         # within the hour: heliod runs
+                                         # Alhammarret's Archive and Teferi's
+                                         # Ageless Insight with model_draw ON and
+                                         # model_discard OFF, so the model read
+                                         # both doublers, priced both, and no
+                                         # casting loop would ever put either on
+                                         # the table.
+                                         model_draw
                                          and (c["draw"]["activated_draw"]
-                                              or c["blood"][1]
+                                              or c["draw"]["draw_multiplier"] > 1),
+                                         # BLOOD NEEDS BOTH HALVES and keeps the
+                                         # pair: cracking one is a discard AND a
+                                         # draw, and a deck that has not opted
+                                         # into discard cannot be paid for it.
+                                         model_discard and model_draw
+                                         and (c["blood"][1]
                                               in ("etb", "per_opponent", "spell")
-                                              or c["draw"]["draw_multiplier"] > 1
                                               or any(v for k, v in c["artifact_sac"].items()
                                                      if k != "unmodelled"))))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):

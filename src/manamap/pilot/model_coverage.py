@@ -155,7 +155,22 @@ def channels_for(profile):
             # read by the loops and never listed here.
             "cast_draw", "x_draw_multiplier",
             # 2026-09-11: draw for greatest power, draw per type on entry.
-            "spell_draw_greatest_power", "etb_draw_per_type")):
+            "spell_draw_greatest_power", "etb_draw_per_type",
+            # THE FOURTH DRIFT OF THIS MIRROR, and the file predicted it two
+            # channels up. `activated_draw` and `draw_multiplier` shipped on
+            # 2026-09-14 and were taught to `never_cast` — which asks whether a
+            # card would be CAST — but not to `channels_for`, which asks whether
+            # the model reads it at all. So Teferi's Ageless Insight reported as
+            # INVISIBLE, "no channel reads it; only its mana cost is known",
+            # while the same model measured it at +2.95 extra cards by turn ten
+            # on the deck built around it.
+            #
+            # The fleet test cannot catch this one either, for the reason the
+            # combat comment gives: it asks whether a modelled effect is
+            # APPLIED, not whether an applied effect is REPORTED. Found by the
+            # deck-engineer, which read both figures in one sitting and said
+            # they could not both be true.
+            "activated_draw")) or (profile.get("draw") or {}).get("draw_multiplier", 1) > 1:
         found.add("draw")
     # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
     # or a draw. Named keys, never the dict's truthiness.
@@ -164,7 +179,15 @@ def channels_for(profile):
                                       # with the channel (2026-09-13) rather
                                       # than in the session that notices the
                                       # mirror has drifted for a third time.
-                                      "activated_wheel")) \
+                                      "activated_wheel",
+                                      # A Blood token is a DISCARD engine: its
+                                      # cost pitches a card and its effect draws
+                                      # one, which is what both commanders here
+                                      # charge for. Listed with the channel.
+                                      "activated_draw_discards")) \
+            or (profile.get("blood") or (0, None))[1] in _MODELLED_BLOOD_TRIGGERS \
+            or any(v for k, v in (profile.get("artifact_sac") or {}).items()
+                   if k != "unmodelled") \
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled"):
         found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
@@ -242,10 +265,17 @@ def never_cast(profile, flags):
     # channel rather than in the session that notices the deck never played
     # them -- the rule the `activated_wheel` line below was written under, and
     # the failure this file exists to catch.
+    # A DRAW YOU BUY AND A DRAW DOUBLER ARE DRAW CARDS. Gating them on
+    # `model_discard` as well was wrong: heliod runs two doublers with
+    # model_draw ON and model_discard OFF, so the model priced both and no loop
+    # would have cast either. Blood keeps the pair — cracking one is a discard
+    # AND a draw, and a deck that has not opted into discard cannot be paid.
+    if flags.get("model_draw") and (
+            _nonzero(profile.get("draw"), ("activated_draw",))
+            or ((profile.get("draw") or {}).get("draw_multiplier") or 1) > 1):
+        return False
     if flags.get("model_discard") and flags.get("model_draw") and (
             (profile.get("blood") or (0, None))[1] in _MODELLED_BLOOD_TRIGGERS
-            or _nonzero(profile.get("draw"), ("activated_draw",))
-            or ((profile.get("draw") or {}).get("draw_multiplier") or 1) > 1
             or any(v for k, v in (profile.get("artifact_sac") or {}).items()
                    if k != "unmodelled")):
         return False

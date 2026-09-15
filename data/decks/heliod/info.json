@@ -1361,89 +1361,89 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.003,
+          "rate": 0.0033,
           "ci95": [
-            0.0021,
-            0.0043
+            0.0024,
+            0.0046
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0023,
+          "rate": 0.0028,
           "ci95": [
-            0.0015,
-            0.0034
+            0.0019,
+            0.004
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0008,
+          "rate": 0.0011,
           "ci95": [
-            0.0004,
-            0.0016
+            0.0006,
+            0.002
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0007,
+          "rate": 0.0011,
           "ci95": [
-            0.0003,
-            0.0014
+            0.0006,
+            0.002
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0005,
+          "rate": 0.0006,
           "ci95": [
-            0.0002,
-            0.0012
+            0.0003,
+            0.0013
           ],
           "n": 10000
         },
         "9": {
+          "rate": 0.0003,
+          "ci95": [
+            0.0001,
+            0.0009
+          ],
+          "n": 10000
+        },
+        "10": {
           "rate": 0.0001,
           "ci95": [
             0.0,
             0.0006
           ],
           "n": 10000
-        },
-        "10": {
-          "rate": 0.0,
-          "ci95": [
-            0.0,
-            0.0004
-          ],
-          "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0091,
+        "rate": 0.0096,
         "ci95": [
-          0.0074,
-          0.0112
+          0.0079,
+          0.0117
         ],
         "n": 10000
       },
       "fleet": "below the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 792,
-        "hand_empty": 6,
-        "mana_short": 786
+        "stall_turns": 811,
+        "hand_empty": 14,
+        "mana_short": 797
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.5194,
+        "rate": 0.5202,
         "ci95": [
-          0.5096,
-          0.5292
+          0.5104,
+          0.53
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3247,
+      "missed_land_drop_rate": 0.327,
       "mulliganed": {
         "rate": 0.2619,
         "ci95": [
@@ -1457,16 +1457,16 @@
         "2": 2.14,
         "3": 3.396,
         "4": 4.273,
-        "5": 4.987,
-        "6": 5.666,
-        "7": 6.298,
-        "8": 6.923,
-        "9": 7.565,
-        "10": 8.196
+        "5": 4.985,
+        "6": 5.657,
+        "7": 6.279,
+        "8": 6.896,
+        "9": 7.534,
+        "10": 8.167
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.3226
+      "mana_stdev_turn_five": 1.3219
     },
     "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175"
   },
@@ -1524,7 +1524,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.221,
+          "value": 4.222,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1532,7 +1532,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 83,
+          "value": 82,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -1548,7 +1548,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)": {
-          "value": 26,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)' by turn six",
@@ -1556,7 +1556,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine plus a draw-triggered drain, both drawn": {
-          "value": 20,
+          "value": 19,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine plus a draw-triggered drain, both drawn' by turn six",
@@ -1572,7 +1572,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Free or cheap interaction held": {
-          "value": 71,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Free or cheap interaction held' by turn six",
@@ -1596,7 +1596,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod protected, or a flash grant that does not need him": {
-          "value": 53,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod protected, or a flash grant that does not need him' by turn six",
@@ -1612,7 +1612,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 36,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -1670,15 +1670,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.997,
-            "10": 8.241,
+            "10": 8.202,
             "2": 2.139,
             "3": 3.404,
             "4": 4.28,
-            "5": 5.01,
-            "6": 5.679,
-            "7": 6.319,
-            "8": 6.966,
-            "9": 7.612
+            "5": 5.008,
+            "6": 5.669,
+            "7": 6.296,
+            "8": 6.934,
+            "9": 7.574
           },
           "tier": "data",
           "weight": "detail",
@@ -1689,15 +1689,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.997,
-            "10": 0.506,
+            "10": 0.504,
             "2": 0.993,
             "3": 0.869,
             "4": 0.729,
-            "5": 0.603,
-            "6": 0.54,
-            "7": 0.518,
-            "8": 0.517,
-            "9": 0.509
+            "5": 0.601,
+            "6": 0.534,
+            "7": 0.51,
+            "8": 0.509,
+            "9": 0.507
           },
           "tier": "data",
           "weight": "detail",
@@ -1708,15 +1708,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.251,
-            "10": 3.256,
-            "2": 0.477,
-            "3": 0.754,
-            "4": 1.059,
-            "5": 1.53,
-            "6": 1.931,
-            "7": 2.279,
-            "8": 2.617,
-            "9": 2.938
+            "10": 3.225,
+            "2": 0.476,
+            "3": 0.751,
+            "4": 1.035,
+            "5": 1.469,
+            "6": 1.875,
+            "7": 2.235,
+            "8": 2.573,
+            "9": 2.901
           },
           "tier": "data",
           "weight": "detail",
@@ -1742,10 +1742,10 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 807,
+            "10": 753,
             "7": 5,
-            "8": 98,
-            "9": 435
+            "8": 87,
+            "9": 402
           },
           "tier": "data",
           "weight": "detail",
@@ -1761,12 +1761,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.221,
+    "commander_mean_cast_turn": 4.222,
     "commander_cast_by_turn_6_pct": 89,
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 83
+        "by_turn_6_pct": 82
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
@@ -1774,11 +1774,11 @@
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 25
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
-        "by_turn_6_pct": 20
+        "by_turn_6_pct": 19
       },
       {
         "label": "Heliod down with an asymmetric card engine",
@@ -1786,7 +1786,7 @@
       },
       {
         "label": "Free or cheap interaction held",
-        "by_turn_6_pct": 71
+        "by_turn_6_pct": 70
       },
       {
         "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
@@ -1798,7 +1798,7 @@
       },
       {
         "label": "Heliod protected, or a flash grant that does not need him",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 52
       },
       {
         "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
@@ -1806,21 +1806,21 @@
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 36
+        "by_turn_6_pct": 35
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.52,
+      "mean_kill_turn": 9.526,
       "median_kill_turn": 10,
       "kill_by_turn_6_pct": 0,
       "kill_by_turn_8_pct": 1,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 87,
+      "no_kill_by_max_turn_pct": 88,
       "kill_turn_histogram": {
-        "10": 807,
+        "10": 753,
         "7": 5,
-        "8": 98,
-        "9": 435
+        "8": 87,
+        "9": 402
       }
     }
   },

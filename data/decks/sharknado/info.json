@@ -23,12 +23,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -3576,7 +3574,7 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Two free commanders that tax every card that moves — Brallin charges 1 damage to each opponent per DISCARD, Shabraz charges a +1/+1 counter per DRAW — sitting behind seventeen wheels, so that emptying and refilling a hand bills the table twice for the same seven cards.",
+    "thesis": "Every card that moves is billed twice: a wheel empties the hand and refills it, Brallin taxes the half that leaves and Shabraz taxes the half that arrives, and thirteen more permanents stand at the same two tollbooths.",
     "critic": null,
     "lines": 10,
     "verified_lines": 0
@@ -3603,48 +3601,38 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does one Wheel of Fortune with Brallin, Skyshark Rider on the battlefield trigger Brallin once per card discarded — seven triggers, 7 damage to each opponent and seven +1/+1 counters — and does the same wheel then trigger Shabraz seven times on the redraw?",
+      "question": "Does Library of Leng's replacement — putting a discarded card on top of your library instead of into the graveyard — still trigger Brallin's 'whenever you discard a card'? If it does, a wheel under Library of Leng pays its full damage AND leaves the cards on top.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "With Brallin and Glint-Horn Buccaneer both on the battlefield, does a seven-card wheel deal 14 to each opponent — two independent triggers per discarded card — and does adding Psychosis Crawler on the redraw reach the declared 21?",
+      "question": "Resolve a stack for the base line: a seven-card discard wheel with Brallin on the battlefield. Confirm that each card discarded is a separate trigger, that the damage is dealt to each opponent per trigger, and that the counters are on Brallin before the refill draws resolve.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "If Library of Leng replaces a discard by putting the card on top of the library instead of into the graveyard, does Brallin still trigger, and do Rielle, Containment Construct and Currency Converter still see the event?",
+      "question": "Does Artist's Talent level 3 ('if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2') apply per Brallin trigger, making a seven-card wheel 21 damage a seat rather than 7?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Can Jace's Archivist be activated every turn for {U} and a tap to wheel the table, and does Brallin trigger for the pilot's own discarded hand each time, including when the pilot's hand is smaller than the largest hand discarded?",
+      "question": "Confirm the partner keyword grants: Shabraz's '{W/U}: Target Human gains flying' legally targets Brallin (Human Shaman) and Brallin's '{R}: Target Shark gains trample' legally targets Shabraz (Shark Bird).",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Does Niv-Mizzet, Parun's per-draw ping trigger on each of the seven cards a wheel draws, and may each ping be aimed at a different target?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "Does Glint-Horn Buccaneer's {1}{R}, Discard a card: Draw a card loop with Brallin into a repeatable ping while it is attacking, and what stops it?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "Does the simulator read Burning Inquiry, Khorvath's Fury and Wheel of Misfortune as hand-refill effects and as discards? model-coverage lists all three with a `target` channel and NO `discard` channel, while Wheel of Fortune, Windfall and Tolarian Winds carry `discard`.",
+      "question": "model-coverage reports Teferi's Ageless Insight as `invisible` (no channel reads it), while the card was measured at +2.95 extra cards and +3.80 commander counters by turn ten. Which is right — is there a doubler channel that model-coverage's channel table does not enumerate, or is the measured figure from a different run?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "How much of the deck's discard and ping output comes from cards model-coverage calls `invisible` — Artist's Talent, Astral Drift, Gossip's Talent, Mind's Eye, Rhystic Study and Waterbender Ascension — plus the DARK treasure and sacrifice channels?",
+      "question": "Re-run with model_treasures and model_sacrifice ON. Five of the seven declared ramp cards make Treasure, Generous Plunderer is DARK on the treasure channel, Treasure Map // Treasure Cove is DARK on sacrifice, and Smothering Tithe off a symmetrical wheel is potentially the deck's largest single mana event.",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Is the wheel or the commander the real ignition? The wheel group assembles 98.2% at mean turn 1.709, while Brallin arrives at mean turn 4.276 and Shabraz at 5.391.",
-      "settled_by": "goldfish"
+      "question": "How much is the deck losing by handing three opponents a fresh seven every wheel? The goldfish prices the tax and explicitly does not price the cost — it has no opponent turn and no opponent board.",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -3697,14 +3685,13 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `ivora-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge ivora-v1 --write`",
     "branch `recon-v1` needs 32 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 5 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
     "engine.json's critic verdict is None — `/analyze-engine sharknado`",
-    "open questions routed: goldfish ×3, resolve-stack ×6",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×4",
     "2 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
