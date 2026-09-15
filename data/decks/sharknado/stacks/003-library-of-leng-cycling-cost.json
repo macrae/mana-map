@@ -1,0 +1,394 @@
+{
+  "id": "003",
+  "slug": "library-of-leng-cycling-cost",
+  "deck": "sharknado",
+  "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3)",
+        "Library of Leng",
+        "Command Tower",
+        "Steam Vents",
+        "Hallowed Fountain",
+        "Sulfur Falls",
+        "Sol Ring"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x3"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Smothering Tithe",
+      "Sticky Fingers"
+    ],
+    "mana_available": "{0} — Sol Ring and Sulfur Falls were tapped to pay the cycling cost; the other lands are untapped but unspent",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Raugrin Triome's cycling ability",
+        "controller": "you",
+        "note": "activated from hand for {3}, Raugrin Triome discarded as part of the cost"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, main phase 1. You have just activated Raugrin Triome's cycling ability from your hand — 'Cycling {3} ({3}, Discard this card: Draw a card.)' — paying {3} and discarding Raugrin Triome as the cost. The ability is on the stack and no player has yet received priority since the activation. Raugrin Triome is deliberately not listed in any zone: whether it is in your graveyard or could instead be on top of your library is the question. Shabraz is NOT on the battlefield. Nothing on any board other than Library of Leng modifies discards, draws, damage or triggers.",
+      "assumptions": [
+        "Brallin is on the battlefield under your control with no counters",
+        "Library of Leng is on the battlefield under your control",
+        "no opponent responds at any point"
+      ]
+    },
+    "question": "Resolve this. Does Library of Leng's replacement — 'if an effect causes you to discard a card' — apply to Raugrin Triome, discarded as the COST of its own cycling ability, so that it could go on top of your library instead of the graveyard? And does Brallin's 'whenever you discard a card' ability trigger on that cost discard — if so, when is it put on the stack relative to the cycling ability, which resolves first, and how much damage does each opponent take?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Establish what is on the stack and what has already happened. Raugrin Triome's cycling ability was activated from hand; its activation cost was {3} plus 'Discard this card'. Both parts of that cost were paid during the activation process, before the ability was complete on the stack.",
+        "effect": "The cycling ability is the only object on the stack. Paying {3} (Sol Ring + Sulfur Falls tapped) and discarding Raugrin Triome were cost payments made in the activation step corresponding to 601.2h, and they cannot be undone or altered. The discard itself moved Raugrin Triome from your hand to your graveyard.",
+        "citations": [
+          {
+            "rule": "702.29a",
+            "quote": "Cycling is an activated ability that functions only while the card with cycling is in a player’s hand. “Cycling [cost]” means “[Cost], Discard this card: Draw a card.”"
+          },
+          {
+            "rule": "602.2",
+            "quote": "To activate an ability is to put it onto the stack and pay its costs, so that it will eventually resolve and have its effect."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "The player pays the total cost."
+          },
+          {
+            "rule": "701.9a",
+            "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Test Library of Leng's replacement — 'If an effect causes you to discard a card, discard it, but you may put it on top of your library instead of into your graveyard' — against the cost discard.",
+        "effect": "Library of Leng does NOT apply. The CR defines an effect as something that happens as a result of a spell or ability, created when that spell or ability resolves (or by a static ability). Discarding Raugrin Triome was a cost, paid during activation under 602.2 / 601.2h, not something that happened when a spell or ability resolved; the cycling ability has not resolved at all. Its trigger condition 'if an effect causes you to discard' is therefore unmet, and the 'instead' replacement never has an event to modify. Raugrin Triome is in your graveyard and cannot be placed on top of your library. The engine model's reading (engine.json open_questions[0], second half) is CONFIRMED on this point, and the official Library of Leng ruling agrees: you can't use it when you discard a card as a cost, because costs aren't effects.",
+        "citations": [
+          {
+            "rule": "609.1",
+            "quote": "An effect is something that happens in the game as a result of a spell or ability. When a spell, activated ability, or triggered ability resolves, it may create one or more one-shot or continuous effects. Static abilities may create one or more continuous effects."
+          },
+          {
+            "rule": "118.1",
+            "quote": "A cost is an action or payment necessary to take another action or to stop another action from taking place."
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Brallin's middle ability — 'Whenever you discard a card, put a +1/+1 counter on Brallin and it deals 1 damage to each opponent' — checks its trigger event against the cost discard.",
+        "effect": "It TRIGGERS. The trigger condition is simply 'you discard a card', and the cost payment was a discard (701.9a, step 1). Triggered abilities can trigger while an ability is being activated. Nothing happens yet: the ability has triggered but is not on the stack. The engine model's reading is CONFIRMED: a discard is a discard, regardless of whether it was a cost or an effect.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Activation completes. You had priority when you activated the cycling ability, so you would receive priority next. Before you do, the game checks state-based actions and then puts waiting triggered abilities on the stack.",
+        "effect": "No state-based action applies (every player is at 40, Brallin is a 3/3 with no damage, nothing is in a zone it should not be in). Brallin's triggered ability is put on the stack on top of the cycling ability — it becomes the topmost object. Cycling has no targets, so no targeting choices were made (the Brallin ruling's 'after you've chosen targets' clause is vacuous here). Stack, bottom to top: [0] Raugrin Triome's cycling ability, [1] Brallin's triggered ability. Then you receive priority.",
+        "citations": [
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event. If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass in succession with no responses. The top object — Brallin's triggered ability — resolves, following its instructions in the order written.",
+        "effect": "Brallin's ability resolves BEFORE the cycling ability, as the engine model reads and as Brallin's official ruling states. A +1/+1 counter is put on Brallin (now 4/4). Brallin deals 1 damage to each opponent; each opponent loses 1 life. Per seat: 40 -> 39. Pod total: 3 damage across three opponents. Those two figures are not interchangeable.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "After Brallin's ability resolves, you (the active player) receive priority; state-based actions are checked and nothing triggers. All players pass again. The cycling ability resolves.",
+        "effect": "No state-based action applies (opponents at 39, Brallin 4/4). No new trigger: the discard already produced its one Brallin trigger, and the draw below triggers nothing on this board. The cycling ability's single instruction, 'Draw a card', puts the top card of your library into your hand. You now hold three cards: Smothering Tithe, Sticky Fingers and the drawn card (unknown). Because Library of Leng did not apply, that drawn card is whatever was already on top of your library — it is NOT Raugrin Triome, which is in your graveyard.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The stack is empty. You receive priority in your first main phase; state-based actions are checked once more.",
+        "effect": "Nothing applies. Final board: Brallin 4/4 with one +1/+1 counter; Raugrin Triome in your graveyard; three cards in hand; Sol Ring and Sulfur Falls tapped, Command Tower, Steam Vents and Hallowed Fountain untapped; each opponent at 39.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Library of Leng does not reach a discard paid as a cost: a cost is paid during activation (602.2/601.2h) and is not an effect (609.1), so Raugrin Triome went to the graveyard (701.9a) and could not be put on top of the library. Brallin's 'whenever you discard a card' ability triggers on the cost discard (603.2, 117.2a), is put on the stack above the cycling ability the next time a player would receive priority (603.3, 704.3, 117.3c), and resolves first (405.5): one +1/+1 counter on Brallin and 1 damage to each opponent — 1 per seat (40 -> 39), 3 across the pod. Then the cycling ability resolves and you draw one card (121.1). Every part of the engine model's reading (engine.json open_questions[0], second half) is confirmed; both official rulings agree with the CR outcome.",
+      "you": {
+        "life": "unchanged (not stated in scenario)",
+        "board": [
+          "Brallin, Skyshark Rider (4/4, one +1/+1 counter)",
+          "Library of Leng",
+          "Command Tower (untapped)",
+          "Steam Vents (untapped)",
+          "Hallowed Fountain (untapped)",
+          "Sulfur Falls (tapped)",
+          "Sol Ring (tapped)"
+        ],
+        "hand": [
+          "Smothering Tithe",
+          "Sticky Fingers",
+          "<the card that was on top of your library — drawn by the cycling ability>"
+        ],
+        "graveyard": [
+          "Raugrin Triome"
+        ],
+        "library_top": "unchanged by this sequence; Raugrin Triome was never placed there",
+        "stack": []
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 39,
+          "board": [
+            "untapped lands x4"
+          ]
+        },
+        {
+          "seat": "opponent_2",
+          "life": 39,
+          "board": [
+            "untapped lands x5"
+          ]
+        },
+        {
+          "seat": "opponent_3",
+          "life": 39,
+          "board": [
+            "untapped lands x3"
+          ]
+        }
+      ],
+      "drain_arithmetic": {
+        "per_opponent": 1,
+        "pod_total": 3,
+        "opponents": 3
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "702.29a",
+        "status": "supported",
+        "note": "Full rule: cycling is an activated ability usable only from hand, whose cost is '[Cost], Discard this card'. Matches Raugrin Triome's oracle text in cards.json ('Cycling {3}')."
+      },
+      {
+        "step": 1,
+        "rule": "602.2",
+        "status": "supported",
+        "note": "Full rule also says 'Announcements and payments can't be altered after they've been made', which is what grounds the step's 'cannot be undone or altered'."
+      },
+      {
+        "step": 1,
+        "rule": "602.2b",
+        "status": "supported",
+        "note": "Routes activation through 601.2b-i; the activation cost is the analog of a mana cost."
+      },
+      {
+        "step": 1,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Total cost paid during activation. Full rule orders payments (non-random / non-library-moving first); the discard is hand-to-graveyard so nothing in the ordering clause bites. Sol Ring {C}{C} + Sulfur Falls = {3}, matches the scenario."
+      },
+      {
+        "step": 1,
+        "rule": "701.9a",
+        "status": "supported",
+        "note": "Defines the discard action as hand-to-graveyard. CAUTION for the writer: step 1 states the Triome 'moved to your graveyard' as an accomplished fact BEFORE step 2 tests the only thing that could have diverted it. The placement is justified only by steps 1+2 read together; the manual should not lift step 1's sentence on its own."
+      },
+      {
+        "step": 2,
+        "rule": "609.1",
+        "status": "supported",
+        "note": "Full rule: an effect is created when a spell/ability RESOLVES or by a static ability, and 'text itself is never an effect'. A cost paid at 601.2h is neither. 121.1's own full text ('as part of a cost or effect of a spell or ability') independently treats cost and effect as disjoint. Agrees with the Library of Leng ruling (2004-10-04): 'You can't use the Library of Leng ability to place a discarded card on top of your library when you discard a card as a cost, because costs aren't effects.'"
+      },
+      {
+        "step": 2,
+        "rule": "118.1",
+        "status": "supported",
+        "note": "Cost defined as the action necessary to take another action; the discard here is exactly that."
+      },
+      {
+        "step": 2,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Leng's 'instead' clause is a replacement effect. Wording caution: the step calls Leng's 'if an effect causes you to discard' its 'trigger condition' — replacement effects do not trigger (614.1: they watch for an event and replace it). The substance is right: the event (a discard) occurs but the effect's applicability condition is unmet, so nothing is replaced."
+      },
+      {
+        "step": 3,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "'You discard a card' matches the trigger event; the ability triggers and does nothing yet. Brallin oracle text verified against cards.json."
+      },
+      {
+        "step": 3,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Full rule explicitly names 'while ... an ability is being activated' and defers placement to the next time a player would receive priority (117.5), which is what step 4 does."
+      },
+      {
+        "step": 4,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": "Activating player receives priority afterward."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Quote is cut mid-sentence (', then the check is repeated' omitted) but the omitted tail does not change the claim: SBAs checked, then waiting triggers placed, before priority."
+      },
+      {
+        "step": 4,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Trigger goes on the stack as the topmost object the next time a player would receive priority — above the cycling ability. Cycling has no targets, so the Brallin ruling's 'after you've chosen targets' clause is correctly called vacuous."
+      },
+      {
+        "step": 5,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top object resolves first. Agrees with the Brallin ruling (2020-04-17): 'If you discard a card as a cost to cast a spell or activate an ability, Brallin's middle ability resolves before that spell or ability'."
+      },
+      {
+        "step": 5,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Instructions in order written: counter, then damage."
+      },
+      {
+        "step": 5,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "One +1/+1 counter, 3/3 -> 4/4. Agrees with the Brallin ruling: one counter per resolution regardless of opponents dealt damage."
+      },
+      {
+        "step": 5,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "1 damage to each opponent = 1 life lost per seat. Per-seat (40 -> 39) and pod total (3) stated separately and both match scenario-facts drain_arithmetic (3 opponents, 40 each)."
+      },
+      {
+        "step": 6,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player receives priority after the trigger resolves."
+      },
+      {
+        "step": 6,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Next pass in succession resolves the cycling ability."
+      },
+      {
+        "step": 6,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Draw = top card of library to hand; that card is not Raugrin Triome because step 2 holds. Draw triggers nothing: Shabraz is off the battlefield and Smothering Tithe is in hand."
+      },
+      {
+        "step": 7,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Priority returns to the active player with an empty stack."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Final SBA check before priority; nothing applies."
+      }
+    ],
+    "iterations": 1
+  }
+}

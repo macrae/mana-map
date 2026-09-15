@@ -1,0 +1,351 @@
+{
+  "id": "002",
+  "slug": "library-of-leng-windfall-discard",
+  "deck": "sharknado",
+  "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3)",
+        "Library of Leng",
+        "Command Tower",
+        "Steam Vents",
+        "Hallowed Fountain",
+        "Sulfur Falls",
+        "Sol Ring"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ],
+          "note": "holding 2 cards"
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ],
+          "note": "holding 5 cards"
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x3"
+          ],
+          "note": "holding 3 cards"
+        }
+      ]
+    },
+    "hand": [
+      "Smothering Tithe",
+      "Sticky Fingers",
+      "Arcane Signet",
+      "Treasure Map // Treasure Cove"
+    ],
+    "mana_available": "{C}{C} from Sol Ring and {U} or {R} from Sulfur Falls — untapped and unspent; nothing floating",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Windfall",
+        "controller": "you",
+        "note": "cast from hand for {2}{U}; the four cards listed in hand are what remains after casting it"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, main phase 1. Windfall is the only object on the stack and every player has passed priority on it. You hold exactly the four cards listed; opponents hold 2, 5 and 3 cards, so the greatest number discarded will be five. You intend to use Library of Leng on every card you discard. Shabraz is NOT on the battlefield. Nothing on any board other than Library of Leng modifies discards, draws, damage or triggers.",
+      "assumptions": [
+        "Brallin is on the battlefield under your control with no counters",
+        "Library of Leng is on the battlefield under your control and you choose its replacement for every card you discard",
+        "no card in any hand or on any board has madness or any other replacement effect for discarding or drawing",
+        "no opponent responds at any point"
+      ]
+    },
+    "question": "Resolve Windfall. When Library of Leng's replacement puts each of your four discarded cards on top of your library instead of into your graveyard, does each of them still count as a card you discarded for Brallin's 'whenever you discard a card' ability — state the number of Brallin triggers and the total damage each opponent takes — when and in what order the four cards are placed on top of your library, and exactly which cards you then draw when Windfall's draw resolves for five."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Windfall begins to resolve. Every player has passed priority with it the only object on the stack, so its controller (you) follows its instructions in the order written: first the discard, then the draw.",
+        "effect": "Each player discards their hand. Opponents 1, 2 and 3 discard 2, 5 and 3 cards respectively; each of those cards moves from its owner's hand to that player's graveyard. You discard your four cards: Smothering Tithe, Sticky Fingers, Arcane Signet and Treasure Map // Treasure Cove. No draw has happened yet.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+          },
+          {
+            "rule": "701.9a",
+            "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Library of Leng's static ability applies to each of your four discards as they happen. Its text — 'If an effect causes you to discard a card, discard it, but you may put it on top of your library instead of into your graveyard' — uses 'instead', so it is a replacement effect, and Windfall is an effect (not a cost), so it applies. You choose to apply it to all four cards.",
+        "effect": "Each of the four cards is still discarded — the replacement changes only the destination of the discarded card, not whether the discard occurs. The CR itself describes a discarded card that an effect puts somewhere other than the graveyard as having been discarded. The four cards go on top of your library at the same time, so you arrange them in any order you choose, and the order is not revealed. Official ruling agrees (Library of Leng, 2004-10-04: the ability 'replaces the normal discard action with a discard action that puts the card on the library instead of the graveyard', decided per card, order chosen by you).",
+        "citations": [
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "701.9c",
+            "quote": "If a card is discarded, but an effect causes it to be put into a hidden zone instead of into its owner’s graveyard without being revealed, all values of that card’s characteristics are considered to be undefined."
+          },
+          {
+            "rule": "401.4",
+            "quote": "If an effect puts two or more cards in a specific position in a library at the same time, the owner of those cards may arrange them in any order. That library’s owner doesn’t reveal the order in which the cards go into the library."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Brallin, Skyshark Rider's ability 'Whenever you discard a card' checks the modified event.",
+        "effect": "The modified event (a discard whose card went to the top of your library) is still a discard of a card, so it triggers Brallin. Four cards were discarded, so the ability triggers four times, once per card. Windfall is still resolving, so the four triggers wait: they are not put on the stack until the next time a player would receive priority. Official ruling agrees (Library of Leng: 'The discard triggers anything else that triggers on discards'; Brallin: a discard during a spell's resolution lets that spell finish resolving first).",
+        "citations": [
+          {
+            "rule": "614.6",
+            "quote": "If an event is replaced, it never happens. A modified event occurs instead, which may in turn trigger abilities."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Windfall's second instruction: each player draws cards equal to the greatest number of cards a player discarded this way.",
+        "effect": "Your four cards were discarded (the replacement did not undo that), so you discarded four; opponent 2 discarded five, the greatest. Every player draws five. Draws are performed one at a time, each taking the top card of the library, so your five draws take the four cards you just placed on top — in the order you arranged them — and then one more card, the card that was on top of your library before Windfall resolved. Your hand is Smothering Tithe, Sticky Fingers, Arcane Signet, Treasure Map // Treasure Cove plus that one unknown card. Each opponent draws five from their own library.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.2",
+            "quote": "Cards may only be drawn one at a time. If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Windfall finishes resolving and is put into your graveyard. Before you receive priority, the game checks state-based actions and then puts the waiting triggered abilities on the stack.",
+        "effect": "No state-based action applies (every player is at 40 life; no creature has lethal damage). You put your four Brallin triggers on the stack in any order you choose (they are identical, so the order does not matter). The check repeats, nothing further triggers, and you, as the active player, receive priority.",
+        "citations": [
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+          },
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "All players pass priority on each Brallin trigger in turn (scenario assumption: no opponent responds). The four triggers resolve one at a time, top of stack first.",
+        "effect": "Each resolution puts one +1/+1 counter on Brallin and Brallin deals 1 damage to each opponent, and each opponent loses 1 life per point of damage. After all four: Brallin has four +1/+1 counters and is 7/7; each opponent has taken 4 damage and is at 36 life (per seat 4; across the pod 12 — the two figures are not interchangeable). A state-based action check after each resolution finds no player at 0 or less life, so no one loses. You receive priority in your main phase with an empty stack.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "CONFIRMED in every part. Library of Leng is a replacement effect that changes where a discarded card goes, not whether it was discarded (614.1a, 701.9c, 614.6): all four of your Windfall discards still count, Brallin triggers four times (603.2c), the four cards go on top of your library at the moment of the discard in the order you choose (401.4), and Windfall's draw for five — five because opponent 2 discarded the most — draws those four back plus one more card from beneath them (608.2c, 121.1, 121.2). The triggers resolve after Windfall finishes (603.3, 704.3): 4 damage to each opponent, 12 across the pod, four +1/+1 counters on Brallin. Domain kept: no cost discards, no Shabraz, no responses. Official rulings on Library of Leng and Brallin agree and were the starting point; Windfall has no official rulings.",
+      "you": {
+        "life": 40,
+        "battlefield": [
+          "Brallin, Skyshark Rider (7/7, four +1/+1 counters)",
+          "Library of Leng",
+          "Command Tower",
+          "Steam Vents",
+          "Hallowed Fountain",
+          "Sulfur Falls",
+          "Sol Ring"
+        ],
+        "hand": [
+          "Smothering Tithe",
+          "Sticky Fingers",
+          "Arcane Signet",
+          "Treasure Map // Treasure Cove",
+          "one unknown card — the card that was on top of your library before Windfall resolved"
+        ],
+        "graveyard": [
+          "Windfall"
+        ],
+        "library": "four cards shorter at the top than before; the four placed cards were all drawn back",
+        "mana_available": "{C}{C} from Sol Ring and {U} or {R} from Sulfur Falls — unchanged",
+        "stack": []
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 36,
+          "hand": "5 cards (drew 5)",
+          "graveyard": "the 2 cards discarded to Windfall"
+        },
+        {
+          "seat": "opponent_2",
+          "life": 36,
+          "hand": "5 cards (drew 5)",
+          "graveyard": "the 5 cards discarded to Windfall"
+        },
+        {
+          "seat": "opponent_3",
+          "life": 36,
+          "hand": "5 cards (drew 5)",
+          "graveyard": "the 3 cards discarded to Windfall"
+        }
+      ],
+      "brallin_triggers": 4,
+      "damage_per_opponent": 4,
+      "damage_pod_total": 12
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Full rule: instructions followed in order written, replacement effects may modify them. Establishes discard-then-draw ordering and the hook for Library of Leng."
+      },
+      {
+        "step": 1,
+        "rule": "701.9a",
+        "status": "supported",
+        "note": "Defines the default discard (hand to graveyard) that the opponents' 2/5/3 discards follow. Correct as the unmodified event."
+      },
+      {
+        "step": 2,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Library of Leng's oracle text (cards.json) uses 'instead'; 614.1a makes it a replacement effect. Windfall's discard is an effect, not a cost; agrees with the 2004-10-04 ruling 'The discard is forced because it is an effect' and 'costs aren't effects'."
+      },
+      {
+        "step": 2,
+        "rule": "701.9c",
+        "status": "supported",
+        "note": "Whole rule read: 'If a card is discarded, but an effect causes it to be put into a hidden zone instead of into its owner's graveyard' — the CR itself treats such a card as discarded. The card's own text ('discard it, but you may put it on top of your library instead') is the primary basis; 701.9c corroborates. Its consequence (characteristics undefined) is inert here: neither Brallin nor Windfall references a discarded card's characteristics."
+      },
+      {
+        "step": 2,
+        "rule": "401.4",
+        "status": "supported",
+        "note": "Windfall's 'each player discards their hand' is one event, so the four redirected cards reach the top simultaneously; owner orders them and does not reveal the order. Agrees with the 2004-10-04 ruling ('You get to decide the order the cards are placed on the library if more than one goes there'; 'the card is not revealed')."
+      },
+      {
+        "step": 3,
+        "rule": "614.6",
+        "status": "supported",
+        "note": "Modified event occurs instead and may trigger abilities. The modified event is by Library of Leng's own wording a discard. Agrees with ruling 'The discard triggers anything else that triggers on discards.'"
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One event containing four discards; ability triggers once per occurrence. Four triggers is correct — the rule's own example (destroy all lands) is the same shape."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Triggers go on the stack the next time a player would receive priority, i.e. after Windfall finishes. Agrees with Brallin ruling 2020-04-17: 'If you discard a card while a spell or ability is resolving, that spell or ability finishes resolving before Brallin's triggered ability does.'"
+      },
+      {
+        "step": 4,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Draw follows discard in the order written."
+      },
+      {
+        "step": 4,
+        "rule": "121.2",
+        "status": "supported",
+        "note": "Five individual draws, so the four placed cards come off in the arranged order, then one more."
+      },
+      {
+        "step": 4,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Each draw is the top card. Count of five is correct: opponent 2 discarded 5, the greatest; your four are immaterial to the maximum, so the draw count does not even depend on the redirect. Opponents' hands of 5 each in final_state are correct."
+      },
+      {
+        "step": 5,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Windfall to owner's graveyard as the final part of resolution."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check first, then waiting triggers go on the stack, then check repeats. No SBA applies: all players at 40, Brallin 3/3 undamaged."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Brallin's triggers are not triggering on another ability, so they are placed in the first pass, in the order their controller chooses. Only one player has triggers, so APNAP is moot."
+      },
+      {
+        "step": 5,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player (you) receives priority after Windfall resolves; consistent with 117.5's SBA-then-triggers sequence the step narrates."
+      },
+      {
+        "step": 6,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Brallin has no infect; 1 damage per resolution per opponent = 1 life lost. Four resolutions: 4 per seat, 12 across the pod, each 40 -> 36 — scenario-facts drain_arithmetic (3 opponents, 120 total) agrees and the resolution keeps the two figures separate. Brallin 3/3 + four counters = 7/7 agrees with the ruling 'only one +1/+1 counter each time it resolves'."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Checked after each resolution; 36 > 0, no player loses."
+      },
+      {
+        "step": 6,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "You receive priority after each trigger resolves, ending with an empty stack in your main phase."
+      }
+    ],
+    "iterations": 1
+  }
+}
