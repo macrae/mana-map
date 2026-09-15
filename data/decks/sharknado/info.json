@@ -23,12 +23,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -4529,9 +4527,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Every card that moves is billed twice — Brallin taxes the half of a wheel that LEAVES the hand and Shabraz taxes the half that ARRIVES — and fourteen more permanents stand at one of those two tollbooths, three of them only once a turn.",
+    "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
     "critic": "pass",
-    "lines": 10,
+    "lines": 15,
     "verified_lines": 0
   },
   "diagnosis": null,
@@ -4555,38 +4553,48 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Library of Leng's replacement — putting a discarded card on top of your library instead of into the graveyard — still trigger Brallin's 'whenever you discard a card'? If it does, a wheel under Library of Leng pays its full damage AND leaves the cards on top.",
+      "question": "Resolve the base line: a seven-card discard wheel (Windfall) with Brallin on the battlefield. Confirm that each card discarded is a SEPARATE trigger, that each deals 1 to EACH opponent, and settle the sequencing: the model's reading is that no player receives priority inside Windfall's resolution (CR 603.3), so the seven Brallin triggers and the seven Shabraz triggers all go on the stack together AFTER the refill is drawn, ordered by their controller — Brallin's counters are NOT on him while the seven are drawn.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Resolve a stack for the base line: a seven-card discard wheel with Brallin on the battlefield. Confirm that each card discarded is a separate trigger, that the damage is dealt to each opponent per trigger, and that the counters are on Brallin before the refill draws resolve.",
+      "question": "Does Library of Leng's replacement — a discarded card goes on top of your library instead of into the graveyard — still count as a discard for Brallin, Ivora, Rielle, Glint-Horn Buccaneer and Magmakin Artillerist? And confirm its scope: 'if an EFFECT causes you to discard' does not reach a discard paid as a COST (cycling, a Blood crack, Jaxis).",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Does Artist's Talent level 3 ('if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2') apply per Brallin trigger, making a seven-card wheel 21 damage a seat rather than 7?",
+      "question": "Does Artist's Talent level 3 ('if a source you control would deal noncombat damage to an opponent, it deals that much damage plus 2 instead') apply to EACH Brallin trigger, so a seven-card wheel reads 21 to a seat rather than 7 — and does it apply once to Magmakin Artillerist's single 'that much damage' trigger?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Confirm the partner keyword grants: Shabraz's '{W/U}: Target Human gains flying' legally targets Brallin (Human Shaman) and Brallin's '{R}: Target Shark gains trample' legally targets Shabraz (Shark Bird).",
+      "question": "Cracking one Blood token: is the discard (a cost) a Brallin and an Ivora trigger, and is the draw a Shabraz trigger, from the single activation?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Re-run the Teferi's Ageless Insight measurement as a COMMITTED sweep: control = the current 99 with the Insight cut, arm = the current 99, same seed and game count. The +2.95 extra cards / +3.80 commander counters pair exists only as prose in branches/ivora-v1/branch.json and was measured against a baseline list that is committed nowhere.",
+      "question": "Confirm the partner keyword grants are legal: Shabraz's '{W/U}: Target Human gains flying' targeting Brallin (Human Shaman), and Brallin's '{R}: Target Shark gains trample' targeting Shabraz (Shark Bird).",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Is a cycling cost's discard a Brallin trigger and its draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Is the deck under-built on Blood? Ivora is the only Blood source in the 99; the channel exists and is measured at one card. Sweep the Blood makers available in the identity against the current list.",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Re-run with model_treasures and model_sacrifice ON. Five of the seven declared ramp cards make Treasure, Generous Plunderer is DARK on the treasure channel, Treasure Map // Treasure Cove is DARK on sacrifice, and Smothering Tithe off a symmetrical wheel is potentially the deck's largest single mana event.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "How much is the deck losing by handing three opponents a fresh seven every wheel? The goldfish prices the tax and explicitly does not price the cost — it has no opponent turn and no opponent board.",
+      "question": "What does the deck lose by giving three opponents a fresh seven every wheel? Six of this stage's twelve one-shot wheels are symmetric, and the model prices the tax on their refill while explicitly not pricing the cost — it has no opponent turn and no opponent board.",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "mana_analysis.json credits Gleaming Bastion, Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of them in sources.gated, although each one's blue mode is gated on a basic land or a Plains/Island/Mountain on the battlefield and the 99 holds zero basics and seven typed lands. Is the U figure (32 land sources, on-curve 0.785 ungated) an upper bound by four sources, and should land_colors(card, pool=...) read these pool-dependent gates the way it already reads a fetchland?",
+      "settled_by": "goldfish"
     }
   ],
   "simulation": {
@@ -4639,14 +4647,13 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
     "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
     "branch `recon-v1` needs 38 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
-    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×4",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
     "3 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
