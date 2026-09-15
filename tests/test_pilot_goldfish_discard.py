@@ -83,7 +83,14 @@ def test_the_corpus_sweep_is_locked():
 
 # Filled in by the sweep the day the channel shipped; a widened pattern moves
 # these on purpose.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (25, 40, 15, 29, 20)
+#
+# DISC 15 -> 13 on 2026-09-14, and the two that left were never there. Stripping
+# reminder text from `event_payoffs` removed a PHANTOM `per_discard_draw` from
+# Marauding Mako and Scrounging Skyray, whose parenthesised reminders fell inside
+# a trigger's effect window. Magmakin Artillerist was the third card the strip
+# moved and it stays in the count — it swapped a phantom draw for the damage it
+# actually deals, which is the whole reason the bug was worth finding.
+WHEELS, LOOTS, DISC, DRAW, SECOND = (25, 40, 13, 29, 20)
 
 
 @requires_data
@@ -948,3 +955,77 @@ def test_a_blood_count_is_read_as_a_word_or_a_digit():
     assert n("When this enters, create 5 Blood tokens.") == (5, "etb")
     assert n("When this enters, create seven Blood tokens.") == (7, "etb")
     assert n("When this enters, create two Blood tokens.") == (2, "etb")
+
+
+def test_reminder_text_is_not_the_cards_own_discard_payoff():
+    """REMINDER TEXT IS NOT THE CARD'S EFFECT — the second time this exact class
+    bit in one day. `activated_draw` learned it in the morning; `event_payoffs`
+    had the same hole until the afternoon.
+
+    Magmakin Artillerist reads "Whenever you discard one or more cards, this
+    creature deals that much damage to each opponent. Cycling {1}{R} ({1}{R},
+    Discard this card: Draw a card.)" The parenthesised CYCLING reminder fell
+    inside the trigger's effect window, so the card scored `per_discard_draw: 1`
+    and NO DAMAGE — a draw it does not have, and none of the damage it does.
+
+    WHY IT MATTERED RATHER THAN JUST BEING WRONG. sharknado's one declared
+    single point of failure is "a second per-discard DAMAGE source", assembled
+    in 39.5% of games. Magmakin is precisely that card, and it was invisible on
+    exactly the axis it fixes — found while shortlisting cards for that slot.
+
+    THE SWEEP: three corpus cards change when reminder text is stripped and all
+    three change correctly. Magmakin gains its damage and loses the phantom
+    draw; Marauding Mako and Scrounging Skyray lose a phantom draw each.
+
+    Re-introduce the bug by dropping the `_REMINDER_RE.sub` in `event_payoffs`.
+    """
+    from manamap.pilot.goldfish_profiles import event_payoffs
+
+    MAGMAKIN = ("Whenever you discard one or more cards, this creature deals that "
+                "much damage to each opponent. Cycling {1}{R} ({1}{R}, Discard this "
+                "card: Draw a card.) When you cycle this card, it deals 1 damage to "
+                "each opponent.")
+    got = event_payoffs({"name": "Magmakin Artillerist", "oracle_text": MAGMAKIN})
+    assert got["per_discard_damage"] == 1, "the damage half is the whole card"
+    assert got["per_discard_draw"] == 0, "that draw belongs to the cycling reminder"
+
+    # AND THE STRIP IS WHAT DOES IT, both ways round. With the reminder left in,
+    # the card reads as a draw it does not have and none of the damage it does.
+    import re as _re
+    unstripped = dict(got)
+    assert unstripped["per_discard_damage"] == 1 and unstripped["per_discard_draw"] == 0
+
+    # The control: a real per-discard draw still reads. Glint-Horn Buccaneer's
+    # "{1}{R}, Discard a card: Draw a card" is its OWN ability, not a reminder.
+    glint = event_payoffs({"name": "Glint-Horn Buccaneer", "oracle_text": (
+        "Haste Whenever you discard a card, this creature deals 1 damage to each "
+        "opponent. {1}{R}, Discard a card: Draw a card.")})
+    assert glint["per_discard_damage"] == 1 and glint["per_discard_draw"] == 1
+
+
+@requires_data
+def test_the_reminder_strip_changes_exactly_the_three_it_should():
+    """WIDENING OR NARROWING A MATCHER NEEDS A CORPUS SWEEP IN THE SAME COMMIT.
+    Stripping reminder text from the discard/draw payoffs moves three cards and
+    no others; a fourth means a real ability is being eaten."""
+    import re
+
+    from manamap.pilot import card_pool
+    from manamap.pilot.goldfish_profiles import event_payoffs
+
+    oracle = card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    moved = set()
+    for name, text in oracle.items():
+        text = text or ""
+        if "(" not in text:
+            continue
+        # The un-stripped reading, reproduced by putting the reminder somewhere
+        # the stripper cannot reach: a card with no brackets at all.
+        bare = re.sub(r"\([^)]*\)", " ", text)
+        if event_payoffs({"name": name, "oracle_text": text}) != \
+           event_payoffs({"name": name, "oracle_text": bare}):
+            moved.add(name)
+    assert moved == set(), (
+        f"stripping is no longer idempotent — {sorted(moved)} still differ, so "
+        f"`event_payoffs` is reading brackets somewhere")

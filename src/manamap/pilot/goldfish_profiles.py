@@ -740,7 +740,23 @@ def event_payoffs(card):
     DRAWS on a draw (Curiosity-class loops) is deliberately not read: a
     goldfish with no cap would draw its whole library and call it steam.
     """
-    text = card.get("oracle_text", "") or ""
+    # REMINDER TEXT IS NOT THE CARD'S OWN EFFECT, and here it was being read as
+    # one. `activated_draw` learned this on 2026-09-14 and this function did not:
+    # Magmakin Artillerist is "Whenever you discard one or more cards, this
+    # creature deals that much damage to each opponent. Cycling {1}{R} ({1}{R},
+    # Discard this card: Draw a card.)" — and the parenthesised CYCLING reminder
+    # fell inside the trigger's effect window, so the card read as
+    # `per_discard_draw: 1` and NO DAMAGE AT ALL. It is a per-discard damage
+    # source on a deck whose one declared single point of failure is "a second
+    # per-discard damage source" at 39.5%, and it was invisible on exactly that
+    # axis while claiming a draw it does not have.
+    #
+    # THE SWEEP: three corpus cards change when reminder text is stripped, and
+    # all three change correctly — Magmakin gains its damage and loses the
+    # phantom draw; Marauding Mako and Scrounging Skyray lose a phantom draw
+    # each. Parenthesised text in an oracle is always reminder text, so the
+    # strip is safe by construction.
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
     out = {"per_discard_damage": 0, "per_discard_counter": 0,
            "per_discard_draw": 0, "per_discard_token_power": 0,
            "per_draw_damage": 0, "per_draw_counter": 0,
