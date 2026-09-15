@@ -4524,7 +4524,7 @@
     "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
     "critic": "pass",
     "lines": 15,
-    "verified_lines": 0
+    "verified_lines": 1
   },
   "diagnosis": null,
   "audit": {
@@ -4545,11 +4545,6 @@
     "latest": null
   },
   "open_questions": [
-    {
-      "from": "engine",
-      "question": "Resolve the base line: a seven-card discard wheel (Windfall) with Brallin on the battlefield. Confirm that each card discarded is a SEPARATE trigger, that each deals 1 to EACH opponent, and settle the sequencing: the model's reading is that no player receives priority inside Windfall's resolution (CR 603.3), so the seven Brallin triggers and the seven Shabraz triggers all go on the stack together AFTER the refill is drawn, ordered by their controller — Brallin's counters are NOT on him while the seven are drawn.",
-      "settled_by": "resolve-stack"
-    },
     {
       "from": "engine",
       "question": "Does Library of Leng's replacement — a discarded card goes on top of your library instead of into the graveyard — still count as a discard for Brallin, Ivora, Rielle, Glint-Horn Buccaneer and Magmakin Artillerist? And confirm its scope: 'if an EFFECT causes you to discard' does not reach a discard paid as a COST (cycling, a Blood crack, Jaxis).",
@@ -4647,7 +4642,7 @@
     "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
     "branch `recon-v1` needs 38 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
-    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6",
+    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×5",
     "3 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
