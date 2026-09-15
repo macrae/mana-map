@@ -23,11 +23,9 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 10,
+    "complete": 11,
     "of": 18,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "invalid": [
       "engine"
     ],
@@ -3700,15 +3698,14 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `ivora-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge ivora-v1 --write`",
     "branch `recon-v1` needs 32 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 5 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
     "engine.json's critic verdict is None — `/analyze-engine sharknado`",
-    "open questions routed: goldfish ×3, resolve-stack ×6"
+    "open questions routed: goldfish ×3, resolve-stack ×6",
+    "2 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
