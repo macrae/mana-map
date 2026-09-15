@@ -91,6 +91,10 @@ NOT_A_CHANNEL = {
 #: the flag says, so it cannot be DARK on this channel. Kept beside CHANNELS
 #: rather than imported from goldfish so that adding a trigger there without
 #: teaching this module about it fails a test instead of going quiet.
+#: The Blood triggers the turn loop actually credits. `combat` and
+#: `unmodelled` are READ and not acted on -- a Blood made by connecting is
+#: one a blocker can prevent, and this model has no blockers.
+_MODELLED_BLOOD_TRIGGERS = ("etb", "per_opponent", "spell")
 _MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast"})
 
 def _nonzero(profile, keys):
@@ -233,6 +237,18 @@ def never_cast(profile, flags):
         return False
     # A wheel is selected by the draw loop under model_discard; a payoff
     # permanent by the engine loop.
+    # A BLOOD MAKER IS CAST FOR THE BLOOD, and a rock that cashes itself in for
+    # a card is cast for the card. Both ship here in the same commit as their
+    # channel rather than in the session that notices the deck never played
+    # them -- the rule the `activated_wheel` line below was written under, and
+    # the failure this file exists to catch.
+    if flags.get("model_discard") and flags.get("model_draw") and (
+            (profile.get("blood") or (0, None))[1] in _MODELLED_BLOOD_TRIGGERS
+            or _nonzero(profile.get("draw"), ("activated_draw",))
+            or ((profile.get("draw") or {}).get("draw_multiplier") or 1) > 1
+            or any(v for k, v in (profile.get("artifact_sac") or {}).items()
+                   if k != "unmodelled")):
+        return False
     if flags.get("model_discard") and (
             _nonzero(profile.get("draw"), ("wheel_draws", "activated_wheel"))
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled")):

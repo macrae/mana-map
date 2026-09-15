@@ -315,10 +315,27 @@ def test_the_wheel_fires_before_anything_joins_the_battlefield():
 def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     """DRIVEN THROUGH THE SIMULATOR, and proved by RE-INTRODUCING THE BUG.
 
-    sharknado at 4,000 games, seed 3, read 10.317 extra cards by turn ten with
+    sharknado at 4,000 games, seed 3, reads 14.320 extra cards by turn ten with
     the three activated wheels invisible. Blinding the channel must return
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
+
+    RE-BASELINED TWICE ON 2026-09-14 — 10.317, then 12.020, now 14.320 — and
+    each move is the point rather than a nuisance. The second was the DECK
+    changing under the test rather than the model: Elesh Norn and Goblin
+    Engineer came out for Teferi's Ageless Insight and Ivora, and Teferi's
+    DOUBLES every draw after the draw step, so the floor this test stands on
+    rose again. The wheels are worth 5.542 cards by turn ten against 4.582
+    before the swap, which is the doubler multiplying what they already drew.
+
+    The first was the model:  The `activated_draw` channel added that day reads a draw you BUY
+    — "{1}, {T}, Sacrifice this artifact: Draw a card" — across 357 corpus
+    cards, several of which sharknado runs. Those draws are real and were
+    previously scored as nothing, so the floor this test stands on rose by 1.703
+    cards. What the test asserts is unchanged: with the wheels blinded the model
+    must return the floor EXACTLY, so the wheels' own contribution is the whole
+    of the difference. That contribution is 4.582 cards by turn ten, against
+    4.5 before — the wheels did not get better, the control got honest.
     """
     import copy
 
@@ -340,9 +357,9 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 3, f"sharknado should hold three activated wheels, not {checked}"
-    assert t10(blind) == 10.317, "the pre-change figure is not being recovered"
-    assert with_wheels > 14, (
-        f"the activated wheels are worth ~4.5 cards by turn ten; got {with_wheels}")
+    assert t10(blind) == 14.320, "the pre-change figure is not being recovered"
+    assert with_wheels > 19, (
+        f"the activated wheels are worth ~5.5 cards by turn ten; got {with_wheels}")
 
 
 @requires_data
@@ -547,3 +564,387 @@ def test_a_wheel_refills_the_opponent_and_that_is_part_of_the_tax():
     assert with_wheels > without_wheels + 0.4, (
         f"the tax gains {with_wheels:.2f} with wheels and {without_wheels:.2f} "
         f"without — the opponent's share of a wheel is not being counted")
+
+
+# ── The draw you BUY, and the Blood token ─────────────────────────────────
+#
+# A draw attached to an ETB, a cast, an upkeep or a wheel was modelled; a draw
+# you pay for by SACRIFICING the permanent was not, so "{1}, {T}, Sacrifice this
+# artifact: Draw a card" returned an all-zero profile with `unmodelled` still
+# None — the one value that means "nothing to see here". Measured before the
+# channel existed: 405 corpus cards carry a sacrifice-gated draw and
+# `draw_profile` read zero draw for 400 of them, 99%.
+#
+# A BLOOD TOKEN IS THAT ABILITY WITH A DISCARD IN THE COST, which is why the
+# two shipped together: "{1}, {T}, Discard a card, Sacrifice this token: Draw a
+# card". It is card-NEUTRAL — one leaves the hand, one arrives — so it makes no
+# card advantage at all. What it makes is EVENTS, and a deck whose commanders
+# charge for a discard AND for a draw is paid twice for every token it cracks.
+
+
+def _art(name, text, type_line="Artifact", mana_cost="{2}"):
+    return goldfish.draw_profile({"name": name, "oracle_text": text,
+                                  "type_line": type_line, "mana_cost": mana_cost})
+
+
+BLOOD_TEXT = "{1}, {T}, Discard a card, Sacrifice this token: Draw a card."
+
+
+def test_a_draw_you_buy_is_read_with_its_cost_and_its_discard():
+    """THE CARD THE CHANNEL EXISTS FOR, in its two shapes. Re-introduce the bug
+    by deleting the `activated_draw` branch in `draw_profile` and Mind Stone is
+    a rock with no text on it again."""
+    stone = _art("Mind Stone", "{T}: Add {C}. {1}, {T}, Sacrifice this artifact: Draw a card.")
+    assert stone["activated_draw"] == 1
+    assert stone["activated_draw_cost"] == 1, "{1}; the tap is not mana"
+    assert stone["activated_draw_once"] is True, "it eats its own source"
+    assert stone["activated_draw_sacs_self"] is True
+    assert stone["activated_draw_discards"] == 0
+    assert stone["unmodelled"] is None, "read, so it must not also be named unreadable"
+
+    blood = _art("Blood token", BLOOD_TEXT, type_line="Artifact Token")
+    assert blood["activated_draw"] == 1
+    assert blood["activated_draw_cost"] == 1
+    assert blood["activated_draw_discards"] == 1, "the discard is part of the COST"
+    assert blood["activated_draw_once"] is True
+
+
+def test_a_free_sacrifice_to_draw_is_still_a_cost():
+    """Commander's Sphere is "Sacrifice this artifact: Draw a card" — no mana at
+    all. `activated_wheel` skips a cost with no mana symbol, and copying that
+    rule here would have dropped the whole free-sacrifice family."""
+    got = _art("Commander's Sphere",
+               "{T}: Add one mana of any color in your commander's color identity. "
+               "Sacrifice this artifact: Draw a card.")
+    assert got["activated_draw"] == 1
+    assert got["activated_draw_cost"] == 0
+    assert got["activated_draw_once"] is True
+
+
+def test_the_loot_rider_on_an_activated_draw_is_counted_as_a_discard():
+    """"{T}: Draw a card, then discard a card" — Thought Courier. The discard is
+    in the EFFECT rather than the cost, and to this model both are the same
+    event: a card leaves the hand, which is the whole of what Brallin charges
+    for. Summed into one field because a reader who must add two will add one."""
+    got = _art("Thought Courier", "{T}: Draw a card, then discard a card.",
+               type_line="Creature — Human Wizard")
+    assert got["activated_draw"] == 1
+    assert got["activated_draw_discards"] == 1
+    assert got["activated_draw_once"] is False, "{T} alone is payable every turn"
+
+
+def test_reminder_text_describes_the_token_not_the_card():
+    """THE DOUBLE COUNT THIS WOULD HAVE SHIPPED. Every Blood maker carries the
+    token's ability in brackets — "(It's an artifact with "{1}, {T}, Discard a
+    card, Sacrifice this token: Draw a card.")" — so Voldaren Epicure read as
+    drawing a card ITSELF, and would have been scored once here and again as the
+    Blood it makes. Every Clue and Food maker has the same shape.
+
+    Re-introduce the bug by dropping the `_REMINDER_RE.sub` in `activated_draw`.
+    """
+    epicure = _art("Voldaren Epicure",
+                   "When this creature enters, it deals 1 damage to each opponent. "
+                   "Create a Blood token. (It's an artifact with \"" + BLOOD_TEXT + "\")",
+                   type_line="Creature — Vampire", mana_cost="{R}")
+    assert epicure["activated_draw"] == 0, "that ability belongs to the TOKEN"
+    assert epicure["activated_draw_discards"] == 0
+
+    clue = _art("Hard Evidence",
+                "Create a 0/3 blue Crab creature token. Investigate. (Create a Clue "
+                "token. It's an artifact with \"{2}, Sacrifice this token: Draw a card.\")",
+                type_line="Sorcery", mana_cost="{U}")
+    assert clue["activated_draw"] == 0
+
+
+def test_a_cost_this_model_cannot_price_is_refused_and_named():
+    """ENERGY AND {X} BOTH READ AS FREE through `_activation_mana`, and free is
+    the dangerous direction. Era of Innovation is "Pay six {E}, Sacrifice this
+    enchantment: Draw three cards" and Bargaining Table is "{X}, {T}: Draw a
+    card" where X is an opponent's hand size — read naively they are a free
+    draw-three and a free repeatable draw engine. Both found by reading the tail
+    of the corpus sweep, which is what the tail is for."""
+    era = _art("Era of Innovation",
+               "Whenever an artifact or Artificer you control enters, you may pay {1}. "
+               "If you do, you get {E}{E} (two energy counters). "
+               "Pay six {E}, Sacrifice this enchantment: Draw three cards.",
+               type_line="Enchantment")
+    assert era["activated_draw"] == 0
+    assert era["unmodelled"] == "Era of Innovation", "refused must still be NAMED"
+
+    table = _art("Bargaining Table",
+                 "{X}, {T}: Draw a card. X is the number of cards in an opponent's hand.")
+    assert table["activated_draw"] == 0
+    assert table["unmodelled"] == "Bargaining Table"
+
+
+def test_an_ability_that_cannot_be_paid_twice_is_not_repeatable():
+    """Surge Engine says "Activate only if this creature is blue and only once";
+    every EXHAUST ability says "Activate each exhaust ability only once". Both
+    read as REPEATABLE draw engines until the sweep's tail was read — Loot, the
+    Pathfinder would have drawn three every turn forever for {U}."""
+    surge = _art("Surge Engine",
+                 "{4}{U}{U}: Draw three cards. Activate only if this creature is "
+                 "blue and only once.", type_line="Artifact Creature")
+    assert surge["activated_draw"] == 3
+    assert surge["activated_draw_cost"] == 6
+    assert surge["activated_draw_once"] is True
+
+    loot = _art("Loot, the Pathfinder",
+                "Exhaust — {U}, {T}: Draw three cards. (Activate each exhaust "
+                "ability only once.)", type_line="Legendary Creature")
+    assert loot["activated_draw_once"] is True
+
+
+@requires_data
+def test_no_card_is_paid_for_on_both_activated_channels():
+    """A wheel IS a draw, and a card read on both would be paid for twice —
+    once emptying the hand for seven, once drawing on top of it.
+
+    ASSERTED OVER THE WHOLE CORPUS, and that is the point rather than laziness.
+    `activated_draw` carries a guard that skips a cost whose effect is a wheel,
+    and trying to prove that guard by re-introducing the bug turned NO test red:
+    it is unreachable, because a wheel's effect always begins "each player
+    discards" and `_ACTIVATED_DRAW_RE` is anchored on "draw". The property is
+    real and the guard is not what delivers it, so the test asserts the property
+    across 34,814 cards instead of asserting a single card the guard never
+    touched."""
+    from manamap.pilot import card_pool
+
+    pool, oracle = card_pool.load_pool(), card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    both, checked = [], 0
+    for name, text in oracle.items():
+        checked += 1
+        got = goldfish.draw_profile(dict(pool.get(name) or {}, name=name,
+                                         oracle_text=text))
+        if got["activated_wheel"] and got["activated_draw"]:
+            both.append(name)
+    assert checked > 30000
+    assert both == [], f"read on both channels, so paid for twice: {both}"
+
+
+# ── Blood ─────────────────────────────────────────────────────────────────
+
+
+def _blood(name, text, type_line="Creature — Vampire"):
+    from manamap.pilot.goldfish_profiles import blood_profile
+    return blood_profile({"name": name, "oracle_text": text, "type_line": type_line})
+
+
+def test_blood_is_read_with_its_trigger():
+    assert _blood("Voldaren Epicure",
+                  "When this creature enters, it deals 1 damage to each opponent. "
+                  "Create a Blood token.") == (1, "etb")
+    assert _blood("Falkenrath Celebrants",
+                  "Menace When this creature enters, create two Blood tokens.") == (2, "etb")
+    assert _blood("Arterial Alchemy",
+                  "When this enchantment enters, create a Blood token for each opponent "
+                  "you have.", type_line="Enchantment") == (3, "per_opponent")
+    assert _blood("Vampire's Kiss",
+                  "Target player loses 2 life and you gain 2 life. Create two Blood tokens.",
+                  type_line="Sorcery") == (2, "spell")
+
+
+def test_an_etb_that_spans_a_sentence_is_still_an_etb():
+    """Voldaren Epicure is the best one-mana Blood maker in the corpus and its
+    create is a SECOND SENTENCE — "When this creature enters, it deals 1 damage
+    to each opponent. Create a Blood token." Standard templating; a pattern that
+    stops at the first full stop reads it as `unmodelled` and the card does
+    nothing. Re-introduce the bug by removing the optional second clause from
+    `_BLOOD_ETB_RE`."""
+    assert _blood("Voldaren Epicure",
+                  "When this creature enters, it deals 1 damage to each opponent. "
+                  "Create a Blood token.")[1] == "etb"
+
+
+def test_a_card_that_is_both_etb_and_combat_is_read_as_the_guaranteed_half():
+    """Ivora reads "When Ivora enters AND whenever it deals combat damage to a
+    player, create a Blood token" — one trigger clause, two conditions. Filing
+    her under `combat` puts her whole contribution behind `model_combat` and
+    understates a Blood that arrives on turn two whatever the board does."""
+    assert _blood("Ivora, Insatiable Heir",
+                  "Trample When Ivora enters and whenever it deals combat damage to a "
+                  "player, create a Blood token. Whenever you discard a card, put a "
+                  "+1/+1 counter on Ivora.") == (1, "etb")
+
+
+def test_a_card_that_plainly_makes_blood_is_never_scored_as_having_none():
+    """ABSENT MEANS ABSENT, NEVER ZERO — and `(0, None)` here means "no Blood
+    text at all", which is a different claim from "makes Blood in a shape this
+    model has no event for". Reading all 44 Blood cards card by card found two
+    in the wrong bucket: Lacerate Flesh ("create a number of Blood tokens equal
+    to the amount of excess damage") and Transmutation Font ("{T}: Create your
+    choice of a Blood token, a Clue token, or a Food token")."""
+    n, trigger = _blood("Lacerate Flesh",
+                        "Lacerate Flesh deals 4 damage to target creature. Create a "
+                        "number of Blood tokens equal to the amount of excess damage.",
+                        type_line="Instant")
+    assert trigger is not None, "a card that creates Blood must never read as having none"
+    n, trigger = _blood("Transmutation Font",
+                        "{T}: Create your choice of a Blood token, a Clue token, or a "
+                        "Food token.", type_line="Artifact")
+    assert trigger == "unmodelled"
+    # And a card that only SACRIFICES Blood genuinely has none to make.
+    assert _blood("Wedding Security",
+                  "Whenever this creature attacks, you may sacrifice a Blood token. If "
+                  "you do, put a +1/+1 counter on this creature.") == (0, None)
+
+
+def test_the_blood_corpus_sweep_is_locked():
+    """WIDENING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT. 44 cards in
+    the corpus mention a Blood token on 2026-09-14; every one was read by hand
+    when the channel shipped. Exactly two make none — both only sacrifice them —
+    and everything else lands in a named bucket. A new set moves these on
+    purpose."""
+    import collections
+
+    from manamap.pilot import card_pool
+    from manamap.pilot.goldfish_profiles import blood_profile
+
+    oracle = card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    pool = card_pool.load_pool()
+    buckets, checked = collections.Counter(), 0
+    for name, text in oracle.items():
+        if "Blood token" not in (text or ""):
+            continue
+        checked += 1
+        buckets[blood_profile(dict(pool.get(name) or {}, name=name,
+                                   oracle_text=text))[1]] += 1
+    assert checked >= 40, f"only {checked} Blood cards found — did the corpus change?"
+    assert buckets[None] == 2, (
+        f"a card that creates Blood is scoring as having none: {buckets}")
+    assert buckets["etb"] >= 10 and buckets["spell"] >= 5, buckets
+
+
+# ── the channels are reachable, and the model ACTS on them ────────────────
+
+
+def test_the_bought_draw_and_blood_are_in_the_casting_predicate():
+    """A CARD CAN BE READ CORRECTLY AND NEVER PLAYED — the failure this repo has
+    recorded seven times. Unlike the activated wheel, this family is NOT all
+    creatures: Mind Stone, Blood Fountain and Sanguine Statuette have no body at
+    all, so without the predicate they are read perfectly and sit in hand for
+    ten turns."""
+    from conftest import simulator_source
+
+    src = simulator_source()
+    assert 'c["draw"]["activated_draw"]' in src, "a bodyless rock would never be cast"
+    assert 'c["blood"]' in src, "a bodyless Blood maker would never be cast"
+
+
+def test_model_coverage_knows_both_channels():
+    """`never_cast` is what the fleet test reads to find a card the model
+    understands and never plays. A channel missing here reports every card in it
+    as a silent loss."""
+    from manamap.pilot.model_coverage import never_cast
+
+    flags = {"model_draw": True, "model_discard": True}
+    stone = {"is_land": False, "bodies": 0, "produces": 0, "tutor": False,
+             "reduces": False, "treasure_doubler": False, "treasure_bonus": 0,
+             "treasure_trigger": None, "blood": (0, None),
+             "draw": _art("Mind Stone",
+                          "{T}: Add {C}. {1}, {T}, Sacrifice this artifact: Draw a card."),
+             "event": {}, "combat": {}}
+    assert never_cast(stone, flags) is False, "a rock that draws is worth casting"
+
+    maker = dict(stone, blood=(1, "etb"),
+                 draw=_art("Blood Fountain", "When this artifact enters, create a Blood token."))
+    assert never_cast(maker, flags) is False, "a Blood maker is cast FOR the Blood"
+
+
+def test_the_bought_draw_list_does_not_shadow_the_recurring_one():
+    """THE BUG THIS CHANNEL SHIPPED WITH FOR ONE COMMIT. `draw_engines` already
+    existed twenty lines above — permanents that draw on their own every upkeep
+    — and the first cut of this channel named its list the same thing. The
+    second binding won, the recurring list was empty at boot, and the model died
+    on the first card that had one: `KeyError: 'recurring_draw'`, because the
+    entries are shaped differently too.
+
+    A single-assignment check, because the names are close enough that the next
+    edit will reach for the wrong one."""
+    from conftest import simulator_source
+
+    src = simulator_source()
+    assert len(re.findall(r"^    draw_engines = \[\]", src, re.M)) == 1, (
+        "draw_engines is bound twice — the recurring-draw list is being shadowed")
+    assert "bought_draws = []" in src
+
+
+# ── The draw doubler ──────────────────────────────────────────────────────
+
+
+def test_a_draw_doubler_is_read_and_the_draw_step_is_the_exception():
+    """"If you would draw a card EXCEPT THE FIRST ONE YOU DRAW IN EACH OF YOUR
+    DRAW STEPS, draw two cards instead." The exception is the whole card, and
+    the model gets it for free: the draw step takes its card straight off the
+    deck and never calls `draw_n`, which is the only place the multiplier is
+    applied. Structure, not bookkeeping.
+
+    THE HELLBENT ONES ARE REFUSED. Blood Scrivener doubles only "while you have
+    no cards in hand" — true at exactly the moment a wheel deck is about to
+    refill, so reading it as unconditional would be the most flattering possible
+    error on the deck most likely to play it.
+    """
+    from manamap.pilot import card_pool
+    oracle = card_pool.corpus_oracle()
+
+    def mult(name):
+        return goldfish.draw_profile({"name": name, "oracle_text": oracle.get(name),
+                                      "type_line": "Enchantment", "cmc": 4})
+
+    for name in ("Teferi's Ageless Insight", "Bard, King of Dale", "Thought Reflection"):
+        got = mult(name)
+        assert got["draw_multiplier"] == 2, name
+        assert got["unmodelled"] is None, f"{name} is read, so must not be named unreadable"
+    assert mult("Blood Scrivener")["draw_multiplier"] == 1, "hellbent is not unconditional"
+    assert mult("Sol Ring")["draw_multiplier"] == 1
+
+
+def test_the_draw_doubler_is_applied_where_the_exception_is_free():
+    """Re-introduce the bug by multiplying at the draw step as well, or by
+    dropping the multiplication in `draw_n`."""
+    from conftest import simulator_source
+
+    src = simulator_source()
+    assert "for _ in range(int(n) * draw_multiplier):" in src, (
+        "the multiplier is not applied in draw_n")
+    assert 'c["draw"]["draw_multiplier"] > 1' in src, (
+        "a doubler with no body would be read and never cast")
+
+
+@requires_data
+def test_the_draw_doubler_sweep_is_locked():
+    """WIDENING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT. Eight cards
+    on 2026-09-14, five of them legal in a Jeskai deck. A new set moves this on
+    purpose."""
+    from manamap.pilot import card_pool
+
+    oracle = card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    hits = {n for n, t in oracle.items()
+            if goldfish.draw_profile({"name": n, "oracle_text": t or "",
+                                      "type_line": "", "cmc": 0})["draw_multiplier"] > 1}
+    assert 5 <= len(hits) <= 14, f"the doubler family moved to {len(hits)}: {sorted(hits)}"
+    for real in ("Teferi's Ageless Insight", "Thought Reflection", "Bard, King of Dale"):
+        assert real in hits, real
+    for hellbent in ("Blood Scrivener", "Phial of Galadriel"):
+        assert hellbent not in hits, f"{hellbent} doubles only while hellbent"
+
+
+@requires_data
+def test_a_blood_count_is_read_as_a_word_or_a_digit():
+    """The count alternation stopped at "four" and accepted no digits, which is
+    a narrowness rather than a decision — `_NUMBER_WORDS` beside it goes to ten.
+    Found by a sensitivity run whose three arms came back BYTE-IDENTICAL because
+    "create 3 Blood tokens", "create 5" and "create 1" all failed to match and
+    fell into the same bucket, which is the shape of a measurement that silently
+    measured nothing."""
+    from manamap.pilot.goldfish_profiles import blood_profile
+
+    def n(text):
+        return blood_profile({"name": "x", "oracle_text": text, "type_line": "Creature"})
+
+    assert n("When this enters, create 5 Blood tokens.") == (5, "etb")
+    assert n("When this enters, create seven Blood tokens.") == (7, "etb")
+    assert n("When this enters, create two Blood tokens.") == (2, "etb")

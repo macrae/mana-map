@@ -458,11 +458,58 @@ BLIND = {
                     "nothing to counter and reads as a dead card",
     "protection": "the goldfish is never attacked or targeted, so protection "
                   "reads as a dead card",
-    "draw": "extra card draw is not modelled — one card per turn, always",
+    # NOT A BLANKET CLAIM ANY MORE, and it was one for a year after it stopped
+    # being true. `model_draw` prices ETB draw, spell draw, recurring draw, cast
+    # draw, X spells, wheels, activated draw and draw DOUBLERS — a deck that has
+    # opted in has most of its card advantage measured. Left as a flat sentence
+    # it told a reader that a measured +0.89 extra cards had not been measured,
+    # which is a liar in the more dangerous direction: it invites cutting a card
+    # the figures already credited. `_draw_is_blind` decides per CARD.
+    "draw": "this card's draw is not one of the shapes the model reads — see "
+            "`meta.draw_not_modelled` for what it does instead",
     "recursion": "nothing dies in a goldfish, so recursion has no target",
     "stax": "there is no opponent to tax",
     "hate": "there is no opponent to hate out",
 }
+
+
+def _draw_is_blind(slug, branch, name):
+    """Is THIS card's draw outside what the model prices?
+
+    A ROLE IS NOT AN ANSWER. `card_roles.json` says "this card draws"; whether
+    the model can READ that draw is a different question, and `draw_profile`
+    already answers it — it sets `unmodelled` to the card's own name when the
+    draw is through a channel there is no event for, and leaves it None when the
+    draw is priced. Asking the profile rather than the role is what stops the
+    report claiming a measured figure was never measured.
+
+    Blind if the deck never opted into `model_draw` at all, since then every
+    draw really is one a turn.
+    """
+    from manamap.pilot.common import load_deck_cards
+    from manamap.pilot.goldfish_profiles import draw_profile
+
+    try:
+        targets = json.loads(deck_file_or_none(slug, branch).read_text())
+    except Exception:                                # pragma: no cover - defensive
+        targets = {}
+    if not targets.get("model_draw"):
+        return True
+    try:
+        doc = load_deck_cards(slug, branch)
+    except Exception:                                # pragma: no cover - defensive
+        return True
+    for card in doc.get("cards") or []:
+        if card.get("name") == name:
+            return bool(draw_profile(card)["unmodelled"])
+    # Not in this list — it is the card leaving, so read it from the champion.
+    try:
+        for card in load_deck_cards(slug).get("cards") or []:
+            if card.get("name") == name:
+                return bool(draw_profile(card)["unmodelled"])
+    except Exception:                                # pragma: no cover - defensive
+        pass
+    return True
 
 
 def blind_spots(slug, branch, change_doc):
@@ -486,8 +533,11 @@ def blind_spots(slug, branch, change_doc):
             name = entry.get(side)
             for role in roles.get(name) or []:
                 head = role.split(":", 1)[0]
-                if head in BLIND:
-                    found.setdefault(head, set()).add(name)
+                if head not in BLIND:
+                    continue
+                if head == "draw" and not _draw_is_blind(slug, branch, name):
+                    continue
+                found.setdefault(head, set()).add(name)
     out = [{"class": head, "why": BLIND[head], "cards": sorted(names),
             "headline": f"{len(names)} card(s) carrying a {head} effect"}
            for head, names in sorted(found.items())]

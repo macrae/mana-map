@@ -46,6 +46,8 @@ from manamap.pilot.goldfish_profiles import (
     _TUTOR_TO_TOP_RE,
     _corpus_creature_types,
     _land_mana_bonus,
+    artifact_sac_payoffs,
+    blood_profile,
     body_count,
     cast_pips,
     cast_token_profile,
@@ -182,6 +184,16 @@ def classify(card, pool=None):
             if is_tutor_card and _TUTOR_TO_BATTLEFIELD_RE.search(text) else None),
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
         "treasure_trigger": None if is_land else treasure_profile(card)[1],
+        # BLOOD, shaped exactly like Treasure beside it: `(count, trigger)`.
+        # A LAND CAN MAKE BLOOD -- Voldaren Estate does, for {5} and a tap --
+        # so this one is deliberately NOT gated on `is_land` the way Treasure
+        # is. Its trigger reads `unmodelled` there anyway, which is the honest
+        # answer for an activation this model has no slot for.
+        "blood": blood_profile(card),
+        # WHAT AN ARTIFACT LEAVING THE BATTLEFIELD PAYS. The event a Blood
+        # token creates every time it is cracked, and the reason Jaws is worth
+        # more than the tokens he makes.
+        "artifact_sac": artifact_sac_payoffs(card),
         # Xorn makes no Treasure of its own; it adds one to every event.
         # WHAT IT PRODUCES and WHAT IT COSTS, in colours. Both ride along
         # always and are READ only under `model_colors`, so the colourless path

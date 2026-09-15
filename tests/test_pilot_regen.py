@@ -166,6 +166,20 @@ def test_only_a_sleeved_deck_is_built_automatically():
 
     The first cut of `BOOTSTRAP` missed this and created `diagnostic.json` for
     three bench decks on its first run.
+
+    A DECK THAT ALREADY HAS THE ARTIFACT IS STILL A BENCH DECK, and this used to
+    skip those — which made the guard depend on the fleet happening to contain a
+    bench deck with no diagnostic. On 2026-09-14 it stopped containing one:
+    ingris-infect, the last example, was broken down for parts, and sharknado
+    had a diagnostic because the pilot asked for one BY HAND, which is exactly
+    what a bench deck is allowed to do. The guard then failed with "no bench
+    deck to prove the exclusion against" — an unsatisfiable check reading as a
+    broken invariant.
+
+    Dropping the skip makes it both satisfiable and STRONGER: regen must leave a
+    bench deck alone whether or not the artifact is already there, because the
+    thing being asserted is that it does not run stages nobody asked for. The
+    artifact's presence was never the point.
     """
     from manamap.config import DECKS_DIR
     from manamap.pilot import regen
@@ -175,7 +189,7 @@ def test_only_a_sleeved_deck_is_built_automatically():
     for deck in sorted(DECKS_DIR.iterdir()):
         if not deck.is_dir() or regen.is_retired(deck.name):
             continue
-        if regen.is_pinned(deck.name) or (deck / "diagnostic.json").exists():
+        if regen.is_pinned(deck.name):
             continue
         bench += 1
         assert deck.name not in planned, (

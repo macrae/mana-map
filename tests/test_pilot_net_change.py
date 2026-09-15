@@ -5,6 +5,7 @@ whether to buy 21 cards for the Ur-Dragon treasure refactor. The answer was no.
 Doing that by hand again is how the next one gets skipped.
 """
 
+import inspect
 import json
 
 import pytest
@@ -937,3 +938,38 @@ def test_the_validator_refuses_a_report_about_a_list_that_moved():
     errors = validate_net_change.validate(moved)
     assert any("not the list on disk" in e for e in errors), (
         f"a report stamped with a list that is not on disk was accepted: {errors}")
+
+
+def test_a_draw_the_model_prices_is_not_reported_as_unmeasured():
+    """THE BLIND-SPOT LIST IS A PROMISE ABOUT WHAT THE FIGURES LEAVE OUT, and a
+    wrong entry lies in the more dangerous direction than a missing one: it
+    tells a pilot that a measured improvement was never measured, and invites
+    cutting a card the numbers already credited.
+
+    `BLIND["draw"]` read "extra card draw is not modelled — one card per turn,
+    always". That was true before `model_draw` existed and has been false ever
+    since: the channel prices ETB draw, spell draw, recurring draw, cast draw,
+    X spells, wheels, activated draw and draw DOUBLERS. It was keyed on the
+    card's ROLE, which only says the card draws — never on whether the model
+    can read that draw.
+
+    Caught on sharknado/ivora-v1, whose report named Teferi's Ageless Insight
+    as unmeasured in the same breath as measuring it at +0.89 extra cards by
+    turn eight. `draw_profile` already knew: it sets `unmodelled` to the card's
+    own name when the draw is through a channel there is no event for.
+
+    Re-introduce the bug by dropping the `_draw_is_blind` call in `blind_spots`.
+    """
+    from manamap.pilot import net_change
+
+    assert "not modelled — one card per turn, always" not in net_change.BLIND["draw"], (
+        "the blind-spot sentence claims no draw at all is modelled")
+    src = inspect.getsource(net_change.blind_spots)
+    assert "_draw_is_blind(slug, branch, name)" in src, (
+        "the draw blind spot is decided by ROLE rather than by whether the "
+        "model can read the card")
+    # The predicate asks the PROFILE, which is the thing that knows.
+    probe = inspect.getsource(net_change._draw_is_blind)
+    assert 'draw_profile(card)["unmodelled"]' in probe
+    assert 'targets.get("model_draw")' in probe, (
+        "a deck that never opted in really does draw one a turn")

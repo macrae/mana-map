@@ -345,15 +345,79 @@ WHEEL_MIN_HAND = 3
 #: and `cards.csv` does not -- so an anchored pattern read Runehorn Hellkite one
 #: way in a deck and the other way in a corpus sweep, which is the one thing a
 #: sweep exists to prevent. The token set does the work the anchor was doing.
+#: WIDENED 2026-09-14 TO READ A DISCARD IN THE COST, which is what a Blood
+#: token's whole ability is: "{1}, {T}, Discard a card, Sacrifice this token:
+#: Draw a card". Without the `Discard a card` alternative the match died on the
+#: D and the ability read as nothing at all.
+#:
+#: THE SWEEP, because this regex is shared with `activated_wheel` and widening a
+#: pattern that something else already reads is how a silent regression ships.
+#: Across all 34,890 cards: OLD matched 7,974 costs, NEW matches 8,186 —
+#: **212 newly matched, 0 newly dropped**, and **0 cards whose `activated_wheel`
+#: reading changes in any field**, checked by running `draw_profile` under both
+#: regexes and diffing the six wheel keys plus `unmodelled`. The gain is the
+#: looter family the cost alternation could not spell: Anje Falkenrath, Aquamoeba,
+#: Advanced Stitchwing, Birgi // Harnfel, and every Blood token in the corpus.
 _ACTIVATED_COST_RE = re.compile(
     r"((?:\{[^}]{1,5}\}|Sacrifice this [a-z]+|Exile this card from your graveyard"
-    r"|Discard your hand|, |\s)+): ", re.I)
+    r"|Discard your hand|Discard (?:a|an|one|two|three|four|X) cards?"
+    r"|, |\s)+): ", re.I)
+#: How many cards an activation COSTS. Distinct from the effect's own discard:
+#: this one is paid before anything resolves, and it is the half that triggers
+#: Brallin.
+_ACTIVATED_DISCARD_COST_RE = re.compile(
+    r"discard (a|an|one|two|three|four|X) cards?", re.I)
 #: A cost that consumes its own source cannot be paid twice.
 _ACTIVATED_ONE_SHOT_RE = re.compile(r"sacrifice this|exile this", re.I)
 _ACTIVATED_SAC_SELF_RE = re.compile(r"sacrifice this", re.I)
-#: Immortus's reminder text. One card, and it is cheaper to read the sentence
-#: than to pretend a seven-mana power-up recurs.
-_ACTIVATE_ONLY_ONCE_RE = re.compile(r"activate each power-up ability only once", re.I)
+#: WHAT CANNOT BE PAID TWICE. Immortus's power-up reminder was the first case
+#: and for a while the only one, which is how "only once" came to be spelled as
+#: narrowly as the single card that needed it. Reading the tail of the
+#: `activated_draw` sweep found two more shapes, both reading as REPEATABLE
+#: draw engines: Surge Engine ("{4}{U}{U}: Draw three cards. Activate only if
+#: this creature is blue and only once.") and every EXHAUST ability, whose
+#: reminder text is "Activate each exhaust ability only once" — Loot, the
+#: Pathfinder draws three for {U} and would have recurred every turn forever.
+_ACTIVATE_ONLY_ONCE_RE = re.compile(
+    r"activate each power-up ability only once"
+    r"|activate (?:each [a-z]+ ability )?only once"
+    r"|and only once", re.I)
+#: A COST THIS MODEL CANNOT PRICE, and both halves overstate in the dangerous
+#: direction if read as zero.
+#:
+#: ENERGY is a resource the goldfish does not have. "Pay six {E}, Sacrifice this
+#: enchantment: Draw three cards" (Era of Innovation) and "{T}, Pay {E}{E}{E}:
+#: Draw a card" (Bespoke Battlewagon) both read as FREE — a three-card draw for
+#: nothing, and a repeatable one-card draw for nothing.
+#:
+#: {X} IN AN ACTIVATION is not the {X} in a spell's mana cost. `_activation_mana`
+#: scores it zero, which matches Scryfall's `cmc` and is right for a card you
+#: CAST; for an ability you ACTIVATE it turns Bargaining Table's "{X}, {T}: Draw
+#: a card. X is the number of cards in an opponent's hand" into a free
+#: repeatable draw engine. Refused and NAMED rather than priced at a number
+#: nobody measured.
+_ACTIVATED_UNPRICEABLE_RE = re.compile(r"\{E\}|\{X\}", re.I)
+#: REMINDER TEXT DESCRIBES A TOKEN'S ABILITY, NOT THE CARD'S, and reading it
+#: hands the card an ability it does not have. Every Clue maker says "(It's an
+#: artifact with "{2}, Sacrifice this token: Draw a card.")" and every Blood
+#: maker says the same with a discard in it — so Voldaren Epicure read as
+#: drawing a card itself, and would have been counted TWICE: once here and once
+#: as the Blood token it makes. Found by reading the 520-card sweep diff rather
+#: than by thinking about it, which is what the sweep is for.
+#:
+#: Parenthesised text in an oracle is always reminder text, so stripping it is
+#: safe and is done for the ACTIVATED readers only — a card's real abilities are
+#: never in brackets.
+_REMINDER_RE = re.compile(r"\([^)]*\)")
+#: The loot rider on an ACTIVATED draw: "{T}: Draw a card, then discard a card"
+#: (Thought Courier, The Harvester, Bonded Fetch). The discard is in the EFFECT
+#: rather than the cost, and to this model both are the same event — a card
+#: leaves the hand — which is the whole of what Brallin charges for. Summed with
+#: the cost discard rather than kept apart: no corpus card has both, and a
+#: reader who has to add two fields to learn "how many cards leave my hand" will
+#: eventually add only one.
+_ACTIVATED_THEN_DISCARD_RE = re.compile(
+    r"then discards? (a|an|one|two|three|four) cards?", re.I)
 #: The zone the ability is activated FROM, when it is not the battlefield.
 _ACTIVATED_ELSEWHERE_RE = re.compile(r"from your (graveyard|library|exile)", re.I)
 
@@ -401,6 +465,271 @@ def activated_wheel(text):
         elsewhere = _ACTIVATED_ELSEWHERE_RE.search(cost)
         return cost, wheel, (elsewhere.group(1).lower() if elsewhere else None)
     return None
+
+
+#: A DRAW DOUBLER: "if you would draw a card ... draw two cards instead".
+#:
+#: EIGHT CARDS IN THE CORPUS, five of them legal in a Jeskai deck — Teferi's
+#: Ageless Insight, Bard King of Dale, Thought Reflection, The Value Knight,
+#: Vnwxt — which is a family rather than a one-off and so is parsed, per the
+#: rule that decides between parsing and declaring.
+#:
+#: THE EXCEPTION IS IN THE CARD AND IT MATTERS: "except the first one you draw
+#: in each of your draw steps". The draw step is the one draw this does NOT
+#: double, and in `goldfish_turn` the draw step takes its card directly off the
+#: deck rather than through `draw_n` — so multiplying inside `draw_n` models the
+#: exception exactly, by construction rather than by a counter somebody has to
+#: keep right.
+#:
+#: THE HELLBENT ONES ARE NOT READ. Blood Scrivener and Phial of Galadriel double
+#: only "while you have no cards in hand", a condition this model tracks but
+#: which is true at exactly the moment a wheel deck is about to refill — reading
+#: them as unconditional would be the most flattering possible error on the deck
+#: most likely to run them.
+_DRAW_DOUBLER_RE = re.compile(
+    r"if you would draw a card(?! while you have no cards in hand)"
+    r"[^.\n]{0,80}?draw (two|three) cards? instead", re.I)
+
+
+#: The EFFECT of an activated draw, anchored at the colon. A later sentence
+#: that happens to draw is a TRIGGER, not this ability — the same rule
+#: `activated_wheel` states and for the same reason.
+_ACTIVATED_DRAW_RE = re.compile(r"draws? (a|one|two|three|four|X) cards?", re.I)
+
+
+def activated_draw(text):
+    """The cost and the size of a draw that is an ACTIVATED ABILITY.
+
+    Returns `(cost_text, draw_match, refused)` or None. This is the channel
+    behind "{1}, {T}, Sacrifice this artifact: Draw a card" — Mind Stone,
+    Commander's Sphere, and every Blood token in the corpus.
+
+    WHY IT WAS WORTH BUILDING. `draw_profile` wants a draw attached to an ETB,
+    a cast, an upkeep or a wheel; a draw you BUY by sacrificing the permanent
+    matched none of those, so the whole family returned an all-zero profile
+    with `unmodelled` still None — the one value that means "nothing to see
+    here". Measured across the corpus before this existed: **405 cards carry a
+    sacrifice-gated draw and `draw_profile` read zero draw for 400 of them, 99%**.
+    Two of the eight replacements priced for sharknado's Goblin Engineer slot
+    were in that 400, which is why that sweep could not answer its own question.
+
+    DISJOINT FROM `activated_wheel` BY CONSTRUCTION, not by an `elif` somebody
+    can break: a cost whose effect is a wheel is skipped here outright. The two
+    channels cost differently — a wheel empties the hand, this draws N — and a
+    card read as both would be paid for twice.
+
+    A COST WITH NO MANA SYMBOL IS ALLOWED, unlike `activated_wheel`'s. Commander's
+    Sphere is exactly "Sacrifice this artifact: Draw a card" and is real; what is
+    refused instead is a cost that is only whitespace, which `_ACTIVATED_COST_RE`
+    can match and which would hand every card in the corpus a free draw.
+    """
+    text = _REMINDER_RE.sub(" ", text or "")
+    for m in _ACTIVATED_COST_RE.finditer(text):
+        cost = m.group(1)
+        # A REAL COST, or nothing. Mana, a sacrifice, an exile, or a discard.
+        if ("{" not in cost
+                and not _ACTIVATED_ONE_SHOT_RE.search(cost)
+                and not _ACTIVATED_DISCARD_COST_RE.search(cost)):
+            continue
+        rest = text[m.end():]
+        # BELT AND BRACES, AND LABELLED AS SUCH. Today this is unreachable: a
+        # wheel's effect always begins "each player discards" or "you shuffle",
+        # and `_ACTIVATED_DRAW_RE` is anchored on "draw", so no text can satisfy
+        # both. It was written believing it was load-bearing and the proof-by-
+        # re-introduction found otherwise — deleting it turned no test red. It
+        # stays because the disjointness it guards is an assumption about
+        # TEMPLATING rather than about code, and a future "…: Draw seven cards,
+        # then discard your hand" would break it silently. The corpus-wide
+        # assertion in the tests is what actually holds the property.
+        if _WHEEL_RE.match(rest):
+            continue
+        drew = _ACTIVATED_DRAW_RE.match(rest)
+        if not drew:
+            continue
+        # REFUSED AND NAMED, never priced at zero. See `_ACTIVATED_UNPRICEABLE_RE`:
+        # energy and {X} both read as FREE through `_activation_mana`, which turns
+        # a six-energy draw-three and an X-cost draw engine into gifts.
+        if _ACTIVATED_UNPRICEABLE_RE.search(cost):
+            return cost, drew, "an unpriceable cost"
+        elsewhere = _ACTIVATED_ELSEWHERE_RE.search(cost)
+        return cost, drew, (elsewhere.group(1).lower() if elsewhere else None)
+    return None
+
+
+#: A BLOOD TOKEN IS A STOCKPILE, the way a Treasure is, and `blood_profile` is
+#: deliberately shaped like `treasure_profile` beside it — `(count, trigger)`,
+#: with `unmodelled` for a trigger this model has no event for.
+#:
+#: WHAT A BLOOD IS, in one line: "{1}, {T}, Discard a card, Sacrifice this
+#: token: Draw a card". It is CARD-NEUTRAL — one leaves the hand, one arrives —
+#: so it generates no card advantage at all. What it generates is EVENTS, and a
+#: deck whose commanders charge for a discard and for a draw is paid twice for
+#: each one. `_NONCREATURE_TOKENS` has always listed "blood", so the model knew
+#: not to count it as a body; it simply had nothing else to do with it.
+#: THE COUNT ALTERNATION STOPPED AT "four" AND ACCEPTED NO DIGITS, which is a
+#: narrowness rather than a decision — `_NUMBER_WORDS` beside it goes to ten,
+#: and Magic writes counts as words on cards and as digits nowhere in this
+#: corpus but everywhere in a hand-written sensitivity. Found by a ceiling run
+#: whose three arms came back byte-identical because "create 3 Blood tokens",
+#: "create 5 Blood tokens" and "create 1 Blood token" all failed to match and
+#: fell through to the same `unmodelled` bucket.
+_BLOOD_CREATE_RE = re.compile(
+    r"creates? (a|an|one|two|three|four|five|six|seven|eight|nine|ten|\d+"
+    r"|X|that many|a number of) (?:\w+ )?Blood tokens?", re.I)
+#: THE SECOND HALF OF "DOES THIS CARD MAKE BLOOD AT ALL", and it exists because
+#: reading all 44 Blood cards in the corpus card by card found two the create
+#: pattern could not spell: Lacerate Flesh ("create a number of Blood tokens
+#: equal to the amount of excess damage") and Transmutation Font ("{T}: Create
+#: your choice of a Blood token, a Clue token, or a Food token"). Both returned
+#: `(0, None)` — the value that means NO BLOOD TEXT — when the truth is "makes
+#: Blood, through a channel this model has no event for". That is the silent
+#: zero this whole file exists to stop producing, so anything mentioning a
+#: created Blood that the count pattern misses lands in `unmodelled` instead.
+_BLOOD_LOOSE_RE = re.compile(r"creates?[^.\n]{0,60}Blood token", re.I)
+#: "a Blood token for each opponent" — three in a four-player pod, which is the
+#: table this model's damage is already reported against.
+_BLOOD_PER_OPPONENT_RE = re.compile(r"Blood token for each opponent", re.I)
+#: ONE SENTENCE BOUNDARY IS ALLOWED, and Voldaren Epicure is why: "When this
+#: creature enters, it deals 1 damage to each opponent. Create a Blood token."
+#: The create is a second SENTENCE and still part of the same triggered
+#: ability's resolution — standard templating — so a pattern that stops at the
+#: first full stop reads the best one-mana Blood maker in the corpus as
+#: `unmodelled`. Same shape as `_EVENT_TRIGGER_RE`'s optional second clause.
+_BLOOD_ETB_RE = re.compile(
+    r"when(?:ever)? (?:this|[\w,' ]{0,30}?) enters"
+    r"[^.\n]{0,80}(?:\.[^.\n]{0,80})?creates? [^.\n]{0,30}Blood", re.I)
+_BLOOD_COMBAT_RE = re.compile(
+    r"deals combat damage to a player[^.]{0,60}creates? [^.]{0,30}Blood", re.I)
+
+
+def blood_profile(card):
+    """How this card makes Blood tokens, and whether a goldfish can see it.
+
+    Returns `(per_event, trigger)` where trigger is `etb` (once, on arrival),
+    `per_opponent` (an ETB scaled by the pod), `combat` or `unmodelled`.
+    A card with no Blood text returns `(0, None)`.
+
+    `combat` is REPORTED AND NOT ACTED ON unless `model_combat` is also set,
+    because a Blood made by connecting is a Blood a blocker can prevent, and
+    this model has no blockers — the same reason the whole combat pillar is
+    opt-in.
+    """
+    text = card.get("oracle_text") or ""
+    if not _BLOOD_CREATE_RE.search(text):
+        # NAMED, NOT ZEROED. See `_BLOOD_LOOSE_RE`: a card that plainly creates
+        # Blood in a shape the count pattern cannot read is `unmodelled`, which
+        # `meta` surfaces; `(0, None)` would file it with the vanilla bears.
+        return (1, "unmodelled") if _BLOOD_LOOSE_RE.search(text) else (0, None)
+    if _BLOOD_PER_OPPONENT_RE.search(text):
+        # The pod is three opponents, which is what `opponent_life` is already
+        # scaled against; stated in MODEL_ASSUMPTIONS rather than guessed here.
+        return 3, "per_opponent"
+    match = _BLOOD_CREATE_RE.search(text)
+    word = (match.group(1) or "a").lower()
+    count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1) or 1
+    # ETB IS CHECKED FIRST BECAUSE A CARD CAN BE BOTH, and when it is, the ETB
+    # half is the one that is GUARANTEED. Ivora, Insatiable Heir reads "When
+    # Ivora enters and whenever it deals combat damage to a player, create a
+    # Blood token" — one trigger clause, two conditions. Filing her under
+    # `combat` would put her whole contribution behind `model_combat`, which is
+    # off for most decks, and understate a Blood that arrives on turn two
+    # whatever the board does.
+    if _BLOOD_ETB_RE.search(text):
+        return count, "etb"
+    if _BLOOD_COMBAT_RE.search(text):
+        return count, "combat"
+    # A SPELL MAKES ITS BLOOD ON RESOLUTION, which is the same event as casting
+    # it — the shape `treasure_profile` already calls `cast`. Six corpus cards
+    # are this and nothing else (Grisly Ritual, Vampire's Kiss, Syphon Essence,
+    # Pointed Discussion, Bloody Betrayal, Vampires' Vengeance); three are legal
+    # in sharknado's identity. Left as `unmodelled` they would be a permanent
+    # blind spot in a channel built for exactly this deck.
+    if "Instant" in (card.get("type_line") or "") or "Sorcery" in (card.get("type_line") or ""):
+        return count, "spell"
+    return count, "unmodelled"
+
+
+#: A PAYOFF WHEN AN ARTIFACT LEAVES THE BATTLEFIELD, which is the event a Blood
+#: token creates every time it is cracked.
+#:
+#: PARSED, NOT DECLARED, and the repo's own rule is what decides that: "an
+#: ability only one card in the corpus has is DECLARED per deck; one a handful
+#: share is parsed after a sweep." Jaws, Relentless Predator was the card that
+#: raised it — "Whenever a noncreature artifact is sacrificed or destroyed, Jaws
+#: deals 1 damage to each opponent" — and its exact wording IS a corpus of one.
+#: The FAMILY is not: **48 cards** pay for an artifact or a Blood token leaving
+#: the battlefield, in four shapes this model already has words for — damage to
+#: each opponent, a +1/+1 counter, a card, and a life-loss that is the same
+#: event wearing different prose.
+#:
+#: Both halves of the trigger are read because Magic writes it both ways:
+#: "whenever you sacrifice an artifact" (Crime Novelist) and "whenever an
+#: artifact is put into a graveyard from the battlefield" (Disciple of the
+#: Vault) are the same event to this model, which has no graveyard and no
+#: destruction — only sacrifice.
+#: THREE WORDINGS, ONE EVENT. Magic writes this trigger as "whenever you
+#: sacrifice an artifact" (Crime Novelist), "whenever an artifact is put into a
+#: graveyard from the battlefield" (Disciple of the Vault) and "whenever a
+#: noncreature artifact is sacrificed or destroyed" (Jaws, Relentless Predator).
+#: The first cut spelled only two of them and Jaws — the card the whole channel
+#: was built for — read as nothing at all.
+_ARTIFACT_SAC_TRIGGER_RE = re.compile(
+    r"whenever (?:you sacrifice (?:a|an|one or more|another)"
+    r"|(?:a|an|another|one or more)?[^,.]{0,40}?(?:is|are) put into a graveyard"
+    r"|(?:a|an|another|one or more)?[^,.]{0,40}?(?:is|are) sacrificed)"
+    r"[^.\n]{0,60}?(?P<effect>[^.\n]{0,120})", re.I)
+#: The subject has to be an artifact or a Blood token, and the clause the
+#: trigger opens is where that noun lives — the lesson `_TOKEN_CREATED_TRIGGER_RE`
+#: records about a `.*` sitting where the subject should be.
+_ARTIFACT_SAC_SUBJECT_RE = re.compile(r"artifact|Blood token", re.I)
+#: "target opponent loses 1 life" — one seat, not the table.
+_ARTIFACT_SAC_ONE_OPPONENT_RE = re.compile(
+    r"(?:target |that )?(?:opponent|player) loses? (\d+) life", re.I)
+
+
+def artifact_sac_payoffs(card):
+    """What this card pays when an artifact you control is sacrificed.
+
+    Shaped exactly like `event_payoffs` beside it — a FLAT amount per EVENT —
+    because it is the same kind of claim about the same kind of trigger, and a
+    second shape would need a second reader in the turn loop.
+
+    ONLY THE OPPONENT-FACING HALF OF A LIFE SWING IS READ. "Each opponent loses
+    1 life" is damage this model has a number for; "you gain 5 life" is not,
+    because the model has no life total of its own and a field nothing applies
+    is the silent zero this file exists to stop producing.
+    """
+    text = card.get("oracle_text", "") or ""
+    out = {"per_artifact_sac_damage": 0, "per_artifact_sac_counter": 0,
+           "per_artifact_sac_draw": 0, "unmodelled": None}
+    hit = False
+    for m in _ARTIFACT_SAC_TRIGGER_RE.finditer(text):
+        clause = text[m.start():m.end()]
+        if not _ARTIFACT_SAC_SUBJECT_RE.search(clause):
+            continue
+        hit = True
+        effect = m.group("effect") or ""
+        dmg = _EVENT_DAMAGE_RE.search(effect)
+        if dmg:
+            out["per_artifact_sac_damage"] += int(dmg.group(1) or dmg.group(2))
+        else:
+            # THE SAME EVENT IN THE OTHER VOICE. `_EVENT_DAMAGE_RE` knows "each
+            # opponent loses N life"; this family more often says "target
+            # opponent loses N life" (Disciple of the Vault), which is ONE
+            # opponent rather than the table. Counted as one, which understates
+            # against a pod of three and is the direction this file always
+            # errs — never as the "each opponent" number, which would treble it.
+            single = _ARTIFACT_SAC_ONE_OPPONENT_RE.search(effect)
+            if single:
+                out["per_artifact_sac_damage"] += int(single.group(1))
+        if _EVENT_COUNTER_RE.search(effect):
+            out["per_artifact_sac_counter"] += 1
+        drw = _EVENT_DRAW_RE.search(effect)
+        if drw:
+            out["per_artifact_sac_draw"] += _DRAW_WORDS[drw.group(1).lower()]
+    if hit and not any(v for k, v in out.items() if k != "unmodelled"):
+        out["unmodelled"] = card.get("name")
+    return out
 
 
 def event_payoffs(card):
@@ -575,8 +904,67 @@ _TOKEN_DOUBLER_RE = re.compile(
     r"if (?:an effect would create )?one or more tokens would be created"
     r"[^.]{0,80}?twice that many|if an effect would create one or more tokens"
     r"[^.]{0,80}?twice that many", re.IGNORECASE)
-_TOKEN_DOUBLER_TEMPORARY_RE = re.compile(
+#: A GRANT THAT WEARS OFF. Named for the effect rather than for the token
+#: doubler that needed it first, because the damage multiplier needs the very
+#: same test and a second copy of this list is a second copy that drifts.
+_TEMPORARY_EFFECT_RE = re.compile(
     r"until end of turn|this turn|while it's", re.IGNORECASE)
+
+
+#: A TRIGGER THAT COMES ROUND AGAIN. "Whenever a Dragon you control attacks, it
+#: gains double strike until end of turn" wears off every turn and is re-applied
+#: every turn, so to a model that attacks every turn it is permanent. This is
+#: what separates Atarka from Cleaver Riot, whose identical clause fires once.
+_RECURRING_TRIGGER_RE = re.compile(r"whenever|at the beginning of", re.I)
+
+
+def _permanent_damage_multiplier(text, type_line=""):
+    """Does this card double the team's damage FOR GOOD, or for a turn?
+
+    THE CONDITION IS SCOPED TO THE CLAUSE IT ATTACHES TO — the lesson
+    `token_doubler` below already records, applied to the channel that did not
+    have it. `_TEAM_DOUBLE_STRIKE_RE` matched any "creatures you control ...
+    gain double strike" anywhere in the oracle, so a ONE-TURN pump read as a
+    permanent x2 on everything the deck would ever deal.
+
+    MEASURED ON sharknado: Elesh Norn // The Argent Etchings carried
+    `team_damage_multiplier: 2` off its SAGA BACK FACE, chapter II — "Creatures
+    you control get +1/+1 and gain double strike until end of turn" — a single
+    turn, on a face reachable only by paying {2}{W} and sacrificing three other
+    creatures. The deck's damage at turn eight was being doubled by a card that
+    had done nothing. Cutting it read as -2.2 damage and would have been
+    reported as a reason to keep it.
+
+    The window runs from 90 characters before the match to the end of that
+    sentence: "until end of turn" follows the grant rather than preceding it,
+    which is why looking backwards alone (as the token doubler does, for a
+    phrase that reads the other way) is not enough here.
+    """
+    text, type_line = text or "", type_line or ""
+    for pattern in (_DAMAGE_DOUBLER_RE, _TEAM_DOUBLE_STRIKE_RE, _TEAM_POWER_DOUBLE_RE):
+        match = pattern.search(text)
+        if not match:
+            continue
+        stop = text.find(".", match.end())
+        window = text[max(0, match.start() - 90):(stop if stop != -1 else len(text))]
+        if not _TEMPORARY_EFFECT_RE.search(window):
+            return True                 # a static grant; plainly permanent
+        # IT WEARS OFF — SO DOES IT COME BACK? A one-shot is a combat trick; a
+        # grant re-applied by a trigger the permanent carries is a multiplier
+        # the model will see every single turn.
+        if "Instant" in type_line or "Sorcery" in type_line:
+            continue                    # Cleaver Riot, Savage Beating: once
+        if "Saga" in type_line:
+            # A CHAPTER FIRES ONCE AND THE SAGA IS DONE. Elesh Norn // The
+            # Argent Etchings is the case that found this whole defect: chapter
+            # II grants the team double strike for ONE turn, on a face reachable
+            # only by paying {2}{W} and sacrificing three other creatures, and
+            # it was doubling every point of damage the deck dealt.
+            continue
+        if _RECURRING_TRIGGER_RE.search(window):
+            return True                 # Atarka, Thrakkus: every combat
+        continue
+    return False
 
 
 def token_doubler(card):
@@ -588,7 +976,7 @@ def token_doubler(card):
     # The condition is scoped to the clause, the same lesson the ETB life-loss
     # channel records: a -2 that doubles "until end of turn" is not a doubler.
     window = text[max(0, m.start() - 90):m.end()]
-    return not _TOKEN_DOUBLER_TEMPORARY_RE.search(window)
+    return not _TEMPORARY_EFFECT_RE.search(window)
 
 
 #: Gates that name a CARD TYPE rather than a creature subtype. Same four as
@@ -773,7 +1161,22 @@ def draw_profile(card):
            "activated_wheel": 0, "activated_wheel_shuffles": False,
            "activated_wheel_cost": 0, "activated_wheel_pips": [],
            "activated_wheel_once": False, "activated_wheel_sacs_self": False,
+           # A DRAW YOU BUY, rather than one a wheel hands you. "{1}, {T},
+           # Sacrifice this artifact: Draw a card" — Mind Stone, Commander's
+           # Sphere, and every Blood token. `activated_draw_discards` is the
+           # discard paid as part of the COST, which is a real discard event and
+           # is what makes a Blood token worth anything to a discard deck.
+           # EVERY DRAW AFTER THE DRAW STEP, TIMES THIS. 1 when the card is
+           # not a doubler, so the turn loop multiplies unconditionally and
+           # there is no flag to forget.
+           "draw_multiplier": 1,
+           "activated_draw": 0, "activated_draw_cost": 0,
+           "activated_draw_pips": [], "activated_draw_once": False,
+           "activated_draw_discards": 0, "activated_draw_sacs_self": False,
            "unmodelled": None}
+    _dd = _DRAW_DOUBLER_RE.search(text)
+    if _dd:
+        out["draw_multiplier"] = 3 if _dd.group(1).lower() == "three" else 2
     _w = _WHEEL_RE.search(text)
     # A wheel with NO MANA COST (Wheel of Fate, suspend only) would be cast
     # for nothing by a loop that spends what a card costs; excluded.
@@ -808,6 +1211,38 @@ def draw_profile(card):
             _ACTIVATED_ONE_SHOT_RE.search(_cost)
             or _ACTIVATE_ONLY_ONCE_RE.search(text))
         out["activated_wheel_sacs_self"] = bool(_ACTIVATED_SAC_SELF_RE.search(_cost))
+    # DISJOINT FROM THE WHEEL ABOVE BY CONSTRUCTION — `activated_draw` skips a
+    # cost whose effect is a wheel — so this is deliberately not an `elif`. A
+    # permanent may carry both abilities and be read for both.
+    _ad = activated_draw(text)
+    if _ad and _ad[2]:
+        # Activated from a zone this model does not have. NAMED rather than
+        # zeroed, for the reason the wheel path above states.
+        out["unmodelled"] = card.get("name")
+    elif _ad:
+        _cost, _dm, _ = _ad
+        _word = _dm.group(1).lower()
+        out["activated_draw"] = _DRAW_WORDS.get(_word, _NUMBER_WORDS.get(_word, 1)) or 1
+        out["activated_draw_cost"] = _activation_mana(_cost)
+        out["activated_draw_pips"] = cast_pips(_cost)
+        out["activated_draw_sacs_self"] = bool(_ACTIVATED_SAC_SELF_RE.search(_cost))
+        out["activated_draw_once"] = bool(
+            _ACTIVATED_ONE_SHOT_RE.search(_cost)
+            or _ACTIVATE_ONLY_ONCE_RE.search(text))
+        _dc = _ACTIVATED_DISCARD_COST_RE.search(_cost)
+        if _dc:
+            _dw = _dc.group(1).lower()
+            out["activated_draw_discards"] = (
+                _DRAW_WORDS.get(_dw, _NUMBER_WORDS.get(_dw, 1)) or 1)
+        # The loot rider, from the EFFECT rather than the cost. Read off the
+        # same de-reminded text the cost came from, or a Clue's "{2}, Sacrifice
+        # this token: Draw a card" would contribute a phantom discard.
+        _td = _ACTIVATED_THEN_DISCARD_RE.search(
+            _REMINDER_RE.sub(" ", text)[text.index(_cost) if _cost in text else 0:])
+        if _td:
+            _tw = _td.group(1).lower()
+            out["activated_draw_discards"] += (
+                _DRAW_WORDS.get(_tw, _NUMBER_WORDS.get(_tw, 1)) or 1)
     # BEFORE the `_DRAW_RE` guard, which wants a WRITTEN-OUT quantity ("draw
     # two cards") and does not recognise "draws X cards" — so every card in
     # this family returned here with an all-zero profile and, worse, with
@@ -885,10 +1320,17 @@ def draw_profile(card):
             if td:
                 out["spell_discard"] = _DRAW_WORDS[td.group(1).lower()]
 
+    # EVERY CHANNEL THAT READS A DRAW BELONGS IN THIS TUPLE. It is the guard
+    # that decides whether the card gets named as unreadable, so a channel
+    # missing from it reads its card correctly AND reports it as unmodelled at
+    # the same time — which is worse than either, because `meta` then lists a
+    # card the model is in fact acting on and a reader cuts it. `activated_draw`
+    # was exactly that for the length of one commit.
     if not any((out["etb_draw"], out["spell_draw"], out["recurring_draw"],
                 out["arrival_draw"], out["cast_draw"],
                 out["x_draw_multiplier"], out["wheel_draws"],
-                out["activated_wheel"],
+                out["activated_wheel"], out["activated_draw"],
+                out["draw_multiplier"] > 1,
                 out["spell_draw_greatest_power"], out["etb_draw_per_type"])):
         out["unmodelled"] = card.get("name")
     return out
@@ -1958,8 +2400,7 @@ def combat_profile(card):
                 profile["etb_token_bodies"] += count
                 profile["etb_token_power"] += count * _stat(tok.group(2))
 
-    if (_DAMAGE_DOUBLER_RE.search(text) or _TEAM_DOUBLE_STRIKE_RE.search(text)
-            or _TEAM_POWER_DOUBLE_RE.search(text)):
+    if _permanent_damage_multiplier(text, type_line):
         profile["team_damage_multiplier"] = 2
     elif is_creature and _SELF_DOUBLE_STRIKE_RE.search(text):
         # Its OWN damage twice. `elif` because a card that grants the team

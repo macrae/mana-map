@@ -179,12 +179,12 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     _TEAM_COUNTER_ETB_RE,
     _TEAM_COUNTER_ON_TYPE_RE,
     _TEAM_DOUBLE_STRIKE_RE,
+    _TEMPORARY_EFFECT_RE,
     _TEAM_HASTE_RE,
     _TEAM_POWER_DOUBLE_RE,
     _TOKEN_CLAUSE_HEAD_RE,
     _TOKEN_CREATED_TRIGGER_RE,
     _TOKEN_DOUBLER_RE,
-    _TOKEN_DOUBLER_TEMPORARY_RE,
     _TOKEN_PT_RE,
     _TOKEN_RE,
     _TOXIC_KW_RE,
@@ -480,6 +480,19 @@ TREASURE_ASSUMPTIONS = [
 
 # Appended only for a deck that opts in, same contract as TREASURE_ASSUMPTIONS.
 DISCARD_ASSUMPTIONS = [
+    "BLOOD: a Blood token is created on an ETB, a per-opponent ETB (three, the "
+    "pod) or a spell's resolution; Blood made by CONNECTING in combat is read "
+    "and NOT credited, because a blocker can prevent it and this model has no "
+    "blockers. AT MOST ONE IS CRACKED PER TURN, before the casting loops, and "
+    "only with a card in hand, since discarding is part of the cost. One a turn "
+    "is an authored floor: a pilot holding three with mana to spare cracks "
+    "more, so this understates. Cracking one is a DISCARD and a DRAW, which the "
+    "commander payoffs below charge for, and it sacrifices an ARTIFACT, which "
+    "the artifact-sacrifice payoffs charge for.",
+    "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw "
+    "a card' -- is paid for out of whatever mana the casting loops did not "
+    "want, and a cost that eats its own source fires once. Energy and {X} "
+    "activation costs are REFUSED and named, never priced at zero.",
     "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only "
     "when the hand holds at most three nonland cards or a discard payoff is on "
     "the battlefield; a loot pitches lands beyond the next drop first, then the "

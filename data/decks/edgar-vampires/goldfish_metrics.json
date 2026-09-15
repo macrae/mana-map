@@ -4,20 +4,17 @@
       "cards_that_draw": 16,
       "draw_not_modelled": [
         "Bloodtracker",
-        "Castle Locthwain",
         "Champion of Dusk",
         "Crossway Troublemakers",
         "High-Society Hunter",
         "Liliana, Dreadhorde General",
         "Midgar, City of Mako // Reactor Raid",
-        "Minas Tirith",
         "Preacher of the Schism",
         "Savai Triome",
-        "Silent Clearing",
         "Skullclamp",
         "Voldaren Epicure"
       ],
-      "modelled": 3,
+      "modelled": 6,
       "why": "ETB, spell, upkeep and arrival draw are modelled; activated, X-based, death- and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
     },
     "combat_effects_not_modelled": [
@@ -84,7 +81,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "61c2ffdcbefb",
+    "model_version": "a5dc923f4c9b",
     "seed": 42
   },
   "metrics": {

@@ -184,6 +184,35 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # no way to point at the battlefield entry it belongs to. One dict per
     # permanent: {"draw", "power", "is_creature"}.
     wheel_engines = []
+    # A DRAW YOU BUY, and the stockpile of one-shot ones.
+    #
+    # `bought_draws` IS NOT `draw_engines` TWENTY LINES UP, and the first cut of
+    # this channel named it that and silently shadowed it — `draw_engines` holds
+    # permanents that draw on their own every upkeep, this holds permanents that
+    # draw when you PAY. The collision emptied the recurring list at boot and
+    # the model died on the first card that had one (`KeyError: recurring_draw`,
+    # because the entries are shaped differently too). Worth the long name.
+    #
+    # `blood` is a count of Blood tokens, shaped like `treasures` above because
+    # it is the same kind of thing — a resource that sits on the board until it
+    # is spent, once.
+    bought_draws = []
+    blood = 0
+    blood_by_turn = []
+    # Permanents that pay when an artifact you control is sacrificed, and the
+    # count of those sacrifices this turn. Reset per turn like `drawn_this_turn`,
+    # because the payoff is per EVENT and the turn is the accounting period.
+    artifact_sac_payoff_permanents = []
+    artifact_sacs_this_turn = 0
+    # CUMULATIVE, and returned: a channel whose events nobody can count is a
+    # channel nobody can tell apart from a channel that never fires. This is
+    # what showed the first placement of the Blood crack was inert.
+    artifact_sacs = 0
+    artifact_sacs_by_turn = []
+    # EVERY DRAW AFTER THE DRAW STEP, TIMES THIS. Multiplicative across sources
+    # the way the damage multiplier is, because the rules are: two Teferi's
+    # Ageless Insights really do draw four.
+    draw_multiplier = 1
 
     def _register_wheel(card):
         """ONE DOOR FOR A WHEEL ARRIVING ON THE BATTLEFIELD.
@@ -193,8 +222,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for `draw_engines` is already one too many, and a fourth channel added
         at two of the three is how a card comes to work on some turns.
         """
+        nonlocal blood, draw_multiplier
         if not (model_draw and model_discard):
             return
+        # BLOOD IS MADE ON ARRIVAL, so it is credited here rather than in a
+        # loop of its own — the docstring above says three registration sites
+        # is already one too many, and a fourth channel added at two of them is
+        # how a card comes to work on some turns and not others.
+        #
+        # `combat` and `unmodelled` triggers are deliberately NOT credited: a
+        # Blood made by connecting is one a blocker can prevent and this model
+        # has no blockers, which is the same reason the combat pillar is opt-in.
+        # SUBSCRIPTED, NOT `.get`, and that is not style. `classify` emits
+        # "blood" for every card, and `test_every_signal_the_model_sets_is_read_
+        # by_something` is an AST sweep for SUBSCRIPTS — a `.get` is invisible
+        # to it, so the channel would read as a flag the model sets and nothing
+        # acts on, which is the exact failure that test exists to catch.
+        _bn, _bt = card["blood"]
+        if _bt in ("etb", "per_opponent", "spell"):
+            blood += _bn
+        if card["draw"]["draw_multiplier"] > 1:
+            draw_multiplier *= card["draw"]["draw_multiplier"]
+        if any(v for k, v in card["artifact_sac"].items() if k != "unmodelled"):
+            artifact_sac_payoff_permanents.append(card["artifact_sac"])
+        if card["draw"]["activated_draw"]:
+            bought_draws.append({
+                "draw": card["draw"],
+                "power": card["combat"]["power"],
+                "is_creature": card["combat"]["is_creature"]})
         if not card["draw"]["activated_wheel"]:
             return
         wheel_engines.append({
@@ -372,6 +427,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # wheel refills that one seat. A real table has three, which makes
         # every figure downstream of this a FLOOR and is stated as one.
         opponent_draws_this_turn = 1
+        artifact_sacs_this_turn = 0
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -407,9 +463,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         def draw_n(n):
             """Take n off the top. The deck running out is a real outcome and
             is not an error: a goldfish that decks itself has answered the
-            question about steam more loudly than any rate could."""
+            question about steam more loudly than any rate could.
+
+            THE DRAW DOUBLER IS APPLIED HERE AND NOWHERE ELSE, which is what
+            makes "except the first one you draw in each of your draw steps"
+            exact: the draw step takes its card straight off the deck a hundred
+            lines up and never calls this, so the one draw the card does not
+            double is the one draw that cannot reach this multiplication.
+            """
             nonlocal drawn_extra, drawn_this_turn
-            for _ in range(int(n)):
+            for _ in range(int(n) * draw_multiplier):
                 if not deck:
                     return
                 got = deck.pop(0)
@@ -1060,6 +1123,36 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # this one is on the battlefield. Without the gate the Archivist wheels
         # away a good hand every turn from turn four, forever, and reports it
         # as card advantage.
+        # ── CRACK A BLOOD ─────────────────────────────────────────────────
+        #
+        # BEFORE THE CASTING LOOPS, WHICH IS WHERE THE DECISION ACTUALLY SITS.
+        # The first cut put this last, on whatever mana nothing else wanted, by
+        # analogy with the X spells — and that made the channel INERT: a
+        # goldfish spends its whole pool casting, so `spend(1)` failed almost
+        # every turn and the tokens sat on the board uncracked. Measured at the
+        # time: 49 of 300 games had Blood standing at end of turn and virtually
+        # none was ever spent. A resource the model can never spend is a
+        # resource the model cannot price.
+        #
+        # ONE PER TURN, AND THAT IS AN AUTHORED NUMBER. A pilot cracks a Blood
+        # to smooth a draw, not to empty the board; cracking every token the
+        # pool could afford would spend a turn-eight deck's whole mana on
+        # rummaging. One is the conservative reading — it understates a pilot
+        # holding three with mana to spare, which is the direction every other
+        # choice in this file takes — and it is stated in MODEL_ASSUMPTIONS
+        # rather than buried here.
+        #
+        # A BLOOD CANNOT BE CRACKED WITH AN EMPTY HAND: discarding is part of
+        # the cost, and a cost you cannot pay is an ability you cannot activate.
+        # Without the guard the model draws a free card off every token whenever
+        # it is hellbent — which is exactly when a wheel deck usually is.
+        if model_draw and model_discard and blood > 0 and hand and spend(1, []):
+            blood -= 1
+            artifact_sacs_this_turn += 1        # the token IS an artifact
+            artifact_sacs += 1
+            discard_n(1)
+            draw_n(1)
+
         if model_draw and model_discard and wheel_engines:
             for _we in list(wheel_engines):
                 _wp = _we["draw"]
@@ -1137,7 +1230,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # casting predicate ships in the same
                                          # commit as the channel rather than in
                                          # the session that notices.
-                                         model_discard and c["draw"]["activated_wheel"]))),
+                                         model_discard and c["draw"]["activated_wheel"],
+                                         # AND THE TWO CHANNELS ADDED WITH THIS
+                                         # SENTENCE. A rock that cashes itself
+                                         # in for a card, and anything that
+                                         # makes Blood. Both need only to reach
+                                         # the battlefield: `_register_wheel`
+                                         # picks them up from there, and
+                                         # `never_cast` was taught the same
+                                         # pair in the same commit. Unlike the
+                                         # line above, these are NOT all
+                                         # creatures -- Blood Fountain, Sanguine
+                                         # Statuette and Mind Stone have no body
+                                         # at all, so without this they are
+                                         # read perfectly and never played.
+                                         model_discard and model_draw
+                                         and (c["draw"]["activated_draw"]
+                                              or c["blood"][1]
+                                              in ("etb", "per_opponent", "spell")
+                                              or c["draw"]["draw_multiplier"] > 1
+                                              or any(v for k, v in c["artifact_sac"].items()
+                                                     if k != "unmodelled"))))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 # THE LOOP WALKS A SNAPSHOT OF THE HAND, and a wheel cast two
                 # iterations ago emptied it: a card that has since been
@@ -1669,6 +1782,52 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 hand.remove(_best)
                 draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
 
+        # ── BLOOD, AND THE DRAWS YOU BUY ────────────────────────────────
+        #
+        # LAST, ON WHAT IS LEFT, for the same reason the X spells above are:
+        # a loop placed earlier eats the pool and starves the board, and
+        # spending only the leftovers makes the channel CONSERVATIVE. A real
+        # pilot cracks a Blood early to dig for a land; this model cannot, and
+        # understates in the direction every other choice in this file does.
+        #
+        # WHY BLOOD IS WORTH A CHANNEL AT ALL, since it draws no cards on net:
+        # one leaves the hand and one arrives, so the card economy is flat and
+        # the EVENTS are the whole point. A deck whose commanders charge for a
+        # discard and for a draw is paid twice for every token it cracks, which
+        # is why this arrived for sharknado and not for anybody else.
+        if model_draw and model_discard:
+            for _de in list(bought_draws):
+                _dp = _de["draw"]
+                if _dp["activated_draw_discards"] and not hand:
+                    continue
+                if not spend(_dp["activated_draw_cost"], _dp["activated_draw_pips"]):
+                    continue
+                if _dp["activated_draw_discards"]:
+                    discard_n(_dp["activated_draw_discards"])
+                draw_n(_dp["activated_draw"])
+                if _dp["activated_draw_sacs_self"] and not _de["is_creature"]:
+                    # Mind Stone, Commander's Sphere, a Blood token: the cost
+                    # ate an ARTIFACT, which is the event Jaws charges for.
+                    artifact_sacs_this_turn += 1
+                    artifact_sacs += 1
+                if not _dp["activated_draw_once"]:
+                    continue
+                bought_draws.remove(_de)
+                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT --
+                # the same correction the wheel loop above carries, and for
+                # the same reason: Living Lectern says "Sacrifice this
+                # creature" and leaving its body on the board is an over-credit
+                # the sacrifice channel already learned to avoid.
+                if not (_dp["activated_draw_sacs_self"] and _de["is_creature"]):
+                    continue
+                _own = [i for i, (_p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                        if _p == _de["power"] and not _tok]
+                if _own:
+                    _i = _own[0]
+                    battlefield.pop(_i)
+                    creature_types.pop(_i)
+                    creature_flying.pop(_i)
+
         # THE DISCARD AND DRAW PAYOFFS, paid on the turn's events. Applied
         # OUTSIDE the combat gate, the way drain is, so Brallin's ping counts
         # under model_discard alone rather than dying silently inside
@@ -1676,6 +1835,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # explicitly, because it is damage. Counters accumulate as power the
         # swing adds while the commander is out (an approximation, stated).
         _evt_dmg = 0
+        # WHAT THE SACRIFICES PAID. Folded into `_evt_dmg` so it is multiplied
+        # by the team damage multiplier and checked against the kill exactly
+        # like Brallin's ping, which is the same kind of number. Counters go to
+        # `counter_power` the same way, and a draw off a sacrifice terminates by
+        # construction: cracking a token is not caused by drawing.
+        if model_discard and model_draw and artifact_sac_payoff_permanents \
+                and artifact_sacs_this_turn:
+            for _a in artifact_sac_payoff_permanents:
+                _evt_dmg += _a["per_artifact_sac_damage"] * artifact_sacs_this_turn
+                counter_power += _a["per_artifact_sac_counter"] * artifact_sacs_this_turn
+                if _a["per_artifact_sac_draw"]:
+                    draw_n(_a["per_artifact_sac_draw"] * artifact_sacs_this_turn)
         if model_discard and event_payoff_permanents:
             _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
             for _e in event_payoff_permanents:
@@ -1716,6 +1887,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     kill_turn = turn
                     kill_by = "life"
         event_damage_by_turn.append(_evt_dmg)
+        blood_by_turn.append(blood)
+        artifact_sacs_by_turn.append(artifact_sacs)
         discarded_by_turn.append(discarded)
         # CUMULATIVE, like `discarded_by_turn` beside it: the size the pair has
         # reached, not what they gained this turn.
@@ -2227,6 +2400,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "mana_by_turn": mana_by_turn,
         "commander_turn": commander_turn,
         "commander_counters_by_turn": commander_counters_by_turn,
+        # The stockpile STANDING at the end of each turn, not what was made:
+        # the same reading `treasures_by_turn` takes, so the two can be read
+        # beside each other without a footnote.
+        "blood_by_turn": blood_by_turn,
+        "artifact_sacs_by_turn": artifact_sacs_by_turn,
         "bodies_by_turn": bodies_by_turn,
         "drawn_extra_by_turn": drawn_extra_by_turn,
         "discarded_by_turn": discarded_by_turn,

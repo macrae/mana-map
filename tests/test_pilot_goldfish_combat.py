@@ -238,7 +238,12 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # `model_combat`, and its wheels were invisible before `model_discard`.
     # gishath opted in on 2026-09-11 with combat, Treasure, draw and the
     # declared combat-damage reveal: 33 of its cards had been DARK.
-    assert sorted(opted) == ["edgar-vampires", "gishath", "heliod", "ingris-infect",
+    # 2026-09-14: ingris-infect BROKEN DOWN FOR PARTS by the pilot — "you need
+    # infect which is a green thing" — so it leaves this list the way
+    # zur-enchantress did, by being retired rather than by changing its mind
+    # about a flag. It opted in on the day it was built and that is still true;
+    # it is simply no longer walked here.
+    assert sorted(opted) == ["edgar-vampires", "gishath", "heliod",
                              "sharknado", "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
@@ -719,3 +724,90 @@ def test_ur_dragon_reads_its_two_grants_and_they_are_worth_something(monkeypatch
     # And it is a SMALL number on an unopposed table: the deck's clock is set
     # by mana, not summoning sickness. Stated so a haste branch is not oversold.
     assert seen["8"] - blind["8"] < 0.05
+
+
+# ── A doubler that wears off is not a doubler ─────────────────────────────
+
+
+def test_a_one_turn_double_strike_grant_is_not_a_permanent_multiplier():
+    """THE CONDITION IS SCOPED TO THE CLAUSE IT ATTACHES TO, and this channel
+    did not have that guard while the token doubler beside it did.
+
+    `_TEAM_DOUBLE_STRIKE_RE` matched "creatures you control ... gain double
+    strike" ANYWHERE in an oracle, so a one-turn combat trick read as a
+    permanent x2 on every point of damage the deck would ever deal.
+
+    FOUND ON sharknado, and it nearly produced backwards advice. Elesh Norn //
+    The Argent Etchings carried `team_damage_multiplier: 2` off its SAGA BACK
+    FACE, chapter II — "Creatures you control get +1/+1 and gain double strike
+    until end of turn" — one turn, on a face reachable only by paying {2}{W} and
+    sacrificing three other creatures. Cutting the card measured as -2.2 damage
+    at turn eight and would have been reported as a reason to keep a card that
+    does nothing.
+
+    THE DISTINCTION IS ONE-SHOT VERSUS RE-APPLIED, and the first cut of this fix
+    got it wrong by testing only for "until end of turn". That dropped Atarka,
+    World Render and Thrakkus the Butcher too — and they are real: "Whenever a
+    Dragon you control attacks, it gains double strike until end of turn" wears
+    off every turn and is put back every turn, so to a model that attacks every
+    turn it is permanent. `test_three_wordings_one_effect` exists for exactly
+    those two and went red, which is how the over-correction was caught.
+
+    THE SWEEP: 75 corpus cards read as permanent multipliers before the fix and
+    53 after — **22 were phantom**. Four are Saga chapters, seven are instants
+    and sorceries (Cleaver Riot, Savage Beating, Double Trouble), and the rest
+    are ETB one-shots like God-Eternal Rhonas and Terror of Mount Velus. The
+    survivors include both the static doublers (Furnace of Rath, Dictate of the
+    Twin Gods, Rage Reflection) and the re-applied ones (Atarka, Thrakkus).
+
+    Re-introduce the bug by dropping the `_TEMPORARY_EFFECT_RE` check in
+    `_permanent_damage_multiplier`.
+    """
+    from manamap.pilot.goldfish_profiles import _permanent_damage_multiplier as perm
+
+    # ONE-SHOT — scored as a permanent doubler until this fix.
+    assert not perm("Creatures you control gain double strike until end of turn.",
+                    "Sorcery"), "Cleaver Riot fires once"
+    assert not perm("Double the power of each creature you control until end of turn.",
+                    "Instant"), "Double Trouble fires once"
+    assert not perm("II — Creatures you control get +1/+1 and gain double strike "
+                    "until end of turn.",
+                    "Legendary Creature — Phyrexian Praetor // Enchantment — Saga"), (
+        "a Saga chapter fires once, and this one costs three creatures to reach")
+
+    # RE-APPLIED — wears off, comes back every combat, so it is permanent to a
+    # model that attacks every turn. Dropping these was the over-correction.
+    assert perm("Flying, trample Whenever a Dragon you control attacks, it gains "
+                "double strike until end of turn.", "Legendary Creature — Dragon")
+    assert perm("Trample Whenever Thrakkus attacks, double the power of each Dragon "
+                "you control until end of turn.", "Legendary Creature — Dragon")
+
+    # STATIC — never in doubt, and must survive.
+    assert perm("Creatures you control have double strike.", "Enchantment")
+    assert perm("Attacking creatures you control have double strike.", "Enchantment")
+    assert perm("If a source would deal damage to a permanent or player, it deals "
+                "double that damage to that permanent or player instead.", "Enchantment")
+
+
+@requires_data
+def test_the_permanent_multiplier_sweep_is_locked():
+    """WIDENING OR NARROWING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT.
+    37 cards on 2026-09-14, down from 75. A new set moves this on purpose; a
+    refactor that moves it has broken something."""
+    from manamap.pilot import card_pool
+    from manamap.pilot.goldfish_profiles import _permanent_damage_multiplier as perm
+
+    oracle = card_pool.corpus_oracle()
+    assert len(oracle) > 30000, "corpus did not load"
+    pool = card_pool.load_pool()
+    hits = {n for n, t in oracle.items()
+            if perm(t or "", str((pool.get(n) or {}).get("type_line") or ""))}
+    assert 45 <= len(hits) <= 62, f"the multiplier family moved to {len(hits)}"
+    for real in ("Furnace of Rath", "Dictate of the Twin Gods", "Rage Reflection",
+                 "Berserkers' Onslaught", "True Conviction",
+                 # RE-APPLIED EVERY COMBAT, and the reason the first fix was wrong.
+                 "Atarka, World Render", "Thrakkus the Butcher"):
+        assert real in hits, f"{real} is a permanent doubler and was dropped"
+    for phantom in ("Cleaver Riot", "Savage Beating", "Double Trouble",
+                    "God-Eternal Rhonas", "Elesh Norn // The Argent Etchings"):
+        assert phantom not in hits, f"{phantom} fires once and is scored as forever"
