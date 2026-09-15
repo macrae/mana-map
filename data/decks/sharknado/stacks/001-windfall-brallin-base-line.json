@@ -1,0 +1,428 @@
+{
+  "id": "001",
+  "slug": "windfall-brallin-base-line",
+  "deck": "sharknado",
+  "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3)",
+        "Shabraz, the Skyshark (3/3, flying)",
+        "Command Tower",
+        "Steam Vents",
+        "Hallowed Fountain",
+        "Sulfur Falls",
+        "Mana Confluence",
+        "Sol Ring"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ],
+          "note": "holding 4 cards"
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ],
+          "note": "holding 6 cards"
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x3"
+          ],
+          "note": "holding 2 cards"
+        }
+      ]
+    },
+    "hand": [
+      "Reforge the Soul",
+      "Smothering Tithe",
+      "Rielle, the Everwise",
+      "Library of Leng",
+      "Sticky Fingers",
+      "Arcane Signet",
+      "Treasure Map // Treasure Cove"
+    ],
+    "mana_available": "{C}{C} from Sol Ring, {U} or {R} from Sulfur Falls, one mana of any colour from Mana Confluence — untapped and unspent; nothing floating",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Windfall",
+        "controller": "you",
+        "note": "cast from hand for {2}{U}; the seven cards listed in hand are what remains after casting it"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, main phase 1. Windfall is the only object on the stack and every player has passed priority on it. Your hand is exactly the seven cards listed; opponents hold 4, 6 and 2 cards. Nothing on any board modifies discards, draws, damage or triggers.",
+      "assumptions": [
+        "Brallin and Shabraz are both on the battlefield under your control and have no counters yet",
+        "no card in any hand or on any board has madness or any other replacement effect for discarding or drawing, and nothing else triggers on a discard or a draw",
+        "no opponent responds at any point"
+      ]
+    },
+    "question": "Resolve Windfall. State how many times Brallin's 'whenever you discard a card' ability triggers, how much damage each opponent is dealt in total and how many +1/+1 counters Brallin ends with, how many cards you draw and how many times Shabraz's 'whenever you draw a card' ability triggers, and exactly WHEN all of those triggered abilities are put on the stack relative to Windfall's own discard-then-draw resolution — in particular whether Brallin is still a 3/3 with no counters at the moment the seven cards are drawn, and who orders the triggers once they are stacked."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players have passed priority with Windfall the only object on the stack; Windfall begins to resolve. Its text is two actions in one resolution: 'Each player discards their hand, then draws cards equal to the greatest number of cards a player discarded this way.' The discard is processed first, as one simultaneous action across all four players; the draw is the second action.",
+        "effect": "No player receives priority at any point during Windfall's resolution; the instructions are followed in the order written, discard first, then draw. Rielle, the Everwise and Library of Leng are both in your HAND (they are among the seven cards about to be discarded), not on the battlefield, so neither's ability functions: no extra draw, no option to put a discarded card on top of the library.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "608.2e",
+            "quote": "Some spells and abilities have multiple steps or actions, denoted by separate sentences or clauses, that involve multiple players. In these cases, the choices for the first action are made in APNAP order, and then the first action is processed simultaneously. Then the choices for the second action are made in APNAP order, and then that action is processed simultaneously, and so on."
+          },
+          {
+            "rule": "113.6",
+            "quote": "Abilities of all other objects usually function only while that object is on the battlefield."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "First action: each player discards their hand. You discard seven cards (Reforge the Soul, Smothering Tithe, Rielle, the Everwise, Library of Leng, Sticky Fingers, Arcane Signet, Treasure Map // Treasure Cove); opponent_1 discards 4, opponent_2 discards 6, opponent_3 discards 2. All seven of your cards go from hand to graveyard: per the scenario's assumptions no card in any hand or on any board has a replacement effect for discarding, and Treasure Map's own text has nothing that cares about a discard or a draw.",
+        "effect": "Brallin's 'Whenever you discard a card' ability TRIGGERS SEVEN TIMES — once per card you discarded, because one event (the discard of your hand) contains seven occurrences of the trigger event. It does not trigger for the 12 cards opponents discard ('you' means Brallin's controller). Shabraz's ability does not trigger here (nothing has been drawn yet). Nothing happens yet for any of these seven triggered abilities: they have triggered, but triggering does nothing by itself.",
+        "citations": [
+          {
+            "rule": "701.9a",
+            "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "109.5",
+            "quote": "The words “you” and “your” on an object refer to the object’s controller, its would-be controller (if a player is attempting to play, cast, or activate it), or its owner (if it has no controller). For a static ability, this is the current controller of the object it’s on. For an activated ability, this is the player who activated the ability. For a triggered ability, this is the controller of the object when the ability triggered, unless it’s a delayed triggered ability."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Windfall continues resolving. The seven Brallin triggers are NOT put on the stack now.",
+        "effect": "A triggered ability is put on the stack only the next time a player would receive priority, and no player receives priority while a spell is resolving. So at this moment Brallin is still a 3/3 with NO +1/+1 counters, no damage has been dealt to anyone, and every opponent is still at 40. This confirms the engine model's reading that Brallin's counters are not on him while the refill is drawn, and it confirms the official Brallin ruling that the resolving spell finishes resolving before Brallin's trigger does.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Second action: each player draws cards equal to the greatest number of cards a player discarded this way. That number is determined once, now: you discarded 7, opponents 4, 6 and 2, so the greatest is 7. Each player draws seven cards. You are the active player, so you perform all seven of your draws first, one card at a time; then each opponent in turn order draws seven.",
+        "effect": "You draw seven cards. Shabraz's 'Whenever you draw a card' ability TRIGGERS SEVEN TIMES — one trigger per individual card draw, because seven draws are seven occurrences of its trigger event. It does not trigger for the 21 cards opponents draw. These seven triggers likewise do nothing yet and are not put on the stack: no player receives priority, so Brallin is STILL a 3/3 with no counters, and Shabraz is still a 3/3, while all seven cards are drawn. Your hand is now seven unknown cards from the top of your library; opponents hold 7, 7 and 7.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "121.2",
+            "quote": "Cards may only be drawn one at a time. If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+          },
+          {
+            "rule": "121.2c",
+            "quote": "If more than one player is instructed to draw cards, the active player performs all of their draws first, then each other player in turn order does the same."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Windfall's last step: it is put into your graveyard. Windfall has finished resolving; the stack is empty.",
+        "effect": "Fourteen triggered abilities you control have triggered during Windfall's resolution and none has been put on the stack: seven Brallin triggers and seven Shabraz triggers.",
+        "citations": [
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "You, the active player, would now receive priority. Before you do, the game performs state-based actions (none apply: every player is at 40, no creature has damage or toughness 0) and then all fourteen triggered abilities are put on the stack. All fourteen are controlled by you, so YOU choose their relative order — any order at all; there is no APNAP question because no other player controls a trigger. Then you receive priority.",
+        "effect": "The stack now holds fourteen abilities in the order you chose. This is the single moment the question asks about: every one of Brallin's seven and Shabraz's seven goes on the stack together, AFTER Windfall has completely resolved, ordered by their controller. Your Sol Ring, Sulfur Falls and Mana Confluence are still untapped with nothing floating, but the scenario stipulates no responses, so nothing is cast or activated with that mana here.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "If multiple abilities have triggered since the last time a player received priority, the abilities are placed on the stack in a two-part process. First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "With no responses (per the scenario), all players pass in succession and the fourteen abilities resolve one at a time, top of the stack first, in the order you set. Each Brallin trigger resolving: put ONE +1/+1 counter on Brallin and Brallin deals 1 damage to EACH opponent. Each Shabraz trigger resolving: put ONE +1/+1 counter on Shabraz and you gain 1 life. Between each resolution the game checks state-based actions again before you receive priority.",
+        "effect": "Seven Brallin resolutions: Brallin gets seven +1/+1 counters (one per resolution, regardless of how many opponents are damaged) and becomes a 10/10; each opponent is dealt 1 damage seven times and loses 7 life — 7 PER SEAT, 21 across the pod, never 21 to one player. Every opponent goes 40 -> 33; no one reaches 0, so no state-based action removes a player. Seven Shabraz resolutions: Shabraz gets seven +1/+1 counters and becomes a 10/10 flyer, and you gain 7 life. The order you chose changes nothing about these totals: Brallin's damage is a fixed 1 per trigger, not tied to his power, so a counter arriving earlier or later does not change the arithmetic.",
+        "citations": [
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          },
+          {
+            "rule": "119.2",
+            "quote": "Damage dealt to a player normally causes that player to lose that much life."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Brallin's ability triggers SEVEN times (one per card you discard; opponents' 12 discards do not count). Each trigger deals 1 damage to EACH opponent: 7 per seat, 21 across the pod; all three opponents go 40 -> 33. Brallin ends with seven +1/+1 counters (10/10). You draw seven cards and Shabraz's ability triggers SEVEN times: seven +1/+1 counters on Shabraz (10/10 flying) and you gain 7 life. TIMING: the discard and the draw are one resolution of Windfall; no player receives priority inside it, so NONE of the fourteen triggers is put on the stack until Windfall has completely resolved and gone to the graveyard. Brallin is therefore a 3/3 with no counters throughout the discard AND while all seven cards are drawn. Then, before you receive priority, state-based actions are checked and you — the controller of all fourteen — put them on the stack in any order you choose. The engine model's reading (engine.json open_questions[0] / lines[0]) is CONFIRMED in every part. Windfall has no official rulings; the official Brallin ruling that a resolving spell finishes resolving before Brallin's trigger does agrees with step 3.",
+      "you": {
+        "life": "unstated in the scenario; +7 from Shabraz's seven triggers",
+        "battlefield": [
+          "Brallin, Skyshark Rider 10/10 (seven +1/+1 counters)",
+          "Shabraz, the Skyshark 10/10 flying (seven +1/+1 counters)",
+          "Command Tower (tapped)",
+          "Steam Vents (tapped)",
+          "Hallowed Fountain (tapped)",
+          "Sulfur Falls (untapped)",
+          "Mana Confluence (untapped)",
+          "Sol Ring (untapped)"
+        ],
+        "hand": "seven unknown cards drawn from the top of your library",
+        "graveyard": [
+          "Windfall",
+          "Reforge the Soul",
+          "Smothering Tithe",
+          "Rielle, the Everwise",
+          "Library of Leng",
+          "Sticky Fingers",
+          "Arcane Signet",
+          "Treasure Map // Treasure Cove"
+        ],
+        "stack": "empty"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 33,
+          "hand": 7,
+          "damage_taken": 7
+        },
+        {
+          "seat": "opponent_2",
+          "life": 33,
+          "hand": 7,
+          "damage_taken": 7
+        },
+        {
+          "seat": "opponent_3",
+          "life": 33,
+          "hand": 7,
+          "damage_taken": 7
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Full rule adds that replacement effects may modify the actions and later text may modify earlier text; the scenario stipulates no replacement effects and Windfall's two clauses do not modify each other, so discard-then-draw in written order holds."
+      },
+      {
+        "step": 1,
+        "rule": "608.2e",
+        "status": "supported",
+        "note": "Establishes the discard as one action processed simultaneously across all four players, then the draw as a second action. The draw action is not literally simultaneous — 121.2c (cited in step 4) sequences it AP-first — and 608.2f permits exactly that when an action cannot be processed simultaneously; step 1 does not claim the draws are simultaneous, so no contradiction."
+      },
+      {
+        "step": 1,
+        "rule": "113.6",
+        "status": "supported",
+        "note": "Rielle, the Everwise and Library of Leng are in hand; none of the 113.6a–k exceptions (CDAs, zone-stated abilities, alternative-cost abilities, etc.) covers either card's ability. Agrees with the Rielle ruling of 2020-04-17: 'Rielle's first ability applies only while it's on the battlefield.' Library of Leng's 2004-10-04 rulings describe a replacement effect that would apply only while it is on the battlefield."
+      },
+      {
+        "step": 2,
+        "rule": "701.9a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "The rule's own example — a spell destroying all lands triggers a 'whenever a land is put into a graveyard' ability once per land — is the exact analogue of one discard-your-hand event containing seven 'you discard a card' occurrences. Seven Brallin triggers is established."
+      },
+      {
+        "step": 2,
+        "rule": "109.5",
+        "status": "supported",
+        "note": "Now cited. Full rule read: 'you' on an object refers to its controller; for a triggered ability, the controller of the object when the ability triggered. Brallin's ability is not a delayed triggered ability, so the rule's final sentence (603.7d-f) does not apply. Establishes that only your seven discards trigger Brallin, not the opponents' twelve. Quote is exact against the rule text."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Agrees with the Brallin ruling of 2020-04-17: 'If you discard a card while a spell or ability is resolving, that spell or ability finishes resolving before Brallin's triggered ability does.' The ruling is an input; 603.3 plus 117.2a establish the claim."
+      },
+      {
+        "step": 3,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": "Full rule expressly names 'while a spell or ability is resolving' and 'nothing actually happens at the time an ability triggers'; the no-counters-during-resolution claim follows."
+      },
+      {
+        "step": 4,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "'The greatest number of cards a player discarded this way' is information from the game determined once when applied; 7."
+      },
+      {
+        "step": 4,
+        "rule": "121.2",
+        "status": "supported",
+        "note": "Seven individual card draws, hence seven occurrences of Shabraz's trigger event."
+      },
+      {
+        "step": 4,
+        "rule": "121.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Seven Shabraz triggers. Consistent with the Shabraz ruling of 2020-04-17 that only the word 'draw' counts; Windfall says 'draws'."
+      },
+      {
+        "step": 4,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "First sentence of the rule; Windfall to graveyard as the final part of resolution."
+      },
+      {
+        "step": 6,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs first, repeated until none, then triggers, then the player receives priority. The SBA enumeration in the step (life 40, no damage, no toughness 0, and — unstated but checked — the legend rule does not apply since Brallin and Shabraz have different names) is correct; 704.4 independently confirms SBAs pay no attention to mid-resolution states."
+      },
+      {
+        "step": 6,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All fourteen abilities are controlled by you (603.3a: controller of the source when it triggered), so the APNAP pass is a single player placing fourteen abilities in any order they choose. Correct."
+      },
+      {
+        "step": 6,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "119.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Brallin is the damage source and has no infect; 1 life per opponent per resolution."
+      },
+      {
+        "step": 7,
+        "rule": "119.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Checked after each resolution; 33 > 0 for every seat."
+      },
+      {
+        "step": 7,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Second sentence of the rule; each ability leaves the stack after resolving."
+      },
+      {
+        "step": 7,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Now cited; the quote is the entire rule. Establishes that when all players pass in succession the top object on the stack resolves, which is the mechanism behind 'resolve one at a time, top of the stack first'. With 117.3b (step 6) giving you priority after each resolution, the fourteen sequential resolutions are fully grounded."
+      }
+    ],
+    "iterations": 2
+  }
+}
