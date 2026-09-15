@@ -41,6 +41,7 @@ _CORPUS = {
     "roles": DATA_DIR / "card_roles.json",
     "combos": DATA_DIR / "combo_details.json",
     "rules": DATA_DIR / "rules",
+    "rulings": DATA_DIR / "rulings",
     "strategy": DATA_DIR / "strategy",
     "decks": DATA_DIR / "decks",
     "pods": DATA_DIR / "pods",
@@ -53,6 +54,9 @@ _CORPUS = {
 #: over-invalidates and cannot be wrong.
 _DEPS = {
     "query-rules": ("rules",), "lookup-rule": ("rules",),
+    # Rulings are an input the resolve loop reads through scenario-facts, so an
+    # answer built on either invalidates when the dump moves.
+    "card-rulings": ("cards", "rulings"),
     "query-strategy": ("strategy",), "lookup-strategy": ("strategy",),
     # The docs and code indexes are rebuilt by hand, so they move rarely — but
     # naming them means an answer citing a passage invalidates when that passage
@@ -64,7 +68,7 @@ _DEPS = {
     "deck-audit": ("cards", "roles", "combos"),
     "mana-fit": ("cards",),
     "deck-info": (), "deck-facts": (), "deck-status": (),
-    "engine-facts": (), "scenario-facts": (), "deck-history": (),
+    "engine-facts": (), "scenario-facts": ("rulings",), "deck-history": (),
     "deck-version": (), "impact": (), "cache-status": (),
 }
 

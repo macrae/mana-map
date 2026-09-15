@@ -239,6 +239,44 @@ def corpus_oracle():
     return mtime_memo(OUTPUT_CSV_PATH, "corpus:oracle", _build_oracle, absent={}) or {}
 
 
+def _read_oracle_ids():
+    """{name: oracle_id}, keyed on the joined name AND each DFC face.
+
+    A LEGAL PRINTING WINS, for the same reason `_read_legality` gives: 38 names
+    carry more than one oracle_id in the corpus — Un-set six-packs, Jumpstart
+    front cards, promo variants — and every Commander-relevant one of them has
+    exactly one `legal` row. Otherwise first row wins. Read ON DEMAND like
+    legality rather than folded into `CORPUS_COLUMNS`: it is the first
+    oracle_id-keyed lookup in the pilot layer, the rulings are its only reader,
+    and widening every `deck-facts` parse for it is the wrong trade.
+    """
+    import pandas as pd
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, usecols=["name", "oracle_id", "legal_commander"])
+    out, legal = {}, set()
+    for name, oid, legality in zip(frame["name"], frame["oracle_id"], frame["legal_commander"]):
+        if not isinstance(oid, str) or not oid:
+            continue
+        is_legal = legality == "legal"
+        for key in expand_faces(name):
+            if key not in out or (is_legal and key not in legal):
+                out[key] = oid
+            if is_legal:
+                legal.add(key)
+    return out
+
+
+def corpus_oracle_ids():
+    """{name: oracle_id} — the name -> Scryfall oracle identity bridge.
+
+    `cards.json` deliberately carries no oracle_id (adding a field there would
+    rewrite every deck and MISS every `cards:semantic` routine), so anything
+    keyed by oracle_id — the rulings dump — resolves through the corpus. {} if
+    the corpus is absent.
+    """
+    return mtime_memo(OUTPUT_CSV_PATH, "corpus:oracle_ids", _read_oracle_ids, absent={}) or {}
+
+
 def read_pool_with_csv_module():
     """The pre-consolidation `csv`-module reader, kept ONLY as a test oracle.
 

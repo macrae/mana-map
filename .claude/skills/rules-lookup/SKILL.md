@@ -8,6 +8,7 @@ description: Query the local Magic comprehensive-rules DB — semantic search fo
 ```bash
 .venv/bin/manamap pilot query-rules "does storm copy targets" --k 8 --json   # semantic discovery
 .venv/bin/manamap pilot lookup-rule 702.40a --json                            # exact fetch
+.venv/bin/manamap pilot card-rulings "Brallin, Skyshark Rider" --json          # official WotC rulings: INPUT, never a citation
 ```
 
 **Semantic vs exact**: use `query-rules` to *discover* which rules govern an interaction (try several phrasings; keyword mechanics also have `glossary:<term>` chunks). Use `lookup-rule` to *verify or quote* — citation quotes must be copied verbatim from `lookup-rule` output, and the rules-checker only ever uses exact lookup. A miss suggests near-IDs ("601" → 601.1, 601.2, ...).

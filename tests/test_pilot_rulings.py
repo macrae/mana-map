@@ -173,3 +173,132 @@ def test_download_rulings_is_registered_and_not_read_only():
     names = [n for n, _, _ in PILOT_STEPS]
     assert "download-rulings" in names
     assert "download-rulings" not in serve.CLI_READONLY
+
+
+# ── the loader, the bridge, the three absent shapes ─────────────────────
+
+from manamap.pilot import card_pool, rulings
+from manamap.pilot.common import clear_memo
+
+@pytest.fixture
+def corpus(tmp_path, monkeypatch):
+    csv = tmp_path / "cards.csv"
+    csv.write_text(
+        "oracle_id,name,layout,legal_commander\n"
+        "promo-not-legal,Savage Lands,normal,not_legal\n"
+        "aaaa-1,Savage Lands,normal,legal\n"
+        '"bbbb-2","Brallin, Skyshark Rider",normal,legal\n'
+        "dddd-4,Fire // Ice,split,legal\n"
+        "eeee-5,No Rulings Here,normal,legal\n")
+    monkeypatch.setattr(card_pool, "OUTPUT_CSV_PATH", csv)
+    clear_memo()
+    yield csv
+    clear_memo()
+
+
+@pytest.fixture
+def dump(rulings_dir):
+    from manamap import config
+    rulings_dir.mkdir(parents=True, exist_ok=True)
+    config.RULINGS_PATH.write_bytes(gz_body())
+    config.RULINGS_META_PATH.write_text(json.dumps(
+        {"updated_at": "2026-09-15T09:00:00Z", "download_uri": "x",
+         "content_sha256": "f" * 64, "count": len(RULING_LINES)}))
+    clear_memo()
+    yield config.RULINGS_PATH
+    clear_memo()
+
+
+def test_loader_groups_by_oracle_id_and_sorts_by_date(dump):
+    db = rulings.load_rulings_db()
+    assert set(db) == {"aaaa-1", "bbbb-2"}
+    assert [r["date"] for r in db["aaaa-1"]] == ["2019-01-01", "2020-04-17", "2021-06-01"]
+    assert db["aaaa-1"][2]["source"] == "scryfall"
+
+
+def test_loader_is_none_when_the_dump_is_absent(rulings_dir):
+    assert rulings.load_rulings_db() is None
+
+
+def test_loader_notices_a_rewrite(dump):
+    """Keyed on the file signature, never on truthiness — the memo rule."""
+    import os
+    assert len(rulings.load_rulings_db()["aaaa-1"]) == 3
+    new = gz_body(RULING_LINES + [{"object": "ruling", "oracle_id": "aaaa-1", "source": "wotc",
+                                    "published_at": "2026-01-01", "comment": "A fourth."}])
+    dump.write_bytes(new)
+    st = dump.stat()
+    os.utime(dump, ns=(st.st_mtime_ns + 10**9, st.st_mtime_ns + 10**9))
+    assert len(rulings.load_rulings_db()["aaaa-1"]) == 4
+
+
+def test_the_bridge_prefers_a_legal_printing_and_keys_every_face(corpus):
+    ids = card_pool.corpus_oracle_ids()
+    assert ids["Savage Lands"] == "aaaa-1", "the promo sorts first and must not win"
+    assert ids["Fire // Ice"] == "dddd-4"
+    assert ids["Fire"] == "dddd-4" and ids["Ice"] == "dddd-4"
+    assert ids["Brallin, Skyshark Rider"] == "bbbb-2"
+
+
+def test_the_bridge_is_empty_without_a_corpus(tmp_path, monkeypatch):
+    monkeypatch.setattr(card_pool, "OUTPUT_CSV_PATH", tmp_path / "absent.csv")
+    clear_memo()
+    assert card_pool.corpus_oracle_ids() == {}
+    clear_memo()
+
+
+def test_three_absent_shapes_are_distinct(corpus, dump):
+    db = rulings.load_rulings_db()
+    present = rulings.rulings_for("Savage Lands", db)
+    empty = rulings.rulings_for("No Rulings Here", db)
+    unknown = rulings.rulings_for("Not A Card", db)
+    assert [r["text"] for r in present["rulings"]] == [
+        "An earlier ruling, which sorts first by date.",
+        "Brallin's middle ability gives it only one counter."]
+    assert present["scryfall_notes_omitted"] == 1 and "note" not in present
+    assert empty["rulings"] == [] and empty["note"] == rulings.NO_RULINGS
+    assert empty["scryfall_notes_omitted"] == 0
+    assert unknown == {"name": "Not A Card", "absent": rulings.NOT_IN_CORPUS}
+    # And the fourth shape, the whole section absent, names the command.
+    section = rulings.section(["Savage Lands"])
+    assert "cards" in section and section["cards"]["Savage Lands"]["oracle_id"] == "aaaa-1"
+    assert section["not_in_corpus"] == []
+
+
+def test_all_sources_keeps_the_scryfall_note(corpus, dump):
+    db = rulings.load_rulings_db()
+    block = rulings.rulings_for("Savage Lands", db, wotc_only=False)
+    assert [r["source"] for r in block["rulings"]] == ["wotc", "wotc", "scryfall"]
+    assert "scryfall_notes_omitted" not in block
+
+
+def test_section_when_the_dump_is_absent_names_the_command(corpus, rulings_dir):
+    section = rulings.section(["Savage Lands"])
+    assert set(section) == {"absent", "run"}
+    assert "download-rulings" in section["absent"] and "download-rulings" in section["run"]
+    assert rulings.cards_block(["Savage Lands"]) is None
+
+
+def test_card_rulings_cli_text_and_json(corpus, dump, capsys):
+    rulings.main(argparse.Namespace(names=["Savage Lands", "Not A Card"], as_json=False,
+                                    all_sources=False))
+    out = capsys.readouterr().out
+    assert "Savage Lands — 2 official ruling(s)" in out
+    assert "+1 Scryfall note(s) omitted" in out
+    assert "Not A Card: not-in-corpus" in out
+    rulings.main(argparse.Namespace(names=["No Rulings Here"], as_json=True, all_sources=False))
+    doc = json.loads(capsys.readouterr().out)
+    assert doc == [{"name": "No Rulings Here", "oracle_id": "eeee-5", "rulings": [],
+                    "scryfall_notes_omitted": 0, "note": rulings.NO_RULINGS}]
+
+
+def test_card_rulings_cli_refuses_without_the_dump(corpus, rulings_dir):
+    with pytest.raises(SystemExit, match="download-rulings"):
+        rulings.main(argparse.Namespace(names=["Savage Lands"], as_json=False, all_sources=False))
+
+
+def test_card_rulings_is_read_only_and_registered():
+    from manamap.pilot.registry import PILOT_STEPS
+    from manamap import serve
+    assert "card-rulings" in [n for n, _, _ in PILOT_STEPS]
+    assert "card-rulings" in serve.CLI_READONLY

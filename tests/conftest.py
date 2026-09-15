@@ -30,6 +30,11 @@ requires_rules = pytest.mark.skipif(
     reason="requires the rules DB (run `manamap pilot download-rules && manamap pilot build-rules-db`)",
 )
 
+requires_rulings = pytest.mark.skipif(
+    not config.RULINGS_PATH.exists(),
+    reason="requires the rulings dump (run `manamap pilot download-rulings`)",
+)
+
 requires_deck = pytest.mark.skipif(
     not (config.DECKS_DIR / "goblin-storm" / "cards.json").exists(),
     reason="requires a fetched deck (run `manamap pilot fetch-deck goblin-storm`)",

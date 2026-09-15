@@ -18,6 +18,8 @@ PILOT_STEPS = [
     ("lookup-rule", "manamap.pilot.query_rules", "Exact rule fetch by number"),
     ("download-rulings", "manamap.pilot.download_rulings",
      "Download Scryfall's card-rulings dump (INPUT to the resolve loop; never a citation)"),
+    ("card-rulings", "manamap.pilot.rulings",
+     "Official WotC rulings for named cards, from the local dump (INPUT, never a citation)"),
     ("validate-stack", "manamap.pilot.validate_stack", "Enforce the citation contract on scenarios"),
     ("goldfish", "manamap.pilot.goldfish", "Seeded Monte Carlo resource-development metrics"),
     ("benchmark", "manamap.pilot.benchmark",
@@ -267,6 +269,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="Re-download and rewrite even when the catalog stamp "
                                   "and the content sha both match")
+        if name == "card-rulings":
+            # Slugless like `card-search`: a ruling is a fact about a card, not a deck.
+            cmd.add_argument("names", nargs="+", metavar="NAME",
+                             help="Card name(s), either face of a DFC accepted")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--all-sources", action="store_true", dest="all_sources",
+                             help="Include Scryfall's own editorial notes (default: WotC only)")
         if name == "validate-stack":
             cmd.add_argument("--stack", default=None, help="Only this scenario id (e.g. 001)")
             cmd.add_argument("--scenario-only", action="store_true", dest="scenario_only",

@@ -50,6 +50,7 @@ manamap pilot build-rules-db            # ~3.9K chunks → embeddings + index
 manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery path)
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
 manamap pilot download-rulings          # Scryfall's card-rulings dump (5 MB; idempotent on content)
+manamap pilot card-rulings "<name>" […] [--json]  # official WotC rulings for a card — INPUT, never a citation
 manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had: commander real and
@@ -1112,6 +1113,14 @@ Run via the `resolve-stack` skill: `stack-resolver` agent drafts → `validate-s
 One chunk per numbered CR rule — **chunk ID = rule number = citation ID** — plus `glossary:<term>` chunks. `Example:` and continuation lines attach to the owning rule, so quotes from examples satisfy the contract. Embedded text is prefixed with `id + section title` (helps MiniLM find "storm" for 702.40a, whose text never says storm); stored text is verbatim CR. Embeddings are L2-normalized MiniLM (reuses `compute_text_embeddings`); row i ↔ `order[i]`.
 
 **CR refresh** (each set release): get the current TXT link from https://magic.wizards.com/en/rules, update `CR_RULES_URL` in `src/manamap/config.py`, run `download-rules` + `build-rules-db`. Artifacts record their `rules_version`.
+
+## Rulings (`data/rulings/`, INPUT ONLY)
+
+The official WotC / Gatherer rulings for every card, as Scryfall's bulk `rulings` file: gzipped JSONL keyed by `oracle_id`, ~79k rulings on ~20k cards, `download-rulings` (5 MB, seconds; gitignored beside `data/rules/`). `card-rulings "<name>"` prints them for any card, and `scenario-facts --stack NNN` embeds them under `rulings` for every card the scenario names — which is how they reach the stack-resolver and the rules-checker, since both run that command first.
+
+**A ruling is never a citation.** It tells an agent which CR rule to look for: the resolver reads the rulings FIRST, starts `query-rules` from the mechanic the ruling names, and cites the CR rule that states the outcome; the checker holds every step against the named cards' rulings and reports a contradiction as `unsupported`, quoting the ruling in the finding's `note`. `citations[].rule` stays a CR id or `glossary:` term, `validate-stack` is unchanged, and no ruling earns a ✓. Names resolve through the corpus (`card_pool.corpus_oracle_ids`; a legal printing wins the 38 names with several oracle_ids) because `cards.json` carries no oracle_id on purpose.
+
+Three shapes, because absent is never zero: the dump missing (`{"absent", "run"}` — nothing fails), a name not in the corpus (`not-in-corpus`), a card with no WotC rulings (`rulings: []` plus `note`). WotC-only by default; Scryfall's 69 editorial notes are counted, not shown (`--all-sources`). The stack routine's cache token is `rulings:scenario`, a digest over the named cards' rulings only, so Scryfall's DAILY re-stamp of the bulk file MISSes nothing and a ruling that changes on a card the scenario names MISSes exactly that scenario. The ~54 stacks committed before 2026-09-15 were resolved without rulings.
 
 ## Strategy DB (`data/strategy/`, tier ★ grounding)
 
