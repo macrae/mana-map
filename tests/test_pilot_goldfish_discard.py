@@ -327,8 +327,14 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED TWICE ON 2026-09-14 — 10.317, then 12.020, now 14.320 — and
-    each move is the point rather than a nuisance. The second was the DECK
+    RE-BASELINED THREE TIMES ON 2026-09-14 — 10.317, 12.020, 14.320, now 14.625
+    — and each move is the point rather than a nuisance. The THIRD was the deck
+    again: Queen Kayla bin-Kroog came in as a FOURTH activated wheel ({4}, {T}:
+    discard your hand, draw that many), so the count in this test moves from
+    three to four and the channel is worth 8.391 cards by turn ten against 5.542
+    before. A test that counts a deck's cards has to move when the deck does;
+    what must not move is the rule that blinding the channel recovers the floor
+    EXACTLY. The second was the DECK
     changing under the test rather than the model: Elesh Norn and Goblin
     Engineer came out for Teferi's Ageless Insight and Ivora, and Teferi's
     DOUBLES every draw after the draw step, so the floor this test stands on
@@ -363,10 +369,10 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
         if goldfish.draw_profile(card)["activated_wheel"]:
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
-    assert checked == 3, f"sharknado should hold three activated wheels, not {checked}"
-    assert t10(blind) == 14.320, "the pre-change figure is not being recovered"
-    assert with_wheels > 19, (
-        f"the activated wheels are worth ~5.5 cards by turn ten; got {with_wheels}")
+    assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
+    assert t10(blind) == 14.625, "the pre-change figure is not being recovered"
+    assert with_wheels > 22, (
+        f"the activated wheels are worth ~8.4 cards by turn ten; got {with_wheels}")
 
 
 @requires_data
@@ -565,7 +571,12 @@ def test_a_wheel_refills_the_opponent_and_that_is_part_of_the_tax():
                 or "shuffles their hand" in t):
             c["oracle_text"] = "Flying"
             blinded += 1
-    assert blinded >= 9, f"only {blinded} wheels blinded — the control is weak"
+    # 9 -> 8 on 2026-09-14 with the budget swaps: Wheel of Fortune and Wheel of
+    # Misfortune left, and of the two that arrived only Anje's Ravager matches
+    # this grep — Queen Kayla says "discard ALL THE CARDS IN your hand", which is
+    # the same act in different words. The grep is deliberately literal, so the
+    # floor moves with the wording rather than the wording being chased.
+    assert blinded >= 8, f"only {blinded} wheels blinded — the control is weak"
     without_wheels = ping(plus_tax(blind)) - ping(blind)
 
     assert with_wheels > without_wheels + 0.4, (
