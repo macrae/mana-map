@@ -3574,8 +3574,8 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Every card that moves is billed twice: a wheel empties the hand and refills it, Brallin taxes the half that leaves and Shabraz taxes the half that arrives, and thirteen more permanents stand at the same two tollbooths.",
-    "critic": null,
+    "thesis": "Every card that moves is billed twice — Brallin taxes the half of a wheel that LEAVES the hand and Shabraz taxes the half that ARRIVES — and fourteen more permanents stand at one of those two tollbooths, three of them only once a turn.",
+    "critic": "pass",
     "lines": 10,
     "verified_lines": 0
   },
@@ -3621,7 +3621,7 @@
     },
     {
       "from": "engine",
-      "question": "model-coverage reports Teferi's Ageless Insight as `invisible` (no channel reads it), while the card was measured at +2.95 extra cards and +3.80 commander counters by turn ten. Which is right — is there a doubler channel that model-coverage's channel table does not enumerate, or is the measured figure from a different run?",
+      "question": "Re-run the Teferi's Ageless Insight measurement as a COMMITTED sweep: control = the current 99 with the Insight cut, arm = the current 99, same seed and game count. The +2.95 extra cards / +3.80 commander counters pair exists only as prose in branches/ivora-v1/branch.json and was measured against a baseline list that is committed nowhere.",
       "settled_by": "goldfish"
     },
     {
@@ -3690,7 +3690,6 @@
     "branch `ivora-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge ivora-v1 --write`",
     "branch `recon-v1` needs 32 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `tax-v1` needs 5 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
-    "engine.json's critic verdict is None — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×4",
     "2 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

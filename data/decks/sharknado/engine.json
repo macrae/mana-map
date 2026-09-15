@@ -1,11 +1,11 @@
 {
   "slug": "sharknado",
-  "thesis": "Every card that moves is billed twice: a wheel empties the hand and refills it, Brallin taxes the half that leaves and Shabraz taxes the half that arrives, and thirteen more permanents stand at the same two tollbooths.",
+  "thesis": "Every card that moves is billed twice \u2014 Brallin taxes the half of a wheel that LEAVES the hand and Shabraz taxes the half that ARRIVES \u2014 and fourteen more permanents stand at one of those two tollbooths, three of them only once a turn.",
   "stages": [
     {
       "stage": "mana",
       "label": "THIRTY-NINE SOURCES, TWO PRICES",
-      "what_it_does": "Thirty-six lands plus Sol Ring, Arcane Signet and Treasure Map // Treasure Cove. It pays for a 4- or 5-mana commander and then a 3-to-6-mana wheel on top, which is why mean available mana matters more here than any single land: 4.015 at turn four, 5.482 at turn six, 9.237 at turn ten, with the land drop hit at 0.810 on turn four and 0.698 on turn six. The map splits the landbase and the split is real, not an artefact: every land that charges LIFE to tap (City of Brass, Mana Confluence, Spire of Industry, Adarkar Wastes, Battlefield Forge, Shivan Reef), every any-colour source, and every land with a non-mana ability (Reliquary Tower, Talon Gates of Madara, Raugrin Triome, Opal Palace, Gemstone Caverns, Calciform Pools) is in THE FIXERS; not one of the twenty-two in COLOUR ON CURVE does any of those things. Two of the fixers are doing engine work a land has no business doing \u2014 Reliquary Tower is one third of the declared hand-size relief, and Raugrin Triome's cycling is a discard that pays Brallin. Both stay here because a land you must play on curve is mana first.",
+      "what_it_does": "Thirty-six lands plus Sol Ring, Arcane Signet and Treasure Map // Treasure Cove. It pays for a 4- or 5-mana commander and then a 3-to-6-mana wheel on top, which is why mean available mana matters more here than any single land: 4.015 at turn four, 5.482 at turn six, 9.237 at turn ten, with the land drop hit at 0.810 on turn four and 0.698 on turn six. The map splits the landbase and the split is real, not an artefact: every land that charges LIFE TO TAP (City of Brass, Mana Confluence, Spire of Industry, Adarkar Wastes, Battlefield Forge, Shivan Reef), every any-colour source, and every land with a non-mana ability (Reliquary Tower, Talon Gates of Madara, Raugrin Triome, Opal Palace, Gemstone Caverns, Calciform Pools) is in THE FIXERS; not one of the twenty-two in COLOUR ON CURVE does any of those things. The line the split draws is RECURRING PER TAP against ONE-OFF ON ENTRY, not free against costly \u2014 three of the twenty-two (Hallowed Fountain, Sacred Foundry, Steam Vents) pay 2 life as they enter and nothing thereafter. Two of the fixers are doing engine work a land has no business doing \u2014 Reliquary Tower is one third of the declared hand-size relief, and Raugrin Triome's cycling is a discard that pays Brallin. Both stay here because a land you must play on curve is mana first.",
       "cards": [
         "Adarkar Wastes",
         "Arcane Signet",
@@ -72,7 +72,7 @@
     {
       "stage": "ignition",
       "label": "A WHEEL RESOLVING",
-      "what_it_does": "Seventeen cards move a whole hand at once; nothing else in the deck moves more than a few. That is the first thing that has to happen, because both commanders are guaranteed from the command zone and the wheel is the only variable \u2014 Brallin's mean cast turn is 4.255 and both partners are online by turn six 82.0% of the time, while a wheel is drawn by turn six 94.7% of the time at mean turn 1.735 and sits in 74.5% of opening sevens. So ignition is this deck's LEAST fragile stage, and any account that calls the wheel the bottleneck is wrong. Nine of the seventeen make you DISCARD, which is the half Brallin bills; the other eight shuffle or bottom the hand instead and pay him nothing (Arjun, Commit // Memory, Echo of Eons, Molten Psyche, Teferi's Puzzle Box, Time Reversal, Whirlpool Warrior, Winds of Change). The discard nine are drawn by turn six 82.1% of the time. A wheel with no tollbooth on the battlefield is just a new hand \u2014 the stage after this one is what makes it an engine.",
+      "what_it_does": "The declaration's ignition component, seventeen cards (deck-audit, size 17). Sixteen of them move a WHOLE hand at once; Burning Inquiry is the exception and is named rather than smoothed over \u2014 'each player draws three cards, then discards three cards at random' is a fixed three, the same shape as Faithless Looting, which this model files in fuel as an outlet. It sits in the component because deck-audit's own list puts it there. Ignition is the first thing that has to happen, and it is this deck's LEAST fragile stage: both commanders are guaranteed from the command zone (Brallin's mean cast turn 4.255, both partners online by turn six 82.0%), while a wheel is drawn by turn six 94.7% of the time at mean turn 1.735 and sits in 74.5% of opening sevens. Any account that calls the wheel the bottleneck is wrong. Nine of the seventeen make you DISCARD, which is the half Brallin bills; the other eight shuffle or bottom the hand instead and pay him nothing (Arjun, Commit // Memory, Echo of Eons, Molten Psyche, Teferi's Puzzle Box, Time Reversal, Whirlpool Warrior, Winds of Change). The discard nine are drawn by turn six 82.1% of the time. A wheel with no tollbooth on the battlefield is just a new hand \u2014 the stage after this one is what makes it an engine.",
       "cards": [
         "Arjun, the Shifting Flame",
         "Burning Inquiry",
@@ -105,7 +105,7 @@
     {
       "stage": "fuel",
       "label": "CARD MOVEMENT BETWEEN WHEELS, AND THE MANA FOR THE NEXT ONE",
-      "what_it_does": "A wheel is a burst; these keep cards moving on the turns there is no wheel, and pay for the one after. Three kinds. Outlets that convert mana into a discard one card at a time \u2014 Faithless Looting, Artist's Talent, Jaxis, Mindless Automaton, and Ceremonial Knife, whose Blood token is a discard and a draw in the same activation. Draw supply that keeps the tollbooths paid \u2014 Rhystic Study, Mind's Eye, Enduring Curiosity, Sorcerer Class, and Teferi's Ageless Insight, which doubles every card a wheel produces and was measured at +2.95 extra cards and +3.80 commander counters by turn ten. And Treasure that funds a second spell the same turn: Smothering Tithe, Generous Plunderer, Sticky Fingers. Library of Leng is here because it is what stops the cleanup step taking the wheel's seven back. Measured output of this stage plus ignition: 20.061 extra cards drawn and 10.444 cards discarded by turn ten. Caveat on the Treasure: `model_treasures` is OFF in goldfish_targets.json, so none of that mana is priced in any figure above.",
+      "what_it_does": "A wheel is a burst; these keep cards moving on the turns there is no wheel, and pay for the one after. Outlets you buy a discard from, one card at a time, with mana: Faithless Looting, Jaxis ({R}, {T}, discard) and Mindless Automaton ({1}, discard). Artist's Talent is NOT one of those \u2014 its level-1 loot costs no mana and is gated on casting a noncreature spell. Ceremonial Knife is not one either: it is an Equipment whose Blood arrives only 'whenever this creature deals COMBAT damage', so it wants {1} to cast, {2} to equip, a creature, an attack and a connection \u2014 and the goldfish states that Blood made by connecting in combat is read and NOT credited, so the Knife moves no figure anywhere in this artifact. Draw supply that keeps the tollbooths paid: Rhystic Study, Mind's Eye, Enduring Curiosity, Sorcerer Class, and Teferi's Ageless Insight, which doubles every draw except the first one in each draw step (its only measurement is an uncommitted sweep \u2014 see lines and notes). And Treasure that funds a second spell the same turn: Smothering Tithe, Generous Plunderer, Sticky Fingers \u2014 all unpriced, `model_treasures` is OFF. Library of Leng is here because it is what stops the cleanup step taking the wheel's seven back. Marketback Walker is here and NOT in the air kill: no combat trigger, no evasion, and its only engine contact is 'when this creature dies, draw a card for each +1/+1 counter on it' \u2014 a deferred draw burst that first requires it to die, and model-coverage reads the card on the `bodies` channel alone. The goldfish emits ONE DECK-WIDE series and no per-stage split, so no figure belongs to this stage alone.",
       "cards": [
         "Artist's Talent",
         "Ceremonial Knife",
@@ -114,6 +114,7 @@
         "Generous Plunderer",
         "Jaxis, the Troublemaker",
         "Library of Leng",
+        "Marketback Walker",
         "Mind's Eye",
         "Mindless Automaton",
         "Rhystic Study",
@@ -128,26 +129,32 @@
           "kind": "city",
           "id": "city-4",
           "agreement": "cuts-across",
-          "note": "4 of 14 in FUND THE NEXT WHEEL"
+          "note": "4 of 15 in FUND THE NEXT WHEEL"
         },
         {
           "kind": "city",
           "id": "city-6",
           "agreement": "cuts-across",
-          "note": "4 of 14 in WHAT THE DRAWS BUY"
+          "note": "4 of 15 in WHAT THE DRAWS BUY"
         },
         {
           "kind": "city",
           "id": "city-2",
           "agreement": "cuts-across",
           "note": "Artist's Talent, Faithless Looting and Teferi's Ageless Insight cluster with THE WHEELS on their draw/discard wording without being wheels"
+        },
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "Mindless Automaton and Marketback Walker sit in BODIES THAT GROW; the map reads both as bodies, and both are in this stage for a card-movement clause instead"
         }
       ]
     },
     {
       "stage": "conversion",
       "label": "THE TOLLBOOTHS THAT PAY IN BOARD AND CARDS",
-      "what_it_does": "Eleven permanents that read 'whenever you draw' or 'whenever you discard' and answer in counters, bodies or more cards. Shabraz is the per-draw half of the commander pair \u2014 a counter and a life per card arriving. Ivora is a second Brallin on the discard half (a counter per discard) and she makes her own fodder: the decomposition run priced her Blood alone at -0.026, her counter trigger alone at +0.305, and the two together at +0.817, which is the token feeding the trigger. Rielle converts a seven-card wheel discard into seven fresh draws, which then pay every per-draw trigger again. The Locust God, Improbable Alliance and Drake Haven turn card movement into fliers; Chasm Skulker and Ominous Seas bank it as counters; Containment Construct and Currency Converter recover the discarded card itself. This stage is where the deck's board comes from: mean bodies 2.280 at turn six and 7.202 at turn ten, mean board power 18.334 at turn ten, mean commander counters 32.765 at turn ten.",
+      "what_it_does": "Eleven permanents that read 'whenever you draw' or 'whenever you discard'. Nine pay in counters, bodies or more cards; TWO are here for their trigger rather than their payout \u2014 Curator of Mysteries pays in scry 1, which is selection and not advantage, and Currency Converter's discard trigger pays nothing at all by itself. CADENCE is what to read here, not the count: The Locust God makes an Insect per card and Chasm Skulker and Shabraz take a counter per card, while Improbable Alliance makes ONE Faerie however many a wheel draws ('whenever you draw your second card each turn'), Rielle fires only on the first discard each turn but draws that many, so a seven-card wheel is seven cards, and Ominous Seas banks a counter per draw and pays nothing until eight. Ivora is a second Brallin on the discard half (a counter per discard) and she makes her own fodder; the swap decision record (branches/ivora-v1/branch.json, staged[0].why) reports an UNCOMMITTED decomposition sweep, stating no arms, seed or game count and so carrying no sha: Blood alone -0.026 damage@8, counter trigger alone +0.305, the two together +0.817, against that sweep's own stated MDE of 0.564. Only +0.817 clears it; 'the token feeds the trigger' is the record's reading. Drake Haven turns a discard into a 2/2 for {1}. Containment Construct recovers the discarded card itself (exile it from the graveyard, play it this turn); Currency Converter does NOT \u2014 its trigger only exiles, and a separate {T} turns one exiled card per tap into a Treasure if it was a land or a 2/2 Rogue if it was not. This stage is where the board comes from: mean bodies 2.280 at turn six and 7.202 at turn ten, mean board power 18.334 at turn ten, mean commander counters 32.765 at turn ten.",
       "cards": [
         "Shabraz, the Skyshark",
         "Ivora, Insatiable Heir",
@@ -186,35 +193,35 @@
     {
       "stage": "output",
       "label": "THE TOLLBOOTHS THAT PAY IN DAMAGE",
-      "what_it_does": "The same tollbooths, billing in life totals instead of board. Brallin is the whole discard half: one damage to EACH opponent per card discarded, so a seven-card wheel is seven to each of three seats. Glint-Horn Buccaneer is the only other per-discard damage source in the 99 and doubles that ping; Psychosis Crawler, Niv-Mizzet and Irencrag Pyromancer bill the draw half instead. Astral Drift is the one non-damage member \u2014 repeatable exile removal triggered by cycling \u2014 and it is here because what it produces is a targeted action, not fuel. Read the figures with their convention: the goldfish counts ONE opponent at 40 life, so cumulative discard-event damage of 13.22 by turn ten is a floor that roughly triples at a real table, and mean total damage of 31.290 at turn eight / 53.904 at turn ten is mostly COMBAT, not pings. The fragility is priced: Glint-Horn is the deck's single point of failure, a one-card component at 39.5% assembled and 18.4% by turn six.",
+      "what_it_does": "The same tollbooths, billing in life totals instead of board. Brallin is the whole discard half: one damage to EACH opponent per card discarded, so a seven-card wheel is seven to each of three seats. Glint-Horn Buccaneer is the only other per-discard damage source in the 99 and doubles that ping. Psychosis Crawler and Niv-Mizzet bill EVERY draw; Irencrag Pyromancer is on a different clock \u2014 'whenever you draw your second card each turn' is one 3-damage trigger a wheel, not seven \u2014 and grouping the three as one rate would overstate it. Astral Drift was in this stage in the previous model and has been WITHDRAWN: it exiles a creature and returns it at the beginning of the next end step, which is a blink and not removal. Read the figures with their convention: the goldfish counts ONE opponent at 40 life, and `discard.mean_cumulative_event_damage_by_turn['10']` = 13.22 is the WHOLE event-damage pillar in one accumulator \u2014 every per-discard AND per-draw payoff together \u2014 not Brallin's share, which the model does not decompose. THE WHEEL KILL target reads 0.787 assembled, 0.460 by turn six, mean turn 5.467. This stage has NO single point of failure: deck-audit's one SPOF is scoped to the component 'A second per-discard DAMAGE source drawn' (size 1, 39.5% assembled, 18.4% by turn six), which is a redundancy gap in the DOUBLER. Brallin is a commander and is available every game, and three more payoffs remain without Glint-Horn.",
       "cards": [
         "Brallin, Skyshark Rider",
         "Glint-Horn Buccaneer",
         "Psychosis Crawler",
         "Niv-Mizzet, Parun",
-        "Irencrag Pyromancer",
-        "Astral Drift"
+        "Irencrag Pyromancer"
       ],
-      "single_point_of_failure": "Glint-Horn Buccaneer",
+      "single_point_of_failure": null,
       "evidence": [
         {
           "kind": "city",
           "id": "city-2",
           "agreement": "cuts-across",
-          "note": "Glint-Horn and Irencrag Pyromancer cluster with THE WHEELS; Brallin is in BODIES THAT GROW; Niv-Mizzet and Psychosis Crawler in WHAT THE DRAWS BUY; Astral Drift in CARD BY CARD. Five cards doing one job, four addresses."
+          "note": "Glint-Horn and Irencrag Pyromancer cluster with THE WHEELS (city-2-hood-1, BURN FROM THE REFILL); Brallin is in BODIES THAT GROW (city-3); Niv-Mizzet and Psychosis Crawler in WHAT THE DRAWS BUY (city-6). Five cards doing one job, three addresses."
         }
       ]
     },
     {
       "stage": "protection",
       "label": "KEEPING THE TOLLBOOTH ON THE TABLE",
-      "what_it_does": "Two equipment that make a commander untargetable the turn it lands (Lightning Greaves' shroud, Swiftfoot Boots' hexproof), two counters that come stapled to a cycling cost so they are never a dead card (Decree of Silence, Nimble Obstructionist), and Nezahal, which cannot be countered, removes your maximum hand size, and whose self-exile cost is itself three discards \u2014 three more Brallin triggers paid to dodge a removal spell. The declared protection group is thin and measured thin: two cards, 61.9% assembled, 35.4% by turn six, mean turn 5.333. Held-up interaction is worse and the model says so \u2014 interaction castable sits at 0.083 on turn six and 0.125 on turn eight while 0.525 of hands HOLD an answer, because this model spends every mana it has. Read that as a floor, not a verdict.",
+      "what_it_does": "Two equipment that make a commander untargetable the turn it lands (Lightning Greaves' shroud, Swiftfoot Boots' hexproof), and Nezahal, which cannot be countered, removes your maximum hand size, and whose self-exile cost is itself three discards \u2014 three more Brallin triggers paid to dodge a removal spell. The two cycling answers are NOT the same answer: Decree of Silence's cycle trigger counters target SPELL, while Nimble Obstructionist's counters 'target activated or triggered ABILITY you don't control' and cannot touch a Swords to Plowshares, a Pongify or a wrath \u2014 which is the threat this stage exists to price. The declaration inherits the same conflation: its 'A real answer drawn' group is Commit // Memory, Decree of Silence and Nimble Obstructionist (74.6% assembled, 46.6% by turn six). Astral Drift is here rather than in output because it is a BLINK: 'you may exile target creature ... return that card to the battlefield ... at the beginning of the next end step' removes nothing, and its use on your own creature in response to a targeted spell costs a commander every +1/+1 counter it had. The goldfish lists it in meta.interaction_suite_counted, which records what was counted, not that it answers anything. The declared protection group is thin and measured thin: two cards, 61.9% assembled, 35.4% by turn six, mean turn 5.333. Held-up interaction is worse and the model says so \u2014 interaction castable 0.083 on turn six and 0.125 on turn eight while 0.525 of hands HOLD an answer, because this model spends every mana it has. A floor, not a verdict.",
       "cards": [
         "Lightning Greaves",
         "Swiftfoot Boots",
         "Nezahal, Primal Tide",
         "Decree of Silence",
-        "Nimble Obstructionist"
+        "Nimble Obstructionist",
+        "Astral Drift"
       ],
       "single_point_of_failure": null,
       "evidence": [
@@ -222,21 +229,20 @@
           "kind": "city",
           "id": "city-0",
           "agreement": "cuts-across",
-          "note": "4 of 5 in CARD BY CARD; Nezahal clusters with THE WHEELS on its hand-size and draw wording"
+          "note": "5 of 6 in CARD BY CARD (Decree and Nimble Obstructionist together in city-0-hood-1, CYCLED NOT CAST; Astral Drift in city-0-hood-0); Nezahal clusters with THE WHEELS on its hand-size and draw wording"
         }
       ]
     },
     {
       "stage": "wincon",
       "label": "THE AIR KILL, AND WHO CARRIES THE COUNTERS",
-      "what_it_does": "The declaration names two kills and they share one ignition. The WHEEL KILL is the output stage stacking pings; this stage is the AIR KILL \u2014 evasive bodies that grow on every card and fly over. Shark Typhoon, Vanguard Suppressor and Kefnet the Mindful fly; Silent Hallcreeper cannot be blocked; Stromkirk Noble, Marketback Walker, Waterbender Ascension and Gossip's Talent are the connect-and-grow support that makes the rest get through. The two commanders are the real finishers and they enable each other in a way no cluster shows: Shabraz's {W/U} gives a HUMAN flying and Brallin is a Human Shaman; Brallin's {R} gives a SHARK trample and Shabraz is a Shark Bird. Two 3/3s carrying 32.765 counters between them by turn ten, each granting the other the keyword it lacks. Measured clock, unopposed and against one seat: kill by turn seven 61.9%, by turn eight 87.3%, median turn 7, mean 7.268.",
+      "what_it_does": "The declaration names two kills and they share one ignition. The WHEEL KILL is the output stage stacking pings; this stage is the AIR KILL \u2014 evasive bodies that grow on every card and fly over. Shark Typhoon, Vanguard Suppressor and Kefnet the Mindful fly; Silent Hallcreeper cannot be blocked; Stromkirk Noble, Waterbender Ascension and Gossip's Talent are the connect-and-grow support that makes the rest get through \u2014 three, not the four the previous model named. Marketback Walker is WITHDRAWN from this stage and filed in fuel: its whole text is an {X}{X} body, a {4} counter and a death-draw, with no combat trigger, no evasion and nothing that helps anything through. The map already draws that line \u2014 city-3-hood-1 PAID ON CONNECTION against city-3-hood-0 COUNTERS WITHOUT COMBAT. The two commanders are the real finishers and they enable each other in a way no cluster shows: Shabraz's {W/U} gives a HUMAN flying and Brallin is a Human Shaman; Brallin's {R} gives a SHARK trample and Shabraz is a Shark Bird. Two 3/3s carrying 32.765 counters between them by turn ten, each granting the other the keyword it lacks. Measured clock, unopposed and against one seat: kill by turn seven 61.9%, by turn eight 87.3%, median turn 7, mean 7.268.",
       "cards": [
         "Shark Typhoon",
         "Vanguard Suppressor",
         "Kefnet the Mindful",
         "Silent Hallcreeper",
         "Stromkirk Noble",
-        "Marketback Walker",
         "Waterbender Ascension",
         "Gossip's Talent"
       ],
@@ -246,7 +252,7 @@
           "kind": "city",
           "id": "city-3",
           "agreement": "cuts-across",
-          "note": "5 of 8 in BODIES THAT GROW; Shark Typhoon and Vanguard Suppressor in WHAT THE DRAWS BUY, Kefnet in CARD BY CARD"
+          "note": "4 of 7 in BODIES THAT GROW (Silent Hallcreeper, Stromkirk Noble, Waterbender Ascension, Gossip's Talent); Kefnet the Mindful and Vanguard Suppressor in WHAT THE DRAWS BUY (city-6); Shark Typhoon in CARD BY CARD (city-0)"
         }
       ]
     }
@@ -260,7 +266,7 @@
         "Brallin, Skyshark Rider"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack. Seven cards discarded is seven separate Brallin triggers: seven damage to EACH opponent and Brallin at 10/10. The goldfish prices this against one 40-life seat and reads 13.22 cumulative discard-event damage by turn ten."
+      "note": "CLAIM, no passing stack. Seven cards discarded is seven separate Brallin triggers: seven damage to EACH opponent and Brallin at 10/10. NO FIGURE PRICES THIS PAIR ALONE \u2014 the goldfish accumulates every per-discard and per-draw payoff into one series, so 13.22 (discard.mean_cumulative_event_damage_by_turn['10'], one 40-life seat) is the whole event-damage pillar and not this pair's share."
     },
     {
       "from": "ignition",
@@ -271,7 +277,7 @@
         "Glint-Horn Buccaneer"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack. Both read 'whenever you discard a card', so the same seven discards bill twice. Glint-Horn is the deck's single point of failure: 39.5% assembled, 18.4% by turn six."
+      "note": "CLAIM, no passing stack. Both read 'whenever you discard a card', so the same seven discards bill twice. deck-audit's one single point of failure is this second source, scoped to the component 'A second per-discard DAMAGE source drawn' (size 1): 39.5% assembled, 18.4% by turn six."
     },
     {
       "from": "ignition",
@@ -282,7 +288,7 @@
         "Shabraz, the Skyshark"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack. The doubler applies to every draw except the first in a draw step, so a wheel's seven becomes fourteen and Shabraz takes fourteen counters. Measured at +2.95 extra cards and +3.80 commander counters by turn ten."
+      "note": "CLAIM, no passing stack. The doubler applies to every draw except the first in a draw step, so a wheel's seven becomes fourteen and Shabraz takes fourteen counters. The only measurement of the card is an UNCOMMITTED sweep run during the swap decision and recorded as prose in branches/ivora-v1/branch.json (staged[1].why): control = this 99 with Elesh Norn cut and nothing added, arm = the same list plus Teferi's Ageless Insight, 10,000 games, seed 17 \u2014 mean_extra_cards_drawn_by_turn['10'] 16.948 \u2192 19.894 (+2.95) and mean_commander_counters_by_turn['10'] 28.582 \u2192 32.386 (+3.80). Neither arm is a committed decklist, so these figures carry NO artifact sha; the previous model stamped one on them and that stamp is withdrawn."
     },
     {
       "from": "ignition",
@@ -302,7 +308,7 @@
         "Brallin, Skyshark Rider"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack. Cracking a Blood token discards a card and draws one: a Brallin ping plus counter, an Ivora counter and a Shabraz counter from one activation. The decomposition run priced Blood alone at -0.026 and Blood plus trigger at +0.817."
+      "note": "CLAIM, no passing stack. Cracking a Blood token discards a card and draws one: a Brallin ping plus counter, an Ivora counter and a Shabraz counter from one activation. The swap decision record (branches/ivora-v1/branch.json, staged[0].why) reports an uncommitted decomposition sweep in damage@8 deltas: Blood alone -0.026, which sits under that sweep's stated MDE of 0.564, and Blood plus trigger +0.817, which clears it. The record states no arms, seed or game count and the figures carry no artifact sha. Only the +0.817 is resolvable."
     },
     {
       "from": "fuel",
@@ -312,7 +318,7 @@
         "Brallin, Skyshark Rider"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack. Artist's Talent level 3 adds 2 to noncombat damage a source you control deals an opponent; Brallin's per-discard ping is noncombat damage to each opponent, so a seven-card wheel would read 21 a seat instead of 7. Unpriced \u2014 Artist's Talent is invisible to the goldfish."
+      "note": "CLAIM, no passing stack. Artist's Talent level 3 adds 2 to noncombat damage a source you control deals an opponent; Brallin's per-discard ping is noncombat damage to each opponent, so a seven-card wheel would read 21 a seat instead of 7. It is not cheap or fast: {1}{R} to cast, then {2}{R} and {2}{R} at sorcery speed to reach level 3 before any of it happens. Unpriced \u2014 Artist's Talent is invisible to the goldfish."
     },
     {
       "from": "fuel",
@@ -322,7 +328,7 @@
         "Brallin, Skyshark Rider"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack, and the one most worth checking. Library of Leng changes where a discarded card goes, not whether it was discarded; if that is right, a wheel pays Brallin its full count and you keep the cards on top of your library."
+      "note": "CLAIM, no passing stack, and the one most worth checking. Library of Leng changes where a discarded card goes, not whether it was discarded; if that is right, a wheel pays Brallin its full count and you keep the cards on top of your library. Note its scope: 'if an EFFECT causes you to discard', which does not reach a discard paid as a COST \u2014 cycling, a Blood crack, Jaxis \u2014 so whichever way it goes it applies to the wheel and not to the self-discard channel."
     },
     {
       "from": "ignition",
@@ -361,17 +367,16 @@
       "cities": [
         "THE WHEELS"
       ],
-      "why": "All 17 wheels are in city-2, but city-2 holds 23 cards. The six extras cluster there on WORDING, not job: Teferi's Ageless Insight, Artist's Talent and Faithless Looting all say draw-and-discard without moving a hand, and Glint-Horn Buccaneer, Irencrag Pyromancer and Nezahal say it while being tollbooths or protection. Reading the city as the engine's first stage over-counts ignition by six."
+      "why": "All 17 wheels are in city-2, but city-2 holds 23 cards. The six extras cluster there on WORDING, not job, and in two different ways. Artist's Talent ('you may discard a card. If you do, draw a card') and Faithless Looting ('Draw two cards, then discard two cards') say draw-and-discard without moving a hand. Teferi's Ageless Insight says no such thing \u2014 'If you would draw a card except the first one you draw in each of your draw steps, draw two cards instead' has no discard clause anywhere \u2014 and clusters on the draw wording alone. Glint-Horn Buccaneer, Irencrag Pyromancer and Nezahal say it while being tollbooths or protection. Reading the city as the engine's first stage over-counts ignition by six."
     },
     {
-      "component": "The damage tollbooths have four addresses",
+      "component": "The damage tollbooths have three addresses",
       "cities": [
         "THE WHEELS",
         "BODIES THAT GROW",
-        "WHAT THE DRAWS BUY",
-        "CARD BY CARD"
+        "WHAT THE DRAWS BUY"
       ],
-      "why": "Brallin, Glint-Horn, Irencrag, Niv-Mizzet, Psychosis Crawler and Astral Drift do one job \u2014 convert a card moving into a life total going down \u2014 and land in four cities, because the map reads what each card's trigger CONDITION is (a discard, a second draw, a cycle) rather than what it pays out. This is the deck's clock and it is invisible as a group on the map."
+      "why": "Brallin, Glint-Horn, Irencrag Pyromancer, Niv-Mizzet and Psychosis Crawler do one job \u2014 convert a card moving into a life total going down \u2014 and land in three cities, because the map reads what each card's trigger CONDITION is (a discard, a second draw) rather than what it pays out. This is the deck's clock and it is invisible as a group on the map. The previous model counted four addresses by including Astral Drift, which is not a damage source at all."
     },
     {
       "component": "The partners are split across two stages and one city",
@@ -381,13 +386,13 @@
       "why": "Shabraz and Brallin sit together in city-3, correctly \u2014 both are commanders that grow on card movement. Functionally they are two different machines: Shabraz taxes the arriving half and pays in counters and life (conversion), Brallin taxes the leaving half and pays in damage (output). The city cannot show that, and it is the single most important thing to know about piloting the deck."
     },
     {
-      "component": "Six cards discard themselves and the map scatters them",
+      "component": "SEVEN cards discard themselves and the map scatters them",
       "cities": [
         "CARD BY CARD",
         "WHAT THE DRAWS BUY",
         "THE FIXERS"
       ],
-      "why": "Astral Drift, Decree of Silence, Nimble Obstructionist and Shark Typhoon in CARD BY CARD, Curator of Mysteries in WHAT THE DRAWS BUY, Raugrin Triome in THE FIXERS: every one is a card that cycles itself, which is a discard that pays Brallin and a draw that pays Shabraz at instant speed with no wheel. They are clustered on what they do WHEN cycled, which is six different things. The goldfish does not model cycling at all, so this whole channel is absent from every figure here."
+      "why": "Enumerated from cards.json by the word 'cycling': Astral Drift, Decree of Silence, Nimble Obstructionist, Ominous Seas and Shark Typhoon in CARD BY CARD, Curator of Mysteries in WHAT THE DRAWS BUY, Raugrin Triome in THE FIXERS \u2014 seven, not the six the previous model listed, which missed Ominous Seas' cycling {2}. Every one is a card that cycles itself, which is a discard that pays Brallin and a draw that pays Shabraz at instant speed with no wheel. They are clustered on what they do WHEN cycled, which is seven different things. The goldfish does not model cycling at all, so this whole channel is absent from every figure here."
     },
     {
       "component": "COLOUR ON CURVE and THE FIXERS are one mana stage but a real split",
@@ -395,7 +400,7 @@
         "COLOUR ON CURVE",
         "THE FIXERS"
       ],
-      "why": "Both cities are the landbase, so the mana stage cuts across them \u2014 but they are NOT an arbitrary division, and any account saying so is wrong on membership. Every land in the deck that charges life to tap, every any-colour source, and every land with a non-mana ability is in THE FIXERS; zero of the twenty-two in COLOUR ON CURVE does any of those. The split is cost-to-tap, which is a distinction a pilot uses every turn and a stage boundary cannot express."
+      "why": "Both cities are the landbase, so the mana stage cuts across them \u2014 but they are NOT an arbitrary division, and any account saying so is wrong on membership. Every land in the deck that charges life TO TAP, every any-colour source, and every land with a non-mana ability is in THE FIXERS; zero of the twenty-two in COLOUR ON CURVE does any of those. The split is recurring-per-tap against one-off-on-entry rather than cost against no cost: Hallowed Fountain, Sacred Foundry and Steam Vents sit in COLOUR ON CURVE and each pays 2 life as it ENTERS, then nothing. That is still a distinction a pilot uses every turn and a stage boundary cannot express."
     }
   ],
   "unassigned": [],
@@ -421,9 +426,9 @@
       "why_it_matters": "It is the whole air kill. Two 3/3s with 32.765 counters between them by turn ten only close a game if they are evasive, and the deck's answer is that each partner fixes the other."
     },
     {
-      "question": "model-coverage reports Teferi's Ageless Insight as `invisible` (no channel reads it), while the card was measured at +2.95 extra cards and +3.80 commander counters by turn ten. Which is right \u2014 is there a doubler channel that model-coverage's channel table does not enumerate, or is the measured figure from a different run?",
+      "question": "Re-run the Teferi's Ageless Insight measurement as a COMMITTED sweep: control = the current 99 with the Insight cut, arm = the current 99, same seed and game count. The +2.95 extra cards / +3.80 commander counters pair exists only as prose in branches/ivora-v1/branch.json and was measured against a baseline list that is committed nowhere.",
       "settled_by": "goldfish",
-      "why_it_matters": "A card bought on a measured figure the coverage tool says was never read is the exact failure class the model_coverage gate exists to catch. If the figure stands, the tool is under-reporting; if it does not, one of the two cards added today is unpriced."
+      "why_it_matters": "It is the only figure attached to either card bought on 2026-09-14, and a measurement no artifact can carry a sha for is one nothing downstream can re-derive or invalidate. model-coverage now reports the card `seen` on the `draw` channel (the mirror drift was fixed in commit a8c77df3), so the harness can price it."
     },
     {
       "question": "Re-run with model_treasures and model_sacrifice ON. Five of the seven declared ramp cards make Treasure, Generous Plunderer is DARK on the treasure channel, Treasure Map // Treasure Cove is DARK on sacrifice, and Smothering Tithe off a symmetrical wheel is potentially the deck's largest single mana event.",
@@ -445,12 +450,12 @@
     {
       "target": "THE AIR KILL \u2014 a wheel plus a flying body that grows on every card (second component)",
       "change": "Either drop Chasm Skulker from the component or reword it to 'an evasive body'.",
-      "why": "Chasm Skulker has no flying and no evasion; its death tokens have islandwalk, not flying. The other three members \u2014 Shark Typhoon, The Locust God, Vanguard Suppressor \u2014 all do fly. A four-card component reading 81.9% by turn six is really three that match the label."
+      "why": "Chasm Skulker has no flying and no evasion; its death tokens have islandwalk, not flying. The other three members \u2014 Shark Typhoon, The Locust God, Vanguard Suppressor \u2014 all do fly, so a four-card component is really three that match the label. Its own deck-audit odds are opening_seven 0.258 / by_turn_three 0.321. CORRECTION: the previous model priced this at '81.9% by turn six'. That figure appears in NO key of this deck's committed run \u2014 not as an assembled rate, not as a by-turn-six rate \u2014 and is withdrawn outright, along with round 2's attempt to give it a provenance. The committed run at decklist_sha256 e512fc87f4 reads the AIR KILL target at 0.821 assembled, 0.535 by turn six, mean turn 4.871."
     },
     {
       "target": "A discard converted to board or cards (the non-damage half of the tax)",
-      "change": "Split into two groups: TRIGGERS that fire on any discard (Containment Construct, Currency Converter, Drake Haven, Rielle) and OUTLETS you pay for one card at a time (Ceremonial Knife, Jaxis, Mindless Automaton).",
-      "why": "Only the triggers scale with a wheel \u2014 Rielle off a seven-card discard draws seven; Mindless Automaton off the same wheel does nothing, because its discard is an activation cost you pay separately. One 7-card group at 95.2% hides that the wheel-scaling half is 4 cards."
+      "change": "Split the seven into TRIGGERS that fire on any discard (Containment Construct, Currency Converter, Drake Haven, Rielle) and OUTLETS you pay mana for one card at a time (Jaxis, Mindless Automaton) \u2014 and take Ceremonial Knife out of the component, or label it as combat-gated.",
+      "why": "Only the triggers scale with a wheel: Rielle off a seven-card discard draws seven, while Mindless Automaton off the same wheel does nothing, because its discard is an activation cost you pay separately. Ceremonial Knife belongs in neither half \u2014 it is an Equipment that makes Blood only when the equipped creature deals COMBAT damage, and the goldfish's own assumption says Blood made by connecting is read and NOT credited, so it contributes nothing to the 95.2% this group reports."
     },
     {
       "target": "the target list as a whole",
@@ -459,8 +464,8 @@
     },
     {
       "target": "A real answer drawn \u2014 a counter, a sweeper or a tax",
-      "change": "Consider adding Astral Drift.",
-      "why": "It is repeatable exile removal triggered by every cycle in the deck, and deck-audit already flags a protection-class card the taxonomy missed (Talon Gates of Madara). A 3-card answer group at 74.6% assembled is measuring less interaction than the deck holds."
+      "change": "Reword to name what each member actually answers, or split it: Commit // Memory and Decree of Silence answer a SPELL; Nimble Obstructionist answers only an activated or triggered ABILITY.",
+      "why": "The group's label promises an answer to the removal spell that kills a commander, and one of its three members cannot provide one \u2014 'counter target activated or triggered ability you don't control' does not touch a Swords to Plowshares or a wrath. WITHDRAWN from the previous model: it proposed ADDING Astral Drift to this group on the ground that it is 'repeatable exile removal'. It is not removal \u2014 it exiles a creature and returns it at the beginning of the next end step \u2014 and applying that edit would have grown the group to four on a false premise."
     },
     {
       "target": "flags",
@@ -470,10 +475,100 @@
   ],
   "notes": [
     "NO FACT TIER. engine-facts reports 0 verified pairings across 0 passing stacks, 0 load-bearing cards and 0 candidate combo lines. Every entry in `lines` is the analyst's reading, carries verified_by: null, and has a matching entry in open_questions.",
-    "Stage completeness: 100 of 100 cards placed, none unassigned. Counts: mana 39, ignition 17, fuel 14, conversion 11, output 6, protection 5, wincon 8.",
-    "NO FODDER STAGE. The resource this deck converts is its own hand, which is not a card class \u2014 there is no subset of the 99 whose job is to be eaten. The nearest thing, six cards that cycle themselves, are outlets and are filed under fuel, protection and output by what they do when cycled. Manufacturing a fodder stage here would name a city, not an engine.",
+    "Stage completeness: 100 of 100 cards placed, none unassigned. Counts: mana 39, ignition 17, fuel 15, conversion 11, output 5, protection 6, wincon 7. Two cards have moved across revisions: Astral Drift from output to protection (it is a blink, not removal), and Marketback Walker from wincon to fuel (no combat trigger and no evasion, so it is not part of the air kill).",
+    "NO FODDER STAGE. The resource this deck converts is its own hand, which is not a card class \u2014 there is no subset of the 99 whose job is to be eaten. The nearest thing is the SEVEN cards that cycle themselves, enumerated by regex over cards.json for 'Cycling': Astral Drift, Curator of Mysteries, Decree of Silence, Nimble Obstructionist, Ominous Seas, Raugrin Triome, Shark Typhoon. They are filed by what they do when cycled, which puts them in FOUR stages \u2014 protection (Astral Drift, Decree of Silence, Nimble Obstructionist), conversion (Curator of Mysteries, Ominous Seas), mana (Raugrin Triome) and wincon (Shark Typhoon). None is in fuel and none is in output; the previous model said six cards and named the wrong three stages. Manufacturing a fodder stage here would name a city, not an engine.",
     "The goldfish counts ONE opponent at 40 life, so every per-opponent figure (Brallin, Glint-Horn, Psychosis Crawler) is a floor that roughly triples at a four-player table. It also does not model cycling, madness, or activated loots \u2014 the whole self-discard channel is absent, not zero.",
-    "Two cards were cut from the 99 on 2026-09-14 (Elesh Norn // The Argent Etchings, Goblin Engineer) and neither appears anywhere in this artifact. The damage figures used here are the post-cut ones: damage@8 31.290, damage@10 53.904.",
-    "Figures are stated inside each stage's what_it_does rather than as evidence entries, because validate-engine's EVIDENCE_KINDS is the closed set {stack, combo, role, city} and has no figure kind. Sources: goldfish_metrics.json (10,000 iterations, seed 42, model_version a5dc923f4c9b, decklist_sha256 e512fc87f4) and deck-audit's engine block."
-  ]
+    "Two cards were cut from the 99 on 2026-09-14 (Elesh Norn // The Argent Etchings, Goblin Engineer) and neither appears anywhere in this artifact. The run every figure here is read from is the post-cut one, at decklist_sha256 e512fc87f4. combat.mean_damage_by_turn is SETTLED as PER TURN: net_change.METRICS['damage @T10'] now states it \u2014 'the clock at its tenth turn, not a running total' \u2014 because goldfish_turn resets `dealt` to 0 inside the turn loop before appending, and the event pillar carries both shapes by name while this row has only the per-turn one. So this deck's 31.290 and 53.904 are damage dealt ON turn eight and ON turn ten. The only running total the model keeps is mean_cumulative_event_damage_by_turn, the series lines[0] quotes at 13.22, and it covers event damage alone. No figure in this artifact was read as a cumulative one.",
+    "SOURCES, and every figure in this artifact resolves to one of them. (1) THIS DECK'S committed run: goldfish_metrics.json, 10,000 iterations, seed 42, model_version d9d046070ee5, decklist_sha256 e512fc87f4 \u2014 every mana, land-drop, partner, target, body, board-power, commander-counter, event-damage, damage, kill-turn and interaction figure. (2) deck-audit's engine block at the same sha \u2014 the component card lists, their hypergeometric opening_seven / by_turn_three odds, and the single point of failure. (3) TWO UNCOMMITTED SWEEPS, which exist only as prose in the swap decision record branches/ivora-v1/branch.json: Ivora's decomposition (-0.026 / +0.305 / +0.817 damage@8 against a stated MDE of 0.564; arms, seed and game count not recorded) and Teferi's Ageless Insight (+2.95 extra cards, +3.80 commander counters by turn ten; control = this 99 with Elesh Norn cut and nothing added, arm = the same plus the Insight, 10,000 games, seed 17). NEITHER CARRIES A SHA, because neither arm is a committed decklist, and both are labelled as sweeps wherever they appear. CORRECTION, and it is the error that misled both previous rounds: the ivora-v1 branch decklist is NOT a different list. It is the same 100-card multiset as decklist.txt; the two shas differ only because the branch file carries Commander:/Deck: headers and omits the two *CMDR* markers. That branch was folded in and never withdrawn, so its committed goldfish run is a duplicate of this deck's wearing another sha, and NO figure from that run is cited anywhere in this artifact. Round 1 quoted its 81.9% as a champion figure and round 2 re-stamped two sweep figures with its sha; both are withdrawn. The previous model also stated model_version a5dc923f4c9b, which is not the value in the file."
+  ],
+  "critic": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "where": "notes[5]",
+        "claim": "the ivora-v1 branch decklist is NOT a different list ... the same 100-card multiset ... NO figure from that run is cited anywhere in this artifact",
+        "status": "supported",
+        "note": "Re-verified independently and from both directions. Parsing both decklists into copy-counters (stripping *CMDR* markers and the Commander:/Deck: headers) gives 100 copies each with `only champion` and `only branch` both EMPTY. And the withdrawal is complete: outside the `critic` block, engine.json contains zero occurrences of `0.819` and zero of `bbfc76be`, and the only two occurrences of `81.9` are the two sentences withdrawing it. The 0.819 is confirmed to be branches/ivora-v1/goldfish_metrics.json's AIR KILL `assembled_rate` (by_turn_6 there is 0.527), and it appears in no key of this deck's committed run, exactly as proposed_goldfish_edits[1] now states. My round-2 headline finding is answered in full."
+      },
+      {
+        "where": "lines[2]",
+        "claim": "recorded as prose in branches/ivora-v1/branch.json (staged[1].why): control = this 99 with Elesh Norn cut and nothing added, arm = the same list plus Teferi's Ageless Insight, 10,000 games, seed 17 \u2014 mean_extra_cards_drawn_by_turn['10'] 16.948 -> 19.894 (+2.95) and mean_commander_counters_by_turn['10'] 28.582 -> 32.386 (+3.80)",
+        "status": "mis-cited",
+        "note": "The cited path carries only the two deltas. branches/ivora-v1/branch.json staged[1].why reads, verbatim and in full on this point, 'Measured alone: +2.95 extra cards and +3.80 commander counters by turn ten.' The arms, the seed, the game count and the four raw means are NOT there \u2014 and they are nowhere else either: grepping the whole repo for 16.948, 19.894, 28.582 and 32.386 returns engine.json itself and nothing else (the other hits are substring collisions inside projection_2d*.json and combo_details.json). So the colon after '(staged[1].why)' presents a superset of that record as its contents. Contrast staged[0].why for Ivora, which DOES carry '-0.026', '+0.305', '+0.817' and 'an MDE of 0.564' verbatim, and which lines[4] and stages[3] cite exactly, including the true statement that it records no arms, seed or game count. NOT VERDICT-FLIPPING: the model says three times over that these figures carry no sha, that neither arm is a committed decklist, and open_questions[4] asks for the committed re-run, so nothing downstream can render them as measured. The honest phrasing is to split the sentence \u2014 deltas from staged[1].why, arms and raw means from the sweep itself, recorded in no artifact. MECHANICALLY CHECKABLE: a numeral quoted next to a JSON path should be findable at that path."
+      },
+      {
+        "where": "notes[4]",
+        "claim": "Two cards were cut from the 99 on 2026-09-14 (Elesh Norn // The Argent Etchings, Goblin Engineer) and neither appears anywhere in this artifact.",
+        "status": "contradicts-artifact",
+        "note": "Elesh Norn appears twice more in this same artifact: lines[2] and notes[5] both describe the Teferi sweep's control arm as 'this 99 with Elesh Norn cut and nothing added'. The intended claim is true and I checked it \u2014 neither card is in any stages[].cards (all 100 placed are the current 99 plus commander), neither is named in any line's `via`, and no figure here counts either. It is the scope of 'anywhere' that is wrong, and it was made wrong by the round-3 repair that introduced the arms into lines[2]/notes[5]. Narrow, and low-cost to fix: 'neither is in a stage and no figure here counts them'. MECHANICALLY CHECKABLE: a 'does not appear anywhere in this artifact' claim naming a card can be grepped against the artifact that makes it."
+      },
+      {
+        "where": "notes[4]",
+        "claim": "combat.mean_damage_by_turn is SETTLED as PER TURN ... this deck's 31.290 and 53.904 are damage dealt ON turn eight and ON turn ten",
+        "status": "supported",
+        "note": "Checked against the source rather than the prose. net_change.METRICS['damage @T10']['what'] now reads 'Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total', with a `scale` key saying 'not a total across the game' and a comment block naming goldfish_turn's reset of `dealt` inside the turn loop and the presence of both mean_event_damage_by_turn and mean_cumulative_event_damage_by_turn against this row's single shape. My round-2 finding said this should be recorded as an ANSWER and not left as open_questions[7]; it has been, in the right direction, and the figures re-read correctly. 31.290 = combat.mean_damage_by_turn['8'], 53.904 = ['10'], 13.22 = discard.mean_cumulative_event_damage_by_turn['10'], the one running total, which is what lines[0] quotes."
+      },
+      {
+        "where": "notes[2]",
+        "claim": "the SEVEN cards that cycle themselves ... protection (Astral Drift, Decree of Silence, Nimble Obstructionist), conversion (Curator of Mysteries, Ominous Seas), mana (Raugrin Triome) and wincon (Shark Typhoon). None is in fuel and none is in output",
+        "status": "supported",
+        "note": "Regex for 'Cycling' over cards.json (both faces) returns exactly those seven and no eighth, Ominous Seas' Cycling {2} included. Every filing re-derived from stages[].cards: the three protection members are in stages[5], Curator and Ominous Seas in stages[3], Raugrin Triome in stages[0], Shark Typhoon in stages[6]; fuel and output contain none of the seven. map_disagreements[3] now states the same seven and the same scatter (CARD BY CARD 5, WHAT THE DRAWS BUY 1, THE FIXERS 1), which deck_map.json confirms card by card, so the artifact no longer contradicts itself."
+      },
+      {
+        "where": "stages[6].evidence[0]",
+        "claim": "4 of 7 in BODIES THAT GROW (Silent Hallcreeper, Stromkirk Noble, Waterbender Ascension, Gossip's Talent); Kefnet the Mindful and Vanguard Suppressor in WHAT THE DRAWS BUY (city-6); Shark Typhoon in CARD BY CARD (city-0)",
+        "status": "supported",
+        "note": "The transposition is corrected and the arithmetic survives the Marketback Walker move. deck_map.json places all four named cards in city-3 (all in city-3-hood-1 PAID ON CONNECTION), Kefnet in city-6-hood-0 and Vanguard Suppressor in city-6-hood-1, and Shark Typhoon in city-0-hood-0. I re-ran the check across ALL SEVEN stages' city notes: stages[1] (17/17 in city-2, city-2 holding 23, so six extras \u2014 and map_disagreements[0] names exactly those six), stages[2] (4/4/3/2), stages[3] (4/3/3 + Brallin in the same city on the output stage), stages[4] (2 city-2, 1 city-3, 2 city-6 \u2014 'three addresses'), stages[5] (5 city-0, 1 city-2, hoods correct), stages[0] (22 city-1, 14 city-5, 3 city-4). Every count and every name matches deck_map.json. No transpositions remain."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "Marketback Walker is WITHDRAWN from this stage and filed in fuel ... no combat trigger, no evasion ... model-coverage reads the card on the `bodies` channel alone",
+        "status": "supported",
+        "note": "Oracle text in cards.json is exactly the three lines quoted ({X}{X} body entering with X counters, {4} for a counter, a death-draw) with no combat or evasion clause; `manamap pilot model-coverage sharknado --json` returns possible ['bodies'], active ['bodies'], dark_channels [], state seen; deck_map puts it in city-3-hood-0 COUNTERS WITHOUT COMBAT against the other three in city-3-hood-1 PAID ON CONNECTION, which is the line the prose says the map already draws. Counts now reconcile: fuel 15, wincon 7, and 39+17+15+11+5+6+7 = 100. One residual shorthand, not a defect: 'Shark Typhoon ... fly' is true of its tokens, not the enchantment \u2014 the same shorthand proposed_goldfish_edits[1] uses when it distinguishes Chasm Skulker's islandwalking tokens from the three that 'do fly', so it is consistent and the distinction it is drawing is real."
+      },
+      {
+        "where": "stages[3].what_it_does",
+        "claim": "Currency Converter does NOT [recover the discarded card] \u2014 its trigger only exiles, and a separate {T} turns one exiled card per tap into a Treasure if it was a land or a 2/2 Rogue if it was not",
+        "status": "supported",
+        "note": "Oracle verified: 'Whenever you discard a card, you may exile that card from your graveyard.' / '{T}: Put a card exiled with this artifact into its owner's graveyard. If it's a land card, create a Treasure token. If it's a nonland card, create a 2/2 black Rogue creature token.' Containment Construct's 'If you do, you may play that card this turn' is correctly kept as the one that recovers. The nine-pay/two-for-their-trigger split also re-derives: reading all eleven members, nine pay in counters, bodies or cards and exactly Curator (scry 1) and Currency Converter (trigger pays nothing alone) do not. Currency Converter's third mode, '{2}, {T}: Draw a card, then discard a card', goes unmentioned, but nothing in the stage is false because of it."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "Glint-Horn Buccaneer is the only other per-discard damage source in the 99",
+        "status": "supported",
+        "note": "Enumerated before accepting the superlative. Every card in cards.json whose text contains both 'discard' and 'damage' is Brallin, Artist's Talent, Ceremonial Knife, Glint-Horn Buccaneer, Ivora, Khorvath's Fury, Sorcerer Class and Wheel of Misfortune \u2014 eight, read one by one. Only Glint-Horn carries 'Whenever you discard a card, this creature deals 1 damage to each opponent'; Ivora pays a counter, Artist's Talent multiplies rather than sources, Ceremonial Knife is combat Blood, Khorvath's Fury bills hand size, Sorcerer Class bills spells, Wheel of Misfortune bills the number game. The rider on Irencrag Pyromancer ('whenever you draw your SECOND card each turn' is one trigger a wheel, not seven) is also exact, and stages[4] keeping single_point_of_failure null while naming deck-audit's size-1 SPOF and saying why a commander-backed stage does not inherit it is the right disposition \u2014 Brallin is free from the command zone and three per-draw payoffs remain without Glint-Horn."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "Thirty-six lands plus Sol Ring, Arcane Signet and Treasure Map // Treasure Cove ... every land that charges LIFE TO TAP, every any-colour source, and every land with a non-mana ability is in THE FIXERS; not one of the twenty-two in COLOUR ON CURVE does any of those",
+        "status": "supported",
+        "note": "The superlative is enumerated, and so is the DFC trap behind the count. cards.json holds 37 entries whose type line contains 'Land', but one is Treasure Map // Treasure Cove, whose front face is an Artifact \u2014 so 36 true lands plus three artifacts is the correct 39, and the model counts it on the artifact side as it should. Reading all 36 oracle texts: city-5 holds the six that charge life to tap (City of Brass, Mana Confluence, Spire of Industry, Adarkar Wastes, Battlefield Forge, Shivan Reef), every any-colour source (add Command Tower, Exotic Orchard, Opal Palace, Talon Gates) and every non-mana ability (Reliquary Tower, Talon Gates, Raugrin Triome's cycling, Opal Palace, Gemstone Caverns, Calciform Pools' storage counters). None of city-1's 22 does any of the three: the only life any of them charges is the shockland 2-on-entry, and it is exactly the three named (Hallowed Fountain, Sacred Foundry, Steam Vents). map_disagreements[4] makes the same claim and survives the same check."
+      },
+      {
+        "where": "proposed_goldfish_edits",
+        "claim": "the six proposed edits and their figures",
+        "status": "supported",
+        "note": "Each re-derived from the artifact it names. [0]: the WHEEL component is 17 and the DISCARD-wheel component 9, difference 8, and the eight named are exactly the set difference \u2014 I read each and all eight shuffle or bottom rather than discard, and goldfish_targets' own _shuffle_note independently splits them 6 shuffle / 2 bottom. [1]: the AIR KILL's second component in deck-audit is the four cards named, odds opening_seven 0.258 / by_turn_three 0.321 exactly, and Chasm Skulker's tokens have islandwalk, not flying. [2]: the group is exactly the seven named, Ceremonial Knife included, and meta.model_assumptions' BLOOD paragraph says verbatim that Blood made by CONNECTING in combat is read and NOT credited. [3]: eighteen nonlands sit in no component \u2014 my first count said nineteen until I noticed Gemstone Caverns is a Legendary Land, which is the same DFC/type-line trap as above \u2014 and both commanders and both cards added on 2026-09-14 are among them. [5]: goldfish_targets carries model_draw, model_combat and model_discard only, so treasures and sacrifice are OFF, and model-coverage reports Generous Plunderer DARK on treasure and Treasure Map // Treasure Cove DARK on sacrifice."
+      },
+      {
+        "where": "open_questions[4]",
+        "claim": "model-coverage now reports the card `seen` on the `draw` channel (the mirror drift was fixed in commit a8c77df3), so the harness can price it",
+        "status": "supported",
+        "note": "`manamap pilot model-coverage sharknado --json` returns for Teferi's Ageless Insight: possible ['draw'], active ['draw'], dark_channels [], state 'seen'. The stale round-1 claim that it was `invisible` is gone, the answered half is stated as an answer, and only the live half \u2014 a committed sweep with a re-derivable sha \u2014 is still asked, of `goldfish`, which is the right settler. The six genuinely invisible cards are Artist's Talent, Astral Drift, Gossip's Talent, Mind's Eye, Rhystic Study and Waterbender Ascension, which is consistent with lines[5] calling Artist's Talent unpriced."
+      },
+      {
+        "where": "lines",
+        "claim": "all ten lines carry verified_by: null and open with 'CLAIM, no passing stack'",
+        "status": "unverified-line",
+        "note": "Recorded for the third round, and again not faulted. `engine-facts` reports 0 verified pairings across 0 passing stacks and 0 candidate combo lines, so null is the only honest value; validate-engine confirms 0/10 lines verified. Every note opens with the disclaimer and the unpriced ones name what is unpriced (lines[5] Artist's Talent invisible to the goldfish, lines[7] model_treasures OFF, lines[0] 13.22 explicitly the whole event-damage pillar rather than the pair's share), and each has a matching open_questions entry with settled_by resolve-stack. I re-read all ten for the failure mode this charter exists for \u2014 a dashed line phrased as fact \u2014 and none of them is. Every figure quoted inside a line note resolves to a committed key: 0.395/0.184 (lines[1]), 0.821/0.535/4.871 (lines[9]), 32.765 (lines[8]), 13.22 (lines[0]). lines[2]'s via names Teferi's Ageless Insight, which is in `fuel` rather than either endpoint stage, which validate-engine permits and which is correct here \u2014 Windfall is in `ignition` and Shabraz in `conversion`, so the arrow is about both its endpoints and the doubler is the intermediary."
+      },
+      {
+        "where": "stages[*].what_it_does",
+        "claim": "every goldfish and deck-audit figure carried in stage prose",
+        "status": "supported",
+        "note": "Re-derived all thirty-odd figures key by key against goldfish_metrics.json (meta: 10,000 iterations, seed 42, model d9d046070ee5, decklist_sha256 e512fc87f4...) and deck-audit, with ZERO drift: mana 4.015/5.482/9.237, land drops 0.810/0.698, partner mean cast 4.255 and both_online_by_turn 0.820, wheel 0.947 by T6 at mean 1.735 with opening_seven 0.745 from deck-audit's component odds, discard-wheel 0.821, bodies 2.280/7.202, board power 18.334, commander counters 32.765, event damage 13.22, WHEEL KILL 0.787/0.460/5.467, SPOF 0.395/0.184, AIR KILL 0.821/0.535/4.871, protection 0.619/0.354/5.333 on a two-card group, real answer 0.746/0.466, interaction 0.083/0.125 against 0.525 held, kill 0.619/0.873 mean 7.268, damage 31.290/53.904. Two coincidences that would have caught a careless reader are both used correctly: 0.821 is simultaneously the discard-wheel by-T6 rate (stages[1]) and the AIR KILL assembled rate (lines[9]), and 0.619 is both the protection assembled rate (stages[5]) and kill_by_turn_rate['7'] (stages[6]). One watch item for any future revision, not a defect now: stages[3].what_it_does is 1,745 characters against the 1,800 cap and is the densest passage in the file \u2014 it is organised (count, cadence, the Ivora sweep, Drake Haven, the Construct/Converter split, the figures) and I could follow every claim, but it has no room left to absorb another correction."
+      }
+    ],
+    "iterations": 3
+  }
 }
