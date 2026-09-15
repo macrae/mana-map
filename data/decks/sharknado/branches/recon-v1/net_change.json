@@ -168,11 +168,11 @@
       "status": null
      },
      {
-      "apart": false,
+      "apart": true,
       "kind": "deck",
       "locked": false,
       "slug": "ingris-infect",
-      "status": null
+      "status": "broken-down"
      },
      {
       "apart": false,
@@ -751,16 +751,8 @@
    {
     "free": false,
     "name": "Teferi's Ageless Insight",
-    "state": "elsewhere",
-    "where": [
-     {
-      "apart": false,
-      "kind": "deck",
-      "locked": true,
-      "slug": "heliod",
-      "status": null
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -869,9 +861,9 @@
   "counts": {
    "box": 4,
    "buy": 18,
-   "elsewhere": 15,
+   "elsewhere": 14,
    "free": 0,
-   "in_deck": 63
+   "in_deck": 64
   },
   "counts_are": "distinct names",
   "diff": {
@@ -907,7 +899,6 @@
     "Swords to Plowshares",
     "Talisman of Creativity",
     "Talisman of Progress",
-    "Teferi's Ageless Insight",
     "Teferi's Protection",
     "Thought Vessel",
     "Thrill of Possibility",
@@ -925,14 +916,13 @@
     "City of Brass",
     "Currency Converter",
     "Decree of Silence",
-    "Elesh Norn // The Argent Etchings",
     "Floodfarm Verge",
     "Gemstone Caverns",
     "Generous Plunderer",
     "Gleaming Bastion",
-    "Goblin Engineer",
     "Gossip's Talent",
     "Hengegate Pathway // Mistgate Pathway",
+    "Ivora, Insatiable Heir",
     "Jaxis, the Troublemaker",
     "Khorvath's Fury",
     "Mana Confluence",
@@ -960,7 +950,7 @@
   },
   "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 15,
+  "owned_but_elsewhere": 14,
   "proxy": false,
   "slug": "sharknado",
   "unsourced": [
@@ -992,7 +982,6 @@
    "Surly Badgersaur",
    "Swords to Plowshares",
    "Talisman of Creativity",
-   "Teferi's Ageless Insight",
    "Teferi's Protection",
    "Thrill of Possibility",
    "Training Center",
@@ -1008,14 +997,14 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 37,
-    "in_copies": 37,
+    "in": 36,
+    "in_copies": 36,
     "lands_in": 12,
     "lands_out": 13,
-    "out": 37,
-    "out_copies": 37,
-    "spells_in": 25,
-    "spells_out": 24
+    "out": 36,
+    "out_copies": 36,
+    "spells_in": 24,
+    "spells_out": 23
    },
    "in": [
     {
@@ -1236,16 +1225,6 @@
      "pair": null,
      "state": "buy",
      "type_line": "Creature \u2014 Badger Dinosaur",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Teferi's Ageless Insight",
-     "pair": null,
-     "state": "elsewhere",
-     "type_line": "Legendary Enchantment",
      "why": null
     },
     {
@@ -1476,18 +1455,18 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Goblin Engineer",
+     "name": "Gossip's Talent",
      "pair": null,
-     "type_line": "Creature \u2014 Goblin Artificer",
+     "type_line": "Enchantment \u2014 Class",
      "why": null
     },
     {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Gossip's Talent",
+     "name": "Ivora, Insatiable Heir",
      "pair": null,
-     "type_line": "Enchantment \u2014 Class",
+     "type_line": "Legendary Creature \u2014 Vampire Warrior",
      "why": null
     },
     {
@@ -1533,15 +1512,6 @@
      "name": "Whirlpool Warrior",
      "pair": null,
      "type_line": "Creature \u2014 Merfolk Warrior",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Elesh Norn // The Argent Etchings",
-     "pair": null,
-     "type_line": "Legendary Creature \u2014 Phyrexian Praetor // Enchantment \u2014 Saga",
      "why": null
     },
     {
@@ -1727,8 +1697,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 37,
-    "out": 37
+    "in": 36,
+    "out": 36
    }
   },
   "lands": [],
@@ -1909,9 +1879,9 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 7,
+    "delta": -7,
     "gap": [
-     -6,
+     8,
      1
     ],
     "have": [
@@ -1919,7 +1889,7 @@
      23
     ],
     "target": [
-     36,
+     22,
      22
     ]
    },
@@ -2025,7 +1995,7 @@
     0.742
    ],
    "W": [
-    0.822,
+    0.967,
     0.918
    ]
   }
@@ -2037,7 +2007,7 @@
   "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict."
  },
  "objective_grade": {
-  "reading": 8.3338,
+  "reading": 9.3707,
   "shortfall": null,
   "state": "met"
  },
@@ -2046,9 +2016,9 @@
   "bill": {
    "box": 4,
    "buy": 18,
-   "elsewhere": 15,
+   "elsewhere": 14,
    "free": 0,
-   "in_deck": 63
+   "in_deck": 64
   },
   "cost": {
    "buy": 18,
@@ -2075,9 +2045,9 @@
    "counts": {
     "box": 4,
     "buy": 18,
-    "elsewhere": 15,
+    "elsewhere": 14,
     "free": 0,
-    "in_deck": 63
+    "in_deck": 64
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -2106,7 +2076,6 @@
     {
      "decks": [
       "goblin-storm",
-      "ingris-infect",
       "ur-dragon"
      ],
      "name": "Chaos Warp"
@@ -2171,12 +2140,6 @@
     },
     {
      "decks": [
-      "heliod"
-     ],
-     "name": "Teferi's Ageless Insight"
-    },
-    {
-     "decks": [
       "edgar-vampires",
       "heliod",
       "ur-dragon"
@@ -2185,7 +2148,7 @@
     }
    ],
    "owned": 82,
-   "reads_as": "18 to buy; 15 to pull out of a deck that is still together; 82 of 100 already owned",
+   "reads_as": "18 to buy; 14 to pull out of a deck that is still together; 82 of 100 already owned",
    "total": 100
   },
   "fell": [
@@ -2205,29 +2168,29 @@
   "reward": [
    {
     "measure": "killed by T6",
-    "reads_as": "20 games in 100 -> 25 in 100, a swing of 5 games per 100",
+    "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "18 games in 100 -> 6 in 100, a swing of 12 games per 100",
+    "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "17 games in 100 -> 44 in 100, a swing of 26 games per 100",
+    "reads_as": "15 games in 100 -> 40 in 100, a swing of 25 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "47.93 -> 42.66, a change of -5.27 (-11%)",
+    "detail": "53.91 -> 49.44, a change of -4.48 (-8%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "41 games in 100 -> 45 in 100, a swing of 4 games per 100",
+    "detail": "40 games in 100 -> 45 in 100, a swing of 5 games per 100",
     "kind": "paid",
     "what": "missed drop by T5",
     "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
@@ -2239,7 +2202,7 @@
     "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
    },
    {
-    "detail": "10.09 -> 8.33, a change of -1.75 (-17%)",
+    "detail": "11.68 -> 9.37, a change of -2.31 (-20%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -2251,7 +2214,7 @@
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "U gap -5 -> -10, R gap +2 -> +1",
+    "detail": "W gap +8 -> +1, U gap -5 -> -10, R gap +2 -> +1",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -2275,12 +2238,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 42.6581,
-   "champion": 47.928,
-   "delta": -5.2699,
-   "mde": 1.0632,
+   "branch": 49.4364,
+   "champion": 53.9125,
+   "delta": -4.4761,
+   "mde": 1.311,
    "measure": "damage @T10",
-   "reads_as": "47.93 -> 42.66, a change of -5.27 (-11%)",
+   "reads_as": "53.91 -> 49.44, a change of -4.48 (-8%)",
    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
    "unit": "mean",
    "verdict": "worse",
@@ -2289,12 +2252,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 9.5762,
-   "champion": 9.5146,
-   "delta": 0.0616,
-   "mde": 0.1547,
+   "branch": 9.4804,
+   "champion": 9.4763,
+   "delta": 0.0041,
+   "mde": 0.1543,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.062 is smaller than the 0.155 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.154 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -2303,12 +2266,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2483,
-   "champion": 0.1999,
-   "delta": 0.0484,
+   "branch": 0.249,
+   "champion": 0.2071,
+   "delta": 0.0419,
    "mde": 0.0171,
    "measure": "killed by T6",
-   "reads_as": "20 games in 100 -> 25 in 100, a swing of 5 games per 100",
+   "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -2317,12 +2280,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9792,
-   "champion": 0.9789,
-   "delta": 0.0003,
-   "mde": 0.0057,
+   "branch": 0.9794,
+   "champion": 0.9807,
+   "delta": -0.0013,
+   "mde": 0.0056,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -2331,12 +2294,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0611,
-   "champion": 0.1841,
-   "delta": -0.123,
-   "mde": 0.0154,
+   "branch": 0.0603,
+   "champion": 0.1565,
+   "delta": -0.0962,
+   "mde": 0.0144,
    "measure": "stall, 2 in a row",
-   "reads_as": "18 games in 100 -> 6 in 100, a swing of 12 games per 100",
+   "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -2346,11 +2309,11 @@
   {
    "better_is": "lower",
    "branch": 0.4515,
-   "champion": 0.4097,
-   "delta": 0.0418,
+   "champion": 0.4049,
+   "delta": 0.0466,
    "mde": 0.0197,
    "measure": "missed drop by T5",
-   "reads_as": "41 games in 100 -> 45 in 100, a swing of 4 games per 100",
+   "reads_as": "40 games in 100 -> 45 in 100, a swing of 5 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -2373,12 +2336,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 8.3338,
-   "champion": 10.0872,
-   "delta": -1.7534,
-   "mde": 0.2959,
+   "branch": 9.3707,
+   "champion": 11.68,
+   "delta": -2.3093,
+   "mde": 0.3615,
    "measure": "extra cards by T8",
-   "reads_as": "10.09 -> 8.33, a change of -1.75 (-17%)",
+   "reads_as": "11.68 -> 9.37, a change of -2.31 (-20%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -2387,12 +2350,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4364,
-   "champion": 0.1717,
-   "delta": 0.2647,
-   "mde": 0.0216,
+   "branch": 0.4019,
+   "champion": 0.1482,
+   "delta": 0.2537,
+   "mde": 0.0213,
    "measure": "interaction affordable @T6",
-   "reads_as": "17 games in 100 -> 44 in 100, a swing of 26 games per 100",
+   "reads_as": "15 games in 100 -> 40 in 100, a swing of 25 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",

@@ -1,0 +1,37 @@
+{
+ "slug": "sharknado",
+ "branch": "ivora-v1",
+ "v": 2,
+ "opened": "2026-09-14",
+ "why": "Two cards the model could not see until 2026-09-14, replacing two it could see doing nothing. Goblin Engineer is the deck's only tutor and cannot reach the engine: no wheel is an artifact, and the one artifact that closes a game (Psychosis Crawler, MV 5) sits above its MV-3 reanimation cap. Forge cast it 19 times in 120 games and activated it TWICE. Elesh Norn // The Argent Etchings measured as worth 2.2 damage a game through a PHANTOM \u2014 the model read chapter II of its Saga back face, 'creatures you control gain double strike until end of turn', as a permanent doubler on all damage, off a face reachable only by paying {2}{W} and sacrificing three other creatures. That defect is fixed in the same session; 22 corpus cards lost a doubler they never had and sharknado's own damage@8 fell 31.45 to 29.47. In their place: Ivora, who is her own discard payoff, and Teferi's Ageless Insight, which doubles every draw a wheel produces.",
+ "objective": {
+  "axis": "damage_8",
+  "op": ">=",
+  "value": 30.1,
+  "why": "Two cards the model could not see until 2026-09-14, replacing two it could see doing nothing. Goblin Engineer is the deck's only tutor and cannot reach the engine: no wheel is an artifact, and the one artifact that closes a game (Psychosis Crawler, MV 5) sits above its MV-3 reanimation cap. Forge cast it 19 times in 120 games and activated it TWICE. Elesh Norn // The Argent Etchings measured as worth 2.2 damage a game through a PHANTOM \u2014 the model read chapter II of its Saga back face, 'creatures you control gain double strike until end of turn', as a permanent doubler on all damage, off a face reachable only by paying {2}{W} and sacrificing three other creatures. That defect is fixed in the same session; 22 corpus cards lost a doubler they never had and sharknado's own damage@8 fell 31.45 to 29.47. In their place: Ivora, who is her own discard payoff, and Teferi's Ageless Insight, which doubles every draw a wheel produces."
+ },
+ "commits": [
+  {
+   "at": "2026-09-14",
+   "decklist_sha256": "bbfc76be8058231b09f607bdd1526cbd5a6bb554b1b9f77a674ce4d3643f8246",
+   "message": "Two cards the model could not see, for two it could see doing nothing"
+  }
+ ],
+ "base_version": 1,
+ "staged": [
+  {
+   "at": "2026-09-14",
+   "out": "Goblin Engineer",
+   "in": "Ivora, Insatiable Heir",
+   "strength": null,
+   "why": "The tutor cannot reach the engine; Ivora IS one. She makes a Blood on arrival and carries 'whenever you discard a card, put a +1/+1 counter on Ivora' \u2014 a second Brallin on the half of a wheel this deck is built to charge for. Measured alone: +0.741 damage@8 against an MDE of 0.564, the only candidate of thirteen to clear it. A decomposition run isolated why: her Blood alone is worth -0.026 (nothing) and her counter trigger alone +0.305, but the two together +0.817 \u2014 the token feeds the trigger."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Elesh Norn",
+   "in": "Teferi's Ageless Insight",
+   "strength": null,
+   "why": "Elesh Norn triggers on neither half of a wheel and its Saga back face WRATHS both commanders (chapter III spares artifacts, lands and Phyrexians; Shabraz is a Shark Bird and Brallin a Human Shaman). Teferi's Ageless Insight doubles every draw after the draw step, which is every card a wheel produces and every card Shabraz charges for. Measured alone: +2.95 extra cards and +3.80 commander counters by turn ten. Chosen over Bard, King of Dale, which has the IDENTICAL doubling text at {4}{W}{U} against {2}{U}{U} and measured +0.11 cards \u2014 the two mana is the whole card."
+  }
+ ]
+}
