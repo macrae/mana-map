@@ -1094,9 +1094,9 @@
     "why": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    "damage @T10": {
-    "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
+    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
     "unit": "mean",
-    "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
+    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
     "why": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    "extra cards by T8": {
@@ -1454,10 +1454,10 @@
    "mde": 0.4831,
    "measure": "damage @T10",
    "reads_as": "19.86 -> 20.79, a change of +0.93 (+5%)",
-   "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
+   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
-   "what": "Cumulative damage dealt to the single goldfish opponent by the end of turn 10, averaged over every game.",
+   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {

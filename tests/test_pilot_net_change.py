@@ -973,3 +973,60 @@ def test_a_draw_the_model_prices_is_not_reported_as_unmeasured():
     assert 'draw_profile(card)["unmodelled"]' in probe
     assert 'targets.get("model_draw")' in probe, (
         "a deck that never opted in really does draw one a turn")
+
+
+def test_the_damage_row_is_not_described_as_cumulative():
+    """EVERY FIGURE CARRIES ITS DEFINITION, IN THE REPORT THAT PRINTS IT — and
+    this one carried the wrong definition of the headline output row.
+
+    `damage @T10` reads `combat.mean_damage_by_turn["10"]`, and
+    `goldfish_turn.simulate_once` resets `dealt` to 0 INSIDE the turn loop
+    before appending it. The series is therefore what was dealt ON each turn,
+    never a running total. `METRICS` described it as "Cumulative damage dealt
+    ... by the end of turn 10" and anchored the reader further with a scale line
+    reading "the opponent starts at 40 life, so 40.0 is exactly lethal once" —
+    which is only true of the cumulative reading it does not have.
+
+    THE MODEL'S OWN NAMING SETTLES IT. The event-damage pillar carries BOTH
+    shapes and distinguishes them by name: `mean_event_damage_by_turn` is
+    2.288 / 2.978 / 3.87 at turns 8/9/10 on sharknado, and
+    `mean_cumulative_event_damage_by_turn` is 6.372 / 9.35 / 13.22. The combat
+    row has only the first shape and no cumulative twin anywhere in `goldfish`.
+
+    Found by the deck-engineer during `/analyze-engine`, which noticed that
+    53.904 at turn ten sits on top of board power 18.334 plus 32.765 commander
+    counters — one swing, not ten turns of them — and raised it as an open
+    question rather than quoting the row either way.
+
+    Re-introduce the bug by putting the word "cumulative" back in the `what`.
+    """
+    from manamap.pilot import net_change
+
+    spec = net_change.METRICS["damage @T10"]
+    blurb = (spec["what"] + " " + spec.get("scale", "")).lower()
+    assert "cumulative damage" not in blurb, (
+        "the headline damage row is described as a running total; it is one "
+        "turn's damage")
+    assert "on turn 10" in spec["what"].lower(), (
+        "the row must say WHICH turn's damage it is")
+    assert "exactly lethal once" not in blurb, (
+        "that scale line anchors the reader to a 40-life total, which is the "
+        "cumulative reading this row does not have")
+
+
+def test_the_only_cumulative_series_says_so_in_its_name():
+    """The guard behind the fix: `goldfish` distinguishes the two shapes by
+    NAME, and a row that cumulates without saying so is the defect above waiting
+    to happen again. Exactly one series in the metrics is a running total."""
+    import inspect
+
+    from manamap.pilot import goldfish
+
+    src = inspect.getsource(goldfish)
+    # The cumulative builder slices the whole prefix; the per-turn one indexes.
+    assert 'sum(sum(r["event_damage_by_turn"][:t]) for r in results)' in src
+    assert 'sum(r["damage_by_turn"][t - 1] for r in results)' in src, (
+        "the combat damage row must index a single turn, not sum a prefix")
+    assert "mean_cumulative_damage_by_turn" not in src, (
+        "a cumulative combat row now exists — `METRICS` must be updated to say "
+        "which of the two `damage @T10` reads")

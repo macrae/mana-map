@@ -152,12 +152,31 @@ METRICS = {
     },
     "damage @T10": {
         "unit": "mean",
-        "what": "Cumulative damage dealt to the single goldfish opponent by the "
-                "end of turn 10, averaged over every game.",
+        # NOT CUMULATIVE, AND IT SAID SO HERE FOR MONTHS. The source is
+        # `combat.mean_damage_by_turn["10"]`, and `goldfish_turn` resets `dealt`
+        # to 0 INSIDE the turn loop before appending it — so the series is what
+        # was dealt ON each turn, never a running total. The file's own naming
+        # settles it: the event-damage pillar carries BOTH
+        # `mean_event_damage_by_turn` (2.288 / 2.978 / 3.87 at T8/9/10) and
+        # `mean_cumulative_event_damage_by_turn` (6.372 / 9.35 / 13.22), and
+        # this row has only the first shape and no cumulative twin.
+        #
+        # Found by the deck-engineer on sharknado, which noticed that 53.904 at
+        # turn ten sits right on top of board power 18.334 plus 32.765 commander
+        # counters — one swing, not ten turns of them. The old `scale` line made
+        # it worse by anchoring the reader to a 40-life total, which is the
+        # cumulative reading.
+        "what": "Damage dealt to the single goldfish opponent ON turn 10, "
+                "averaged over every game — the clock at its tenth turn, not a "
+                "running total. The cumulative series does not exist for this "
+                "pillar; `mean_cumulative_event_damage_by_turn` is the only "
+                "running total the model keeps, and it covers event damage "
+                "alone.",
         "why": "The headline output figure and the one a doubler moves. It has "
                "no ceiling, so unlike the kill rate it keeps separating two "
                "lists after both of them already win.",
-        "scale": "the opponent starts at 40 life, so 40.0 is exactly lethal once",
+        "scale": "one turn's damage, so 40.0 would be lethal in a single swing "
+                 "from an opponent at full life — not a total across the game",
     },
     "board power @T6": {
         "unit": "mean",
