@@ -62,6 +62,8 @@ per-artifact `stack:<NNN>`, `decision:<NNN>` and `prescription:<id>`.
 | `deck-build` | deck-architect ⇄ deck-critic | 105,096 + 96,380 (architect, revision) + 94,468 (critic); ~430,000 for a full loop | new pool, critic findings |
 | *(research pass)* | strategy-researcher (research) | 91,332–166,544 per pass | an explicit research request |
 
+**Since 2026-09-15 both stack agents read the named cards' official rulings** (`scenario-facts --stack` → `rulings.cards`, `docs/pilot.md` → Rulings) before deriving anything; the two rows above predate that and the next new scenario is the re-measurement. Adding the input MISSed every `stack:<NNN>` once (the charters changed and `rulings:scenario` joined the fingerprint); a rulings refresh that changes nothing on a named card MISSes nothing thereafter.
+
 **The resolve loop is the outlier, and it is measured twice.** hapatra's stack 001
 (2026-07-26) reached **~600k** over 4 resolver + 4 checker passes; radagast's stack 008
 (2026-08-19, the first board lifted from a Forge game) reached **~570k** over 3

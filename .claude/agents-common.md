@@ -72,8 +72,10 @@ assert that a combo works** — a line without a passing stack is `"status": "ne
 stack scenario"`, always. Spellbook lines can quietly assume a piece is your commander
 (`"Infinite commander casts"` in `produces` is the tell; goblin-storm stack 004 refuted
 one this way). Deterministic Python over committed artifacts is ◆ data-derived. A
-strategy citation is ★ coaching and never upgrades a claim to rules-verified. Costume
-never earns the badge.
+strategy citation is ★ coaching and never upgrades a claim to rules-verified. An
+official card ruling (Scryfall/Gatherer — `scenario-facts --stack` and `card-rulings`)
+is an INPUT that tells you which CR rule to look for: never a citation, never a badge.
+Costume never earns the badge.
 
 Look things up the way the data is shaped: `combo_details.json` via `by_card`, never a
 linear scan; `combo_graph.json` is adjacency only; `synergy_graph.json` is a format-wide

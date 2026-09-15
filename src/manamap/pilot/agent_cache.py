@@ -234,6 +234,23 @@ def rules_version():
     return load_json_memo(CR_RULES_META_PATH).get("effective_date")
 
 
+def rulings_scenario_digest(path):
+    """A digest over the official rulings of the cards THIS scenario names —
+    exactly what `scenario-facts --stack` shows the two stack agents.
+
+    Per scenario on purpose. Scryfall re-stamps the whole rulings dump every
+    day, so a token over the dump's version would MISS every stack in the
+    fleet on a refresh that changed nothing a reader can see; this one moves
+    only when a ruling on a card the scenario names does. None when the dump
+    is absent — absence is part of the fingerprint, as with `rules_version`.
+    """
+    from manamap.pilot import rulings, scenario_facts
+    doc = load_json_memo(path)
+    names = scenario_facts.scenario_named_cards(doc.get("scenario") or {})
+    block = rulings.cards_block(names)
+    return None if block is None else json_sha256(block)
+
+
 def strategy_doc_digest():
     """Reuse the canonical helper; tolerate an absent doc."""
     from manamap.pilot.common import strategy_doc_sha256
@@ -370,6 +387,11 @@ def resolve_inputs(slug, spec):
             extra["strategy_doc_sha256"] = strategy_doc_digest()
         elif token == "rules:version":
             extra["rules_version"] = rules_version()
+        elif token == "rulings:scenario":
+            path = artifact_path(slug, spec)
+            if not path.exists():
+                raise MissingInput(f"{rel(path)} is required by this routine but missing")
+            extra["rulings_scenario"] = rulings_scenario_digest(path)
         else:
             raise UnknownRoutine(f"Unknown input token {token!r}")
 
@@ -462,7 +484,8 @@ def diff_inputs(old_entries, new_entries):
 def _extra_changes(old_extra, new_extra):
     changes = []
     labels = {"strategy_doc_sha256": "strategy.md changed",
-              "rules_version": "rules version changed"}
+              "rules_version": "rules version changed",
+              "rulings_scenario": "a named card's official rulings changed (or the dump appeared/vanished)"}
     for key in sorted(set(old_extra or {}) | set(new_extra or {})):
         if (old_extra or {}).get(key) != (new_extra or {}).get(key):
             changes.append({"path": key, "change": "changed",

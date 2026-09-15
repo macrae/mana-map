@@ -1571,7 +1571,11 @@ AGENT_ROUTINES = {
 
 # Dynamic routines (stack:NNN / decision:NNN) — resolved per artifact.
 AGENT_ROUTINE_STACK_AGENT = "stack-resolver+rules-checker"
-AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version"]
+AGENT_ROUTINE_STACK_INPUTS = ["scenario:self", "cards:semantic", "rules:version",
+                              # The named cards' official rulings, digested per
+                              # scenario — NOT the dump's daily stamp, which would
+                              # MISS the fleet on a refresh that changed nothing.
+                              "rulings:scenario"]
 AGENT_ROUTINE_DECISION_AGENT = "pilot-notes"
 AGENT_ROUTINE_DECISION_INPUTS = ["scenario:self", "cards:semantic",
                                  "deck:goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",

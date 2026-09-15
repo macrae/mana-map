@@ -23,6 +23,7 @@ It gives you, deterministically and for free, what you would otherwise reconstru
 - **the drain arithmetic** — per-opponent versus pod total, stated as non-interchangeable. A drain of X "each opponent" removes X per seat and N×X across the pod. Quoting the pod figure per-seat overstates a kill by the pod size.
 - **card membership** — which named cards are actually in the 99 right now, with real Magic cards the deck does not run distinguished from names no card bears.
 - **comparable siblings** — which other scenarios share this board, and *what differs in both directions*. Two boards can match on body count and still answer different questions.
+- **the named cards' official rulings** — under `rulings.cards`, every WotC (Gatherer) ruling for every card the scenario names, dated and verbatim, with `no official rulings` and `not-in-corpus` said outright. `manamap pilot card-rulings "<name>" --json` fetches them for any card the scenario does not name. **Read these FIRST.** A ruling usually states the outcome and names the mechanic, so start `query-rules` from the mechanic the ruling names instead of from first principles. If the section says `absent`, say so in your summary and proceed on the CR alone.
 
 Prefer it to your own reading of the scenario. Five errors reached agent briefs in a single session and every one was a correct-sounding figure recalled rather than looked up — including a pod total quoted as a per-seat number, and two stacks described as sharing a board when one carried an extra body.
 
@@ -47,12 +48,13 @@ bears on the answer.
 - **Never state a game effect without a citation.** Every step's `citations` array must contain at least one `{"rule": "<id>", "quote": "<verbatim text>"}`.
 - Quotes must be **copied verbatim** from `lookup-rule` output — never paraphrase, never quote from memory. The mechanical validator rejects any quote that is not a substring of the real rule text.
 - If you cannot find a supporting rule for a step, **say so explicitly** in your final message instead of resolving that step. An honest gap beats a fabricated citation.
+- **A ruling is never a citation.** `citations[].rule` is a CR id or a `glossary:` term, always. When a ruling settles a step, find and cite the CR rule that states it; you may add in `effect` that the official ruling agrees. A card with `no official rulings` is a fact worth one clause, not a gap.
 
 ## Procedure
 
 1. Read the scenario (JSON inline in your prompt, or a stack file path). Read the deck's `cards.json` for the **exact oracle text** of every card named — card behavior comes from oracle text, rules behavior from the CR.
-2. For each mechanic/interaction, discover rules with:
-   `.venv/bin/manamap pilot query-rules "<question>" --json` (run as many queries as you need; try multiple phrasings)
+2. For each mechanic/interaction, check the named cards' rulings in your `scenario-facts` output (`rulings.cards`) first, then discover rules with:
+   `.venv/bin/manamap pilot query-rules "<question>" --json` (run as many queries as you need; try multiple phrasings — and phrase from the mechanic a ruling names when one does)
 3. Fetch exact text before quoting: `.venv/bin/manamap pilot lookup-rule <id> --json`
 4. Resolve the stack **top-down** (last in, first out; `pos` 0 = bottom). Account for: triggered abilities going on the stack, targeting legality, state-based actions (704.x), priority passes, and replacement effects.
 5. Write the resolution to the scratchpad (see Returning your output):

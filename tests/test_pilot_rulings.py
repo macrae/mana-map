@@ -302,3 +302,97 @@ def test_card_rulings_is_read_only_and_registered():
     from manamap import serve
     assert "card-rulings" in [n for n, _, _ in PILOT_STEPS]
     assert "card-rulings" in serve.CLI_READONLY
+
+
+# ── the cache token: rulings:scenario ────────────────────────────────────
+#
+# Per scenario, not per dump. Scryfall re-stamps the bulk file daily, so a token
+# over its version would MISS every stack in the fleet on a refresh that changed
+# nothing; this one moves only when a ruling on a card THIS scenario names does.
+
+from manamap.pilot import agent_cache as ac
+
+SLUG = "rulings-deck"
+
+
+def _write_json(path, doc):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(doc, indent=1))
+
+
+@pytest.fixture
+def stack_deck(tmp_path, monkeypatch, corpus):
+    decks = tmp_path / "decks"
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    base = decks / SLUG
+    _write_json(base / "cards.json", {"deck": SLUG, "decklist_sha256": "abc",
+                                      "cards": [{"name": "Savage Lands"}]})
+    _write_json(base / "stacks" / "001-first.json", {
+        "id": "001", "slug": "first", "deck": SLUG, "title": "T",
+        # A land on your board is filtered (boards write their mana as prose), so
+        # the named cards here are the permanent and the stack object.
+        "scenario": {"board": {"you": ["No Rulings Here", "Savage Lands"],
+                               "opponents": [{"life": 40, "board": []}]},
+                     "hand": [], "mana_available": "{0}",
+                     "stack": [{"pos": 0, "object": "Brallin, Skyshark Rider", "controller": "you"}],
+                     "question": "?"},
+        "resolution": {"steps": [{"n": 1, "action": "A", "effect": "B",
+                                  "citations": [{"rule": "117.5", "quote": "q"}]}],
+                       "final_state": {"summary": "s"}},
+        "checker": {"verdict": "pass", "findings": [], "iterations": 1}})
+    ac._SHA_MEMO.clear()
+    return base
+
+
+def _extra(slug, routine):
+    spec = ac.routine_spec(slug, routine)
+    _, extra = ac.resolve_inputs(slug, spec)
+    return extra
+
+
+def test_the_token_is_none_without_the_dump_and_a_digest_with_it(stack_deck, rulings_dir):
+    assert "rulings:scenario" in ac.routine_spec(SLUG, "stack:001")["inputs"]
+    assert _extra(SLUG, "stack:001")["rulings_scenario"] is None
+    from manamap import config
+    rulings_dir.mkdir(parents=True, exist_ok=True)
+    config.RULINGS_PATH.write_bytes(gz_body())
+    clear_memo()
+    digest = _extra(SLUG, "stack:001")["rulings_scenario"]
+    assert isinstance(digest, str) and len(digest) == 64
+    clear_memo()
+
+
+def test_a_named_cards_ruling_moves_the_digest_and_an_unrelated_ones_does_not(stack_deck, rulings_dir):
+    """This is the argument for the token, so it is the test."""
+    import os
+    from manamap import config
+    rulings_dir.mkdir(parents=True, exist_ok=True)
+
+    def put(lines):
+        config.RULINGS_PATH.write_bytes(gz_body(lines))
+        st = config.RULINGS_PATH.stat()
+        os.utime(config.RULINGS_PATH, ns=(st.st_mtime_ns + 10**9, st.st_mtime_ns + 10**9))
+        clear_memo()
+
+    put(RULING_LINES)
+    base = _extra(SLUG, "stack:001")["rulings_scenario"]
+    # "Fire // Ice" (dddd-4) is in the corpus and NOT in this scenario.
+    put(RULING_LINES + [{"object": "ruling", "oracle_id": "dddd-4", "source": "wotc",
+                         "published_at": "2026-09-15", "comment": "Unrelated."}])
+    assert _extra(SLUG, "stack:001")["rulings_scenario"] == base
+    # A Scryfall editorial note on a named card is filtered from the list but
+    # counted in `scryfall_notes_omitted`, which the agent sees — so it counts.
+    put(RULING_LINES + [{"object": "ruling", "oracle_id": "bbbb-2", "source": "scryfall",
+                         "published_at": "2026-09-15", "comment": "Editorial."}])
+    assert _extra(SLUG, "stack:001")["rulings_scenario"] != base
+    # A WotC ruling on Brallin (bbbb-2, the stack object) moves it.
+    put(RULING_LINES + [{"object": "ruling", "oracle_id": "bbbb-2", "source": "wotc",
+                         "published_at": "2026-09-15", "comment": "New Brallin ruling."}])
+    moved = _extra(SLUG, "stack:001")["rulings_scenario"]
+    assert moved != base
+    clear_memo()
+
+
+def test_extra_changes_names_the_rulings_token():
+    changes = ac._extra_changes({"rulings_scenario": "a"}, {"rulings_scenario": "b"})
+    assert changes and "rulings" in changes[0]["note"]

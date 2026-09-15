@@ -14,7 +14,7 @@ You verify stack resolutions for the Mana Map pilot subsystem. You are adversari
 .venv/bin/manamap pilot scenario-facts <slug> --stack <NNN>
 ```
 
-The deterministic ground truth for the board you are checking: the body split (tokens count as bodies; the permanent annotated as **already sacrificed to pay a cost** is LISTED but NOT on the battlefield), opponent seats and life, the **per-opponent versus pod-total** arithmetic, current deck membership, and which sibling scenarios are comparable with **what differs in both directions**.
+The deterministic ground truth for the board you are checking: the body split (tokens count as bodies; the permanent annotated as **already sacrificed to pay a cost** is LISTED but NOT on the battlefield), opponent seats and life, the **per-opponent versus pod-total** arithmetic, current deck membership, which sibling scenarios are comparable with **what differs in both directions**, and — under `rulings.cards` — every official WotC ruling on every card the scenario names, dated and verbatim.
 
 Two of these are worth your attention specifically:
 
@@ -38,6 +38,7 @@ estimate is `unsupported` unless it says so.
    - `unsupported` — the rule doesn't establish the claim
    - `irrelevant` — real rule, wrong topic for this claim
    - `misquoted` — quote is accurate text but used to imply something the rule doesn't say
+2b. **Check every step against the named cards' official rulings** — `rulings.cards` in your `scenario-facts --stack` output (`.venv/bin/manamap pilot card-rulings "<name>" --json` for a card the scenario does not name). A step whose claimed outcome CONTRADICTS a WotC ruling is `unsupported`, with the ruling quoted verbatim and dated in `note`. A ruling is never a finding's `rule` — `rule` stays a CR id — and agreement with a ruling does not by itself make a step `supported`: the cited CR rule still has to establish the claim. When the section is `absent`, say so in your summary and do not fail the artifact for it.
 3. Then audit for **missing steps**: walk the scenario yourself. Were triggered abilities put on the stack? State-based actions checked (704)? Priority passed correctly (117)? Replacement effects applied (614)? Each omission is a finding with `"step": null` and a note naming the missed rule area.
 4. Read the deck's `cards.json` to verify card names/oracle text used in the resolution match reality.
 

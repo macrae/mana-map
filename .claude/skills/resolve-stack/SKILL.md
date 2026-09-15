@@ -74,7 +74,8 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
    The deterministic brief for this scenario — board split into creature bodies /
    other permanents / lands / the already-paid cost payment, opponent seats and
    life, the per-opponent vs pod-total arithmetic, which named cards are actually
-   in the 99, and which sibling scenarios are comparable and how they differ.
+   in the 99, which sibling scenarios are comparable and how they differ, and (with
+   `--stack`) every named card's official rulings under `rulings.cards`.
    Read it instead of recalling figures. Five errors reached agent briefs in one
    session and every one was a correct-sounding number remembered rather than
    looked up — most damagingly a pod total quoted as a per-seat figure, which
@@ -98,17 +99,23 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
 
    ```bash
    .venv/bin/manamap pilot validate-stack <slug> --scenario-only
+   test -f data/rulings/rulings.jsonl.gz || .venv/bin/manamap pilot download-rulings   # 5 MB, seconds
    ```
 
-   Checks the scenario's form without needing a resolution, and warns when the question
+   The second line puts every named card's official WotC rulings into the brief both
+   agents read (`scenario-facts --stack` → `rulings.cards`); without it they resolve
+   from the CR alone and say so. Rulings are INPUT, never a citation.
+
+   The first checks the scenario's form without needing a resolution, and warns when the question
    is over the sub-question budget. An empty `scenario.stack` once aborted three
    resolutions *after* all three had run, because nothing looked at the scenario until
    it had an answer attached. Fix anything it reports before step 1b.
 
 1b. **Cache gate** (the loop costs 65–130k tokens — never re-run it blindly):
    `.venv/bin/manamap pilot cache-status <slug> --routine stack:<NNN>`
-   - **exit 0** — the scenario block, `cards.json`, the CR version, and both agent
-     prompts are unchanged since this artifact was resolved. Report the recorded
+   - **exit 0** — the scenario block, `cards.json`, the CR version, the named cards'
+     official rulings, and both agent prompts are unchanged since this artifact was
+     resolved. Report the recorded
      verdict and iteration count and **stop — spawn neither agent.** A recorded `fail`
      is a HIT too: identical inputs reproduce the same failure, and the loop already
      spent its iterations. Use `--force` to retry anyway.
