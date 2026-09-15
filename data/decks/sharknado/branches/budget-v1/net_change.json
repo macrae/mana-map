@@ -1,10 +1,16 @@
 {
  "bill": {
-  "branch": "ivora-v1",
+  "branch": "budget-v1",
   "cards": [
    {
     "free": false,
     "name": "Adarkar Wastes",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Anje's Ravager",
     "state": "in_deck",
     "where": []
    },
@@ -75,12 +81,6 @@
     "free": false,
     "name": "Cascade Bluffs",
     "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Ceremonial Knife",
-    "state": "buy",
     "where": []
    },
    {
@@ -213,6 +213,12 @@
    },
    {
     "free": false,
+    "name": "Glittering Massif",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Gossip's Talent",
     "state": "in_deck",
     "where": []
@@ -244,6 +250,12 @@
    {
     "free": false,
     "name": "Irencrag Pyromancer",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Irrigated Farmland",
     "state": "in_deck",
     "where": []
    },
@@ -286,6 +298,12 @@
    {
     "free": false,
     "name": "Lightning Greaves",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Magmakin Artillerist",
     "state": "in_deck",
     "where": []
    },
@@ -375,13 +393,13 @@
    },
    {
     "free": false,
-    "name": "Plateau",
-    "state": "buy",
+    "name": "Psychosis Crawler",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
-    "name": "Psychosis Crawler",
+    "name": "Queen Kayla bin-Kroog",
     "state": "in_deck",
     "where": []
    },
@@ -555,6 +573,12 @@
    },
    {
     "free": false,
+    "name": "Thundering Falls",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Time Reversal",
     "state": "in_deck",
     "where": []
@@ -573,38 +597,14 @@
    },
    {
     "free": false,
-    "name": "Tundra",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Vanguard Suppressor",
     "state": "in_deck",
     "where": []
    },
    {
     "free": false,
-    "name": "Volcanic Island",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Waterbender Ascension",
     "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Wheel of Fortune",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Wheel of Misfortune",
-    "state": "buy",
     "where": []
    },
    {
@@ -628,37 +628,25 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 7,
+   "buy": 1,
    "elsewhere": 2,
    "free": 0,
-   "in_deck": 91
+   "in_deck": 97
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Battlefield Forge",
-    "Ceremonial Knife",
     "Clifftop Retreat",
-    "Inspiring Vantage",
-    "Plateau",
-    "Tundra",
-    "Volcanic Island",
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
+    "Inspiring Vantage"
    ],
    "base_names": 100,
    "base_size": 100,
    "names": 100,
    "out": [
-    "Anje's Ravager",
     "Ferrous Lake",
     "Fiery Islet",
-    "Glittering Massif",
-    "Irrigated Farmland",
-    "Magmakin Artillerist",
-    "Queen Kayla bin-Kroog",
-    "Riverpyre Verge",
-    "Thundering Falls"
+    "Riverpyre Verge"
    ],
    "size": 100
   },
@@ -669,65 +657,69 @@
   "slug": "sharknado",
   "unsourced": [
    "Battlefield Forge",
-   "Ceremonial Knife",
    "Clifftop Retreat",
-   "Inspiring Vantage",
-   "Plateau",
-   "Tundra",
-   "Volcanic Island",
-   "Wheel of Fortune",
-   "Wheel of Misfortune"
+   "Inspiring Vantage"
   ]
  },
- "blind_spots": [],
- "branch": "ivora-v1",
+ "blind_spots": [
+  {
+   "cards": [
+    "Anje's Ravager",
+    "Wheel of Fortune",
+    "Wheel of Misfortune"
+   ],
+   "class": "draw",
+   "headline": "3 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Queen Kayla bin-Kroog"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Magmakin Artillerist"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Glittering Massif",
+    "Irrigated Farmland",
+    "Plateau",
+    "Thundering Falls",
+    "Tundra",
+    "Volcanic Island"
+   ],
+   "class": "land",
+   "headline": "3 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
+ "branch": "budget-v1",
  "changes": {
-  "count": 2,
+  "count": 6,
   "diff": {
    "base_names": 100,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 9,
-    "in_copies": 9,
-    "lands_in": 6,
-    "lands_out": 6,
-    "out": 9,
-    "out_copies": 9,
-    "spells_in": 3,
-    "spells_out": 3
+    "in": 3,
+    "in_copies": 3,
+    "lands_in": 3,
+    "lands_out": 3,
+    "out": 3,
+    "out_copies": 3,
+    "spells_in": 0,
+    "spells_out": 0
    },
    "in": [
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Ceremonial Knife",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Artifact \u2014 Equipment",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Wheel of Fortune",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Wheel of Misfortune",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": null
-    },
     {
      "cmc": 0,
      "copies": 1,
@@ -757,67 +749,10 @@
      "state": "buy",
      "type_line": "Land",
      "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Plateau",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Land \u2014 Mountain Plains",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Tundra",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Land \u2014 Plains Island",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Volcanic Island",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Land \u2014 Island Mountain",
-     "why": null
     }
    ],
    "names": 100,
    "out": [
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Anje's Ravager",
-     "pair": null,
-     "type_line": "Creature \u2014 Vampire Berserker",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Magmakin Artillerist",
-     "pair": null,
-     "type_line": "Creature \u2014 Elemental Pirate",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Queen Kayla bin-Kroog",
-     "pair": null,
-     "type_line": "Legendary Creature \u2014 Human Noble",
-     "why": null
-    },
     {
      "cmc": 0,
      "copies": 1,
@@ -840,64 +775,62 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Glittering Massif",
-     "pair": null,
-     "type_line": "Land \u2014 Mountain Plains",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Irrigated Farmland",
-     "pair": null,
-     "type_line": "Land \u2014 Plains Island",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
      "name": "Riverpyre Verge",
      "pair": null,
      "type_line": "Land",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Thundering Falls",
-     "pair": null,
-     "type_line": "Land \u2014 Island Mountain",
      "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 9,
-    "out": 9
+    "in": 3,
+    "out": 3
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": "2026-09-14",
+    "in": "Thundering Falls",
+    "out": "Volcanic Island",
+    "why": "$725.35 for the only dual that genuinely hurts to lose \u2014 U/R is six deep and both colours are load-bearing. Thundering Falls keeps the ISLAND MOUNTAIN types, which is the point: only 7 of 36 lands carry a basic type and five other lands (Clifftop Retreat, Glacial Fortress, Sulfur Falls, Floodfarm Verge, Nimbus Maze) are conditional on controlling one. An untyped replacement would quietly make three of those enter tapped and stop two making coloured mana. Cost: it enters tapped, and surveil 1 is the consolation."
+   },
+   {
+    "at": "2026-09-14",
+    "in": "Irrigated Farmland",
+    "out": "Tundra",
+    "why": "$475.00 for the twelfth source of a SPLASH. Only three cards in the 100 carry a W pip \u2014 Shabraz, Astral Drift, Smothering Tithe \u2014 and mana_analysis already reads W at 0.962 on-curve against U's 0.804. Irrigated Farmland keeps PLAINS ISLAND, and its CYCLING {2} is a discard and a draw in one activation, which is a Brallin trigger plus a Shabraz trigger the original never gave."
+   },
+   {
+    "at": "2026-09-14",
+    "in": "Glittering Massif",
+    "out": "Plateau",
+    "why": "$304.00 for the seventh source of the same splash. Glittering Massif keeps MOUNTAIN PLAINS and cycles for {2} \u2014 again a discard and a draw the dual could not provide. Trap avoided: Prairie Stream and its cycle read 'unless you control two or more BASIC lands' and this deck runs zero basics, so they would always enter tapped."
+   }
+  ],
   "opened": "2026-09-14",
   "spells": [
    {
     "at": "2026-09-14",
-    "in": "Ivora, Insatiable Heir",
-    "out": "Goblin Engineer",
-    "why": "The tutor cannot reach the engine; Ivora IS one. She makes a Blood on arrival and carries 'whenever you discard a card, put a +1/+1 counter on Ivora' \u2014 a second Brallin on the half of a wheel this deck is built to charge for. Measured alone: +0.741 damage@8 against an MDE of 0.564, the only candidate of thirteen to clear it. A decomposition run isolated why: her Blood alone is worth -0.026 (nothing) and her counter trigger alone +0.305, but the two together +0.817 \u2014 the token feeds the trigger."
+    "in": "Magmakin Artillerist",
+    "out": "Wheel of Fortune",
+    "why": "$318.00, and engine.json measures ignition at 94.7% by turn six across 17 cards \u2014 it is explicitly NOT the bottleneck. The one declared single point of failure is 'a second per-discard DAMAGE source', assembled in 39.5% of games, and Magmakin is exactly that for three mana, the same cost as Glint-Horn. MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY: that figure is a membership claim, not an output one, and the value of a second damage source is insurance against Glint-Horn eating a removal spell \u2014 which a goldfish with no removal cannot price. Recorded as a judgement call, not as a measured gain."
    },
    {
     "at": "2026-09-14",
-    "in": "Teferi's Ageless Insight",
-    "out": "Elesh Norn",
-    "why": "Elesh Norn triggers on neither half of a wheel and its Saga back face WRATHS both commanders (chapter III spares artifacts, lands and Phyrexians; Shabraz is a Shark Bird and Brallin a Human Shaman). Teferi's Ageless Insight doubles every draw after the draw step, which is every card a wheel produces and every card Shabraz charges for. Measured alone: +2.95 extra cards and +3.80 commander counters by turn ten. Chosen over Bard, King of Dale, which has the IDENTICAL doubling text at {4}{W}{U} against {2}{U}{U} and measured +0.11 cards \u2014 the two mana is the whole card."
+    "in": "Queen Kayla bin-Kroog",
+    "out": "Wheel of Misfortune",
+    "why": "The only wheel the model does not read as a wheel, and correctly: only the player who bids LOWEST discards and redraws, so it may never wheel you. Queen Kayla is asymmetric, discards, and is REPEATABLE \u2014 {4}, {T}, every turn, the only repeatable self-only wheel in the identity. Measured +1.102 on damage_8 against an MDE of 0.695, the best of thirteen candidates."
+   },
+   {
+    "at": "2026-09-14",
+    "in": "Anje's Ravager",
+    "out": "Ceremonial Knife",
+    "why": "THE BIGGEST SINGLE-CARD RESULT MEASURED ON THIS DECK: +1.739 on damage_8 against an MDE of 0.695, two and a half times the threshold, and it clears that bar in 13 of the 15 slots swept. {2}{R}, attacks each combat IF ABLE, and whenever it attacks: discard your hand, then draw three. Asymmetric, repeatable, and it fires itself every turn without costing a card or a mana \u2014 the pilot's own principle (asymmetric beats symmetric unless a discount or a rider earns it) turned out to be the best-paying rule of the session. Ceremonial Knife is the slot because it is the worst: an Equipment whose Blood comes only from COMBAT DAMAGE, which this model explicitly refuses to credit, and the engine critic flagged it as miscast in the conversion stage for exactly that. THE TAXES DO NOT PAY, which is what settles the symmetric question: Razorkin Needlehead reads -0.258 and Scrawling Crawler -0.144, both noise, so the upside that would justify eleven symmetric wheels does not materialise."
    }
   ],
-  "why": "Two cards the model could not see until 2026-09-14, replacing two it could see doing nothing. Goblin Engineer is the deck's only tutor and cannot reach the engine: no wheel is an artifact, and the one artifact that closes a game (Psychosis Crawler, MV 5) sits above its MV-3 reanimation cap. Forge cast it 19 times in 120 games and activated it TWICE. Elesh Norn // The Argent Etchings measured as worth 2.2 damage a game through a PHANTOM \u2014 the model read chapter II of its Saga back face, 'creatures you control gain double strike until end of turn', as a permanent doubler on all damage, off a face reachable only by paying {2}{W} and sacrificing three other creatures. That defect is fixed in the same session; 22 corpus cards lost a doubler they never had and sharknado's own damage@8 fell 31.45 to 29.47. In their place: Ivora, who is her own discard payoff, and Teferi's Ageless Insight, which doubles every draw a wheel produces."
+  "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly."
  },
- "decklist_sha256": "bbfc76be8058231b09f607bdd1526cbd5a6bb554b1b9f77a674ce4d3643f8246",
+ "decklist_sha256": "fc170165382bc0d0aa7ccecc2402dea22ebbcf4a2bfcd425acb63fe15d53ff87",
  "definitions": {
   "derived": [
    {
@@ -995,7 +928,7 @@
  },
  "forge": {
   "available": false,
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@ivora-v1 --vs <pod>` puts it at a table and writes where this reads"
+  "why": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@budget-v1 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
   "iterations": 10000,
@@ -1093,7 +1026,7 @@
   ],
   "enters_tapped_always": [
    5,
-   2
+   5
   ],
   "lands": [
    36,
@@ -1136,40 +1069,34 @@
  "objective": {
   "axis": "damage_8",
   "op": ">=",
-  "value": 30.1,
-  "why": "Two cards the model could not see until 2026-09-14, replacing two it could see doing nothing. Goblin Engineer is the deck's only tutor and cannot reach the engine: no wheel is an artifact, and the one artifact that closes a game (Psychosis Crawler, MV 5) sits above its MV-3 reanimation cap. Forge cast it 19 times in 120 games and activated it TWICE. Elesh Norn // The Argent Etchings measured as worth 2.2 damage a game through a PHANTOM \u2014 the model read chapter II of its Saga back face, 'creatures you control gain double strike until end of turn', as a permanent doubler on all damage, off a face reachable only by paying {2}{W} and sacrificing three other creatures. That defect is fixed in the same session; 22 corpus cards lost a doubler they never had and sharknado's own damage@8 fell 31.45 to 29.47. In their place: Ivora, who is her own discard payoff, and Teferi's Ageless Insight, which doubles every draw a wheel produces."
+  "value": 30.0,
+  "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly."
  },
  "objective_grade": {
-  "reading": 31.5161,
+  "reading": 33.328,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy nothing and pay damage @T10, board power @T6 and extra cards by T8.",
+  "because": "The objective is met and nothing measured here got worse.",
   "bill": {
    "box": 0,
-   "buy": 7,
+   "buy": 1,
    "elsewhere": 2,
    "free": 0,
-   "in_deck": 91
+   "in_deck": 97
   },
   "cost": {
-   "buy": 7,
+   "buy": 1,
    "buy_cards": [
-    "Ceremonial Knife",
-    "Inspiring Vantage",
-    "Plateau",
-    "Tundra",
-    "Volcanic Island",
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
+    "Inspiring Vantage"
    ],
    "counts": {
     "box": 0,
-    "buy": 7,
+    "buy": 1,
     "elsewhere": 2,
     "free": 0,
-    "in_deck": 91
+    "in_deck": 97
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1188,50 +1115,76 @@
      "name": "Clifftop Retreat"
     }
    ],
-   "owned": 93,
-   "reads_as": "7 to buy; 2 to pull out of a deck that is still together; 93 of 100 already owned",
+   "owned": 99,
+   "reads_as": "1 to buy; 2 to pull out of a deck that is still together; 99 of 100 already owned",
    "total": 100
   },
-  "fell": [
+  "fell": [],
+  "no_call": [
    "damage @T10",
    "board power @T6",
-   "extra cards by T8"
-  ],
-  "no_call": [
    "killed by T6",
    "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
+   "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [],
+  "notes": [
+   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
+  ],
   "reward": [],
   "risk": [
    {
-    "detail": "61.26 -> 54.01, a change of -7.25 (-12%)",
-    "kind": "paid",
-    "what": "damage @T10",
-    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "detail": "9.92 -> 9.50, a change of -0.41 (-4%)",
-    "kind": "paid",
-    "what": "board power @T6",
-    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "detail": "12.13 -> 11.65, a change of -0.47 (-4%)",
-    "kind": "paid",
-    "what": "extra cards by T8",
-    "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
-   },
-   {
-    "detail": "the largest is interaction affordable @T6 at +0.019 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "7 row(s) returned no call",
+    "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Anje's Ravager",
+     "Wheel of Fortune",
+     "Wheel of Misfortune"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "3 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Queen Kayla bin-Kroog"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Magmakin Artillerist"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Glittering Massif",
+     "Irrigated Farmland",
+     "Plateau",
+     "Thundering Falls",
+     "Tundra",
+     "Volcanic Island"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "3 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -2 -> -5",
@@ -1240,54 +1193,54 @@
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@ivora-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@budget-v1 --vs <pod>` puts it at a table and writes where this reads",
     "kind": "structural",
     "what": "no game has been played at a real table",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
   "rose": [],
-  "state": "a trade"
+  "state": "merge"
  },
  "slug": "sharknado",
- "staged": 2,
+ "staged": 6,
  "table": [
   {
    "better_is": "higher",
-   "branch": 54.0144,
+   "branch": 61.174,
    "champion": 61.2607,
-   "delta": -7.2463,
+   "delta": -0.0867,
    "mde": 1.5311,
    "measure": "damage @T10",
-   "reads_as": "61.26 -> 54.01, a change of -7.25 (-12%)",
+   "reads_as": "no call \u2014 the gap of 0.087 is smaller than the 1.531 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {
    "better_is": "higher",
-   "branch": 9.5046,
+   "branch": 9.9039,
    "champion": 9.918,
-   "delta": -0.4134,
+   "delta": -0.0141,
    "mde": 0.1463,
    "measure": "board power @T6",
-   "reads_as": "9.92 -> 9.50, a change of -0.41 (-4%)",
+   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.146 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
-   "branch": 0.2106,
+   "branch": 0.2169,
    "champion": 0.2185,
-   "delta": -0.0079,
+   "delta": -0.0016,
    "mde": 0.0164,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1296,12 +1249,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9806,
+   "branch": 0.985,
    "champion": 0.9852,
-   "delta": -0.0046,
-   "mde": 0.0055,
+   "delta": -0.0002,
+   "mde": 0.0048,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.005 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1310,12 +1263,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1571,
+   "branch": 0.1515,
    "champion": 0.1521,
-   "delta": 0.005,
-   "mde": 0.0144,
+   "delta": -0.0006,
+   "mde": 0.0142,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.014 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.014 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1324,12 +1277,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.395,
+   "branch": 0.3918,
    "champion": 0.391,
-   "delta": 0.004,
-   "mde": 0.0194,
+   "delta": 0.0008,
+   "mde": 0.0193,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1338,12 +1291,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1914,
+   "branch": 0.1929,
    "champion": 0.1929,
-   "delta": -0.0015,
+   "delta": 0.0,
    "mde": 0.0156,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1352,26 +1305,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.6536,
+   "branch": 12.109,
    "champion": 12.1252,
-   "delta": -0.4716,
+   "delta": -0.0162,
    "mde": 0.396,
    "measure": "extra cards by T8",
-   "reads_as": "12.13 -> 11.65, a change of -0.47 (-4%)",
+   "reads_as": "no call \u2014 the gap of 0.016 is smaller than the 0.396 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
   },
   {
    "better_is": "higher",
-   "branch": 0.151,
+   "branch": 0.1315,
    "champion": 0.1317,
-   "delta": 0.0193,
-   "mde": 0.0197,
+   "delta": -0.0002,
+   "mde": 0.0183,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.018 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1380,12 +1333,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9518,
+   "branch": 0.9481,
    "champion": 0.9481,
-   "delta": 0.0037,
+   "delta": 0.0,
    "mde": 0.0088,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.009 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.009 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

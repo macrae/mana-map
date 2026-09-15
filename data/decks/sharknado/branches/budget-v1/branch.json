@@ -1,0 +1,76 @@
+{
+ "slug": "sharknado",
+ "branch": "budget-v1",
+ "v": 2,
+ "opened": "2026-09-14",
+ "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly.",
+ "objective": {
+  "axis": "damage_8",
+  "op": ">=",
+  "value": 30.0,
+  "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly."
+ },
+ "commits": [
+  {
+   "at": "2026-09-14",
+   "decklist_sha256": "1a9f7168927c4d1697343c336a508bccf7a3cadd09a54bd16dfb5af647d1f967",
+   "message": "Under $500: three duals, two wheels that were not pulling their weight"
+  },
+  {
+   "at": "2026-09-14",
+   "decklist_sha256": "fc170165382bc0d0aa7ccecc2402dea22ebbcf4a2bfcd425acb63fe15d53ff87",
+   "message": "Anje's Ravager over Ceremonial Knife \u2014 the largest measured gain on the deck"
+  }
+ ],
+ "base_version": 2,
+ "staged": [
+  {
+   "at": "2026-09-14",
+   "out": "Volcanic Island",
+   "in": "Thundering Falls",
+   "strength": null,
+   "why": "$725.35 for the only dual that genuinely hurts to lose \u2014 U/R is six deep and both colours are load-bearing. Thundering Falls keeps the ISLAND MOUNTAIN types, which is the point: only 7 of 36 lands carry a basic type and five other lands (Clifftop Retreat, Glacial Fortress, Sulfur Falls, Floodfarm Verge, Nimbus Maze) are conditional on controlling one. An untyped replacement would quietly make three of those enter tapped and stop two making coloured mana. Cost: it enters tapped, and surveil 1 is the consolation."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Tundra",
+   "in": "Irrigated Farmland",
+   "strength": null,
+   "why": "$475.00 for the twelfth source of a SPLASH. Only three cards in the 100 carry a W pip \u2014 Shabraz, Astral Drift, Smothering Tithe \u2014 and mana_analysis already reads W at 0.962 on-curve against U's 0.804. Irrigated Farmland keeps PLAINS ISLAND, and its CYCLING {2} is a discard and a draw in one activation, which is a Brallin trigger plus a Shabraz trigger the original never gave."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Plateau",
+   "in": "Glittering Massif",
+   "strength": null,
+   "why": "$304.00 for the seventh source of the same splash. Glittering Massif keeps MOUNTAIN PLAINS and cycles for {2} \u2014 again a discard and a draw the dual could not provide. Trap avoided: Prairie Stream and its cycle read 'unless you control two or more BASIC lands' and this deck runs zero basics, so they would always enter tapped."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Wheel of Fortune",
+   "in": "Magmakin Artillerist",
+   "strength": null,
+   "why": "$318.00, and engine.json measures ignition at 94.7% by turn six across 17 cards \u2014 it is explicitly NOT the bottleneck. The one declared single point of failure is 'a second per-discard DAMAGE source', assembled in 39.5% of games, and Magmakin is exactly that for three mana, the same cost as Glint-Horn. MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY: that figure is a membership claim, not an output one, and the value of a second damage source is insurance against Glint-Horn eating a removal spell \u2014 which a goldfish with no removal cannot price. Recorded as a judgement call, not as a measured gain."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Wheel of Misfortune",
+   "in": "Queen Kayla bin-Kroog",
+   "strength": null,
+   "why": "The only wheel the model does not read as a wheel, and correctly: only the player who bids LOWEST discards and redraws, so it may never wheel you. Queen Kayla is asymmetric, discards, and is REPEATABLE \u2014 {4}, {T}, every turn, the only repeatable self-only wheel in the identity. Measured +1.102 on damage_8 against an MDE of 0.695, the best of thirteen candidates."
+  },
+  {
+   "at": "2026-09-14",
+   "out": "Ceremonial Knife",
+   "in": "Anje's Ravager",
+   "strength": null,
+   "why": "THE BIGGEST SINGLE-CARD RESULT MEASURED ON THIS DECK: +1.739 on damage_8 against an MDE of 0.695, two and a half times the threshold, and it clears that bar in 13 of the 15 slots swept. {2}{R}, attacks each combat IF ABLE, and whenever it attacks: discard your hand, then draw three. Asymmetric, repeatable, and it fires itself every turn without costing a card or a mana \u2014 the pilot's own principle (asymmetric beats symmetric unless a discount or a rider earns it) turned out to be the best-paying rule of the session. Ceremonial Knife is the slot because it is the worst: an Equipment whose Blood comes only from COMBAT DAMAGE, which this model explicitly refuses to credit, and the engine critic flagged it as miscast in the conversion stage for exactly that. THE TAXES DO NOT PAY, which is what settles the symmetric question: Razorkin Needlehead reads -0.258 and Scrawling Crawler -0.144, both noise, so the upside that would justify eleven symmetric wheels does not materialise."
+  }
+ ],
+ "merged": {
+  "at": "2026-09-14",
+  "decklist_sha256": "fc170165382bc0d0aa7ccecc2402dea22ebbcf4a2bfcd425acb63fe15d53ff87",
+  "into_version_before": null,
+  "forced_reason": "Five of the six are simply to buy and are bulk \u2014 Anje's Ravager, Magmakin Artillerist, Queen Kayla bin-Kroog, Thundering Falls, Glittering Massif. The sixth, Irrigated Farmland, is SLEEVED IN HELIOD AND LOCKED, and the answer there is a second copy at bulk price rather than unsleeving a deck the pilot plays: the whole point of this branch is that the cart came back at $2,464.64 and needs to land under $500, which it does with room. Forced because the gate is about cardboard and the cardboard decision has been made."
+ }
+}

@@ -1,6 +1,6 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "9361be6b5109d713dfc952b7fc7db34321e10d4ef5ce5e6ac3606e0da6033060",
+  "decklist_sha256": "fc170165382bc0d0aa7ccecc2402dea22ebbcf4a2bfcd425acb63fe15d53ff87",
   "lands": {
     "total": 36,
     "entries": 36,
@@ -8,13 +8,13 @@
       "recurring_per_tap_cycle": 6,
       "one_time_on_entry": 6
     },
-    "enters_tapped": 13,
+    "enters_tapped": 15,
     "enters_tapped_always": 5,
     "classes": {
       "fixing": 8,
       "mdfc": 1,
-      "tapped": 13,
-      "untapped-dual": 22,
+      "tapped": 15,
+      "untapped-dual": 20,
       "utility": 10
     },
     "list": [
@@ -27,6 +27,18 @@
         ],
         "produces": [
           "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Battlefield Forge",
+        "copies": 1,
+        "classes": [
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "R",
           "W"
         ]
       },
@@ -68,6 +80,17 @@
         ]
       },
       {
+        "name": "Clifftop Retreat",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Command Tower",
         "copies": 1,
         "classes": [
@@ -91,29 +114,6 @@
           "R",
           "U",
           "W"
-        ]
-      },
-      {
-        "name": "Ferrous Lake",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "R",
-          "U"
-        ]
-      },
-      {
-        "name": "Fiery Islet",
-        "copies": 1,
-        "classes": [
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "R",
-          "U"
         ]
       },
       {
@@ -194,6 +194,17 @@
         ],
         "produces": [
           "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Inspiring Vantage",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "R",
           "W"
         ]
       },
@@ -288,17 +299,6 @@
         "copies": 1,
         "classes": [],
         "produces": []
-      },
-      {
-        "name": "Riverpyre Verge",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "R",
-          "U"
-        ]
       },
       {
         "name": "Rugged Prairie",
@@ -442,8 +442,8 @@
   },
   "sources": {
     "lands": {
-      "W": 26,
-      "U": 32,
+      "W": 29,
+      "U": 29,
       "B": 0,
       "R": 22,
       "G": 0
@@ -456,16 +456,15 @@
       "G": 0
     },
     "total": {
-      "W": 27,
-      "U": 34,
+      "W": 30,
+      "U": 31,
       "B": 0,
       "R": 24,
       "G": 0
     },
     "gated": {
-      "count": 4,
+      "count": 3,
       "names": [
-        "Ferrous Lake",
         "Opal Palace",
         "Skycloud Expanse",
         "Talon Gates of Madara"
@@ -536,11 +535,11 @@
     },
     "U": {
       "pip_share": 0.541,
-      "source_share": 0.4
+      "source_share": 0.362
     },
     "W": {
       "pip_share": 0.054,
-      "source_share": 0.325
+      "source_share": 0.362
     }
   },
   "source_targets": {
@@ -550,19 +549,19 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.944,
-      "U": 0.855,
+      "W": 0.962,
+      "U": 0.804,
       "R": 0.907
     },
     "with_rocks_and_dorks": {
-      "W": 0.951,
-      "U": 0.882,
+      "W": 0.967,
+      "U": 0.839,
       "R": 0.927
     },
     "lands_only_ungated": {
-      "W": 0.918,
-      "U": 0.785,
-      "R": 0.866
+      "W": 0.944,
+      "U": 0.742,
+      "R": 0.881
     }
   },
   "ramp": {
@@ -575,24 +574,24 @@
       "10": 0.86,
       "2": 0.997,
       "3": 0.912,
-      "4": 0.817,
+      "4": 0.816,
       "5": 0.732,
       "6": 0.719,
-      "7": 0.794,
-      "8": 0.839,
+      "7": 0.793,
+      "8": 0.838,
       "9": 0.862
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.392,
+      "10": 9.389,
       "2": 2.145,
       "3": 3.166,
-      "4": 4.02,
-      "5": 4.772,
-      "6": 5.524,
-      "7": 6.402,
-      "8": 7.37,
-      "9": 8.377
+      "4": 4.019,
+      "5": 4.771,
+      "6": 5.523,
+      "7": 6.4,
+      "8": 7.367,
+      "9": 8.374
     }
   },
   "assumptions": [
@@ -602,7 +601,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "U: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
-    "13 of 36 lands enter tapped (36%) — over the one-in-three budget the deck builder allows itself."
+    "U: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 31.",
+    "15 of 36 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
