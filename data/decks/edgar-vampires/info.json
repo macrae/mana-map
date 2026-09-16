@@ -14,11 +14,9 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 16,
+    "complete": 17,
     "of": 18,
-    "stale": [
-      "tutors"
-    ],
+    "stale": [],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -4926,9 +4924,9 @@
     "verified_lines": 5
   },
   "diagnosis": {
-    "verdict": "It functions and every multi-card component turns over: 91.3% turn-3 land drop, a castable Vampire in 92.3% of games, lords 79.0%, a draw engine 73.3%. What I can measure end to end is conversion, and that is where it thins — THE GO-WIDE KILL assembles by turn six in 28.5% of games (mean turn 5.043), and its payoff leg is the thinnest of its three legs — six cards at 36.4% of openers against the multiplier's seven and the ignition leg's thirteen. That leg is now declared correctly: the group this document said was wrong in both directions has been split by trigger event, Mirkwood Bats is in it and the two death drains have a component of their own, and across 1,686 declare-attackers decisions in 180 games the pod attacks the biggest revealed damage dealer 69.5% of the time, ci95 [0.673, 0.717] against a uniform 50.6%, permutation p = 0.0001. Card draw is not what costs games: eleven real sources survive an oracle read against a floor of ten. Black may be — 30 sources of 36 and 82.2% on-curve with rocks against a cited 90% — and this document declines to rank it against conversion rather than pretending to, because the instrument that measures assembly cannot see colour at all; that ranking is routed, not decided here.",
+    "verdict": "It develops as well as any deck in the quiver and closes worse than its board deserves. A castable Vampire in 95.0% of goldfish games at mean turn 2.22, a turn-three land drop 91.9% of the time, a draw engine in 83.5%, and both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings. The two verified kill lines each rest on one named card and assemble in 7.8% and 4.1% of goldfish games (mean turns 6.4 and 6.7) — a ceiling by construction, not a defect — while the plan's payoff drain is a two-card pair at 37.2% and the sweeper count is zero by role in a deck whose best logged turn was an opponent's wipe with a drain online. Colour is the cheap fix on paper (black four sources short with a triple-pip card in the 99), though mana_analysis and the oracle text disagree on whether the land swap moves it; the drain-and-sweeper layer is what the losses point at, and the Purphoros answer the pilot asked white for is a class (exile) the deck holds two of, plus — pending a stack — the Conqueror his direction marked as out.",
     "skeptic": "pass",
-    "stale": true
+    "stale": false
   },
   "audit": {
     "archetype": null,
@@ -4975,32 +4973,37 @@
     },
     {
       "from": "diagnosis",
-      "question": "ANSWERED for its first half, still open for its second. The payoff group has been corrected and re-derived: the leg is six creation-and-entry payoffs at 36.4% of openers, 67.4% assembled, 56.7% by turn six; Blood Artist and Cruel Celebrant hold their own component at 13.7% / 30.4% / 24.1%; and THE GO-WIDE KILL moved from 0.491 assembled and 0.327 by turn six to 0.445 and 0.285, mean turn 4.773 to 5.043. What remains unrun is the sandbox with this document's four (add, natural_cut) pairs applied, which is the only way to price two things it cannot derive: the payoff leg at eight copies against the kill's other two legs, and THE SURVIVING INFINITE once Sanguine Bond leaves its second group.",
+      "question": "Bloodthirsty Conqueror, Vito (or Sanguine Bond) and Cruel Celebrant on the battlefield; one creature dies. Is the loop (stacks 004/006) already running, and can the pilot decline it? Same question with any lifelink hit or a Meathook trigger as the seed.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Tom's Purphoros triggers ('deals 2 damage to each opponent') with Bloodthirsty Conqueror on our battlefield: do Alex's and Oliver's life losses each fire Conqueror for us (net +2 per trigger), and with Vito or Sanguine Bond also out does each trigger drain Tom and start the loop?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Boros Charm's 'permanents you control gain indestructible' with Elspeth, Storm Slayer attacked for lethal loyalty: does she survive? Which of the seven protection cards keep a planeswalker alive through (a) a destroy spell, (b) an exile spell, (c) combat damage?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Re-run the goldfish with Ancient Tomb replaced by a Swamp (and Survivors' Encampment by Dragonskull Summit): commander mean cast turn (now 6.318, 60.3% by turn six), kill-by-turn-8 (now 0.704) and mean available mana by turn.",
       "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Mirkwood Bats reads 'whenever you create or sacrifice a token' where Caretaker's Talent reads 'whenever one or more tokens you control enter ... only once each turn'. When one eminence trigger creates eight tokens as a single replaced event (stack 010), does Mirkwood Bats trigger eight times or once?",
-      "settled_by": "resolve-stack"
+      "question": "Add the third death drain (Bastion of Remembrance, Zulaport Cutthroat or Vindictive Vampire) to the goldfish group 'A drain that fires when a creature DIES' and re-measure; add Viscera Seer ({B}, Vampire Wizard) to the castable-Vampire group, which declares thirteen where cards.json holds fourteen; and declare an outlet-AND-drain pair so the conversion layer has a rate at all.",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
-      "question": "Does Bloodletter of Aclazotz double DAMAGE as well as stated life loss? Stacks 003 and 007 only ever tested 'each opponent loses N life' from Sanctum Seeker and Throne of the God-Pharaoh; nobody has run Purphoros dealing 2 to each opponent through it.",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "What does the corpus say about typal and uncounterable mana against raw source counts? manabase.land_colors credits Urborg, Tomb of Yawgmoth and Cavern of Souls ZERO colour sources, so both left the 99 without moving the colour-sources axis by a single point, and no measured axis will move if either comes back.",
+      "question": "How does a mid-range aristocrats deck sequence against an each-opponent ETB-drain deck (Purphoros): attack it first, answer the enchantment, race on drain, or hold blockers? Is 'the natural predator for mid-range aggro' (log 005) a known matchup reading in the corpus?",
       "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
-      "question": "Is the black shortfall costing this deck games, or is conversion? The bench cannot currently answer it: goldfish.py's `_mana_pips` reduces every cost to generic-equivalent mana and its mulligan rule counts lands rather than colours, so assembly rates, the turn-3 land drop and the keep rate are all colour-blind by construction, and mana_analysis's Karsten castability is a static hypergeometric that never meets the deck's curve. What would settle it is a colour-aware run: how often is a black spell in hand, affordable by total mana, and uncastable for want of a black source?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Does the death-drain line actually convert? It now has a measured rate — Blood Artist and Cruel Celebrant, 30.4% assembled and 24.1% by turn six — and no checker-passed stack showing it closing a game. engine-critic established the deck can manufacture the death rather than wait for it (Skullclamp for {1} on a 1/1 token; Indulgent Aristocrat's outlet has no tap symbol and no timing restriction), so the question is how many deaths a seat costs at what mana, the way stack 009 did for the entry event.",
+      "question": "With Elenda at power X fed to a free outlet under two doublers, how many lifelink tokens enter, and do Cordial Vampire and Blade trigger for their later deaths? (carried from strategic_frame candidate lines)",
       "settled_by": "resolve-stack"
     },
     {
@@ -5117,15 +5120,13 @@
     }
   },
   "next": [
-    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `elenda-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch edgar-vampires merge elenda-v1 --write`",
     "branch `fear-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source fear-v1`",
     "branch `march-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source march-v1`",
     "branch `mound-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mound-v1`",
     "branch `newblood-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source newblood-v1`",
     "branch `sergeant-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source sergeant-v1`",
-    "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×6"
+    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×7"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

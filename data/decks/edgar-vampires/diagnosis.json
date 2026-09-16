@@ -1044,105 +1044,75 @@
     "Ancient Tomb's replacement is a fifth basic Swamp, and it cannot appear in add_candidates because the validator reads a basic the 99 already holds (Swamp ×4) as 'already in the maindeck'. The case, from mana_analysis on this sha: black is 32 sources against a Karsten target of 36 for 38 black cards and 54 black pips (Bloodletter is {1}{B}{B}{B}); black on curve is 0.785 on lands alone and 0.855 with rocks; a Swamp takes black to 33 (33 by mana_analysis's arithmetic even with Dragonskull Summit for Survivors' Encampment, since the artifact already credits Encampment as a black source; 34 only under the oracle reading in add_candidates[3]), enters untapped, deals no damage, and turns on Castle Locthwain, Dragonskull Summit, Blazemire Verge and Bleachbone Verge. Game Changers go 3 to 2 and the bracket floor stays 4 on the two infinites. The Ancient Tomb cut therefore has no paired add and is not applied by the validator's swap check; the goldfish open question above measures the tempo cost before anyone sleeves it."
   ],
   "skeptic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
       {
-        "where": "add_candidates[3]",
-        "status": "contradicts-artifact",
-        "severity": "medium",
-        "note": "Dragonskull Summit for Survivors' Encampment is priced as 'Black 32 to 33 and red 20 to 21', and gaps[-1] says a Swamp plus Summit takes black to 34. mana_analysis.json (this sha) lands.list files Survivors' Encampment as produces ['B','R','W'], classes ['fixing','untapped-dual','utility'] — it is already inside the B 28 / R 17 / W 21 land counts the audit's colour-sources axis reads. By the artifact's own arithmetic the swap is B 32→32, R 20→20, W 24→23, and Swamp-for-Tomb plus Summit-for-Encampment is 33, not 34. The +1/+1 only holds under the doctor's oracle reading (axes[3]: 'Two lands add no colour without a cost') that Encampment is not a source — which is a fair reading of '{T}, Tap an untapped creature you control', and one mana_analysis's own assumption ('a source counts only for mana it produces unconditionally') arguably violates. That disagreement between oracle text and the measured artifact is the finding to name (agents-common §2); the diagnosis resolves it silently in its own favour and prices the 'cheapest axis to fix' with a gain the audit will not show when re-run. mana-fit does not list Encampment among its cut candidates either, which is consistent with it being credited as fixing."
+        "where": "add_candidates[3], axes[3].reading, cut_candidates[0].why, gaps[10]",
+        "status": "supported",
+        "severity": "low",
+        "note": "R1 finding [0] (contradicts-artifact) ANSWERED — carried by evidence, not softened. The arithmetic is now the artifact's: mana_analysis lands.list files Survivors' Encampment as produces ['B','R','W'], it sits inside the B 28 / R 17 / W 21 land counts, and I recomputed the swap independently — remove Encampment (B−1 R−1 W−1), add Summit (B+1 R+1) = B 32→32, R 20→20, W 24→23, exactly what add_candidates[3] now states. 'Two lands add no colour' is re-scoped to 'by oracle text'; gaps[10]'s '34' is corrected to 33 with the oracle-reading alternative named; the Encampment cut states both readings and says which one it rests on; the assumption quoted ('A source counts only for mana it produces unconditionally') is verbatim from mana_analysis.assumptions[1]. A pilot reading this cannot be misled: the entry says in terms that the gain 'the measured axis will not show'. TWO NITS for the orchestrator, neither blocking: (a) the structured `closes` field still reads 'colour-sources' and `evidence` still carries B 32/36, which is the claim the artifact declines — the prose caveat is adjacent, but a renderer reading `closes` gets the optimistic half; (b) the disagreement is named in four places and routed nowhere. There is a concrete route: mana_analysis already has the mechanism for exactly this case — `sources.gated` ('their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve') is count 0 / names [] on this deck, and Encampment's '{T}, Tap an untapped creature you control' is the textbook member. That is a one-line gap or open question, and it would settle the doctor's reading in his favour rather than against him."
       },
       {
         "where": "axes[9]",
-        "status": "over-claimed",
-        "severity": "medium",
-        "note": "threat-density is read as 'weakness' at a measured 10 against a floor of 3 on three legs, and two do not hold. (a) The one-card legs: deck-audit's own note says '2 declared target(s) rest on a component with one card… that is the ceiling on those lines, not a defect', and the 7.8% / 4.1% quoted as the one-card components' rates are the two-card LINE rates (Conqueror AND Vito-or-Bond; Bloodletter AND Sanctum Seeker per goldfish_targets 'need' groups) — the audit presents them the same way, but the verdict then reads a by-construction ceiling as a defect, which the charter names as over-claimed. (b) 'median first attack at global turn 12 and 13… 13… and 16': parse.py sets first_attack_turn = ev['turn'], the log's global turn counter (line 178/192/569). In a four-seat pod global turns 9–12 are round 3 and 13–16 round 4; in the five-seat pod 16 is round 4. The seat attacks on its third or fourth turn — early — and the figure is set beside goldfish own-turn means of 6.4–6.7 as though it were the same clock. (c) Logs 004 and 005 both have the deck reaching lethal ('closed the game before my lethal resolved'; 'pings finished the job before lethal landed') and losing to a tutored combo and a race — answer-economy and sequencing losses, which lean_into[3] itself says. The doctor's own enumeration of real closes (Bloodletter line, Conqueror loops, Akroma's Will alpha, Elenda) sits inside Zupke's 3–5. What the evidence reaches is 'adequate by count, fragile at the one-card legs, and the sweeper/drain layer is the measured gap' — which is what the prescriptions are actually sized off (sweepers 0, drain pair 0.372), so Meathook and a third drain survive this finding; the verdict sentence 'This is the axis that is costing games' does not. Alternatives tested: ramp 'adequate' is supported (land_drop t3 0.919, mean_available_mana t6 5.591, keep 0.811, no logged mana cause); colour-sources −4 is a real measured under, but its cheap fix is mis-priced (finding on add_candidates[3])."
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [1] (over-claimed) WITHDRAWN CLEANLY, not reworded. verdict weakness→adequate, which now agrees with deck-audit's own verdict on the axis ('at', gap 0, floor 3) — re-run today, value still 10. All three legs I attacked are gone or repaired: the four closes are enumerated and placed inside Zupke's 3–5 verbatim band; the one-card legs are called 'a ceiling by construction, not a defect', which is deck-audit's note almost word for word, and the reading explicitly says it does not call it one; the global-turn clock is deleted from the axis (the only surviving mention is gaps[2]'s provenance list); the losses are re-scoped to 'answer-economy and sequencing', which is what logs 004 and 005 say and what lean_into[3] already argued. 'Logs 004 and 005 both REACHED lethal' checks out — 004 verbatim 'closed the game before my lethal resolved', 005 'before lethal landed' plus the pilot's own follow-up 'swing lethal when it's there'. The prescriptions survive intact because they were always sized on sweepers 0 and the 0.372 drain pair, both re-verified. Nit: of the four closes, Elenda carries '(no stack)' and the Akroma's Will alpha carries no marker — it is a combat line rather than a combo line so `unverified-line` does not bite, but the two deserve the same mark."
       },
       {
-        "where": "cut_candidates[6]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "Vish Kal's why leans on 'whose Forge seat's median first attack is global turn 12–13' as a clock that makes seven mana late; global turn 12–13 is the seat's third or fourth turn (see axes[9]). The evidence that does support the cut is in the artifacts the doctor already cites: engine_casts cast 0 / discarded 1 in n60 and absent in n40, and goldfish mean_available_mana_by_turn 7: 6.185, 8: 6.787, 9: 7.387 — seven mana is a turn-nine mean in the deck's own turns. Restate on those; the difficulty 'painful' and the cost_of_cutting are fair."
+        "where": "cut_candidates[6].why",
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [2] ANSWERED. The global-turn clock is replaced with goldfish mean_available_mana_by_turn 7: 6.185, 8: 6.787, 9: 7.387 — all three match goldfish_metrics.json exactly — and the conclusion 'seven mana is a turn-nine mean in the deck's own turns' follows from them. engine_casts 0/60 with one discard, absent from n40, re-read from the records and correct. The cut keeps difficulty 'painful' and its cost_of_cutting is unchanged and still a real cost."
       },
       {
-        "where": "lean_into[3]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'the count is two or four depending on Tom's board' under-enumerates the devotion-five case. axes[6]'s count of two exile answers to a NONCREATURE Purphoros is correct (Anguished Unmaking; Despark, mv 4 — corpus oracle confirms {3}{R}). Once he is a creature, Path and Winds exile him AND Vish Kal's −1/−1-per-counter reduces toughness to 0, which is a state-based action (704.5f), not destruction, so indestructible does not apply; Liliana's −4 is a sacrifice, which indestructible also does not stop. Same omission in add_candidates[0]: Meathook at X≥5 removes a creature Purphoros too ('the Purphoros board, not Purphoros'). None of this changes the Vanishing Verse prescription, but the class the pilot needs is 'exile, toughness-reduction or sacrifice', and the deck holds more of it than 'two or four' says. (The doctor's expected answer on open_questions[2] is otherwise well-framed and correctly routed to resolve-stack.)"
+        "where": "lean_into[3].why, axes[6].reading, add_candidates[0].why",
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [3] ANSWERED, and enumerated further than I asked. Every mechanical claim checked against cards.json oracle text: Vish Kal 'Remove all +1/+1 counters…: Target creature gets -1/-1 … for each' reduces toughness to 0, a state-based action indestructible does not stop; Liliana's −4 'Each player sacrifices two creatures of their choice' bypasses indestructible, and the entry states the choice caveat ('though Tom chooses which'); Elspeth's −3 destroys and cannot target the noncreature God, so 'fails in both states' is right; Path and Winds exile at devotion five. 'Two cards against the enchantment, six against the creature' reconciles (2 + Path + Winds + Vish Kal + Liliana), and all six are inside deck-audit's eleven interaction copies. The Meathook line is corrected to reach Purphoros himself 'once devotion makes him a creature and X is at least five' — he is 6/5, so X≥5 is the exact threshold."
       },
       {
         "where": "engine.declared",
-        "status": "miscounted",
-        "severity": "low",
-        "note": "'eight sacrifice outlets (six free)': by oracle text seven of the eight cost no mana — Master of Dark Rites is '{T}, Sacrifice another creature: Add {B}{B}{B}', no mana in the cost — and strategic_frame.json on the same sha says 'seven of them cost no mana'. components[5].reading explains six as the goldfish group less Master (filed under mana), but `declared` states it as a fact about the 99 and disagrees with the frame; name the filing rather than restate the count. (engine.json's thesis says 'seven sacrifice outlets' — three artifacts, three counts; cards.json regex gives eight proper outlets plus High-Society Hunter's optional attack sacrifice and Reactor Raid's one-shot.)"
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [4] (miscounted) ANSWERED by reconciling all three artifacts rather than restating a count: eight outlets by role (deck-facts sac-outlet 8), seven of which cost no mana, the goldfish group holding six because it files Master of Dark Rites under mana. Verified against cards.json — Indulgent Aristocrat is the only one of the eight with mana in the activation ('{2}, Sacrifice a creature'); Master of Dark Rites is '{T}, Sacrifice another creature: Add {B}{B}{B}', quoted correctly. This now agrees with strategic_frame.json's 'seven of them cost no mana' instead of contradicting it."
       },
       {
-        "where": "engine.components[0].reading, axes[10]",
-        "status": "miscounted",
-        "severity": "low",
-        "note": "'Thirteen Vampires at mana value two or less' / 'thirteen of them cost two or less and are the eminence leg': cards.json holds FOURTEEN Vampire creatures at cmc ≤ 2 — Viscera Seer ({B}, Vampire Wizard, the turn-one play in log 005) is not in the goldfish group, which was declared 2026-08-24 and repaired 2026-09-16 only by removing cut cards. The 95.0% / mean 2.22 is the declared thirteen's rate and is quoted correctly; the sentence states the count as the deck's. Say 'thirteen declared; cards.json has fourteen' and fold the missing card into open_questions[4]'s goldfish re-run."
+        "where": "engine.components[0].reading, axes[10].reading, open_questions[4]",
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [5] (miscounted) ANSWERED. cards.json holds fourteen Vampire creatures at mana value ≤2 (re-enumerated, Viscera Seer included); goldfish_targets' castable group declares thirteen (re-counted from the need groups). Both artifacts are now named and distinguished rather than conflated, the identification of Viscera Seer as log 005's turn-one play matches log_annotations, and 'the true rate is at least the declared one' is the correct direction — adding a member to an any_of group cannot lower an assembled rate. Routed into open_questions[4] for the goldfish, which is the right owner."
       },
       {
-        "where": "add_candidates[4]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'Bloodletter doubles it (damage is loss)': Bloodletter's clause is 'If an opponent would lose life DURING YOUR TURN' — a Vindictive Vampire trigger off an opponent's wipe (the log-002 scenario lean_into[0] is built on) is not doubled. Stack 007's whole result turns on that clause. Add the qualifier."
+        "where": "add_candidates[4].why",
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [6] ANSWERED with the oracle qualifier: Bloodletter is 'If an opponent would lose life during your turn', and the entry now says the doubling is on your turn only and that a Vindictive Vampire trigger off an opponent's wipe is undoubled — which is the scenario lean_into[0] is built on, so the correction lands where it mattered."
       },
       {
         "where": "cut_candidates[2].cost_of_cutting",
-        "status": "over-claimed",
+        "status": "supported",
+        "severity": "none",
+        "note": "R1 finding [7] ANSWERED. The superlative is gone, replaced by 'one of the deck's two turn-one accelerants (Sol Ring is its equal)'. I checked the enumeration and the supporting log: Sol Ring and Ancient Tomb are the only two cards in the 99 that produce two mana on turn one (Legion's Landing makes a token, Master of Dark Rites cannot tap the turn it lands), and log 003's 'two lands plus Sol Ring… ended turn one on four mana' only reconciles with a one-mana land, so 'no Tomb' is right — 1 + 2 + 1 = 4, where Tomb would have made five. The cut's substance is unchanged and still supported."
+      },
+      {
+        "where": "axes[*].measured.value, citations, engine rates, stack references, log citations, gaps[2]",
+        "status": "supported",
+        "severity": "none",
+        "note": "NOTHING I MARKED SUPPORTED IN ROUND 1 WAS ALTERED. Diffed every leaf path between the round-1 commit (c1691388) and the merged file: exactly 17 changed, no key added or removed, and all 17 fall inside the eight findings' scope (verdict; axes 3/6/9/10; cut 0/2/6; add 0/3/4; engine.declared; engine.components[0].reading; lean_into[3].why; open_questions[4]; gaps[10]). No measured.value moved — deck-audit re-run today still matches all sixteen in order — and no citation id, quote, bracket_delta, natural_cut, orphans_stack, stack id, Forge figure or log quote changed anywhere. The five untouched cuts and five untouched adds are byte-identical. Two nits carried forward from round 1, both unchanged and neither blocking: gaps[2] still lists 'median first attack global turn 12–13' among 'every Forge figure quoted' though no passage quotes it now, and it dates the records '2026-09-03 to 09-11' while the giada/baylen/abaddon n100 record is 2026-09-02."
+      },
+      {
+        "where": "verdict, axes[9].citations",
+        "status": "supported",
         "severity": "low",
-        "note": "'The fastest opener in the 99' for Ancient Tomb: enumerated, Sol Ring is at least its equal (turn-one three mana with a land; log 003's four-mana turn one was two lands + Sol Ring + Talisman, no Tomb). Rhetorical, and the cut's substance (colourless in a 54-black-pip deck, 2 damage into a 'raced' loss, floor stays 4) is supported; drop the superlative or scope it."
+        "note": "The verdict paragraph carries the withdrawal correctly — the one-card legs are 'a ceiling by construction, not a defect', colour is 'the cheap fix on paper' with the artifact/oracle disagreement flagged, and 'what costs games' is softened to 'what the losses point at'. Two wording nits the orchestrator may want tightened, neither a false claim: (a) 'the drain-and-sweeper layer is what the losses point at' is looser than axes[9], which correctly calls 004 and 005 answer-economy and sequencing losses and the drain/sweeper layer the measured GAP behind them — the five logged causes are wipe, wipe, stalled, combo, raced, and none is filed as a missing sweeper; (b) axes[9] still carries strategy:whos-the-beatdown.metagame-clock ('aggro must instead compress the game before the table's late game arrives'), which was the anchor for the deleted clock figure. It is not mis-cited — the section points to multiplayer.asymmetry and the each-opponent-drain argument the reading still makes, and cut_candidates[6] uses it squarely — but its best anchor on this axis is now the drain layer, not a clock the reading no longer discusses."
       },
       {
-        "where": "axes[*].measured.value",
+        "where": "engine.single_points_of_failure, open_questions[0], open_questions[1], archetype",
         "status": "supported",
         "severity": "none",
-        "note": "deck-audit re-run today: all 16 values match (36/43/3/-4/8/7/11/0/7/10/37/3/0.919/3/4/1); goldfish_metrics.json and mana_analysis.json current on 7be137d0; every axis target quote is the audit's verbatim. Readings checked against values: card-advantage 7 read as adequate via the audit's probe list (six real draw sources named, three self-replacers correctly excluded); interaction 11 enumerated card by card and matches the audit's list; sweepers 0 read against oracle text (Winds overload, Liliana −4/−9 — regex over the 99 finds no other mass effect); ramp 8 read adequate on measured goldfish figures; curve 13/14/19, one seven-drop, matches deck-facts; power drivers match bracket_report; only-triple-pip Bloodletter, the one recursion (Takenuma), no graveyard exile, no land targeting, 8 keyword-lifelink bodies and 3 lifelink token makers all enumerated and hold."
-      },
-      {
-        "where": "gaps[2], lean_into[0].evidence, cut_candidates[*] Forge figures",
-        "status": "supported",
-        "severity": "none",
-        "note": "Re-read from the records: standard-v3 n60 0.413 ci95 [0.283,0.557] decided 46/60, first attack median 12; n40 0.296 [0.159,0.485] 27/40, median 13; giada/baylen/abaddon n100 median 13; playgroup n40 0.105 [0.042,0.241] 38/40, purphoros-pingers 19 wins, eliminated our seat 12 of 21 (3+12+5+1), how = damage 21/21, median first attack 16. games_with_a_wipe_rate 0.267 [0.171,0.39] is analysis.wipe_recovery at table level (games 60, wipes 20); the seat-level block reads 0.6 [0.357,0.802] on 15 games — say 'table-level'. engine_casts by_card: Altar of Dementia cast 0 / discarded 1 in both standard-v3 runs; Viscera Seer and Bloodflow Connoisseur absent from both; Ashnod's Altar activated 0 in both; Stroke 11/60 and 4/40; Haunt 10/60 and 5/40; Vish Kal 0/60 discarded 1, absent n40. Every record's edgar seat is sha 7ce22fd6 = v1.1.0 and the diagnosis says so, with the AI-floor caveat on the sacrifice layer. Nit: the giada/baylen/abaddon n100 record is dated 2026-09-02, one day outside the '2026-09-03 to 09-11' range gaps[2] states."
-      },
-      {
-        "where": "citations (all 18 strategy sections)",
-        "status": "supported",
-        "severity": "none",
-        "note": "Every strategy:* id fetched with lookup-strategy; every quote is verbatim. deckbuilding.ratios is quoted together with its own 'counts of functions' caveat and is not used as a rule — ramp and card-advantage are both read adequate against under counts, which is what the section asks for. interaction-suite ('one or two max', 'cover the classes', 'Depth is a meta call'), wrath-math ('assume the wrath', 'buy resilience'), threat-density, asymmetry, answer-economy, redundancy-vs-tutors, commander-insurance, pivot-window, metagame-clock, power-level, curve, archetype-selection, card-advantage and resource-hedging are each used within the sense of the whole section. The lean_into[0] argument that the deck should CAST the wipe is the doctor's own inference beyond wrath-math's text; asymmetry's 'preferring asymmetric board wipes' is the closer citation and is already attached."
-      },
-      {
-        "where": "cut_candidates[*]",
-        "status": "supported",
-        "severity": "none",
-        "note": "None of the seven cuts appears in any of the 11 stack files (grep), so orphans_stack [] is correct for all. Two entries are painful (Tomb, Vish Kal) and the list does not dodge the job. Altar of Dementia's cost names the unmeasured Elenda/Vish Kal Altar line from the frame and the log-003 'one card is not a package' finding verbatim; Bloodflow's and Haunt's costs are real costs, not restatements of why; Haunt's 'a six-mana body, not a plan' is engine.json verbatim; Stroke as contested is right — it is the only unconditional catch-all in the eleven. Survivors' Encampment 'easy' is fair on the oracle text, but see add_candidates[3]: the artifact credits it as a source."
-      },
-      {
-        "where": "add_candidates[*]",
-        "status": "supported",
-        "severity": "none",
-        "note": "card-search --deck edgar-vampires returns all eight in BRW identity, Commander-legal, none a Game Changer, so bracket_delta 4→4 holds while the infinites stay. Oracle text read for each: Meathook drains on our deaths and gains on theirs (the 'new trigger for the existing loop' note is right and correctly 'needs a stack scenario'); Bastion's token is created so Procession/Mondrak/Elspeth apply, and 13.7%→19.9% is the hypergeometric for 2→3 of 99 in seven; Vanishing Verse monocolored only; Summit checks Swamp/Mountain and the deck holds eight typed copies (Swamp ×4, Blood Crypt, Godless Shrine, Savai Triome, Smoldering Marsh); Zulaport; Toxic Deluge; Rakdos Charm's 'Exile target player's graveyard' matches deck_audit's breadth regex so it does close interaction-breadth. The 'four sweeper-plus-drain cards' set (Meathook, One Ring, Final Act, Ruinous Rampage) reproduces under an oracle each-opponent regex over removal:sweeper in identity; by role the fourth is Gix's Command, not Rampage — state the query. Ranking Meathook first is justified by the oracle reading given."
-      },
-      {
-        "where": "engine.components[*], engine.single_points_of_failure[*]",
-        "status": "supported",
-        "severity": "none",
-        "note": "All eleven `have` lists byte-match goldfish_targets.json groups and all rates/mean turns match goldfish_metrics.json targets. SPOF[0] and SPOF[1] are the audit's own two single_points_of_failure with its closers verbatim (seven combo-route lines all 'needs a stack scenario'); SPOF[2] is correctly labelled a pair, not a single point. Stacks re-read: 004 and 006 final_state 'Deterministic table-kill, VERIFIED'; 003 eliminates the 14-life opponent on the seventh Sanctum trigger before blockers with seven attackers; 010 makes eight tokens under all six orders; 007 is PARTIALLY REFUTED (15-life opponent survives at 1) and Throne has left the 99 — the diagnosis cites 007 only as the source of Bloodletter's during-your-turn clause, which is what it proves."
-      },
-      {
-        "where": "verdict, archetype, open_questions[0], open_questions[1]",
-        "status": "supported",
-        "severity": "none",
-        "note": "The Conqueror question is stated accurately: both loops are checker-passed table kills (004, 006), both are the two two-card infinites deck-facts and bracket_report list, they alone force the floor to 4, and the diagnosis reports rather than cuts, routing 'can it be declined' to resolve-stack. Provenance caveat for the orchestrator: 'the pilot's direction says the lifegain infinite is out' rests on strategic_frame.json's 'quiver inventory, 2026-09-16', which I could not find outside the frame. The Purphoros question is stated accurately — the pilot asked for 'targeted disruption in white' (log 005 verbatim), the class is exile and the deck already holds two — subject to the devotion-five under-count in lean_into[3]."
-      },
-      {
-        "where": "log citations (001–005)",
-        "status": "supported",
-        "severity": "none",
-        "note": "Every quoted phrase found verbatim in log.jsonl or log_annotations.json: 002 'signature play', eleven deaths / 11 off every opponent, 'my mana was spent casting vampires'; 003 four mana on turn one, mill package = one card (Altar); 004 draw creatures fed by Sharpshooter, tutored two-card infinite; 005 'Never missed a land drop', 'Edgar off Ancient Tomb on turn five', 'natural predator for mid-range aggro', 'targeted disruption in white'. log_causes: wipe / wipe / stalled / combo / raced. Both 004 and 005 carry sha 7ce22fd6 = v1.1.0, two cards from the diagnosed list; 'the current shape' is a hedge the doctor should make explicit ('on v1.1.0, two swaps from this list')."
+        "note": "Re-verified unchanged and still accurate on the two items the pilot owns. The Conqueror decision is reported and not made: both loops are checker-passed table kills (stacks 004 and 006, final_state 'Deterministic table-kill, VERIFIED'), they are the two two-card infinites deck-facts and bracket_report list, they alone force the bracket floor to 4, the closers are all 'needs a stack scenario', and 'whether this component should be closed or cut is the pilot's decision' stands. The Purphoros question is stated accurately and is now better enumerated than in round 1. Provenance caveat repeated from round 1: 'the pilot's direction says the lifegain infinite is out' rests on strategic_frame.json's 'quiver inventory, 2026-09-16', which I could not locate as a source outside the frame."
       }
     ],
-    "iterations": 1
+    "iterations": 2
   }
 }
