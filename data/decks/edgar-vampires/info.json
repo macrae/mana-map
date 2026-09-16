@@ -14,15 +14,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 16,
     "of": 18,
     "stale": [
-      "frame",
       "tutors"
     ],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -4923,9 +4920,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight - but v1.1.0 stopped asking those bodies to connect and started asking them to DIE: nine cards convert them into cards, counters and life loss at every seat, and the two checker-passed kill routes are a doubled attack drain and a two-card lifegain loop, neither of which needs combat damage to land.",
-    "critic": null,
-    "lines": 14,
+    "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight; v1.1.0 kept the combat plan (a lord or anthem is drawn in 80.0% of games) and added a conversion layer beside it - seven sacrifice outlets feeding ten death payoffs (Blood Artist, Cruel Celebrant, Cordial Vampire, Elenda, Blade of the Bloodchief, Crossway Troublemakers, Liliana, Skullclamp, High-Society Hunter for nontoken deaths, and Reactor Raid) that turn a dying body into cards, counters or life loss - and the two checker-passed kill routes, a doubled attack drain and a two-card lifegain loop, need no combat damage to land.",
+    "critic": "pass",
+    "lines": 16,
     "verified_lines": 5
   },
   "diagnosis": {
@@ -4934,7 +4931,7 @@
     "stale": true
   },
   "audit": {
-    "archetype": "aggro",
+    "archetype": null,
     "under": [
       "colour-sources",
       "ramp",
@@ -4942,10 +4939,7 @@
       "sweepers",
       "interaction-breadth"
     ],
-    "over": [
-      "interaction",
-      "creatures"
-    ],
+    "over": [],
     "stale": []
   },
   "prescriptions": {
@@ -4956,23 +4950,28 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar), Crossway Troublemakers AND High-Society Hunter on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost, and does High-Society Hunter see ANY of them given its 'another nontoken creature' clause? Also: is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
+      "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar) and Crossway Troublemakers on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost? Is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter (an opponent had lost life earlier that turn); stack 011 records them entering WITHOUT it, because the only life loss that turn came from a trigger that had not yet resolved. What is the practical sequencing rule - does the pilot cast the Vampire before or after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast?",
+      "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter because an opponent had lost 3 life earlier that turn. What is the practical sequencing rule on this list - cast the Vampire after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast? (Stack 011 recorded the no-counter case, but its board turns on Mirkwood Bats, cut in v1.1.0, so it does not answer this for this 99.)",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 77.6% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
+      "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 72.3% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.2% assembled, Bloodthirsty Conqueror 7.6%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
+      "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.1% assembled, Bloodthirsty Conqueror 7.8%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "Board: Elenda, the Dusk Rose with three +1/+1 counters (a 4/4), Cordial Vampire, Blade of the Bloodchief equipped to Nighthawk Scavenger, Anointed Procession, Mondrak, Viscera Seer, and two eminence tokens. Sacrifice Elenda to Viscera Seer. (a) Is X read from Elenda's last known power, counters included, so four tokens before doubling? (b) Order the triggers: Cordial Vampire and the Blade both trigger on her death alongside her own - do the tokens she leaves get Cordial's counter if her trigger resolves first, and can the pilot choose that order? (c) Two doublers: 4 -> 8 -> 16 lifelink Vampires? (d) Does the Blade put two counters on the Scavenger for Elenda's death, and none for tokens created later?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -5118,8 +5117,7 @@
     }
   },
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "stale: frame, tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `elenda-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch edgar-vampires merge elenda-v1 --write`",
     "branch `fear-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source fear-v1`",
     "branch `march-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source march-v1`",
@@ -5127,8 +5125,7 @@
     "branch `newblood-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source newblood-v1`",
     "branch `sergeant-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source sergeant-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "engine.json's critic verdict is None — `/analyze-engine edgar-vampires`",
-    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×5"
+    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
