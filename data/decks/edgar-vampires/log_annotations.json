@@ -321,6 +321,91 @@
           "why_it_matters": "the pilot has asked for the meta note to go on the record, and the norm and the deck's own wincon stage are pointed at each other. Better to price that before the proposal is made at the table than after."
         }
       ]
+    },
+    "005": {
+      "summary": "Four-player pod at Alex's, 2026-09-15, the second logged game on the current list (decklist_sha256 7ce22fd6… matches the deck as it stands, so every card the note names is still in the 99). The pilot's Edgar game was a strong opener that held momentum and then lost to Tom's Purphoros deck: 'Turn one Viserys Seer off a swamp (Edgar token trigger)', 'Never missed a land drop', 'Elspeth out, then Edgar off Ancient Tomb on turn five', 'Early vampires + Edgar swinging grew the board; held momentum all game. Oliver said afterward he was always a turn behind.' The loss is filed as `raced` and the note gives the mechanism in two sentences — 'Went too all-in on Tom with Elspeth exposed — planeswalker got taken down. Purphoros ETB pings finished the job before lethal landed.' The pilot's own verdict on both games that night is that the tuning has moved 'from \"rebuild the deck\" to \"sequence and close better.\"' The note also carries a Gishath game and a two-game summary; only the Edgar game is read here. Two identifications are mine, not the pilot's: 'Viserys Seer' is read as Viscera Seer, the only Seer in the 99 and a Vampire Wizard with a sacrifice ability, which fits both 'Edgar token trigger' and 'used Seer's sac ability early'; 'Elspeth' is read as Elspeth, Storm Slayer, the only Elspeth in the 99.",
+      "opponents": [
+        {
+          "seat": "Tom",
+          "archetype": "mono-red goblin ETB",
+          "commander": null,
+          "evidence": "Purphoros mono-red goblin ETB (Tom)"
+        },
+        {
+          "seat": "Oliver",
+          "archetype": "mono-black vampires",
+          "commander": null,
+          "evidence": "Vito mono-black vampires (Oliver)"
+        },
+        {
+          "seat": "Alex",
+          "archetype": "counters",
+          "commander": null,
+          "evidence": "Azorius counters deck (Alex)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Viscera Seer",
+          "read": "as-expected",
+          "why": "the turn-one play, written as 'Viserys Seer' — 'Turn one Viserys Seer off a swamp (Edgar token trigger); used Seer's sac ability early.' Identification is mine: Viscera Seer is the only Seer in the 99."
+        },
+        {
+          "card": "Edgar Markov",
+          "read": "over",
+          "why": "'Edgar off Ancient Tomb on turn five' and then 'Early vampires + Edgar swinging grew the board; held momentum all game. Oliver said afterward he was always a turn behind.'"
+        },
+        {
+          "card": "Ancient Tomb",
+          "read": "as-expected",
+          "why": "the land that cast the commander: 'Edgar off Ancient Tomb on turn five'. The note does not say whether Edgar came down ahead of curve because of it."
+        },
+        {
+          "card": "Elspeth, Storm Slayer",
+          "read": "under",
+          "why": "resolved and then lost to the pilot's own line, not to the card: 'Elspeth out', then 'Went too all-in on Tom with Elspeth exposed — planeswalker got taken down.' The pilot's lesson is about protecting her, not replacing her. Identification is mine: she is the only Elspeth in the 99."
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Elspeth on the battlefield, board grown by early vampires and Edgar, Tom on Purphoros: swing all-in at Tom, or keep blockers back for the planeswalker and push a turn later. The pilot's retrospective is 'Went too all-in on Tom with Elspeth exposed — planeswalker got taken down' and his rule for next time is 'keep blockers up and protect the engine before pushing tempo.' The note does not give the exact board, life totals or what Tom had up.",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "the close: the note says 'Purphoros ETB pings finished the job before lethal landed' and the follow-up line says 'swing lethal when it's there' — which reads as a turn where lethal was available and was not taken, but the note does not say which turn or what was on board.",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "PROTECT THE ENGINE BEFORE PUSHING TEMPO — the pilot's lesson in his own words: 'Once a planeswalker is online, keep blockers up and protect the engine before pushing tempo.' The loss chain in the note runs Elspeth exposed -> planeswalker taken down -> Purphoros pings finished the job, and the pilot puts the first link on his own sequencing.",
+        "PURPHOROS-STYLE ETB DECKS ARE THE PREDATOR, AND THE PILOT WANTS WHITE TO ANSWER THEM — 'Purphoros is the natural predator for mid-range aggro — need targeted disruption in white (no blue in the deck).' The follow-up is a deck change: 'Edgar: add white disruption for Purphoros-style ETB decks.' Whether the current 99 already holds an answer is an open question below, not something the note settles.",
+        "THE OPENER IS NO LONGER THE PROBLEM — turn-one vampire with the eminence token, no missed land drop, Elspeth then Edgar on five, momentum all game, and the table felt it ('Oliver said afterward he was always a turn behind'). Read against entries 001-003, which lost on wipes and running out of steam, this is the second game on the current list where the deck reached a winning board and lost on the close.",
+        "SWING LETHAL WHEN IT'S THERE — the pilot's piloting follow-up: 'protect planeswalkers; swing lethal when it's there.' He frames both games' errors as 'fewer and more specific' and the tuning as having moved 'from \"rebuild the deck\" to \"sequence and close better.\"'"
+      ],
+      "engine_stages": [
+        "ignition",
+        "fodder",
+        "protection",
+        "output"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "What in the current 99 answers a Purphoros-style ETB deck, and does the deck need more of it in white? The pilot's ask is 'targeted disruption in white (no blue in the deck)' and 'add white disruption for Purphoros-style ETB decks.' engine.json's output stage lists five removal spells (Path to Exile, Winds of Abandon, Despark, Anguished Unmaking, Stroke of Midnight) and reads interaction OVER at 12 against a 5-6 target with interaction-breadth UNDER at 4 classes — so the question is which of those, if any, hits the permanent Tom's damage came from, and what a white swap would cost against the rest of the 99.",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot has named this as a deck change, not a piloting fix, and it is the first swap request logged on the v1.1.0 list. Two of five logged losses (004 to Tom's tutored combo, 005 to Tom's Purphoros) are to the same seat, so it is also a pod-specific question."
+        },
+        {
+          "question": "Does the deck's protection suite cover a planeswalker, and what does holding it cost the attack? engine.json's protection stage reads Boros Charm as indestructible on 'EVERY permanent you control' and Teferi's Protection as phasing the whole board out, with Flawless Maneuver and Akroma's Will naming creatures only. The pilot's lesson is 'keep blockers up and protect the engine before pushing tempo' — whether the cover is blockers, a held spell, or both is what a diagnosis would say.",
+          "settled_by": "diagnose",
+          "why_it_matters": "Elspeth is filed under `fodder` as one of the three token doublers (stack 010), so losing her is losing an engine piece, not just a card; the pilot's lesson only helps if the deck has a way to act on it."
+        },
+        {
+          "question": "How is mid-range aggro supposed to sequence against a Purphoros-style ETB deck that races on triggers rather than combat — attack it first, hold back, or answer the enchantment? The pilot's read is 'Purphoros is the natural predator for mid-range aggro', from one game.",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the note gives a lesson (protect, then push) and a swap request (white disruption) but no account of the matchup itself; if the strategy literature says the answer is racing or holding rather than removal, the swap request changes shape."
+        }
+      ]
     }
   }
 }

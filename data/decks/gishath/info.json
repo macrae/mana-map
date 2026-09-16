@@ -1783,17 +1783,19 @@
     "release": "v1.0.0"
   },
   "record": {
-    "games": 1,
+    "games": 2,
     "win": 1,
-    "loss": 0,
+    "loss": 1,
     "draw": 0,
-    "last_played": "2026-08-28",
+    "last_played": "2026-09-15",
     "first_played": "2026-08-28",
     "undebriefed": [],
     "causes": {
-      "001": "won"
+      "001": "won",
+      "002": "politics"
     },
     "cause_counts": {
+      "politics": 1,
       "won": 1
     }
   },
@@ -2177,6 +2179,26 @@
       "from": "log:001",
       "question": "Does the tracked 99 actually contain a pump effect that converts a Gishath connect into lethal commander damage, given that Enlarge — the card that finished this game — is not in the list this entry's decklist_sha256 points at?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "How often does this list have the green it needs on curve? The pilot asks for a green pip / green source audit after being stranded with double-green dinos, Selvala and Rishkar's Expertise despite a four-mana turn one. deck-facts reads green as the heaviest colour — 55 total pips across 39 cards — against 22 green land sources (26 with rocks and dorks) and a source target of 36; mana_analysis reads green on-curve at 0.639 lands-only and 0.742 with rocks and dorks. Does the goldfish's castability by turn for the GG cards agree with what the table showed, and what does a land pass buy?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:002",
+      "question": "Should the enrage package stay? The pilot reads it as idling — \"too few ping sources to activate it; better fit for Standard than Commander.\" engine.json's conversion stage carries the enrage residue as two cards, Trapjaw Tyrant and Wrathful Raptors, with 'Enrage engine drawn' at 56.7% assembled, 28.1% by turn 6, and calls it thin; the pilot's word 'package' may cover more than those two. What does the deck lose by cutting it, and what would the slots buy — including toward closing lethal?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:002",
+      "question": "With 8-9 Dinosaurs carrying counters and 30+ power on board, Alex at 18 and Oliver at 15, was an alpha strike split across both seats lethal on Oliver even after Alex saves himself — and what does Alex's Azorius counters deck need to hold to stop it? The note gives only the totals, not the individual bodies.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:002",
+      "question": "Is deliberately holding creatures in hand through a removal-heavy table's wipe waves — then deploying into the cleared board — a documented line against wrath-dense pods, and what does it cost a deck whose commander needs the board to do anything?",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -2223,7 +2245,7 @@
     "branch `cart-v1` needs 8 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
     "`mana-v1` is PROPOSED as v1.1.0 and waiting on cardboard — 11 card(s) (7 to buy, 4 to unsleeve) — `manamap pilot deck-branch gishath show mana-v1` has the pull list",
     "engine.json's critic verdict is None — `/analyze-engine gishath`",
-    "open questions routed: diagnose ×1, goldfish ×2, research-strategy ×1, resolve-stack ×9",
+    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×10",
     "4 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

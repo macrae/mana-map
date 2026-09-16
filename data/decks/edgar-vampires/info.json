@@ -4485,21 +4485,23 @@
     "release": "v1.1.0"
   },
   "record": {
-    "games": 4,
+    "games": 5,
     "win": 0,
-    "loss": 4,
+    "loss": 5,
     "draw": 0,
-    "last_played": "2026-09-01",
+    "last_played": "2026-09-15",
     "first_played": "2026-08-22",
     "undebriefed": [],
     "causes": {
       "001": "wipe",
       "002": "wipe",
       "003": "stalled",
-      "004": "combo"
+      "004": "combo",
+      "005": "raced"
     },
     "cause_counts": {
       "combo": 1,
+      "raced": 1,
       "stalled": 1,
       "wipe": 2
     }
@@ -4956,6 +4958,21 @@
       "from": "log:004",
       "question": "The pilot wants a pod norm against two-card infinite combos and tutorability. This deck's own two checker-passed kill routes are a two-card lifegain loop (Bloodthirsty Conqueror with Sanguine Bond or Vito, stacks 004 and 006) and a doubled attack drain, and Vampiric Tutor is in the 99. Would the norm he proposes disarm his own proven kills, and if so what closes games instead?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "What in the current 99 answers a Purphoros-style ETB deck, and does the deck need more of it in white? The pilot's ask is 'targeted disruption in white (no blue in the deck)' and 'add white disruption for Purphoros-style ETB decks.' engine.json's output stage lists five removal spells (Path to Exile, Winds of Abandon, Despark, Anguished Unmaking, Stroke of Midnight) and reads interaction OVER at 12 against a 5-6 target with interaction-breadth UNDER at 4 classes — so the question is which of those, if any, hits the permanent Tom's damage came from, and what a white swap would cost against the rest of the 99.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "Does the deck's protection suite cover a planeswalker, and what does holding it cost the attack? engine.json's protection stage reads Boros Charm as indestructible on 'EVERY permanent you control' and Teferi's Protection as phasing the whole board out, with Flawless Maneuver and Akroma's Will naming creatures only. The pilot's lesson is 'keep blockers up and protect the engine before pushing tempo' — whether the cover is blockers, a held spell, or both is what a diagnosis would say.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "How is mid-range aggro supposed to sequence against a Purphoros-style ETB deck that races on triggers rather than combat — attack it first, hold back, or answer the enchantment? The pilot's read is 'Purphoros is the natural predator for mid-range aggro', from one game.",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -5024,7 +5041,7 @@
     "branch `sergeant-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source sergeant-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "engine.json's critic verdict is None — `/analyze-engine edgar-vampires`",
-    "open questions routed: diagnose ×5, goldfish ×4, research-strategy ×4, resolve-stack ×5"
+    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
