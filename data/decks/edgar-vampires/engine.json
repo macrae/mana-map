@@ -1,533 +1,568 @@
 {
-  "slug": "edgar-vampires",
-  "note": "Rebuilt 2026-09-02 against v1.1.0 (decklist_sha256 7ce22fd6...) after the bloodline branch merged 12 swaps. The previous model was written against v1.0.0 and named 12 cards that are no longer in the 99. Every card name here was checked against deck-facts; every figure is quoted from `engine-facts`/`deck-audit` rather than computed.",
-  "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight - but v1.1.0 stopped asking those bodies to connect and started asking them to DIE: nine cards convert them into cards, counters and life loss at every seat, and the two checker-passed kill routes are a doubled attack drain and a two-card lifegain loop, neither of which needs combat damage to land.",
-  "stages": [
+ "slug": "edgar-vampires",
+ "note": "Rebuilt 2026-09-02 against v1.1.0 (decklist_sha256 7ce22fd6...) after the bloodline branch merged 12 swaps. The previous model was written against v1.0.0 and named 12 cards that are no longer in the 99. Every card name here was checked against deck-facts; every figure is quoted from `engine-facts`/`deck-audit` rather than computed.",
+ "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight - but v1.1.0 stopped asking those bodies to connect and started asking them to DIE, and v1.1.1 added two more cards that pay on the death: ten cards convert them into cards, counters and life loss at every seat, and the two checker-passed kill routes are a doubled attack drain and a two-card lifegain loop, neither of which needs combat damage to land.",
+ "stages": [
+  {
+   "stage": "mana",
+   "label": "THIRTY-EIGHT SOURCES FOR A DECK THAT CASTS FOUR SPELLS A TURN",
+   "what_it_does": "Thirty-two lands plus five rocks, and one body that turns into mana. The declared ramp component (Sol Ring, Arcane Signet, Talisman of Indulgence, Herald's Horn, Patchwork Banner) is drawn in 67.5% of games, mean turn 3.58, and deck-audit still reads the axis UNDER at 8 copies against a 10-12 target while colour-sources sits 4 short in the worst colour. That shortfall has one address: Bloodletter of Aclazotz is the ONLY cost in the 99 with three or more identical coloured pips ({1}{B}{B}{B}) - enumerated over every mana cost in cards.json - and it is half the deck's fastest verified kill. Master of Dark Rites files here rather than with the sacrifice outlets because its output is mana, but deck-facts flags the catch: its {B}{B}{B} is spend-only-on-Vampire-Cleric-Demon SPELLS, and an activated ability is not a spell, so it accelerates toward a commander without paying for what the commander then does. Bloodletter is a Vampire Demon, so it qualifies twice over. One land is also an engine piece: Midgar, City of Mako's Adventure half, Reactor Raid, sacrifices a creature to draw two.",
+   "cards": [
+    "Ancient Tomb",
+    "Battlefield Forge",
+    "Blazemire Verge",
+    "Bleachbone Verge",
+    "Blood Crypt",
+    "Bloodstained Mire",
+    "Castle Locthwain",
+    "Caves of Koilos",
+    "City of Brass",
+    "Command Tower",
+    "Concealed Courtyard",
+    "Godless Shrine",
+    "Haunted Ridge",
+    "Luxury Suite",
+    "Mana Confluence",
+    "Marsh Flats",
+    "Midgar, City of Mako // Reactor Raid",
+    "Minas Tirith",
+    "Nomad Outpost",
+    "Plains",
+    "Reflecting Pool",
+    "Savai Triome",
+    "Shattered Sanctum",
+    "Silent Clearing",
+    "Smoldering Marsh",
+    "Spectator Seating",
+    "Sulfurous Springs",
+    "Sundown Pass",
+    "Survivors' Encampment",
+    "Swamp",
+    "Takenuma, Abandoned Mire",
+    "Vault of Champions",
+    "Sol Ring",
+    "Arcane Signet",
+    "Talisman of Indulgence",
+    "Patchwork Banner",
+    "Herald's Horn",
+    "Master of Dark Rites"
+   ],
+   "evidence": [
     {
-      "stage": "mana",
-      "label": "THIRTY-EIGHT SOURCES FOR A DECK THAT CASTS FOUR SPELLS A TURN",
-      "what_it_does": "Thirty-two lands plus five rocks, and one body that turns into mana. The declared ramp component (Sol Ring, Arcane Signet, Talisman of Indulgence, Herald's Horn, Patchwork Banner) is drawn in 67.0% of games, mean turn 3.54, and deck-audit still reads the axis UNDER at 8 copies against a 10-12 target while colour-sources sits 4 short in the worst colour. That shortfall has one address: Bloodletter of Aclazotz is the ONLY cost in the 99 with three or more identical coloured pips ({1}{B}{B}{B}) - enumerated over every mana cost in cards.json - and it is half the deck's fastest verified kill. Master of Dark Rites files here rather than with the sacrifice outlets because its output is mana, but deck-facts flags the catch: its {B}{B}{B} is spend-only-on-Vampire-Cleric-Demon SPELLS, and an activated ability is not a spell, so it accelerates toward a commander without paying for what the commander then does. Bloodletter is a Vampire Demon, so it qualifies twice over. One land is also an engine piece: Midgar, City of Mako's Adventure half, Reactor Raid, sacrifices a creature to draw two.",
-      "cards": [
-        "Ancient Tomb",
-        "Battlefield Forge",
-        "Blazemire Verge",
-        "Bleachbone Verge",
-        "Blood Crypt",
-        "Bloodstained Mire",
-        "Castle Locthwain",
-        "Caves of Koilos",
-        "City of Brass",
-        "Command Tower",
-        "Concealed Courtyard",
-        "Godless Shrine",
-        "Haunted Ridge",
-        "Luxury Suite",
-        "Mana Confluence",
-        "Marsh Flats",
-        "Midgar, City of Mako // Reactor Raid",
-        "Minas Tirith",
-        "Nomad Outpost",
-        "Plains",
-        "Reflecting Pool",
-        "Savai Triome",
-        "Shattered Sanctum",
-        "Silent Clearing",
-        "Smoldering Marsh",
-        "Spectator Seating",
-        "Sulfurous Springs",
-        "Sundown Pass",
-        "Survivors' Encampment",
-        "Swamp",
-        "Takenuma, Abandoned Mire",
-        "Vault of Champions",
-        "Sol Ring",
-        "Arcane Signet",
-        "Talisman of Indulgence",
-        "Patchwork Banner",
-        "Herald's Horn",
-        "Master of Dark Rites"
-      ],
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "full",
-          "note": "all 32 lands sit in city-1 ('Mana'), the only city that is one stage and nothing else"
-        },
-        {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "partial",
-          "note": "4 of the 5 rocks in city-4 ('Ramp'); Herald's Horn files in city-6 and Master of Dark Rites in city-5"
-        },
-        {
-          "kind": "role",
-          "id": "ramp:rock",
-          "note": "6 copies by role; deck-audit reads the ramp axis UNDER at 8 against a 10-12 target"
-        }
-      ]
+     "kind": "city",
+     "id": "city-1",
+     "agreement": "full",
+     "note": "all 32 lands sit in city-1 ('Mana'), the only city that is one stage and nothing else"
     },
     {
-      "stage": "ignition",
-      "label": "CAST A CHEAP VAMPIRE AND A BODY APPEARS - THE ONLY THING THAT HAS TO HAPPEN FIRST",
-      "what_it_does": "Nothing in this deck happens until a Vampire spell is CAST. Edgar's eminence fires from the command zone - checker-passed twice, in stacks 002 and 010, which read the intervening-'if' again on resolution and confirm the ability functions from the zone it names - so the ignition half the pilot owns is free and undrawable in 100% of games. The half that must be found is the spell: a castable Vampire is drawn in 95.1% of games at mean turn 2.19, the healthiest figure in the brief, and it is the leg every checker-passed kill proof opens on. The six cards beside Edgar are the members whose contribution is dominated by being that spell - four are printed keywords and nothing else, Knight of the Ebon Legion adds a pump activation and Voldaren Epicure an entry ping plus a Blood token - so they can be cast alongside the plan rather than instead of it. Nighthawk Scavenger is the same card at {1}{B}{B} and sits above the declaration's mana-value-2 line. Voldaren Epicure adds one damage to each opponent and a Blood token on the way past. The point of the stage is not that these bodies are good; it is that casting one of them is what turns Edgar on, and everything downstream is priced off that 95.1%.",
-      "cards": [
-        "Edgar Markov",
-        "Gifted Aetherborn",
-        "Vampire Cutthroat",
-        "Vampire of the Dire Moon",
-        "Knight of the Ebon Legion",
-        "Voldaren Epicure",
-        "Nighthawk Scavenger"
-      ],
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "eminence resolves from the command zone; one {B}{B} cast yields five new bodies"
-        },
-        {
-          "kind": "stack",
-          "id": "010",
-          "note": "re-proves the command-zone question against a third doubler, with Edgar never cast"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "Edgar, Gifted Aetherborn, Vampire of the Dire Moon and Nighthawk Scavenger here; Vampire Cutthroat and Knight of the Ebon Legion in city-2, Voldaren Epicure in city-3"
-        }
-      ],
-      "single_point_of_failure": "Edgar Markov"
+     "kind": "city",
+     "id": "city-5",
+     "agreement": "partial",
+     "note": "4 of the 5 rocks in city-5 ('Ramp'); Herald's Horn files in city-6 ('Insurance') and Master of Dark Rites in city-3 ('Interaction'), with the sacrifice outlets"
     },
     {
-      "stage": "fodder",
-      "label": "THE BODIES ARE THE RESOURCE, AND THREE CARDS DECIDE HOW MANY THERE ARE",
-      "what_it_does": "The thing this engine converts is 1/1 Vampire tokens, and the deck holds no card that IS one - so the stage's members are the cards that decide the count. Three replacement doublers stack multiplicatively on the single eminence event: stack 002 records Anointed Procession + Mondrak taking one token to four (1->2->4), and stack 010 records all three taking it to eight (1->2->4->8), order-independent because each doubler gets exactly one opportunity at the event and any modified event replacing it. The declared multiplier component is drawn in 67.3% of games, mean turn 3.61. Five of these seven also make bodies without Edgar - Bloodline Keeper taps for a 2/2 flier, Mavren Fein mints on every nontoken Vampire attack, Charismatic Conqueror taxes opponents' untapped entries, Elspeth's +1 makes a Soldier, and Legion's Landing arrives as a token and flips into a land that makes more. Read the 400-game Forge result before pricing this stage as a win: on a go-wide refactor, combat damage to players fell 29.07 to 18.20 because 1/1 tokens do not connect. Eight tokens is not eight damage. It is eight things to convert.",
-      "cards": [
-        "Anointed Procession",
-        "Mondrak, Glory Dominus",
-        "Elspeth, Storm Slayer",
-        "Mavren Fein, Dusk Apostle",
-        "Charismatic Conqueror",
-        "Bloodline Keeper // Lord of Lineage",
-        "Legion's Landing // Adanto, the First Fort"
-      ],
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "two doublers on one eminence event: four tokens, plus the cast body, five new bodies"
-        },
-        {
-          "kind": "stack",
-          "id": "010",
-          "note": "three doublers: eight tokens from one trigger, identical for all six application orders"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "five here; Mondrak files in city-6 and Legion's Landing in city-4, so the three doublers verified together in 010 have three addresses"
-        }
-      ]
-    },
-    {
-      "stage": "fuel",
-      "label": "THE THING v1.1.0 WAS BUILT TO FIX",
-      "what_it_does": "Four logged games say the same thing: the deck ran out of steam on card draw. This stage is the answer bloodline bought. Ten of the eleven are draw; the declared component is nine cards and reads 84.1% assembled, mean turn 2.68, second only to the castable-Vampire leg among the eleven declared components - and yet deck-audit still reads card-advantage UNDER at 7 copies against a 10 target, because the taxonomy cannot see Bloodtracker, Champion of Dusk, Preacher of the Schism, Castle Locthwain, Minas Tirith or Midgar's Adventure half, among others it names. Five of these turn a body LEAVING THE BATTLEFIELD into cards rather than reading off casts - Crossway Troublemakers (2 life per Vampire death), Liliana (every creature death), Skullclamp (two cards per equipped body), Bloodtracker (a card per counter when it leaves), and High-Society Hunter, whose clause is 'another NONTOKEN creature' and therefore never sees an eminence token. That is the shape the pilot's 2026-09-01 game demonstrated: an opponent's Goblin Sharpshooter pinging the token board fed the draw rather than emptying it. Vampiric Tutor is the eleventh, and it is not card advantage - it is the reason a 4.2% component reads 9.6% assisted and a 7.6% one reads 14.6%.",
-      "cards": [
-        "Bloodtracker",
-        "Caretaker's Talent",
-        "Champion of Dusk",
-        "Crossway Troublemakers",
-        "High-Society Hunter",
-        "Liliana, Dreadhorde General",
-        "Night's Whisper",
-        "Preacher of the Schism",
-        "Skullclamp",
-        "Welcoming Vampire",
-        "Vampiric Tutor"
-      ],
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-3",
-          "agreement": "partial",
-          "note": "8 of 11 in city-3 ('Card Flow'); Bloodtracker and High-Society Hunter in city-2, Vampiric Tutor in city-0"
-        },
-        {
-          "kind": "role",
-          "id": "draw:engine",
-          "note": "6 copies by role, and deck-audit names six more cards whose oracle text shows the function the taxonomy did not classify"
-        }
-      ]
-    },
-    {
-      "stage": "conversion",
-      "label": "NINE OUTLETS, AND THE ONE THAT MAKES THEM PAY",
-      "what_it_does": "This is the component bloodline actually added, and until 2026-09-01 nothing in the declaration described it - the goldfish's sacrifice cap only started firing (0.0 -> 0.003) once the target existed. Seven of these are free outlets: no mana, no tap, sacrifice a creature and get something. Drawn in 77.6% of games, mean turn 3.04. They are the machine that turns a stage of disposable bodies into cards (Skullclamp, Crossway Troublemakers), drain (Blood Artist, Cruel Celebrant), mana (Ashnod's Altar), and counters. Cordial Vampire files here rather than with the lords because it is the piece that answers the 400-game finding: every death puts a +1/+1 counter on EACH Vampire, which is how a board of 1/1s that cannot connect becomes a board of 2/2s and 3/3s that can. Stack 002 is explicit that it never triggers on a board where nothing dies - the mint alone is not the engine, the mint plus an outlet is. One warning that is about the bench and not the deck: Forge's evaluator will not pay a cost it cannot price, and Ashnod's Altar activated 0 times in 59 castings under both AI profiles - a bench measurement on a sacrifice deck, not one taken on this list. A Forge figure on this stage is a floor, not a measurement.",
-      "cards": [
-        "Altar of Dementia",
-        "Ashnod's Altar",
-        "Bloodflow Connoisseur",
-        "Immersturm Predator",
-        "Indulgent Aristocrat",
-        "Viscera Seer",
-        "Vish Kal, Blood Arbiter",
-        "Yahenni, Undying Partisan",
-        "Cordial Vampire"
-      ],
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-5",
-          "agreement": "partial",
-          "note": "8 of 9 in city-5 ('Insurance'); the map reads sacrifice outlets as protection tricks, and the ninth card - Cordial Vampire - is the one that makes them pay"
-        },
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "records in the negative that Cordial Vampire does not trigger when nothing dies, which is what makes the outlets load-bearing"
-        },
-        {
-          "kind": "role",
-          "id": "sac-outlet",
-          "note": "9 copies by role, of which 8 are here and Master of Dark Rites is filed under mana"
-        }
-      ]
-    },
-    {
-      "stage": "output",
-      "label": "EVERY SEAT, EVERY TURN, WITHOUT AN ATTACK CONNECTING",
-      "what_it_does": "What the converted bodies actually buy. Two death drains bill on every creature that dies - Blood Artist one target player, Cruel Celebrant EACH opponent, a difference of three-to-one in a pod and the reason they are not interchangeable; the pair is drawn in 37.2% of games and is a two-card component, the thinnest declared here apart from the two one-card kill pieces. Two lifegain converters turn the deck's heavy lifelink into life loss: Vito and Sanguine Bond share the same trigger word for word. Five lords and counter-payoffs raise what a body is worth in combat - a lord or anthem is drawn in 80.2% of games, mean turn 3.14 - and five removal spells answer what the drain cannot. deck-audit reads interaction OVER at 12 copies against a 5-6 target and interaction-breadth UNDER at 4 classes, with land the class it detects no answer for; that is an oracle-text heuristic and a floor, not a verdict. The stage's job is that none of it needs combat damage to land, which is exactly what the 400-game run said this deck could not rely on.",
-      "cards": [
-        "Blood Artist",
-        "Cruel Celebrant",
-        "Vito, Thorn of the Dusk Rose",
-        "Sanguine Bond",
-        "Legion Lieutenant",
-        "Stromkirk Captain",
-        "Captivating Vampire",
-        "Vampire Socialite",
-        "Drana, Liberator of Malakir",
-        "Path to Exile",
-        "Winds of Abandon",
-        "Despark",
-        "Anguished Unmaking",
-        "Stroke of Midnight"
-      ],
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "8 here (the lords and the removal), 4 in city-3 (the drains), 2 in city-2"
-        },
-        {
-          "kind": "role",
-          "id": "wincon:drain",
-          "note": "6 copies by role, 4 of which are in this stage and 2 in wincon"
-        }
-      ]
-    },
-    {
-      "stage": "protection",
-      "label": "FIVE CARDS HELD, AND FOUR OF THEM ARE FREE OR NEARLY",
-      "what_it_does": "Held, not cast. Deflecting Swat and Flawless Maneuver cost nothing while a commander is on the board or in the zone, and Edgar is in one of those places in every game; Boros Charm is two mana for indestructible on EVERY permanent you control and Teferi's Protection phases the whole board out - reading all five, those are the two that reach the enchantment doublers, since Flawless Maneuver and Akroma's Will name creatures only. Teferi's is also the answer to a sweeper this deck has no other reply to: deck-audit reads sweepers at 0 copies. Akroma's Will is the exception: with a commander it is both modes, which is a kill spell as often as it is insurance. The component is drawn in 68.3% of games, mean turn 3.55, and deck-audit reads protection OVER at 8 copies against a 5-7 target, counting self-protecting bodies like Mondrak and Yahenni that are filed in other stages here.",
-      "cards": [
-        "Teferi's Protection",
-        "Flawless Maneuver",
-        "Boros Charm",
-        "Akroma's Will",
-        "Deflecting Swat"
-      ],
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-6",
-          "agreement": "partial",
-          "note": "4 of 5 in city-6 ('Interaction'); Deflecting Swat files in city-0"
-        },
-        {
-          "kind": "role",
-          "id": "protection:self",
-          "note": "7 copies by role - the two beyond this stage are bodies that protect only themselves"
-        }
-      ]
-    },
-    {
-      "stage": "wincon",
-      "label": "TWO CHECKER-PASSED ROUTES, AND BOTH REST ON ONE CARD EACH",
-      "what_it_does": "Route one is combat-adjacent and does not need damage to land. Stack 003: seven attacking Vampires give seven Sanctum Seeker triggers; Bloodletter doubles each opponent's loss independently because it is your turn, so each seat loses 14, and the opponent at 14 is eliminated by state-based actions BEFORE blockers are declared. Your own lifegain is not doubled - Bloodletter replaces only opponents' loss. Route two is the infinite: Bloodthirsty Conqueror with Vito (stack 004) or Sanguine Bond (stack 006), both checker-passed as deterministic, shortcut-legal, zero-additional-mana table kills. The honest part is the price. Both routes are single points of failure that deck-audit has already priced: Bloodletter is 7.1% of opening sevens and 4.2% assembled (9.6% with the tutor), Conqueror 7.1% and 7.6% assembled (14.6% assisted). The Haunt of Hightower sits here as the combat close - a 4/4 flying lifelink that grows on every card entering an opponent's graveyard - and it is a six-mana body, not a plan. Two one-card lines and a fatty is a ceiling, and stating it is not the same as calling it a defect.",
-      "cards": [
-        "Bloodletter of Aclazotz",
-        "Bloodthirsty Conqueror",
-        "Sanctum Seeker",
-        "The Haunt of Hightower"
-      ],
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "003",
-          "note": "7 triggers x 2 = 14 per seat on attack declaration; one opponent eliminated before blockers"
-        },
-        {
-          "kind": "stack",
-          "id": "004",
-          "note": "Conqueror + Vito verified as a true two-card infinite and a full table kill"
-        },
-        {
-          "kind": "stack",
-          "id": "006",
-          "note": "Conqueror + Sanguine Bond, the same loop with the enchantment half"
-        },
-        {
-          "kind": "combo",
-          "id": "Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
-          "note": "contained, infinite, mana_value_needed 0; one of only 2 contained lines in the deck"
-        },
-        {
-          "kind": "city",
-          "id": "city-3",
-          "agreement": "partial",
-          "note": "3 of 4 in city-3 ('Card Flow'), the city the map names for draw - every checker-passed kill in this deck files with the draw engines"
-        }
-      ],
-      "single_point_of_failure": "Bloodthirsty Conqueror"
+     "kind": "role",
+     "id": "ramp:rock",
+     "note": "6 copies by role; deck-audit reads the ramp axis UNDER at 8 against a 10-12 target"
     }
-  ],
-  "lines": [
+   ]
+  },
+  {
+   "stage": "ignition",
+   "label": "CAST A CHEAP VAMPIRE AND A BODY APPEARS - THE ONLY THING THAT HAS TO HAPPEN FIRST",
+   "what_it_does": "Nothing in this deck happens until a Vampire spell is CAST. Edgar's eminence fires from the command zone - checker-passed twice, in stacks 002 and 010, which read the intervening-'if' again on resolution and confirm the ability functions from the zone it names - so the ignition half the pilot owns is free and undrawable in 100% of games. The half that must be found is the spell: a castable Vampire is drawn in 95.0% of games at mean turn 2.22, the healthiest figure in the brief, and it is the leg every checker-passed kill proof opens on. The six cards beside Edgar are the members whose contribution is dominated by being that spell - four are printed keywords and nothing else, Knight of the Ebon Legion adds a pump activation and Voldaren Epicure an entry ping plus a Blood token - so they can be cast alongside the plan rather than instead of it. Nighthawk Scavenger is the same card at {1}{B}{B} and sits above the declaration's mana-value-2 line. Voldaren Epicure adds one damage to each opponent and a Blood token on the way past. The point of the stage is not that these bodies are good; it is that casting one of them is what turns Edgar on, and everything downstream is priced off that 95.0%.",
+   "cards": [
+    "Edgar Markov",
+    "Gifted Aetherborn",
+    "Vampire Cutthroat",
+    "Vampire of the Dire Moon",
+    "Knight of the Ebon Legion",
+    "Voldaren Epicure",
+    "Nighthawk Scavenger"
+   ],
+   "evidence": [
     {
-      "from": "ignition",
-      "to": "fodder",
-      "via": [
-        "Gifted Aetherborn",
-        "Anointed Procession",
-        "Mondrak, Glory Dominus"
-      ],
-      "verified_by": "002",
-      "note": "One {B}{B} Vampire cast, two doublers: the single eminence event becomes four 1/1 tokens (1->2->4, order chosen by you and identical either way) and the Aetherborn resolves as a fifth body. Eminence does not re-trigger on the tokens - they are created, not cast."
+     "kind": "stack",
+     "id": "002",
+     "note": "eminence resolves from the command zone; one {B}{B} cast yields five new bodies"
     },
     {
-      "from": "ignition",
-      "to": "fodder",
-      "via": [
-        "Gifted Aetherborn",
-        "Elspeth, Storm Slayer",
-        "Anointed Procession",
-        "Mondrak, Glory Dominus"
-      ],
-      "verified_by": "010",
-      "note": "The same cast with the third doubler: eight tokens, 1->2->4->8, identical for all six application orders, and Elspeth doubles a trigger resolving from the command zone off a commander that has never been on the battlefield."
+     "kind": "stack",
+     "id": "010",
+     "note": "re-proves the command-zone question against a third doubler, with Edgar never cast"
     },
     {
-      "from": "ignition",
-      "to": "wincon",
-      "via": [
-        "Edgar Markov",
-        "Sanctum Seeker",
-        "Bloodletter of Aclazotz"
-      ],
-      "verified_by": "003",
-      "note": "The fastest verified kill. Seven Vampires attack, four of them eminence tokens: 7 Sanctum Seeker triggers, each drain doubled by Bloodletter to 2 per opponent = 14 per seat, and the 14-life seat dies on the seventh trigger before blockers. Edgar's own attack trigger adds counters and changes nothing about the drain."
-    },
-    {
-      "from": "output",
-      "to": "wincon",
-      "via": [
-        "Vito, Thorn of the Dusk Rose",
-        "Bloodthirsty Conqueror"
-      ],
-      "verified_by": "004",
-      "note": "Verified two-card infinite and a full table kill at zero additional mana: Conqueror's trigger matches Exquisite Blood word for word, the '(Damage causes loss of life.)' parenthetical is reminder text and not a damage requirement, and the loop survives an opponent dying mid-iteration."
-    },
-    {
-      "from": "output",
-      "to": "wincon",
-      "via": [
-        "Sanguine Bond",
-        "Bloodthirsty Conqueror"
-      ],
-      "verified_by": "006",
-      "note": "The same loop with the enchantment half - Bond's trigger is word-for-word Vito's. Two contained lines, one shared body: this is why Conqueror is a priced single point of failure rather than redundancy."
-    },
-    {
-      "from": "mana",
-      "to": "wincon",
-      "via": [
-        "Master of Dark Rites",
-        "Bloodletter of Aclazotz"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). Bloodletter is the only cost in the 99 with three identical coloured pips ({1}{B}{B}{B}), enumerated over every mana cost in cards.json, and Master of Dark Rites adds exactly {B}{B}{B} spendable on Vampire, Cleric and Demon SPELLS - Bloodletter is a Vampire Demon. Sweeping every 'Add' clause in the 99, it is the only source that produces three mana at once (Nomad Outpost and Savai Triome add one of three colours, not three), and it charges a body to do it."
-    },
-    {
-      "from": "fodder",
-      "to": "conversion",
-      "via": [
-        "Anointed Procession",
-        "Ashnod's Altar",
-        "Viscera Seer"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). The doubled tokens are what the free outlets eat; the multiplier component is drawn 67.3% and the outlet component 77.6%, but NOTHING in the declaration measures the pair, which is the whole of bloodline's engine. See proposed_goldfish_edits."
-    },
-    {
-      "from": "conversion",
-      "to": "fuel",
-      "via": [
-        "Viscera Seer",
-        "Crossway Troublemakers",
-        "Skullclamp"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). Sacrifice a token, draw a card: Crossway Troublemakers pays 2 life per Vampire death, Skullclamp two cards per equipped body. This is the loop the pilot's 2026-09-01 game ran when an opponent's pinger fed the draw instead of emptying the board. High-Society Hunter does NOT see this - its clause is 'another nontoken creature'."
-    },
-    {
-      "from": "conversion",
-      "to": "output",
-      "via": [
-        "Ashnod's Altar",
-        "Blood Artist",
-        "Cruel Celebrant"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). Each converted body bills the table on the way out. The asymmetry matters and is not interchangeable: Blood Artist drains one target player, Cruel Celebrant each opponent - three-to-one in a pod - and the pair is a two-card component at 37.2%."
-    },
-    {
-      "from": "conversion",
-      "to": "output",
-      "via": [
-        "Cordial Vampire",
-        "Vampire Socialite",
-        "Legion Lieutenant"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). The answer to the 400-game finding. Every death puts a +1/+1 counter on each Vampire; the lords add a static +1/+1 each. A 1/1 that does not connect becomes a 3/3 that does, and the deck buys that with deaths rather than with more tokens."
-    },
-    {
-      "from": "fodder",
-      "to": "fuel",
-      "via": [
-        "Anointed Procession",
-        "Caretaker's Talent",
-        "Welcoming Vampire"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). Token entries draw cards - but read the caps before pricing it: both abilities say 'This ability triggers only once each turn', so eight tokens from stack 010's board draw two cards, not sixteen."
-    },
-    {
-      "from": "fuel",
-      "to": "wincon",
-      "via": [
-        "Vampiric Tutor",
-        "Bloodthirsty Conqueror",
-        "Bloodletter of Aclazotz"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). The single tutor is the whole difference between the unassisted and assisted figures on both one-card routes: Conqueror 7.6% -> 14.6%, Bloodletter 4.2% -> 9.6% (deck-audit)."
-    },
-    {
-      "from": "protection",
-      "to": "fodder",
-      "via": [
-        "Teferi's Protection",
-        "Boros Charm",
-        "Mondrak, Glory Dominus"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). The doublers are enchantments and a legend, so the creature-only insurance does not cover them: of the five protection cards only Teferi's Protection (phases out all permanents) and Boros Charm (indestructible on every permanent) reach Anointed Procession and Mondrak. Mondrak's own indestructible counter costs two other permanents."
-    },
-    {
-      "from": "mana",
-      "to": "ignition",
-      "via": [
-        "Herald's Horn",
-        "Gifted Aetherborn",
-        "Sol Ring"
-      ],
-      "verified_by": null,
-      "note": "READING (no stack). Ignition is priced in mana, not in cards: a castable Vampire is drawn in 95.1% of games at mean turn 2.19, so the binding constraint on how many eminence triggers a turn buys is how many spells the mana casts. Herald's Horn cuts each by {1} and digs for the next."
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "Gifted Aetherborn, Vampire of the Dire Moon and Nighthawk Scavenger in city-0 ('Bodies'); Edgar, Vampire Cutthroat and Knight of the Ebon Legion in city-4 ('Payoffs'); Voldaren Epicure in city-2 ('Card Flow'). The re-clustering that came with v1.1.1 moved Edgar out of 'Bodies' and in with the counter payoffs"
     }
-  ],
-  "map_disagreements": [
+   ],
+   "single_point_of_failure": "Edgar Markov"
+  },
+  {
+   "stage": "fodder",
+   "label": "THE BODIES ARE THE RESOURCE, AND THREE CARDS DECIDE HOW MANY THERE ARE",
+   "what_it_does": "The thing this engine converts is 1/1 Vampire tokens, and the deck holds no card that IS one - so the stage's members are the cards that decide the count. Three replacement doublers stack multiplicatively on the single eminence event: stack 002 records Anointed Procession + Mondrak taking one token to four (1->2->4), and stack 010 records all three taking it to eight (1->2->4->8), order-independent because each doubler gets exactly one opportunity at the event and any modified event replacing it. The declared multiplier component is drawn in 67.9% of games, mean turn 3.60. Five of these seven also make bodies without Edgar - Bloodline Keeper taps for a 2/2 flier, Mavren Fein mints on every nontoken Vampire attack, Charismatic Conqueror taxes opponents' untapped entries, Elspeth's +1 makes a Soldier, and Legion's Landing arrives as a token and flips into a land that makes more. Read the 400-game Forge result before pricing this stage as a win: on a go-wide refactor, combat damage to players fell 29.07 to 18.20 because 1/1 tokens do not connect. Eight tokens is not eight damage. It is eight things to convert.",
+   "cards": [
+    "Anointed Procession",
+    "Mondrak, Glory Dominus",
+    "Elspeth, Storm Slayer",
+    "Mavren Fein, Dusk Apostle",
+    "Charismatic Conqueror",
+    "Bloodline Keeper // Lord of Lineage",
+    "Legion's Landing // Adanto, the First Fort"
+   ],
+   "evidence": [
     {
-      "component": "A castable Vampire drawn - the eminence trigger every kill proof opens on",
-      "cities": [
-        "city-2 'Finishers' (4)",
-        "city-0 'Bodies' (4)",
-        "city-3 'Card Flow' (3)",
-        "city-5 'Insurance' (2)"
-      ],
-      "why": "The single most scattered component in the brief - 13 cards, 4 cities - and the reason is that it is the only component defined by a COST and a TYPE LINE rather than by an effect. The map groups on what the rest of the card says, so Blood Artist files with the drains, Indulgent Aristocrat with the sacrifice outlets, Charismatic Conqueror with the token makers, and the plain biters with the finishers. The leg that 95.1% of games open on has four addresses and no name. My ignition stage is deliberately narrower - the six members whose whole text is keywords, plus Edgar - which is a reading the map cannot express in either direction."
+     "kind": "stack",
+     "id": "002",
+     "note": "two doublers on one eminence event: four tokens, plus the cast body, five new bodies"
     },
     {
-      "component": "wincon (this model's stage, not a declared component)",
-      "cities": [
-        "city-3 'Card Flow' (3 of 4)"
-      ],
-      "why": "The payload half of every checker-passed kill in this deck files in the city the map names for card draw. Bloodletter of Aclazotz, Sanctum Seeker, Bloodthirsty Conqueror and both loop halves (Vito, Sanguine Bond) sit in city-3 alongside Skullclamp, Night's Whisper, Champion of Dusk and Caretaker's Talent; only Edgar himself, who supplies four of stack 003's seven attackers, files elsewhere, in city-0 'Bodies'. The cause is sentence shape: 'whenever a creature dies, draw a card' and 'whenever a creature dies, each opponent loses 1 life' are the same clause with a different payload, and a cluster built from card text cannot separate refuel from kill. That collision is worth stating because it is also the deck's actual reading - the same deaths do both jobs - but a reader looking at the map will see a draw neighbourhood where the deck keeps its win."
+     "kind": "stack",
+     "id": "010",
+     "note": "three doublers: eight tokens from one trigger, identical for all six application orders"
     },
     {
-      "component": "A free sacrifice outlet drawn (bloodline's new engine)",
-      "cities": [
-        "city-5 'Insurance' (7 of 7)"
-      ],
-      "why": "Five of the thirteen scatter rows are fully coherent and this is the largest of them - seven cards, one city - yet the name the map gives that city is wrong for what these cards do here. The seven outlets cluster because Yahenni, Immersturm Predator and Mondrak all read as self-protection tricks - sacrifice to gain indestructible - so the map calls the region Insurance. In v1.1.0 they are the CONVERSION layer, and the card that makes them pay, Cordial Vampire, is filed two cities away in 'Finishers'. Agreement on membership, disagreement on job."
-    },
-    {
-      "component": "A token multiplier or extra token-maker drawn",
-      "cities": [
-        "city-0 'Bodies' (4)",
-        "city-6 'Interaction' (1)"
-      ],
-      "why": "The three doublers that stack 010 proves multiply together on one event have three different addresses: Anointed Procession and Elspeth, Storm Slayer in city-0, Mondrak in city-6 because its loud clause is the indestructible-counter activation, and Legion's Landing in city-4 'Ramp' because its back face is a land. A pilot reading the map would not learn that these are the same effect printed three times."
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "five here; Mondrak files in city-6 ('Insurance') and Legion's Landing in city-5 ('Ramp'), so the three doublers verified together in 010 have two addresses and the stage's seven members three"
     }
-  ],
-  "unassigned": [
+   ]
+  },
+  {
+   "stage": "fuel",
+   "label": "THE THING v1.1.0 WAS BUILT TO FIX",
+   "what_it_does": "The three games logged on v1.0.0 (001-003) say the same thing: the deck ran out of steam on card draw; the two logged on the current list (004, 005) report the draw holding and the loss moving to the close. This stage is the answer bloodline bought. Ten of the eleven are draw; the declared component is nine cards and reads 83.5% assembled, mean turn 2.62, second only to the castable-Vampire leg among the eleven declared components - and yet deck-audit still reads card-advantage UNDER at 7 copies against a 10 target, because the taxonomy cannot see Bloodtracker, Champion of Dusk, Preacher of the Schism, Castle Locthwain, Minas Tirith or Midgar's Adventure half, among others it names. Five of these turn a body LEAVING THE BATTLEFIELD into cards rather than reading off casts - Crossway Troublemakers (2 life per Vampire death), Liliana (every creature death), Skullclamp (two cards per equipped body), Bloodtracker (a card per counter when it leaves), and High-Society Hunter, whose clause is 'another NONTOKEN creature' and therefore never sees an eminence token. That is the shape the pilot's 2026-09-01 game demonstrated: an opponent's Goblin Sharpshooter pinging the token board fed the draw rather than emptying it. Vampiric Tutor is the eleventh, and it is not card advantage - it is the reason a 4.1% component reads 9.4% assisted and a 7.8% one reads 15.1%.",
+   "cards": [
+    "Bloodtracker",
+    "Caretaker's Talent",
+    "Champion of Dusk",
+    "Crossway Troublemakers",
+    "High-Society Hunter",
+    "Liliana, Dreadhorde General",
+    "Night's Whisper",
+    "Preacher of the Schism",
+    "Skullclamp",
+    "Welcoming Vampire",
+    "Vampiric Tutor"
+   ],
+   "evidence": [
     {
-      "card": "Unbounded Potential",
-      "why": "A {1}{W} instant that puts +1/+1 counters on up to two creatures or proliferates. It touches the counters subtheme - Cordial Vampire, Indulgent Aristocrat, Vish Kal, Bloodflow Connoisseur, Mondrak's indestructible counter, Elspeth's loyalty - but no stage's job depends on it and it appears in no declared component, no verified pairing and no contained combo line. It is the one card in the 99 the engine model cannot give work to, and saying so is more useful than inventing a stage for it."
+     "kind": "city",
+     "id": "city-2",
+     "agreement": "partial",
+     "note": "8 of 11 in city-2 ('Card Flow'); Bloodtracker and High-Society Hunter in city-4 ('Payoffs'), Vampiric Tutor in city-0 ('Bodies')"
+    },
+    {
+     "kind": "role",
+     "id": "draw:engine",
+     "note": "6 copies by role, and deck-audit names six more cards whose oracle text shows the function the taxonomy did not classify"
     }
-  ],
-  "open_questions": [
+   ]
+  },
+  {
+   "stage": "conversion",
+   "label": "SEVEN OUTLETS, AND THE THREE THAT MAKE THEM PAY",
+   "what_it_does": "The component bloodline added and v1.1.1 built on. Seven outlets by role sit here (the eighth, Master of Dark Rites, is filed under mana); six are free - no mana, no tap, sacrifice a creature and get something - and that declared free-outlet component is drawn in 72.3% of games, mean turn 3.16. Indulgent Aristocrat's outlet costs {1}, so it is in the stage and not the component. The outlets turn disposable bodies into cards (Skullclamp, Crossway Troublemakers), drain (Blood Artist, Cruel Celebrant), mana (Ashnod's Altar) and counters - and the three cards beside them make a death pay IN SIZE, the answer to the 400-game finding that 1/1s do not connect. Cordial Vampire puts a counter on EACH Vampire per death. Elenda, the Dusk Rose (in for Immersturm Predator, same four mana) takes a counter for every other creature that dies and has lifelink, so each death makes her next connect gain more for Vito and Sanguine Bond to convert; and fed to an outlet herself she leaves X 1/1 white lifelink Vampire tokens, X her power - created, not cast, so the doublers apply and eminence does not. Blade of the Bloodchief (in for Unbounded Potential) is the same clause on one body: two counters on the equipped Vampire per death, {1} to cast and {1} to equip, best under a lifelinker. Stack 002 is explicit that Cordial Vampire never triggers when nothing dies - the mint alone is not the engine, the mint plus an outlet is - and Elenda and the Blade read the same event. Two bench warnings, not deck findings: nothing declared measures an outlet and a payoff together (the goldfish's sacrifice cap never binds here, sac_cap_hit_rate 0.0), and Forge's evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles on another sacrifice deck. A simulated figure here is a floor.",
+   "cards": [
+    "Altar of Dementia",
+    "Ashnod's Altar",
+    "Bloodflow Connoisseur",
+    "Indulgent Aristocrat",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Yahenni, Undying Partisan",
+    "Cordial Vampire",
+    "Elenda, the Dusk Rose",
+    "Blade of the Bloodchief"
+   ],
+   "evidence": [
     {
-      "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar), Crossway Troublemakers AND High-Society Hunter on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost, and does High-Society Hunter see ANY of them given its 'another nontoken creature' clause? Also: is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "This is the v1.1.0 engine in one board - the loop the pilot's 2026-09-01 game actually ran - and it is the only major stage-to-stage arrow in this model with no passing stack behind it. If High-Society Hunter is blind to tokens, the fuel stage is a card thinner than the declaration reads."
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "7 of 10 in city-3 ('Interaction'), whose eighth member is Master of Dark Rites; the map reads the outlets as interaction, and the three cards that make them pay - Cordial Vampire, Elenda and the Blade - file together in city-4 ('Payoffs')"
     },
     {
-      "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter (an opponent had lost life earlier that turn); stack 011 records them entering WITHOUT it, because the only life loss that turn came from a trigger that had not yet resolved. What is the practical sequencing rule - does the pilot cast the Vampire before or after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It is a free two-power-per-token swing on the deck's most common turn, it is decided entirely by play order, and the two tracked stacks give opposite answers on boards that differ only in timing."
+     "kind": "stack",
+     "id": "002",
+     "note": "records in the negative that Cordial Vampire does not trigger when nothing dies, which is what makes the outlets load-bearing; Elenda and the Blade key on the same 'dies' event and are in no passing stack"
     },
     {
-      "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 77.6% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
-      "settled_by": "goldfish",
-      "why_it_matters": "The conversion stage is the whole of what v1.1.0 bought, and right now every figure attached to it measures a card being DRAWN. A stage nobody can measure is a stage the deck page will render as green."
+     "kind": "role",
+     "id": "sac-outlet",
+     "note": "8 copies by role, of which 7 are here and Master of Dark Rites is filed under mana"
     },
     {
-      "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.2% assembled, Bloodthirsty Conqueror 7.6%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
-      "settled_by": "research-strategy",
-      "why_it_matters": "It decides whether the next branch buys redundancy (more drain doublers, more tutors) or more conversion throughput, and the 400-game run already refuted the third option, which was more bodies."
+     "kind": "role",
+     "id": "buff:counters",
+     "note": "15 copies by role, the largest role class in the deck; Elenda and the Blade both carry it, and both also carry payoff:counters"
     }
-  ],
-  "proposed_goldfish_edits": [
+   ]
+  },
+  {
+   "stage": "output",
+   "label": "EVERY SEAT, EVERY TURN, WITHOUT AN ATTACK CONNECTING",
+   "what_it_does": "What the converted bodies actually buy. Two death drains bill on every creature that dies - Blood Artist one target player, Cruel Celebrant EACH opponent, a difference of three-to-one in a pod and the reason they are not interchangeable; the pair is drawn in 37.2% of games and is a two-card component, the thinnest declared here apart from the two one-card kill pieces. Two lifegain converters turn the deck's heavy lifelink into life loss: Vito and Sanguine Bond share the same trigger word for word. Five lords and counter-payoffs raise what a body is worth in combat - a lord or anthem is drawn in 80.0% of games, mean turn 3.17 - and five removal spells answer what the drain cannot. deck-audit reads interaction OVER at 11 copies against a 5-6 target and interaction-breadth UNDER at 3 classes, with graveyard and land the classes it detects no answer for - the graveyard answer left with Immersturm Predator; that is an oracle-text heuristic and a floor, not a verdict. The stage's job is that none of it needs combat damage to land, which is exactly what the 400-game run said this deck could not rely on.",
+   "cards": [
+    "Blood Artist",
+    "Cruel Celebrant",
+    "Vito, Thorn of the Dusk Rose",
+    "Sanguine Bond",
+    "Legion Lieutenant",
+    "Stromkirk Captain",
+    "Captivating Vampire",
+    "Vampire Socialite",
+    "Drana, Liberator of Malakir",
+    "Path to Exile",
+    "Winds of Abandon",
+    "Despark",
+    "Anguished Unmaking",
+    "Stroke of Midnight"
+   ],
+   "evidence": [
     {
-      "target": "A draw engine drawn",
-      "change": "Add High-Society Hunter to the component (currently 9 cards: Bloodtracker, Caretaker's Talent, Champion of Dusk, Crossway Troublemakers, Liliana Dreadhorde General, Night's Whisper, Preacher of the Schism, Skullclamp, Welcoming Vampire).",
-      "why": "Its oracle text is 'Whenever another nontoken creature dies, draw a card' and card_roles.json already tags it draw:engine - it is the only card carrying that role that the component omits. The deck holds ten draw engines and the declaration measures nine, which understates the axis the pilot's four logged games identified as the deck's failure and which v1.1.0 was built to fix."
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "8 here in city-0 ('Bodies') - three lords and the five removal spells; 4 in city-2 ('Card Flow') - the two death drains and the two lifegain converters; Vampire Socialite and Drana in city-4 ('Payoffs')"
     },
     {
-      "target": "(new) A conversion pair online - an outlet AND a death payoff",
-      "change": "Add an all_of target requiring one of {Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Immersturm Predator, Viscera Seer, Vish Kal Blood Arbiter, Yahenni Undying Partisan} AND one of {Blood Artist, Cruel Celebrant, Cordial Vampire, Crossway Troublemakers, Skullclamp, Liliana Dreadhorde General}.",
-      "why": "The declaration prices the outlet (77.6%) and the death drain (37.2%) as independent components, and an outlet with nothing to pay it is a scry. bloodline's whole thesis is the PAIR, and nothing in the file measures it. Note the caveat in this deck's own history: an authored declaration is not evidence, so this target should be used to read a rate, never to split games for an engine-lift figure."
-    },
-    {
-      "target": "Protection held for the swarm",
-      "change": "Rename to 'Protection held for the board' (membership unchanged: Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat).",
-      "why": "The label still names a plan the deck deliberately abandoned. The same re-derivation that added the sacrifice-outlet target DELETED two swarm targets on the grounds that 400 Forge games refuted the go-wide thesis; this label is the last surviving reference to it, and a label is what a reader sees first."
+     "kind": "role",
+     "id": "wincon:drain",
+     "note": "6 copies by role, 4 of which are in this stage and 2 in wincon"
     }
-  ]
+   ]
+  },
+  {
+   "stage": "protection",
+   "label": "FIVE CARDS HELD, AND FOUR OF THEM ARE FREE OR NEARLY",
+   "what_it_does": "Held, not cast. Deflecting Swat and Flawless Maneuver cost nothing 'if you control a commander' - that is Edgar on the battlefield, not in the command zone, and the goldfish has him cast by turn six in 60.3% of games; Boros Charm is two mana for indestructible on EVERY permanent you control and Teferi's Protection phases the whole board out - reading all five, those are the two that reach the enchantment doublers, since Flawless Maneuver and Akroma's Will name creatures only. Teferi's is also the answer to a sweeper this deck has no other reply to: deck-audit reads sweepers at 0 copies. Akroma's Will is the exception: with a commander it is both modes, which is a kill spell as often as it is insurance. The component is drawn in 68.3% of games, mean turn 3.63, and deck-audit reads protection AT 7 copies against a 5-7 target - it read OVER at 8 until Immersturm Predator left - counting Mondrak and Yahenni, self-protecting bodies filed in other stages here.",
+   "cards": [
+    "Teferi's Protection",
+    "Flawless Maneuver",
+    "Boros Charm",
+    "Akroma's Will",
+    "Deflecting Swat"
+   ],
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-6",
+     "agreement": "partial",
+     "note": "4 of 5 in city-6 ('Insurance'); Deflecting Swat files in city-0 ('Bodies')"
+    },
+    {
+     "kind": "role",
+     "id": "protection:self",
+     "note": "6 copies by role, four of them here (Deflecting Swat carries protection:redirect); the two beyond this stage, Mondrak and Yahenni, are bodies that protect only themselves"
+    }
+   ]
+  },
+  {
+   "stage": "wincon",
+   "label": "TWO CHECKER-PASSED ROUTES, AND BOTH REST ON ONE CARD EACH",
+   "what_it_does": "Route one is combat-adjacent and does not need damage to land. Stack 003: seven attacking Vampires give seven Sanctum Seeker triggers; Bloodletter doubles each opponent's loss independently because it is your turn, so each seat loses 14, and the opponent at 14 is eliminated by state-based actions BEFORE blockers are declared. Your own lifegain is not doubled - Bloodletter replaces only opponents' loss. Route two is the infinite: Bloodthirsty Conqueror with Vito (stack 004) or Sanguine Bond (stack 006), both checker-passed as deterministic, shortcut-legal, zero-additional-mana table kills. The honest part is the price. Both routes are single points of failure that deck-audit has already priced: Bloodletter is 7.1% of opening sevens and 4.1% assembled (9.4% with the tutor), Conqueror 7.1% and 7.8% assembled (15.1% assisted). The Haunt of Hightower sits here as the combat close - a 4/4 flying lifelink that grows on every card entering an opponent's graveyard - and it is a six-mana body, not a plan. Two one-card lines and a fatty is a ceiling, and stating it is not the same as calling it a defect.",
+   "cards": [
+    "Bloodletter of Aclazotz",
+    "Bloodthirsty Conqueror",
+    "Sanctum Seeker",
+    "The Haunt of Hightower"
+   ],
+   "evidence": [
+    {
+     "kind": "stack",
+     "id": "003",
+     "note": "7 triggers x 2 = 14 per seat on attack declaration; one opponent eliminated before blockers"
+    },
+    {
+     "kind": "stack",
+     "id": "004",
+     "note": "Conqueror + Vito verified as a true two-card infinite and a full table kill"
+    },
+    {
+     "kind": "stack",
+     "id": "006",
+     "note": "Conqueror + Sanguine Bond, the same loop with the enchantment half"
+    },
+    {
+     "kind": "combo",
+     "id": "Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose",
+     "note": "contained, infinite, mana_value_needed 0; one of only 2 contained lines in the deck"
+    },
+    {
+     "kind": "city",
+     "id": "city-2",
+     "agreement": "partial",
+     "note": "3 of 4 in city-2 ('Card Flow'), the city the map names for draw - every checker-passed kill in this deck files with the draw engines; The Haunt of Hightower in city-4 ('Payoffs')"
+    }
+   ],
+   "single_point_of_failure": "Bloodthirsty Conqueror"
+  }
+ ],
+ "lines": [
+  {
+   "from": "ignition",
+   "to": "fodder",
+   "via": [
+    "Gifted Aetherborn",
+    "Anointed Procession",
+    "Mondrak, Glory Dominus"
+   ],
+   "verified_by": "002",
+   "note": "One {B}{B} Vampire cast, two doublers: the single eminence event becomes four 1/1 tokens (1->2->4, order chosen by you and identical either way) and the Aetherborn resolves as a fifth body. Eminence does not re-trigger on the tokens - they are created, not cast."
+  },
+  {
+   "from": "ignition",
+   "to": "fodder",
+   "via": [
+    "Gifted Aetherborn",
+    "Elspeth, Storm Slayer",
+    "Anointed Procession",
+    "Mondrak, Glory Dominus"
+   ],
+   "verified_by": "010",
+   "note": "The same cast with the third doubler: eight tokens, 1->2->4->8, identical for all six application orders, and Elspeth doubles a trigger resolving from the command zone off a commander that has never been on the battlefield."
+  },
+  {
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Edgar Markov",
+    "Sanctum Seeker",
+    "Bloodletter of Aclazotz"
+   ],
+   "verified_by": "003",
+   "note": "The fastest verified kill. Seven Vampires attack, four of them eminence tokens: 7 Sanctum Seeker triggers, each drain doubled by Bloodletter to 2 per opponent = 14 per seat, and the 14-life seat dies on the seventh trigger before blockers. Edgar's own attack trigger adds counters and changes nothing about the drain."
+  },
+  {
+   "from": "output",
+   "to": "wincon",
+   "via": [
+    "Vito, Thorn of the Dusk Rose",
+    "Bloodthirsty Conqueror"
+   ],
+   "verified_by": "004",
+   "note": "Verified two-card infinite and a full table kill at zero additional mana: Conqueror's trigger matches Exquisite Blood word for word, the '(Damage causes loss of life.)' parenthetical is reminder text and not a damage requirement, and the loop survives an opponent dying mid-iteration."
+  },
+  {
+   "from": "output",
+   "to": "wincon",
+   "via": [
+    "Sanguine Bond",
+    "Bloodthirsty Conqueror"
+   ],
+   "verified_by": "006",
+   "note": "The same loop with the enchantment half - Bond's trigger is word-for-word Vito's. Two contained lines, one shared body: this is why Conqueror is a priced single point of failure rather than redundancy."
+  },
+  {
+   "from": "mana",
+   "to": "wincon",
+   "via": [
+    "Master of Dark Rites",
+    "Bloodletter of Aclazotz"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). Bloodletter is the only cost in the 99 with three identical coloured pips ({1}{B}{B}{B}), enumerated over every mana cost in cards.json, and Master of Dark Rites adds exactly {B}{B}{B} spendable on Vampire, Cleric and Demon SPELLS - Bloodletter is a Vampire Demon. Sweeping every 'Add' clause in the 99, it is the only source that produces three mana at once (Nomad Outpost and Savai Triome add one of three colours, not three), and it charges a body to do it."
+  },
+  {
+   "from": "fodder",
+   "to": "conversion",
+   "via": [
+    "Anointed Procession",
+    "Ashnod's Altar",
+    "Viscera Seer"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The doubled tokens are what the free outlets eat; the multiplier component is drawn 67.9% and the outlet component 72.3%, but NOTHING in the declaration measures the pair, which is the whole of bloodline's engine. See proposed_goldfish_edits."
+  },
+  {
+   "from": "conversion",
+   "to": "fuel",
+   "via": [
+    "Viscera Seer",
+    "Crossway Troublemakers",
+    "Skullclamp"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). Sacrifice a token, draw a card: Crossway Troublemakers pays 2 life per Vampire death, Skullclamp two cards per equipped body. This is the loop the pilot's 2026-09-01 game ran when an opponent's pinger fed the draw instead of emptying the board. High-Society Hunter does NOT see this - its clause is 'another nontoken creature'."
+  },
+  {
+   "from": "conversion",
+   "to": "output",
+   "via": [
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Cruel Celebrant"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). Each converted body bills the table on the way out. The asymmetry matters and is not interchangeable: Blood Artist drains one target player, Cruel Celebrant each opponent - three-to-one in a pod - and the pair is a two-card component at 37.2%."
+  },
+  {
+   "from": "conversion",
+   "to": "output",
+   "via": [
+    "Cordial Vampire",
+    "Vampire Socialite",
+    "Legion Lieutenant"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The answer to the 400-game finding. Every death puts a +1/+1 counter on each Vampire; the lords add a static +1/+1 each. A 1/1 that does not connect becomes a 3/3 that does, and the deck buys that with deaths rather than with more tokens."
+  },
+  {
+   "from": "fodder",
+   "to": "fuel",
+   "via": [
+    "Anointed Procession",
+    "Caretaker's Talent",
+    "Welcoming Vampire"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). Token entries draw cards - but read the caps before pricing it: both abilities say 'This ability triggers only once each turn', so eight tokens from stack 010's board draw two cards, not sixteen."
+  },
+  {
+   "from": "fuel",
+   "to": "wincon",
+   "via": [
+    "Vampiric Tutor",
+    "Bloodthirsty Conqueror",
+    "Bloodletter of Aclazotz"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The single tutor is the whole difference between the unassisted and assisted figures on both one-card routes: Conqueror 7.8% -> 15.1%, Bloodletter 4.1% -> 9.4% (deck-audit)."
+  },
+  {
+   "from": "protection",
+   "to": "fodder",
+   "via": [
+    "Teferi's Protection",
+    "Boros Charm",
+    "Mondrak, Glory Dominus"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The doublers are enchantments and a legend, so the creature-only insurance does not cover them: of the five protection cards only Teferi's Protection (phases out all permanents) and Boros Charm (indestructible on every permanent) reach Anointed Procession and Mondrak. Mondrak's own indestructible counter costs two other permanents."
+  },
+  {
+   "from": "mana",
+   "to": "ignition",
+   "via": [
+    "Herald's Horn",
+    "Gifted Aetherborn",
+    "Sol Ring"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). Ignition is priced in mana, not in cards: a castable Vampire is drawn in 95.0% of games at mean turn 2.22, so the binding constraint on how many eminence triggers a turn buys is how many spells the mana casts. Herald's Horn cuts each by {1} and digs for the next."
+  },
+  {
+   "from": "conversion",
+   "to": "output",
+   "via": [
+    "Elenda, the Dusk Rose",
+    "Blade of the Bloodchief",
+    "Vito, Thorn of the Dusk Rose"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The v1.1.1 arrow. Every death from the seven outlets puts one counter on Elenda and two on whichever Vampire carries the Blade, read off the same 'creature dies' event that pays Cordial Vampire. Elenda has lifelink and the Blade wants a lifelinker under it (Nighthawk Scavenger, Vish Kal, Elenda herself), so each death adds to the next connect's lifegain, and Vito or Sanguine Bond turn that gain into an opponent's loss one for one. Stack 004 seeds its loop with 'you gained 3 life from some source' and does not say where the life came from; this is where it lives."
+  },
+  {
+   "from": "conversion",
+   "to": "fodder",
+   "via": [
+    "Viscera Seer",
+    "Elenda, the Dusk Rose",
+    "Anointed Procession"
+   ],
+   "verified_by": null,
+   "note": "READING (no stack). The one arrow that runs from conversion back upstream. Feed Elenda to a free outlet at power X and she leaves X 1/1 white lifelink Vampire tokens; they are created, not cast, so Anointed Procession, Mondrak and Elspeth double them the way stack 010 doubles a single token, and eminence does not fire. What X is on the turn she dies, and whether Cordial Vampire's trigger on her death reaches tokens that do not exist yet, is the open question filed for resolve-stack."
+  }
+ ],
+ "map_disagreements": [
+  {
+   "component": "A castable Vampire drawn - the eminence trigger every kill proof opens on",
+   "cities": [
+    "city-4 'Payoffs' (4)",
+    "city-0 'Bodies' (4)",
+    "city-2 'Card Flow' (3)",
+    "city-3 'Interaction' (2)"
+   ],
+   "why": "The single most scattered component in the brief - 13 cards, 4 cities - and the reason is that it is the only component defined by a COST and a TYPE LINE rather than by an effect. The map groups on what the rest of the card says, so Blood Artist and Cruel Celebrant file with the draw engines, Indulgent Aristocrat and Master of Dark Rites with the sacrifice outlets, Charismatic Conqueror and Gifted Aetherborn with the token makers, and Vampire Cutthroat and Knight of the Ebon Legion with the counter payoffs. The leg that 95.0% of games open on has four addresses and no name. My ignition stage is deliberately narrower - the six members whose whole text is keywords, plus Edgar - which is a reading the map cannot express in either direction."
+  },
+  {
+   "component": "wincon (this model's stage, not a declared component)",
+   "cities": [
+    "city-2 'Card Flow' (3 of 4)"
+   ],
+   "why": "The payload half of every checker-passed kill in this deck files in the city the map names for card draw. Bloodletter of Aclazotz, Sanctum Seeker, Bloodthirsty Conqueror and both loop halves (Vito, Sanguine Bond) sit in city-2 alongside Skullclamp, Night's Whisper, Champion of Dusk and Caretaker's Talent; only Edgar himself, who supplies four of stack 003's seven attackers, files elsewhere - in city-4 'Payoffs' since the re-clustering, beside The Haunt of Hightower, the stage's fourth card. The cause is sentence shape: 'whenever a creature dies, draw a card' and 'whenever a creature dies, each opponent loses 1 life' are the same clause with a different payload, and a cluster built from card text cannot separate refuel from kill. That collision is worth stating because it is also the deck's actual reading - the same deaths do both jobs - but a reader looking at the map will see a draw neighbourhood where the deck keeps its win."
+  },
+  {
+   "component": "A free sacrifice outlet drawn (bloodline's new engine)",
+   "cities": [
+    "city-3 'Interaction' (6 of 6)"
+   ],
+   "why": "Seven of the thirteen scatter rows are fully coherent and this is the largest of them - six cards, one city - yet the name the map gives that city is wrong for what these cards do here. The six free outlets cluster with Indulgent Aristocrat and Master of Dark Rites in a city the fallback names 'Interaction' (it read 'Insurance' before the v1.1.1 re-clustering, when Immersturm Predator's sacrifice-for-indestructible sat in it). In v1.1.1 they are the CONVERSION layer, and the three cards that make them pay - Cordial Vampire, Elenda and Blade of the Bloodchief - file one city away in 'Payoffs'. Agreement on membership, disagreement on job."
+  },
+  {
+   "component": "A token multiplier or extra token-maker drawn",
+   "cities": [
+    "city-0 'Bodies' (4)",
+    "city-6 'Insurance' (1)"
+   ],
+   "why": "The three doublers that stack 010 proves multiply together on one event have two addresses: Anointed Procession and Elspeth, Storm Slayer in city-0, Mondrak in city-6 ('Insurance') because its loud clause is the indestructible-counter activation. The fodder stage's other token-makers add a third - Legion's Landing, in the stage but not the declared component, sits in city-5 'Ramp' because its back face is a land. A pilot reading the map would not learn that the first three are the same effect printed three times."
+  }
+ ],
+ "unassigned": [],
+ "open_questions": [
+  {
+   "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar), Crossway Troublemakers AND High-Society Hunter on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost, and does High-Society Hunter see ANY of them given its 'another nontoken creature' clause? Also: is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "This is the v1.1.0 engine in one board - the loop the pilot's 2026-09-01 game actually ran - and it is the only major stage-to-stage arrow in this model with no passing stack behind it. If High-Society Hunter is blind to tokens, the fuel stage is a card thinner than the declaration reads."
+  },
+  {
+   "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter (an opponent had lost life earlier that turn); stack 011 records them entering WITHOUT it, because the only life loss that turn came from a trigger that had not yet resolved. What is the practical sequencing rule - does the pilot cast the Vampire before or after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "It is a free two-power-per-token swing on the deck's most common turn, it is decided entirely by play order, and the two tracked stacks give opposite answers on boards that differ only in timing."
+  },
+  {
+   "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 72.3% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
+   "settled_by": "goldfish",
+   "why_it_matters": "The conversion stage is the whole of what v1.1.0 bought, and right now every figure attached to it measures a card being DRAWN. A stage nobody can measure is a stage the deck page will render as green."
+  },
+  {
+   "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.1% assembled, Bloodthirsty Conqueror 7.8%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
+   "settled_by": "research-strategy",
+   "why_it_matters": "It decides whether the next branch buys redundancy (more drain doublers, more tutors) or more conversion throughput, and the 400-game run already refuted the third option, which was more bodies."
+  },
+  {
+   "question": "Board: Elenda, the Dusk Rose with three +1/+1 counters (a 4/4), Cordial Vampire, Blade of the Bloodchief equipped to Nighthawk Scavenger, Anointed Procession, Mondrak, Viscera Seer, and two eminence tokens. Sacrifice Elenda to Viscera Seer. (a) Is X read from Elenda's last known power, counters included, so four tokens before doubling? (b) Order the triggers: Cordial Vampire and the Blade both trigger on her death alongside her own - do the tokens she leaves get Cordial's counter if her trigger resolves first, and can the pilot choose that order? (c) Two doublers: 4 -> 8 -> 16 lifelink Vampires? (d) Does the Blade put two counters on the Scavenger for Elenda's death, and none for tokens created later?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "This is the v1.1.1 loop in one board - the reason the branch stated for the swap - and none of its four questions is touched by a passing stack. Every one of them is decided by trigger ordering and last-known information rather than by card text, and the difference between 'Elenda dies into four tokens' and 'sixteen 2/2 lifelinkers' is the difference between a body and a wincon."
+  }
+ ],
+ "proposed_goldfish_edits": [
+  {
+   "target": "A draw engine drawn",
+   "change": "Add High-Society Hunter to the component (currently 9 cards: Bloodtracker, Caretaker's Talent, Champion of Dusk, Crossway Troublemakers, Liliana Dreadhorde General, Night's Whisper, Preacher of the Schism, Skullclamp, Welcoming Vampire).",
+   "why": "Its oracle text is 'Whenever another nontoken creature dies, draw a card' and card_roles.json already tags it draw:engine - it is the only card carrying that role that the component omits. The deck holds ten draw engines and the declaration measures nine, which understates the axis the pilot's four logged games identified as the deck's failure and which v1.1.0 was built to fix."
+  },
+  {
+   "target": "(new) A conversion pair online - an outlet AND a death payoff",
+   "change": "Add an all_of target requiring one of {Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Viscera Seer, Vish Kal Blood Arbiter, Yahenni Undying Partisan} AND one of {Blood Artist, Cruel Celebrant, Cordial Vampire, Crossway Troublemakers, Skullclamp, Liliana Dreadhorde General, Elenda the Dusk Rose, Blade of the Bloodchief}.",
+   "why": "The declaration prices the outlet (72.3%) and the death drain (37.2%) as independent components, and an outlet with nothing to pay it is a scry. bloodline's whole thesis is the PAIR, and nothing in the file measures it. Note the caveat in this deck's own history: an authored declaration is not evidence, so this target should be used to read a rate, never to split games for an engine-lift figure. Elenda and the Blade are the two v1.1.1 additions, both death payoffs, and neither sits in any declared component."
+  },
+  {
+   "target": "Protection held for the swarm",
+   "change": "Rename to 'Protection held for the board' (membership unchanged: Teferi's Protection, Flawless Maneuver, Boros Charm, Akroma's Will, Deflecting Swat).",
+   "why": "The label still names a plan the deck deliberately abandoned. The same re-derivation that added the sacrifice-outlet target DELETED two swarm targets on the grounds that 400 Forge games refuted the go-wide thesis; this label is the last surviving reference to it, and a label is what a reader sees first."
+  }
+ ],
+ "notes": [
+  {
+   "at": "2026-09-16",
+   "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+   "note": "Revised for v1.1.1 (branch elenda-v1 merged): Elenda, the Dusk Rose replaced Immersturm Predator and Blade of the Bloodchief replaced Unbounded Potential. Both new cards file under conversion beside Cordial Vampire - they are read off the same 'creature dies' event the seven outlets produce, and they pay it in size on a lifelinker that Vito and Sanguine Bond then convert; Elenda's death-into-doubled-tokens is an arrow back into fodder. Immersturm Predator left the conversion stage, the outlet disagreement and the proposed conversion-pair target; Unbounded Potential left unassigned, which is now empty. Two READING lines and one resolve-stack question were added for the new cards. Every measured figure was re-read from the artifacts regenerated on the new list (goldfish, audit, mana-analysis, diagnostic): the free-outlet component is six cards at 72.3%, interaction reads OVER at 11 with graveyard and land unanswered (the graveyard answer was Immersturm Predator), protection reads AT 7. The merge re-clustered the map (7 cities, fallback names) and every city id and name in this file was re-addressed against the new deck_map.json; Edgar moved from 'Bodies' to 'Payoffs' and the outlet city is now called 'Interaction'. Captain's log 005 (2026-09-15) was read: the fuel stage's count of logged games now separates the three v1.0.0 games that ran out of steam from the two on the current list that did not. Also corrected in passing, in prose that was being rewritten anyway: Deflecting Swat and Flawless Maneuver are free only while you CONTROL a commander (Edgar on the battlefield), not while he is in the command zone."
+  }
+ ]
 }

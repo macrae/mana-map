@@ -8,7 +8,20 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 96,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-3's fallback 'Interaction' is a misread of the cluster: its eight cards are exactly the deck's eight sac-outlet role holders (deck-facts sac-outlet 8), enumerated card by card, and none is a removal spell. Vish Kal's -1/-1 mode and Altar of Dementia's mill are what the tag saw.",
+      "city-3-hood-0, city-5-hood-0 and city-6-hood-0 are single-neighbourhood cities and carry the same name as their parent on purpose: merge_deck_map.validate exempts a lone neighbourhood from the no-repeat rule because it IS the city. Left unnamed, city-3's would render 'Interaction' beneath THE SLAUGHTERHOUSE. Drop the three entries if the charter's letter is preferred; the validator passes either way.",
+      "city-0 is the deck's mixed city: nine mint/doubler cards, five removal spells and the four lords share one region. The split into three neighbourhoods reads clean; the city name covers all three jobs and the hood names carry the distinctions. Vampiric Tutor and Deflecting Swat are the odd members of city-0-hood-0 (neither mints nor is a body).",
+      "city-1-hood-2 (Bloodstained Mire, Marsh Flats) is a two-card neighbourhood at the far edge of the land city (cx 0.998 against the city's 0.684). The embedding reads a fetch as producing nothing (CLAUDE.md: a fetchland's colours are a property of the deck), so the isolation is the model's, not the deck's: these belong.",
+      "city-4-hood-1 (Vampire Cutthroat, Vampire Socialite) is a two-card neighbourhood pulled away from the counter-growers. Cutthroat carries no counter text at all and is the one card in city-4 that does not grow; Socialite grants entry counters rather than growing itself. Both belong to the deck; the split is the map telling you they connect rather than swell.",
+      "The commander's own body sits in city-4 (THE FEEDERS) because the embedding reads his attack trigger; the eminence ignition works from the command zone and appears nowhere on this map. Anyone reading THE MINT as the whole token supply should know the largest mint is off-map.",
+      "Both cards merged today from elenda-v1 landed in city-4-hood-0: Elenda, the Dusk Rose and Blade of the Bloodchief both convert deaths into +1/+1 counters, which is the job the swap was made for. Immersturm Predator, which they replaced, would have sat in city-3 (an outlet); the outlet count fell from nine to eight and the map shows it.",
+      "city-6 is four protection instants plus two odd residents: Herald's Horn (typal cost reduction and top-of-library draw) and Mondrak, Glory Dominus (the third token doubler, verified in stack 010, and city-6's only verified card). Both are named for the majority; Mondrak's indestructible-counter clause is presumably what pulled it toward the protection spells, and Horn's placement looks arbitrary.",
+      "strategic_frame.json is stamped for decklist 7ce22fd6 (v1.1.0) and still names Immersturm Predator among nine outlets; the map is on 7be137d0 (today's list). The names here follow the map. The frame is a day stale, not wrong about the engine.",
+      "city-2's verified_count of 5 (Bloodletter, Bloodthirsty Conqueror, Sanctum Seeker, Sanguine Bond, Vito) all sit in city-2-hood-1: every checker-passed kill route in the deck is one neighbourhood, and the draw half of the city has none. That is the engine on the record, and why the hood is named for the kill rather than the city's draw side."
+    ]
   },
   "cards": [
     {
@@ -1275,7 +1288,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE MUSTER",
       "fallback": "Bodies",
       "cx": -0.15543,
       "cy": 0.1412,
@@ -1300,13 +1313,14 @@
         "Vampiric Tutor",
         "Winds of Abandon"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Raising the army: the token mints and their doublers, the four lords, and five spells that clear the road."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE MINT",
       "fallback": "Bodies",
       "cx": -0.20582,
       "cy": 0.01517,
@@ -1322,13 +1336,14 @@
         "Vampire of the Dire Moon",
         "Vampiric Tutor"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Where the tokens get made and doubled; the two-mana deathtouch bodies are the spells that trigger the mint."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE EVICTIONS",
       "fallback": "Interaction II",
       "cx": -0.00634,
       "cy": 0.28315,
@@ -1340,13 +1355,14 @@
         "Stroke of Midnight",
         "Winds of Abandon"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Five spot answers, four of them exile; three also hit the enchantment or artifact that is actually the problem."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE OFFICERS",
       "fallback": "Bodies II",
       "cx": -0.22842,
       "cy": 0.24735,
@@ -1357,12 +1373,13 @@
         "Legion Lieutenant",
         "Stromkirk Captain"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Four stacking statics that make every other Vampire bigger: the size the tokens need before an attack is worth declaring."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE BLOOD BANK",
       "fallback": "Mana",
       "cx": 0.68379,
       "cy": -0.05305,
@@ -1401,13 +1418,14 @@
         "Takenuma, Abandoned Mire",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Thirty-two lands, thirty-six copies; eleven of them bill you life for mana, which this deck treats as currency anyway."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE FINE PRINT",
       "fallback": "Mana",
       "cx": 0.69784,
       "cy": 0.0096,
@@ -1428,13 +1446,14 @@
         "Survivors' Encampment",
         "Takenuma, Abandoned Mire"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Painlands and any-colour lands beside the five whose activations draw, cycle or recur: mana with a clause attached."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TAPPED UNLESS",
       "fallback": "Mana II",
       "cx": 0.64435,
       "cy": -0.19822,
@@ -1453,13 +1472,14 @@
         "Sundown Pass",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Twelve two- and three-colour lands whose untapped entry is a condition: land count, opponent count, or two life."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "GO FETCH",
       "fallback": "Mana IIII",
       "cx": 0.99762,
       "cy": 0.12306,
@@ -1468,13 +1488,14 @@
         "Bloodstained Mire",
         "Marsh Flats"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-1-hood-3",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE BASICS AND VERGES",
       "fallback": "Mana III",
       "cx": 0.59602,
       "cy": 0.07515,
@@ -1485,12 +1506,13 @@
         "Plains",
         "Swamp"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two basics and the two Verges that read their types: untapped mana on turn one, no life paid."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "DRAW AND DRAIN",
       "fallback": "Card Flow",
       "cx": -0.36663,
       "cy": -0.32945,
@@ -1513,13 +1535,14 @@
         "Voldaren Epicure",
         "Welcoming Vampire"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "Life is currency here: you spend it for cards on one side and collect it from every opponent on the other."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE REFILL",
       "fallback": "Card Flow",
       "cx": -0.53134,
       "cy": -0.1699,
@@ -1535,13 +1558,14 @@
         "Voldaren Epicure",
         "Welcoming Vampire"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Deaths and entries turned into cards, the answer to two logged games that ran out of steam; four of nine cost life."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE KILL FLOOR",
       "fallback": "Finishers",
       "cx": -0.15487,
       "cy": -0.53458,
@@ -1555,12 +1579,13 @@
         "Sanguine Bond",
         "Vito, Thorn of the Dusk Rose"
       ],
-      "verified_count": 5
+      "verified_count": 5,
+      "gloss": "Both checker-passed kills live here: the attack drain doubled, and the two lifegain loops that end the game at zero mana."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE SLAUGHTERHOUSE",
       "fallback": "Interaction",
       "cx": -0.75002,
       "cy": 0.20415,
@@ -1575,13 +1600,14 @@
         "Vish Kal, Blood Arbiter",
         "Yahenni, Undying Partisan"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Every sacrifice outlet in the 99, six needing no mana: where a token stops being a body and becomes a trigger."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE SLAUGHTERHOUSE",
       "fallback": "Interaction",
       "cx": -0.75002,
       "cy": 0.20415,
@@ -1596,12 +1622,13 @@
         "Vish Kal, Blood Arbiter",
         "Yahenni, Undying Partisan"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE ENORMOUS VAMPIRES",
       "fallback": "Payoffs",
       "cx": -0.51456,
       "cy": -0.46475,
@@ -1619,13 +1646,14 @@
         "Vampire Cutthroat",
         "Vampire Socialite"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Deaths, attacks and life lost become +1/+1 counters: a few bodies that get huge, the answer to tokens that never connected."
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "THE FEEDERS",
       "fallback": "Payoffs",
       "cx": -0.55582,
       "cy": -0.40213,
@@ -1641,13 +1669,14 @@
         "Knight of the Ebon Legion",
         "The Haunt of Hightower"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "Nine growers, four fed by deaths, the rest by attacks, life lost or an opponent's graveyard; the commander's own body sits here."
     },
     {
       "id": "city-4-hood-1",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "THE SNEAKS",
       "fallback": "Value",
       "cx": -0.32886,
       "cy": -0.74654,
@@ -1656,12 +1685,13 @@
         "Vampire Cutthroat",
         "Vampire Socialite"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Two cheap bodies built to connect, skulk and menace, while everything else in this city waits to be fed."
     },
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "ROCKS AND A FORT",
       "fallback": "Ramp",
       "cx": 0.16375,
       "cy": 0.7199,
@@ -1673,13 +1703,14 @@
         "Sol Ring",
         "Talisman of Indulgence"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Four rocks and the one-drop enchantment that flips into a land once three creatures attack: ramp that is not a land."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "ROCKS AND A FORT",
       "fallback": "Ramp",
       "cx": 0.16375,
       "cy": 0.7199,
@@ -1691,12 +1722,13 @@
         "Sol Ring",
         "Talisman of Indulgence"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "THE SAFETY NET",
       "fallback": "Insurance",
       "cx": -0.39598,
       "cy": 0.71777,
@@ -1709,13 +1741,14 @@
         "Mondrak, Glory Dominus",
         "Teferi's Protection"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Held for the commit turn: the four instants that carry your board through a wrath or a blocked alpha strike."
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
-      "label": null,
+      "label": "THE SAFETY NET",
       "fallback": "Insurance",
       "cx": -0.39598,
       "cy": 0.71777,
@@ -1728,7 +1761,8 @@
         "Mondrak, Glory Dominus",
         "Teferi's Protection"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": null
     }
   ],
   "edges": [

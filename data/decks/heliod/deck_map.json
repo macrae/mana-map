@@ -8,7 +8,20 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 85,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "The one passing stack (002, Approach off Mystical Tutor) is split across three cities on the map: Mystical Tutor in city-0-hood-1, Approach of the Second Sun in city-3-hood-1, Swan Song in city-4. The win's two halves are one city apart; that is a reading of the clustering, not a defect, but a reader looking for 'the engine' should be told it spans THE SEARCH PARTY and THE BILL COMES DUE.",
+      "city-4's fallback reads 'Card Flow II' over seven cards every one of which is tagged counterspell (deck-facts histogram: counterspell 8, the eighth being An Offer You Can't Refuse in city-2). That looks like a quirk in how the fallback word is derived or de-duplicated, not a membership problem; worth a look by whoever owns deck_map.py.",
+      "city-0-hood-2 fuses two jobs the tags do not share: three attack taxes (Archangel of Tithes, Ghostly Prison, Propaganda) and four X-spells (Braingeyser, Hangarback Walker, Secure the Wastes, Walking Ballista). Dig Through Time and Leyline of Anticipation are the stragglers; Leyline is a flash grant and belongs by function with Heliod's back face in hood-0. Named for the two jobs I can see rather than pretending there is one.",
+      "city-0-hood-0 is five protection pieces around the commander (Guardian of Faith, Karametra's Blessing, Lightning Greaves, Teferi's Protection, and Heliod himself) plus three odd members: Cyclonic Rift and the two Medallions. The Medallions sit here as cost reduction alongside Heliod's own discount; Rift is the one that does not belong and is the hood's most unusual card.",
+      "city-1-hood-0 is named for the six of nine that are plain untapped sources (Adarkar Wastes, Command Tower, Island, Mana Confluence, Plains, Skycloud Expanse). Irrigated Farmland enters tapped, and Mikokoro and Reliquary Tower do a second job; none is out of place enough to flag.",
+      "city-2-hood-0 holds An Offer You Can't Refuse, which by job is a counterspell (city-4's work) and landed here because it also makes Treasure; and Isochron Scepter, merged today for Mikaeus, clustered as a tap-artifact beside Temple Bell rather than with the counters it would imprint. Smothering Tithe does not tap but is the same economy. Membership is measured; noted, not moved.",
+      "city-3-hood-1's loose member is Kefnet the Mindful: it draws for you alone, not the table, and its seven-cards-in-hand gate is why it clusters with the hand-size and drain cards. The Second Doctor is the reverse case, a table-draw card in the asymmetric hood, placed there by its 'can't attack you' rider.",
+      "Today's three merged cards read clean on the map: Horn of Greed sits with the symmetric draw (city-3-hood-0), Mind Stone with the rocks (city-2-hood-1), Isochron Scepter loosely in the tap-utility hood (see above).",
+      "No lone-member neighbourhood. The smallest is city-1-hood-2 (Eiganjo, Flooded Strand, Otawara), three lands with a spell mode, and the split reads clean.",
+      "engine-facts: 5 of 12 declared components sit in a single city. The seven that span cities are the draw-engine components, which is consistent with the map splitting symmetric draw (city-3-hood-0) from the on-demand tap sources (city-2-hood-0) and from the payoffs (city-3-hood-1)."
+    ]
   },
   "cards": [
     {
@@ -1064,7 +1077,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE HOME FRONT",
       "fallback": "Bodies",
       "cx": -0.34952,
       "cy": -0.15188,
@@ -1092,13 +1105,14 @@
         "Teferi's Protection",
         "Walking Ballista"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Your side of the table: the god, what keeps him there, the fort that taxes attackers, and the search for the ending."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "KEEP THE GOD UP",
       "fallback": "Insurance",
       "cx": -0.80172,
       "cy": 0.15915,
@@ -1113,13 +1127,14 @@
         "Sapphire Medallion",
         "Teferi's Protection"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The commander and his cover: phase out, shroud, hexproof, plus the two Medallions that discount like his back face does."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE SEARCH PARTY",
       "fallback": "Tutors",
       "cx": -0.48633,
       "cy": -0.42598,
@@ -1130,13 +1145,14 @@
         "Long-Term Plans",
         "Mystical Tutor"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Four ways to go get one card; the verified line is the tutor that finds the second Sun."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "TOLLS AND X-SPELLS",
       "fallback": "Bodies",
       "cx": 0.11323,
       "cy": -0.30653,
@@ -1152,12 +1168,13 @@
         "Secure the Wastes",
         "Walking Ballista"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Three taxes on attacking you, four spells that scale with X: the mana sinks for a hand this deck keeps full."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE GROUND",
       "fallback": "Mana",
       "cx": 0.77172,
       "cy": -0.09667,
@@ -1182,13 +1199,14 @@
         "Skycloud Expanse",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "What everything stands on: two colours, most of it untapped, and three lands that double as spells."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "UNTAPPED, NO QUESTIONS",
       "fallback": "Mana",
       "cx": 0.71629,
       "cy": 0.01971,
@@ -1204,13 +1222,14 @@
         "Reliquary Tower",
         "Skycloud Expanse"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "ENTERS TAPPED, MAYBE",
       "fallback": "Mana II",
       "cx": 0.84102,
       "cy": -0.14335,
@@ -1223,13 +1242,14 @@
         "Seachrome Coast",
         "Temple of Enlightenment"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The duals with a condition on the way in: a Plains or Island, two other lands, two life."
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "LANDS THAT ARE SPELLS",
       "fallback": "Mana III",
       "cx": 0.7994,
       "cy": -0.35248,
@@ -1239,12 +1259,13 @@
         "Flooded Strand",
         "Otawara, Soaring City"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "A fetch and two channel lands: mana on turn two, an answer on turn nine."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE TAP ROOM",
       "fallback": "Ramp",
       "cx": 0.13982,
       "cy": 0.5294,
@@ -1264,13 +1285,14 @@
         "Temple Bell",
         "Thought Vessel"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Mostly tap abilities: seven rocks that pay for the game, six handles that pass cards and Treasure around the table."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE HAND CRANK",
       "fallback": "Value",
       "cx": -0.10321,
       "cy": 0.35885,
@@ -1283,13 +1305,14 @@
         "Smothering Tithe",
         "Temple Bell"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Tap on demand: opponents draw now, so the next spell costs less now, and the Tithe bills them for every card."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE ROCKERY",
       "fallback": "Ramp",
       "cx": 0.34813,
       "cy": 0.67559,
@@ -1303,12 +1326,13 @@
         "Talisman of Progress",
         "Thought Vessel"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE GIFT ECONOMY",
       "fallback": "Card Flow",
       "cx": -0.22031,
       "cy": 0.32016,
@@ -1335,13 +1359,14 @@
         "Teferi's Ageless Insight",
         "The Second Doctor"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The engine: the table draws, your spells get cheaper, their draws cost them life, and the second Sun ends it."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE OPEN BAR",
       "fallback": "Card Flow",
       "cx": -0.10056,
       "cy": 0.17076,
@@ -1357,13 +1382,14 @@
         "Skyscribing",
         "Stroke of Genius"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Cards for the whole table, on the house; each one an opponent draws is a mana off your next spell."
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE BILL COMES DUE",
       "fallback": "Finishers",
       "cx": -0.31188,
       "cy": 0.42482,
@@ -1377,13 +1403,14 @@
         "Scrawling Crawler",
         "The Second Doctor"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "The asymmetric half: their draws cost them life, their spells cost them mana, and the second Sun closes the account."
     },
     {
       "id": "city-3-hood-2",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "YOUR CUT",
       "fallback": "Card Flow III",
       "cx": -0.32949,
       "cy": 0.47315,
@@ -1394,12 +1421,13 @@
         "Faerie Mastermind",
         "Teferi's Ageless Insight"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your share of the giveaway: two doublers for your draws, two bodies that draw off opponents' draws."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "NOT TODAY",
       "fallback": "Card Flow II",
       "cx": -0.54176,
       "cy": -0.52925,
@@ -1413,7 +1441,8 @@
         "Force of Negation",
         "Swan Song"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Seven counters, two of them free: the reason you pass with mana open and the reason the table plays around you."
     },
     {
       "id": "city-4-hood-0",
@@ -1438,7 +1467,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "THE CLEANERS",
       "fallback": "Interaction",
       "cx": -0.02834,
       "cy": -0.77517,
@@ -1451,7 +1480,8 @@
         "Supreme Verdict",
         "Swords to Plowshares"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Two sweepers for the board you let them build, four one-for-ones for the thing that must go now."
     },
     {
       "id": "city-5-hood-0",
